@@ -1,0 +1,62 @@
+package Commands.BanSystem;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+
+import ServerControl.API;
+import ServerControl.Loader;
+import me.Straiker123.TheAPI;
+
+public class Warn implements CommandExecutor {
+	@Override
+	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+		if(API.hasPerm(s, "ServerControl.Warn")) {
+		if(args.length==0) {
+			Loader.Help(s, "/Warn <player> <reason>", "BanSystem.Warn");
+			return true;
+		}
+		if(args.length==1) {
+			String p = Loader.me.getString("Players."+args[0]);
+			if(p!=null) {
+				if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true) {
+					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "Warn")
+							.replace("%target%", args[0]), s);
+					return true;
+				}
+				API.getBanSystemAPI().setWarn(args[0], s, Loader.config.getString("BanSystem.Warn.Reason"));
+				TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.Warn")
+						.replace("%operator%", s.getName()).replace("%reason%", Loader.config.getString("BanSystem.Warn.Reason")).replace("%player%", args[0])
+						.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.Warn");
+				return true;
+			}
+			BanSystem.notExist(s, args);
+			return true;}
+		if(args.length>=2) {
+			String p = Loader.me.getString("Players."+args[0]);
+			if(p!=null) {
+				if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true) {
+					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "Warn")
+							.replace("%target%", args[0]), s);
+					return true;
+				}
+				String msg = "";
+				for (int i = 0; i < args.length; i++) {
+				msg = msg + args[i] + " ";
+				}
+				msg = msg.replaceFirst(args[0]+" ",	"");
+				msg = msg.substring(0,msg.length()-1);
+				API.getBanSystemAPI().setWarn(args[0], s, msg);
+				TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.Warn")
+						.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])
+						.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.Warn");
+				return true;
+			}
+			BanSystem.notExist(s, args);
+			return true;
+			
+		}
+	}
+		return true;
+	}
+}
