@@ -25,7 +25,7 @@ public class SetWarp implements CommandExecutor {
 					warp(s);
 					
 					return true;
-				}else {
+				}else { 
 					Loader.msg(Loader.s("ConsoleErrorMessage"),s);
 				return true;
 				}

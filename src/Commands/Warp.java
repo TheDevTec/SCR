@@ -38,7 +38,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 								.replace("%warps%", StringUtils.join(warpss(s), ", ")), s);
 								//.replace("%warps%", StringUtils.join(Loader.config.getConfigurationSection("Warps").getKeys(false), ", "))
 						return true;
-					}
+					} 
 			if(args.length==1) {
 			if(warp(args)!=null) { 
 		 }
