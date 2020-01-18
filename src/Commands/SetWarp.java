@@ -30,7 +30,7 @@ public class SetWarp implements CommandExecutor {
 				return true;
 				}
 			}
-			if(args[0]!=null && args[1]==null) {
+			if(args.length==1) {
 			if(s instanceof Player) {
 				if(Loader.config.getString("Warps."+args[0])==null) {
 				Player p = (Player)s;

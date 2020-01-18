@@ -37,11 +37,6 @@ public class Warp implements CommandExecutor, TabCompleter {
 				Loader.msg(Loader.s("Prefix")+Loader.s("Warp.List")//c.addAll(StringUtil.copyPartialMatches(args[0], warpss(s), new ArrayList<>()));
 								.replace("%warps%", StringUtils.join(warpss(s), ", ")), s);
 								//.replace("%warps%", StringUtils.join(Loader.config.getConfigurationSection("Warps").getKeys(false), ", "))
-				Loader.msg(Loader.s("Warp.List")
-								.replace("%warps%", StringUtils.join(Loader.config.getConfigurationSection("Warps").getKeys(false), ", "))
-								.replace("%player%", s.getName())
-								.replace("%prefix%", Loader.s("Prefix"))
-								, s);
 						return true;
 					}
 			if(args.length==1) {
