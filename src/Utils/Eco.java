@@ -20,8 +20,8 @@ import net.milkbowl.vault.economy.EconomyResponse;
 				if(a!=null)world=a;
 			}
 			if(a==null)a=Bukkit.getWorlds().get(0).getName();
-			for(String f:Loader.config.getConfigurationSection("MultiEconomy.Types").getKeys(false)) {
-				for(String g:Loader.config.getStringList("MultiEconomy.Types."+f)) {
+			for(String f:Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
+				for(String g:Loader.config.getStringList("Options.Economy.MultiEconomy.Types."+f)) {
 					if(g.equals(world))wd=f;
 				}
 			}
@@ -29,8 +29,8 @@ import net.milkbowl.vault.economy.EconomyResponse;
 		}
 		public static String getEconomyGroup(String p, String world) {
 			String wd = "default";
-			for(String f:Loader.config.getConfigurationSection("MultiEconomy.Types").getKeys(false)) {
-				for(String g:Loader.config.getStringList("MultiEconomy.Types."+f)) {
+			for(String f:Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
+				for(String g:Loader.config.getStringList("Options.Economy.MultiEconomy.Types."+f)) {
 					if(g.equals(world))wd=f;
 				}
 			}
@@ -72,7 +72,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    }
 	    private String getPaths(String player, String group) {
 			String path = "Players."+player+".Money";
-			if(Loader.config.getBoolean("MultiEconomy.Enabled"))path=path+"."+group;
+			if(Loader.config.getBoolean("Options.Economy.MultiEconomy.Use"))path=path+"."+group;
 			return path;
 	    }
 	    private String get(String player) {
@@ -164,8 +164,10 @@ import net.milkbowl.vault.economy.EconomyResponse;
 			try {
 	    	Loader.me.set(get(s), getBalance(s) - v);
 	    	Configs.chatme.save();
+	        Loader.EconomyLog("Succefully withdrawed $"+v+" from player "+s);
 	        return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS, "Succefully withdrawed $"+v+" from player "+s);
 			}catch(Exception e) {
+		        Loader.EconomyLog("Failed withdrawed $"+v+" from player "+s);
 				 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+" from player "+s);
 				}
 			}
@@ -181,8 +183,10 @@ import net.milkbowl.vault.economy.EconomyResponse;
 			try {
 	    	Loader.me.set(get(s,getEconomyGroup(s,world)),getBalance(s) - v);
 	    	Configs.chatme.save();
+	        Loader.EconomyLog("Succefully withdrawed $"+v+" from player "+s);
 	        return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS, "Succefully withdrawed $"+v+" from player "+s);
 			}catch(Exception e) {
+		        Loader.EconomyLog("Failed withdrawed $"+v+" from player "+s);
 				 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+" from player "+s);
 				}
 			}
@@ -196,12 +200,11 @@ import net.milkbowl.vault.economy.EconomyResponse;
 			if(s==null)return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed deposited $"+v+", because player is null");
 			try {
 	    	 Loader.me.set(get(s), getBalance(s) + v);
-	    	/* Bukkit.broadcast("String: "+s, "");
-	    	 Bukkit.broadcast("Double: "+v, "");*/
-	    	 if(Configs.chatme!=null)
 	    	 Configs.chatme.save();
+		        Loader.EconomyLog("Succefully deposited $"+v+" from player "+s);
 	        return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS, "Succefully deposited $"+v+" to player "+s);
 		}catch(Exception e) {
+	        Loader.EconomyLog("Failed deposited $"+v+" to player "+s);
 			 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed deposited $"+v+" to player "+s);
 			}
 		}
@@ -217,8 +220,10 @@ import net.milkbowl.vault.economy.EconomyResponse;
 			try {
 	    	 Loader.me.set(get(s,getEconomyGroup(s,w)), getBalance(s,w) + v);
 	    	 Configs.chatme.save();
+		        Loader.EconomyLog("Succefully deposited $"+v+" from player "+s);
 	        return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS, "Succefully deposited $"+v+" to player "+s);
 		}catch(Exception e) {
+	        Loader.EconomyLog("Failed deposited $"+v+" to player "+s);
 			 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed deposited $"+v+" to player "+s);
 			}
 		}
@@ -292,8 +297,9 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    public boolean createPlayerAccount(String s) {
 	    	if(s==null)return false;
 			if(!existPath(s)) {
-	        Loader.me.set(get(s),  Loader.config.getDouble("Economy.DefaultMoney"));
+	        Loader.me.set(get(s),  Loader.config.getDouble("Options.Economy.Money"));
 	        Configs.chatme.save();
+	        Loader.EconomyLog("Creating economy account for player "+s);
 	        return true;}
 			return false;
 	    }
@@ -306,8 +312,9 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    @Override
 	    public boolean createPlayerAccount(String s, String world) {
 	    	if(!existPath(s,world)) {
-		        Loader.me.set(get(s,world),  Loader.config.getDouble("Economy.DefaultMoney"));
+		        Loader.me.set(get(s,world),  Loader.config.getDouble("Options.Economy.Money"));
 		        Configs.chatme.save();
+		        Loader.EconomyLog("Creating economy account for player "+s);
 		        return true;}
 				return false;
 	    }

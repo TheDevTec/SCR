@@ -23,32 +23,15 @@ public class Give implements CommandExecutor, TabCompleter {
 	public List<String> items(){
 		ArrayList<String> list = new ArrayList<String>();
 		for(Material ss:Material.values()) {
-			String s = ss.name();
-			list.add(s);
+			if(ss.isOccluding())
+			list.add(ss.name());
 		}
-		list.remove("AIR");
-		list.remove("WATER");
-		list.remove("WALL_TORCH");
-		list.remove("OAK_WALL_SIGN");
-		list.remove("DARK_OAK_WALL_SIGN");
-		list.remove("JUNGLE_WALL_SIGN");
-		list.remove("ACACIA_WALL_SIGN");
-		list.remove("ATTACHED_MELON_STEM");
-		list.remove("ATTACHED_PUMPKIN_STEM");
-		list.remove("BAMBOO_SAPLING");
-		ArrayList<String> r = new ArrayList<String>();
-		for(String s:list)if(s.contains("WALL_BANNER"))r.add(s);
-		for(String s:r)list.remove(s);
-		r.clear();
-		list.remove("BUBBLE_CORAL_WALL_FAN");
-		list.remove("BRAIN_CORAL_WALL_FAN");
-		list.remove("TUBE_CORAL_WALL_FAN");
-		list.remove("FIRE_CORAL_WALL_FAN");
-		list.remove("HORN_CORAL_WALL_FAN");
 		return list;
 	}
 	public String getItem(String s) {
+		if(Material.matchMaterial(s) != null && Material.matchMaterial(s).isOccluding())
 		return Material.matchMaterial(s).name();
+		return null;
 	}
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {

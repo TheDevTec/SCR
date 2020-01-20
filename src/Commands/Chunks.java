@@ -27,14 +27,12 @@ public class Chunks implements CommandExecutor, TabCompleter{
 	  	        	Loader.msg(Loader.s("Prefix")+"&e----------------- &bChunks &e-----------------",s);
 					Loader.msg("",s);
 			        int chunks=0;
-			        int worlds=0;
 			        for(World w : Bukkit.getWorlds()) {
-			        	worlds=worlds+1;
 			        	chunks=chunks+w.getLoadedChunks().length;
 			        	Loader.msg(Loader.s("Prefix")+Loader.s("Chunks.Loaded").replace("%world%", w.getName())
 			        			.replace("%chunks%", String.valueOf(w.getLoadedChunks().length)),s);
 			        }
-			        Loader.msg(Loader.s("Prefix")+Loader.s("Chunks.TotalLoaded").replace("%worlds%", String.valueOf(worlds))
+			        Loader.msg(Loader.s("Prefix")+Loader.s("Chunks.TotalLoaded").replace("%worlds%", String.valueOf(Bukkit.getWorlds().size()))
 			        		.replace("%chunks%", String.valueOf(chunks)),s);
 					return true;
 				}
@@ -42,7 +40,6 @@ public class Chunks implements CommandExecutor, TabCompleter{
 	  	        	Loader.msg(Loader.s("Prefix")+"&e----------------- &bChunks &e-----------------",s);
 	  	        	Loader.msg("",s);
 	  			MultiWorldsUtils.unloadWorlds(s);
-	  			
 	  	  		return true;
 	  	        }}}return true;}
 	private static final List<String> Unload = Arrays.asList("Unload");
@@ -52,7 +49,6 @@ public class Chunks implements CommandExecutor, TabCompleter{
 	    	if(cmd.getName().equalsIgnoreCase("chunks") && args.length==1) {
 	        	if(s.hasPermission("ServerControl.Chunks")) {
 	        		c.addAll(StringUtil.copyPartialMatches(args[0], Unload, new ArrayList<>()));
-	        		
 	        	}
 			}
 	        return c;

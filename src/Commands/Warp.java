@@ -34,20 +34,19 @@ public class Warp implements CommandExecutor, TabCompleter {
 		if(API.hasPerm(s, "ServerControl.Warp")) {
 			if(Loader.config.getString("Warps")!=null) {
 			if(args.length==0) {
-				Loader.msg(Loader.s("Prefix")+Loader.s("Warp.List")//c.addAll(StringUtil.copyPartialMatches(args[0], warpss(s), new ArrayList<>()));
-								.replace("%warps%", StringUtils.join(warpss(s), ", ")), s);
-								//.replace("%warps%", StringUtils.join(Loader.config.getConfigurationSection("Warps").getKeys(false), ", "))
+				Loader.msg(Loader.s("Warp.List")
+								.replace("%warps%", StringUtils.join(warpss(s), ", "))
+								.replace("%player%", s.getName())
+								.replace("%prefix%", Loader.s("Prefix"))
+								, s);
 						return true;
 					} 
 			if(args.length==1) {
-			if(warp(args)!=null) { 
-		 }
 		if(s instanceof Player) {
 		if(warp(args)!=null) {
 			float x_head = Loader.config.getInt("Warps."+warp(args)+".X_Pos_Head");
 			float z_head = Loader.config.getInt("Warps."+warp(args)+".Z_Pos_Head");
-			 Location loc = new Location(Bukkit.getWorld(Loader.config.getString("Warps."+warp(args)+".World")), Loader.config.getDouble("Warps."+warp(args)+".X"), Loader.config.getDouble("Warps."+warp(args)+".Y") ,Loader.config.getDouble("Warps."+warp(args)+".Z"), x_head, z_head);
-			 if(loc == null || loc.getWorld()==null) {
+			 if(Bukkit.getWorld(Loader.config.getString("Warps."+warp(args)+".World"))==null) {
 				Loader.msg(Loader.s("Warp.CantGetLocation")
 						.replace("%warp%", warp(args))
 						.replace("%world%", "-")
@@ -57,6 +56,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 						, s);
 				return true;
 			}
+			 Location loc = new Location(Bukkit.getWorld(Loader.config.getString("Warps."+warp(args)+".World")), Loader.config.getDouble("Warps."+warp(args)+".X"), Loader.config.getDouble("Warps."+warp(args)+".Y") ,Loader.config.getDouble("Warps."+warp(args)+".Z"), x_head, z_head);
 			 boolean needperm = Loader.config.getBoolean("Warps."+warp(args)+".NeedPermission");
 			 if(needperm == true) {
 				 if(API.hasPerm(s, "ServerControl.Warp."+warp(args))) {
@@ -103,8 +103,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 						if(warp(args)!=null) {
 							float x_head = Loader.config.getInt("Warps."+warp(args)+".X_Pos_Head");
 							float z_head = Loader.config.getInt("Warps."+warp(args)+".Z_Pos_Head");
-							Location loc = new Location(Bukkit.getWorld(Loader.config.getString("Warps."+warp(args)+".World")), Loader.config.getDouble("Warps."+warp(args)+".X"), Loader.config.getDouble("Warps."+warp(args)+".Y") ,Loader.config.getDouble("Warps."+warp(args)+".Z"), x_head, z_head);
-							if(loc == null || loc.getWorld()==null) {
+							if(Bukkit.getWorld(Loader.config.getString("Warps."+warp(args)+".World"))==null) {
 									Loader.msg(Loader.s("Warp.CantGetLocation")
 										.replace("%warp%", warp(args))
 										.replace("%world%", "-")
@@ -114,7 +113,8 @@ public class Warp implements CommandExecutor, TabCompleter {
 										, s);
 									return true;
 								}
-								API.setBack(p);
+							Location loc = new Location(Bukkit.getWorld(Loader.config.getString("Warps."+warp(args)+".World")), Loader.config.getDouble("Warps."+warp(args)+".X"), Loader.config.getDouble("Warps."+warp(args)+".Y") ,Loader.config.getDouble("Warps."+warp(args)+".Z"), x_head, z_head);
+							API.setBack(p);
 						TheAPI.getPlayerAPI(p).teleport(loc);
 						Loader.msg(Loader.s("Warp.Warping")
 								.replace("%warp%",warp(args))
@@ -151,8 +151,6 @@ public class Warp implements CommandExecutor, TabCompleter {
 		if(Bukkit.getPlayer(s.getName())!=null)return Bukkit.getPlayer(s.getName()).getDisplayName();
 		return s.getName();
 	}
-	/* String needperm = Loader.config.getString("Warps."+warp(args)+".NeedPermission");
-	 if(needperm.equalsIgnoreCase("true")) {*/
 	public List<String> warpss(CommandSender s){ 
 		List<String> w = new ArrayList<>();
 		if(Loader.config.getString("Warps")!=null)

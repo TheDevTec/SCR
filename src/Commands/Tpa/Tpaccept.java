@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,6 +14,8 @@ import org.bukkit.entity.Player;
 import Commands.BanSystem.BanSystem;
 import ServerControl.API;
 import ServerControl.Loader;
+import Utils.setting;
+import me.Straiker123.TheAPI;
 
 public class Tpaccept implements CommandExecutor, TabCompleter {
 
@@ -33,6 +36,9 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.Tpaccept")
 		            .replace("%player%",pd)
 		            .replace("%playername%", BanSystem.getName(pd)), p);
+		            if(setting.tp_safe)
+		            	TheAPI.getPlayerAPI(d).safeTeleport(((Player)p).getLocation());
+		            else
 		            d.teleport(((Player)p).getLocation());
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaAccepted")
 		            .replace("%player%",p.getName())
@@ -44,7 +50,13 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.Tpahereccept")
 		            .replace("%player%",pd)
 		            .replace("%playername%", BanSystem.getName(pd)), p);
-		            ((Player)p).teleport(d);
+		            Location loc = d.getLocation();
+		            if(setting.tp_onreqloc && RequestMap.getLocation(p.getName(), pd)!=null)
+		            	loc=RequestMap.getLocation(p.getName(), pd);
+		            if(setting.tp_safe)
+		            	TheAPI.getPlayerAPI((Player)p).safeTeleport(loc);
+		            else
+		            ((Player)p).teleport(loc);
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpahereAccepted")
 		            .replace("%player%",p.getName())
 		            .replace("%playername%", BanSystem.getName(p.getName())),d);

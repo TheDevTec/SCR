@@ -51,82 +51,80 @@ public class Kit implements CommandExecutor,TabCompleter{
 		}
 		return null;
 	}
-	public static void giveKit(String p, String KitName, boolean cooldown, boolean economy) {
-		
-		if(Bukkit.getPlayer(p)!=null) {
+	public static void giveKit(String s, String KitName, boolean cooldown, boolean economy) {
+		Player p = Bukkit.getPlayer(s);
+		if(p!=null) {
 			if(!cooldown) {
 				if(!economy) {
-		setupKit(Bukkit.getPlayer(p),KitName);
+		setupKit(p,KitName);
 		return;
 				}else {
-					if(TheAPI.getEconomyAPI().has(p, Loader.kit.getDouble("Kits."+KitName+".Price"))) {
-						setupKit(Bukkit.getPlayer(p),KitName);
+					if(TheAPI.getEconomyAPI().has(s, Loader.kit.getDouble("Kits."+KitName+".Price"))) {
+						setupKit(p,KitName);
 	                            Loader.msg(Loader.s("Prefix")+Loader.s("Kit.Used")
 	                            		.replace("%kit%", getKitName(KitName))
-	            						.replace("%player%", Bukkit.getPlayer(p).getName())
-	            						.replace("%playername%", Bukkit.getPlayer(p).getDisplayName()),Bukkit.getPlayer(p));
-	            				TheAPI.getEconomyAPI().withdrawPlayer(p, Loader.kit.getDouble("Kits."+KitName+".Price"));
+	            						.replace("%player%", p.getName())
+	            						.replace("%playername%", p.getDisplayName()),p);
+	            				TheAPI.getEconomyAPI().withdrawPlayer(s, Loader.kit.getDouble("Kits."+KitName+".Price"));
 	            				return;
 	                        }
 					Loader.msg(Loader.s("Economy.NoMoney")
-							.replace("%money%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p), true))
-							.replace("%currently%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p), true))
-							.replace("%player%", Bukkit.getPlayer(p).getName())
-							.replace("%playername%", Bukkit.getPlayer(p).getDisplayName()), Bukkit.getPlayer(p));
+							.replace("%money%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s), true))
+							.replace("%currently%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s), true))
+							.replace("%player%", p.getName())
+							.replace("%playername%", p.getDisplayName()),p);
     				return;
 				}
 			}
 			else {
 				if(economy) {
-				if(TheAPI.getEconomyAPI().has(p, Loader.kit.getDouble("Kits."+KitName+".Price"))) {
+				if(TheAPI.getEconomyAPI().has(s, Loader.kit.getDouble("Kits."+KitName+".Price"))) {
 					CooldownAPI a = TheAPI.getCooldownAPI("Kit."+KitName);
-					if(!a.expired(p)) {
+					if(!a.expired(s)) {
             				Loader.msg(Loader.s("Prefix")+Loader.s("Kit.Cooldown").
-            						replace("%cooldown%", TheAPI.getTimeConventorAPI().setTimeToString(a.getTimeToExpire(p)))
+            						replace("%cooldown%", TheAPI.getTimeConventorAPI().setTimeToString(a.getTimeToExpire(s)))
             						.replace("%kit%", getKitName(KitName))
-            						.replace("%player%", Bukkit.getPlayer(p).getName())
-            						.replace("%playername%", Bukkit.getPlayer(p).getDisplayName()),Bukkit.getPlayer(p));
+            						.replace("%player%", p.getName())
+            						.replace("%playername%", p.getDisplayName()),p);
             				return;
                         }
-					setupKit(Bukkit.getPlayer(p),KitName);
+					setupKit(p,KitName);
                             Loader.msg(Loader.s("Prefix")+Loader.s("Kit.Used").
                             		replace("%kit%", getKitName(KitName))
-            						.replace("%player%", Bukkit.getPlayer(p).getName())
-            						.replace("%playername%", Bukkit.getPlayer(p).getDisplayName()),Bukkit.getPlayer(p));
-                            a.createCooldown(p, Loader.kit.getDouble("Kits."+KitName+".Cooldown"));
-            				TheAPI.getEconomyAPI().withdrawPlayer(p, Loader.kit.getDouble("Kits."+getKitName(KitName)+".Price"));
+            						.replace("%player%", p.getName())
+            						.replace("%playername%", p.getDisplayName()),p);
+                            a.createCooldown(s, Loader.kit.getDouble("Kits."+KitName+".Cooldown"));
+            				TheAPI.getEconomyAPI().withdrawPlayer(s, Loader.kit.getDouble("Kits."+getKitName(KitName)+".Price"));
             				return;
                         }
 				Loader.msg(Loader.s("Economy.NoMoney")
-						.replace("%money%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p), true))
-						.replace("%currently%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p), true))
-						.replace("%player%", Bukkit.getPlayer(p).getName())
-						.replace("%playername%", Bukkit.getPlayer(p).getDisplayName()), Bukkit.getPlayer(p));
+						.replace("%money%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s), true))
+						.replace("%currently%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s), true))
+						.replace("%player%", p.getName())
+						.replace("%playername%", p.getDisplayName()), p);
 				return;
 				}else {
 					CooldownAPI a = TheAPI.getCooldownAPI("Kit."+KitName);
-					if(!a.expired(p)) {
+					if(!a.expired(s)) {
             				Loader.msg(Loader.s("Prefix")+Loader.s("Kit.Cooldown").
-            						replace("%cooldown%", TheAPI.getTimeConventorAPI().setTimeToString(a.getTimeToExpire(p)))
+            						replace("%cooldown%", TheAPI.getTimeConventorAPI().setTimeToString(a.getTimeToExpire(s)))
             						.replace("%kit%", getKitName(KitName))
-            						.replace("%player%", Bukkit.getPlayer(p).getName())
-            						.replace("%playername%", Bukkit.getPlayer(p).getDisplayName()),Bukkit.getPlayer(p));
+            						.replace("%player%", p.getName())
+            						.replace("%playername%", p.getDisplayName()),p);
             				return;
                         }
-					setupKit(Bukkit.getPlayer(p),KitName);
+					setupKit(p,KitName);
                             Loader.msg(Loader.s("Prefix")+Loader.s("Kit.Used").
                             		replace("%kit%", getKitName(KitName))
-            						.replace("%player%", Bukkit.getPlayer(p).getName())
-            						.replace("%playername%", Bukkit.getPlayer(p).getDisplayName()),Bukkit.getPlayer(p));
-                            a.createCooldown(p, Loader.kit.getDouble("Kits."+KitName+".Cooldown"));
+            						.replace("%player%", p.getName())
+            						.replace("%playername%", p.getDisplayName()),p);
+                            a.createCooldown(s, Loader.kit.getDouble("Kits."+KitName+".Cooldown"));
             				return;
-				}
-			}
-		}
-	}
+				}}}}
 	private static void setupKit(Player p,String kitName) {
 		if(getKitName(kitName) != null) {
-			for(String def:Loader.kit.getConfigurationSection("Kits."+getKitName(kitName)+".Items").getKeys(false)) {
+			kitName = getKitName(kitName);
+			for(String def:Loader.kit.getConfigurationSection("Kits."+kitName+".Items").getKeys(false)) {
 				Material m = XMaterial.matchXMaterial(def.toUpperCase()).parseMaterial();
 				if(m==null) {
 					Loader.warn("Error when giving kit '"+kitName+"', material '"+def+"' is invalid !");
@@ -134,13 +132,13 @@ public class Kit implements CommandExecutor,TabCompleter{
 				}
 					
 				ItemCreatorAPI a = TheAPI.getItemCreatorAPI(m);
-				a.setAmount(Loader.kit.getInt("Kits."+getKitName(kitName)+".Items."+def+".Amount"));
-	            a.setLore(Loader.kit.getStringList("Kits."+getKitName(kitName)+".Items."+def+".Lore"));
-	            a.setDisplayName(Loader.kit.getString("Kits."+getKitName(kitName)+".Items."+def+".CustomName"));
-	            if(Loader.kit.getString("Kits."+getKitName(kitName)+".Items."+def+".Enchantments")!=null) {
-	            for(String enchs:Loader.kit.getStringList("Kits."+getKitName(kitName)+".Items."+def+".Enchantments")) {
-	            	String nonum = enchs.replace(":", "").replaceAll("[0-9]+", "");
-	            	String num = enchs.replace(":", "").replaceAll("[A-Za-z]+", "").replace("_", "");
+				a.setAmount(Loader.kit.getInt("Kits."+kitName+".Items."+def+".Amount") > 0 ? Loader.kit.getInt("Kits."+kitName+".Items."+def+".Amount") : 1);
+	            a.setLore(Loader.kit.getStringList("Kits."+kitName+".Items."+def+".Lore"));
+	            a.setDisplayName(Loader.kit.getString("Kits."+kitName+".Items."+def+".CustomName"));
+	            if(Loader.kit.getString("Kits."+kitName+".Items."+def+".Enchantments")!=null) {
+	            for(String enchs:Loader.kit.getStringList("Kits."+kitName+".Items."+def+".Enchantments")) {
+	            	String nonum = enchs.replace(":", "").replaceAll("[0-9]+", "").replace(" ", "");
+	            	String num = enchs.replace(":", "").replaceAll("[A-Za-z]+", "").replace("_", "").replace(" ", "");
 	            	if(!TheAPI.getEnchantmentAPI().isEnchantment(nonum))Loader.warn("Error when giving kit '"+kitName+"', enchant '"+nonum+"' is invalid !");
 	            	else
 	            		a.addEnchantment(TheAPI.getEnchantmentAPI().getByName(nonum), TheAPI.getNumbersAPI(num).getInt());
@@ -150,7 +148,6 @@ public class Kit implements CommandExecutor,TabCompleter{
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label,String[] args) {
-
 			if(args.length==0) {
 				Loader.msg(Loader.s("Prefix")+Loader.s("Kit.List")
 						.replace("%player%", s.getName())
@@ -170,10 +167,10 @@ public class Kit implements CommandExecutor,TabCompleter{
 				Loader.Help(s, "/Kit "+kit+" <player>", "Kit-Give");
 				return true;
 				}
-				s.sendMessage(TheAPI.colorize(Loader.s("NotPermissionsMessage")
+				Loader.msg(Loader.s("NotPermissionsMessage")
 						.replace("%player%", s.getName())
 						.replace("%playername%", s.getName())
-						.replace("%permission%", "servercontrol.kit."+kit)));
+						.replace("%permission%", "servercontrol.kit."+kit), s);
 				return true;
 			}
 

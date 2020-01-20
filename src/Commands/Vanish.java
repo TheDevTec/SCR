@@ -20,7 +20,7 @@ public class Vanish implements CommandExecutor {
 		if(args.length==0) {
 		if(s instanceof Player) {
 			Player p = (Player)s;
-		if(Loader.me.getBoolean("Players."+s.getName()+".Vanish")==false) {
+		if(!Loader.me.getBoolean("Players."+s.getName()+".Vanish")) {
 			Loader.me.set("Players."+s.getName()+".Vanish", true);
 			Configs.chatme.save();
 			TheAPI.vanish(p, "ServerControl.Vanish", true);
@@ -39,7 +39,7 @@ public class Vanish implements CommandExecutor {
 		if(args.length==1) {
 			Player t = Bukkit.getPlayer(args[0]);
 			if(t!=null) {
-				if(Loader.me.getBoolean("Players."+t.getName()+".Vanish")==false) {
+				if(!Loader.me.getBoolean("Players."+t.getName()+".Vanish")) {
 					Loader.me.set("Players."+t.getName()+".Vanish", true);
 					Configs.chatme.save();TheAPI.vanish(t, "ServerControl.Vanish", true);
 				Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.Toggled")

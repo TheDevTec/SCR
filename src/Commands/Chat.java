@@ -68,16 +68,17 @@ public class Chat implements CommandExecutor, TabCompleter {
 		if(API.hasPerm(s, "ServerControl.Info")) {
         	Loader.msg(Loader.s("Prefix")+"&e----------------- &bVersion&e -----------------",s);
         	Loader.msg("",s);
-        	Loader.msg(Loader.s("Prefix")+Loader.s("Words.Version")+"&7: &6V"+ Loader.getInstance.getDescription().getVersion(),s);
-        	Loader.msg(Loader.s("Prefix")+Loader.s("Words.ServerVersion")+"&7: &6"+ Bukkit.getServer().getBukkitVersion(),s);
+        	Loader.msg(Loader.s("Prefix")+"&7Version of ServerControlReloaded: &eV"+ TheAPI.getPluginsManagerAPI().getVersion("ServerControlReloaded"),s);
+        	Loader.msg(Loader.s("Prefix")+"&7Version of TheAPI: &eV"+ TheAPI.getPluginsManagerAPI().getVersion("TheAPI"),s);
+        	Loader.msg(Loader.s("Prefix")+"&7Version of Server: &e"+ Bukkit.getServer().getBukkitVersion(),s);
             return true;
        }return true;}
         	if(args[0].equalsIgnoreCase("General")){
     			if(API.hasPerm(s, "ServerControl.General")) {
                 	   Loader.msg(Loader.s("Prefix")+"&e----------------- &bGeneral&e -----------------",s);
                 	   Loader.msg("",s);
-                	   Loader.msg(Loader.s("Prefix")+Loader.config.getInt("VulgarWords")+" "+Loader.s("Words.Vulgar"),s);
-                	   Loader.msg(Loader.s("Prefix")+Loader.config.getInt("Spam")+" "+Loader.s("Words.Spams"),s);
+                	   Loader.msg(Loader.s("Prefix")+Loader.config.getInt("VulgarWords")+" of swear words",s);
+                	   Loader.msg(Loader.s("Prefix")+Loader.config.getInt("Spam")+" of spam",s);
         	        return true;
         		}return true;}
         	if(args[0].equalsIgnoreCase("Me")){
@@ -163,6 +164,8 @@ public class Chat implements CommandExecutor, TabCompleter {
                     if(args.length==2) {
                     	if(Loader.me.getString("Players."+args[1])!=null) {
             	        	List<String> about = Loader.TranslationsFile.getStringList("AboutYou");
+            	        	String world  = Loader.me.getString("Players."+args[1]+".DisconnectWorld");
+            	        	if(Bukkit.getPlayer(args[1])!=null)world=Bukkit.getPlayer(args[1]).getName();
             	        	String money = API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true);
             	        	for(String a: about) {
                     		if(Loader.getInstance.getServer().getPluginManager().getPlugin("Vault") != null) {
@@ -179,8 +182,8 @@ public class Chat implements CommandExecutor, TabCompleter {
         	        				.replace("%vault-money%", money)
         	        				.replace("%kills%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Kills")))
         	        				.replace("%money%",  money)
-        	        				.replace("%vault-group%", String.valueOf(Loader.vault.getPrimaryGroup(Loader.me.getString("Players."+args[1]+".DisconnectWorld"),args[1])))
-        	        				.replace("%group%", String.valueOf(Loader.vault.getPrimaryGroup(Loader.me.getString("Players."+args[1]+".DisconnectWorld"),args[1])))
+        	        				.replace("%vault-group%", String.valueOf(Loader.vault.getPrimaryGroup(world,args[1])))
+        	        				.replace("%group%", String.valueOf(Loader.vault.getPrimaryGroup(world,args[1])))
         	        				.replace("%deaths%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Deaths")))
         	        				.replace("%lastleave%", check(Loader.me.getString("Players."+args[1]+".LastLeave")))
         	        				.replace("%firstjoin%", check(Loader.me.getString("Players."+args[1]+".FirstJoin"))),s);
@@ -234,10 +237,10 @@ public class Chat implements CommandExecutor, TabCompleter {
 	        if(args[0].equalsIgnoreCase("Info")){
 	            	Loader.msg(Loader.s("Prefix")+"&e----------------- &bInfo&e -----------------",s);
 	            	Loader.msg("",s);
-	            	Loader.msg(Loader.s("PluginName")+"&7: &4Server Control Reloaded",s);
-	            	Loader.msg(Loader.s("Prefix")+Loader.s("PluginCreatedBy")+"&7: &6Straiker123",s);
-	            	Loader.msg(Loader.s("Prefix")+Loader.s("Words.Version")+"&7: &6V"+  Loader.getInstance.getDescription().getVersion(),s);
-	            	Loader.msg(Loader.s("Prefix")+Loader.s("ServerControlThema"),s);
+	            	Loader.msg(Loader.s("Prefix")+"&7Name of plugin: &eServerControlReloaded",s);
+	            	Loader.msg(Loader.s("Prefix")+"&7Version: &eV"+TheAPI.getPluginsManagerAPI().getVersion("ServerControlReloaded"),s);
+	            	Loader.msg(Loader.s("Prefix")+"&cServerControlReloaded developed by &eDevTec",s);
+	            	Loader.msg(Loader.s("Prefix")+"&cOur discord: &ehttps://discord.gg/z4kK66g",s);
 	        
 	            return true;
 	       }

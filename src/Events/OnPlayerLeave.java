@@ -15,6 +15,7 @@ import ServerControl.SPlayer;
 import Utils.AFK;
 import Utils.Configs;
 import Utils.Tasks;
+import Utils.setting;
 import me.Straiker123.TheAPI;
 
 public class OnPlayerLeave implements Listener {
@@ -23,10 +24,9 @@ public Loader plugin=Loader.getInstance;
 		if(Tasks.players.contains(p)) {
 			Tasks.players.remove(p);
 	    }
-	    Date noww = new Date();
 		String date_time = Loader.config.getString("Format.DateWithTime");
 	    SimpleDateFormat format_date_time = new SimpleDateFormat(date_time);
-	    Loader.me.set("Players."+p.getName()+".LastLeave", format_date_time.format(noww));
+	    Loader.me.set("Players."+p.getName()+".LastLeave", format_date_time.format(new Date()));
 	    Loader.me.set("Players."+p.getName()+".DisconnectWorld", p.getWorld().getName());
 	    Loader.me.set("Players."+p.getName()+".Leaves", Loader.me.getInt("Players."+p.getName()+".Leaves") + 1);
 		Loader.me.set("Players."+p.getName()+".LeaveTime",System.currentTimeMillis()/1000);
@@ -58,7 +58,7 @@ public Loader plugin=Loader.getInstance;
 	public void PlayerLeaveEvent(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
 	    set(p);
-		if(Loader.config.getBoolean("OnLeave.CustomLeaveMessage")==true) {
+		if(setting.leave) {
 			e.setQuitMessage(null);
 			TheAPI.broadcastMessage(replaceAll(Loader.s("OnLeave.Leave"),p));
 		}

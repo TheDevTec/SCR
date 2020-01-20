@@ -12,14 +12,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
+import org.sqlite.util.StringUtils;
 
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Configs;
 import Utils.MultiWorldsUtils;
 import Utils.Tasks;
-import Utils.gui;
-import Utils.gui.Type;
+import Utils.setting;
 import me.Straiker123.TheAPI;
 
 public class ServerControl implements CommandExecutor, TabCompleter {
@@ -55,7 +55,7 @@ public class ServerControl implements CommandExecutor, TabCompleter {
         if(args[0].equalsIgnoreCase("Manager")){
     		if(API.hasPerm(s, "ServerControl.Manager")) {
     			if(s instanceof Player) {
-    				gui.openGUI((Player)s, Type.n);
+    				setting.getManager((Player)s);
     		        return true;
     			}
     			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
@@ -68,8 +68,8 @@ public class ServerControl implements CommandExecutor, TabCompleter {
  			Loader.msg(Loader.s("Prefix")+"&e----------------- &bList &e-----------------",s);
  			Loader.msg("",s);
  			Loader.msg(Loader.s("Prefix")+Loader.s("Words.List"),s);
- 			Loader.msg(Loader.s("Prefix")+Loader.s("Words.VulgarWordsList")+Loader.config.getList("VulgarWordsList"),s);
- 			Loader.msg(Loader.s("Prefix")+Loader.s("Words.SpamWordsList")+Loader.config.getList("SpamWordsList"),s);
+ 			Loader.msg(Loader.s("Prefix")+"&cList of swear words: "+StringUtils.join(Loader.config.getStringList("SwearWords"), ", "),s);
+ 			Loader.msg(Loader.s("Prefix")+"&cList of spam words: "+StringUtils.join(Loader.config.getStringList("SpamWords.Words"), ", "),s);
         return true;
      }
  		return true;}
@@ -161,8 +161,7 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 	Tasks.reload();
 	Loader.startConvertMoney();
 	MultiWorldsUtils.LoadWorlds();
-	Loader.getInstance.SoundsChecker();
-
+	Loader.SoundsChecker();
     try {
 	if(Loader.config.getBoolean("TimeZone-Enabled")) {
 		TimeZone.setDefault(TimeZone.getTimeZone(Loader.config.getString("TimeZone")));

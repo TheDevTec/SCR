@@ -27,7 +27,6 @@ public class Kill implements CommandExecutor {
 				return true;
 			}
 		}
-		if(args.length==1) {
 			Player p = Bukkit.getPlayer(args[0]);
 			if(p==null) {
 				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
@@ -36,6 +35,6 @@ public class Kill implements CommandExecutor {
 			p.damage(p.getMaxHealth());
 			if(p.isDead())
 			Loader.msg(API.replacePlayerName(Loader.s("Kill.Killed"),p), s);
-		}}
+		}
 		return true;
 	}}

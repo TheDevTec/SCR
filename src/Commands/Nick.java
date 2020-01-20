@@ -25,7 +25,8 @@ public class Nick implements CommandExecutor {
 			}
 			msg=msg.substring(0,msg.length()-1);
 			Loader.me.set("Players."+s.getName()+".DisplayName", msg);
-			 Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("NicknameChanged").replace("%nick%", msg).replace("%nickname%", msg), s);
+			 Configs.chatme.save();
+			 Loader.msg(Loader.s("Prefix")+Loader.s("NicknameChanged").replace("%nick%", msg).replace("%nickname%", msg), s);
 			return true;
 		}return true;
 		}

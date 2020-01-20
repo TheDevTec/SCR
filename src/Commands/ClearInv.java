@@ -56,7 +56,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 	     		return true;
 		}else {
 			Player p = (Player)s;
-    		int take = Loader.config.getInt("ClearInventory.TakeMoney");
+    		int take = Loader.config.getInt("Options.Cost-ClearInvUndo");
     		
     		if(args.length==0) {
     			if(API.hasPerm(s, "ServerControl.ClearInv.Clear")) {

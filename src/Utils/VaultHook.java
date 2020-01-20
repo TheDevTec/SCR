@@ -15,14 +15,14 @@ public class VaultHook {
     	if(API.existVaultPlugin()) {
         provider = new Eco();
         Bukkit.getServicesManager().register(Economy.class, provider, Loader.getInstance, ServicePriority.Normal);
-        Loader.getInstance.EconomyLog("Vault hooked into plugin Economy");
+        Loader.EconomyLog("Vault hooked into plugin Economy");
     }}
 
     public void unhook() {
     	if(API.existVaultPlugin())
     	if(provider != null) {
         Bukkit.getServicesManager().unregister(Economy.class, provider);
-        Loader.getInstance.EconomyLog("Vault unhooked from plugin Economy");
+        Loader.EconomyLog("Vault unhooked from plugin Economy");
     	}
     }
 }

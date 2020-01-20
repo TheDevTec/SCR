@@ -12,20 +12,21 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import ServerControl.Loader;
 import Utils.Colors;
+import Utils.setting;
 import me.Straiker123.TheAPI;
 
 public class Signs implements Listener {
 	public Loader ps = Loader.getInstance;
     private String setColors(String s, Player p) {
-    	if(Loader.config.getBoolean("Colored-Chat.Enabled")==true
+    	if(setting.color_sign
 				&&
-				Loader.config.getBoolean("Colored-Chat.Enabled-Permissions")==true
+				setting.color_sign_perm
 				&&
-				p.hasPermission(Loader.config.getString("Colored-Chat.Permission"))
+				p.hasPermission(Loader.config.getString("Options.Colors.Sign.Permission"))
 				||
-				Loader.config.getBoolean("Colored-Chat.Enabled")==true
+				setting.color_sign
 				&&
-				Loader.config.getBoolean("Colored-Chat.Enabled-Permissions")==false)
+				!setting.color_sign_perm)
 		return TheAPI.colorize(s);
     	return s;
     }

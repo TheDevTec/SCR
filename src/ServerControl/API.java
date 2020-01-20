@@ -16,12 +16,14 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import Commands.Kit;
 import ServerControlEvents.PluginHookEvent;
 import Utils.Configs;
+import Utils.setting;
 import me.Straiker123.TheAPI;
 
 public class API {
@@ -29,11 +31,77 @@ public class API {
 	public static String MoneyFormat;
 	
 	 public static boolean existVaultPlugin() {
-		 if(getPlugin("Vault")) {
+		 if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Vault")) {
 			 return true;
 		 }
 		 return false;
 	 }
+	 public static enum TeleportLocation{
+		 HOME,
+		 BED,
+		 SPAWN
+	 }
+	 public static void teleportPlayer(Player p, TeleportLocation location) {
+		 switch(location) {
+		 case BED:{
+			 if(p.getBedSpawnLocation()!=null) {
+					if(setting.tp_safe) TheAPI.getPlayerAPI(p).safeTeleport(p.getBedSpawnLocation());
+					else TheAPI.getPlayerAPI(p).teleport(p.getBedSpawnLocation());
+			 }else
+				teleportPlayer(p,TeleportLocation.SPAWN);
+			 }
+			 break;
+		 case HOME:{
+			 String home = null;
+				List<String> homes = new ArrayList<String>();
+				if(Loader.me.getString("Players."+p.getName()+".Homes")!=null)
+					for(String s :Loader.me.getConfigurationSection("Players."+p.getName()+".Homes").getKeys(false))homes.add(s);
+				if(homes.isEmpty()==false) {
+					home=homes.get(0);
+				}
+				if(home != null) {
+				World w = Bukkit.getWorld(Loader.me.getString("Players."+p.getName()+".Homes."+home+".World"));
+				double x = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".X");
+				double y = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Y");
+				double z = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Z");
+				float pitch = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Pitch");
+				float yaw = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Yaw");
+				if(w != null) {
+				Location loc = new Location(w,x,y,z,yaw,pitch);
+					Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {
+					public void run() {
+						if(setting.tp_safe)
+							TheAPI.getPlayerAPI(p).safeTeleport(loc);
+						else
+							TheAPI.getPlayerAPI(p).teleport(loc);
+							}}, 1);
+				}else
+					teleportPlayer(p,TeleportLocation.SPAWN);
+					}else
+						teleportPlayer(p,TeleportLocation.SPAWN);
+		 }break;
+		 case SPAWN:{
+			 World world = Bukkit.getWorlds().get(0);;
+				Location loc=Bukkit.getWorlds().get(0).getSpawnLocation();
+				if(Loader.config.getString("Spawn")!=null) {
+					float x_head = Loader.config.getInt("Spawn.X_Pos_Head");
+					float z_head = Loader.config.getInt("Spawn.Z_Pos_Head");
+					 world = Bukkit.getWorld(Loader.config.getString("Spawn.World"));
+					 if(world != null)
+					 loc = new Location(world, Loader.config.getDouble("Spawn.X"), Loader.config.getDouble("Spawn.Y") ,Loader.config.getDouble("Spawn.Z"), x_head, z_head);
+				}
+				Location l = loc;
+							Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {
+								public void run() {
+									if(setting.tp_safe)
+										TheAPI.getPlayerAPI(p).safeTeleport(l);
+									else
+										TheAPI.getPlayerAPI(p).teleport(l);
+				}}, 1);
+		 }break;
+		 }
+	 }
+	 
 		/**
 		 * Replace player placeholdes (%player% and %playername%)
 		 */
@@ -165,11 +233,6 @@ public class API {
 	 public static String getIPAdress(String player) {
 		 return Loader.me.getString("Players."+player+".IPAdress").replace('_', '.');
 	 }
-	 
-	 public static boolean getPlugin(String pluginName) {
-		 if(Bukkit.getPluginManager().getPlugin(pluginName)!=null)return true;
-		 return false;
-	 }
 	 public static ArrayList<String> getKits() {
 		 ArrayList<String> list = new ArrayList<String>();
 		for(String name: Loader.kit.getConfigurationSection("Kits").getKeys(false)) {
@@ -276,7 +339,7 @@ public class API {
 		 return null;
 	 }
 	 public static boolean getVulgarWord(String string) {
-		 List<String> words = Loader.config.getStringList("VulgarWordsList");
+		 List<String> words = Loader.config.getStringList("SwearWords");
 		 for(String word:words)
 		 if(string.toLowerCase().contains(word.toLowerCase())) {
 				return true;
@@ -284,7 +347,7 @@ public class API {
 		 return false;
 	 }
 	 public static String getValueOfVulgarWord(String string) {
-		 List<String> words = Loader.config.getStringList("VulgarWordsList");
+		 List<String> words = Loader.config.getStringList("SwearWords");
 		 for(String word:words)
 		 if(string.toLowerCase().contains(word.toLowerCase())) {
 				return String.valueOf(word);
@@ -292,7 +355,7 @@ public class API {
 		 return "";
 	 }
 	 public static boolean getSpamWord(String string) {
-		 List<String> words = Loader.config.getStringList("SpamWordsList");
+		 List<String> words = Loader.config.getStringList("SpamWords.Words");
 		 for(String word:words)
 		 if(string.toLowerCase().contains(word.toLowerCase())) {
 				return true;
@@ -300,7 +363,7 @@ public class API {
 		 return false;
 	 }
 	 public static String getValueOfSpamWord(String string) {
-		 List<String> words = Loader.config.getStringList("SpamWordsList");
+		 List<String> words = Loader.config.getStringList("SpamWords.Words");
 		 for(String word:words)
 		 if(string.toLowerCase().contains(word.toLowerCase())) {
 				return String.valueOf(word);
@@ -351,7 +414,7 @@ public class API {
 		 return false;
 	 }
 	 public static boolean getBlockedCommand(String string) {
-		 List<String> words = Loader.config.getStringList("Blocked-Commands");
+		 List<String> words = Loader.config.getStringList("Options.CommandsBlocker.List");
 		 for(String word:words) 
 		 if(string.toLowerCase().contains(word.toLowerCase())) {
 				return true;

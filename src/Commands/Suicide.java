@@ -18,7 +18,7 @@ public class Suicide implements CommandExecutor {
 				Player p = (Player)s;
 				p.damage(p.getMaxHealth());
 				if(p.isDead())
-				Loader.msg(API.replacePlayerName(Loader.s("Kill.Killed"),p), s);
+				Loader.msg(API.replacePlayerName(Loader.s("Kill.Suicide"),p), s);
 				return true;
 			}
 			Loader.Help(s, "/Kill <player>", "Kill");

@@ -19,7 +19,6 @@ public class Seen implements CommandExecutor {
 			Loader.Help(s,"/Seen <player>","Seen");
 			return true;
 		}
-		if(args.length==1) {
 			String a = Loader.me.getString("Players."+args[0]);
 			if(a!=null) {
 				Player p = Bukkit.getPlayer(args[0]);
@@ -40,7 +39,7 @@ public class Seen implements CommandExecutor {
 			}
 			Loader.msg(Loader.PlayerNotEx(args[0]),s);
 			return true;
-		}
+		
 		}
 		return true;
 	}

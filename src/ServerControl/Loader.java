@@ -1,7 +1,6 @@
 package ServerControl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 import org.bukkit.Bukkit;
@@ -14,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Team;
 
 import com.earth2me.essentials.Essentials;
 
@@ -28,14 +26,14 @@ import Utils.MultiWorldsUtils;
 import Utils.ScoreboardStats;
 import Utils.TabList;
 import Utils.VaultHook;
-import Utils.gui;
+import Utils.setting;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
  
 public class Loader extends JavaPlugin implements Listener {
-	public static HashMap<String, Integer> tempfly = new HashMap<String, Integer>();
+    public static List<Plugin> addons = new ArrayList<Plugin>();
     public static FileConfiguration TranslationsFile;
     public static FileConfiguration chatLogFile;
     public static FileConfiguration mw;
@@ -77,7 +75,6 @@ public class Loader extends JavaPlugin implements Listener {
 		}else
 	 		API.setDisplayName(p,Loader.getInstance.getPrefix(p)+p.getName()+Loader.getInstance.getSuffix(p));
     }
-    public static List<Plugin> addons = new ArrayList<Plugin>();
     public String getSuffix(Player p) {
     	if(API.existVaultPlugin()) {
     	if(vault!=null) {
@@ -105,39 +102,44 @@ public class Loader extends JavaPlugin implements Listener {
 		return "";
 	}
 	public static void Help(CommandSender s, String cmd, String help) {
-	    s.sendMessage(TheAPI.colorize(config.getString("HelpFormat")
+	   msg(config.getString("HelpFormat")
 	    		.replace("%prefix%", Loader.s("Prefix"))
 	    		.replace("%command%", cmd).replace("%space%", " - ")
-	    		.replace("%help%", Loader.s("Help."+help))));
+	    		.replace("%help%", Loader.s("Help."+help)),s);
 		}
 	public static void startConvertMoney() {
 		if(config.getBoolean("MultiEconomy.Enabled")&&!config.getBoolean("MultiEconomy.Converted")) {
 		int amount = 0;
-		Loader.getInstance.EconomyLog("Converting economies..");
+		EconomyLog("Converting economies..");
 		config.set("MultiEconomy.Converted", true);
+		 Configs.config.save();
 		if(me.getString("Players")!=null) {
 		for(String s:me.getConfigurationSection("Players").getKeys(false)) {
 			if(me.getString("Players."+s+".Money")!=null) {
-				amount=amount+1;
+			++amount;
 			double money =me.getDouble("Players."+s+".Money");
 			me.set("Players."+s+".Money.default",money);
 			}}}
 		 Configs.chatme.save();
-		 Configs.config.save();
-			Loader.getInstance.EconomyLog("Converted "+amount+" economies.");
+			EconomyLog("Converted "+amount+" economies.");
 		}}
 public String isAfk(Player p) {
-	if(API.getPlugin("AFKPlus")) {
+	if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("AFKPlus")) {
 		AFKPlusPlayer afkplus = (AFKPlusPlayer)Bukkit.getServer().getPluginManager().getPlugin("AFKPlus");
 	if(afkplus.isAFK()||AFK.isAFK(p))return tab.getString("AFK.IsAFK");
 	return tab.getString("AFK.IsNotAFK");
 }
-	if(API.getPlugin("Essentials")) {
+	if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials")) {
+		try {
 		Essentials ess = (com.earth2me.essentials.Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
 		if (ess.getUser(p).isAfk()||AFK.isAFK(p))return tab.getString("AFK.IsAFK");
 		return tab.getString("AFK.IsNotAFK");
+		}catch(Exception err) {
+			if(AFK.isAFK(p))return tab.getString("AFK.IsAFK");
+			return tab.getString("AFK.IsNotAFK");
+		}
 	}
-	if(!API.getPlugin("Essentials")&&!API.getPlugin("AFKPlus")) {
+	if(!TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials")&&!TheAPI.getPluginsManagerAPI().isEnabledPlugin("AFKPlus")) {
 		if(AFK.isAFK(p))return tab.getString("AFK.IsAFK");
 	return tab.getString("AFK.IsNotAFK");
 	}
@@ -156,6 +158,7 @@ public String pingPlayer(Player who) {
 }
 @Override
 public void onLoad() {
+    getInstance = this;
 	Configs.LoadConfigs();
 	if(ver() == null) {
 		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
@@ -165,7 +168,6 @@ public void onLoad() {
 		Bukkit.getPluginManager().disablePlugin(this);
 		}
 	regClasses();
-    getInstance = this;
 	if(API.existVaultPlugin()) {
 	setupEco();
     }else {
@@ -181,9 +183,8 @@ private void regClasses() {
 		new BanSystem();
 		new RequestMap();
 		new Utils.AFK();
-		new gui();
 		new ScoreboardStats();
-	
+		setting.load();
 	}catch(NoClassDefFoundError | Exception e) {
 		Bukkit.getLogger().severe(TheAPI.colorize(Loader.s("Prefix")+"&cError when loading classes"));
 	}
@@ -214,7 +215,7 @@ public void onEnable() {
         	TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&6INFO: Missing Permissions plugin for Groups (TabList and ChatFormat)."));
     		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
         }
-			if(API.getPlugin("PlaceholderAPI")) {
+			if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("PlaceholderAPI")) {
 				TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
 				TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&aINFO: Hooked PlaceholderAPI plugin."));
 				TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
@@ -242,23 +243,23 @@ public void Tasks() {
      for(World wa: Bukkit.getWorlds()) {
 		MultiWorldsUtils.DefaultSet(wa);
 	}
-	if(mw.getInt("SavingTask.Delay") <= 600) {
-		mw.set("SavingTask.Delay", 3600);
-		 Configs.mw.save();
-	}
 	for(Player p:Bukkit.getOnlinePlayers()) {
 		SPlayer s = new SPlayer(p);
-		if(s.hasPermission("servercontrol.fly"))
+		if(s.hasTempFlyEnabled())
+			s.enableTempFly();
+		else
+		if(s.hasPermission("servercontrol.fly") && s.hasFlyEnabled())
 		s.enableFly();
 		setupChatFormat(p);
  		if(econ != null)
- 		if(Loader.econ.createPlayerAccount(p))
- 			EconomyLog("Creating economy account for player "+p.getName());
+ 		Loader.econ.createPlayerAccount(p);
 	}
 	Utils.Tasks.load();
   	MultiWorldsUtils.EnableWorldCheck();
+  	try {
 	new Metrics(this);
-	msg(Loader.s("Prefix")+"&aPlugin loaded in "+(loading - System.currentTimeMillis()/100)*-1+"ms",Bukkit.getConsoleSender());
+  	}catch(Exception er) {}
+	msg(Loader.s("Prefix")+"&aPlugin loaded in "+(System.currentTimeMillis()/100 - loading)+"ms",Bukkit.getConsoleSender());
 	loading=0;
 }
 @Override
@@ -269,7 +270,6 @@ public void onDisable() {
 	}
 	TabList.removeTab();
 	ScoreboardStats.removeScoreboard();
-	for(Team t:Bukkit.getScoreboardManager().getMainScoreboard().getTeams())t.unregister();
 	if(mw.getString("Worlds")!=null)
 	 for(String w: mw.getStringList("Worlds")) {
 			if(Bukkit.getWorld(w) != null && !mw.getBoolean("WorldsSettings."+w+".AutoSave")) {
@@ -310,14 +310,15 @@ private boolean setupCustomEco(){
 	return econ !=null;
 	
 }
-public void EconomyLog(String s) {
-	info("[Economy] "+s);
+public static void EconomyLog(String s) {
+	if(config.getBoolean("Options.Economy.Log"))
+	info("[EconomyLog] "+s);
 }
 private boolean setupEco(){
 	try {
     RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
     if (economyProvider != null) {
-    	if(config.getBoolean("Economy.UseOnlyPluginEco")==true) {
+    	if(config.getBoolean("Options.Economy.CanUseOtherEconomy")) {
     		EconomyLog("Found economy '"+economyProvider.getProvider().getName()+"', using setting and loading plugin economy.");
         	setupCustomEco();
     	}else {
@@ -327,6 +328,7 @@ private boolean setupEco(){
     }
     if(econ ==null) {
     	EconomyLog("Plugin not found any economy, loading plugin economy.");
+    	if(!config.getBoolean("Options.Economy.DisablePluginEconomy"))
     	setupCustomEco();
     }
 	}catch(Exception e) {
@@ -412,8 +414,6 @@ private void CommmandsRegister() {
 	CmdC("ClearChat", new Commands.ClearChat());
 	CmdC("SCR", new Commands.ServerControl());
 	CmdC("Chat", new Commands.Chat());
-	CmdC("WordAdd", new Commands.WordAdd());
-	CmdC("WordDel", new Commands.WordDel());
 	CmdC("Maintenance", new Commands.Maintenance());
 	CmdC("Clear", new Commands.ClearInv());
 	CmdC("God", new Commands.God());
@@ -506,12 +506,7 @@ private void CommmandsRegister() {
 	CmdC("nickreset", new Commands.NickReset());
 	CmdC("WhoIs", new Commands.WhoIs());
 	CmdC("closeinv", new Commands.CloseInventory());
-	CmdC("closeinv", new Commands.CloseInventory());
-	CmdC("closeinventory", new Commands.CloseInventory());
-	CmdC("closeopeninv", new Commands.CloseInventory());
-	CmdC("closeopeninventory", new Commands.CloseInventory());
 	CmdC("homeother", new Commands.HomeOther());
-	
 	CmdC("tempfly", new Commands.TempFly());
 }
 private void EventC(Listener l) {
@@ -532,17 +527,17 @@ private void EventsRegister() {
 	EventC(new Events.WorldChange());
 	EventC(new Events.CreatePortal());
 	EventC(new Events.Signs());
-	EventC(new Events.foodLevel());
 	EventC(new Events.EntitySpawn());
 }
-public void SoundsChecker() {
-	if(!config.getString("Sounds").equalsIgnoreCase("1")&&!config.getString("Sounds").equalsIgnoreCase("2")
-			&&!config.getString("Sounds").equalsIgnoreCase("3")&&!config.getString("Sounds").equalsIgnoreCase("4")
-			&&!config.getString("Sounds").equalsIgnoreCase("5")&&!config.getString("Sounds").equalsIgnoreCase("false")){
+public static boolean SoundsChecker() {
+	if(setting.sound && !TheAPI.getSoundAPI().existSound(config.getString("Options.Sounds.Sound"))){
 		msg("",TheAPI.getConsole());
 		msg("",TheAPI.getConsole());
 		msg(Loader.s("Prefix")+Loader.s("SoundErrorMessage"),TheAPI.getConsole());
 		msg("",TheAPI.getConsole());
 		msg("",TheAPI.getConsole());
-		}}
+		return false;
+		}
+	return true;
+}
 }

@@ -2,8 +2,6 @@ package Events;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,13 +15,13 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEditBookEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.apache.commons.lang.StringUtils;
 
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControlEvents.PlayerAdvertisementEvent;
 import Utils.Configs;
+import Utils.setting;
 import me.Straiker123.TheAPI;
 
 @SuppressWarnings("deprecation")
@@ -41,7 +39,7 @@ public Loader plugin=Loader.getInstance;
 		Player p = event.getPlayer();
         String message = event.getMessage().toLowerCase();
 	    	
-        if(Loader.config.getBoolean("AntiAD.Chat")==true) {
+        if(setting.ad_chat) {
     	if(!p.hasPermission("ServerControl.Advertisement")) {
         if(API.getAdvertisement(message)) {
         	PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(event.getPlayer(),event.getMessage());
@@ -55,7 +53,7 @@ public Loader plugin=Loader.getInstance;
     public void onPlayerCommands(PlayerCommandPreprocessEvent event) {
 		Player p = event.getPlayer();
         String message = event.getMessage().toLowerCase();
-        if(Loader.config.getBoolean("AntiAD.Commands")==true) {
+        if(setting.ad_cmd) {
     	if(!p.hasPermission("ServerControl.Advertisement")) {
         if(API.getAdvertisement(message)) {
         	PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(event.getPlayer(),event.getMessage());
@@ -68,7 +66,7 @@ public Loader plugin=Loader.getInstance;
     @EventHandler(priority = EventPriority.LOWEST)
     public void signCreate(SignChangeEvent e){
         Player p = e.getPlayer();
-        if(Loader.config.getBoolean("AntiAD.Sign")==true) {
+        if(setting.ad_sign) {
     	if(!p.hasPermission("ServerControl.Advertisement")) {
      for(String line: e.getLines()) {
     	 
@@ -84,22 +82,25 @@ public Loader plugin=Loader.getInstance;
 	@EventHandler(priority = EventPriority.LOWEST)
     public void BookSave(PlayerEditBookEvent e){
     	Player p = e.getPlayer();
-        if(Loader.config.getBoolean("AntiAD.Book")==true) {
+        if(setting.ad_book) {
     	if(!p.hasPermission("ServerControl.Advertisement")) {
+    		String page = "";
      for(String line: e.getNewBookMeta().getPages()) {
-    	 
-    	 if(API.getAdvertisement(line)) {
-          	PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(e.getPlayer(),line);
+    	 page=page+" "+line;
+     }
+     page=page.replace(" ", "");
+    	 if(API.getAdvertisement(page)) {
+          	PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(e.getPlayer(),page);
       		Bukkit.getPluginManager().callEvent(ed);
       		if(!ed.isCancelled()) {
-        		chatLog(getMatches(line), p);
-     	    	 sendBroadcast(p,getMatches(line),AdType.Other);
+        		chatLog(getMatches(page), p);
+     	    	 sendBroadcast(p,getMatches(page),AdType.Other);
     		 e.setCancelled(true);
-    	}}}}}}
+    	}}}}}
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInventoryClickEvent(InventoryClickEvent event) {
     	Player p = (Player)event.getWhoClicked();
-        if(Loader.config.getBoolean("AntiAD.Anvil")) {
+        if(setting.ad_anvil) {
        	 if (event.getInventory().getType() == InventoryType.ANVIL) {
              if(event.getSlotType() == InventoryType.SlotType.RESULT) {
              	if(!p.hasPermission("ServerControl.Advertisement")) {
@@ -118,7 +119,7 @@ public Loader plugin=Loader.getInstance;
     public void PickupAntiADEvent(PlayerPickupItemEvent event) {
     	Player p = (Player)event.getPlayer();
     	String displayName = event.getItem().getItemStack().getItemMeta().getDisplayName();
-        if(Loader.config.getBoolean("AntiAD.ItemPickup")==true) {
+        if(setting.ad_itempick) {
     	if(!p.hasPermission("ServerControl.Advertisement")) {
         	if (displayName != null) {
     		if(API.getAdvertisement(displayName)) {
@@ -134,7 +135,7 @@ public Loader plugin=Loader.getInstance;
     public void DropAntiADEvent(PlayerDropItemEvent event) {
     	Player p = (Player)event.getPlayer();
     	String displayName = event.getItemDrop().getItemStack().getItemMeta().getDisplayName();
-        if(Loader.config.getBoolean("AntiAD.ItemDrop")==true) {
+        if(setting.ad_itemdrop) {
     	if(!p.hasPermission("ServerControl.Advertisement")) {
         	if (displayName != null) {
     		if(API.getAdvertisement(displayName)) {
@@ -174,23 +175,17 @@ public Loader plugin=Loader.getInstance;
 	          		.replace("%message%", message), "ServerControl.Advertisement");
 			  break;
 		}
-		List<String> adlist = Loader.TranslationsFile.getStringList("Security.TryingSendAdvertisement");
-      for(String ad: adlist) {
+		if(Loader.config.getBoolean("TasksOnSend.Advertisement.Broadcast")) {
+      for(String ad:  Loader.TranslationsFile.getStringList("Security.TryingSendAdvertisement")) {
     	  TheAPI.broadcastMessage(ad
       			.replace("%playername%", p.getDisplayName())
       			.replace("%player%", p.getName())
       			.replace("%prefix%", Loader.s("Prefix")));
-   		}
-      if(Loader.config.getBoolean("PerformCommands.PlayerSendAdvertisement.Enabled")==true) {
-          List<String> cmda = Loader.config.getStringList("PerformCommands.PlayerSendAdvertisement.Commands");
-        	new BukkitRunnable() {
-					@Override
-					public void run() {
-  		    	for(String cmds: cmda) {
+   		}}
+      if(Loader.config.getBoolean("TasksOnSend.Advertisement.Use-Commands")) {
+  		    	for(String cmds: Loader.config.getStringList("TasksOnSend.Advertisement.Commands")) {
 	        	plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), TheAPI.colorize(cmds.replace("%player%", p.getName()))); 
-  		    	}}
-				}.runTask(plugin);{
-				}}}
+  		    	}}}
 
     public void chatLog(String str, Player p) {
     	String playername = p.getName();

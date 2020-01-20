@@ -40,12 +40,8 @@ public class Warn implements CommandExecutor {
 							.replace("%target%", args[0]), s);
 					return true;
 				}
-				String msg = "";
-				for (int i = 0; i < args.length; i++) {
-				msg = msg + args[i] + " ";
-				}
+				String msg = TheAPI.buildString(args);
 				msg = msg.replaceFirst(args[0]+" ",	"");
-				msg = msg.substring(0,msg.length()-1);
 				API.getBanSystemAPI().setWarn(args[0], s, msg);
 				TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.Warn")
 						.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])

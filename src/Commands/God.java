@@ -27,7 +27,7 @@ public class God implements CommandExecutor, Listener {
 					return true;
 				}
 				if(args.length==1) {
-					SPlayer target = new SPlayer((Player)Bukkit.getServer().getPlayer(args[0]));
+					SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
 					if(target.getPlayer() == null) {
 						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
@@ -42,7 +42,7 @@ public class God implements CommandExecutor, Listener {
 							return true;
 								}}return true;}
 				if(args.length==2) {
-					SPlayer target = new SPlayer((Player)Bukkit.getServer().getPlayer(args[0]));
+					SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
 					if(target.getPlayer() == null) {
 						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;

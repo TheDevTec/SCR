@@ -1,9 +1,9 @@
 name: ServerControlReloaded
 main: ServerControl.Loader
-version: 7.0
+version: 7.1
 website: https://www.spigotmc.org/resources/server-control-reloaded.71147/
 description: Fully customizable plugin with many features!
-author: Straiker123, Houska02
+author: DevTec
 depend: [TheAPI]
 softdepend: [Vault]
 api-version: 1.13
@@ -261,12 +261,6 @@ commands:
         description: Shows online players in list
         usage: /<command>
         aliases: [who, online,players]
-    WordAdd:
-        description: Adds the specifed word to the specifed path
-        usage: /<command>
-    WordDel:
-        description: Delete the specifed word to the specifed path
-        usage: /<command>
     Maintenance:
         description: Enable or Disable server maintenance mode
         usage: /<command>

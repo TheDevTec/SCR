@@ -2,7 +2,6 @@ package ServerControl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -50,27 +49,23 @@ public class BanSystemAPI {
 		Loader.me.set("Players."+n+".IPAdress", r.replace('.', '_'));
 		 Configs.chatme.save();
 			Commands.BanSystem.BanSystem.KickMaxWarns(n);
-			if (Loader.config.getBoolean("MaxNumberOfKicks.Enabled")==true) {
+			if (Loader.config.getBoolean("AutoKickLimit.Kick.Use")==true) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {
 				public void run() {
-			int Kicker = Loader.config.getInt("MaxNumberOfKicks.Number");
-		int Kick = Loader.me.getInt("Players."+n+".Kicks");
 		
-	if(Kick >= Kicker) {
-		Loader.me.set("Players."+n+".Kicks" ,Kick - Kicker);
+	if(Loader.me.getInt("Players."+n+".Kicks") >= Loader.config.getInt("AutoKickLimit.Kick.Number")) {
+		Loader.me.set("Players."+n+".Kicks" ,Loader.me.getInt("Players."+n+".Kicks") - Loader.config.getInt("AutoKickLimit.Kick.Number"));
 		 Configs.chatme.save();
-		if(Loader.config.getBoolean("MaxNumberOfKicks.Message.Enabled")==true) {
-			List<String> cmd = Loader.config.getStringList("MaxNumberOfKicks.Message.Messages");
-			    	for(String cmds: cmd) {
-			    		Loader.msg(cmds.replace("%player%", n).replace("%number%", String.valueOf(Kicker)),p);
+		if(Loader.config.getBoolean("AutoKickLimit.Kick.Message.Use")) {
+			    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Kick.Message.List")) {
+			    		Loader.msg(cmds.replace("%player%", n).replace("%number%", ""+Loader.config.getInt("AutoKickLimit.Kick.Number")),p);
 	    	}}
-	         if(Loader.config.getBoolean("MaxNumberOfKicks.Commands.Enabled")==true) {
+	         if(Loader.config.getBoolean("AutoKickLimit.Spam.Commands.Use")==true) {
 	new BukkitRunnable() {
 		@Override
 		public void run() {
-			List<String> cmd = Loader.config.getStringList("MaxNumberOfKicks.Commands.Commands");
-	    	for(String cmds: cmd) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), TheAPI.colorize(cmds.replace("%player%", n).replace("%number%", String.valueOf(Kicker).toString())));
+	    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Spam.Commands.List")) {
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), TheAPI.colorize(cmds.replace("%player%", n).replace("%number%", ""+Loader.config.getInt("AutoKickLimit.Kick.Number"))));
 		  }}
 	}.runTask(Loader.getInstance);{
 	}}}}}, 20);}

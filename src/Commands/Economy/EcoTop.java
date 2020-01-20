@@ -51,7 +51,7 @@ public class EcoTop implements CommandExecutor {
 									break;
 								}
 								Object obj = keys.get(i);
-								Loader.msg(Loader.config.getString("Economy.BalanceTopFormat")
+								Loader.msg(Loader.config.getString("Options.Economy.BalanceTop")
 										.replace("%position%", String.valueOf(counter))
 										.replace("%player%", obj.toString())
 										.replace("%playername%", player(obj.toString()))

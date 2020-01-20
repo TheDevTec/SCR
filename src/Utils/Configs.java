@@ -20,7 +20,7 @@ public class Configs {
 	public static ConfigAPI kit;
 	public static void TranslationsLoading() {
 		Map<String, Object> c = new HashMap<String, Object>();
-			c.put("Prefix", "&4ServerControl &e>>> ");
+			c.put("Prefix", "&4SCR &e> ");
 			c.put("Skull-GivenToPlayer", "&6Given player head '%head%' to player %playername%");
 			c.put("Skull-Given", "&6Given player head '%head%' to you");
 			c.put("Seen.Online", "&6Player %playername% &6is &aonline &6for &a%online%");	
@@ -30,6 +30,7 @@ public class Configs {
 			c.put("Give.UknownItem", "&6Item/Block with name &c'%item%' &6is invalid");
 			c.put("Give.Given", "&6Given %amount%x %item% to player %playername%");
 			c.put("Kill.Killed", "&6Killed %playername%");
+			c.put("Kill.Suicide", "&6You killed yourself");
 			c.put("Kill.KilledAll", "&6Killed &a%amount% &6players &a(%players%)");
 			c.put("Butcher.WorldIsInvalid", "&6World &c&%world% &6doesn't exists");
 			c.put("Butcher.EntityIsInvalid", "&6Entity with name &c&%entity% &6doesn't exists");
@@ -115,7 +116,6 @@ public class Configs {
 			c.put("BanSystem.Ban", "&6Player %playername% &6has been banned for &c%reason%");
 			c.put("BanSystem.Jail", "&6Player %playername% &6has been jailed for &c%reason%");
 			c.put("BanSystem.Arrested", "&6You're arrested for &c%reason%");
-			
 			c.put("BanSystem.UnBan", "&6Player %playername% &6has been unbanned");
 			c.put("BanSystem.UnBanIP", "&6Player %playername% &6has been unIPbanned");
 			c.put("BanSystem.TempBan", "&6Player %playername% &6has been temp-banned for &c%reason% &6on &c%time%");
@@ -164,7 +164,6 @@ public class Configs {
 		c.put("Homes.ListEmpty", "&6There is no homes");
 		c.put("Homes.LimitReached", "&cYou reached limit of maximum homes ! &o(%limit%)");
 		c.put("Homes.ListOtherEmpty", "&6Player %target% have no homes");
-		
 		c.put("Chunks.Loaded", "&aLoaded &6%chunks% &achunks in world &6'%world%'");
 		c.put("Chunks.TotalLoaded", "&aTotal loaded &6%chunks% &achunks in &6%worlds% &aworlds");
 		c.put("Chunks.Unloaded", "&aUnloaded &6'%chunks%' &achunks");
@@ -356,9 +355,7 @@ public class Configs {
 		c.put("Help.BanSystem.Jail", "&5Jail specified player with reason");
 		c.put("Help.BanSystem.setJail", "&5Set new jail on your location");
 		c.put("Help.BanSystem.delJail", "&5Remove specified jail");
-		
 		c.put("Help.BanSystem.Immune", "&7You can enable or disable immunity for others players");
-		
 		c.put("Help.BanSystem.Kick", "&5Kick specified player from server with reason");
 		c.put("Help.BanSystem.Warn", "&5Send warning to specified player with reason");
 		c.put("Help.TabList.Prefix", "&5Set prefix of group in tablist and above player");
@@ -512,26 +509,138 @@ public class Configs {
 		trans.create();
 		Loader.TranslationsFile=trans.getConfig();
 		}
-
 	public static void configLoading() {
 		config = TheAPI.getConfig("ServerControlReloaded", "Config");
 		Map<String, Object> c = new HashMap<String, Object>();
-		c.put("TimeZone-Enabled", false);
-		c.put("TimeZone", "Europe/Prague");
-		c.put("Sounds", 1);
-		c.put("StaffList", Arrays.asList("owner","admin","operator","helper","builder","developer"));
-		c.put("TpaRequestTime", 60);
-		c.put("OnDeathTeleportToHome", true);
-		c.put("AFK.Time-Enabled", true);
-		c.put("AFK.Time", 300);
-		c.put("AFK.Kick.Enabled", true);
-		c.put("AFK.Kick.Message", "&cYou were kicked for AFK longer than 10 minutes.");
-		c.put("AFK.Kick.Time", 600);
-		c.put("MultiEconomy.Enabled",false);
-		if(!config.existPath("MultiEconomy.Types")) {
-			c.put("MultiEconomy.Types.default",Arrays.asList("world","world_nether","world_the_end"));
-			c.put("MultiEconomy.Types.SkyBlock",Arrays.asList("SkyBlock_Normal", "SkyBlock_Nether", "SkyBlock_The_End", "SkyBlock_Shop"));
+		c.put("Options.Maintenance.Enabled", false);
+		c.put("Options.Maintenance.KickMessages", Arrays.asList(
+				"&8=-=-=-=-=-= &eMaintenance Mode &8=-=-=-=-=-=",
+				"&cWe are sorry %playername%, the server is currently under maintenance mode",
+				"&cMore informations can found on our web: &cwww.example.com",
+				"&8=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="));
+		c.put("Options.Codes.Use", true);
+		c.put("Options.Codes.Message", "&eCongratulation, you found secret code: &c%code%");
+		c.put("Options.Codes.List", Arrays.asList("ServerControlReloaded","TheAPI","Straiker123","Houska02","2020","Secret","Codes"));
+		c.put("Options.Codes.Random-Command", Arrays.asList(
+				"eco give %player% 50",
+				"eco give %player% 150",
+				"give %player% diamond 2",
+				"give %player% iron_block 1",
+				"xp give %player% 150"));
+		c.put("Options.Codes.Commands", Arrays.asList(
+				"eco give %player% 25"));
+		if(!config.existPath("Options.Disable-Items")) {
+		c.put("Options.Disable-Items.Worlds.Creative", Arrays.asList("Bedrock","TNT", "TNT_Minecart"));
+		c.put("Options.Disable-Items.Worlds.world", Arrays.asList("Bedrock"));
+		c.put("Options.Disable-Items.Worlds.world_nether", Arrays.asList("Bedrock"));
+		c.put("Options.Disable-Items.Worlds.world_the_end", Arrays.asList("Bedrock"));
 		}
+		c.put("Options.ChatLock", false);
+		c.put("Options.Disable-Items.Use", true);
+		c.put("Options.TimeZone.Use", false);
+		c.put("Options.TimeZone.Zone", "Europe/Prague");
+		c.put("Options.Colors.Chat.Use", true);
+		c.put("Options.Colors.Chat.Required-Permission", true);
+		c.put("Options.Colors.Chat.Permission", "ServerControl.ChatColor");
+		c.put("Options.Colors.Sign.Use", true);
+		c.put("Options.Colors.Sign.Required-Permission", true);
+		c.put("Options.Colors.Sign.Permission", "ServerControl.SignColor");
+		c.put("Options.Sounds.Use", true);
+		c.put("Options.Sounds.Sound", "ENTITY_PLAYER_LEVELUP");
+		c.put("Options.Teleport.SafeLocation", true);
+		c.put("Options.Teleport.RequestTime", "1min");
+		c.put("Options.Teleport.CommandSendLocation", true);
+		c.put("Options.RespawnTeleport", "home"); //spawn, home, bed
+		c.put("Options.AFK.AutoAFK", true);
+		c.put("Options.AFK.TimeToAFK", "5min");
+		c.put("Options.AFK.AutoKick", true);
+		c.put("Options.AFK.TimeToKick", "10min");
+		c.put("Options.AFK.KickMessage", "&cYou were kicked for AFK longer than 10 minutes.");
+		c.put("Options.Economy.Money", 100);
+		c.put("Options.Economy.DisablePluginEconomy", false);
+		c.put("Options.Economy.CanUseOtherEconomy", true);
+		c.put("Options.Economy.BalanceTop", "&6%position%. &c%playername% &a&o(%money%&a&o)");
+		c.put("Options.Economy.Log", false);
+		c.put("Options.Economy.MultiEconomy.Use", false);
+		if(!config.existPath("Options.Economy.MultiEconomy.Types")) {
+			c.put("Options.Economy.MultiEconomy.Types.default",Arrays.asList("world","world_nether","world_the_end"));
+			c.put("Options.Economy.MultiEconomy.Types.SkyBlock",Arrays.asList("SkyBlock_Normal", "SkyBlock_Nether", "SkyBlock_The_End", "SkyBlock_Shop"));
+		}
+		c.put("Options.WarningSystem.Reload.Use", true);
+		c.put("Options.WarningSystem.Reload.PauseTime", 5);
+		c.put("Options.WarningSystem.Reload.Messages", 
+				Arrays.asList(
+						"&8****** &4Warning &8******"
+						,"&cReload of server in %time%"
+						,"&cPlease login using /login <password>"
+						,"&8****** &4Warning &8******"));
+		c.put("Options.WarningSystem.Restart.Use", true);
+		c.put("Options.WarningSystem.Restart.PauseTime", 15);
+		c.put("Options.WarningSystem.Restart.Messages", 
+				Arrays.asList(
+						"&8****** &4Warning &8******"
+						,"&cRestart of server in %time%"
+						,"&8****** &4Warning &8******"));
+		c.put("Options.WarningSystem.Stop.Use", true);
+		c.put("Options.WarningSystem.Stop.PauseTime", 15);
+		c.put("Options.WarningSystem.Stop.Messages", 
+				Arrays.asList(
+						"&8****** &4Warning &8******"
+						,"&cStopping of server in %time%"
+						,"&8****** &4Warning &8******"));
+		c.put("Options.AutoMessage.Use", true);
+		c.put("Options.AutoMessage.MinimalPlayers", 1);
+		c.put("Options.AutoMessage.Interval", "5min");
+		c.put("Options.AutoMessage.Random", false);
+		c.put("Options.AutoMessage.Messages", Arrays.asList("&0[&a&lINFO&0] &cServerControlReloaded created by &nDevTec","&0[&a&lINFO&0] &c20% Bugs free"
+				,"&0[&a&lINFO&0] &cOnline players &a%online% &7/ &a%max_players%","&0[&a&lINFO&0] &cYou found a bug ? Report it to https://github.com/TheDevTec/ServerControlReloaded"
+				,"&0[&a&lINFO&0] &cDo you like our plugin? Write a comment on the https://www.spigotmc.org/resources/server-control-reloaded.71147"));
+		c.put("Options.Cost-ClearInvUndo", 50);
+		c.put("Options.RAM-Percentage", true);
+		c.put("Options.ServerList.MOTD.Use", true);
+		c.put("Options.ServerList.MOTD.Maintenance", false);
+		c.put("Options.ServerList.MOTD.Text.Normal", "&8-------< &eMinecraft Server &8>-------%line%&aServer is online");
+		c.put("Options.ServerList.MOTD.Text.Maintenance", "&8-------< &eMinecraft Server &8>-------%line%&cServer is under Maintenance Mode");
+		c.put("Options.VIPSlots.Use", true);
+		c.put("Options.VIPSlots.AddSlots", false);
+		c.put("Options.VIPSlots.SlotsToAdd", 4);
+		c.put("Options.VIPSlots.KickWhenFullServer", true);
+		c.put("Options.VIPSlots.VIPJoinBroadcast", false);
+		c.put("Options.VIPSlots.Text.Kick", "&eBuy &nVIP&r&e on our site and get access to this &nreserved slot");
+		c.put("Options.VIPSlots.Text.BroadcastVIPJoin", "&eVIP player joined to the server");
+		c.put("Options.VIPSlots.Text.FullServer", "&cAll &nVIP Slots&r &care in use");
+		c.put("Options.Join.TeleportToSpawn", false);
+		c.put("Options.Join.CustomJoinMessage", true);
+		c.put("Options.Join.MOTD", true);
+		c.put("Options.Join.FirstJoin.Use", true);
+		c.put("Options.Join.FirstJoin.GiveKit", true);
+		c.put("Options.Join.FirstJoin.Kit", "Default");
+		c.put("Options.Join.FirstJoin.PerformCommands.Use", false);
+		c.put("Options.Join.FirstJoin.PerformCommands.List", Arrays.asList("give %player% stone_sword 1","eco give %player% 10"));
+		c.put("Options.Leave.CustomLeaveMessage", true);
+		c.put("Options.Security.AntiAD.WhiteList", Arrays.asList("minecraft.net","bukkit.org","spigot.org"));
+		c.put("Options.Security.AntiAD.Book", true);
+		c.put("Options.Security.AntiAD.Sign", true);
+		c.put("Options.Security.AntiAD.Chat", true);
+		c.put("Options.Security.AntiAD.Commands", true);
+		c.put("Options.Security.AntiAD.Anvil", true);
+		c.put("Options.Security.AntiAD.ItemDrop", true);
+		c.put("Options.Security.AntiAD.ItemPickup", true);
+		c.put("Options.Security.AntiSwear.Chat", true);
+		c.put("Options.Security.AntiSwear.Commands", false);
+		c.put("Options.Security.AntiSpam.Chat", true);
+		c.put("Options.Security.AntiSpam.Commands", false);
+		c.put("Options.Security.AntiCaps.Chat", true);
+		c.put("Options.Security.AntiCaps.Commands", false);
+		c.put("Options.Cooldowns.Chat.Use", true);
+		c.put("Options.Cooldowns.Chat.Time", 2);
+		c.put("Options.Cooldowns.Commands.Use", true);
+		c.put("Options.Cooldowns.Commands.Time", 1);
+		c.put("Options.Cooldowns.Commands.PerCommand.Use", true); //<command>:<cooldown>
+		c.put("Options.Cooldowns.Commands.PerCommand.List", Arrays.asList("Heal:300","Tpa:30","TpaHere:30","TpaAll:30","Suicide:60","Feed:150"));
+		c.put("Options.CommandsBlocker.Use", true);
+		c.put("Options.CommandsBlocker.List", Arrays.asList("pl","plugins","version","ihasbukkit","spigot","reload","stop","restart"));
+		c.put("StaffList", Arrays.asList("owner","admin","operator","helper","builder","developer"));
 		c.put("BanSystem.TempMute.Reason", "Unknown");
 		c.put("BanSystem.TempMute.Time", "1h");
 		c.put("BanSystem.Kick", "Unknown");
@@ -546,47 +655,29 @@ public class Configs {
 		c.put("BanSystem.Warn.Reason", "Unknown");
 			if(!config.existPath("BanSystem.Warn.Operations")) {
 			c.put("BanSystem.Warn.Operations.1.Commands", Arrays.asList("eco take %player% 20"));
-			c.put("BanSystem.Warn.Operations.1.Messages",  Arrays.asList("&6Last 20 warns."));
-			c.put("BanSystem.Warn.Operations.5.Commands", Arrays.asList("eco take %player% 50", "kick %player% You have 5 warns !"));
-			c.put("BanSystem.Warn.Operations.5.Messages", Arrays.asList("&cLast 15 warns."));
-			c.put("BanSystem.Warn.Operations.20.Commands", Arrays.asList("eco take %player% 100", "tempban %player% 604800 Last warning !"));
-			c.put("BanSystem.Warn.Operations.20.Messages", Arrays.asList("&4Last warning."));
-			c.put("BanSystem.Warn.Operations.21.Commands", Arrays.asList("ban %player% Maximum of warnings."));
-			c.put("BanSystem.Warn.Operations.21.Messages", Arrays.asList("&4Your life is lie!"));
+			c.put("BanSystem.Warn.Operations.1.Messages",  Arrays.asList("&0[&4Warning&0] &cYou have last 20 warnings"));
+			c.put("BanSystem.Warn.Operations.5.Commands", Arrays.asList("eco take %player% 50", "kick %player% &0[&4Warning&0] &cYou have 5 warnings"));
+			c.put("BanSystem.Warn.Operations.20.Commands", Arrays.asList("eco take %player% 100"));
+			c.put("BanSystem.Warn.Operations.20.Messages", Arrays.asList("&0[&4Warning&0] &cThis is last warning"));
+			c.put("BanSystem.Warn.Operations.21.Commands", Arrays.asList("tempban %player% 2d &0[&4Info&0] &cYour life is lie!"));
 		}
 		c.put("BanSystem.Mute.Reason", "Unknown");
 		c.put("BanSystem.Mute.DisableChat", true);
 		c.put("BanSystem.Mute.DisableCmds", true);
-		
-		c.put("BanSystem.Mute.DisabledCmds", Arrays.asList("m","r","tell","msg","message","pm","w","ac","amsg","helpop","say"));
-		c.put("WarningSystem.Enabled", true);
-		c.put("WarningSystem.Reload-Enabled", true);
-		c.put("WarningSystem.Restart.Enabled", true);
-		c.put("WarningSystem.Restart.PauseTime", 5);
-		c.put("WarningSystem.Stop.Enabled", true);
-		c.put("WarningSystem.Stop.PauseTime", 5);
+		c.put("BanSystem.Mute.DisabledCmds", Arrays.asList("m","r","tell","msg","message","pm","w","say"));
 		c.put("Chat-Groups-Enabled", true);
 		if(!config.existPath("Chat-Groups.DefaultFormat")) {
-		c.put("Chat-Groups.DefaultFormat.Chat", "%player% &7> &f%message%");
-		c.put("Chat-Groups.DefaultFormat.Name", "&f%vault-group% &f%player%");
-		c.put("Chat-Groups.default.Chat", "%player% &7> &f%message%");
-		c.put("Chat-Groups.default.Name", "&f%vault-group% &f%player%");
-		c.put("Chat-Groups.vip.Chat", "%player% &7> &a%message%");
-		c.put("Chat-Groups.vip.Name", "&a%vault-group% &e%player%");
-		c.put("Chat-Groups.admin.Chat", "%player% &7> &3%message%");
-		c.put("Chat-Groups.admin.Name", "&6%vault-group% &4%player%");
+		c.put("Chat-Groups.DefaultFormat.Chat", "%player% &8> &f%message%");
+		c.put("Chat-Groups.DefaultFormat.Name", "&7%vault-group% &f%player%");
+		c.put("Chat-Groups.default.Chat", "%player% &8> &f%message%");
+		c.put("Chat-Groups.default.Name", "&7%player%");
+		c.put("Chat-Groups.vip.Chat", "%player% &8> &a%message%");
+		c.put("Chat-Groups.vip.Name", "&aVIP &e%player%");
+		c.put("Chat-Groups.admin.Chat", "%player% &8> &3%message%");
+		c.put("Chat-Groups.admin.Name", "&4Admin &3%player%");
+		c.put("Chat-Groups.owner.Chat", "%player% &8> &3%message%");
+		c.put("Chat-Groups.owner.Name", "&3&lOwner &f%player%");
 		}
-		c.put("AutoMessage.Enabled", true);
-		c.put("AutoMessage.Delay", 120);
-		c.put("AutoMessage.Random", false);
-		c.put("AutoMessage.Messages", Arrays.asList("&bPlugin created by Straiker123","&c20% Bugs free !"
-				,"&6Online players: &a%online% &7/ &a%max_players%","&4If you found a bug, report it to new bugs reporting system! https://github.com/Straiker123/Server-Control-Reloaded"
-				,"&5If you like my plugin, write a nice comment on  https://dev.bukkit.org/projects/server-control-reloaded"));
-		c.put("AutoMessage.MinimalPlayers", 1);
-		c.put("ClearInventory.TakeMoney", 50);
-		c.put("Economy.DefaultMoney", 100);
-		c.put("Economy.UseOnlyPluginEco", false);
-		c.put("Economy.BalanceTopFormat", "&2%position%. &6%playername% &a&o(%money%&a&o)");
 		if(!config.existPath("Homes.default")) {
 			c.put("Homes.default", 3);
 			c.put("Homes.vip", 3);
@@ -596,123 +687,67 @@ public class Configs {
 			c.put("Homes.builder", 7);
 			c.put("Homes.owner", 10);
 		}
-		c.put("ServerMOTD.Enabled", true);
-		c.put("ServerMOTD.Maintenance.MOTD", "&6----------< &4Server Control's Server &6>---------- %line%&cServer is under Maintenance Mode.");
-		c.put("ServerMOTD.Normal.MOTD", "&6----------< &4Server Control's Server &6>---------- %line%&5Rate my plugin to know you are there !");
-		c.put("VIPSlots.Enabled", true);
-		c.put("VIPSlots.KickPlayerIfServerIsFull", true);
-		c.put("VIPSlots.KickMessage", "&6Buy &b&nVIP&r&6 on our site and get access to this reserved slot !");
-		c.put("VIPSlots.VIPPlayerJoinBroadcast", "%prefix%&bVIP &aplayer %player% &ajoined the game");
-		c.put("VIPSlots.KickVIPServerNeedMoreVIPSlots", "&cAll &bVIP Slots &care in use :(");
-		c.put("VIPSlots.Enable-VIPPlayerJoinBroadcast", false);
-		c.put("VIPSlots.MaxSlots", 4);
-		c.put("RAM.InPercents", false);
-		c.put("List.LoadedFormat", "&6World: &a%world%&6, Chunks: &a%chunks%&6, Mobs: &a%mobs%&6, Players: &a%players%");
-		c.put("List.UnloadedFormat", "&6World: &c%world% (Unloaded)");
-		c.put("HelpFormat", "%prefix%&e%command%&7%space%&5%help%");
+		c.put("List.LoadedFormat", "&6World: &e%world%&6, Chunks: &e%chunks%&6, Mobs: &e%mobs%&6, Players: &e%players%");
+		c.put("List.UnloadedFormat", "&6World: &e%world% &7(Unloaded)");
+		c.put("HelpFormat", "%prefix%&e%command%& &7- &5%help%");
 		c.put("Format.Time", "HH:mm:ss");
 		c.put("Format.Date", "dd.MM.yyyy");
 		c.put("Format.DateWithTime", "dd.MM.yyyy HH:mm:ss");
 		c.put("Format.Broadcast", "&0[&4Broadcast&0] &a%message%");
-		c.put("Format.PrivateMessageTo", "&6(You -> %to%): &f%message%");
-		c.put("Format.PrivateMessageFrom", "&6(%from% -> You): &f%message%");
-		c.put("Format.Kick", "&6You was kicked for %reason%");
-		c.put("Format.Ban", "&6You was banned for %reason%");
-		c.put("Format.TempBan", "&6You was temp-banned for %reason% on %time%");
-		c.put("Format.BanIP", "&6You was ip banned for %reason%");
+		c.put("Format.PrivateMessageTo", "&8(&eYou -> %to%&8): &f%message%");
+		c.put("Format.PrivateMessageFrom", "&8(&e%from% -> You&8): &f%message%");
+		c.put("Format.Kick", "&6You was kicked for &c%reason%");
+		c.put("Format.Ban", "&6You was banned for &c%reason%");
+		c.put("Format.TempBan", "&6You was temp-banned for &c%reason% &6on &c%time%");
+		c.put("Format.BanIP", "&6You was ip banned for &c%reason%");
 		c.put("Format.Helpop", "&0[&4HelpOp&0] &6%playername%&f: &6%message%");
-		c.put("OnJoin.SpawnTeleport", false);
-		c.put("OnJoin.CustomJoinMessage", true);
-		c.put("OnJoin.Messages", true);
-		c.put("OnLeave.CustomLeaveMessage", true);
-		c.put("FirstJoin.Enabled", true);
-		c.put("FirstJoin.PerformCommands.Enabled", true);
-		c.put("FirstJoin.Kit-Enabled", true);
-		c.put("FirstJoin.Kit", "Default");
-		c.put("FirstJoin.PerformCommands.Commands", Arrays.asList("give %player% stone_sword 1","eco give %player% 10"));
-		c.put("AntiAD.WhiteList", Arrays.asList("minecraft.net","bukkit.org"));
-		c.put("AntiAD.Book", true);
-		c.put("AntiAD.Sign", true);
-		c.put("AntiAD.Chat", true);
-		c.put("AntiAD.Commands", true);
-		c.put("AntiAD.Anvil", true);
-		c.put("AntiAD.ItemDrop", true);
-		c.put("AntiAD.ItemPickup", true);
-			if(!config.existPath("Disable-Items")) {
-			c.put("Disable-Items.Creative", Arrays.asList("TNT", "TNT_Minecart"));
-			c.put("Disable-Items.world", Arrays.asList("Bedrock"));
-		}
-		c.put("Disable-Items-Enabled", true);
-		c.put("Codes-Rewards.Enabled", true);
-			if(!config.existPath("Codes-Rewards.Words")) {
-		c.put("Codes-Rewards.Words", Arrays.asList("Straiker123","SecretCode","BestServer","2018"));
-			c.put("Codes-Rewards.Words-PerCMD.ChatSecurity.Messages", Arrays.asList("&5-=-=-=-=--=-=-=-=-=-=-=-=-=-"
-					,"&6Congratulation, You found a secret code, ChatSecurity was old name of ServerControlReloaded !","&5-=-=-=-=--=-=-=-=-=-=-=-=-=-"));
-			c.put("Codes-Rewards.Words-PerCMD.ChatSecurity.Commands", Arrays.asList("eco give %player% 50"));
-			c.put("Codes-Rewards.Words-PerCMD.ServerControlReloaded.Messages", Arrays.asList("&5-=-=-=-=--=-=-=-=-=-=-=-=-=-",
-					"&6Congratulation to you, You found a secret code, ServerControlReloaded for ever !","&5-=-=-=-=--=-=-=-=-=-=-=-=-=-"));
-			c.put("Codes-Rewards.Words-PerCMD.ServerControlReloaded.Commands", Arrays.asList("give %player% diamond 1"));
-		}
-		c.put("Codes-Rewards.Messages", Arrays.asList("&5-=-=-=-=--=-=-=-=-=-=-=-=-=-","&6Congratulation, You found a secret code ! (%code%)"
-				,"&5-=-=-=-=--=-=-=-=-=-=-=-=-=-"));
-		c.put("Codes-Rewards.Commands", Arrays.asList("eco give %player% 15"));
-		c.put("Heal-Cooldown", 300);
-		c.put("Colored-Chat.Enabled", true);
-		c.put("Colored-Chat.Enabled-Permissions", true);
-		c.put("Colored-Chat.Permission", "ServerControl.ChatColor");
-		c.put("MaintenanceMode.Enabled", false);
-		c.put("MaintenanceMode.KickMessages", Arrays.asList("&6=-=-=-=-=-= &cMaintenance Mode &6=-=-=-=-=-=",
-				"&6We are sorry %playername%, the server is currently under maintenance mode"
-				,"&6More informations can found on our web: &cwww.example.com","&6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="));
-		c.put("Chat.AntiSwear", true);
-		c.put("Chat.AntiSpam", true);
-		c.put("Chat.Caps", true);
-		c.put("Commands.AntiSwear", true);
-		c.put("Commands.AntiSpam", true);
-		c.put("Commands.Caps", true);
-		c.put("Cooldown.Chat", 2);
-		c.put("Cooldown.Commands", 2);
-		c.put("Blocked-Commands", Arrays.asList("pl","version"));
-		c.put("PerformBroadcasts.PlayerSendSpam.BroadcastMessage", true);
-		c.put("PerformBroadcasts.PlayerSendVulgarWord.BroadcastMessage", true);
-		c.put("PerformBroadcasts.PlayerSendDisabledCommand.BroadcastMessage", true);
-		c.put("PerformCommands.PlayerSendSpam.Enabled", true);
-		c.put("PerformCommands.PlayerSendSpam.Commands", Arrays.asList("msg %player% &6We take from you &c$10&6, because you send &cspam &6!","eco take %player% 10"));
-		c.put("PerformCommands.PlayerSendVulgarWord.Enabled", true);
-		c.put("PerformCommands.PlayerSendVulgarWord.Commands", Arrays.asList("msg %player% &6We take from you &c$50&6, because you send &cvulgar word &6!","eco take %player% 50"));
-		c.put("PerformCommands.PlayerSendAdvertisement.Enabled", true);
-		c.put("PerformCommands.PlayerSendAdvertisement.Commands", Arrays.asList("msg %player% &6We take from you &c$150&6, because you tried do &cadvertisement &6!"
+		c.put("TasksOnSend.BlockedCommand-Broadcast", false);
+		c.put("TasksOnSend.Spam.Use-Commands", true);
+		c.put("TasksOnSend.Spam.Broadcast", false);
+		c.put("TasksOnSend.Spam.Commands", Arrays.asList("msg %player% &0[&4AntiSpam&0] &cPlease, stop spamming"));
+		c.put("TasksOnSend.Swear.Use-Commands", true);
+		c.put("TasksOnSend.Swear.Broadcast", false);
+		c.put("TasksOnSend.Swear.Commands", Arrays.asList("msg %player% &0[&4AntiSwear&0] &cPlease, stop being vulgar"));
+		c.put("TasksOnSend.Advertisement.Broadcast", false);
+		c.put("TasksOnSend.Advertisement.Use-Commands", true);
+		c.put("TasksOnSend.Advertisement.Commands", Arrays.asList("msg %player% &0[&4AntiAD&0] &cPlease, stop sending advertisements"
 				,"eco take %player% 150"));
 		c.put("WritingFormat.Spam", "%player%: %message% - Spam (%spam%)");
-		c.put("WritingFormat.VulgarWords", "%player%: %message% - Vulgar Word (%vulgarword%)");
+		c.put("WritingFormat.Swear", "%player%: %message% - Swear (%vulgarword%)");
 		c.put("WritingFormat.Advertisement", "%player%: %message% - Advertisement");
-		c.put("WritingFormat.CommandsRegister", "%player%: %message%");
-		c.put("MaxNumberOfVulgarRecords.Enabled", true);
-		c.put("MaxNumberOfVulgarRecords.Number", 3);
-		c.put("MaxNumberOfVulgarRecords.Message.Enabled", true);
-		c.put("MaxNumberOfVulgarRecords.Message.Messages", Arrays.asList("&6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=",
-				"&cYou have reached the maximum number of Vulgar Words! &o(%number%)","&6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="));
-		c.put("MaxNumberOfVulgarRecords.Commands.Enabled", true);
-		c.put("MaxNumberOfVulgarRecords.Commands.Commands", Arrays.asList("kick %player% &cYou have reached the maximum number of Vulgar Words! &o(%number%)","eco take %player% 350"));
-		c.put("MaxNumberOfSpamRecords.Enabled", true);
-		c.put("MaxNumberOfSpamRecords.Number", 5);
-		c.put("MaxNumberOfSpamRecords.Message.Enabled", true);
-		c.put("MaxNumberOfSpamRecords.Message.Messages", Arrays.asList("&6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=",
-				"&cYou have reached the maximum number of Spams! &o(%number%)","&6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="));
-		c.put("MaxNumberOfSpamRecords.Commands.Enabled", true);
-		c.put("MaxNumberOfSpamRecords.Commands.Commands", Arrays.asList("kick %player% &cYou have reached the maximum number of Spams! &o(%number%)"));
-		c.put("MaxNumberOfKicks.Enabled", true);
-		c.put("MaxNumberOfKicks.Number", 5);
-		c.put("MaxNumberOfKicks.Message.Enabled", true);
-		c.put("MaxNumberOfKicks.Message.Messages", Arrays.asList("&6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=",
-				"&4&lYou have reached the maximum number of Kicks! &o(%number%)","&6=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="));
-		c.put("MaxNumberOfKicks.Commands.Enabled", true);
-		c.put("MaxNumberOfKicks.Commands.Commands", Arrays.asList("tempban %player% 7d &4&lYou have reached the maximum number of Kicks! &o(%number%)","eco take %player% 5000"));
-		c.put("VulgarWordsList", Arrays.asList("fuck","idiot","PlsOP"));
-		c.put("SpamWordsList", Arrays.asList("wwwwwww","eeeeeee","rrrrrrr","ttttttt","???????","pls op"));
+		c.put("WritingFormat.Blocked-Command", "%player%: %message%");
+		c.put("AutoKickLimit.Swear.Use", true);
+		c.put("AutoKickLimit.Swear.Number", 3);
+		c.put("AutoKickLimit.Swear.Message.Use", true);
+		c.put("AutoKickLimit.Swear.Message.List", Arrays.asList("&6=-=-=-=-=-=-=-=-=-=-=-=-=-=",
+				"&cYou have reached the maximum number of Vulgar Words! &o(%number%)","&6=-=-=-=-=-=-=-=-=-=-=-=-=-="));
+		c.put("AutoKickLimit.Swear.Commands.Use", true);
+		c.put("AutoKickLimit.Swear.Commands.List", Arrays.asList("kick %player% &cYou have reached maximum warnings for &nswearing&r&c &o(%number%)","eco take %player% 350"));
+		c.put("AutoKickLimit.Spam.Use", true);
+		c.put("AutoKickLimit.Spam.Number", 5);
+		c.put("AutoKickLimit.Spam.Message.Use", true);
+		c.put("AutoKickLimit.Spam.Message.List", Arrays.asList("&6=-=-=-=-=-=-=-=-=-=-=-=-=-=",
+				"&cYou have reached the maximum number of Spams! &o(%number%)","&6=-=-=-=-=-=-=-=-=-=-=-=-=-="));
+		c.put("AutoKickLimit.Spam.Commands.Use", true);
+		c.put("AutoKickLimit.Spam.Commands.List", Arrays.asList("kick %player% &cYou have reached maximum warnings for &nspaming&r&c &o(%number%)"));
+		c.put("AutoKickLimit.Kick.Use", true);
+		c.put("AutoKickLimit.Kick.Number", 5);
+		c.put("AutoKickLimit.Kick.Message.Use", true);
+		c.put("AutoKickLimit.Kick.Message.List", Arrays.asList("&6=-=-=-=-=-=-=-=-=-=-=-=-=-=",
+				"&4&lYou have reached the maximum number of Kicks! &o(%number%)","&6=-=-=-=-=-=-=-=-=-=-=-=-=-="));
+		c.put("AutoKickLimit.Kick.Commands.Use", true);
+		c.put("AutoKickLimit.Kick.Commands.List", Arrays.asList("tempban %player% 7d &4&lYou have reached maximum number of &nkicks&r&4&l &o(%number%)","eco take %player% 5000"));
+		c.put("SwearWords", Arrays.asList("fuck","idiot","kurv","kurw"));
+		c.put("SpamWords.SimiliarMessage", true);
+		c.put("SpamWords.DoubledLetters.MaxAmount", 4);
+		c.put("SpamWords.DoubledLetters.ReduceLetters", true);
+		c.put("SpamWords.DoubledLetters.Ignore", Arrays.asList("?","!"));
+		c.put("SpamWords.DoubledLetters.Use", true);
+		c.put("SpamWords.Words",Arrays.asList("pls op","please op", "op pls", "op please"));
 		config.setHeader("+-------------------------------------------------------------------+ #\r\n" + 
 				"| Info: https://dev.bukkit.org/projects/server-control-reloaded     | #\r\n" + 
 				"+-------------------------------------------------------------------+ #\r\n" + 
+				"Options for RespawnTeleport are: Home, Bed, Spawn"+
 				"PlaceHolders for AutoMessage:\n" +
 				"  %used_ram% - used memory\n"+
 				"  %free_ram% -  free memory\n"+
@@ -727,15 +762,15 @@ public class Configs {
 		config.addDefaults(c);
 		config.create();
 		Loader.config=config.getConfig();
-		}
-		public static void BansLoading() {
+	}
+	public static void BansLoading() {
 			bans= TheAPI.getConfig("ServerControlReloaded", "Bans");
 			bans.addDefault("Ban","");
 			bans.addDefault("Mute","");
 			bans.create();
 			Loader.ban=bans.getConfig();
 			}
-		public static void ScoreboardLoading() {
+	public static void ScoreboardLoading() {
 			Map<String, Object> c = new HashMap<String, Object>();
 			c.put("Scoreboard-Enabled", true);
 			c.put("Scoreboard-PerWorld", false);
@@ -751,41 +786,38 @@ public class Configs {
 			c.put("PerWorld.skyblock.Lines", Arrays.asList("&r&lMoney: &a%money%$","&r&lHealth:  &a%health%","&r&lFood:  &a%food%"));
 			
 			sb= TheAPI.getConfig("ServerControlReloaded", "Scoreboard");
-			sb.setHeader("%used_ram%   used memory\n"
-					+"%free_ram%   free memory\n"
-					+"%max_ram%   maximum memory\n"
-					+"%money%   player money\n"
-					+"%online%   online players\n"
+			sb.setHeader("%money%   player money balance\n"
+					+"%online%   online players on server\n"
 					+"%max_players%   maximum players on server\n"
 					+"%time%   server time\n"
 					+"%date%   server date\n"
-					+"%world%   world of player\n"
+					+"%world%   world name of player\n"
 					+"%health%, %hp%   player healths\n"
-					+"%food%   player food\n"
-					+"%group%   player group\n"
-					+"%ping%   player ping\n"
-					+"%tps%   server tps\n"
-					+"%ram_free%   free ram\n"
-					+"%ram_usage%   used ram\n"
-					+"%ram_max%   max ram\n"
-					+"%ram_free_percentage%   free ram in percentage\n"
-					+"%ram_usage_percentage%   used ram in percentage\n"
+					+"%food%   player food level\n"
+					+"%group%   player vault group\n"
+					+"%ping%   player server ping\n"
+					+"%tps%   current server tps\n"
+					+"%ram_free%   free memory of server\n"
+					+"%ram_usage%   used memory of server\n"
+					+"%ram_max%   maximum memory of server\n"
+					+"%ram_free_percentage%   free memory of server in percentage\n"
+					+"%ram_usage_percentage%   used memory of server in percentage\n"
 					+"%kills%   killed players\n"
-					+"%afk%   return if player is afk");
+					+"%afk%   afk placeholder");
 			sb.addDefaults(c);
 			sb.create();
 			Loader.scFile=sb.getConfig();
 			}
-			public static void ChatLogLoading() {
+	public static void ChatLogLoading() {
 				chat= TheAPI.getConfig("ServerControlReloaded", "ChatLog");
 				chat.create();
 			}
-			public static void ChatMeLoading() {
+	public static void ChatMeLoading() {
 				chatme= TheAPI.getConfig("ServerControlReloaded", "ChatMe");
 				chatme.create();
 				Loader.me=chatme.getConfig();
 				}
-		public static void TabLoading() {
+	public static void TabLoading() {
 			tab= TheAPI.getConfig("ServerControlReloaded", "TabList");
 			Map<String, Object> c = new HashMap<String, Object>();
 			c.put("Tab-Enabled", true);
@@ -812,29 +844,24 @@ public class Configs {
 					,"&7--------------------------------"));
 			}
 			tab.addDefaults(c);
-			tab.setHeader("%used_ram%   used memory\n"
-					+"%free_ram%   free memory\n"
-					+"%max_ram%   maximum memory\n"
-					+"%money%   player money\n"
-					+"%online%   online players\n"
+			tab.setHeader("%money%   player money balance\n"
+					+"%online%   online players on server\n"
 					+"%max_players%   maximum players on server\n"
-					+"%ping%   player ping\n"
 					+"%time%   server time\n"
 					+"%date%   server date\n"
-					+"%world%   world of player\n"
+					+"%world%   world name of player\n"
 					+"%health%, %hp%   player healths\n"
-					+"%food%   player food\n"
-					+"%group%   player group\n"
-					+"%ping%   player ping\n"
+					+"%food%   player food level\n"
+					+"%group%   player vault group\n"
+					+"%ping%   player server ping\n"
+					+"%tps%   current server tps\n"
+					+"%ram_free%   free memory of server\n"
+					+"%ram_usage%   used memory of server\n"
+					+"%ram_max%   maximum memory of server\n"
+					+"%ram_free_percentage%   free memory of server in percentage\n"
+					+"%ram_usage_percentage%   used memory of server in percentage\n"
 					+"%kills%   killed players\n"
-					+"%tps%   server tps\n"
-					+"%ram_free%   free ram\n"
-					+"%ram_usage%   used ram\n"
-					+"%ram_max%   max ram\n"
-
-					+"%ram_free_percentage%   free ram in percentage\n"
-					+"%ram_usage_percentage%   used ram in percentage\n"
-					+"%afk%   return if player is afk");
+					+"%afk%   afk placeholder");
 			tab.create();
 			Loader.tab=tab.getConfig();
 			}
@@ -848,7 +875,7 @@ public class Configs {
 		mw.create();
 		Loader.mw=mw.getConfig();
 		}
-public static void KitLoading() {
+	public static void KitLoading() {
 	kit=TheAPI.getConfig("ServerControlReloaded", "Kits");
 	Map<String, Object> c = new HashMap<String, Object>();
 	if(!kit.existPath("Kits")) {
@@ -875,7 +902,6 @@ public static void KitLoading() {
 		MultiWorldLoading();
 		configLoading();
 		TranslationsLoading();
-		
 		ScoreboardLoading();
 		TabLoading();
 		ChatLogLoading();

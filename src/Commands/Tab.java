@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -34,7 +33,7 @@ public class Tab implements CommandExecutor, TabCompleter {
 		}
 		if(API.hasPerm(s,"ServerCotrol.TAB")) {
 			if(args[0].equalsIgnoreCase("Reload")) {
-				Loader.msg(Loader.s("Prefix")+ ChatColor.YELLOW+"----------------- "+ChatColor.DARK_AQUA+"Tab Reload"+ChatColor.YELLOW+" -----------------",s);
+				Loader.msg(Loader.s("Prefix")+"&e----------------- &bTab Reload &e-----------------",s);
 			    Loader.msg("",s);
 				TabList.removeTab();
 				Configs.TabLoading();

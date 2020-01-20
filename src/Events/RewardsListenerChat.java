@@ -8,10 +8,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import ServerControl.Loader;
 import Utils.Configs;
+import Utils.setting;
 import me.Straiker123.TheAPI;
 import me.Straiker123.TheAPI.SudoType;
 
@@ -19,24 +19,17 @@ import me.Straiker123.TheAPI.SudoType;
 public class RewardsListenerChat implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void ChatListener(PlayerChatEvent e) {
-		if(Loader.config.getBoolean("Codes-Rewards.Enabled")==true) {
+		if(setting.code) {
 	Player p = e.getPlayer();
 		String name = p.getName();
 		String msg = e.getMessage();
-		ArrayList<String> words = new ArrayList<String>();
-		List<String> only = Loader.config.getStringList("Codes-Rewards.Words");
-		List<String> msgs = Loader.config.getStringList("Codes-Rewards.Messages");
-		List<String> cmds = Loader.config.getStringList("Codes-Rewards.Commands");
+		List<String> only = Loader.config.getStringList("Options.Codes.List");
+		if(Loader.me.getString("Players."+name+".Taken-Codes")!=null)
+		only.removeAll(Loader.me.getStringList("Players."+name+".Taken-Codes"));
 		List<String> codes = Loader.me.getStringList("Players."+name+".Taken-Codes");
-		if(Loader.config.getString("Codes-Rewards.Words-PerCMD")!=null) {
-		for(String get: Loader.config.getConfigurationSection("Codes-Rewards.Words-PerCMD").getKeys(false)) {
-			words.add(get);
-		}}
 		for(String g: only) {
 			if(msg.contains(g)) {
-				if(!codes.contains(g)) {
-				for(String c : msgs) {
-					Loader.msg(c
+					Loader.msg(Loader.config.getString("Options.Codes.Message")
 							.replace("%player%", name)
 							.replace("%code%", String.valueOf(g))
 							.replace("%playername%", p.getDisplayName())
@@ -45,11 +38,7 @@ public class RewardsListenerChat implements Listener {
 							.replace("%group-suffix%", Loader.getInstance.getSuffix(p))
 							.replace("%vault-group%", Loader.getInstance.getGroup(p))
 							.replace("%prefix%", Loader.s("Prefix")), p);
-				}
-  	        	new BukkitRunnable() {
-    					@Override
-    					public void run() {
-	    		    	for(String cmds: cmds) {
+	    		    	for(String cmds: Loader.config.getStringList("Options.Codes.Commands")) {
 	    		    		TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", name)
 						.replace("%code%", String.valueOf(g))
 						.replace("%playername%", p.getDisplayName())
@@ -58,47 +47,20 @@ public class RewardsListenerChat implements Listener {
 						.replace("%group-suffix%", Loader.getInstance.getSuffix(p))
 						.replace("%vault-group%", Loader.getInstance.getGroup(p))
 						.replace("%prefix%", Loader.s("Prefix")))); 
-	    		    	}}
-    				}.runTask(Loader.getInstance);{
-    				}
+	    		    	}
+	    		    	List<Object> list = new ArrayList<Object>();
+	    		    	for(String s : Loader.config.getStringList("Options.Codes.Random-Command"))list.add(s);
+	    		    	TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(TheAPI.getRandomFromList(list).toString().replace("%player%", name)
+	    						.replace("%code%", String.valueOf(g))
+	    						.replace("%playername%", p.getDisplayName())
+	    						.replace("%group%", Loader.getInstance.getGroup(p))
+	    						.replace("%group-prefix%", Loader.getInstance.getPrefix(p))
+	    						.replace("%group-suffix%", Loader.getInstance.getSuffix(p))
+	    						.replace("%vault-group%", Loader.getInstance.getGroup(p))
+	    						.replace("%prefix%", Loader.s("Prefix"))));
 				codes.add(g);
 				Loader.me.set("Players."+name+".Taken-Codes", codes);
-				Configs.chatme.save();}}
-		}
-		if(!words.isEmpty()) {
-		for(String g: words) {
-			if(msg.contains(g)) {
-				if(!codes.contains(g)) {
-				for(String c : Loader.config.getStringList("Codes-Rewards.Words-PerCMD."+g+".Messages")) {
-					Loader.msg(c
-							.replace("%player%", name)
-							.replace("%code%", String.valueOf(g))
-							.replace("%playername%", p.getDisplayName())
-							.replace("%group%", Loader.getInstance.getGroup(p))
-							.replace("%group-prefix%", Loader.getInstance.getPrefix(p))
-							.replace("%group-suffix%", Loader.getInstance.getSuffix(p))
-							.replace("%vault-group%", Loader.getInstance.getGroup(p))
-							.replace("%prefix%", Loader.s("Prefix")), p);
-				}
-  	        	new BukkitRunnable() {
-    					@Override
-    					public void run() {
-	    		    	for(String cmds: Loader.config.getStringList("Codes-Rewards.Words-PerCMD."+g+".Commands")) {
-	    		    		TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", name)
-						.replace("%code%", String.valueOf(g))
-						.replace("%playername%", p.getDisplayName())
-						.replace("%group%", Loader.getInstance.getGroup(p))
-						.replace("%group-prefix%", Loader.getInstance.getPrefix(p))
-						.replace("%group-suffix%", Loader.getInstance.getSuffix(p))
-						.replace("%vault-group%", Loader.getInstance.getGroup(p))
-						.replace("%prefix%", Loader.s("Prefix")))); 
-	    		    	}}
-    				}.runTask(Loader.getInstance);{
-    				}
-				codes.add(g);
-				Loader.me.set("Players."+name+".Taken-Codes", codes);
-				Configs.chatme.save();}}
-		}
+				Configs.chatme.save();}
 		}
 		}
 	}

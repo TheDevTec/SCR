@@ -15,6 +15,7 @@ import ServerControl.Loader;
 import Utils.Colors;
 import Utils.Configs;
 import Utils.MultiWorldsGUI;
+import Utils.setting;
 import me.Straiker123.TheAPI;
 
 @SuppressWarnings("deprecation")
@@ -88,43 +89,41 @@ public class ChatFormat implements Listener {
 	 			String caps = Loader.s("Security.TryingSendCaps");
 	 				if(p!=null)
 	 					TheAPI.broadcast(Loader.s("Prefix")+API.replacePlayerName(caps,(Player)p).replace("%message%", msg), "ServerControl.Caps");
-	 				
-	 				if(Loader.config.getBoolean("Colored-Chat.Enabled")==true
+	 				if(setting.color_chat
 	 						&&
-	 						Loader.config.getBoolean("Colored-Chat.Enabled-Permissions")==true
+	 						setting.color_chat_perm
 	 						&&
 	 						p.hasPermission(Loader.config.getString("Colored-Chat.Permission"))
 	 						||
-	 						Loader.config.getBoolean("Colored-Chat.Enabled")==true
+	 						setting.color_chat
 	 						&&
-	 						Loader.config.getBoolean("Colored-Chat.Enabled-Permissions")==false)
+	 						!setting.color_chat_perm)
 	 				return TheAPI.colorize(msg.toLowerCase());
 	 				else
 	 				return msg.toLowerCase();
 	 				
 	 		}
-	 		if(Loader.config.getBoolean("Colored-Chat.Enabled")==true
+			if(setting.color_chat
 						&&
-						Loader.config.getBoolean("Colored-Chat.Enabled-Permissions")==true
+ 						setting.color_chat_perm
 						&&
 						p.hasPermission(Loader.config.getString("Colored-Chat.Permission"))
 						||
-						Loader.config.getBoolean("Colored-Chat.Enabled")==true
+						setting.color_chat
 						&&
-						Loader.config.getBoolean("Colored-Chat.Enabled-Permissions")==false)
+ 						!setting.color_chat_perm)
 				return TheAPI.colorize(msg);
 				else
 				return msg;
 	 		}}
-		if(Loader.config.getBoolean("Colored-Chat.Enabled")==true
+		if(setting.color_chat
 					&&
-					Loader.config.getBoolean("Colored-Chat.Enabled-Permissions")==true
+						setting.color_chat_perm
 					&&
 					p.hasPermission(Loader.config.getString("Colored-Chat.Permission"))
 					||
-					Loader.config.getBoolean("Colored-Chat.Enabled")==true
-					&&
-					Loader.config.getBoolean("Colored-Chat.Enabled-Permissions")==false)
+					setting.color_chat
+					&&!setting.color_chat_perm)
 			return TheAPI.colorize(msg);
 		else
 		return msg;

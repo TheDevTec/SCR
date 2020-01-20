@@ -1,12 +1,14 @@
 package ServerControl;
 
-import org.bukkit.Bukkit;
+import java.util.List;
+
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
 import Utils.Configs;
+import Utils.setting;
 import me.Straiker123.PlayerAPI;
 import me.Straiker123.TheAPI;
 
@@ -37,52 +39,38 @@ public class SPlayer {
 		d.setAir(s.getMaximumAir());
 	}
 	public void enableTempFly(int stop) {
-		enableFly();
+		enableTempFly();
         Loader.msg(Loader.s("Prefix")+Loader.s("TempFly.Enabled").replace("%time%", TheAPI.getTimeConventorAPI().setTimeToString(stop)), getPlayer());
+        Loader.me.set("Players."+getName()+".TempFly.Start", System.currentTimeMillis());
+        Loader.me.set("Players."+getName()+".TempFly.Time", stop);
+		if(!hasTempFlyEnabled()) {
+        List<String> w = Loader.me.getStringList("TempFly");
+        w.add(getName());
+        Loader.me.set("TempFly",w);
+		}
+        Configs.chatme.save();
         
-        Loader.tempfly.put(s.getName(), Bukkit.getScheduler().scheduleSyncRepeatingTask(Loader.getInstance,new Runnable(){
-        	int run = 0;
-        	@Override 
-            public void run(){
-                ++run;
-                if(run==stop-15) {
-                	d.sendTitle("&615 seconds", "&eTo turn off flying");
-                }
-                if(run==stop-5) {
-                	d.sendTitle("&25 seconds", "&eTo turn off flying");
-                }
-                if(run==stop-4) {
-                	d.sendTitle("&a4 seconds", "&eTo turn off flying");
-                }
-                if(run==stop-3) {
-                	d.sendTitle("&e3 seconds", "&eTo turn off flying");
-                }
-                if(run==stop-2) {
-                	d.sendTitle("&c2 seconds", "&eTo turn off flying");
-                }
-                if(run==stop-1) {
-                	d.sendTitle("&41 second", "&eTo turn off flying");
-                }
-                if(run>=stop) {
-                     disableFly();
-                     d.sendTitle("&6Your TempFly", "&ehas ended");
-                }
-            }}
-        ,20,20));
+	}
+	public void enableTempFly() {
+		d.setFly(true, true);
 	}
 	
 	public void enableFly() {
-		if(Loader.tempfly.containsKey(getName())) {
-        	Bukkit.getScheduler().cancelTask(Loader.tempfly.get(s.getName()));
-			Loader.tempfly.remove(getName());
+		if(hasTempFlyEnabled()) {
+			List<String> w = Loader.me.getStringList("TempFly");
+        w.remove(getName());
+        Loader.me.set("TempFly",w);
+        Configs.chatme.save();
 		}
 		d.setFly(true, true);
 	}
 	public void disableFly() {
-		if(Loader.tempfly.containsKey(getName())) {
-        	Bukkit.getScheduler().cancelTask(Loader.tempfly.get(s.getName()));
-			Loader.tempfly.remove(getName());
-		}
+		if(hasTempFlyEnabled()) {
+			List<String> w = Loader.me.getStringList("TempFly");
+	        w.remove(getName());
+	        Loader.me.set("TempFly",w);
+	        Configs.chatme.save();
+			}
 		d.setFly(false, false);
 	}
 	public boolean isAFK() {
@@ -181,13 +169,16 @@ public class SPlayer {
 	public boolean hasPermission(String perm) {
 		return s.hasPermission(perm);
 	}
+	public boolean hasPerm(String perm) {
+		return s.hasPermission(perm);
+	}
 	
 	public void disableGod() {
 		d.setGod(false);
 	}
 	
 	public void createEconomyAccount() {
-		if(Loader.config.getBoolean("MultiEconomy.Enabled") && Loader.econ != null)
+		if(setting.eco_multi && Loader.econ != null)
 			Loader.econ.createPlayerAccount(s);
 	}
 	
@@ -204,5 +195,10 @@ public class SPlayer {
 
 	public boolean hasGodEnabled() {
 		return d.allowedGod();
+	}
+
+	public boolean hasTempFlyEnabled() {
+		
+		return Loader.me.getString("TempFly") != null ? Loader.me.getStringList("TempFly").contains(getName()) : false;
 	}
 }

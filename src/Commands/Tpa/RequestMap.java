@@ -4,38 +4,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
 import ServerControl.Loader;
 import Utils.Configs;
+import Utils.setting;
+import me.Straiker123.TheAPI;
 /**
  * 
  * @author waskerSK
  * 
- * Edited by Straiker123
+ * Updated by Straiker123
  */
 public class RequestMap {
     public static void addRequest(String target, String sender, Type tp) {
-    	Loader.me.set("Players."+sender+".TeleportType."+target, tp.toString());
-    	Loader.me.set("Players."+sender+".TpaSender."+target, System.currentTimeMillis()/1000);
+    	Loader.me.set("Players."+sender+".Tp."+target+".Type", tp.toString());
+    	Loader.me.set("Players."+sender+".Tp."+target+".Time", System.currentTimeMillis()/1000);
+    	if(setting.tp_onreqloc)
+    	Loader.me.set("Players."+sender+".Tp."+target+".Location", Bukkit.getPlayer(sender).getLocation());
 		Configs.chatme.save();
     }
 
     public static void removeRequest(String target, String sender) {
-        Loader.me.set("Players."+target+".TpaSender."+sender, null);
-        Loader.me.set("Players."+target+".TeleportType."+sender, null);
+        Loader.me.set("Players."+target+".Tp."+sender, null);
 		Configs.chatme.save();    
     }
     
     public static String getRequest(String p) {
-        if(Loader.me.getString("Players."+p+".TpaSender")!=null) {
+        if(Loader.me.getString("Players."+p+".Tp")!=null) {
             List<String> s = new ArrayList<String>();
-            if(Loader.me.getString("Players."+p+".TpaSender")!=null)
-            for(String d : Loader.me.getConfigurationSection("Players."+p+".TpaSender").getKeys(false))
+            for(String d : Loader.me.getConfigurationSection("Players."+p+".Tp").getKeys(false))
             	if(Bukkit.getPlayer(d)!=null)s.add(d);
             if(!s.isEmpty())return s.get(0);
             return null;
         }
         return null;
+    }
+    
+    public static Location getLocation(String p, String t) {
+    	if(Loader.me.getString("Players."+p+".Tp."+t+".Location")!=null)
+    		return (Location)Loader.me.get("Players."+p+".Tp."+t+".Location");
+    	return null;
     }
     
     public static enum Type {
@@ -44,12 +53,12 @@ public class RequestMap {
     }
 
     public static Type getTeleportType(String target, String sender) {
-        return Type.valueOf(Loader.me.getString("Players."+target+".TeleportType."+sender));
+        return Type.valueOf(Loader.me.getString("Players."+target+".Tp."+sender+".Type"));
     }
     
     public static boolean containsRequest(String target, String sender) {
-    	if(Loader.me.getLong("Players."+target+".TpaSender."+sender)
-    			-System.currentTimeMillis()/1000+Loader.config.getInt("TpaRequestTime")>0)
+    	if(Loader.me.getLong("Players."+target+".Tp."+sender+".Time")
+    			-System.currentTimeMillis()/1000+TheAPI.getTimeConventorAPI().getTimeFromString(Loader.config.getString("Options.Teleport.RequestTime"))>0)
     		return true;
     	else {
     		removeRequest(target, sender);

@@ -11,7 +11,7 @@ public class AFK {
 	public static boolean isAFK(Player p) {
 		int afk = 300; //5min
 		if(Loader.config.getInt("AFK.Time")!=0)afk=Loader.config.getInt("AFK.Time");
-		if(getAFKTime(p) != -1 && getAFKTime(p) >= afk && Loader.config.getBoolean("AFK.Time-Enabled")||Loader.me.getBoolean("Players."+p.getName()+".AFK-Manual")) {
+		if(getAFKTime(p) != -1 && getAFKTime(p) >= afk && setting.afk_auto||Loader.me.getBoolean("Players."+p.getName()+".AFK-Manual")) {
 			return true;
 		}
 		return false;

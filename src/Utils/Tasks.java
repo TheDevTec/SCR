@@ -12,11 +12,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
 import ServerControl.Loader;
+import ServerControl.SPlayer;
 import me.Straiker123.ScoreboardAPI;
 import me.Straiker123.TheAPI;
 
 public class Tasks {
-	static Loader a = Loader.getInstance;
+	public Tasks() {
+		a = Loader.getInstance;
+	}
+	static Loader a;
 	static List<Integer> tasks = new ArrayList<Integer>();
 	static int tests;
 	static HashMap<Player, String> ss = new HashMap<Player, String>();
@@ -24,28 +28,45 @@ public class Tasks {
 	 static HashMap<Player, Scoreboard> l = new HashMap<Player, Scoreboard>();
 	 static HashMap<Player, ScoreboardAPI> setup = new HashMap<Player, ScoreboardAPI>();
 	public static void load() {
-		if(Loader.config.getBoolean("AutoMessage.Enabled"))
+		if(setting.am) {
+			Loader.info("Enabling AutoMessages");
 		automessage();
-		if(Loader.config.getBoolean("VIPSlots.Enabled")==true)
+		}
+		if(setting.vip) {
+			Loader.info("Enabling VIPSlots");
 		vipslot();
-		 if(Loader.tab.getBoolean("Tab-Enabled")==true)
+		}
+		 if(setting.tab) {
+				Loader.info("Enabling Tablist");
 		tab();
-		if(Loader.mw.getBoolean("SavingTask.Enabled"))
+		 }
+		if(setting.save) {
+			Loader.info("Enabling Worlds Saving Task");
 		savetask();
-		if(Loader.scFile.getBoolean("Scoreboard-Enabled")==true)
+		}
+		if(setting.sb) {
+			Loader.info("Enabling Scoreboard");
 		scoreboard();
+		}
 		other();
+		Loader.info("Enabling TempFly Task");
+		tempfly();
 	}
 	public static void reload() {
+		Loader.info("Disabling all tasks");
 		for(Integer t : tasks)
 		Bukkit.getScheduler().cancelTask(t);
 		tests=0;
 		players.clear();
+		ss.clear();
+		l.clear();
+		setup.clear();
+		tasks.clear();
 		load();
 	}
 	private static void setup(Player p) {
 		setup.remove(p);
-		if(Loader.scFile.getBoolean("Scoreboard-PerWorld") && 
+		if(setting.sb_world && 
 				 Loader.scFile.getString("PerWorld."+p.getWorld().getName()+".Name")!=null &&
 				 Loader.scFile.getString("PerWorld."+p.getWorld().getName()+".Lines")!=null)
 			 l.remove(p);
@@ -59,7 +80,7 @@ public class Tasks {
 				 
 		String getName = "Name";
 		 String getLine = "Lines";
-		 if(Loader.scFile.getBoolean("Scoreboard-PerWorld") && 
+		 if(setting.sb_world && 
 				 Loader.scFile.getString("PerWorld."+p.getWorld().getName()+".Name")!=null &&
 				 Loader.scFile.getString("PerWorld."+p.getWorld().getName()+".Lines")!=null) {
 			 getName="PerWorld."+p.getWorld().getName()+".Name";
@@ -75,6 +96,33 @@ public class Tasks {
 		}
 		setup.put(p, a);
 		}
+	}
+	private static void tempfly() {
+		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
+			if(Loader.me.getString("TempFly") !=null && Loader.me.getStringList("TempFly").isEmpty()==false)
+			for(String p:Loader.me.getStringList("TempFly")) {
+				Player s = Bukkit.getPlayer(p);
+				long start = Loader.me.getLong("Players."+p+".TempFly.Start");
+				int end = Loader.me.getInt("Players."+p+".TempFly.Time");
+				long timeout = start - System.currentTimeMillis() + end;
+				if(timeout <= 0) {
+					if(s!=null) {
+					TheAPI.sendActionBar(s, "&cTempFly ended");
+					new SPlayer(s).disableFly();
+					}
+					List<String> list = Loader.me.getStringList("TempFly");
+					list.remove(p);
+					Loader.me.set("TempFly",list);
+					Loader.me.set("Players."+p+".TempFly",null);
+					Configs.chatme.save();
+				}
+				if(timeout == 5 || timeout == 4 || timeout == 3 || timeout == 2 || timeout == 1 
+						|| timeout == 15 || timeout == 10 || timeout == 30) {
+					if(s!=null)
+					TheAPI.sendActionBar(s, "&6TempFly ends in &c"+TheAPI.getTimeConventorAPI().setTimeToString(timeout));
+					}
+			}
+		}},20,20));
 	}
 	
 	private static void scoreboard() {
@@ -92,6 +140,10 @@ public class Tasks {
 	}},20,r));
 	}
 	private static void savetask() {
+		if(Loader.mw.getInt("SavingTask.Delay") < 600){
+			Loader.mw.set("SavingTask.Delay", 600);
+			Configs.mw.save();
+		}
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 			for(World w: Bukkit.getWorlds()) {
 				if(Loader.mw.getBoolean("WorldsSettings."+w.getName()+".AutoSave"))
@@ -103,28 +155,29 @@ public class Tasks {
 		for(Player p:Bukkit.getOnlinePlayers()) {
 			if(!ss.containsKey(p)) {
 				String uuid = p.getUniqueId().toString();
-				 if (uuid.length() > 6) {
-					 uuid = uuid.substring(0, 6);
-		            }
+				uuid = uuid.substring(0, 5);
 				String pname = p.getName();
-			 if (pname.length() > 6) {
-				 pname = pname.substring(0, 6);
+			 if (pname.length() > 5) {
+				 pname = pname.substring(0, 5);
 	            }
     		ss.put(p, uuid+pname);
 			}
 		}
 	}
 	private static void other() {
+	    if(setting.motd)
+		Loader.info("Enabling Server MOTD");
+		Loader.info("Enabling AFK Tasks");
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
-		    if(Loader.config.getBoolean("ServerMOTD.Enabled")==true) {
-				if(Loader.config.getBoolean("MaintenanceMode.Enabled")==false) {
-					TheAPI.setServerMotd(Loader.config.getString("ServerMOTD.Normal.MOTD").replace("%next%", "\n").replace("%line%", "\n"));
-				}else
-					TheAPI.setServerMotd(Loader.config.getString("ServerMOTD.Maintenance.MOTD").replace("%next%", "\n").replace("%line%", "\n"));
+		    if(setting.motd) {
+				if(!Loader.config.getBoolean("Options.Maintenance.Enabled") || Loader.config.getBoolean("Options.MaintenanceMode.Enabled") && !setting.motd_maintenance)
+					TheAPI.setServerMotd(Loader.config.getString("Options.ServerList.MOTD.Text.Normal").replace("%next%", "\n").replace("%line%", "\n"));
+				else
+					TheAPI.setServerMotd(Loader.config.getString("Options.ServerList.MOTD.Text.Maintenance").replace("%next%", "\n").replace("%line%", "\n"));
 		}
 	   	 for(Player p:Bukkit.getOnlinePlayers()) {
 	   		 if(AFK.isAFK(p)) {
-	   				 if(AFK.getAFKTime(p)>=Loader.config.getInt("AFK.Kick.Time") &&Loader.config.getBoolean("AFK.Kick.Enabled")==true 
+	   				 if(setting.afk_kick && AFK.getAFKTime(p)>=Loader.config.getInt("AFK.Kick.Time")
 	   						 && !p.hasPermission("ServerControl.AFK.Bypass")) {
 	   					Loader.me.set("Players."+p.getName()+".AFK-Manual",null);
 	   					Loader.me.set("Players."+p.getName()+".AFK-Broadcast",null);
@@ -151,7 +204,8 @@ public class Tasks {
 		}},20,r));
 	}
 	private static void vipslot() {
-	    TheAPI.setMaxPlayers(Bukkit.getMaxPlayers() + Loader.config.getInt("VIPSlots.MaxSlots"));
+		if(Loader.config.getBoolean("Options.VIPSlots.AddSlots"))
+	    TheAPI.setMaxPlayers(Bukkit.getMaxPlayers() + Loader.config.getInt("Options.VIPSlots.SlotsToAdd"));
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 	    	   	 for(Player online:Bukkit.getOnlinePlayers()) {
 	    	   	 if(!players.contains(online) &&!online.hasPermission("ServerControl.JoinFullServer"))
@@ -165,10 +219,10 @@ public class Tasks {
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable() {
 			@Override
 			public void run() {
-		    	if(Bukkit.getOnlinePlayers().size()<Loader.config.getInt("AutoMessage.MinimalPlayers"))return;
+		    	if(Bukkit.getOnlinePlayers().size()<Loader.config.getInt("Options.AutoMessage.MinimalPlayers"))return;
 				List<Object> l = new ArrayList<Object>();
-				for(String s : Loader.config.getStringList("AutoMessage.Messages"))l.add(s);
-			  		if(Loader.config.getBoolean("AutoMessage.Random")==true) {
+				for(String s : Loader.config.getStringList("Options.AutoMessage.Messages"))l.add(s);
+			  		if(setting.am_random) {
 			  				TheAPI.broadcastMessage(TheAPI.getRandomFromList(l).toString()
 			     			 			.replace("%used_ram%", TheAPI.getMemoryAPI().getUsedMemory(false)+"")
 			    			 			.replace("%free_ram%",TheAPI.getMemoryAPI().getFreeMemory(false)+"")
@@ -178,8 +232,7 @@ public class Tasks {
 			     			 			.replace("%time%", new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
 			     			 			.replace("%date%", new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()))
 			     			 			.replace("%prefix%", Loader.s("Prefix")));
-			  		}
-			  		if(Loader.config.getBoolean("AutoMessage.Random")==false) {
+			  		}else {
 			  			if(l.size() <= tests) {
 							tests = 0;
 			  		}
@@ -196,6 +249,6 @@ public class Tasks {
 				  }
 			}
 			
-		}, 20, 20*Loader.config.getInt("AutoMessage.Delay")));
+		}, 20, 20*Loader.config.getInt("Options.AutoMessage.Interval")));
 	}
 }

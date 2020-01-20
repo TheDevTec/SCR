@@ -18,7 +18,6 @@ public class Thor implements CommandExecutor {
 				Loader.Help(s, "/Thor <player>", "Thor");
 				return true;
 			}
-			if(args.length==1) {
 				Player p = Bukkit.getPlayer(args[0]);
 				if(p!=null) {
 					p.getWorld().strikeLightning(p.getLocation());
@@ -27,8 +26,6 @@ public class Thor implements CommandExecutor {
 				}
 				Loader.msg(Loader.PlayerNotOnline(args[0]),s);
 				return true;
-			}
-			return true;
 		}
 		return true;
 	}

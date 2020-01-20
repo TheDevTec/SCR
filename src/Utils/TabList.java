@@ -14,7 +14,7 @@ import me.Straiker123.TheAPI;
 
 public class TabList {
 	private static String group(Player p) {
-		if(API.getPlugin("Vault")) {
+		if(API.existVaultPlugin()) {
 			if(Loader.perms != null && Loader.vault != null)
 			if(Loader.perms.getPrimaryGroup(p) != null) {
 				return Loader.perms.getPrimaryGroup(p);
@@ -93,7 +93,7 @@ public class TabList {
 	}
 	
 	static String setHeaderFooter(String FooterOrHeader, String path, Player p) {
-		if(Loader.tab.getBoolean(FooterOrHeader+"-Enabled")==true) {
+		if(FooterOrHeader.equalsIgnoreCase("header") && setting.tab_header || FooterOrHeader.equalsIgnoreCase("footer") && setting.tab_footer) {
 		if(Loader.tab.getStringList(path)!=null) {
 			List<String> L = Loader.tab.getStringList(path);
 			L=TheAPI.getPlaceholderAPI().setPlaceholders(p, L);
@@ -102,7 +102,7 @@ public class TabList {
 		return null;
 	}
 	public static String getHeader(Player p) {
-		if(Loader.tab.getBoolean("Tab-Enabled")&&Loader.tab.getBoolean("Header-Enabled")) {
+		if(setting.tab_footer && setting.tab_header) {
 		if(ex("PerPlayerTabList."+p.getName()+".Header"))
 			return setHeaderFooter("Header","PerPlayerTabList."+p.getName()+".Header", p);
 	else
@@ -114,7 +114,7 @@ public class TabList {
 			return "";
 	}
 	public static String getFooter(Player p) {
-		if(Loader.tab.getBoolean("Tab-Enabled")&&Loader.tab.getBoolean("Footer-Enabled")) {
+		if(setting.tab_footer && setting.tab_header) {
 		if(ex("PerPlayerTabList."+p.getName()+".Footer"))
 			return setHeaderFooter("Footer","PerPlayerTabList."+p.getName()+".Footer", p);
 		else

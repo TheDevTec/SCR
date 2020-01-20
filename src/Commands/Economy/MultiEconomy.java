@@ -22,7 +22,7 @@ import me.Straiker123.TheAPI;
 
 public class MultiEconomy implements CommandExecutor, TabCompleter {
 	private String getEconomyGroup(String ss) {
-			for(String s:Loader.config.getConfigurationSection("MultiEconomy.Types").getKeys(false)) {
+			for(String s:Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
 			if(s.toLowerCase().equalsIgnoreCase(ss)) {
 				return s;
 			}
@@ -65,7 +65,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 				return true;
 				}
 				ArrayList<String> worlds = new ArrayList<String>();
-				for(String ss:Loader.config.getStringList("MultiEconomy.Types."+getEconomyGroup(args[1]))) {
+				for(String ss:Loader.config.getStringList("Options.Economy.MultiEconomy.Types."+getEconomyGroup(args[1]))) {
 					worlds.add(ss);
 				}
 				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.Worlds")
@@ -91,7 +91,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 					, s);
 					return true;	
 				}
-				Loader.config.set("MultiEconomy.Types."+args[1], "");
+				Loader.config.set("Options.Economy.MultiEconomy.Types."+args[1], "");
 				Configs.config.save();
 				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.Created").replace("%group%", getEconomyGroup(args[1]))
 						.replace("%economygroup%", getEconomyGroup(args[1]))
@@ -118,7 +118,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 						.replace("%economygroup%", getEconomyGroup(args[1]))
 						.replace("%economy-group%", getEconomyGroup(args[1]))
 						.replace("%economy%", getEconomyGroup(args[1])), s);
-				Loader.config.set("MultiEconomy.Types."+getEconomyGroup(args[1]), null);
+				Loader.config.set("Options.Economy.MultiEconomy.Types."+getEconomyGroup(args[1]), null);
 				return true;
 				
 			}
@@ -143,10 +143,10 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.WorldNotExists").replace("%world%", args[2]), s);
 				return true;
 			}else {
-			List<String> list = Loader.config.getStringList("MultiEconomy.Types."+getEconomyGroup(args[1]));
+			List<String> list = Loader.config.getStringList("Options.Economy.MultiEconomy.Types."+getEconomyGroup(args[1]));
 			if(!list.contains(args[2])) {
 			list.add(args[2]);
-			Loader.config.set("MultiEconomy.Types."+getEconomyGroup(args[1]), list);
+			Loader.config.set("Options.Economy.MultiEconomy.Types."+getEconomyGroup(args[1]), list);
 
 			Configs.config.save();
 			Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.WorldAdded").replace("%world%",args[2]).replace("%group%", getEconomyGroup(args[1]))
@@ -181,10 +181,10 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.WorldNotExists").replace("%world%",args[2]), s);
 				return true;
 			}else {
-			List<String> list = Loader.config.getStringList("MultiEconomy.Types."+getEconomyGroup(args[1]));
+			List<String> list = Loader.config.getStringList("Options.Economy.MultiEconomy.Types."+getEconomyGroup(args[1]));
 			if(list.contains(args[2])) {
 			list.remove(args[2]);
-			Loader.config.set("MultiEconomy.Types."+getEconomyGroup(args[1]), list);
+			Loader.config.set("Options.Economy.MultiEconomy.Types."+getEconomyGroup(args[1]), list);
 
 			Configs.config.save();
 			Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.WorldRemoved").replace("%group%", getEconomyGroup(args[1]))
@@ -238,7 +238,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 		}
 			if(args[0].equalsIgnoreCase("groups")) {
 				ArrayList<String> groups = new ArrayList<String>();
-				for(String ss:Loader.config.getConfigurationSection("MultiEconomy.Types").getKeys(false)) {
+				for(String ss:Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
 					groups.add(ss);
 				}
 				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.Groups").replace("%groups%",StringUtils.join(groups,", ")),s);
@@ -305,28 +305,28 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 	c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));
 			}
 			if(args[0].equalsIgnoreCase("Delete")||args[0].equalsIgnoreCase("Add")||args[0].equalsIgnoreCase("Remove")||args[0].equalsIgnoreCase("Worlds")) {
-	c.addAll(StringUtil.copyPartialMatches(args[1], Loader.config.getConfigurationSection("MultiEconomy.Types").getKeys(false), new ArrayList<>()));
+	c.addAll(StringUtil.copyPartialMatches(args[1], Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false), new ArrayList<>()));
 			}
 			if(args[0].equalsIgnoreCase("Transfer")||args[0].equalsIgnoreCase("Money"))
 				return null;
 	}
 		if(args.length==3) {
 			if(args[0].equalsIgnoreCase("Add")||args[0].equalsIgnoreCase("Remove")) {
-				for(String world:Loader.config.getConfigurationSection("MultiEconomy.Types").getKeys(false))
+				for(String world:Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false))
 				if(args[1].equalsIgnoreCase(world))
 				c.addAll(StringUtil.copyPartialMatches(args[2], worlds(), new ArrayList<>()));
 						}
 			if(args[0].equalsIgnoreCase("Money")||args[0].equalsIgnoreCase("Transfer")) {
 				Player p = Bukkit.getPlayer(args[1]);
 				if(p!=null)
-					c.addAll(StringUtil.copyPartialMatches(args[2], Loader.config.getConfigurationSection("MultiEconomy.Types").getKeys(false), new ArrayList<>()));
+					c.addAll(StringUtil.copyPartialMatches(args[2], Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false), new ArrayList<>()));
 			}}
 		if(args.length==4) {
 			if(args[0].equalsIgnoreCase("Transfer")) {
 				Player p = Bukkit.getPlayer(args[1]);
 				if(p!=null)
-					if(Loader.config.getConfigurationSection("MultiEconomy.Types").getKeys(false).contains(args[2]))
-					c.addAll(StringUtil.copyPartialMatches(args[3], Loader.config.getConfigurationSection("MultiEconomy.Types").getKeys(false), new ArrayList<>()));
+					if(Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false).contains(args[2]))
+					c.addAll(StringUtil.copyPartialMatches(args[3], Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false), new ArrayList<>()));
 			}}
 		}
 		return c;
