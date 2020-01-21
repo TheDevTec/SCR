@@ -249,6 +249,6 @@ public class Tasks {
 				  }
 			}
 			
-		}, 20, 20*Loader.config.getInt("Options.AutoMessage.Interval")));
+		}, 20, 20*TheAPI.getTimeConventorAPI().getTimeFromString(Loader.config.getString("Options.AutoMessage.Interval"))));
 	}
 }

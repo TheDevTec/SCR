@@ -184,6 +184,7 @@ private void regClasses() {
 		new RequestMap();
 		new Utils.AFK();
 		new ScoreboardStats();
+		new Utils.Tasks();
 		setting.load();
 	}catch(NoClassDefFoundError | Exception e) {
 		Bukkit.getLogger().severe(TheAPI.colorize(Loader.s("Prefix")+"&cError when loading classes"));
