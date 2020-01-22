@@ -209,6 +209,8 @@ public class Configs {
 		c.put("TpaSystem.TpaBlock.UnBlocked-Global", "&6You are no longer blocking teleport requests of all players");
 		c.put("TpaSystem.TpBlocked", "&6Player %playername% is blocking your teleport");
 		c.put("TpaSystem.TpaBlocked", "&6Player %playername% is blocking your requests");
+		c.put("TpaSystem.Cancelled", "&6Player %playername% has cancelled teleport requests");
+		c.put("TpaSystem.TpaCancel", "&6You cancelled teleport request");
 		c.put("Sudo.SendMessage", "&6Sent message &a'%message%' &6as player &a%playername%");
 		c.put("Sudo.SendCommand", "&6Sent command &a'%command%' &6as player &a%playername%");
 		c.put("Repair.HandIsEmpty", "&cFirst take item to your &nhand");

@@ -8,6 +8,10 @@ depend: [TheAPI]
 softdepend: [Vault]
 api-version: 1.13
 commands:
+    Tpcancel:
+        usage: /<command>
+        description: Cancel teleportation
+        aliases: [tpacancel]
     TempFly:
         usage: /<command> <player> <time> 
         description: Enable fly to player on time
