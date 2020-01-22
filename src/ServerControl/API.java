@@ -31,10 +31,7 @@ public class API {
 	public static String MoneyFormat;
 	
 	 public static boolean existVaultPlugin() {
-		 if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Vault")) {
-			 return true;
-		 }
-		 return false;
+		 return TheAPI.getPluginsManagerAPI().getPlugin("Vault") !=null;
 	 }
 	 public static enum TeleportLocation{
 		 HOME,
