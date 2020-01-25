@@ -63,7 +63,7 @@ public class API {
 				double z = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Z");
 				float pitch = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Pitch");
 				float yaw = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Yaw");
-				if(w != null) {
+				if(w != null) { 
 				Location loc = new Location(w,x,y,z,yaw,pitch);
 					Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {
 					public void run() {
