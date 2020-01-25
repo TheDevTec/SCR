@@ -91,7 +91,7 @@ public class API {
 							Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {
 								public void run() {
 									if(setting.tp_safe)
-										TheAPI.getPlayerAPI(p).safeTeleport(l.add(0,-1,0));
+										TheAPI.getPlayerAPI(p).safeTeleport(l.add(0,-2,0));
 									else
 										TheAPI.getPlayerAPI(p).teleport(l);
 				}}, 1);
