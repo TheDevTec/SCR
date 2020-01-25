@@ -79,7 +79,8 @@ public class API {
 		 }break;
 		 case SPAWN:{
 			 World world = Bukkit.getWorlds().get(0);;
-				Location loc=Bukkit.getWorlds().get(0).getSpawnLocation();
+				Location loc=Bukkit.getWorlds().get(0).getSpawnLocation().add(0,-1,0);
+				Bukkit.broadcast(loc.add(0,-1,0).getBlock().getBlockData().getMaterial().name(), "");
 				if(Loader.config.getString("Spawn")!=null) {
 					float x_head = Loader.config.getInt("Spawn.X_Pos_Head");
 					float z_head = Loader.config.getInt("Spawn.Z_Pos_Head");
