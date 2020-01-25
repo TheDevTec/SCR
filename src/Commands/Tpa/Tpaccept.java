@@ -37,7 +37,7 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 		            .replace("%player%",pd)
 		            .replace("%playername%", BanSystem.getName(pd)), p);
 		            if(setting.tp_safe)
-		            	TheAPI.getPlayerAPI(d).safeTeleport(((Player)p).getLocation());
+		            	TheAPI.getPlayerAPI(d).safeTeleport(((Player)p).getLocation().add(0,-1,0));
 		            else
 		            d.teleport(((Player)p).getLocation());
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaAccepted")
@@ -52,7 +52,7 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 		            .replace("%playername%", BanSystem.getName(pd)), p);
 		            Location loc = d.getLocation();
 		            if(setting.tp_onreqloc && RequestMap.getLocation(p.getName(), pd)!=null)
-		            	loc=RequestMap.getLocation(p.getName(), pd);
+		            	loc=RequestMap.getLocation(p.getName(), pd).add(0,-1,0);
 		            if(setting.tp_safe)
 		            	TheAPI.getPlayerAPI((Player)p).safeTeleport(loc);
 		            else

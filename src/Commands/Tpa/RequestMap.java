@@ -21,7 +21,7 @@ public class RequestMap {
     	Loader.me.set("Players."+sender+".Tp."+target+".Type", tp.toString());
     	Loader.me.set("Players."+sender+".Tp."+target+".Time", System.currentTimeMillis()/1000);
     	if(setting.tp_onreqloc)
-    	Loader.me.set("Players."+sender+".Tp."+target+".Location", Bukkit.getPlayer(sender).getLocation());
+    	Loader.me.set("Players."+sender+".Tp."+target+".Location", Bukkit.getPlayer(target).getLocation());
 		Configs.chatme.save();
     }
 
