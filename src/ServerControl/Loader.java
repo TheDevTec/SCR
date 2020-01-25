@@ -47,8 +47,9 @@ public class Loader extends JavaPlugin implements Listener {
     public static Loader getInstance;
     
     public String getPrefix(Player p) {
-    	if(API.existVaultPlugin()) {
-    	if(vault!=null&&getGroup(p)!=null)return vault.getGroupPrefix(p.getWorld(), getGroup(p));
+    	if(API.existVaultPlugin()&&vault!=null){
+    		if(getGroup(p)!=null && vault.getGroupPrefix(p.getWorld(), getGroup(p)) != null)return vault.getGroupPrefix(p.getWorld(), getGroup(p));
+    		return "";
     	}
     	return "";
     }

@@ -37,6 +37,7 @@ public class Heal implements CommandExecutor {
             }
 			if(args.length == 1){
 				if(args[0].equals("*")) {
+					Repeat.a(s, "heal *");
 					Repeat.a(s,"feed * ");
 					return true;
 				}

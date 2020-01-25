@@ -15,7 +15,8 @@ public class NameTagChanger {
 	            		.setNameTag(TabList.getGroup(p)+Tasks.ss.get(p), player.getScoreboard());
 	            	else {
 	     				String pname = p.getName();
-					 pname = pname.substring(0, 11);
+	     				if(pname.length() >= 12)
+	     					pname = pname.substring(0, 11);
 	            		TheAPI.getNameTagAPI(p, null, null).setNameTag(pname, player.getScoreboard());
 		}}else {
 	            	if(setting.tab_nametag)
