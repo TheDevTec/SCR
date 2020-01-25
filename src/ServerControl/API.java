@@ -80,7 +80,6 @@ public class API {
 		 case SPAWN:{
 			 World world = Bukkit.getWorlds().get(0);;
 				Location loc=Bukkit.getWorlds().get(0).getSpawnLocation();
-				Bukkit.broadcast(loc.add(0,-1,0).getBlock().getBlockData().getMaterial().name(), "");
 				if(Loader.config.getString("Spawn")!=null) {
 					float x_head = Loader.config.getInt("Spawn.X_Pos_Head");
 					float z_head = Loader.config.getInt("Spawn.Z_Pos_Head");
@@ -92,7 +91,7 @@ public class API {
 							Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {
 								public void run() {
 									if(setting.tp_safe)
-										TheAPI.getPlayerAPI(p).safeTeleport(l.add(0,-1,0));
+										TheAPI.getPlayerAPI(p).safeTeleport(l);
 									else
 										TheAPI.getPlayerAPI(p).teleport(l);
 				}}, 1);
