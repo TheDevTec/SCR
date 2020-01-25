@@ -94,7 +94,7 @@ public class API {
 									if(setting.tp_safe)
 										TheAPI.getPlayerAPI(p).safeTeleport(l.add(0,-1,0));
 									else
-										TheAPI.getPlayerAPI(p).teleport(l.add(0,-1,0));
+										TheAPI.getPlayerAPI(p).teleport(l);
 				}}, 1);
 		 }break;
 		 }
