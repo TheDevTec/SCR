@@ -161,13 +161,6 @@ public String pingPlayer(Player who) {
 public void onLoad() {
     getInstance = this;
 	Configs.LoadConfigs();
-	if(ver() == null) {
-		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
-		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&4ERROR: You are using an unsupported version of the plugin for this server."));
-		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&4ERROR: Disabling plugin..."));
-		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
-		Bukkit.getPluginManager().disablePlugin(this);
-		}
 	regClasses();
 	if(API.existVaultPlugin()) {
 	setupEco();
@@ -194,6 +187,14 @@ private void regClasses() {
 long loading;
 @Override
 public void onEnable() {
+	if(ver() == null) {
+		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
+		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&4ERROR: You are using an unsupported version of the plugin for this server."));
+		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&4ERROR: Disabling plugin..."));
+		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
+		Bukkit.getPluginManager().disablePlugin(this);
+		return;
+		}
 	loading=System.currentTimeMillis()/100;
 	Configs.LoadConfigs();
 	
@@ -284,9 +285,6 @@ public void onDisable() {
 public static void msg(String message, CommandSender s){
 s.sendMessage(TheAPI.colorize(message));
 }
-public boolean version(String version){
-	return Bukkit.getBukkitVersion().contains(version);
-}
 public static void warn(String s) {
 	Bukkit.getLogger().warning(TheAPI.colorize(s));
 }
@@ -355,32 +353,26 @@ private boolean setupPermisions(){
 	}
 public String ver() {
 	String v = null;
-if(version("1.8.8")) {
-	v = "1.8.8";
+if(TheAPI.getServerVersion().contains("1_7_10")) { //required testing!
+	v = "1.7.10";
 }
-if(version("1.9")) {
+if(TheAPI.getServerVersion().contains("1_8")) { //required testing! (1.8 to 1.8.8)
+	v = "1.8+";
+}
+if(TheAPI.getServerVersion().contains("1_9")) {
 	v = "1.9+";
 }
-if(version("1.10")) {
+if(TheAPI.getServerVersion().contains("1_10")) {
 	v = "1.10+";
 }
-if(version("1.11")) {
+if(TheAPI.getServerVersion().contains("1_11")) {
 	v = "1.11+";
 }
-if(version("1.12")) {
+if(TheAPI.getServerVersion().contains("1_12")) {
 	v = "1.12+";
 }
-if(version("1.13")) {
-	v = "1.13+";
-}
-if(version("1.14")) {
-	v = "1.14+";
-}
-if(version("1.15")) {
-	v = "1.15+";
-}
-if(version("1.16")) {
-	v = "1.16+";
+if(TheAPI.isNewVersion()) {
+	v=TheAPI.getServerVersion().substring(1, 5).replace("_", ".")+"+";
 }
 return v;
 }
