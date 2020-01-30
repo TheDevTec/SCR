@@ -17,7 +17,7 @@ public class Maintenance implements CommandExecutor {
 			if(API.hasPerm(s, "ServerControl.Maintenance")) {
 	        if(setting.lock_server) {
 	            Loader.config.set("Options.Maintenance.Enabled", false);
-	            setting.lock_server=true;
+	            setting.lock_server=false;
         Configs.config.save();
         Loader.msg(Loader.s("Prefix")+"&e----------------- &bMaintenance is Disabled &e-----------------",s);
         Loader.msg("",s);

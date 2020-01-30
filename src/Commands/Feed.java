@@ -47,6 +47,7 @@ public class Feed implements CommandExecutor {
 					return true;	
 					}return true;	
 				}
+				return true;
 		}
 		Loader.msg(Loader.s("ConsoleErrorMessage"), s);
 		return true;

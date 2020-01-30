@@ -37,7 +37,6 @@ public class ServerControl implements CommandExecutor, TabCompleter {
             Loader.Help(s, "/ServerControl Reset","Reset");
             Loader.Help(s, "/ServerControl Manager","Manager");
             Loader.Help(s, "/ServerControl List","List");
-            Loader.Help(s, "/ServerControl Maintenance","Maintenance");
             
             if(args.length==2) {
             	for(String v:All)
@@ -73,28 +72,6 @@ public class ServerControl implements CommandExecutor, TabCompleter {
         return true;
      }
  		return true;}
-
-        if(args[0].equalsIgnoreCase("Maintenance")){
-    		if(API.hasPerm(s, "ServerControl.Maintenance")) {
-	        if(Loader.config.getBoolean("MaintenanceMode.Enabled")== true) {
-        Loader.config.set("MaintenanceMode.Enabled", false);
-		Configs.config.save();
-		Loader.msg(Loader.s("Prefix")+"&e----------------- "+"&bOff"+"&e -----------------",s);
-		Loader.msg("",s);
-		Loader.msg(Loader.s("Prefix")+Loader.s("MaintenanceMode.TurnOff"),s);
-        
-        return true;
-     }else
-         if(Loader.config.getBoolean("MaintenanceMode.Enabled")== false) {
-
-         Loader.config.set("MaintenanceMode.Enabled", true);
- 		Configs.config.save();
- 		Loader.msg(Loader.s("Prefix")+"&e----------------- &bOn &e-----------------",s);
- 		Loader.msg("",s);
- 		Loader.msg(Loader.s("Prefix")+Loader.s("MaintenanceMode.TurnOn"),s);
-         
-         return true;
-    		}}return true;}
 	    	    	            if(args[0].equalsIgnoreCase("Reset")){
 	    	    	        		if(API.hasPerm(s, "ServerControl.Reset")) {
 		    	    	        			if(args.length == 1) {

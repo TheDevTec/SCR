@@ -99,7 +99,9 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 					.replace("%home%", args[1]), s);
 					return true;
 				}
+				return true;
 			}
+			return true;
 		}
 		Loader.msg(Loader.s("Prefix")+Loader.s("ConsoleErrorMessage"), s);
 		return true;
