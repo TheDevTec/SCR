@@ -353,7 +353,6 @@ private boolean setupPermisions(){
 	}
 public String ver() {
 	String v = null;
-	warn(TheAPI.getServerVersion());
 if(TheAPI.getServerVersion().equals("v1_7_R4")) { //required testing!
 	v = "1.7.10";
 }
