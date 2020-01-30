@@ -28,32 +28,24 @@ public class Tasks {
 	 static HashMap<Player, Scoreboard> l = new HashMap<Player, Scoreboard>();
 	 static HashMap<Player, ScoreboardAPI> setup = new HashMap<Player, ScoreboardAPI>();
 	public static void load() {
-		if(setting.am) {
-			Loader.info("Enabling AutoMessages");
+		if(setting.am)
 		automessage();
-		}
-		if(setting.vip) {
-			Loader.info("Enabling VIPSlots");
+		if(setting.vip)
 		vipslot();
-		}
-		 if(setting.tab) {
-				Loader.info("Enabling Tablist");
+		
+		 if(setting.tab)
 		tab();
-		 }
-		if(setting.save) {
-			Loader.info("Enabling Worlds Saving Task");
+		 
+		if(setting.save)
 		savetask();
-		}
-		if(setting.sb) {
-			Loader.info("Enabling Scoreboard");
+		
+		if(setting.sb) 
 		scoreboard();
-		}
+		
 		other();
-		Loader.info("Enabling TempFly Task");
 		tempfly();
 	}
 	public static void reload() {
-		Loader.info("Disabling all tasks");
 		for(Integer t : tasks)
 		Bukkit.getScheduler().cancelTask(t);
 		tests=0;
@@ -165,12 +157,9 @@ public class Tasks {
 		}
 	}
 	private static void other() {
-	    if(setting.motd)
-		Loader.info("Enabling Server MOTD");
-		Loader.info("Enabling AFK Tasks");
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 		    if(setting.motd) {
-				if(!Loader.config.getBoolean("Options.Maintenance.Enabled") || Loader.config.getBoolean("Options.MaintenanceMode.Enabled") && !setting.motd_maintenance)
+				if(!setting.lock_server ||setting.lock_server && !setting.motd_maintenance)
 					TheAPI.setServerMotd(Loader.config.getString("Options.ServerList.MOTD.Text.Normal").replace("%next%", "\n").replace("%line%", "\n"));
 				else
 					TheAPI.setServerMotd(Loader.config.getString("Options.ServerList.MOTD.Text.Maintenance").replace("%next%", "\n").replace("%line%", "\n"));
