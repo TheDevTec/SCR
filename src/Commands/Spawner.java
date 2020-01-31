@@ -54,15 +54,13 @@ public class Spawner implements CommandExecutor, TabCompleter {
 				if (args.length == 0) {
 					Loader.Help(s, "/Spawner setMob <mob>", "Spawner-Mob");
 					Loader.Help(s, "/Spawner setTime <time>", "Spawner-SpawnTime");
-					if(TheAPI.getServerVersion().contains("1_14")||TheAPI.getServerVersion().contains("1_15")
-							|| TheAPI.getServerVersion().contains("1_13")) {
+					if(TheAPI.isNewVersion()) {
 						Loader.Help(s, "/Spawner setAmount <amount>", "Spawner-SpawnAmount");
 						Loader.Help(s, "/Spawner setRangePlayer <range>", "Spawner-SpawnRangePlayer");
 						}
 					return true;
 				}
-				if(TheAPI.getServerVersion().contains("1_14")||TheAPI.getServerVersion().contains("1_15")
-						|| TheAPI.getServerVersion().contains("1_13")) {
+				if(TheAPI.isNewVersion()) {
 					if (args[0].equalsIgnoreCase("setAmount")) {
 					if(args.length==1) {
 						Loader.Help(s, "/Spawner setAmount <amount>", "Spawner-SpawnAmount");
@@ -162,8 +160,7 @@ public class Spawner implements CommandExecutor, TabCompleter {
 				}
 				Loader.Help(s, "/Spawner setMob <mob>", "Spawner-Mob");
 				Loader.Help(s, "/Spawner setTime <time>", "Spawner-SpawnTime");
-				if(TheAPI.getServerVersion().contains("1_14")||TheAPI.getServerVersion().contains("1_15")
-						|| TheAPI.getServerVersion().contains("1_13")) {
+				if(TheAPI.isNewVersion()) {
 					Loader.Help(s, "/Spawner setAmount <amount>", "Spawner-SpawnAmount");
 				Loader.Help(s, "/Spawner setRangePlayer <range>", "Spawner-SpawnRangePlayer");
 				}
@@ -180,8 +177,7 @@ public class Spawner implements CommandExecutor, TabCompleter {
 		if(s.hasPermission("servercontrol.spawner")) {
 			if(args.length==1) {
 				List<String> list = new ArrayList<String>();
-				if(TheAPI.getServerVersion().contains("1_14")||TheAPI.getServerVersion().contains("1_15")
-						|| TheAPI.getServerVersion().contains("1_13")) {
+				if(TheAPI.isNewVersion()) {
 					list=Arrays.asList("setMob", "setRangePlayer", "setTime","setAmount");
 				}else
 					list=Arrays.asList("setMob", "setTime");
@@ -191,8 +187,7 @@ public class Spawner implements CommandExecutor, TabCompleter {
 				if(args[0].equalsIgnoreCase("setMob"))
 		           	c.addAll(StringUtil.copyPartialMatches(args[1], list(), new ArrayList<>()));
 
-				if(TheAPI.getServerVersion().contains("1_14")||TheAPI.getServerVersion().contains("1_15")
-						|| TheAPI.getServerVersion().contains("1_13")) {
+				if(TheAPI.isNewVersion()) {
 				if(args[0].equalsIgnoreCase("setRangePlayer")||args[0].equalsIgnoreCase("setAmount"))
            	c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));}
 				if(args[0].equalsIgnoreCase("setTime"))
