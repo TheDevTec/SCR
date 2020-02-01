@@ -42,7 +42,7 @@ public class Chat implements CommandExecutor, TabCompleter {
 	    if(args.length==0 ||args[0].equalsIgnoreCase("Help")){
 			if(API.hasPerm(s, "ServerControl.Help")) {
 	            if(args.length==0 ||args.length==1) {
-	            	Loader.msg(Loader.s("Prefix")+"&e----------------- &b"+Loader.s("Words.Help")+"&e -----------------",s);
+	            	Loader.msg(Loader.s("Prefix")+"&e----------------- &bHelp&e -----------------",s);
 	            	Loader.msg("",s);
 	            Loader.Help(s, "/Chat Me <player>","Me");
 	            Loader.Help(s, "/Chat General","General");
@@ -54,12 +54,12 @@ public class Chat implements CommandExecutor, TabCompleter {
 	            if(args.length==2) {
 	                	for(String v:All)
 	            			if(args[1].equalsIgnoreCase(v)) {
-	            				Loader.msg(Loader.s("Prefix")+"&e----------------- &b"+Loader.s("Words.HelpFor")+" "+"&b"+v+"&e -----------------",s);
+	            				Loader.msg(Loader.s("Prefix")+"&e----------------- &bHelp for &b"+v+"&e -----------------",s);
 	            				Loader.msg("",s);
 	                        Loader.Help(s, "/Chat "+v,v);
 	                        return true;
 	                        }
-	                	Loader.msg(Loader.s("Prefix")+"&e----------------- &b"+Loader.s("Words.HelpFor")+" "+"&4"+args[1]+" &e-----------------",s);
+	                	Loader.msg(Loader.s("Prefix")+"&e----------------- &bHelp "+"&4"+args[1]+" &e-----------------",s);
 	                	Loader.msg("",s);
 	                	Loader.msg(Loader.s("Prefix")+Loader.s("Help.NoHelpForCommand").replace("%command%", args[1]), s);
 	                        return true;

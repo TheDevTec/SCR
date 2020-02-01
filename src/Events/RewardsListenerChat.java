@@ -24,11 +24,12 @@ public class RewardsListenerChat implements Listener {
 		String name = p.getName();
 		String msg = e.getMessage();
 		List<String> only = Loader.config.getStringList("Options.Codes.List");
-		if(Loader.me.getString("Players."+name+".Taken-Codes")!=null)
-		only.removeAll(Loader.me.getStringList("Players."+name+".Taken-Codes"));
 		List<String> codes = Loader.me.getStringList("Players."+name+".Taken-Codes");
+		if(!codes.isEmpty())
+		only.removeAll(codes);
+		if(!only.isEmpty())
 		for(String g: only) {
-			if(msg.contains(g)) {
+			if(msg.toLowerCase().contains(g.toLowerCase())) {
 					Loader.msg(Loader.config.getString("Options.Codes.Message")
 							.replace("%player%", name)
 							.replace("%code%", String.valueOf(g))
@@ -60,7 +61,8 @@ public class RewardsListenerChat implements Listener {
 	    						.replace("%prefix%", Loader.s("Prefix"))));
 				codes.add(g);
 				Loader.me.set("Players."+name+".Taken-Codes", codes);
-				Configs.chatme.save();}
+				Configs.chatme.save();
+				}
 		}
 		}
 	}

@@ -34,6 +34,7 @@ public void CooldownCommands(PlayerCommandPreprocessEvent e) {
 	Player p = e.getPlayer();
 	if(setting.cool_cmd && 
 			!p.hasPermission("ServerControl.CooldownBypass.Commands") && Loader.config.getInt("Options.Cooldowns.Commands.Time") > 0) {
+	
 	if(!a.expired(p.getName())) {
 		Loader.msg(Loader.s("Prefix")+Loader.s("Cooldown.ToSendCommand")
 		.replace("%timer%", TheAPI.getTimeConventorAPI().setTimeToString(a.getTimeToExpire(p.getName()))),p);
@@ -41,7 +42,7 @@ public void CooldownCommands(PlayerCommandPreprocessEvent e) {
 		return;
 	}else
 		a.createCooldown(p.getName(), Loader.config.getInt("Cooldown.Commands"));
-	}}
-
+	}
+}
 
 }

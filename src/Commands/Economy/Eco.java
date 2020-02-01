@@ -60,8 +60,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 				return true;
 			}return true;
 			}
-			Loader.msg(Loader.s("Prefix")+"&e----------------- &b"
-			+Loader.s("Words.Help")+" &e-----------------",s);
+			Loader.msg(Loader.s("Prefix")+"&e----------------- &bHelp &e-----------------",s);
 			Loader.msg("",s);
 			bal(s);
 			give(s);
@@ -72,8 +71,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 			}
 
 		if(args[0].equalsIgnoreCase("Help")) {
-			Loader.msg(Loader.s("Prefix")+"&e----------------- &b"
-		+Loader.s("Words.Help")+" &e-----------------",s);
+			Loader.msg(Loader.s("Prefix")+"&e----------------- &bHelp &e-----------------",s);
 			Loader.msg("",s);
 		if(s instanceof Player)
 			if(s.hasPermission("ServerControl.Pay"))

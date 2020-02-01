@@ -37,7 +37,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 				Loader.msg(fs+"&e----------------- &bClear &e-----------------",s);
 
 				Loader.msg("",s);
-				Loader.msg(fs + f("ClearInventory.Usage"),s);
+				Loader.Help(s, "/ClearInv <player>", "ClearInv");
 	    	    return true;
 			}
 	    		if(args.length==1) {
@@ -187,7 +187,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 			    	        	}}return true;}
     	        		if(args[0].equalsIgnoreCase("Help")) {
     	        			if(API.hasPerm(s, "ServerControl.ClearInv.Help")) {
-    	        				Loader.msg(fs + "&e----------------- &b"+Loader.s("Words.Help")+" &e-----------------",s);
+    	        				Loader.msg(fs + "&e----------------- &bHelp &e-----------------",s);
     	        				Loader.msg("",s);
     	        				Loader.Help(s, "/Clear","ClearInv.Clear");
     	        				Loader.Help(s, "/Clear Clear","ClearInv.Clear");

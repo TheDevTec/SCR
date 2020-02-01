@@ -23,7 +23,7 @@ public class God implements CommandExecutor, Listener {
 				return true;
 				}return true;
 				}
-					Loader.msg(Loader.s("Prefix")+Loader.s("God.Usage"), s);
+					Loader.Help(s, "/God <player> <on/off>", "God");
 					return true;
 				}
 				if(args.length==1) {

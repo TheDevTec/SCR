@@ -10,7 +10,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import org.sqlite.util.StringUtils;
 
@@ -19,7 +18,6 @@ import ServerControl.Loader;
 import Utils.Configs;
 import Utils.MultiWorldsUtils;
 import Utils.Tasks;
-import Utils.setting;
 import me.Straiker123.TheAPI;
 
 public class ServerControl implements CommandExecutor, TabCompleter {
@@ -29,46 +27,34 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 	
 	if(args.length==0 || args.length==1  && args[0].equalsIgnoreCase("Help")){
 		if(API.hasPerm(s, "ServerControl.Help")) {
-            	Loader.msg(Loader.s("Prefix")+"&e----------------- &b"+Loader.s("Words.Help")+"&e -----------------",s);
+            	Loader.msg(Loader.s("Prefix")+"&e----------------- &bHelp&e -----------------",s);
             	Loader.msg("",s);
             Loader.Help(s, "/ServerControl Reload","Reload");
             Loader.Help(s, "/ServerControl Version","Version");
             Loader.Help(s, "/ServerControl Info","Info");
             Loader.Help(s, "/ServerControl Reset","Reset");
-            Loader.Help(s, "/ServerControl Manager","Manager");
             Loader.Help(s, "/ServerControl List","List");
             
             if(args.length==2) {
             	for(String v:All)
         			if(args[1].equalsIgnoreCase(v)) {
-        				Loader.msg(Loader.s("Prefix")+"&e----------------- &b"+Loader.s("Words.HelpFor")+" "+"&b"+v+"&e -----------------",s);
+        				Loader.msg(Loader.s("Prefix")+"&e----------------- &bHelp for "+"&b"+v+"&e -----------------",s);
         				Loader.msg("",s);
                     Loader.Help(s, "/ServerControl "+v,v);
                     return true;
                     }
-            	Loader.msg(Loader.s("Prefix")+"&e----------------- &b"+Loader.s("Words.HelpFor")+" "+"&4"+args[1]+" &e-----------------",s);
+            	Loader.msg(Loader.s("Prefix")+"&e----------------- &bHelp "+"&4"+args[1]+" &e-----------------",s);
             	Loader.msg("",s);
             	Loader.msg(Loader.s("Prefix")+Loader.s("Help.NoHelpForCommand").replace("%command%", args[1]), s);
                     return true;
         		}return true;}return true;}
-        if(args[0].equalsIgnoreCase("Manager")){
-    		if(API.hasPerm(s, "ServerControl.Manager")) {
-    			if(s instanceof Player) {
-    				setting.getManager((Player)s);
-    		        return true;
-    			}
-    			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
-        return true;
-       }return true;
-        }
 
         if(args[0].equalsIgnoreCase("List")){
     		if(API.hasPerm(s, "ServerControl.List")) {
  			Loader.msg(Loader.s("Prefix")+"&e----------------- &bList &e-----------------",s);
  			Loader.msg("",s);
- 			Loader.msg(Loader.s("Prefix")+Loader.s("Words.List"),s);
- 			Loader.msg(Loader.s("Prefix")+"&cList of swear words: "+StringUtils.join(Loader.config.getStringList("SwearWords"), ", "),s);
- 			Loader.msg(Loader.s("Prefix")+"&cList of spam words: "+StringUtils.join(Loader.config.getStringList("SpamWords.Words"), ", "),s);
+ 			Loader.msg(Loader.s("Prefix")+"&cSwear words: "+StringUtils.join(Loader.config.getStringList("SwearWords"), ", "),s);
+ 			Loader.msg(Loader.s("Prefix")+"&cSpam words: "+StringUtils.join(Loader.config.getStringList("SpamWords.Words"), ", "),s);
         return true;
      }
  		return true;}
@@ -122,11 +108,10 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 					    	    	        	}}} return true;}
 	    	    	        	if(args[0].equalsIgnoreCase("Info")){
 	    	    	        			Loader.msg(Loader.s("Prefix")+"----------------- &bInfo&e -----------------",s);
-		    	    	                Loader.msg("",s);
-		    	    	                Loader.msg(Loader.s("PluginName")+"&7: &4Server Control Reloaded",s);
-		    	    	                Loader.msg(Loader.s("Prefix")+Loader.s("PluginCreatedBy")+"&7: &6Straiker123",s);
-		    	    	                Loader.msg(Loader.s("Prefix")+Loader.s("Words.Version")+"&7: &6V"+  Loader.getInstance.getDescription().getVersion(),s);
-		    	    	                Loader.msg(Loader.s("Prefix")+Loader.s("ServerControlThema"),s);
+	    	    	        			Loader.msg("",s);
+	    	    	                	Loader.msg(Loader.s("Prefix")+"&7Version of ServerControlReloaded: &eV"+ TheAPI.getPluginsManagerAPI().getVersion("ServerControlReloaded"),s);
+	    	    	                	Loader.msg(Loader.s("Prefix")+"&7Version of TheAPI: &eV"+ TheAPI.getPluginsManagerAPI().getVersion("TheAPI"),s);
+	    	    	                	Loader.msg(Loader.s("Prefix")+"&7Version of Server: &e"+ Bukkit.getServer().getBukkitVersion(),s);
 	    	    	            return true;
 	    	    	        	}
 
@@ -155,8 +140,9 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 		if(API.hasPerm(s, "ServerControl.Info")) {
 			Loader.msg(Loader.s("Prefix")+"&e----------------- &bVersion&e -----------------",s);
 			Loader.msg("",s);
-			Loader.msg(Loader.s("Prefix")+Loader.s("Words.Version")+"&7: &6V"+ Loader.getInstance.getDescription().getVersion(),s);
-			Loader.msg(Loader.s("Prefix")+Loader.s("Words.ServerVersion")+"&7: &6"+ Bukkit.getServer().getBukkitVersion(),s);
+        	Loader.msg(Loader.s("Prefix")+"&7Version of ServerControlReloaded: &eV"+ TheAPI.getPluginsManagerAPI().getVersion("ServerControlReloaded"),s);
+        	Loader.msg(Loader.s("Prefix")+"&7Version of TheAPI: &eV"+ TheAPI.getPluginsManagerAPI().getVersion("TheAPI"),s);
+        	Loader.msg(Loader.s("Prefix")+"&7Version of Server: &e"+ Bukkit.getServer().getBukkitVersion(),s);
 	            return true;
      }return true;
      }
@@ -166,13 +152,10 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 	final List<String> Reload = Arrays.asList("Reload");
 	final List<String> Help = Arrays.asList("Help");
 	final List<String> Reset = Arrays.asList("Reset");
-	final List<String> Manager = Arrays.asList("Manager");
 	final List<String> Version = Arrays.asList("Version");
-	final List<String> Info = Arrays.asList("Info");
 	final List<String> List = Arrays.asList("List");
 	final List<String> Confirm = Arrays.asList("Confirm");
-	final List<String> Maintenance = Arrays.asList("Maintenance");
-    final List<String> All = Arrays.asList("Reset","Maintenance","List","Info","Version","Manager","Help","Reload");
+    final List<String> All = Arrays.asList("Reset","Info","Version","Help","Reload");
     @Override
     public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
     	List<String> c = new ArrayList<>();
@@ -191,25 +174,18 @@ public class ServerControl implements CommandExecutor, TabCompleter {
         	if(s.hasPermission("ServerControl.List")) {
         		c.addAll(StringUtil.copyPartialMatches(args[0], List, new ArrayList<>()));
             }
-        	if(s.hasPermission("ServerControl.Manager")) {
-        		c.addAll(StringUtil.copyPartialMatches(args[0], Manager, new ArrayList<>()));
-        	}
         	if(s.hasPermission("ServerControl.Version")) {
         		c.addAll(StringUtil.copyPartialMatches(args[0], Version, new ArrayList<>()));
             }
-        	if(s.hasPermission("ServerControl.Maintenance")) {
-        		c.addAll(StringUtil.copyPartialMatches(args[0], Maintenance, new ArrayList<>()));
-            }
-        	c.addAll(StringUtil.copyPartialMatches(args[0], Info, new ArrayList<>()));
         }
-    	if(cmd.getName().equalsIgnoreCase("ServerControl") && args[0].equalsIgnoreCase("Reset") && args.length==2) {
+    	if(args[0].equalsIgnoreCase("Reset") && args.length==2) {
         	if(s.hasPermission("ChatControl.Reset")) {
         		c.addAll(StringUtil.copyPartialMatches(args[1], Confirm, new ArrayList<>()));
         		
         	}
 			
 		}
-    	if(cmd.getName().equalsIgnoreCase("ServerControl") && args[0].equalsIgnoreCase("Help") && args.length==2) {
+    	if(args[0].equalsIgnoreCase("Help") && args.length==2) {
         	if(s.hasPermission("ChatControl.Help")) {
         		c.addAll(StringUtil.copyPartialMatches(args[1], All, new ArrayList<>()));
         		

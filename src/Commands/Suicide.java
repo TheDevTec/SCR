@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class Suicide implements CommandExecutor {
 
@@ -18,7 +19,7 @@ public class Suicide implements CommandExecutor {
 				Player p = (Player)s;
 				p.damage(p.getMaxHealth());
 				if(p.isDead())
-				Loader.msg(API.replacePlayerName(Loader.s("Kill.Suicide"),p), s);
+					TheAPI.broadcastMessage(API.replacePlayerName(Loader.s("Kill.Suicide"),p));
 				return true;
 			}
 			Loader.Help(s, "/Kill <player>", "Kill");

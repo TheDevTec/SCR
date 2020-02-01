@@ -42,11 +42,11 @@ public class Vanish implements CommandExecutor {
 				if(!Loader.me.getBoolean("Players."+t.getName()+".Vanish")) {
 					Loader.me.set("Players."+t.getName()+".Vanish", true);
 					Configs.chatme.save();TheAPI.vanish(t, "ServerControl.Vanish", true);
-				Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.Toggled")
+				Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.Enabled")
 				.replace("%player%", t.getName())
 				.replace("%playername%", t.getDisplayName())
 				.replace("%toggled%", "enabled"),t);
-				Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.ToggledPlayer")
+				Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.EnabledPlayer")
 				.replace("%player%", t.getName())
 				.replace("%playername%", t.getDisplayName())
 				.replace("%toggled%", "enabled"),s);
@@ -55,11 +55,11 @@ public class Vanish implements CommandExecutor {
 				Loader.me.set("Players."+t.getName()+".Vanish", false);
 				Configs.chatme.save();
 			TheAPI.vanish(t, "ServerControl.Vanish", false);
-			Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.Toggled")
+			Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.Disabled")
 			.replace("%player%", t.getName())
 			.replace("%playername%", t.getDisplayName())
 			.replace("%toggled%", "disabled"),t);
-			Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.ToggledPlayer")
+			Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.DisabledPlayer")
 			.replace("%player%", t.getName())
 			.replace("%playername%", t.getDisplayName())
 			.replace("%toggled%", "disabled"),s);

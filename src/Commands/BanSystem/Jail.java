@@ -4,6 +4,7 @@ package Commands.BanSystem;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,6 +15,7 @@ import me.Straiker123.TheAPI;
 
 public class Jail implements CommandExecutor {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(API.hasPerm(s, "ServerControl.Jail")) {
@@ -25,7 +27,7 @@ public class Jail implements CommandExecutor {
 				List<String> jails = new ArrayList<String>();
 				if(Loader.config.getString("Jails")!=null) {
 				for(String f:Loader.config.getConfigurationSection("Jails").getKeys(false))jails.add(f);
-					if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true) {
+					if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 						Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish")
 						.replace("%punishment%", "Jail").replace("%target%", args[0]), s);
 						return true;
@@ -44,7 +46,7 @@ public class Jail implements CommandExecutor {
 				List<String> jails = new ArrayList<String>();
 				if(Loader.config.getString("Jails")!=null) {
 				for(String f:Loader.config.getConfigurationSection("Jails").getKeys(false))jails.add(f);
-					if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true) {
+					if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 						Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "Jail").replace("%target%", args[0]), s);
 						return true;
 					}

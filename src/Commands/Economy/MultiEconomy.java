@@ -57,7 +57,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 				String group = getEconomyGroup(args[1]);
 				
 				if(group==null) {
-					Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.NotExists")
+					Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.NotExist")
 				.replace("%group%", args[1])
 				.replace("%economygroup%", args[1])
 				.replace("%economy-group%", args[1])
@@ -107,7 +107,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 					return true;	
 				}
 				if(getEconomyGroup(args[1])==null) {
-					Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.NotExists")
+					Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.NotExist")
 					.replace("%group%", args[1])
 					.replace("%economygroup%", args[1])
 							.replace("%economy-group%", args[1])
@@ -130,7 +130,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 			}
 			if(args.length==2) {
 			if(getEconomyGroup(args[1])==null) {
-				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.NotExists").replace("%group%", args[1])
+				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.NotExist").replace("%group%", args[1])
 						.replace("%economygroup%", args[1])
 						.replace("%economy-group%", args[1])
 						.replace("%economy%", args[1]), s);
@@ -140,7 +140,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 				return true;	
 			}}
 			if(Bukkit.getWorld(args[2])==null) {
-				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.WorldNotExists").replace("%world%", args[2]), s);
+				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.WorldNotExist").replace("%world%", args[2]), s);
 				return true;
 			}else {
 			List<String> list = Loader.config.getStringList("Options.Economy.MultiEconomy.Types."+getEconomyGroup(args[1]));
@@ -178,7 +178,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 				return true;	
 			}}
 			if(Bukkit.getWorld(args[2])==null) {
-				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.WorldNotExists").replace("%world%",args[2]), s);
+				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.WorldNotExist").replace("%world%",args[2]), s);
 				return true;
 			}else {
 			List<String> list = Loader.config.getStringList("Options.Economy.MultiEconomy.Types."+getEconomyGroup(args[1]));
@@ -220,7 +220,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 								.replace("%player%", args[1])
 								.replace("%playername%", BanSystem.getName(args[1])),s);
 						else
-							Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.NotExists").replace("%group%", args[2])
+							Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.NotExist").replace("%group%", args[2])
 								.replace("%economygroup%", args[2])
 								.replace("%economy-group%", args[2])
 								.replace("%economy%", args[2]),s);
@@ -259,7 +259,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				if(getEconomyGroup(args[2])==null) {
-					Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.NotExists").replace("%group%", args[2])
+					Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.NotExist").replace("%group%", args[2])
 							.replace("%economygroup%", args[2])
 							.replace("%economy-group%", args[2])
 							.replace("%economy%", args[2]),s);

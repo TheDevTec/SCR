@@ -21,32 +21,41 @@ public class Configs {
 	public static void TranslationsLoading() {
 		Map<String, Object> c = new HashMap<String, Object>();
 			c.put("Prefix", "&4SCR &e> ");
-			c.put("Skull-GivenToPlayer", "&6Given player head '%head%' to player %playername%");
-			c.put("Skull-Given", "&6Given player head '%head%' to you");
+			c.put("Skull-GivenToPlayer", "&6Gave player-head %head% to %playername%");
+			c.put("Skull-Given", "&6Gave player-head ''%head%'' to you");
 			c.put("Seen.Online", "&6Player %playername% &6is &aonline &6for &a%online%");	
 			c.put("Seen.Offline", "&6Player %playername% &6is &coffline &6for &c%offline%");	
-			c.put("PlayerList.Staff", Arrays.asList("&7=-=-=- %online% / %max_players% -=-=-=","&8Online staff: &a%staff%","&7=-=-=-=-=-=-=-=-="));	
-			c.put("PlayerList.Normal", Arrays.asList("&7=-=-=- %online% / %max_players% -=-=-=","&8AT: &a%staff%","&8Players: &a%players%","&8VIP: &a%VIP% %SuperVIP%","&8All: &a%all%"));	
-			c.put("Give.UknownItem", "&6Item/Block with name &c'%item%' &6is invalid");
-			c.put("Give.Given", "&6Given %amount%x %item% to player %playername%");
+			
+			c.put("PlayerList.Staff", 
+					Arrays.asList("&7=-=-=- %online% / %max_players% -=-=-=","&8Online staff: &a%staff%","&7=-=-=-=-=-=-=-=-="));	
+			c.put("PlayerList.Normal", Arrays.asList("&7=-=-=- %online% / %max_players% -=-=-=","&8Staff: &a%staff%","&8VIP: &a%VIP%","&8Players: &a%players%"));	
+			c.put("Give.UknownItem", "&6Item &c'%item%' &6is invalid");
+			c.put("Give.Given", "&6Gave %amount%x %item% to player %playername%");
 			c.put("Kill.Killed", "&6Killed %playername%");
-			c.put("Kill.Suicide", "&6You killed yourself");
+			c.put("Kill.Suicide", "&6%playername% has commited suicide. Farewell cruel world!");
 			c.put("Kill.KilledAll", "&6Killed &a%amount% &6players &a(%players%)");
-			c.put("Butcher.WorldIsInvalid", "&6World &c&%world% &6doesn't exists");
-			c.put("Butcher.EntityIsInvalid", "&6Entity with name &c&%entity% &6doesn't exists");
+			c.put("Butcher.WorldIsInvalid", "&6World &c&%world% &6doesn't exist");
+			c.put("Butcher.EntityIsInvalid", "&6Entity with name &c&%entity% &6doesn't exist");
 			c.put("Butcher.Killed", "&6Killed &a%amount% &6entities");
 			c.put("Butcher.KilledSpecified", "&6Killed &a%amount% &6entities type &a%entity%");
-			c.put("RAM.Info.Normal", Arrays.asList("&6-=-=-=-=-=-=-=-=-=-=-=-","&aUsed Memory: &6%used_ram% MB","&aMax Memory: &6%max_ram% MB","&6-=-=-=-=-=-=-=-=-=-=-=-"));	
-			c.put("RAM.Info.Percent", Arrays.asList("&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
-					,"&aFree: &6%free_ram%% &8/ &aUsed: &6%used_ram%% &8/ &aMax: &6%max_ram% MB","&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
+			c.put("RAM.Info.Normal", Arrays.asList(
+					"&6-=-=-=-=-=-=-=-=-=-=-=-",
+					"&aFree Memory: &6%free_ram% MB",
+					"&aUsed Memory: &6%used_ram% MB",
+					"&aMax Memory: &6%max_ram% MB",
+					"&6-=-=-=-=-=-=-=-=-=-=-=-"));	
+			c.put("RAM.Info.Percent", Arrays.asList(
+					"&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+					,"&aFree: &6%free_ram%% &8/ &aUsed: &6%used_ram%% &8/ &aMax: &6%max_ram% MB",
+					"&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
 			c.put("Xp.Balance", "&6%playername% &6currently have &a%amount%exps");
 			c.put("Xp.Given", "&6Given &a%amount%exps &6to %playername%");
 			c.put("Xp.Taken", "&6Taken &c%amount%exps &6from %playername%");
 			c.put("RAM.Clearing", "&6Clearing memory cache, please wait..");
 			c.put("RAM.Cleared", "&6Cleared &a%cleared% MB");
 			c.put("RAM.AlreadyClearing", "&cMemory is clearing, please wait..");
-			c.put("PlayerNotOnline", "&cPlayer &4%player% &cis not online");
-			c.put("PlayerNotExists", "&cPlayer &4%player% &cnot exists");
+			c.put("PlayerNotOnline", "&cPlayer &4%player% &cisn't online");
+			c.put("PlayerNotExists", "&cPlayer &4%player% &cdoesn't exist");
 			c.put("Item.SetName", "&6Set custom name &a'%name%&a' &6on item &a%item%");
 			c.put("Item.SetLore.Add", "&6Added lore &a'%lore%&a' &6on item &a%item%");
 			c.put("Item.SetLore.Remove", "&6Removed lore line &a%line% &6from item &a%item%");
@@ -55,14 +64,14 @@ public class Configs {
 			c.put("Item.SetLore.Lines-Format", "&6%position%. line: &5%lore%");
 			c.put("Item.Unbreakable.true", "&6Unbreakable on item &a%item% &aenabled");
 			c.put("Item.Unbreakable.false", "&6Unbreakable on item &a%item% &cdisabled");
-			c.put("Item.HideEnchants.true", "&6Enchants on item &a%item% &6are now invisible");
-			c.put("Item.HideEnchants.false", "&6Enchants on item &a%item% &6are no longer invisible");
+			c.put("Item.HideEnchants.true", "&6Enchants on item &a%item% &6are no longer visible");
+			c.put("Item.HideEnchants.false", "&6Enchants on item &a%item% &6are visible");
 			c.put("Hat.HandIsEmpty", "&cFirst take item to your &nhand");
 			c.put("Hat.Equiped", "&aItem/Block from your hand equiped to your head!");
 			c.put("Hat.EquipedToOther", "&aItem/Block from your hand equiped to %target%'s head!");
 			c.put("MultiEconomy.AlreadyCreated", "&6Economy group %economy-group% is already exists");
 			c.put("MultiEconomy.Created", "&6Economy group %economy-group% created");
-			c.put("MultiEconomy.NotExists", "&6Economy group %economy-group% doesn't exists");
+			c.put("MultiEconomy.NotExist", "&6Economy group %economy-group% doesn't exist");
 			c.put("MultiEconomy.Groups", "&6Economy groups: &a%groups%");
 			c.put("MultiEconomy.Worlds", "&6Worlds in economy group %economy-group%: &a%worlds%");
 			c.put("MultiEconomy.Deleted", "&6Economy group %economy-group% deleted");
@@ -73,15 +82,13 @@ public class Configs {
 			c.put("MultiEconomy.NoMoney", "&6Player %playername% &6doesn't have any money in economy group %economy-group%");
 			c.put("MultiEconomy.HaveMoney", "&6Player %playername% &6currently have %money%$ in economy group %economy-group%");
 			c.put("MultiEconomy.Transfer", "&6Transferred economy of player %playername% &6to economy group %economy-group%");
-			c.put("MultiEconomy.WorldNotExists", "&cWorld &4'%world%' &cdoesn't exists");
-			c.put("MultiEconomy.WorldNotExists", "&cWorld &4'%world%' &cdoesn't exists");
-			c.put("MultiEconomy.Deleted", "&6Economy group %economy-group% deleted");
+			c.put("MultiEconomy.WorldNotExist", "&cWorld &4'%world%' &cdoesn't exist");
 			c.put("NicknameChanged", "&6Your nickname changed to &r%nickname%");
-			c.put("NicknameReseted", "&6Your nickname reseted");
-			c.put("NicknameResetedOther", "&6Nickname of player %player% reseted");
+			c.put("NicknameReseted", "&6Your nickname has been reset");
+			c.put("NicknameResetedOther", "&6Nickname of player %player% has been reset");
 			c.put("AFK.IsAFK", "%playername% &cis AFK");
 			c.put("AFK.NoLongerAFK", "%playername% &7is no longer AFK");
-			c.put("PrivateMessage.NoPlayerToReply", "&6You have never written a private message to anyone to reply");
+			c.put("PrivateMessage.NoPlayerToReply", "&6You have nobody to reply to");
 			c.put("BanSystem.Broadcast.Ban", "&6Operator &c%operator% &6banned &c%playername%&r &6for &c%reason%");
 			c.put("BanSystem.Broadcast.TempBan", "&6Operator &c%operator% &6temp-banned &c%playername%&r &6for &c%reason%&r &6on &c%time%");
 			c.put("BanSystem.Broadcast.TempBanIP", "&6Operator &c%operator% &6temp-ip banned &c%playername%&r &6for &c%reason%&r &6on &c%time%");
@@ -97,13 +104,13 @@ public class Configs {
 			c.put("BanSystem.Broadcast.UnJail", "&6Operator &c%operator% &6unjailed &c%playername%");
 			c.put("BanSystem.Broadcast.UnWarn", "&6Operator &c%operator% &6unwarned &c%playername%");
 			c.put("BanSystem.UnMute", "&6Player %playername% &6has been unmuted");
-			c.put("BanSystem.UnMuted", "&6You're no longer muted");
-			c.put("BanSystem.Warn", "&6Player %playername% &6warned for &c%reason%");
-			c.put("BanSystem.Warned", "&6You was warned for &c%reason% &6by operator &c%warnedby%");
-			c.put("BanSystem.WarnLater", "&6You was warned for &c%reason% &6by operator &c%warnedby% &6at &c%time%");
-			c.put("BanSystem.Muted", "&cYou're muted for &c%reason%");
+			c.put("BanSystem.UnMuted", "&6You are no longer muted");
+			c.put("BanSystem.Warn", "&6Player %playername% &6was warned for &c%reason%");
+			c.put("BanSystem.Warned", "&6You were warned for &c%reason% &6by operator &c%warnedby%");
+			c.put("BanSystem.WarnLater", "&6You were warned for &c%reason% &6by operator &c%warnedby% &6at &c%time%");
+			c.put("BanSystem.Muted", "&cYou are muted for &c%reason%");
 			c.put("BanSystem.Kick", "&6Player %playername% &6has been kicked for %reason%");
-			c.put("BanSystem.NotWarned", "&6Player %playername% &6wasn't been any time warned");
+			c.put("BanSystem.NotWarned", "&6Player %playername% &6has not been warned");
 			c.put("BanSystem.unWarned", "&6Player %playername% &6was unwarned");
 			c.put("BanSystem.CantKickYourself", "&6Hey %playername%&6, you can't kick yourself..");
 			c.put("BanSystem.CantBanYourself", "&6Hey %playername%&6, you can't ban yourself..");
@@ -111,59 +118,59 @@ public class Configs {
 			c.put("BanSystem.CantJailYourself", "&6Hey %playername%&6, you can't jail yourself..");
 			c.put("BanSystem.MissingJail", "&6Missing jail, first set jail using command /setJail <name>");
 			c.put("BanSystem.TempMute", "&6Player %playername% &6has been muted for &c%reason% &6on &c%time%");
-			c.put("BanSystem.TempMuted", "&cYou're muted for &c%reason% &6on &c%time%");
+			c.put("BanSystem.TempMuted", "&cYou are muted for &c%reason% &6on &c%time%");
 			c.put("BanSystem.Mute", "&6Player %playername% &6has been muted for &c%reason%");
 			c.put("BanSystem.Ban", "&6Player %playername% &6has been banned for &c%reason%");
 			c.put("BanSystem.Jail", "&6Player %playername% &6has been jailed for &c%reason%");
-			c.put("BanSystem.Arrested", "&6You're arrested for &c%reason%");
+			c.put("BanSystem.Arrested", "&6You are arrested for &c%reason%");
 			c.put("BanSystem.UnBan", "&6Player %playername% &6has been unbanned");
 			c.put("BanSystem.UnBanIP", "&6Player %playername% &6has been unIPbanned");
 			c.put("BanSystem.TempBan", "&6Player %playername% &6has been temp-banned for &c%reason% &6on &c%time%");
 			c.put("BanSystem.BanIP", "&6Player %playername% &6has been ip banned for &c%reason%");
-			c.put("BanSystem.PlayerHaveNotBan", "&6Player %playername% haven't ban");
+			c.put("BanSystem.PlayerHasNotBan", "&6Player %playername% hasn''t been banned");
 			c.put("BanSystem.PlayerNotMuted", "&6Player %player% isn't muted");
 			c.put("BanSystem.unJailed", "&6Player %player% was unjailed");
 			c.put("BanSystem.JailAlreadyExist", "&6Jail %jail% already exists");
-			c.put("BanSystem.CreatedJail", "&6Create new jail %jail% on your location");
-			c.put("BanSystem.JailNotExist", "&6Jail %jail% doesn't exists");
+			c.put("BanSystem.CreatedJail", "&6Create new jail %jail% at your location");
+			c.put("BanSystem.JailNotExist", "&6Jail %jail% doesn't exist");
 			c.put("BanSystem.DeletedJail", "&6Deleted jail %jail%");
-			c.put("ClearInventory.Usage", "&6/Clear <player> &7- &5To clear inventory selected player");
-			c.put("ClearInventory.PlayerInvCleared", "&6Inventory of player &c%player% &6has been cleared !");
-		c.put("ClearInventory.NoMoney", "&cYou must have &6$%money% &cto buy undo inventory !");
+			c.put("ClearInventory.PlayerInvCleared", "&6Inventory of &c%player% &6has been cleared");
+		c.put("ClearInventory.NoMoney", "&cYou must have &6$%money% &cto purchase your inventory back");
 		c.put("ClearInventory.NoConfirm", "&6You have no confirm request");
 		c.put("ClearInventory.InvCleared", "&6Your inventory has been cleared");
-		c.put("ClearInventory.ConfirmClearInv", "&cPlease confirm your request to clear your inventory !");
+		c.put("ClearInventory.ConfirmClearInv", "&cPlease confirm your request to clear your inventory");
 		c.put("ClearInventory.InstallEconomyPlugin", "&cPlease install economy plugin");
-		c.put("ClearInventory.NoInventoryRetrieved", "&6There is no your inventory to retrived");
-		c.put("ClearInventory.InventoryRetrievedForFree", "&aYour inventory has been retrieved for &6Free &a!");
-		c.put("ClearInventory.InventoryRetrievedForMoney", "&aYour inventory has been retrieved for &6$%money% &a!");
-		c.put("ClearInventory.ConfirmToggled", "&6Request for clear inventory has been %confirm%");
-		c.put("Economy.Balance", "&6You currently have &a%money%$");
-		c.put("Economy.BalanceOther", "&6Player &a%player% &6currently have &a%currently%$");
-		c.put("Economy.Given", "&6To your account has been added &a%money%$&6, currently you have &a%currently%$");
-		c.put("Economy.GivenToPlayer", "&6You gave &a%money%$ &6to player &a%playername%&6, currently &a%player% &6have &a%currently%$");
-		c.put("Economy.Taken", "&6From your account has been taken &c%money%$, currently you have &a%currently%$");
-		c.put("Economy.TakenFromPlayer", "&6You taken &c%money%$ &6from player &c%playername%&6, currently &c%player% &6have &c%currently%$");
-		c.put("Economy.Reseted", "&6Your account has been reseted, currently you have &a%currently%$");
-	 	c.put("Economy.ResetedPlayer", "&6You &creseted &6money account of player &c%playername%");
-		c.put("Economy.PaidTo", "&6You paid &e%money%$ &6to player &e%playername%");
-		c.put("Economy.PaidFrom", "&6%playername% &6paid you &e%money%$&6, currently you have &a%currently%$");
-		c.put("Economy.NoMoney", "&cYou don't have enough money you currently have &6%money%$");
-		c.put("Economy.SetPlayer", "&6Money of player &a%playername% &6has been changed to &a%money%$");
-		c.put("Economy.Set", "&6Your money has been changed to &a%money%$");
-		c.put("Economy.NoPlayers", "&6There is no players economies");
+		c.put("ClearInventory.NoInventoryRetrieved", "&6There is no inventory to be retrieved");
+		c.put("ClearInventory.InventoryRetrievedForFree", "&aYour inventory has been retrieved for &6Free&a!");
+		c.put("ClearInventory.InventoryRetrievedForMoney", "&a&aYour inventory has been retrieved for &6$%money%");
+		c.put("ClearInventory.ConfirmEnabled", "&6Request for clear inventory has been enabled");
+		c.put("ClearInventory.ConfirmDisabled", "&6Request for clear inventory has been disabled");
+		c.put("Economy.Balance", "&6You currently have &a$%money%");
+		c.put("Economy.BalanceOther", "&6Player &a%player% &6currently has &a$%currently%");
+		c.put("Economy.Given", "&6$%money%&6 &ahas been added to your account, currently you have &6$%currently%");
+		c.put("Economy.GivenToPlayer", "&6You gave &a$%money% &6to &a%playername%&6, currently &a%player% &6has &a$%currently%");
+		c.put("Economy.Taken", "&c$%money% has been taken from your account, you now have &a$%currently%");
+		c.put("Economy.TakenFromPlayer", "&6You took &c$%money% &6from &c%playername%&6, currently &c%player% &6has &c$%currently");
+		c.put("Economy.Reseted", "&6Your account has been reset, you now have &a$%currently%");
+	 	c.put("Economy.ResetedPlayer", "&6You &creset &6account of player &c%playername%");
+		c.put("Economy.PaidTo", "&6You paid &e$%money% &6to player &e%playername%");
+		c.put("Economy.PaidFrom", "&6%playername% &6paid you &e$%money%&6, you now have &a$%currently%");
+		c.put("Economy.NoMoney", "&cYou don't have enough money. You only have &6$%money%");
+		c.put("Economy.SetPlayer", "&6Balance of player &a%playername% &6has been changed to &a$%money%");
+		c.put("Economy.Set", "&6Your balance has been changed to &a$%money%");
+		c.put("Economy.NoPlayers", "&6There is no player economies");
 		c.put("Homes.Created", "&6Home &a'%home%' &6created");
 		c.put("Homes.Deleted", "&6Home &c'%home%' &6deleted");
 		c.put("Homes.Teleporting", "&6Teleporting to home &a'%home%'");
 		c.put("Homes.TeleportingToOther", "&6Teleporting to home &a'%home%' &6of player &c%target%");
 		c.put("Homes.TeleportingOtherToOther", "&6Teleporting player %player% to home &a'%home%' &6of player &c%target%");
-		c.put("Homes.NotExists", "&6Home &c'%home%' &6doesn't exists");
-		c.put("Homes.NotExistsOther", "&6Home &c'%home%' &6of player &c%target% &6doesn't exists");
+		c.put("Homes.NotExists", "&6Home &c'%home%' &6doesn't exist");
+		c.put("Homes.NotExistsOther", "&6Home &c'%home%' &6of player &c%target% &6doesn't exist");
 		c.put("Homes.List", "&6Homes: &a%list%");
-		c.put("Homes.ListOther", "&6Homes of Player %target%: &a%list%");
-		c.put("Homes.ListEmpty", "&6There is no homes");
-		c.put("Homes.LimitReached", "&cYou reached limit of maximum homes ! &o(%limit%)");
-		c.put("Homes.ListOtherEmpty", "&6Player %target% have no homes");
+		c.put("Homes.ListOther", "&6Homes of player %target%: &a%list%");
+		c.put("Homes.ListEmpty", "&6There are no homes");
+		c.put("Homes.LimitReached", "&cYou reached the maximum home limit! &o(%limit%)");
+		c.put("Homes.ListOtherEmpty", "&6Player %target% has no homes");
 		c.put("Chunks.Loaded", "&aLoaded &6%chunks% &achunks in world &6'%world%'");
 		c.put("Chunks.TotalLoaded", "&aTotal loaded &6%chunks% &achunks in &6%worlds% &aworlds");
 		c.put("Chunks.Unloaded", "&aUnloaded &6'%chunks%' &achunks");
@@ -175,31 +182,31 @@ public class Configs {
 		c.put("Enchant.EnchantRemoved", "&5From item &d%item% &5has been removed enchant &d%enchant% &5that has level &d%level%");
 		c.put("Enchant.EnchantsRemoved", "&5From item &d%item% &5has been removed all enchants, list: &d%enchants%");
 		c.put("Enchant.HandIsEmpty", "&cFirst take item to your &nhand");
-		c.put("Enchant.EnchantNotExist", "&cEnchant &4'%enchant%' &cdon't exists");
-		c.put("Enchant.NoEnchant", "&cOn item &4%item% &cisn't enchant &4%enchant% &cto remove");
-		c.put("Enchant.NoEnchants", "&cOn item &4%item% &cisn't any enchant to remove");
+		c.put("Enchant.EnchantNotExist", "&cEnchant &4'%enchant%' &cdoesn't exist");
+		c.put("Enchant.NoEnchant", "&cThere isn't enchant &4%enchant% on item &4%item% &cto remove");
+		c.put("Enchant.NoEnchants", "&cThere is no enchant on item &4%item% &cto remove");
 		c.put("TrashTitle", "&8Trash");
-		c.put("TpaSystem.TpahereSender", "&6Request for teleport player %playername% &6to you sent");
-		c.put("TpaSystem.TpahereTarget", "&6Player %playername% &6want to teleport you to him");
-		c.put("TpaSystem.TpaSender", "&6Request for teleport player you to %playername% &6sent");
-		c.put("TpaSystem.NoRequest", "&6You have any request to accept or deny");
+		c.put("TpaSystem.TpahereSender", "&6Request for teleport sent to player %playername%");
+		c.put("TpaSystem.TpahereTarget", "&6Player %playername% &6wants you to teleport to him");
+		c.put("TpaSystem.TpaSender", "&6Request sent to teleport player %playername% to you");
+		c.put("TpaSystem.NoRequest", "&6You don't have any request to accept or deny");
 		c.put("TpaSystem.CantSendRequestToSelf", "&6You can't send request to your self");
-		c.put("TpaSystem.CantBlockSelf", "&6You can't block your self");
-		c.put("TpaSystem.TpaTarget", "&6Player %playername% &6want to teleport to you");
-		c.put("TpaSystem.Tpaall", "&6Request for teleport players to you sended to players: %players%");
-		c.put("TpaSystem.Tpall", "&6Teleported to you players: %players%");
+		c.put("TpaSystem.CantBlockSelf", "&6You can't block yourself");
+		c.put("TpaSystem.TpaTarget", "&6Player %playername% &6wants to teleport to you");
+		c.put("TpaSystem.Tpaall", "&6Request to teleport players to you sent to players: %players%");
+		c.put("TpaSystem.Tpall", "&6Teleported players to you: %players%");
 		c.put("TpaSystem.TpLocationPlayer", "&6Player %playername% teleported to location in world %world% on X %x% Y %y% Z %z%");
-		c.put("TpaSystem.TpLocation", "&6Teleported to you players: %players%");
+		c.put("TpaSystem.TpLocation", "&6Teleporting you to location in world %world% on X %x% Y %y% Z %z%");
 		c.put("TpaSystem.TpPlayerToPlayer", "&6Player %firstplayername% teleported to player %lastplayername%");
 		c.put("TpaSystem.AlreadyHaveRequest", "&6Player %playername% already have request from you");
-		c.put("TpaSystem.Tpaccept", "&6Request of player %playername% &6for teleport him to you accepted");
-		c.put("TpaSystem.TpaAccepted", "&6Player %playername% &6accepted your request for teleport you to him");
-		c.put("TpaSystem.Tpahereccept", "&6Request of player %playername% &6for teleport you to him accepted");
-		c.put("TpaSystem.TpahereAccepted", "&6Player %playername% &6accepted your request for teleport him to you");
-		c.put("TpaSystem.Tpadeny", "&6Request of player %playername% &6for teleport you to him denied");
-		c.put("TpaSystem.TpaDenied", "&6Player %playername% &6denied your request for teleport you to him");
-		c.put("TpaSystem.Tpaheredeny", "&6Request of player %playername% &6for teleport you to him denied");
-		c.put("TpaSystem.TpahereDenied", "&6Player %playername% &6denied your request for teleport him to you");
+		c.put("TpaSystem.Tpaccept", "&6Request of player %playername% &6to teleport him to you accepted");
+		c.put("TpaSystem.TpaAccepted", "&6Player %playername% &6accepted your request to teleport you to him");
+		c.put("TpaSystem.Tpahereccept", "&6Request of player %playername% &6to teleport you to him accepted");
+		c.put("TpaSystem.TpahereAccepted", "&6Player %playername% &6accepted your request to teleport him to you");
+		c.put("TpaSystem.Tpadeny", "&6Request of player %playername% &6to teleport you to him denied");
+		c.put("TpaSystem.TpaDenied", "&6Player %playername% &6denied your request to teleport you to him");
+		c.put("TpaSystem.Tpaheredeny", "&6Request of player %playername% &6to teleport you to him denied");
+		c.put("TpaSystem.TpahereDenied", "&6Player %playername% &6denied your request to teleport him to you");
 		c.put("TpaSystem.Teleportedhere", "&6Player %playername% &6teleported to your location");
 		c.put("TpaSystem.Teleported", "&6Teleporting you to player %playername%");
 		c.put("TpaSystem.TeleportedHere", "&6Teleporting player %playername% &6to you");
@@ -218,17 +225,17 @@ public class Configs {
 		c.put("Repair.RepairedAll", "&aAll items in your inventory reapired");
 		c.put("Time.Day", "&6Time in world &a'%world%' &6changed to &aday");
 		c.put("Time.Night", "&6Time of world &e'%world%' &6changed to &enight");
-		c.put("Time.WorldNotExists", "&6World &c'%world%' &6doesn't exists");
+		c.put("Time.WorldNotExists", "&6World &c'%world%' &6doesn't exist");
 		c.put("Weather.Sun", "&6Weather of world &e'%world%' &6changed to &asunny");
 		c.put("Weather.Rain", "&6Weather of world &e'%world%' &6changed to &erainy");
 		c.put("Weather.Thunder", "&6Weather of world &e'%world%' &6changed to &cstorm");
-		c.put("Weather.WorldNotExists", "&6World &c'%world%' &6doesn't exists");
+		c.put("Weather.WorldNotExists", "&6World &c'%world%' &6doesn't exist");
 		c.put("MultiWorld.AlreadyExists", "&cWorld &6'%world%' &calready exists");
 		c.put("MultiWorld.WorldImported", "&6World &a'%world%' &6imported & loaded");
 		c.put("MultiWorld.AlreadyLoaded", "&cWorld &6'%world%' &cis already loaded");
 		c.put("MultiWorld.TeleportedWorld", "&6You has been teleported to world &c'%world%'");
 		c.put("MultiWorld.SpawnSet", "&aSpawn of world &6'%world%'&a has been set");
-		c.put("MultiWorld.CantBeDeleted", "&cWorld &6'%world%' &ccan't been deleted !");
+		c.put("MultiWorld.CantBeDeleted", "&cWorld &6'%world%' &ccan't been deleted");
 		c.put("MultiWorld.Deleted", "&aWorld &6'%world%' &ahas been deleted");
 		c.put("MultiWorld.Created", "&aWorld &6'%world%' &ahas been created");
 		c.put("MultiWorld.NotFoundImport", "&6We not found world folder with name &c'%world%'");
@@ -239,17 +246,16 @@ public class Configs {
 		c.put("MultiWorld.PlayerTeleportedWorld", "&aPlayer &6%player% &ahas been teleported to world &6'%world%'");
 		c.put("WalkSpeed.WalkSpeed", "&6Your walk speed has been set to &a%speed%");
 		c.put("WalkSpeed.WalkSpeedPlayer", "&6Walk speed of player &a%playername% &6has been set to &a%speed%");
-		c.put("Fly.Enabled", "&6Fly &aEnabled");
-		c.put("Fly.Disabled", "&6Fly &cDisabled");
+		c.put("Fly.Enabled", "&6Fly &aenabled");
+		c.put("Fly.Disabled", "&6Fly &cdisabled");
 		c.put("Fly.FlySpeed", "&6Your fly speed has been set to &a%speed%");
 		c.put("Fly.FlySpeedPlayer", "&6Fly speed of player &a%playername% &6has been set to &a%speed%");
-		c.put("Fly.Usage", "&e/Fly <player> &7- &5Enable or Disable fly specified player");
-		c.put("Fly.SpecifiedPlayerFlyEnabled", "&6Fly of player %playername%&6 has been &aEnabled");
-		c.put("Fly.SpecifiedPlayerFlyDisabled", "&6Fly of player %playername%&6 has been &cDisabled");
-		c.put("TempFly.Enabled", "&6TempFly &aEnabled &6for &a%time%");
-		c.put("TempFly.EnabledOther", "&6TempFly of player %playername% has been &aEnabled &6for &a%time%");
+		c.put("Fly.SpecifiedPlayerFlyEnabled", "&6Fly of player %playername%&6 has been &aenabled");
+		c.put("Fly.SpecifiedPlayerFlyDisabled", "&6Fly of player %playername%&6 has been &cdisabled");
+		c.put("TempFly.Enabled", "&6TempFly &aenabled &6for &a%time%");
+		c.put("TempFly.EnabledOther", "&6TempFly of player %playername% has been &aenabled &6for &a%time%");
 		c.put("ConsoleErrorMessage", "&4This command can be used only ingame!");
-		c.put("SoundErrorMessage", "&4Invalid song, please select a song from 1 to 5 or false to disable !");
+		c.put("SoundErrorMessage", "&4Invalid song!");
 		c.put("Spawn.TeleportedToSpawn", "&aYou has been teleported to the spawn");
 		c.put("Spawn.PlayerTeleportedToSpawn", "&aPlayer %playername% &ahas been teleported to the spawn");
 		c.put("Spawn.SpawnSet", "&6Global spawn set");
@@ -260,42 +266,37 @@ public class Configs {
 		c.put("Warp.PlayerWarped", "&6Player %playername% warped to warp &c'%warp%'");
 		c.put("Warp.List", "&6Warps: &c%warps%");
 		c.put("Warp.AlreadyExists", "&cWarp &6'%warp%' &calready exists");
-		c.put("Warp.NotExists", "&cWarp &6'%warp%' &cdoesn't exists");
-		c.put("Warp.NoWarps", "&6There is no warps");
+		c.put("Warp.NotExists", "&cWarp &6'%warp%' &cdoesn't exist");
+		c.put("Warp.NoWarps", "&6There are no warps");
 		c.put("Warp.CantGetLocation", "&cWarp &6'%warp%' &chave wrong location");
-		c.put("OnJoin.Messages", Arrays.asList("&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-","&aWelcome back %player% &a!"
-				,"&aDon't forget to vote for the server ! /Vote","&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
-		c.put("OnJoin.Join", "%prefix%&r%player% &ajoined the game");
-		c.put("OnJoin.FirstJoin.Messages", Arrays.asList("&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-","&aWelcome &6%player% &aon server &6%server_name% !"
-				,"&aInvite more of your friends and create a great community of people together!"
-				,"&aIP: &6%server_ip%","&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
-		c.put("OnJoin.FirstJoin.BroadCast", "%prefix% &aWelcome new player &r%player%&a on our server! ");
+		c.put("OnJoin.Messages", Arrays.asList(
+				"&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-",
+				"&aWelcome back &6%player% &aon &6&l%server_name% !",
+				"&aDon't forget to vote! /Vote",
+				"&aServer IP: &6%server_ip%",
+				"&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
+		c.put("OnJoin.Join", "%prefix%&a%playername% &ajoined to the game");
+		c.put("OnJoin.FirstJoin.Messages", Arrays.asList(
+				"&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-",
+				"&aWelcome &6%player% &aon &6&l%server_name% !",
+				"&aInvite more of your friends and create a great community of people together!",
+				"&aServer IP: &6%server_ip%",
+				"&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
+		c.put("OnJoin.FirstJoin.BroadCast", "%prefix%&aWelcome new player &r%player%&a on our server!");
 		c.put("OnLeave.Leave", "%prefix%&r%player% &9left the game");
 		c.put("Inventory.OpeningEnderChest", "&5Opening EnderChest..");
 		c.put("Inventory.OpeningEnderChestOther", "&5Opening EnderChest of player %playername%&5..");
-		c.put("Inventory.OpeningEnderChestForTarget", "&5Opening EnderChest of player %playername%&5 for target %target%..");
+		c.put("Inventory.OpeningEnderChestForTarget", "&5Opening EnderChest of player %playername%&5 for player %target%..");
 		c.put("Inventory.OpeningCraftTable", "&5Opening Crafting Table..");
 		c.put("Inventory.OpeningCraftTableForTarget", "&5Opening Crafting Table for player %target%..");
 		c.put("Inventory.OpeningInvsee", "&5Opening inventory of player %playername%&5..");
-		c.put("Inventory.OpeningInvseeForTarget", "&5Opening inventory of player %playername% &5 for target %target%&5..");
+		c.put("Inventory.OpeningInvseeForTarget", "&5Opening inventory of player %playername% &5 for player %target%&5..");
 		c.put("Inventory.OpeningTrash", "&5Opening Trash..");
 		c.put("Inventory.ClosePlayersInventory", "&5You closed opened inventory of player %playername%&5..");
-		c.put("Words.Usage", "&4Usage");
-		c.put("Words.Help", "&2Help");
-		c.put("Words.HelpFor", "&2Help For:");
-		c.put("Words.Version", "&aVersion");
-		c.put("Words.ServerVersion", "&aServer Version");
-		c.put("Words.Vulgar", "&4Vulgar Words");
-		c.put("Words.Spams", "&4Spams");
-		c.put("Words.List", "&2Lists:");
-		c.put("Words.VulgarWordsList", "&cVulgar Words: ");
-		c.put("Words.SpamWordsList", "&cSpam Words: ");
-		c.put("Vanish.Toggled", "&6Your Vanish has been %toggled%");
-		c.put("Vanish.ToggledPlayer", "Vanish of player %player% has been %toggled%");
-		c.put("Chat.TurnOn", "&aChat Security turned on.");
-		c.put("Chat.AlreadyTurnOn", "&6Chat Security is already turned on.");
-		c.put("Chat.TurnOff", "&cChat Security turned off !");
-		c.put("Chat.AlreadyTurnOff", "&6Chat Security is already turned off.");
+		c.put("Vanish.Enabled", "&6Your vanish has been enabled");
+		c.put("Vanish.Disabled", "&6Your vanish has been disabled");
+		c.put("Vanish.EnabledPlayer", "Vanish of player %player% has been enabled");
+		c.put("Vanish.DisabledPlayer", "Vanish of player %player% has been disabled");
 		c.put("MaintenanceMode.TurnOn", "&6Maintenance mode turned &aon.");
 		c.put("MaintenanceMode.TurnOff", "&6Maintenance mode turned &aoff.");
 		c.put("Spawner.Set", "&6Spawner set to mob %mob%");
@@ -305,24 +306,20 @@ public class Configs {
 		c.put("Spawner.Set", "&6Spawner set to mob %mob%");
 		c.put("Spawner.InvalidMob", "&cMob with name &4'%mob%' &cis invalid");
 		c.put("Spawner.BlockIsNotSpawner", "&6Block you're looking at isn't a spawner");
-		c.put("Warning.Reload", Arrays.asList("&c***** &4Warning &c*****","&4Reload, please login.","&c***** &4Warning &c*****"));
-		c.put("Warning.Stop", Arrays.asList("&c***** &4Warning &c*****","&4Warning: After %time%s server shutdown.","&c***** &4Warning &c*****"));
-		c.put("Warning.Restart", Arrays.asList("&c***** &4Warning &c*****","&4Warning: After %time%s server restart.","&c***** &4Warning &c*****"));
-		c.put("PluginName", "&aPlugin name");
-		c.put("PluginCreatedBy", "&aPlugin created by");
-		c.put("ServerControlThema", "&aThis plugin is used to manage server.");
-		c.put("NotPermissionsMessage", "&cYou do not have permissions !");
+		c.put("NotPermissionsMessage", "&cYou do not have permission %permission% to do that!");
 		c.put("ClearChat.ByConsole", "&aChat Cleared by &cconsole");
 		c.put("ClearChat.ByPlayer", "&aChat Cleared by %playername% &7(%player%)");
-		c.put("ClearChat.PlayerNotOnline", "&cPlayer %player% is not online !");
+		c.put("ClearChat.PlayerNotOnline", "&cPlayer %player% is not online");
 		c.put("ClearChat.SpecifedChatCleared", "&6Chat of player &c%player% &6has been cleared");
-		c.put("ClearChat.NoClearOwnChat", "&6You can't clear your own chat !");
-		c.put("ClearChat.SpecifedChatHaveBypass", "&6You can't clear chat of player %player%, because they has bypass permission !");
+		c.put("ClearChat.NoClearOwnChat", "&6You can't clear your own chat");
+		c.put("ClearChat.SpecifedChatHaveBypass", "&6You can't clear chat of player %player%, because they has bypass permission");
 		c.put("ConfigReloaded", "&aConfiguration reloaded !");
-		c.put("Back.CantGetLocation", "&cCan't get position to teleport back");
+		c.put("Back.CantGetLocation", "&cCan't get location to teleport back");
 		c.put("Back.Teleporting", "&6Teleporting back to latest position..");
-		c.put("Back.PlayerTeleported", "&6Player %playername% &6has been teleported back to latest position..");
+		c.put("Back.PlayerTeleported", "&6Player %playername% &6has been teleported back to last position..");
 		c.put("Help.NoHelpForCommand", "&cThere is no help for command: %command%");
+		c.put("Help.ClearInv", "&5Clear players's inventory");
+		c.put("Help.Fly", "&5Enable/disable player fly");
 		c.put("Help.FlySpeed", "&5Set your or specified player fly speed");
 		c.put("Help.WalkSpeed", "&5Set your or specified player walk speed");
 		c.put("Help.ClearChat", "&5Deletes all players chat");
@@ -339,9 +336,8 @@ public class Configs {
 		c.put("Help.Item.SetLore.Lines", "&5Show you list of lore lines on item in your hand");
 		c.put("Help.Item.Unbreakable", "&5Set your item in your hand unbreakable");
 		c.put("Help.Item.HideEnchants", "&5Hide all enchants on your item in your hand");
-		c.put("Help.Manager", "&5Open manager of AntiSpam, AntiSwear and AntiCaps");
 		c.put("Help.Seen", "&5Sends you information about the player how long is player online/offline");
-		c.put("Help.Xp.Give", "&5Give player experiences");
+		c.put("Help.Xp.Give", "&5Gave player experiences");
 		c.put("Help.Xp.Take", "&5Take from player experiences");
 		c.put("Help.Xp.Balance", "&5Balance of player experiences");
 		c.put("Help.BanSystem.TempBan", "&5Temp-Ban specified player with reason for time");
@@ -396,21 +392,17 @@ public class Configs {
 		c.put("Help.Skull", "&5Gave you a player head");
 		c.put("Help.SkullOther", "&5Gave specified player a player head");
 		c.put("Help.Enchant", "&5Enchant item in your hand with specified enchant and level");
-		c.put("Help.EnchantRemove", "&5Remove specified enchant from item in your hand");//export?
-		c.put("Help.Gamemode", "&5Change specified player gamemode"); //export, ale ještì nìco tzapni google 
-		c.put("Help.ChatOn", "&5Turn on Chat Security (Vulgar Words and Spams)");
-		c.put("Help.ChatOff", "&5Turn off Chat Security (Vulgar Words and Spams)");
+		c.put("Help.EnchantRemove", "&5Remove specified enchant from item in your hand");
+		c.put("Help.Gamemode", "&5Change specified player gamemode");
+		c.put("Help.Heal", "&5Heal & Feed specified player");
 		c.put("Help.ChatLock", "&5Lock or Unlock chat");
 		c.put("Help.Spawner-Mob", "&5Sets spawner on specified entity");
 		c.put("Help.Spawner-SpawnTime", "&5Sets entity spawn delay");
 		c.put("Help.Spawner-SpawnAmount", "&5Sets entity spawn amount");
 		c.put("Help.Spawner-SpawnRangePlayer", "&5Sets required range of players to spawn entity");
 		c.put("Help.Helpop", "&5Send message to online admins");
-		c.put("Help.Maintenance", "&5Turn on / off server maintenance mode");
-		c.put("Help.List", "&5Shows list with vulgar words a spawn words");
+		c.put("Help.List", "&5Shows list with swear words a spam words");
 		c.put("Help.Chunks", "&5Shows chunks used and loaded worlds");
-		c.put("Help.WordAdd", "&5Add selected word to selected path");
-		c.put("Help.WordDel", "&5Delete selected word from selected path");
 		c.put("Help.AFK-Other", "&5Enable or Disable AFK of specified player");
 		c.put("Help.ClearInv.Help", "&5Shows this help list");
 		c.put("Help.ClearInv.Clear", "&5Send request to clear your inventory");
@@ -426,8 +418,9 @@ public class Configs {
 		c.put("Help.Back", "&5Teleport player back to latest position");
 		c.put("Help.Spawn", "&5Teleport player to spawn");
 		c.put("Help.PrivateMessage", "&5Send player private message");
+		c.put("Help.God", "&5Enable or disable god mode of specified player");
 		c.put("Help.ReplyPrivateMessage", "&5Reply to latest message");
-		c.put("Help.Economy.Give", "&5Give money to player");
+		c.put("Help.Economy.Give", "&5Gave money to player");
 		c.put("Help.Economy.Take", "&5Take money from player");
 		c.put("Help.Economy.Reset", "&5Reset money of player");
 		c.put("Help.Economy.Pay", "&5Send money to player");
@@ -440,11 +433,10 @@ public class Configs {
 		c.put("Heal.Feed", "&aYou has been feeded");
 		c.put("Heal.PlayerFeed", "&aPlayer %playername% has been feeded");
 		c.put("Heal.SpecifyPlayerHealed", "&aPlayer %playername% has been healed");
-		c.put("Heal.SpecifyPlayer", "&e/Heal <player> &7- &5Heal specified player");
 		c.put("TabList.PrefixSet", "&6Prefix of group '&a%group%&6' set to '&a%prefix%&6'");
 		c.put("TabList.SuffixSet", "&6Suffix of group '&a%group%&6' set to '&a%suffix%&6'");
 		c.put("TabList.PrioriteSet", "&6Priorite of group '&a%group%&6' set to '&a%priorite%&6'");
-		c.put("TabList.AlreadyExist", "&6Group '&c%group%&6' already exist");
+		c.put("TabList.AlreadyExist", "&6Group '&c%group%&6' already exists");
 		c.put("TabList.DoNotExist", "&6Group '&c%group%&6' doesn't exist");
 		c.put("TabList.GroupCreated", "&6Group '&c%group%&6' created");
 		c.put("TabList.GroupDeleted", "&6Group '&c%group%&6' deleted");
@@ -453,14 +445,13 @@ public class Configs {
 		c.put("Kit.Cooldown", "&6You must wait &a%cooldown% &6to use kit &a'%kit%'");
 		c.put("Kit.NotExists", "&6Kit &c'%kit%' &6doesn't exists");
 		c.put("Kit.Got", "&6You got kit &a'%kit%'");
-		c.put("Kit.Given", "&6You give kit &a'%kit%' &6to player %playername%");
-		c.put("God.Usage", "&e/God <player> &7- &5Enable or Disable god mode specified player");
+		c.put("Kit.Given", "&6You gave kit &a'%kit%' &6to player %playername%");
 		c.put("God.Enabled", "&6God mode &aEnabled");
 		c.put("God.Disabled", "&6God mode &cDisabled");
 		c.put("God.SpecifiedPlayerGodEnabled", "&6God mode of player %playername%&6 has been &aEnabled");
 		c.put("God.SpecifiedPlayerGodDisabled", "&6God mode of player %playername%&6 has been &cDisabled");
 		c.put("General.Reset", "&2Chat General was reseted");
-		c.put("General.Confirm", "&cConfirm reset all general informations using /ServerControl Reset Confirm. &o(You have 10 seconds to do this)");
+		c.put("General.Confirm", "&cConfirm reset all general informations using '/ServerControl Reset Confirm' command. &o(You have 10 seconds to do this)");
 		c.put("General.AnyConfirm", "&cYou have no request to confirm");
 		c.put("General.PleaseConfirm", "&cPlease confirm your request");
 		c.put("AboutYou", Arrays.asList("&a-=-=-=-=-=-< &6%playername% &a>-=-=-=-=-=-","&aNickname: &6%player%","&aJoins: &6%joins%"
@@ -470,10 +461,10 @@ public class Configs {
 		c.put("Thor", "Player %playername% striked");
 		c.put("Cooldown.ToSendMessage", "&6You have to wait &c%timer% seconds &6before you can send a message");
 		c.put("Cooldown.ToSendCommand", "&6You have to wait &c%timer% seconds &6before you can send a command");
-		c.put("Security.TryingSendVulgarWord", Arrays.asList("&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-","&4%player% &ctried to write a &4vulgar word",
+		c.put("Security.TryingSendVulgarWord", Arrays.asList("&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-","&4%player% &ctried to write a &4swear word",
 				"&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
 		c.put("Security.TryingSendSpam", Arrays.asList("&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-","&4%player% &ctried to send a &4spam","&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
-		c.put("Security.TryingSendAdvertisement", Arrays.asList("&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-","&4%player% &ctried to send a &4advertisement",
+		c.put("Security.TryingSendAdvertisement", Arrays.asList("&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-","&4%player% &ctried to send an &4advertisement",
 				"&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
 		c.put("Security.TryingSendCaps", "&ePlayer &6%player% &etried send a Caps &8( &6%message% &8)&e.");
 		c.put("Security.TryingSendBlockedCommand", "&ePlayer &6%playername% &etried send blocked command &8( &6%command% &8)&e.");
@@ -483,30 +474,21 @@ public class Configs {
 		c.put("ChatLock.BroadCastMessageChatLock", "&ePlayer &6%player% &ewrote: &6%message%&e, but chat is locked.");
 		c.put("Caps", "&cPlease turn off caps lock, because you sending too many large block letters");
 		c.put("UknownCommand", "&4Uknown command");
-		c.put("BroadCastMessageVulgarWord", "&ePlayer &6%player% &ewrote a vulgar word &8( &6%message% &7<--- &6%word% &8)&e.");
+		c.put("BroadCastMessageVulgarWord", "&ePlayer &6%player% &ewrote a swear word &8( &6%message% &7<--- &6%word% &8)&e.");
 		c.put("BroadCastMessageAdvertisement", "&ePlayer &6%player% &ewrote an advertisement &8( &6%message% &8)&e.");
 		c.put("BroadCastMessageAdvertisementPickupItem", "&ePlayer &6%player% &etried pickup item with an advertisement &8( &6%message% &8)&e.");
 		c.put("BroadCastMessageAdvertisementDropItem", "&ePlayer &6%player% &etried drop item with an advertisement &8( &6%message% &8)&e.");
 		c.put("BroadCastMessageSpam", "&ePlayer &6%player% &ehas attempted spam &8(&6 %message% &7<--- &6%word%&8)&e.");
 		c.put("VulgarWordsList-PlayerMessage", "&cHey, &6%player% &cword &6'%word%! &cis not allowed, please do not repeat it");
-		c.put("AddWord.Added", "&2Word %word% successfully added!");
-		c.put("AddWord.UsageCommand", "&4Usage /WordAdd <path> <word> to add a word to the selected path.");
-		c.put("AddWord.WrongPath", "&4Sorry, we did not find a path to: %path%");
-		c.put("AddWord.Path", "&cPaths are: %paths%");
-		c.put("AddWord.AlreadyInConfig", "&cThis word %word% is already in config, usage /ServerControl List for list words in config.");
-		c.put("DelWord.WordDeleted", "&2Word %word% successfully deleted!");
-		c.put("DelWord.WordIsNotInConfig", "&cWord %word% is not in config, usage /ServerControl List for list words in config.");
-		c.put("DelWord.UsageCommand", "&4Usage /WordDel <path> <word> to delete a word to the selected path.");
-		c.put("DelWord.WrongPath", "&4Sorry, we did not find a path to: %path%");
-		c.put("DelWord.Path", "&cPaths are: %paths%");
-		
 		c.put("Immune.Enabled", "&6You &aenabled &6your immunity");
 		c.put("Immune.Disabled", "&6You &cdisabled &6your immunity");
 		c.put("Immune.OnOther", "&6You &aenabled &6immunity of player &a%target%");
 		c.put("Immune.OffOther", "&6You &cdisabled &6immunity of player &c%target%");
 		c.put("Immune.NoPunish", "&6You can't &c%punishment% %target%&6, his immunity is enabled.");
 		trans = TheAPI.getConfig("ServerControlReloaded", "Translations");
-		trans.setHeader("******************************\n*** Created by Straiker123 ***\n******************************");
+		trans.setHeader("*************************\n" + 
+				"*** Created by DevTec ***\n" + 
+				"*************************\n");
 		trans.addDefaults(c);
 		trans.create();
 		Loader.TranslationsFile=trans.getConfig();
@@ -593,7 +575,7 @@ public class Configs {
 		c.put("Options.AutoMessage.Use", true);
 		c.put("Options.AutoMessage.MinimalPlayers", 1);
 		c.put("Options.AutoMessage.Interval", "5min");
-		c.put("Options.AutoMessage.Random", false);
+		c.put("Options.AutoMessage.Random", true);
 		c.put("Options.AutoMessage.Messages", Arrays.asList("&0[&a&lINFO&0] &cServerControlReloaded created by &nDevTec","&0[&a&lINFO&0] &c20% Bugs free"
 				,"&0[&a&lINFO&0] &cOnline players &a%online% &7/ &a%max_players%","&0[&a&lINFO&0] &cYou found a bug ? Report it to https://github.com/TheDevTec/ServerControlReloaded"
 				,"&0[&a&lINFO&0] &cDo you like our plugin? Write a comment on the https://www.spigotmc.org/resources/server-control-reloaded.71147"));

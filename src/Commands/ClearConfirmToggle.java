@@ -22,13 +22,11 @@ public class ClearConfirmToggle implements CommandExecutor {
 			if(API.hasPerm(s,"ServerControl.ClearInv.Clear")) {
 			if(Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm")==true) {
 				Loader.me.set("Players."+s.getName()+".ClearInvConfirm", false);
-				Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("ClearInventory.ConfirmToggled")
-			.replace("%confirm%", "enabled"), s);
+				Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("ClearInventory.ConfirmEnabled"), s);
 			return true;
 		}else {
 			Loader.me.set("Players."+s.getName()+".ClearInvConfirm", true);
-			Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("ClearInventory.ConfirmToggled")
-			.replace("%confirm%", "disabled"), s);
+			Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("ClearInventory.ConfirmDisabled"), s);
 			return true;
 		}}return true;}}
 		return false;

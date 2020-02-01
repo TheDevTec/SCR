@@ -42,8 +42,7 @@ public class MultiWorldsGUI {
 
 	public static ItemStack createItem(String name,List<String> lore) {
 		Material torch =null;
-		if(TheAPI.getServerVersion().contains("1_14")||TheAPI.getServerVersion().contains("1_15")
-				|| TheAPI.getServerVersion().contains("1_13"))
+		if(TheAPI.isNewVersion())
 			torch=Material.matchMaterial("REDSTONE_TORCH");
 		else
 			torch = Material.matchMaterial("REDSTONE_TORCH_ON");
@@ -77,10 +76,7 @@ public class MultiWorldsGUI {
 				if(API.hasPerm(p, "ServerControl.MultiWorld.Delete")) {
 					openInvDelete(p);
 				}}});
-		/*
-          ServerControl.MultiWorld.List
-          ServerControl.MultiWorld.Import
-		 */
+		
 		HashMap<Options, Object> setspawn = new HashMap<Options, Object>();
 		setspawn.put(Options.CANT_BE_TAKEN,true);
 		setspawn.put(Options.RUNNABLE, new Runnable() {

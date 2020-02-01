@@ -29,6 +29,7 @@ public class NewSecurityListener implements Listener {
 	boolean restart;
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCommand(ServerCommandEvent e) {
+		if(Bukkit.getOnlinePlayers().size() > 0) {
 		if(e.getCommand().equalsIgnoreCase("reload")||e.getCommand().equalsIgnoreCase("rl")) { 
 			cancel("reload");
 		}
@@ -39,12 +40,12 @@ public class NewSecurityListener implements Listener {
 		if(e.getCommand().equalsIgnoreCase("restart")) {
 			e.setCancelled(true);
 			cancel("restart");
-		}
+		}}
 	}
 	
 	public void cancel(String command) {
 		if(command.equalsIgnoreCase("reload") && setting.warn_reload||command.equalsIgnoreCase("rl") && setting.warn_reload) { 
-			for(String s:Loader.TranslationsFile.getStringList("Warning.Reload"))
+			for(String s:Loader.config.getStringList("Options.WarningSystem.Reload.Messages"))
 				TheAPI.broadcastMessage(s.replace("%time%", Loader.config.getInt("Options.WarningSystem.Reload.PauseTime")+""));
 			try {
 				Bukkit.getScheduler().runTaskLater(Loader.getInstance, new Runnable() {
@@ -62,7 +63,7 @@ public class NewSecurityListener implements Listener {
 		if(command.equalsIgnoreCase("stop") && setting.warn_stop) {
 			if(!stop) {
 				stop=true;
-				for(String s:Loader.TranslationsFile.getStringList("Warning.Stop"))
+				for(String s:Loader.config.getStringList("Options.WarningSystem.Stop.Messages"))
 					TheAPI.broadcastMessage(s.replace("%time%", ""+Loader.config.getInt("Options.WarningSystem.Stop.PauseTime")));
 				try {
 					Bukkit.getScheduler().runTaskLater(Loader.getInstance, new Runnable() {
@@ -80,7 +81,7 @@ public class NewSecurityListener implements Listener {
 		if(command.equalsIgnoreCase("restart")&& setting.warn_restart) {
 			if(!restart) {
 				restart=true;
-				for(String s:Loader.TranslationsFile.getStringList("Warning.Restart"))
+				for(String s:Loader.config.getStringList("Options.WarningSystem.Restart.Messages"))
 					TheAPI.broadcastMessage(s.replace("%time%", ""+Loader.config.getInt("Options.WarningSystem.Restart.PauseTime")));
 				try {
 					Bukkit.getScheduler().runTaskLater(Loader.getInstance, new Runnable() {
@@ -101,7 +102,7 @@ public class NewSecurityListener implements Listener {
 	}
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCommand(PlayerCommandPreprocessEvent e) {
-		if(Loader.config.getBoolean("WarningSystem.Enabled")) {
+		if(Bukkit.getOnlinePlayers().size() > 1) {
 				if(e.getMessage().equalsIgnoreCase("reload")||e.getMessage().equalsIgnoreCase("rl")) { 
 					cancel("reload");
 				}
@@ -112,8 +113,7 @@ public class NewSecurityListener implements Listener {
 				if(e.getMessage().equalsIgnoreCase("restart")) {
 					e.setCancelled(true);
 					cancel("restart");
-				}
-			}
+				}}
 		Commands.BanSystem.BanSystem.KickMaxWarns(e.getPlayer().getName());
 		if(API.getBanSystemAPI().hasJail(e.getPlayer()))e.setCancelled(true);
 		if(TheAPI.getPunishmentAPI().hasMute(e.getPlayer().getName())){

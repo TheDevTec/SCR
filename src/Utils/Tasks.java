@@ -136,11 +136,19 @@ public class Tasks {
 			Loader.mw.set("SavingTask.Delay", 600);
 			Configs.mw.save();
 		}
-		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
-			for(World w: Bukkit.getWorlds()) {
-				if(Loader.mw.getBoolean("WorldsSettings."+w.getName()+".AutoSave"))
-				w.save();
-			}}}, 20, 20*Loader.mw.getInt("SavingTask.Delay")));
+		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ 
+			int now = 0;
+			public void run(){
+			List<World> w = Bukkit.getWorlds();
+			if(w.get(now)==null) now = 0;
+			try {
+				if(!Loader.mw.getBoolean("WorldsSettings."+w.get(now).getName()+".AutoSave"))
+				w.get(now).save();
+			}catch(Exception err) {
+				//out
+			}
+				++now;
+			}}, 20, 20*Loader.mw.getInt("SavingTask.Delay")));
 	}
 	private static void regPlayers() {
 		ss.clear();

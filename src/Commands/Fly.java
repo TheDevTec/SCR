@@ -26,6 +26,7 @@ public class Fly implements CommandExecutor {
 					p.toggleFly(null);
 					return true;
 					}
+				Loader.Help(s, "/Fly <player> <on/off>", "Fly");
 				Loader.msg(Loader.s("Prefix")+Loader.s("Fly.Usage"), s);
 				return true;
 				}return true;}

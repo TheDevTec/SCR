@@ -93,7 +93,7 @@ public class BanSystem {
 	}
 
 	public static void notExist(CommandSender s, String[] args) {
-		if(Loader.me.getString("Players."+args[0])!=null) Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.PlayerHaveNotBan")
+		if(Loader.me.getString("Players."+args[0])!=null) Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.PlayerHasNotBan")
 		.replace("%player%", args[0]).replace("%playername%", args[0]),s);else
 			Loader.msg(Loader.PlayerNotEx(args[0]),s);
 	}

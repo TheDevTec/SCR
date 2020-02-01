@@ -12,6 +12,7 @@ import me.Straiker123.TheAPI;
 
 public class Kick implements CommandExecutor {
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(API.hasPerm(s, "ServerControl.Kick")) {
@@ -22,7 +23,7 @@ public class Kick implements CommandExecutor {
 		if(args.length==1) {
 			Player p = Bukkit.getPlayer(args[0]);
 			if(p!=null) {
-				if (Loader.me.getBoolean("Players."+p.getName()+".Immune")==true) {
+				if (Loader.me.getBoolean("Players."+p.getName()+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "kick"
 							).replace("%target%", p.getName()), s);
 					return true;
@@ -40,7 +41,7 @@ public class Kick implements CommandExecutor {
 		if(args.length>=2) {
 			Player p = Bukkit.getPlayer(args[0]);
 			if(p!=null) {
-				if (Loader.me.getBoolean("Players."+p.getName()+".Immune")==true) {
+				if (Loader.me.getBoolean("Players."+p.getName()+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "kick")
 							.replace("%target%", p.getName()), s);
 					return true;

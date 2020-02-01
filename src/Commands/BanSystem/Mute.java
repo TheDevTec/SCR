@@ -1,5 +1,6 @@
 package Commands.BanSystem;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,6 +10,7 @@ import me.Straiker123.TheAPI;
 
 public class Mute implements CommandExecutor {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(API.hasPerm(s, "ServerControl.Mute")) {
@@ -17,7 +19,7 @@ public class Mute implements CommandExecutor {
 			return true;
 		}
 		if(args.length==1) {
-				if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true) {
+				if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "Mute").replace("%target%", args[0]), s);
 					return true;
 				}
@@ -27,7 +29,7 @@ public class Mute implements CommandExecutor {
 				return true;
 		}
 		if(args.length>=2) {
-				if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true) {
+				if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "Mute").replace("%target%", args[0]), s);
 					return true;
 				}

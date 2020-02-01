@@ -35,8 +35,9 @@ public class Staff implements CommandExecutor {
 			p.put(a, getGroup(a));
 		}
 	}
+	ArrayList<String> w = new ArrayList<String>();
 	public String getStaff() {
-		ArrayList<String> w = new ArrayList<String>();
+		w.clear();
 		for(Player a:Bukkit.getOnlinePlayers()) {
 		if(Loader.config.getStringList("StaffList").contains(p.get(a))) {
 			w.add(a.getName());
@@ -48,10 +49,10 @@ public class Staff implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(API.hasPerm(s,"ServerControl.Staff")){
+			sortPlayers();
 			for(String a:Loader.TranslationsFile.getStringList("PlayerList.Staff")) {
-				sortPlayers();
 			Loader.msg(a
-					.replace("%online%",Bukkit.getOnlinePlayers().size()+"")
+					.replace("%online%",w.size()+"")
 					.replace("%max_players%", Bukkit.getMaxPlayers()+"")
 					.replace("%prefix%", Loader.s("Prefix"))
 					.replace("%staff%", getStaff()), s);
