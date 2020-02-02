@@ -73,6 +73,7 @@ commands:
     Give:
         description: Give player item/block
         usage: /<command> <player> <item/block> <amount>
+        aliases: [i]
     Butcher:
         description: Kill specified mobs in specified radious
         usage: /<command> <radius> <mob>

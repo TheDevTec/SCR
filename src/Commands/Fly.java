@@ -31,11 +31,11 @@ public class Fly implements CommandExecutor {
 				return true;
 				}return true;}
 			if(args.length==1) {
-        		SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
-				if(target.getPlayer() == null) {
+				if(Bukkit.getServer().getPlayer(args[0]) == null) {
 					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
 				}
+        		SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
 					if(target.getPlayer() == s) {
 		    			if(API.hasPerm(s,"ServerControl.Fly")) {
 		    			if(task.get(target) != null)Bukkit.getScheduler().cancelTask(task.get(target));
@@ -50,11 +50,11 @@ public class Fly implements CommandExecutor {
 						}return true;
 						}}
 			if(args.length==2) {
-        		SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
-				if(target.getPlayer() == null) {
+				if(Bukkit.getServer().getPlayer(args[0]) == null) {
 					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
 				}
+        		SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
 					if(target.getPlayer() != s) {
     			if(API.hasPerm(s,"ServerControl.Fly.Other")) {
     				if(args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {

@@ -26,8 +26,8 @@ public class setting {
 	ad_book, ad_chat, ad_cmd, ad_sign, ad_anvil, ad_itemdrop, ad_itempick,
 	spam_chat, spam_cmd, swear_chat, swear_cmd,
 	join_spawn, join_msg, join_motd, join_first, join_first_give, join_first_percmd, leave,
-	cool_cmd, cool_chat, color_chat_perm,  color_sign_perm, 
-	tp_safe,tp_onreqloc, ram;
+	cool_cmd, cool_chat, cool_percmd, color_chat_perm,  color_sign_perm, 
+	tp_safe,tp_onreqloc, ram, spam_double,caps_chat, caps_cmd;
 	public static DeathTp deathspawn;
 	
 /**	public static boolean offlineinvsee; ///invsee <offline player>, /esee <offline player> (Req. SCR_PerWorldInventory)
@@ -64,8 +64,12 @@ public class setting {
 		join_first = Loader.config.getBoolean("Options.Join.FirstJoin.Use");
 		leave = Loader.config.getBoolean("Options.Leave.CustomLeaveMessage");
 		cool_cmd = Loader.config.getBoolean("Options.Cooldowns.Commands.Use");
+		cool_percmd = Loader.config.getBoolean("Options.Cooldowns.Commands.PerCommand.Use");
 		cool_chat = Loader.config.getBoolean("Options.Cooldowns.Chat.Use");
 		spam_chat = Loader.config.getBoolean("Options.Security.AntiSpam.Chat");
+		caps_cmd = Loader.config.getBoolean("Options.Security.AntiCaps.Commands");
+		caps_chat = Loader.config.getBoolean("Options.Security.AntiCaps.Chat");
+		spam_double = Loader.config.getBoolean("SpamWords.DoubledLetters.Use");
 		spam_cmd = Loader.config.getBoolean("Options.Security.AntiSpam.Commands");
 		swear_chat = Loader.config.getBoolean("Options.Security.AntiSwear.Chat");
 		swear_cmd = Loader.config.getBoolean("Options.Security.AntiSwear.Commands");

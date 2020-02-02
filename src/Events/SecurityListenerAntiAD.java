@@ -176,12 +176,11 @@ public Loader plugin=Loader.getInstance;
 			  break;
 		}
 		if(Loader.config.getBoolean("TasksOnSend.Advertisement.Broadcast")) {
-      for(String ad:  Loader.TranslationsFile.getStringList("Security.TryingSendAdvertisement")) {
-    	  TheAPI.broadcastMessage(ad
+    	  TheAPI.broadcastMessage(Loader.s("Security.TryingSendAdvertisement")
       			.replace("%playername%", p.getDisplayName())
       			.replace("%player%", p.getName())
       			.replace("%prefix%", Loader.s("Prefix")));
-   		}}
+   		}
       if(Loader.config.getBoolean("TasksOnSend.Advertisement.Use-Commands")) {
   		    	for(String cmds: Loader.config.getStringList("TasksOnSend.Advertisement.Commands")) {
 	        	plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), TheAPI.colorize(cmds.replace("%player%", p.getName()))); 

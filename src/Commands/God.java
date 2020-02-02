@@ -27,11 +27,11 @@ public class God implements CommandExecutor, Listener {
 					return true;
 				}
 				if(args.length==1) {
-					SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
-					if(target.getPlayer() == null) {
+					if(Bukkit.getServer().getPlayer(args[0]) == null) {
 						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
 					}
+					SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
 						if(target == s) {
 							if(API.hasPerm(s,"ServerControl.God")) {
 								target.toggleGod(null);
@@ -42,11 +42,11 @@ public class God implements CommandExecutor, Listener {
 							return true;
 								}}return true;}
 				if(args.length==2) {
-					SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
-					if(target.getPlayer() == null) {
+					if(Bukkit.getServer().getPlayer(args[0]) == null) {
 						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
 					}
+					SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
 					if(s == target.getPlayer()) {
 						if(API.hasPerm(s,"ServerControl.God")) {
 		    				if(args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {

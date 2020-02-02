@@ -79,7 +79,7 @@ public class Loader extends JavaPlugin implements Listener {
     public String getSuffix(Player p) {
     	if(API.existVaultPlugin()) {
     	if(vault!=null) {
-    		if(getGroup(p)!=null)return vault.getGroupSuffix(p.getWorld(), getGroup(p));
+    		if(getGroup(p)!=null&& vault.getGroupSuffix(p.getWorld(), getGroup(p)) != null)return vault.getGroupSuffix(p.getWorld(), getGroup(p));
     	}}
     	return "";
     }
@@ -517,7 +517,7 @@ private void EventsRegister() {
 	EventC(new Events.ChatFormat());
 	EventC(new Events.RewardsListenerChat());
 	EventC(new Events.LoginEvent());
-	EventC(new Events.NewSecurityListener());
+	EventC(new Events.SecurityListenerV3());
 	EventC(new Events.DeathEvent());
 	EventC(new Events.AFkPlayerEvents());
 	EventC(new Events.WorldChange());

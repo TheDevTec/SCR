@@ -461,11 +461,10 @@ public class Configs {
 		c.put("Thor", "Player %playername% striked");
 		c.put("Cooldown.ToSendMessage", "&6You have to wait &c%timer% seconds &6before you can send a message");
 		c.put("Cooldown.ToSendCommand", "&6You have to wait &c%timer% seconds &6before you can send a command");
-		c.put("Security.TryingSendVulgarWord", Arrays.asList("&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-","&4%player% &ctried to write a &4swear word",
-				"&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
-		c.put("Security.TryingSendSpam", Arrays.asList("&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-","&4%player% &ctried to send a &4spam","&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
-		c.put("Security.TryingSendAdvertisement", Arrays.asList("&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-","&4%player% &ctried to send an &4advertisement",
-				"&6-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
+		c.put("Security.TriedSendSimiliarMessage", "&4%player% &ctried to send a &4similiar message");
+		c.put("Security.TryingSendVulgarWord", "&4%player% &ctried to write a &4swear word");
+		c.put("Security.TryingSendSpam","&4%player% &ctried to send a &4spam");
+		c.put("Security.TryingSendAdvertisement", "&4%player% &ctried to send an &4advertisement");
 		c.put("Security.TryingSendCaps", "&ePlayer &6%player% &etried send a Caps &8( &6%message% &8)&e.");
 		c.put("Security.TryingSendBlockedCommand", "&ePlayer &6%playername% &etried send blocked command &8( &6%command% &8)&e.");
 		c.put("ChatLock.ChatIsLocked", "&4Chat is Locked");
@@ -673,7 +672,7 @@ public class Configs {
 		}
 		c.put("List.LoadedFormat", "&6World: &e%world%&6, Chunks: &e%chunks%&6, Mobs: &e%mobs%&6, Players: &e%players%");
 		c.put("List.UnloadedFormat", "&6World: &e%world% &7(Unloaded)");
-		c.put("HelpFormat", "%prefix%&e%command%& &7- &5%help%");
+		c.put("HelpFormat", "%prefix%&e%command% &7- &5%help%");
 		c.put("Format.Time", "HH:mm:ss");
 		c.put("Format.Date", "dd.MM.yyyy");
 		c.put("Format.DateWithTime", "dd.MM.yyyy HH:mm:ss");
@@ -723,9 +722,6 @@ public class Configs {
 		c.put("AutoKickLimit.Kick.Commands.List", Arrays.asList("tempban %player% 7d &4&lYou have reached maximum number of &nkicks&r&4&l &o(%number%)","eco take %player% 5000"));
 		c.put("SwearWords", Arrays.asList("fuck","idiot","kurv","kurw"));
 		c.put("SpamWords.SimiliarMessage", true);
-		c.put("SpamWords.DoubledLetters.MaxAmount", 4);
-		c.put("SpamWords.DoubledLetters.ReduceLetters", true);
-		c.put("SpamWords.DoubledLetters.Ignore", Arrays.asList("?","!"));
 		c.put("SpamWords.DoubledLetters.Use", true);
 		c.put("SpamWords.Words",Arrays.asList("pls op","please op", "op pls", "op please"));
 		config.setHeader("+-------------------------------------------------------------------+ #\r\n" + 

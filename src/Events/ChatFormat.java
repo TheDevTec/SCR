@@ -10,7 +10,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Colors;
 import Utils.Configs;
@@ -22,20 +21,6 @@ import me.Straiker123.TheAPI;
 public class ChatFormat implements Listener {
 	static Loader plugin = Loader.getInstance;
 	String m;
-
-	public static int capitalCount(String string){
-		char ch = (char)string.charAt(0);
-		int upperCaseCount = 0;
-		for(int i = 0; i < string.length(); i++)
-		{
-			ch = (char)string.charAt(i);
-	        if (Character.isAlphabetic(ch) && Character.isUpperCase(ch))
-	        {
-	        	upperCaseCount++;
-	        }
-		}
-		return upperCaseCount;
-	}
 	
 	public static String r(Player p, String s, String msg, boolean a) {
 		
@@ -81,41 +66,6 @@ public class ChatFormat implements Listener {
 	}
 	
 	public static String r(String msg, CommandSender p, boolean chat) {
-		if(!p.hasPermission("ServerControl.Caps")) {
-			int ALLOWED_CAPITALS_PERCENT = 50;
-	 		if(msg.length() > 5) {
-	 		double upperCaseCount = capitalCount(msg);			
-	 		if((upperCaseCount / msg.length()) * 100 > ALLOWED_CAPITALS_PERCENT){
-	 			String caps = Loader.s("Security.TryingSendCaps");
-	 				if(p!=null)
-	 					TheAPI.broadcast(Loader.s("Prefix")+API.replacePlayerName(caps,(Player)p).replace("%message%", msg), "ServerControl.Caps");
-	 				if(setting.color_chat
-	 						&&
-	 						setting.color_chat_perm
-	 						&&
-	 						p.hasPermission(Loader.config.getString("Colored-Chat.Permission"))
-	 						||
-	 						setting.color_chat
-	 						&&
-	 						!setting.color_chat_perm)
-	 				return TheAPI.colorize(msg.toLowerCase());
-	 				else
-	 				return msg.toLowerCase();
-	 				
-	 		}
-			if(setting.color_chat
-						&&
- 						setting.color_chat_perm
-						&&
-						p.hasPermission(Loader.config.getString("Colored-Chat.Permission"))
-						||
-						setting.color_chat
-						&&
- 						!setting.color_chat_perm)
-				return TheAPI.colorize(msg);
-				else
-				return msg;
-	 		}}
 		if(setting.color_chat
 					&&
 						setting.color_chat_perm
@@ -128,7 +78,7 @@ public class ChatFormat implements Listener {
 		else
 		return msg;
 	}
-	@EventHandler(priority=EventPriority.NORMAL)
+	@EventHandler(priority=EventPriority.LOW)
 	public void set(PlayerChatEvent e) {
 		Player p =e.getPlayer();
 	if(TheAPI.getCooldownAPI("world-create").getStart(p.getName())!=-1) {
