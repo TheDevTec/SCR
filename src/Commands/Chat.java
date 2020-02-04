@@ -18,11 +18,6 @@ import me.Straiker123.TheAPI;
 
 public class Chat implements CommandExecutor, TabCompleter {
 
-	private static final List<String> Help = Arrays.asList("Help");
-	private static final List<String> Version = Arrays.asList("Version");
-	private static final List<String> Info = Arrays.asList("Info");
-	private static final List<String> General = Arrays.asList("General");
-	private static final List<String> Me = Arrays.asList("Me");
 	private static final List<String> All = Arrays.asList("General", "Help", "Info","Version", "Me");
 
 	public String online(String[] args) {
@@ -44,11 +39,17 @@ public class Chat implements CommandExecutor, TabCompleter {
 	            if(args.length==0 ||args.length==1) {
 	            	Loader.msg(Loader.s("Prefix")+"&e----------------- &bHelp&e -----------------",s);
 	            	Loader.msg("",s);
+	            	if(s.hasPermission("ServerControl.Me.Other"))
 	            Loader.Help(s, "/Chat Me <player>","Me");
+	            	else
+		            	if(s.hasPermission("ServerControl.Me"))
+		    	            Loader.Help(s, "/Chat Me","Me");
+	            	if(s.hasPermission("ServerControl.General"))
 	            Loader.Help(s, "/Chat General","General");
+	            	if(s.hasPermission("ServerControl.Info")) {
+	    	            Loader.Help(s, "/Chat Info","Info");
 	            Loader.Help(s, "/Chat Version","Version");
-	            Loader.Help(s, "/Chat Help","Help");
-	            Loader.Help(s, "/Chat Info","Info");
+	            	}
 	            return true;
 	        }
 	            if(args.length==2) {
@@ -64,13 +65,14 @@ public class Chat implements CommandExecutor, TabCompleter {
 	                	Loader.msg(Loader.s("Prefix")+Loader.s("Help.NoHelpForCommand").replace("%command%", args[1]), s);
 	                        return true;
 	            		}}return true;}
-    if(args[0].equalsIgnoreCase("Version")){
+    if(args[0].equalsIgnoreCase("Version")||args[0].equalsIgnoreCase("info")){
 		if(API.hasPerm(s, "ServerControl.Info")) {
         	Loader.msg(Loader.s("Prefix")+"&e----------------- &bVersion&e -----------------",s);
         	Loader.msg("",s);
         	Loader.msg(Loader.s("Prefix")+"&7Version of ServerControlReloaded: &eV"+ TheAPI.getPluginsManagerAPI().getVersion("ServerControlReloaded"),s);
         	Loader.msg(Loader.s("Prefix")+"&7Version of TheAPI: &eV"+ TheAPI.getPluginsManagerAPI().getVersion("TheAPI"),s);
         	Loader.msg(Loader.s("Prefix")+"&7Version of Server: &e"+ Bukkit.getServer().getBukkitVersion(),s);
+        	Loader.msg(Loader.s("Prefix")+"&7Our discord: &ehttps://discord.gg/z4kK66g",s);
             return true;
        }return true;}
         	if(args[0].equalsIgnoreCase("General")){
@@ -234,47 +236,38 @@ public class Chat implements CommandExecutor, TabCompleter {
                     	}
         	  		return true;
                     }}return true;}
-	        if(args[0].equalsIgnoreCase("Info")){
-	            	Loader.msg(Loader.s("Prefix")+"&e----------------- &bInfo&e -----------------",s);
-	            	Loader.msg("",s);
-	            	Loader.msg(Loader.s("Prefix")+"&7Name of plugin: &eServerControlReloaded",s);
-	            	Loader.msg(Loader.s("Prefix")+"&7Version: &eV"+TheAPI.getPluginsManagerAPI().getVersion("ServerControlReloaded"),s);
-	            	Loader.msg(Loader.s("Prefix")+"&cServerControlReloaded developed by &eDevTec",s);
-	            	Loader.msg(Loader.s("Prefix")+"&cOur discord: &ehttps://discord.gg/z4kK66g",s);
-	        
-	            return true;
-	       }
         Loader.msg(Loader.s("Prefix")+Loader.s("UknownCommand"),s);
         return true;
 			}
     @Override
     public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
     	List<String> c = new ArrayList<>();
-    	if(cmd.getName().equalsIgnoreCase("Chat") && args.length==1) {
+    	if(args.length==1) {
 
         	if(s.hasPermission("ServerControl.Help")) {
-                c.addAll(StringUtil.copyPartialMatches(args[0], Help, new ArrayList<>()));
+                c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Help"), new ArrayList<>()));
             }
         	if(s.hasPermission("ServerControl.General")) {
-                c.addAll(StringUtil.copyPartialMatches(args[0], General, new ArrayList<>()));
+                c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("General"), new ArrayList<>()));
             }
-        	if(s.hasPermission("ServerControl.Version")) {
-                c.addAll(StringUtil.copyPartialMatches(args[0], Version, new ArrayList<>()));
+        	if(s.hasPermission("ServerControl.Info")) {
+                c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Info","Version"), new ArrayList<>()));
             }
         	if(s.hasPermission("ServerControl.Me")) {
-                c.addAll(StringUtil.copyPartialMatches(args[0], Me, new ArrayList<>()));
+                c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Me"), new ArrayList<>()));
             }
-        	c.addAll(StringUtil.copyPartialMatches(args[0], Info, new ArrayList<>()));
-    	}else
-        	if(cmd.getName().equalsIgnoreCase("Chat") && args[0].equalsIgnoreCase("Help") && args.length==2) {
+        	c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Info","Version"), new ArrayList<>()));
+    	}
+    	if(args.length==2) {
+        	if(args[0].equalsIgnoreCase("Help")) {
             	if(s.hasPermission("ServerControl.Help")) {
             		c.addAll(StringUtil.copyPartialMatches(args[1], All, new ArrayList<>()));
             		
             	}}
-    	if(cmd.getName().equalsIgnoreCase("Chat") && args[0].equalsIgnoreCase("Me") && args.length==2) {
+    	if(args[0].equalsIgnoreCase("Me") && s.hasPermission("ServerControl.Me.Other")) {
         	if(s.hasPermission("ServerControl.Me")) {
         		return null;
-        	}}
+        	}}}
     return c;
 }
 }

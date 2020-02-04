@@ -18,6 +18,7 @@ import ServerControl.Loader;
 import Utils.Configs;
 import Utils.MultiWorldsUtils;
 import Utils.Tasks;
+import Utils.setting;
 import me.Straiker123.TheAPI;
 
 public class ServerControl implements CommandExecutor, TabCompleter {
@@ -29,10 +30,13 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 		if(API.hasPerm(s, "ServerControl.Help")) {
             	Loader.msg(Loader.s("Prefix")+"&e----------------- &bHelp&e -----------------",s);
             	Loader.msg("",s);
+            	if(s.hasPermission("ServerControl.Reload"))
             Loader.Help(s, "/ServerControl Reload","Reload");
+            	if(s.hasPermission("ServerControl.Info")) {
             Loader.Help(s, "/ServerControl Version","Version");
             Loader.Help(s, "/ServerControl Info","Info");
-            Loader.Help(s, "/ServerControl Reset","Reset");
+            	}
+            	if(s.hasPermission("ServerControl.List"))
             Loader.Help(s, "/ServerControl List","List");
             
             if(args.length==2) {
@@ -58,63 +62,6 @@ public class ServerControl implements CommandExecutor, TabCompleter {
         return true;
      }
  		return true;}
-	    	    	            if(args[0].equalsIgnoreCase("Reset")){
-	    	    	        		if(API.hasPerm(s, "ServerControl.Reset")) {
-		    	    	        			if(args.length == 1) {
-		    	    	        				
-		    	    	        			if(Loader.me.getString("Players."+s.getName()+".ResetCooldown")==null) {
-		    	    	        				Loader.me.set("Players."+s.getName()+".ResetCooldown", System.currentTimeMillis()/1000);
-
-		    	    	        				Configs.chatme.save();
-		    	    	        				Loader.msg(Loader.s("Prefix")+"&e----------------- &bReset&e -----------------",s);
-		    	    	        				Loader.msg("",s);
-		    	    	        				Loader.msg(Loader.s("Prefix")+Loader.s("General.Confirm"),s);
-	    	    	    	    	       return true;
-	    	    	        		}
-	    	    	    	        		long reset = Loader.me.getLong("Players."+s.getName()+".ResetCooldown")-System.currentTimeMillis()/1000;
-	    	    	    	        		reset = reset*-1;
-	    	    	    	        		if(reset <10) {
-	    	    	    	        			Loader.msg(Loader.s("Prefix")+"&e----------------- &bReset&e -----------------",s);
-	    	    	    	        			Loader.msg("",s);
-	    	    	    	        			Loader.msg(Loader.s("Prefix")+Loader.s("General.PleaseConfirm"),s);
-    	    	        					return true;
-		    	    	        			}
-	    	    	    	        		Loader.me.set("Players."+s.getName()+".ResetCooldown", System.currentTimeMillis()/1000);
-	    	    	    	        		Configs.chatme.save();Loader.msg(Loader.s("Prefix")+"&e----------------- &bReset&e -----------------",s);
-	    	    	    	        		Loader.msg("",s);
-	    	    	    	        		Loader.msg(Loader.s("Prefix")+Loader.s("General.Confirm"),s);
-	    	    	    	    	       return true;
-		    	    	        			}
-	    	    	        			
-	    	    	        			if(args.length == 2) {
-				    	    	        	if(args[1].equalsIgnoreCase("Confirm")) {
-		    	    	    	        		long reset = Loader.me.getLong("Players."+s.getName()+".ResetCooldown")-System.currentTimeMillis()/1000;
-		    	    	    	        		reset = reset*-1;
-		    	    	    	        		if(reset < 10) {
-		    	    	    	        			Loader.msg(Loader.s("Prefix")+"&e----------------- &bReset Confirm&e -----------------",s);
-		    	    	    	        			Loader.msg("",s);
-		    	    	    	        			Loader.msg(Loader.s("Prefix")+Loader.s("General.Reset"),s);
-						    	    	  	    Loader.me.set("Players", null);
-				    	    	        		Configs.chatme.save();
-				    	    	        		Loader.config.set("VulgarWords", 0);
-					    	    	        Loader.config.set("Spam", 0);
-			    	    	        		Configs.config.save();
-				    	    	    	    return true;
-				    	    	        	}
-		    	    	    	        		Loader.msg(Loader.s("Prefix")+"----------------- &bReset Confirm&e -----------------",s);
-		    	    	    	        		Loader.msg("",s);
-		    	    	    	        		Loader.msg(Loader.s("Prefix")+Loader.s("General.AnyConfirm"),s);
-						    	    	    	    return true;
-					    	    	        	}}} return true;}
-	    	    	        	if(args[0].equalsIgnoreCase("Info")){
-	    	    	        			Loader.msg(Loader.s("Prefix")+"----------------- &bInfo&e -----------------",s);
-	    	    	        			Loader.msg("",s);
-	    	    	                	Loader.msg(Loader.s("Prefix")+"&7Version of ServerControlReloaded: &eV"+ TheAPI.getPluginsManagerAPI().getVersion("ServerControlReloaded"),s);
-	    	    	                	Loader.msg(Loader.s("Prefix")+"&7Version of TheAPI: &eV"+ TheAPI.getPluginsManagerAPI().getVersion("TheAPI"),s);
-	    	    	                	Loader.msg(Loader.s("Prefix")+"&7Version of Server: &e"+ Bukkit.getServer().getBukkitVersion(),s);
-	    	    	            return true;
-	    	    	        	}
-
 	if(args[0].equalsIgnoreCase("Reload")){
 		if(API.hasPerm(s, "ServerControl.Reload")) {
 		Loader.msg(Loader.s("Prefix")+"&e----------------- &bReloading config&e -----------------",s);
@@ -124,67 +71,51 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 	Loader.startConvertMoney();
 	MultiWorldsUtils.LoadWorlds();
 	Loader.SoundsChecker();
-    try {
-	if(Loader.config.getBoolean("TimeZone-Enabled")) {
-		TimeZone.setDefault(TimeZone.getTimeZone(Loader.config.getString("TimeZone")));
-	}}catch(Exception e) {
-		Loader.msg("&6Invalid time zone: &c"+Loader.config.getString("TimeZone"), TheAPI.getConsole());
+	if(setting.timezone) {
+	    try {
+		TimeZone.setDefault(TimeZone.getTimeZone(Loader.config.getString("Options.TimeZone.Zone")));
+	}catch(Exception e) {
+		Loader.msg("&6Invalid time zone: &c"+Loader.config.getString("Options.TimeZone.Zone"), TheAPI.getConsole());
 		Loader.msg("&6List of available time zones:", TheAPI.getConsole());
 		Loader.msg(" &6https://greenwichmeantime.com/time-zone/", TheAPI.getConsole());
-        }
+        }}
  	Loader.msg(Loader.s("Prefix")+Loader.s("ConfigReloaded"),s);
 	return true;
     }return true;}
 
-	if(args[0].equalsIgnoreCase("Version")){
+	if(args[0].equalsIgnoreCase("Version")||args[0].equalsIgnoreCase("info")){
 		if(API.hasPerm(s, "ServerControl.Info")) {
 			Loader.msg(Loader.s("Prefix")+"&e----------------- &bVersion&e -----------------",s);
 			Loader.msg("",s);
         	Loader.msg(Loader.s("Prefix")+"&7Version of ServerControlReloaded: &eV"+ TheAPI.getPluginsManagerAPI().getVersion("ServerControlReloaded"),s);
         	Loader.msg(Loader.s("Prefix")+"&7Version of TheAPI: &eV"+ TheAPI.getPluginsManagerAPI().getVersion("TheAPI"),s);
         	Loader.msg(Loader.s("Prefix")+"&7Version of Server: &e"+ Bukkit.getServer().getBukkitVersion(),s);
+        	Loader.msg(Loader.s("Prefix")+"&7Our discord: &ehttps://discord.gg/z4kK66g",s);
 	            return true;
      }return true;
      }
 	Loader.msg(Loader.s("Prefix")+Loader.s("UknownCommand"),s);
 	 return true;
 	}
-	final List<String> Reload = Arrays.asList("Reload");
-	final List<String> Help = Arrays.asList("Help");
-	final List<String> Reset = Arrays.asList("Reset");
-	final List<String> Version = Arrays.asList("Version");
-	final List<String> List = Arrays.asList("List");
-	final List<String> Confirm = Arrays.asList("Confirm");
-    final List<String> All = Arrays.asList("Reset","Info","Version","Help","Reload");
+    final List<String> All = Arrays.asList("Info","Version","Help","Reload");
     @Override
     public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
     	List<String> c = new ArrayList<>();
     	if(args.length==1) {
         	
         	if(s.hasPermission("ServerControl.Help")) {
-                c.addAll(StringUtil.copyPartialMatches(args[0], Help, new ArrayList<>()));
+                c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Help"), new ArrayList<>()));
             }
         	if(s.hasPermission("ServerControl.Reload")) {
-        		c.addAll(StringUtil.copyPartialMatches(args[0], Reload, new ArrayList<>()));
-            }
-        	if(s.hasPermission("ServerControl.Reset")) {
-        		c.addAll(StringUtil.copyPartialMatches(args[0], Reset, new ArrayList<>()));
-        		
+        		c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Reload"), new ArrayList<>()));
             }
         	if(s.hasPermission("ServerControl.List")) {
-        		c.addAll(StringUtil.copyPartialMatches(args[0], List, new ArrayList<>()));
+        		c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("List"), new ArrayList<>()));
             }
-        	if(s.hasPermission("ServerControl.Version")) {
-        		c.addAll(StringUtil.copyPartialMatches(args[0], Version, new ArrayList<>()));
+        	if(s.hasPermission("ServerControl.Info")) {
+        		c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Version","Info"), new ArrayList<>()));
             }
         }
-    	if(args[0].equalsIgnoreCase("Reset") && args.length==2) {
-        	if(s.hasPermission("ChatControl.Reset")) {
-        		c.addAll(StringUtil.copyPartialMatches(args[1], Confirm, new ArrayList<>()));
-        		
-        	}
-			
-		}
     	if(args[0].equalsIgnoreCase("Help") && args.length==2) {
         	if(s.hasPermission("ChatControl.Help")) {
         		c.addAll(StringUtil.copyPartialMatches(args[1], All, new ArrayList<>()));

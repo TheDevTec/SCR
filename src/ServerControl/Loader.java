@@ -203,10 +203,10 @@ public void onEnable() {
     	setupPermisions();
 		}
         try {
-		if(config.getBoolean("TimeZone-Enabled")) {
-			TimeZone.setDefault(TimeZone.getTimeZone(config.getString("TimeZone")));
+		if(setting.timezone) {
+			TimeZone.setDefault(TimeZone.getTimeZone(config.getString("Options.TimeZone.Zone")));
 		}}catch(Exception e) {
-			TheAPI.getConsole().sendMessage(TheAPI.colorize("&6Invalid time zone: &c"+config.getString("TimeZone")));
+			TheAPI.getConsole().sendMessage(TheAPI.colorize("&6Invalid time zone: &c"+config.getString("Options.TimeZone.Zone")));
 			TheAPI.getConsole().sendMessage(TheAPI.colorize("&6List of available time zones:"));
 			TheAPI.getConsole().sendMessage(TheAPI.colorize(" &6https://greenwichmeantime.com/time-zone/"));
 	        }

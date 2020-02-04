@@ -37,6 +37,7 @@ public class setting {
 	public static boolean findchunks; //every X minutes, this feature will search for chunks with 100+ mobs and send to the console a warning about these chunks
 **/
 	public static void load() {
+		timezone = Loader.config.getBoolean("Options.TimeZone.Use");
 		ram = Loader.config.getBoolean("Options.RAM-Percentage");
 		warn_restart = Loader.config.getBoolean("Options.WarningSystem.Restart.Use");
 		warn_reload = Loader.config.getBoolean("Options.WarningSystem.Reload.Use");
