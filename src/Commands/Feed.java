@@ -28,7 +28,7 @@ public class Feed implements CommandExecutor {
 					Player p = Bukkit.getPlayer(args[0]);
 					if(p==null) {
 						if(args[0].equals("*")) {
-							Repeat.a(s,"feed * ");
+							Repeat.a(s,"feed *");
 							return true;
 						}
 						Loader.msg(Loader.PlayerNotOnline(args[0]),s);

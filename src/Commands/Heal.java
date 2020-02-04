@@ -37,8 +37,7 @@ public class Heal implements CommandExecutor {
             }
 			if(args.length == 1){
 				if(args[0].equals("*")) {
-					Repeat.a(s, "heal *");
-					Repeat.a(s,"feed * ");
+					Repeat.a(s,"heal *");
 					return true;
 				}
         		Player target = (Player)Bukkit.getServer().getPlayer(args[0]);
