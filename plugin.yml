@@ -404,7 +404,7 @@ permissions:
           ServerControl.ClearInv.Clear: true
           ServerControl.ClearInv.Other: true
           ServerControl.ClearInv.Clear: true
-          ServerControl.ClearInv.Undo: false
+          ServerControl.ClearInv.Undo: true
     ServerControl.Teleport.*:
         default: false
         children:
@@ -446,9 +446,9 @@ permissions:
     ServerControl.Heal.*:
         default: false
         children:
-          ServerControl.Heal.Bypass: false
+          ServerControl.Heal.Bypass: true
           ServerControl.Heal: true
-          ServerControl.Heal.Other: false
+          ServerControl.Heal.Other: true
     ServerControl.Home.*:
         default: false
         children:
@@ -470,7 +470,7 @@ permissions:
         children:
           ServerControl.God.OnJoin: true
           ServerControl.God: true
-          ServerControl.God.Other: false
+          ServerControl.God.Other: true
     ServerControl.Time.*:
         default: false
         children:
@@ -481,7 +481,7 @@ permissions:
         children:
           ServerControl.Fly.OnJoin: true
           ServerControl.Fly: true
-          ServerControl.Fly.Other: false
+          ServerControl.Fly.Other: true
     ServerControl.Economy.InMinus:
         default: false
     ServerControl.CooldownBypass:
@@ -492,7 +492,7 @@ permissions:
     ServerControl.Me:
         default: true
     ServerControl.Gamemode.*:
-        default: op
+        default: false
         children:
           ServerControl.Gamemode: true
           ServerControl.Gamemode.Other: true
@@ -501,7 +501,7 @@ permissions:
           ServerControl.Gamemode.Creative: true
           ServerControl.Gamemode.Adventure: true
     ServerControl.Multiworld.*:
-        default: op
+        default: false
         children:
           ServerControl.MultiWorld.Set: true
           ServerControl.MultiWorld.Create: true
