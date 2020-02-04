@@ -340,6 +340,7 @@ public class Configs {
 		c.put("Help.Xp.Give", "&5Gave player experiences");
 		c.put("Help.Xp.Take", "&5Take from player experiences");
 		c.put("Help.Xp.Balance", "&5Balance of player experiences");
+		c.put("Help.MultiWorld.Tp", "&5Teleport player to world");
 		c.put("Help.BanSystem.TempBan", "&5Temp-Ban specified player with reason for time");
 		c.put("Help.BanSystem.Ban", "&5Ban specified player with reason");
 		c.put("Help.BanSystem.BanIP", "&5Ban IP of specified player with reason");
