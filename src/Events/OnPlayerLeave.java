@@ -40,7 +40,7 @@ public Loader plugin=Loader.getInstance;
 	    SimpleDateFormat format_date_time = new SimpleDateFormat(Loader.config.getString("Format.DateWithTime"));
 	    SimpleDateFormat format_time = new SimpleDateFormat(Loader.config.getString("Format.Time"));
 	    SimpleDateFormat format_date = new SimpleDateFormat(Loader.config.getString("Format.Date"));
-		return s.replace("%players_max%", TheAPI.getCountingAPI().getMaxPlayers()+"")
+		return TheAPI.getPlaceholderAPI().setPlaceholders(p,s.replace("%players_max%", TheAPI.getCountingAPI().getMaxPlayers()+"")
 		  .replace("%players_online%", TheAPI.getCountingAPI().getOnlinePlayers().size()-1+"")
 		  .replace("%player%", p.getDisplayName()) 
 		  .replace("%playername%", p.getDisplayName()) 
@@ -52,7 +52,7 @@ public Loader plugin=Loader.getInstance;
 		  .replace("%version%", "V"+plugin.getDescription().getVersion())
 		  .replace("%server_time%", format_time.format(new Date()))
 		  .replace("%server_name%", API.getServerName())
-		  .replace("%server_ip%", API.getServerIP()+":"+API.getServerPort());
+		  .replace("%server_ip%", API.getServerIP()+":"+API.getServerPort()));
 	}
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PlayerLeaveEvent(PlayerQuitEvent e) {
