@@ -363,8 +363,8 @@ public class SecurityListenerV3 implements Listener{
 						if(isSim(p,message)) {
 							e.setCancelled(true);
 							TheAPI.broadcast(Loader.s("Security.TriedSendSimiliarMessage").replace("%player%", p.getName()).replace("%message%", e.getMessage()),"ServerControl.Admin");
+							return;
 						}
-						return;
 					}
 				 if(setting.swear_chat && API.getVulgarWord(build) || setting.spam_chat && API.getSpamWord(build)){
 					 if(API.getVulgarWord(build)) {
@@ -398,7 +398,7 @@ public class SecurityListenerV3 implements Listener{
 						 return;
 					 }
 				 }
-					 e.setMessage(build);
+				 e.setMessage(build);
 				 }
 	}
 	

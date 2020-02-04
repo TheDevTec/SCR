@@ -1,6 +1,6 @@
 name: ServerControlReloaded
 main: ServerControl.Loader
-version: 7.1
+version: 7.1.5
 website: https://www.spigotmc.org/resources/server-control-reloaded.71147/
 description: Fully customizable plugin with many features!
 author: DevTec
