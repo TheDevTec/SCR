@@ -7,14 +7,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import Commands.BanSystem.BanSystem;
-import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class Tpcancel implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.Tpa")||API.hasPerm(s, "ServerControl.Tpahere")) {
+		if(s.hasPermission("ServerControl.Tpa")||s.hasPermission("ServerControl.Tpahere")) {
 			if(s instanceof Player) {
 				if(args.length==0) {
 					String pd = RequestMap.getRequest(s.getName());
@@ -38,6 +38,10 @@ public class Tpcancel implements CommandExecutor {
 				Loader.msg(Loader.s("ConsoleErrorMessage"), s);
 				return true;
 		}
+		s.sendMessage(TheAPI.colorize(Loader.s("NotPermissionsMessage")
+				.replace("%player%", s.getName())
+				.replace("%playername%", s.getName())
+				.replace("%permission%", "ServerControl.Tpa or ServerControl.Tpahere")));
 		return true;
 	}
 
