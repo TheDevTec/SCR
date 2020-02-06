@@ -10,6 +10,9 @@ public class Repeat {
 	public static void a(CommandSender s, String c) {
 		for(Player p:TheAPI.getCountingAPI().getOnlinePlayers()) {
 			String r = c.replace("*", p.getName());
+			if(s instanceof Player)
+				TheAPI.sudo((Player) s,SudoType.COMMAND, r);
+			else
 			TheAPI.sudoConsole(SudoType.COMMAND, r);
 		}
 	}
