@@ -429,6 +429,11 @@ public class Configs {
 		c.put("Help.Economy.Balance", "&5Show you balance of specified player");
 		c.put("Help.Inventory.CloseInventory", "&5Close opened inventory of specific player");
 		c.put("Help.Homes.HomeOther", "&5Teleport you to player home");
+		
+		c.put("Help.Mail.Send", "&5Send some player new mail...");
+		c.put("Help.Mail.Read", "&5Read all your mails...");
+		c.put("Help.Mail.Clear", "&5Delete all your mails...");
+		
 		c.put("Heal.CooldownMessage", "&6You have to wait &c%time% seconds &6before you can heal yourselves");
 		c.put("Heal.Healed", "&aYou has been healed");
 		c.put("Heal.Feed", "&aYou has been feeded");

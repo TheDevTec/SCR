@@ -504,6 +504,7 @@ private void CommmandsRegister() {
 	CmdC("tempfly", new Commands.TempFly());
 	
 	CmdC("tpcancel", new Commands.Tpa.Tpcancel());
+	CmdC("mail", new Commands.Mail());
 }
 private void EventC(Listener l) {
 	getServer().getPluginManager().registerEvents(l, this);
