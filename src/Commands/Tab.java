@@ -14,6 +14,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Configs;
 import Utils.TabList;
+import me.Straiker123.TheAPI;
 
 public class Tab implements CommandExecutor, TabCompleter {
 
@@ -33,7 +34,7 @@ public class Tab implements CommandExecutor, TabCompleter {
 		}
 		if(API.hasPerm(s,"ServerCotrol.TAB")) {
 			if(args[0].equalsIgnoreCase("Reload")) {
-				Loader.msg(Loader.s("Prefix")+"&e----------------- &bTab Reload &e-----------------",s);
+				Loader.msg(Loader.s("Prefix")+"&e----------------- &bTab Reloading &e-----------------",s);
 			    Loader.msg("",s);
 				TabList.removeTab();
 				Configs.TabLoading();
@@ -87,11 +88,8 @@ public class Tab implements CommandExecutor, TabCompleter {
 			return true;
 			}
 			if(args[0].equalsIgnoreCase("prefix")) {
-				String msg = "";
-					for (int i = 2; i < args.length; i++) {
-						msg = msg + args[i]+" ";
-					}
-					msg=msg.substring(0, msg.length()-1);
+				String msg = TheAPI.buildString(args);
+				msg=msg.replaceFirst(args[0]+" "+args[1]+" ", "");
 					Loader.msg(Loader.s("Prefix")+
 							Loader.s("TabList.PrefixSet").replace("%prefix%", msg).replace("%group%", args[1]),s);
 			Loader.tab.set("Groups."+args[1]+".Prefix", msg);
@@ -99,11 +97,8 @@ public class Tab implements CommandExecutor, TabCompleter {
 			return true;
 		}
 			if(args[0].equalsIgnoreCase("suffix")) {
-				String msg = "";
-					for (int i = 2; i < args.length; i++) {
-						msg = msg + args[i]+" ";
-					}
-					msg=msg.substring(0, msg.length()-1);
+				String msg = TheAPI.buildString(args);
+				msg=msg.replaceFirst(args[0]+" "+args[1]+" ", "");
 					Loader.msg(Loader.s("Prefix")+
 							Loader.s("TabList.SuffixSet").replace("%suffix%", msg).replace("%group%", args[1]),s);
 			Loader.tab.set("Groups."+args[1]+".Suffix", msg);
@@ -134,7 +129,7 @@ public class Tab implements CommandExecutor, TabCompleter {
 				if(args[0].equalsIgnoreCase("Prefix")||args[0].equalsIgnoreCase("Suffix")||args[0].equalsIgnoreCase("Priorite")||args[0].equalsIgnoreCase("Delete"))
         		c.addAll(StringUtil.copyPartialMatches(args[1], Loader.tab.getConfigurationSection("Groups").getKeys(false), new ArrayList<>()));
 				if(args[0].equalsIgnoreCase("Create")) {
-					
+					if(Loader.tab.getString("Groups") != null)
 					for(String a:Loader.tab.getConfigurationSection("Groups").getKeys(false))
 					if(args[1].equals(a))
 	        		c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("AlreadyExists"), new ArrayList<>()));
@@ -146,6 +141,7 @@ public class Tab implements CommandExecutor, TabCompleter {
 							}
 						}else
 							list=Arrays.asList("?");
+						list.removeAll(Loader.tab.getConfigurationSection("Groups").getKeys(false));
 		        		c.addAll(StringUtil.copyPartialMatches(args[1], list, new ArrayList<>()));
 				}}
 			}

@@ -159,9 +159,24 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 					args[0].equalsIgnoreCase("set") && s.hasPermission("ServerControl.ChatFormat.Set"))
             	c.addAll(StringUtil.copyPartialMatches(args[1], Loader.config.getConfigurationSection("Chat-Groups").getKeys(false), new ArrayList<>()));
 
-			if(args[0].equalsIgnoreCase("create") && s.hasPermission("ServerControl.ChatFormat.Create"))
+			if(args[0].equalsIgnoreCase("create") && s.hasPermission("ServerControl.ChatFormat.Create")) {
+				if(Loader.config.getString("Chat-Groups") != null)
+					for(String a:Loader.config.getConfigurationSection("Chat-Groups").getKeys(false))
+					if(args[1].equals(a))
+	        		c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("AlreadyExists"), new ArrayList<>()));
+					else {
+						List<String> list = new ArrayList<String>();
+						if(Loader.vault!=null && API.existVaultPlugin()) {
+							for(String d:Loader.vault.getGroups()) {
+								list.add(d);
+							}
+						}else
+							list=Arrays.asList("?");
+						list.removeAll(Loader.config.getConfigurationSection("Chat-Groups").getKeys(false));
+		        		c.addAll(StringUtil.copyPartialMatches(args[1], list, new ArrayList<>()));
+			}
             	c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));
-		}
+		}}
 		if(args.length==3) {
 			if(args[0].equalsIgnoreCase("set") && s.hasPermission("ServerControl.ChatFormat.Set"))
             	c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("Chat","Name"), new ArrayList<>()));
