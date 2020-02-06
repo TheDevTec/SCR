@@ -1,6 +1,5 @@
 package Commands;
 
-import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -44,7 +43,7 @@ public class Mail implements CommandExecutor {
                 msg = String.valueOf(msg) + args[i] + " ";
 				}
 				msg=msg.substring(0,msg.length()-1);
-				List<String> mails = Loader.me.getStringList("Players."+args[1]+"Mails");
+				//List<String> mails = Loader.me.getStringList("Players."+args[1]+"Mails");
 				
 			}
 		return true;

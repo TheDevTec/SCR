@@ -163,7 +163,7 @@ public class Chat implements CommandExecutor, TabCompleter {
                	        }
         	        return true;
         		}
-                    if(args.length==2) {
+                    if(args.length==2) { 
                     	if(Loader.me.getString("Players."+args[1])!=null) {
             	        	List<String> about = Loader.TranslationsFile.getStringList("AboutYou");
             	        	String world  = Loader.me.getString("Players."+args[1]+".DisconnectWorld");
