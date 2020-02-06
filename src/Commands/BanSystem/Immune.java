@@ -38,7 +38,7 @@ public class Immune implements CommandExecutor {
 				if(s.hasPermission("ServerControl.Immune.Other")) {
 				Player target = Bukkit.getPlayer(args[0]);
 				Player p = (Player) s;
-				boolean imt = Loader.me.getBoolean("Players."+target.getName()+".Immune");
+				boolean imt = Loader.me.getBoolean("Players."+args[0]+".Immune");
 				SPlayer target2 = new SPlayer((Player)Bukkit.getServer().getPlayer(args[0]));
 				if(target2.getPlayer()==null) {
 					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
