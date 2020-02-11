@@ -96,7 +96,7 @@ public class Tasks {
 				Player s = Bukkit.getPlayer(p);
 				long start = Loader.me.getLong("Players."+p+".TempFly.Start");
 				int end = Loader.me.getInt("Players."+p+".TempFly.Time");
-				long timeout = start - System.currentTimeMillis() + end;
+				long timeout = start/1000 - System.currentTimeMillis()/1000 + end;
 				if(timeout <= 0) {
 					if(s!=null) {
 					TheAPI.sendActionBar(s, "&cTempFly ended");
