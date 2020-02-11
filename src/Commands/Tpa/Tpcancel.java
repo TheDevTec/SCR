@@ -16,9 +16,8 @@ public class Tpcancel implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(s.hasPermission("ServerControl.Tpa")||s.hasPermission("ServerControl.Tpahere")) {
 			if(s instanceof Player) {
-				if(args.length==0) {
 					String pd = RequestMap.getRequest(s.getName());
-			        if(pd==null || Bukkit.getPlayer(pd) == null || pd != null && !RequestMap.containsRequest(s.getName(),pd)) {
+			        if(pd==null || !RequestMap.containsRequest(s.getName(),pd)) {
 			        	Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.NoRequest"),s);
 			            return true;
 			        }
@@ -31,9 +30,7 @@ public class Tpcancel implements CommandExecutor {
 			            .replace("%player%",p.getName())
 			            .replace("%playername%", p.getDisplayName()),p);
 			            RequestMap.removeRequest(p.getName(), pd);
-			     
-				}
-				return true;
+						return true;
 				}
 				Loader.msg(Loader.s("ConsoleErrorMessage"), s);
 				return true;

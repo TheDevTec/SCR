@@ -1,3 +1,5 @@
-/Utils/
 /Commands/
+/Events/
 /ServerControl/
+/ServerControlEvents/
+/Utils/
