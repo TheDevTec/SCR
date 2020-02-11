@@ -11,13 +11,12 @@ import me.Straiker123.TheAPI;
 
 public class Suicide implements CommandExecutor {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(API.hasPerm(s, "ServerControl.Suicide")){
 			if(s instanceof Player) {
 				Player p = (Player)s;
-				p.damage(p.getMaxHealth());
+				p.setHealth(0);
 				if(p.isDead())
 					TheAPI.broadcastMessage(API.replacePlayerName(Loader.s("Kill.Suicide"),p));
 				return true;

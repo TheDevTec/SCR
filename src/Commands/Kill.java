@@ -11,14 +11,13 @@ import ServerControl.Loader;
 
 public class Kill implements CommandExecutor {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(API.hasPerm(s, "ServerControl.Kill")) {
 		if(args.length==0) {
 			if(s instanceof Player) {
 				Player p = (Player)s;
-				p.damage(p.getMaxHealth());
+				p.setHealth(0);
 				if(p.isDead())
 				Loader.msg(API.replacePlayerName(Loader.s("Kill.Killed"),p), s);
 				return true;
@@ -32,7 +31,7 @@ public class Kill implements CommandExecutor {
 				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
-			p.damage(p.getMaxHealth());
+			p.setHealth(0);
 			if(p.isDead())
 			Loader.msg(API.replacePlayerName(Loader.s("Kill.Killed"),p), s);
 		}

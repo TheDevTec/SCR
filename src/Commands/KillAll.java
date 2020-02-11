@@ -14,14 +14,13 @@ import ServerControl.Loader;
 
 public class KillAll implements CommandExecutor {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(API.hasPerm(s, "ServerControl.KillAll")) {
 			int amount = 0;
 			ArrayList<String> pl = new ArrayList<String>();
 			for(Player p :Bukkit.getOnlinePlayers()) {
-				p.damage(p.getMaxHealth());
+				p.setHealth(0);
 				if(p.isDead()) {
 				pl.add(p.getName());
 				++amount;
