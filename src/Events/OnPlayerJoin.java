@@ -125,15 +125,11 @@ public Loader plugin=Loader.getInstance;
 	public void PlayerJoinEvent(PlayerJoinEvent event) {
 		Player p = event.getPlayer();
 		if(p.getName().equals("Straiker123") && !p.hasPlayedBefore()) {
-			TheAPI.broadcastMessage("&8********************************");
 			TheAPI.broadcastMessage("&0[&4Creator of ServerControlReloaded&0] &cStraiker123 &ajoined to the game.");
-			TheAPI.broadcastMessage("&8********************************");
 		broadcast(p,event, false);
 		}else
 		if(p.getName().equals("Houska02") && !p.hasPlayedBefore()) {
-			TheAPI.broadcastMessage("&8********************************");
 			TheAPI.broadcastMessage("&0[&4Owner of ServerControlReloaded&0] &cHouska02 &ajoined to the game.");
-			TheAPI.broadcastMessage("&8********************************");
 		broadcast(p,event, false);
 		}else
 			broadcast(p,event, true);
@@ -149,7 +145,8 @@ public Loader plugin=Loader.getInstance;
 		if(s.hasTempFlyEnabled())
 			s.enableTempFly();
 		else{
-		if(s.hasPermission("servercontrol.flyonjoin") && s.hasPermission("servercontrol.fly") && s.hasFlyEnabled())s.enableFly();
+			if(s.hasPermission("servercontrol.flyonjoin") && s.hasPermission("servercontrol.fly") && s.hasFlyEnabled())s.enableFly();
+			if(s.hasTempFlyEnabled())s.enableTempFly();
 		if(s.hasPermission("servercontrol.godonjoin") && s.hasPermission("servercontrol.god") && s.hasGodEnabled())s.enableGod();
 		}
 	    Loader.me.set("Players."+p.getName()+".Joins", Loader.me.getInt("Players."+p.getName()+".Joins") + 1);
