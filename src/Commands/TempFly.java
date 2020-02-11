@@ -23,7 +23,7 @@ public class TempFly implements CommandExecutor {
 			if(args.length==1) {
 				if(TheAPI.getNumbersAPI(args[0]).getInt()>0 && s instanceof Player) {
 					if(API.hasPerm(s, "ServerControl.TempFly")) {
-						new SPlayer(Bukkit.getPlayer(s.getName())).enableTempFly(TheAPI.getNumbersAPI(args[0]).getInt());
+						new SPlayer(Bukkit.getPlayer(s.getName())).enableTempFly((int) TheAPI.getTimeConventorAPI().getTimeFromString(args[1]));
 						return true;}return true;
 				}
 				Loader.Help(s, "/TempFly <Player> <Time>", "TempFly");
@@ -41,7 +41,7 @@ public class TempFly implements CommandExecutor {
 						return true;}return true;
 					}
 					if(API.hasPerm(s, "ServerControl.TempFly.Other")) {
-						int sec =TheAPI.getNumbersAPI(args[1]).getInt();
+						int sec =(int) TheAPI.getTimeConventorAPI().getTimeFromString(args[1]);
 						Loader.msg(Loader.s("Prefix")+Loader.s("TempFly.EnabledOther")
 						.replace("%player%", t.getName())
 						.replace("%playername%", t.getName())

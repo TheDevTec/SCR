@@ -101,12 +101,12 @@ public class Tasks {
 					if(s!=null) {
 					TheAPI.sendActionBar(s, "&cTempFly ended");
 					new SPlayer(s).disableFly();
-					}
 					List<String> list = Loader.me.getStringList("TempFly");
 					list.remove(p);
 					Loader.me.set("TempFly",list);
 					Loader.me.set("Players."+p+".TempFly",null);
 					Configs.chatme.save();
+					}
 				}
 				if(timeout == 5 || timeout == 4 || timeout == 3 || timeout == 2 || timeout == 1 
 						|| timeout == 15 || timeout == 10 || timeout == 30) {
