@@ -197,7 +197,7 @@ public void onEnable() {
 		}
 	loading=System.currentTimeMillis()/100;
 	Configs.LoadConfigs();
-	
+    MultiWorldsUtils.LoadWorlds();
 		if(API.existVaultPlugin()) {
     	setupVault();
     	setupPermisions();
@@ -223,7 +223,6 @@ public void onEnable() {
 				TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&aINFO: Hooked PlaceholderAPI plugin."));
 				TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
 			}
-	    MultiWorldsUtils.LoadWorlds();
 		APIChecker();
 		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
 		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&6INFO: Newest versions of TheAPI can be found on Spigot:"));

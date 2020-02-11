@@ -182,6 +182,7 @@ public class MultiWorldsUtils {
 
 	public static void LoadWorlds() {
 		List<String> worlds =Loader. mw.getStringList("Worlds");
+		if(worlds.isEmpty()==false)
 		for(String w:worlds) {
 			String biome =Loader. mw.getString("WorldsSettings."+w+".Generator");
 			if(biome.equalsIgnoreCase("NETHER")) {
@@ -199,10 +200,11 @@ public class MultiWorldsUtils {
 				if(biome.equalsIgnoreCase("THE_VOID")) {
 					TheAPI.getWorldsManager().create(w, Environment.NORMAL, null, true, 0);
 					 }
-			for(World wa: Bukkit.getWorlds()) {
+		}
+		for(World wa: Bukkit.getWorlds()) {
 			DefaultSet(wa);
 			}
-		}}
+	}
 	public static void LoadWorld(String s, CommandSender sender) {
 		List<String> worlds = Loader.mw.getStringList("Worlds");
 		List<String> ww = Loader.mw.getStringList("Unloaded-Worlds");
