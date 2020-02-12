@@ -140,7 +140,7 @@ public class Tasks {
 			int now = 0;
 			public void run(){
 			List<World> w = Bukkit.getWorlds();
-			if(w.size()-1 >= now) now = 0;
+			if(w.size()-1 <= now) now = 0;
 			try {
 				if(!Loader.mw.getBoolean("WorldsSettings."+w.get(now).getName()+".AutoSave"))
 				w.get(now).save();

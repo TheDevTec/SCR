@@ -44,6 +44,9 @@ public class TabList {
 }
 	public static String replace(String header, Player p) {
 		String customname = p.getName();
+		String group = Loader.FormatgetGroup(p);
+		if(Loader.vault!=null)
+			group=Loader.vault.getPrimaryGroup(p);
 		if(p.getCustomName()!=null)customname=p.getCustomName();
 		String displayname = p.getName();
 		if(p.getDisplayName()!=null)displayname=p.getDisplayName();
@@ -57,6 +60,14 @@ public class TabList {
 				.replace("%hp%", String.valueOf(p.getHealth()))
 				.replace("%health%", String.valueOf(p.getHealth()))
 				.replace("%food%", String.valueOf(p.getFoodLevel()))
+				.replace("%x%", String.valueOf(p.getLocation().getBlockX()))
+				.replace("%y%", String.valueOf(p.getLocation().getBlockY()))
+				.replace("%z%", String.valueOf(p.getLocation().getBlockZ()))
+				.replace("%vault-group%", group)
+				.replace("%vault-prefix%", Loader.getInstance.getPrefix(p))
+				.replace("%prefix%", Loader.getInstance.getPrefix(p))
+				.replace("%vault-suffix%", Loader.getInstance.getSuffix(p))
+				.replace("%suffix%", Loader.getInstance.getSuffix(p))
 				.replace("%group%", getGroup(p))
 				.replace("%tps%", TheAPI.getServerTPS()+"")
 				.replace("%ping%", Loader.getInstance.pingPlayer(p)+"")
