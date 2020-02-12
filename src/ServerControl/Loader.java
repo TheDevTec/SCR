@@ -45,10 +45,17 @@ public class Loader extends JavaPlugin implements Listener {
     public static FileConfiguration kit;
 	public static Economy econ;
     public static Loader getInstance;
-    
+
     public String getPrefix(Player p) {
     	if(API.existVaultPlugin()&&vault!=null){
     		if(getGroup(p)!=null && vault.getGroupPrefix(p.getWorld(), getGroup(p)) != null)return vault.getGroupPrefix(p.getWorld(), getGroup(p));
+    		return "";
+    	}
+    	return "";
+    }
+    public String getSuffix(Player p) {
+    	if(API.existVaultPlugin()&&vault!=null){
+    		if(getGroup(p)!=null && vault.getGroupSuffix(p.getWorld(), getGroup(p)) != null)return vault.getGroupSuffix(p.getWorld(), getGroup(p));
     		return "";
     	}
     	return "";
@@ -75,13 +82,6 @@ public class Loader extends JavaPlugin implements Listener {
 			API.setDisplayName(p, g);
 		}else
 	 		API.setDisplayName(p,Loader.getInstance.getPrefix(p)+p.getName()+Loader.getInstance.getSuffix(p));
-    }
-    public String getSuffix(Player p) {
-    	if(API.existVaultPlugin()) {
-    	if(vault!=null) {
-    		if(getGroup(p)!=null&& vault.getGroupSuffix(p.getWorld(), getGroup(p)) != null)return vault.getGroupSuffix(p.getWorld(), getGroup(p));
-    	}}
-    	return "";
     }
     public static String PlayerNotEx(String s) {
     	return Loader.s("Prefix")+Loader.s("PlayerNotExists").replace("%player%", s).replace("%playername%", s);

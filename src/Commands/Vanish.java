@@ -24,13 +24,13 @@ public class Vanish implements CommandExecutor {
 			Loader.me.set("Players."+s.getName()+".Vanish", true);
 			Configs.chatme.save();
 			TheAPI.vanish(p, "ServerControl.Vanish", true);
-			Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.Toggled").replace("%toggled%", "enabled"),s);
+			Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.Enabled"),s);
 		    return true;
 		}
 		Loader.me.set("Players."+s.getName()+".Vanish", false);
 		Configs.chatme.save();
 		TheAPI.vanish(p, "ServerControl.Vanish", false);
-		Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.Toggled").replace("%toggled%", "disabled"),s);
+		Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.Disabled"),s);
 	    return true;
 		}
 		Loader.Help(s, "/Vanish <player>","Vanish");
@@ -44,12 +44,10 @@ public class Vanish implements CommandExecutor {
 					Configs.chatme.save();TheAPI.vanish(t, "ServerControl.Vanish", true);
 				Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.Enabled")
 				.replace("%player%", t.getName())
-				.replace("%playername%", t.getDisplayName())
-				.replace("%toggled%", "enabled"),t);
+				.replace("%playername%", t.getDisplayName()),t);
 				Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.EnabledPlayer")
 				.replace("%player%", t.getName())
-				.replace("%playername%", t.getDisplayName())
-				.replace("%toggled%", "enabled"),s);
+				.replace("%playername%", t.getDisplayName()),s);
 			    return true;
 			}
 				Loader.me.set("Players."+t.getName()+".Vanish", false);
@@ -57,12 +55,10 @@ public class Vanish implements CommandExecutor {
 			TheAPI.vanish(t, "ServerControl.Vanish", false);
 			Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.Disabled")
 			.replace("%player%", t.getName())
-			.replace("%playername%", t.getDisplayName())
-			.replace("%toggled%", "disabled"),t);
+			.replace("%playername%", t.getDisplayName()),t);
 			Loader.msg(Loader.s("Prefix")+Loader.s("Vanish.DisabledPlayer")
 			.replace("%player%", t.getName())
-			.replace("%playername%", t.getDisplayName())
-			.replace("%toggled%", "disabled"),s);
+			.replace("%playername%", t.getDisplayName()),s);
 		    return true;
 			}
 			Loader.msg(Loader.PlayerNotOnline(args[0]),s);

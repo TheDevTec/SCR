@@ -75,12 +75,10 @@ public class SecurityListenerV3 implements Listener{
 			String o = old.get(p);
 			old.remove(p);
 			old.put(p, msg);
-			if(o.length()>=5) {
+			if(o.length()>=5 && msg.length() >o.length()*2) {
 				String f = o.substring(1, o.length()-1);
 			return o.equalsIgnoreCase(msg) || msg.startsWith(o)||f.startsWith(msg)||f.equalsIgnoreCase(msg);
-			}else
-				return o.equalsIgnoreCase(msg) || msg.startsWith(o);
-			}else
+			}}else
 				old.put(p, msg);
 		}
 		return false;
