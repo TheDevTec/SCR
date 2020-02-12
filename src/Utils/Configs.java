@@ -464,7 +464,7 @@ public class Configs {
 				,"&aLeaves: &6%leaves%","&aFirst Join: &6%firstjoin%","&aVulgarWords: &6%vulgarwords%"
 				,"&aSpams: &6%spams%","&aKicks: &6%kicks%","&aDeaths: &6%deaths%","&aMoney: &6%vault-money%$"
 				,"&aGroup: &6%vault-group%","&a-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
-		c.put("Thor", "Player %playername% striked");
+		c.put("Thor", "&ePlayer %playername% striked");
 		c.put("Cooldown.ToSendMessage", "&6You have to wait &c%timer% seconds &6before you can send a message");
 		c.put("Cooldown.ToSendCommand", "&6You have to wait &c%timer% seconds &6before you can send a command");
 		c.put("Security.TriedSendSimiliarMessage", "&4%player% &ctried to send a &4similiar message");

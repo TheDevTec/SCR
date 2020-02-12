@@ -1,5 +1,5 @@
 # ServerControlReloaded
-Current version of ServerControlReloaded on this GitHub is 7.1.5
+Current version of ServerControlReloaded on this GitHub is 7.2
 
 ## Download ServerControlReloaded:
 - Spigot (Dev builds): https://www.spigotmc.org/resources/server-control-reloaded.71147/
