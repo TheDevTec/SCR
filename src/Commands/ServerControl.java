@@ -67,6 +67,7 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 		Loader.msg(Loader.s("Prefix")+"&e----------------- &bReloading config&e -----------------",s);
 		Loader.msg("",s);
 	Configs.LoadConfigs();
+	setting.load();
 	Tasks.reload();
 	Loader.startConvertMoney();
 	MultiWorldsUtils.LoadWorlds();

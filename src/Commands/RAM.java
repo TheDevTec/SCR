@@ -30,7 +30,7 @@ public class RAM implements CommandExecutor {
 	        }
 	            	List<String> normal = Loader.TranslationsFile.getStringList("RAM.Info.Percent");
 	            	for(String sss: normal) {
-	            		Loader.msg(Loader.s("Prefix")+sss.replace("%used_ram%", TheAPI.getMemoryAPI().getUsedMemory(true)+"").replace("%max_ram%",TheAPI.getMemoryAPI().getMaxMemory()+"ù").replace("%free_ram%", TheAPI.getMemoryAPI().getFreeMemory(true)+""),s);
+	            		Loader.msg(Loader.s("Prefix")+sss.replace("%used_ram%", TheAPI.getMemoryAPI().getUsedMemory(true)+"").replace("%max_ram%",TheAPI.getMemoryAPI().getMaxMemory()+"").replace("%free_ram%", TheAPI.getMemoryAPI().getFreeMemory(true)+""),s);
 	            		
 	                	}
 	            	return true;

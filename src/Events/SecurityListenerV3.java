@@ -75,7 +75,7 @@ public class SecurityListenerV3 implements Listener{
 			String o = old.get(p);
 			old.remove(p);
 			old.put(p, msg);
-			if(o.length()>=5 && msg.length() >o.length()*2) {
+			if(o.length()>=5 && msg.length() >= o.length()) {
 				String f = o.substring(1, o.length()-1);
 			return o.equalsIgnoreCase(msg) || msg.startsWith(o)||f.startsWith(msg)||f.equalsIgnoreCase(msg);
 			}}else
@@ -360,7 +360,7 @@ public class SecurityListenerV3 implements Listener{
 					if(Loader.config.getBoolean("SpamWords.SimiliarMessage")) {
 						if(isSim(p,message)) {
 							e.setCancelled(true);
-							TheAPI.broadcast(Loader.s("Security.TriedSendSimiliarMessage").replace("%player%", p.getName()).replace("%message%", e.getMessage()),"ServerControl.Admin");
+							TheAPI.broadcast(Loader.s("Prefix")+Loader.s("Security.TriedSendSimiliarMessage").replace("%player%", p.getName()).replace("%message%", e.getMessage()),"ServerControl.Admin");
 							return;
 						}
 					}
@@ -396,6 +396,7 @@ public class SecurityListenerV3 implements Listener{
 						 return;
 					 }
 				 }
+				 TheAPI.broadcastMessage(build);
 				 e.setMessage(build);
 				 }
 	}
