@@ -23,13 +23,13 @@ public class Give implements CommandExecutor, TabCompleter {
 	public List<String> items(){
 		ArrayList<String> list = new ArrayList<String>();
 		for(Material ss:Material.values()) {
-			if(ss.isItem() && ss != Material.AIR)
+			if(ss.isOccluding() && ss != Material.AIR)
 			list.add(ss.name());
 		}
 		return list;
 	}
 	public String getItem(String s) {
-		if(Material.matchMaterial(s) != null && Material.matchMaterial(s).isItem() && Material.matchMaterial(s) != Material.AIR)
+		if(Material.matchMaterial(s) != null && Material.matchMaterial(s).isOccluding() && Material.matchMaterial(s) != Material.AIR)
 		return Material.matchMaterial(s).name();
 		return null;
 	}
