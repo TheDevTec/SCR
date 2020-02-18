@@ -244,6 +244,9 @@ public class Configs {
 		c.put("MultiWorld.DoNotUnloaded", "&cWorld &6'%world%' &cdoesn't been unloaded");
 		c.put("MultiWorld.AlreadyCreated", "&6World &c'%world%' &6is already created");
 		c.put("MultiWorld.PlayerTeleportedWorld", "&aPlayer &6%player% &ahas been teleported to world &6'%world%'");
+		
+		c.put("Mail.Notification", "&6You have &a%number% &6new mail('s)");
+		
 		c.put("WalkSpeed.WalkSpeed", "&6Your walk speed has been set to &a%speed%");
 		c.put("WalkSpeed.WalkSpeedPlayer", "&6Walk speed of player &a%playername% &6has been set to &a%speed%");
 		c.put("Fly.Enabled", "&6Fly &aenabled");

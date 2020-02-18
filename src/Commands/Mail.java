@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,24 +30,20 @@ public class Mail implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if(args.length == 1) {
-				
 				if(args[0].equalsIgnoreCase("Send")&&API.hasPerm(s, "ServerControl.Mail.Send")) {
 					Loader.Help(s, "/Mail send <player> <text>", "Mail.Send");
 					return true;
 					}
-				
 				if(args[0].equalsIgnoreCase("Read")&&API.hasPerm(s, "ServerControl.Mail.Read")) {
 					if(getMails(s.getName()).isEmpty()) {
 						TheAPI.sendActionBar((Player) s, "&cYou do not have any mail!");
 						return true;
 					}
 					for (String mail : getMails(s.getName())) {
-                    	msg(mail,s);
-                    }
+                    	msg(mail,s); }
 					Configs.chatme.save();
 					return true;
-				}
-				
+					}
 				if(args[0].equalsIgnoreCase("Clear")&&API.hasPerm(s, "ServerControl.Mail.Read")) {
 					if(getMails(s.getName()).isEmpty()) {
 						TheAPI.sendActionBar((Player) s, "&cYou do not have any mail!");
@@ -54,6 +51,7 @@ public class Mail implements CommandExecutor, TabCompleter {
 					}
 					removeALL(s);
 					TheAPI.sendActionBar((Player) s, "&aYou cleared all mails...");
+					Configs.chatme.save();
 					return true;
 				}
 				
@@ -71,13 +69,20 @@ public class Mail implements CommandExecutor, TabCompleter {
 				}
 				msg=msg.substring(0,msg.length()-1);
 				add(s, "&8"+s.getName()+": &8"+msg, args[1]);
-				TheAPI.sendActionBar((Player) s, "&6You sended new mail to player &aHouska02 &6...");
+				TheAPI.sendActionBar((Player) s, "&6You sended new mail to player &a"+args[1]+" &6...");
+				
+				if(Bukkit.getPlayer(args[1])!=null) {
+					Player p = Bukkit.getPlayer(args[1]);
+					int number = Loader.me.getStringList("Players."+p.getName()+".Mails").size();
+					Loader.msg(Loader.s("Prefix")+Loader.s("Mail.Notification")
+							.replace("%number%", ""+number), p);
+				}
 				return true;
 			}
 		return true;
 	}
 	 public static void add(CommandSender s, String message, String p) {
-	    		List<String> a = getMails(s.getName());
+	    		List<String> a = getMails(p);
 	    		a.add(message);
 	    		Loader.me.set("Players."+p+".Mails", a);
 	    		Configs.chatme.save();

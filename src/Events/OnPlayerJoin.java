@@ -10,6 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import Commands.Mail;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
@@ -158,6 +160,11 @@ public Loader plugin=Loader.getInstance;
 		
 		
 		setFlyWalk(p);
+		if(!Mail.getMails(s.getName()).isEmpty()) {
+			int number = Loader.me.getStringList("Players."+p.getName()+".Mails").size();
+			Loader.msg(Loader.s("Prefix")+Loader.s("Mail.Notification")
+					.replace("%number%", ""+number), p);
+		}
 		if(Loader.SoundsChecker())
 			p.playSound(p.getLocation(), TheAPI.getSoundAPI().getByName(Loader.config.getString("Options.Sounds.Sound")), 1, 1);
 		Date d = new Date();
