@@ -88,13 +88,23 @@ public class API {
 					 loc = new Location(world, Loader.config.getDouble("Spawn.X"), Loader.config.getDouble("Spawn.Y") ,Loader.config.getDouble("Spawn.Z"), x_head, z_head);
 				}
 				Location l = loc;
+				/*Location block = loc.add(0,0,0);
+				Location loc1 = loc.add(0,+1,0);
+				Location loc2 = loc.add(0,+2,0); 
+				Bukkit.broadcast("OriginalLocation: "+loc, "");
+				Bukkit.broadcast("Block: "+block, "");
+				Bukkit.broadcast("loc1: "+loc1, "");
+				Bukkit.broadcast("loc2: "+loc2, "");*/
 							Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {
 								public void run() {
-									if(setting.tp_safe)
-										TheAPI.getPlayerAPI(p).safeTeleport(l.add(0,-2,0));
-									else
+									
+									/*if(setting.tp_safe) {
+										TheAPI.getPlayerAPI(p).safeTeleportToSpawn(l,TeleportCause.PLUGIN);
+									}else {*/
 										TheAPI.getPlayerAPI(p).teleport(l);
-				}}, 1);
+								}
+							//}
+				}, 1);
 		 }break;
 		 }
 	 }
