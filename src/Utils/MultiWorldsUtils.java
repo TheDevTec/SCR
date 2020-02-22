@@ -19,6 +19,7 @@ import me.Straiker123.TheAPI;
 
 public class MultiWorldsUtils {
 	public static void UnloadWorld(String w, CommandSender sender) {
+		if(Bukkit.getWorld(w)==null)return;
 		if(!TheAPI.getWorldsManager().unloadWorld(w, true)) {
 			Loader.msg(Loader.s("Prefix")+Loader.s("MultiWorld.DoNotUnloaded").replace("%world%", w), sender);
 			return;
@@ -75,6 +76,7 @@ public class MultiWorldsUtils {
 	}
 	
 	public static void importWorld(String w, CommandSender s, Generator type) {
+		if(Bukkit.getWorld(w)!=null)return;
 		if(exist(w)) {
 				if(Bukkit.getWorld(w) != null) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("MultiWorld.AlreadyExists").replace("%world%", w), s);
@@ -207,6 +209,7 @@ public class MultiWorldsUtils {
 			}
 	}
 	public static void LoadWorld(String s, CommandSender sender) {
+		if(Bukkit.getWorld(s)!=null)return;
 		List<String> worlds = Loader.mw.getStringList("Worlds");
 		List<String> ww = Loader.mw.getStringList("Unloaded-Worlds");
 		String biome =Loader. mw.getString("WorldsSettings."+s+".Generator");
