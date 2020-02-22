@@ -45,7 +45,7 @@ public class API {
 					if(setting.tp_safe) TheAPI.getPlayerAPI(p).safeTeleport(p.getBedSpawnLocation());
 					else TheAPI.getPlayerAPI(p).teleport(p.getBedSpawnLocation());
 			 }else
-				teleportPlayer(p,TeleportLocation.SPAWN);
+				teleportPlayer(p,TeleportLocation.HOME);
 			 }
 			 break;
 		 case HOME:{
@@ -75,16 +75,16 @@ public class API {
 				}else {
 					teleportPlayer(p,TeleportLocation.SPAWN);
 				Loader.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn")
-						.replace("%world%", ((Player)p).getWorld().getName())
+						.replace("%world%", p.getWorld().getName())
 						.replace("%player%", p.getName())
-						.replace("%playername%", ((Player)p).getDisplayName())
+						.replace("%playername%", p.getDisplayName())
 						, p);
 				}}else {
 						teleportPlayer(p,TeleportLocation.SPAWN);
 						Loader.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn")
-								.replace("%world%", ((Player)p).getWorld().getName())
+								.replace("%world%", p.getWorld().getName())
 								.replace("%player%", p.getName())
-								.replace("%playername%", ((Player)p).getDisplayName())
+								.replace("%playername%", p.getDisplayName())
 								, p);
 				}
 		 }break;
@@ -99,22 +99,14 @@ public class API {
 					 loc = new Location(world, Loader.config.getDouble("Spawn.X"), Loader.config.getDouble("Spawn.Y") ,Loader.config.getDouble("Spawn.Z"), x_head, z_head);
 				}
 				Location l = loc;
-				/*Location block = loc.add(0,0,0);
-				Location loc1 = loc.add(0,+1,0);
-				Location loc2 = loc.add(0,+2,0); 
-				Bukkit.broadcast("OriginalLocation: "+loc, "");
-				Bukkit.broadcast("Block: "+block, "");
-				Bukkit.broadcast("loc1: "+loc1, "");
-				Bukkit.broadcast("loc2: "+loc2, "");*/
 							Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {
 								public void run() {
-									
-									/*if(setting.tp_safe) {
-										TheAPI.getPlayerAPI(p).safeTeleportToSpawn(l,TeleportCause.PLUGIN);
-									}else {*/
+									if(setting.tp_safe) {
+										TheAPI.getPlayerAPI(p).safeTeleport(l);
+									}else {
 										TheAPI.getPlayerAPI(p).teleport(l);
 								}
-							//}
+								}
 				}, 1);
 		 }break;
 		 }

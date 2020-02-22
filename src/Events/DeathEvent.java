@@ -43,7 +43,11 @@ public class DeathEvent implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void Respawn(PlayerRespawnEvent e) {
 		Player p = e.getPlayer();
-
+		SPlayer a = new SPlayer(p);
+		if(a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
+		a.enableFly();
+		if(a.hasPermission("servercontrol.god") && a.hasGodEnabled())
+		a.enableGod();
 		if(API.getBanSystemAPI().hasJail(p)) {
 
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {
@@ -66,10 +70,5 @@ public class DeathEvent implements Listener {
 				.replace("%playername%", ((Player)p).getDisplayName())
 				, p);
 		}
-		SPlayer a = new SPlayer(p);
-		if(a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
-		a.enableFly();
-		if(a.hasPermission("servercontrol.god") && a.hasGodEnabled())
-		a.enableGod();
 	}
 	}}
