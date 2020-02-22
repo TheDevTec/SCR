@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.API.TeleportLocation;
 import Utils.Configs;
 import me.Straiker123.TheAPI;
 
@@ -25,13 +26,14 @@ public class UnJail implements CommandExecutor {
 					Loader.me.set("Players."+args[0]+".Jail", null);
 					Configs.chatme.save();
 					if(Bukkit.getPlayer(args[0])!=null)
-						Bukkit.dispatchCommand(Bukkit.getPlayer(args[0]), "spawn");
+						API.teleportPlayer(Bukkit.getPlayer(args[0]), TeleportLocation.SPAWN);
 					Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.unJailed")
 					.replace("%playername%", BanSystem.getName(args[0]))
 					.replace("%player%", args[0]), s);
 					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.UnJail")
 							.replace("%operator%", s.getName()).replace("%player%", args[0])
 							.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.UnJail");
+					
 					return true;
 				}
 				BanSystem.notExist(s, args);

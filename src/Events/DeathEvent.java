@@ -58,8 +58,14 @@ public class DeathEvent implements Listener {
 			API.teleportPlayer(p, TeleportLocation.HOME);
 		if(setting.deathspawn == DeathTp.Bed)
 			API.teleportPlayer(p, TeleportLocation.BED);
-		if(setting.deathspawn == DeathTp.Spawn)
+		if(setting.deathspawn == DeathTp.Spawn) {
 			API.teleportPlayer(p, TeleportLocation.SPAWN);
+		Loader.msg(Loader.s("Spawn.TeleportedToSpawn")
+				.replace("%world%", ((Player)p).getWorld().getName())
+				.replace("%player%", p.getName())
+				.replace("%playername%", ((Player)p).getDisplayName())
+				, p);
+		}
 		SPlayer a = new SPlayer(p);
 		if(a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
 		a.enableFly();

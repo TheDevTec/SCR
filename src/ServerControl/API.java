@@ -72,10 +72,21 @@ public class API {
 						else
 							TheAPI.getPlayerAPI(p).teleport(loc);
 							}}, 1);
-				}else
+				}else {
 					teleportPlayer(p,TeleportLocation.SPAWN);
-					}else
+				Loader.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn")
+						.replace("%world%", ((Player)p).getWorld().getName())
+						.replace("%player%", p.getName())
+						.replace("%playername%", ((Player)p).getDisplayName())
+						, p);
+				}}else {
 						teleportPlayer(p,TeleportLocation.SPAWN);
+						Loader.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn")
+								.replace("%world%", ((Player)p).getWorld().getName())
+								.replace("%player%", p.getName())
+								.replace("%playername%", ((Player)p).getDisplayName())
+								, p);
+				}
 		 }break;
 		 case SPAWN:{
 			 World world = Bukkit.getWorlds().get(0);;

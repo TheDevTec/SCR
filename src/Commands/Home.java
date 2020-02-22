@@ -61,7 +61,7 @@ public class Home implements CommandExecutor, TabCompleter {
 							API.setBack(p);
 						p.teleport(locs);
 						
-						Loader.msg(Loader.s("Prefix")+Loader.s("Spawn.TeleportedToSpawn")
+						Loader.msg(Loader.s("Prefix")+Loader.s("Spawn.NoHomesTeleportedToSpawn")
 				.replace("%world%", world.getName())
 				.replace("%player%", s.getName())
 				.replace("%playername%", ((Player)s).getDisplayName()),s);

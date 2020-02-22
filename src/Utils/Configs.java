@@ -261,6 +261,7 @@ public class Configs {
 		c.put("ConsoleErrorMessage", "&4This command can be used only ingame!");
 		c.put("SoundErrorMessage", "&4Invalid song!");
 		c.put("Spawn.TeleportedToSpawn", "&aYou has been teleported to the spawn");
+		c.put("Spawn.NoHomesTeleportedToSpawn", "&aYou have no home! You have been teleported to the spawn");
 		c.put("Spawn.PlayerTeleportedToSpawn", "&aPlayer %playername% &ahas been teleported to the spawn");
 		c.put("Spawn.SpawnSet", "&6Global spawn set");
 		c.put("Warp.Created", "&aWarp &6'%warp%' &ahas been created");

@@ -106,7 +106,10 @@ public class SecurityListenerV3 implements Listener{
 				}
 			}}
 		Commands.BanSystem.BanSystem.KickMaxWarns(p.getName());
-		if(API.getBanSystemAPI().hasJail(p))e.setCancelled(true);
+		if(API.getBanSystemAPI().hasJail(p)) {
+			e.setCancelled(true);
+			return;
+		}
 		if(TheAPI.getPunishmentAPI().hasMute(p.getName())){
 			if(Loader.config.getBoolean("BanSystem.Mute.DisableCmds")){
 				String mes = e.getMessage().toLowerCase();
@@ -327,6 +330,10 @@ public class SecurityListenerV3 implements Listener{
 	public void onChat(PlayerChatEvent e) {
 		Player p = e.getPlayer();
 		 if(!p.hasPermission("ServerControl.Admin")) {
+			 if(setting.lock_chat) {
+				 e.setCancelled(true);
+				 return;
+			 }
 				String message = e.getMessage();
 				String d = ""; //anti doubled letters
 				int up = 0; //anti caps
