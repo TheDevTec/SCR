@@ -184,6 +184,7 @@ public class MultiWorldsUtils {
 		List<String> worlds =Loader. mw.getStringList("Worlds");
 		if(worlds.isEmpty()==false)
 		for(String w:worlds) {
+			if(Bukkit.getWorld(w)!=null)continue;
 			String biome =Loader. mw.getString("WorldsSettings."+w+".Generator");
 			if(biome.equalsIgnoreCase("NETHER")) {
 				TheAPI.getWorldsManager().create(w, Environment.NETHER, WorldType.NORMAL, true, 0);
