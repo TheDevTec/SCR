@@ -51,6 +51,7 @@ public class Configs {
 			c.put("Xp.Balance", "&6%playername% &6currently have &a%amount%exps");
 			c.put("Xp.Given", "&6Given &a%amount%exps &6to %playername%");
 			c.put("Xp.Taken", "&6Taken &c%amount%exps &6from %playername%");
+			c.put("Xp.Set", "&6%playername%'s experiences set to &c%amount%");
 			c.put("RAM.Clearing", "&6Clearing memory cache, please wait..");
 			c.put("RAM.Cleared", "&6Cleared &a%cleared% MB");
 			c.put("RAM.AlreadyClearing", "&cMemory is clearing, please wait..");
@@ -341,6 +342,7 @@ public class Configs {
 		c.put("Help.Seen", "&5Sends you information about the player how long is player online/offline");
 		c.put("Help.Xp.Give", "&5Gave player experiences");
 		c.put("Help.Xp.Take", "&5Take from player experiences");
+		c.put("Help.Xp.Set", "&5Set player experiences to new value");
 		c.put("Help.Xp.Balance", "&5Balance of player experiences");
 		c.put("Help.MultiWorld.Tp", "&5Teleport player to world");
 		c.put("Help.BanSystem.TempBan", "&5Temp-Ban specified player with reason for time");
