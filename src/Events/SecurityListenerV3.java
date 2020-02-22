@@ -343,7 +343,7 @@ public class SecurityListenerV3 implements Listener{
 				String build = d;
 				if(setting.caps_chat) {
 					build="";
-				if((up/d.length())*100 >= 60 && !p.hasPermission("ServerControl.Caps") && d.length() > 5) {
+				if(up != 0 ? (up/d.length())*100 >= 60 && !p.hasPermission("ServerControl.Caps") && d.length() > 5:false) {
 					TheAPI.broadcast(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Security.TryingSendCaps"),p).replace("%message%", message), "ServerControl.Caps");
 					for(String s : d.split(" ")) {
 						if(!is(s)) {
