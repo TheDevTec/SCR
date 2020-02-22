@@ -419,6 +419,7 @@ public class Configs {
 		c.put("Help.Warp.Warp", "&5Teleport you to specified warp");
 		c.put("Help.DelHome", "&5Delete specified home");
 		c.put("Help.Thor", "&5Strike player with lighting bolt");
+		c.put("Help.ThorOnBlock", "&5Summon lightning bolt on block you are looking!");
 		c.put("Help.TempFly", "&5Enable FLY to specific player for time");
 		c.put("Help.Back", "&5Teleport player back to latest position");
 		c.put("Help.Spawn", "&5Teleport player to spawn");
@@ -469,6 +470,7 @@ public class Configs {
 				,"&aSpams: &6%spams%","&aKicks: &6%kicks%","&aDeaths: &6%deaths%","&aMoney: &6%vault-money%$"
 				,"&aGroup: &6%vault-group%","&a-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
 		c.put("Thor", "&ePlayer %playername% striked");
+		c.put("ThorOnBlock", "&eSummoned lightning bolt!");
 		c.put("Cooldown.ToSendMessage", "&6You have to wait &c%timer% seconds &6before you can send a message");
 		c.put("Cooldown.ToSendCommand", "&6You have to wait &c%timer% seconds &6before you can send a command");
 		c.put("Security.TriedSendSimiliarMessage", "&4%player% &ctried to send a &4similiar message");
