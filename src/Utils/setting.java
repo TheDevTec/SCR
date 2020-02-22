@@ -98,7 +98,7 @@ public class setting {
 		vip_kick = Loader.config.getBoolean("Options.VIPSlots.KickWhenFullServer");
 		vip_join = Loader.config.getBoolean("Options.VIPSlots.VIPJoinBroadcast");
 		motd = Loader.config.getBoolean("Options.ServerList.MOTD.Use");
-		motd_maintenance = Loader.config.getBoolean("Options.ServerList.Maintenance");
+		motd_maintenance = Loader.config.getBoolean("Options.ServerList.MOTD.Maintenance");
 		afk_auto = Loader.config.getBoolean("Options.AFK.AutoAFK");
 		afk_kick = Loader.config.getBoolean("Options.AFK.AutoKick");
 		lock_chat = Loader.config.getBoolean("Options.ChatLock");

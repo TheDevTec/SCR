@@ -167,6 +167,7 @@ public class Tasks {
 	private static void other() {
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 		    if(setting.motd) {
+		    	
 				if(!setting.lock_server ||setting.lock_server && !setting.motd_maintenance)
 					TheAPI.setServerMotd(Loader.config.getString("Options.ServerList.MOTD.Text.Normal").replace("%next%", "\n").replace("%line%", "\n"));
 				else
@@ -174,7 +175,7 @@ public class Tasks {
 		}
 	   	 for(Player p:Bukkit.getOnlinePlayers()) {
 	   		 if(AFK.isAFK(p)) {
-	   				 if(setting.afk_kick && AFK.getAFKTime(p)>=Loader.config.getInt("AFK.Kick.Time")
+	   				 if(setting.afk_kick && AFK.getAFKTime(p)>=TheAPI.getTimeConventorAPI().getTimeFromString(Loader.config.getString("AFK.Kick.Time"))
 	   						 && !p.hasPermission("ServerControl.AFK.Bypass")) {
 	   					Loader.me.set("Players."+p.getName()+".AFK-Manual",null);
 	   					Loader.me.set("Players."+p.getName()+".AFK-Broadcast",null);
