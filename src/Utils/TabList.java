@@ -43,6 +43,7 @@ public class TabList {
 		return Loader.getInstance.getSuffix(p);
 }
 	public static String replace(String header, Player p) {
+		header=TheAPI.getPlaceholderAPI().setPlaceholders(p, header);
 		String customname = p.getName();
 		String group = Loader.FormatgetGroup(p);
 		if(Loader.vault!=null)

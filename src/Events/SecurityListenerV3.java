@@ -43,10 +43,9 @@ public class SecurityListenerV3 implements Listener{
 		return false;
 	}
 	private int count(String string){
-		char ch = (char)string.charAt(0);
+		char ch = 0;
 		int upperCaseCount = 0;
-		for(int i = 0; i < string.length(); i++)
-		{
+		for(int i = 0; i < string.length(); i++) {
 			ch = (char)string.charAt(i);
 	        if (Character.isAlphabetic(ch) && Character.isUpperCase(ch))
 	        {

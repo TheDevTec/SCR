@@ -24,8 +24,8 @@ public class Configs {
 			c.put("Skull-GivenToPlayer", "&6Gave player-head %head% to %playername%");
 			c.put("Skull-Given", "&6Gave player-head ''%head%'' to you");
 			c.put("Seen.Online", "&6Player %playername% &6is &aonline &6for &a%online%");	
-			c.put("Seen.Offline", "&6Player %playername% &6is &coffline &6for &c%offline%");	
-			
+			c.put("Seen.Offline", "&6Player %playername% &6is &coffline &6for &c%offline%");
+			c.put("Seen.SimiliarNames", "&6Did you mean this name: %names%");
 			c.put("PlayerList.Staff", 
 					Arrays.asList("&7=-=-=- %online% / %max_players% -=-=-=","&8Online staff: &a%staff%","&7=-=-=-=-=-=-=-=-="));	
 			c.put("PlayerList.Normal", Arrays.asList("&7=-=-=- %online% / %max_players% -=-=-=","&8Staff: &a%staff%","&8VIP: &a%VIP%","&8Players: &a%players%"));	
@@ -321,7 +321,6 @@ public class Configs {
 		c.put("Back.Teleporting", "&6Teleporting back to latest position..");
 		c.put("Back.PlayerTeleported", "&6Player %playername% &6has been teleported back to last position..");
 		c.put("Help.NoHelpForCommand", "&cThere is no help for command: %command%");
-		c.put("Help.ClearInv", "&5Clear players's inventory");
 		c.put("Help.Fly", "&5Enable/disable player fly");
 		c.put("Help.FlySpeed", "&5Set your or specified player fly speed");
 		c.put("Help.WalkSpeed", "&5Set your or specified player walk speed");
@@ -408,7 +407,6 @@ public class Configs {
 		c.put("Help.List", "&5Shows list with swear words a spam words");
 		c.put("Help.Chunks", "&5Shows chunks used and loaded worlds");
 		c.put("Help.AFK-Other", "&5Enable or Disable AFK of specified player");
-		c.put("Help.ClearInv.Help", "&5Shows this help list");
 		c.put("Help.ClearInv.Clear", "&5Send request to clear your inventory");
 		c.put("Help.ClearInv.Undo", "&5Undo latest clear inventory command (If it was confirmed)");
 		c.put("Help.ClearInv.Confirm", "&5Confirm request for clear inventory");

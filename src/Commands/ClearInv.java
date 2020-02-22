@@ -81,13 +81,9 @@ public class ClearInv implements CommandExecutor, TabCompleter {
         	if(args[0].equalsIgnoreCase("Other")) {
     			if(API.hasPerm(s, "ServerControl.ClearInv.Other")) {
     				if(args.length ==1) {
-        				Loader.msg(fs+"&e----------------- &bClear &e-----------------",s);
-    					Loader.msg("",s);
-    					Loader.msg(fs + f("ClearInventory.Usage"),s);
+        				Loader.Help(s, "/Clear Other <player>","ClearInv.Other");
     		    	    return true;
     				}
-
-    				if(args.length ==2) {
     	    		Player target = Bukkit.getServer().getPlayer(args[1]);
     	            		if(target == null) {
     	            			Loader.msg(Loader.PlayerNotOnline(args[1]),s);
@@ -96,10 +92,10 @@ public class ClearInv implements CommandExecutor, TabCompleter {
     	            	if(target != null) {
     	            		Loader.msg(fs+f("ClearInventory.PlayerInvCleared").replace("%player%", target.getName()),s);
     		        			undo.put(target, target.getInventory().getContents());
-    		        			Loader.msg(fs+f("ClearInventory.InvCleared"),s);
+    		        			Loader.msg(fs+f("ClearInventory.InvCleared"),target);
     	            			target.getInventory().clear();
     		    	    	    return true;
-    	            	}}}return true;}
+    	            	}}return true;}
 			if(Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm")==false) {
     		if(args[0].equalsIgnoreCase("Confirm")) {
     				
@@ -189,13 +185,14 @@ public class ClearInv implements CommandExecutor, TabCompleter {
     	        			if(API.hasPerm(s, "ServerControl.ClearInv.Help")) {
     	        				Loader.msg(fs + "&e----------------- &bHelp &e-----------------",s);
     	        				Loader.msg("",s);
+    	        				if(s.hasPermission("ServerControl.ClearInv"))
     	        				Loader.Help(s, "/Clear","ClearInv.Clear");
-    	        				Loader.Help(s, "/Clear Clear","ClearInv.Clear");
-    	        				Loader.Help(s, "/Clear Help","ClearInv.Help");
     	        				Loader.Help(s, "/Clear Other <player>","ClearInv.Other");
-    	        				if(Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm")==false) {
+    	        				if(!Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm")) {
+    	        					if(s.hasPermission("ServerControl.ClearInv"))
     	        				Loader.Help(s, "/Clear Confirm","ClearInv.Confirm");
     	        				}
+    	        				if(s.hasPermission("ServerControl.Undo"))
     	        				Loader.Help(s, "/Clear Undo","ClearInv.Undo");
 	    	    	    return true;
     	        			}return true;}
@@ -221,7 +218,10 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 	        		c.addAll(StringUtil.copyPartialMatches(args[0],  Arrays.asList("Undo"), new ArrayList<>()));
 	            }
 	        	if(s.hasPermission("ServerControl.Other")) {
+	        		if(args.length==1)
 	        		c.addAll(StringUtil.copyPartialMatches(args[0],  Arrays.asList("Other"), new ArrayList<>()));
+	        		if(args.length==2 && args[0].equalsIgnoreCase("other"))
+	        			return null;
 	            }
 	    	if(args[0].equalsIgnoreCase("Other") && args.length==2) {
 	    		return null;

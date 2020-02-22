@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 
-public class List implements CommandExecutor {
+public class ListCmd implements CommandExecutor {
 	HashMap<Player,String> p = new HashMap<Player,String>(); // Player, group;
 	
 	public String getGroup(Player a) {

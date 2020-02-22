@@ -9,21 +9,19 @@ import ServerControl.Loader;
 
 public class AFK {
 	public static boolean isAFK(Player p) {
-		int afk = 300; //5min
-		if(Loader.config.getInt("AFK.Time")!=0)afk=Loader.config.getInt("AFK.Time");
-		if(getAFKTime(p) != -1 && getAFKTime(p) >= afk && setting.afk_auto||Loader.me.getBoolean("Players."+p.getName()+".AFK-Manual")) {
+		if(Loader.me.getBoolean("Players."+p.getName()+".AFK-Manual"))return true;
+		if(Loader.config.getInt("AFK.Time")<=0)return false;
+		int afk=Loader.config.getInt("AFK.Time");
+		if(getAFKTime(p) != -1 && getAFKTime(p) >= afk && setting.afk_auto) {
 			return true;
 		}
 		return false;
 	}
-	public static int getAFKTime(Player p) {
-		int afk = -1;
+	public static long getAFKTime(Player p) {
 		if(time.containsKey(p)) {
-		long afks = time.get(p)/1000-System.currentTimeMillis()/1000;
-		afks=-1*afks;
-		afk=(int)afks;
+		 return System.currentTimeMillis()/1000-time.get(p)/1000;
 		}
-		return afk;
+		return -1;
 	}
 	
 	public static boolean wait(Player p) {
@@ -49,6 +47,7 @@ public class AFK {
 	public static HashMap<Player, Boolean> w = new HashMap<Player, Boolean>();
 	
 	public static void save(Player p) {
+		if(time.containsKey(p))time.remove(p);
 		time.put(p,System.currentTimeMillis());
 		Loader.me.set("Players."+p.getName()+".AFK-Broadcast",false);
 	}

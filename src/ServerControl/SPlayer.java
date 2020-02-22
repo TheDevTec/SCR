@@ -83,14 +83,13 @@ public class SPlayer {
 				Utils.AFK.save(s);
 				Loader.me.set("Players."+getName()+".AFK-Manual",null);
 	   		 	Loader.me.set("Players."+getName()+".AFK-Broadcast", null);
-	   			Configs.chatme.save();
-				}else {
+			}else {
 				Loader.getInstance.afk(s, false);
 				Utils.AFK.save(s);
 	   		 	Loader.me.set("Players."+getName()+".AFK-Broadcast", true);
 				Loader.me.set("Players."+getName()+".AFK-Manual",true);
-				Configs.chatme.save();
-				}
+		}
+			Configs.chatme.save();
 	}
 	
 	public void setFire() {

@@ -42,7 +42,7 @@ public class Exp implements CommandExecutor {
 		}
 		if(args[0].equalsIgnoreCase("give")||args[0].equalsIgnoreCase("add")) {
 			if(API.hasPerm(s, "servercontrol.xp.give")){
-			Loader.Help(s, "/Xp Give <player> <amount> <exp/level>", "Xp.Give");
+			Loader.Help(s, "/Xp Give <player> <amount>", "Xp.Give");
 			if(args.length==1||args.length==2) {
 				return true;
 			}
@@ -55,7 +55,7 @@ public class Exp implements CommandExecutor {
 				Loader.msg(Loader.PlayerNotOnline(args[1]), s);
 				return true;
 			}
-			p.setTotalExperience(p.getTotalExperience()+TheAPI.getNumbersAPI(args[2]).getInt());
+			TheAPI.getPlayerAPI(p).giveExp(TheAPI.getNumbersAPI(args[2]).getInt());
 			Loader.msg(Loader.s("Prefix")+Loader.s("Xp.Given").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()).replace("%amount%", ""+TheAPI.getNumbersAPI(args[2]).getInt()), s);
 			return true;
 			}return true;
@@ -75,11 +75,7 @@ public class Exp implements CommandExecutor {
 				Loader.msg(Loader.PlayerNotOnline(args[1]), s);
 				return true;
 			}
-			int take = (int)p.getExp();
-			if(take-TheAPI.getNumbersAPI(args[2]).getInt() < 0) {
-				p.setTotalExperience(take);
-			}else
-				p.setTotalExperience(take-TheAPI.getNumbersAPI(args[2]).getInt());
+			TheAPI.getPlayerAPI(p).takeExp(TheAPI.getNumbersAPI(args[2]).getInt());
 			Loader.msg(Loader.s("Prefix")+Loader.s("Xp.Taken").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()).replace("%amount%", ""+TheAPI.getNumbersAPI(args[2]).getInt()), s);
 			return true;
 			}return true;

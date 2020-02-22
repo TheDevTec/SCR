@@ -48,14 +48,14 @@ public class Loader extends JavaPlugin implements Listener {
 
     public String getPrefix(Player p) {
     	if(API.existVaultPlugin()&&vault!=null){
-    		if(getGroup(p)!=null && vault.getGroupPrefix(p.getWorld(), getGroup(p)) != null)return vault.getGroupPrefix(p.getWorld(), getGroup(p));
+    		if(getGroup(p)!=null && vault.getGroupPrefix(p.getWorld().getName(), getGroup(p)) != null)return vault.getGroupPrefix(p.getWorld().getName(), getGroup(p));
     		return "";
     	}
     	return "";
     }
     public String getSuffix(Player p) {
     	if(API.existVaultPlugin()&&vault!=null){
-    		if(getGroup(p)!=null && vault.getGroupSuffix(p.getWorld(), getGroup(p)) != null)return vault.getGroupSuffix(p.getWorld(), getGroup(p));
+    		if(getGroup(p)!=null && vault.getGroupSuffix(p.getWorld().getName(), getGroup(p)) != null)return vault.getGroupSuffix(p.getWorld().getName(), getGroup(p));
     		return "";
     	}
     	return "";
@@ -89,12 +89,11 @@ public class Loader extends JavaPlugin implements Listener {
     public static String PlayerNotOnline(String s) {
     	return Loader.s("Prefix")+Loader.s("PlayerNotOnline").replace("%player%", s).replace("%playername%", s);
     }
-	@SuppressWarnings("deprecation")
 	public String getGroup(Player p) {
 		try {
 		if(API.existVaultPlugin()) {
 			if(Loader.vault!=null && Loader.vault.getPrimaryGroup(p)!=null)
-			return Loader.vault.getPrimaryGroup(p.getWorld().getName(),p.getName());
+			return Loader.vault.getPrimaryGroup(p);
 			return "";
 		}
 		}catch(Exception e) {
@@ -469,7 +468,7 @@ private void CommmandsRegister() {
 	CmdC("enderchest", new Commands.EnderChest());
 	CmdC("endersee", new Commands.EnderSee());
 	CmdC("Seen", new Commands.Seen());
-	CmdC("List", new Commands.List());
+	CmdC("List", new Commands.ListCmd());
 	CmdC("Staff", new Commands.Staff());
 	CmdC("Trash", new Commands.Trash());
 	CmdC("Invsee", new Commands.Invsee());
