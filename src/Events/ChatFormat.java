@@ -109,7 +109,7 @@ public class ChatFormat implements Listener {
 
 			Loader.setupChatFormat(p);
 			
-		if(Loader.config.getBoolean("ChatLock")) {
+		if(setting.lock_chat) {
 			if(!p.hasPermission("ServerControl.ChatLock"))  {
 				e.setCancelled(true);
 				Loader.msg(Loader.s("Prefix")+Loader.s("ChatLock.ChatIsLockedErrorPlayerMessage"), p);

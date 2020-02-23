@@ -63,8 +63,7 @@ public class SecurityListenerV3 implements Listener{
             }
             prevchar = c;
         }
-        String result = sb.toString();
-  	      return result;
+        return sb.toString();
   	      
 	}
 	static HashMap<Player, String> old = new HashMap<Player, String>();
@@ -330,10 +329,6 @@ public class SecurityListenerV3 implements Listener{
 	public void onChat(PlayerChatEvent e) {
 		Player p = e.getPlayer();
 		 if(!p.hasPermission("ServerControl.Admin")) {
-			 if(setting.lock_chat) {
-				 e.setCancelled(true);
-				 return;
-			 }
 				String message = e.getMessage();
 				String d = ""; //anti doubled letters
 				int up = 0; //anti caps
