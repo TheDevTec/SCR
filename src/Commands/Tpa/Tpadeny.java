@@ -18,7 +18,7 @@ public class Tpadeny implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.Tpa")||API.hasPerm(s, "ServerControl.Tpahere")) {
+		if(API.hasPerm(s, "ServerControl.Tpdeny")) {
 			if(s instanceof Player) {
 			if(args.length==0) {
 				String pd = RequestMap.getRequest(s.getName());

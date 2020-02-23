@@ -34,9 +34,6 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 
 		if(s instanceof Player == false) {
 			if(args.length==0) {
-				Loader.msg(fs+"&e----------------- &bClear &e-----------------",s);
-
-				Loader.msg("",s);
 				Loader.Help(s, "/ClearInv <player>", "ClearInv");
 	    	    return true;
 			}
@@ -59,12 +56,10 @@ public class ClearInv implements CommandExecutor, TabCompleter {
     		int take = Loader.config.getInt("Options.Cost-ClearInvUndo");
     		
     		if(args.length==0) {
-    			if(API.hasPerm(s, "ServerControl.ClearInv.Clear")) {
+    			if(API.hasPerm(s, "ServerControl.ClearInventory")) {
     			if(Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm")==false) {
     				Loader.me.set("Players."+p.getName()+".ClearInvCooldown",System.currentTimeMillis()/1000);
     				Configs.chatme.save();
-    				Loader.msg(fs+"&e----------------- &bClear &e-----------------",s);
-    				Loader.msg("",s);
     				Loader.msg(fs +f("ClearInventory.ConfirmClearInv"),s);
 	    	    return true;
 			}
@@ -72,14 +67,12 @@ public class ClearInv implements CommandExecutor, TabCompleter {
     				if(Loader.me.getString("Players."+p.getName()+".ClearInvCooldown")!=null)
     					Loader.me.set("Players."+p.getName()+".ClearInvCooldown",null);
     				Configs.chatme.save();undo.put(p, p.getInventory().getContents());
-    				Loader.msg(fs+"&e----------------- &bClear &e-----------------",s);
-    	        		Loader.msg("",s);
     	        		Loader.msg(fs+f("ClearInventory.InvCleared"),s);
 			p.getInventory().clear();
             return true;
     		}}return true;}
         	if(args[0].equalsIgnoreCase("Other")) {
-    			if(API.hasPerm(s, "ServerControl.ClearInv.Other")) {
+    			if(API.hasPerm(s, "ServerControl.ClearInventory.Other")) {
     				if(args.length ==1) {
         				Loader.Help(s, "/Clear Other <player>","ClearInv.Other");
     		    	    return true;
@@ -99,55 +92,45 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 			if(Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm")==false) {
     		if(args[0].equalsIgnoreCase("Confirm")) {
     				
-    			if(API.hasPerm(s, "ServerControl.ClearInv.Clear")) {
+    			if(API.hasPerm(s, "ServerControl.ClearInventory")) {
 	        		long reset = Loader.me.getLong("Players."+s.getName()+".ClearInvCooldown")-System.currentTimeMillis()/1000;
 	        		reset = reset*-1;
 	        		if(reset <60) {
 	        			undo.put(p, p.getInventory().getContents());
-	    				Loader.msg(fs+"&e----------------- &bConfirm &e-----------------",s);
-
-    	        		Loader.msg("",s);
     	        		Loader.msg(fs+f("ClearInventory.InvCleared"),s);
     				Loader.me.set("Players."+p.getName()+".ClearInvCooldown",null);
     				Configs.chatme.save();p.getInventory().clear();
     	    	    return true;
     			}
-    				Loader.msg(fs+"&e----------------- &bConfirm &e-----------------",s);
-	        		Loader.msg("",s);
 	        		Loader.msg(fs +f("ClearInventory.NoConfirm"),s);
         	   	    return true;
     			}return true;}}
         	if(args[0].equalsIgnoreCase("Clear")) {
-        		if(API.hasPerm(s, "ServerControl.ClearInv.Clear")) {
+        		if(API.hasPerm(s, "ServerControl.ClearInventory")) {
         			if(Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm")==false) {
         				Loader.me.set("Players."+p.getName()+".ClearInvCooldown",System.currentTimeMillis()/1000);
         				Configs.chatme.save();
-        				Loader.msg(fs+"&e----------------- &bClear &e-----------------",s);
-        				Loader.msg("",s);
         				Loader.msg(fs +f("ClearInventory.ConfirmClearInv"),s);
     	    	    return true;
     			}
         			if(Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm")==true) {
         				if(Loader.me.getString("Players."+p.getName()+".ClearInvCooldown")!=null)
         					Loader.me.set("Players."+p.getName()+".ClearInvCooldown",null);
-        				Configs.chatme.save();undo.put(p, p.getInventory().getContents());
-        				Loader.msg(fs+"&e----------------- &bClear &e-----------------",s);
-        	        		Loader.msg("",s);
+        				Configs.chatme.save();
+        				undo.put(p, p.getInventory().getContents());
         	        		Loader.msg(fs+f("ClearInventory.InvCleared"),s);
     			p.getInventory().clear();
                 return true;
         		}}}
     	        	
     	        	if(args[0].equalsIgnoreCase("Undo")) {
-	        			if(API.hasPerm(s, "ServerControl.ClearInv.Undo")) {
+	        			if(API.hasPerm(s, "ServerControl.ClearInventory.Undo")) {
 	    	        	if(undo.containsKey(p)) {
 	    	        		
 						if(take == 0||Loader.econ==null) {
 							for(ItemStack item : undo.get(p)) {
 						        TheAPI.giveItem(p, item);}
 							undo.remove(p);
-	        				Loader.msg(fs+"&e----------------- &bUndo &e-----------------",s);
-							Loader.msg("",s);
 							Loader.msg(fs +f("ClearInventory.InventoryRetrievedForFree"),s);
 							
 							return true;
@@ -159,15 +142,11 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 							        TheAPI.giveItem(p, item);}
 								Loader.econ.withdrawPlayer(p, take);
 								undo.remove(p);
-		        				Loader.msg(fs+"&e----------------- &bUndo &e-----------------",s);
-								Loader.msg("",s);
 								Loader.msg(fs +f("ClearInventory.InventoryRetrievedForMoney")
 								.replace("%money%", value(take)),s);
 								return true;
 						}else
 							if(!Loader.econ.has(p,take)) {
-		        				Loader.msg(fs+"&e----------------- &bUndo &e-----------------",s);
-								Loader.msg("",s);
 								Loader.msg(fs +f("ClearInventory.NoMoney").replace("%money%", value(take)),s);
 							    return true;
 								
@@ -175,27 +154,22 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 						
 	    	        	}else
 			    	        	if(!undo.containsKey(p)) {
-			        				Loader.msg(fs+"&e----------------- &bUndo &e-----------------",s);
-			    	        		Loader.msg("",s);
 			    	        		Loader.msg(fs +f("ClearInventory.NoInventoryRetrieved").replace("%money%", value(take)),s);
 									return true;
 			    	        		
 			    	        	}}return true;}
     	        		if(args[0].equalsIgnoreCase("Help")) {
-    	        			if(API.hasPerm(s, "ServerControl.ClearInv.Help")) {
-    	        				Loader.msg(fs + "&e----------------- &bHelp &e-----------------",s);
-    	        				Loader.msg("",s);
-    	        				if(s.hasPermission("ServerControl.ClearInv"))
+    	        				if(s.hasPermission("ServerControl.ClearInventory")) {
     	        				Loader.Help(s, "/Clear","ClearInv.Clear");
-    	        				Loader.Help(s, "/Clear Other <player>","ClearInv.Other");
-    	        				if(!Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm")) {
-    	        					if(s.hasPermission("ServerControl.ClearInv"))
+    	        				if(!Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm"))
     	        				Loader.Help(s, "/Clear Confirm","ClearInv.Confirm");
     	        				}
-    	        				if(s.hasPermission("ServerControl.Undo"))
+    	        				if(s.hasPermission("ServerControl.ClearInventory.Other"))
+    	        				Loader.Help(s, "/Clear Other <player>","ClearInv.Other");
+    	        				if(s.hasPermission("ServerControl.ClearInventory.Undo"))
     	        				Loader.Help(s, "/Clear Undo","ClearInv.Undo");
 	    	    	    return true;
-    	        			}return true;}
+    	        			}
     	        		Loader.msg(Loader.s("Prefix")+Loader.s("UknownCommand"),s);
     	    	     		return true;
 	}
@@ -203,29 +177,25 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 	  @Override
 	    public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 	    	List<String> c = new ArrayList<>();
-	        	if(s.hasPermission("ServerControl.ClearInv")) {
+	        	if(s.hasPermission("ServerControl.ClearInventory")) {
 
 	    			if(Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm")==false) {
-	                c.addAll(StringUtil.copyPartialMatches(args[0],  Arrays.asList("Clear", "Confirm"), new ArrayList<>()));
+	                c.addAll(StringUtil.copyPartialMatches(args[0],  Arrays.asList("Confirm"), new ArrayList<>()));
 	    			}
 	                c.addAll(StringUtil.copyPartialMatches(args[0],  Arrays.asList("Clear"), new ArrayList<>()));
 	    			
 	            }
-	        	if(s.hasPermission("ServerControl.Help")) {
 	        		c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Help"), new ArrayList<>()));
-	            }
-	        	if(s.hasPermission("ServerControl.Undo")) {
+	            
+	        	if(s.hasPermission("ServerControl.ClearInventory.Undo")) {
 	        		c.addAll(StringUtil.copyPartialMatches(args[0],  Arrays.asList("Undo"), new ArrayList<>()));
 	            }
-	        	if(s.hasPermission("ServerControl.Other")) {
+	        	if(s.hasPermission("ServerControl.ClearInventory.Other")) {
 	        		if(args.length==1)
 	        		c.addAll(StringUtil.copyPartialMatches(args[0],  Arrays.asList("Other"), new ArrayList<>()));
 	        		if(args.length==2 && args[0].equalsIgnoreCase("other"))
 	        			return null;
 	            }
-	    	if(args[0].equalsIgnoreCase("Other") && args.length==2) {
-	    		return null;
-	    	}
 	        return c;
 	    }
 }

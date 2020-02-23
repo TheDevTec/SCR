@@ -13,7 +13,7 @@ public class ClearConfirmToggle implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-
+	if(API.hasPerm(s, "ServerControl.ClearInventory")) {
 	if(args.length==0) {
 		if(s instanceof Player == false) {
 			Loader.msg(Loader.s("Prefix")+Loader.s("ConsoleErrorMessage"), s);
@@ -28,6 +28,6 @@ public class ClearConfirmToggle implements CommandExecutor {
 			Loader.me.set("Players."+s.getName()+".ClearInvConfirm", true);
 			Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("ClearInventory.ConfirmDisabled"), s);
 			return true;
-		}}return true;}}
-		return false;
+		}}return true;}}}
+		return true;
 	}}

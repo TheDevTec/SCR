@@ -18,7 +18,7 @@ public class TpaBlock implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.TpaBlock")) {
+		if(API.hasPerm(s, "ServerControl.TpBlock")) {
 			if(s instanceof Player) {
 			if(args.length==0) {
 				if(Loader.me.getBoolean("Players."+s.getName()+".TpBlock-Global")==false) {

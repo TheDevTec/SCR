@@ -11,205 +11,265 @@ commands:
     Mail:
         usage: /<command> <send/read/clear>
         description: Mail system
+        permission: servercontrol.mail
     Tpcancel:
         usage: /<command>
         description: Cancel teleportation
         aliases: [tpacancel]
+        permission: servercontrol.tpcancel
     TempFly:
         usage: /<command> <player> <time> 
         description: Enable fly to player on time
+        permission: servercontrol.tempfly
     Suicide:
         usage: /<command>
         description: Kill yourself
+        permission: servercontrol.suicide
     HomeOther:
         usage: /<command> <player> <home>
         description: Teleport you to player home
+        permission: servercontrol.homeother
     CloseInv:
         usage: /<command> <player>
         description: Close player inventory
         aliases: [closeinventory, closeopeninv, closeopeninventory]
+        permission: servercontrol.closeinventory
     TempBanIP:
         usage: /<command>
         description: Temp Ban IP adress or player
+        permission: servercontrol.tempbanip
     Immune:
         usage: /<command>
-        description: Immunity against ban
+        description: Immunity against ban, kick and other
+        permission: servercontrol.immune
     WhoIs:
         usage: /<command> <player>
         description: Information about specified player
+        permission: servercontrol.whois
     NickReset:
         usage: /<command> <player>
         aliases: [nicknamereset]
         description: Reset nickname of player
+        permission: servercontrol.nickname
     Nick:
         usage: /<command> <nickname>
         aliases: [nickname]
         description: Change your nickname
+        permission: servercontrol.nickname
     Exp:
         usage: /<command>
         aliases: [xp, experiences]
         description: Manager for player experiences
+        permission: servercontrol.experiences
     ChatFormat:
         usage: /<command>
         aliases: [cf, chatf]
         description: Main command to manage chat format
+        permission: servercontrol.chatformat
     Skull:
         usage: /<command> <name>
         description: Gave you player head
+        permission: servercontrol.skull
     Addons:
         description: Show you hooked addons
         usage: /<command>
+        permission: servercontrol.addons
     Jail:
         description: Jail player with reason
         usage: /<command> <player> <reason>
+        permission: servercontrol.jail
     unJail:
         description: unJail player
         usage: /<command> <player>
+        permission: servercontrol.unjail
     setJail:
         description: Create new jail
         usage: /<command> <name>
+        permission: servercontrol.setjail
     delJail:
         description: Remove existing jail
         usage: /<command> <name>
+        permission: servercontrol.deljail
     unWarn:
         description: unWarn player
         usage: /<command> <player>
+        permission: servercontrol.unwarn
     Give:
         description: Give player item/block
-        usage: /<command> <player> <item/block> <amount>
-        aliases: [i]
+        usage: /<command> <player> <item> <amount>
+        permission: servercontrol.give
     Butcher:
         description: Kill specified mobs in specified radious
         usage: /<command> <radius> <mob>
+        permission: servercontrol.butcher
     Kill:
         description: Kill player
         usage: /<command> <player>
+        permission: servercontrol.kill
     KillAll:
         description: Kill all players
         usage: /<command>
+        permission: servercontrol.killall
     Tp:
         description: Teleport you to specified player
         usage: /<command> <player>
+        permission: servercontrol.tp
     Broadcast:
         description: Teleport you to specified player
         usage: /<command>
         aliases: [bc]
+        permission: servercontrol.broadcast
     Spawner:
         description: Sets spawner on specified entity
         usage: /<command> <mob>
+        permission: servercontrol.spawner
     Hat:
         description: Set on your head item/block in your hand
         usage: /<command>
+        permission: servercontrol.hat
     Item:
         description: Main command for item editor
         usage: /<command>
+        aliases: [i]
+        permission: servercontrol.item
     Tpa:
         description: Send request to specified player for teleport to him
         usage: /<command> <player>
+        permission: servercontrol.tpa
     MultiEconomy:
         description: Main command to manage multi economies feature
         usage: /<command>
         aliases: [multieco]
+        permission: servercontrol.multieconomy
     Tpaccept:
         description: Accept teleport request
         usage: /<command>
         aliases: [tpyes]
+        permission: servercontrol.tpaccept
     TpBlock:
         description: Block or Unblock all requests for teleport of specified player
         usage: /<command> <player>
         aliases: [tpablock, tpaignore, tpignore, tptoggle, tpatoggle]
+        permission: servercontrol.tpblock
     Tpadeny:
         description: Deny teleport request
         usage: /<command>
         aliases: [tpno, tpdeny]
+        permission: servercontrol.tpadeny
     Thor:
         description: Strike player with lighting bolt
         usage: /<command>
         aliases: [strike, smite,lighting]
+        permission: servercontrol.thor
     Tphere:
         description: Teleport to you specified player
         usage: /<command> <player>
+        permission: servercontrol.tphere
     Sudo:
         description: Send message/command as specified player
         usage: /<command> <player> <arguments>
+        permission: servercontrol.sudo
     Tpahere:
         description: Send request to specified player for teleport him to you
         usage: /<command> <player>
+        permission: servercontrol.tpdeny
     Tpaall:
         description: Send request to all players for teleport to you
         usage: /<command>
+        permission: servercontrol.tpaall
     Tpall:
         description: Teleport all players to you
         usage: /<command>
+        permission: servercontrol.tpall
     Kick:
         description: Kick specified player with reason
         usage: /<command> <player> <reason>
+        permission: servercontrol.kick
     Seen:
         description: Show you how long is player online/offline
         usage: /<command> <player>
+        permission: servercontrol.seen
     Ban:
         description: Ban specified player with reason
         usage: /<command> <player> <reason>
+        permission: servercontrol.ban
     Craft:
         description: Open virtual crafting table
         usage: /<command>
         aliases: [workbench,wb]
+        permission: servercontrol.workbench
     Trash:
         description: Open virtual trash
         usage: /<command>
+        permission: servercontrol.trash
     Enchant:
         description: Add or Remove specified enchant to item in your hand
         usage: /<command> <enchant> <level>
         aliases: [enchanttable, enchantment]
+        permission: servercontrol.enchant
     Staff:
         description: Shows online staff
         usage: /<command>
+        permission: servercontrol.staff
     EnchantRemove:
         description: Remove specified enchant from item in your hand
         usage: /<command> <enchant>
         aliases: [enchanttableremove, enchantmentremove]
+        permission: servercontrol.enchantremove
     EnchantRemoveAll:
         description: Remove all enchants from item in your hand
         usage: /<command>
         aliases: [enchanttableremoveall, enchantmentremoveall]
+        permission: servercontrol.enchantremoveall
     Enderchest:
         description: Open your virtual EnderChest
         usage: /<command>
         aliases: [echest]
+        permission: servercontrol.enderchest
     Endersee:
         description: Open virtual EnderChest of specified player
         usage: /<command> <player>
         aliases: [esee]
+        permission: servercontrol.endersee
     Invsee:
         description: Open inventory of specified player
         usage: /<command> <player>
+        permission: servercontrol.invsee
     Warn:
         description: Warn online or offline player with reason
         usage: /<command> <player> <reason>
+        permission: servercontrol.warn
     UnBan:
         description: UnBan specified player
         usage: /<command> <player>
         aliases: [pardon]
+        permission: servercontrol.unban
     TempBan:
         description: Temp Ban specified player for time with reason
         usage: /<command> <player> <time> <reason>
+        permission: servercontrol.tempban
     Mute:
         description: Mute specified player with reason
         usage: /<command> <player> <reason>
+        permission: servercontrol.mute
     TempMute:
         description: Temp Mute specified player for time with reason 
         usage: /<command> <player> <time> <reason>
+        permission: servercontrol.tempmute
     UnMute:
         description: UnMute specified player
         usage: /<command> <player>
+        permission: servercontrol.unmute
     Ban-IP:
         description: Ban IP adress of specified player with reason
         usage: /<command> <player> <reason>
         aliases: [ip-ban, ipban, banip]
+        permission: servercontrol.banip
     UnBan-IP:
         description: UnBan IP adress of specified player
         usage: /<command> <player>
         aliases: [unip-ban, unbanip, unipban, pardon-ip]
+        permission: servercontrol.unbanip
     SCR:
         description: Main plugin commands
         usage: /<command>
@@ -217,173 +277,222 @@ commands:
     Chunks:
         description: Shows loaded chunks and worlds
         usage: /<command>
+        permission: servercontrol.chunks
     RAM:
         description: Shows ram usage
         usage: /<command>
         aliases: [mem]
+        permission: servercontrol.ram
     Chat:
         description: Normal commands
         usage: /<command>
+        permission: servercontrol.chat
     Reply:
         description: Reply to private message
         usage: /<command> <message>
         aliases: [r]
+        permission: servercontrol.privatemessage
     pm:
         description: Send private message to player
         usage: /<command> <player> <message>
         aliases: [message,m,w,tell,msg]
+        permission: servercontrol.privatemessage
     Gamemode:
         description: Change your or other player gamemode
         usage: /<command>
         aliases: [gm]
+        permission: servercontrol.gamemode
     Gms:
         description: Change your or other player gamemode to survival
         usage: /<command>
+        permission: servercontrol.gamamode.survival
     Gmc:
         description: Change your or other player gamemode to creative
         usage: /<command>
+        permission: servercontrol.gamamode.creative
     Gmsp:
         description: Change your or other player gamemode to spectator
         usage: /<command>
+        permission: servercontrol.gamamode.spectator
     Gma:
         description: Change your or other player gamemode to adventure
         usage: /<command>
+        permission: servercontrol.gamamode.adventure
     Day:
         description: Set time to day
         usage: /<command> <world>
+        permission: servercontrol.day
     Night:
         description: Set time to night
         usage: /<command> <world>
+        permission: servercontrol.night
     ClearChat:
         description: Clear global chat or chat specified player
         usage: /<command> <player>
         aliases: [cc]
+        permission: servercontrol.clearchat
     ChatLock:
         description: Lock or unlock global chat
         usage: /<command>
         aliases: [lockchat]
+        permission: servercontrol.chatlock
     Back:
         description: Teleport you to latest position
         usage: /<command>
         aliases: [return]
+        permission: servercontrol.back
     List:
         description: Shows online players in list
         usage: /<command>
         aliases: [who, online,players]
+        permission: servercontrol.list
     Maintenance:
         description: Enable or Disable server maintenance mode
         usage: /<command>
+        permission: servercontrol.maintenance
     Vanish:
         description: Hide or Show you for all players
         usage: /<command> <player>
         aliases: [v]
+        permission: servercontrol.vanish
     Clear:
         description: Clear your inventory and more
         usage: /<command>
         aliases: [clearinv, clearinvent, clearinventory]
+        permission: servercontrol.clearinventory
     Heal:
         description: Heal you or specified player
         usage: /<command> <player>
+        permission: servercontrol.heal
     Board:
         description: Reload scoreboard config
         usage: /<command>
         aliases: [scs]
+        permission: servercontrol.scoreboard
     God:
         description: Turns god mode on or off for you or specified player
         usage: /<command> <player>
+        permission: servercontrol.god
     TPS:
         description: Get server TPS in real time
         usage: /<command>
         aliases: [lag]
+        permission: servercontrol.tps
     Repair:
         description: Repair item in your hand or all items in your inventory
         usage: /<command> <hand/all>
         aliases: [fix]
+        permission: servercontrol.repair
     Feed:
         description: Feed you or specified player
         usage: /<command> <player>
+        permission: servercontrol.feed
     Fly:
         description: Turns fly on or off for you or specified player
         usage: /<command> <player>
+        permission: servercontrol.fly
     FlySpeed:
         description: Set fly speed specified player
         usage: /<command> <player> <number>
+        permission: servercontrol.flyspeed
     WalkSpeed:
         description: Set walk speed specified player
         usage: /<command> <player> <number>
+        permission: servercontrol.walksped
     MultiWorlds:
         description: Main command for MultiWorlds commands
         aliases: [mw, multiworld]
         usage: /<command>
+        permission: servercontrol.multiworlds
     TabList:
         description: Main command for TAB commands
         usage: /<command>
         aliases: [tab]
+        permission: servercontrol.tablist
     Spawn:
         description: Teleport you to global spawn
         usage: /<command>
+        permission: servercontrol.spawn
     SetSpawn:
         description: Set global spawn
         usage: /<command>
+        permission: servercontrol.setspawn
     Warp:
         description: Teleport you to existing warp
         usage: /<command> <warp>
         aliases: [warps]
+        permission: servercontrol.warp
     Home:
         description: Teleport you to home
         usage: /<command> <home>
+        permission: servercontrol.home
     SetHome:
         description: Create new home
         usage: /<command> <home>
+        permission: servercontrol.sethome
     DelHome:
         description: Delete existing home
         usage: /<command> <home>
+        permission: servercontrol.delhome
     SetWarp:
         description: Create new warp
         usage: /<command> <warp>
+        permission: servercontrol.setwarp
     DelWarp:
         description: Delete existing warp
         usage: /<command> <warp>
+        permission: servercontrol.delwarp
     Homes:
         description: Shows you list of your homes
         usage: /<command>
+        permission: servercontrol.homes
     BalanceTop:
         description: Shows top 10 players balance
         usage: /<command>
         aliases: [baltop]
+        permission: servercontrol.balancetop
     Money:
         description: Main command for Economy commands
         usage: /<command>
-        aliases: [eco, balance]
+        aliases: [eco]
+        permission: servercontrol.economy
     Pay:
         description: Pay money to specified player
         usage: /<command>
+        permission: servercontrol.pay
     Sun:
         description: Set weather sunny
-        usage: /<command> <wo
+        usage: /<command> <world>
+        permission: servercontrol.sun
     Rain:
         description: Set weather rainy
         usage: /<command> <world>
+        permission: servercontrol.rain
     Strorm:
         description: Set weather rainy with storm
         usage: /<command> <world>
         aliases: [thunder]
+        permission: servercontrol.thunder
     AFK:
         description: Turns on or off afk
         usage: /<command>
         aliases: [away]
+        permission: servercontrol.afk
     Helpop:
         description: Send message to online admins
         usage: /<command> <message>
         aliases: [ac, amsg]
+        permission: servercontrol.helpop
     Kit:
         description: Shows you all existing kits and give you specified kit
         usage: /<command>
         aliases: [kits]
+        permission: servercontrol.kit
     ClearConfirmToggle:
         description: Toggle confirm in clear inventory commands
         usage: /<command>
         aliases: [clearinvconfirmtoggle, clearinventoryconfirmtoggle]
+        permission: servercontrol.clearinventorytoggle
 permissions:
     ServerControl.*:
         default: op
@@ -401,29 +510,50 @@ permissions:
           ServerControl.Fly.*: true
           ServerControl.MultiWorld.*: true
           ServerControl.Give.*: true
-    ServerControl.ClearInv.*:
+    ServerControl.User:
+        default: true
+        children:
+          ServerControl.Me: true
+          ServerControl.Economy.User: true
+          ServerControl.Warp: true
+          ServerControl.Tpa: true
+          ServerControl.Tpahere: true
+          ServerControl.TpCancel: true
+          ServerControl.Tpaccept: true
+          ServerControl.Tpdeny: true
+          ServerControl.Afk: true
+          ServerControl.PrivateMessage: true
+          ServerControl.List: true
+          ServerControl.Staff: true
+          ServerControl.Kit.Default: true
+          ServerControl.Home: true
+          ServerControl.SetHome: true
+          ServerControl.delHome: true
+          ServerControl.Spawn: true
+          ServerControl.Reply: true
+          servercontrol.mail: true
+          servercontrol.mail.read: true
+          servercontrol.mail.send: true
+    ServerControl.ClearInventory.*:
         default: false
         children:
-          ServerControl.ClearInv.Help: true
-          ServerControl.ClearInv.Clear: true
-          ServerControl.ClearInv.Other: true
-          ServerControl.ClearInv.Clear: true
-          ServerControl.ClearInv.Undo: true
+          ServerControl.ClearInventory: true
+          ServerControl.ClearInventory.Other: true
+          ServerControl.ClearInventory.Undo: true
     ServerControl.Teleport.*:
         default: false
         children:
-          ServerControl.TpaAll.Blocked: true
-          ServerControl.TpaAll: true
-          
-          ServerControl.TpaaAll: true
-          
-          ServerControl.TpaBlock: true
-          
+          ServerControl.Tp.Location: true
+          ServerControl.Tp: true
           ServerControl.Tpa: true
+          ServerControl.Tpaall: true
+          ServerControl.TpBlock: true
+          ServerControl.Tpaccept: true
+          ServerControl.Tpdeny: true
           ServerControl.Tpahere: true
-          
+          ServerControl.Tpall: true
+          ServerControl.TpCancel: true
           ServerControl.Tphere: true
-          ServerControl.Tphere.Blocked: true
         
     ServerControl.Jail.*:
         default: false
@@ -447,6 +577,7 @@ permissions:
           ServerControl.Economy.User: true
           ServerControl.Economy.Give: true
           ServerControl.Economy.Reset: true
+          ServerControl.Economy.User: true
     ServerControl.Heal.*:
         default: false
         children:
@@ -493,8 +624,6 @@ permissions:
         children:
           ServerControl.CooldownBypass.Commands: true
           ServerControl.CooldownBypass.Chat: true
-    ServerControl.Me:
-        default: true
     ServerControl.Gamemode.*:
         default: false
         children:

@@ -10,12 +10,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import ServerControl.API;
 import ServerControl.Loader;
 
 public class Tpahere implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+		if(API.hasPerm(s, "ServerControl.Tpahere")) {
 			if(s instanceof Player) {
 			if(args.length==0) {
 				Loader.Help(s, "/Tpahere <player>", "TpaSystem.Tpahere");
@@ -58,6 +60,8 @@ public class Tpahere implements CommandExecutor, TabCompleter {
 			}
 			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
+			}
+		return true;
 		}
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {

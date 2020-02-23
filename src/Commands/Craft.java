@@ -13,7 +13,7 @@ public class Craft implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.Craft")) {
+		if(API.hasPerm(s, "ServerControl.Workbench")) {
 			if(s instanceof Player) {
 				if(args.length==0) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Inventory.OpeningCraftTable"), s);
