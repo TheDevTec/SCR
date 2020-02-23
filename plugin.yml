@@ -159,7 +159,7 @@ commands:
     Thor:
         description: Strike player with lighting bolt
         usage: /<command>
-        aliases: [strike, smite,lighting]
+        aliases: [strike, smite,lighting, lightning]
         permission: servercontrol.thor
     Tphere:
         description: Teleport to you specified player
