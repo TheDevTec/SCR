@@ -158,7 +158,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 			if(isAlias(args[0],"take") &&s.hasPermission("servercontrol.xp.take")||
 					isAlias(args[0],"give") &&s.hasPermission("servercontrol.xp.give")||
 					isAlias(args[0],"set") &&s.hasPermission("servercontrol.xp.set"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("?"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("?"), new ArrayList<>()));
 		}
 		}
 		return c;
