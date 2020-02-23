@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
+import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
 
 public class Home implements CommandExecutor, TabCompleter {
@@ -43,30 +44,14 @@ public class Home implements CommandExecutor, TabCompleter {
 				.replace("%home%", "home"), s);
 				return true;
 			}
-				float x_head;
-				float z_head;
-				World world = null;
-				Location locs = null;
-				if(Loader.config.getString("Spawn")!=null) {
-					 x_head = Loader.config.getInt("Spawn.X_Pos_Head");
-					 z_head = Loader.config.getInt("Spawn.Z_Pos_Head");
-					 world = Bukkit.getWorld(Loader.config.getString("Spawn.World"));
-					 locs = new Location(world, Loader.config.getDouble("Spawn.X"), Loader.config.getDouble("Spawn.Y") ,Loader.config.getDouble("Spawn.Z"), x_head, z_head);
-						}
-						if(Loader.config.getString("Spawn")==null) {
-							world = Bukkit.getWorlds().get(0);
-							 locs = Bukkit.getWorlds().get(0).getSpawnLocation();
-						}
-						if(world!=null) {
 							API.setBack(p);
-						p.teleport(locs);
-						
+						API.teleportPlayer(p, TeleportLocation.SPAWN);
 						Loader.msg(Loader.s("Prefix")+Loader.s("Spawn.NoHomesTeleportedToSpawn")
-				.replace("%world%", world.getName())
-				.replace("%player%", s.getName())
-				.replace("%playername%", ((Player)s).getDisplayName()),s);
+				.replace("%world%", p.getWorld().getName())
+				.replace("%player%", p.getName())
+				.replace("%playername%", p.getDisplayName()),s);
 				return true;
-			}}
+			}
 			if(args.length==1) {
 		if(Loader.me.getString("Players."+p.getName()+".Homes."+args[0])!=null) {
 			World w = Bukkit.getWorld(Loader.me.getString("Players."+p.getName()+".Homes."+args[0]+".World"));
