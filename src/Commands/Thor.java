@@ -33,7 +33,7 @@ public class Thor implements CommandExecutor {
 		if(API.hasPerm(s, "ServerControl.Thor")) {
 			if(args.length==0) {
 				Player p2 = (Player) s;
-				Block b = getTargetBlock(p2, 800);
+				Block b = getTargetBlock(p2, 100);
 				b.getWorld().strikeLightning(b.getLocation());
 				Loader.msg(Loader.s("Prefix")+Loader.s("ThorOnBlock"), s);
 				return true;
