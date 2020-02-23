@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import Utils.setting;
 import me.Straiker123.TheAPI;
 
 public class Warp implements CommandExecutor, TabCompleter {
@@ -60,7 +61,10 @@ public class Warp implements CommandExecutor, TabCompleter {
 			 boolean needperm = Loader.config.getBoolean("Warps."+warp(args)+".NeedPermission");
 			 if(needperm == true) {
 				 if(API.hasPerm(s, "ServerControl.Warp."+warp(args))) {
-					 API.setBack(((Player) s));
+					 API.setBack((Player) s);
+					 if(setting.tp_safe)
+							TheAPI.getPlayerAPI((Player)s).safeTeleport(loc);
+					 else
 						TheAPI.getPlayerAPI((Player)s).teleport(loc);
 						Loader.msg(Loader.s("Warp.Warping")
 									.replace("%warp%",warp(args))
@@ -73,8 +77,11 @@ public class Warp implements CommandExecutor, TabCompleter {
 				 }
 				 return true;
 			 }
-				API.setBack(((Player) s));
-		TheAPI.getPlayerAPI((Player)s).teleport(loc);
+				API.setBack((Player) s);
+				 if(setting.tp_safe)
+						TheAPI.getPlayerAPI((Player)s).safeTeleport(loc);
+				 else
+					TheAPI.getPlayerAPI((Player)s).teleport(loc);
 		Loader.msg(Loader.s("Warp.Warping")
 					.replace("%warp%",warp(args))
 					.replace("%world%", loc.getWorld().getName())
@@ -115,7 +122,10 @@ public class Warp implements CommandExecutor, TabCompleter {
 								}
 							Location loc = new Location(Bukkit.getWorld(Loader.config.getString("Warps."+warp(args)+".World")), Loader.config.getDouble("Warps."+warp(args)+".X"), Loader.config.getDouble("Warps."+warp(args)+".Y") ,Loader.config.getDouble("Warps."+warp(args)+".Z"), x_head, z_head);
 							API.setBack(p);
-						TheAPI.getPlayerAPI(p).teleport(loc);
+							 if(setting.tp_safe)
+									TheAPI.getPlayerAPI(p).safeTeleport(loc);
+							 else
+								TheAPI.getPlayerAPI(p).teleport(loc);
 						Loader.msg(Loader.s("Warp.Warping")
 								.replace("%warp%",warp(args))
 								.replace("%world%", loc.getWorld().getName())
