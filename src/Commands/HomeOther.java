@@ -16,6 +16,8 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import Utils.setting;
+import me.Straiker123.TheAPI;
 
 public class HomeOther implements CommandExecutor, TabCompleter {
 
@@ -47,15 +49,18 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 						float yaw = Loader.me.getInt("Players."+t.getName()+".Homes."+args[1]+".Yaw");
 						API.setBack(p);
 						Location loc = new Location(w,x,y,z,yaw,pitch);
-						if(w!=null)
-						p.teleport(loc);
+						if(w!=null){
+							if(setting.tp_safe)
+								TheAPI.getPlayerAPI(p).safeTeleport(loc);
+						 else
+							TheAPI.getPlayerAPI(p).teleport(loc);
 						Loader.msg(Loader.s("Prefix")+Loader.s("Homes.TeleportingToOther")
 			            .replace("%player%", p.getName())
 			            .replace("%playername%", p.getDisplayName())
 			            .replace("%target%", t.getDisplayName())
 						.replace("%home%", args[1]), s);
 						return true;
-						}
+						}}
 					Loader.msg(Loader.s("Prefix")+Loader.s("Homes.NotExistsOther")
 			        .replace("%player%", p.getName())
 			        .replace("%playername%", p.getDisplayName())
@@ -83,15 +88,18 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 						float yaw = Loader.me.getInt("Players."+t.getName()+".Homes."+args[1]+".Yaw");
 						API.setBack(pl);
 						Location loc = new Location(w,x,y,z,yaw,pitch);
-						if(w!=null)
-						pl.teleport(loc);
+						if(w!=null){
+							if(setting.tp_safe)
+								TheAPI.getPlayerAPI(p).safeTeleport(loc);
+						 else
+							TheAPI.getPlayerAPI(p).teleport(loc);
 						Loader.msg(Loader.s("Prefix")+Loader.s("Homes.TeleportingOtherToOther")
 			            .replace("%player%", pl.getName())
 			            .replace("%playername%", pl.getDisplayName())
 			            .replace("%target%", t.getDisplayName())
 						.replace("%home%", args[1]), s);
 						return true;
-						}
+						}}
 					Loader.msg(Loader.s("Prefix")+Loader.s("Homes.NotExistsOther")
 			        .replace("%player%", p.getName())
 			        .replace("%playername%", p.getDisplayName())

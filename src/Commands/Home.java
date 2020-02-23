@@ -17,6 +17,8 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
+import Utils.setting;
+import me.Straiker123.TheAPI;
 
 public class Home implements CommandExecutor, TabCompleter {
 
@@ -36,14 +38,17 @@ public class Home implements CommandExecutor, TabCompleter {
 				float yaw = Loader.me.getInt("Players."+p.getName()+".Homes.home.Yaw");
 				Location loc = new Location(w,x,y,z,yaw,pitch);
 				API.setBack(p);
-				if(w!=null)
-				p.teleport(loc);
+				if(w!=null) {
+					if(setting.tp_safe)
+						TheAPI.getPlayerAPI(p).safeTeleport(loc);
+				 else
+					TheAPI.getPlayerAPI(p).teleport(loc);
 				Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Teleporting")
                 .replace("%player%", p.getName())
                 .replace("%playername%", p.getDisplayName())
 				.replace("%home%", "home"), s);
 				return true;
-			}
+			}}
 							API.setBack(p);
 						API.teleportPlayer(p, TeleportLocation.SPAWN);
 						Loader.msg(Loader.s("Prefix")+Loader.s("Spawn.NoHomesTeleportedToSpawn")
@@ -62,14 +67,17 @@ public class Home implements CommandExecutor, TabCompleter {
 			float yaw = Loader.me.getInt("Players."+p.getName()+".Homes."+args[0]+".Yaw");
 			API.setBack(p);
 			Location loc = new Location(w,x,y,z,yaw,pitch);
-			if(w!=null)
-			p.teleport(loc);
+			if(w!=null){
+				if(setting.tp_safe)
+					TheAPI.getPlayerAPI(p).safeTeleport(loc);
+			 else
+				TheAPI.getPlayerAPI(p).teleport(loc);
 			Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Teleporting")
             .replace("%player%", p.getName())
             .replace("%playername%", p.getDisplayName())
 			.replace("%home%", args[0]), s);
 			return true;
-			}
+			}}
 		Loader.msg(Loader.s("Prefix")+Loader.s("Homes.NotExists")
         .replace("%player%", p.getName())
         .replace("%playername%", p.getDisplayName())
