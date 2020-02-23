@@ -14,12 +14,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.earth2me.essentials.Essentials;
-
 import Commands.BanSystem.BanSystem;
 import Commands.Tpa.RequestMap;
 import me.Straiker123.TheAPI;
-import Utils.AFK;
 import Utils.Configs;
 import Utils.Metrics;
 import Utils.MultiWorldsUtils;
@@ -27,7 +24,6 @@ import Utils.ScoreboardStats;
 import Utils.TabList;
 import Utils.VaultHook;
 import Utils.setting;
-import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -124,27 +120,9 @@ public class Loader extends JavaPlugin implements Listener {
 			EconomyLog("Converted "+amount+" economies.");
 		}}
 public String isAfk(Player p) {
-	if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("AFKPlus")) {
-		AFKPlusPlayer afkplus = (AFKPlusPlayer)Bukkit.getServer().getPluginManager().getPlugin("AFKPlus");
-	if(afkplus.isAFK()||AFK.isAFK(p))return tab.getString("AFK.IsAFK");
-	return tab.getString("AFK.IsNotAFK");
-}
-	if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials")) {
-		try {
-		Essentials ess = (com.earth2me.essentials.Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
-		if (ess.getUser(p).isAfk()||AFK.isAFK(p))return tab.getString("AFK.IsAFK");
+		if (new SPlayer(p).isAFK())return tab.getString("AFK.IsAFK");
 		return tab.getString("AFK.IsNotAFK");
-		}catch(Exception err) {
-			if(AFK.isAFK(p))return tab.getString("AFK.IsAFK");
-			return tab.getString("AFK.IsNotAFK");
-		}
 	}
-	if(!TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials")&&!TheAPI.getPluginsManagerAPI().isEnabledPlugin("AFKPlus")) {
-		if(AFK.isAFK(p))return tab.getString("AFK.IsAFK");
-	return tab.getString("AFK.IsNotAFK");
-	}
-	return tab.getString("AFK.IsNotAFK");
-}
 private String getColoredPing(Player p) {
 	int s = TheAPI.getPlayerPing(p);
 	if(s >= 500)return TheAPI.colorize("&c"+s);
@@ -232,9 +210,11 @@ public void onEnable() {
 
 public void afk(Player p, boolean afk) {
 		      if(afk) {
+		    	  if(!API.getSPlayer(p).hasVanish())
 		 TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("AFK.NoLongerAFK").replace("%player%", p.getName())
 				   .replace("%playername%", p.getDisplayName()));
 		      } else {
+		    	  if(!API.getSPlayer(p).hasVanish())
 		 TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("AFK.IsAFK").replace("%player%", p.getName())
 			       .replace("%playername%", p.getDisplayName()));
 }}
@@ -523,6 +503,8 @@ private void EventsRegister() {
 	EventC(new Events.CreatePortal());
 	EventC(new Events.Signs());
 	EventC(new Events.EntitySpawn());
+	if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("AFKPlus"))
+	EventC(new Events.AFKPlus());
 }
 public static boolean SoundsChecker() {
 	if(setting.sound && !TheAPI.getSoundAPI().existSound(config.getString("Options.Sounds.Sound"))){

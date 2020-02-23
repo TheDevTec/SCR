@@ -33,6 +33,11 @@ public class API {
 	 public static boolean existVaultPlugin() {
 		 return TheAPI.getPluginsManagerAPI().getPlugin("Vault") !=null;
 	 }
+	 
+	 public static SPlayer getSPlayer(Player p) {
+		 return new SPlayer(p);
+	 }
+	 
 	 public static enum TeleportLocation{
 		 HOME,
 		 BED,

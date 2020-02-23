@@ -7,6 +7,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
+import com.earth2me.essentials.Essentials;
+
+import Events.AFKPlus;
 import Utils.Configs;
 import Utils.setting;
 import me.Straiker123.PlayerAPI;
@@ -74,6 +77,12 @@ public class SPlayer {
 		d.setFly(false, false);
 	}
 	public boolean isAFK() {
+		try {
+		if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("AFKPlus") && AFKPlus.AFKPlus.get(s).isAFK())return true;
+		}catch(Exception er) {}
+		try {
+		if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials") && ((Essentials) TheAPI.getPluginsManagerAPI().getPlugin("Essentials")).getUser(s) != null && ((Essentials) TheAPI.getPluginsManagerAPI().getPlugin("Essentials")).getUser(s).isAfk())return true;
+		}catch(Exception er) {}
 		return Utils.AFK.isAFK(s);
 	}
 	
@@ -199,5 +208,12 @@ public class SPlayer {
 	public boolean hasTempFlyEnabled() {
 		
 		return Loader.me.getString("TempFly") != null ? Loader.me.getStringList("TempFly").contains(getName()) : false;
+	}
+
+	public boolean hasVanish() {
+		return TheAPI.isVanished(s);
+	}
+	public void setVanish(boolean v) {
+		TheAPI.vanish(s,"ServerControl.Vanish",v);
 	}
 }

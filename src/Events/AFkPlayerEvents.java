@@ -16,6 +16,7 @@ import Utils.AFK;
 
 @SuppressWarnings("deprecation")
 public class AFkPlayerEvents implements Listener {
+	 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onMove(PlayerMoveEvent e) {
          if(Math.abs(e.getFrom().getBlockX() - e.getTo().getBlockX()) > 0 || Math.abs(e.getFrom().getBlockZ() - e.getTo().getBlockZ()) > 0 
