@@ -397,7 +397,6 @@ public class SecurityListenerV3 implements Listener{
 						 return;
 					 }
 				 }
-				 TheAPI.broadcastMessage(build);
 				 e.setMessage(build);
 				 }
 	}
