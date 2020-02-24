@@ -14,7 +14,7 @@ public class NickReset implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		
-			if(API.hasPerm(s, "ServerControl.NickReset")){
+			if(API.hasPerm(s, "ServerControl.Nickname")){
 			if(args.length==0) {
 				if(s instanceof Player) {
 				Loader.me.set("Players."+s.getName()+".DisplayName", null);
