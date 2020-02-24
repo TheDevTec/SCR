@@ -60,7 +60,7 @@ commands:
         usage: /<command>
         aliases: [xp, experiences]
         description: Manager for player experiences
-        permission: servercontrol.experiences
+        permission: servercontrol.xp
     ChatFormat:
         usage: /<command>
         aliases: [cf, chatf]
