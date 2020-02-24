@@ -14,7 +14,7 @@ public class Nick implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(s instanceof Player) {
-			if(API.hasPerm(s, "ServerControl.Nick")){
+			if(API.hasPerm(s, "ServerControl.Nickname")){
 			if(args.length==0) {
 				Loader.Help(s, "/Nick <nickname>", "Nick");
 				return true;
