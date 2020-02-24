@@ -29,8 +29,8 @@ public Loader plugin=Loader.getInstance;
 	    SimpleDateFormat format_date_time = new SimpleDateFormat(Loader.config.getString("Format.DateWithTime"));
 	    SimpleDateFormat format_time = new SimpleDateFormat(Loader.config.getString("Format.Time"));
 	    SimpleDateFormat format_date = new SimpleDateFormat(Loader.config.getString("Format.Date"));
-		return TheAPI.getPlaceholderAPI().setPlaceholders(p,s.replace("%players_max%", TheAPI.getCountingAPI().getMaxPlayers()+"")
-		  .replace("%players_online%", TheAPI.getCountingAPI().getOnlinePlayers().size()+"")
+		return TheAPI.getPlaceholderAPI().setPlaceholders(p,s.replace("%players_max%", TheAPI.getMaxPlayers()+"")
+		  .replace("%players_online%", TheAPI.getOnlinePlayers().size()+"")
 		  .replace("%player%", p.getDisplayName()) 
 		  .replace("%playername%", p.getDisplayName()) 
 		  .replace("%prefix%", Loader.s("Prefix"))
