@@ -261,7 +261,7 @@ public void onDisable() {
 	Configs.LoadConfigs();
 }
 public static void msg(String message, CommandSender s){
-s.sendMessage(TheAPI.colorize(message));
+	s.sendMessage(TheAPI.colorize(message));
 }
 public static void warn(String s) {
 	Bukkit.getLogger().warning(TheAPI.colorize(s));

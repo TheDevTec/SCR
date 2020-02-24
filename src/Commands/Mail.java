@@ -94,7 +94,7 @@ public class Mail implements CommandExecutor, TabCompleter {
     	return Loader.me.getStringList("Players."+p+".Mails");
     }
 	public static void msg(String mail, CommandSender s){
-		s.sendMessage(TheAPI.colorize(""+mail));
+		Loader.msg(""+mail,s);
 		}
 	 public static void removeALL(CommandSender p) {
 		 Loader.me.set("Players."+p.getName()+".Mails", null);
