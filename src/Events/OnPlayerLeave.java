@@ -60,6 +60,7 @@ public Loader plugin=Loader.getInstance;
 	    set(p);
 		if(setting.leave) {
 			e.setQuitMessage(null);
+			if(!TheAPI.isVanished(p))
 			TheAPI.broadcastMessage(replaceAll(Loader.s("OnLeave.Leave"),p));
 		}
 		SPlayer s = new SPlayer(p);

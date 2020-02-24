@@ -60,9 +60,11 @@ public Loader plugin=Loader.getInstance;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 					public void run() {
     					if(p == null || Bukkit.getPlayer(p.getName())==null)return;
+    					if(!TheAPI.isVanished(p))
 						TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.Join"),p));
 					}}, 11);
 			}else {
+				if(!TheAPI.isVanished(p))
 				TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.Join"),p));
 			}
 		}
@@ -97,6 +99,7 @@ public Loader plugin=Loader.getInstance;
 		  					for(String ss: Loader.TranslationsFile.getStringList("OnJoin.FirstJoin.Messages")) {
 											  Loader.msg(replaceAll(ss,p),p);
 		  				}
+		  					if(!TheAPI.isVanished(p))
 		  					TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.FirstJoin.BroadCast"),p));
 										  if(setting.join_first_percmd) {
 									  			for(String cmds: Loader.config.getStringList("Options.Join.FirstJoin.PerformCommands.List")) {
@@ -110,6 +113,7 @@ public Loader plugin=Loader.getInstance;
       		for(String ss: Loader.TranslationsFile.getStringList("OnJoin.FirstJoin.Messages")) {
       			Loader.msg(replaceAll(ss,p),p);
       		}
+			if(!TheAPI.isVanished(p))
       		TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.FirstJoin.BroadCast"),p));
 			if(setting.join_first_give && Loader.config.getString("Options.Join.FirstJoin.Kit")!=null)
 			API.giveKit(p.getName(),Loader.config.getString("Options.Join.FirstJoin.Kit"),false,false); 
@@ -127,10 +131,12 @@ public Loader plugin=Loader.getInstance;
 	public void PlayerJoinEvent(PlayerJoinEvent event) {
 		Player p = event.getPlayer();
 		if(p.getName().equals("Straiker123") && !p.hasPlayedBefore()) {
+			if(!TheAPI.isVanished(p))
 			TheAPI.broadcastMessage("&0[&4Creator of ServerControlReloaded&0] &cStraiker123 &ajoined to the game.");
 		broadcast(p,event, false);
 		}else
 		if(p.getName().equals("Houska02") && !p.hasPlayedBefore()) {
+			if(!TheAPI.isVanished(p))
 			TheAPI.broadcastMessage("&0[&4Owner of ServerControlReloaded&0] &cHouska02 &ajoined to the game.");
 		broadcast(p,event, false);
 		}else
