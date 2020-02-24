@@ -24,9 +24,11 @@ public class Mail implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String label, String[] args) {
 		
 			if(args.length == 0) {
-				if(API.hasPerm(s, "ServerControl.Mail.Send")) Loader.Help(s, "/Mail send <player> <text>", "Mail.Send");
-				if(API.hasPerm(s, "ServerControl.Mail.Read")) Loader.Help(s, "/Mail clear", "Mail.Clear");
-				if(API.hasPerm(s, "ServerControl.Mail.Read")) Loader.Help(s, "/Mail read", "Mail.Read");
+				if(s.hasPermission("ServerControl.Mail.Send")) 
+					Loader.Help(s, "/Mail send <player> <text>", "Mail.Send");
+				if(s.hasPermission("ServerControl.Mail.Read")) { 
+				Loader.Help(s, "/Mail clear", "Mail.Clear");
+				Loader.Help(s, "/Mail read", "Mail.Read");}
 				return true;
 			}
 			if(args.length == 1) {
@@ -112,8 +114,9 @@ public class Mail implements CommandExecutor, TabCompleter {
 				if(args.length==1) {
 					c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Send"), new ArrayList<>())); // Pøidá Send
 				}
-				if(args[0].equalsIgnoreCase("Send"))
+				if(args[0].equalsIgnoreCase("Send") && args.length==2)
 					return null; //returne online hráèe
+				if(args.length>=3)return Arrays.asList("?");
 			}
 			return c; //returne celej ten "list" co se ti bude zobrazovat
 		}
