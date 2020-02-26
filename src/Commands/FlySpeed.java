@@ -52,11 +52,11 @@ public class FlySpeed implements CommandExecutor {
 		Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("Fly.FlySpeedPlayer")
 				.replace("%player%", target.getName())
 				.replace("%playername%", target.getDisplayName())
-				.replace("%speed%", String.valueOf(flightmodifier)),target);
+				.replace("%speed%", String.valueOf(flightmodifier)),s);
 		Loader.msg(Loader.s("Prefix")+Loader.s("Fly.FlySpeed")
 		.replace("%player%", target.getName())
 		.replace("%playername%", target.getDisplayName())
-		.replace("%speed%", String.valueOf(flightmodifier)),s);
+		.replace("%speed%", String.valueOf(flightmodifier)),target);
 		return true;
 	}
 		Loader.msg(Loader.PlayerNotOnline(args[0]),s);
