@@ -57,7 +57,7 @@ public Loader plugin=Loader.getInstance;
 			event.setJoinMessage("");
 			if(b)
 			if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials")) {
-				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 					public void run() {
     					if(p == null || Bukkit.getPlayer(p.getName())==null)return;
     					if(!TheAPI.isVanished(p))
@@ -79,7 +79,7 @@ public Loader plugin=Loader.getInstance;
 		case NORMAL:
 			  if(setting.join_motd){
 					if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials")) {
-				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
     				public void run() {
     					if(p == null || Bukkit.getPlayer(p.getName())==null)return;
 		    	for(String ss: Loader.TranslationsFile.getStringList("OnJoin.Messages")) {
@@ -93,7 +93,7 @@ public Loader plugin=Loader.getInstance;
 		case FIRST:
 			if(setting.join_first){
 				if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials")) {
-		  		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		  		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 		  				public void run() {
 	    					if(p == null || Bukkit.getPlayer(p.getName())==null)return;
 		  					for(String ss: Loader.TranslationsFile.getStringList("OnJoin.FirstJoin.Messages")) {
@@ -101,12 +101,23 @@ public Loader plugin=Loader.getInstance;
 		  				}
 		  					if(!TheAPI.isVanished(p))
 		  					TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.FirstJoin.BroadCast"),p));
-										  if(setting.join_first_percmd) {
+											  if(Loader.config.getInt("Options.Join.FirstJoin.Wait") > 0) {
+											  		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+										  				public void run() {
+												  if(setting.join_first_percmd) {
 									  			for(String cmds: Loader.config.getStringList("Options.Join.FirstJoin.PerformCommands.List")) {
 									  				TheAPI.sudoConsole(SudoType.COMMAND,TheAPI.colorize(replaceAll(cmds,p)));
 									  			}}
 									  		if(setting.join_first_give && Loader.config.getString("Options.Join.FirstJoin.Kit")!=null)
 									  			API.giveKit(p.getName(),Loader.config.getString("Options.Join.FirstJoin.Kit"),false,false); 
+										  }},20*Loader.config.getInt("Options.Join.FirstJoin.Wait"));}else {
+											  if(setting.join_first_percmd) {
+										  			for(String cmds: Loader.config.getStringList("Options.Join.FirstJoin.PerformCommands.List")) {
+										  				TheAPI.sudoConsole(SudoType.COMMAND,TheAPI.colorize(replaceAll(cmds,p)));
+										  			}}
+										  		if(setting.join_first_give && Loader.config.getString("Options.Join.FirstJoin.Kit")!=null)
+										  			API.giveKit(p.getName(),Loader.config.getString("Options.Join.FirstJoin.Kit"),false,false);
+										  }
 									  		API.teleportPlayer(p, TeleportLocation.SPAWN);
 			}},11);
       		}else {
@@ -115,12 +126,24 @@ public Loader plugin=Loader.getInstance;
       		}
 			if(!TheAPI.isVanished(p))
       		TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.FirstJoin.BroadCast"),p));
-			if(setting.join_first_give && Loader.config.getString("Options.Join.FirstJoin.Kit")!=null)
-			API.giveKit(p.getName(),Loader.config.getString("Options.Join.FirstJoin.Kit"),false,false); 
-			if(setting.join_first_give) {
-			for(String cmds: Loader.config.getStringList("Options.Join.FirstJoin.PerformCommands.List")) {
-			TheAPI.sudoConsole(SudoType.COMMAND,TheAPI.colorize(replaceAll(cmds,p)));
-			}}
+			
+			if(Loader.config.getInt("Options.Join.FirstJoin.Wait") > 0) {
+		  		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+	  				public void run() {
+			  if(setting.join_first_percmd) {
+  			for(String cmds: Loader.config.getStringList("Options.Join.FirstJoin.PerformCommands.List")) {
+  				TheAPI.sudoConsole(SudoType.COMMAND,TheAPI.colorize(replaceAll(cmds,p)));
+  			}}
+  		if(setting.join_first_give && Loader.config.getString("Options.Join.FirstJoin.Kit")!=null)
+  			API.giveKit(p.getName(),Loader.config.getString("Options.Join.FirstJoin.Kit"),false,false); 
+	  }},20*Loader.config.getInt("Options.Join.FirstJoin.Wait"));}else {
+		  if(setting.join_first_percmd) {
+	  			for(String cmds: Loader.config.getStringList("Options.Join.FirstJoin.PerformCommands.List")) {
+	  				TheAPI.sudoConsole(SudoType.COMMAND,TheAPI.colorize(replaceAll(cmds,p)));
+	  			}}
+	  		if(setting.join_first_give && Loader.config.getString("Options.Join.FirstJoin.Kit")!=null)
+	  			API.giveKit(p.getName(),Loader.config.getString("Options.Join.FirstJoin.Kit"),false,false);
+	  }
 	  		API.teleportPlayer(p, TeleportLocation.SPAWN);
       		}}
 			break;

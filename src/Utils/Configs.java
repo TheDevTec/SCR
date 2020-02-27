@@ -610,6 +610,7 @@ public class Configs {
 		c.put("Options.Join.FirstJoin.Use", true);
 		c.put("Options.Join.FirstJoin.GiveKit", true);
 		c.put("Options.Join.FirstJoin.Kit", "Default");
+		c.put("Options.Join.FirstJoin.Wait", 5); //only for give kit, commands
 		c.put("Options.Join.FirstJoin.PerformCommands.Use", false);
 		c.put("Options.Join.FirstJoin.PerformCommands.List", Arrays.asList("give %player% stone_sword 1","eco give %player% 10"));
 		c.put("Options.Leave.CustomLeaveMessage", true);

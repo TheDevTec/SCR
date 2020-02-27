@@ -1,6 +1,5 @@
 package Events;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Player;
@@ -20,19 +19,18 @@ public class RewardsListenerChat implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void ChatListener(PlayerChatEvent e) {
 		if(setting.code) {
-	Player p = e.getPlayer();
-		String name = p.getName();
-		String msg = e.getMessage();
+			Player p = e.getPlayer();
+			String name = p.getName();
 		List<String> only = Loader.config.getStringList("Options.Codes.List");
 		List<String> codes = Loader.me.getStringList("Players."+name+".Taken-Codes");
-		if(!codes.isEmpty())
-		only.removeAll(codes);
+		if(Loader.me.getString("Players."+name+".Taken-Codes")!=null)
+			for(String s : codes)only.remove(s);
 		if(!only.isEmpty())
 		for(String g: only) {
-			if(msg.toLowerCase().contains(g.toLowerCase())) {
+			if(e.getMessage().toLowerCase().contains(g.toLowerCase())) {
 					Loader.msg(Loader.config.getString("Options.Codes.Message")
 							.replace("%player%", name)
-							.replace("%code%", String.valueOf(g))
+							.replace("%code%",g)
 							.replace("%playername%", p.getDisplayName())
 							.replace("%group%", Loader.getInstance.getGroup(p))
 							.replace("%group-prefix%", Loader.getInstance.getPrefix(p))
@@ -41,7 +39,7 @@ public class RewardsListenerChat implements Listener {
 							.replace("%prefix%", Loader.s("Prefix")), p);
 	    		    	for(String cmds: Loader.config.getStringList("Options.Codes.Commands")) {
 	    		    		TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", name)
-						.replace("%code%", String.valueOf(g))
+						.replace("%code%", g)
 						.replace("%playername%", p.getDisplayName())
 						.replace("%group%", Loader.getInstance.getGroup(p))
 						.replace("%group-prefix%", Loader.getInstance.getPrefix(p))
@@ -49,10 +47,8 @@ public class RewardsListenerChat implements Listener {
 						.replace("%vault-group%", Loader.getInstance.getGroup(p))
 						.replace("%prefix%", Loader.s("Prefix")))); 
 	    		    	}
-	    		    	List<Object> list = new ArrayList<Object>();
-	    		    	for(String s : Loader.config.getStringList("Options.Codes.Random-Command"))list.add(s);
-	    		    	TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(TheAPI.getRandomFromList(list).toString().replace("%player%", name)
-	    						.replace("%code%", String.valueOf(g))
+	    		    	TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(TheAPI.getRandomFromList(Loader.config.getStringList("Options.Codes.Random-Command")).toString().replace("%player%", name)
+	    						.replace("%code%", g)
 	    						.replace("%playername%", p.getDisplayName())
 	    						.replace("%group%", Loader.getInstance.getGroup(p))
 	    						.replace("%group-prefix%", Loader.getInstance.getPrefix(p))
