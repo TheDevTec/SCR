@@ -1,5 +1,6 @@
 package Utils;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
@@ -13,7 +14,7 @@ public class setting {
 	
 	
 	public static boolean
-	warn_reload, warn_stop, warn_restart,
+	warn_reload, warn_stop, warn_restart, singeplayersleep,
 	color_chat, color_sign,
 	sound, cmdblock, disable_item,
 	vip, vip_kick, vip_add, vip_join,
@@ -37,54 +38,56 @@ public class setting {
 	public static boolean findchunks; //every X minutes, this feature will search for chunks with 100+ mobs and send to the console a warning about these chunks
 **/
 	public static void load() {
-		timezone = Loader.config.getBoolean("Options.TimeZone.Use");
-		ram = Loader.config.getBoolean("Options.RAM-Percentage");
-		warn_restart = Loader.config.getBoolean("Options.WarningSystem.Restart.Use");
-		warn_reload = Loader.config.getBoolean("Options.WarningSystem.Reload.Use");
-		warn_stop = Loader.config.getBoolean("Options.WarningSystem.Stop.Use");
-		cmdblock = Loader.config.getBoolean("Options.CommandsBlocker.Use");
-		code = Loader.config.getBoolean("Options.Codes.Use");
-		sound = Loader.config.getBoolean("Options.Sounds.Use");
-		color_chat = Loader.config.getBoolean("Options.Colors.Chat.Use");
-		color_chat_perm= Loader.config.getBoolean("Options.Colors.Chat.RequiredPermission");
-		color_sign = Loader.config.getBoolean("Options.Colors.Sign.Use");
-		color_sign_perm= Loader.config.getBoolean("Options.Colors.Sign.RequiredPermission");
-		disable_item=Loader.config.getBoolean("Options.Disable-Items.Use");
+		FileConfiguration f = Loader.config;
+		singeplayersleep=f.getBoolean("Options.SinglePlayerSleep");
+		timezone = f.getBoolean("Options.TimeZone.Use");
+		ram = f.getBoolean("Options.RAM-Percentage");
+		warn_restart =f.getBoolean("Options.WarningSystem.Restart.Use");
+		warn_reload =f.getBoolean("Options.WarningSystem.Reload.Use");
+		warn_stop = f.getBoolean("Options.WarningSystem.Stop.Use");
+		cmdblock =f.getBoolean("Options.CommandsBlocker.Use");
+		code = f.getBoolean("Options.Codes.Use");
+		sound =f.getBoolean("Options.Sounds.Use");
+		color_chat =f.getBoolean("Options.Colors.Chat.Use");
+		color_chat_perm= f.getBoolean("Options.Colors.Chat.RequiredPermission");
+		color_sign = f.getBoolean("Options.Colors.Sign.Use");
+		color_sign_perm= f.getBoolean("Options.Colors.Sign.RequiredPermission");
+		disable_item=f.getBoolean("Options.Disable-Items.Use");
 		try {
-		deathspawn = DeathTp.valueOf(Loader.config.getString("Options.RespawnTeleport"));
+		deathspawn = DeathTp.valueOf(f.getString("Options.RespawnTeleport"));
 		}catch(Exception er) {
 			deathspawn = DeathTp.Spawn;
 		}
-		tp_safe = Loader.config.getBoolean("Options.Teleport.SafeLocation");
-		tp_onreqloc = Loader.config.getBoolean("Options.Teleport.CommandSendLocation");
-		join_spawn = Loader.config.getBoolean("Options.Join.TeleportToSpawn");
-		join_msg = Loader.config.getBoolean("Options.Join.CustomJoinMessage");
-		join_motd = Loader.config.getBoolean("Options.Join.MOTD");
-		join_first_give = Loader.config.getBoolean("Options.Join.FirstJoin.GiveKit");
-		join_first_percmd = Loader.config.getBoolean("Options.Join.PerformCommands.Use");
-		join_first = Loader.config.getBoolean("Options.Join.FirstJoin.Use");
-		leave = Loader.config.getBoolean("Options.Leave.CustomLeaveMessage");
-		cool_cmd = Loader.config.getBoolean("Options.Cooldowns.Commands.Use");
-		cool_percmd = Loader.config.getBoolean("Options.Cooldowns.Commands.PerCommand.Use");
-		cool_chat = Loader.config.getBoolean("Options.Cooldowns.Chat.Use");
-		spam_chat = Loader.config.getBoolean("Options.Security.AntiSpam.Chat");
-		caps_cmd = Loader.config.getBoolean("Options.Security.AntiCaps.Commands");
-		caps_chat = Loader.config.getBoolean("Options.Security.AntiCaps.Chat");
-		spam_double = Loader.config.getBoolean("SpamWords.DoubledLetters.Use");
-		spam_cmd = Loader.config.getBoolean("Options.Security.AntiSpam.Commands");
-		swear_chat = Loader.config.getBoolean("Options.Security.AntiSwear.Chat");
-		swear_cmd = Loader.config.getBoolean("Options.Security.AntiSwear.Commands");
-		ad_book = Loader.config.getBoolean("Options.Security.AntiAD.Book");
-		ad_chat = Loader.config.getBoolean("Options.Security.AntiAD.Chat");
-		ad_cmd = Loader.config.getBoolean("Options.Security.AntiAD.Commands");
-		ad_sign = Loader.config.getBoolean("Options.Security.AntiAD.Sign");
-		ad_anvil = Loader.config.getBoolean("Options.Security.AntiAD.Anvil");
-		ad_itemdrop = Loader.config.getBoolean("Options.Security.AntiAD.ItemDrop");
-		ad_itempick = Loader.config.getBoolean("Options.Security.AntiAD.ItemPickup");
-		eco_multi = Loader.config.getBoolean("Options.Economy.MultiEconomy.Use");
-		eco_log = Loader.config.getBoolean("Options.Economy.Log");
-		eco = Loader.config.getBoolean("Options.Economy.DisablePluginEconomy");
-		eco_other = Loader.config.getBoolean("Options.Economy.CanUseOtherEconomy");
+		tp_safe =f.getBoolean("Options.Teleport.SafeLocation");
+		tp_onreqloc =f.getBoolean("Options.Teleport.CommandSendLocation");
+		join_spawn =f.getBoolean("Options.Join.TeleportToSpawn");
+		join_msg = f.getBoolean("Options.Join.CustomJoinMessage");
+		join_motd = f.getBoolean("Options.Join.MOTD");
+		join_first_give = f.getBoolean("Options.Join.FirstJoin.GiveKit");
+		join_first_percmd =f.getBoolean("Options.Join.PerformCommands.Use");
+		join_first = f.getBoolean("Options.Join.FirstJoin.Use");
+		leave = f.getBoolean("Options.Leave.CustomLeaveMessage");
+		cool_cmd = f.getBoolean("Options.Cooldowns.Commands.Use");
+		cool_percmd = f.getBoolean("Options.Cooldowns.Commands.PerCommand.Use");
+		cool_chat = f.getBoolean("Options.Cooldowns.Chat.Use");
+		spam_chat = f.getBoolean("Options.Security.AntiSpam.Chat");
+		caps_cmd = f.getBoolean("Options.Security.AntiCaps.Commands");
+		caps_chat = f.getBoolean("Options.Security.AntiCaps.Chat");
+		spam_double = f.getBoolean("SpamWords.DoubledLetters.Use");
+		spam_cmd = f.getBoolean("Options.Security.AntiSpam.Commands");
+		swear_chat = f.getBoolean("Options.Security.AntiSwear.Chat");
+		swear_cmd = f.getBoolean("Options.Security.AntiSwear.Commands");
+		ad_book = f.getBoolean("Options.Security.AntiAD.Book");
+		ad_chat = f.getBoolean("Options.Security.AntiAD.Chat");
+		ad_cmd = f.getBoolean("Options.Security.AntiAD.Commands");
+		ad_sign = f.getBoolean("Options.Security.AntiAD.Sign");
+		ad_anvil = f.getBoolean("Options.Security.AntiAD.Anvil");
+		ad_itemdrop = f.getBoolean("Options.Security.AntiAD.ItemDrop");
+		ad_itempick = f.getBoolean("Options.Security.AntiAD.ItemPickup");
+		eco_multi = f.getBoolean("Options.Economy.MultiEconomy.Use");
+		eco_log = f.getBoolean("Options.Economy.Log");
+		eco = f.getBoolean("Options.Economy.DisablePluginEconomy");
+		eco_other = f.getBoolean("Options.Economy.CanUseOtherEconomy");
 		tab = Loader.tab.getBoolean("Tab-Enabled");
 		tab_header = Loader.tab.getBoolean("Header-Enabled");
 		tab_footer = Loader.tab.getBoolean("Footer-Enabled");
@@ -93,18 +96,18 @@ public class setting {
 		sb = Loader.scFile.getBoolean("Scoreboard-Enabled");
 		sb_world = Loader.scFile.getBoolean("Scoreboard-PerWorld");
 		save = Loader.mw.getBoolean("SavingTask.Enabled");
-		vip = Loader.config.getBoolean("Options.VIPSlots.Use");
-		vip_add = Loader.config.getBoolean("Options.VIPSlots.AddSlots");
-		vip_kick = Loader.config.getBoolean("Options.VIPSlots.KickWhenFullServer");
-		vip_join = Loader.config.getBoolean("Options.VIPSlots.VIPJoinBroadcast");
-		motd = Loader.config.getBoolean("Options.ServerList.MOTD.Use");
-		motd_maintenance = Loader.config.getBoolean("Options.ServerList.MOTD.Maintenance");
-		afk_auto = Loader.config.getBoolean("Options.AFK.AutoAFK");
-		afk_kick = Loader.config.getBoolean("Options.AFK.AutoKick");
-		lock_chat = Loader.config.getBoolean("Options.ChatLock");
-		lock_server = Loader.config.getBoolean("Options.Maintenance.Enabled");
-		am = Loader.config.getBoolean("Options.AutoMessage.Use");
-		am_random = Loader.config.getBoolean("Options.AutoMessage.Random");
+		vip = f.getBoolean("Options.VIPSlots.Use");
+		vip_add = f.getBoolean("Options.VIPSlots.AddSlots");
+		vip_kick = f.getBoolean("Options.VIPSlots.KickWhenFullServer");
+		vip_join = f.getBoolean("Options.VIPSlots.VIPJoinBroadcast");
+		motd = f.getBoolean("Options.ServerList.MOTD.Use");
+		motd_maintenance = f.getBoolean("Options.ServerList.MOTD.Maintenance");
+		afk_auto = f.getBoolean("Options.AFK.AutoAFK");
+		afk_kick = f.getBoolean("Options.AFK.AutoKick");
+		lock_chat = f.getBoolean("Options.ChatLock");
+		lock_server = f.getBoolean("Options.Maintenance.Enabled");
+		am = f.getBoolean("Options.AutoMessage.Use");
+		am_random = f.getBoolean("Options.AutoMessage.Random");
 	}
 
 public static void getManager(Player s) {

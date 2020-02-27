@@ -531,6 +531,7 @@ public class Configs {
 		c.put("Options.Disable-Items.Worlds.world_the_end", Arrays.asList("Bedrock"));
 		}
 		c.put("Options.ChatLock", false);
+		c.put("Options.SinglePlayerSleep", true);
 		c.put("Options.Disable-Items.Use", true);
 		c.put("Options.TimeZone.Use", false);
 		c.put("Options.TimeZone.Zone", "Europe/Prague");
