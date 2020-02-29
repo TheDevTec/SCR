@@ -132,7 +132,10 @@ public class Kit implements CommandExecutor,TabCompleter{
 				}
 					
 				ItemCreatorAPI a = TheAPI.getItemCreatorAPI(m);
-				a.setAmount(Loader.kit.getInt("Kits."+kitName+".Items."+def+".Amount") > 0 ? Loader.kit.getInt("Kits."+kitName+".Items."+def+".Amount") : 1);
+				int numb;
+				numb = 1;
+				if(Loader.kit.getInt("Kits."+kitName+".Items."+def+".Amount")!=0) numb =Loader.kit.getInt("Kits."+kitName+".Items."+def+".Amount");
+				a.setAmount(numb);
 	            a.setLore(Loader.kit.getStringList("Kits."+kitName+".Items."+def+".Lore"));
 	            a.setDisplayName(Loader.kit.getString("Kits."+kitName+".Items."+def+".CustomName"));
 	            if(Loader.kit.getString("Kits."+kitName+".Items."+def+".Enchantments")!=null) {
