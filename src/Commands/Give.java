@@ -3,28 +3,22 @@ package Commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.StringUtil;
 
-import com.google.common.collect.Multimap;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
 import Utils.XMaterial;
+import me.Straiker123.ItemCreatorAPI;
 import me.Straiker123.MultiMap;
 import me.Straiker123.TheAPI;
 
@@ -99,7 +93,6 @@ public class Give implements CommandExecutor, TabCompleter {
 		}}
 	}
 	
-	@SuppressWarnings({ "deprecation" })
 	private ItemStack getPotion(String s) {
 		Material args1 = null; //type
 		PotionEffectType args2 = null; //eff
@@ -350,25 +343,20 @@ public class Give implements CommandExecutor, TabCompleter {
 			break;
 			
 		}
-		ItemStack as = new ItemStack(args1);
-		PotionMeta meta = (PotionMeta)as.getItemMeta();
+		ItemCreatorAPI g = TheAPI.getItemCreatorAPI(args1);
 		if(multi) {
-		Multimap<Attribute, AttributeModifier> map = meta.getAttributeModifiers();
-		map.put(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(),"generic.movementSpeed", -90, Operation.ADD_SCALAR));
-		meta.setAttributeModifiers(map);
 		for(Object f : a.getKeySet()) { //effect
 		Object[] o = a.getValues(f).toArray();//values
 		int i = TheAPI.getNumbersAPI(o[0].toString()).getInt();
 		int ib = TheAPI.getNumbersAPI(o[1].toString()).getInt();
-			meta.addCustomEffect(PotionEffectType.getByName(f.toString()).createEffect(i, (ib == 0 ? 1 : ib)), true);
+		g.addPotionEffect(f.toString(), i, (ib == 0 ? 1 : ib));
 		}
 		}else
-		meta.setMainEffect(args2.createEffect(args3, (args4 == 0 ? 1 : args4)).getType());
+			g.addPotionEffect(args2, args3, (args4 == 0 ? 1 : args4));
 
 		if(s.toUpperCase().startsWith("LINGERING_POTION_OF_"))
-			meta.addCustomEffect(PotionEffectType.WATER_BREATHING.createEffect(0, 1), true);
-		as.setItemMeta(meta);
-		return as;
+			g.addPotionEffect("WATER_BREATHING", 0, 1);
+		return g.create();
 	}
 	
 	public List<String> items(){
