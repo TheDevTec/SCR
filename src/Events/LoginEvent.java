@@ -20,7 +20,7 @@ import me.Straiker123.TheAPI;
 
 public class LoginEvent implements Listener {
 public Loader plugin=Loader.getInstance;
-	
+	 
 	private void bc(Player p) {
 				if(setting.vip_join) {
 					TheAPI.broadcastMessage(Loader.config.getString("Options.VIPSlots.Text.BroadcastVIPJoin")
