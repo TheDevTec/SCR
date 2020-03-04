@@ -3,34 +3,379 @@ package Commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.StringUtil;
 
+import com.google.common.collect.Multimap;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
+import Utils.XMaterial;
+import me.Straiker123.MultiMap;
 import me.Straiker123.TheAPI;
 
 public class Give implements CommandExecutor, TabCompleter {
-	public List<String> items(){
-		ArrayList<String> list = new ArrayList<String>();
+	List<String> list = new ArrayList<String>();
+	public Give() {
 		for(Material ss:Material.values()) {
-			if(ss.isOccluding() && ss != Material.AIR)
-			list.add(ss.name());
+			if(!ss.name().contains("WALL_")&&!ss.name().contains("AIR")&&!ss.name().contains("VOID")
+					&&!ss.name().contains("_STEM")&&!ss.name().contains("POTTED_")&&!ss.name().contains("LEGACY_")
+					&&!ss.name().equals("END_PORTAL")&&!ss.name().equals("END_GATEWAY")&&!ss.name().equals("NETHER_PORTAL")
+					|| ss.isBlock() && ss.isOccluding())
+		if(ss != Material.AIR)
+		list.add(ss.name());
 		}
+		for(String add : Arrays.asList("POTION_OF_","SPLASH_POTION_OF_","LINGERING_POTION_OF_")) {
+		list.add(add+"INVISIBILITY");
+		list.add(add+"INVISIBILITY2");
+
+		list.add(add+"NIGHT_VISION");
+		list.add(add+"NIGHT_VISION2");
+
+		list.add(add+"LEAPING");
+		list.add(add+"LEAPING2");
+		list.add(add+"LEAPING3");
+
+		list.add(add+"FIRE_RESISTANCE");
+		list.add(add+"FIRE_RESISTANCE2");
+		
+		list.add(add+"SPEED");
+		list.add(add+"SPEED2");
+		list.add(add+"SPEED3");
+
+		list.add(add+"SLOWNESS");
+		list.add(add+"SLOWNESS2");
+		list.add(add+"SLOWNESS3");
+
+		list.add(add+"WATER_BREATHING");
+		list.add(add+"WATER_BREATHING2");
+		
+		list.add(add+"HEALING");
+		list.add(add+"HEALING2");
+
+		list.add(add+"HARMING");
+		list.add(add+"HARMING2");
+
+		list.add(add+"POISON");
+		list.add(add+"POISON2");
+		list.add(add+"POISON3");
+
+		list.add(add+"REGENERATION");
+		list.add(add+"REGENERATION2");
+		list.add(add+"REGENERATION3");
+
+		list.add(add+"STRENGHT");
+		list.add(add+"STRENGHT2");
+		list.add(add+"STRENGHT3");
+
+		list.add(add+"WEAKNESS");
+		list.add(add+"WEAKNESS2");
+
+		list.add(add+"LUCK");
+		
+		list.add(add+"SWIFTNESS");
+		list.add(add+"SWIFTNESS2");
+		list.add(add+"SWIFTNESS3");
+		if(TheAPI.isNewVersion()) {
+		list.add(add+"TURTLE_MASTER");
+		list.add(add+"TURTLE_MASTER2");
+		list.add(add+"TURTLE_MASTER3");
+		list.add(add+"SLOW_FALLING");
+		list.add(add+"SLOW_FALLING2");
+		}}
+	}
+	
+	@SuppressWarnings({ "deprecation" })
+	private ItemStack getPotion(String s) {
+		Material args1 = null; //type
+		PotionEffectType args2 = null; //eff
+		int args3=0; //level
+		int args4=0; //time
+		boolean multi =false;
+		MultiMap a = TheAPI.getMultiMap();
+		if(s.toUpperCase().startsWith("POTION_OF_")) {
+			args1=XMaterial.POTION.parseMaterial();
+			args2=PotionEffectType.getByName(s.toUpperCase().replaceFirst("POTION_OF_", "").replaceAll("[0-9]", ""));
+			args3=TheAPI.getNumbersAPI(s).getInt();
+		}
+		if(s.toUpperCase().startsWith("SPLASH_POTION_OF_")) {
+			args1=XMaterial.SPLASH_POTION.parseMaterial();
+			args2=PotionEffectType.getByName(s.toUpperCase().replaceFirst("SPLASH_POTION_OF_", "").replaceAll("[0-9]", ""));
+			args3=TheAPI.getNumbersAPI(s).getInt();
+		}
+		if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+			args1=XMaterial.LINGERING_POTION.parseMaterial();
+			args2=PotionEffectType.getByName(s.toUpperCase().replaceFirst("LINGERING_POTION_OF_", "").replaceAll("[0-9]", ""));
+			args3=TheAPI.getNumbersAPI(s).getInt();
+			
+		}
+		if(args1==null) return null;
+		switch(s.toUpperCase().replaceFirst("LINGERING_POTION_OF_", "").replaceFirst("SPLASH_POTION_OF_", "").replaceFirst("POTION_OF_", "")) {
+		case "INVISIBILITY":
+			args3=1;
+			args4=180;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=45;
+			}
+			break;
+		case "INVISIBILITY2":
+			args3=1;
+			args4=480;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=120;
+			}
+			break;
+		case "NIGHT_VISION":
+			args3=1;
+			args4=180;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=45;
+			}
+			break;
+		case "NIGHT_VISION2":
+			args3=1;
+			args4=480;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=120;
+			}
+			break;
+
+		case "FIRE_RESISTANCE":
+			args3=1;
+			args4=180;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=45;
+			}
+			break;
+		case "FIRE_RESISTANCE2":
+			args3=1;
+			args4=480;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=120;
+			}
+			break;
+		case "SWIFTNESS":
+		case "SPEED":
+			args3=1;
+			args4=180;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=45;
+			}
+			break;
+		case "SWIFTNESS2":
+		case "SPEED2":
+			args3=1;
+			args4=480;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=120;
+			}
+			break;
+		case "SWIFTNESS3":
+		case "SPEED3":
+			args3=2;
+			args4=90;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=22;
+			}
+			break;
+
+		case "WATER_BREATHING":
+			args3=1;
+			args4=180;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=45;
+			}
+			break;
+		case "WATER_BREATHING2":
+			args3=1;
+			args4=480;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=120;
+			}
+			break;
+
+		case "HEALING":
+			args3=1;
+			args4=0;
+			break;
+		case "HEALING2":
+			args3=2;
+			args4=0;
+			break;
+
+		case "HARMING":
+			args3=1;
+			args4=0;
+			break;
+		case "HARMING2":
+			args3=2;
+			args4=0;
+			break;
+
+		case "POISON":
+			args3=1;
+			args4=45;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=11;
+			}
+			break;
+		case "POISON2":
+			args3=1;
+			args4=90;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=22;
+			}
+			break;
+		case "POISON3":
+			args3=2;
+			args4=21;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=5;
+			}
+			break;
+
+		case "REGENERATION":
+			args3=1;
+			args4=45;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=11;
+			}
+			break;
+		case "REGENERATION2":
+			args3=1;
+			args4=90;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=22;
+			}
+			break;
+		case "REGENERATION3":
+			args3=2;
+			args4=22;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=5;
+			}
+			break;
+
+		case "STRENGHT":
+			args3=1;
+			args4=180;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=45;
+			}
+			break;
+		case "STRENGHT2":
+			args3=1;
+			args4=480;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=120;
+			}
+			break;
+		case "STRENGHT3":
+			args3=2;
+			args4=90;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=22;
+			}
+			break;
+
+		case "WEAKNESS":
+			args3=1;
+			args4=180;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=22;
+			}
+			break;
+		case "WEAKNESS2":
+			args3=1;
+			args4=480;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=60;
+			}
+			break;
+		case "LUCK":
+			args3=1;
+			args4=480;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=75;
+			}
+			break;
+		case "TURTLE_MASTER":
+			multi=true;
+			a.put("WATER_BREATHING", 1,0);
+			a.put("SLOWNESS", 4,20);
+			a.put("DAMAGE_RESISTANCE", 3,20);
+			break;
+		case "TURTLE_MASTER2":
+			multi=true;
+			a.put("WATER_BREATHING", 1,0);
+			a.put("SLOWNESS", 4,40);
+			a.put("DAMAGE_RESISTANCE", 3,40);
+			break;
+		case "TURTLE_MASTER3":
+			multi=true;
+			a.put("WATER_BREATHING", 1,0);
+			a.put("SLOWNESS", 4,20);
+			a.put("DAMAGE_RESISTANCE", 4,20);
+			break;
+
+		case "SLOW_FALLING":
+			args3=1;
+			args4=90;
+
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=22;
+			}
+			break;
+		case "SLOW_FALLING2":
+			args3=1;
+			args4=240;
+
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=60;
+			}
+			break;
+			
+		}
+		ItemStack as = new ItemStack(args1);
+		PotionMeta meta = (PotionMeta)as.getItemMeta();
+		if(multi) {
+		Multimap<Attribute, AttributeModifier> map = meta.getAttributeModifiers();
+		map.put(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(),"generic.movementSpeed", -90, Operation.ADD_SCALAR));
+		meta.setAttributeModifiers(map);
+		for(Object f : a.getKeySet()) { //effect
+		Object[] o = a.getValues(f).toArray();//values
+		int i = TheAPI.getNumbersAPI(o[0].toString()).getInt();
+		int ib = TheAPI.getNumbersAPI(o[1].toString()).getInt();
+			meta.addCustomEffect(PotionEffectType.getByName(f.toString()).createEffect(i, (ib == 0 ? 1 : ib)), true);
+		}
+		}else
+		meta.setMainEffect(args2.createEffect(args3, (args4 == 0 ? 1 : args4)).getType());
+
+		if(s.toUpperCase().startsWith("LINGERING_POTION_OF_"))
+			meta.addCustomEffect(PotionEffectType.WATER_BREATHING.createEffect(0, 1), true);
+		as.setItemMeta(meta);
+		return as;
+	}
+	
+	public List<String> items(){
 		return list;
 	}
 	public String getItem(String s) {
-		if(Material.matchMaterial(s) != null && Material.matchMaterial(s).isOccluding() && Material.matchMaterial(s) != Material.AIR)
-		return Material.matchMaterial(s).name();
+		if(list.contains(s.toUpperCase()))return s.toUpperCase();
 		return null;
 	}
 	@Override
@@ -52,7 +397,11 @@ public class Give implements CommandExecutor, TabCompleter {
 						if(API.hasPerm(s, "ServerControl."+getItem(args[0]))||API.hasPerm(s, "ServerControl.Give.*")) {
 							Player p = (Player)s;
 							try {
+								String g = args[0].toUpperCase();
+								if(!g.startsWith("LINGERING_POTION_OF_")||g.startsWith("SPLASH_POTION_OF_")||g.startsWith("POTION_OF_"))
 							TheAPI.giveItem(p, Material.matchMaterial(args[0]),1);
+								else
+									TheAPI.giveItem(p, getPotion(args[0]));
 							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),p).replace("%amount%", "1").replace("%item%", getItem(args[0])), s);
 						return true;
 							}catch(Exception e) {
@@ -109,7 +458,14 @@ public class Give implements CommandExecutor, TabCompleter {
 							return true;
 						}
 						if(getItem(args[1])!=null) {
-							TheAPI.giveItem(ps, new ItemStack(Material.matchMaterial(args[1]),TheAPI.getNumbersAPI(args[2]).getInt()));
+							String g = args[0].toUpperCase();
+							if(!g.startsWith("LINGERING_POTION_OF_")||g.startsWith("SPLASH_POTION_OF_")||g.startsWith("POTION_OF_"))
+						TheAPI.giveItem(ps, Material.matchMaterial(args[0]),TheAPI.getNumbersAPI(args[2]).getInt());
+							else {
+								ItemStack a = getPotion(args[0]);
+								a.setAmount(TheAPI.getNumbersAPI(args[2]).getInt());
+								TheAPI.giveItem(ps, a);
+							}
 							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),ps).replace("%item%", getItem(args[1])).replace("%amount%", TheAPI.getNumbersAPI(args[2]).getInt()+""), s);
 							return true;
 							}
