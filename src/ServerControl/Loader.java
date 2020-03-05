@@ -480,9 +480,10 @@ private void CommmandsRegister() {
 	CmdC("closeinv", new Commands.CloseInventory());
 	CmdC("homeother", new Commands.HomeOther());
 	CmdC("tempfly", new Commands.TempFly());
-	
 	CmdC("tpcancel", new Commands.Tpa.Tpcancel());
 	CmdC("mail", new Commands.Mail());
+	
+	CmdC("balance", new Commands.Economy.Balance());
 }
 private void EventC(Listener l) {
 	getServer().getPluginManager().registerEvents(l, this);
