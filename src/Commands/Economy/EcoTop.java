@@ -1,7 +1,7 @@
 package Commands.Economy;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -12,18 +12,15 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-
-import static java.util.stream.Collectors.*;
-
-import java.util.ArrayList;
-
-import static java.util.Map.Entry.*;
+import Utils.Pagination;
+import me.Straiker123.MultiMap;
+import me.Straiker123.RankingAPI;
+import me.Straiker123.TheAPI;
 
 public class EcoTop implements CommandExecutor {
+	//world, rankingapi
+	MultiMap h= TheAPI.getMultiMap();
 
-	public HashMap<String, Double> exampleBank = new HashMap<>();
-
-	@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(Loader.econ==null) {
@@ -31,35 +28,49 @@ public class EcoTop implements CommandExecutor {
 			return true;
 		}
 				if (API.hasPerm(s, "ServerControl.BalanceTop")) {
+					String world = Bukkit.getWorlds().get(0).getName();
+					if(s instanceof Player)world=((Player) s).getWorld().getName();
+						RankingAPI m = (h.containsKey(world) ? (RankingAPI)h.getValues(world).get(0) : null);
+					if(TheAPI.getCooldownAPI("scr.baltop").expired("scr")||m==null) {
+						TheAPI.getCooldownAPI("scr.baltop").createCooldown("scr", 300); //5min update
+						HashMap<String, Double> money = new HashMap<String, Double>();
+						for (String sa : Loader.me.getConfigurationSection("Players").getKeys(false)) {
+							money.put(sa, TheAPI.getEconomyAPI().getBalance(sa,world));
+						}
+						if(m!=null)
+						h.remove(m);
+						m=TheAPI.getRankingAPI(money);
+						h.put(world,m);
+					}
+					List<String> list = new ArrayList<String>();
+					for(Object o : m.getKeySet()) {
+						list.add(o.toString()+":"+m.getValue(o));
+					}
+					Pagination<String> g=new Pagination<>(10, list);
 					if (Loader.me.getString("Players") != null) {
 							Loader.msg(Loader.s("Prefix") +"&e----------------- &bTOP 10 Players &e-----------------", s);
 							Loader.msg("",s);
-							String world = Bukkit.getWorlds().get(0).getName();
-							if(s instanceof Player)world=((Player) s).getWorld().getName();
-							for (String sa : Loader.me.getConfigurationSection("Players").getKeys(false)) {
-								exampleBank.put(sa, Loader.econ.getBalance(sa,world));
+							int page = 1;
+							if(args.length!=0)
+								page=TheAPI.getStringUtils().getInt(args[0]);
+							if(g.totalPages() < page)page=g.totalPages();
+							if(1 > page)page=1;
+							--page;
+							HashMap<String, Double> money = new HashMap<String, Double>();
+							for (String sa : g.getPage(page)) {
+								String[] f = sa.split(":");
+								money.put(f[0], TheAPI.getStringUtils().getDouble(f[1]));
 							}
-
-							HashMap<String, Double> sorted = exampleBank.entrySet().stream().sorted(comparingByValue())
-									.collect(toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2,
-											LinkedHashMap::new));
-							int size = sorted.size();
-							int counter = 1;
-							List keys = new ArrayList(sorted.keySet());
-							for (int i = size - 1; i >= 0; i--) {
-								if (counter > 10) {
-									break;
-								}
-								Object obj = keys.get(i);
+							RankingAPI ms =TheAPI.getRankingAPI(money);
+							for (int i = 1; i< 11; i++) {
+								if(ms.getKeySet().size() <i)break;
+								String player = ms.getObject(i).toString();
 								Loader.msg(Loader.config.getString("Options.Economy.BalanceTop")
-										.replace("%position%", String.valueOf(counter))
-										.replace("%player%", obj.toString())
-										.replace("%playername%", player(obj.toString()))
-										.replace("%money%", API.setMoneyFormat(exampleBank.get(obj), true)), s);
-								counter++;
+										.replace("%position%", String.valueOf(m.getPosition(player)))
+										.replace("%player%", player)
+										.replace("%playername%", player(player))
+										.replace("%money%", API.setMoneyFormat(m.getValue(player), true)), s);
 							}
-							exampleBank.clear();
-							sorted.clear();
 							return true;
 						}
 					Loader.msg(Loader.s("Economy.NoPlayers"), s);

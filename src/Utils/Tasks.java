@@ -111,7 +111,7 @@ public class Tasks {
 				if(timeout == 5 || timeout == 4 || timeout == 3 || timeout == 2 || timeout == 1 
 						|| timeout == 15 || timeout == 10 || timeout == 30) {
 					if(s!=null)
-					TheAPI.sendActionBar(s, "&6TempFly ends in &c"+TheAPI.getTimeConventorAPI().setTimeToString(timeout));
+					TheAPI.sendActionBar(s, "&6TempFly ends in &c"+TheAPI.getStringUtils().setTimeToString(timeout));
 					}
 			}
 		}},20,20));
@@ -175,7 +175,7 @@ public class Tasks {
 		}
 	   	 for(Player p:Bukkit.getOnlinePlayers()) {
 	   		 if(AFK.isAFK(p)) {
-	   				 if(setting.afk_kick && AFK.getAFKTime(p)>=TheAPI.getTimeConventorAPI().getTimeFromString(Loader.config.getString("AFK.Kick.Time"))
+	   				 if(setting.afk_kick && AFK.getAFKTime(p)>=TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("AFK.Kick.Time"))
 	   						 && !p.hasPermission("ServerControl.AFK.Bypass")) {
 	   					Loader.me.set("Players."+p.getName()+".AFK-Manual",null);
 	   					Loader.me.set("Players."+p.getName()+".AFK-Broadcast",null);
@@ -247,6 +247,6 @@ public class Tasks {
 				  }
 			}
 			
-		}, 20, 20*TheAPI.getTimeConventorAPI().getTimeFromString(Loader.config.getString("Options.AutoMessage.Interval"))));
+		}, 20, 20*TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.AutoMessage.Interval"))));
 	}
 }

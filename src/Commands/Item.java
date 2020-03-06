@@ -174,13 +174,13 @@ public class Item implements CommandExecutor, TabCompleter {
 					}
 						try {
 							List<String> lore = m.getLore();
-							lore.remove(TheAPI.getNumbersAPI(args[2]).getInt());
+							lore.remove(TheAPI.getStringUtils().getInt(args[2]));
 							m.setLore(lore);
 							item.setItemMeta(m);
-						Loader.msg(Loader.s("Prefix")+Loader.s("Item.SetLore.Remove").replace("%item%", item.getType().name()).replace("%line%", ""+TheAPI.getNumbersAPI(args[2]).getInt()),s);
+						Loader.msg(Loader.s("Prefix")+Loader.s("Item.SetLore.Remove").replace("%item%", item.getType().name()).replace("%line%", ""+TheAPI.getStringUtils().getInt(args[2])),s);
 						return true;
 						}catch(Exception e) {
-							Loader.msg(Loader.s("Prefix")+Loader.s("Item.SetLore.RemoveError").replace("%item%", item.getType().name()).replace("%line%", ""+TheAPI.getNumbersAPI(args[2]).getInt()),s);
+							Loader.msg(Loader.s("Prefix")+Loader.s("Item.SetLore.RemoveError").replace("%item%", item.getType().name()).replace("%line%", ""+TheAPI.getStringUtils().getInt(args[2])),s);
 							return true;
 						}
 					}

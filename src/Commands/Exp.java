@@ -47,14 +47,14 @@ public class Exp implements CommandExecutor, TabCompleter {
 				Player p = Bukkit.getPlayer(args[1]);
 				if(p==null) {
 					if(args[0].equals("*")) {
-						Repeat.a(s,"xp set * "+TheAPI.getNumbersAPI(args[2]).getInt());
+						Repeat.a(s,"xp set * "+TheAPI.getStringUtils().getInt(args[2]));
 						return true;
 					}
 					Loader.msg(Loader.PlayerNotOnline(args[1]), s);
 					return true;
 				}
-				TheAPI.getPlayerAPI(p).setExp(TheAPI.getNumbersAPI(args[2]).getInt());
-				Loader.msg(Loader.s("Prefix")+Loader.s("Xp.Set").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()).replace("%amount%", ""+TheAPI.getNumbersAPI(args[2]).getInt()), s);
+				TheAPI.getPlayerAPI(p).setExp(TheAPI.getStringUtils().getInt(args[2]));
+				Loader.msg(Loader.s("Prefix")+Loader.s("Xp.Set").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()).replace("%amount%", ""+TheAPI.getStringUtils().getInt(args[2])), s);
 				return true;
 				}return true;
 		}
@@ -83,14 +83,14 @@ public class Exp implements CommandExecutor, TabCompleter {
 			Player p = Bukkit.getPlayer(args[1]);
 			if(p==null) {
 				if(args[0].equals("*")) {
-					Repeat.a(s,"xp give * "+TheAPI.getNumbersAPI(args[2]).getInt());
+					Repeat.a(s,"xp give * "+TheAPI.getStringUtils().getInt(args[2]));
 					return true;
 				}
 				Loader.msg(Loader.PlayerNotOnline(args[1]), s);
 				return true;
 			}
-			TheAPI.getPlayerAPI(p).giveExp(TheAPI.getNumbersAPI(args[2]).getInt());
-			Loader.msg(Loader.s("Prefix")+Loader.s("Xp.Given").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()).replace("%amount%", ""+TheAPI.getNumbersAPI(args[2]).getInt()), s);
+			TheAPI.getPlayerAPI(p).giveExp(TheAPI.getStringUtils().getInt(args[2]));
+			Loader.msg(Loader.s("Prefix")+Loader.s("Xp.Given").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()).replace("%amount%", ""+TheAPI.getStringUtils().getInt(args[2])), s);
 			return true;
 			}return true;
 		}
@@ -103,14 +103,14 @@ public class Exp implements CommandExecutor, TabCompleter {
 			Player p = Bukkit.getPlayer(args[1]);
 			if(p==null) {
 				if(args[0].equals("*")) {
-					Repeat.a(s,"xp take * "+TheAPI.getNumbersAPI(args[2]).getInt());
+					Repeat.a(s,"xp take * "+TheAPI.getStringUtils().getInt(args[2]));
 					return true;
 				}
 				Loader.msg(Loader.PlayerNotOnline(args[1]), s);
 				return true;
 			}
-			TheAPI.getPlayerAPI(p).takeExp(TheAPI.getNumbersAPI(args[2]).getInt());
-			Loader.msg(Loader.s("Prefix")+Loader.s("Xp.Taken").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()).replace("%amount%", ""+TheAPI.getNumbersAPI(args[2]).getInt()), s);
+			TheAPI.getPlayerAPI(p).takeExp(TheAPI.getStringUtils().getInt(args[2]));
+			Loader.msg(Loader.s("Prefix")+Loader.s("Xp.Taken").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()).replace("%amount%", ""+TheAPI.getStringUtils().getInt(args[2])), s);
 			return true;
 			}return true;
 		}

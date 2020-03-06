@@ -58,7 +58,7 @@ public class RequestMap {
     
     public static boolean containsRequest(String target, String sender) {
     	if(Loader.me.getLong("Players."+target+".Tp."+sender+".Time")
-    			-System.currentTimeMillis()/1000+TheAPI.getTimeConventorAPI().getTimeFromString(Loader.config.getString("Options.Teleport.RequestTime"))>0)
+    			-System.currentTimeMillis()/1000+TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.Teleport.RequestTime"))>0)
     		return true;
     	else {
     		removeRequest(target, sender);

@@ -58,7 +58,7 @@ public class Butcher implements CommandExecutor {
 			Loader.msg(Loader.s("Butcher.Killed").replace("%amount%", butcher(w,null,0)+""), s);
 			return true;
 			}
-			Loader.msg(Loader.s("Butcher.Killed").replace("%amount%", butcher(((Player)s).getWorld(),((Player)s).getLocation(),TheAPI.getNumbersAPI(args[0]).getInt())+""), s);
+			Loader.msg(Loader.s("Butcher.Killed").replace("%amount%", butcher(((Player)s).getWorld(),((Player)s).getLocation(),TheAPI.getStringUtils().getInt(args[0]))+""), s);
 			return true;
 		}}
 		return true;

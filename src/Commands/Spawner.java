@@ -69,11 +69,11 @@ public class Spawner implements CommandExecutor, TabCompleter {
 					Block b = getTargetBlock(p, 10);
 					if (b.getType().name() == "SPAWNER") {
 						CreatureSpawner ss = (CreatureSpawner) b.getState();
-						ss.setSpawnCount(TheAPI.getNumbersAPI(args[1]).getInt());
+						ss.setSpawnCount(TheAPI.getStringUtils().getInt(args[1]));
 						ss.update();
 					}
 					Loader.msg(Loader.s("Spawner.AmountSet")
-							.replace("%amount%", ""+TheAPI.getNumbersAPI(args[1]).getInt())
+							.replace("%amount%", ""+TheAPI.getStringUtils().getInt(args[1]))
 							.replace("%world%", b.getWorld().getName())
 							.replace("%x%", String.valueOf(b.getX()))
 							.replace("%z%", String.valueOf(b.getZ()))
@@ -89,11 +89,11 @@ public class Spawner implements CommandExecutor, TabCompleter {
 					Block b = getTargetBlock(p, 10);
 					if (b.getType().name() == "SPAWNER") {
 						CreatureSpawner ss = (CreatureSpawner) b.getState();
-						ss.setRequiredPlayerRange(TheAPI.getNumbersAPI(args[1]).getInt());
+						ss.setRequiredPlayerRange(TheAPI.getStringUtils().getInt(args[1]));
 						ss.update();
 					}
 					Loader.msg(Loader.s("Spawner.RangePlayerSet")
-							.replace("%range%", ""+TheAPI.getNumbersAPI(args[1]).getInt())
+							.replace("%range%", ""+TheAPI.getStringUtils().getInt(args[1]))
 							.replace("%world%", b.getWorld().getName())
 							.replace("%x%", String.valueOf(b.getX()))
 							.replace("%z%", String.valueOf(b.getZ()))
@@ -111,11 +111,11 @@ public class Spawner implements CommandExecutor, TabCompleter {
 					Block b = getTargetBlock(p, 10);
 					if (b.getType().name() == "SPAWNER") {
 						CreatureSpawner ss = (CreatureSpawner) b.getState();
-						ss.setDelay(TheAPI.getNumbersAPI(args[1]).getInt());
+						ss.setDelay(TheAPI.getStringUtils().getInt(args[1]));
 						ss.update();
 					}
 					Loader.msg(Loader.s("Spawner.TimeSet")
-							.replace("%time%", ""+TheAPI.getNumbersAPI(args[1]).getInt())
+							.replace("%time%", ""+TheAPI.getStringUtils().getInt(args[1]))
 							.replace("%world%", b.getWorld().getName())
 							.replace("%x%", String.valueOf(b.getX()))
 							.replace("%z%", String.valueOf(b.getZ()))

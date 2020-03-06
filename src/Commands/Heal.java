@@ -25,14 +25,14 @@ public class Heal implements CommandExecutor {
 		if(a.expired(p.getName()) || s.hasPermission("ServerControl.Heal.Bypass")) {
 			new SPlayer(p).heal();
 			if(!s.hasPermission("ServerControl.Heal.Bypass"))
-    			a.createCooldown(p.getName(), TheAPI.getTimeConventorAPI().getTimeFromString(
+    			a.createCooldown(p.getName(), TheAPI.getStringUtils().getTimeFromString(
     					Loader.config.getString("Heal-Cooldown")));
 			Loader.msg(Loader.s("Prefix")+Loader.s("Heal.Healed").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),s);
 			return true;
 		}
 				Loader.msg(Loader.s("Heal.CooldownMessage").replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName())
-				.replace("%time%", TheAPI.getTimeConventorAPI().setTimeToString(a.getTimeToExpire(p.getName()))),s);
+				.replace("%time%", TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(p.getName()))),s);
                 return true;
             }
 			if(args.length == 1){
@@ -50,14 +50,14 @@ public class Heal implements CommandExecutor {
         			if(a.expired(p.getName()) || s.hasPermission("ServerControl.Heal.Bypass")) {
         				new SPlayer(p).heal();
             			if(!s.hasPermission("ServerControl.Heal.Bypass"))
-                			a.createCooldown(p.getName(), TheAPI.getTimeConventorAPI().getTimeFromString(
+                			a.createCooldown(p.getName(), TheAPI.getStringUtils().getTimeFromString(
                 					Loader.config.getString("Heal-Cooldown")));
         				Loader.msg(Loader.s("Prefix")+Loader.s("Heal.Healed").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),s);
         				return true;
         			}
         					Loader.msg(Loader.s("Heal.CooldownMessage").replace("%player%", p.getName())
         							.replace("%playername%", p.getDisplayName())
-        					.replace("%time%", TheAPI.getTimeConventorAPI().setTimeToString(a.getTimeToExpire(p.getName()))),s);
+        					.replace("%time%", TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(p.getName()))),s);
         	                return true;
         	            }
     				if(API.hasPerm(s, "ServerControl.Heal.Other")){

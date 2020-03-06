@@ -82,7 +82,7 @@ public class Kit implements CommandExecutor,TabCompleter{
 					CooldownAPI a = TheAPI.getCooldownAPI("Kit."+KitName);
 					if(!a.expired(s)) {
             				Loader.msg(Loader.s("Prefix")+Loader.s("Kit.Cooldown").
-            						replace("%cooldown%", TheAPI.getTimeConventorAPI().setTimeToString(a.getTimeToExpire(s)))
+            						replace("%cooldown%", TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(s)))
             						.replace("%kit%", getKitName(KitName))
             						.replace("%player%", p.getName())
             						.replace("%playername%", p.getDisplayName()),p);
@@ -107,7 +107,7 @@ public class Kit implements CommandExecutor,TabCompleter{
 					CooldownAPI a = TheAPI.getCooldownAPI("Kit."+KitName);
 					if(!a.expired(s)) {
             				Loader.msg(Loader.s("Prefix")+Loader.s("Kit.Cooldown").
-            						replace("%cooldown%", TheAPI.getTimeConventorAPI().setTimeToString(a.getTimeToExpire(s)))
+            						replace("%cooldown%", TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(s)))
             						.replace("%kit%", getKitName(KitName))
             						.replace("%player%", p.getName())
             						.replace("%playername%", p.getDisplayName()),p);
@@ -144,7 +144,7 @@ public class Kit implements CommandExecutor,TabCompleter{
 	            	String num = enchs.replace(":", "").replaceAll("[A-Za-z]+", "").replace("_", "").replace(" ", "");
 	            	if(!TheAPI.getEnchantmentAPI().isEnchantment(nonum))Loader.warn("Error when giving kit '"+kitName+"', enchant '"+nonum+"' is invalid !");
 	            	else
-	            		a.addEnchantment(TheAPI.getEnchantmentAPI().getByName(nonum), TheAPI.getNumbersAPI(num).getInt());
+	            		a.addEnchantment(TheAPI.getEnchantmentAPI().getByName(nonum), TheAPI.getStringUtils().getInt(num));
 	            }}
 	            TheAPI.giveItem(p, a.create());
 		}}}

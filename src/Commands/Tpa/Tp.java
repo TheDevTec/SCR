@@ -27,7 +27,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 				if(s instanceof Player) {
 			Player target = Bukkit.getPlayer(args[0]);
 			if(target==null) {
-				if(TheAPI.getNumbersAPI(args[0]).isInt()) {
+				if(TheAPI.getStringUtils().isInt(args[0])) {
 					Loader.Help(s, "/Tp <x> <y> <z>", "TpaSystem.Tp");
 					return true;
 				}else {
@@ -57,7 +57,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 			}
 				}
 				if(Bukkit.getPlayer(args[0])==null) {
-				if(TheAPI.getNumbersAPI(args[0]).isInt()) {
+					if(TheAPI.getStringUtils().isInt(args[0])) {
 					Loader.Help(s, "/Tp <player> <x> <y> <z>", "TpaSystem.Tp");
 					return true;
 				}else
@@ -79,14 +79,14 @@ public class Tp implements CommandExecutor, TabCompleter {
 			Player p1 = Bukkit.getPlayer(args[1]);
 			if(p1==null) {
 				if(s instanceof Player) {
-			if(p0 != null && TheAPI.getNumbersAPI(args[1]).isInt()) {
+			if(p0 != null && TheAPI.getStringUtils().isInt(args[1])) {
 				if(s.hasPermission("ServerControl.Tp.Location"))
 				Loader.Help(s, "/Tp <player player|player x y z>", "TpaSystem.Tp");
 				else
 					Loader.Help(s, "/Tp <player> <player>", "TpaSystem.Tp");
 				return true;
 			}else 
-				if(p0==null && TheAPI.getNumbersAPI(args[1]).isInt()) {
+				if(p0==null && TheAPI.getStringUtils().isInt(args[1])) {
 					if(s.hasPermission("ServerControl.Tp.Location"))
 					Loader.Help(s, "/Tp <player player|player x y z>", "TpaSystem.Tp");
 					else
@@ -126,7 +126,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 		if(args.length==3) {
 			Player p = Bukkit.getPlayer(args[0]);
 			if(p==null) {
-				if(TheAPI.getNumbersAPI(args[0]).isInt()&&TheAPI.getNumbersAPI(args[1]).isInt()&&TheAPI.getNumbersAPI(args[2]).isInt()) {
+				if(TheAPI.getStringUtils().isInt(args[0])&&TheAPI.getStringUtils().isInt(args[1])&&TheAPI.getStringUtils().isInt(args[2])) {
 					if(s instanceof Player) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpLocation")
 					.replace("%playername%", ((Player) s).getDisplayName())
@@ -136,7 +136,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 					.replace("%y%", args[1])
 					.replace("%z%", args[2])
 					, s);
-					Location loc = new Location(((Player) s).getWorld(),TheAPI.getNumbersAPI(args[0]).getInt(),TheAPI.getNumbersAPI(args[1]).getInt(),TheAPI.getNumbersAPI(args[2]).getInt());
+					Location loc = new Location(((Player) s).getWorld(),TheAPI.getStringUtils().getDouble(args[0]),TheAPI.getStringUtils().getDouble(args[1]),TheAPI.getStringUtils().getDouble(args[2]));
 
 					API.setBack(((Player) s));
 					((Player) s).teleport(loc);
@@ -163,7 +163,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 		}
 		if(args.length==4) {
 			Player p = Bukkit.getPlayer(args[0]);
-			if(TheAPI.getNumbersAPI(args[0]).isInt()&&TheAPI.getNumbersAPI(args[1]).isInt()&&TheAPI.getNumbersAPI(args[2]).isInt()) {
+			if(TheAPI.getStringUtils().isInt(args[0])&&TheAPI.getStringUtils().isInt(args[1])&&TheAPI.getStringUtils().isInt(args[2])) {
 				if(s instanceof Player) {
 				Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpLocation")
 				.replace("%world%", ((Player) s).getWorld().getName())
@@ -173,7 +173,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 				.replace("%y%", args[1])
 				.replace("%z%", args[2])
 				, s);
-				Location loc = new Location(((Player) s).getWorld(),TheAPI.getNumbersAPI(args[0]).getInt(),TheAPI.getNumbersAPI(args[1]).getInt(),TheAPI.getNumbersAPI(args[2]).getInt());
+				Location loc = new Location(p.getWorld(),TheAPI.getStringUtils().getDouble(args[0]),TheAPI.getStringUtils().getDouble(args[1]),TheAPI.getStringUtils().getDouble(args[2]));
 				API.setBack(((Player) s));
 				((Player) s).teleport(loc);
 				return true;
@@ -185,7 +185,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 					return true;
 				}
 			}else
-				if(p!=null &&TheAPI.getNumbersAPI(args[1]).isInt()&&TheAPI.getNumbersAPI(args[2]).isInt()&&TheAPI.getNumbersAPI(args[3]).isInt()) {
+				if(p!=null &&TheAPI.getStringUtils().isInt(args[0])&&TheAPI.getStringUtils().isInt(args[1])&&TheAPI.getStringUtils().isInt(args[2])) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpLocationPlayer")
 					.replace("%world%", p.getWorld().getName())
 					.replace("%playername%", p.getDisplayName())
@@ -194,7 +194,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 					.replace("%y%", args[2])
 					.replace("%z%", args[3])
 					, s);
-					Location loc = new Location(p.getWorld(),TheAPI.getNumbersAPI(args[1]).getInt(),TheAPI.getNumbersAPI(args[2]).getInt(),TheAPI.getNumbersAPI(args[3]).getInt());
+					Location loc = new Location(p.getWorld(),TheAPI.getStringUtils().getDouble(args[0]),TheAPI.getStringUtils().getDouble(args[1]),TheAPI.getStringUtils().getDouble(args[2]));
 					API.setBack(p);
 					p.teleport(loc);
 					return true;

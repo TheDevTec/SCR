@@ -103,17 +103,17 @@ public class Give implements CommandExecutor, TabCompleter {
 		if(s.toUpperCase().startsWith("POTION_OF_")) {
 			args1=XMaterial.POTION.parseMaterial();
 			args2=PotionEffectType.getByName(s.toUpperCase().replaceFirst("POTION_OF_", "").replaceAll("[0-9]", ""));
-			args3=TheAPI.getNumbersAPI(s).getInt();
+			args3=TheAPI.getStringUtils().getInt(s);
 		}
 		if(s.toUpperCase().startsWith("SPLASH_POTION_OF_")) {
 			args1=XMaterial.SPLASH_POTION.parseMaterial();
 			args2=PotionEffectType.getByName(s.toUpperCase().replaceFirst("SPLASH_POTION_OF_", "").replaceAll("[0-9]", ""));
-			args3=TheAPI.getNumbersAPI(s).getInt();
+			args3=TheAPI.getStringUtils().getInt(s);
 		}
 		if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
 			args1=XMaterial.LINGERING_POTION.parseMaterial();
 			args2=PotionEffectType.getByName(s.toUpperCase().replaceFirst("LINGERING_POTION_OF_", "").replaceAll("[0-9]", ""));
-			args3=TheAPI.getNumbersAPI(s).getInt();
+			args3=TheAPI.getStringUtils().getInt(s);
 			
 		}
 		if(args1==null) return null;
@@ -347,8 +347,8 @@ public class Give implements CommandExecutor, TabCompleter {
 		if(multi) {
 		for(Object f : a.getKeySet()) { //effect
 		Object[] o = a.getValues(f).toArray();//values
-		int i = TheAPI.getNumbersAPI(o[0].toString()).getInt();
-		int ib = TheAPI.getNumbersAPI(o[1].toString()).getInt();
+		int i = TheAPI.getStringUtils().getInt(o[0].toString());
+		int ib = TheAPI.getStringUtils().getInt(o[1].toString());
 		g.addPotionEffect(f.toString(), i, (ib == 0 ? 1 : ib));
 		}
 		}else
@@ -414,8 +414,8 @@ public class Give implements CommandExecutor, TabCompleter {
 						if(getItem(args[0])!=null) {
 							ps=(Player)s;
 							try {
-							TheAPI.giveItem(ps, new ItemStack(Material.matchMaterial(args[0]),TheAPI.getNumbersAPI(args[1]).getInt()));
-							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),ps).replace("%amount%",TheAPI.getNumbersAPI(args[1]).getInt()+"").replace("%item%", getItem(args[0])), s)
+							TheAPI.giveItem(ps, new ItemStack(Material.matchMaterial(args[0]),TheAPI.getStringUtils().getInt(args[1])));
+							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),ps).replace("%amount%",TheAPI.getStringUtils().getInt(args[1])+"").replace("%item%", getItem(args[0])), s)
 							;return true;
 							
 						}catch(Exception e) {
@@ -448,13 +448,13 @@ public class Give implements CommandExecutor, TabCompleter {
 						if(getItem(args[1])!=null) {
 							String g = args[0].toUpperCase();
 							if(!g.startsWith("LINGERING_POTION_OF_")||g.startsWith("SPLASH_POTION_OF_")||g.startsWith("POTION_OF_"))
-						TheAPI.giveItem(ps, Material.matchMaterial(args[0]),TheAPI.getNumbersAPI(args[2]).getInt());
+						TheAPI.giveItem(ps, Material.matchMaterial(args[0]),TheAPI.getStringUtils().getInt(args[2]));
 							else {
 								ItemStack a = getPotion(args[0]);
-								a.setAmount(TheAPI.getNumbersAPI(args[2]).getInt());
+								a.setAmount(TheAPI.getStringUtils().getInt(args[2]));
 								TheAPI.giveItem(ps, a);
 							}
-							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),ps).replace("%item%", getItem(args[1])).replace("%amount%", TheAPI.getNumbersAPI(args[2]).getInt()+""), s);
+							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),ps).replace("%item%", getItem(args[1])).replace("%amount%", TheAPI.getStringUtils().getInt(args[2])+""), s);
 							return true;
 							}
 							Loader.msg(Loader.s("Prefix")+Loader.s("Give.UknownItem").replace("%item%", args[1]), s);

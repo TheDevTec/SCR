@@ -360,7 +360,7 @@ public void APIChecker() {
 	if(Loader.kit.getString("Kits")!=null) {
 	TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&2INFO: Loading kits.."));
 	for(String s:Loader.kit.getConfigurationSection("Kits").getKeys(false)) {
-		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&2Kits: Name: "+s+", Cooldown: "+TheAPI.getTimeConventorAPI().setTimeToString(TheAPI.getTimeConventorAPI().getTimeFromString(Loader.kit.getString("Kits."+s+".Cooldown")))+", Price: $"+API.setMoneyFormat(kit.getDouble("Kits."+s+".Price"),false)));
+		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&2Kits: Name: "+s+", Cooldown: "+TheAPI.getStringUtils().setTimeToString(TheAPI.getStringUtils().getTimeFromString(Loader.kit.getString("Kits."+s+".Cooldown")))+", Price: $"+API.setMoneyFormat(kit.getDouble("Kits."+s+".Price"),false)));
 	}}
 	TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
     SoundsChecker();

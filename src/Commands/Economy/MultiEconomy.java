@@ -230,7 +230,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 							.replace("%economygroup%", getEconomyGroup(args[2]))
 							.replace("%economy-group%", getEconomyGroup(args[2]))
 							.replace("%economy%", getEconomyGroup(args[2]))
-							.replace("%money%", API.setMoneyFormat(TheAPI.getNumbersAPI(group).getDouble(), true))
+							.replace("%money%", API.setMoneyFormat(TheAPI.getStringUtils().getDouble(group), true))
 							.replace("%player%", args[1])
 							.replace("%playername%", BanSystem.getName(args[1])),s);
 					return true;

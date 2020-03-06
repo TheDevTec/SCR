@@ -134,7 +134,7 @@ public class API {
 		 return where.replace("%player%", playerr).replace("%playername%", playername);
 	 }
 		public static double convertMoney(String s) {
-			double a = TheAPI.getNumbersAPI(s).getDouble();
+			double a = TheAPI.getStringUtils().getDouble(s);
 			double mille = a*1000;
 			double million = mille*1000;
 			double billion = million*1000;
@@ -160,11 +160,11 @@ public class API {
 		 switch(type) {
 		 case Online:
 			 if(Loader.me.getString("Players."+player+".JoinTime")!=null)
-			 a=TheAPI.getTimeConventorAPI().setTimeToString((Loader.me.getLong("Players."+player+".JoinTime") - System.currentTimeMillis()/1000)*-1);
+			 a=TheAPI.getStringUtils().setTimeToString((Loader.me.getLong("Players."+player+".JoinTime") - System.currentTimeMillis()/1000)*-1);
 			 break;
 		 case Offline:
 			 if(Loader.me.getString("Players."+player+".LeaveTime")!=null)
-			 a=TheAPI.getTimeConventorAPI().setTimeToString((Loader.me.getLong("Players."+player+".LeaveTime") - System.currentTimeMillis()/1000)*-1);
+			 a=TheAPI.getStringUtils().setTimeToString((Loader.me.getLong("Players."+player+".LeaveTime") - System.currentTimeMillis()/1000)*-1);
 			 break;
 		 }
 		 return a;

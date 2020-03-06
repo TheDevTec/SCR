@@ -31,7 +31,7 @@ public class WalkSpeed implements CommandExecutor {
 	if(args.length==1) {
 		if(s instanceof Player == false) {speed(s);return true;}else {
 			if(API.hasPerm(s, "ServerControl.WalkSpeed")) {
-		double flightmodifier=TheAPI.getNumbersAPI(args[0]).getDouble();
+		double flightmodifier=TheAPI.getStringUtils().getDouble(args[0]);
 		if(flightmodifier>10.0)flightmodifier = 10.0;
 		if(flightmodifier<-10.0)flightmodifier = -10.0;
 		((Player) s).setWalkSpeed((float)flightmodifier/10);
@@ -46,7 +46,7 @@ public class WalkSpeed implements CommandExecutor {
 		if(API.hasPerm(s, "ServerControl.WalkSpeed")) {
 			Player target = Bukkit.getPlayer(args[0]);
 		if(target!=null) {
-			double flightmodifier=TheAPI.getNumbersAPI(args[1]).getDouble();
+			double flightmodifier=TheAPI.getStringUtils().getDouble(args[1]);
 			if(flightmodifier>10.0)flightmodifier = 10.0;
 			if(flightmodifier<-10.0)flightmodifier = -10.0;
 		target.setWalkSpeed((float)flightmodifier/10);

@@ -43,7 +43,7 @@ public class SPlayer {
 	}
 	public void enableTempFly(int stop) {
 		enableTempFly();
-        Loader.msg(Loader.s("Prefix")+Loader.s("TempFly.Enabled").replace("%time%", TheAPI.getTimeConventorAPI().setTimeToString(stop)), getPlayer());
+        Loader.msg(Loader.s("Prefix")+Loader.s("TempFly.Enabled").replace("%time%", TheAPI.getStringUtils().setTimeToString(stop)), getPlayer());
         Loader.me.set("Players."+getName()+".TempFly.Start", System.currentTimeMillis());
         Loader.me.set("Players."+getName()+".TempFly.Time", stop);
 		if(!hasTempFlyEnabled()) {

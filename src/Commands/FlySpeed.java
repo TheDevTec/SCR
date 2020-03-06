@@ -29,7 +29,7 @@ public class FlySpeed implements CommandExecutor {
 	if(args.length==1) {
 		if(s instanceof Player == false) {speed(s);return true;}else {
 			if(API.hasPerm(s, "ServerControl.FlySpeed")) {
-		double flightmodifier=TheAPI.getNumbersAPI(args[0]).getDouble();
+		double flightmodifier=TheAPI.getStringUtils().getDouble(args[0]);
 		if(flightmodifier>10.0)flightmodifier = 10.0;
 		if(flightmodifier<-10.0)flightmodifier = -10.0;
 		((Player) s).setFlySpeed((float)flightmodifier/10);
@@ -44,7 +44,7 @@ public class FlySpeed implements CommandExecutor {
 		if(API.hasPerm(s, "ServerControl.FlySpeed")) {
 		Player target = Bukkit.getPlayer(args[0]);
 		if(target!=null) {
-			double flightmodifier=TheAPI.getNumbersAPI(args[1]).getDouble();
+			double flightmodifier=TheAPI.getStringUtils().getDouble(args[1]);
 			if(flightmodifier>10.0)flightmodifier = 10.0;
 			if(flightmodifier<-10.0)flightmodifier = -10.0;
 			target.setFlySpeed((float)flightmodifier/10);
