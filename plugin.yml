@@ -8,7 +8,7 @@ depend: [TheAPI]
 softdepend: [Vault, Essentials, AFKPlus]
 api-version: 1.13
 commands:
-	Balance:
+    Balance:
         usage: /<command> <player>
         description: Economy status of player
         aliases: [bal]
