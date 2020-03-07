@@ -11,7 +11,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.server.ServerCommandEvent;
 
 import ServerControl.API;
 import ServerControl.Loader;
@@ -85,25 +84,6 @@ public class SecurityListenerV3 implements Listener{
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCommand(PlayerCommandPreprocessEvent e) {
 		Player p = e.getPlayer();
-		if(Bukkit.getOnlinePlayers().size() > 1) {
-			if(e.getMessage().toLowerCase().startsWith("reload")||e.getMessage().toLowerCase().startsWith("rl")) { 
-				if(e.getPlayer().hasPermission("bukkit.command.reload")) {
-				e.setCancelled(true);
-				cancel("reload");
-				}
-			}
-			if(e.getMessage().toLowerCase().startsWith("stop")) {
-				if(e.getPlayer().hasPermission("minecraft.command.stop")) {
-				e.setCancelled(true);
-				cancel("stop");
-				}
-				}
-			if(e.getMessage().toLowerCase().startsWith("restart")) {
-				if(e.getPlayer().hasPermission("bukkit.command.restart")) {
-				e.setCancelled(true);
-				cancel("restart");
-				}
-			}}
 		Commands.BanSystem.BanSystem.KickMaxWarns(p.getName());
 		if(API.getBanSystemAPI().hasJail(p)) {
 			e.setCancelled(true);
@@ -401,86 +381,4 @@ public class SecurityListenerV3 implements Listener{
 				 }
 	}
 	
-	boolean stop;
-	boolean restart;
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onCommand(ServerCommandEvent e) {
-		if(Bukkit.getOnlinePlayers().size() > 0) {
-		if(e.getCommand().toLowerCase().startsWith("reload")||e.getCommand().toLowerCase().startsWith("rl")) { 
-			if(e.getSender().hasPermission("bukkit.command.reload")) {
-			e.setCancelled(true);
-			cancel("reload");
-			}
-		}
-		if(e.getCommand().toLowerCase().startsWith("stop")) {
-			if(e.getSender().hasPermission("minecraft.command.stop")) {
-			e.setCancelled(true);
-			cancel("stop");
-			}
-			}
-		if(e.getCommand().toLowerCase().startsWith("restart")) {
-			if(e.getSender().hasPermission("bukkit.command.restart")) {
-			e.setCancelled(true);
-			cancel("restart");
-			}
-		}}
-	}
-	
-	public void cancel(String command) {
-		if(command.equalsIgnoreCase("reload") && setting.warn_reload||command.equalsIgnoreCase("rl") && setting.warn_reload) { 
-			for(String s:Loader.config.getStringList("Options.WarningSystem.Reload.Messages"))
-				TheAPI.broadcastMessage(s.replace("%time%", Loader.config.getInt("Options.WarningSystem.Reload.PauseTime")+""));
-			try {
-				Bukkit.getScheduler().runTaskLater(Loader.getInstance, new Runnable() {
-
-					@Override
-					public void run() {
-						Bukkit.reload();
-					}
-					
-				}, 20*Loader.config.getInt("Options.WarningSystem.Reload.PauseTime"));
-			}catch(Exception error) {
-				Bukkit.reload();
-			}
-		}
-		if(command.equalsIgnoreCase("stop") && setting.warn_stop) {
-			if(!stop) {
-				stop=true;
-				for(String s:Loader.config.getStringList("Options.WarningSystem.Stop.Messages"))
-					TheAPI.broadcastMessage(s.replace("%time%", ""+Loader.config.getInt("Options.WarningSystem.Stop.PauseTime")));
-				try {
-					Bukkit.getScheduler().runTaskLater(Loader.getInstance, new Runnable() {
-
-						@Override
-						public void run() {
-							Bukkit.shutdown();
-						}
-						
-					}, 20*Loader.config.getInt("Options.WarningSystem.Stop.PauseTime"));
-				}catch(Exception error) {
-					Bukkit.shutdown();
-				}
-		}}
-		if(command.equalsIgnoreCase("restart")&& setting.warn_restart) {
-			if(!restart) {
-				restart=true;
-				for(String s:Loader.config.getStringList("Options.WarningSystem.Restart.Messages"))
-					TheAPI.broadcastMessage(s.replace("%time%", ""+Loader.config.getInt("Options.WarningSystem.Restart.PauseTime")));
-				try {
-					Bukkit.getScheduler().runTaskLater(Loader.getInstance, new Runnable() {
-
-						@Override
-						public void run() {
-							if(Bukkit.getServer().spigot() != null)Bukkit.getServer().spigot().restart();
-							else Bukkit.shutdown();
-						}
-						
-					}, 20*Loader.config.getInt("Options.WarningSystem.Restart.PauseTime"));
-				}catch(Exception error) {
-					if(Bukkit.getServer().spigot() != null)Bukkit.getServer().spigot().restart();
-					else Bukkit.shutdown();
-				}
-			}
-		}
-	}
 }

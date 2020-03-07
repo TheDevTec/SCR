@@ -370,6 +370,9 @@ private void CmdC(String s, CommandExecutor p) {
 	getCommand(s).setExecutor(p);
 }
 private void CommmandsRegister() {
+	CmdC("stop", new Commands.Main.Stop());
+	CmdC("reload", new Commands.Main.Reload());
+	CmdC("restart", new Commands.Main.Restart());
 	CmdC("addons", new Commands.Addons());
 	CmdC("give", new Commands.Give());
 	CmdC("Kill", new Commands.Kill());
