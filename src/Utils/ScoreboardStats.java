@@ -1,7 +1,8 @@
 package Utils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import me.Straiker123.TheAPI;
 
 public class ScoreboardStats {
 	  
@@ -11,7 +12,7 @@ public class ScoreboardStats {
 			 }
 			 	
 	public static void removeScoreboard() {
-		for(Player p:Bukkit.getOnlinePlayers()) {
+		for(Player p:TheAPI.getOnlinePlayers()) {
 			Tasks.setup.remove(p);
 			 p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
 	}

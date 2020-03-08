@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class ListCmd implements CommandExecutor {
 	HashMap<Player,String> p = new HashMap<Player,String>(); // Player, group;
@@ -29,14 +30,14 @@ public class ListCmd implements CommandExecutor {
 	
 	public void sortPlayers() {
 		p.clear();
-		for(Player a:Bukkit.getOnlinePlayers()) {
+		for(Player a:TheAPI.getOnlinePlayers()) {
 			if(p.get(a)==null)
 			p.put(a, getGroup(a));
 		}
 	}
 	public String normalPlayers() {
 		ArrayList<String> w = new ArrayList<String>();
-		for(Player a:Bukkit.getOnlinePlayers()) {
+		for(Player a:TheAPI.getOnlinePlayers()) {
 		if(!Loader.config.getStringList("StaffList").contains(p.get(a))) {
 			w.add(a.getName());
 		}}
@@ -46,7 +47,7 @@ public class ListCmd implements CommandExecutor {
 	}
 	public String getStaff() {
 		ArrayList<String> w = new ArrayList<String>();
-		for(Player a:Bukkit.getOnlinePlayers()) {
+		for(Player a:TheAPI.getOnlinePlayers()) {
 		if(Loader.config.getStringList("StaffList").contains(p.get(a))) {
 			w.add(a.getName());
 		}}
@@ -56,7 +57,7 @@ public class ListCmd implements CommandExecutor {
 	}
 	public String allPlayers() {
 		ArrayList<String> w = new ArrayList<String>();
-		for(Player a:Bukkit.getOnlinePlayers()) {
+		for(Player a:TheAPI.getOnlinePlayers()) {
 			w.add(a.getName());
 		}
 		if(w.isEmpty())
@@ -65,7 +66,7 @@ public class ListCmd implements CommandExecutor {
 	}
 	public String getPlayersInGroup(String f) {
 			ArrayList<String> w = new ArrayList<String>();
-			for(Player a:Bukkit.getOnlinePlayers()) {
+			for(Player a:TheAPI.getOnlinePlayers()) {
 			if(f.equals(p.get(a))) {
 				w.add(a.getName());
 			}
@@ -89,7 +90,7 @@ public class ListCmd implements CommandExecutor {
 					a=a.replace("%"+wa+"%", getPlayersInGroup(wa));
 				}
 			Loader.msg(a
-					.replace("%online%",String.valueOf(Bukkit.getOnlinePlayers().size()))
+					.replace("%online%",String.valueOf(TheAPI.getOnlinePlayers().size()))
 					.replace("%max_players%",String.valueOf(Bukkit.getMaxPlayers()))
 			.replace("%staff%",getStaff())
 			.replace("%players%",normalPlayers())

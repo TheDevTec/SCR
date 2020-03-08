@@ -224,7 +224,7 @@ public void Tasks() {
      for(World wa: Bukkit.getWorlds()) {
 		MultiWorldsUtils.DefaultSet(wa);
 	}
-	for(Player p:Bukkit.getOnlinePlayers()) {
+	for(Player p:TheAPI.getOnlinePlayers()) {
 		SPlayer s = new SPlayer(p);
 		if(s.hasTempFlyEnabled())
 			s.enableTempFly();
@@ -245,7 +245,7 @@ public void Tasks() {
 }
 @Override
 public void onDisable() {
-	for(Player p : Bukkit.getOnlinePlayers()) {
+	for(Player p : TheAPI.getOnlinePlayers()) {
 		p.setFlying(false);
 		p.setAllowFlight(false);
 	}

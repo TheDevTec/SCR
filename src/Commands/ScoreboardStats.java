@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,6 +9,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Configs;
 import Utils.setting;
+import me.Straiker123.TheAPI;
 
 public class ScoreboardStats implements CommandExecutor {
 
@@ -21,7 +21,7 @@ public class ScoreboardStats implements CommandExecutor {
 				Configs.ScoreboardLoading();
 				Utils.ScoreboardStats.removeScoreboard();
 				if(setting.sb) {
-				for(Player p : Bukkit.getOnlinePlayers())
+				for(Player p : TheAPI.getOnlinePlayers())
 					Utils.ScoreboardStats.createScoreboard(p);}
 				Loader.msg(Loader.s("Prefix")+Loader.s("ConfigReloaded"),s);
 				return true;

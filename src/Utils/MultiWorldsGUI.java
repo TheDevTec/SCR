@@ -634,19 +634,19 @@ public class MultiWorldsGUI {
 				 g=Loader.mw.getString("WorldsSettings."+w.getName()+".GameMode");
 				if(GameMode.valueOf(g)==GameMode.SURVIVAL) {
 					Loader.mw.set("WorldsSettings."+w.getName()+".GameMode", "CREATIVE");
-					for(Player p:Bukkit.getOnlinePlayers())if(p.getWorld()==w)p.setGameMode(GameMode.CREATIVE);
+					for(Player p:TheAPI.getOnlinePlayers())if(p.getWorld()==w)p.setGameMode(GameMode.CREATIVE);
 				}else
 					if(GameMode.valueOf(g)==GameMode.CREATIVE) {
 						Loader.mw.set("WorldsSettings."+w.getName()+".GameMode", "SPECTATOR");
-						for(Player p:Bukkit.getOnlinePlayers())if(p.getWorld()==w)p.setGameMode(GameMode.SPECTATOR);
+						for(Player p:TheAPI.getOnlinePlayers())if(p.getWorld()==w)p.setGameMode(GameMode.SPECTATOR);
 					}else
 						if(GameMode.valueOf(g)==GameMode.SPECTATOR) {
 							Loader.mw.set("WorldsSettings."+w.getName()+".GameMode", "ADVENTURE");
-							for(Player p:Bukkit.getOnlinePlayers())if(p.getWorld()==w)p.setGameMode(GameMode.ADVENTURE);
+							for(Player p:TheAPI.getOnlinePlayers())if(p.getWorld()==w)p.setGameMode(GameMode.ADVENTURE);
 						}else
 							if(GameMode.valueOf(g)==GameMode.ADVENTURE) {
 								Loader.mw.set("WorldsSettings."+w.getName()+".GameMode", "SURVIVAL");
-								for(Player p:Bukkit.getOnlinePlayers())if(p.getWorld()==w)p.setGameMode(GameMode.SURVIVAL);
+								for(Player p:TheAPI.getOnlinePlayers())if(p.getWorld()==w)p.setGameMode(GameMode.SURVIVAL);
 							}
 				Configs.mw.save();
 				openInvSetWorld(p,w);

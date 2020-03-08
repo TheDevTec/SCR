@@ -52,7 +52,7 @@ public class TabList {
 		String displayname = p.getName();
 		if(p.getDisplayName()!=null)displayname=p.getDisplayName();
 		return header.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true))
-				.replace("%online%", String.valueOf(Bukkit.getOnlinePlayers().size()))
+				.replace("%online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
 				.replace("%max_players%", String.valueOf(Bukkit.getMaxPlayers()))
 				.replace("%ping%", String.valueOf(Loader.getInstance.pingPlayer(p)))
 				.replace("%time%", String.valueOf( new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date())))
@@ -93,7 +93,7 @@ public class TabList {
 	}
 	static int test;
 	public static void removeTab() {
-		 for(Player p:Bukkit.getOnlinePlayers()) {
+		 for(Player p:TheAPI.getOnlinePlayers()) {
 			 NameTagChanger.remove(p);
 			 p.setPlayerListName(p.getName());
 		p.setScoreboard(Bukkit.getServer().getScoreboardManager().getNewScoreboard());
@@ -139,13 +139,13 @@ public class TabList {
 	}
     
 	public static void setNameTag() {
-		for(Player p:Bukkit.getOnlinePlayers()) {
+		for(Player p:TheAPI.getOnlinePlayers()) {
 			if(Bukkit.getPlayer(p.getName())!=null) {
 			setTab(p);
 		}}
 	}
 	public static void setFooterHeader() {
-		for(Player p:Bukkit.getOnlinePlayers()) {
+		for(Player p:TheAPI.getOnlinePlayers()) {
 			if(Bukkit.getPlayer(p.getName())!=null) {
 				TheAPI.getTabListAPI().setHeaderFooter(p, getHeader(p), getFooter(p));
 		}}}

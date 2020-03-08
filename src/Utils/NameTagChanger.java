@@ -1,6 +1,5 @@
 package Utils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
@@ -8,7 +7,7 @@ import me.Straiker123.TheAPI;
 		
 public class NameTagChanger {
 	public static void setNameTag(Player p, String prefix, String suffix) {
-		for(Player player:Bukkit.getOnlinePlayers()) {
+		for(Player player:TheAPI.getOnlinePlayers()) {
         	if(setting.tab_sort) {
 	            	if(setting.tab_nametag)
 	            		TheAPI.getNameTagAPI(p, TabList.replace(prefix,p), TabList.replace(suffix,p))

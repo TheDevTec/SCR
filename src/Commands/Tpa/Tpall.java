@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class Tpall implements CommandExecutor, TabCompleter {
 
@@ -22,7 +22,7 @@ public class Tpall implements CommandExecutor, TabCompleter {
 		if(API.hasPerm(s, "ServerControl.Tpall")) {
 			if(s instanceof Player) {
 				ArrayList<String> list = new ArrayList<String>();
-				for(Player p:Bukkit.getOnlinePlayers()) {
+				for(Player p:TheAPI.getOnlinePlayers()) {
 					if(p==s)continue;
 if(!Loader.me.getBoolean("Players."+p.getName()+".TpBlock."+s.getName())&&!Loader.me.getBoolean("Players."+p.getName()+".TpBlock-Global")
 		||

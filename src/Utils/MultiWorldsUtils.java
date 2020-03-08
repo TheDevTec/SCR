@@ -48,7 +48,7 @@ public class MultiWorldsUtils {
 		.replace("%chunks%", String.valueOf(chunk)),s);	
 	}
 	public static void EnableWorldCheck() {
-		for(Player on: Bukkit.getOnlinePlayers()) {
+		for(Player on: TheAPI.getOnlinePlayers()) {
 			if(Bukkit.getWorld(on.getWorld().getName())!=null) {
 				String[] f = {"SURVIVAL", "CREATIVE", "ADVENTURE", "SPECTATOR"};
 			for(String waww:f) {

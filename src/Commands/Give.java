@@ -362,9 +362,6 @@ public class Give implements CommandExecutor, TabCompleter {
 		return h;
 	}
 	
-	public List<String> items(){
-		return list;
-	}
 	public String getItem(String s) {
 		if(list.contains(s.toUpperCase()))return s.toUpperCase();
 		return null;
@@ -389,7 +386,7 @@ public class Give implements CommandExecutor, TabCompleter {
 							Player p = (Player)s;
 							try {
 								String g = args[0].toUpperCase();
-								if(!g.startsWith("LINGERING_POTION_OF_")&&g.startsWith("SPLASH_POTION_OF_")&&g.startsWith("POTION_OF_"))
+								if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
 							TheAPI.giveItem(p, XMaterial.matchXMaterial(g).parseMaterial(),1);
 								else
 									TheAPI.giveItem(p, getPotion(g));
@@ -418,7 +415,7 @@ public class Give implements CommandExecutor, TabCompleter {
 							ps=(Player)s;
 							try {
 								String g = args[0].toUpperCase();
-								if(!g.startsWith("LINGERING_POTION_OF_")&&g.startsWith("SPLASH_POTION_OF_")&&g.startsWith("POTION_OF_"))
+								if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
 							TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).parseMaterial(),1);
 								else {
 									ItemStack a = getPotion(g);
@@ -441,7 +438,7 @@ public class Give implements CommandExecutor, TabCompleter {
 					}
 					if(getItem(args[1])!=null) {
 						String g = args[1].toUpperCase();
-						if(!g.startsWith("LINGERING_POTION_OF_")&&g.startsWith("SPLASH_POTION_OF_")&&g.startsWith("POTION_OF_"))
+						if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
 					TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).parseMaterial(),1);
 						else
 							TheAPI.giveItem(ps, getPotion(g));
@@ -460,7 +457,7 @@ public class Give implements CommandExecutor, TabCompleter {
 						}
 						if(getItem(args[1])!=null) {
 							String g = args[1].toUpperCase();
-							if(!g.startsWith("LINGERING_POTION_OF_")&&g.startsWith("SPLASH_POTION_OF_")&&g.startsWith("POTION_OF_"))
+							if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
 						TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).parseMaterial(),TheAPI.getStringUtils().getInt(args[2]));
 							else {
 								ItemStack a = getPotion(args[1]);
@@ -483,9 +480,12 @@ public class Give implements CommandExecutor, TabCompleter {
 	  public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 	  	List<String> c = new ArrayList<>();
 	      	if(s.hasPermission("ServerControl.Give")) {
-	    	  	if(args.length==1)return null;
+	      		List<String> wPl = new ArrayList<String>();
+	      		wPl.addAll(list);
+	      		for(Player p : TheAPI.getOnlinePlayers())wPl.add(p.getName());
+	    	  	if(args.length==1)return wPl;
 	    	  	if(args.length==2) {
-		      		c.addAll(StringUtil.copyPartialMatches(args[1], items(), new ArrayList<>()));
+		      		c.addAll(StringUtil.copyPartialMatches(args[1], list, new ArrayList<>()));
 	    	  		}
 	    	  	if(args.length==3) {
 		      		c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));

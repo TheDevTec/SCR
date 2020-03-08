@@ -25,7 +25,7 @@ public Loader plugin=Loader.getInstance;
 				if(setting.vip_join) {
 					TheAPI.broadcastMessage(Loader.config.getString("Options.VIPSlots.Text.BroadcastVIPJoin")
 							.replace("%players_max%", String.valueOf(Bukkit.getMaxPlayers() + (setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)))
-							.replace("%players_online%", String.valueOf(Bukkit.getOnlinePlayers().size()))
+							.replace("%players_online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
 							.replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName())
 							.replace("%prefix%", Loader.s("Prefix"))
@@ -64,32 +64,32 @@ public Loader plugin=Loader.getInstance;
 						e.allow();
 					}
 				}else {
-					if (Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
+					if (TheAPI.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
 						e.disallow(Result.KICK_FULL, TheAPI.colorize(Loader.config.getString("Options.VIPSlots.Text.Kick")));
 					}}}
 				if(Tasks.players.isEmpty()){
 					if(p.hasPermission("ServerControl.JoinFullServer")) {
-					if (Bukkit.getOnlinePlayers().size() > Bukkit.getMaxPlayers()+(setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)) {
+					if (TheAPI.getOnlinePlayers().size() > Bukkit.getMaxPlayers()+(setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)) {
 						e.disallow(Result.KICK_FULL, TheAPI.colorize(Loader.config.getString("Options.VIPSlots.Text.FullServer")));
 					}
-					if (Bukkit.getOnlinePlayers().size() < Bukkit.getMaxPlayers()+(setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)) {
+					if (TheAPI.getOnlinePlayers().size() < Bukkit.getMaxPlayers()+(setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)) {
 						e.allow();
 						bc(p);
 					}}else {
-					if (Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
+					if (TheAPI.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
 						e.disallow(Result.KICK_FULL, TheAPI.colorize(Loader.config.getString("Options.VIPSlots.Text.Kick")));
 					}}
 				}
 			}else {
 				if(p.hasPermission("ServerControl.JoinFullServer")) {
-					if (Bukkit.getOnlinePlayers().size() > Bukkit.getMaxPlayers()+(setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)) {
+					if (TheAPI.getOnlinePlayers().size() > Bukkit.getMaxPlayers()+(setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)) {
 						e.disallow(Result.KICK_FULL, TheAPI.colorize(Loader.config.getString("Options.VIPSlots.Text.FullServer")));
 					}
-					if (Bukkit.getOnlinePlayers().size() < Bukkit.getMaxPlayers()+(setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)) {
+					if (TheAPI.getOnlinePlayers().size() < Bukkit.getMaxPlayers()+(setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)) {
 						bc(p);
 						e.allow();
 					}}else {
-		if (Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
+		if (TheAPI.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
 			e.disallow(Result.KICK_FULL,TheAPI.colorize(Loader.config.getString("Options.VIPSlots.Text.Kick")));
 			
 		}

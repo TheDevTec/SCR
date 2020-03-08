@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class Staff implements CommandExecutor {
 	
@@ -31,14 +32,14 @@ public class Staff implements CommandExecutor {
 	
 	public void sortPlayers() {
 		p.clear();
-		for(Player a:Bukkit.getOnlinePlayers()) {
+		for(Player a:TheAPI.getOnlinePlayers()) {
 			p.put(a, getGroup(a));
 		}
 	}
 	ArrayList<String> w = new ArrayList<String>();
 	public String getStaff() {
 		w.clear();
-		for(Player a:Bukkit.getOnlinePlayers()) {
+		for(Player a:TheAPI.getOnlinePlayers()) {
 		if(Loader.config.getStringList("StaffList").contains(p.get(a))) {
 			w.add(a.getName());
 		}}

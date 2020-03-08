@@ -17,7 +17,7 @@ public class ClearChat implements CommandExecutor {
 		if (s instanceof Player == false){
         	if(args.length == 0){
     			for (int i = 0; i < 250; i++) {
-    				for (Player online : Bukkit.getOnlinePlayers()) {
+    				for (Player online : TheAPI.getOnlinePlayers()) {
 						if(!online.hasPermission("ServerControl.ClearChat.Bypass")) {
 							Loader.msg("",online);
     				}}}
@@ -48,7 +48,7 @@ public class ClearChat implements CommandExecutor {
 		        	if(args.length == 0){
 		    			if(API.hasPerm(s, "ServerControl.ClearChat")) {
 		        for (int i = 0; i < 250; i++) {
-					for (Player online : Bukkit.getOnlinePlayers()) {
+					for (Player online : TheAPI.getOnlinePlayers()) {
 
 						if(!online.hasPermission("ServerControl.ClearChat.Bypass")) {
 					

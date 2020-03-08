@@ -35,7 +35,7 @@ public class SecurityListenerV3 implements Listener{
 		Command
 	}
 	private boolean is(String s) {
-		for(Player p : Bukkit.getOnlinePlayers()) {
+		for(Player p : TheAPI.getOnlinePlayers()) {
 			if(s.equalsIgnoreCase(p.getName()))return true;
 			
 		}

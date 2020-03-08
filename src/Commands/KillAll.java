@@ -3,7 +3,6 @@ package Commands;
 import java.util.ArrayList;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class KillAll implements CommandExecutor {
 
@@ -19,7 +19,7 @@ public class KillAll implements CommandExecutor {
 		if(API.hasPerm(s, "ServerControl.KillAll")) {
 			int amount = 0;
 			ArrayList<String> pl = new ArrayList<String>();
-			for(Player p :Bukkit.getOnlinePlayers()) {
+			for(Player p :TheAPI.getOnlinePlayers()) {
 				p.setHealth(0);
 				if(p.isDead()) {
 				pl.add(p.getName());

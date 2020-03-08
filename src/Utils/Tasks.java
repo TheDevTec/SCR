@@ -13,7 +13,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import me.Straiker123.ScoreboardAPI;
+import me.Straiker123.ScoreboardAPIV2;
 import me.Straiker123.TheAPI;
 
 public class Tasks {
@@ -26,7 +26,7 @@ public class Tasks {
 	static HashMap<Player, String> ss = new HashMap<Player, String>();
 	public static ArrayList<Player> players = new ArrayList<Player>();
 	 static HashMap<Player, Scoreboard> l = new HashMap<Player, Scoreboard>();
-	 static HashMap<Player, ScoreboardAPI> setup = new HashMap<Player, ScoreboardAPI>();
+	 static HashMap<Player, ScoreboardAPIV2> setup = new HashMap<Player, ScoreboardAPIV2>();
 	public static void load() {
 		if(setting.am)
 		automessage();
@@ -58,18 +58,7 @@ public class Tasks {
 	}
 	private static void setup(Player p) {
 		setup.remove(p);
-		if(setting.sb_world && 
-				 Loader.scFile.getString("PerWorld."+p.getWorld().getName()+".Name")!=null &&
-				 Loader.scFile.getString("PerWorld."+p.getWorld().getName()+".Lines")!=null)
-			 l.remove(p);
-			 if(!l.containsKey(p)) {
-				 l.put(p, p.getServer().getScoreboardManager().getNewScoreboard());
-				 p.setScoreboard(l.get(p));
-			 }
-			 Scoreboard f = l.get(p);
-			 if(p.getScoreboard()==f||p.getScoreboard().getObjectives().isEmpty()) {
-				 ScoreboardAPI a = TheAPI.getScoreboardAPI(p,f);
-				 
+		ScoreboardAPIV2 a = TheAPI.getScoreboardAPIV2(p);
 		String getName = "Name";
 		 String getLine = "Lines";
 		 if(setting.sb_world && 
@@ -79,15 +68,11 @@ public class Tasks {
 			 getLine="PerWorld."+p.getWorld().getName()+".Lines";
 		 }
 		a.setTitle(Loader.scFile.getString(getName));
-		List<String> list = Loader.scFile.getStringList(getLine);
-	    list = TheAPI.getPlaceholderAPI().setPlaceholders(p,list);
-	    int test= list.size();
-		for(String ss: list) {
-			--test;
-			a.addLine(TabList.replace(ss, p),test);
+		for(String ss: Loader.scFile.getStringList(getLine)) {
+			a.addLine(TheAPI.getPlaceholderAPI().setPlaceholders(p,TabList.replace(ss, p)));
 		}
 		setup.put(p, a);
-		}
+		
 	}
 	private static void tempfly() {
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
@@ -121,12 +106,12 @@ public class Tasks {
 		int r = Loader.scFile.getInt("RefleshTick");
 		if(r <= 0)r=1;
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
-			for(Player p:Bukkit.getOnlinePlayers())
+			for(Player p:TheAPI.getOnlinePlayers())
 				setup(p);
 		
 	}},20,r-1));
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
-			for(Player p:Bukkit.getOnlinePlayers())
+			for(Player p:TheAPI.getOnlinePlayers())
 				ScoreboardStats.createScoreboard(p);
 		
 	}},20,r));
@@ -152,7 +137,7 @@ public class Tasks {
 	}
 	private static void regPlayers() {
 		ss.clear();
-		for(Player p:Bukkit.getOnlinePlayers()) {
+		for(Player p:TheAPI.getOnlinePlayers()) {
 			if(!ss.containsKey(p)) {
 				String uuid = p.getUniqueId().toString();
 				uuid = uuid.substring(0, 5);
@@ -173,7 +158,7 @@ public class Tasks {
 				else
 					TheAPI.setServerMotd(Loader.config.getString("Options.ServerList.MOTD.Text.Maintenance").replace("%next%", "\n").replace("%line%", "\n"));
 		}
-	   	 for(Player p:Bukkit.getOnlinePlayers()) {
+	   	 for(Player p:TheAPI.getOnlinePlayers()) {
 	   		 if(AFK.isAFK(p)) {
 	   				 if(setting.afk_kick && AFK.getAFKTime(p)>=TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("AFK.Kick.Time"))
 	   						 && !p.hasPermission("ServerControl.AFK.Bypass")) {
@@ -205,7 +190,7 @@ public class Tasks {
 		if(Loader.config.getBoolean("Options.VIPSlots.AddSlots"))
 	    TheAPI.setMaxPlayers(Bukkit.getMaxPlayers() + Loader.config.getInt("Options.VIPSlots.SlotsToAdd"));
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
-	    	   	 for(Player online:Bukkit.getOnlinePlayers()) {
+	    	   	 for(Player online:TheAPI.getOnlinePlayers()) {
 	    	   	 if(!players.contains(online) &&!online.hasPermission("ServerControl.JoinFullServer"))
 	    	   		 players.add(online);
 	    	   	 if(players.contains(online) && online.hasPermission("ServerControl.JoinFullServer"))
@@ -217,7 +202,7 @@ public class Tasks {
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable() {
 			@Override
 			public void run() {
-		    	if(Bukkit.getOnlinePlayers().size()<Loader.config.getInt("Options.AutoMessage.MinimalPlayers"))return;
+		    	if(TheAPI.getOnlinePlayers().size()<Loader.config.getInt("Options.AutoMessage.MinimalPlayers"))return;
 				List<Object> l = new ArrayList<Object>();
 				for(String s : Loader.config.getStringList("Options.AutoMessage.Messages"))l.add(s);
 			  		if(setting.am_random) {
@@ -225,7 +210,7 @@ public class Tasks {
 			     			 			.replace("%used_ram%", TheAPI.getMemoryAPI().getUsedMemory(false)+"")
 			    			 			.replace("%free_ram%",TheAPI.getMemoryAPI().getFreeMemory(false)+"")
 			     			 			.replace("%max_ram%",TheAPI.getMemoryAPI().getMaxMemory()+"")
-			     			 			.replace("%online%", String.valueOf(Bukkit.getOnlinePlayers().size()))
+			     			 			.replace("%online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
 			     			 			.replace("%max_players%", String.valueOf(Bukkit.getMaxPlayers()))
 			     			 			.replace("%time%", new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
 			     			 			.replace("%date%", new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()))
@@ -238,7 +223,7 @@ public class Tasks {
 						 			.replace("%used_ram%", TheAPI.getMemoryAPI().getUsedMemory(false)+"")
 						 			.replace("%free_ram%",TheAPI.getMemoryAPI().getFreeMemory(false)+"")
 						 			.replace("%max_ram%",TheAPI.getMemoryAPI().getMaxMemory()+"")
-			 			 			.replace("%online%", String.valueOf(Bukkit.getOnlinePlayers().size()))
+			 			 			.replace("%online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
 			 			 			.replace("%max_players%", String.valueOf(Bukkit.getMaxPlayers()))
 			 			 			.replace("%time%", new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
 			 			 			.replace("%date%", new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()))
