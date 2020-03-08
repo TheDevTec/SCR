@@ -56,24 +56,6 @@ public class Tasks {
 		tasks.clear();
 		load();
 	}
-	private static void setup(Player p) {
-		setup.remove(p);
-		ScoreboardAPIV2 a = TheAPI.getScoreboardAPIV2(p);
-		String getName = "Name";
-		 String getLine = "Lines";
-		 if(setting.sb_world && 
-				 Loader.scFile.getString("PerWorld."+p.getWorld().getName()+".Name")!=null &&
-				 Loader.scFile.getString("PerWorld."+p.getWorld().getName()+".Lines")!=null) {
-			 getName="PerWorld."+p.getWorld().getName()+".Name";
-			 getLine="PerWorld."+p.getWorld().getName()+".Lines";
-		 }
-		a.setTitle(Loader.scFile.getString(getName));
-		for(String ss: Loader.scFile.getStringList(getLine)) {
-			a.addLine(TheAPI.getPlaceholderAPI().setPlaceholders(p,TabList.replace(ss, p)));
-		}
-		setup.put(p, a);
-		
-	}
 	private static void tempfly() {
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 			if(Loader.me.getString("TempFly") !=null && Loader.me.getStringList("TempFly").isEmpty()==false)
@@ -105,11 +87,6 @@ public class Tasks {
 	private static void scoreboard() {
 		int r = Loader.scFile.getInt("RefleshTick");
 		if(r <= 0)r=1;
-		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
-			for(Player p:TheAPI.getOnlinePlayers())
-				setup(p);
-		
-	}},20,r-1));
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 			for(Player p:TheAPI.getOnlinePlayers())
 				ScoreboardStats.createScoreboard(p);

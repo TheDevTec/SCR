@@ -1,7 +1,6 @@
 package Utils;
 
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Team;
 
 import me.Straiker123.TheAPI;
 		
@@ -23,8 +22,6 @@ public class NameTagChanger {
 	            		.setNameTag(Tasks.ss.get(p), player.getScoreboard());
         	}}}
 	public static void remove(Player p) {
-    	for(Team t : p.getScoreboard().getTeams()) {
-    		t.unregister();
-    	}
+		TheAPI.getNameTagAPI(p, null, null).resetNameTag();
 	}
 }
