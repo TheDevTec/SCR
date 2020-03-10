@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,7 +36,7 @@ public class Vanish implements CommandExecutor {
 		return true;
 		}
 		if(args.length==1) {
-			Player t = Bukkit.getPlayer(args[0]);
+			Player t = TheAPI.getPlayer(args[0]);
 			if(t!=null) {
 				if(!Loader.me.getBoolean("Players."+t.getName()+".Vanish")) {
 					Loader.me.set("Players."+t.getName()+".Vanish", true);

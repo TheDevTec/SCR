@@ -1,6 +1,5 @@
 package Commands.Economy;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -68,8 +67,8 @@ public class Pay implements CommandExecutor {
 					return true;
 			}}}return true;}
 	public Player get(String args) {
-		if(Bukkit.getPlayer(args) != null) {
-			return Bukkit.getPlayer(args);
+		if(TheAPI.getPlayer(args) != null) {
+			return TheAPI.getPlayer(args);
 		}
 		return null;
 	}

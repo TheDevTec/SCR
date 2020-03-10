@@ -51,6 +51,7 @@ public class SecurityListenerV3 implements Listener{
 	        	upperCaseCount++;
 	        }
 		}
+		TheAPI.broadcastMessage(upperCaseCount+"");
 		return upperCaseCount;
 	}
 	private String removeDoubled(String s) {

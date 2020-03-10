@@ -129,7 +129,7 @@ public class API {
 		 */
 	 public static String replacePlayerName(String where, String player) {
 		 String playername = player;
-		 if(Bukkit.getPlayer(player)!=null)playername=Bukkit.getPlayer(player).getDisplayName();
+		 if(TheAPI.getPlayer(player)!=null)playername=TheAPI.getPlayer(player).getDisplayName();
 		 String playerr = player;
 		 return where.replace("%player%", playerr).replace("%playername%", playername);
 	 }

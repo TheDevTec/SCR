@@ -60,7 +60,7 @@ public class Tasks {
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 			if(Loader.me.getString("TempFly") !=null && Loader.me.getStringList("TempFly").isEmpty()==false)
 			for(String p:Loader.me.getStringList("TempFly")) {
-				Player s = Bukkit.getPlayer(p);
+				Player s = TheAPI.getPlayer(p);
 				long start = Loader.me.getLong("Players."+p+".TempFly.Start");
 				int end = Loader.me.getInt("Players."+p+".TempFly.Time");
 				long timeout = start/1000 - System.currentTimeMillis()/1000 + end;

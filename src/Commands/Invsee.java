@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,12 +21,12 @@ public class Invsee implements CommandExecutor {
 				}
 				if(args.length==1) {
 					if(s instanceof Player) {
-						Player p = Bukkit.getPlayer(args[0]);
+						Player p = TheAPI.getPlayer(args[0]);
 						if(p==null) {
 							Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 							return true;
 						} 
-							Loader.msg(Loader.s("Prefix")+Loader.s("Inventory.OpeningInvsee").replace("%player%",p.getName()).replace("%playername%",p.getDisplayName()), s);
+							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Inventory.OpeningInvsee"),p.getName()), s);
 							TheAPI.getPlayerAPI((Player)s).invsee(p, InvseeType.INVENTORY);
 							return true;
 					}
@@ -35,8 +34,8 @@ public class Invsee implements CommandExecutor {
 					return true;
 				}
 				if(args.length==2) {
-					Player p = Bukkit.getPlayer(args[0]);
-					Player t = Bukkit.getPlayer(args[1]);
+					Player p = TheAPI.getPlayer(args[0]);
+					Player t = TheAPI.getPlayer(args[1]);
 					if(p==null) {
 						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
@@ -45,8 +44,8 @@ public class Invsee implements CommandExecutor {
 						Loader.msg(Loader.PlayerNotOnline(args[1]), s);
 						return true;
 					} 
-						Loader.msg(Loader.s("Prefix")+Loader.s("Inventory.OpeningInvseeForTarget").replace("%player%",p.getName()).replace("%playername%",p.getDisplayName()).replace("%target%",t.getDisplayName()), s);
-						TheAPI.getPlayerAPI((Player)t).invsee(p, InvseeType.INVENTORY);
+						Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Inventory.OpeningInvseeForTarget"),p.getName()).replace("%target%",t.getDisplayName()), s);
+						TheAPI.getPlayerAPI(t).invsee(p, InvseeType.INVENTORY);
 						return true;
 						
 				}

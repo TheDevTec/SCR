@@ -3,7 +3,6 @@ package Commands.Tpa;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,7 +24,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 			}
 			if(args.length==1) {
 				if(s instanceof Player) {
-			Player target = Bukkit.getPlayer(args[0]);
+			Player target = TheAPI.getPlayer(args[0]);
 			if(target==null) {
 				if(TheAPI.getStringUtils().isInt(args[0])) {
 					Loader.Help(s, "/Tp <x> <y> <z>", "TpaSystem.Tp");
@@ -56,7 +55,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 			
 			}
 				}
-				if(Bukkit.getPlayer(args[0])==null) {
+				if(TheAPI.getPlayer(args[0])==null) {
 					if(TheAPI.getStringUtils().isInt(args[0])) {
 					Loader.Help(s, "/Tp <player> <x> <y> <z>", "TpaSystem.Tp");
 					return true;
@@ -75,8 +74,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 				}
 		}
 		if(args.length==2) {
-			Player p0 = Bukkit.getPlayer(args[0]);
-			Player p1 = Bukkit.getPlayer(args[1]);
+			Player p0 = TheAPI.getPlayer(args[0]);
+			Player p1 = TheAPI.getPlayer(args[1]);
 			if(p1==null) {
 				if(s instanceof Player) {
 			if(p0 != null && TheAPI.getStringUtils().isInt(args[1])) {
@@ -124,7 +123,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 		}
 		if(API.hasPerm(s,"ServerControl.Tp.Location")) {
 		if(args.length==3) {
-			Player p = Bukkit.getPlayer(args[0]);
+			Player p = TheAPI.getPlayer(args[0]);
 			if(p==null) {
 				if(TheAPI.getStringUtils().isInt(args[0])&&TheAPI.getStringUtils().isInt(args[1])&&TheAPI.getStringUtils().isInt(args[2])) {
 					if(s instanceof Player) {
@@ -162,7 +161,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if(args.length==4) {
-			Player p = Bukkit.getPlayer(args[0]);
+			Player p = TheAPI.getPlayer(args[0]);
 			if(TheAPI.getStringUtils().isInt(args[0])&&TheAPI.getStringUtils().isInt(args[1])&&TheAPI.getStringUtils().isInt(args[2])) {
 				if(s instanceof Player) {
 				Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpLocation")

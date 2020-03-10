@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,7 +22,7 @@ public class EnderSee implements CommandExecutor {
 				return true;
 				}
 				if(args.length==1) {
-					Player p = Bukkit.getPlayer(args[0]);
+					Player p = TheAPI.getPlayer(args[0]);
 					if(p!=null) {
 					if(p==s) {
 						Loader.msg(Loader.s("Prefix")+Loader.s("Inventory.OpeningEnderChest"), s);

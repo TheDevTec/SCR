@@ -21,8 +21,8 @@ public class Chat implements CommandExecutor, TabCompleter {
 	private static final List<String> All = Arrays.asList("General", "Help", "Info","Version", "Me");
 
 	public String online(String[] args) {
-		if(Bukkit.getPlayer(args[1])!=null) {
-			return Bukkit.getPlayer(args[1]).getDisplayName();
+		if(TheAPI.getPlayer(args[1])!=null) {
+			return TheAPI.getPlayer(args[1]).getDisplayName();
 		}
 		return args[1];
 	}
@@ -167,7 +167,7 @@ public class Chat implements CommandExecutor, TabCompleter {
                     	if(Loader.me.getString("Players."+args[1])!=null) {
             	        	List<String> about = Loader.TranslationsFile.getStringList("AboutYou");
             	        	String world  = Loader.me.getString("Players."+args[1]+".DisconnectWorld");
-            	        	if(Bukkit.getPlayer(args[1])!=null)world=Bukkit.getPlayer(args[1]).getName();
+            	        	if(TheAPI.getPlayer(args[1])!=null)world=TheAPI.getPlayer(args[1]).getName();
             	        	String money = API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true);
             	        	for(String a: about) {
                     		if(Loader.getInstance.getServer().getPluginManager().getPlugin("Vault") != null) {

@@ -80,8 +80,8 @@ public class EcoTop implements CommandExecutor {
 	}
 
 	public String player(String s) {
-		if (Bukkit.getPlayer(s) != null)
-			return Bukkit.getPlayer(s).getDisplayName();
+		if (TheAPI.getPlayer(s) != null)
+			return TheAPI.getPlayer(s).getDisplayName();
 		return s;
 	}
 }

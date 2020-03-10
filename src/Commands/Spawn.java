@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,6 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class Spawn implements CommandExecutor {
 
@@ -29,7 +29,7 @@ public class Spawn implements CommandExecutor {
 			Loader.Help(s, "/Spawn <player>", "Spawn");
 			return true;
 		}}
-			Player p = Bukkit.getPlayer(args[0]);
+			Player p = TheAPI.getPlayer(args[0]);
 			if(p==null) {
 				Loader.msg(Loader.PlayerNotEx(args[0]), s);
 				return true;

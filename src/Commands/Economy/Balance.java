@@ -40,7 +40,7 @@ public class Balance implements CommandExecutor, TabCompleter {
 			if(API.hasPerm(s, "ServerControl.Balance.Other")) {
 
 				String world = Bukkit.getWorlds().get(0).getName();
-				if(Bukkit.getPlayer(s.getName())!=null)world=((Player) s).getWorld().getName();
+				if(TheAPI.getPlayer(s.getName())!=null)world=((Player) s).getWorld().getName();
 				
 				Loader.msg(Loader.s("Economy.BalanceOther")
 						.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[0],world), true))

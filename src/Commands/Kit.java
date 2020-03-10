@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -52,7 +51,7 @@ public class Kit implements CommandExecutor,TabCompleter{
 		return null;
 	}
 	public static void giveKit(String s, String KitName, boolean cooldown, boolean economy) {
-		Player p = Bukkit.getPlayer(s);
+		Player p = TheAPI.getPlayer(s);
 		if(p!=null) {
 			if(!cooldown) {
 				if(!economy) {
@@ -192,7 +191,7 @@ public class Kit implements CommandExecutor,TabCompleter{
 							.replace("%playername%", s.getName()),s);
 					return true;
 				}
-					Player t = Bukkit.getPlayer(args[1]);
+					Player t = TheAPI.getPlayer(args[1]);
 					if(t!=null){
 						if(t!=s) {
 						if(API.hasPerm(s, "servercontrol.kit.give")) {

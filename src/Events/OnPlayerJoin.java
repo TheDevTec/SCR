@@ -59,7 +59,7 @@ public Loader plugin=Loader.getInstance;
 			if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials")) {
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 					public void run() {
-    					if(p == null || Bukkit.getPlayer(p.getName())==null)return;
+    					if(p == null || TheAPI.getPlayer(p.getName())==null)return;
     					if(!TheAPI.isVanished(p))
 						TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.Join"),p));
 					}}, 11);
@@ -81,7 +81,7 @@ public Loader plugin=Loader.getInstance;
 					if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials")) {
 				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
     				public void run() {
-    					if(p == null || Bukkit.getPlayer(p.getName())==null)return;
+    					if(p == null || TheAPI.getPlayer(p.getName())==null)return;
 		    	for(String ss: Loader.TranslationsFile.getStringList("OnJoin.Messages")) {
 		    		Loader.msg(replaceAll(ss,p),p);
 		    	}}},11);
@@ -95,7 +95,7 @@ public Loader plugin=Loader.getInstance;
 				if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials")) {
 		  		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 		  				public void run() {
-	    					if(p == null || Bukkit.getPlayer(p.getName())==null)return;
+	    					if(p == null || TheAPI.getPlayer(p.getName())==null)return;
 		  					for(String ss: Loader.TranslationsFile.getStringList("OnJoin.FirstJoin.Messages")) {
 											  Loader.msg(replaceAll(ss,p),p);
 		  				}

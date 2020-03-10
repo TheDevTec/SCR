@@ -1,6 +1,5 @@
 package Commands.BanSystem;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,8 +24,8 @@ public class UnMute implements CommandExecutor {
 
 				TheAPI.getPunishmentAPI().unMute(args[0]);
 				TheAPI.getPunishmentAPI().unTempMute(args[0]);
-				if(Bukkit.getPlayer(args[0])!=null)Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.UnMuted")
-				.replace("%player%", args[0]).replace("%playername%", args[0]),Bukkit.getPlayer(args[0]));
+				if(TheAPI.getPlayer(args[0])!=null)Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.UnMuted")
+				.replace("%player%", args[0]).replace("%playername%", args[0]),TheAPI.getPlayer(args[0]));
 				TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.UnMute")
 						.replace("%operator%", s.getName()).replace("%player%", args[0])
 						.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.UnMute");

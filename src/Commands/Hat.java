@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class Hat implements CommandExecutor {
 
@@ -31,7 +31,7 @@ public class Hat implements CommandExecutor {
 					return true;
 				}
 				if(args.length==1) {
-					Player t = Bukkit.getPlayer(args[0]);
+					Player t = TheAPI.getPlayer(args[0]);
 					//SPlayer target = new SPlayer((Player)Bukkit.getServer().getPlayer(args[0]));
 					if(t== null) {
 						Loader.msg(Loader.PlayerNotOnline(args[0]), s);

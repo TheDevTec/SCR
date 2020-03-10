@@ -102,7 +102,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 			return true;
 			}}
 			if(args.length==2) {
-				Player p = Bukkit.getPlayer(args[1]);
+				Player p = TheAPI.getPlayer(args[1]);
 				if(p==null) {
 					Loader.msg(Loader.PlayerNotOnline(args[1]),s);
 					return true;
@@ -158,7 +158,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 					.replace("%prefix%", Loader.s("Prefix")),s);
 			return true;}
 	public String player(CommandSender s) {
-		if(Bukkit.getPlayer(s.getName())!=null)return Bukkit.getPlayer(s.getName()).getDisplayName();
+		if(TheAPI.getPlayer(s.getName())!=null)return TheAPI.getPlayer(s.getName()).getDisplayName();
 		return s.getName();
 	}
 	public List<String> warpss(CommandSender s){ 

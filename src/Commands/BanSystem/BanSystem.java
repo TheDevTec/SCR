@@ -42,7 +42,7 @@ public class BanSystem {
 					if(Loader.ban.getString("Warn."+player+".WarnLater.Message")!=null)
 						reason=Loader.ban.getString("Warn."+player+".WarnLater.Message");
 				for(String s:Loader.config.getStringList("BanSystem.Warn.Operations."+Warns(player)+".Messages")) {
-					if(Bukkit.getPlayer(player)!=null)Bukkit.getPlayer(player).sendMessage(TheAPI.colorize(s
+					if(TheAPI.getPlayer(player)!=null)TheAPI.getPlayer(player).sendMessage(TheAPI.colorize(s
 							.replace("%player%", player)
 							.replace("%playername%", getName(player))
 							.replace("%time%", Loader.ban.getString("Warn."+player+".WarnLater.Time"))
@@ -73,7 +73,7 @@ public class BanSystem {
 		return null;
 	}
 	public static String getName(String s) {
-		if(Bukkit.getPlayer(s)!=null)return Bukkit.getPlayer(s).getDisplayName();
+		if(TheAPI.getPlayer(s)!=null)return TheAPI.getPlayer(s).getDisplayName();
 		return s;
 	}
 
@@ -127,11 +127,11 @@ public class BanSystem {
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.Jail").replace("%player%", player)
 					.replace("%playername%", getName(player))
 					.replace("%reason%", getJailReason(player)),s);
-			if(Bukkit.getPlayer(player)!=null) {
+			if(TheAPI.getPlayer(player)!=null) {
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.Arrested").replace("%player%", player)
 					.replace("%playername%", getName(player))
-					.replace("%reason%", getJailReason(player)),Bukkit.getPlayer(player));
-			Bukkit.getPlayer(player).teleport((Location) Loader.config.get("Jails."+Loader.me.getString("Players."+player+".Jail.Location")));
+					.replace("%reason%", getJailReason(player)),TheAPI.getPlayer(player));
+			TheAPI.getPlayer(player).teleport((Location) Loader.config.get("Jails."+Loader.me.getString("Players."+player+".Jail.Location")));
 			}
 			}
 		break;
@@ -143,6 +143,6 @@ public class BanSystem {
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.Kick").replace("%player%", player)
 					.replace("%playername%", getName(player))
 					.replace("%reason%", getKickReason(player)),s);
-			if(Bukkit.getPlayer(player)!=null)Bukkit.getPlayer(player).kickPlayer(TheAPI.colorize(Loader.config.getString("Format.Kick")
+			if(TheAPI.getPlayer(player)!=null)TheAPI.getPlayer(player).kickPlayer(TheAPI.colorize(Loader.config.getString("Format.Kick")
 					.replace("%reason%", getKickReason(player)).replace("%player%", player).replace("%playername%", getName(player))));
 		}break;}}}

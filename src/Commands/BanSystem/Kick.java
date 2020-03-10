@@ -21,7 +21,7 @@ public class Kick implements CommandExecutor {
 			return true;
 		}
 		if(args.length==1) {
-			Player p = Bukkit.getPlayer(args[0]);
+			Player p = TheAPI.getPlayer(args[0]);
 			if(p!=null) {
 				if (Loader.me.getBoolean("Players."+p.getName()+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "kick"
@@ -39,7 +39,7 @@ public class Kick implements CommandExecutor {
 			return true;
 		}
 		if(args.length>=2) {
-			Player p = Bukkit.getPlayer(args[0]);
+			Player p = TheAPI.getPlayer(args[0]);
 			if(p!=null) {
 				if (Loader.me.getBoolean("Players."+p.getName()+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "kick")

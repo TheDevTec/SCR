@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,7 +41,8 @@ public class Mail implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					for (String mail : getMails(s.getName())) {
-                    	msg(mail,s); }
+						Loader.msg(mail,s);
+                    	}
 					Configs.chatme.save();
 					return true;
 					}
@@ -73,8 +73,8 @@ public class Mail implements CommandExecutor, TabCompleter {
 				add(s, "&8"+s.getName()+": &8"+msg, args[1]);
 				TheAPI.sendActionBar((Player) s, "&6You sended new mail to player &a"+args[1]+" &6...");
 				
-				if(Bukkit.getPlayer(args[1])!=null) {
-					Player p = Bukkit.getPlayer(args[1]);
+				if(TheAPI.getPlayer(args[1])!=null) {
+					Player p = TheAPI.getPlayer(args[1]);
 					int number = Loader.me.getStringList("Players."+p.getName()+".Mails").size();
 					Loader.msg(Loader.s("Prefix")+Loader.s("Mail.Notification")
 							.replace("%number%", ""+number), p);
@@ -92,12 +92,6 @@ public class Mail implements CommandExecutor, TabCompleter {
 	public static List<String> getMails(String p){
     	return Loader.me.getStringList("Players."+p+".Mails");
     }
-	public static List<String> getMails(CommandSender p){
-    	return Loader.me.getStringList("Players."+p+".Mails");
-    }
-	public static void msg(String mail, CommandSender s){
-		Loader.msg(""+mail,s);
-		}
 	 public static void removeALL(CommandSender p) {
 		 Loader.me.set("Players."+p.getName()+".Mails", null);
 		 Configs.chatme.save();

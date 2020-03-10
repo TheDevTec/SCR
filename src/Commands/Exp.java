@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -44,7 +43,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 					Loader.Help(s, "/Xp Set <player> <amount>", "Xp.Set");
 					return true;
 				}
-				Player p = Bukkit.getPlayer(args[1]);
+				Player p = TheAPI.getPlayer(args[1]);
 				if(p==null) {
 					if(args[0].equals("*")) {
 						Repeat.a(s,"xp set * "+TheAPI.getStringUtils().getInt(args[2]));
@@ -64,7 +63,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 				Loader.Help(s, "/Xp Balance <player>", "Xp.Balance");
 				return true;
 			}
-			Player p = Bukkit.getPlayer(args[1]);
+			Player p = TheAPI.getPlayer(args[1]);
 			if(p==null) {
 				Loader.msg(Loader.PlayerNotOnline(args[1]), s);
 				return true;
@@ -80,7 +79,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 				Loader.Help(s, "/Xp Give <player> <amount>", "Xp.Give");
 				return true;
 			}
-			Player p = Bukkit.getPlayer(args[1]);
+			Player p = TheAPI.getPlayer(args[1]);
 			if(p==null) {
 				if(args[0].equals("*")) {
 					Repeat.a(s,"xp give * "+TheAPI.getStringUtils().getInt(args[2]));
@@ -100,7 +99,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 				Loader.Help(s, "/Xp Take <player> <amount>", "Xp.Take");
 				return true;
 			}
-			Player p = Bukkit.getPlayer(args[1]);
+			Player p = TheAPI.getPlayer(args[1]);
 			if(p==null) {
 				if(args[0].equals("*")) {
 					Repeat.a(s,"xp take * "+TheAPI.getStringUtils().getInt(args[2]));

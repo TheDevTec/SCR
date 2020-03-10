@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +20,7 @@ public class Sudo implements CommandExecutor {
 			return true;
 		}
 		if(args.length==1) {
-			Player target = Bukkit.getPlayer(args[0]);
+			Player target = TheAPI.getPlayer(args[0]);
 			if(target !=null) {
 			Loader.Help(s, "/Sudo "+target.getName()+" <arguments>", "Sudo");
 			return true;
@@ -30,27 +29,19 @@ public class Sudo implements CommandExecutor {
 			return true;
 		}
 		if(args.length>=2) {
-			Player target = Bukkit.getPlayer(args[0]);
+			Player target = TheAPI.getPlayer(args[0]);
 			if(target !=null) {
-			if(args[1].startsWith("/")) {
-				String command = "";
-				for (int i = 0; i < args.length; i++) {
-					command = command + args[i]+" ";
-				}
-				command=command.replaceFirst(args[0]+" /", "");
-				TheAPI.sudo(target, SudoType.COMMAND, command);
+				String msg = TheAPI.buildString(args);
+			if(msg.startsWith("/")) {
+				msg=msg.replaceFirst(args[0]+"/", "");
+				TheAPI.sudo(target, SudoType.COMMAND, msg);
 				String st = API.replacePlayerName(Loader.s("Sudo.SendCommand"),target);
-				Loader.msg(Loader.s("Prefix")+st.replace("%command%", command.substring(0,command.length()-1)), s);
+				Loader.msg(Loader.s("Prefix")+st.replace("%command%", msg), s);
 				return true;
 			}else {
-				String message = "";
-				for (int i = 0; i < args.length; i++) {
-					message = message + args[i]+" ";
-				}
-				message=message.replaceFirst(args[0]+" ", "");
-				TheAPI.sudo(target, SudoType.CHAT, message);
+				TheAPI.sudo(target, SudoType.CHAT, msg);
 				String st = API.replacePlayerName(Loader.s("Sudo.SendMessage"),target);
-				Loader.msg(Loader.s("Prefix")+st.replace("%message%", message.substring(0,message.length()-1)), s);
+				Loader.msg(Loader.s("Prefix")+st.replace("%message%", msg), s);
 				return true;
 			}
 			}

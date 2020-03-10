@@ -82,9 +82,9 @@ public class BanSystemAPI {
 			Loader.ban.set("Warn."+player+".WarnLater.Reason",reason);
 			Loader.ban.set("Warn."+player+".WarnLater.WarnedBy",sender.getName());
 			Loader.ban.set("Warn."+player+".WarnLater.Time",(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date())));
-			Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.Warn").replace("%reason%", reason).replace("%player%", player).replace("%playername%", BanSystem.getName(player)).replace("%warnedby%", sender.getName()), Bukkit.getPlayer(player));
-			if(Bukkit.getPlayer(player)!=null)
-				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.Warned").replace("%reason%", reason).replace("%player%", player).replace("%playername%", BanSystem.getName(player)).replace("%warnedby%", sender.getName()), Bukkit.getPlayer(player));
+			Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.Warn").replace("%reason%", reason).replace("%player%", player).replace("%playername%", BanSystem.getName(player)).replace("%warnedby%", sender.getName()), TheAPI.getPlayer(player));
+			if(TheAPI.getPlayer(player)!=null)
+				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.Warned").replace("%reason%", reason).replace("%player%", player).replace("%playername%", BanSystem.getName(player)).replace("%warnedby%", sender.getName()), TheAPI.getPlayer(player));
 			else
 				Loader.ban.set("Warn."+player+".WarnLater.Wait",true);
 			 Configs.bans.save();

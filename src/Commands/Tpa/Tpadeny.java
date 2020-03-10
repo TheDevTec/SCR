@@ -3,7 +3,6 @@ package Commands.Tpa;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,6 +12,7 @@ import org.bukkit.entity.Player;
 import Commands.BanSystem.BanSystem;
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class Tpadeny implements CommandExecutor, TabCompleter {
 
@@ -22,11 +22,11 @@ public class Tpadeny implements CommandExecutor, TabCompleter {
 			if(s instanceof Player) {
 			if(args.length==0) {
 				String pd = RequestMap.getRequest(s.getName());
-		        if(pd==null || Bukkit.getPlayer(pd) == null || pd != null && !RequestMap.containsRequest(s.getName(),pd)) {
+		        if(pd==null || TheAPI.getPlayer(pd) == null || pd != null && !RequestMap.containsRequest(s.getName(),pd)) {
 		        	Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.NoRequest"),s);
 		            return true;
 		        }
-				Player d = Bukkit.getPlayer(pd);
+				Player d = TheAPI.getPlayer(pd);
 				Player p = (Player)s;
 		        switch(RequestMap.getTeleportType(p.getName(),pd)) {
 		        case TPA:

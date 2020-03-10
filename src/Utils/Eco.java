@@ -7,6 +7,7 @@ import org.bukkit.OfflinePlayer;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -15,7 +16,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 			String wd = "default";
 			String world = null;
 			String a=Loader.me.getString("Players."+p+".DisconnectWorld");
-			if(Bukkit.getPlayer(p)!=null)world = Bukkit.getPlayer(p).getWorld().getName();
+			if(TheAPI.getPlayer(p)!=null)world = TheAPI.getPlayer(p).getWorld().getName();
 			else {
 				if(a!=null)world=a;
 			}

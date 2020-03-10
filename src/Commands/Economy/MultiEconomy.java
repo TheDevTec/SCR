@@ -249,7 +249,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 					Loader.Help(s, "/MultiEconomy Transfer <player> <target group> <group>", "MultiEconomy.Transfer");
 					return true;
 				}
-				Player p = Bukkit.getPlayer(args[1]);
+				Player p = TheAPI.getPlayer(args[1]);
 				if(p==null) {
 					Loader.msg(Loader.PlayerNotEx(args[1]),s);
 					return true;
@@ -317,13 +317,13 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 				c.addAll(StringUtil.copyPartialMatches(args[2], worlds(), new ArrayList<>()));
 						}
 			if(args[0].equalsIgnoreCase("Money")||args[0].equalsIgnoreCase("Transfer")) {
-				Player p = Bukkit.getPlayer(args[1]);
+				Player p = TheAPI.getPlayer(args[1]);
 				if(p!=null)
 					c.addAll(StringUtil.copyPartialMatches(args[2], Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false), new ArrayList<>()));
 			}}
 		if(args.length==4) {
 			if(args[0].equalsIgnoreCase("Transfer")) {
-				Player p = Bukkit.getPlayer(args[1]);
+				Player p = TheAPI.getPlayer(args[1]);
 				if(p!=null)
 					if(Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false).contains(args[2]))
 					c.addAll(StringUtil.copyPartialMatches(args[3], Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false), new ArrayList<>()));

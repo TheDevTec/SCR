@@ -3,7 +3,6 @@ package Commands.Tpa;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class Tphere implements CommandExecutor, TabCompleter {
 
@@ -22,7 +22,7 @@ public class Tphere implements CommandExecutor, TabCompleter {
 				Loader.Help(s, "/Tphere <player>", "TpaSystem.Tphere");
 			}
 			if(args.length==1) {
-			Player target = Bukkit.getPlayer(args[0]);
+			Player target = TheAPI.getPlayer(args[0]);
 			if(target==null) {
 				Loader.msg(Loader.PlayerNotOnline(args[0]),s);
 				return true;

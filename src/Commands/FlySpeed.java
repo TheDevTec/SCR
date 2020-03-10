@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,7 +41,7 @@ public class FlySpeed implements CommandExecutor {
 	}return true;}}
 	if(args.length==2) {
 		if(API.hasPerm(s, "ServerControl.FlySpeed")) {
-		Player target = Bukkit.getPlayer(args[0]);
+		Player target = TheAPI.getPlayer(args[0]);
 		if(target!=null) {
 			double flightmodifier=TheAPI.getStringUtils().getDouble(args[1]);
 			if(flightmodifier>10.0)flightmodifier = 10.0;

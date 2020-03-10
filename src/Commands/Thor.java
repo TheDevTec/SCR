@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -11,6 +10,7 @@ import org.bukkit.util.BlockIterator;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class Thor implements CommandExecutor {
 
@@ -43,7 +43,7 @@ public class Thor implements CommandExecutor {
 					Loader.Help(s, "/Thor ", "ThorOnBlock");
 					Loader.Help(s, "/Thor <player>", "Thor");
 				}
-				Player p = Bukkit.getPlayer(args[0]);
+				Player p = TheAPI.getPlayer(args[0]);
 				if(p!=null) {
 					p.getWorld().strikeLightning(p.getLocation());
 					Loader.msg(Loader.s("Prefix")+Loader.s("Thor").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), s);

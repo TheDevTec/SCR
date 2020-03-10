@@ -18,6 +18,7 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.MultiWorldsGUI;
+import me.Straiker123.TheAPI;
 
 public class Worlds implements CommandExecutor, TabCompleter  {
 
@@ -67,7 +68,7 @@ public class Worlds implements CommandExecutor, TabCompleter  {
 		                return true;
 		            }
 		            else if (args.length==3&& s.hasPermission("ServerControl.MultiWorld.tp.other")) {
-		                final Player target = Bukkit.getPlayer(args[2]);
+		                final Player target = TheAPI.getPlayer(args[2]);
 		                if (target == null) {
 		                	Loader.msg(Loader.PlayerNotOnline(args[2]), s);
 		                    return true;

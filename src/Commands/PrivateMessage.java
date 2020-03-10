@@ -45,7 +45,7 @@ public class PrivateMessage implements CommandExecutor {
 					Bukkit.getConsoleSender().sendMessage(from);
 					return true;
 				}else {
-				Player p = Bukkit.getPlayer(args[0]);
+				Player p = TheAPI.getPlayer(args[0]);
 				if(p!=null) {
 					from =TheAPI.colorize(Loader.config.getString("Format.PrivateMessageFrom").replace("%from%", s.getName()).replace("%to%", p.getName()));
 					 to = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageTo").replace("%from%", s.getName()).replace("%to%", p.getName()));

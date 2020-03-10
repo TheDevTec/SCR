@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,6 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
+import me.Straiker123.TheAPI;
 
 public class CloseInventory implements CommandExecutor {
 
@@ -20,7 +20,7 @@ public class CloseInventory implements CommandExecutor {
 				return true;
 			}
 			if(args.length==1) {
-				Player p = Bukkit.getPlayer(args[0]);
+				Player p = TheAPI.getPlayer(args[0]);
 				if(p==null) {
 					if(args[0].equals("*")) {
 						Repeat.a(s,"closeinv *");

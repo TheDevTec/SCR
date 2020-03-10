@@ -3,7 +3,6 @@ package Commands.Tpa;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import ServerControl.Loader;
@@ -21,7 +20,7 @@ public class RequestMap {
     	Loader.me.set("Players."+sender+".Tp."+target+".Type", tp.toString());
     	Loader.me.set("Players."+sender+".Tp."+target+".Time", System.currentTimeMillis()/1000);
     	if(setting.tp_onreqloc)
-    	Loader.me.set("Players."+sender+".Tp."+target+".Location", Bukkit.getPlayer(target).getLocation());
+    	Loader.me.set("Players."+sender+".Tp."+target+".Location", TheAPI.getPlayer(target).getLocation());
 		Configs.chatme.save();
     }
 
@@ -34,7 +33,7 @@ public class RequestMap {
         if(Loader.me.getString("Players."+p+".Tp")!=null) {
             List<String> s = new ArrayList<String>();
             for(String d : Loader.me.getConfigurationSection("Players."+p+".Tp").getKeys(false))
-            	if(Bukkit.getPlayer(d)!=null)s.add(d);
+            	if(TheAPI.getPlayer(d)!=null)s.add(d);
             if(!s.isEmpty())return s.get(0);
             return null;
         }

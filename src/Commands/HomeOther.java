@@ -35,7 +35,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				if(args.length==2) {
-					Player t = Bukkit.getPlayer(args[0]);
+					Player t = TheAPI.getPlayer(args[0]);
 					if(t==null) {
 						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
@@ -69,8 +69,8 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				if(args.length==3) {
-					Player t = Bukkit.getPlayer(args[0]);
-					Player pl = Bukkit.getPlayer(args[2]);
+					Player t = TheAPI.getPlayer(args[0]);
+					Player pl = TheAPI.getPlayer(args[2]);
 					if(pl==null) {
 						Loader.msg(Loader.PlayerNotOnline(args[2]), s);
 						return true;
@@ -122,7 +122,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
     			return null;
     		}
     		if(args.length==2) {
-    			Player t = Bukkit.getPlayer(args[0]);
+    			Player t = TheAPI.getPlayer(args[0]);
     			try {
             		Set<String> homes = Loader.me.getConfigurationSection("Players."+t.getName()+".Homes").getKeys(false);
             		if(!homes.isEmpty() && homes != null)

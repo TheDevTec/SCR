@@ -140,13 +140,13 @@ public class TabList {
     
 	public static void setNameTag() {
 		for(Player p:TheAPI.getOnlinePlayers()) {
-			if(Bukkit.getPlayer(p.getName())!=null) {
+			if(TheAPI.getPlayer(p.getName())!=null) {
 			setTab(p);
 		}}
 	}
 	public static void setFooterHeader() {
 		for(Player p:TheAPI.getOnlinePlayers()) {
-			if(Bukkit.getPlayer(p.getName())!=null) {
+			if(TheAPI.getPlayer(p.getName())!=null) {
 				TheAPI.getTabListAPI().setHeaderFooter(p, getHeader(p), getFooter(p));
 		}}}
 }

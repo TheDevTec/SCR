@@ -3,7 +3,6 @@ package Commands.Tpa;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,11 +24,11 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 			if(p instanceof Player) {
 			if(args.length==0) {
 				String pd = RequestMap.getRequest(p.getName());
-		        if(pd==null || Bukkit.getPlayer(pd) == null || pd != null && !RequestMap.containsRequest(p.getName(),pd)) {
+		        if(pd==null || TheAPI.getPlayer(pd) == null || pd != null && !RequestMap.containsRequest(p.getName(),pd)) {
 		        	Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.NoRequest"),p);
 		            return true;
 		        }
-				Player d = Bukkit.getPlayer(pd);
+				Player d = TheAPI.getPlayer(pd);
 		        switch(RequestMap.getTeleportType(p.getName(),pd)) {
 		        case TPA:
 		            API.setBack(d);

@@ -3,7 +3,6 @@ package Commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -374,7 +373,7 @@ public class Give implements CommandExecutor, TabCompleter {
 				return true;
 			}
 				if(args.length==1) {
-					Player ps = Bukkit.getPlayer(args[0]);
+					Player ps = TheAPI.getPlayer(args[0]);
 					if(ps==null) {
 
 						if(s instanceof Player==false) {
@@ -405,7 +404,7 @@ public class Give implements CommandExecutor, TabCompleter {
 					return true;
 					}
 				if(args.length==2) {
-					Player ps = Bukkit.getPlayer(args[0]);
+					Player ps = TheAPI.getPlayer(args[0]);
 					if(ps==null) {
 						if(args[0].equals("*")) {
 							Repeat.a(s,"give * "+args[1]);
@@ -449,7 +448,7 @@ public class Give implements CommandExecutor, TabCompleter {
 						return true;
 				}
 				if(args.length==3) {
-					Player ps = Bukkit.getPlayer(args[0]);
+					Player ps = TheAPI.getPlayer(args[0]);
 					if(ps!=null) {
 						if(args[0].equals("*")) {
 							Repeat.a(s,"give * "+args[1]+" "+args[2]);

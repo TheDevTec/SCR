@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,6 +9,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
 import Utils.Repeat;
+import me.Straiker123.TheAPI;
 
 public class AFK implements CommandExecutor {
 
@@ -31,7 +31,7 @@ public class AFK implements CommandExecutor {
 	}return true;}
 	if(args.length==1) {
 		if(API.hasPerm(s,"ServerControl.AFK")) {
-		SPlayer p = new SPlayer(Bukkit.getPlayer(args[0]));
+		SPlayer p = new SPlayer(TheAPI.getPlayer(args[0]));
 		if(p.getPlayer()!=null) {
 			if(p.isAFK()) {
 				p.setAFK(false);

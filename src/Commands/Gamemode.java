@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class Gamemode implements CommandExecutor {
 
@@ -66,7 +66,7 @@ public class Gamemode implements CommandExecutor {
 						
 						}
 					if(API.hasPerm(s, "ServerControl.Gamemode."+gamemode)) {
-					Player p = Bukkit.getPlayer(args[1]);
+					Player p = TheAPI.getPlayer(args[1]);
 					if(gamemode != null) {
 					if(p!=null) {
 						p.setGameMode(GameMode.valueOf(gamemode.toUpperCase()));

@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.command.Command;
@@ -46,7 +45,7 @@ public class Skull implements CommandExecutor {
 				return true;
 			}
 			if(args.length==2) {
-				Player p = Bukkit.getPlayer(args[1]);
+				Player p = TheAPI.getPlayer(args[1]);
 				if(p!=null) {
 				String player = args[0];
 				ItemCreatorAPI w = TheAPI.getItemCreatorAPI(getMaterial());

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.API.SeenType;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class Seen implements CommandExecutor {
 	List<String> getS(String a){
@@ -30,7 +30,7 @@ public class Seen implements CommandExecutor {
 		}
 			String a = Loader.me.getString("Players."+args[0]);
 			if(a!=null) {
-				if(Bukkit.getPlayer(args[0]) != null && Bukkit.getPlayer(args[0]).getName().equals(args[0])) {
+				if(TheAPI.getPlayer(args[0]) != null && TheAPI.getPlayer(args[0]).getName().equals(args[0])) {
 					Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Seen.Online"), args[0])
 					.replace("%online%", API.getSeen(args[0], SeenType.Online)), s);
 					return true;

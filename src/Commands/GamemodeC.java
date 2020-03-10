@@ -1,6 +1,5 @@
 package Commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class GamemodeC implements CommandExecutor {
 
@@ -27,7 +27,7 @@ public class GamemodeC implements CommandExecutor {
 			return true;
 			}
 			if(args.length==1) {
-				Player p = Bukkit.getPlayer(args[0]);
+				Player p = TheAPI.getPlayer(args[0]);
 				if(p!=null) {
 				p.setGameMode(GameMode.CREATIVE);
 				Loader.msg(Loader.s("Prefix")+Loader.s("Gamemode.ChangedOther")

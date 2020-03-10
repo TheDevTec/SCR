@@ -1,6 +1,5 @@
 package Commands.BanSystem;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,6 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
 import Utils.Configs;
+import me.Straiker123.TheAPI;
 
 public class Immune implements CommandExecutor {
 	
@@ -36,11 +36,10 @@ public class Immune implements CommandExecutor {
 			}
 			if(args.length==1) {
 				if(s.hasPermission("ServerControl.Immune.Other")) {
-				Player target = Bukkit.getPlayer(args[0]);
 				Player p = (Player) s;
 				boolean imt = Loader.me.getBoolean("Players."+args[0]+".Immune");
-				SPlayer target2 = new SPlayer((Player)Bukkit.getServer().getPlayer(args[0]));
-				if(target2.getPlayer()==null) {
+				SPlayer target = new SPlayer(TheAPI.getPlayer(args[0]));
+				if(target.getPlayer()==null) {
 					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
 				}else

@@ -23,7 +23,7 @@ public class RewardsListenerChat implements Listener {
 			String name = p.getName();
 		List<String> only = Loader.config.getStringList("Options.Codes.List");
 		List<String> codes = Loader.me.getStringList("Players."+name+".Taken-Codes");
-		if(Loader.me.getString("Players."+name+".Taken-Codes")!=null)
+		if(!codes.isEmpty())
 			for(String s : codes)only.remove(s);
 		if(!only.isEmpty())
 		for(String g: only) {

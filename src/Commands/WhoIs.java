@@ -15,8 +15,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import ServerControl.API;
-import ServerControl.Loader;
 import ServerControl.API.SeenType;
+import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 
@@ -39,7 +40,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
     }
     
     private String getName(String s) {
-    	if(Bukkit.getPlayer(s)!=null)return Bukkit.getPlayer(s).getDisplayName();
+    	if(TheAPI.getPlayer(s)!=null)return TheAPI.getPlayer(s).getDisplayName();
     	return s;
     }
 	
@@ -60,10 +61,10 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 		String what = "Offline";
 		String afk = "No";
 		String seen = API.getSeen(a[0], SeenType.Offline);
-		if(Bukkit.getPlayer(a[0])!=null && Bukkit.getPlayer(a[0]).getName().equals(a[0])) {
+		if(TheAPI.getPlayer(a[0])!=null && TheAPI.getPlayer(a[0]).getName().equals(a[0])) {
 			what="Online";
 			seen = API.getSeen(a[0], SeenType.Online);
-			if(API.isAFK(Bukkit.getPlayer(a[0])))afk="Yes";
+			if(API.isAFK(TheAPI.getPlayer(a[0])))afk="Yes";
 		}
 		String fly = "Disabled";
 		String god = "Disabled";
