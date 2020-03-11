@@ -42,29 +42,22 @@ public class SecurityListenerV3 implements Listener{
 		return false;
 	}
 	private int count(String string){
-		char ch = 0;
 		int upperCaseCount = 0;
-		for(int i = 0; i < string.length(); i++) {
-			ch = (char)string.charAt(i);
-	        if (Character.isAlphabetic(ch) && Character.isUpperCase(ch))
-	        {
-	        	upperCaseCount++;
-	        }
-		}
-		TheAPI.broadcastMessage(upperCaseCount+"");
+		for(int i = 0; i < string.length(); i++)
+	        if (Character.isAlphabetic((char)string.charAt(i)) && Character.isUpperCase((char)string.charAt(i)))upperCaseCount++;
 		return upperCaseCount;
 	}
 	private String removeDoubled(String s) {
 		char prevchar = 0;
         StringBuilder sb = new StringBuilder();
         for (char c : s.toCharArray()) {
-            if(!(prevchar == c)) {
-                sb.append(c);
-            }
+            if(prevchar != c)sb.append(c);
             prevchar = c;
         }
         return sb.toString();
-  	      
+	}
+	private int countDoubled(String s) {
+        return s.length()-removeDoubled(s).length();
 	}
 	static HashMap<Player, String> old = new HashMap<Player, String>();
 	private boolean isSim(Player p, String msg) {
@@ -306,18 +299,25 @@ public class SecurityListenerV3 implements Listener{
 	          Configs.config.save(); 
 	         	Configs.chatme.save();
 		}
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChat(PlayerChatEvent e) {
 		Player p = e.getPlayer();
-		 if(!p.hasPermission("ServerControl.Admin")) {
+		if(!p.hasPermission("ServerControl.Admin")) {
 				String message = e.getMessage();
 				String d = ""; //anti doubled letters
 				int up = 0; //anti caps
 				if(setting.spam_double) {
+					if(message.split(" ").length == 0) {
+						if(!is(message)) {
+							up=up+count(message);
+							d=d+" "+(countDoubled(message) >= 5 ? removeDoubled(message) : message);
+						}else
+							d=d+" "+message;
+					}else
 				for(String s : message.split(" ")) {
 					if(!is(s)) {
 						up=up+count(s);
-						d=d+" "+removeDoubled(s);
+						d=d+" "+(countDoubled(s) >= 5 ? removeDoubled(s) : s);
 					}else
 						d=d+" "+s;
 				}
@@ -325,22 +325,26 @@ public class SecurityListenerV3 implements Listener{
 				d=d.replaceFirst(" ", "");
 				String build = d;
 				if(setting.caps_chat) {
+				if(up != 0 ? up/((double)d.length()/100) >= 60 && !p.hasPermission("ServerControl.Caps") && d.length() > 5:false) {
+					TheAPI.broadcast(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Security.TryingSendCaps"),p).replace("%message%", build), "ServerControl.Caps");
 					build="";
-				if(up != 0 ? (up/d.length())*100 >= 60 && !p.hasPermission("ServerControl.Caps") && d.length() > 5:false) {
-					TheAPI.broadcast(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Security.TryingSendCaps"),p).replace("%message%", message), "ServerControl.Caps");
+					if(d.split(" ").length == 0) {
+						if(!is(d)) {
+							build=build+" "+d.toLowerCase();
+						}else
+							build=build+" "+d;
+					}else
 					for(String s : d.split(" ")) {
 						if(!is(s)) {
 							build=build+" "+s.toLowerCase();
 						}else
 							build=build+" "+s;
-							
 					}
-				
 					build=build.replaceFirst(" ", "");
 				}}
 					message=build;
 					if(Loader.config.getBoolean("SpamWords.SimiliarMessage")) {
-						if(isSim(p,message)) {
+						if(isSim(p,e.getMessage())) {
 							e.setCancelled(true);
 							TheAPI.broadcast(Loader.s("Prefix")+Loader.s("Security.TriedSendSimiliarMessage").replace("%player%", p.getName()).replace("%message%", e.getMessage()),"ServerControl.Admin");
 							return;
@@ -349,37 +353,33 @@ public class SecurityListenerV3 implements Listener{
 				 if(setting.swear_chat && API.getVulgarWord(build) || setting.spam_chat && API.getSpamWord(build)){
 					 if(API.getVulgarWord(build)) {
 						 e.setCancelled(true);
-						 call((API.getVulgarWord(build) ? Security.Swear : Security.Spam),p,e.getMessage(),build);
+						 call((API.getVulgarWord(build) ? Security.Swear : Security.Spam),p,message,build);
 						 return;
 					 }else
 					 if(API.getVulgarWord(build.replace(" ", ""))) {
 						 e.setCancelled(true);
-						 call((API.getVulgarWord(build) ? Security.Swear : Security.Spam),p,e.getMessage(),build.replace(" ", ""));
+						 call((API.getVulgarWord(build) ? Security.Swear : Security.Spam),p,message,build.replace(" ", ""));
 						 return;
 					 }else
 					 if(API.getVulgarWord(build.replaceAll("[^a-zA-Z0-9]+", ""))) {
 						 e.setCancelled(true);
-						 call((API.getVulgarWord(build) ? Security.Swear : Security.Spam),p,e.getMessage(),build.replaceAll("[^a-zA-Z0-9]+", ""));
+						 call((API.getVulgarWord(build) ? Security.Swear : Security.Spam),p,message,build.replaceAll("[^a-zA-Z0-9]+", ""));
 						 return;
 					 }else
 					 if(API.getVulgarWord(build.replaceAll("[a-zA-Z0-9]+", ""))) {
 						 e.setCancelled(true);
-						 call((API.getVulgarWord(build) ? Security.Swear : Security.Spam),p,e.getMessage(),build.replaceAll("[a-zA-Z0-9]+", ""));
+						 call((API.getVulgarWord(build) ? Security.Swear : Security.Spam),p,message,build.replaceAll("[a-zA-Z0-9]+", ""));
 						 return;
 					 }else
 					 if(API.getVulgarWord(build.replaceAll("[^a-zA-Z0-9]+", "").replace(" ", ""))) {
 						 e.setCancelled(true);
-						 call((API.getVulgarWord(build) ? Security.Swear : Security.Spam),p,e.getMessage(),build.replaceAll("[^a-zA-Z0-9]+", "").replace(" ", ""));
+						 call((API.getVulgarWord(build) ? Security.Swear : Security.Spam),p,message,build.replaceAll("[^a-zA-Z0-9]+", "").replace(" ", ""));
 						 return;
 					 }else
 					 if(API.getVulgarWord(build.replaceAll("[a-zA-Z0-9]+", "").replace(" ", ""))) {
 						 e.setCancelled(true);
-						 call((API.getVulgarWord(build) ? Security.Swear : Security.Spam),p,e.getMessage(),build.replaceAll("[a-zA-Z0-9]+", "").replace(" ", ""));
+						 call((API.getVulgarWord(build) ? Security.Swear : Security.Spam),p,message,build.replaceAll("[a-zA-Z0-9]+", "").replace(" ", ""));
 						 return;
-					 }
-				 }
-				 e.setMessage(build);
-				 }
-	}
-	
-}
+					 }}
+				 e.setMessage(message);
+		}}}
