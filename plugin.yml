@@ -11,6 +11,7 @@ commands:
     stop:
         usage: /<command> <time/cancel>
         description: Stop server
+        aliases: [pause, shutdown]
         permission: servercontrol.stop
     Restart:
         usage: /<command> <time/cancel>
@@ -19,6 +20,7 @@ commands:
     Reload:
         usage: /<command> <time/cancel>
         description: Reload server
+        aliases: [rl]
         permission: servercontrol.reload
     Balance:
         usage: /<command> <player>
