@@ -737,7 +737,7 @@ public class Configs {
 		c.put("SwearWords", Arrays.asList("fuck","idiot","kurv","kurw"));
 		c.put("SpamWords.SimiliarMessage", true);
 		c.put("SpamWords.DoubledLetters.Use", true);
-		c.put("SpamWords.Words",Arrays.asList("pls op","please op", "op pls", "op please"));
+		c.put("SpamWords.Words",Arrays.asList("?????","!!!!!","....."));
 		config.setHeader("+-------------------------------------------------------------------+ #\r\n" + 
 				"| Info: https://dev.bukkit.org/projects/server-control-reloaded     | #\r\n" + 
 				"+-------------------------------------------------------------------+ #\r\n" + 
