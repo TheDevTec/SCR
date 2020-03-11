@@ -3,7 +3,6 @@ package Commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -36,7 +35,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 			if(Loader.config.getString("Warps")!=null) {
 			if(args.length==0) {
 				Loader.msg(Loader.s("Warp.List")
-								.replace("%warps%", StringUtils.join(warpss(s), ", "))
+								.replace("%warps%", TheAPI.getStringUtils().join(warpss(s), ", "))
 								.replace("%player%", s.getName())
 								.replace("%prefix%", Loader.s("Prefix"))
 								, s);

@@ -2,7 +2,6 @@ package Commands;
 
 import java.util.ArrayList;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,7 +25,7 @@ public class KillAll implements CommandExecutor {
 				++amount;
 				}
 			}
-				Loader.msg(Loader.s("Kill.KilledAll").replace("%amount%", amount+"").replace("%players%", StringUtils.join(pl,",")), s);
+				Loader.msg(Loader.s("Kill.KilledAll").replace("%amount%", amount+"").replace("%players%", TheAPI.getStringUtils().join(pl,",")), s);
 				return true;
 		}
 		return true;

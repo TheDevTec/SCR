@@ -3,7 +3,6 @@ package Commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -153,7 +152,7 @@ public class Kit implements CommandExecutor,TabCompleter{
 			if(args.length==0) {
 				Loader.msg(Loader.s("Prefix")+Loader.s("Kit.List")
 						.replace("%player%", s.getName())
-						.replace("%kits%", StringUtils.join(kits(s), ", "))
+						.replace("%kits%", TheAPI.getStringUtils().join(kits(s), ", "))
 						.replace("%playername%", s.getName()),s);
 				return true;
 			}

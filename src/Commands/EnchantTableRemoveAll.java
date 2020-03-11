@@ -2,7 +2,6 @@ package Commands;
 
 import java.util.ArrayList;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class EnchantTableRemoveAll implements CommandExecutor {
 	@SuppressWarnings("deprecation")
@@ -32,7 +32,7 @@ public class EnchantTableRemoveAll implements CommandExecutor {
 						
 							}
 					Loader.msg(Loader.s("Prefix")+Loader.s("Enchant.EnchantsRemoved")
-					.replace("%enchants%", StringUtils.join(enchants, ", ")).replace("%level%","none").replace("%item%", a.name()), s);
+					.replace("%enchants%", TheAPI.getStringUtils().join(enchants, ", ")).replace("%level%","none").replace("%item%", a.name()), s);
 					return true;
 					}
 						

@@ -12,7 +12,6 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -225,7 +224,7 @@ public class API {
 			p.sendMessage(TheAPI.colorize(Loader.s("NotPermissionsMessage")
 					.replace("%player%", p.getName())
 					.replace("%playername%", p.getName())
-					.replace("%permission%", StringUtils.join(perms,", "))));
+					.replace("%permission%", TheAPI.getStringUtils().join(perms,", "))));
 			return false;
 	 }
 	 public static boolean hasPerm(CommandSender s, String permission) {

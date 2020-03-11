@@ -2,7 +2,6 @@ package Commands;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -43,7 +42,7 @@ public class ListCmd implements CommandExecutor {
 		}}
 		if(w.isEmpty())
 		return "0";
-		return StringUtils.join(w," ");
+		return TheAPI.getStringUtils().join(w," ");
 	}
 	public String getStaff() {
 		ArrayList<String> w = new ArrayList<String>();
@@ -53,7 +52,7 @@ public class ListCmd implements CommandExecutor {
 		}}
 		if(w.isEmpty())
 		return "0";
-		return StringUtils.join(w," ");
+		return TheAPI.getStringUtils().join(w," ");
 	}
 	public String allPlayers() {
 		ArrayList<String> w = new ArrayList<String>();
@@ -62,7 +61,7 @@ public class ListCmd implements CommandExecutor {
 		}
 		if(w.isEmpty())
 		return "0";
-		return StringUtils.join(w," ");
+		return TheAPI.getStringUtils().join(w," ");
 	}
 	public String getPlayersInGroup(String f) {
 			ArrayList<String> w = new ArrayList<String>();
@@ -72,7 +71,7 @@ public class ListCmd implements CommandExecutor {
 			}
 		}
 			if(w.isEmpty())return "";
-			return StringUtils.join(w," ");
+			return TheAPI.getStringUtils().join(w," ");
 		}
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {

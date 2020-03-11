@@ -3,7 +3,6 @@ package Commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -45,8 +44,8 @@ public class Seen implements CommandExecutor {
 			if(sim.isEmpty())
 			Loader.msg(Loader.PlayerNotEx(args[0]),s);
 			else {
-				Loader.msg(Loader.s("Seen.SimiliarNames").replace("%names%", StringUtils.join(sim,", "))
-						.replace("%list%", StringUtils.join(sim,", ")),s);
+				Loader.msg(Loader.s("Seen.SimiliarNames").replace("%names%", TheAPI.getStringUtils().join(sim,", "))
+						.replace("%list%", TheAPI.getStringUtils().join(sim,", ")),s);
 			}
 			return true;
 		

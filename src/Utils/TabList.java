@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -109,7 +108,7 @@ public class TabList {
 		if(Loader.tab.getStringList(path)!=null) {
 			List<String> L = Loader.tab.getStringList(path);
 			L=TheAPI.getPlaceholderAPI().setPlaceholders(p, L);
-			return replace(StringUtils.join(L, "\n"),p);
+			return replace(TheAPI.getStringUtils().join(L, "\n"),p);
 	}}
 		return null;
 	}

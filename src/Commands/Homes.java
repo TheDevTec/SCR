@@ -2,7 +2,6 @@ package Commands;
 
 import java.util.ArrayList;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
+import me.Straiker123.TheAPI;
 
 public class Homes implements CommandExecutor {
 
@@ -32,7 +32,7 @@ public class Homes implements CommandExecutor {
 					if(!ne.isEmpty()) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Homes.List")
 					.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
-					.replace("%list%", StringUtils.join(ne,", ")), s);
+					.replace("%list%", TheAPI.getStringUtils().join(ne,", ")), s);
 					return true;
 				}
 					Loader.msg(Loader.s("Prefix")+Loader.s("Homes.ListEmpty")
@@ -64,7 +64,7 @@ public class Homes implements CommandExecutor {
 							if(!ne.isEmpty()) {
 							Loader.msg(Loader.s("Prefix")+Loader.s("Homes.ListOther")
 							.replace("%target%", target.getName()).replace("%playername%", target.getDisplayName())
-								.replace("%list%", StringUtils.join(ne,", ")), s);
+								.replace("%list%", TheAPI.getStringUtils().join(ne,", ")), s);
 								return true;
 							}
 								Loader.msg(Loader.s("Prefix")+Loader.s("Homes.ListEmpty")

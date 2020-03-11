@@ -15,7 +15,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEditBookEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.apache.commons.lang.StringUtils;
 
 import ServerControl.API;
 import ServerControl.Loader;
@@ -30,7 +29,7 @@ public Loader plugin=Loader.getInstance;
      
      public String getMatches(String where) {
     	 String list = null;
-    	 if(API.getAdvertisementMatches(where).isEmpty()==false)list=StringUtils.join(API.getAdvertisementMatches(where), ", ");
+    	 if(API.getAdvertisementMatches(where).isEmpty()==false)list=TheAPI.getStringUtils().join(API.getAdvertisementMatches(where), ", ");
     	 return list;
      }
 

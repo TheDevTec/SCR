@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -73,7 +72,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 				.replace("%economygroup%", getEconomyGroup(args[1]))
 				.replace("%economy-group%", getEconomyGroup(args[1]))
 				.replace("%economy%", getEconomyGroup(args[1]))
-				.replace("%worlds%", StringUtils.join(worlds,", ")),s);
+				.replace("%worlds%", TheAPI.getStringUtils().join(worlds,", ")),s);
 				return true;
 				}
 			if(args[0].equalsIgnoreCase("create")) {
@@ -241,7 +240,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 				for(String ss:Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
 					groups.add(ss);
 				}
-				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.Groups").replace("%groups%",StringUtils.join(groups,", ")),s);
+				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.Groups").replace("%groups%",TheAPI.getStringUtils().join(groups,", ")),s);
 				return true;
 				}
 			if(args[0].equalsIgnoreCase("transfer")) {

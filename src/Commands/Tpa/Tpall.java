@@ -3,7 +3,6 @@ package Commands.Tpa;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -35,7 +34,7 @@ if(!Loader.me.getBoolean("Players."+p.getName()+".TpBlock."+s.getName())&&!Loade
 					list.add(p.getName());
 					p.teleport(((Player) s));}}
 					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.Tpall")
-					.replace("%players%", StringUtils.join(list,", ")), s);
+					.replace("%players%", TheAPI.getStringUtils().join(list,", ")), s);
 					return true;
 					}
 			Loader.msg(Loader.s("ConsoleErrorMessage"), s);

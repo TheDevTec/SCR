@@ -11,7 +11,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.util.StringUtil;
-import org.sqlite.util.StringUtils;
 
 import ServerControl.API;
 import ServerControl.Loader;
@@ -57,8 +56,8 @@ public class ServerControl implements CommandExecutor, TabCompleter {
     		if(API.hasPerm(s, "ServerControl.List")) {
  			Loader.msg(Loader.s("Prefix")+"&e----------------- &bList &e-----------------",s);
  			Loader.msg("",s);
- 			Loader.msg(Loader.s("Prefix")+"&cSwear words: "+StringUtils.join(Loader.config.getStringList("SwearWords"), ", "),s);
- 			Loader.msg(Loader.s("Prefix")+"&cSpam words: "+StringUtils.join(Loader.config.getStringList("SpamWords.Words"), ", "),s);
+ 			Loader.msg(Loader.s("Prefix")+"&cSwear words: "+TheAPI.getStringUtils().join(Loader.config.getStringList("SwearWords"), ", "),s);
+ 			Loader.msg(Loader.s("Prefix")+"&cSpam words: "+TheAPI.getStringUtils().join(Loader.config.getStringList("SpamWords.Words"), ", "),s);
         return true;
      }
  		return true;}

@@ -3,7 +3,6 @@ package Commands;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -45,7 +44,7 @@ public class Staff implements CommandExecutor {
 		}}
 		if(w.isEmpty())
 		return "0";
-		return StringUtils.join(w," ");
+		return TheAPI.getStringUtils().join(w," ");
 	}
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
