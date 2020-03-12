@@ -45,7 +45,7 @@ private boolean wait(Player p, String cmd) {
 				}else {
 					exp=false;
 					Loader.msg(Loader.s("Prefix")+Loader.s("Cooldown.ToSendCommand")
-					.replace("%timer%", TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(p.getName()))),p);
+					.replace("%timer%", TheAPI.getStringUtils().setTimeToString(as.getTimeToExpire(p.getName()))),p);
 				}
 				break;
 			}
