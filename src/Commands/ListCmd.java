@@ -30,7 +30,7 @@ public class ListCmd implements CommandExecutor {
 	public void sortPlayers() {
 		p.clear();
 		for(Player a:TheAPI.getOnlinePlayers()) {
-			if(p.get(a)==null)
+			if(p.get(a)!=null)
 			p.put(a, getGroup(a));
 		}
 	}
@@ -42,17 +42,7 @@ public class ListCmd implements CommandExecutor {
 		}}
 		if(w.isEmpty())
 		return "0";
-		return TheAPI.getStringUtils().join(w," ");
-	}
-	public String getStaff() {
-		ArrayList<String> w = new ArrayList<String>();
-		for(Player a:TheAPI.getOnlinePlayers()) {
-		if(Loader.config.getStringList("StaffList").contains(p.get(a))) {
-			w.add(a.getName());
-		}}
-		if(w.isEmpty())
-		return "0";
-		return TheAPI.getStringUtils().join(w," ");
+		return TheAPI.getStringUtils().join(w,", ");
 	}
 	public String allPlayers() {
 		ArrayList<String> w = new ArrayList<String>();
@@ -61,7 +51,7 @@ public class ListCmd implements CommandExecutor {
 		}
 		if(w.isEmpty())
 		return "0";
-		return TheAPI.getStringUtils().join(w," ");
+		return TheAPI.getStringUtils().join(w,", ");
 	}
 	public String getPlayersInGroup(String f) {
 			ArrayList<String> w = new ArrayList<String>();
@@ -89,9 +79,9 @@ public class ListCmd implements CommandExecutor {
 					a=a.replace("%"+wa+"%", getPlayersInGroup(wa));
 				}
 			Loader.msg(a
-					.replace("%online%",String.valueOf(TheAPI.getOnlinePlayers().size()))
-					.replace("%max_players%",String.valueOf(Bukkit.getMaxPlayers()))
-			.replace("%staff%",getStaff())
+					.replace("%online%",TheAPI.getOnlinePlayers().size()+"")
+					.replace("%max_players%",Bukkit.getMaxPlayers()+"")
+			.replace("%staff%",Staff.getStaff())
 			.replace("%players%",normalPlayers())
 			.replace("%all%",allPlayers())
 			.replace("%prefix%",Loader.s("Prefix")), s);

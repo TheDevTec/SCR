@@ -1,7 +1,7 @@
 package Commands;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -15,9 +15,9 @@ import me.Straiker123.TheAPI;
 
 public class Staff implements CommandExecutor {
 	
-	HashMap<Player,String> p = new HashMap<Player,String>(); // Player, group;
+	private static List<String> p = new ArrayList<String>(); // Player, group;
 	
-	public String getGroup(Player a) {
+	private static String getGroup(Player a) {
 		try {
 		if(API.existVaultPlugin())
 			if(Loader.vault != null)
@@ -29,22 +29,17 @@ public class Staff implements CommandExecutor {
 		return "default";
 	}
 	
-	public void sortPlayers() {
+	public static void sortPlayers() {
 		p.clear();
 		for(Player a:TheAPI.getOnlinePlayers()) {
-			p.put(a, getGroup(a));
-		}
-	}
-	ArrayList<String> w = new ArrayList<String>();
-	public String getStaff() {
-		w.clear();
-		for(Player a:TheAPI.getOnlinePlayers()) {
-		if(Loader.config.getStringList("StaffList").contains(p.get(a))) {
-			w.add(a.getName());
+			if(Loader.config.getStringList("StaffList").contains(getGroup(a))) {
+			p.add(a.getName());
 		}}
-		if(w.isEmpty())
+	}
+	public static String getStaff() {
+		if(p.isEmpty())
 		return "0";
-		return TheAPI.getStringUtils().join(w," ");
+		return TheAPI.getStringUtils().join(p,", ");
 	}
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -52,7 +47,7 @@ public class Staff implements CommandExecutor {
 			sortPlayers();
 			for(String a:Loader.TranslationsFile.getStringList("PlayerList.Staff")) {
 			Loader.msg(a
-					.replace("%online%",w.size()+"")
+					.replace("%online%",a.length()+"")
 					.replace("%max_players%", Bukkit.getMaxPlayers()+"")
 					.replace("%prefix%", Loader.s("Prefix"))
 					.replace("%staff%", getStaff()), s);
