@@ -47,7 +47,7 @@ public class Staff implements CommandExecutor {
 			sortPlayers();
 			for(String a:Loader.TranslationsFile.getStringList("PlayerList.Staff")) {
 			Loader.msg(a
-					.replace("%online%",a.length()+"")
+					.replace("%online%",p.size()+"")
 					.replace("%max_players%", Bukkit.getMaxPlayers()+"")
 					.replace("%prefix%", Loader.s("Prefix"))
 					.replace("%staff%", getStaff()), s);
