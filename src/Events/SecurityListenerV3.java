@@ -321,8 +321,9 @@ public class SecurityListenerV3 implements Listener{
 					}else
 						d=d+" "+s;
 				}
-				}
-				d=d.replaceFirst(" ", "");
+					d=d.replaceFirst(" ", "");
+				}else
+					d=message;
 				String build = d;
 				if(setting.caps_chat) {
 				if(up != 0 ? up/((double)d.length()/100) >= 60 && !p.hasPermission("ServerControl.Caps") && d.length() > 5:false) {
