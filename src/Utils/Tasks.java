@@ -137,13 +137,13 @@ public class Tasks {
 		}
 	   	 for(Player p:TheAPI.getOnlinePlayers()) {
 	   		 if(AFK.isAFK(p)) {
-	   				 if(setting.afk_kick && AFK.getAFKTime(p)>=TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("AFK.Kick.Time"))
+	   				 if(setting.afk_kick && AFK.getAFKTime(p)>=TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"))
 	   						 && !p.hasPermission("ServerControl.AFK.Bypass")) {
 	   					Loader.me.set("Players."+p.getName()+".AFK-Manual",null);
 	   					Loader.me.set("Players."+p.getName()+".AFK-Broadcast",null);
 	   					Configs.chatme.save();
 	   					AFK.time.remove(p);
-	   				 p.kickPlayer(TheAPI.colorize(Loader.config.getString("AFK.Kick.Message")));
+	   				 p.kickPlayer(TheAPI.colorize(Loader.config.getString("Options.AFK.KickMessage")));
 	   			 }else
 	   				 if(AFK.broadcast(p))Loader.getInstance.afk(p, false);
 	   		 }

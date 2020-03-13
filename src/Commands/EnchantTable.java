@@ -91,8 +91,8 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 	    			, "PROTECTION_FALL","FEATHER_FALLING", "PROTECTION_FIRE","FIRE_PROTECTION", "PROTECTION_PROJECTILE","PROJECTILE_PROTECTION"
 	    			, "SILK_TOUCH", "SWEEPING_EDGE"
 	    			, "THORNS", "VANISHING_CURSE","CURSE_OF_VANISHING", "WATER_WORKER","AQUA_AFFINITY");
-	    	if(TheAPI.isNewVersion()) enchs.addAll(
-	    			Arrays.asList("LOYALTY","PIERCING","IMPALING","MULTISHOT","QUICK_CHARGE","RIPTIDE","CHANNELING"));
+	    	if(TheAPI.isNewVersion()) Arrays.asList("LOYALTY","PIERCING","IMPALING","MULTISHOT","QUICK_CHARGE","RIPTIDE","CHANNELING").forEach(String ->
+	    	enchs.add(String));
 			if(s instanceof Player) {
 				if(args.length==1) {
 	            	c.addAll(StringUtil.copyPartialMatches(args[0], enchs, new ArrayList<>()));
