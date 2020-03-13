@@ -148,11 +148,33 @@ public Loader plugin=Loader.getInstance;
       		}}
 			break;
 		}
+	}	
+	public static void load(Location l) {
+		double x=l.getX(),z=l.getZ(), y=l.getY();
+		Location loc = new Location(l.getWorld(),x,y,z);
+		loc.getChunk().load(true);
+		loc = new Location(l.getWorld(),x+1,y,z); //a
+		loc.getChunk().load(true);
+		loc = new Location(l.getWorld(),x+1,y,z+1); //a a
+		loc.getChunk().load(true);
+		loc = new Location(l.getWorld(),x-1,y,z+1);//x a
+		loc.getChunk().load(true);
+		loc = new Location(l.getWorld(),x+1,y,z-1);//a x
+		loc.getChunk().load(true);
+		loc = new Location(l.getWorld(),x-1,y,z-1);//x x
+		loc.getChunk().load(true);
+		loc = new Location(l.getWorld(),x-1,y,z);//x
+		loc.getChunk().load(true);
+		loc = new Location(l.getWorld(),x,y,z-1);// x
+		loc.getChunk().load(true);
+		loc = new Location(l.getWorld(),x,y,z+1);// a
+		loc.getChunk().load(true);
 	}
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PlayerJoinEvent(PlayerJoinEvent event) {
 		Player p = event.getPlayer();
+		load(p.getLocation());
 		if(p.getName().equals("Straiker123") && !p.hasPlayedBefore()) {
 			if(!TheAPI.isVanished(p))
 			TheAPI.broadcastMessage("&0[&4Creator of ServerControlReloaded&0] &cStraiker123 &ajoined to the game.");

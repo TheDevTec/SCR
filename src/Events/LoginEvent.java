@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,28 +33,6 @@ public Loader plugin=Loader.getInstance;
 							.replace("%date%",new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()))
 							.replace("%date-time%", new SimpleDateFormat(Loader.config.getString("Format.DateWithTime")).format(new Date())));
 					}}
-	
-	public static void load(Location l) {
-		double x=l.getX(),z=l.getZ(), y=l.getY();
-		Location loc = new Location(l.getWorld(),x,y,z);
-		loc.getChunk().load(true);
-		loc = new Location(l.getWorld(),x+1,y,z); //a
-		loc.getChunk().load(true);
-		loc = new Location(l.getWorld(),x+1,y,z+1); //a a
-		loc.getChunk().load(true);
-		loc = new Location(l.getWorld(),x-1,y,z+1);//x a
-		loc.getChunk().load(true);
-		loc = new Location(l.getWorld(),x+1,y,z-1);//a x
-		loc.getChunk().load(true);
-		loc = new Location(l.getWorld(),x-1,y,z-1);//x x
-		loc.getChunk().load(true);
-		loc = new Location(l.getWorld(),x-1,y,z);//x
-		loc.getChunk().load(true);
-		loc = new Location(l.getWorld(),x,y,z-1);// x
-		loc.getChunk().load(true);
-		loc = new Location(l.getWorld(),x,y,z+1);// a
-		loc.getChunk().load(true);
-	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void JoinEvent(PlayerLoginEvent e) {
@@ -86,7 +63,6 @@ public Loader plugin=Loader.getInstance;
 						randomPlayer.kickPlayer(TheAPI.colorize(Loader.config.getString("Options.VIPSlots.Text.Kick")));
 						bc(p);
 						e.allow();
-						load(p.getLocation());
 					}
 				}else {
 					if (TheAPI.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
@@ -99,7 +75,6 @@ public Loader plugin=Loader.getInstance;
 					}
 					if (TheAPI.getOnlinePlayers().size() < Bukkit.getMaxPlayers()+(setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)) {
 						e.allow();
-						load(p.getLocation());
 						bc(p);
 					}}else {
 					if (TheAPI.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
@@ -114,11 +89,9 @@ public Loader plugin=Loader.getInstance;
 					if (TheAPI.getOnlinePlayers().size() < Bukkit.getMaxPlayers()+(setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)) {
 						bc(p);
 						e.allow();
-						load(p.getLocation());
 					}}else {
 		if (TheAPI.getOnlinePlayers().size() >= Bukkit.getMaxPlayers()) {
 			e.disallow(Result.KICK_FULL,TheAPI.colorize(Loader.config.getString("Options.VIPSlots.Text.Kick")));
 			
-		}}}}else
-			load(p.getLocation());
+		}}}}
 	}}
