@@ -2,7 +2,6 @@ package Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -95,44 +94,26 @@ public class TabList {
 		 for(Player p:TheAPI.getOnlinePlayers()) {
 			 NameTagChanger.remove(p);
 			 p.setPlayerListName(p.getName());
-		p.setScoreboard(Bukkit.getServer().getScoreboardManager().getNewScoreboard());
 		TheAPI.getTabListAPI().setHeaderFooter(p, "", "");
 	}}
-	static boolean ex(String s) {
-		if(Loader.tab.getString(s)!=null)return true;
-		return false;
-	}
 	
-	static String setHeaderFooter(String FooterOrHeader, String path, Player p) {
-		if(FooterOrHeader.equalsIgnoreCase("header") && setting.tab_header || FooterOrHeader.equalsIgnoreCase("footer") && setting.tab_footer) {
+	private static String get(String path, Player p) {
+		if(setting.tab_header || setting.tab_footer) {
 		if(Loader.tab.getStringList(path)!=null) {
-			List<String> L = Loader.tab.getStringList(path);
-			L=TheAPI.getPlaceholderAPI().setPlaceholders(p, L);
-			return replace(TheAPI.getStringUtils().join(L, "\n"),p);
+			String a = TheAPI.getStringUtils().join(Loader.tab.getStringList(path), "\n");
+			return replace(a,p);
 	}}
-		return null;
+		return "";
 	}
-	public static String getHeader(Player p) {
-		if(setting.tab_footer && setting.tab_header) {
-		if(ex("PerPlayerTabList."+p.getName()+".Header"))
-			return setHeaderFooter("Header","PerPlayerTabList."+p.getName()+".Header", p);
+	public static String getPath(Player p, String what) {
+		if(what.equalsIgnoreCase("footer") && setting.tab_footer ||what.equalsIgnoreCase("header") && setting.tab_header) {
+		if(Loader.tab.getString("PerPlayerTabList."+p.getName()+"."+what)!=null)
+			return get("PerPlayerTabList."+p.getName()+"."+what, p);
 	else
-			if(ex("PerWorldTabList."+p.getWorld().getName()+".Header"))
-				return setHeaderFooter("Header","PerWorldTabList."+p.getWorld().getName()+".Header", p);
+			if(Loader.tab.getString("PerWorldTabList."+p.getWorld().getName()+"."+what)!=null)
+				return get("PerWorldTabList."+p.getWorld().getName()+"."+what, p);
 		else {
-			return setHeaderFooter("Header","Header", p);
-		}}
-			return "";
-	}
-	public static String getFooter(Player p) {
-		if(setting.tab_footer && setting.tab_header) {
-		if(ex("PerPlayerTabList."+p.getName()+".Footer"))
-			return setHeaderFooter("Footer","PerPlayerTabList."+p.getName()+".Footer", p);
-		else
-			if(ex("PerWorldTabList."+p.getWorld().getName()+".Footer"))
-				return setHeaderFooter("Footer","PerWorldTabList."+p.getWorld().getName()+".Footer", p);
-		else {
-			return setHeaderFooter("Footer","Footer", p);
+			return get(what, p);
 		}}
 			return "";
 	}
@@ -145,7 +126,6 @@ public class TabList {
 	}
 	public static void setFooterHeader() {
 		for(Player p:TheAPI.getOnlinePlayers()) {
-			if(TheAPI.getPlayer(p.getName())!=null) {
-				TheAPI.getTabListAPI().setHeaderFooter(p, getHeader(p), getFooter(p));
-		}}}
+			TheAPI.getTabListAPI().setHeaderFooter(p, getPath(p,"Header"), getPath(p,"Footer"));
+		}}
 }
