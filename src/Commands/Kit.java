@@ -20,8 +20,8 @@ import me.Straiker123.ItemCreatorAPI;
 import me.Straiker123.TheAPI;
 
 public class Kit implements CommandExecutor,TabCompleter{
-	public ArrayList<String> kits(CommandSender p){
-		 ArrayList<String> list = new ArrayList<String>();
+	public List<String> kits(CommandSender p){
+		List<String> list = new ArrayList<String>();
 		if(Kits().isEmpty()==false) {
 			if(!p.hasPermission("servercontrol.kit.*")) {
 			for(String name:Kits()) {
@@ -34,8 +34,8 @@ public class Kit implements CommandExecutor,TabCompleter{
 		}
 		return list;
 	}
-	public static ArrayList<String> Kits(){
-		 ArrayList<String> list = new ArrayList<String>();
+	public static List<String> Kits(){
+		List<String> list = new ArrayList<String>();
 		 if(Loader.kit.getString("Kits")!=null)
 			 for(String s:Loader.kit.getConfigurationSection("Kits").getKeys(false))list.add(s);
 		 return list;
@@ -130,20 +130,20 @@ public class Kit implements CommandExecutor,TabCompleter{
 				}
 					
 				ItemCreatorAPI a = TheAPI.getItemCreatorAPI(m);
-				int numb;
-				numb = 1;
+				int numb = 1;
 				if(Loader.kit.getInt("Kits."+kitName+".Items."+def+".Amount")!=0) numb =Loader.kit.getInt("Kits."+kitName+".Items."+def+".Amount");
 				a.setAmount(numb);
 	            a.setLore(Loader.kit.getStringList("Kits."+kitName+".Items."+def+".Lore"));
 	            a.setDisplayName(Loader.kit.getString("Kits."+kitName+".Items."+def+".CustomName"));
-	            if(Loader.kit.getString("Kits."+kitName+".Items."+def+".Enchantments")!=null) {
+	            if(Loader.kit.getString("Kits."+kitName+".Items."+def+".Enchantments")!=null)
 	            for(String enchs:Loader.kit.getStringList("Kits."+kitName+".Items."+def+".Enchantments")) {
-	            	String nonum = enchs.replace(":", "").replaceAll("[0-9]+", "").replace(" ", "");
-	            	String num = enchs.replace(":", "").replaceAll("[A-Za-z]+", "").replace("_", "").replace(" ", "");
-	            	if(!TheAPI.getEnchantmentAPI().isEnchantment(nonum))Loader.warn("Error when giving kit '"+kitName+"', enchant '"+nonum+"' is invalid !");
-	            	else
-	            		a.addEnchantment(TheAPI.getEnchantmentAPI().getByName(nonum), TheAPI.getStringUtils().getInt(num));
-	            }}
+	            	String nonum = enchs.replace(":", "").replaceAll("[0-9]+", "").replaceAll(" ", "");
+	            	if(!TheAPI.getEnchantmentAPI().isEnchantment(nonum)) {
+	            		Loader.warn("Error when giving kit '"+kitName+"', enchant '"+nonum+"' is invalid !");
+	            	}else {
+	            		a.addEnchantment(nonum, TheAPI.getStringUtils().getInt(enchs.replace(":", "").replace("_", "").replace(" ", "")));
+	            	}
+	            	}
 	            TheAPI.giveItem(p, a.create());
 		}}}
 
