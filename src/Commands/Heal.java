@@ -9,11 +9,8 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
 import Utils.Repeat;
-import me.Straiker123.CooldownAPI;
-import me.Straiker123.TheAPI;
 
 public class Heal implements CommandExecutor {
-	CooldownAPI a= TheAPI.getCooldownAPI("SCR-Heal");
 	public boolean onCommand(CommandSender s, Command cmd, String label,String[] args) {
 		if(!API.hasPerm(s, "ServerControl.Heal"))return true;
 		if(args.length == 0) {
@@ -22,19 +19,10 @@ public class Heal implements CommandExecutor {
 			return true;
 		}
 		Player p = (Player)s;
-		if(a.expired(p.getName()) || s.hasPermission("ServerControl.Heal.Bypass")) {
 			new SPlayer(p).heal();
-			if(!s.hasPermission("ServerControl.Heal.Bypass"))
-    			a.createCooldown(p.getName(), TheAPI.getStringUtils().getTimeFromString(
-    					Loader.config.getString("Heal-Cooldown")));
 			Loader.msg(Loader.s("Prefix")+Loader.s("Heal.Healed").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),s);
 			return true;
 		}
-				Loader.msg(Loader.s("Heal.CooldownMessage").replace("%player%", p.getName())
-						.replace("%playername%", p.getDisplayName())
-				.replace("%time%", TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(p.getName()))),s);
-                return true;
-            }
 			if(args.length == 1){
 				if(args[0].equals("*")) {
 					Repeat.a(s,"heal *");
@@ -47,19 +35,10 @@ public class Heal implements CommandExecutor {
         		}
         		if(target == s) {
         			Player p = (Player)s;
-        			if(a.expired(p.getName()) || s.hasPermission("ServerControl.Heal.Bypass")) {
         				new SPlayer(p).heal();
-            			if(!s.hasPermission("ServerControl.Heal.Bypass"))
-                			a.createCooldown(p.getName(), TheAPI.getStringUtils().getTimeFromString(
-                					Loader.config.getString("Heal-Cooldown")));
         				Loader.msg(Loader.s("Prefix")+Loader.s("Heal.Healed").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),s);
         				return true;
         			}
-        					Loader.msg(Loader.s("Heal.CooldownMessage").replace("%player%", p.getName())
-        							.replace("%playername%", p.getDisplayName())
-        					.replace("%time%", TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(p.getName()))),s);
-        	                return true;
-        	            }
     				if(API.hasPerm(s, "ServerControl.Heal.Other")){
     					new SPlayer(target).heal();
     					Loader.msg(Loader.s("Prefix")+Loader.s("Heal.Healed").replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()),target);
