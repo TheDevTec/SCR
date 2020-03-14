@@ -99,7 +99,7 @@ public class Give implements CommandExecutor, TabCompleter {
 		int args3=0; //level
 		int args4=0; //time
 		boolean multi =false;
-		MultiMap a = TheAPI.getMultiMap();
+		MultiMap<PotionEffectType> a = TheAPI.getMultiMap();
 		if(s.toUpperCase().startsWith("POTION_OF_")) {
 			args1=XMaterial.POTION.parseMaterial();
 			args2=s.toUpperCase().replaceFirst("POTION_OF_", "").replaceAll("[0-9]", "");
@@ -309,18 +309,18 @@ public class Give implements CommandExecutor, TabCompleter {
 			break;
 		case "TURTLE_MASTER":
 			multi=true;
-			a.put("SLOW", 4,20);
-			a.put("DAMAGE_RESISTANCE", 3,20);
+			a.put(PotionEffectType.SLOW, 4,20);
+			a.put(PotionEffectType.DAMAGE_RESISTANCE, 3,20);
 			break;
 		case "TURTLE_MASTER2":
 			multi=true;
-			a.put("SLOW", 4,40);
-			a.put("DAMAGE_RESISTANCE", 3,40);
+			a.put(PotionEffectType.SLOW, 4,40);
+			a.put(PotionEffectType.DAMAGE_RESISTANCE, 3,40);
 			break;
 		case "TURTLE_MASTER3":
 			multi=true;
-			a.put("SLOW", 4,20);
-			a.put("DAMAGE_RESISTANCE", 4,20);
+			a.put(PotionEffectType.SLOW, 4,20);
+			a.put(PotionEffectType.DAMAGE_RESISTANCE, 4,20);
 			break;
 
 		case "SLOW_FALLING":
@@ -346,7 +346,7 @@ public class Give implements CommandExecutor, TabCompleter {
 		ItemStack h = new ItemStack(args1);
 		PotionMeta g = (PotionMeta)h.getItemMeta();
 		if(multi) {
-		for(Object f : a.getKeySet()) { //effect
+		for(PotionEffectType f : a.getKeySet()) { //effect
 		Object[] o = a.getValues(f).toArray();//values
 		int i = TheAPI.getStringUtils().getInt(o[0].toString());
 		int ib = TheAPI.getStringUtils().getInt(o[1].toString());

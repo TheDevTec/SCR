@@ -19,7 +19,7 @@ import me.Straiker123.TheAPI;
 
 public class EcoTop implements CommandExecutor {
 	//world, rankingapi
-	MultiMap h= TheAPI.getMultiMap();
+	MultiMap<String> h= TheAPI.getMultiMap();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -38,7 +38,7 @@ public class EcoTop implements CommandExecutor {
 							money.put(sa, TheAPI.getEconomyAPI().getBalance(sa,world));
 						}
 						if(m!=null)
-						h.remove(m);
+						h.remove(world);
 						m=TheAPI.getRankingAPI(money);
 						h.put(world,m);
 					}
