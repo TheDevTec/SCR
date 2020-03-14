@@ -9,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
@@ -134,6 +135,14 @@ public class Kit implements CommandExecutor,TabCompleter{
 				if(Loader.kit.getInt("Kits."+kitName+".Items."+def+".Amount")!=0) numb =Loader.kit.getInt("Kits."+kitName+".Items."+def+".Amount");
 				a.setAmount(numb);
 	            a.setLore(Loader.kit.getStringList("Kits."+kitName+".Items."+def+".Lore"));
+	            if(Loader.kit.getBoolean("Kits."+kitName+".Items."+def+".HideEnchants"))
+	            a.addItemFlag(ItemFlag.HIDE_ENCHANTS);
+	            if(Loader.kit.getBoolean("Kits."+kitName+".Items."+def+".HideAttributes"))
+	            a.addItemFlag(ItemFlag.HIDE_ATTRIBUTES);
+	            if(Loader.kit.getBoolean("Kits."+kitName+".Items."+def+".HideUnbreakable"))
+	            a.addItemFlag(ItemFlag.HIDE_UNBREAKABLE);
+	            if(Loader.kit.getBoolean("Kits."+kitName+".Items."+def+".Unbreakable"))
+	            a.setUnbreakable(true);
 	            a.setDisplayName(Loader.kit.getString("Kits."+kitName+".Items."+def+".CustomName"));
 	            if(Loader.kit.getString("Kits."+kitName+".Items."+def+".Enchantments")!=null)
 	            for(String enchs:Loader.kit.getStringList("Kits."+kitName+".Items."+def+".Enchantments")) {
