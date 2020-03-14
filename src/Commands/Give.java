@@ -479,15 +479,14 @@ public class Give implements CommandExecutor, TabCompleter {
 	  public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 	  	List<String> c = new ArrayList<>();
 	      	if(s.hasPermission("ServerControl.Give")) {
-	      		List<String> wPl = new ArrayList<String>();
-	      		wPl.addAll(list);
-	      		for(Player p : TheAPI.getOnlinePlayers())wPl.add(p.getName());
-	    	  	if(args.length==1)return wPl;
+	      		List<String> pls = new ArrayList<String>();
+	      		for(Player p : TheAPI.getOnlinePlayers())pls.add(p.getName());
+	    	  	if(args.length==1)c.addAll(StringUtil.copyPartialMatches(args[0], pls, new ArrayList<>()));
 	    	  	if(args.length==2) {
 		      		c.addAll(StringUtil.copyPartialMatches(args[1], list, new ArrayList<>()));
 	    	  		}
 	    	  	if(args.length==3) {
-		      		c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));
+		      		c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("1","3","5","10","15"), new ArrayList<>()));
 	    	  	}
 	    	  	}
 	      return c;}
