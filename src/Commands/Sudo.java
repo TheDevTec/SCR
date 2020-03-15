@@ -32,8 +32,9 @@ public class Sudo implements CommandExecutor {
 			Player target = TheAPI.getPlayer(args[0]);
 			if(target !=null) {
 				String msg = TheAPI.buildString(args);
+				msg=msg.replaceFirst(args[0]+" ", "");
 			if(msg.startsWith("/")) {
-				msg=msg.replaceFirst(args[0]+"/", "");
+				msg=msg.replaceFirst("/", "");
 				TheAPI.sudo(target, SudoType.COMMAND, msg);
 				String st = API.replacePlayerName(Loader.s("Sudo.SendCommand"),target);
 				Loader.msg(Loader.s("Prefix")+st.replace("%command%", msg), s);
