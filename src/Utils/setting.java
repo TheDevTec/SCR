@@ -54,7 +54,7 @@ public class setting {
 		color_sign_perm= f.getBoolean("Options.Colors.Sign.RequiredPermission");
 		disable_item=f.getBoolean("Options.Disable-Items.Use");
 		try {
-		deathspawn = DeathTp.valueOf(f.getString("Options.RespawnTeleport"));
+		deathspawn = DeathTp.valueOf(f.getString("Options.RespawnTeleport").toUpperCase());
 		}catch(Exception er) {
 			deathspawn = DeathTp.Spawn;
 		}
