@@ -137,7 +137,7 @@ public String pingPlayer(Player who) {
 @Override
 public void onLoad() {
     getInstance = this;
-	Configs.LoadConfigs();
+	Configs.load();
 	regClasses();
 	if(API.existVaultPlugin()) {
 	setupEco();
@@ -173,7 +173,6 @@ public void onEnable() {
 		return;
 		}
 	loading=System.currentTimeMillis()/100;
-	Configs.LoadConfigs();
     MultiWorldsUtils.LoadWorlds();
 		if(API.existVaultPlugin()) {
     	setupVault();
@@ -258,7 +257,6 @@ public void onDisable() {
 				Bukkit.getWorld(w).save();
 				Loader.info("World '"+w+"' saved");
 			}}
-	Configs.LoadConfigs();
 }
 public static void msg(String message, CommandSender s){
 	s.sendMessage(TheAPI.colorize(message));

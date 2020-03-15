@@ -65,7 +65,7 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 		if(API.hasPerm(s, "ServerControl.Reload")) {
 		Loader.msg(Loader.s("Prefix")+"&e----------------- &bReloading config&e -----------------",s);
 		Loader.msg("",s);
-	Configs.LoadConfigs();
+	Configs.reload();
 	setting.load();
 	Tasks.reload();
 	Loader.startConvertMoney();

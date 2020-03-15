@@ -9,15 +9,15 @@ import me.Straiker123.ConfigAPI;
 import me.Straiker123.TheAPI;
 
 public class Configs {
-	public static ConfigAPI trans;
-	public static ConfigAPI config;
-	public static ConfigAPI chatme;
-	public static ConfigAPI bans;
-	public static ConfigAPI sb;
-	public static ConfigAPI tab;
-	public static ConfigAPI chat;
-	public static ConfigAPI mw;
-	public static ConfigAPI kit;
+	public static ConfigAPI trans= TheAPI.getConfig("ServerControlReloaded", "Translations");
+	public static ConfigAPI config= TheAPI.getConfig("ServerControlReloaded", "Config");
+	public static ConfigAPI chatme= TheAPI.getConfig("ServerControlReloaded", "ChatMe");
+	public static ConfigAPI bans= TheAPI.getConfig("ServerControlReloaded", "Bans");
+	public static ConfigAPI sb= TheAPI.getConfig("ServerControlReloaded", "Scoreboard");
+	public static ConfigAPI tab= TheAPI.getConfig("ServerControlReloaded", "TabList");
+	public static ConfigAPI chat= TheAPI.getConfig("ServerControlReloaded", "ChatLog");
+	public static ConfigAPI mw=TheAPI.getConfig("ServerControlReloaded", "MultiWorlds");
+	public static ConfigAPI kit=TheAPI.getConfig("ServerControlReloaded", "Kits");
 	public static void TranslationsLoading() {
 		Map<String, Object> c = new HashMap<String, Object>();
 			c.put("Prefix", "&4SCR &e> ");
@@ -496,7 +496,6 @@ public class Configs {
 		c.put("Immune.OnOther", "&6You &aenabled &6immunity of player &a%target%");
 		c.put("Immune.OffOther", "&6You &cdisabled &6immunity of player &c%target%");
 		c.put("Immune.NoPunish", "&6You can't &c%punishment% %target%&6, his immunity is enabled.");
-		trans = TheAPI.getConfig("ServerControlReloaded", "Translations");
 		trans.setHeader("*************************\n" + 
 				"*** Created by DevTec ***\n" + 
 				"*************************\n");
@@ -505,7 +504,6 @@ public class Configs {
 		Loader.TranslationsFile=trans.getConfig();
 		}
 	public static void configLoading() {
-		config = TheAPI.getConfig("ServerControlReloaded", "Config");
 		Map<String, Object> c = new HashMap<String, Object>();
 		c.put("Options.Maintenance.Enabled", false);
 		c.put("Options.Maintenance.KickMessages", Arrays.asList(
@@ -758,7 +756,6 @@ public class Configs {
 		Loader.config=config.getConfig();
 	}
 	public static void BansLoading() {
-			bans= TheAPI.getConfig("ServerControlReloaded", "Bans");
 			bans.addDefault("Ban","");
 			bans.addDefault("Mute","");
 			bans.create();
@@ -779,7 +776,6 @@ public class Configs {
 			c.put("PerWorld.skyblock.Name", "&eSkyBlock");
 			c.put("PerWorld.skyblock.Lines", Arrays.asList("&r&lMoney: &a%money%$","&r&lHealth:  &a%health%","&r&lFood:  &a%food%"));
 			
-			sb= TheAPI.getConfig("ServerControlReloaded", "Scoreboard");
 			sb.setHeader("%money%   player money balance\n"
 					+"%online%   online players on server\n"
 					+"%max_players%   maximum players on server\n"
@@ -803,16 +799,13 @@ public class Configs {
 			Loader.scFile=sb.getConfig();
 			}
 	public static void ChatLogLoading() {
-				chat= TheAPI.getConfig("ServerControlReloaded", "ChatLog");
 				chat.create();
 			}
 	public static void ChatMeLoading() {
-				chatme= TheAPI.getConfig("ServerControlReloaded", "ChatMe");
 				chatme.create();
 				Loader.me=chatme.getConfig();
 				}
 	public static void TabLoading() {
-			tab= TheAPI.getConfig("ServerControlReloaded", "TabList");
 			Map<String, Object> c = new HashMap<String, Object>();
 			c.put("Tab-Enabled", true);
 			c.put("Header-Enabled", true);
@@ -864,13 +857,11 @@ public class Configs {
 		c.put("ModifyMobsSpawnRates", false);
 		c.put("SavingTask.Enabled", true);
 		c.put("SavingTask.Delay", 3600);
-		mw=TheAPI.getConfig("ServerControlReloaded", "MultiWorlds");
 		mw.addDefaults(c);
 		mw.create();
 		Loader.mw=mw.getConfig();
 		}
 	public static void KitLoading() {
-	kit=TheAPI.getConfig("ServerControlReloaded", "Kits");
 	Map<String, Object> c = new HashMap<String, Object>();
 	if(!kit.existPath("Kits")) {
 	c.put("Kits.Default.Items.Stone.Amount", 16);
@@ -891,7 +882,7 @@ public class Configs {
 	kit.create();
 	Loader.kit=kit.getConfig();
 	}
-	public static void LoadConfigs() {
+	public static void load() {
 		ChatMeLoading();
 		MultiWorldLoading();
 		configLoading();
@@ -901,5 +892,16 @@ public class Configs {
 		ChatLogLoading();
 		KitLoading();
 		BansLoading();
+	}
+	public static void reload() {
+		trans.reload();
+		config.reload();
+		bans.reload();
+		chat.reload();
+		chatme.reload();
+		kit.reload();
+		mw.reload();
+		sb.reload();
+		tab.reload();
 	}
 }

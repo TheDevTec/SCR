@@ -27,8 +27,8 @@ public class SetHome implements CommandExecutor {
                 	Loader.me.set("Players."+p.getName()+".Homes.home.Z", l.getZ());
                 	Loader.me.set("Players."+p.getName()+".Homes.home.Pitch", p.getLocation().getPitch());
                 	Loader.me.set("Players."+p.getName()+".Homes.home.Yaw", p.getLocation().getYaw());
-                	
-                	Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Created")
+                	Configs.chatme.save();
+                	Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Created")
         			.replace("%home%", "home"),s);
                     return true;   
             }
@@ -40,7 +40,8 @@ public class SetHome implements CommandExecutor {
                 	Loader.me.set("Players."+p.getName()+".Homes.home.Z", l.getZ());
                 	Loader.me.set("Players."+p.getName()+".Homes.home.Pitch", p.getLocation().getPitch());
                 	Loader.me.set("Players."+p.getName()+".Homes.home.Yaw", p.getLocation().getYaw());
-                	Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Created")
+                	Configs.chatme.save();
+                	Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Created")
                     .replace("%player%", p.getName())
                     .replace("%playername%", p.getDisplayName())
                     .replace("%home%", "home"),s);
