@@ -58,11 +58,11 @@ public class DeathEvent implements Listener {
 						TheAPI.getPlayerAPI(p).teleport((Location) Loader.config.get("Jails."+Loader.me.getString("Players."+p.getName()+".Jail.Location")));
 				}}, 1);
 	}else {
-		if(setting.deathspawn == DeathTp.Home)
+		if(setting.deathspawn == DeathTp.HOME)
 			API.teleportPlayer(p, TeleportLocation.HOME);
-		if(setting.deathspawn == DeathTp.Bed)
+		if(setting.deathspawn == DeathTp.BED)
 			API.teleportPlayer(p, TeleportLocation.BED);
-		if(setting.deathspawn == DeathTp.Spawn) {
+		if(setting.deathspawn == DeathTp.SPAWN) {
 			API.teleportPlayer(p, TeleportLocation.SPAWN);
 		Loader.msg(Loader.s("Spawn.TeleportedToSpawn")
 				.replace("%world%", ((Player)p).getWorld().getName())

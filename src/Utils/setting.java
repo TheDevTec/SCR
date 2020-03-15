@@ -7,9 +7,9 @@ import ServerControl.Loader;
 
 public class setting {
 	public static enum DeathTp{
-		Home,
-		Bed,
-		Spawn
+		HOME,
+		BED,
+		SPAWN
 	}
 	
 	
@@ -56,7 +56,7 @@ public class setting {
 		try {
 		deathspawn = DeathTp.valueOf(f.getString("Options.RespawnTeleport").toUpperCase());
 		}catch(Exception er) {
-			deathspawn = DeathTp.Spawn;
+			deathspawn = DeathTp.SPAWN;
 		}
 		tp_safe =f.getBoolean("Options.Teleport.SafeLocation");
 		tp_onreqloc =f.getBoolean("Options.Teleport.CommandSendLocation");
