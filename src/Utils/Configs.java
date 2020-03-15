@@ -67,6 +67,7 @@ public class Configs {
 			c.put("Item.Unbreakable.false", "&6Unbreakable on item &a%item% &cdisabled");
 			c.put("Item.HideEnchants.true", "&6Enchants on item &a%item% &6are no longer visible");
 			c.put("Item.HideEnchants.false", "&6Enchants on item &a%item% &6are visible");
+			c.put("Item.HandIsEmpty", "&cFirst take item to your &nhand");
 			c.put("Hat.HandIsEmpty", "&cFirst take item to your &nhand");
 			c.put("Hat.Equiped", "&aItem/Block from your hand equiped to your head!");
 			c.put("Hat.EquipedToOther", "&aItem/Block from your hand equiped to %target%'s head!");
