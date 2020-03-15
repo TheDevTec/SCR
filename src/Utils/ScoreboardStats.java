@@ -11,21 +11,22 @@ public class ScoreboardStats {
 	 public static void createScoreboard(Player p) {
 		 ScoreboardAPIV2 a = TheAPI.getScoreboardAPIV2(p);
 			if(Tasks.setup.containsKey(p))a=Tasks.setup.get(p);
-			Tasks.setup.remove(p);
+			else {
+				 Tasks.setup.put(p,a);
+			}
 			String getName = "Name";
 			 String getLine = "Lines";
-			 if(setting.sb_world && 
-					 Loader.scFile.getString("PerWorld."+p.getWorld().getName()+".Name")!=null &&
-					 Loader.scFile.getString("PerWorld."+p.getWorld().getName()+".Lines")!=null) {
-				 getName="PerWorld."+p.getWorld().getName()+".Name";
-				 getLine="PerWorld."+p.getWorld().getName()+".Lines";
+			 if(setting.sb_world ) {
+				 if( Loader.scFile.getString("PerWorld."+p.getWorld().getName()+".Name")!=null )
+					 getName="PerWorld."+p.getWorld().getName()+".Name";
+				 if( Loader.scFile.getString("PerWorld."+p.getWorld().getName()+".Lines")!=null )
+					 getLine="PerWorld."+p.getWorld().getName()+".Lines";
 			 }
 			a.setTitle(Loader.scFile.getString(getName));
 			for(String ss: Loader.scFile.getStringList(getLine)) {
 				a.addLine(TheAPI.getPlaceholderAPI().setPlaceholders(p,TabList.replace(ss, p)));
 			}
 			 a.create();
-			 Tasks.setup.put(p,a);
 		 }
 			 	
 	public static void removeScoreboard() {
