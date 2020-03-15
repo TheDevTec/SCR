@@ -250,19 +250,21 @@ public class Item implements CommandExecutor, TabCompleter {
             		c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("Add", "Remove", "Lines"), new ArrayList<>()));
             	}
         	if(args.length==3) {
+        		
+        		if(args[0].equalsIgnoreCase("SetLore"))
+            		if(args[1].equalsIgnoreCase("Add"))
+            		c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("?"), new ArrayList<>()));
+    		if(args[1].equalsIgnoreCase("Remove")) {
         		int count = 0;
-        		if(((Player)s).getItemInHand().getItemMeta().hasLore())
+    			if(s instanceof Player && ((Player)s).getItemInHand()!= null&&
+        				((Player)s).getItemInHand().getItemMeta().hasLore())
         		for(@SuppressWarnings("unused") String d:((Player)s).getItemInHand().getItemMeta().getLore()) {
         			l.add(count+"");
         			count++;
         		}
-        		if(args[0].equalsIgnoreCase("SetLore"))
-            		if(args[0].equalsIgnoreCase("Add"))
-            		c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));
-    		if(args[0].equalsIgnoreCase("Remove"))
     			if(!l.isEmpty())
-    		c.addAll(StringUtil.copyPartialMatches(args[1], l, new ArrayList<>()));
+    		c.addAll(StringUtil.copyPartialMatches(args[2], l, new ArrayList<>()));
         	}
-	}
+	}}
         return c;
 }}
