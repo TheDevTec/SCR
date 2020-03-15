@@ -1,5 +1,7 @@
 package Utils;
 
+import java.util.HashMap;
+
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
@@ -7,13 +9,11 @@ import me.Straiker123.ScoreboardAPIV2;
 import me.Straiker123.TheAPI;
 
 public class ScoreboardStats {
-	
+
+	 static HashMap<Player, ScoreboardAPIV2> setup = new HashMap<Player, ScoreboardAPIV2>();
 	 public static void createScoreboard(Player p) {
-		 ScoreboardAPIV2 a = TheAPI.getScoreboardAPIV2(p);
-			if(Tasks.setup.containsKey(p))a=Tasks.setup.get(p);
-			else {
-				 Tasks.setup.put(p,a);
-			}
+		 if(!setup.containsKey(p))setup.put(p, TheAPI.getScoreboardAPIV2(p));
+		 ScoreboardAPIV2 a=setup.get(p);
 			String getName = "Name";
 			 String getLine = "Lines";
 			 if(setting.sb_world ) {
@@ -31,7 +31,7 @@ public class ScoreboardStats {
 			 	
 	public static void removeScoreboard() {
 		for(Player p:TheAPI.getOnlinePlayers()) {
-			Tasks.setup.remove(p);
+			setup.remove(p);
 			 p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
 	}
 }}

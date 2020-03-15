@@ -13,7 +13,6 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import me.Straiker123.ScoreboardAPIV2;
 import me.Straiker123.TheAPI;
 
 public class Tasks {
@@ -26,7 +25,6 @@ public class Tasks {
 	static HashMap<Player, String> ss = new HashMap<Player, String>();
 	public static ArrayList<Player> players = new ArrayList<Player>();
 	 static HashMap<Player, Scoreboard> l = new HashMap<Player, Scoreboard>();
-	 static HashMap<Player, ScoreboardAPIV2> setup = new HashMap<Player, ScoreboardAPIV2>();
 	public static void load() {
 		if(setting.am)
 		automessage();
@@ -52,7 +50,6 @@ public class Tasks {
 		players.clear();
 		ss.clear();
 		l.clear();
-		setup.clear();
 		tasks.clear();
 		load();
 	}
