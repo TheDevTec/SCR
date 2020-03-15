@@ -257,7 +257,7 @@ public class Item implements CommandExecutor, TabCompleter {
     		if(args[1].equalsIgnoreCase("Remove")) {
         		int count = 0;
     			if(s instanceof Player && ((Player)s).getItemInHand()!= null&&
-        				((Player)s).getItemInHand().getItemMeta().hasLore())
+        			 ((Player)s).getItemInHand().hasItemMeta() &&((Player)s).getItemInHand().getItemMeta().hasLore())
         		for(@SuppressWarnings("unused") String d:((Player)s).getItemInHand().getItemMeta().getLore()) {
         			l.add(count+"");
         			count++;
