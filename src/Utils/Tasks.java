@@ -22,9 +22,9 @@ public class Tasks {
 	static Loader a;
 	static List<Integer> tasks = new ArrayList<Integer>();
 	static int tests;
-	static HashMap<Player, String> ss = new HashMap<Player, String>();
-	public static ArrayList<Player> players = new ArrayList<Player>();
-	 static HashMap<Player, Scoreboard> l = new HashMap<Player, Scoreboard>();
+	static HashMap<String, String> ss = new HashMap<String, String>();
+	public static ArrayList<String> players = new ArrayList<String>();
+	 static HashMap<String, Scoreboard> l = new HashMap<String, Scoreboard>();
 	public static void load() {
 		if(setting.am)
 		automessage();
@@ -95,7 +95,7 @@ public class Tasks {
 			Loader.mw.set("SavingTask.Delay", 600);
 			Configs.mw.save();
 		}
-		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ 
+		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){
 			int now = 0;
 			public void run(){
 			List<World> w = Bukkit.getWorlds();
@@ -109,19 +109,16 @@ public class Tasks {
 				++now;
 			}}, 20, 20*Loader.mw.getInt("SavingTask.Delay")));
 	}
-	private static void regPlayers() {
-		ss.clear();
-		for(Player p:TheAPI.getOnlinePlayers()) {
-			if(!ss.containsKey(p)) {
+	public static void regPlayer(Player p) {
+			if(!ss.containsKey(p.getName())) {
 				String uuid = p.getUniqueId().toString();
 				uuid = uuid.substring(0, 5);
 				String pname = p.getName();
 			 if (pname.length() > 5) {
 				 pname = pname.substring(0, 5);
 	            }
-    		ss.put(p, uuid+pname);
+    		ss.put(p.getName(), uuid+pname);
 			}
-		}
 	}
 	private static void other() {
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
@@ -148,14 +145,14 @@ public class Tasks {
 	}
 	
 	private static void tab() {
+		for(Player p:TheAPI.getOnlinePlayers()) {
+		regPlayer(p);
+		}
 		int r = Loader.tab.getInt("NameTag-RefleshTick");
 		if(r <= 0)r=1;
 	tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 			TabList.setFooterHeader();
 		}},20,Loader.tab.getInt("RefleshTick")));
-	tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
-		regPlayers();
-		}},20,r-1));
 	tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 		TabList.setNameTag();
 		}},20,r));
@@ -165,10 +162,10 @@ public class Tasks {
 	    TheAPI.setMaxPlayers(Bukkit.getMaxPlayers() + Loader.config.getInt("Options.VIPSlots.SlotsToAdd"));
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 	    	   	 for(Player online:TheAPI.getOnlinePlayers()) {
-	    	   	 if(!players.contains(online) &&!online.hasPermission("ServerControl.JoinFullServer"))
-	    	   		 players.add(online);
-	    	   	 if(players.contains(online) && online.hasPermission("ServerControl.JoinFullServer"))
-	    	   		 players.remove(online);
+	    	   	 if(!players.contains(online.getName()) &&!online.hasPermission("ServerControl.JoinFullServer"))
+	    	   		 players.add(online.getName());
+	    	   	 if(players.contains(online.getName()) && online.hasPermission("ServerControl.JoinFullServer"))
+	    	   		 players.remove(online.getName());
 	    	   	 }}}, 20, 200));
 	}
 	

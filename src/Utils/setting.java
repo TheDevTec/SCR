@@ -1,5 +1,7 @@
 package Utils;
 
+import java.text.SimpleDateFormat;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -12,7 +14,8 @@ public class setting {
 		SPAWN
 	}
 	
-	
+
+    public static SimpleDateFormat format_date_time,format_time,format_date;
 	public static boolean
 	warn_reload, warn_stop, warn_restart, singeplayersleep,
 	color_chat, color_sign,
@@ -38,7 +41,11 @@ public class setting {
 	public static boolean findchunks; //every X minutes, this feature will search for chunks with 100+ mobs and send to the console a warning about these chunks
 **/
 	public static void load() {
+		
 		FileConfiguration f = Loader.config;
+		 format_date_time = new SimpleDateFormat(f.getString("Format.DateWithTime"));
+		 format_time = new SimpleDateFormat(f.getString("Format.Time"));
+		 format_date = new SimpleDateFormat(f.getString("Format.Date"));
 		singeplayersleep=f.getBoolean("Options.SinglePlayerSleep");
 		timezone = f.getBoolean("Options.TimeZone.Use");
 		ram = f.getBoolean("Options.RAM-Percentage");

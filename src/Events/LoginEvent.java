@@ -1,8 +1,6 @@
 package Events;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,7 +18,6 @@ import me.Straiker123.TheAPI;
 
 public class LoginEvent implements Listener {
 public Loader plugin=Loader.getInstance;
-	 
 	private void bc(Player p) {
 				if(setting.vip_join) {
 					TheAPI.broadcastMessage(Loader.config.getString("Options.VIPSlots.Text.BroadcastVIPJoin")
@@ -29,9 +26,9 @@ public Loader plugin=Loader.getInstance;
 							.replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName())
 							.replace("%prefix%", Loader.s("Prefix"))
-							.replace("%time%",new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
-							.replace("%date%",new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()))
-							.replace("%date-time%", new SimpleDateFormat(Loader.config.getString("Format.DateWithTime")).format(new Date())));
+							.replace("%time%",setting.format_time.format(new Date()))
+							.replace("%date%",setting.format_date.format(new Date()))
+							.replace("%date-time%",setting.format_date_time.format(new Date())));
 					}}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -51,14 +48,14 @@ public Loader plugin=Loader.getInstance;
 		if(setting.vip) {
 			if(setting.vip_kick) {
 				if(!Tasks.players.isEmpty()){
-				    Player randomPlayer = Tasks.players.get(new Random().nextInt(Tasks.players.size()));
+				    Player randomPlayer = TheAPI.getRandomPlayer();
 				    if(p.hasPermission("ServerControl.JoinFullServer")) {
 					if (Bukkit.getMaxPlayers() > Bukkit.getMaxPlayers()+(setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0) && randomPlayer == null) {
 						e.disallow(Result.KICK_FULL, TheAPI.colorize(Loader.config.getString("Options.VIPSlots.FullServer")));
 					}
 					if (Bukkit.getMaxPlayers() > Bukkit.getMaxPlayers()+(setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0) && randomPlayer != null) {
-						if(Tasks.players.contains(randomPlayer)) {
-							Tasks.players.remove(randomPlayer);
+						if(Tasks.players.contains(randomPlayer.getName())) {
+							Tasks.players.remove(randomPlayer.getName());
 					    }
 						randomPlayer.kickPlayer(TheAPI.colorize(Loader.config.getString("Options.VIPSlots.Text.Kick")));
 						bc(p);

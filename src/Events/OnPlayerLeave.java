@@ -21,8 +21,8 @@ import me.Straiker123.TheAPI;
 public class OnPlayerLeave implements Listener {
 public Loader plugin=Loader.getInstance;
 	private void set(Player p) {
-		if(Tasks.players.contains(p)) {
-			Tasks.players.remove(p);
+		if(Tasks.players.contains(p.getName())) {
+			Tasks.players.remove(p.getName());
 	    }
 		String date_time = Loader.config.getString("Format.DateWithTime");
 	    SimpleDateFormat format_date_time = new SimpleDateFormat(date_time);
@@ -36,23 +36,22 @@ public Loader plugin=Loader.getInstance;
 			Loader.me.set("Players."+p.getName()+".AFK-Broadcast",null);
 		Configs.chatme.save();
 		}
-	private String replaceAll(String s, Player p) {
-	    SimpleDateFormat format_date_time = new SimpleDateFormat(Loader.config.getString("Format.DateWithTime"));
-	    SimpleDateFormat format_time = new SimpleDateFormat(Loader.config.getString("Format.Time"));
-	    SimpleDateFormat format_date = new SimpleDateFormat(Loader.config.getString("Format.Date"));
+	public static String replaceAll(String s, Player p) {
+		String name = p.getDisplayName();
 		return TheAPI.getPlaceholderAPI().setPlaceholders(p,s.replace("%players_max%", TheAPI.getMaxPlayers()+"")
 		  .replace("%players_online%", TheAPI.getOnlinePlayers().size()-1+"")
-		  .replace("%player%", p.getDisplayName()) 
-		  .replace("%playername%", p.getDisplayName()) 
+		  .replace("%player%", name) 
+		  .replace("%playername%", name) 
+		  .replace("%customname%", p.getCustomName()!=null ? p.getCustomName():name) 
 		  .replace("%prefix%", Loader.s("Prefix"))
-		  .replace("%time%",format_time.format(new Date()))
-		  .replace("%date%",format_date.format(new Date()))
-		  .replace("%date-time%",format_date_time.format(new Date()))
-		  .replace("%server_support%", plugin.ver())
-		  .replace("%version%", "V"+plugin.getDescription().getVersion())
-		  .replace("%server_time%", format_time.format(new Date()))
+		  .replace("%time%",setting.format_time.format(new Date()))
+		  .replace("%date%",setting.format_date.format(new Date()))
+		  .replace("%date-time%",setting.format_date_time.format(new Date()))
+		  .replace("%server_support%", Loader.getInstance.ver())
+		  .replace("%version%", "V"+Loader.getInstance.getDescription().getVersion())
+		  .replace("%server_time%", setting.format_time.format(new Date()))
 		  .replace("%server_name%", API.getServerName())
-		  .replace("%server_ip%", API.getServerIP()+":"+API.getServerPort()));
+		  .replace("%server_ip%", p.getAddress().toString().split(":")[0]+":"+API.getServerPort()));
 	}
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PlayerLeaveEvent(PlayerQuitEvent e) {
