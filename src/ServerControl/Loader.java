@@ -485,6 +485,7 @@ private void CommmandsRegister() {
 	CmdC("mail", new Commands.Mail());
 	
 	CmdC("balance", new Commands.Economy.Balance());
+	CmdC("tempjail", new Commands.BanSystem.TempJail());
 }
 private void EventC(Listener l) {
 	getServer().getPluginManager().registerEvents(l, this);
