@@ -1,8 +1,10 @@
 package ServerControl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
@@ -16,7 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import Commands.BanSystem.BanSystem;
 import Commands.Tpa.RequestMap;
-import me.Straiker123.TheAPI;
+import Utils.AFKV2;
 import Utils.Configs;
 import Utils.Metrics;
 import Utils.MultiWorldsUtils;
@@ -24,12 +26,14 @@ import Utils.ScoreboardStats;
 import Utils.TabList;
 import Utils.VaultHook;
 import Utils.setting;
+import me.Straiker123.TheAPI;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
  
 public class Loader extends JavaPlugin implements Listener {
     public static List<Plugin> addons = new ArrayList<Plugin>();
+    public static HashMap<String,AFKV2> afk = new HashMap<String,AFKV2>();
     public static FileConfiguration TranslationsFile;
     public static FileConfiguration chatLogFile;
     public static FileConfiguration mw;
@@ -153,7 +157,6 @@ private void regClasses() {
 		new MultiWorldsUtils();
 		new BanSystem();
 		new RequestMap();
-		new Utils.AFK();
 		new ScoreboardStats();
 		new Utils.Tasks();
 		setting.load();

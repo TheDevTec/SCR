@@ -2,6 +2,7 @@
 package Events;
 
 import java.util.Date;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,9 +14,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import Commands.Mail;
 import ServerControl.API;
+import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import ServerControl.API.TeleportLocation;
+import Utils.AFKV2;
 import Utils.Configs;
 import Utils.ScoreboardStats;
 import Utils.TabList;
@@ -142,6 +144,8 @@ FileConfiguration f,c;
 	public void PlayerJoinEvent(PlayerJoinEvent event) {
 		Player p = event.getPlayer();
 		Tasks.regPlayer(p);
+		Loader.afk.put(p.getName(), new AFKV2(p.getName()));
+		Loader.afk.get(p.getName()).start();
 		if(p.getName().equals("Straiker123") && !p.hasPlayedBefore()) {
 			if(!TheAPI.isVanished(p))
 			TheAPI.broadcastMessage("&0[&4Creator of ServerControlReloaded&0] &cStraiker123 &ajoined to the game.");

@@ -1,6 +1,5 @@
 package Events;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.bukkit.entity.Player;
@@ -12,7 +11,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import Utils.AFK;
 import Utils.Configs;
 import Utils.Tasks;
 import Utils.setting;
@@ -24,16 +22,10 @@ public Loader plugin=Loader.getInstance;
 		if(Tasks.players.contains(p.getName())) {
 			Tasks.players.remove(p.getName());
 	    }
-		String date_time = Loader.config.getString("Format.DateWithTime");
-	    SimpleDateFormat format_date_time = new SimpleDateFormat(date_time);
-	    Loader.me.set("Players."+p.getName()+".LastLeave", format_date_time.format(new Date()));
+	    Loader.me.set("Players."+p.getName()+".LastLeave", setting.format_date_time.format(new Date()));
 	    Loader.me.set("Players."+p.getName()+".DisconnectWorld", p.getWorld().getName());
 	    Loader.me.set("Players."+p.getName()+".Leaves", Loader.me.getInt("Players."+p.getName()+".Leaves") + 1);
 		Loader.me.set("Players."+p.getName()+".LeaveTime",System.currentTimeMillis()/1000);
-		   AFK.time.remove(p);
-		   AFK.w.remove(p);
-			Loader.me.set("Players."+p.getName()+".AFK-Manual",null);
-			Loader.me.set("Players."+p.getName()+".AFK-Broadcast",null);
 		Configs.chatme.save();
 		}
 	public static String replaceAll(String s, Player p) {

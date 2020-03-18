@@ -10,6 +10,7 @@ import org.bukkit.potion.PotionEffect;
 import com.earth2me.essentials.Essentials;
 
 import Events.AFKPlus;
+import Utils.AFKV2;
 import Utils.Configs;
 import Utils.setting;
 import me.Straiker123.PlayerAPI;
@@ -83,22 +84,15 @@ public class SPlayer {
 		try {
 		if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials") && ((Essentials) TheAPI.getPluginsManagerAPI().getPlugin("Essentials")).getUser(s) != null && ((Essentials) TheAPI.getPluginsManagerAPI().getPlugin("Essentials")).getUser(s).isAfk())return true;
 		}catch(Exception er) {}
-		return Utils.AFK.isAFK(s);
+		return new AFKV2(s.getName()).isAFK();
 	}
 	
 	public void setAFK(boolean afk) {
 		 if(!afk) {
-				Loader.getInstance.afk(s, true);
-				Utils.AFK.save(s);
-				Loader.me.set("Players."+getName()+".AFK-Manual",null);
-	   		 	Loader.me.set("Players."+getName()+".AFK-Broadcast", null);
+				new AFKV2(s.getName()).save();
 			}else {
-				Loader.getInstance.afk(s, false);
-				Utils.AFK.save(s);
-	   		 	Loader.me.set("Players."+getName()+".AFK-Broadcast", true);
-				Loader.me.set("Players."+getName()+".AFK-Manual",true);
+				new AFKV2(s.getName()).setAFK();
 		}
-			Configs.chatme.save();
 	}
 	
 	public void setFire() {
