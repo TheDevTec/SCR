@@ -83,7 +83,7 @@ public class SPlayer {
 		try {
 		if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials") && ((Essentials) TheAPI.getPluginsManagerAPI().getPlugin("Essentials")).getUser(s) != null && ((Essentials) TheAPI.getPluginsManagerAPI().getPlugin("Essentials")).getUser(s).isAfk())return true;
 		}catch(Exception er) {}
-		return Loader.afk.get(getName()).isAfk()||Loader.afk.get(getName()).isManualAfk();
+		return Loader.afk.containsKey(getName()) ? (Loader.afk.get(getName()).isAfk()||Loader.afk.get(getName()).isManualAfk()) : false;
 	}
 	
 	public void msg(String msg) {

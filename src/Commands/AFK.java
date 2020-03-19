@@ -21,6 +21,9 @@ public class AFK implements CommandExecutor {
 		if(p.isAFK()) {
 			p.setAFK(false);
 			}else {
+				if(!p.hasVanish())
+			  		  TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("AFK.NoLongerAFK").replace("%player%", p.getName())
+					   .replace("%playername%", p.getDisplayName()));
 				p.setAFK(true);
 			}
 			return true;
@@ -35,6 +38,9 @@ public class AFK implements CommandExecutor {
 		if(p.getPlayer()!=null) {
 			if(p.isAFK()) {
 				p.setAFK(false);
+				if(!p.hasVanish())
+			  		  TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("AFK.NoLongerAFK").replace("%player%",p.getName())
+					   .replace("%playername%", p.getDisplayName()));
 			}else {
 				p.setAFK(true);
 				}
