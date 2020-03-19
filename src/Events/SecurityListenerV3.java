@@ -79,7 +79,7 @@ public class SecurityListenerV3 implements Listener{
 	public void onCommand(PlayerCommandPreprocessEvent e) {
 		Player p = e.getPlayer();
 		Commands.BanSystem.BanSystem.KickMaxWarns(p.getName());
-		if(API.getBanSystemAPI().hasJail(p)) {
+		if(API.getBanSystemAPI().hasJail(p)||API.getBanSystemAPI().hasTempJail(p)) {
 			e.setCancelled(true);
 			return;
 		}

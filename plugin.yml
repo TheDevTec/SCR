@@ -8,6 +8,10 @@ depend: [TheAPI]
 softdepend: [Vault, Essentials, AFKPlus]
 api-version: 1.13
 commands:
+    tempjail:
+        usage: /<command> <player> <time> <reason>
+        description: TempJail player
+        permission: servercontrol.tempjail
     stop:
         usage: /<command> <time/cancel>
         description: Stop server

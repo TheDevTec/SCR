@@ -23,6 +23,7 @@ public class UnJail implements CommandExecutor {
 				String p = Loader.me.getString("Players."+args[0]);
 				if(p!=null) {
 					Loader.me.set("Players."+args[0]+".Jail", null);
+					Loader.me.set("Players."+args[0]+".TempJail", null);
 					Configs.chatme.save();
 					if(TheAPI.getPlayer(args[0])!=null)
 						API.teleportPlayer(TheAPI.getPlayer(args[0]), TeleportLocation.SPAWN);

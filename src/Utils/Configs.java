@@ -100,6 +100,7 @@ public class Configs {
 			c.put("BanSystem.Broadcast.Warn", "&6Operator &c%operator% &6warned &c%playername%&r &6for &c%reason%");
 			c.put("BanSystem.Broadcast.Kick", "&6Operator &c%operator% &6kicked &c%playername%&r &6for &c%reason%");
 			c.put("BanSystem.Broadcast.Jail", "&6Operator &c%operator% &6arrested &c%playername%&r &6for &c%reason%");
+			c.put("BanSystem.Broadcast.TempJail", "&6Operator &c%operator% &6temparrested &c%playername%&r &6for &c%reason%&6 on &c%time");
 			c.put("BanSystem.Broadcast.UnBan", "&6Operator &c%operator% &6unbanned &c%playername%");
 			c.put("BanSystem.Broadcast.UnBanIP", "&6Operator &c%operator% &6unbanned ip of &c%playername%");
 			c.put("BanSystem.Broadcast.UnMute", "&6Operator &c%operator% &6unmuted &c%playername%");
@@ -124,7 +125,9 @@ public class Configs {
 			c.put("BanSystem.Mute", "&6Player %playername% &6has been muted for &c%reason%");
 			c.put("BanSystem.Ban", "&6Player %playername% &6has been banned for &c%reason%");
 			c.put("BanSystem.Jail", "&6Player %playername% &6has been jailed for &c%reason%");
+			c.put("BanSystem.TempJail", "&6Player %playername% &6has been TempJailed for &c%reason% &6on time &c%time%");
 			c.put("BanSystem.Arrested", "&6You are arrested for &c%reason%");
+			c.put("BanSystem.TempArrested", "&6You are temparrested for &c%reason% &6on &c%time%");
 			c.put("BanSystem.UnBan", "&6Player %playername% &6has been unbanned");
 			c.put("BanSystem.UnBanIP", "&6Player %playername% &6has been unIPbanned");
 			c.put("BanSystem.TempBan", "&6Player %playername% &6has been temp-banned for &c%reason% &6on &c%time%");
@@ -358,6 +361,7 @@ public class Configs {
 		c.put("Help.BanSystem.unWarn", "&5UnWarn specified player");
 		c.put("Help.BanSystem.unJail", "&5UnJail specified player");
 		c.put("Help.BanSystem.Jail", "&5Jail specified player with reason");
+		c.put("Help.BanSystem.TempJail", "&5Jail specified player with reason for time");
 		c.put("Help.BanSystem.setJail", "&5Set new jail on your location");
 		c.put("Help.BanSystem.delJail", "&5Remove specified jail");
 		c.put("Help.BanSystem.Immune", "&7You can enable or disable immunity for others players");
@@ -439,7 +443,6 @@ public class Configs {
 		c.put("Help.Mail.Send", "&5Send some player new mail...");
 		c.put("Help.Mail.Read", "&5Read all your mails...");
 		c.put("Help.Mail.Clear", "&5Delete all your mails...");
-		
 		c.put("Heal.CooldownMessage", "&6You have to wait &c%time% seconds &6before you can heal yourselves");
 		c.put("Heal.Healed", "&aYou has been healed");
 		c.put("Heal.Feed", "&aYou has been feeded");

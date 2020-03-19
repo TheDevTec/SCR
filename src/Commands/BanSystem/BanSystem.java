@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
+import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Configs;
 import me.Straiker123.TheAPI;
@@ -15,6 +16,7 @@ public class BanSystem {
 	}
 	public enum BanType {
 		JAIL,
+		TEMPJAIL,
 		KICK
 	}
 	public static String BuildString(int s, int d, String[] args) {
@@ -81,12 +83,18 @@ public class BanSystem {
 		if(Loader.me.getString("Players."+p+".Jail")!=null)return true;
 		return false;
 	}
-
+	public static boolean isTempArrested(String p) {
+		if(Loader.me.getString("Players."+p+".TempJail")!=null)return true;
+		return false;
+	}
 	public static String getJailReason(String p) {
 		if(Loader.me.getString("Players."+p+".Jail.Reason")!=null)return Loader.me.getString("Players."+p+".Jail.Reason");
 		return "";
 	}
-
+	public static String getTempJailReason(String p) {
+		if(Loader.me.getString("Players."+p+".TempJail.Reason")!=null)return Loader.me.getString("Players."+p+".TempJail.Reason");
+		return "";
+	}
 	public static String getKickReason(String p) {
 		if(Loader.ban.getString("Bans."+p+".Kick")!=null)return Loader.ban.getString("Bans."+p+".Kick");
 		return "";
@@ -111,6 +119,11 @@ public class BanSystem {
 		case JAIL:
 			Loader.me.set("Players."+player+".Jail.Reason", reason);
 			break;
+		case TEMPJAIL:
+			Loader.me.set("Players."+player+".TempJail.Reason", reason);
+			Loader.me.set("Players."+player+"TempJail.Start", start);
+			Loader.me.set("Players."+player+"TempJail.Time", time);
+			break;
 			}
 			Configs.chatme.save();
 			Configs.bans.save();
@@ -132,6 +145,24 @@ public class BanSystem {
 					.replace("%playername%", getName(player))
 					.replace("%reason%", getJailReason(player)),TheAPI.getPlayer(player));
 			TheAPI.getPlayer(player).teleport((Location) Loader.config.get("Jails."+Loader.me.getString("Players."+player+".Jail.Location")));
+			}
+			}
+		break;
+		case TEMPJAIL:
+			if(a == Bukkit.getOfflinePlayer(player).getName()) {
+				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.CantJailYourself").replace("%player%", s.getName())
+						.replace("%playername%", getName(s.getName())),s);
+			}else {
+				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.TempJail").replace("%player%", player)
+					.replace("%playername%", getName(player))
+					.replace("%reason%", getTempJailReason(player))
+					.replace("%time%",""+API.getBanSystemAPI().getTempBanTime(player) ),s);
+			if(TheAPI.getPlayer(player)!=null) {
+				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.TempArrested").replace("%player%", player)
+					.replace("%playername%", getName(player))
+					.replace("%time%",""+API.getBanSystemAPI().getTempBanTime(player))
+					.replace("%reason%", getJailReason(player)),TheAPI.getPlayer(player));
+			TheAPI.getPlayer(player).teleport((Location) Loader.config.get("Jails."+Loader.me.getString("Players."+player+".TempJail.Location")));
 			}
 			}
 		break;

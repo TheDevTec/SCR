@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import Commands.BanSystem.BanSystem;
 import Commands.BanSystem.BanSystem.BanType;
 import Utils.Configs;
+import me.Straiker123.LoaderClass;
 import me.Straiker123.TheAPI;
 
 public class BanSystemAPI {
@@ -21,6 +22,28 @@ public class BanSystemAPI {
 	 public boolean hasJail(Player p) {
 		 return BanSystem.isArrested(p.getName());
 	 }
+	 
+	 public boolean hasTempJail(String p) {
+		if(p==null)return false;
+		if(getTempJailStart(p)==-0)return false;
+		long time = getTempJailStart(p)/1000 - System.currentTimeMillis()/1000 + getTempBanTime(p);
+		return time > 0;
+	 }
+	 public boolean hasTempJail(Player p) {
+		 if(p==null)return false;
+			if(getTempJailStart(p.getName())==-0)return false;
+			long time = getTempJailStart(p.getName())/1000 - System.currentTimeMillis()/1000 + getTempBanTime(p.getName());
+			return time > 0;
+	 }
+	 public long getTempJailStart(String player) {
+			if(player==null)return 0;
+			return LoaderClass.data.getConfig().getLong("Players."+player+".TempJail.Start");
+	 }
+	 public long getTempBanTime(String player) {
+			if(player==null)return 0;
+			return LoaderClass.data.getConfig().getLong("Players."+player+".TempJail.Time");
+	}
+
 	 public void setJail(CommandSender sender,String player, String jail, String reason) {
 		 BanSystem.setPlayer(BanSystem.BanType.JAIL, player, reason, 0, System.currentTimeMillis(), sender);
 		 Loader.me.set("Players."+player+".Jail.Location", jail);
@@ -33,7 +56,19 @@ public class BanSystemAPI {
 		 Configs.chatme.save();
 		BanSystem.kickPlayer(sender,player.getName(),BanType.JAIL);
 	 }
-
+	 
+	 public void setTempJail(CommandSender sender,String player, String jail, String reason, long time) {
+		 BanSystem.setPlayer(BanSystem.BanType.TEMPJAIL, player, reason, time, System.currentTimeMillis(), sender);
+		 Loader.me.set("Players."+player+".TempJail.Location", jail);
+		 Configs.chatme.save();
+		 BanSystem.kickPlayer(sender,player,BanType.TEMPJAIL);
+	 }
+	 public void setTempJail(CommandSender sender,Player player, String jail, String reason, long time) {
+		 BanSystem.setPlayer(BanSystem.BanType.TEMPJAIL, player.getName(), reason, time, System.currentTimeMillis(), sender);
+		 Loader.me.set("Players."+player.getName()+".TempJail.Location", jail);
+		 Configs.chatme.save();
+		 BanSystem.kickPlayer(sender,player.getName(),BanType.TEMPJAIL);
+	 }
 	 public void setKick(CommandSender sender,String player, String reason) {
 		 BanSystem.setPlayer(BanSystem.BanType.KICK, player, reason, 0, System.currentTimeMillis(), sender);
 			BanSystem.kickPlayer(sender,player,BanType.KICK);
@@ -90,4 +125,5 @@ public class BanSystemAPI {
 			 Configs.bans.save();
 			BanSystem.KickMaxWarns(player);
 	 }
+
 }
