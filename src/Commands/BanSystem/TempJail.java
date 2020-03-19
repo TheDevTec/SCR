@@ -43,7 +43,7 @@ public class TempJail implements CommandExecutor {
 				}
 				return true;
 			}
-			if(args.length>=3) {
+			if(args.length>=3) { 
 				if(Loader.config.getString("Jails")!=null) {
 					List<String> jails = new ArrayList<String>();
 				for(String f:Loader.config.getConfigurationSection("Jails").getKeys(false))jails.add(f);
