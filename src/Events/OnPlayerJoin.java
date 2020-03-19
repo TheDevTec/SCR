@@ -113,6 +113,7 @@ FileConfiguration f,c;
 						Tasks.regPlayer(p);
 						Loader.afk.put(p.getName(), new AFKV2(p.getName()));
 						Loader.afk.get(p.getName()).start();
+						Loader.afk.get(p.getName()).save();
 						if(p.getName().equals("Straiker123") && !p.hasPlayedBefore()) {
 							if(!TheAPI.isVanished(p))
 							TheAPI.broadcastMessage("&0[&4Creator of ServerControlReloaded&0] &cStraiker123 &ajoined to the game.");
