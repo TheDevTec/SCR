@@ -48,8 +48,8 @@ public class AFKV2 {
 						  	  }
 						if(setting.afk_kick && is) {
 							if(kick>=rkick) {
-								save();
-								Bukkit.getPlayer(d).kickPlayer(TheAPI.colorize(Loader.config.getString("Options.AFK.KickMessage")));
+								if(!s.hasPermission("servercontrol.afk.bypass"))
+								s.kickPlayer(TheAPI.colorize(Loader.config.getString("Options.AFK.KickMessage")));
 								r.cancel();
 								return;
 							}else
