@@ -15,7 +15,7 @@ public class UnJail implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(API.hasPerm(s, "ServerControl.unJail")) {
-			if(args.length==0) {
+			if(args.length==0) { 
 				Loader.Help(s, "/unJail <player>", "BanSystem.unJail");
 				return true;
 			}
