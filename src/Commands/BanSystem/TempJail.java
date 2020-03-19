@@ -17,9 +17,9 @@ public class TempJail implements CommandExecutor {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.Jail")) {
+		if(API.hasPerm(s, "ServerControl.TempJail")) {
 			if(args.length==0||args.length==1) {
-				Loader.Help(s, "/TempJail <player> <time> <reason>", "BanSystem.TempJail");   //TODO MSG
+				Loader.Help(s, "/TempJail <player> <time> <reason>", "BanSystem.TempJail");
 				return true;
 			}
 			if(args.length==2) {
@@ -31,13 +31,12 @@ public class TempJail implements CommandExecutor {
 						.replace("%punishment%", "TempJail").replace("%target%", args[0]), s);
 						return true;
 					}
-					long time = TheAPI.getTimeConventorAPI().getTimeFromString(args[1]);
 					String msg = Loader.config.getString("BanSystem.Jail.Reason");
 					API.getBanSystemAPI().setTempJail(s, args[0], jails.get(TheAPI.generateRandomInt(jails.size())),msg,
-							TheAPI.getTimeConventorAPI().getTimeFromString(args[1]));
-					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.TempJail")   //TODO MSG
+							TheAPI.getStringUtils().getLong(args[1]));
+					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.TempJail")
 							.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])
-							.replace("%time%", ""+TheAPI.getTimeConventorAPI().setTimeToString(time))
+							.replace("%time%", ""+TheAPI.getStringUtils().getTimeFromString(args[1]))
 							.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.jail");
 					return true;
 					
@@ -52,13 +51,12 @@ public class TempJail implements CommandExecutor {
 						Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "TempJail").replace("%target%", args[0]), s);
 						return true;
 					}
-					long time = TheAPI.getTimeConventorAPI().getTimeFromString(args[1]);
 					String msg = BanSystem.BuildString(2, 1, args);
 					API.getBanSystemAPI().setTempJail(s, args[0], jails.get(TheAPI.generateRandomInt(jails.size())),msg,
-							TheAPI.getTimeConventorAPI().getTimeFromString(args[1]));
+							TheAPI.getStringUtils().getLong(args[1]));
 					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.TempJail")
 							.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])
-							.replace("%time%", ""+TheAPI.getTimeConventorAPI().setTimeToString(time))
+							.replace("%time%", ""+TheAPI.getStringUtils().getTimeFromString(args[1]))
 							.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.jail");
 					return true;
 				}

@@ -12,7 +12,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import Commands.BanSystem.BanSystem;
 import Commands.BanSystem.BanSystem.BanType;
 import Utils.Configs;
-import me.Straiker123.LoaderClass;
 import me.Straiker123.TheAPI;
 
 public class BanSystemAPI {
@@ -26,22 +25,22 @@ public class BanSystemAPI {
 	 public boolean hasTempJail(String p) {
 		if(p==null)return false;
 		if(getTempJailStart(p)==-0)return false;
-		long time = getTempJailStart(p)/1000 - System.currentTimeMillis()/1000 + getTempBanTime(p);
+		long time = getTempJailStart(p)/1000 - System.currentTimeMillis()/1000 + getTempJailTime(p);
 		return time > 0;
 	 }
 	 public boolean hasTempJail(Player p) {
 		 if(p==null)return false;
 			if(getTempJailStart(p.getName())==-0)return false;
-			long time = getTempJailStart(p.getName())/1000 - System.currentTimeMillis()/1000 + getTempBanTime(p.getName());
+			long time = getTempJailStart(p.getName())/1000 - System.currentTimeMillis()/1000 + getTempJailTime(p.getName());
 			return time > 0;
 	 }
 	 public long getTempJailStart(String player) {
 			if(player==null)return 0;
-			return LoaderClass.data.getConfig().getLong("Players."+player+".TempJail.Start");
+			return Loader.me.getLong("Players."+player+".TempJail.Start");
 	 }
-	 public long getTempBanTime(String player) {
+	 public long getTempJailTime(String player) {
 			if(player==null)return 0;
-			return LoaderClass.data.getConfig().getLong("Players."+player+".TempJail.Time");
+			return  Loader.me.getLong("Players."+player+".TempJail.Time");
 	}
 
 	 public void setJail(CommandSender sender,String player, String jail, String reason) {

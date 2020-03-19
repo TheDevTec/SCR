@@ -121,8 +121,8 @@ public class BanSystem {
 			break;
 		case TEMPJAIL:
 			Loader.me.set("Players."+player+".TempJail.Reason", reason);
-			Loader.me.set("Players."+player+"TempJail.Start", start);
-			Loader.me.set("Players."+player+"TempJail.Time", time);
+			Loader.me.set("Players."+player+".TempJail.Start", start);
+			Loader.me.set("Players."+player+".TempJail.Time", time);
 			break;
 			}
 			Configs.chatme.save();
@@ -156,12 +156,12 @@ public class BanSystem {
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.TempJail").replace("%player%", player)
 					.replace("%playername%", getName(player))
 					.replace("%reason%", getTempJailReason(player))
-					.replace("%time%",""+API.getBanSystemAPI().getTempBanTime(player) ),s);
+					.replace("%time%",""+API.getBanSystemAPI().getTempJailTime(player) ),s);
 			if(TheAPI.getPlayer(player)!=null) {
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.TempArrested").replace("%player%", player)
 					.replace("%playername%", getName(player))
-					.replace("%time%",""+API.getBanSystemAPI().getTempBanTime(player))
-					.replace("%reason%", getJailReason(player)),TheAPI.getPlayer(player));
+					.replace("%time%",""+API.getBanSystemAPI().getTempJailTime(player))
+					.replace("%reason%", getTempJailReason(player)),TheAPI.getPlayer(player));
 			TheAPI.getPlayer(player).teleport((Location) Loader.config.get("Jails."+Loader.me.getString("Players."+player+".TempJail.Location")));
 			}
 			}
