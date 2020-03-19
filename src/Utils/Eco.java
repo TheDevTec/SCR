@@ -163,11 +163,15 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    public EconomyResponse withdrawPlayer(String s, double v) {
 			if(s==null)return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+", because player is null");
 			try {
+				if(v < 0) {
+					Loader.EconomyLog("Failed withdrawed $"+v+" from player "+s+", you can't withdraw negative amount");
+					 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+" from player "+s+", you can't withdraw negative amount");
+					}else {
 	    	Loader.me.set(get(s), getBalance(s) - v);
 	    	Configs.chatme.save();
 	        Loader.EconomyLog("Succefully withdrawed $"+v+" from player "+s);
 	        return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS, "Succefully withdrawed $"+v+" from player "+s);
-			}catch(Exception e) {
+				}}catch(Exception e) {
 		        Loader.EconomyLog("Failed withdrawed $"+v+" from player "+s);
 				 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+" from player "+s);
 				}
@@ -182,11 +186,15 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    public EconomyResponse withdrawPlayer(String s, String world, double v) {
 			if(s==null)return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+", because player is null");
 			try {
+				if(v < 0) {
+					Loader.EconomyLog("Failed withdrawed $"+v+" from player "+s+", you can't withdraw negative amount");
+					 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+" from player "+s+", you can't withdraw negative amount");
+					}else {
 	    	Loader.me.set(get(s,getEconomyGroup(s,world)),getBalance(s) - v);
 	    	Configs.chatme.save();
 	        Loader.EconomyLog("Succefully withdrawed $"+v+" from player "+s);
 	        return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS, "Succefully withdrawed $"+v+" from player "+s);
-			}catch(Exception e) {
+			}}catch(Exception e) {
 		        Loader.EconomyLog("Failed withdrawed $"+v+" from player "+s);
 				 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+" from player "+s);
 				}
@@ -200,11 +208,15 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    public EconomyResponse depositPlayer(String s, double v) {
 			if(s==null)return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed deposited $"+v+", because player is null");
 			try {
+				if(v < 0) {
+				Loader.EconomyLog("Failed deposited $"+v+" to player "+s+", you can't deposite negative amount");
+				 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+" from player "+s+", you can't withdraw negative amount");
+				}else {
 	    	 Loader.me.set(get(s), getBalance(s) + v);
 	    	 Configs.chatme.save();
 		        Loader.EconomyLog("Succefully deposited $"+v+" from player "+s);
 	        return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS, "Succefully deposited $"+v+" to player "+s);
-		}catch(Exception e) {
+				}}catch(Exception e) {
 	        Loader.EconomyLog("Failed deposited $"+v+" to player "+s);
 			 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed deposited $"+v+" to player "+s);
 			}
@@ -219,11 +231,15 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    public EconomyResponse depositPlayer(String s, String w, double v) {
 			if(s==null)return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed deposited $"+v+", because player is null");
 			try {
+				if(v < 0) {
+					Loader.EconomyLog("Failed deposited $"+v+" to player "+s+", you can't deposite negative amount");
+					 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+" from player "+s+", you can't withdraw negative amount");
+					}else {
 	    	 Loader.me.set(get(s,getEconomyGroup(s,w)), getBalance(s,w) + v);
 	    	 Configs.chatme.save();
 		        Loader.EconomyLog("Succefully deposited $"+v+" from player "+s);
 	        return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS, "Succefully deposited $"+v+" to player "+s);
-		}catch(Exception e) {
+					}}catch(Exception e) {
 	        Loader.EconomyLog("Failed deposited $"+v+" to player "+s);
 			 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed deposited $"+v+" to player "+s);
 			}
