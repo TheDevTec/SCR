@@ -122,6 +122,8 @@ public class Tasks {
 	}
 	private static void other() {
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
+			for(Player p : TheAPI.getOnlinePlayers())
+			Loader.setupChatFormat(p);
 		    if(setting.motd) {
 		    	
 				if(!setting.lock_server ||setting.lock_server && !setting.motd_maintenance)

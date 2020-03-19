@@ -102,13 +102,9 @@ public class ChatFormat implements Listener {
 			MultiWorldsGUI.openInvCreate(p);
 		}
 	}
-
 	String msg = r(e.getMessage(),p,true);
 	msg=msg.replace("%", "%%");
 	e.setMessage(msg);
-
-			Loader.setupChatFormat(p);
-			
 		if(setting.lock_chat) {
 			if(!p.hasPermission("ServerControl.ChatLock"))  {
 				e.setCancelled(true);

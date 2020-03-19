@@ -78,9 +78,8 @@ public class BanSystemAPI {
 			BanSystem.kickPlayer(sender,player.getName(),BanType.KICK);
 	 }
 	 
-	public void processBanSystem(Player p,PlayerLoginEvent e) {
-		String n = p.getName();
-		String r = e.getAddress().toString();
+	public void processBanSystem(String n,PlayerLoginEvent p) {
+		String r = p.getRealAddress().toString();
 		Loader.me.set("Players."+n+".IPAdress", r.replace('.', '_'));
 		 Configs.chatme.save();
 			Commands.BanSystem.BanSystem.KickMaxWarns(n);
@@ -92,8 +91,9 @@ public class BanSystemAPI {
 		Loader.me.set("Players."+n+".Kicks" ,Loader.me.getInt("Players."+n+".Kicks") - Loader.config.getInt("AutoKickLimit.Kick.Number"));
 		 Configs.chatme.save();
 		if(Loader.config.getBoolean("AutoKickLimit.Kick.Message.Use")) {
+			if(TheAPI.getPlayer(n)!=null)
 			    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Kick.Message.List")) {
-			    		Loader.msg(cmds.replace("%player%", n).replace("%number%", ""+Loader.config.getInt("AutoKickLimit.Kick.Number")),p);
+			    		Loader.msg(cmds.replace("%player%", n).replace("%number%", ""+Loader.config.getInt("AutoKickLimit.Kick.Number")),TheAPI.getPlayer(n));
 	    	}}
 	         if(Loader.config.getBoolean("AutoKickLimit.Spam.Commands.Use")==true) {
 	new BukkitRunnable() {
@@ -104,10 +104,11 @@ public class BanSystemAPI {
 		  }}
 	}.runTask(Loader.getInstance);{
 	}}}}}, 20);}
+			 if(TheAPI.getPlayer(n)!=null)
 			if(BanSystem.getLaterWarn(n)!=null && Loader.ban.getBoolean("Warn."+n+".WarnLater.Wait")==true) {
 				Loader.ban.set("Warn."+n+".WarnLater.Wait", false);
 				 Configs.bans.save();
-				 Loader.msg(BanSystem.getLaterWarn(n), p);
+				 Loader.msg(BanSystem.getLaterWarn(n), TheAPI.getPlayer(n));
 				return;
 			}
 	 }
