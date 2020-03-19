@@ -72,23 +72,22 @@ FileConfiguration f,c;
 				  		API.teleportPlayer(p, TeleportLocation.SPAWN);
 	}
 	
-	private void broadcast(Player p, boolean b) {
-		if(setting.join_msg){
-			if(b)
-				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-					public void run() {
-    					if(!TheAPI.isVanished(p))
-						TheAPI.broadcastMessage(OnPlayerLeave.replaceAll(Loader.s("OnJoin.Join"),p));
-					}}, 11);
-		}
+	private void broadcast(Player p) {
+		
 		if(!p.hasPlayedBefore() || c.getString("Players."+p.getName()+".FirstJoin")==null){
 		c.set("Players."+p.getName()+".FirstJoin", setting.format_date_time.format(new Date()));
 		}
 		Join type = Join.NORMAL;
 		if(!p.hasPlayedBefore() && setting.join_first)type=Join.FIRST;
 		switch(type) {
+		case FIRST:
+		  		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+		  				public void run() {
+		  					runs(p.getName());
+			}},11);
+		  		break;
 		case NORMAL:
-			  if(setting.join_motd){
+			if(setting.join_motd){
 				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
     				public void run() {
 		    	for(String ss: Loader.TranslationsFile.getStringList("OnJoin.Messages")) {
@@ -96,35 +95,35 @@ FileConfiguration f,c;
 		    	}}},11);
 			}
 			break;
-		case FIRST:
-		  		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-		  				public void run() {
-		  					runs(p.getName());
-			}},11);
-			break;
 		}
-	}	
+		}
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PlayerJoinEvent(PlayerJoinEvent event) {
 		Player p = event.getPlayer();
 		if(setting.join_msg)event.setJoinMessage("");
+		if(p.getName().equals("Straiker123") && !p.hasPlayedBefore()) {
+			if(!TheAPI.isVanished(p))
+			TheAPI.broadcastMessage("&0[&4Creator of ServerControlReloaded&0] &cStraiker123 &ajoined to the game.");
+		}else
+		if(p.getName().equals("Houska02") && !p.hasPlayedBefore()) {
+			if(!TheAPI.isVanished(p))
+			TheAPI.broadcastMessage("&0[&4Owner of ServerControlReloaded&0] &cHouska02 &ajoined to the game.");
+		}else
+		if(setting.join_msg){
+			
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				public void run() {
+					if(!TheAPI.isVanished(p))
+					TheAPI.broadcastMessage(OnPlayerLeave.replaceAll(Loader.s("OnJoin.Join"),p));
+				}}, 11);
+	}
 				TheAPI.getRunnable().runLater(new Runnable() {
 					public void run() {
 						Tasks.regPlayer(p);
 						Loader.afk.put(p.getName(), new AFKV2(p.getName()));
 						Loader.afk.get(p.getName()).start();
 						Loader.afk.get(p.getName()).save();
-						if(p.getName().equals("Straiker123") && !p.hasPlayedBefore()) {
-							if(!TheAPI.isVanished(p))
-							TheAPI.broadcastMessage("&0[&4Creator of ServerControlReloaded&0] &cStraiker123 &ajoined to the game.");
-						broadcast(p, false);
-						}else
-						if(p.getName().equals("Houska02") && !p.hasPlayedBefore()) {
-							if(!TheAPI.isVanished(p))
-							TheAPI.broadcastMessage("&0[&4Owner of ServerControlReloaded&0] &cHouska02 &ajoined to the game.");
-							broadcast(p, false);
-						}else
-							broadcast(p, true);
+							broadcast(p);
 						if(Loader.econ!=null)
 							Loader.econ.createPlayerAccount(p);
 							if(setting.sb)

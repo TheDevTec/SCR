@@ -22,48 +22,37 @@ public class TempJail implements CommandExecutor {
 				Loader.Help(s, "/TempJail <player> <time> <reason>", "BanSystem.TempJail");
 				return true;
 			}
-			if(args.length==2) {
-				if(Loader.config.getString("Jails")!=null) {
-					List<String> jails = new ArrayList<String>();
-					for(String f:Loader.config.getConfigurationSection("Jails").getKeys(false))jails.add(f);
-					if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-						Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish")
-						.replace("%punishment%", "TempJail").replace("%target%", args[0]), s);
-						return true;
-					}
-					String msg = Loader.config.getString("BanSystem.Jail.Reason");
-					API.getBanSystemAPI().setTempJail(s, args[0], jails.get(TheAPI.generateRandomInt(jails.size())),msg,
-							TheAPI.getStringUtils().getLong(args[1]));
-					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.TempJail")
-							.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])
-							.replace("%time%", ""+TheAPI.getStringUtils().getTimeFromString(args[1]))
-							.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.jail");
-					return true;
-					
-				}
+			if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+				Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "TempJail").replace("%target%", args[0]), s);
 				return true;
 			}
-			if(args.length>=3) { 
-				if(Loader.config.getString("Jails")!=null) {
-					List<String> jails = new ArrayList<String>();
-				for(String f:Loader.config.getConfigurationSection("Jails").getKeys(false))jails.add(f);
-					if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-						Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "TempJail").replace("%target%", args[0]), s);
-						return true;
-					}
-					String msg = BanSystem.BuildString(2, 1, args);
-					API.getBanSystemAPI().setTempJail(s, args[0], jails.get(TheAPI.generateRandomInt(jails.size())),msg,
-							TheAPI.getStringUtils().getLong(args[1]));
-					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.TempJail")
-							.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])
-							.replace("%time%", ""+TheAPI.getStringUtils().getTimeFromString(args[1]))
-							.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.jail");
-					return true;
-				}
+			if(Loader.config.getString("Jails")==null) {
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.MissingJail"), s);
 				return true;
 			}
-		}
+			List<String> jails = new ArrayList<String>();
+		for(String f:Loader.config.getConfigurationSection("Jails").getKeys(false))jails.add(f);
+			if(args.length==2) {
+					String msg = Loader.config.getString("BanSystem.Jail.Reason");
+					API.getBanSystemAPI().setTempJail(s, args[0], jails.get(TheAPI.generateRandomInt(jails.size()-1)),msg,
+							TheAPI.getStringUtils().getLong(args[1]));
+					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.TempJail")
+							.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])
+							.replace("%time%", ""+TheAPI.getStringUtils().getTimeFromString(args[1]))
+							.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.jail");
+					return true;
+			}
+			if(args.length>=3) { 
+					String msg = BanSystem.BuildString(2, 1, args);
+					API.getBanSystemAPI().setTempJail(s, args[0], jails.get(TheAPI.generateRandomInt(jails.size()-1)),msg,
+							TheAPI.getStringUtils().getLong(args[1]));
+					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.TempJail")
+							.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])
+							.replace("%time%", ""+TheAPI.getStringUtils().getTimeFromString(args[1]))
+							.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.jail");
+					return true;
+				}
+			}
 		return true;
 	}
 
