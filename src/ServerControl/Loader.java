@@ -124,8 +124,7 @@ public class Loader extends JavaPlugin implements Listener {
 			EconomyLog("Converted "+amount+" economies.");
 		}}
 public String isAfk(Player p) {
-		if (new SPlayer(p).isAFK())return tab.getString("AFK.IsAFK");
-		return tab.getString("AFK.IsNotAFK");
+		return new SPlayer(p).isAFK() ? tab.getString("AFK.IsAFK") : tab.getString("AFK.IsNotAFK");
 	}
 private String getColoredPing(Player p) {
 	int s = TheAPI.getPlayerPing(p);
@@ -209,17 +208,6 @@ public void onEnable() {
 		TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
     	Tasks();
     }
-
-public void afk(Player p, boolean afk) {
-		      if(afk) {
-		    	  if(!API.getSPlayer(p).hasVanish())
-		 TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("AFK.NoLongerAFK").replace("%player%", p.getName())
-				   .replace("%playername%", p.getDisplayName()));
-		      } else {
-		    	  if(!API.getSPlayer(p).hasVanish())
-		 TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("AFK.IsAFK").replace("%player%", p.getName())
-			       .replace("%playername%", p.getDisplayName()));
-}}
 public void Tasks() {
     EventsRegister();
     CommmandsRegister();
@@ -227,6 +215,8 @@ public void Tasks() {
 		MultiWorldsUtils.DefaultSet(wa);
 	}
 	for(Player p:TheAPI.getOnlinePlayers()) {
+	    afk.put(p.getName(), new AFKV2(p.getName()));
+	    afk.get(p.getName()).start();
 		SPlayer s = new SPlayer(p);
 		if(s.hasTempFlyEnabled())
 			s.enableTempFly();

@@ -30,6 +30,7 @@ public class AFkPlayerEvents implements Listener {
 	   }
 	   @EventHandler(priority = EventPriority.LOWEST)
 	   public void onPlayerMessage(PlayerCommandPreprocessEvent e) {
+		   if(!e.getMessage().toLowerCase().startsWith("/afk") && !e.getMessage().toLowerCase().startsWith("/away"))
 		   Loader.afk.get(e.getPlayer().getName()).save();
 		      
 	   }

@@ -18,10 +18,10 @@ public class AFK implements CommandExecutor {
 		if(API.hasPerm(s,"ServerControl.AFK")) {
 	if(s instanceof Player) {
 		SPlayer p = new SPlayer((Player)s);
-			if(p.isAFK()) {
+		if(p.isAFK()) {
 			p.setAFK(false);
 			}else {
-			p.setAFK(true);
+				p.setAFK(true);
 			}
 			return true;
 		}
@@ -35,7 +35,7 @@ public class AFK implements CommandExecutor {
 		if(p.getPlayer()!=null) {
 			if(p.isAFK()) {
 				p.setAFK(false);
-				}else {
+			}else {
 				p.setAFK(true);
 				}
 		return true;
