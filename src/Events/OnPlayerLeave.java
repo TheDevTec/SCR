@@ -43,7 +43,7 @@ public Loader plugin=Loader.getInstance;
 		  .replace("%version%", "V"+Loader.getInstance.getDescription().getVersion())
 		  .replace("%server_time%", setting.format_time.format(new Date()))
 		  .replace("%server_name%", API.getServerName())
-		  .replace("%server_ip%", p.getAddress().toString().split(":")[0]+":"+API.getServerPort()));
+		  .replace("%server_ip%", p.getServer().getIp()+":"+p.getServer().getPort()));
 	}
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PlayerLeaveEvent(PlayerQuitEvent e) {
