@@ -12,24 +12,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import ServerControl.Loader;
 import Utils.Colors;
-import Utils.setting;
 import me.Straiker123.TheAPI;
 
 public class Signs implements Listener {
 	public Loader ps = Loader.getInstance;
-    private String setColors(String s, Player p) {
-    	if(setting.color_sign
-				&&
-				setting.color_sign_perm
-				&&
-				p.hasPermission(Loader.config.getString("Options.Colors.Sign.Permission"))
-				||
-				setting.color_sign
-				&&
-				!setting.color_sign_perm)
-		return TheAPI.colorize(s);
-    	return s;
-    }
 	public String warp(String ss) {
 		if(Loader.config.getString("Warps")!=null)
 		for(String s:Loader.config.getConfigurationSection("Warps").getKeys(false)) {
@@ -45,7 +31,7 @@ public class Signs implements Listener {
     	Player p = e.getPlayer();
 		int test = 0;
 		for(String line: e.getLines()) {
-			e.setLine(test, setColors(line,p));
+			e.setLine(test, Colors.colorize(line,true,p));
 			test=test+1;
 		}
 		if(p.hasPermission("ServerControl.SignCreate.Warp")) {

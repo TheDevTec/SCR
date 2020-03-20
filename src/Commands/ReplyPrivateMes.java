@@ -27,7 +27,7 @@ public class ReplyPrivateMes implements CommandExecutor {
 			path="Players."+s.getName()+".Reply";
 		}
 		if(Loader.me.getString(path)!=null) {
-		String msg=Colors.colorize(TheAPI.buildString(args),s);
+		String msg=Colors.colorize(TheAPI.buildString(args),false,s);
 		String from = "";
 		String to = "";
 		if(s instanceof Player ==false) {

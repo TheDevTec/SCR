@@ -80,7 +80,7 @@ public class Loader extends JavaPlugin implements Listener {
 			g=g.replace("%", "%%");
 			g=Events.ChatFormat.r(p,g, null,false);
 			g=g.replace("%%", "%");
-			API.setDisplayName(p, Colors.colorize(g,p));
+			API.setDisplayName(p, Colors.colorize(g,false,p));
 		}else
 	 		API.setDisplayName(p,Loader.getInstance.getPrefix(p)+p.getName()+Loader.getInstance.getSuffix(p));
     }

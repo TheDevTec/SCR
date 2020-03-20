@@ -22,7 +22,7 @@ public class PrivateMessage implements CommandExecutor {
 			}
 			if(args.length>=2) {
 				
-				String msg=Colors.colorize(TheAPI.buildString(args).replaceFirst(args[0]+" ", ""),s);
+				String msg=Colors.colorize(TheAPI.buildString(args).replaceFirst(args[0]+" ", ""),false,s);
 				String from = "";
 				String to = "";
 				if(args[0].equalsIgnoreCase("CONSOLE")) {

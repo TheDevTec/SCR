@@ -67,7 +67,7 @@ public class ChatFormat implements Listener {
 	
 	public static String r(String msg, CommandSender p) {
 		if(setting.color_chat)
-			return Colors.colorize(msg,p);
+			return Colors.colorize(msg,false,p);
 		else
 		return msg;
 	}
