@@ -3,7 +3,6 @@ package Utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import ServerControl.API;
@@ -50,18 +49,18 @@ public class TabList {
 		String displayname = p.getName();
 		if(p.getDisplayName()!=null)displayname=p.getDisplayName();
 		return header.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true))
-				.replace("%online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
-				.replace("%max_players%", String.valueOf(Bukkit.getMaxPlayers()))
-				.replace("%ping%", String.valueOf(Loader.getInstance.pingPlayer(p)))
-				.replace("%time%", String.valueOf( new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date())))
-				.replace("%date%", String.valueOf( new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date())))
+				.replace("%online%",TheAPI.getOnlinePlayers().size()+"")
+				.replace("%max_players%", TheAPI.getMaxPlayers()+"")
+				.replace("%ping%", Loader.getInstance.pingPlayer(p))
+				.replace("%time%", new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
+				.replace("%date%", new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()))
 				.replace("%world%", p.getWorld().getName())
-				.replace("%hp%", String.valueOf(p.getHealth()))
-				.replace("%health%", String.valueOf(p.getHealth()))
-				.replace("%food%", String.valueOf(p.getFoodLevel()))
-				.replace("%x%", String.valueOf(p.getLocation().getBlockX()))
-				.replace("%y%", String.valueOf(p.getLocation().getBlockY()))
-				.replace("%z%", String.valueOf(p.getLocation().getBlockZ()))
+				.replace("%hp%", p.getHealth()+"")
+				.replace("%health%",p.getHealth()+"")
+				.replace("%food%",p.getFoodLevel()+"")
+				.replace("%x%", p.getLocation().getBlockX()+"")
+				.replace("%y%", p.getLocation().getBlockY()+"")
+				.replace("%z%", p.getLocation().getBlockZ()+"")
 				.replace("%vault-group%", group)
 				.replace("%vault-prefix%", Loader.getInstance.getPrefix(p))
 				.replace("%prefix%", Loader.getInstance.getPrefix(p))

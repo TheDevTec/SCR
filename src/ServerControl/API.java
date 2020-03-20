@@ -13,7 +13,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -343,7 +342,6 @@ public class API {
 				 double billion = million/1000;
 				 double trillion = billion/1000;
 				 double quadrillion = trillion/1000;
-				 
 				 df= new DecimalFormat("#,##0.00");
 				 get = df.format(money);
 					if(get.length()>=8 && get.length()<12) {
@@ -387,9 +385,9 @@ public class API {
 			 }
 		 }
 		 if(colorized) {
-			 if(a.startsWith("-"))return ChatColor.RED+a;
-				if(!a.startsWith("-")&&a.equals("0"))return ChatColor.YELLOW+a;
-				return ChatColor.GREEN+a;
+			 if(a.startsWith("-"))return "&e"+a;
+				if(!a.startsWith("-")&&a.equals("0"))return "&e"+a;
+				return "&a"+a;
 		 }else
 		 return a;
 	 }

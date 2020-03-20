@@ -92,7 +92,7 @@ FileConfiguration f,c;
 						Loader.afk.put(p.getName(), v);
 						v.start();
 						broadcast(p);
-						if(Loader.econ!=null)
+						if(Loader.econ!=null && !Loader.econ.hasAccount(p))
 							Loader.econ.createPlayerAccount(p);
 							if(setting.sb)
 								ScoreboardStats.createScoreboard(p);
