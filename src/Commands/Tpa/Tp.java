@@ -36,7 +36,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 			if(!Loader.me.getBoolean("Players."+target.getName()+".TpBlock."+s.getName())&&!Loader.me.getBoolean("Players."+target.getName()+".TpBlock-Global")) {
 			Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.Teleported").replace("%player%",target.getName()).replace("%playername%", target.getDisplayName()), s);
 			API.setBack(((Player) s));
-			((Player) s).teleport(target);
+			TheAPI.getPlayerAPI((Player) s).safeTeleport(target.getLocation());
 			return true;
 			}else {
 				if(s.hasPermission("ServerControl.Tp.Blocked")) {
@@ -116,7 +116,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 				.replace("%lastplayer%",player1)
 				.replace("%lastplayername%",playername1), s);
 				API.setBack(p0);
-				p0.teleport(p1);
+				TheAPI.getPlayerAPI(p0).safeTeleport(p1.getLocation());
 				return true;
 				
 			}
@@ -138,7 +138,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 					Location loc = new Location(((Player) s).getWorld(),TheAPI.getStringUtils().getDouble(args[0]),TheAPI.getStringUtils().getDouble(args[1]),TheAPI.getStringUtils().getDouble(args[2]));
 
 					API.setBack(((Player) s));
-					((Player) s).teleport(loc);
+					TheAPI.getPlayerAPI((Player)s).safeTeleport(loc);
 					return true;
 					}else {
 						if(s.hasPermission("ServerControl.Tp.Location"))
@@ -162,54 +162,24 @@ public class Tp implements CommandExecutor, TabCompleter {
 		}
 		if(args.length==4) {
 			Player p = TheAPI.getPlayer(args[0]);
-			if(TheAPI.getStringUtils().isInt(args[0])&&TheAPI.getStringUtils().isInt(args[1])&&TheAPI.getStringUtils().isInt(args[2])) {
-				if(s instanceof Player) {
-				Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpLocation")
-				.replace("%world%", ((Player) s).getWorld().getName())
-				.replace("%playername%", ((Player) s).getDisplayName())
-				.replace("%player%", ((Player) s).getName())
-				.replace("%x%", args[0])
-				.replace("%y%", args[1])
-				.replace("%z%", args[2])
-				, s);
-				Location loc = new Location(p.getWorld(),TheAPI.getStringUtils().getDouble(args[0]),TheAPI.getStringUtils().getDouble(args[1]),TheAPI.getStringUtils().getDouble(args[2]));
-				API.setBack(((Player) s));
-				((Player) s).teleport(loc);
-				return true;
-				}else {
-					if(s.hasPermission("ServerControl.Tp.Location"))
-					Loader.Help(s, "/Tp <player player|player x y z>", "TpaSystem.Tp");
-					else
-						Loader.Help(s, "/Tp <player> <player>", "TpaSystem.Tp");
-					return true;
-				}
-			}else
-				if(p!=null &&TheAPI.getStringUtils().isInt(args[0])&&TheAPI.getStringUtils().isInt(args[1])&&TheAPI.getStringUtils().isInt(args[2])) {
+			if(p!=null) {
+				if(TheAPI.getStringUtils().isInt(args[1])&&TheAPI.getStringUtils().isInt(args[2])&&TheAPI.getStringUtils().isInt(args[3])) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpLocationPlayer")
 					.replace("%world%", p.getWorld().getName())
 					.replace("%playername%", p.getDisplayName())
 					.replace("%player%", p.getName())
 					.replace("%x%", args[1])
 					.replace("%y%", args[2])
-					.replace("%z%", args[3])
-					, s);
-					Location loc = new Location(p.getWorld(),TheAPI.getStringUtils().getDouble(args[0]),TheAPI.getStringUtils().getDouble(args[1]),TheAPI.getStringUtils().getDouble(args[2]));
+					.replace("%z%", args[3]), s);
 					API.setBack(p);
-					p.teleport(loc);
+					TheAPI.getPlayerAPI(p).safeTeleport(new Location(p.getWorld(),TheAPI.getStringUtils().getDouble(args[1]),TheAPI.getStringUtils().getDouble(args[2]),TheAPI.getStringUtils().getDouble(args[3])));
 					return true;
-				}else {
-					if(p!=null) {
+				}}else {
 						if(s.hasPermission("ServerControl.Tp.Location"))
 							Loader.Help(s, "/Tp <player player|player x y z>", "TpaSystem.Tp");
 							else
 								Loader.Help(s, "/Tp <player> <player>", "TpaSystem.Tp");
 						return true;
-					}else
-						if(s.hasPermission("ServerControl.Tp.Location"))
-							Loader.Help(s, "/Tp <player player|player x y z>", "TpaSystem.Tp");
-							else
-								Loader.Help(s, "/Tp <player> <player>", "TpaSystem.Tp");
-					return true;
 					}}
 		}return true;
 		

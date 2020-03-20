@@ -191,9 +191,9 @@ public class Configs {
 		c.put("Enchant.NoEnchant", "&cThere isn't enchant &4%enchant% on item &4%item% &cto remove");
 		c.put("Enchant.NoEnchants", "&cThere is no enchant on item &4%item% &cto remove");
 		c.put("TrashTitle", "&8Trash");
-		c.put("TpaSystem.TpahereSender", "&6Request for teleport sent to player %playername%");
+		c.put("TpaSystem.TpahereSender", "&6Request for teleport to player %playername% sent");
 		c.put("TpaSystem.TpahereTarget", "&6Player %playername% &6wants you to teleport to him");
-		c.put("TpaSystem.TpaSender", "&6Request sent to teleport player %playername% to you");
+		c.put("TpaSystem.TpaSender", "&6Request to teleport you to player %playername% sent");
 		c.put("TpaSystem.NoRequest", "&6You don't have any request to accept or deny");
 		c.put("TpaSystem.CantSendRequestToSelf", "&6You can't send request to your self");
 		c.put("TpaSystem.CantBlockSelf", "&6You can't block yourself");
