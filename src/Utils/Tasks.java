@@ -140,10 +140,12 @@ public class Tasks {
 		int r = Loader.tab.getInt("NameTag-RefleshTick");
 		if(r <= 0)r=1;
 	tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
-			TabList.setFooterHeader();
+		for(Player p : TheAPI.getOnlinePlayers())
+			TabList.setFooterHeader(p);
 		}},20,Loader.tab.getInt("RefleshTick")));
 	tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
-		TabList.setNameTag();
+		for(Player p : TheAPI.getOnlinePlayers())
+		TabList.setNameTag(p);
 		}},20,r));
 	}
 	private static void vipslot() {

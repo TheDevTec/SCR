@@ -42,6 +42,58 @@ public class API {
 		 BED,
 		 SPAWN
 	 }
+	 
+	 public static Location getTeleportLocation(Player p, TeleportLocation l) {
+		 Location a = null;
+		 switch(l) {
+		 case BED:{
+			 if(p.getBedSpawnLocation()!=null) {
+				 a= p.getBedSpawnLocation();
+			 }else
+				 a= getTeleportLocation(p,TeleportLocation.HOME);
+		 }
+			 break;
+		 case HOME:{
+			 String home = null;
+				List<String> homes = new ArrayList<String>();
+				if(Loader.me.getString("Players."+p.getName()+".Homes")!=null)
+					for(String s :Loader.me.getConfigurationSection("Players."+p.getName()+".Homes").getKeys(false))homes.add(s);
+				if(homes.isEmpty()==false) {
+					home=homes.get(0);
+				}
+				if(home != null) {
+				World w = Bukkit.getWorld(Loader.me.getString("Players."+p.getName()+".Homes."+home+".World"));
+				double x = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".X");
+				double y = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Y");
+				double z = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Z");
+				float pitch = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Pitch");
+				float yaw = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Yaw");
+				if(w != null) { 
+					a= new Location(w,x,y,z,yaw,pitch);
+				}}else {
+						Loader.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn")
+								.replace("%world%", p.getWorld().getName())
+								.replace("%player%", p.getName())
+								.replace("%playername%", p.getDisplayName())
+								, p);
+						a= getTeleportLocation(p,TeleportLocation.SPAWN);
+				}
+		 }break;
+		 case SPAWN:{
+			 World world = Bukkit.getWorlds().get(0);
+				Location loc=world.getSpawnLocation();
+				if(Loader.config.getString("Spawn")!=null && Bukkit.getWorld(Loader.config.getString("Spawn.World")) != null) {
+					float x_head = Loader.config.getInt("Spawn.X_Pos_Head");
+					float z_head = Loader.config.getInt("Spawn.Z_Pos_Head");
+					 world = Bukkit.getWorld(Loader.config.getString("Spawn.World"));
+					 loc = new Location(world, Loader.config.getDouble("Spawn.X"), Loader.config.getDouble("Spawn.Y") ,Loader.config.getDouble("Spawn.Z"), x_head, z_head);
+				}
+				a= loc;
+		 }break;
+		 }
+		 return a;
+	 }
+	 
 	 public static void teleportPlayer(Player p, TeleportLocation location) {
 		 switch(location) {
 		 case BED:{

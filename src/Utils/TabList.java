@@ -83,7 +83,7 @@ public class TabList {
 				.replace("%afk%", Loader.getInstance.isAfk(p));
 	}
 
-	public static void setTab(Player p) {
+	public static void setNameTag(Player p) {
 		String prefix = TheAPI.colorize(TabList.replace(TabList.getPrefix(p), p));
 		String suffix = TheAPI.colorize(TabList.replace(TabList.getSuffix(p), p));
 		TheAPI.getTabListAPI().setTabListName(p, prefix + p.getName() + suffix);
@@ -105,7 +105,7 @@ public class TabList {
 	}}
 		return "";
 	}
-	public static String getPath(Player p, String what) {
+	private static String getPath(Player p, String what) {
 		if(what.equalsIgnoreCase("footer") && setting.tab_footer ||what.equalsIgnoreCase("header") && setting.tab_header) {
 		if(Loader.tab.getString("PerPlayerTabList."+p.getName()+"."+what)!=null)
 			return get("PerPlayerTabList."+p.getName()+"."+what, p);
@@ -117,15 +117,7 @@ public class TabList {
 		}}
 			return "";
 	}
-    
-	public static void setNameTag() {
-		for(Player p:TheAPI.getOnlinePlayers()) {
-			if(TheAPI.getPlayer(p.getName())!=null) {
-			setTab(p);
-		}}
-	}
-	public static void setFooterHeader() {
-		for(Player p:TheAPI.getOnlinePlayers()) {
+	public static void setFooterHeader(Player p) {
 			TheAPI.getTabListAPI().setHeaderFooter(p, getPath(p,"Header"), getPath(p,"Footer"));
-		}}
+		}
 }

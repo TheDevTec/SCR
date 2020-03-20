@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
@@ -38,8 +39,10 @@ public class Tab implements CommandExecutor, TabCompleter {
 			    Loader.msg("",s);
 				TabList.removeTab();
 				Configs.TabLoading();
-				TabList.setFooterHeader();
-				TabList.setNameTag();
+				for(Player p : TheAPI.getOnlinePlayers()) {
+				TabList.setFooterHeader(p);
+				TabList.setNameTag(p);
+				}
 				Loader.msg(Loader.s("Prefix")+Loader.s("ConfigReloaded"),s);
 				return true;
 			}

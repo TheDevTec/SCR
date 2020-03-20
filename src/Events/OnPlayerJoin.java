@@ -128,8 +128,10 @@ FileConfiguration f,c;
 							Loader.econ.createPlayerAccount(p);
 							if(setting.sb)
 								ScoreboardStats.createScoreboard(p);
-							if(setting.tab)
-								TabList.setTab(p);
+							if(setting.tab) {
+								TabList.setNameTag(p);
+							TabList.setFooterHeader(p);
+							}
 						SPlayer s = new SPlayer(p);
 						if(s.hasTempFlyEnabled())
 							s.enableTempFly();
