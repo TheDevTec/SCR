@@ -68,7 +68,7 @@ public class TempJail implements CommandExecutor, TabCompleter {
 				return null;
 			}
 			if(args.length==2) {
-				if(args[1].equalsIgnoreCase("")) {
+				if(args[1].equalsIgnoreCase("")) { 
 				c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("1","2","3","4","5","6","7","8","9","0"), new ArrayList<>()));
 				}
 				if(args[1].startsWith("1")||args[1].startsWith("2")||args[0].startsWith("3")||
