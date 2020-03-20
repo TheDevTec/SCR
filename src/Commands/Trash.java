@@ -35,7 +35,7 @@ public class Trash implements CommandExecutor {
 		ItemCreatorAPI a =TheAPI.getItemCreatorAPI(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial());
 		a.setDisplayName(" ");
 		
-		ItemCreatorAPI b =TheAPI.getItemCreatorAPI(Material.BUCKET);
+		ItemCreatorAPI b =TheAPI.getItemCreatorAPI(Material.LAVA_BUCKET);
 		b.setDisplayName("&6Clear");
 		GUICreatorAPI s = TheAPI.getGUICreatorAPI(p);
 		s.setSize(54);
