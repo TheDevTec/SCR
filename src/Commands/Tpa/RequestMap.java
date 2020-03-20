@@ -20,7 +20,7 @@ public class RequestMap {
     	Loader.me.set("Players."+sender+".Tp."+target+".Type", tp.toString());
     	Loader.me.set("Players."+sender+".Tp."+target+".Time", System.currentTimeMillis()/1000);
     	if(setting.tp_onreqloc)
-    	Loader.me.set("Players."+sender+".Tp."+target+".Location", TheAPI.getPlayer(target).getLocation());
+    	Loader.me.set("Players."+sender+".Tp."+target+".Location", TheAPI.getStringUtils().getLocationAsString(TheAPI.getPlayer(target).getLocation()));
 		Configs.chatme.save();
     }
 
@@ -42,7 +42,7 @@ public class RequestMap {
     
     public static Location getLocation(String p, String t) {
     	if(Loader.me.getString("Players."+p+".Tp."+t+".Location")!=null)
-    		return (Location)Loader.me.get("Players."+p+".Tp."+t+".Location");
+    		return TheAPI.getStringUtils().getLocationFromString(Loader.me.getString("Players."+p+".Tp."+t+".Location"));
     	return null;
     }
     
