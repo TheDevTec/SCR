@@ -82,6 +82,7 @@ public class AFKV2 {
 		a.set("Players."+d+".AFK",System.currentTimeMillis()/1000);
 		kick=0;
 		manual=false;
+		mp=false;
 		bc=false;
 	}
 	
