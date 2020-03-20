@@ -34,21 +34,21 @@ public class TempJail implements CommandExecutor {
 		for(String f:Loader.config.getConfigurationSection("Jails").getKeys(false))jails.add(f);
 			if(args.length==2) {
 					String msg = Loader.config.getString("BanSystem.Jail.Reason");
-					API.getBanSystemAPI().setTempJail(s, args[0], jails.get(TheAPI.generateRandomInt(jails.size()-1)),msg,
-							TheAPI.getStringUtils().getLong(args[1]));
+					long time = TheAPI.getStringUtils().getTimeFromString(args[1]);
+					API.getBanSystemAPI().setTempJail(s, args[0], jails.get(TheAPI.generateRandomInt(jails.size()-1)),msg,time);
 					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.TempJail")
 							.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])
-							.replace("%time%", ""+TheAPI.getStringUtils().getTimeFromString(args[1]))
+							.replace("%time%", ""+TheAPI.getStringUtils().setTimeToString(time))
 							.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.jail");
 					return true;
 			}
 			if(args.length>=3) { 
 					String msg = BanSystem.BuildString(2, 1, args);
-					API.getBanSystemAPI().setTempJail(s, args[0], jails.get(TheAPI.generateRandomInt(jails.size()-1)),msg,
-							TheAPI.getStringUtils().getLong(args[1]));
+					long time = TheAPI.getStringUtils().getTimeFromString(args[1]);
+					API.getBanSystemAPI().setTempJail(s, args[0], jails.get(TheAPI.generateRandomInt(jails.size()-1)),msg,time);
 					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.TempJail")
 							.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])
-							.replace("%time%", ""+TheAPI.getStringUtils().getTimeFromString(args[1]))
+							.replace("%time%", ""+TheAPI.getStringUtils().setTimeToString(time))
 							.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.jail");
 					return true;
 				}

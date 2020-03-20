@@ -156,11 +156,11 @@ public class BanSystem {
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.TempJail").replace("%player%", player)
 					.replace("%playername%", getName(player))
 					.replace("%reason%", getTempJailReason(player))
-					.replace("%time%",""+API.getBanSystemAPI().getTempJailTime(player) ),s);
+					.replace("%time%",TheAPI.getStringUtils().setTimeToString(API.getBanSystemAPI().getTempJailTime(player))),s);
 			if(TheAPI.getPlayer(player)!=null) {
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.TempArrested").replace("%player%", player)
 					.replace("%playername%", getName(player))
-					.replace("%time%",""+API.getBanSystemAPI().getTempJailTime(player))
+					.replace("%time%",TheAPI.getStringUtils().setTimeToString(API.getBanSystemAPI().getTempJailTime(player)))
 					.replace("%reason%", getTempJailReason(player)),TheAPI.getPlayer(player));
 			TheAPI.getPlayer(player).teleport((Location) Loader.config.get("Jails."+Loader.me.getString("Players."+player+".TempJail.Location")));
 			}
