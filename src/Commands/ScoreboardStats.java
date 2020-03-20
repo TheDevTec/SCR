@@ -18,7 +18,8 @@ public class ScoreboardStats implements CommandExecutor {
 		if(API.hasPerm(s,"ServerCotrol.Scoreboard")) {
 			Loader.msg(Loader.s("Prefix")+ "&e----------------- &bScoreboard Reload &e-----------------",s);
 			    Loader.msg("",s);
-				Configs.ScoreboardLoading();
+			    Configs.sb.reload();
+			    Loader.scFile = Configs.sb.getConfig();
 				Utils.ScoreboardStats.removeScoreboard();
 				if(setting.sb) {
 				for(Player p : TheAPI.getOnlinePlayers())
