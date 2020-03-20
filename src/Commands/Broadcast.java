@@ -14,7 +14,7 @@ public class Broadcast implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(API.hasPerm(s, "ServerControl.Broadcast")){
-			if(args.length==0) {
+			if(args.length==0) { 
 				Loader.Help(s, "/Broadcast <message>", "Broadcast");
 				return true;
 			}
