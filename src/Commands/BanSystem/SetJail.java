@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Configs;
+import me.Straiker123.TheAPI;
 
 public class SetJail implements CommandExecutor {
 
@@ -25,7 +26,7 @@ public class SetJail implements CommandExecutor {
 					return true;
 				}
 				Player p = (Player)s;
-				Loader.config.set("Jails."+args[0], p.getLocation());
+				Loader.config.set("Jails."+args[0], TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
 				Configs.config.save();
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.CreatedJail").replace("%jail%", args[0]), s);
 				return true;

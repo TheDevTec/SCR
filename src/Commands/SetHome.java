@@ -51,7 +51,6 @@ public class SetHome implements CommandExecutor {
                 	if(Loader.me.getString("Players."+p.getName()+".Homes")!=null) {
                 		if(Loader.config.getString("Homes."+ Loader.vault.getPrimaryGroup(p))!=null) {
                     if(Loader.me.getConfigurationSection("Players."+p.getName()+".Homes").getKeys(false).size() < Loader.config.getInt("Homes."+ Loader.vault.getPrimaryGroup(p))) {
-                    	Loader.me.set("Players."+p.getName()+".Homes."+args[0], p.getLocation());
                     	Loader.me.set("Players."+p.getName()+".Homes."+args[0]+".World", p.getLocation().getWorld().getName());
                     	Loader.me.set("Players."+p.getName()+".Homes."+args[0]+".X", l.getX());
                     	Loader.me.set("Players."+p.getName()+".Homes."+args[0]+".Y", l.getY());
@@ -75,7 +74,6 @@ public class SetHome implements CommandExecutor {
                             return true;	
                 	}
                 }
-                	Loader.me.set("Players."+p.getName()+".Homes."+args[0], p.getLocation());
                 	Loader.me.set("Players."+p.getName()+".Homes."+args[0]+".World", p.getLocation().getWorld().getName());
                 	Loader.me.set("Players."+p.getName()+".Homes."+args[0]+".X", l.getX());
                 	Loader.me.set("Players."+p.getName()+".Homes."+args[0]+".Y", l.getY());

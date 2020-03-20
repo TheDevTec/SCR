@@ -38,7 +38,8 @@ public class Tab implements CommandExecutor, TabCompleter {
 				Loader.msg(Loader.s("Prefix")+"&e----------------- &bTab Reloading &e-----------------",s);
 			    Loader.msg("",s);
 				TabList.removeTab();
-				Configs.TabLoading();
+				Configs.tab.reload();
+				Loader.tab=Configs.tab.getConfig();
 				for(Player p : TheAPI.getOnlinePlayers()) {
 				TabList.setFooterHeader(p);
 				TabList.setNameTag(p);

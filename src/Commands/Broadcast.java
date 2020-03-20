@@ -14,12 +14,12 @@ public class Broadcast implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(API.hasPerm(s, "ServerControl.Broadcast")){
-			if(args.length==0) {
+			if(args.length==0) { 
 				Loader.Help(s, "/Broadcast <message>", "Broadcast");
 				return true;
 			}
 			if(args.length>=1) {
-				String msg = TheAPI.buildString(args).replaceFirst(" ", "");
+				String msg = TheAPI.buildString(args);
 				TheAPI.broadcastMessage(Loader.config.getString("Format.Broadcast").replace("%sender%", BanSystem.getName(s.getName()))
 						.replace("%message%", msg));
 				return true;
