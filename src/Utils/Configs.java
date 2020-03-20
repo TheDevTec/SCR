@@ -100,7 +100,7 @@ public class Configs {
 			c.put("BanSystem.Broadcast.Warn", "&6Operator &c%operator% &6warned &c%playername%&r &6for &c%reason%");
 			c.put("BanSystem.Broadcast.Kick", "&6Operator &c%operator% &6kicked &c%playername%&r &6for &c%reason%");
 			c.put("BanSystem.Broadcast.Jail", "&6Operator &c%operator% &6arrested &c%playername%&r &6for &c%reason%");
-			c.put("BanSystem.Broadcast.TempJail", "&6Operator &c%operator% &6temparrested &c%playername%&r &6for &c%reason%&6 on &c%time%");
+			c.put("BanSystem.Broadcast.TempJail", "&6Operator &c%operator% &6temp-arrested &c%playername%&r &6for &c%reason%&6 on &c%time%");
 			c.put("BanSystem.Broadcast.UnBan", "&6Operator &c%operator% &6unbanned &c%playername%");
 			c.put("BanSystem.Broadcast.UnBanIP", "&6Operator &c%operator% &6unbanned ip of &c%playername%");
 			c.put("BanSystem.Broadcast.UnMute", "&6Operator &c%operator% &6unmuted &c%playername%");
