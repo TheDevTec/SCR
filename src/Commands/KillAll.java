@@ -1,6 +1,7 @@
 package Commands;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,10 +18,11 @@ public class KillAll implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(API.hasPerm(s, "ServerControl.KillAll")) {
 			int amount = 0;
-			ArrayList<String> pl = new ArrayList<String>();
+			List<String> pl = new ArrayList<String>();
 			for(Player p :TheAPI.getOnlinePlayers()) {
+				boolean i = p.isDead();
 				p.setHealth(0);
-				if(p.isDead()) {
+				if(p.isDead() &&!i) {
 				pl.add(p.getName());
 				++amount;
 				}

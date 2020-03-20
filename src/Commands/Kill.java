@@ -17,8 +17,9 @@ public class Kill implements CommandExecutor {
 		if(args.length==0) {
 			if(s instanceof Player) {
 				Player p = (Player)s;
+				boolean i = p.isDead();
 				p.setHealth(0);
-				if(p.isDead())
+				if(p.isDead() && !i)
 				Loader.msg(API.replacePlayerName(Loader.s("Kill.Killed"),p), s);
 				return true;
 			}else {
@@ -31,8 +32,9 @@ public class Kill implements CommandExecutor {
 				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
+			boolean i = p.isDead();
 			p.setHealth(0);
-			if(p.isDead())
+			if(p.isDead() && !i)
 			Loader.msg(API.replacePlayerName(Loader.s("Kill.Killed"),p), s);
 		}
 		return true;
