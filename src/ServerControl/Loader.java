@@ -19,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import Commands.BanSystem.BanSystem;
 import Commands.Tpa.RequestMap;
 import Utils.AFKV2;
+import Utils.Colors;
 import Utils.Configs;
 import Utils.Metrics;
 import Utils.MultiWorldsUtils;
@@ -79,7 +80,7 @@ public class Loader extends JavaPlugin implements Listener {
 			g=g.replace("%", "%%");
 			g=Events.ChatFormat.r(p,g, null,false);
 			g=g.replace("%%", "%");
-			API.setDisplayName(p, g);
+			API.setDisplayName(p, Colors.colorize(g,p));
 		}else
 	 		API.setDisplayName(p,Loader.getInstance.getPrefix(p)+p.getName()+Loader.getInstance.getSuffix(p));
     }

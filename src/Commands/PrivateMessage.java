@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import Utils.Colors;
 import Utils.Configs;
 import me.Straiker123.TheAPI;
 
@@ -21,12 +22,7 @@ public class PrivateMessage implements CommandExecutor {
 			}
 			if(args.length>=2) {
 				
-				String msg = "";
-				for (int i = 1; i < args.length; i++) {
-				msg = msg + args[i] + " ";
-				}
-				msg = msg.substring(0, msg.length()-1);
-				msg = Events.ChatFormat.r(msg,s,false);
+				String msg=Colors.colorize(TheAPI.buildString(args).replaceFirst(args[0]+" ", ""),s);
 				String from = "";
 				String to = "";
 				if(args[0].equalsIgnoreCase("CONSOLE")) {

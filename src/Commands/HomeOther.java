@@ -35,18 +35,13 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				if(args.length==2) {
-					Player t = TheAPI.getPlayer(args[0]);
-					if(t==null) {
-						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
-						return true;
-					}
-					if(Loader.me.getString("Players."+t.getName()+".Homes."+args[1])!=null) {
-						World w = Bukkit.getWorld(Loader.me.getString("Players."+t.getName()+".Homes."+args[1]+".World"));
-						double x = Loader.me.getDouble("Players."+t.getName()+".Homes."+args[1]+".X");
-						double y = Loader.me.getDouble("Players."+t.getName()+".Homes."+args[1]+".Y");
-						double z = Loader.me.getDouble("Players."+t.getName()+".Homes."+args[1]+".Z");
-						float pitch = Loader.me.getInt("Players."+t.getName()+".Homes."+args[1]+".Pitch");
-						float yaw = Loader.me.getInt("Players."+t.getName()+".Homes."+args[1]+".Yaw");
+					if(Loader.me.getString("Players."+args[0]+".Homes."+args[1])!=null) {
+						World w = Bukkit.getWorld(Loader.me.getString("Players."+args[0]+".Homes."+args[1]+".World"));
+						double x = Loader.me.getDouble("Players."+args[0]+".Homes."+args[1]+".X");
+						double y = Loader.me.getDouble("Players."+args[0]+".Homes."+args[1]+".Y");
+						double z = Loader.me.getDouble("Players."+args[0]+".Homes."+args[1]+".Z");
+						float pitch = Loader.me.getInt("Players."+args[0]+".Homes."+args[1]+".Pitch");
+						float yaw = Loader.me.getInt("Players."+args[0]+".Homes."+args[1]+".Yaw");
 						API.setBack(p);
 						Location loc = new Location(w,x,y,z,yaw,pitch);
 						if(w!=null){
@@ -57,35 +52,30 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 						Loader.msg(Loader.s("Prefix")+Loader.s("Homes.TeleportingToOther")
 			            .replace("%player%", p.getName())
 			            .replace("%playername%", p.getDisplayName())
-			            .replace("%target%", t.getDisplayName())
+			            .replace("%target%", args[0])
 						.replace("%home%", args[1]), s);
 						return true;
 						}}
 					Loader.msg(Loader.s("Prefix")+Loader.s("Homes.NotExistsOther")
 			        .replace("%player%", p.getName())
 			        .replace("%playername%", p.getDisplayName())
-			        .replace("%target%", t.getDisplayName())
+			        .replace("%target%", args[0])
 					.replace("%home%", args[1]), s);
 					return true;
 				}
 				if(args.length==3) {
-					Player t = TheAPI.getPlayer(args[0]);
 					Player pl = TheAPI.getPlayer(args[2]);
 					if(pl==null) {
 						Loader.msg(Loader.PlayerNotOnline(args[2]), s);
 						return true;
 					}
-					if(t==null) {
-						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
-						return true;
-					}
-					if(Loader.me.getString("Players."+t.getName()+".Homes."+args[1])!=null) {
-						World w = Bukkit.getWorld(Loader.me.getString("Players."+t.getName()+".Homes."+args[1]+".World"));
-						double x = Loader.me.getDouble("Players."+t.getName()+".Homes."+args[1]+".X");
-						double y = Loader.me.getDouble("Players."+t.getName()+".Homes."+args[1]+".Y");
-						double z = Loader.me.getDouble("Players."+t.getName()+".Homes."+args[1]+".Z");
-						float pitch = Loader.me.getInt("Players."+t.getName()+".Homes."+args[1]+".Pitch");
-						float yaw = Loader.me.getInt("Players."+t.getName()+".Homes."+args[1]+".Yaw");
+					if(Loader.me.getString("Players."+args[0]+".Homes."+args[1])!=null) {
+						World w = Bukkit.getWorld(Loader.me.getString("Players."+args[0]+".Homes."+args[1]+".World"));
+						double x = Loader.me.getDouble("Players."+args[0]+".Homes."+args[1]+".X");
+						double y = Loader.me.getDouble("Players."+args[0]+".Homes."+args[1]+".Y");
+						double z = Loader.me.getDouble("Players."+args[0]+".Homes."+args[1]+".Z");
+						float pitch = Loader.me.getInt("Players."+args[0]+".Homes."+args[1]+".Pitch");
+						float yaw = Loader.me.getInt("Players."+args[0]+".Homes."+args[1]+".Yaw");
 						API.setBack(pl);
 						Location loc = new Location(w,x,y,z,yaw,pitch);
 						if(w!=null){
@@ -96,14 +86,14 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 						Loader.msg(Loader.s("Prefix")+Loader.s("Homes.TeleportingOtherToOther")
 			            .replace("%player%", pl.getName())
 			            .replace("%playername%", pl.getDisplayName())
-			            .replace("%target%", t.getDisplayName())
+			            .replace("%target%", args[0])
 						.replace("%home%", args[1]), s);
 						return true;
 						}}
 					Loader.msg(Loader.s("Prefix")+Loader.s("Homes.NotExistsOther")
 			        .replace("%player%", p.getName())
 			        .replace("%playername%", p.getDisplayName())
-			        .replace("%target%", t.getDisplayName())
+			        .replace("%target%",args[0])
 					.replace("%home%", args[1]), s);
 					return true;
 				}

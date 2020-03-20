@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import Utils.Colors;
 import Utils.Configs;
 import me.Straiker123.TheAPI;
 
@@ -26,12 +27,7 @@ public class ReplyPrivateMes implements CommandExecutor {
 			path="Players."+s.getName()+".Reply";
 		}
 		if(Loader.me.getString(path)!=null) {
-		String msg = "";
-		for (int i = 0; i < args.length; i++) {
-		msg = msg + args[i] + " ";
-		}
-		msg = msg.substring(0, msg.length()-1);
-		msg = Events.ChatFormat.r(msg,s,false);
+		String msg=Colors.colorize(TheAPI.buildString(args),s);
 		String from = "";
 		String to = "";
 		if(s instanceof Player ==false) {

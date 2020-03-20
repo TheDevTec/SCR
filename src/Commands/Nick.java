@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Configs;
+import me.Straiker123.TheAPI;
 
 public class Nick implements CommandExecutor {
 
@@ -19,11 +20,7 @@ public class Nick implements CommandExecutor {
 				Loader.Help(s, "/Nick <nickname>", "Nick");
 				return true;
 			}
-			String msg = "";
-			for(int i = 0; i<args.length; ++i) {
-				msg=msg+args[i]+" ";
-			}
-			msg=msg.substring(0,msg.length()-1);
+			String msg = TheAPI.buildString(args);
 			Loader.me.set("Players."+s.getName()+".DisplayName", msg);
 			 Configs.chatme.save();
 			 Loader.msg(Loader.s("Prefix")+Loader.s("NicknameChanged").replace("%nick%", msg).replace("%nickname%", msg), s);

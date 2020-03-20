@@ -539,10 +539,14 @@ public class Configs {
 		c.put("Options.TimeZone.Zone", "Europe/Prague");
 		c.put("Options.Colors.Chat.Use", true);
 		c.put("Options.Colors.Chat.Required-Permission", true);
-		c.put("Options.Colors.Chat.Permission", "ServerControl.ChatColor");
+		c.put("Options.Colors.Chat.Permission.Color", "ServerControl.ChatColor");
+		c.put("Options.Colors.Chat.Permission.Format", "ServerControl.ChatColor.Format");
+		c.put("Options.Colors.Chat.Permission.Magic", "ServerControl.ChatColor.Magic");
 		c.put("Options.Colors.Sign.Use", true);
 		c.put("Options.Colors.Sign.Required-Permission", true);
-		c.put("Options.Colors.Sign.Permission", "ServerControl.SignColor");
+		c.put("Options.Colors.Sign.Permission.Color", "ServerControl.SignColor");
+		c.put("Options.Colors.Sign.Permission.Format", "ServerControl.SignColor.Format");
+		c.put("Options.Colors.Sign.Permission.Magic", "ServerControl.SignColor.Magic");
 		c.put("Options.Sounds.Use", true);
 		c.put("Options.Sounds.Sound", "ENTITY_PLAYER_LEVELUP");
 		c.put("Options.Teleport.SafeLocation", true);

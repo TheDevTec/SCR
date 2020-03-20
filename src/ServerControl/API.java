@@ -236,11 +236,11 @@ public class API {
 			return false;
 	 }
 	 public static void setDisplayName(Player p, String name) {
-		 p.setDisplayName(TheAPI.colorize(name));
+		 p.setDisplayName(name);
 	 }
 	 
 	 public static void setCustomName(Player p, String name) {
-		p.setCustomName(TheAPI.colorize(name));
+		p.setCustomName(name);
 	 }
 	 
 	 public static String getIPAdress(String player) {

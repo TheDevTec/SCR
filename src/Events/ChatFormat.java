@@ -65,16 +65,9 @@ public class ChatFormat implements Listener {
 		return s;
 	}
 	
-	public static String r(String msg, CommandSender p, boolean chat) {
-		if(setting.color_chat
-					&&
-						setting.color_chat_perm
-					&&
-					p.hasPermission(Loader.config.getString("Colored-Chat.Permission"))
-					||
-					setting.color_chat
-					&&!setting.color_chat_perm)
-			return TheAPI.colorize(msg);
+	public static String r(String msg, CommandSender p) {
+		if(setting.color_chat)
+			return Colors.colorize(msg,p);
 		else
 		return msg;
 	}
@@ -102,7 +95,7 @@ public class ChatFormat implements Listener {
 			MultiWorldsGUI.openInvCreate(p);
 		}
 	}
-	String msg = r(e.getMessage(),p,true);
+	String msg = r(e.getMessage(),p);
 	msg=msg.replace("%", "%%");
 	e.setMessage(msg);
 		if(setting.lock_chat) {
