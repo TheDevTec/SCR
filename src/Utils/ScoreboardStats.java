@@ -10,10 +10,10 @@ import me.Straiker123.TheAPI;
 
 public class ScoreboardStats {
 
-	 static HashMap<Player, ScoreboardAPIV2> setup = new HashMap<Player, ScoreboardAPIV2>();
+	 static HashMap<String, ScoreboardAPIV2> setup = new HashMap<String, ScoreboardAPIV2>();
 	 public static void createScoreboard(Player p) {
-		 if(!setup.containsKey(p))setup.put(p, TheAPI.getScoreboardAPIV2(p));
-		 ScoreboardAPIV2 a=setup.get(p);
+		 if(!setup.containsKey(p.getName()))setup.put(p.getName(), TheAPI.getScoreboardAPIV2(p));
+		 ScoreboardAPIV2 a=setup.get(p.getName());
 			String getName = "Name";
 			 String getLine = "Lines";
 			 if(setting.sb_world ) {
@@ -31,7 +31,7 @@ public class ScoreboardStats {
 			 	
 	public static void removeScoreboard() {
 		for(Player p:TheAPI.getOnlinePlayers()) {
-			setup.remove(p);
+			setup.remove(p.getName());
 			 p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
 	}
 }}
