@@ -19,7 +19,7 @@ public class Broadcast implements CommandExecutor {
 				return true;
 			}
 			if(args.length>=1) {
-				String msg = TheAPI.buildString(args).replaceFirst(" ", "");
+				String msg = TheAPI.buildString(args);
 				TheAPI.broadcastMessage(Loader.config.getString("Format.Broadcast").replace("%sender%", BanSystem.getName(s.getName()))
 						.replace("%message%", msg));
 				return true;
