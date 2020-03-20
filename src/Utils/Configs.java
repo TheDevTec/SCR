@@ -898,6 +898,7 @@ public class Configs {
 		BansLoading();
 	}
 	public static void reload() {
+		chatme.save();
 		trans.reload();
 		config.reload();
 		bans.reload();
@@ -907,5 +908,13 @@ public class Configs {
 		mw.reload();
 		sb.reload();
 		tab.reload();
+		Loader.TranslationsFile=trans.getConfig();
+		Loader.config=config.getConfig();
+		Loader.ban=bans.getConfig();
+		Loader.scFile=sb.getConfig();
+		Loader.me=chatme.getConfig();
+		Loader.kit=kit.getConfig();
+		Loader.mw=mw.getConfig();
+		Loader.tab=tab.getConfig();
 	}
 }
