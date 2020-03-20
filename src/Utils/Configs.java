@@ -825,7 +825,7 @@ public class Configs {
 					,"&bMoney: &9%money%$   &bPing: &9%ping%","&7--------------------------------"));
 			c.put("Footer", Arrays.asList("&7--------------------------------","&bTime: &a%time%   &bOnline: &a%online% &0/ &a%max_players%"));
 			c.put("RefleshTick", 20);
-			c.put("NameTag-RefleshTick", 3);
+			c.put("NameTag-RefleshTick", 20);
 			c.put("AFK.IsAFK", " &4&l*AFK*");
 			c.put("AFK.IsNotAFK", "");
 			if(!tab.existPath("Groups.default")) {
