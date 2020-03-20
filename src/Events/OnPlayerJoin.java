@@ -43,7 +43,7 @@ FileConfiguration f,c;
 		if(!p.hasPlayedBefore() || c.getString("Players."+p.getName()+".FirstJoin")==null){
 		c.set("Players."+p.getName()+".FirstJoin", setting.format_date_time.format(new Date()));
 		}
-		if(p.hasPlayedBefore() && setting.join_first) {
+		if(!p.hasPlayedBefore() && setting.join_first) {
 				for(String ss: Loader.TranslationsFile.getStringList("OnJoin.FirstJoin.Messages")) {
 							  Loader.msg(OnPlayerLeave.replaceAll(ss,p),p);
 			}
