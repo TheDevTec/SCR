@@ -110,8 +110,8 @@ public class SecurityListenerV3 implements Listener{
 	        			Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.TempMuted")
 	        			.replace("%player%", p.getName())
 	        			.replace("%reason%", TheAPI.getPunishmentAPI().getTempMuteReason(p.getName()))
-	        			.replace("%time%", TheAPI.getTimeConventorAPI().setTimeToString((cooldownTime-secondsLeft)))
-	        			.replace("%long%", TheAPI.getTimeConventorAPI().setTimeToString((cooldownTime-secondsLeft)))
+	        			.replace("%time%", TheAPI.getStringUtils().setTimeToString((cooldownTime-secondsLeft)))
+	        			.replace("%long%", TheAPI.getStringUtils().setTimeToString((cooldownTime-secondsLeft)))
 	        			.replace("%playername%", p.getDisplayName()), p);
 	                    return;
 	                }

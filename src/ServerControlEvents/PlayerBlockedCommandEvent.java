@@ -10,7 +10,7 @@ public class PlayerBlockedCommandEvent extends Event implements Cancellable {
 	Player player;
 	String message;
 	String sd;
-    boolean canceled;
+    boolean canceled=true;
 	
 	public PlayerBlockedCommandEvent(Player p, String m,String ww) {
 		player=p;

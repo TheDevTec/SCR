@@ -9,7 +9,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
 
 import ServerControl.Loader;
 import ServerControl.SPlayer;
@@ -19,12 +18,11 @@ public class Tasks {
 	public Tasks() {
 		a = Loader.getInstance;
 	}
-	static Loader a;
+	public static List<String> players = new ArrayList<String>();
 	static List<Integer> tasks = new ArrayList<Integer>();
-	static int tests;
 	static HashMap<String, String> ss = new HashMap<String, String>();
-	public static ArrayList<String> players = new ArrayList<String>();
-	 static HashMap<String, Scoreboard> l = new HashMap<String, Scoreboard>();
+	static Loader a;
+	static int tests;
 	public static void load() {
 		if(setting.am)
 		automessage();
@@ -49,7 +47,6 @@ public class Tasks {
 		tests=0;
 		players.clear();
 		ss.clear();
-		l.clear();
 		tasks.clear();
 		load();
 	}
