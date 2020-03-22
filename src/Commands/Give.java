@@ -386,7 +386,7 @@ public class Give implements CommandExecutor, TabCompleter {
 							try {
 								String g = args[0].toUpperCase();
 								if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
-							TheAPI.giveItem(p, XMaterial.matchXMaterial(g).parseMaterial(),1);
+							TheAPI.giveItem(p, XMaterial.matchXMaterial(g).get().parseMaterial(),1);
 								else
 									TheAPI.giveItem(p, getPotion(g));
 							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),p).replace("%amount%", "1").replace("%item%", getItem(args[0])), s);
@@ -415,7 +415,7 @@ public class Give implements CommandExecutor, TabCompleter {
 							try {
 								String g = args[0].toUpperCase();
 								if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
-							TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).parseMaterial(),1);
+							TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).get().parseMaterial(),1);
 								else {
 									ItemStack a = getPotion(g);
 									a.setAmount(TheAPI.getStringUtils().getInt(args[1]));
@@ -438,7 +438,7 @@ public class Give implements CommandExecutor, TabCompleter {
 					if(getItem(args[1])!=null) {
 						String g = args[1].toUpperCase();
 						if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
-					TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).parseMaterial(),1);
+					TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).get().parseMaterial(),1);
 						else
 							TheAPI.giveItem(ps, getPotion(g));
 						Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),ps).replace("%item%", getItem(args[1])).replace("%amount%", "1"), s);
@@ -457,7 +457,7 @@ public class Give implements CommandExecutor, TabCompleter {
 						if(getItem(args[1])!=null) {
 							String g = args[1].toUpperCase();
 							if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
-						TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).parseMaterial(),TheAPI.getStringUtils().getInt(args[2]));
+						TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).get().parseMaterial(),TheAPI.getStringUtils().getInt(args[2]));
 							else {
 								ItemStack a = getPotion(args[1]);
 								a.setAmount(TheAPI.getStringUtils().getInt(args[2]));

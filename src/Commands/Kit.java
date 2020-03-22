@@ -124,7 +124,7 @@ public class Kit implements CommandExecutor,TabCompleter{
 		if(getKitName(kitName) != null) {
 			kitName = getKitName(kitName);
 			for(String def:Loader.kit.getConfigurationSection("Kits."+kitName+".Items").getKeys(false)) {
-				Material m = XMaterial.matchXMaterial(def.toUpperCase()).parseMaterial();
+				Material m = XMaterial.matchXMaterial(def.toUpperCase()).get().parseMaterial();
 				if(m==null) {
 					Loader.warn("Error when giving kit '"+kitName+"', material '"+def+"' is invalid !");
 					return;
