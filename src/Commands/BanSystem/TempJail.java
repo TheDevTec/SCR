@@ -1,19 +1,24 @@
 package Commands.BanSystem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.LoaderClass;
 import me.Straiker123.TheAPI;
 
-public class TempJail implements CommandExecutor {
+public class TempJail implements CommandExecutor, TabCompleter {
 
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String arg2, String[] args) {
@@ -55,5 +60,34 @@ public class TempJail implements CommandExecutor {
 			}
 		return true;
 	}
-
+	@Override
+	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
+		List<String> c = new ArrayList<>();
+		if(s.hasPermission("ServerControl.TempJail")) {
+			if(args.length==1) {
+				return null;
+			}
+			if(args.length==2) {
+				if(args[1].equalsIgnoreCase("")) { 
+				c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("1","2","3","4","5","6","7","8","9","0"), new ArrayList<>()));
+				}
+				if(args[1].startsWith("1")||args[1].startsWith("2")||args[0].startsWith("3")||
+						args[1].startsWith("4")||args[1].startsWith("5")||args[1].startsWith("6")||
+						args[1].startsWith("7")||args[1].startsWith("8")||args[1].startsWith("9")||args[1].startsWith("0")){
+					String sec =LoaderClass.config.getConfig().getString("Words.Second");
+					String min =LoaderClass.config.getConfig().getString("Words.Minute");
+					String h =LoaderClass.config.getConfig().getString("Words.Hour");
+					String d =LoaderClass.config.getConfig().getString("Words.Day");
+					String w =LoaderClass.config.getConfig().getString("Words.Week");
+					String mon = LoaderClass.config.getConfig().getString("Words.Month");
+					String y =LoaderClass.config.getConfig().getString("Words.Year");
+					String cent = LoaderClass.config.getConfig().getString("Words.Century");
+					String mil =LoaderClass.config.getConfig().getString("Words.Millenium");
+					c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList(args[1]+sec,args[1]+min,args[1]+h,args[1]+d,args[1]+w,args[1]+mon,
+							args[1]+y,args[1]+cent,args[1]+mil), new ArrayList<>()));
+				}
+			}
+		}
+		return c;
+	}
 }
