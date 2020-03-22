@@ -387,7 +387,7 @@ public class Give implements CommandExecutor, TabCompleter {
 								String g = args[0].toUpperCase();
 								if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
 							TheAPI.giveItem(p, XMaterial.matchXMaterial(g).get().parseMaterial(),1);
-								else
+								else 
 									TheAPI.giveItem(p, getPotion(g));
 							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),p).replace("%amount%", "1").replace("%item%", getItem(args[0])), s);
 						return true;
