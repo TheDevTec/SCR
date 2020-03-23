@@ -20,10 +20,10 @@ public class AFK implements CommandExecutor {
 		SPlayer p = new SPlayer((Player)s);
 		if(p.isAFK()) {
 			p.setAFK(false);
+			if(!p.hasVanish())
+		  		  TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("AFK.NoLongerAFK").replace("%player%", p.getName())
+				   .replace("%playername%", p.getDisplayName()));
 			}else {
-				if(!p.hasVanish())
-			  		  TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("AFK.NoLongerAFK").replace("%player%", p.getName())
-					   .replace("%playername%", p.getDisplayName()));
 				p.setAFK(true);
 			}
 			return true;
