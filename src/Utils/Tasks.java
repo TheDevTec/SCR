@@ -202,7 +202,7 @@ FileConfiguration f=Loader.config,c=Loader.me;
 			if(s.hasGodEnabled() && s.hasPermission("servercontrol.godonjoin") && s.hasPermission("servercontrol.god"))s.enableGod();
 			}
 		}   
-		}}, 20, 40));
+		}}, 20, 20));
 	}
 	
 	private static void tab() {
