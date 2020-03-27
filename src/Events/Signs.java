@@ -44,6 +44,27 @@ public class Signs implements Listener {
 				e.getBlock().getState().update();
 		}}
     }
+		if(p.hasPermission("ServerControl.SignCreate.Workbench")) {
+		String l = e.getLine(0);
+		if(l.equalsIgnoreCase("[workbench]")) {
+				e.setLine(0,TheAPI.colorize("&0[&9Workbench&0]"));
+				e.getBlock().getState().update();
+		}
+    }
+		if(p.hasPermission("ServerControl.SignCreate.EnderChest")) {
+		String l = e.getLine(0);
+		if(l.equalsIgnoreCase("[Enderchest]")) {
+				e.setLine(0,TheAPI.colorize("&0[&9EnderChest&0]"));
+				e.getBlock().getState().update();
+		}
+    }
+		if(p.hasPermission("ServerControl.SignCreate.Suicide")) {
+		String l = e.getLine(0);
+		if(l.equalsIgnoreCase("[Suicide]")) {
+				e.setLine(0,TheAPI.colorize("&0[&9Suicide&0]"));
+				e.getBlock().getState().update();
+		}
+    }
 		String l = e.getLine(0);
 		String f = e.getLine(1);
 		if(p.hasPermission("ServerControl.SignCreate.Repair")) {
@@ -87,18 +108,24 @@ public class Signs implements Listener {
 				String s2 = Colors.remove(sign.getLine(1));
 		    	if(s1.equals("[Warp]")){
 		    		if(warp(s2)!=null) {
-		    		Bukkit.dispatchCommand(e.getPlayer(), "warp "+s2);
+		    		Bukkit.dispatchCommand(e.getPlayer(), "Warp "+s2);
 		    	}}
-		    	if(s1.equals("[Repair]")){
+		    	if(s1.equals(TheAPI.colorize("&0[&9Repair&0]"))){
 		    		if(s2.equals("Hand"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "repair hand");
-		    		if(s2.equals("All"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "repair all");
+		    		Bukkit.dispatchCommand(e.getPlayer(), "Repair Hand");
+		    		if(s2.equalsIgnoreCase("All"))
+		    		Bukkit.dispatchCommand(e.getPlayer(), "Repair All");
 		    	}
-		    	if(s1.equals("[Heal]"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "heal");
-		    	if(s1.equals("[Trash]"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "trash");
-		    	if(s1.equals("[Feed]"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "feed");
+		    	if(s1.equals("&0[&9Heal&0]"))
+		    		Bukkit.dispatchCommand(e.getPlayer(), "Heal");
+		    	if(s1.equals("&0[&9Suicide&0]"))
+		    		Bukkit.dispatchCommand(e.getPlayer(), "Suicide");
+		    	if(s1.equals("&0[&9EnderChest&0]"))
+		    		Bukkit.dispatchCommand(e.getPlayer(), "EnderChest");
+		    	if(s1.equals("&0[&9Workbench&0]"))
+		    		Bukkit.dispatchCommand(e.getPlayer(), "Workbench");
+		    	if(s1.equals("&0[&9Trash&0]"))
+		    		Bukkit.dispatchCommand(e.getPlayer(), "Trash");
+		    	if(s1.equals("&0[&9Feed&0]"))
+		    		Bukkit.dispatchCommand(e.getPlayer(), "Feed");
     	}}}}

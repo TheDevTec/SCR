@@ -137,6 +137,7 @@ FileConfiguration f=Loader.config,c=Loader.me;
 				else
 					TheAPI.setServerMotd(Loader.config.getString("Options.ServerList.MOTD.Text.Maintenance").replace("%next%", "\n").replace("%line%", "\n"));
 		}
+		    if(online.isEmpty()==false)
 		    for(String s : online)
 				if(TheAPI.getPlayer(s)==null) {
 					if(players.contains(s)) {
