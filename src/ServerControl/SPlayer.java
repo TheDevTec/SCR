@@ -23,6 +23,10 @@ public class SPlayer {
 		d=TheAPI.getPlayerAPI(s);
 	}
 	
+	public PlayerData getData() {
+		return new PlayerData(s.getName());
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void setHP() {
 		d.setHealth(s.getMaxHealth());

@@ -10,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Tasks;
 import Utils.setting;
@@ -22,7 +21,7 @@ public Loader plugin=Loader.getInstance;
 				if(setting.vip_join) {
 					TheAPI.broadcastMessage(Loader.config.getString("Options.VIPSlots.Text.BroadcastVIPJoin")
 							.replace("%players_max%", String.valueOf(TheAPI.getMaxPlayers() + (setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)))
-							.replace("%players_online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
+							.replace("%online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
 							.replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName())
 							.replace("%prefix%", Loader.s("Prefix"))
@@ -36,8 +35,6 @@ public Loader plugin=Loader.getInstance;
 	public void JoinEvent(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
 		Loader.setupChatFormat(p);
-		API.getBanSystemAPI().processBanSystem(p.getName(), e);
-		if(e.getResult()==Result.KICK_OTHER)return;
 		if(setting.lock_server && !p.hasPermission("ServerControl.Maintenance")) {
 			String kickString="";
 			for(String sk : f.getStringList("Options.Maintenance.KickMessages")) {

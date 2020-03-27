@@ -6,7 +6,6 @@ import java.util.Date;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import Commands.BanSystem.BanSystem;
@@ -77,10 +76,7 @@ public class BanSystemAPI {
 			BanSystem.kickPlayer(sender,player.getName(),BanType.KICK);
 	 }
 	 
-	public void processBanSystem(String n,PlayerLoginEvent p) {
-		String r = p.getRealAddress().toString();
-		Loader.me.set("Players."+n+".IPAdress", r.replace('.', '_'));
-		 Configs.chatme.save();
+	public void processBanSystem(String n) {
 			Commands.BanSystem.BanSystem.KickMaxWarns(n);
 			if (Loader.config.getBoolean("AutoKickLimit.Kick.Use")==true) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {

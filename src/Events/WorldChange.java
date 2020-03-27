@@ -25,7 +25,9 @@ public class WorldChange implements Listener {
 		SPlayer a = new SPlayer(e.getPlayer());
 		a.createEconomyAccount();
 		if(a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
-			e.getPlayer().setAllowFlight(true);
+			a.enableFly();
+		else
+			if(a.hasTempFlyEnabled())a.enableTempFly();
 		if(a.hasPermission("servercontrol.god") && a.hasGodEnabled())
 		a.enableGod();
 		a.setGamamode();
@@ -37,7 +39,9 @@ public class WorldChange implements Listener {
 	public void onChangeGamamode(PlayerGameModeChangeEvent e) {
 		SPlayer a = new SPlayer(e.getPlayer());
 		if(a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
-			e.getPlayer().setAllowFlight(true);
+			a.enableFly();
+		else
+			if(a.hasTempFlyEnabled())a.enableTempFly();
 		if(a.hasPermission("servercontrol.god") && a.hasGodEnabled())
 		a.enableGod();
 		}}
