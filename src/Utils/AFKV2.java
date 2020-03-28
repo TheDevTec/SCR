@@ -26,7 +26,7 @@ public class AFKV2 {
 				Player s = Bukkit.getPlayer(d);
 				if(s==null) {
 					Loader.afk.remove(d);
-					Loader.me.set("Players."+d+".AFK",null);
+					a.set("Players."+d+".AFK",null);
 					r.cancel();
 					return;
 				}
@@ -91,6 +91,6 @@ public class AFKV2 {
 	}
 	
 	public boolean isAfk() {
-		return getTime()<=0;
+		return a.getString("Players."+d+".AFK")!=null?getTime()<=0:false;
 	}
 }

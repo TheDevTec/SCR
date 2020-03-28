@@ -11,7 +11,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import Events.OnPlayerLeave;
+import Commands.Mail;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
@@ -29,6 +29,10 @@ public class Tasks {
 	static Loader a;
 	static int tests;
 	public static void load() {
+		joined = new ArrayList<Player>();
+		ss = new HashMap<String, String>();
+		players = new ArrayList<String>();
+		playedBefore = new ArrayList<Player>();
 		if(setting.am)
 		automessage();
 		if(setting.vip)
@@ -50,8 +54,6 @@ public class Tasks {
 		for(Integer t : tasks)
 		Bukkit.getScheduler().cancelTask(t);
 		tests=0;
-		players.clear();
-		ss.clear();
 		tasks.clear();
 		load();
 	}
@@ -100,14 +102,12 @@ public class Tasks {
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){
 			int now = 0;
 			public void run(){
-			List<World> w = Bukkit.getWorlds();
-			if(w.size()-1 <= now) now = 0;
+				List<World> w = Bukkit.getWorlds();
+			if(w.size()-1 == now) now = 0;
 			try {
 				if(!Loader.mw.getBoolean("WorldsSettings."+w.get(now).getName()+".AutoSave"))
 				w.get(now).save();
-			}catch(Exception err) {
-				//out
-			}
+			}catch(Exception err) {}
 				++now;
 			}}, 20, 20*Loader.mw.getInt("SavingTask.Delay")));
 	}
@@ -123,54 +123,64 @@ public class Tasks {
 			}
 	}
 
-	public static List<String> online = new ArrayList<String>();
-	public static List<String> playedBefore = new ArrayList<String>();
+	public static List<Player> joined = new ArrayList<Player>(),playedBefore = new ArrayList<Player>()
+			,quit = new ArrayList<Player>();
+	public static List<String> ignore = new ArrayList<String>();
 	private static void other() {
-FileConfiguration f=Loader.config,c=Loader.me;
+		FileConfiguration f=Loader.config,c=Loader.me;
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 			for(Player p : TheAPI.getOnlinePlayers())
 			Loader.setupChatFormat(p);
 		    if(setting.motd) {
-		    	
-				if(!setting.lock_server ||setting.lock_server && !setting.motd_maintenance)
-					TheAPI.setServerMotd(Loader.config.getString("Options.ServerList.MOTD.Text.Normal").replace("%next%", "\n").replace("%line%", "\n"));
+		    	if(!setting.lock_server ||setting.lock_server && !setting.motd_maintenance)
+					TheAPI.setServerMotd(f.getString("Options.ServerList.MOTD.Text.Normal").replace("%next%", "\n").replace("%line%", "\n"));
 				else
-					TheAPI.setServerMotd(Loader.config.getString("Options.ServerList.MOTD.Text.Maintenance").replace("%next%", "\n").replace("%line%", "\n"));
+					TheAPI.setServerMotd(f.getString("Options.ServerList.MOTD.Text.Maintenance").replace("%next%", "\n").replace("%line%", "\n"));
 		}
-		    if(online.isEmpty()==false)
-		    for(String s : online)
-				if(TheAPI.getPlayer(s)==null) {
-					if(players.contains(s)) {
-						players.remove(s);
-				    }
-				    Loader.me.set("Players."+s+".LastLeave", setting.format_date_time.format(new Date()));
-				    Loader.me.set("Players."+s+".Leaves", Loader.me.getInt("Players."+s+".Leaves") + 1);
-					Loader.me.set("Players."+s+".LeaveTime",System.currentTimeMillis()/1000);
-					Configs.chatme.save();
-					online.remove(s);
+		    try {
+		    if(!joined.isEmpty() && joined != null)
+		    for(Player p : joined) {
+				if(Bukkit.getPlayer(p.getName())==null) {
+					ignore.add(p.getName());
+					return;
 				}
-			for(Player p : TheAPI.getOnlinePlayers())
-		if(!online.contains(p.getName())) {
-			online.add(p.getName());
+					Tasks.regPlayer(p);
+					AFKV2 v = new AFKV2(p.getName());
+					Loader.afk.put(p.getName(), v);
+					v.start();
+					if(f.getBoolean("OnJoin.SpawnTeleport") && !API.getBanSystemAPI().hasJail(p))API.teleportPlayer(p, TeleportLocation.SPAWN);
+					if(API.getBanSystemAPI().hasJail(p))
+						if(setting.tp_safe)
+						TheAPI.getPlayerAPI(p).safeTeleport(TheAPI.getStringUtils().getLocationFromString(f.getString("Jails."+c.getString("Players."+p.getName()+".Jail.Location"))));
+						else
+							TheAPI.getPlayerAPI(p).teleport(TheAPI.getStringUtils().getLocationFromString(f.getString("Jails."+c.getString("Players."+p.getName()+".Jail.Location"))));
+					if(!Mail.getMails(p.getName()).isEmpty())
+						Loader.msg(Loader.s("Prefix")+Loader.s("Mail.Notification")
+								.replace("%number%", ""+c.getStringList("Players."+p.getName()+".Mails").size()), p);
+					if(Loader.SoundsChecker())
+						p.playSound(p.getLocation(), TheAPI.getSoundAPI().getByName(f.getString("Options.Sounds.Sound")), 1, 1);
+					c.set("Players."+p.getName()+".Joins", c.getInt("Players."+p.getName()+".Joins") + 1);
+					c.set("Players."+p.getName()+".JoinTime",System.currentTimeMillis()/1000);
+					Configs.chatme.save();
 			if(setting.join_msg){
 					if(!TheAPI.isVanished(p))
-					TheAPI.broadcastMessage(OnPlayerLeave.replaceAll(Loader.s("OnJoin.Join"),p));
+					TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.Join"),p));
 			}
-				if(playedBefore.contains(p.getName()) || c.getString("Players."+p.getName()+".FirstJoin")==null){
+				if(playedBefore.contains(p) || c.getString("Players."+p.getName()+".FirstJoin")==null){
 				c.set("Players."+p.getName()+".FirstJoin", setting.format_date_time.format(new Date()));
 				}
-				if(playedBefore.contains(p.getName()) && setting.join_first) {
+				if(playedBefore.contains(p) && setting.join_first) {
 						for(String ss: Loader.TranslationsFile.getStringList("OnJoin.FirstJoin.Messages")) {
-									  Loader.msg(OnPlayerLeave.replaceAll(ss,p),p);
+									  Loader.msg(replaceAll(ss,p),p);
 					}
 						if(!TheAPI.isVanished(p))
-						TheAPI.broadcastMessage(OnPlayerLeave.replaceAll(Loader.s("OnJoin.FirstJoin.BroadCast"),p));
+						TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.FirstJoin.BroadCast"),p));
 									  if(f.getInt("Options.Join.FirstJoin.Wait") > 0) {
 									  		Bukkit.getScheduler().runTaskLater(Loader.getInstance, new Runnable() {
 								  				public void run() {
 										  if(setting.join_first_percmd) {
 							  			for(String cmds:f.getStringList("Options.Join.FirstJoin.PerformCommands.List")) {
-							  				TheAPI.sudoConsole(SudoType.COMMAND,TheAPI.colorize(OnPlayerLeave.replaceAll(cmds,p)));
+							  				TheAPI.sudoConsole(SudoType.COMMAND,TheAPI.colorize(replaceAll(cmds,p)));
 							  			}}
 							  		if(setting.join_first_give && f.getString("Options.Join.FirstJoin.Kit")!=null)
 							  			API.giveKit(p.getName(),f.getString("Options.Join.FirstJoin.Kit"),false,false); 
@@ -178,7 +188,7 @@ FileConfiguration f=Loader.config,c=Loader.me;
 									  		}else {
 									  if(setting.join_first_percmd) {
 								  			for(String cmds: f.getStringList("Options.Join.FirstJoin.PerformCommands.List")) {
-								  				TheAPI.sudoConsole(SudoType.COMMAND,TheAPI.colorize(OnPlayerLeave.replaceAll(cmds,p)));
+								  				TheAPI.sudoConsole(SudoType.COMMAND,TheAPI.colorize(replaceAll(cmds,p)));
 								  			}}
 								  		if(setting.join_first_give &&f.getString("Options.Join.FirstJoin.Kit")!=null)
 								  			API.giveKit(p.getName(),f.getString("Options.Join.FirstJoin.Kit"),false,false);
@@ -187,9 +197,11 @@ FileConfiguration f=Loader.config,c=Loader.me;
 				}else {
 					if(setting.join_motd){
 				    	for(String ss: Loader.TranslationsFile.getStringList("OnJoin.Messages")) {
-				    		Loader.msg(OnPlayerLeave.replaceAll(ss,p),p);
+				    		Loader.msg(replaceAll(ss,p),p);
 					}
 				}}
+				if(playedBefore.contains(p))
+				playedBefore.remove(p);
 			if(Loader.econ!=null && !Loader.econ.hasAccount(p))
 				Loader.econ.createPlayerAccount(p);
 			SPlayer s = new SPlayer(p);
@@ -201,10 +213,50 @@ FileConfiguration f=Loader.config,c=Loader.me;
 				if(s.hasFlyEnabled() && s.hasPermission("servercontrol.flyonjoin") && s.hasPermission("servercontrol.fly"))s.enableFly();
 			if(s.hasGodEnabled() && s.hasPermission("servercontrol.godonjoin") && s.hasPermission("servercontrol.god"))s.enableGod();
 			}
-		}   
-		}}, 20, 20));
+			joined.remove(p);
+		    }}catch(Exception e) {}
+		    try {
+		    if(!quit.isEmpty() && quit != null)
+		    for(Player p : quit) {
+		    	if(ignore.contains(p.getName())) {
+					quit.remove(p);
+		    		ignore.remove(p.getName());
+		    		return;
+		    	}
+		    	if(players.contains(p.getName()))
+					players.remove(p.getName());
+			    c.set("Players."+p.getName()+".LastLeave", setting.format_date_time.format(new Date()));
+			    c.set("Players."+p.getName()+".Leaves", Loader.me.getInt("Players."+p.getName()+".Leaves") + 1);
+				c.set("Players."+p.getName()+".LeaveTime",System.currentTimeMillis()/1000);
+			    c.set("Players."+p.getName()+".DisconnectWorld", p.getWorld().getName());
+				Configs.chatme.save();
+				if(setting.leave) {
+				if(!TheAPI.isVanished(p))
+					TheAPI.broadcastMessage(replaceAll(Loader.s("OnLeave.Leave"),p));
+				}
+				SPlayer s = new SPlayer(p);
+				s.disableFly();
+				s.disableGod();
+				quit.remove(p);
+		}}catch(Exception e) {}}}, 20, 20));
 	}
-	
+	public static String replaceAll(String s, Player p) {
+		String name = p.getDisplayName();
+		return TheAPI.getPlaceholderAPI().setPlaceholders(p,s.replace("%players_max%", TheAPI.getMaxPlayers()+"")
+		  .replace("%online%", TheAPI.getOnlinePlayers().size()-1+"")
+		  .replace("%player%", name) 
+		  .replace("%playername%", name) 
+		  .replace("%customname%", p.getCustomName()!=null ? p.getCustomName():name) 
+		  .replace("%prefix%", Loader.s("Prefix"))
+		  .replace("%time%",setting.format_time.format(new Date()))
+		  .replace("%date%",setting.format_date.format(new Date()))
+		  .replace("%date-time%",setting.format_date_time.format(new Date()))
+		  .replace("%server_support%", Loader.getInstance.ver())
+		  .replace("%version%", "V"+Loader.getInstance.getDescription().getVersion())
+		  .replace("%server_time%", setting.format_time.format(new Date()))
+		  .replace("%server_name%", API.getServerName())
+		  .replace("%server_ip%", p.getServer().getIp()+":"+p.getServer().getPort()));
+	}
 	private static void tab() {
 		for(Player p:TheAPI.getOnlinePlayers()) {
 		regPlayer(p);
