@@ -290,8 +290,7 @@ public class Tasks {
 			@Override
 			public void run() {
 		    	if(TheAPI.getOnlinePlayers().size()<Loader.config.getInt("Options.AutoMessage.MinimalPlayers"))return;
-				List<Object> l = new ArrayList<Object>();
-				for(String s : Loader.config.getStringList("Options.AutoMessage.Messages"))l.add(s);
+				List<String> l = Loader.config.getStringList("Options.AutoMessage.Messages");
 			  		if(setting.am_random) {
 			  				TheAPI.broadcastMessage(TheAPI.getRandomFromList(l).toString()
 			     			 			.replace("%used_ram%", TheAPI.getMemoryAPI().getUsedMemory(false)+"")
