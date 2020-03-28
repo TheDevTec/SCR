@@ -14,9 +14,8 @@ public class OnPlayerJoin implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PlayerJoinEvent(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-		if(setting.join_msg){
+		if(setting.join_msg)
 			e.setJoinMessage("");
-			}
 			Tasks.joined.add(p);
 			if(!p.hasPlayedBefore())Tasks.playedBefore.add(p);
 

@@ -219,8 +219,8 @@ public class Tasks {
 		    if(!quit.isEmpty() && quit != null)
 		    for(Player p : quit) {
 		    	if(ignore.contains(p.getName())) {
-					quit.remove(p);
 		    		ignore.remove(p.getName());
+					quit.remove(p);
 		    		return;
 		    	}
 		    	if(players.contains(p.getName()))
@@ -277,11 +277,11 @@ public class Tasks {
 	    TheAPI.setMaxPlayers(Bukkit.getMaxPlayers() + Loader.config.getInt("Options.VIPSlots.SlotsToAdd"));
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 	    	   	 for(Player online:TheAPI.getOnlinePlayers()) {
-	    	   	 if(!players.contains(online.getName()) &&!online.hasPermission("ServerControl.JoinFullServer"))
-	    	   		 players.add(online.getName());
-	    	   	 if(players.contains(online.getName()) && online.hasPermission("ServerControl.JoinFullServer"))
-	    	   		 players.remove(online.getName());
-	    	   	 }}}, 20, 200));
+	    	   	 if(!players.contains(online.getName())) {
+	    	   		 if(!online.hasPermission("ServerControl.JoinFullServer"))players.add(online.getName());
+	    	   	 }else if(online.hasPermission("ServerControl.JoinFullServer")){
+	    	   		players.remove(online.getName());
+	    	   	 }}}}, 20, 200));
 	}
 	
 	private static void automessage() {
