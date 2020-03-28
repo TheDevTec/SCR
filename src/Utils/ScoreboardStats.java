@@ -16,10 +16,10 @@ public class ScoreboardStats {
 		f=Loader.scFile;
 	}
 	static FileConfiguration f;
-	 static HashMap<String, ScoreboardAPIV2> setup = new HashMap<String, ScoreboardAPIV2>();
+	 static HashMap<Player, ScoreboardAPIV2> setup = new HashMap<Player, ScoreboardAPIV2>();
 	 public static void createScoreboard(Player p) {
-		 if(!setup.containsKey(p.getName()))setup.put(p.getName(), TheAPI.getScoreboardAPIV2(p));
-		 ScoreboardAPIV2 a=setup.get(p.getName());
+		 if(!setup.containsKey(p))setup.put(p, TheAPI.getScoreboardAPIV2(p));
+		 ScoreboardAPIV2 a=setup.get(p);
 			String getName = null;
 			 List<String> getLine = new ArrayList<String>();
 			 if(setting.sb_world) {
@@ -44,10 +44,11 @@ public class ScoreboardStats {
 	 	
 		public static void removeScoreboard() {
 			for(Player p:TheAPI.getOnlinePlayers()) {
-				setup.remove(p.getName());
 				 p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
-		}}
+		}
+			setup.clear();
+		}
 			public static void removeScoreboard(Player p) {
-					setup.remove(p.getName());
+					setup.remove(p);
 					 p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
 }}
