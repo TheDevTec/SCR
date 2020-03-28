@@ -238,7 +238,7 @@ public class Tasks {
 				s.disableFly();
 				s.disableGod();
 				quit.remove(p);
-		}}catch(Exception e) {}}}, 20, 20));
+		}}catch(Exception e) {}}}, 30, 30));
 	}
 	public static String replaceAll(String s, Player p) {
 		String name = p.getDisplayName();
