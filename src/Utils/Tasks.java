@@ -144,7 +144,7 @@ public class Tasks {
 					ignore.add(p.getName());
 					return;
 				}
-					Tasks.regPlayer(p);
+					regPlayer(p);
 					AFKV2 v = new AFKV2(p.getName());
 					Loader.afk.put(p.getName(), v);
 					v.start();
@@ -259,6 +259,7 @@ public class Tasks {
 	}
 	private static void tab() {
 		for(Player p:TheAPI.getOnlinePlayers()) {
+			if(!ss.containsKey(p.getName()))
 		regPlayer(p);
 		}
 		int r = Loader.tab.getInt("NameTag-RefleshTick");
@@ -273,7 +274,7 @@ public class Tasks {
 		}},20,r));
 	}
 	private static void vipslot() {
-		if(Loader.config.getBoolean("Options.VIPSlots.AddSlots"))
+		if(setting.vip_add)
 	    TheAPI.setMaxPlayers(Bukkit.getMaxPlayers() + Loader.config.getInt("Options.VIPSlots.SlotsToAdd"));
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 	    	   	 for(Player online:TheAPI.getOnlinePlayers()) {
