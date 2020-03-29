@@ -1,5 +1,6 @@
 package Events;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.bukkit.block.Sign;
@@ -41,7 +42,7 @@ public class Signs implements Listener {
 				e.setLine(1, TheAPI.colorize("&a"+warp(f)));
 				e.getBlock().getState().update();
 				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
-				a.put(SignAction.PLAYER_COMMANDS, "Warp "+warp(f));
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Warp "+warp(f)));
 				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 		}}
 		if(l.equalsIgnoreCase("[workbench]") && p.hasPermission("ServerControl.SignCreate.Workbench")) {
@@ -49,7 +50,7 @@ public class Signs implements Listener {
 				e.getBlock().getState().update();
 
 				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
-				a.put(SignAction.PLAYER_COMMANDS, "Workbench");
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Workbench"));
 				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 		}
 		if(l.equalsIgnoreCase("[Enderchest]") && p.hasPermission("ServerControl.SignCreate.EnderChest")) {
@@ -57,14 +58,14 @@ public class Signs implements Listener {
 				e.getBlock().getState().update();
 
 				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
-				a.put(SignAction.PLAYER_COMMANDS, "Enderchest");
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Enderchest"));
 				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 		}
 		if(l.equalsIgnoreCase("[Suicide]") && p.hasPermission("ServerControl.SignCreate.Suicide")) {
 				e.setLine(0,TheAPI.colorize("&0[&9Suicide&0]"));
 				e.getBlock().getState().update();
 				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
-				a.put(SignAction.PLAYER_COMMANDS, "Suicide");
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Suicide"));
 				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 		}
 		if(l.equalsIgnoreCase("[repair]") && p.hasPermission("ServerControl.SignCreate.Repair")) {
@@ -72,7 +73,7 @@ public class Signs implements Listener {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.getBlock().getState().update();
 				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
-				a.put(SignAction.PLAYER_COMMANDS, "Repair Hand");
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Repair Hand"));
 				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
     		}
     		if(f.equalsIgnoreCase("Hand")) {
@@ -80,7 +81,7 @@ public class Signs implements Listener {
 				e.setLine(1, TheAPI.colorize("&aHand"));
 				e.getBlock().getState().update();
 				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
-				a.put(SignAction.PLAYER_COMMANDS, "Repair Hand");
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Repair Hand"));
 				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 		}
     		if(f.equalsIgnoreCase("All")) {
@@ -88,27 +89,27 @@ public class Signs implements Listener {
 				e.setLine(1, TheAPI.colorize("&aAll"));
 				e.getBlock().getState().update();
 				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
-				a.put(SignAction.PLAYER_COMMANDS, "Repair All");
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Repair All"));
 				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 		}}
 		if(l.equalsIgnoreCase("[Feed]") && p.hasPermission("ServerControl.SignCreate.Feed")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Feed&0]"));
 			e.getBlock().getState().update();
 			HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
-			a.put(SignAction.CONSOLE_COMMANDS, "Feed %player%");
+			a.put(SignAction.CONSOLE_COMMANDS, Arrays.asList("Feed %player%"));
 			TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 	}
 		if(l.equalsIgnoreCase("[Trash]")&&p.hasPermission("ServerControl.SignCreate.Trash")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Trash&0]"));
 			e.getBlock().getState().update();
 			HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
-			a.put(SignAction.PLAYER_COMMANDS, "Trash");
+			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Trash"));
 			TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 	}
 		if(l.equalsIgnoreCase("[Heal]")&&p.hasPermission("ServerControl.SignCreate.Heal")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Heal&0]"));
 			e.getBlock().getState().update();
 			HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
-			a.put(SignAction.CONSOLE_COMMANDS, "Heal %player%");
+			a.put(SignAction.CONSOLE_COMMANDS, Arrays.asList("Heal %player%"));
 			TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 	}}}
