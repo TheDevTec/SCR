@@ -37,11 +37,35 @@ public class Stop implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(API.hasPerm(s, "ServerControl.Stop")) {
 			int time = Loader.config.getInt("Options.WarningSystem.Stop.PauseTime");
-			if(args.length==1) {
+			if(args.length==0) {
+				stop=true;
+				r=new TheRunnable();
+				int h = time;
+				if(setting.warn_stop) {
+				r.runRepeating(new Runnable() {
+					int f= h;
+					public void run() {
+						
+						if(f<=0) {
+							stop(s);
+							return;
+						}else if(f == h%75 && h > 15  ||f == h%50 && h > 10 ||f == h%25 && h > 5  || f == 5 || f==4||f==3||f==2||f==1){
+							for(String s:Loader.config.getStringList("Options.WarningSystem.Stop.Messages"))
+								TheAPI.broadcastMessage(s.replace("%time%", ""+TheAPI.getStringUtils().setTimeToString(f)));
+						}
+						--f;
+					}}, 20);
+				}else {
+					stop(s);
+				}
+				return true;
+			}
 				if(args[0].equalsIgnoreCase("cancel")) {
+					if(r!=null) {
 					r.cancel();
 					stop=false;
 					TheAPI.broadcastMessage("&eServer shutdown has been &acanceled");
+					}
 					return true;
 				}else
 				if(args[0].equalsIgnoreCase("now")) {
@@ -49,31 +73,29 @@ public class Stop implements CommandExecutor, TabCompleter {
 					return true;
 				}else {
 					time=(int)TheAPI.getStringUtils().getTimeFromString(args[0]);
-				}
-			}
-		if(!stop) {
-			stop=true;
-			r=new TheRunnable();
-			int h = time;
-			if(setting.warn_stop) {
-			r.runRepeating(new Runnable() {
-				int f= h;
-				public void run() {
-					
-					if(f<=0) {
+					stop=true;
+					r=new TheRunnable();
+					int h = time;
+					if(setting.warn_stop) {
+					r.runRepeating(new Runnable() {
+						int f= h;
+						public void run() {
+							
+							if(f<=0) {
+								stop(s);
+								return;
+							}else if(f == h%75 && h > 15  ||f == h%50 && h > 10 ||f == h%25 && h > 5  || f == 5 || f==4||f==3||f==2||f==1){
+								for(String s:Loader.config.getStringList("Options.WarningSystem.Stop.Messages"))
+									TheAPI.broadcastMessage(s.replace("%time%", ""+TheAPI.getStringUtils().setTimeToString(f)));
+							}
+							--f;
+						}}, 20);
+					}else {
 						stop(s);
-						return;
-					}else if(f == h%75 && h > 15  ||f == h%50 && h > 10 ||f == h%25 && h > 5  || f == 5 || f==4||f==3||f==2||f==1){
-						for(String s:Loader.config.getStringList("Options.WarningSystem.Stop.Messages"))
-							TheAPI.broadcastMessage(s.replace("%time%", ""+TheAPI.getStringUtils().setTimeToString(f)));
 					}
-					--f;
-				}}, 20);
-			}else {
-				stop(s);
+					return true;
+				
 			}
-			return true;
-		}
 		}
 		return true;
 	}

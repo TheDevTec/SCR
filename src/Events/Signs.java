@@ -1,17 +1,16 @@
 package Events;
 
-import org.bukkit.Bukkit;
+import java.util.HashMap;
+
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-
 import ServerControl.Loader;
 import Utils.Colors;
+import me.Straiker123.SignAPI.SignAction;
 import me.Straiker123.TheAPI;
 
 public class Signs implements Listener {
@@ -34,98 +33,82 @@ public class Signs implements Listener {
 			e.setLine(test, Colors.colorize(line,true,p));
 			test=test+1;
 		}
-		if(p.hasPermission("ServerControl.SignCreate.Warp")) {
 		String l = e.getLine(0);
 		String f = e.getLine(1);
-		if(l.equalsIgnoreCase("[warp]")) {
+		if(l.equalsIgnoreCase("[warp]") && p.hasPermission("ServerControl.SignCreate.Warp")) {
 			if(warp(f)!=null) {
 				e.setLine(0,TheAPI.colorize("&0[&9Warp&0]"));
 				e.setLine(1, TheAPI.colorize("&a"+warp(f)));
 				e.getBlock().getState().update();
+				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
+				a.put(SignAction.PLAYER_COMMANDS, "Warp "+warp(f));
+				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 		}}
-    }
-		if(p.hasPermission("ServerControl.SignCreate.Workbench")) {
-		String l = e.getLine(0);
-		if(l.equalsIgnoreCase("[workbench]")) {
+		if(l.equalsIgnoreCase("[workbench]") && p.hasPermission("ServerControl.SignCreate.Workbench")) {
 				e.setLine(0,TheAPI.colorize("&0[&9Workbench&0]"));
 				e.getBlock().getState().update();
+
+				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
+				a.put(SignAction.PLAYER_COMMANDS, "Workbench");
+				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 		}
-    }
-		if(p.hasPermission("ServerControl.SignCreate.EnderChest")) {
-		String l = e.getLine(0);
-		if(l.equalsIgnoreCase("[Enderchest]")) {
+		if(l.equalsIgnoreCase("[Enderchest]") && p.hasPermission("ServerControl.SignCreate.EnderChest")) {
 				e.setLine(0,TheAPI.colorize("&0[&9EnderChest&0]"));
 				e.getBlock().getState().update();
+
+				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
+				a.put(SignAction.PLAYER_COMMANDS, "Enderchest");
+				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 		}
-    }
-		if(p.hasPermission("ServerControl.SignCreate.Suicide")) {
-		String l = e.getLine(0);
-		if(l.equalsIgnoreCase("[Suicide]")) {
+		if(l.equalsIgnoreCase("[Suicide]") && p.hasPermission("ServerControl.SignCreate.Suicide")) {
 				e.setLine(0,TheAPI.colorize("&0[&9Suicide&0]"));
 				e.getBlock().getState().update();
+				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
+				a.put(SignAction.PLAYER_COMMANDS, "Suicide");
+				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 		}
-    }
-		String l = e.getLine(0);
-		String f = e.getLine(1);
-		if(p.hasPermission("ServerControl.SignCreate.Repair")) {
-		if(l.equalsIgnoreCase("[repair]")) {
+		if(l.equalsIgnoreCase("[repair]") && p.hasPermission("ServerControl.SignCreate.Repair")) {
     		if(f==null) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
-				e.setLine(1, TheAPI.colorize("&aHand"));
 				e.getBlock().getState().update();
+				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
+				a.put(SignAction.PLAYER_COMMANDS, "Repair Hand");
+				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
     		}
     		if(f.equalsIgnoreCase("Hand")) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.setLine(1, TheAPI.colorize("&aHand"));
 				e.getBlock().getState().update();
+				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
+				a.put(SignAction.PLAYER_COMMANDS, "Repair Hand");
+				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 		}
     		if(f.equalsIgnoreCase("All")) {
 				e.setLine(0,TheAPI.colorize("&0[&9Repair&0]"));
 				e.setLine(1, TheAPI.colorize("&aAll"));
 				e.getBlock().getState().update();
-		}}}
-		if(p.hasPermission("ServerControl.SignCreate.Feed")) {
-		if(l.equalsIgnoreCase("[Feed]")) {
+				HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
+				a.put(SignAction.PLAYER_COMMANDS, "Repair All");
+				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+		}}
+		if(l.equalsIgnoreCase("[Feed]") && p.hasPermission("ServerControl.SignCreate.Feed")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Feed&0]"));
 			e.getBlock().getState().update();
-	}}
-		if(p.hasPermission("ServerControl.SignCreate.Trash")) {
-		if(l.equalsIgnoreCase("[Trash]")) {
+			HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
+			a.put(SignAction.CONSOLE_COMMANDS, "Feed %player%");
+			TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+	}
+		if(l.equalsIgnoreCase("[Trash]")&&p.hasPermission("ServerControl.SignCreate.Trash")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Trash&0]"));
 			e.getBlock().getState().update();
-	}}
-		if(p.hasPermission("ServerControl.SignCreate.Heal")) {
-		if(l.equalsIgnoreCase("[Heal]")) {
+			HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
+			a.put(SignAction.PLAYER_COMMANDS, "Trash");
+			TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+	}
+		if(l.equalsIgnoreCase("[Heal]")&&p.hasPermission("ServerControl.SignCreate.Heal")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Heal&0]"));
 			e.getBlock().getState().update();
+			HashMap<SignAction, Object> a = new HashMap<SignAction, Object>();
+			a.put(SignAction.CONSOLE_COMMANDS, "Heal %player%");
+			TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
 	}}}
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void SignClick(PlayerInteractEvent e) {
-    	if (e.getAction() == Action.RIGHT_CLICK_BLOCK){
-			if (e.getClickedBlock().getState() instanceof Sign) {
-				Sign sign = (Sign) e.getClickedBlock().getState();
-				String s1 = Colors.remove(sign.getLine(0));
-				String s2 = Colors.remove(sign.getLine(1));
-		    	if(s1.equals("[Warp]")){
-		    		if(warp(s2)!=null) {
-		    		Bukkit.dispatchCommand(e.getPlayer(), "Warp "+s2);
-		    	}}
-		    	if(s1.equals(TheAPI.colorize("&0[&9Repair&0]"))){
-		    		if(s2.equals("Hand"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "Repair Hand");
-		    		if(s2.equalsIgnoreCase("All"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "Repair All");
-		    	}
-		    	if(s1.equals("&0[&9Heal&0]"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "Heal");
-		    	if(s1.equals("&0[&9Suicide&0]"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "Suicide");
-		    	if(s1.equals("&0[&9EnderChest&0]"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "EnderChest");
-		    	if(s1.equals("&0[&9Workbench&0]"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "Workbench");
-		    	if(s1.equals("&0[&9Trash&0]"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "Trash");
-		    	if(s1.equals("&0[&9Feed&0]"))
-		    		Bukkit.dispatchCommand(e.getPlayer(), "Feed");
-    	}}}}
