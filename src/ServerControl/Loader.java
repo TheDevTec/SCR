@@ -341,7 +341,10 @@ if(TheAPI.getServerVersion().contains("1_11")) {
 if(TheAPI.getServerVersion().contains("1_12")) {
 	v = "1.12+";
 }
-if(TheAPI.isNewVersion()) {
+if(TheAPI.getServerVersion().equalsIgnoreCase("glowstone")) {
+	v = "Glowstone";
+}
+if(TheAPI.isNewVersion()) {//v1_15_1 ... 1_15
 	v=TheAPI.getServerVersion().substring(1, 5).replace("_", ".")+"+";
 }
 return v;
