@@ -140,7 +140,7 @@ public class Tasks {
 		    try {
 		    if(!joined.isEmpty() && joined != null)
 		    for(Player p : joined) {
-				if(Bukkit.getPlayer(p.getName())==null) {
+				if(TheAPI.getPlayer(p.getName())==null) {
 					ignore.add(p.getName());
 					return;
 				}

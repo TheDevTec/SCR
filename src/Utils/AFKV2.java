@@ -1,11 +1,11 @@
 package Utils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.StringUtils;
 import me.Straiker123.TheAPI;
 import me.Straiker123.TheRunnable;
 
@@ -14,16 +14,17 @@ public class AFKV2 {
 	public AFKV2(String p) {
 	d=p;
 	}
+	StringUtils ss = TheAPI.getStringUtils();
 	TheRunnable r = TheAPI.getRunnable();
 	int kick = 0;
-	long time = TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
-	long rkick = TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
+	long time = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
+	long rkick = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
 	public void start() {
 		r.runRepeating(new Runnable() {
 			int f =0;
 			@Override
 			public void run() {
-				Player s = Bukkit.getPlayer(d);
+				Player s = TheAPI.getPlayer(d);
 				if(s==null) {
 					Loader.afk.remove(d);
 					a.set("Players."+d+".AFK",null);
@@ -32,9 +33,9 @@ public class AFKV2 {
 				}
 				if(f==5) {
 					f=0;
-					time = TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
+					time = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
 					if(setting.afk_kick)
-					rkick = TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
+					rkick = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
 				}
 				boolean is = isAfk();
 				if(setting.afk_auto) {
@@ -67,7 +68,7 @@ public class AFKV2 {
 		save();
 		mp=true;
 		manual=true;
-		Player s = Bukkit.getPlayer(d);
+		Player s = TheAPI.getPlayer(d);
 		if(s!=null) {
 	  	  if(!API.getSPlayer(s).hasVanish())
 	  		  TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("AFK.IsAFK").replace("%player%", d)
