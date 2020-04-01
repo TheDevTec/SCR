@@ -50,6 +50,7 @@ public class DeathEvent implements Listener {
 		if(API.getBanSystemAPI().hasJail(p))
 		e.setRespawnLocation((Location) Loader.config.get("Jails."+Loader.me.getString("Players."+p.getName()+".Jail.Location")));
 		else
+			if(setting.deathspawnbol) {
 			if(setting.deathspawn == DeathTp.HOME)
 				e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.HOME));
 			else
@@ -63,7 +64,7 @@ public class DeathEvent implements Listener {
 					.replace("%player%", p.getName())
 					.replace("%playername%", ((Player)p).getDisplayName())
 					, p);
-			}
+			}}
 		SPlayer a = new SPlayer(p);
 		if(a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
 		a.enableFly();

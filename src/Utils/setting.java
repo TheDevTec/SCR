@@ -31,7 +31,7 @@ public class setting {
 	spam_chat, spam_cmd, swear_chat, swear_cmd,
 	join_spawn, join_msg, join_motd, join_first, join_first_give, join_first_percmd, leave,
 	cool_cmd, cool_chat, cool_percmd, color_chat_perm,  color_sign_perm, 
-	tp_safe,tp_onreqloc, ram, spam_double,caps_chat, caps_cmd;
+	tp_safe,tp_onreqloc, ram, spam_double,caps_chat, caps_cmd,deathspawnbol;
 	public static DeathTp deathspawn;
 	
 /**	public static boolean offlineinvsee; ///invsee <offline player>, /esee <offline player> (Req. SCR_PerWorldInventory)
@@ -60,6 +60,7 @@ public class setting {
 		color_sign = f.getBoolean("Options.Colors.Sign.Use");
 		color_sign_perm= f.getBoolean("Options.Colors.Sign.RequiredPermission");
 		disable_item=f.getBoolean("Options.Disable-Items.Use");
+		deathspawnbol = f.getBoolean("Options.Use-RespawnTeleport");
 		try {
 		deathspawn = DeathTp.valueOf(f.getString("Options.RespawnTeleport").toUpperCase());
 		}catch(Exception er) {

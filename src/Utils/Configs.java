@@ -553,6 +553,7 @@ public class Configs {
 		c.put("Options.Teleport.RequestTime", "1min");
 		c.put("Options.Teleport.CommandSendLocation", true);
 		c.put("Options.RespawnTeleport", "home"); //spawn, home, bed
+		c.put("Options.Use-RespawnTeleport", true);
 		c.put("Options.AFK.AutoAFK", true);
 		c.put("Options.AFK.TimeToAFK", "5min");
 		c.put("Options.AFK.AutoKick", true);
