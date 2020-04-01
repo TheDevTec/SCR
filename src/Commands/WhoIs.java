@@ -74,7 +74,6 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 		for(OfflinePlayer w : Bukkit.getOperators()) {
 			if(w.getName().equals(a[0]))op="Yes";
 		}
-		
 		Loader.msg("&8----- &a"+getName(a[0])+" &8-----",s);
 		Loader.msg("&6Nickname: &a"+a[0],s);
 		Loader.msg("&6"+what+": &a"+seen,s);
@@ -84,6 +83,36 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 		Loader.msg("&6OP: &a"+op,s);
 		Loader.msg("&6IP: &a"+ip.replaceFirst("/", ""),s);
 		Loader.msg("&6Country: &a"+getCountry(ip),s);
+		Loader.msg("&6Punishment: &a",s);
+		if(TheAPI.getPunishmentAPI().hasMute(a[0])) {
+			Loader.msg("  &6Muted", s);
+		}
+		if(TheAPI.getPunishmentAPI().hasTempMute(a[0])) {
+			long tmtime = TheAPI.getPunishmentAPI().getTempMuteExpireTime(a[0]);
+			Loader.msg("  &6TempMuted: &a"+TheAPI.getStringUtils().setTimeToString(tmtime), s);
+		}
+		if(API.getBanSystemAPI().hasJail(a[0])) {
+			Loader.msg("  &6Jailed", s);
+		}
+		if(API.getBanSystemAPI().hasTempJail(a[0])) {
+			long tjtime = API.getBanSystemAPI().getTempJailTime(a[0]);
+			Loader.msg("  &6Temp-arrested: &a"+TheAPI.getStringUtils().setTimeToString(tjtime), s);
+		}
+		if(TheAPI.getPunishmentAPI().hasBan(a[0])) {
+			Loader.msg("  &6Banned", s);
+		}
+		if(TheAPI.getPunishmentAPI().hasTempBan(a[0])) {
+			long tbtime = TheAPI.getPunishmentAPI().getTempBanExpireTime(a[0]);
+			Loader.msg("  &6TempBanned: &a"+TheAPI.getStringUtils().setTimeToString(tbtime), s);
+		}
+
+		if(TheAPI.getPunishmentAPI().hasBanIP(a[0])) {
+			Loader.msg("  &6IPBanned", s);
+		}
+		if(TheAPI.getPunishmentAPI().hasTempBanIP(a[0])) {
+			long tbiptime = TheAPI.getPunishmentAPI().getTempBanIPExpireTime(a[0]);
+			Loader.msg("  &6TempIPBanned: &a"+TheAPI.getStringUtils().setTimeToString(tbiptime), s);
+		}
 		Loader.msg("&8---------------",s);
 		return true;
 		}
