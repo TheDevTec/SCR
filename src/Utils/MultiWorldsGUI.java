@@ -375,13 +375,13 @@ public class MultiWorldsGUI {
 			@Override
 			public void run() {
 				if(Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create") != null && Loader.me.getString("Players."+p.getName()+".MultiWorlds-Generator")!=null) {
+				openInv(p);
 				Loader.mw.set("WorldsSettings."+Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create")+".Generator",Loader.me.getString("Players."+p.getName()+".MultiWorlds-Generator"));
 				MultiWorldsUtils.CreateWorld(Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create"), p);
 				Loader.me.set("Players."+p.getName()+".MultiWorlds-Generator",null);
 				Loader.me.set("Players."+p.getName()+".MultiWorlds-Create",null);
 				Configs.chatme.save();
 				Configs.mw.save();
-				openInv(p);
 				}
 			}});
 		String aads="&cnone";
@@ -581,22 +581,19 @@ public class MultiWorldsGUI {
 		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		a.setTitle("&6World setting - "+w.getName());
 		a.setSize(54);
-		prepareInv(a);
-		HashMap<Options, Object> back = new HashMap<Options, Object>();
-		back.put(Options.CANT_BE_TAKEN,true);
-		back.put(Options.CANT_PUT_ITEM,true);
-		back.put(Options.RUNNABLE, new Runnable() {
+		smallInv(a);
+		HashMap<Options, Object> d = new HashMap<Options, Object>();
+		d.put(Options.CANT_BE_TAKEN,true);
+		d.put(Options.CANT_PUT_ITEM,true);
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				openInvSet(p);
 			}});
-		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null),back);
-		
-
+		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null),d);
+		d.remove(Options.RUNNABLE);
 		String dif = w.getDifficulty().name();
-		HashMap<Options, Object> df = new HashMap<Options, Object>();
-		df.put(Options.CANT_BE_TAKEN,true);
-		df.put(Options.RUNNABLE, new Runnable() {
+		d.put(Options.RUNNABLE_LEFT_CLICK, new Runnable() {
 			@Override
 			public void run() {
 				if(Difficulty.valueOf(dif)==Difficulty.EASY) {
@@ -618,14 +615,35 @@ public class MultiWorldsGUI {
 				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
-		a.setItem(10, createItem("&6Difficulty", XMaterial.FEATHER, Arrays.asList(dif)),df);
-
+		d.put(Options.RUNNABLE_RIGHT_CLICK, new Runnable() {
+			@Override
+			public void run() {
+				if(Difficulty.valueOf(dif)==Difficulty.EASY) {
+					Loader.mw.set("WorldsSettings."+w.getName()+".Difficulty", "PEACEFUL");
+					w.setDifficulty(Difficulty.PEACEFUL);
+				}else
+					if(Difficulty.valueOf(dif)==Difficulty.NORMAL) {
+						Loader.mw.set("WorldsSettings."+w.getName()+".Difficulty", "EASY");
+						w.setDifficulty(Difficulty.EASY);
+					}else
+						if(Difficulty.valueOf(dif)==Difficulty.HARD) {
+							Loader.mw.set("WorldsSettings."+w.getName()+".Difficulty", "NORMAL");
+							w.setDifficulty(Difficulty.NORMAL);
+						}else
+							if(Difficulty.valueOf(dif)==Difficulty.PEACEFUL) {
+								Loader.mw.set("WorldsSettings."+w.getName()+".Difficulty", "HARD");
+								w.setDifficulty(Difficulty.HARD);
+							}
+				Configs.mw.save();
+				openInvSetWorld(p,w);
+			}});
+		a.addItem(createItem("&6Difficulty", XMaterial.FEATHER, Arrays.asList(dif)),d);
+		d.remove(Options.RUNNABLE_LEFT_CLICK);
+		d.remove(Options.RUNNABLE_RIGHT_CLICK);
 		String g ="SURVIVAL";
 		if(Loader.mw.getString("WorldsSettings."+w.getName()+".GameMode")!=null)
 		 g=Loader.mw.getString("WorldsSettings."+w.getName()+".GameMode");
-		HashMap<Options, Object> gg = new HashMap<Options, Object>();
-		gg.put(Options.CANT_BE_TAKEN,true);
-		gg.put(Options.RUNNABLE, new Runnable() {
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 
@@ -651,12 +669,10 @@ public class MultiWorldsGUI {
 				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
-		a.setItem(11, createItem("&6Gamemode", XMaterial.BRICKS, Arrays.asList(g)),gg);
-		
+		a.addItem(createItem("&6Gamemode", XMaterial.BRICKS, Arrays.asList(g)),d);
+		d.remove(Options.RUNNABLE);
 		boolean s = Loader.mw.getBoolean("WorldsSettings."+w.getName()+".KeepSpawnInMemory");
-		HashMap<Options, Object> k = new HashMap<Options, Object>();
-		k.put(Options.CANT_BE_TAKEN,true);
-		k.put(Options.RUNNABLE, new Runnable() {
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if(s==true) {
@@ -668,13 +684,10 @@ public class MultiWorldsGUI {
 				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
-		a.setItem(12, createItem("&6Keep Spawn In Memory", XMaterial.MAP, Arrays.asList(s+"")),k);
-		
-
+		a.addItem(createItem("&6Keep Spawn In Memory", XMaterial.MAP, Arrays.asList(s+"")),d);
+		d.remove(Options.RUNNABLE);
 		boolean sa = Loader.mw.getBoolean("WorldsSettings."+w.getName()+".AutoSave");
-		HashMap<Options, Object> ka = new HashMap<Options, Object>();
-		ka.put(Options.CANT_BE_TAKEN,true);
-		ka.put(Options.RUNNABLE, new Runnable() {
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if(sa==true) {
@@ -687,13 +700,10 @@ public class MultiWorldsGUI {
 				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
-		a.setItem(13, createItem("&6Auto Save", XMaterial.EMERALD_BLOCK, Arrays.asList(sa+"")),ka);
-
-
+		a.addItem(createItem("&6Auto Save", XMaterial.EMERALD_BLOCK, Arrays.asList(sa+"")),d);
+		d.remove(Options.RUNNABLE);
 		boolean sas = Loader.mw.getBoolean("WorldsSettings."+w.getName()+".PvP");
-		HashMap<Options, Object> kas = new HashMap<Options, Object>();
-		kas.put(Options.CANT_BE_TAKEN,true);
-		kas.put(Options.RUNNABLE, new Runnable() {
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if(sas==true) {
@@ -706,12 +716,10 @@ public class MultiWorldsGUI {
 				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
-		a.setItem(14, createItem("&6PvP", XMaterial.DIAMOND_SWORD, Arrays.asList(sas+"")),kas);
-
+		a.addItem(createItem("&6PvP", XMaterial.DIAMOND_SWORD, Arrays.asList(sas+"")),d);
+		d.remove(Options.RUNNABLE);
 		boolean sass = Loader.mw.getBoolean("WorldsSettings."+w.getName()+".CreatePortal");
-		HashMap<Options, Object> kass = new HashMap<Options, Object>();
-		kass.put(Options.CANT_BE_TAKEN,true);
-		kass.put(Options.RUNNABLE, new Runnable() {
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if(sass==true) {
@@ -721,12 +729,10 @@ public class MultiWorldsGUI {
 				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
-		a.setItem(15, createItem("&6Can be portal created in this world", XMaterial.OBSIDIAN, Arrays.asList(sass+"")),kass);
-
+		a.addItem(createItem("&6Can be portal created in this world", XMaterial.OBSIDIAN, Arrays.asList(sass+"")),d);
+		d.remove(Options.RUNNABLE);
 		boolean sasss = Loader.mw.getBoolean("WorldsSettings."+w.getName()+".PortalTeleport");
-		HashMap<Options, Object> kasss = new HashMap<Options, Object>();
-		kasss.put(Options.CANT_BE_TAKEN,true);
-		kasss.put(Options.RUNNABLE, new Runnable() {
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if(sasss==true) {
@@ -736,11 +742,10 @@ public class MultiWorldsGUI {
 				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
-		a.setItem(16, createItem("&6Can be portal used in this world", XMaterial.ENDER_PEARL, Arrays.asList(sasss+"")),kasss);
+		a.addItem(createItem("&6Can be portal used in this world", XMaterial.ENDER_PEARL, Arrays.asList(sasss+"")),d);
+		d.remove(Options.RUNNABLE);
 		boolean sassw = Loader.mw.getBoolean("WorldsSettings."+w.getName()+".NoMobs");
-		HashMap<Options, Object> kassw = new HashMap<Options, Object>();
-		kassw.put(Options.CANT_BE_TAKEN,true);
-		kassw.put(Options.RUNNABLE, new Runnable() {
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if(sassw==true) {
@@ -750,9 +755,172 @@ public class MultiWorldsGUI {
 				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
-		a.setItem(19, createItem("&6No Mobs", XMaterial.CREEPER_HEAD, Arrays.asList(sassw+"")),kassw);
+		a.addItem(createItem("&6No Mobs", XMaterial.CREEPER_HEAD, Arrays.asList(sassw+"")),d);
+		d.remove(Options.RUNNABLE);
+		boolean fire = Loader.mw.getBoolean("WorldsSettings."+w.getName()+".DoFireDamage");
+		d.put(Options.RUNNABLE, new Runnable() {
+			@Override
+			public void run() {
+				if(fire==true) {
+					Loader.mw.set("WorldsSettings."+w.getName()+".DoFireDamage", false);
+				}else
+					Loader.mw.set("WorldsSettings."+w.getName()+".DoFireDamage", true);
+				Configs.mw.save();
+				openInvSetWorld(p,w);
+			}});
+		a.addItem(createItem("&6Do Fire Damage", XMaterial.FLINT_AND_STEEL, Arrays.asList(fire+"")),d);
+
+		d.remove(Options.RUNNABLE);
+		boolean dfire = Loader.mw.getBoolean("WorldsSettings."+w.getName()+".DoDrownDamage");
+		d.put(Options.RUNNABLE, new Runnable() {
+			@Override
+			public void run() {
+				if(dfire==true) {
+					Loader.mw.set("WorldsSettings."+w.getName()+".DoDrownDamage", false);
+				}else
+					Loader.mw.set("WorldsSettings."+w.getName()+".DoDrownDamage", true);
+				Configs.mw.save();
+				openInvSetWorld(p,w);
+			}});
+		a.addItem(createItem("&6Do Drowning Damage", XMaterial.WATER_BUCKET, Arrays.asList(dfire+"")),d);
+
+		d.remove(Options.RUNNABLE);
+		boolean ddfire = Loader.mw.getBoolean("WorldsSettings."+w.getName()+".DoFallDamage");
+		d.put(Options.RUNNABLE, new Runnable() {
+			@Override
+			public void run() {
+				if(ddfire==true) {
+					Loader.mw.set("WorldsSettings."+w.getName()+".DoFallDamage", false);
+				}else
+					Loader.mw.set("WorldsSettings."+w.getName()+".DoFallDamage", true);
+				Configs.mw.save();
+				openInvSetWorld(p,w);
+			}});
+		a.addItem(createItem("&6Do Fall Damage", XMaterial.IRON_BOOTS, Arrays.asList(ddfire+"")),d);
+		for(String ds: Loader.mw.getConfigurationSection("WorldsSettings."+w.getName()+".GameRule").getKeys(false)) {
+			d.remove(Options.RUNNABLE);
+			d.remove(Options.RUNNABLE_LEFT_CLICK);
+			d.remove(Options.RUNNABLE_RIGHT_CLICK);
+		boolean g0 = Loader.mw.getBoolean("WorldsSettings."+w.getName()+".GameRule."+ds);
+		if(ds.equalsIgnoreCase("MAX_COMMAND_CHAIN_LENGTH")||
+				ds.equalsIgnoreCase("RANDOM_TICK_SPEED")||
+				ds.equalsIgnoreCase("MAX_ENTITY_CRAMMING")||
+				ds.equalsIgnoreCase("RANDOM_TICK_SPEED")){
+			d.put(Options.RUNNABLE_LEFT_CLICK, new Runnable() {
+				@SuppressWarnings("deprecation")
+				@Override
+				public void run() {
+					w.setGameRuleValue(ds, ""+(Loader.mw.getInt("WorldsSettings."+w.getName()+".GameRule."+ds)+1));
+				}});
+			d.put(Options.RUNNABLE_RIGHT_CLICK, new Runnable() {
+				@SuppressWarnings("deprecation")
+				@Override
+				public void run() {
+					w.setGameRuleValue(ds, ""+(Loader.mw.getInt("WorldsSettings."+w.getName()+".GameRule."+ds)-1));
+				}});
+		}else
+		d.put(Options.RUNNABLE, new Runnable() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void run() {
+				if(g0==true) {
+					w.setGameRuleValue(ds, "false");
+					Loader.mw.set("WorldsSettings."+w.getName()+"."+ds, false);
+				}else {
+					w.setGameRuleValue(ds, "true");
+					Loader.mw.set("WorldsSettings."+w.getName()+"."+ds, true);
+				}
+				Configs.mw.save();
+				openInvSetWorld(p,w);
+			}});
+		String n = "";
+		XMaterial x = null;
+		switch(ds) {
+		case "COMMAND_BLOCK_OUTPUT":
+			x=XMaterial.COMMAND_BLOCK;
+			break;
+		case "DISABLE_ELYTRA_MOVEMENT_CHECK":
+			x=XMaterial.ELYTRA;
+			break;
+		case "DISABLE_RAIDS":
+			x=XMaterial.IRON_AXE;
+			break;
+		case "DO_DAYLIGHT_CYCLE":
+			x=XMaterial.CLOCK;
+			break;
+		case "DO_ENTITY_DROPS":
+			x=XMaterial.ROTTEN_FLESH;
+			break;
+		case "DO_FIRE_TICK":
+			x=XMaterial.FLINT_AND_STEEL;
+			break;
+		case "DO_LIMITED_CRAFTING":
+			x=XMaterial.CRAFTING_TABLE;
+			break;
+		case "DO_MOB_LOOT":
+			x=XMaterial.PORKCHOP;
+			break;
+		case "DO_TILE_DROPS":
+			x=XMaterial.OAK_SIGN;
+			break;
+		case "DO_WEATHER_CYCLE":
+			x=XMaterial.WATER_BUCKET;
+			break;
+		case "KEEP_INVENTORY":
+			x=XMaterial.CHEST;
+			break;
+		case "LOG_ADMIN_COMMANDS":
+			x=XMaterial.PAPER;
+			break;
+		case "MAX_COMMAND_CHAIN_LENGTH":
+			x=XMaterial.CHAIN_COMMAND_BLOCK;
+			break;
+		case "MAX_ENTITY_CRAMMING":
+			x=XMaterial.ZOMBIE_SPAWN_EGG;
+			break;
+		case "MOB_GRIEFING":
+			x=XMaterial.CREEPER_HEAD;
+			break;
+		case "RANDOM_TICK_SPEED":
+			x=XMaterial.GOLDEN_HOE;
+			break;
+		case "REDUCED_DEBUG_INFO":
+			x=XMaterial.EGG;
+			break;
+		case "SEND_COMMAND_FEEDBACK":
+			x=XMaterial.BOOK;
+			break;
+		case "SHOW_DEATH_MESSAGES":
+			x=XMaterial.MOSSY_COBBLESTONE;
+			break;
+		case "SPAWN_RADIUS":
+			x=XMaterial.GOLDEN_APPLE;
+			break;
+		case "SPECTATORS_GENERATE_CHUNKS":
+			x=XMaterial.GRASS_BLOCK;
+			break;
+		case "ANNOUNCE_ADVANCEMENTS":
+			x=XMaterial.DIAMOND;
+			break;
+		}
+		for(String f: ds.split("_")) {
+			String aa=f.substring(0, 1).toUpperCase();
+			String b=f.substring(1,f.length()).toLowerCase();
+			n=n+" "+aa+b;
+		}
+		n.replaceFirst(" ", "");
+		a.addItem(createItem("&6"+n, x, Arrays.asList(Loader.mw.getString("WorldsSettings."+w.getName()+".GameRule."+ds))),d);
+		}
 		a.open();
 		}
+	private static void smallInv(GUICreatorAPI a) {
+    	HashMap<Options, Object> notake = new HashMap<Options, Object>();
+		notake.put(Options.CANT_BE_TAKEN,true);
+		ItemStack item = createItem(" ", XMaterial.BLACK_STAINED_GLASS_PANE, null);
+    	for(int i =45; i<54; ++i)
+            a.setItem(i, item, notake);
+	}
+
 	public static void prepareInv(GUICreatorAPI a) {
     	HashMap<Options, Object> notake = new HashMap<Options, Object>();
 		notake.put(Options.CANT_BE_TAKEN,true);

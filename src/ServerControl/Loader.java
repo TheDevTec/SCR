@@ -213,7 +213,7 @@ public void Tasks() {
     EventsRegister();
     CommmandsRegister();
      for(World wa: Bukkit.getWorlds()) {
-		MultiWorldsUtils.DefaultSet(wa);
+		MultiWorldsUtils.DefaultSet(wa,Loader.mw.getString("WorldsSettings."+wa.getName()+".Generator"));
 	}
 	for(Player p:TheAPI.getOnlinePlayers()) {
 	    afk.put(p.getName(), new AFKV2(p.getName()));
