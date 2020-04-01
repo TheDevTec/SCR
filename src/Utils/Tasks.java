@@ -124,6 +124,7 @@ public class Tasks {
 	}
 
 	public static List<Player> joined = new ArrayList<Player>(),playedBefore = new ArrayList<Player>()
+			,realJoin = new ArrayList<Player>()
 			,quit = new ArrayList<Player>();
 	public static List<String> ignore = new ArrayList<String>();
 	private static void other() {
@@ -144,6 +145,7 @@ public class Tasks {
 					ignore.add(p.getName());
 					return;
 				}
+				realJoin.add(p);
 					regPlayer(p);
 					AFKV2 v = new AFKV2(p.getName());
 					Loader.afk.put(p.getName(), v);
@@ -218,16 +220,16 @@ public class Tasks {
 		    try {
 		    if(!quit.isEmpty() && quit != null)
 		    for(Player p : quit) {
-		    	if(ignore.contains(p.getName())) {
+		    	if(ignore.contains(p.getName())||!realJoin.contains(p)) {
 		    		ignore.remove(p.getName());
+					realJoin.remove(p);
 					quit.remove(p);
 		    		return;
 		    	}
+				realJoin.remove(p);
 		    	if(players.contains(p.getName()))
 					players.remove(p.getName());
 			    c.set("Players."+p.getName()+".LastLeave", setting.format_date_time.format(new Date()));
-			    c.set("Players."+p.getName()+".Leaves", Loader.me.getInt("Players."+p.getName()+".Leaves") + 1);
-				c.set("Players."+p.getName()+".LeaveTime",System.currentTimeMillis()/1000);
 			    c.set("Players."+p.getName()+".DisconnectWorld", p.getWorld().getName());
 				Configs.chatme.save();
 				if(setting.leave) {

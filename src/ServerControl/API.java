@@ -205,16 +205,16 @@ public class API {
 		 Online,
 		 Offline;
 	 }
-	 public static String getSeen(String player, SeenType type) {
+	 @SuppressWarnings("deprecation")
+	public static String getSeen(String player, SeenType type) {
 		 String a = "0s";
 		 switch(type) {
 		 case Online:
 			 if(Loader.me.getString("Players."+player+".JoinTime")!=null)
-			 a=TheAPI.getStringUtils().setTimeToString((Loader.me.getLong("Players."+player+".JoinTime") - System.currentTimeMillis()/1000)*-1);
+			 a=TheAPI.getStringUtils().setTimeToString(System.currentTimeMillis()/1000-Loader.me.getLong("Players."+player+".JoinTime"));
 			 break;
 		 case Offline:
-			 if(Loader.me.getString("Players."+player+".LeaveTime")!=null)
-			 a=TheAPI.getStringUtils().setTimeToString((Loader.me.getLong("Players."+player+".LeaveTime") - System.currentTimeMillis()/1000)*-1);
+			 a=TheAPI.getStringUtils().setTimeToString(System.currentTimeMillis()/1000-Bukkit.getOfflinePlayer(player).getLastPlayed()/1000);
 			 break;
 		 }
 		 return a;
