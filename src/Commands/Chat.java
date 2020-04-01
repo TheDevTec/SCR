@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Statistic;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -110,9 +111,9 @@ public class Chat implements CommandExecutor, TabCompleter {
         	        				.replace("%money%",  money)
         	        				.replace("%vault-group%", String.valueOf(Loader.vault.getPrimaryGroup(p)))
         	        				.replace("%group%", String.valueOf(Loader.vault.getPrimaryGroup(p)))
-        	        				.replace("%deaths%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Deaths")))
+        	        				.replace("%kills%", ""+p.getStatistic(Statistic.PLAYER_KILLS))
+        	        				.replace("%deaths%", ""+p.getStatistic(Statistic.DEATHS))
         	        				.replace("%lastleave%", check(Loader.me.getString("Players."+p.getName()+".LastLeave")))
-        	        				.replace("%kills%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Kills")))
         	        				.replace("%firstjoin%", check(Loader.me.getString("Players."+p.getName()+".FirstJoin"))),p);
                 	        }
             	        		if(Loader.vault == null) {
@@ -127,10 +128,10 @@ public class Chat implements CommandExecutor, TabCompleter {
                 	        				.replace("%kicks%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Kicks")))
                 	        				.replace("%vault-money%", money)
                 	        				.replace("%money%",  money)
-                	        				.replace("%kills%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Kills")))
-                	        				.replace("%vault-group%".toLowerCase(), "Install groups plugin")
+                	        				.replace("%kills%", ""+p.getStatistic(Statistic.PLAYER_KILLS))
+                	        				.replace("%deaths%", ""+p.getStatistic(Statistic.DEATHS))
+                	        				.replace("%vault-group%", "Install groups plugin")
                 	        				.replace("%group%", "Install groups plugin")
-                	        				.replace("%deaths%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Deaths")))
                 	        				.replace("%lastleave%", check(Loader.me.getString("Players."+p.getName()+".LastLeave")))
                 	        				.replace("%firstjoin%", check(Loader.me.getString("Players."+p.getName()+".FirstJoin"))),p);
             	        		}}
@@ -144,12 +145,12 @@ public class Chat implements CommandExecutor, TabCompleter {
             	        				.replace("%vulgarwords%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".VulgarWords")))
             	        				.replace("%spams%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Spam")))
             	        				.replace("%kicks%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Kicks")))
-            	        				.replace("%kills%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Kills")))
+            	        				.replace("%kills%", ""+p.getStatistic(Statistic.PLAYER_KILLS))
+            	        				.replace("%deaths%", ""+p.getStatistic(Statistic.DEATHS))
             	        				.replace("%vault-money%", "Please install Vault plugin and economy plugin.")
             	        				.replace("%money%", "Please install Vault plugin and economy plugin.")
             	        				.replace("%vault-group%",  "Please install plugin Vault")
             	        				.replace("%group%",  "Please install plugin Vault")
-            	        				.replace("%deaths%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Deaths")))
             	        				.replace("%lastleave%", check(Loader.me.getString("Players."+p.getName()+".LastLeave")))
             	        				.replace("%firstjoin%", check(Loader.me.getString("Players."+p.getName()+".FirstJoin"))),p);
         	        			}}

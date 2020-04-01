@@ -3,6 +3,7 @@ package Utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
 import ServerControl.API;
@@ -69,7 +70,8 @@ public class TabList {
 				.replace("%group%", getGroup(p))
 				.replace("%tps%", TheAPI.getServerTPS()+"")
 				.replace("%ping%", Loader.getInstance.pingPlayer(p)+"")
-				.replace("%kills%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Kills")))
+				.replace("%kills%", ""+p.getStatistic(Statistic.PLAYER_KILLS))
+				.replace("%deaths%", ""+p.getStatistic(Statistic.DEATHS))
 				.replace("%player%", p.getName())
 				.replace("%playername%", displayname)
 				.replace("%customname%", customname)
