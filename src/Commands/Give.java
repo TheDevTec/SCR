@@ -34,6 +34,13 @@ public class Give implements CommandExecutor, TabCompleter {
 		list.add(ss.name());
 		}
 		for(String add : Arrays.asList("POTION_OF_","SPLASH_POTION_OF_","LINGERING_POTION_OF_")) {
+			list.add(add+"MINING_FATIQUE");
+			list.add(add+"GLOWING");
+			
+			list.add(add+"HASTE");
+			list.add(add+"HASTE2");
+			list.add(add+"HASTE3");
+			
 		list.add(add+"INVISIBILITY");
 		list.add(add+"INVISIBILITY2");
 
@@ -85,6 +92,10 @@ public class Give implements CommandExecutor, TabCompleter {
 		list.add(add+"SWIFTNESS2");
 		list.add(add+"SWIFTNESS3");
 		if(TheAPI.isNewVersion()) {
+			list.add(add+"DOLPHINS_GRACE");
+			list.add(add+"CONDUIT_POWER");
+			list.add(add+"BAD_OMEN");
+			list.add(add+"HERO_OF_VILLAGE");
 		list.add(add+"TURTLE_MASTER");
 		list.add(add+"TURTLE_MASTER2");
 		list.add(add+"TURTLE_MASTER3");
@@ -118,6 +129,7 @@ public class Give implements CommandExecutor, TabCompleter {
 		}
 		if(args1==null) return null;
 		switch(s.toUpperCase().replaceFirst("LINGERING_", "").replaceFirst("SPLASH_", "").replaceFirst("POTION_OF_", "")) {
+		
 		case "INVISIBILITY":
 			args3=1;
 			args4=180;
@@ -264,6 +276,28 @@ public class Give implements CommandExecutor, TabCompleter {
 			}
 			break;
 
+		case "HASTE":
+			args3=1;
+			args4=180;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=45;
+			}
+			break;
+		case "HASTE2":
+			args3=1;
+			args4=480;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=120;
+			}
+			break;
+		case "HASTE3":
+			args3=2;
+			args4=90;
+			if(s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
+				args4=22;
+			}
+			break;
+
 		case "STRENGHT":
 			args3=1;
 			args4=180;
@@ -323,7 +357,13 @@ public class Give implements CommandExecutor, TabCompleter {
 			a.put(PotionEffectType.DAMAGE_RESISTANCE, 4,20);
 			break;
 
+		case "CONDUIT_POWER":
+		case "DOLPHINS_GRACE":
+		case "BAD_OMEN":
+		case "HERO_OF_VILLAGE":
+		case "GLOWING":
 		case "SLOW_FALLING":
+		case "MINING_FATIQUE":
 			args3=1;
 			args4=90;
 
