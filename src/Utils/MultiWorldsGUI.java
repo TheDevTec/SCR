@@ -885,7 +885,7 @@ public class MultiWorldsGUI {
 			x=XMaterial.ZOMBIE_SPAWN_EGG;
 			break;
 		case "MOB_GRIEFING":
-			x=XMaterial.CREEPER_HEAD;
+			x=XMaterial.OAK_DOOR;
 			break;
 		case "RANDOM_TICK_SPEED":
 			x=XMaterial.GOLDEN_HOE;
