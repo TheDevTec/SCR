@@ -22,13 +22,15 @@ public class EntitySpawn implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onDamage(EntityDamageEvent e) {
-		if(e instanceof Player && e.getCause()==DamageCause.FALL
-				&& !Loader.mw.getBoolean("WorldsSettings."+e.getEntity().getWorld().getName()+".DoFallDamage"))
+		String w = e.getEntity().getWorld().getName();
+		if(e.getEntity() instanceof Player) {
+		if(e.getCause()==DamageCause.FALL
+				&& !Loader.mw.getBoolean("WorldsSettings."+w+".DoFallDamage"))
 				e.setCancelled(true);
-		if(e instanceof Player && e.getCause()==DamageCause.FIRE
-				&& !Loader.mw.getBoolean("WorldsSettings."+e.getEntity().getWorld().getName()+".DoFireDamage"))
+		if(e.getCause()==DamageCause.FIRE
+				&& !Loader.mw.getBoolean("WorldsSettings."+w+".DoFireDamage"))
 				e.setCancelled(true);
-		if(e instanceof Player && e.getCause()==DamageCause.DROWNING
-				&& !Loader.mw.getBoolean("WorldsSettings."+e.getEntity().getWorld().getName()+".DoDrownDamage"))
+		if(e.getCause()==DamageCause.DROWNING
+				&& !Loader.mw.getBoolean("WorldsSettings."+w+".DoDrownDamage"))
 				e.setCancelled(true);
-	}}
+	}}}
