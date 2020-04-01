@@ -797,11 +797,11 @@ public class MultiWorldsGUI {
 				openInvSetWorld(p,w);
 			}});
 		a.addItem(createItem("&6Do Fall Damage", XMaterial.IRON_BOOTS, Arrays.asList(ddfire+"")),d);
-		for(String ds: Loader.mw.getConfigurationSection("WorldsSettings."+w.getName()+".GameRule").getKeys(false)) {
+		for(String ds: Loader.mw.getConfigurationSection("WorldsSettings."+w.getName()+".Gamerule").getKeys(false)) {
 			d.remove(Options.RUNNABLE);
 			d.remove(Options.RUNNABLE_LEFT_CLICK);
 			d.remove(Options.RUNNABLE_RIGHT_CLICK);
-		boolean g0 = Loader.mw.getBoolean("WorldsSettings."+w.getName()+".GameRule."+ds);
+		boolean g0 = Loader.mw.getBoolean("WorldsSettings."+w.getName()+".Gamerule."+ds);
 		if(ds.equalsIgnoreCase("MAX_COMMAND_CHAIN_LENGTH")||
 				ds.equalsIgnoreCase("RANDOM_TICK_SPEED")||
 				ds.equalsIgnoreCase("MAX_ENTITY_CRAMMING")||
@@ -810,13 +810,13 @@ public class MultiWorldsGUI {
 				@SuppressWarnings("deprecation")
 				@Override
 				public void run() {
-					w.setGameRuleValue(ds, ""+(Loader.mw.getInt("WorldsSettings."+w.getName()+".GameRule."+ds)+1));
+					w.setGameRuleValue(ds, ""+(Loader.mw.getInt("WorldsSettings."+w.getName()+".Gamerule."+ds)+1));
 				}});
 			d.put(Options.RUNNABLE_RIGHT_CLICK, new Runnable() {
 				@SuppressWarnings("deprecation")
 				@Override
 				public void run() {
-					w.setGameRuleValue(ds, ""+(Loader.mw.getInt("WorldsSettings."+w.getName()+".GameRule."+ds)-1));
+					w.setGameRuleValue(ds, ""+(Loader.mw.getInt("WorldsSettings."+w.getName()+".Gamerule."+ds)-1));
 				}});
 		}else
 		d.put(Options.RUNNABLE, new Runnable() {
