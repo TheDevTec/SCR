@@ -811,12 +811,14 @@ public class MultiWorldsGUI {
 				@Override
 				public void run() {
 					w.setGameRuleValue(ds, ""+(Loader.mw.getInt("WorldsSettings."+w.getName()+".Gamerule."+ds)+1));
+					openInvSetWorld(p, w);
 				}});
 			d.put(Options.RUNNABLE_RIGHT_CLICK, new Runnable() {
 				@SuppressWarnings("deprecation")
 				@Override
 				public void run() {
 					w.setGameRuleValue(ds, ""+(Loader.mw.getInt("WorldsSettings."+w.getName()+".Gamerule."+ds)-1));
+					openInvSetWorld(p, w);
 				}});
 		}else
 		d.put(Options.RUNNABLE, new Runnable() {
