@@ -13,13 +13,10 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
 import ServerControl.API.TeleportLocation;
-import Utils.Configs;
 import Utils.TabList;
 import Utils.setting;
 import Utils.setting.DeathTp;
 public class DeathEvent implements Listener {
-
-	public Loader plugin=Loader.getInstance;
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PlayerDeath(PlayerAdvancementDoneEvent e) {
@@ -41,7 +38,6 @@ public class DeathEvent implements Listener {
 		e.setDroppedExp(0);
 		}
 		Loader.me.set("Players."+p.getName()+".Deaths", Loader.me.getInt("Players."+p.getName()+".Deaths") + 1);
-		Configs.chatme.save();
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
