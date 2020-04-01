@@ -810,14 +810,18 @@ public class MultiWorldsGUI {
 				@SuppressWarnings("deprecation")
 				@Override
 				public void run() {
+					Loader.mw.set("WorldsSettings."+w.getName()+".Gamerule."+ds,Loader.mw.getInt("WorldsSettings."+w.getName()+".Gamerule."+ds)+1);
 					w.setGameRuleValue(ds, ""+(Loader.mw.getInt("WorldsSettings."+w.getName()+".Gamerule."+ds)+1));
+					Configs.mw.save();
 					openInvSetWorld(p, w);
 				}});
 			d.put(Options.RUNNABLE_RIGHT_CLICK, new Runnable() {
 				@SuppressWarnings("deprecation")
 				@Override
 				public void run() {
+					Loader.mw.set("WorldsSettings."+w.getName()+".Gamerule."+ds,Loader.mw.getInt("WorldsSettings."+w.getName()+".Gamerule."+ds)-1);
 					w.setGameRuleValue(ds, ""+(Loader.mw.getInt("WorldsSettings."+w.getName()+".Gamerule."+ds)-1));
+					Configs.mw.save();
 					openInvSetWorld(p, w);
 				}});
 		}else
@@ -827,10 +831,10 @@ public class MultiWorldsGUI {
 			public void run() {
 				if(g0==true) {
 					w.setGameRuleValue(ds, "false");
-					Loader.mw.set("WorldsSettings."+w.getName()+"."+ds, false);
+					Loader.mw.set("WorldsSettings."+w.getName()+".Gamerule."+ds, false);
 				}else {
 					w.setGameRuleValue(ds, "true");
-					Loader.mw.set("WorldsSettings."+w.getName()+"."+ds, true);
+					Loader.mw.set("WorldsSettings."+w.getName()+".Gamerule."+ds, true);
 				}
 				Configs.mw.save();
 				openInvSetWorld(p,w);
