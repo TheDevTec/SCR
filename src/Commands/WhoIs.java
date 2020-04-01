@@ -13,6 +13,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import ServerControl.API;
 import ServerControl.API.SeenType;
@@ -56,6 +57,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			Loader.msg(Loader.PlayerNotEx(a[0]),s);
 			return true;
 		}
+		FileConfiguration f = Loader.me;
 		String ip = API.getIPAdress(a[0]);
 		if(ip==null)ip="&7Uknown";
 		String what = "Offline";
@@ -68,8 +70,8 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 		}
 		String fly = "Disabled";
 		String god = "Disabled";
-		if(Loader.me.getBoolean("Players."+a[0]+".Fly"))fly="Enabled";
-		if(Loader.me.getBoolean("Players."+a[0]+".God"))god="Enabled";
+		if(f.getBoolean("Players."+a[0]+".Fly"))fly="Enabled";
+		if(f.getBoolean("Players."+a[0]+".God"))god="Enabled";
 		String op = "No";
 		for(OfflinePlayer w : Bukkit.getOperators()) {
 			if(w.getName().equals(a[0]))op="Yes";

@@ -60,16 +60,15 @@ public class API {
 				if(homes.isEmpty()==false) {
 					home=homes.get(0);
 				}
-				if(home != null) {
+				if(home != null && Bukkit.getWorld(Loader.me.getString("Players."+p.getName()+".Homes."+home+".World"))!=null) {
 				World w = Bukkit.getWorld(Loader.me.getString("Players."+p.getName()+".Homes."+home+".World"));
 				double x = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".X");
 				double y = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Y");
 				double z = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Z");
 				float pitch = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Pitch");
 				float yaw = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Yaw");
-				if(w != null) { 
 					a= new Location(w,x,y,z,yaw,pitch);
-				}}else {
+				}else {
 						Loader.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn")
 								.replace("%world%", p.getWorld().getName())
 								.replace("%player%", p.getName())
