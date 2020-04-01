@@ -314,7 +314,7 @@ public class MultiWorldsGUI {
 		}else
 		if(biome.equalsIgnoreCase("THE_VOID")) {
 			a.addItem(createItem("&7"+w,XMaterial.GLASS, Arrays.asList("&7Click to load world","&7 - The Void")),help);
-		}
+		}}
 		HashMap<Options, Object> back = new HashMap<Options, Object>();
 		back.put(Options.CANT_BE_TAKEN,true);
 		back.put(Options.RUNNABLE, new Runnable() {
@@ -325,7 +325,7 @@ public class MultiWorldsGUI {
 		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null),back);
 	
 		a.open();
-	}}
+	}
 	public static void openInvCreate(Player p) {
 		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		a.setTitle("&2World creator");
