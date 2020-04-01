@@ -90,6 +90,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			Loader.msg("  &6Muted", s);
 		}
 		if(TheAPI.getPunishmentAPI().hasTempMute(a[0])) {
+			
 			long tmtime = TheAPI.getPunishmentAPI().getTempMuteExpireTime(a[0]);
 			Loader.msg("  &6TempMuted: &a"+TheAPI.getStringUtils().setTimeToString(tmtime), s);
 		}
