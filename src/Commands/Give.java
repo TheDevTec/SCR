@@ -26,11 +26,7 @@ public class Give implements CommandExecutor, TabCompleter {
 	List<String> list = new ArrayList<String>();
 	public Give() {
 		for(Material ss:Material.values()) {
-			if(!ss.name().contains("WALL_")&&!ss.name().contains("AIR")&&!ss.name().contains("VOID")
-					&&!ss.name().contains("_STEM")&&!ss.name().contains("POTTED_")&&!ss.name().contains("LEGACY_")
-					&&!ss.name().equals("END_PORTAL")&&!ss.name().equals("END_GATEWAY")&&!ss.name().equals("NETHER_PORTAL")
-					|| ss.isBlock() && ss.isOccluding())
-		if(ss != Material.AIR)
+			if(TheAPI.getItemCreatorAPI(ss).isItem(false))
 		list.add(ss.name());
 		}
 		for(String add : Arrays.asList("POTION_OF_","SPLASH_POTION_OF_","LINGERING_POTION_OF_")) {
@@ -415,24 +411,24 @@ public class Give implements CommandExecutor, TabCompleter {
 				if(args.length==1) {
 					Player ps = TheAPI.getPlayer(args[0]);
 					if(ps==null) {
-
+						String g = args[0].toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
+						
 						if(s instanceof Player==false) {
 							Loader.Help(s, "/Give <player> <item> <amount>", "Give");
 							return true;
 						}
-					if(getItem(args[0])!=null) {
-						if(API.hasPerm(s, "ServerControl."+getItem(args[0]))||API.hasPerm(s, "ServerControl.Give.*")) {
+					if(getItem(g)!=null) {
+						if(API.hasPerm(s, "ServerControl."+getItem(g))||API.hasPerm(s, "ServerControl.Give.*")) {
 							Player p = (Player)s;
 							try {
-								String g = args[0].toUpperCase();
 								if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
 							TheAPI.giveItem(p, XMaterial.matchXMaterial(g).get().parseMaterial(),1);
 								else 
 									TheAPI.giveItem(p, getPotion(g));
-							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),p).replace("%amount%", "1").replace("%item%", getItem(args[0])), s);
+							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),p).replace("%amount%", "1").replace("%item%", getItem(g)), s);
 						return true;
 							}catch(Exception e) {
-								Loader.msg(Loader.s("Prefix")+Loader.s("Give.UknownItem").replace("%item%", args[0]), s);
+								Loader.msg(Loader.s("Prefix")+Loader.s("Give.UknownItem").replace("%item%", g), s);
 								return true;
 							}
 						}return true;
@@ -446,67 +442,67 @@ public class Give implements CommandExecutor, TabCompleter {
 				if(args.length==2) {
 					Player ps = TheAPI.getPlayer(args[0]);
 					if(ps==null) {
+						String g = args[0].toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
 						if(args[0].equals("*")) {
-							Repeat.a(s,"give * "+args[1]);
+							Repeat.a(s,"give * "+g);
 							return true;
 						}
-						if(getItem(args[0])!=null) {
+						if(getItem(g)!=null) {
 							ps=(Player)s;
 							try {
-								String g = args[0].toUpperCase();
 								if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
 							TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).get().parseMaterial(),1);
 								else {
 									ItemStack a = getPotion(g);
 									a.setAmount(TheAPI.getStringUtils().getInt(args[1]));
 									TheAPI.giveItem(ps, a);}
-							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),ps).replace("%amount%",TheAPI.getStringUtils().getInt(args[1])+"").replace("%item%", getItem(args[0])), s)
+							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),ps).replace("%amount%",TheAPI.getStringUtils().getInt(args[1])+"").replace("%item%", getItem(g)), s)
 							;return true;
 							
 						}catch(Exception e) {
-							Loader.msg(Loader.s("Prefix")+Loader.s("Give.UknownItem").replace("%item%", args[0]), s);
+							Loader.msg(Loader.s("Prefix")+Loader.s("Give.UknownItem").replace("%item%", g), s);
 							return true;
 						}
 						}
 						if(s instanceof Player ==false)
 							Loader.msg(Loader.PlayerNotOnline(args[1]), s);
 						else
-							Loader.msg(Loader.s("Prefix")+Loader.s("Give.UknownItem").replace("%item%", args[0]), s);
+							Loader.msg(Loader.s("Prefix")+Loader.s("Give.UknownItem").replace("%item%", g), s);
 							return true;
 						
 					}
-					if(getItem(args[1])!=null) {
-						String g = args[1].toUpperCase();
+					String g = args[1].toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
+					if(getItem(g)!=null) {
 						if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
 					TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).get().parseMaterial(),1);
 						else
 							TheAPI.giveItem(ps, getPotion(g));
-						Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),ps).replace("%item%", getItem(args[1])).replace("%amount%", "1"), s);
+						Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),ps).replace("%item%", getItem(g)).replace("%amount%", "1"), s);
 						return true;
 						}
-						Loader.msg(Loader.s("Prefix")+Loader.s("Give.UknownItem").replace("%item%", args[1]), s);
+						Loader.msg(Loader.s("Prefix")+Loader.s("Give.UknownItem").replace("%item%", g), s);
 						return true;
 				}
 				if(args.length==3) {
 					Player ps = TheAPI.getPlayer(args[0]);
 					if(ps!=null) {
+						String g = args[1].toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
 						if(args[0].equals("*")) {
-							Repeat.a(s,"give * "+args[1]+" "+args[2]);
+							Repeat.a(s,"give * "+g+" "+args[2]);
 							return true;
 						}
 						if(getItem(args[1])!=null) {
-							String g = args[1].toUpperCase();
 							if(!g.startsWith("LINGERING_POTION_OF_")&&!g.startsWith("SPLASH_POTION_OF_")&&!g.startsWith("POTION_OF_"))
 						TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).get().parseMaterial(),TheAPI.getStringUtils().getInt(args[2]));
 							else {
-								ItemStack a = getPotion(args[1]);
+								ItemStack a = getPotion(g);
 								a.setAmount(TheAPI.getStringUtils().getInt(args[2]));
 								TheAPI.giveItem(ps, a);
 							}
-							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),ps).replace("%item%", getItem(args[1])).replace("%amount%", TheAPI.getStringUtils().getInt(args[2])+""), s);
+							Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("Give.Given"),ps).replace("%item%", getItem(g)).replace("%amount%", TheAPI.getStringUtils().getInt(args[2])+""), s);
 							return true;
 							}
-							Loader.msg(Loader.s("Prefix")+Loader.s("Give.UknownItem").replace("%item%", args[1]), s);
+							Loader.msg(Loader.s("Prefix")+Loader.s("Give.UknownItem").replace("%item%", g), s);
 							return true;			
 					}
 					Loader.msg(Loader.PlayerNotOnline(args[1]), s);
