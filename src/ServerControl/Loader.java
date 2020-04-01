@@ -483,6 +483,11 @@ private void CommmandsRegister() {
 	
 	CmdC("balance", new Commands.Economy.Balance());
 	CmdC("tempjail", new Commands.BanSystem.TempJail());
+
+	CmdC("psun", new Commands.PSun());
+	CmdC("prain", new Commands.PRain());
+	CmdC("pday", new Commands.PDay());
+	CmdC("pnight", new Commands.PNight());
 }
 private void EventC(Listener l) {
 	getServer().getPluginManager().registerEvents(l, this);

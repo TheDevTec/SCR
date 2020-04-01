@@ -42,7 +42,8 @@ public class Sun implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			Loader.msg(Loader.s("Prefix")+Loader.s("Weather.WorldNotExists")
-			.replace("%world%", args[0]),s);return true;}return true;}
+			.replace("%world%", args[0]),s);return true;}return true;
+			}
 		return false;
 }
 	  public List<String> worlds() {

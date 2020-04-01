@@ -12,6 +12,26 @@ commands:
         usage: /<command> <player> <time> <reason>
         description: TempJail player
         permission: servercontrol.tempjail
+    pday:
+        usage: /<command> <player>
+        description: Set player day
+        permission: servercontrol.playerday
+    pnight:
+        usage: /<command> <player>
+        description: Set player night
+        permission: servercontrol.playernight
+    psun:
+        usage: /<command> <player>
+        description: Set player sun weather
+        permission: servercontrol.playersun
+    prain:
+        usage: /<command> <player>
+        description: Set player rain weather
+        permission: servercontrol.playerrain
+    tempjail:
+        usage: /<command> <player> <time> <reason>
+        description: TempJail player
+        permission: servercontrol.tempjail
     stop:
         usage: /<command> <time/cancel>
         description: Stop server
