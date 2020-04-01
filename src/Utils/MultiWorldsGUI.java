@@ -908,8 +908,8 @@ public class MultiWorldsGUI {
 			String b=f.substring(1,f.length()).toLowerCase();
 			n=n+" "+aa+b;
 		}
-		n.replaceFirst(" ", "");
-		a.addItem(createItem("&6"+n, x, Arrays.asList(Loader.mw.getString("WorldsSettings."+w.getName()+".GameRule."+ds))),d);
+		n=n.replaceFirst(" ", "");
+		a.addItem(createItem("&6"+n, x, Arrays.asList(Loader.mw.getString("WorldsSettings."+w.getName()+".Gamerule."+ds))),d);
 		}
 		a.open();
 		}
