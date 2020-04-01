@@ -39,12 +39,13 @@ public class AFkPlayerEvents implements Listener {
 	   }
 	   @EventHandler(priority = EventPriority.LOWEST)
 	   public void onPlayerMessage(PlayerCommandPreprocessEvent e) {
-		   if(!e.getMessage().toLowerCase().startsWith("/afk") && !e.getMessage().toLowerCase().startsWith("/away"))
+		   if(!e.getMessage().toLowerCase().startsWith("/afk") && !e.getMessage().toLowerCase().startsWith("/away")) {
 			   if(API.getSPlayer(e.getPlayer()).isAFK() && !API.getSPlayer(e.getPlayer()).hasVanish())
 				  		  TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("AFK.NoLongerAFK").replace("%player%", e.getPlayer().getName())
 						   .replace("%playername%", e.getPlayer().getDisplayName()));
 		  	  if(Loader.afk.containsKey(e.getPlayer().getName()))
 		   Loader.afk.get(e.getPlayer().getName()).save();
+		   }
 		   }
 
 	   @EventHandler(priority = EventPriority.LOWEST)

@@ -129,6 +129,9 @@ public class Tasks {
 	public static List<String> ignore = new ArrayList<String>();
 	private static void other() {
 		FileConfiguration f=Loader.config,c=Loader.me;
+		
+		boolean music = Loader.SoundsChecker(),join=setting.join_msg;
+		
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
 			for(Player p : TheAPI.getOnlinePlayers())
 			Loader.setupChatFormat(p);
@@ -150,58 +153,45 @@ public class Tasks {
 					AFKV2 v = new AFKV2(p.getName());
 					Loader.afk.put(p.getName(), v);
 					v.start();
-					if(f.getBoolean("OnJoin.SpawnTeleport") && !API.getBanSystemAPI().hasJail(p))API.teleportPlayer(p, TeleportLocation.SPAWN);
-					if(API.getBanSystemAPI().hasJail(p))
+					if(API.getBanSystemAPI().hasJail(p)) {
 						if(setting.tp_safe)
 						TheAPI.getPlayerAPI(p).safeTeleport(TheAPI.getStringUtils().getLocationFromString(f.getString("Jails."+c.getString("Players."+p.getName()+".Jail.Location"))));
 						else
 							TheAPI.getPlayerAPI(p).teleport(TheAPI.getStringUtils().getLocationFromString(f.getString("Jails."+c.getString("Players."+p.getName()+".Jail.Location"))));
-					if(!Mail.getMails(p.getName()).isEmpty())
+					}else if(f.getBoolean("OnJoin.SpawnTeleport"))API.teleportPlayer(p, TeleportLocation.SPAWN);
+						if(!Mail.getMails(p.getName()).isEmpty())
 						Loader.msg(Loader.s("Prefix")+Loader.s("Mail.Notification")
 								.replace("%number%", ""+c.getStringList("Players."+p.getName()+".Mails").size()), p);
-					if(Loader.SoundsChecker())
-						p.playSound(p.getLocation(), TheAPI.getSoundAPI().getByName(f.getString("Options.Sounds.Sound")), 1, 1);
+					if(music)
+						TheAPI.getSoundAPI().playSound(p, f.getString("Options.Sounds.Sound"));
 					c.set("Players."+p.getName()+".Joins", c.getInt("Players."+p.getName()+".Joins") + 1);
 					c.set("Players."+p.getName()+".JoinTime",System.currentTimeMillis()/1000);
-					Configs.chatme.save();
-			if(setting.join_msg){
+			if(join){
 					if(!TheAPI.isVanished(p))
 					TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.Join"),p));
 			}
-				if(playedBefore.contains(p) || c.getString("Players."+p.getName()+".FirstJoin")==null){
+				if(c.getString("Players."+p.getName()+".FirstJoin")==null)
 				c.set("Players."+p.getName()+".FirstJoin", setting.format_date_time.format(new Date()));
-				}
 				if(playedBefore.contains(p) && setting.join_first) {
 						for(String ss: Loader.TranslationsFile.getStringList("OnJoin.FirstJoin.Messages")) {
 									  Loader.msg(replaceAll(ss,p),p);
 					}
 						if(!TheAPI.isVanished(p))
 						TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.FirstJoin.BroadCast"),p));
-									  if(f.getInt("Options.Join.FirstJoin.Wait") > 0) {
-									  		Bukkit.getScheduler().runTaskLater(Loader.getInstance, new Runnable() {
-								  				public void run() {
-										  if(setting.join_first_percmd) {
-							  			for(String cmds:f.getStringList("Options.Join.FirstJoin.PerformCommands.List")) {
-							  				TheAPI.sudoConsole(SudoType.COMMAND,TheAPI.colorize(replaceAll(cmds,p)));
-							  			}}
-							  		if(setting.join_first_give && f.getString("Options.Join.FirstJoin.Kit")!=null)
-							  			API.giveKit(p.getName(),f.getString("Options.Join.FirstJoin.Kit"),false,false); 
-								  }},20*f.getInt("Options.Join.FirstJoin.Wait"));
-									  		}else {
-									  if(setting.join_first_percmd) {
-								  			for(String cmds: f.getStringList("Options.Join.FirstJoin.PerformCommands.List")) {
-								  				TheAPI.sudoConsole(SudoType.COMMAND,TheAPI.colorize(replaceAll(cmds,p)));
-								  			}}
-								  		if(setting.join_first_give &&f.getString("Options.Join.FirstJoin.Kit")!=null)
-								  			API.giveKit(p.getName(),f.getString("Options.Join.FirstJoin.Kit"),false,false);
-								  }
-							  		API.teleportPlayer(p, TeleportLocation.SPAWN);
+									 Bukkit.getScheduler().runTaskLater(Loader.getInstance, new Runnable() {
+								  		public void run() {
+								  			if(setting.join_first_percmd) 
+								  				for(String cmds: f.getStringList("Options.Join.FirstJoin.PerformCommands.List"))
+								  					TheAPI.sudoConsole(SudoType.COMMAND,TheAPI.colorize(replaceAll(cmds,p)));
+												if(setting.join_first_give &&f.getString("Options.Join.FirstJoin.Kit")!=null)
+													API.giveKit(p.getName(),f.getString("Options.Join.FirstJoin.Kit"),false,false);
+								  }},f.getInt("Options.Join.FirstJoin.Wait") > 0 ? 20*f.getInt("Options.Join.FirstJoin.Wait"):1);
+								API.teleportPlayer(p, TeleportLocation.SPAWN);
 				}else {
 					if(setting.join_motd){
 				    	for(String ss: Loader.TranslationsFile.getStringList("OnJoin.Messages")) {
 				    		Loader.msg(replaceAll(ss,p),p);
-					}
-				}}
+					}}}
 				if(playedBefore.contains(p))
 				playedBefore.remove(p);
 			if(Loader.econ!=null && !Loader.econ.hasAccount(p))

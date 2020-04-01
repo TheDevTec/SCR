@@ -20,20 +20,19 @@ public class NameTagChanger {
 	            		
 	            	}else {
 	     				String pname = p.getName();
-	     				if(pname.length() > 16)
-	     					pname = pname.substring(0, 15);
+	     				if(pname.length() > 16)pname = pname.substring(0, 15);
 	            		if(!t.containsKey(p))t.put(p, TheAPI.getNameTagAPI(p, null, null));
 	            		NameTagAPI n = t.get(p);
 	            		n.setPrefix(null);
-		            		n.setSuffix(null);
-		            		n.setNameTag(pname);
+		            	n.setSuffix(null);
+		            	n.setNameTag(pname);
 		            		
 		}}else {
 	            	if(setting.tab_nametag) {
 	            		NameTagAPI n = t.get(p);
 	            		n.setPrefix(TabList.replace(prefix,p));
-		            		n.setSuffix(TabList.replace(suffix,p));
-		            		n.setNameTag(Tasks.ss.get(p.getName()));
+		            	n.setSuffix(TabList.replace(suffix,p));
+		            	n.setNameTag(Tasks.ss.get(p.getName()));
 		            		
 	            	}
         	}}

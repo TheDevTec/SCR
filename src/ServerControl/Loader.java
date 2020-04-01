@@ -175,6 +175,12 @@ public void onEnable() {
 		Bukkit.getPluginManager().disablePlugin(this);
 		return;
 		}
+	if(Loader.me.getString("Config-Version")==null) {
+		Loader.me.set("Config-Version",1);
+		for(String s:PlayerData.getPlayers())
+			new PlayerData(s).set("Back", null);
+		 Configs.config.save();
+	}
 	loading=System.currentTimeMillis()/100;
     MultiWorldsUtils.LoadWorlds();
 		if(API.existVaultPlugin()) {

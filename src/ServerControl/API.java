@@ -20,7 +20,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import Commands.Kit;
 import ServerControlEvents.PluginHookEvent;
-import Utils.Configs;
 import Utils.setting;
 import me.Straiker123.TheAPI;
 
@@ -60,16 +59,15 @@ public class API {
 				if(homes.isEmpty()==false) {
 					home=homes.get(0);
 				}
-				if(home != null) {
+				if(home != null && Bukkit.getWorld(Loader.me.getString("Players."+p.getName()+".Homes."+home+".World"))!=null) {
 				World w = Bukkit.getWorld(Loader.me.getString("Players."+p.getName()+".Homes."+home+".World"));
 				double x = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".X");
 				double y = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Y");
 				double z = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Z");
 				float pitch = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Pitch");
 				float yaw = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Yaw");
-				if(w != null) { 
 					a= new Location(w,x,y,z,yaw,pitch);
-				}}else {
+				}else {
 						Loader.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn")
 								.replace("%world%", p.getWorld().getName())
 								.replace("%player%", p.getName())
@@ -245,24 +243,12 @@ public class API {
 		 setBack(p.getName(),p.getLocation());
 	 }
 	 public static void setBack(String p, Location l) {
-		 if(l != null) {
-		 Loader.me.set("Players."+p+".Back.World",l.getWorld().getName());
-		 Loader.me.set("Players."+p+".Back.X",l.getX());
-		 Loader.me.set("Players."+p+".Back.Y",l.getY());
-		 Loader.me.set("Players."+p+".Back.Z",l.getZ());
-		 Loader.me.set("Players."+p+".Back.Yaw",l.getPitch());
-		 Loader.me.set("Players."+p+".Back.Pitch",l.getYaw());
-		 Configs.chatme.save();
-		 }
+		 if(l != null)
+		 Loader.me.set("Players."+p+".Back",TheAPI.getStringUtils().getLocationAsString(l));
 	 }
 	 
 	 public static Location getBack(String p) {
-		 if(Bukkit.getWorld(Loader.me.getString("Players."+p+".Back.World")) != null) {
-			 return new Location(Bukkit.getWorld(Loader.me.getString("Players."+p+".Back.World")),
-					 Loader.me.getDouble("Players."+p+".Back.X"),Loader.me.getDouble("Players."+p+".Back.Y"),Loader.me.getDouble("Players."+p+".Back.Z")
-					 ,Loader.me.getLong("Players."+p+".Back.Pitch"),Loader.me.getLong("Players."+p+".Back.Yaw"));
-		 }
-		 return null;
+		 return TheAPI.getStringUtils().getLocationFromString(Loader.me.getString("Players."+p+".Back"));
 	 }
 	 private static boolean has(CommandSender p, List<String> perms) {
 		 int i = 0;

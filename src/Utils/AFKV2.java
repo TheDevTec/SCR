@@ -20,6 +20,7 @@ public class AFKV2 {
 	long time = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
 	long rkick = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
 	public void start() {
+		a.set("Players."+d+".AFK",System.currentTimeMillis()/1000);
 		r.runRepeating(new Runnable() {
 			int f =0;
 			@Override
@@ -27,7 +28,6 @@ public class AFKV2 {
 				Player s = TheAPI.getPlayer(d);
 				if(s==null) {
 					Loader.afk.remove(d);
-					a.set("Players."+d+".AFK",null);
 					r.cancel();
 					return;
 				}
