@@ -17,7 +17,7 @@ public class PRain implements CommandExecutor {
 		if(args.length==0) {
 			if(s instanceof Player) {
 			if(API.hasPerm(s, "ServerControl.PlayerWeather")) {
-				TheAPI.getPlayer(args[0]).setPlayerWeather(WeatherType.DOWNFALL);
+				((Player)s).setPlayerWeather(WeatherType.DOWNFALL);
 				Loader.msg(Loader.s("Prefix")+Loader.s("Weather.Rain")
 				.replace("%world%", ((Player) s).getLocation().getWorld().getName())
 						,s);
