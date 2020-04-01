@@ -67,26 +67,31 @@ public class TempJail implements CommandExecutor, TabCompleter {
 			if(args.length==1) {
 				return null;
 			}
-			if(args.length==2) {
+			/*if(args.length==2) {
 				if(args[1].equalsIgnoreCase("")) { 
 				c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("1","2","3","4","5","6","7","8","9","0"), new ArrayList<>()));
 				}
+				String sec =LoaderClass.config.getConfig().getString("Words.Second");
+				String min =LoaderClass.config.getConfig().getString("Words.Minute");
+				String h =LoaderClass.config.getConfig().getString("Words.Hour");
+				String d =LoaderClass.config.getConfig().getString("Words.Day");
+				String w =LoaderClass.config.getConfig().getString("Words.Week");
+				String mon = LoaderClass.config.getConfig().getString("Words.Month");
+				String y =LoaderClass.config.getConfig().getString("Words.Year");
 				if(args[1].startsWith("1")||args[1].startsWith("2")||args[0].startsWith("3")||
 						args[1].startsWith("4")||args[1].startsWith("5")||args[1].startsWith("6")||
-						args[1].startsWith("7")||args[1].startsWith("8")||args[1].startsWith("9")||args[1].startsWith("0")){
-					String sec =LoaderClass.config.getConfig().getString("Words.Second");
-					String min =LoaderClass.config.getConfig().getString("Words.Minute");
-					String h =LoaderClass.config.getConfig().getString("Words.Hour");
-					String d =LoaderClass.config.getConfig().getString("Words.Day");
-					String w =LoaderClass.config.getConfig().getString("Words.Week");
-					String mon = LoaderClass.config.getConfig().getString("Words.Month");
-					String y =LoaderClass.config.getConfig().getString("Words.Year");
-					String cent = LoaderClass.config.getConfig().getString("Words.Century");
-					String mil =LoaderClass.config.getConfig().getString("Words.Millenium");
+						args[1].startsWith("7")||args[1].startsWith("8")||args[1].startsWith("9")){
+					if(args[1].endsWith("0")||args[1].endsWith("1")||args[1].endsWith("2")||args[0].endsWith("3")||
+						args[1].endsWith("4")||args[1].endsWith("5")||args[1].endsWith("6")||
+						args[1].endsWith("7")||args[1].endsWith("8")||args[1].endsWith("9")||args[1].endsWith("0")) {
 					c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList(args[1]+sec,args[1]+min,args[1]+h,args[1]+d,args[1]+w,args[1]+mon,
-							args[1]+y,args[1]+cent,args[1]+mil), new ArrayList<>()));
+							args[1]+y), new ArrayList<>()));
+					}
 				}
-			}
+				if(args[1].contains(sec)) {
+					
+				}
+			}*/
 		}
 		return c;
 	}
