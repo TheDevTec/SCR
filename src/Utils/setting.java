@@ -33,6 +33,7 @@ public class setting {
 	cool_cmd, cool_chat, cool_percmd, color_chat_perm,  color_sign_perm, 
 	tp_safe,tp_onreqloc, ram, spam_double,caps_chat, caps_cmd,deathspawnbol;
 	public static DeathTp deathspawn;
+	public static boolean farming;
 	
 /**	public static boolean offlineinvsee; ///invsee <offline player>, /esee <offline player> (Req. SCR_PerWorldInventory)
 	public static boolean clearmem; //clear memory every X minutes
@@ -46,7 +47,8 @@ public class setting {
 		 format_date_time = new SimpleDateFormat(f.getString("Format.DateWithTime"));
 		 format_time = new SimpleDateFormat(f.getString("Format.Time"));
 		 format_date = new SimpleDateFormat(f.getString("Format.Date"));
-		singeplayersleep=f.getBoolean("Options.SinglePlayerSleep");
+		 farming=f.getBoolean("Options.FarmingSystem");
+			singeplayersleep=f.getBoolean("Options.SinglePlayerSleep");
 		timezone = f.getBoolean("Options.TimeZone.Use");
 		ram = f.getBoolean("Options.RAM-Percentage");
 		warn_restart =f.getBoolean("Options.WarningSystem.Restart.Use");

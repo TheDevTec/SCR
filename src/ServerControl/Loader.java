@@ -513,6 +513,7 @@ private void EventsRegister() {
 	EventC(new Events.WorldChange());
 	EventC(new Events.CreatePortal());
 	EventC(new Events.Signs());
+	EventC(new Events.FarmingSystem());
 	EventC(new Events.EntitySpawn());
 	if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("AFKPlus"))
 	EventC(new Events.AFKPlus());
