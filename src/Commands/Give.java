@@ -444,7 +444,7 @@ public class Give implements CommandExecutor, TabCompleter {
 					if(ps==null) {
 						String g = args[0].toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
 						if(args[0].equals("*")) {
-							Repeat.a(s,"give * "+g);
+							Repeat.a(s,"give * "+args[1].toLowerCase().replaceFirst("minecraft:", "").toUpperCase());
 							return true;
 						}
 						if(getItem(g)!=null) {
@@ -505,6 +505,10 @@ public class Give implements CommandExecutor, TabCompleter {
 							Loader.msg(Loader.s("Prefix")+Loader.s("Give.UknownItem").replace("%item%", g), s);
 							return true;			
 					}
+						if(args[0].equals("*")) {
+							Repeat.a(s,"give * "+args[1].toLowerCase().replaceFirst("minecraft:", "").toUpperCase()+" "+TheAPI.getStringUtils().getInt(args[2]));
+							return true;
+						}
 					Loader.msg(Loader.PlayerNotOnline(args[1]), s);
 					return true;
 				}
