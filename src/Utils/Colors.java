@@ -34,6 +34,4 @@ public static String colorize(String s, boolean sign, CommandSender d) {
 		b=b.replace("&k", "§k");
 	}
 	return b;
-}
-
-}
+}}

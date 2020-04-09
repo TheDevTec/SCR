@@ -111,6 +111,7 @@ public class PlayerData {
 	
 	public static List<String> getPlayers(){
 		List<String> p = new ArrayList<String>();
+		if(Loader.me.getString("Players")!=null)
 		for(String d : Loader.me.getConfigurationSection("Players").getKeys(false))p.add(d);
 		return p;
 	}
