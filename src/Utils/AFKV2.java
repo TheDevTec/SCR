@@ -16,11 +16,10 @@ public class AFKV2 {
 	}
 	StringUtils ss = TheAPI.getStringUtils();
 	TheRunnable r = TheAPI.getRunnable();
-	int kick = 0;
-	long time = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
-	long rkick = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
+	String afkMsg = Loader.s("Prefix")+Loader.s("AFK.IsAFK");
+	int afk,kick;
+	long time = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK")),rkick = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
 	public void start() {
-		a.set("Players."+d+".AFK",System.currentTimeMillis()/1000);
 		r.runRepeating(new Runnable() {
 			int f =0;
 			@Override
@@ -34,6 +33,7 @@ public class AFKV2 {
 				if(f==5) {
 					f=0;
 					time = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
+					afkMsg = Loader.s("Prefix")+Loader.s("AFK.IsAFK");
 					if(setting.afk_kick)
 					rkick = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
 				}
@@ -44,7 +44,7 @@ public class AFKV2 {
 							bc=true;
 							mp=true;
 						  	  if(!API.getSPlayer(s).hasVanish())
-						  		  TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("AFK.IsAFK").replace("%player%", d)
+						  		  TheAPI.broadcastMessage(afkMsg.replace("%player%", d)
 								   .replace("%playername%", s.getDisplayName()));
 						  	  }
 						if(setting.afk_kick && is) {
@@ -57,7 +57,8 @@ public class AFKV2 {
 						++kick;
 						}
 					}
-				}
+				}else
+					++afk;
 			}
 		},20,20);
 	}
@@ -71,16 +72,16 @@ public class AFKV2 {
 		Player s = TheAPI.getPlayer(d);
 		if(s!=null) {
 	  	  if(!API.getSPlayer(s).hasVanish())
-	  		  TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("AFK.IsAFK").replace("%player%", d)
+	  		  TheAPI.broadcastMessage(afkMsg.replace("%player%", d)
 			   .replace("%playername%", s.getDisplayName()));
 	}}
 	FileConfiguration a = Loader.me;
 	public long getTime() {
-		return a.getString("Players."+d+".AFK")!=null ? a.getLong("Players."+d+".AFK")-System.currentTimeMillis()/1000+time:time;
+		return time-afk;
 	}
 	boolean bc;
 	public void save() {
-		a.set("Players."+d+".AFK",System.currentTimeMillis()/1000);
+		afk=0;
 		kick=0;
 		manual=false;
 		mp=false;
@@ -92,6 +93,6 @@ public class AFKV2 {
 	}
 	
 	public boolean isAfk() {
-		return a.getString("Players."+d+".AFK")!=null?getTime()<=0:false;
+		return getTime()<=0;
 	}
 }
