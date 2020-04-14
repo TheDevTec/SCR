@@ -515,8 +515,10 @@ private void EventsRegister() {
 	EventC(new Events.Signs());
 	EventC(new Events.FarmingSystem());
 	EventC(new Events.EntitySpawn());
+	try {
 	if(TheAPI.getPluginsManagerAPI().isEnabledPlugin("AFKPlus"))
 	EventC(new Events.AFKPlus());
+	}catch(Exception e) {}
 }
 public static boolean SoundsChecker() {
 	if(setting.sound && !TheAPI.getSoundAPI().existSound(config.getString("Options.Sounds.Sound"))){
