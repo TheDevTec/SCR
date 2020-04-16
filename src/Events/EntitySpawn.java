@@ -30,7 +30,7 @@ public class EntitySpawn implements Listener {
 		if(e.getCause()==DamageCause.FIRE||e.getCause()==DamageCause.FIRE_TICK)
 		if(!Loader.mw.getBoolean("WorldsSettings."+w+".DoFireDamage"))
 				e.setCancelled(true);
-		if(e.getCause()==DamageCause.DROWNING||e.getCause()==DamageCause.DRYOUT
+		if(e.getCause()==DamageCause.DROWNING
 				&& !Loader.mw.getBoolean("WorldsSettings."+w+".DoDrownDamage"))
 				e.setCancelled(true);
 	}}}
