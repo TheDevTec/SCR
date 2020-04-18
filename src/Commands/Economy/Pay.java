@@ -35,27 +35,27 @@ public class Pay implements CommandExecutor {
 						if(moneyfromargs.startsWith("-"))moneyfromargs="0.0";
 						double money = API.convertMoney(moneyfromargs);
 						if(Loader.econ.has(p,p.getWorld().getName(), money)||s.hasPermission("ServerControl.Economy.InMinus")){
-						Loader.econ.withdrawPlayer(p,p.getWorld().getName(), money).transactionSuccess();
-					Loader.econ.depositPlayer(args[0],p.getWorld().getName(), money).transactionSuccess();
+						Loader.econ.withdrawPlayer(p,p.getWorld().getName(), money);
+					Loader.econ.depositPlayer(args[0],p.getWorld().getName(), money);
 					
 					Loader.msg(Loader.s("Economy.PaidTo")
 							.replace("%money%",API.setMoneyFormat(money, true))
-							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
+							.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(s.getName()), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", args[0])
 							.replace("%playername%", BanSystem.getName(args[0])), s);
 					if(get(args[0])!=null) {
 						Loader.msg(Loader.s("Economy.PaidFrom")
 							.replace("%money%",API.setMoneyFormat(money, true))
-							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[0]), true))
+							.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(args[0]), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", s.getName())
 							.replace("%playername%", ((Player) s).getDisplayName()), get(args[0]));
 					}return true;
 				}
 						Loader.msg(Loader.s("Economy.NoMoney")
-								.replace("%money%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
-								.replace("%currently%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
+								.replace("%money%",API.setMoneyFormat(Loader.econ.getBalance(s.getName()), true))
+								.replace("%currently%",API.setMoneyFormat(Loader.econ.getBalance(s.getName()), true))
 								.replace("%player%", args[0])
 								.replace("%playername%", BanSystem.getName(args[0])), s);
 						return true;}
