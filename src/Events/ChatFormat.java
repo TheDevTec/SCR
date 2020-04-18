@@ -74,6 +74,7 @@ public class ChatFormat implements Listener {
 	@EventHandler(priority=EventPriority.LOW)
 	public void set(PlayerChatEvent e) {
 		Player p =e.getPlayer();
+		Loader.setupChatFormat(p);
 	if(TheAPI.getCooldownAPI("world-create").getStart(p.getName())!=-1) {
 		e.setCancelled(true);
 		if(e.getMessage().toLowerCase().equals("cancel")) {
