@@ -505,7 +505,6 @@ private void EventsRegister() {
 	EventC(new Events.DisableItems());
 	EventC(new Events.SecurityListenerAntiAD());
 	EventC(new Events.OnPlayerJoin());
-	EventC(new Events.OnPlayerLeave());
 	EventC(new Events.SecurityListenerCooldowns());
 	EventC(new Events.ChatFormat());
 	EventC(new Events.RewardsListenerChat());

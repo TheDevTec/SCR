@@ -136,4 +136,7 @@ public class PlayerData {
 		for(String d : Loader.me.getConfigurationSection("Players").getKeys(false))p.add(d);
 		return p;
 	}
+	public List<String> getStringList(String path) {
+		return a.getStringList(path);
+	}
 }

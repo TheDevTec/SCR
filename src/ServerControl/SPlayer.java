@@ -10,7 +10,6 @@ import org.bukkit.potion.PotionEffect;
 import com.earth2me.essentials.Essentials;
 
 import Events.AFKPlus;
-import Utils.Configs;
 import Utils.setting;
 import me.Straiker123.PlayerAPI;
 import me.Straiker123.TheAPI;
@@ -18,13 +17,15 @@ import me.Straiker123.TheAPI;
 public class SPlayer {
 	Player s;
 	PlayerAPI d;
+	PlayerData data;
 	public SPlayer(Player p) {
 		s=p;
-		d=TheAPI.getPlayerAPI(s);
+		d=TheAPI.getPlayerAPI(p);
+		data=new PlayerData(p.getName());
 	}
 	
 	public PlayerData getData() {
-		return new PlayerData(s.getName());
+		return data;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -48,14 +49,13 @@ public class SPlayer {
 	public void enableTempFly(int stop) {
 		enableTempFly();
         Loader.msg(Loader.s("Prefix")+Loader.s("TempFly.Enabled").replace("%time%", TheAPI.getStringUtils().setTimeToString(stop)), getPlayer());
-        Loader.me.set("Players."+getName()+".TempFly.Start", System.currentTimeMillis());
-        Loader.me.set("Players."+getName()+".TempFly.Time", stop);
+        data.set("TempFly.Start", System.currentTimeMillis());
+        data.set("TempFly.Time", stop);
 		if(!hasTempFlyEnabled()) {
         List<String> w = Loader.me.getStringList("TempFly");
         w.add(getName());
         Loader.me.set("TempFly",w);
 		}
-        Configs.chatme.save();
         
 	}
 	public void enableTempFly() {
@@ -67,7 +67,6 @@ public class SPlayer {
 			List<String> w = Loader.me.getStringList("TempFly");
         w.remove(getName());
         Loader.me.set("TempFly",w);
-        Configs.chatme.save();
 		}
 		d.setFly(true, true);
 	}
@@ -76,7 +75,6 @@ public class SPlayer {
 			List<String> w = Loader.me.getStringList("TempFly");
 	        w.remove(getName());
 	        Loader.me.set("TempFly",w);
-	        Configs.chatme.save();
 			}
 		d.setFly(false, false);
 	}
@@ -154,21 +152,21 @@ public class SPlayer {
 		}
 	
 	public void setWalkSpeed() {
-		if(s.hasPermission("ServerControl.WalkSpeed")&&Loader.me.getString("Players."+s.getName()+".WalkSpeed")!=null) {
-			if(Loader.me.getDouble("Players."+s.getName()+".WalkSpeed")==0.0)s.setWalkSpeed(2);
+		if(s.hasPermission("ServerControl.WalkSpeed")&&data.existPath("WalkSpeed")) {
+			if(data.getDouble("WalkSpeed")==0.0)s.setWalkSpeed(2);
 			else
-			if(Loader.me.getDouble("Players."+s.getName()+".WalkSpeed")>10.0)s.setWalkSpeed(10);
+			if(data.getDouble("WalkSpeed")>10.0)s.setWalkSpeed(10);
 			else
-			if(Loader.me.getDouble("Players."+s.getName()+".WalkSpeed")<10.0)s.setWalkSpeed((float)Loader.me.getDouble("Players."+s.getName()+".WalkSpeed"));
+			if(data.getDouble("WalkSpeed")<10.0)s.setWalkSpeed((float)data.getDouble("WalkSpeed"));
 		}
 	}
 	public void setFlySpeed(){
-		if(s.hasPermission("ServerControl.WalkSpeed")&&Loader.me.getString("Players."+s.getName()+".WalkSpeed")!=null) {
-			if(Loader.me.getDouble("Players."+s.getName()+".WalkSpeed")==0.0)s.setWalkSpeed(2);
+		if(s.hasPermission("ServerControl.FlySpeed")&&data.existPath("FlySpeed")) {
+			if(data.getDouble("FlySpeed")==0.0)s.setWalkSpeed(2);
 			else
-			if(Loader.me.getDouble("Players."+s.getName()+".WalkSpeed")>10.0)s.setWalkSpeed(10);
+			if(data.getDouble("FlySpeed")>10.0)s.setWalkSpeed(10);
 			else
-			if(Loader.me.getDouble("Players."+s.getName()+".WalkSpeed")<10.0)s.setWalkSpeed((float)Loader.me.getDouble("Players."+s.getName()+".WalkSpeed"));
+			if(data.getDouble("FlySpeed")<10.0)s.setWalkSpeed((float)data.getDouble("FlySpeed"));
 		}
 	}
 	public void enableGod() {
