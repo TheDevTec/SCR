@@ -15,7 +15,6 @@ public class Configs {
 	public static ConfigAPI bans= TheAPI.getConfig("ServerControlReloaded", "Bans");
 	public static ConfigAPI sb= TheAPI.getConfig("ServerControlReloaded", "Scoreboard");
 	public static ConfigAPI tab= TheAPI.getConfig("ServerControlReloaded", "TabList");
-	public static ConfigAPI chat= TheAPI.getConfig("ServerControlReloaded", "ChatLog");
 	public static ConfigAPI mw=TheAPI.getConfig("ServerControlReloaded", "MultiWorlds");
 	public static ConfigAPI kit=TheAPI.getConfig("ServerControlReloaded", "Kits");
 	public static void TranslationsLoading() {
@@ -808,9 +807,6 @@ public class Configs {
 			sb.create();
 			Loader.scFile=sb.getConfig();
 			}
-	public static void ChatLogLoading() {
-				chat.create();
-			}
 	public static void ChatMeLoading() {
 				chatme.create();
 				Loader.me=chatme.getConfig();
@@ -899,7 +895,6 @@ public class Configs {
 		TranslationsLoading();
 		ScoreboardLoading();
 		TabLoading();
-		ChatLogLoading();
 		KitLoading();
 		BansLoading();
 	}
@@ -908,7 +903,6 @@ public class Configs {
 		trans.reload();
 		config.reload();
 		bans.reload();
-		chat.reload();
 		chatme.reload();
 		kit.reload();
 		mw.reload();

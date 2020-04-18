@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -30,6 +31,21 @@ public class PlayerData {
 	public boolean existPath(String path) {
 		return getString(path) != null;
 	}
+	public boolean isString(String path) {
+		return a.isString(path);
+	}
+	public boolean isDouble(String path) {
+		return a.isDouble(path);
+	}
+	public boolean isInt(String path) {
+		return a.isInt(path);
+	}
+	public boolean isLong(String path) {
+		return a.isLong(path);
+	}
+	public boolean isBoolean(String path) {
+		return a.isBoolean(path);
+	}
 	public boolean getBoolean(String path) {
 		return a.getBoolean("Players."+s+"."+path);
 	}
@@ -42,6 +58,11 @@ public class PlayerData {
 	public void setItemStack(String path, ItemStack item) {
 		set(path,toString(item));
 	}
+
+	public Set<String> getConfigurationSection(String section, boolean keys) {
+		return a.getConfigurationSection(section).getKeys(keys);
+	}
+
 
 	public void set(String path, Object value) {
 		a.set("Players."+s+"."+path, value);

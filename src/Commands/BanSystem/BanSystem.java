@@ -10,10 +10,6 @@ import Utils.Configs;
 import me.Straiker123.TheAPI;
 
 public class BanSystem {
-	public static String ip(String p) {
-		if(Loader.me.getString("Players."+p+".IPAdress")!=null)return Loader.me.getString("Players."+p+".IPAdress");
-		return null;
-	}
 	public enum BanType {
 		JAIL,
 		TEMPJAIL,

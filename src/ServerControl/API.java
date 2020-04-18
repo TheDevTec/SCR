@@ -280,9 +280,6 @@ public class API {
 		p.setCustomName(name);
 	 }
 	 
-	 public static String getIPAdress(String player) {
-		 return Loader.me.getString("Players."+player+".IPAdress").replace('_', '.');
-	 }
 	 public static ArrayList<String> getKits() {
 		 ArrayList<String> list = new ArrayList<String>();
 		for(String name: Loader.kit.getConfigurationSection("Kits").getKeys(false)) {
@@ -317,7 +314,7 @@ public class API {
 		 }
 		 
 	public static String setMoneyFormat(double money, boolean colorized) {
-		String a = "0";
+		String a = ""+money;
 		 if(MoneyFormat==null) {
 			 if(existVaultPlugin()) {
 			 if(Loader.econ!=null) {

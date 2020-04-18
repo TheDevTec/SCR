@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
+import ServerControl.PlayerData;
 
 public class ClearConfirmToggle implements CommandExecutor {
 
@@ -20,13 +20,16 @@ public class ClearConfirmToggle implements CommandExecutor {
 		return true;
 	}else {
 			if(API.hasPerm(s,"ServerControl.ClearInv.Clear")) {
-			if(Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm")==true) {
-				Loader.me.set("Players."+s.getName()+".ClearInvConfirm", false);
-				Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("ClearInventory.ConfirmEnabled"), s);
+				PlayerData d = new PlayerData(s.getName());
+			if(d.getBoolean("ClearInvConfirm")==true) {
+				d.set("ClearInvConfirm", false);
+				PlayerData.save();
+				Loader.msg(Loader.s("Prefix")+Loader.s("ClearInventory.ConfirmEnabled"), s);
 			return true;
 		}else {
-			Loader.me.set("Players."+s.getName()+".ClearInvConfirm", true);
-			Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("ClearInventory.ConfirmDisabled"), s);
+			d.set("ClearInvConfirm", true);
+			PlayerData.save();
+			Loader.msg(Loader.s("Prefix")+Loader.s("ClearInventory.ConfirmDisabled"), s);
 			return true;
 		}}return true;}}}
 		return true;

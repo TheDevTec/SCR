@@ -58,7 +58,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		FileConfiguration f = Loader.me;
-		String ip = API.getIPAdress(a[0]);
+		String ip = TheAPI.getPunishmentAPI().getIP(a[0]);
 		if(ip==null)ip="&7Uknown";
 		String what = "Offline";
 		String afk = "No";

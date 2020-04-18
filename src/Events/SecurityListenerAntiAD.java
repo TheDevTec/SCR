@@ -1,7 +1,5 @@
 package Events;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,7 +17,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControlEvents.PlayerAdvertisementEvent;
-import Utils.Configs;
 import Utils.setting;
 import me.Straiker123.TheAPI;
 
@@ -44,7 +41,6 @@ public Loader plugin=Loader.getInstance;
         	PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(event.getPlayer(),event.getMessage());
     		Bukkit.getPluginManager().callEvent(ed);
     		if(!ed.isCancelled()) {
-        		chatLog(getMatches(message), p);
      	    	 sendBroadcast(p,getMatches(message),AdType.Other);
                 event.setCancelled(true);
                 }}}}}
@@ -58,7 +54,6 @@ public Loader plugin=Loader.getInstance;
         	PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(event.getPlayer(),event.getMessage());
     		Bukkit.getPluginManager().callEvent(ed);
     		if(!ed.isCancelled()) {
-        		chatLog(getMatches(message), p);
 	      	    	 sendBroadcast(p,getMatches(message),AdType.Other);
                 event.setCancelled(true);
         				}}}}}
@@ -73,7 +68,6 @@ public Loader plugin=Loader.getInstance;
          	PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(e.getPlayer(),line);
      		Bukkit.getPluginManager().callEvent(ed);
      		if(!ed.isCancelled()) {
-        		chatLog(getMatches(line), p);
      	    	 sendBroadcast(p,getMatches(line),AdType.Other);
     		 e.setCancelled(true);
     		 e.getBlock().breakNaturally();
@@ -92,7 +86,6 @@ public Loader plugin=Loader.getInstance;
           	PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(e.getPlayer(),page);
       		Bukkit.getPluginManager().callEvent(ed);
       		if(!ed.isCancelled()) {
-        		chatLog(getMatches(page), p);
      	    	 sendBroadcast(p,getMatches(page),AdType.Other);
     		 e.setCancelled(true);
     	}}}}}
@@ -110,7 +103,6 @@ public Loader plugin=Loader.getInstance;
                    	PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p,displayName);
               		Bukkit.getPluginManager().callEvent(ed);
               		if(!ed.isCancelled()) {
-                		chatLog(getMatches(displayName), p);
    	      	    	 sendBroadcast(p,getMatches(displayName),AdType.Other);
            		 event.setCancelled(true);
            		}}}}}}}
@@ -125,7 +117,6 @@ public Loader plugin=Loader.getInstance;
              	PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p,displayName);
          		Bukkit.getPluginManager().callEvent(ed);
          		if(!ed.isCancelled()) {
-            		chatLog(getMatches(displayName), p);
 	      	    	 sendBroadcast(p,getMatches(displayName),AdType.PickUpItem);
 	            event.setCancelled(true);
      			event.getItem().remove();
@@ -141,7 +132,6 @@ public Loader plugin=Loader.getInstance;
              	PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p,displayName);
          		Bukkit.getPluginManager().callEvent(ed);
          		if(!ed.isCancelled()) {
-            		chatLog(getMatches(displayName), p);
 	      	    	 sendBroadcast(p,getMatches(displayName),AdType.DropItem);
      			event.getItemDrop().remove();
                 }}}}}}
@@ -183,19 +173,4 @@ public Loader plugin=Loader.getInstance;
       if(Loader.config.getBoolean("TasksOnSend.Advertisement.Use-Commands")) {
   		    	for(String cmds: Loader.config.getStringList("TasksOnSend.Advertisement.Commands")) {
 	        	plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), TheAPI.colorize(cmds.replace("%player%", p.getName()))); 
-  		    	}}}
-
-    public void chatLog(String str, Player p) {
-    	String playername = p.getName();
-    	String start = str;
-    try {
-			FileWriter fw = new FileWriter(Configs.chat.getFile(), true);
-			BufferedWriter bw = new BufferedWriter(fw);
-			String writingFormat = Loader.config.getString("WritingFormat.Advertisement");
-			bw.write(writingFormat.replace("%player%", playername).replace("%message%", start));
-			bw.newLine();
-			fw.flush();
-			bw.close();
-			}catch(Exception ev) {
-			ev.printStackTrace();
-			}}}
+  		    	}}}}

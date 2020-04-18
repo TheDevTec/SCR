@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.PlayerData;
 import me.Straiker123.TheAPI;
 
 public class Chat implements CommandExecutor, TabCompleter {
@@ -86,6 +87,7 @@ public class Chat implements CommandExecutor, TabCompleter {
         		}return true;}
         	if(args[0].equalsIgnoreCase("Me")){
     			if(API.hasPerm(s, "ServerControl.Me")) {
+    				PlayerData d = new PlayerData(s.getName());
                    if(args.length == 1) {
            	        if(s instanceof Player == true) {
            	        	Loader.msg(Loader.s("Prefix")+"&e----------------- &bMe&e -----------------",s);
@@ -104,17 +106,17 @@ public class Chat implements CommandExecutor, TabCompleter {
         	        				.replace("%player%", p.getName())
         	        				.replace("%joins%", ""+(p.getStatistic(Statistic.LEAVE_GAME)+1))
         	        				.replace("%leaves%", ""+p.getStatistic(Statistic.LEAVE_GAME))
-        	        				.replace("%vulgarwords%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".VulgarWords")))
-        	        				.replace("%spams%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Spam")))
-        	        				.replace("%kicks%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Kicks")))
+        	        				.replace("%vulgarwords%", ""+d.getInt("VulgarWords"))
+        	        				.replace("%spams%", ""+d.getInt("Spam"))
+        	        				.replace("%kicks%", ""+d.getInt("Kicks"))
         	        				.replace("%vault-money%", money)
         	        				.replace("%money%",  money)
-        	        				.replace("%vault-group%", String.valueOf(Loader.vault.getPrimaryGroup(p)))
-        	        				.replace("%group%", String.valueOf(Loader.vault.getPrimaryGroup(p)))
+        	        				.replace("%vault-group%", Loader.vault.getPrimaryGroup(p))
+        	        				.replace("%group%", Loader.vault.getPrimaryGroup(p))
         	        				.replace("%kills%", ""+p.getStatistic(Statistic.PLAYER_KILLS))
         	        				.replace("%deaths%", ""+p.getStatistic(Statistic.DEATHS))
-        	        				.replace("%lastleave%", check(Loader.me.getString("Players."+p.getName()+".LastLeave")))
-        	        				.replace("%firstjoin%", check(Loader.me.getString("Players."+p.getName()+".FirstJoin"))),p);
+        	        				.replace("%lastleave%", check(d.getString("LastLeave")))
+        	        				.replace("%firstjoin%", check(d.getString("FirstJoin"))),p);
                 	        }
             	        		if(Loader.vault == null) {
             	        			Loader.msg(a
@@ -123,36 +125,36 @@ public class Chat implements CommandExecutor, TabCompleter {
                 	        				.replace("%player%", p.getName())
                 	        				.replace("%joins%", ""+(p.getStatistic(Statistic.LEAVE_GAME)+1))
                 	        				.replace("%leaves%", ""+p.getStatistic(Statistic.LEAVE_GAME))
-                	        				.replace("%vulgarwords%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".VulgarWords")))
-                	        				.replace("%spams%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Spam")))
-                	        				.replace("%kicks%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Kicks")))
+                	        				.replace("%vulgarwords%", ""+d.getInt("VulgarWords"))
+                	        				.replace("%spams%", ""+d.getInt("Spam"))
+                	        				.replace("%kicks%", ""+d.getInt("Kicks"))
                 	        				.replace("%vault-money%", money)
                 	        				.replace("%money%",  money)
                 	        				.replace("%kills%", ""+p.getStatistic(Statistic.PLAYER_KILLS))
                 	        				.replace("%deaths%", ""+p.getStatistic(Statistic.DEATHS))
                 	        				.replace("%vault-group%", "Install groups plugin")
                 	        				.replace("%group%", "Install groups plugin")
-                	        				.replace("%lastleave%", check(Loader.me.getString("Players."+p.getName()+".LastLeave")))
-                	        				.replace("%firstjoin%", check(Loader.me.getString("Players."+p.getName()+".FirstJoin"))),p);
+                	        				.replace("%lastleave%", check(d.getString("LastLeave")))
+                	        				.replace("%firstjoin%", check(d.getString("FirstJoin"))),p);
             	        		}}
         	        		if(Bukkit.getPluginManager().getPlugin("Vault")==null) {
         	        			Loader.msg(a
             	        				.replace("%playername%", p.getDisplayName())
     	        						.replace("%prefix%", Loader.s("Prefix"))
             	        				.replace("%player%", p.getName())
-            	        				.replace("%joins%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Joins")))
-            	        				.replace("%leaves%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Joins")-1))
-            	        				.replace("%vulgarwords%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".VulgarWords")))
-            	        				.replace("%spams%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Spam")))
-            	        				.replace("%kicks%", String.valueOf(Loader.me.getInt("Players."+p.getName()+".Kicks")))
+            	        				.replace("%joins%", ""+d.getInt("Joins"))
+            	        				.replace("%leaves%", ""+(d.getInt("Joins")-1))
+            	        				.replace("%vulgarwords%", ""+d.getInt("VulgarWords"))
+            	        				.replace("%spams%", ""+d.getInt("Spam"))
+            	        				.replace("%kicks%", ""+d.getInt("Kicks"))
             	        				.replace("%kills%", ""+p.getStatistic(Statistic.PLAYER_KILLS))
             	        				.replace("%deaths%", ""+p.getStatistic(Statistic.DEATHS))
             	        				.replace("%vault-money%", "Please install Vault plugin and economy plugin.")
             	        				.replace("%money%", "Please install Vault plugin and economy plugin.")
             	        				.replace("%vault-group%",  "Please install plugin Vault")
             	        				.replace("%group%",  "Please install plugin Vault")
-            	        				.replace("%lastleave%", check(Loader.me.getString("Players."+p.getName()+".LastLeave")))
-            	        				.replace("%firstjoin%", check(Loader.me.getString("Players."+p.getName()+".FirstJoin"))),p);
+            	        				.replace("%lastleave%", check(d.getString("LastLeave")))
+            	        				.replace("%firstjoin%", check(d.getString("FirstJoin"))),p);
         	        			}}
         	        	 return true;
         	        }
@@ -166,8 +168,9 @@ public class Chat implements CommandExecutor, TabCompleter {
         		}
                     if(args.length==2) { 
                     	if(Loader.me.getString("Players."+args[1])!=null) {
+                    		d=new PlayerData(args[1]);
             	        	List<String> about = Loader.TranslationsFile.getStringList("AboutYou");
-            	        	String world  = Loader.me.getString("Players."+args[1]+".DisconnectWorld");
+            	        	String world  = d.getString("DisconnectWorld");
             	        	if(TheAPI.getPlayer(args[1])!=null)world=TheAPI.getPlayer(args[1]).getName();
             	        	String money = API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true);
             	        	for(String a: about) {
@@ -177,65 +180,62 @@ public class Chat implements CommandExecutor, TabCompleter {
         	        				.replace("%playername%", this.online(args))
 	        						.replace("%prefix%", Loader.s("Prefix"))
         	        				.replace("%player%", args[1])
-        	        				.replace("%joins%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Joins")))
-        	        				.replace("%leaves%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Joins")-1))
-        	        				.replace("%vulgarwords%", String.valueOf(Loader.me.getInt("Players."+args[1]+".VulgarWords")))
-        	        				.replace("%spams%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Spam")))
-        	        				.replace("%kicks%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Kicks")))
+        	        				.replace("%joins%", ""+d.getInt("Joins"))
+        	        				.replace("%leaves%", ""+(d.getInt("Joins")-1))
+        	        				.replace("%vulgarwords%", ""+d.getInt("VulgarWords"))
+        	        				.replace("%spams%", ""+d.getInt("Spam"))
+        	        				.replace("%kicks%",""+d.getInt("Kicks"))
         	        				.replace("%vault-money%", money)
-        	        				.replace("%kills%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Kills")))
+        	        				.replace("%kills%", ""+d.getInt("Kills"))
         	        				.replace("%money%",  money)
-        	        				.replace("%vault-group%", String.valueOf(Loader.vault.getPrimaryGroup(world,args[1])))
-        	        				.replace("%group%", String.valueOf(Loader.vault.getPrimaryGroup(world,args[1])))
-        	        				.replace("%deaths%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Deaths")))
-        	        				.replace("%lastleave%", check(Loader.me.getString("Players."+args[1]+".LastLeave")))
-        	        				.replace("%firstjoin%", check(Loader.me.getString("Players."+args[1]+".FirstJoin"))),s);
+        	        				.replace("%vault-group%", Loader.vault.getPrimaryGroup(world,args[1]))
+        	        				.replace("%group%", Loader.vault.getPrimaryGroup(world,args[1]))
+        	        				.replace("%deaths%", ""+d.getInt("Deaths"))
+        	        				.replace("%lastleave%", check(d.getString("LastLeave")))
+        	        				.replace("%firstjoin%", check(d.getString("FirstJoin"))),s);
                 	        }
             	        		if(Loader.vault == null) {
             	        			Loader.msg(a
                 	        				.replace("%playername%", this.online(args))
         	        						.replace("%prefix%", Loader.s("Prefix"))
                 	        				.replace("%player%", args[1])
-                	        				.replace("%joins%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Joins")))
-                	        				.replace("%leaves%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Joins")-1))
-                	        				.replace("%vulgarwords%", String.valueOf(Loader.me.getInt("Players."+args[1]+".VulgarWords")))
-                	        				.replace("%spams%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Spam")))
-                	        				.replace("%kicks%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Kicks")))
+                	        				.replace("%joins%", ""+d.getInt("Joins"))
+                	        				.replace("%leaves%", ""+(d.getInt("Joins")-1))
+                	        				.replace("%vulgarwords%", ""+d.getInt("VulgarWords"))
+                	        				.replace("%spams%", ""+d.getInt("Spam"))
+                	        				.replace("%kicks%",""+d.getInt("Kicks"))
                 	        				.replace("%vault-money%", money)
                 	        				.replace("%money%",  money)
                 	        				.replace("%vault-group%", "Install groups plugin")
-                	        				.replace("%kills%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Kills")))
+                	        				.replace("%kills%", ""+d.getInt("Kills"))
                 	        				.replace("%group%", "Install groups plugin")
-                	        				.replace("%deaths%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Deaths")))
-                	        				.replace("%lastleave%", check(Loader.me.getString("Players."+args[1]+".LastLeave")))
-                	        				.replace("%firstjoin%", check(Loader.me.getString("Players."+args[1]+".FirstJoin"))),s);
+                	        				.replace("%deaths%", ""+d.getInt("Deaths"))
+                	        				.replace("%lastleave%", check(d.getString("LastLeave")))
+                	        				.replace("%firstjoin%", check(d.getString("FirstJoin"))),s);
             	        		}}
         	        		if(Bukkit.getPluginManager().getPlugin("Vault")==null) {
         	        			Loader.msg(a
             	        				.replace("%playername%", this.online(args))
     	        						.replace("%prefix%", Loader.s("Prefix"))
             	        				.replace("%player%", args[1])
-            	        				.replace("%joins%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Joins")))
-            	        				.replace("%leaves%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Joins")-1))
-            	        				.replace("%vulgarwords%", String.valueOf(Loader.me.getInt("Players."+args[1]+".VulgarWords")))
-            	        				.replace("%spams%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Spam")))
-            	        				.replace("%kicks%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Kicks")))
+            	        				.replace("%joins%", ""+d.getInt("Joins"))
+            	        				.replace("%leaves%", ""+(d.getInt("Joins")-1))
+            	        				.replace("%vulgarwords%", ""+d.getInt("VulgarWords"))
+            	        				.replace("%spams%", ""+d.getInt("Spam"))
+            	        				.replace("%kicks%",""+d.getInt("Kicks"))
             	        				.replace("%vault-money%", "Please install Vault plugin and economy plugin.")
             	        				.replace("%money%", "Please install Vault plugin and economy plugin.")
-            	        				.replace("%kills%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Kills")))
+            	        				.replace("%kills%", ""+d.getInt("Kills"))
             	        				.replace("%vault-group%",  "Please install plugin Vault")
             	        				.replace("%group%",  "Please install plugin Vault")
-            	        				.replace("%deaths%", String.valueOf(Loader.me.getInt("Players."+args[1]+".Deaths")))
-            	        				.replace("%lastleave%", check(Loader.me.getString("Players."+args[1]+".LastLeave")))
-            	        				.replace("%firstjoin%", check(Loader.me.getString("Players."+args[1]+".FirstJoin"))),s);
+            	        				.replace("%deaths%", ""+d.getInt("Deaths"))
+            	        				.replace("%lastleave%", check(d.getString("LastLeave")))
+            	        				.replace("%firstjoin%", check(d.getString("FirstJoin"))),s);
         	        			}}
                 	  		return true;
                     	}
-                    	if(Loader.me.getString("Players."+args[1])==null) {
                     		Loader.msg(Loader.PlayerNotEx(args[1]),s);
                     		return true;
-                    	}
-        	  		return true;
                     }}return true;}
         Loader.msg(Loader.s("Prefix")+Loader.s("UknownCommand"),s);
         return true;

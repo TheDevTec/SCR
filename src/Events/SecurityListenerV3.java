@@ -1,7 +1,5 @@
 package Events;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -14,6 +12,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.PlayerData;
 import ServerControlEvents.PlayerBlockedCommandEvent;
 import Utils.Configs;
 import Utils.setting;
@@ -197,45 +196,36 @@ public class SecurityListenerV3 implements Listener{
 					}
 	
 	private void call(Security swear, Player s, String original, String replace) {
-			switch(swear) {
-			case Spam:{
-				Loader.config.set("Spam", Loader.config.getInt("Spam") + 1);
-		    	Loader.me.set("Players."+s.getName()+".Spam" ,Loader.me.getInt("Players."+s.getName()+".Spam") + 1);
-		       	if(Loader.config.getBoolean("TasksOnSend.Spam.Use-Commands")) {
-				    	for(String cmds: Loader.config.getStringList("TasksOnSend.Spam.Commands")) {
+		PlayerData d = new PlayerData(s.getName());
+		String name = swear == Security.Spam ? "Spam" : "VulgarWords";
+		String r = swear == Security.Spam ? "Spam" : "Swear";
+				Loader.config.set(name, Loader.config.getInt(name) + 1);
+		    	d.set(name ,d.getInt(name) + 1);
+		       	if(Loader.config.getBoolean("TasksOnSend."+r+".Use-Commands")) {
+				    	for(String cmds: Loader.config.getStringList("TasksOnSend."+r+".Commands")) {
 				    	TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%",s.getName())));
 				    	}}
-		       	TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BroadCastMessageSpam").replace("%player%", s.getName())
-		       			.replace("%word%", API.getValueOfSpamWord(replace)).replace("%message%", original), "ServerControl.BroadCastNotify");
+		       	TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BroadCastMessage"+(swear==Security.Spam ? r : "VulgarWord")).replace("%player%", s.getName())
+		       			.replace("%word%", (swear==Security.Spam ?API.getValueOfSpamWord(replace):API.getValueOfVulgarWord(replace))).replace("%message%", original), "ServerControl.BroadCastNotify");
 		              if(Loader.config.getBoolean("TasksOnSend.Spam.Broadcast")) {
-		        	    		TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("Security.TryingSendSpam").replace("%player%", s.getDisplayName()));
+		        	    		TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("Security.TryingSend"+(swear==Security.Spam ? r : "VulgarWord")).replace("%player%", s.getDisplayName()));
 		        	  		}
-		          try {
-		  			FileWriter fw = new FileWriter(Configs.chat.getFile(), true);
-		  			BufferedWriter bw = new BufferedWriter(fw);
-		  			bw.write(Loader.config.getString("WritingFormat.Spam").replace("%player%", s.getName())
-		  					.replace("%message%", original).replace("%spam%", API.getValueOfSpamWord(replace)));
-		  			bw.newLine();
-		  			fw.flush();
-		  			bw.close();
-		  			}catch(Exception ea) {
-		  			}
-		          if(Loader.config.getBoolean("AutoKickLimit.Spam.Use")) {
-		            if(Loader.me.getInt("Players."+s.getName()+".Spam") >= Loader.config.getInt("AutoKickLimit.Spam.Number")) {
-		          	Loader.me.set("Players."+s.getName()+".Spam" ,Loader.me.getInt("Players."+s.getName()+".Spam") - Loader.config.getInt("AutoKickLimit.Spam.Number"));
-		          	if(Loader.config.getBoolean("AutoKickLimit.Spam.Message.Use")) {
-		    		    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Spam.Message.List")) {
-		    		    		Loader.msg(cmds.replace("%player%", s.getName()).replace("%number%", Loader.config.getInt("AutoKickLimit.Spam.Number")+""),s);
+		          if(Loader.config.getBoolean("AutoKickLimit."+r+".Use")) {
+		            if(d.getInt(name) >= Loader.config.getInt("AutoKickLimit."+r+".Number")) {
+		          	d.set(name ,d.getInt(name) - Loader.config.getInt("AutoKickLimit."+r+".Number"));
+		          	if(Loader.config.getBoolean("AutoKickLimit."+r+".Message.Use")) {
+		    		    	for(String cmds: Loader.config.getStringList("AutoKickLimit."+r+".Message.List")) {
+		    		    		Loader.msg(cmds.replace("%player%", s.getName()).replace("%number%", Loader.config.getInt("AutoKickLimit."+r+".Number")+""),s);
 		    		    	}}
-		                if(Loader.config.getBoolean("AutoKickLimit.Spam.Commands.Use")) {
-			    		    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Spam.Commands.List")) {
-			    		    		TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", s.getName()).replace("%number%", Loader.config.getInt("AutoKickLimit.Spam.Number")+"")));
+		                if(Loader.config.getBoolean("AutoKickLimit."+r+".Commands.Use")) {
+			    		    	for(String cmds: Loader.config.getStringList("AutoKickLimit."+r+".Commands.List")) {
+			    		    		TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", s.getName()).replace("%number%", Loader.config.getInt("AutoKickLimit."+r+".Number")+"")));
 					    		if(cmds.toLowerCase().startsWith("kick")) {
-		   	 	                	Loader.me.set("Players."+s.getName()+".Kicks" ,Loader.me.getInt("Players."+s.getName()+".Kicks") + 1);
+		   	 	                	d.set("Kicks",d.getInt("Kicks") + 1);
 		   	 	                	}}}}}
 		          if(Loader.config.getBoolean("AutoKickLimit.Kick.Use")) {
-		          if(Loader.me.getInt("Players."+s.getName()+".Kicks") >= Loader.config.getInt("AutoKickLimit.Kick.Number")) {
-		        	Loader.me.set("Players."+s.getName()+".Kicks" ,Loader.me.getInt("Players."+s.getName()+".Kicks") - Loader.config.getInt("AutoKickLimit.Kick.Number"));
+		          if(d.getInt("Kicks") >= Loader.config.getInt("AutoKickLimit.Kick.Number")) {
+		        	d.set("Kicks" ,d.getInt("Kicks") - Loader.config.getInt("AutoKickLimit.Kick.Number"));
 		        	if(Loader.config.getBoolean("AutoKickLimit.Kick.Message.Use")) {
 		 		    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Kick.Message.List")) {
 		 		    		Loader.msg(cmds.replace("%player%", s.getName()).replace("%number%", Loader.config.getInt("AutoKickLimit.Kick.Number")+""),s);
@@ -244,60 +234,8 @@ public class SecurityListenerV3 implements Listener{
 			    		    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Kick.Commands.List")) {
 			    		    		TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", s.getName()).replace("%number%", Loader.config.getInt("AutoKickLimit.Kick.Number")+"")));
 						  }}}}
-			}
-			break;
-			case Swear:{
-				Loader.config.set("VulgarWords", Loader.config.getInt("VulgarWords") + 1);
-		        Loader.me.set("Players."+s.getName()+".VulgarWords" ,Loader.me.getInt("Players."+s.getName()+".VulgarWords") + 1);
-	           	if(Loader.config.getBoolean("TasksOnSend.Swear.Use-Commands")) {
-		    		    	for(String cmds: Loader.config.getStringList("TasksOnSend.Swear.Commands")) {
-	 	        	TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", s.getName()))); 
-		    		    	}}
-	           	TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BroadCastMessageVulgarWord").replace("%player%", s.getName())
-	           			.replace("%word%", API.getValueOfVulgarWord(replace)).replace("%message%", original), "ServerControl.BroadCastNotify");
-		     	    if(Loader.config.getBoolean("TasksOnSend.Swear.Broadcast")) {
-		     		    	TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("Security.TryingSendVulgarWord").replace("%player%", s.getDisplayName()));
-		     		    	}
-		     	    		try {
-		        	          			FileWriter fw = new FileWriter(Configs.chat.getFile(), true);
-		        	          			BufferedWriter bw = new BufferedWriter(fw);
-									bw.write(Loader.config.getString("WritingFormat.VulgarWords").replace("%player%", s.getName())
-											.replace("%message%", original).replace("%vulgarword%", API.getValueOfVulgarWord(replace)));
-		        	          			bw.newLine();
-		        	          			fw.flush();
-		        	          			bw.close();
-		        	          			}catch(Exception ev) {
-		        	          			}
-		        	              if(Loader.me.getInt("Players."+s.getName()+".VulgarWords") >= Loader.config.getInt("AutoKickLimit.Swear.Number")) {
-		      	                  if(Loader.config.getBoolean("MaxNumberOfVulgarRecords.Enabled")) {
-			       	                   if(Loader.config.getBoolean("AutoKickLimit.Swear.Message.Use")) {
-		       	    		    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Swear.Message.List")) {
-		       	    		    		Loader.msg(cmds.replace("%player%", s.getName()).replace("%number%", Loader.config.getInt("AutoKickLimit.Swear.Number")+""),s);
-		          	        	}}
-		       	    		    Loader.me.set("Players."+s.getName()+".VulgarWords" ,Loader.me.getInt("Players."+s.getName()+".VulgarWords") - Loader.config.getInt("AutoKickLimit.Swear.Number"));
-		       	    		 if(Loader.config.getBoolean("AutoKickLimit.Swear.Commands.Use")) {
-		   	 	    		    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Swear.Commands.List")) {
-		   	 	    		    	TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", s.getName()).replace("%number%", ""+Loader.config.getInt("AutoKickLimit.Swear.Number"))));
-			    			    		if(cmds.toLowerCase().startsWith("kick")) {
-				   	 	                	Loader.me.set("Players."+s.getName()+".Kicks" ,Loader.me.getInt("Players."+s.getName()+".Kicks") + 1);
-		   			   	 	}}}}}
-		 	                  if(Loader.me.getInt("Players."+s.getName()+".Kicks") >= Loader.config.getInt("AutoKickLimit.Kick.Number")) {
-		    	                  if(Loader.config.getBoolean("MaxNumberOfKicks.Enabled")) {
-		 	                	Loader.me.set("Players."+s.getName()+".Kicks" ,Loader.me.getInt("Players."+s.getName()+".Kicks") - Loader.config.getInt("AutoKickLimit.Kick.Number"));
-		 	                	if(Loader.config.getBoolean("AutoKickLimit.Kick.Message.Use")) {
-		  	 	    		    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Kick.Message.List")) {
-		  	 	    		    		Loader.msg(cmds.replace("%player%", s.getName()).replace("%number%",""+Loader.config.getInt("AutoKickLimit.Kick.Number")),s);
-		  	    	        	}}
-		       	                   if(Loader.config.getBoolean("AutoKickLimit.Kick.Commands.Use")) {
-		 	    		    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Kick.Commands.List")) {
-		 	    		    		TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", s.getName()).replace("%number%", ""+Loader.config.getInt("AutoKickLimit.Kick.Number"))));
-		 	    				
-		 	    		    	}}}}
-			}
-			break;
-			}
 	          Configs.config.save(); 
-	         	Configs.chatme.save();
+	          PlayerData.save();
 		}
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChat(PlayerChatEvent e) {

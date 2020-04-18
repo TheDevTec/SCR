@@ -17,6 +17,7 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
+import ServerControl.PlayerData;
 import Utils.setting;
 import me.Straiker123.TheAPI;
 
@@ -27,15 +28,16 @@ public class Home implements CommandExecutor, TabCompleter {
 
 		if(s instanceof Player) {
 			Player p = (Player)s;
+			PlayerData d = new PlayerData(s.getName());
 			if(API.hasPerm(s, "ServerControl.Home")) {
 			if(args.length==0) {
-				if(Loader.me.getString("Players."+p.getName()+".Homes.home")!=null) {
-				World w = Bukkit.getWorld(Loader.me.getString("Players."+p.getName()+".Homes.home.World"));
-				double x = Loader.me.getDouble("Players."+p.getName()+".Homes.home.X");
-				double y = Loader.me.getDouble("Players."+p.getName()+".Homes.home.Y");
-				double z = Loader.me.getDouble("Players."+p.getName()+".Homes.home.Z");
-				float pitch = Loader.me.getInt("Players."+p.getName()+".Homes.home.Pitch");
-				float yaw = Loader.me.getInt("Players."+p.getName()+".Homes.home.Yaw");
+				if(d.existPath("Homes.home")) {
+				World w = Bukkit.getWorld(d.getString("Homes.home.World"));
+				double x = d.getDouble("Homes.home.X");
+				double y = d.getDouble("Homes.home.Y");
+				double z = d.getDouble("Homes.home.Z");
+				float pitch = d.getInt("Homes.home.Pitch");
+				float yaw = d.getInt("Homes.home.Yaw");
 				Location loc = new Location(w,x,y,z,yaw,pitch);
 				API.setBack(p);
 				if(w!=null) {
@@ -58,13 +60,13 @@ public class Home implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if(args.length==1) {
-		if(Loader.me.getString("Players."+p.getName()+".Homes."+args[0])!=null) {
-			World w = Bukkit.getWorld(Loader.me.getString("Players."+p.getName()+".Homes."+args[0]+".World"));
-			double x = Loader.me.getDouble("Players."+p.getName()+".Homes."+args[0]+".X");
-			double y = Loader.me.getDouble("Players."+p.getName()+".Homes."+args[0]+".Y");
-			double z = Loader.me.getDouble("Players."+p.getName()+".Homes."+args[0]+".Z");
-			float pitch = Loader.me.getInt("Players."+p.getName()+".Homes."+args[0]+".Pitch");
-			float yaw = Loader.me.getInt("Players."+p.getName()+".Homes."+args[0]+".Yaw");
+		if(d.getString("Homes."+args[0])!=null) {
+			World w = Bukkit.getWorld(d.getString("Homes."+args[0]+".World"));
+			double x =d.getDouble("Homes."+args[0]+".X");
+			double y = d.getDouble("Homes."+args[0]+".Y");
+			double z = d.getDouble("Homes."+args[0]+".Z");
+			float pitch = d.getInt("Homes."+args[0]+".Pitch");
+			float yaw =d.getInt("Homes."+args[0]+".Yaw");
 			API.setBack(p);
 			Location loc = new Location(w,x,y,z,yaw,pitch);
 			if(w!=null){
