@@ -63,11 +63,10 @@ public class EcoTop implements CommandExecutor {
 								money.put(f[0], TheAPI.getStringUtils().getDouble(f[1]));
 							}
 							RankingAPI ms =TheAPI.getRankingAPI(money);
-							for (int i = 10; i> 0; i--) {
-								if(ms.getKeySet().size() <i)continue;
+							for (int i = 1; i <ms.getKeySet().size()+1; i++) {
 								String player = ms.getObject(i).toString();
 								Loader.msg(Loader.config.getString("Options.Economy.BalanceTop")
-										.replace("%position%", String.valueOf(m.getPosition(player)))
+										.replace("%position%",i+"")
 										.replace("%player%", player)
 										.replace("%playername%", player(player))
 										.replace("%money%", API.setMoneyFormat(m.getValue(player), true)), s);
