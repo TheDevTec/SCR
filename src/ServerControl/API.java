@@ -25,7 +25,6 @@ import me.Straiker123.TheAPI;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
-	public static String MoneyFormat;
 	
 	 public static boolean existVaultPlugin() {
 		 return TheAPI.getPluginsManagerAPI().getPlugin("Vault") !=null;
@@ -315,74 +314,59 @@ public class API {
 		 
 	public static String setMoneyFormat(double money, boolean colorized) {
 		String a = ""+money;
-		 if(MoneyFormat==null) {
-			 if(existVaultPlugin()) {
-			 if(Loader.econ!=null) {
-				 DecimalFormat df = null;
-				 String get = null;
+				 String get =new DecimalFormat("#,##0.00").format(money);
 				 double mille = money/1000;
 				 double million = mille/1000;
 				 double billion = million/1000;
 				 double trillion = billion/1000;
 				 double quadrillion = trillion/1000;
-				 df= new DecimalFormat("#,##0.00");
-				 get = df.format(money);
-					if(get.length()>=8 && get.length()<12) {
-						 df = new DecimalFormat("#,###0.00k");
-						 df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
-							return df.format(mille).replaceAll("\\.00", "");
-					}
-					if(get.length()>=12 && get.length()<16) {
-						 df = new DecimalFormat("#,###0.00m");
-						 df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
-							return df.format(million).replaceAll("\\.00", "");
-					}
-					if(get.length()>=16 && get.length()<20) {
-						 df = new DecimalFormat("#,###0.00b");
-						 df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
-							return df.format(billion).replaceAll("\\.00", "");
-					}
-					if(get.length()>=20 && get.length()<24) {
-						 df = new DecimalFormat("#,###0.00t");
-						 df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
-							return df.format(trillion).replaceAll("\\.00", "");
-					}
-					if(get.length()>=24 && get.length()<28) {
-						 df = new DecimalFormat("#,###0.00q");
-						 df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
-							return df.format(quadrillion).replaceAll("\\.00", "");
-					}
 					if(get.length()>=28) {
 						if(String.valueOf(quadrillion).startsWith("-"))
-							return "-∞";
-						return "∞";
+							a= "-∞";
+						a= "∞";
+					}else
+					if(get.length()>=24 && get.length()<28) {
+								DecimalFormat d = new DecimalFormat("#,###0.00q");
+								 d.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+								 a=d.format(quadrillion).replaceAll("\\.00", "");
+					}else
+					if(get.length()>=20 && get.length()<24) {
+							DecimalFormat d = new DecimalFormat("#,###0.00t");
+							 d.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+							 a=d.format(trillion).replaceAll("\\.00", "");
+					}else
+						if(get.length()>=16 && get.length()<20) {
+								DecimalFormat d = new DecimalFormat("#,###0.00b");
+								 d.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+								 a=d.format(billion).replaceAll("\\.00", "");
+						}
+					if(get.length()>=12 && get.length()<16) {
+							DecimalFormat d = new DecimalFormat("#,###0.00m");
+							 d.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+							 a=d.format(million).replaceAll("\\.00", "");
+					}else
+					if(get.length()>=8 && get.length()<12) {
+						DecimalFormat d = new DecimalFormat("#,###0.00k");
+						 d.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+						 a=d.format(mille).replaceAll("\\.00", "");
+					}else {
+
+						DecimalFormat d = new DecimalFormat("#,###0.00");
+						 d.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+						 a=d.format(mille).replaceAll("\\.00", "");
 					}
-				 df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
-				a= df.format(money).replaceAll("\\.00", "");
-			 }
-		 }
-		 }
-		 if(MoneyFormat!=null) {
-			 if(Loader.econ!=null) {
-				a= MoneyFormat;
-			 }
-		 }
 		 if(colorized) {
-			 if(a.startsWith("-"))return "&e"+a;
-				if(!a.startsWith("-")&&a.equals("0"))return "&e"+a;
-				return "&a"+a;
-		 }else
+			 if(a.startsWith("-"))a= "&c"+a;
+			 else
+				if(a.equals("0"))a= "&e"+a;
+				else
+				a= "&a"+a;
+		 }
 		 return a;
 	 }
 
 	 public static boolean isAFK(Player p) {
 		 return new SPlayer(p).isAFK();
-	 }
-	 public static String getMoneyFormat() {
-		 if(MoneyFormat!=null) {
-				return MoneyFormat;
-		 }
-		 return null;
 	 }
 	 public static boolean getVulgarWord(String string) {
 		 List<String> words = Loader.config.getStringList("SwearWords");

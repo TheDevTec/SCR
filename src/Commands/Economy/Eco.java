@@ -40,6 +40,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 	}
 
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(Loader.econ==null) {
@@ -52,10 +53,10 @@ public class Eco implements CommandExecutor, TabCompleter {
 			if(API.hasPerm(s, "ServerControl.Balance")) {
 				Player p = (Player)s;
 				Loader.msg(Loader.s("Economy.Balance")
-						.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true))
-						.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true))
+						.replace("%money%", API.setMoneyFormat(Loader.econ.getBalance(s.getName()), true))
+						.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(s.getName()), true))
 						.replace("%prefix%", Loader.s("Prefix"))
-						.replace("%player%", p.getName())
+						.replace("%player%", s.getName())
 						.replace("%playername%", p.getDisplayName()), s);
 				return true;
 			}return true;
@@ -98,8 +99,8 @@ public class Eco implements CommandExecutor, TabCompleter {
 				if(TheAPI.getPlayer(s.getName())!=null)world=((Player) s).getWorld().getName();
 				
 				Loader.msg(Loader.s("Economy.BalanceOther")
-						.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[0],world), true))
-						.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[0],world), true))
+						.replace("%money%", API.setMoneyFormat(Loader.econ.getBalance(args[0],world), true))
+						.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(args[0],world), true))
 						.replace("%prefix%", Loader.s("Prefix"))
 						.replace("%player%", args[0])
 						.replace("%playername%", BanSystem.getName(args[0])), s);
@@ -119,17 +120,17 @@ public class Eco implements CommandExecutor, TabCompleter {
 					String t = Loader.me.getString("Players."+args[1]);
 					if(t!=null) {
 					double given = API.convertMoney(args[2]);
-					TheAPI.getEconomyAPI().depositPlayer(args[1], given);
+					Loader.econ.depositPlayer(args[1], given);
 					Loader.msg(Loader.s("Economy.GivenToPlayer")
 							.replace("%money%",API.setMoneyFormat(given, true))
-							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true))
+							.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(args[1]), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", args[1])
 							.replace("%playername%", BanSystem.getName(args[1])), s);
 					if(TheAPI.getPlayer(args[1])!=null) {
 						Loader.msg(Loader.s("Economy.Given")
 							.replace("%money%",API.setMoneyFormat(given, true))
-							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true))
+							.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(args[1]), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", args[1])
 							.replace("%playername%", BanSystem.getName(args[1])), get(args[1]));
@@ -154,10 +155,10 @@ public class Eco implements CommandExecutor, TabCompleter {
 					String t = Loader.me.getString("Players."+args[1]);
 					if(t!=null) {
 					double taken = API.convertMoney(args[2]);
-					TheAPI.getEconomyAPI().withdrawPlayer(args[1], taken);
+					Loader.econ.withdrawPlayer(args[1], taken);
 					Loader.msg(Loader.s("Economy.TakenFromPlayer")
 							.replace("%money%",API.setMoneyFormat(taken,true))
-							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true))
+							.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(args[1]), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", args[1])
 							.replace("%playername%", BanSystem.getName(args[1])), s);
@@ -165,7 +166,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 						if(TheAPI.getPlayer(args[1])!=null) {
 							Loader.msg(Loader.s("Economy.Taken")
 							.replace("%money%",API.setMoneyFormat(taken,true))
-							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true))
+							.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(args[1]), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", args[1])
 							.replace("%playername%", BanSystem.getName(args[1])), get(args[1]));
@@ -188,27 +189,27 @@ public class Eco implements CommandExecutor, TabCompleter {
 						String moneyfromargs = args[2];
 						if(moneyfromargs.startsWith("-"))moneyfromargs="0.0";
 						double money = API.convertMoney(args[2]);
-						if(TheAPI.getEconomyAPI().has(p.getName(), money)||s.hasPermission("ServerControl.Economy.InMinus")){
-							TheAPI.getEconomyAPI().withdrawPlayer(p.getName(), money);
-							TheAPI.getEconomyAPI().depositPlayer(args[1], money);
+						if(Loader.econ.has(p.getName(), money)||s.hasPermission("ServerControl.Economy.InMinus")){
+							Loader.econ.withdrawPlayer(p.getName(), money);
+							Loader.econ.depositPlayer(args[1], money);
 							Loader.msg(Loader.s("Economy.PaidTo")
 							.replace("%money%",API.setMoneyFormat(money,true))
-							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
+							.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(s.getName()), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", args[1])
 							.replace("%playername%", BanSystem.getName(args[1])), s);
 					if(get(args[1])!=null && get(args[1]).getWorld().getName().equals(TheAPI.getPlayer(s.getName()).getWorld().getName())) {
 						Loader.msg(Loader.s("Economy.PaidFrom")
 							.replace("%money%",API.setMoneyFormat(money,true))
-							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
+							.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(s.getName()), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", s.getName())
 							.replace("%playername%", ((Player) s).getDisplayName()), get(args[1]));
 					}return true;
 				}
 						Loader.msg(Loader.s("Economy.NoMoney")
-								.replace("%money%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
-								.replace("%currently%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
+								.replace("%money%",API.setMoneyFormat(Loader.econ.getBalance(s.getName()), true))
+								.replace("%currently%",API.setMoneyFormat(Loader.econ.getBalance(s.getName()), true))
 								.replace("%player%", args[1])
 								.replace("%playername%", args[1]), s);
 						return true;}
@@ -229,15 +230,15 @@ public class Eco implements CommandExecutor, TabCompleter {
 					if(t!=null) {
 						reset(args[1], Loader.config.getDouble("Economy.DefaultMoney"));
 						Loader.msg(Loader.s("Economy.ResetedPlayer")
-							.replace("%money%",  API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true))
-							.replace("%currently%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true))
+							.replace("%money%",  API.setMoneyFormat(Loader.econ.getBalance(args[1]), true))
+							.replace("%currently%",API.setMoneyFormat(Loader.econ.getBalance(args[1]), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", args[1])
 							.replace("%playername%",BanSystem.getName(args[1])), s);
 					if(TheAPI.getPlayer(args[1])!=null) {
 						Loader.msg(Loader.s("Economy.Reseted")
-							.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true))
-							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true))
+							.replace("%money%", API.setMoneyFormat(Loader.econ.getBalance(args[1]), true))
+							.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(args[1]), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", args[1])
 							.replace("%playername%", BanSystem.getName(args[1])), get(args[1]));
@@ -257,15 +258,15 @@ public class Eco implements CommandExecutor, TabCompleter {
 					if(t!=null) {
 						reset(args[1], API.convertMoney(args[2]));
 						Loader.msg(Loader.s("Economy.SetPlayer")
-							.replace("%money%",  API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true))
-							.replace("%currently%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true))
+							.replace("%money%",  API.setMoneyFormat(Loader.econ.getBalance(args[1]), true))
+							.replace("%currently%",API.setMoneyFormat(Loader.econ.getBalance(args[1]), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", args[1])
 							.replace("%playername%", BanSystem.getName(args[1])), s);
 					if(TheAPI.getPlayer(args[1])!=null) {
 						Loader.msg(Loader.s("Economy.Set")
-							.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true))
-							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true))
+							.replace("%money%", API.setMoneyFormat(Loader.econ.getBalance(args[1]), true))
+							.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(args[1]), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", args[1])
 							.replace("%playername%", BanSystem.getName(args[1])), get(args[1]));
@@ -287,8 +288,14 @@ public class Eco implements CommandExecutor, TabCompleter {
 	}
 	@SuppressWarnings("deprecation")
 	private void reset(String i, double money) {
-		TheAPI.getEconomyAPI().withdrawPlayer(i, Loader.econ.getBalance(i));
-		TheAPI.getEconomyAPI().depositPlayer(i, money);
+		if(Loader.econ.getBalance(i) < 0) {
+			Loader.econ.depositPlayer(i, Loader.econ.getBalance(i)*-1);
+		}else
+		Loader.econ.withdrawPlayer(i, Loader.econ.getBalance(i));
+		if(money < 0) {
+			Loader.econ.withdrawPlayer(i, money*-1);
+		}else
+		Loader.econ.depositPlayer(i, money);
 	}
 
 	private Player get(String args) {

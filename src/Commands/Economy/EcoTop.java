@@ -21,6 +21,7 @@ public class EcoTop implements CommandExecutor {
 	//world, rankingapi
 	MultiMap<String> h= TheAPI.getMultiMap();
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(Loader.econ==null) {
@@ -35,7 +36,7 @@ public class EcoTop implements CommandExecutor {
 						TheAPI.getCooldownAPI("scr.baltop").createCooldown("scr", 300); //5min update
 						HashMap<String, Double> money = new HashMap<String, Double>();
 						for (String sa : Loader.me.getConfigurationSection("Players").getKeys(false)) {
-							money.put(sa, TheAPI.getEconomyAPI().getBalance(sa,world));
+							money.put(sa, Loader.econ.getBalance(sa,world));
 						}
 						if(m!=null)
 						h.remove(world);
@@ -62,8 +63,8 @@ public class EcoTop implements CommandExecutor {
 								money.put(f[0], TheAPI.getStringUtils().getDouble(f[1]));
 							}
 							RankingAPI ms =TheAPI.getRankingAPI(money);
-							for (int i = 1; i< 11; i++) {
-								if(ms.getKeySet().size() <i)break;
+							for (int i = 10; i> 0; i--) {
+								if(ms.getKeySet().size() <i)continue;
 								String player = ms.getObject(i).toString();
 								Loader.msg(Loader.config.getString("Options.Economy.BalanceTop")
 										.replace("%position%", String.valueOf(m.getPosition(player)))

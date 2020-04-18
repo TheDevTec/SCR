@@ -121,7 +121,7 @@ public class Loader extends JavaPlugin implements Listener {
 			double money =me.getDouble("Players."+s+".Money");
 			me.set("Players."+s+".Money.default",money);
 			}}}
-		 Configs.chatme.save();
+		 PlayerData.save();
 			EconomyLog("Converted "+amount+" economies.");
 		}}
 public String isAfk(Player p) {
@@ -175,11 +175,16 @@ public void onEnable() {
 		Bukkit.getPluginManager().disablePlugin(this);
 		return;
 		}
+    if(API.existVaultPlugin()) {
+    	setupEco();
+	if(econ!=null)
+    	startConvertMoney();
+	}
 	if(Loader.me.getString("Config-Version")==null) {
 		Loader.me.set("Config-Version",1);
 		for(String s:PlayerData.getPlayers())
 			new PlayerData(s).set("Back", null);
-		 Configs.config.save();
+		 PlayerData.save();
 	}
 	loading=System.currentTimeMillis()/100;
     MultiWorldsUtils.LoadWorlds();
@@ -195,9 +200,6 @@ public void onEnable() {
 			TheAPI.getConsole().sendMessage(TheAPI.colorize("&6List of available time zones:"));
 			TheAPI.getConsole().sendMessage(TheAPI.colorize(" &6https://greenwichmeantime.com/time-zone/"));
 	        }
-		if(econ!=null&& API.existVaultPlugin()) {
-	    	startConvertMoney();
-		}
         if(vault==null && API.existVaultPlugin()) {
         	TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&8*********************************************"));
         	TheAPI.getConsole().sendMessage(TheAPI.colorize(Loader.s("Prefix")+"&6INFO: Missing Permissions plugin for Groups (TabList and ChatFormat)."));
@@ -329,29 +331,30 @@ private boolean setupPermisions(){
 	}
 public String ver() {
 	String v = null;
-if(TheAPI.getServerVersion().equals("v1_7_R4")) { //required testing!
+	String r = TheAPI.getServerVersion();
+if(r.equals("v1_7_R4")) { //required testing!
 	v = "1.7.10";
 }
-if(TheAPI.getServerVersion().contains("1_8")) { //required testing! (1.8 to 1.8.8)
+if(r.contains("1_8")) { //required testing! (1.8 to 1.8.8)
 	v = "1.8+";
 }
-if(TheAPI.getServerVersion().contains("1_9")) {
+if(r.contains("1_9")) {
 	v = "1.9+";
 }
-if(TheAPI.getServerVersion().contains("1_10")) {
+if(r.contains("1_10")) {
 	v = "1.10+";
 }
-if(TheAPI.getServerVersion().contains("1_11")) {
+if(r.contains("1_11")) {
 	v = "1.11+";
 }
-if(TheAPI.getServerVersion().contains("1_12")) {
+if(r.contains("1_12")) {
 	v = "1.12+";
 }
-if(TheAPI.getServerVersion().equalsIgnoreCase("glowstone")) {
+if(r.equalsIgnoreCase("glowstone")) {
 	v = "Glowstone";
 }
 if(TheAPI.isNewVersion()) {//v1_15_1 ... 1_15
-	v=TheAPI.getServerVersion().substring(1, 5).replace("_", ".")+"+";
+	v=r.substring(1, 5).replace("_", ".")+"+";
 }
 return v;
 }

@@ -16,6 +16,7 @@ import me.Straiker123.TheAPI;
 
 public class Balance implements CommandExecutor, TabCompleter {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(Loader.econ==null) {
@@ -27,8 +28,8 @@ public class Balance implements CommandExecutor, TabCompleter {
 			if(API.hasPerm(s, "ServerControl.Balance")) {
 				Player p = (Player)s;
 				Loader.msg(Loader.s("Economy.Balance")
-						.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true))
-						.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true))
+						.replace("%money%", API.setMoneyFormat(Loader.econ.getBalance(p.getName()), true))
+						.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(p.getName()), true))
 						.replace("%prefix%", Loader.s("Prefix"))
 						.replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName()), s);
@@ -43,8 +44,8 @@ public class Balance implements CommandExecutor, TabCompleter {
 				if(TheAPI.getPlayer(s.getName())!=null)world=((Player) s).getWorld().getName();
 				
 				Loader.msg(Loader.s("Economy.BalanceOther")
-						.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[0],world), true))
-						.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[0],world), true))
+						.replace("%money%", API.setMoneyFormat(Loader.econ.getBalance(args[0],world), true))
+						.replace("%currently%", API.setMoneyFormat(Loader.econ.getBalance(args[0],world), true))
 						.replace("%prefix%", Loader.s("Prefix"))
 						.replace("%player%", args[0])
 						.replace("%playername%", BanSystem.getName(args[0])), s);
