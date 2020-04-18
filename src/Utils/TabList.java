@@ -3,7 +3,6 @@ package Utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
@@ -51,7 +50,6 @@ public class TabList {
 		if(p.getCustomName()!=null)customname=p.getCustomName();
 		String displayname = p.getName();
 		if(p.getDisplayName()!=null)displayname=p.getDisplayName();
-		Bukkit.broadcastMessage(""+API.setMoneyFormat(Loader.econ.getBalance(p.getName()), true));
 		return header.replace("%money%", API.setMoneyFormat(Loader.econ.getBalance(p.getName()), true))
 				.replace("%online%",TheAPI.getOnlinePlayers().size()+"")
 				.replace("%max_players%", TheAPI.getMaxPlayers()+"")
