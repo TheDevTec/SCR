@@ -18,6 +18,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
 import Commands.Kit;
 import ServerControlEvents.PluginHookEvent;
 import Utils.setting;
@@ -228,7 +229,8 @@ public class API {
 	 public static void TeleportBack(Player p) {
 				Location loc = getBack(p.getName());
 				if(loc != null) {
-				setBack(p);
+					 Loader.me.set("Players."+p.getName()+".Back",TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
+					 PlayerData.save();
 				p.teleport(loc);
 				Loader.msg(Loader.s("Back.Teleporting")
 						.replace("%prefix%", Loader.s("Prefix"))
@@ -239,11 +241,12 @@ public class API {
 	 }
 
 	 public static void setBack(Player p) {
-		 setBack(p.getName(),p.getLocation());
+		 Loader.me.set("Players."+p.getName()+".Back",TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
+		 PlayerData.save();
 	 }
 	 public static void setBack(String p, Location l) {
-		 if(l != null)
 		 Loader.me.set("Players."+p+".Back",TheAPI.getStringUtils().getLocationAsString(l));
+		 PlayerData.save();
 	 }
 	 
 	 public static Location getBack(String p) {
