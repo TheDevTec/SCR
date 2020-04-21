@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import ServerControl.API;
 import ServerControl.Loader;
@@ -25,8 +26,9 @@ public class Hat implements CommandExecutor {
 				if(args.length==0) {
 					if(p.getInventory().getHelmet()!=null)
 					p.getInventory().addItem(p.getInventory().getHelmet());
-					p.getInventory().setHelmet(p.getItemInHand());
-					p.getInventory().remove(p.getItemInHand());
+					//p.getInventory().setHelmet(p.getItemInHand());
+					p.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
+					p.getInventory().setItemInHand(new ItemStack(Material.AIR));
 					Loader.msg(Loader.s("Hat.Equiped"), s);
 					return true;
 				}
@@ -39,12 +41,12 @@ public class Hat implements CommandExecutor {
 					}
 					if(t.getInventory().getHelmet()!=null)
 					t.getInventory().addItem(t.getInventory().getHelmet());
-					t.getInventory().setHelmet(p.getItemInHand());
-					p.getInventory().remove(p.getItemInHand());
+					t.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
+					p.getInventory().setItemInHand(new ItemStack(Material.AIR));
 					Loader.msg(Loader.s("Hat.EquipedToOther")
 							.replace("%target%", t.getName()), s);
 					return true;
-				}
+				}//zakaž ten EntityMoveEvent, lagguje checking a také LagChecker :D celý.
 			}
 			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
