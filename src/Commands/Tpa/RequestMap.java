@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.Location;
 
 import ServerControl.Loader;
-import Utils.Configs;
 import Utils.setting;
 import me.Straiker123.TheAPI;
 /**
@@ -21,13 +20,11 @@ public class RequestMap {
     	Loader.me.set("Players."+sender+".Tp."+target+".Time", System.currentTimeMillis()/1000);
     	if(setting.tp_onreqloc)
     	Loader.me.set("Players."+sender+".Tp."+target+".Location", TheAPI.getStringUtils().getLocationAsString(TheAPI.getPlayer(target).getLocation()));
-		Configs.chatme.save();
-    }
+	}
 
     public static void removeRequest(String target, String sender) {
         Loader.me.set("Players."+target+".Tp."+sender, null);
-		Configs.chatme.save();    
-    }
+	}
     
     public static String getRequest(String p) {
         if(Loader.me.getString("Players."+p+".Tp")!=null) {

@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import Commands.BanSystem.BanSystem;
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 
 public class TpaBlock implements CommandExecutor, TabCompleter {
 
@@ -25,12 +24,12 @@ public class TpaBlock implements CommandExecutor, TabCompleter {
 					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaBlock.Blocked-Global")
 					.replace("%player%", "All").replace("%playername%", "All"), s);
 					Loader.me.set("Players."+s.getName()+".TpBlock-Global", true);
-					Configs.chatme.save();return true;
+					return true;
 				}else {
 					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaBlock.UnBlocked-Global")
 					.replace("%player%", "All").replace("%playername%", "All"), s);
 					Loader.me.set("Players."+s.getName()+".TpBlock-Global", null);
-					Configs.chatme.save();return true;
+					return true;
 				}
 			}
 			if(args.length==1) {
@@ -40,12 +39,12 @@ public class TpaBlock implements CommandExecutor, TabCompleter {
 					if(Loader.me.getBoolean("Players."+s.getName()+".TpBlock."+args[0])==false) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaBlock.Blocked")
 					.replace("%player%", args[0]).replace("%playername%", BanSystem.getName(args[0])), s);
-					Configs.chatme.save();Loader.me.set("Players."+s.getName()+".TpBlock."+args[0], true);
+					Loader.me.set("Players."+s.getName()+".TpBlock."+args[0], true);
 					return true;
 					}else {
 						Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaBlock.UnBlocked")
 						.replace("%player%", args[0]).replace("%playername%", BanSystem.getName(args[0])), s);
-						Configs.chatme.save();Loader.me.set("Players."+s.getName()+".TpBlock."+args[0], null);
+						Loader.me.set("Players."+s.getName()+".TpBlock."+args[0], null);
 						return true;
 					}
 					}

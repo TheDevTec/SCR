@@ -73,7 +73,6 @@ public class gui {
 				@Override
 				public void run() {
 					Loader.config.set(pat+".AntiSpam", !Loader.config.getBoolean(pat+".AntiSpam"));
-					Configs.config.save();
 					openGUI(p, type);
 				}});
 			a.setItem(3, item("&cAntiSpam",spam),s);
@@ -87,7 +86,6 @@ public class gui {
 					@Override
 					public void run() {
 						Loader.config.set(pat+".Caps", !Loader.config.getBoolean(pat+".Caps"));
-						Configs.config.save();
 						openGUI(p, type);
 					}});
 				a.setItem(4, item("&6Caps",spams),s);
@@ -101,7 +99,6 @@ public class gui {
 				@Override
 				public void run() {
 					Loader.config.set(pat+".AntiSwear", !Loader.config.getBoolean(pat+".AntiSwear"));
-					Configs.config.save();
 					openGUI(p, type);
 				}});
 			a.setItem(5, item("&cAntiSwear",sw),s);

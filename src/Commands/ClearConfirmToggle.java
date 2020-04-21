@@ -23,12 +23,10 @@ public class ClearConfirmToggle implements CommandExecutor {
 				PlayerData d = new PlayerData(s.getName());
 			if(d.getBoolean("ClearInvConfirm")==true) {
 				d.set("ClearInvConfirm", false);
-				PlayerData.save();
 				Loader.msg(Loader.s("Prefix")+Loader.s("ClearInventory.ConfirmEnabled"), s);
 			return true;
 		}else {
 			d.set("ClearInvConfirm", true);
-			PlayerData.save();
 			Loader.msg(Loader.s("Prefix")+Loader.s("ClearInventory.ConfirmDisabled"), s);
 			return true;
 		}}return true;}}}

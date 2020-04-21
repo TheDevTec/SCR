@@ -89,7 +89,7 @@ public class MultiWorldsGUI {
 					Loader.mw.set("WorldsSettings."+p.getWorld().getName()+".Spawn.Z", p.getLocation().getZ());
 					Loader.mw.set("WorldsSettings."+p.getWorld().getName()+".Spawn.X_Pos_Head", p.getLocation().getYaw());
 					Loader.mw.set("WorldsSettings."+p.getWorld().getName()+".Spawn.Z_Pos_Head", p.getLocation().getPitch());
-					Configs.mw.save();Loader.msg(Loader.s("Prefix")+Loader.s("MultiWorld.SpawnSet")
+					Loader.msg(Loader.s("Prefix")+Loader.s("MultiWorld.SpawnSet")
 					.replace("%world%",p.getWorld().getName()),p);
 				}
 			}});
@@ -380,8 +380,6 @@ public class MultiWorldsGUI {
 				MultiWorldsUtils.CreateWorld(Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create"), p);
 				Loader.me.set("Players."+p.getName()+".MultiWorlds-Generator",null);
 				Loader.me.set("Players."+p.getName()+".MultiWorlds-Create",null);
-				Configs.chatme.save();
-				Configs.mw.save();
 				}
 			}});
 		String aads="&cnone";
@@ -411,7 +409,6 @@ public class MultiWorldsGUI {
 			public void run() {
 				Loader.me.set("Players."+p.getName()+".MultiWorlds-Generator",null);
 				Loader.me.set("Players."+p.getName()+".MultiWorlds-Create",null);
-				Configs.chatme.save();
 				openInv(p);
 			}});
 		a.setItem(49, createItem("&cCancel", XMaterial.BARRIER, null),back);
@@ -435,7 +432,6 @@ public class MultiWorldsGUI {
 				worlds.remove(w.getName());
 				ww.remove(w.getName());
 				Loader.mw.set("Worlds", worlds);
-				Configs.mw.save();
 				if(TheAPI.getWorldsManager().delete(w, true)) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("MultiWorld.Deleted").replace("%world%", w.getName()), p);
 					}else {
@@ -612,7 +608,6 @@ public class MultiWorldsGUI {
 								Loader.mw.set("WorldsSettings."+w.getName()+".Difficulty", "EASY");
 								w.setDifficulty(Difficulty.EASY);
 							}
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		d.put(Options.RUNNABLE_RIGHT_CLICK, new Runnable() {
@@ -634,7 +629,6 @@ public class MultiWorldsGUI {
 								Loader.mw.set("WorldsSettings."+w.getName()+".Difficulty", "HARD");
 								w.setDifficulty(Difficulty.HARD);
 							}
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		a.addItem(createItem("&6Difficulty", XMaterial.FEATHER, Arrays.asList(dif)),d);
@@ -666,7 +660,6 @@ public class MultiWorldsGUI {
 								Loader.mw.set("WorldsSettings."+w.getName()+".GameMode", "SURVIVAL");
 								for(Player p:TheAPI.getOnlinePlayers())if(p.getWorld()==w)p.setGameMode(GameMode.SURVIVAL);
 							}
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		a.addItem(createItem("&6Gamemode", XMaterial.BRICKS, Arrays.asList(g)),d);
@@ -681,7 +674,6 @@ public class MultiWorldsGUI {
 				}else {
 					Loader.mw.set("WorldsSettings."+w.getName()+".KeepSpawnInMemory", true);
 				w.setKeepSpawnInMemory(true);}
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		a.addItem(createItem("&6Keep Spawn In Memory", XMaterial.MAP, Arrays.asList(s+"")),d);
@@ -697,7 +689,6 @@ public class MultiWorldsGUI {
 					Loader.mw.set("WorldsSettings."+w.getName()+".AutoSave", true);
 					w.setAutoSave(true);
 				}
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		a.addItem(createItem("&6Auto Save", XMaterial.EMERALD_BLOCK, Arrays.asList(sa+"")),d);
@@ -713,7 +704,6 @@ public class MultiWorldsGUI {
 					Loader.mw.set("WorldsSettings."+w.getName()+".PvP", true);
 					w.setPVP(true);
 				}
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		a.addItem(createItem("&6PvP", XMaterial.DIAMOND_SWORD, Arrays.asList(sas+"")),d);
@@ -726,7 +716,6 @@ public class MultiWorldsGUI {
 					Loader.mw.set("WorldsSettings."+w.getName()+".CreatePortal", false);
 				}else
 					Loader.mw.set("WorldsSettings."+w.getName()+".CreatePortal", true);
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		a.addItem(createItem("&6Can be portal created in this world", XMaterial.OBSIDIAN, Arrays.asList(sass+"")),d);
@@ -739,7 +728,6 @@ public class MultiWorldsGUI {
 					Loader.mw.set("WorldsSettings."+w.getName()+".PortalTeleport", false);
 				}else
 					Loader.mw.set("WorldsSettings."+w.getName()+".PortalTeleport", true);
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		a.addItem(createItem("&6Can be portal used in this world", XMaterial.ENDER_PEARL, Arrays.asList(sasss+"")),d);
@@ -752,7 +740,6 @@ public class MultiWorldsGUI {
 					Loader.mw.set("WorldsSettings."+w.getName()+".NoMobs", false);
 				}else
 					Loader.mw.set("WorldsSettings."+w.getName()+".NoMobs", true);
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		a.addItem(createItem("&6No Mobs", XMaterial.CREEPER_HEAD, Arrays.asList(sassw+"")),d);
@@ -765,7 +752,6 @@ public class MultiWorldsGUI {
 					Loader.mw.set("WorldsSettings."+w.getName()+".DoFireDamage", false);
 				}else
 					Loader.mw.set("WorldsSettings."+w.getName()+".DoFireDamage", true);
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		a.addItem(createItem("&6Do Fire Damage", XMaterial.FLINT_AND_STEEL, Arrays.asList(fire+"")),d);
@@ -779,7 +765,6 @@ public class MultiWorldsGUI {
 					Loader.mw.set("WorldsSettings."+w.getName()+".DoDrownDamage", false);
 				}else
 					Loader.mw.set("WorldsSettings."+w.getName()+".DoDrownDamage", true);
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		a.addItem(createItem("&6Do Drowning Damage", XMaterial.WATER_BUCKET, Arrays.asList(dfire+"")),d);
@@ -793,7 +778,6 @@ public class MultiWorldsGUI {
 					Loader.mw.set("WorldsSettings."+w.getName()+".DoFallDamage", false);
 				}else
 					Loader.mw.set("WorldsSettings."+w.getName()+".DoFallDamage", true);
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		a.addItem(createItem("&6Do Fall Damage", XMaterial.IRON_BOOTS, Arrays.asList(ddfire+"")),d);
@@ -812,7 +796,6 @@ public class MultiWorldsGUI {
 				public void run() {
 					Loader.mw.set("WorldsSettings."+w.getName()+".Gamerule."+ds,Loader.mw.getInt("WorldsSettings."+w.getName()+".Gamerule."+ds)+1);
 					w.setGameRuleValue(ds, ""+(Loader.mw.getInt("WorldsSettings."+w.getName()+".Gamerule."+ds)+1));
-					Configs.mw.save();
 					openInvSetWorld(p, w);
 				}});
 			d.put(Options.RUNNABLE_RIGHT_CLICK, new Runnable() {
@@ -821,7 +804,6 @@ public class MultiWorldsGUI {
 				public void run() {
 					Loader.mw.set("WorldsSettings."+w.getName()+".Gamerule."+ds,Loader.mw.getInt("WorldsSettings."+w.getName()+".Gamerule."+ds)-1);
 					w.setGameRuleValue(ds, ""+(Loader.mw.getInt("WorldsSettings."+w.getName()+".Gamerule."+ds)-1));
-					Configs.mw.save();
 					openInvSetWorld(p, w);
 				}});
 		}else
@@ -836,7 +818,6 @@ public class MultiWorldsGUI {
 					w.setGameRuleValue(ds, "true");
 					Loader.mw.set("WorldsSettings."+w.getName()+".Gamerule."+ds, true);
 				}
-				Configs.mw.save();
 				openInvSetWorld(p,w);
 			}});
 		String n = "";

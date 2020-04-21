@@ -16,7 +16,6 @@ import org.bukkit.util.StringUtil;
 import Commands.BanSystem.BanSystem;
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 import me.Straiker123.TheAPI;
 
 public class MultiEconomy implements CommandExecutor, TabCompleter {
@@ -91,7 +90,6 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 					return true;	
 				}
 				Loader.config.set("Options.Economy.MultiEconomy.Types."+args[1], "");
-				Configs.config.save();
 				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.Created").replace("%group%", getEconomyGroup(args[1]))
 						.replace("%economygroup%", getEconomyGroup(args[1]))
 						.replace("%economy-group%", getEconomyGroup(args[1]))
@@ -146,8 +144,6 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 			if(!list.contains(args[2])) {
 			list.add(args[2]);
 			Loader.config.set("Options.Economy.MultiEconomy.Types."+getEconomyGroup(args[1]), list);
-
-			Configs.config.save();
 			Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.WorldAdded").replace("%world%",args[2]).replace("%group%", getEconomyGroup(args[1]))
 					.replace("%economygroup%", getEconomyGroup(args[1]))
 					.replace("%economy-group%", getEconomyGroup(args[1]))
@@ -184,8 +180,6 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 			if(list.contains(args[2])) {
 			list.remove(args[2]);
 			Loader.config.set("Options.Economy.MultiEconomy.Types."+getEconomyGroup(args[1]), list);
-
-			Configs.config.save();
 			Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.WorldRemoved").replace("%group%", getEconomyGroup(args[1]))
 					.replace("%economygroup%", getEconomyGroup(args[1]))
 					.replace("%economy-group%", getEconomyGroup(args[1]))
@@ -279,8 +273,6 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 				double money2 = Loader.me.getDouble("Players."+p.getName()+".Money."+getEconomyGroup(args[3]));
 				Loader.me.set("Players."+p.getName()+".Money."+getEconomyGroup(args[3]), money);
 				Loader.me.set("Players."+p.getName()+".Money."+getEconomyGroup(args[2]), money2);
-
-				Configs.chatme.save();
 				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.Transfer").replace("%group%", getEconomyGroup(args[2]))
 						.replace("%economygroup%", getEconomyGroup(args[2]))
 						.replace("%economy-group%", getEconomyGroup(args[2]))

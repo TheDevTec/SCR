@@ -58,7 +58,6 @@ public class Tab implements CommandExecutor, TabCompleter {
 				}
 				Loader.msg(Loader.s("Prefix")+Loader.s("TabList.GroupCreated").replace("%group%", args[1]),s);
 				Loader.tab.set("Groups."+args[1], "");
-        		Configs.tab.save();
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("delete")) {
@@ -72,7 +71,6 @@ public class Tab implements CommandExecutor, TabCompleter {
 				}
 				Loader.msg(Loader.s("Prefix")+Loader.s("TabList.GroupDeleted").replace("%group%", args[1]),s);
 				Loader.tab.set("Groups."+args[1], null);
-        		Configs.tab.save();
 				return true;
 			}
 			if(args.length==1||args.length==2)
@@ -88,7 +86,6 @@ public class Tab implements CommandExecutor, TabCompleter {
 			if(args[0].equalsIgnoreCase("priorite")) {
 				Loader.msg(Loader.s("Prefix")+Loader.s("TabList.PrioriteSet").replace("%priorite%", args[2]).replace("%group%", args[1]),s);
 			Loader.tab.set("Groups."+args[1]+".Priorite", args[2]);
-    		Configs.tab.save();
 			return true;
 			}
 			if(args[0].equalsIgnoreCase("prefix")) {
@@ -97,7 +94,6 @@ public class Tab implements CommandExecutor, TabCompleter {
 					Loader.msg(Loader.s("Prefix")+
 							Loader.s("TabList.PrefixSet").replace("%prefix%", msg).replace("%group%", args[1]),s);
 			Loader.tab.set("Groups."+args[1]+".Prefix", msg);
-    		Configs.tab.save();
 			return true;
 		}
 			if(args[0].equalsIgnoreCase("suffix")) {
@@ -106,7 +102,6 @@ public class Tab implements CommandExecutor, TabCompleter {
 					Loader.msg(Loader.s("Prefix")+
 							Loader.s("TabList.SuffixSet").replace("%suffix%", msg).replace("%group%", args[1]),s);
 			Loader.tab.set("Groups."+args[1]+".Suffix", msg);
-    		Configs.tab.save();
 			return true;
 		}
 			if(!args[0].equalsIgnoreCase("suffix")&&!args[0].equalsIgnoreCase("prefix")&&!args[0].equalsIgnoreCase("priorite")&&!args[0].equalsIgnoreCase("reload")&&!args[0].equalsIgnoreCase("create")&&!args[0].equalsIgnoreCase("delete")) {

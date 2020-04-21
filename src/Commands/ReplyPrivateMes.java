@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Colors;
-import Utils.Configs;
 import me.Straiker123.TheAPI;
 
 public class ReplyPrivateMes implements CommandExecutor {
@@ -50,8 +49,7 @@ public class ReplyPrivateMes implements CommandExecutor {
 				 from = from.replace("%message%", msg);
 				Loader.me.set("Server.Reply", p.getName());
 				Loader.me.set("Players."+p.getName()+".Reply", s.getName());
-
-				Configs.chatme.save();s.sendMessage(to);
+				s.sendMessage(to);
 					p.sendMessage(from);
 				return true;
 			}
@@ -65,7 +63,6 @@ public class ReplyPrivateMes implements CommandExecutor {
 			 from = from.replace("%message%", msg);
 			Loader.me.set("Server.Reply", s.getName());
 			Loader.me.set("Players."+s.getName()+".Reply", "CONSOLE");
-			Configs.chatme.save();
 			s.sendMessage(to);
 			Bukkit.getConsoleSender().sendMessage(from);
 			return true;
@@ -78,8 +75,7 @@ public class ReplyPrivateMes implements CommandExecutor {
 			 from = from.replace("%message%", msg);
 			Loader.me.set("Players."+s.getName()+".Reply", p.getName());
 			Loader.me.set("Players."+p.getName()+".Reply", s.getName());
-
-			Configs.chatme.save();s.sendMessage(to);
+			s.sendMessage(to);
 			p.sendMessage(from);
 			return true;
 		}

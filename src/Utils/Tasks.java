@@ -67,7 +67,6 @@ public class Tasks {
 					list.remove(p);
 					Loader.me.set("TempFly",list);
 					Loader.me.set("Players."+p+".TempFly",null);
-					Configs.chatme.save();
 					}
 				}
 				if(timeout == 5 || timeout == 4 || timeout == 3 || timeout == 2 || timeout == 1 
@@ -91,7 +90,6 @@ public class Tasks {
 	private static void savetask() {
 		if(Loader.mw.getInt("SavingTask.Delay") < 600){
 			Loader.mw.set("SavingTask.Delay", 600);
-			Configs.mw.save();
 		}
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){
 			int now = 0;

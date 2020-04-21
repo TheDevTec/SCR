@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 
 public class NickReset implements CommandExecutor {
 
@@ -18,7 +17,7 @@ public class NickReset implements CommandExecutor {
 			if(args.length==0) {
 				if(s instanceof Player) {
 				Loader.me.set("Players."+s.getName()+".DisplayName", null);
-				 Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("NicknameReseted"), s);
+				Loader.msg(Loader.s("Prefix")+Loader.s("NicknameReseted"), s);
 				return true;
 				}
 				Loader.Help(s, "/NickReset <player>", "NickReset");
@@ -30,7 +29,7 @@ public class NickReset implements CommandExecutor {
 		return true;
 		}
 		Loader.me.set("Players."+a+".DisplayName", null);
-		 Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("NicknameResetedOther").replace("%player%", a).replace("%playername%", a), s);
+		Loader.msg(Loader.s("Prefix")+Loader.s("NicknameResetedOther").replace("%player%", a).replace("%playername%", a), s);
 		return true;
 	}return true;
 	

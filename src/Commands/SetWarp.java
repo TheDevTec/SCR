@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 
 public class SetWarp implements CommandExecutor {
 
@@ -40,7 +39,6 @@ public class SetWarp implements CommandExecutor {
 		Loader.config.set("Warps."+args[0]+".X_Pos_Head", local.getYaw());
 		Loader.config.set("Warps."+args[0]+".Z_Pos_Head", local.getPitch());
 		Loader.config.set("Warps."+args[0]+".NeedPermission", false);
-		Configs.config.save();
 		Loader.msg(Loader.s("Warp.Created")
 					.replace("%warp%", args[0])
 					.replace("%world%", Loader.config.getString("Warps."+args[0]+".World"))
@@ -73,7 +71,6 @@ public class SetWarp implements CommandExecutor {
 			Loader.config.set("Warps."+args[0]+".X_Pos_Head", local.getYaw());
 			Loader.config.set("Warps."+args[0]+".Z_Pos_Head", local.getPitch());
 			Loader.config.set("Warps."+args[0]+".NeedPermission", true);
-			Configs.config.save();
 			Loader.msg(Loader.s(Loader.s("Prefix")+"Warp.CreatedWithPerm")
 						.replace("%warp%", args[0])
 						.replace("%world%", Loader.config.getString("Warps."+args[0]+".World"))

@@ -14,7 +14,6 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 import me.Straiker123.TheAPI;
 
 public class Mail implements CommandExecutor, TabCompleter {
@@ -43,7 +42,6 @@ public class Mail implements CommandExecutor, TabCompleter {
 					for (String mail : getMails(s.getName())) {
 						Loader.msg(mail,s);
                     	}
-					Configs.chatme.save();
 					return true;
 					}
 				if(args[0].equalsIgnoreCase("Clear")&&API.hasPerm(s, "ServerControl.Mail.Read")) {
@@ -53,7 +51,6 @@ public class Mail implements CommandExecutor, TabCompleter {
 					}
 					removeALL(s);
 					TheAPI.sendActionBar((Player) s, "&aYou cleared all mails...");
-					Configs.chatme.save();
 					return true;
 				}
 				
@@ -87,14 +84,12 @@ public class Mail implements CommandExecutor, TabCompleter {
 	    		List<String> a = getMails(p);
 	    		a.add(message);
 	    		Loader.me.set("Players."+p+".Mails", a);
-	    		Configs.chatme.save();
 	 }
 	public static List<String> getMails(String p){
     	return Loader.me.getStringList("Players."+p+".Mails");
     }
 	 public static void removeALL(CommandSender p) {
 		 Loader.me.set("Players."+p.getName()+".Mails", null);
-		 Configs.chatme.save();
 	 }
 
 		@Override

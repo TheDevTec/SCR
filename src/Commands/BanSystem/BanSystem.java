@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 import me.Straiker123.TheAPI;
 
 public class BanSystem {
@@ -29,8 +28,6 @@ public class BanSystem {
 	public static void resetWarns(String player) {
 		Loader.me.set("Players."+player+".WarnFinished",null);
 		Loader.ban.set("Warn."+player+".Amount", 0);
-		Configs.chatme.save();
-		Configs.bans.save();
 	}
 	public static void KickMaxWarns(String player) {
 		if(Loader.ban.getString("Warn."+player)!=null) {
@@ -56,8 +53,6 @@ public class BanSystem {
 							.replace("%reason%", reason)));
 				}
 				Loader.me.set("Players."+player+".WarnFinished."+Warns(player), true);
-
-				Configs.chatme.save();
 				}
 				
 			}
@@ -121,8 +116,6 @@ public class BanSystem {
 			Loader.me.set("Players."+player+".TempJail.Time", time);
 			break;
 			}
-			Configs.chatme.save();
-			Configs.bans.save();
 	}}
 	@SuppressWarnings("deprecation")
 	public static void kickPlayer(CommandSender s, String player,BanType type) {

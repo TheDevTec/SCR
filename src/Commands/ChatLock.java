@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 import Utils.setting;
 import me.Straiker123.TheAPI;
 
@@ -19,13 +18,11 @@ public class ChatLock implements CommandExecutor {
 			    	  TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("ChatLock.ChatIsLocked"));
 			    	  Loader.config.set("Options.ChatLock",true);
 			    	  setting.lock_chat=true;
-			    	  Configs.chatme.save();
 			        return true;  
 			      }
 			    	  TheAPI.broadcastMessage(Loader.s("Prefix")+Loader.s("ChatLock.ChatIsUnlocked"));
 			    	  Loader.config.set("Options.ChatLock",false);
 			    	  setting.lock_chat=false;
-			    	  Configs.chatme.save();
 			        return true;
 			     }
 		return true;

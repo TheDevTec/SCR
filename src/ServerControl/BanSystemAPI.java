@@ -10,7 +10,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import Commands.BanSystem.BanSystem;
 import Commands.BanSystem.BanSystem.BanType;
-import Utils.Configs;
 import me.Straiker123.TheAPI;
 
 public class BanSystemAPI {
@@ -45,26 +44,22 @@ public class BanSystemAPI {
 	 public void setJail(CommandSender sender,String player, String jail, String reason) {
 		 BanSystem.setPlayer(BanSystem.BanType.JAIL, player, reason, 0, System.currentTimeMillis(), sender);
 		 Loader.me.set("Players."+player+".Jail.Location", jail);
-		 Configs.chatme.save();
 		BanSystem.kickPlayer(sender,player,BanType.JAIL);
 	 }
 	 public void setJail(CommandSender sender,Player player, String jail, String reason) {
 		 BanSystem.setPlayer(BanSystem.BanType.JAIL, player.getName(), reason, 0, System.currentTimeMillis(), sender);
 		 Loader.me.set("Players."+player.getName()+".Jail.Location", jail);
-		 Configs.chatme.save();
 		BanSystem.kickPlayer(sender,player.getName(),BanType.JAIL);
 	 }
 	 
 	 public void setTempJail(CommandSender sender,String player, String jail, String reason, long time) {
 		 BanSystem.setPlayer(BanSystem.BanType.TEMPJAIL, player, reason, time, System.currentTimeMillis(), sender);
 		 Loader.me.set("Players."+player+".TempJail.Location", jail);
-		 Configs.chatme.save();
 		 BanSystem.kickPlayer(sender,player,BanType.TEMPJAIL);
 	 }
 	 public void setTempJail(CommandSender sender,Player player, String jail, String reason, long time) {
 		 BanSystem.setPlayer(BanSystem.BanType.TEMPJAIL, player.getName(), reason, time, System.currentTimeMillis(), sender);
 		 Loader.me.set("Players."+player.getName()+".TempJail.Location", jail);
-		 Configs.chatme.save();
 		 BanSystem.kickPlayer(sender,player.getName(),BanType.TEMPJAIL);
 	 }
 	 public void setKick(CommandSender sender,String player, String reason) {
@@ -84,7 +79,6 @@ public class BanSystemAPI {
 		
 	if(Loader.me.getInt("Players."+n+".Kicks") >= Loader.config.getInt("AutoKickLimit.Kick.Number")) {
 		Loader.me.set("Players."+n+".Kicks" ,Loader.me.getInt("Players."+n+".Kicks") - Loader.config.getInt("AutoKickLimit.Kick.Number"));
-		 Configs.chatme.save();
 		if(Loader.config.getBoolean("AutoKickLimit.Kick.Message.Use")) {
 			if(TheAPI.getPlayer(n)!=null)
 			    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Kick.Message.List")) {
@@ -102,7 +96,6 @@ public class BanSystemAPI {
 			 if(TheAPI.getPlayer(n)!=null)
 			if(BanSystem.getLaterWarn(n)!=null && Loader.ban.getBoolean("Warn."+n+".WarnLater.Wait")==true) {
 				Loader.ban.set("Warn."+n+".WarnLater.Wait", false);
-				 Configs.bans.save();
 				 Loader.msg(BanSystem.getLaterWarn(n), TheAPI.getPlayer(n));
 				return;
 			}
@@ -118,7 +111,6 @@ public class BanSystemAPI {
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.Warned").replace("%reason%", reason).replace("%player%", player).replace("%playername%", BanSystem.getName(player)).replace("%warnedby%", sender.getName()), TheAPI.getPlayer(player));
 			else
 				Loader.ban.set("Warn."+player+".WarnLater.Wait",true);
-			 Configs.bans.save();
 			BanSystem.KickMaxWarns(player);
 	 }
 

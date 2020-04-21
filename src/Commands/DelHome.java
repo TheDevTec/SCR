@@ -13,7 +13,6 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 
 public class DelHome implements CommandExecutor, TabCompleter {
 
@@ -30,7 +29,7 @@ public class DelHome implements CommandExecutor, TabCompleter {
                 if(args.length == 1) {
                 	if(Loader.me.getString("Players."+p.getName()+".Homes."+args[0])!= null) {
                 	Loader.me.set("Players."+p.getName()+".Homes."+args[0], null);
-                	Configs.chatme.save(); Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Deleted")
+                	Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Deleted")
                     .replace("%player%", p.getName())
                     .replace("%playername%", p.getDisplayName())
                     .replace("%home%", args[0]),s);

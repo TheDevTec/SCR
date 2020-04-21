@@ -12,7 +12,6 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 
 public class ChatFormat implements CommandExecutor, TabCompleter {
 
@@ -48,7 +47,7 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 				return true;
 				}
 				Loader.config.set("Chat-Groups."+g, "");
-				Configs.config.save();msg("&aGroup with name &2'"+g+"' &acreated",s);
+				msg("&aGroup with name &2'"+g+"' &acreated",s);
 				return true;
 			}
 			return true;
@@ -67,7 +66,7 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 				return true;
 				}
 				Loader.config.set("Chat-Groups."+g, null);
-				Configs.config.save();msg("&6Group with name &c'"+g+"' &6deleted",s);
+				msg("&6Group with name &c'"+g+"' &6deleted",s);
 				return true;
 			}
 			return true;
@@ -103,7 +102,7 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 				if(what.equals("name"))f="Name";
 				
 				Loader.config.set("Chat-Groups."+g+"."+f, msg);
-				Configs.config.save();msg("&6Set "+what+" format to &c'"+msg+"&c' &6on group &c"+g,s);
+				msg("&6Set "+what+" format to &c'"+msg+"&c' &6on group &c"+g,s);
 				return true;
 				
 			}

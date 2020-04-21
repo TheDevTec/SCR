@@ -899,7 +899,6 @@ public class Configs {
 		BansLoading();
 	}
 	public static void reload() {
-		chatme.save();
 		trans.reload();
 		config.reload();
 		bans.reload();

@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 public class SetHome implements CommandExecutor {
 
 	
@@ -27,7 +26,6 @@ public class SetHome implements CommandExecutor {
                 	Loader.me.set("Players."+p.getName()+".Homes.home.Z", l.getZ());
                 	Loader.me.set("Players."+p.getName()+".Homes.home.Pitch", p.getLocation().getPitch());
                 	Loader.me.set("Players."+p.getName()+".Homes.home.Yaw", p.getLocation().getYaw());
-                	Configs.chatme.save();
                 	Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Created")
         			.replace("%home%", "home"),s);
                     return true;   
@@ -40,7 +38,6 @@ public class SetHome implements CommandExecutor {
                 	Loader.me.set("Players."+p.getName()+".Homes.home.Z", l.getZ());
                 	Loader.me.set("Players."+p.getName()+".Homes.home.Pitch", p.getLocation().getPitch());
                 	Loader.me.set("Players."+p.getName()+".Homes.home.Yaw", p.getLocation().getYaw());
-                	Configs.chatme.save();
                 	Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Created")
                     .replace("%player%", p.getName())
                     .replace("%playername%", p.getDisplayName())
@@ -57,7 +54,7 @@ public class SetHome implements CommandExecutor {
                     	Loader.me.set("Players."+p.getName()+".Homes."+args[0]+".Z", l.getZ());
                     	Loader.me.set("Players."+p.getName()+".Homes."+args[0]+".Pitch", p.getLocation().getPitch());
                     	Loader.me.set("Players."+p.getName()+".Homes."+args[0]+".Yaw", p.getLocation().getYaw());
-                    	Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Created")
+                    	Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Created")
                         .replace("%player%", p.getName())
                         .replace("%playername%", p.getDisplayName())
                         .replace("%home%", args[0]),s);
@@ -80,7 +77,7 @@ public class SetHome implements CommandExecutor {
                 	Loader.me.set("Players."+p.getName()+".Homes."+args[0]+".Z", l.getZ());
                 	Loader.me.set("Players."+p.getName()+".Homes."+args[0]+".Pitch", p.getLocation().getPitch());
                 	Loader.me.set("Players."+p.getName()+".Homes."+args[0]+".Yaw", p.getLocation().getYaw());
-                	Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Created")
+                	Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Created")
                     .replace("%player%", p.getName())
                     .replace("%playername%", p.getDisplayName())
                     .replace("%home%", args[0]),s);

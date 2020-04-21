@@ -5,9 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
-import ServerControl.Loader;
 import ServerControl.API.TeleportLocation;
-import Utils.Configs;
+import ServerControl.Loader;
 import me.Straiker123.TheAPI;
 
 public class UnJail implements CommandExecutor {
@@ -24,7 +23,6 @@ public class UnJail implements CommandExecutor {
 				if(p!=null) {
 					Loader.me.set("Players."+args[0]+".Jail", null);
 					Loader.me.set("Players."+args[0]+".TempJail", null);
-					Configs.chatme.save();
 					if(TheAPI.getPlayer(args[0])!=null)
 						API.teleportPlayer(TheAPI.getPlayer(args[0]), TeleportLocation.SPAWN);
 					Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.unJailed")

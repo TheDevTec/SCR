@@ -13,7 +13,6 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 
 public class DelWarp implements CommandExecutor, TabCompleter {
 
@@ -27,7 +26,7 @@ public class DelWarp implements CommandExecutor, TabCompleter {
 			if(args[0]!=null) {
 				if(Loader.config.getString("Warps."+args[0])!=null) {
 		Loader.config.set("Warps."+args[0], null);
-		Configs.config.save();Loader.msg(Loader.s("Warp.Deleted")
+		Loader.msg(Loader.s("Warp.Deleted")
 					.replace("%warp%", args[0])
 					.replace("%player%", s.getName())
 					.replace("%prefix%", Loader.s("Prefix"))

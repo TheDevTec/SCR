@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 import me.Straiker123.TheAPI;
 
 public class FlySpeed implements CommandExecutor {
@@ -33,7 +32,7 @@ public class FlySpeed implements CommandExecutor {
 		if(flightmodifier<-10.0)flightmodifier = -10.0;
 		((Player) s).setFlySpeed((float)flightmodifier/10);
 		Loader.me.set("Players."+((Player) s).getName()+".FlySpeed", flightmodifier/10);
-		Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("Fly.FlySpeed")
+		Loader.msg(Loader.s("Prefix")+Loader.s("Fly.FlySpeed")
 		.replace("%player%", s.getName())
 		.replace("%playername%", ((Player) s).getDisplayName())
 		.replace("%speed%", String.valueOf(flightmodifier)),s);
@@ -48,7 +47,7 @@ public class FlySpeed implements CommandExecutor {
 			if(flightmodifier<-10.0)flightmodifier = -10.0;
 			target.setFlySpeed((float)flightmodifier/10);
 		Loader.me.set("Players."+target.getName()+".FlySpeed", flightmodifier/10);
-		Configs.chatme.save();Loader.msg(Loader.s("Prefix")+Loader.s("Fly.FlySpeedPlayer")
+		Loader.msg(Loader.s("Prefix")+Loader.s("Fly.FlySpeedPlayer")
 				.replace("%player%", target.getName())
 				.replace("%playername%", target.getDisplayName())
 				.replace("%speed%", String.valueOf(flightmodifier)),s);

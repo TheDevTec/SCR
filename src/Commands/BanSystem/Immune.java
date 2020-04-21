@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import Utils.Configs;
 import me.Straiker123.TheAPI;
 
 public class Immune implements CommandExecutor {
@@ -26,12 +25,10 @@ public class Immune implements CommandExecutor {
 				if (im==false) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.Enabled"), p);
 					Loader.me.set("Players."+s.getName()+".Immune", true);
-					Configs.chatme.save();
 					return true;
 				}
 					Loader.me.set("Players."+s.getName()+".Immune", false);
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.Disabled"), p);
-					Configs.chatme.save();
 					return true;
 			}
 			if(args.length==1) {
@@ -46,13 +43,11 @@ public class Immune implements CommandExecutor {
 					if(imt==true) {
 						Loader.me.set("Players."+target.getName()+".Immune", false);
 						Loader.msg(Loader.s("Prefix")+Loader.s("Immune.OffOther").replace("%target%", target.getName()), p);
-						Configs.chatme.save();
 						return true;
 					}
 					if(imt==false) {
 						Loader.me.set("Players."+target.getName()+".Immune", true);
 						Loader.msg(Loader.s("Prefix")+Loader.s("Immune.OnOther").replace("%target%", target.getName()), p);
-						Configs.chatme.save();
 						return true;
 					}
 				}

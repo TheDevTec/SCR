@@ -30,7 +30,6 @@ public class MultiWorldsUtils {
 			ww.add(w);
 			Loader.mw.set("Worlds", worlds);
 			Loader.mw.set("Unloaded-Worlds", ww);
-			 Configs.mw.save();
 			Loader.msg(Loader.s("Prefix")+Loader.s("MultiWorld.Unloaded").replace("%world%", w), sender);
 			return;
 		}}
@@ -107,7 +106,6 @@ public class MultiWorldsUtils {
 				worlds.add(w);
 				Loader.mw.set("Deleted-Worlds", wws);
 				Loader.mw.set("Worlds", worlds);
-				 Configs.mw.save();
 				DefaultSet(Bukkit.getWorld(w),type.toString());
 				Loader.msg(Loader.s("Prefix")+Loader.s("MultiWorld.WorldImported").replace("%world%", w), s);
 		}}else
@@ -268,7 +266,6 @@ public class MultiWorldsUtils {
 			ww.remove(s);
 			Loader.mw.set("Worlds", worlds);
 			Loader.mw.set("Unloaded-Worlds", ww);
-			 Configs.mw.save();
 			DefaultSet(Bukkit.getWorld(s),biome);
 			Loader.msg(Loader.s("Prefix")+Loader.s("MultiWorld.Loaded").replace("%world%", s), sender);
 		}
@@ -300,7 +297,6 @@ public class MultiWorldsUtils {
 			worlds.add(s);
 			Loader.mw.set("Deleted-Worlds", wws);
 			Loader.mw.set("Worlds", worlds);
-			 Configs.mw.save();
 			DefaultSet(Bukkit.getWorld(s),biome);
 			Loader.msg(Loader.s("Prefix")+Loader.s("MultiWorld.Created").replace("%world%", s), sender);
 		}}

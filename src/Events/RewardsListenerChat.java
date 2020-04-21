@@ -9,7 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
 import ServerControl.Loader;
-import Utils.Configs;
 import Utils.setting;
 import me.Straiker123.TheAPI;
 import me.Straiker123.TheAPI.SudoType;
@@ -57,7 +56,6 @@ public class RewardsListenerChat implements Listener {
 	    						.replace("%prefix%", Loader.s("Prefix"))));
 				codes.add(g);
 				Loader.me.set("Players."+name+".Taken-Codes", codes);
-				Configs.chatme.save();
 				}
 		}
 		}

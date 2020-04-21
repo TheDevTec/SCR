@@ -14,7 +14,6 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.PlayerData;
 import ServerControlEvents.PlayerBlockedCommandEvent;
-import Utils.Configs;
 import Utils.setting;
 import me.Straiker123.TheAPI;
 import me.Straiker123.TheAPI.SudoType;
@@ -115,7 +114,7 @@ public class SecurityListenerV3 implements Listener{
 	                    return;
 	                }
 	                Loader.ban.set("Mute."+p.getName()+".TempMute", null);
-	                Configs.bans.save();}}}}else
+	                }}}}else
 		 if(!p.hasPermission("ServerControl.CommandsAccess") && setting.cmdblock) {
 		   	    for (String cen: Loader.config.getStringList("Options.CommandsBlocker.List")) {
 		   	    	String mes = e.getMessage().toLowerCase();
@@ -234,8 +233,6 @@ public class SecurityListenerV3 implements Listener{
 			    		    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Kick.Commands.List")) {
 			    		    		TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", s.getName()).replace("%number%", Loader.config.getInt("AutoKickLimit.Kick.Number")+"")));
 						  }}}}
-	          Configs.config.save(); 
-	          PlayerData.save();
 		}
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChat(PlayerChatEvent e) {

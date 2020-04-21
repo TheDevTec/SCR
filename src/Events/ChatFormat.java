@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerChatEvent;
 
 import ServerControl.Loader;
 import Utils.Colors;
-import Utils.Configs;
 import Utils.MultiWorldsGUI;
 import Utils.setting;
 import me.Straiker123.TheAPI;
@@ -81,7 +80,6 @@ public class ChatFormat implements Listener {
 			TheAPI.getCooldownAPI("world-create").removeCooldown(p.getName());
 			Loader.me.set("Players."+p.getName()+".MultiWorlds-Create",null);
 			Loader.me.set("Players."+p.getName()+".MultiWorlds-Generator",null);
-			Configs.chatme.save();
 			TheAPI.getPlayerAPI(p).sendTitle("", "&6Cancelled");
 			return;
 		}
@@ -92,7 +90,6 @@ public class ChatFormat implements Listener {
 		else {
 			TheAPI.getCooldownAPI("world-create").removeCooldown(p.getName());
 			Loader.me.set("Players."+p.getName()+".MultiWorlds-Create",Colors.remove(e.getMessage()));
-			Configs.chatme.save();
 			MultiWorldsGUI.openInvCreate(p);
 		}
 	}

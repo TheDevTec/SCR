@@ -230,7 +230,6 @@ public class API {
 				Location loc = getBack(p.getName());
 				if(loc != null) {
 					 Loader.me.set("Players."+p.getName()+".Back",TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
-					 PlayerData.save();
 				p.teleport(loc);
 				Loader.msg(Loader.s("Back.Teleporting")
 						.replace("%prefix%", Loader.s("Prefix"))
@@ -242,11 +241,9 @@ public class API {
 
 	 public static void setBack(Player p) {
 		 Loader.me.set("Players."+p.getName()+".Back",TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
-		 PlayerData.save();
 	 }
 	 public static void setBack(String p, Location l) {
 		 Loader.me.set("Players."+p+".Back",TheAPI.getStringUtils().getLocationAsString(l));
-		 PlayerData.save();
 	 }
 	 
 	 public static Location getBack(String p) {

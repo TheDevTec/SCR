@@ -60,13 +60,11 @@ public class ClearInv implements CommandExecutor, TabCompleter {
     			if(API.hasPerm(s, "ServerControl.ClearInventory")) {
     			if(!d.getBoolean("ClearInvConfirm")) {
     				d.set("ClearInvCooldown",System.currentTimeMillis()/1000);
-    				PlayerData.save();
     				Loader.msg(fs +f("ClearInventory.ConfirmClearInv"),s);
 	    	    return true;
 			}else{
     				if(d.getString("ClearInvCooldown")!=null)
     					d.set("ClearInvCooldown",null);
-    				PlayerData.save();
     				undo.put(p, p.getInventory().getContents());
     	        	Loader.msg(fs+f("ClearInventory.InvCleared"),s);
 			p.getInventory().clear();
@@ -100,7 +98,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 	        			undo.put(p, p.getInventory().getContents());
     	        		Loader.msg(fs+f("ClearInventory.InvCleared"),s);
     				d.set("ClearInvCooldown",null);
-    				PlayerData.save();p.getInventory().clear();
+    				p.getInventory().clear();
     	    	    return true;
     			}
 	        		Loader.msg(fs +f("ClearInventory.NoConfirm"),s);
@@ -110,13 +108,11 @@ public class ClearInv implements CommandExecutor, TabCompleter {
         		if(API.hasPerm(s, "ServerControl.ClearInventory")) {
         			if(!d.getBoolean("ClearInvConfirm")) {
         				d.set("ClearInvCooldown",System.currentTimeMillis()/1000);
-        				PlayerData.save();
         				Loader.msg(fs +f("ClearInventory.ConfirmClearInv"),s);
     	    	    return true;
     			}else {
         				if(d.getString("ClearInvCooldown")!=null)
         				d.set("ClearInvCooldown",null);
-        				PlayerData.save();
         				undo.put(p, p.getInventory().getContents());
         	        		Loader.msg(fs+f("ClearInventory.InvCleared"),s);
     			p.getInventory().clear();

@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 import Utils.setting;
 
 public class Maintenance implements CommandExecutor {
@@ -18,7 +17,6 @@ public class Maintenance implements CommandExecutor {
 	        if(setting.lock_server) {
 	            Loader.config.set("Options.Maintenance.Enabled", false);
 	            setting.lock_server=false;
-        Configs.config.save();
         Loader.msg(Loader.s("Prefix")+"&e----------------- &bMaintenance is Disabled &e-----------------",s);
         Loader.msg("",s);
         Loader.msg(Loader.s("Prefix")+Loader.s("MaintenanceMode.TurnOff"),s);
@@ -27,7 +25,6 @@ public class Maintenance implements CommandExecutor {
 
          Loader.config.set("Options.Maintenance.Enabled", true);
          setting.lock_server=true;
-         Configs.config.save(); 
          Loader.msg(Loader.s("Prefix")+"&e----------------- &bMaintenance is Enabled &e-----------------",s);
          Loader.msg("",s);
          Loader.msg(Loader.s("Prefix")+Loader.s("MaintenanceMode.TurnOn"),s);

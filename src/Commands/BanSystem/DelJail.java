@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 
 public class DelJail implements CommandExecutor {
 
@@ -23,7 +22,6 @@ public class DelJail implements CommandExecutor {
 					return true;
 				}
 				Loader.config.set("Jails."+args[0], null);
-				Configs.config.save();
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.DeletedJail").replace("%jail%", args[0]), s);
 				return true;
 			}
