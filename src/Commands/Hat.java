@@ -26,7 +26,6 @@ public class Hat implements CommandExecutor {
 				if(args.length==0) {
 					if(p.getInventory().getHelmet()!=null)
 					p.getInventory().addItem(p.getInventory().getHelmet());
-					//p.getInventory().setHelmet(p.getItemInHand());
 					p.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
 					p.getInventory().setItemInHand(new ItemStack(Material.AIR));
 					Loader.msg(Loader.s("Hat.Equiped"), s);
@@ -34,7 +33,6 @@ public class Hat implements CommandExecutor {
 				}
 				if(args.length==1) {
 					Player t = TheAPI.getPlayer(args[0]);
-					//SPlayer target = new SPlayer((Player)Bukkit.getServer().getPlayer(args[0]));
 					if(t== null) {
 						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
@@ -46,7 +44,7 @@ public class Hat implements CommandExecutor {
 					Loader.msg(Loader.s("Hat.EquipedToOther")
 							.replace("%target%", t.getName()), s);
 					return true;
-				}//zakaž ten EntityMoveEvent, lagguje checking a také LagChecker :D celý.
+				}
 			}
 			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
