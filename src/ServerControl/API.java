@@ -282,8 +282,8 @@ public class API {
 		p.setCustomName(name);
 	 }
 	 
-	 public static ArrayList<String> getKits() {
-		 ArrayList<String> list = new ArrayList<String>();
+	 public static List<String> getKits() {
+		 List<String> list = new ArrayList<String>();
 		for(String name: Loader.kit.getConfigurationSection("Kits").getKeys(false)) {
 			list.add(name);
 		}
@@ -356,7 +356,7 @@ public class API {
 
 						DecimalFormat d = new DecimalFormat("#,###0.00");
 						 d.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
-						 a=d.format(mille).replaceAll("\\.00", "");
+						 a=d.format(money).replaceAll("\\.00", "");
 					}
 		 if(colorized) {
 			 if(a.startsWith("-"))a= "&c"+a;
@@ -407,28 +407,29 @@ public class API {
 	    	for(String w:Loader.config.getStringList("AntiAD.WhiteList")) {
 		    	str = str.replace(w, "").replaceAll("[0-9]+", "").replace(" ",".");
 		    }
-	        Matcher m = Pattern.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{5,256}\\.(com|ru|net|org|jp|uk|br|fr|nl|cn|ir|es|cz|biz|ca|kr|eu|ua|gr|ro|tw|vn|mx|ch|tr|hu|tv|ar|us|sk|fi|id|cl|nz|pt)\\b(\\/[-a-zA-Z0-9@:%_\\+.~#?&//=]*)?").matcher(str.toLowerCase());
+	        Matcher m = Pattern.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{5,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?").matcher(str.toLowerCase());
 	        return m.find();
 	}
 	    private static boolean checkForIp(String str) {
+	    	str = str.replaceAll("[A-Za-z]+", "").replace(" ",".");
 	    	for(String w:Loader.config.getStringList("AntiAD.WhiteList")) {
-		    	str = str.replace(w, "").replaceAll("[A-Za-z]+", "").replace(" ",".");
+		    	str = str.replace(w, "");
 		    }
-	        Matcher m = Pattern.compile("\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b").matcher(str.toLowerCase());
+	        Matcher m = Pattern.compile("(?:\\d{1,3}[.,\\-:;\\/()=?}+ ]{1,4}){3}\\d{1,3}").matcher(str.toLowerCase());
 	   	     return m.find();
 	    	}
 	    
 	    public static List<String> getAdvertisementMatches(String where){
 	    	List<String> matches = new ArrayList<String>();
 	    	if(getAdvertisement(where)) {
-		        Matcher m = Pattern.compile("\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b").matcher(where.toLowerCase());
+		        Matcher m = Pattern.compile("(?:\\d{1,3}[.,\\-:;\\/()=?}+ ]{1,4}){3}\\d{1,3}").matcher(where.toLowerCase());
 		        while(m.find()) {
 		        	for(int i = 0; i < m.groupCount(); ++i) {
          		    String match = m.group(i);
          		    matches.add(match);
 		        	}
     		}
-		        Matcher ma = Pattern.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{5,256}\\.(com|ru|net|org|jp|uk|br|fr|nl|cn|ir|es|cz|biz|ca|kr|eu|ua|gr|ro|tw|vn|mx|ch|tr|hu|tv|ar|us|sk|fi|id|cl|nz|pt)\\b(\\/[-a-zA-Z0-9@:%_\\+.~#?&//=]*)?").matcher(where.toLowerCase());
+		        Matcher ma = Pattern.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{5,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?").matcher(where.toLowerCase());
 		        while(ma.find()) {
 		        	for(int i = 0; i < ma.groupCount(); ++i) {
          		    String match = ma.group(i);
