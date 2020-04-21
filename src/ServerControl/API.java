@@ -339,7 +339,7 @@ public class API {
 								DecimalFormat d = new DecimalFormat("#,###0.00b");
 								 d.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
 								 a=d.format(billion).replaceAll("\\.00", "");
-						}
+						}else
 					if(get.length()>=12 && get.length()<16) {
 							DecimalFormat d = new DecimalFormat("#,###0.00m");
 							 d.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
@@ -401,8 +401,9 @@ public class API {
 		 return "";
 	 }
 	 private static boolean checkForDomain(String str) {
+	    	str = str.replaceAll("[0-9]+", "").replace(" ",".");
 	    	for(String w:Loader.config.getStringList("AntiAD.WhiteList")) {
-		    	str = str.replace(w, "").replaceAll("[0-9]+", "").replace(" ",".");
+		    	str = str.replace(w, "");
 		    }
 	        Matcher m = Pattern.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{5,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?").matcher(str.toLowerCase());
 	        return m.find();
@@ -421,28 +422,22 @@ public class API {
 	    	if(getAdvertisement(where)) {
 		        Matcher m = Pattern.compile("(?:\\d{1,3}[.,\\-:;\\/()=?}+ ]{1,4}){3}\\d{1,3}").matcher(where.toLowerCase());
 		        while(m.find()) {
-		        	for(int i = 0; i < m.groupCount(); ++i) {
-         		    String match = m.group(i);
-         		    matches.add(match);
+		        	for(int i = 0; i < m.groupCount()+1; ++i) {
+         		    matches.add(m.group(i));
 		        	}
     		}
-		        Matcher ma = Pattern.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{5,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?").matcher(where.toLowerCase());
-		        while(ma.find()) {
-		        	for(int i = 0; i < ma.groupCount(); ++i) {
-         		    String match = ma.group(i);
-         		    matches.add(match);
+		        m = Pattern.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{5,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?").matcher(where.toLowerCase());
+		        while(m.find()) {
+		        	for(int i = 0; i < m.groupCount(); ++i) {
+         		    matches.add(m.group(i));
 		        	}
     		}
 	    	}
 	    	return matches;
 	    	}
 	    
-
 	 public static boolean getAdvertisement(String string) {
-		 if(checkForIp(string)||checkForDomain(string)) {
-				return true;
-		 }
-		 return false;
+		 return checkForIp(string)||checkForDomain(string);
 	 }
 	 public static boolean getBlockedCommand(String string) {
 		 List<String> words = Loader.config.getStringList("Options.CommandsBlocker.List");
