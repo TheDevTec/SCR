@@ -899,6 +899,7 @@ public class Configs {
 		BansLoading();
 	}
 	public static void reload() {
+		 save();
 		trans.reload();
 		config.reload();
 		bans.reload();
@@ -915,5 +916,14 @@ public class Configs {
 		Loader.kit=kit.getConfig();
 		Loader.mw=mw.getConfig();
 		Loader.tab=tab.getConfig();
+	}
+	public static void save() {
+		trans.save();
+		config.save();
+		bans.save();
+		kit.save();
+		mw.save();
+		sb.save();
+		tab.save();
 	}
 }

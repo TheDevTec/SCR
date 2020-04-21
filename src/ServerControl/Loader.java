@@ -252,6 +252,7 @@ public void onDisable() {
 	}
 	TabList.removeTab();
 	ScoreboardStats.removeScoreboard();
+	Configs.save();
 	if(mw.getString("Worlds")!=null)
 	 for(String w: mw.getStringList("Worlds")) {
 			if(Bukkit.getWorld(w) != null && !mw.getBoolean("WorldsSettings."+w+".AutoSave")) {
