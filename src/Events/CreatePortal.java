@@ -1,6 +1,5 @@
 package Events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,17 +9,17 @@ import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 
 import ServerControl.Loader;
+import Utils.XMaterial;
 
 public class CreatePortal implements Listener {
 	@EventHandler(priority=EventPriority.LOWEST)
 	public void onEndPortal(BlockPhysicsEvent e) {
-		Bukkit.broadcastMessage(e.getChangedType().name());
-		if(e.getBlock().getType().name().equals("END_PORTAL")||e.getBlock().getType().name().equals("NETHER_PORTAL"))
+		if(XMaterial.END_PORTAL.parseMaterial().equals(e.getBlock().getType())||XMaterial.NETHER_PORTAL.parseMaterial().equals(e.getBlock().getType()))
 		if(!Loader.mw.getBoolean("WorldsSettings."+e.getBlock().getWorld().getName()+".CreatePortal"))e.getBlock().setType(Material.AIR);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPortalTravel(PlayerPortalEvent e) { //not working for player
+	public void onPortalTravel(PlayerPortalEvent e) {
 		if(!Loader.mw.getBoolean("WorldsSettings."+e.getFrom().getWorld().getName()+".PortalTeleport"))e.setCancelled(true);
 	}
 	
