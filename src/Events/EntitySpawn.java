@@ -15,7 +15,9 @@ public class EntitySpawn implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onEntitySpawn(CreatureSpawnEvent e) {
-			if(e.getSpawnReason()==SpawnReason.NATURAL||e.getSpawnReason()==SpawnReason.SPAWNER)
+			if(e.getSpawnReason()==SpawnReason.NATURAL||e.getSpawnReason()==SpawnReason.SPAWNER
+					||e.getSpawnReason().name().contains("BUILD")||e.getSpawnReason()==SpawnReason.SILVERFISH_BLOCK
+					||e.getSpawnReason()==SpawnReason.BREEDING)
 		if(e instanceof Player == false && Loader.mw.getBoolean("WorldsSettings."+e.getLocation().getWorld().getName()+".NoMobs")) {
 				e.setCancelled(true);
 	}}
