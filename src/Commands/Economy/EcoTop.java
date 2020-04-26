@@ -21,10 +21,9 @@ public class EcoTop implements CommandExecutor {
 	//world, rankingapi
 	MultiMap<String> h= TheAPI.getMultiMap();
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(Loader.econ==null) {
+		if(TheAPI.getEconomyAPI().getEconomy()==null) {
 			Loader.msg(Loader.s("Prefix")+"&cMissing Vault plugin for economy.",s);
 			return true;
 		}
@@ -36,7 +35,7 @@ public class EcoTop implements CommandExecutor {
 						TheAPI.getCooldownAPI("scr.baltop").createCooldown("scr", 300); //5min update
 						HashMap<String, Double> money = new HashMap<String, Double>();
 						for (String sa : Loader.me.getConfigurationSection("Players").getKeys(false)) {
-							money.put(sa, Loader.econ.getBalance(sa,world));
+							money.put(sa, TheAPI.getEconomyAPI().getBalance(sa,world));
 						}
 						if(m!=null)
 						h.remove(world);

@@ -122,7 +122,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 	        			if(API.hasPerm(s, "ServerControl.ClearInventory.Undo")) {
 	    	        	if(undo.containsKey(p)) {
 	    	        		
-						if(take == 0||Loader.econ==null) {
+						if(take == 0||TheAPI.getEconomyAPI().getEconomy()==null) {
 							for(ItemStack item : undo.get(p)) {
 						        TheAPI.giveItem(p, item);}
 							undo.remove(p);
@@ -130,18 +130,17 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 							
 							return true;
 						}else
-						if(take != 0&&Loader.econ!=null) {
+						if(take != 0&&TheAPI.getEconomyAPI().getEconomy()!=null) {
 							
-						if(Loader.econ.has(p,take)) {
+						if(TheAPI.getEconomyAPI().has(p,take)) {
 								for(ItemStack item : undo.get(p)) {
 							        TheAPI.giveItem(p, item);}
-								Loader.econ.withdrawPlayer(p, take);
+								TheAPI.getEconomyAPI().withdrawPlayer(p, take);
 								undo.remove(p);
 								Loader.msg(fs +f("ClearInventory.InventoryRetrievedForMoney")
 								.replace("%money%", value(take)),s);
 								return true;
-						}else
-							if(!Loader.econ.has(p,take)) {
+						}else {
 								Loader.msg(fs +f("ClearInventory.NoMoney").replace("%money%", value(take)),s);
 							    return true;
 								

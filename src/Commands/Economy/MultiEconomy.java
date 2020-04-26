@@ -30,7 +30,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 	}
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(Loader.econ==null) {
+		if(TheAPI.getEconomyAPI().getEconomy()==null) {
 			Loader.msg(Loader.s("Prefix")+"&cMissing Vault plugin for economy.",s);
 			return true;
 		}

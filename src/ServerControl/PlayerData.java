@@ -15,6 +15,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import Utils.Configs;
+import me.Straiker123.TheAPI;
 import me.Straiker123.Utils.Packets;
 
 public class PlayerData {
@@ -23,10 +24,9 @@ public class PlayerData {
 	public PlayerData(String player) {
 		s=player;
 	}
-	@SuppressWarnings("deprecation")
 	public void createPlayer() {
-		if(Loader.econ!=null && !Loader.econ.hasAccount(s))
-			Loader.econ.createPlayerAccount(s);
+		if(TheAPI.getEconomyAPI().getEconomy()!=null && !TheAPI.getEconomyAPI().hasAccount(s))
+			TheAPI.getEconomyAPI().createAccount(s);
 	}
 	public boolean existPath(String path) {
 		return getString(path) != null;

@@ -233,8 +233,8 @@ public void Tasks() {
 		if(s.hasPermission("servercontrol.fly") && s.hasFlyEnabled())
 		s.enableFly();
 		setupChatFormat(p);
- 		if(econ != null)
- 		Loader.econ.createPlayerAccount(p);
+ 		if(TheAPI.getEconomyAPI().getEconomy() != null)
+ 			TheAPI.getEconomyAPI().createAccount(p);
 	}
 	Utils.Tasks.load();
   	MultiWorldsUtils.EnableWorldCheck();

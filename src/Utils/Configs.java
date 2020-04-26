@@ -774,7 +774,7 @@ public class Configs {
 			Map<String, Object> c = new HashMap<String, Object>();
 			c.put("Scoreboard-Enabled", true);
 			c.put("Scoreboard-PerWorld", false);
-			c.put("RefleshTick", 20);
+			c.put("RefleshTick", 40);
 			c.put("Name", "&bStatus");
 			c.put("Lines", Arrays.asList("&r&lMoney: &a%money%$","&r&lOnline:  &a%online%"));
 			
@@ -823,7 +823,7 @@ public class Configs {
 					,"&bMoney: &9%money%$   &bPing: &9%ping%","&7--------------------------------"));
 			c.put("Footer", Arrays.asList("&7--------------------------------","&bTime: &a%time%   &bOnline: &a%online% &0/ &a%max_players%"));
 			c.put("RefleshTick", 20);
-			c.put("NameTag-RefleshTick", 20);
+			c.put("NameTag-RefleshTick", 80);
 			c.put("AFK.IsAFK", " &4&l*AFK*");
 			c.put("AFK.IsNotAFK", "");
 			if(!tab.existPath("Groups.default")) {

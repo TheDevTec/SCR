@@ -97,8 +97,8 @@ public class Chat implements CommandExecutor, TabCompleter {
         	        	List<String> about = Loader.TranslationsFile.getStringList("AboutYou");
         	        	for(String a: about) {
         	        		
-        	        		if(Bukkit.getPluginManager().getPlugin("Vault")!=null && Loader.econ != null) {
-                	        	String money = API.setMoneyFormat(Loader.econ.getBalance(p.getName()), true);
+        	        		if(Bukkit.getPluginManager().getPlugin("Vault")!=null && TheAPI.getEconomyAPI().getEconomy() != null) {
+                	        	String money = API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true);
             	        		if(Loader.vault != null) {
             	        	Loader.msg(a
         	        				.replace("%playername%", p.getDisplayName())
@@ -172,7 +172,7 @@ public class Chat implements CommandExecutor, TabCompleter {
             	        	List<String> about = Loader.TranslationsFile.getStringList("AboutYou");
             	        	String world  = d.getString("DisconnectWorld");
             	        	if(TheAPI.getPlayer(args[1])!=null)world=TheAPI.getPlayer(args[1]).getName();
-            	        	String money = API.setMoneyFormat(Loader.econ.getBalance(args[1]), true);
+            	        	String money = API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true);
             	        	for(String a: about) {
                     		if(Loader.getInstance.getServer().getPluginManager().getPlugin("Vault") != null) {
             	        		if(Loader.vault != null) {

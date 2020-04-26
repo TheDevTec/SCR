@@ -4,6 +4,7 @@ package Events;
 import java.util.Date;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Statistic;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -86,7 +87,6 @@ public class OnPlayerJoin implements Listener {
 				TheAPI.getPlayerAPI(p).teleport(sd.getLocationFromString(f.getString("Jails."+data.getString("Jail.Location"))));
 		}else if(f.getBoolean("OnJoin.SpawnTeleport"))API.teleportPlayer(p, TeleportLocation.SPAWN);
 		
-		data.set("Joins", data.getInt("Joins") + 1);
 		data.set("JoinTime",System.currentTimeMillis()/1000);
 		if(!data.existPath("FirstJoin"))
 			data.set("FirstJoin", setting.format_date_time.format(new Date()));
@@ -111,9 +111,8 @@ public class OnPlayerJoin implements Listener {
 	    	for(String ss: Loader.TranslationsFile.getStringList("OnJoin.Messages")) {
 	    		Loader.msg(replaceAll(ss,p),p);
 		}}}
-		
-		if(Loader.econ!=null && !Loader.econ.hasAccount(p))
-			Loader.econ.createPlayerAccount(p);
+		if(!TheAPI.getEconomyAPI().hasAccount(p))
+			TheAPI.getEconomyAPI().createAccount(p);
 		SPlayer s = new SPlayer(p);
 		if(s.hasPermission("ServerControl.FlySpeedOnJoin"))s.setFlySpeed();
 		if(s.hasPermission("ServerControl.WalkSpeedOnJoin"))s.setWalkSpeed();
@@ -136,6 +135,7 @@ public class OnPlayerJoin implements Listener {
 					e.setQuitMessage(TheAPI.colorize(replaceAll(Loader.s("OnLeave.Leave"),p)));
 			}
 			SPlayer s = new SPlayer(p);
+			s.getData().set("Joins", s.getPlayer().getStatistic(Statistic.LEAVE_GAME));
 		    s.getData().set("LastLeave", setting.format_date_time.format(new Date()));
 		    s.getData().set("DisconnectWorld", p.getWorld().getName());
 			s.disableFly();

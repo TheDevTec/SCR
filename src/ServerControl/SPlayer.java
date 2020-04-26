@@ -185,8 +185,8 @@ public class SPlayer {
 	}
 	
 	public void createEconomyAccount() {
-		if(setting.eco_multi && Loader.econ != null)
-			Loader.econ.createPlayerAccount(s);
+		if(setting.eco_multi && TheAPI.getEconomyAPI().getEconomy() != null)
+			TheAPI.getEconomyAPI().createAccount(s);
 	}
 	
 	public void setGamamode() {

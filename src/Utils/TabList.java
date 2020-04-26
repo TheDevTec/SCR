@@ -40,7 +40,6 @@ public class TabList {
 }
 		return Loader.getInstance.getSuffix(p);
 }
-	@SuppressWarnings("deprecation")
 	public static String replace(String header, Player p) {
 		header=TheAPI.getPlaceholderAPI().setPlaceholders(p, header);
 		String customname = p.getName();
@@ -50,7 +49,7 @@ public class TabList {
 		if(p.getCustomName()!=null)customname=p.getCustomName();
 		String displayname = p.getName();
 		if(p.getDisplayName()!=null)displayname=p.getDisplayName();
-		return header.replace("%money%", API.setMoneyFormat(Loader.econ.getBalance(p.getName()), true))
+		return header.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true))
 				.replace("%online%",TheAPI.getOnlinePlayers().size()+"")
 				.replace("%max_players%", TheAPI.getMaxPlayers()+"")
 				.replace("%ping%", Loader.getInstance.pingPlayer(p))
