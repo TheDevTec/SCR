@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import Commands.BanSystem.BanSystem;
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class TpaBlock implements CommandExecutor, TabCompleter {
 
@@ -20,31 +21,30 @@ public class TpaBlock implements CommandExecutor, TabCompleter {
 		if(API.hasPerm(s, "ServerControl.TpBlock")) {
 			if(s instanceof Player) {
 			if(args.length==0) {
-				if(Loader.me.getBoolean("Players."+s.getName()+".TpBlock-Global")==false) {
+				if(!TheAPI.getUser(s.getName()).getBoolean("TpBlock-Global")) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaBlock.Blocked-Global")
 					.replace("%player%", "All").replace("%playername%", "All"), s);
-					Loader.me.set("Players."+s.getName()+".TpBlock-Global", true);
+					TheAPI.getUser(s.getName()).setAndSave("TpBlock-Global", true);
 					return true;
 				}else {
 					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaBlock.UnBlocked-Global")
 					.replace("%player%", "All").replace("%playername%", "All"), s);
-					Loader.me.set("Players."+s.getName()+".TpBlock-Global", null);
+					TheAPI.getUser(s.getName()).setAndSave("TpBlock-Global", null);
 					return true;
 				}
 			}
 			if(args.length==1) {
-				String p = Loader.me.getString("Players."+args[0]);
-				if(p!=null) {
+				if(TheAPI.existsUser(args[0])) {
 					if(s.getName()!=args[0]) {
-					if(Loader.me.getBoolean("Players."+s.getName()+".TpBlock."+args[0])==false) {
+					if(!TheAPI.getUser(s.getName()).getBoolean("TpBlock."+args[0])) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaBlock.Blocked")
 					.replace("%player%", args[0]).replace("%playername%", BanSystem.getName(args[0])), s);
-					Loader.me.set("Players."+s.getName()+".TpBlock."+args[0], true);
+					TheAPI.getUser(s.getName()).setAndSave("TpBlock."+args[0], true);
 					return true;
 					}else {
 						Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaBlock.UnBlocked")
 						.replace("%player%", args[0]).replace("%playername%", BanSystem.getName(args[0])), s);
-						Loader.me.set("Players."+s.getName()+".TpBlock."+args[0], null);
+						TheAPI.getUser(s.getName()).setAndSave("TpBlock."+args[0], null);
 						return true;
 					}
 					}

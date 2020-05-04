@@ -15,6 +15,7 @@ import Utils.Colors;
 import Utils.MultiWorldsGUI;
 import Utils.setting;
 import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 
 @SuppressWarnings("deprecation")
 public class ChatFormat implements Listener {
@@ -32,9 +33,10 @@ public class ChatFormat implements Listener {
 			displayname=p.getDisplayName();
 			name=displayname;
 		}else {
-			if(Loader.me.getString("Players."+p.getName()+".DisplayName") != null) {
-			name=Loader.me.getString("Players."+p.getName()+".DisplayName");
-			displayname=Loader.me.getString("Players."+p.getName()+".DisplayName");
+			User d = TheAPI.getUser(p);
+			if(d.getString("DisplayName") != null) {
+			name=d.getString("DisplayName");
+			displayname=d.getString("DisplayName");
 			}
 		}
 		String customname = p.getName();
@@ -77,9 +79,10 @@ public class ChatFormat implements Listener {
 	if(TheAPI.getCooldownAPI("world-create").getStart(p.getName())!=-1) {
 		e.setCancelled(true);
 		if(e.getMessage().toLowerCase().equals("cancel")) {
+			User d = TheAPI.getUser(p);
 			TheAPI.getCooldownAPI("world-create").removeCooldown(p.getName());
-			Loader.me.set("Players."+p.getName()+".MultiWorlds-Create",null);
-			Loader.me.set("Players."+p.getName()+".MultiWorlds-Generator",null);
+			d.setAndSave("MultiWorlds-Create",null);
+			d.setAndSave("MultiWorlds-Generator",null);
 			TheAPI.getPlayerAPI(p).sendTitle("", "&6Cancelled");
 			return;
 		}
@@ -89,7 +92,7 @@ public class ChatFormat implements Listener {
 		}
 		else {
 			TheAPI.getCooldownAPI("world-create").removeCooldown(p.getName());
-			Loader.me.set("Players."+p.getName()+".MultiWorlds-Create",Colors.remove(e.getMessage()));
+			TheAPI.getUser(p).setAndSave("MultiWorlds-Create",Colors.remove(e.getMessage()));
 			MultiWorldsGUI.openInvCreate(p);
 		}
 	}

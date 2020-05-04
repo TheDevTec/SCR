@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import ServerControl.Loader;
 import Utils.setting;
 import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 /**
  * 
  * @author waskerSK
@@ -16,30 +17,33 @@ import me.Straiker123.TheAPI;
  */
 public class RequestMap {
     public static void addRequest(String target, String sender, Type tp) {
-    	Loader.me.set("Players."+sender+".Tp."+target+".Type", tp.toString());
-    	Loader.me.set("Players."+sender+".Tp."+target+".Time", System.currentTimeMillis()/1000);
+    	User s = TheAPI.getUser(sender);
+    	s.set("Tp."+target+".Type", tp.toString());
+    	s.setAndSave("Tp."+target+".Time", System.currentTimeMillis()/1000);
     	if(setting.tp_onreqloc)
-    	Loader.me.set("Players."+sender+".Tp."+target+".Location", TheAPI.getStringUtils().getLocationAsString(TheAPI.getPlayer(target).getLocation()));
+    	s.setAndSave("Tp."+target+".Location", TheAPI.getStringUtils().getLocationAsString(TheAPI.getPlayer(target).getLocation()));
 	}
 
     public static void removeRequest(String target, String sender) {
-        Loader.me.set("Players."+target+".Tp."+sender, null);
+        TheAPI.getUser(target).setAndSave("Tp."+sender, null);
 	}
     
     public static String getRequest(String p) {
-        if(Loader.me.getString("Players."+p+".Tp")!=null) {
-            List<String> s = new ArrayList<String>();
-            for(String d : Loader.me.getConfigurationSection("Players."+p+".Tp").getKeys(false))
-            	if(TheAPI.getPlayer(d)!=null)s.add(d);
-            if(!s.isEmpty())return s.get(0);
+    	User s = TheAPI.getUser(p);
+        if(s.exist("Tp")) {
+            List<String> f = new ArrayList<String>();
+            for(String d : s.getKeys("Tp"))
+            	if(TheAPI.getPlayer(d)!=null)f.add(d);
+            if(!f.isEmpty())return f.get(0);
             return null;
         }
         return null;
     }
     
     public static Location getLocation(String p, String t) {
-    	if(Loader.me.getString("Players."+p+".Tp."+t+".Location")!=null)
-    		return TheAPI.getStringUtils().getLocationFromString(Loader.me.getString("Players."+p+".Tp."+t+".Location"));
+    	User s = TheAPI.getUser(p);
+    	if(s.exist("Tp."+t+".Location"))
+    		return TheAPI.getStringUtils().getLocationFromString(s.getString("Tp."+t+".Location"));
     	return null;
     }
     
@@ -49,11 +53,11 @@ public class RequestMap {
     }
 
     public static Type getTeleportType(String target, String sender) {
-        return Type.valueOf(Loader.me.getString("Players."+target+".Tp."+sender+".Type"));
+        return Type.valueOf(TheAPI.getUser(target).getString("Tp."+sender+".Type"));
     }
     
     public static boolean containsRequest(String target, String sender) {
-    	if(Loader.me.getLong("Players."+target+".Tp."+sender+".Time")
+    	if(TheAPI.getUser(target).getLong("Tp."+sender+".Time")
     			-System.currentTimeMillis()/1000+TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.Teleport.RequestTime"))>0)
     		return true;
     	else {

@@ -19,10 +19,9 @@ public class UnJail implements CommandExecutor {
 				return true;
 			}
 			if(args.length==1) {
-				String p = Loader.me.getString("Players."+args[0]);
-				if(p!=null) {
-					Loader.me.set("Players."+args[0]+".Jail", null);
-					Loader.me.set("Players."+args[0]+".TempJail", null);
+				if(TheAPI.existsUser(args[0])) {
+					TheAPI.getUser(args[0]).set("Jail", null);
+					TheAPI.getUser(args[0]).setAndSave("TempJail", null);
 					if(TheAPI.getPlayer(args[0])!=null)
 						API.teleportPlayer(TheAPI.getPlayer(args[0]), TeleportLocation.SPAWN);
 					Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.unJailed")

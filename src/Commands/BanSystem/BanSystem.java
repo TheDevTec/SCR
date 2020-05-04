@@ -14,25 +14,17 @@ public class BanSystem {
 		TEMPJAIL,
 		KICK
 	}
-	public static String BuildString(int s, int d, String[] args) {
-		String msg = "";
-		  for (int i = s; i < args.length; ++i) {
-            msg = String.valueOf(msg) + args[i] + " ";
-        }
-        msg=msg.substring(0,msg.length()-d);
-        return msg;
-	}
 	public static int Warns(String player) {
 		return Loader.ban.getInt("Warn."+player+".Amount");
 	}
 	public static void resetWarns(String player) {
-		Loader.me.set("Players."+player+".WarnFinished",null);
+		TheAPI.getUser(player).setAndSave("WarnFinished",null);
 		Loader.ban.set("Warn."+player+".Amount", 0);
 	}
 	public static void KickMaxWarns(String player) {
 		if(Loader.ban.getString("Warn."+player)!=null) {
 			if(Loader.config.getString("BanSystem.Warn.Operations."+Warns(player))!=null) {
-				if(!Loader.me.getBoolean("Players."+player+".WarnFinished."+Warns(player))) {
+				if(!TheAPI.getUser(player).getBoolean("WarnFinished."+Warns(player))) {
 					String reason = Loader.config.getString("BanSystem.Warn.Reason");
 					if(Loader.ban.getString("Warn."+player+".WarnLater.Message")!=null)
 						reason=Loader.ban.getString("Warn."+player+".WarnLater.Message");
@@ -52,7 +44,7 @@ public class BanSystem {
 							.replace("%warnedby%", Loader.ban.getString("Warn."+player+".WarnLater.WarnedBy"))
 							.replace("%reason%", reason)));
 				}
-				Loader.me.set("Players."+player+".WarnFinished."+Warns(player), true);
+				TheAPI.getUser(player).setAndSave("WarnFinished."+Warns(player), true);
 				}
 				
 			}
@@ -71,19 +63,17 @@ public class BanSystem {
 	}
 
 	public static boolean isArrested(String p) {
-		if(Loader.me.getString("Players."+p+".Jail")!=null)return true;
-		return false;
+		return TheAPI.getUser(p).exist("Jail");
 	}
 	public static boolean isTempArrested(String p) {
-		if(Loader.me.getString("Players."+p+".TempJail")!=null)return true;
-		return false;
+		return TheAPI.getUser(p).exist("TempJail");
 	}
 	public static String getJailReason(String p) {
-		if(Loader.me.getString("Players."+p+".Jail.Reason")!=null)return Loader.me.getString("Players."+p+".Jail.Reason");
+		if(TheAPI.getUser(p).exist("Jail.Reason"))return TheAPI.getUser(p).getString("Jail.Reason");
 		return "";
 	}
 	public static String getTempJailReason(String p) {
-		if(Loader.me.getString("Players."+p+".TempJail.Reason")!=null)return Loader.me.getString("Players."+p+".TempJail.Reason");
+		if(TheAPI.getUser(p).exist("TempJail.Reason"))return TheAPI.getUser(p).getString("TempJail.Reason.Reason");
 		return "";
 	}
 	public static String getKickReason(String p) {
@@ -92,7 +82,7 @@ public class BanSystem {
 	}
 
 	public static void notExist(CommandSender s, String[] args) {
-		if(Loader.me.getString("Players."+args[0])!=null) Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.PlayerHasNotBan")
+		if(TheAPI.existsUser(args[0])) Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.PlayerHasNotBan")
 		.replace("%player%", args[0]).replace("%playername%", args[0]),s);else
 			Loader.msg(Loader.PlayerNotEx(args[0]),s);
 	}
@@ -108,12 +98,12 @@ public class BanSystem {
 			Loader.ban.set("Bans."+player+".Kick", reason);
 			break;
 		case JAIL:
-			Loader.me.set("Players."+player+".Jail.Reason", reason);
+			TheAPI.getUser(player).setAndSave("Jail.Reason", reason);
 			break;
 		case TEMPJAIL:
-			Loader.me.set("Players."+player+".TempJail.Reason", reason);
-			Loader.me.set("Players."+player+".TempJail.Start", start);
-			Loader.me.set("Players."+player+".TempJail.Time", time);
+			TheAPI.getUser(player).set("TempJail.Reason", reason);
+			TheAPI.getUser(player).set("TempJail.Start", start);
+			TheAPI.getUser(player).setAndSave("TempJail.Time", time);
 			break;
 			}
 	}}
@@ -134,7 +124,7 @@ public class BanSystem {
 					.replace("%playername%", getName(player))
 					.replace("%reason%", getJailReason(player)),TheAPI.getPlayer(player));
 			//TheAPI.getPlayer(player).teleport((Location) Loader.config.get("Jails."+Loader.me.getString("Players."+player+".Jail.Location")));
-			TheAPI.getPlayer(player).teleport((Location) TheAPI.getStringUtils().getLocationFromString((String) Loader.config.get("Jails."+Loader.me.getString("Players."+player+".Jail.Location"))));
+			TheAPI.getPlayer(player).teleport((Location) TheAPI.getStringUtils().getLocationFromString((String) Loader.config.get("Jails."+TheAPI.getUser(player).getString("Jail.Location"))));
 			}
 			}
 		break;
@@ -153,7 +143,7 @@ public class BanSystem {
 					.replace("%time%",TheAPI.getStringUtils().setTimeToString(API.getBanSystemAPI().getTempJailTime(player)))
 					.replace("%reason%", getTempJailReason(player)),TheAPI.getPlayer(player));
 			TheAPI.getPlayer(player).teleport((Location) TheAPI.getStringUtils().getLocationFromString(
-					(String) Loader.config.get("Jails."+Loader.me.getString("Players."+player+".TempJail.Location"))));
+					(String) Loader.config.get("Jails."+TheAPI.getUser(player).getString("TempJail.Location"))));
 			}
 			}
 		break;

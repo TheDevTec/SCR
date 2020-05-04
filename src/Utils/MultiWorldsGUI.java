@@ -228,7 +228,7 @@ public class MultiWorldsGUI {
 		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
-				Loader.me.set("Players."+p.getName()+".MultiWorlds-Generator","NORMAL");
+				TheAPI.getUser(p).setAndSave("MultiWorlds-Generator","NORMAL");
 				openInvCreate(p);
 			}});
 		a.setItem(20, createItem("&2Normal", XMaterial.GRASS_BLOCK, Arrays.asList("&7Default generator")), d);
@@ -239,7 +239,7 @@ public class MultiWorldsGUI {
 		n.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
-				Loader.me.set("Players."+p.getName()+".MultiWorlds-Generator","NETHER");
+				TheAPI.getUser(p).setAndSave("MultiWorlds-Generator","NETHER");
 				openInvCreate(p);
 			}});
 		a.setItem(22, createItem("&cNether", XMaterial.NETHERRACK, Arrays.asList("&7Nether generator")), n);
@@ -248,7 +248,7 @@ public class MultiWorldsGUI {
 		t.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
-				Loader.me.set("Players."+p.getName()+".MultiWorlds-Generator","THE_END");
+				TheAPI.getUser(p).setAndSave("MultiWorlds-Generator","THE_END");
 				openInvCreate(p);
 			}});
 		a.setItem(31, createItem("&8The End", XMaterial.END_STONE, Arrays.asList("&7The End generator")), t);
@@ -257,7 +257,7 @@ public class MultiWorldsGUI {
 		f.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
-				Loader.me.set("Players."+p.getName()+".MultiWorlds-Generator","FLAT");
+				TheAPI.getUser(p).setAndSave("MultiWorlds-Generator","FLAT");
 				openInvCreate(p);
 			}});
 		a.setItem(29, createItem("&aFlat", XMaterial.GRASS_BLOCK, Arrays.asList("&7Flat generator")), f);
@@ -266,7 +266,7 @@ public class MultiWorldsGUI {
 		v.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
-				Loader.me.set("Players."+p.getName()+".MultiWorlds-Generator","THE_VOID");
+				TheAPI.getUser(p).setAndSave("MultiWorlds-Generator","THE_VOID");
 				openInvCreate(p);
 			}});
 		a.setItem(33, createItem("&7Void", XMaterial.GLASS, Arrays.asList("&7Void generator")), v);
@@ -343,8 +343,8 @@ public class MultiWorldsGUI {
 				TheAPI.getCooldownAPI("world-create").createCooldown(p.getName(), 30);
 			}});
 		String ad = "&cnone";
-		if(Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create")!=null) {
-			ad="&a"+Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create");
+		if(TheAPI.getUser(p).exist("MultiWorlds-Create")) {
+			ad="&a"+TheAPI.getUser(p).getString("MultiWorlds-Create");
 		String name = "&7 - "+ad;
 		a.setItem(20, createItem("&aWorld Name", XMaterial.GREEN_WOOL, Arrays.asList("&7World name", name)), help);
 		}else {
@@ -361,8 +361,8 @@ public class MultiWorldsGUI {
 			}});
 		
 		String ads = "&cnone";
-		if(Loader.me.getString("Players."+p.getName()+".MultiWorlds-Generator")!=null) {
-			ads="&a"+Loader.me.getString("Players."+p.getName()+".MultiWorlds-Generator");
+		if(TheAPI.getUser(p).exist("MultiWorlds-Generator")) {
+			ads="&a"+TheAPI.getUser(p).getString("MultiWorlds-Generator");
 		String get = "&7 - "+ads;
 		a.setItem(24, createItem("&aGenerator type", XMaterial.GREEN_WOOL, Arrays.asList("&7World generator",get)),w);
 	}else {
@@ -374,31 +374,31 @@ public class MultiWorldsGUI {
 		c.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
-				if(Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create") != null && Loader.me.getString("Players."+p.getName()+".MultiWorlds-Generator")!=null) {
+				if(TheAPI.getUser(p).exist("MultiWorlds-Create")&& TheAPI.getUser(p).exist("MultiWorlds-Generator")) {
 				openInv(p);
-				Loader.mw.set("WorldsSettings."+Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create")+".Generator",Loader.me.getString("Players."+p.getName()+".MultiWorlds-Generator"));
-				MultiWorldsUtils.CreateWorld(Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create"), p);
-				Loader.me.set("Players."+p.getName()+".MultiWorlds-Generator",null);
-				Loader.me.set("Players."+p.getName()+".MultiWorlds-Create",null);
+				Loader.mw.set("WorldsSettings."+TheAPI.getUser(p).getString("MultiWorlds-Create")+".Generator",TheAPI.getUser(p).getString("MultiWorlds-Generator"));
+				MultiWorldsUtils.CreateWorld(TheAPI.getUser(p).getString("MultiWorlds-Create"), p);
+				TheAPI.getUser(p).set("MultiWorlds-Generator",null);
+				TheAPI.getUser(p).setAndSave("MultiWorlds-Create",null);
 				}
 			}});
 		String aads="&cnone";
-		if(Loader.me.getString("Players."+p.getName()+".MultiWorlds-Generator")!=null)
-			 aads="&a"+Loader.me.getString("Players."+p.getName()+".MultiWorlds-Generator");
+		if(TheAPI.getUser(p).exist("MultiWorlds-Generator"))
+			 aads="&a"+TheAPI.getUser(p).getString("MultiWorlds-Generator");
 		String aad="&cnone";
-		if(Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create")!=null)
-			 aad="&a"+Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create");
+		if(TheAPI.getUser(p).exist("MultiWorlds-Create"))
+			 aad="&a"+TheAPI.getUser(p).getString("MultiWorlds-Create");
 		
 		String m ="RED_TERRACOTTA";
 
-		if(Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create")==null 
-				&& Loader.me.getString("Players."+p.getName()+".MultiWorlds-Generator")!=null
-				||Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create")!=null 
-				&& Loader.me.getString("Players."+p.getName()+".MultiWorlds-Generator")==null)
+		if(!TheAPI.getUser(p).exist("MultiWorlds-Create") 
+				&& TheAPI.getUser(p).exist("MultiWorlds-Generator")
+				||TheAPI.getUser(p).exist("MultiWorlds-Create") 
+				&& !TheAPI.getUser(p).exist("MultiWorlds-Generator"))
 		m="ORANGE_TERRACOTTA";
 		
-		if(Loader.me.getString("Players."+p.getName()+".MultiWorlds-Create")!=null 
-				&& Loader.me.getString("Players."+p.getName()+".MultiWorlds-Generator")!=null)
+		if(TheAPI.getUser(p).exist("Players."+p.getName()+".MultiWorlds-Create")
+				&& TheAPI.getUser(p).exist("Players."+p.getName()+".MultiWorlds-Generator"))
 		m="GREEN_TERRACOTTA";
 		a.setItem(40, createItem("&aCreate", XMaterial.valueOf(m), Arrays.asList("&7Current options","&7 - &aGenerator: &6"+aads,"&7 - &aWorld name: &6"+aad)),c);
 		
@@ -407,8 +407,8 @@ public class MultiWorldsGUI {
 		back.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
-				Loader.me.set("Players."+p.getName()+".MultiWorlds-Generator",null);
-				Loader.me.set("Players."+p.getName()+".MultiWorlds-Create",null);
+				TheAPI.getUser(p).set("MultiWorlds-Generator",null);
+				TheAPI.getUser(p).setAndSave("MultiWorlds-Create",null);
 				openInv(p);
 			}});
 		a.setItem(49, createItem("&cCancel", XMaterial.BARRIER, null),back);

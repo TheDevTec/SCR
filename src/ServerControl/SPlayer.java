@@ -11,21 +11,17 @@ import com.earth2me.essentials.Essentials;
 
 import Events.AFKPlus;
 import Utils.setting;
+import me.Straiker123.LoaderClass;
 import me.Straiker123.PlayerAPI;
 import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 
 public class SPlayer {
 	Player s;
 	PlayerAPI d;
-	PlayerData data;
 	public SPlayer(Player p) {
 		s=p;
 		d=TheAPI.getPlayerAPI(p);
-		data=new PlayerData(p.getName());
-	}
-	
-	public PlayerData getData() {
-		return data;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -47,14 +43,16 @@ public class SPlayer {
 		d.setAir(s.getMaximumAir());
 	}
 	public void enableTempFly(int stop) {
+		User s = TheAPI.getUser(this.s);
 		enableTempFly();
         Loader.msg(Loader.s("Prefix")+Loader.s("TempFly.Enabled").replace("%time%", TheAPI.getStringUtils().setTimeToString(stop)), getPlayer());
-        data.set("TempFly.Start", System.currentTimeMillis());
-        data.set("TempFly.Time", stop);
+        s.set("TempFly.Start", System.currentTimeMillis());
+        s.set("TempFly.Time", stop);
 		if(!hasTempFlyEnabled()) {
-        List<String> w = Loader.me.getStringList("TempFly");
+        List<String> w = LoaderClass.data.getStringList("TempFly");
         w.add(getName());
-        Loader.me.set("TempFly",w);
+        LoaderClass.data.set("TempFly",w);
+        LoaderClass.data.save();
 		}
         
 	}
@@ -64,17 +62,19 @@ public class SPlayer {
 	
 	public void enableFly() {
 		if(hasTempFlyEnabled()) {
-			List<String> w = Loader.me.getStringList("TempFly");
+	        List<String> w = LoaderClass.data.getStringList("TempFly");
         w.remove(getName());
-        Loader.me.set("TempFly",w);
+        LoaderClass.data.set("TempFly",w);
+        LoaderClass.data.save();
 		}
 		d.setFly(true, true);
 	}
 	public void disableFly() {
 		if(hasTempFlyEnabled()) {
-			List<String> w = Loader.me.getStringList("TempFly");
+	        List<String> w = LoaderClass.data.getStringList("TempFly");
 	        w.remove(getName());
-	        Loader.me.set("TempFly",w);
+	        LoaderClass.data.set("TempFly",w);
+	        LoaderClass.data.save();
 			}
 		d.setFly(false, false);
 	}
@@ -152,21 +152,23 @@ public class SPlayer {
 		}
 	
 	public void setWalkSpeed() {
-		if(s.hasPermission("ServerControl.WalkSpeed")&&data.existPath("WalkSpeed")) {
-			if(data.getDouble("WalkSpeed")==0.0)s.setWalkSpeed(2);
+		User d = TheAPI.getUser(this.s);
+		if(s.hasPermission("ServerControl.WalkSpeed")&&d.exist("WalkSpeed")) {
+			if(d.getDouble("WalkSpeed")==0.0)s.setWalkSpeed(2);
 			else
-			if(data.getDouble("WalkSpeed")>10.0)s.setWalkSpeed(10);
+			if(d.getDouble("WalkSpeed")>10.0)s.setWalkSpeed(10);
 			else
-			if(data.getDouble("WalkSpeed")<10.0)s.setWalkSpeed((float)data.getDouble("WalkSpeed"));
+			if(d.getDouble("WalkSpeed")<10.0)s.setWalkSpeed((float)d.getDouble("WalkSpeed"));
 		}
 	}
 	public void setFlySpeed(){
-		if(s.hasPermission("ServerControl.FlySpeed")&&data.existPath("FlySpeed")) {
-			if(data.getDouble("FlySpeed")==0.0)s.setWalkSpeed(2);
+		User d = TheAPI.getUser(this.s);
+		if(s.hasPermission("ServerControl.FlySpeed")&&d.exist("FlySpeed")) {
+			if(d.getDouble("FlySpeed")==0.0)s.setWalkSpeed(2);
 			else
-			if(data.getDouble("FlySpeed")>10.0)s.setWalkSpeed(10);
+			if(d.getDouble("FlySpeed")>10.0)s.setWalkSpeed(10);
 			else
-			if(data.getDouble("FlySpeed")<10.0)s.setWalkSpeed((float)data.getDouble("FlySpeed"));
+			if(d.getDouble("FlySpeed")<10.0)s.setWalkSpeed((float)d.getDouble("FlySpeed"));
 		}
 	}
 	public void enableGod() {
@@ -205,8 +207,7 @@ public class SPlayer {
 	}
 
 	public boolean hasTempFlyEnabled() {
-		
-		return Loader.me.getString("TempFly") != null ? Loader.me.getStringList("TempFly").contains(getName()) : false;
+		return LoaderClass.data.existPath("TempFly") ? LoaderClass.data.getStringList("TempFly").contains(getName()) : false;
 	}
 
 	public boolean hasVanish() {

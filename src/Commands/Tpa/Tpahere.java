@@ -30,8 +30,9 @@ public class Tpahere implements CommandExecutor, TabCompleter {
 					return true;
 				}else {
 					if(p!=s) {
-					if(!Loader.me.getBoolean("Players."+p.getName()+".TpBlock."+s.getName())&&!Loader.me.getBoolean("Players."+p.getName()+".TpBlock-Global")) {
-					if(!RequestMap.containsRequest(p.getName(),s.getName())) {
+
+						if(!TheAPI.getUser(p).getBoolean("TpBlock."+s.getName())&&!TheAPI.getUser(p).getBoolean("TpBlock-Global")) {
+							if(!RequestMap.containsRequest(p.getName(),s.getName())) {
 						Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpahereSender").replace("%playername%", p.getDisplayName())
 								.replace("%player%", p.getName()), s);
 						Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpahereTarget").replace("%playername%", ((Player) s).getDisplayName())

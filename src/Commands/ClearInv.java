@@ -16,8 +16,8 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import ServerControl.PlayerData;
 import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 
 public class ClearInv implements CommandExecutor, TabCompleter {
 
@@ -53,18 +53,18 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 	     		return true;
 		}else {
 			Player p = (Player)s;
-			PlayerData d = new PlayerData(s.getName());
+			User d = TheAPI.getUser(p);
     		int take = Loader.config.getInt("Options.Cost-ClearInvUndo");
     		
     		if(args.length==0) {
     			if(API.hasPerm(s, "ServerControl.ClearInventory")) {
     			if(!d.getBoolean("ClearInvConfirm")) {
-    				d.set("ClearInvCooldown",System.currentTimeMillis()/1000);
+    				d.setAndSave("ClearInvCooldown",System.currentTimeMillis()/1000);
     				Loader.msg(fs +f("ClearInventory.ConfirmClearInv"),s);
 	    	    return true;
 			}else{
     				if(d.getString("ClearInvCooldown")!=null)
-    					d.set("ClearInvCooldown",null);
+    					d.setAndSave("ClearInvCooldown",null);
     				undo.put(p, p.getInventory().getContents());
     	        	Loader.msg(fs+f("ClearInventory.InvCleared"),s);
 			p.getInventory().clear();
@@ -97,7 +97,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 	        		if(reset <60) {
 	        			undo.put(p, p.getInventory().getContents());
     	        		Loader.msg(fs+f("ClearInventory.InvCleared"),s);
-    				d.set("ClearInvCooldown",null);
+    				d.setAndSave("ClearInvCooldown",null);
     				p.getInventory().clear();
     	    	    return true;
     			}
@@ -107,12 +107,12 @@ public class ClearInv implements CommandExecutor, TabCompleter {
         	if(args[0].equalsIgnoreCase("Clear")) {
         		if(API.hasPerm(s, "ServerControl.ClearInventory")) {
         			if(!d.getBoolean("ClearInvConfirm")) {
-        				d.set("ClearInvCooldown",System.currentTimeMillis()/1000);
+        				d.setAndSave("ClearInvCooldown",System.currentTimeMillis()/1000);
         				Loader.msg(fs +f("ClearInventory.ConfirmClearInv"),s);
     	    	    return true;
     			}else {
         				if(d.getString("ClearInvCooldown")!=null)
-        				d.set("ClearInvCooldown",null);
+        				d.setAndSave("ClearInvCooldown",null);
         				undo.put(p, p.getInventory().getContents());
         	        		Loader.msg(fs+f("ClearInventory.InvCleared"),s);
     			p.getInventory().clear();
@@ -143,9 +143,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 						}else {
 								Loader.msg(fs +f("ClearInventory.NoMoney").replace("%money%", value(take)),s);
 							    return true;
-								
 							}}
-						
 	    	        	}else
 			    	        	if(!undo.containsKey(p)) {
 			    	        		Loader.msg(fs +f("ClearInventory.NoInventoryRetrieved").replace("%money%", value(take)),s);
@@ -173,7 +171,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 	    	List<String> c = new ArrayList<>();
 	        	if(s.hasPermission("ServerControl.ClearInventory")) {
 
-	    			if(!Loader.me.getBoolean("Players."+s.getName()+".ClearInvConfirm")) {
+	    			if(!TheAPI.getUser(s.getName()).getBoolean("ClearInvConfirm")) {
 	                c.addAll(StringUtil.copyPartialMatches(args[0],  Arrays.asList("Confirm"), new ArrayList<>()));
 	    			}
 	                c.addAll(StringUtil.copyPartialMatches(args[0],  Arrays.asList("Clear"), new ArrayList<>()));

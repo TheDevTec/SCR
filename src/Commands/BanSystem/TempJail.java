@@ -24,8 +24,8 @@ public class TempJail implements CommandExecutor, TabCompleter {
 				Loader.Help(s, "/TempJail <player> <time> <reason>", "BanSystem.TempJail");
 				return true;
 			}
-			if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-				Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "TempJail").replace("%target%", args[0]), s);
+			if (TheAPI.getUser(args[0]).getBoolean("Immune")|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+				Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "Mute").replace("%target%", args[0]), s);
 				return true;
 			}
 			if(Loader.config.getString("Jails")==null) {
@@ -45,7 +45,8 @@ public class TempJail implements CommandExecutor, TabCompleter {
 					return true;
 			}
 			if(args.length>=3) { 
-					String msg = BanSystem.BuildString(2, 1, args);
+				String msg = TheAPI.buildString(args);
+				msg=msg.replaceFirst(args[0]+" "+args[1]+" ", "");
 					long time = TheAPI.getStringUtils().getTimeFromString(args[1]);
 					API.getBanSystemAPI().setTempJail(s, args[0], jails.get(TheAPI.generateRandomInt(jails.size()-1)),msg,time);
 					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.TempJail")
@@ -64,31 +65,6 @@ public class TempJail implements CommandExecutor, TabCompleter {
 			if(args.length==1) {
 				return null;
 			}
-			/*if(args.length==2) {
-				if(args[1].equalsIgnoreCase("")) { 
-				c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("1","2","3","4","5","6","7","8","9","0"), new ArrayList<>()));
-				}
-				String sec =LoaderClass.config.getConfig().getString("Words.Second");
-				String min =LoaderClass.config.getConfig().getString("Words.Minute");
-				String h =LoaderClass.config.getConfig().getString("Words.Hour");
-				String d =LoaderClass.config.getConfig().getString("Words.Day");
-				String w =LoaderClass.config.getConfig().getString("Words.Week");
-				String mon = LoaderClass.config.getConfig().getString("Words.Month");
-				String y =LoaderClass.config.getConfig().getString("Words.Year");
-				if(args[1].startsWith("1")||args[1].startsWith("2")||args[0].startsWith("3")||
-						args[1].startsWith("4")||args[1].startsWith("5")||args[1].startsWith("6")||
-						args[1].startsWith("7")||args[1].startsWith("8")||args[1].startsWith("9")){
-					if(args[1].endsWith("0")||args[1].endsWith("1")||args[1].endsWith("2")||args[0].endsWith("3")||
-						args[1].endsWith("4")||args[1].endsWith("5")||args[1].endsWith("6")||
-						args[1].endsWith("7")||args[1].endsWith("8")||args[1].endsWith("9")||args[1].endsWith("0")) {
-					c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList(args[1]+sec,args[1]+min,args[1]+h,args[1]+d,args[1]+w,args[1]+mon,
-							args[1]+y), new ArrayList<>()));
-					}
-				}
-				if(args[1].contains(sec)) {
-					
-				}
-			}*/
 		}
 		return c;
 	}

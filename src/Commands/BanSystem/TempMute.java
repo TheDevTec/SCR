@@ -19,7 +19,7 @@ public class TempMute implements CommandExecutor {
 			return true;
 		}
 		if(args.length==1) {
-				if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+			if (TheAPI.getUser(args[0]).getBoolean("Immune")|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "TempMute").replace("%target%", args[0]), s);
 					return true;
 				}
@@ -32,7 +32,7 @@ public class TempMute implements CommandExecutor {
 			
 		}
 		if(args.length==2) {
-				if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+			if (TheAPI.getUser(args[0]).getBoolean("Immune")|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "TempMute").replace("%target%", args[0]), s);
 					return true;
 				}
@@ -43,11 +43,12 @@ public class TempMute implements CommandExecutor {
 				return true;
 		}
 		if(args.length>=3) {
-				if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+			if (TheAPI.getUser(args[0]).getBoolean("Immune")|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "TempMute").replace("%target%", args[0]), s);
 					return true;
 				}
-				String msg = BanSystem.BuildString(2, 1, args);
+			String msg = TheAPI.buildString(args);
+			msg=msg.replaceFirst(args[0]+" "+args[1]+" ", "");
 			TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
 			TheAPI.getPunishmentAPI().setTempMute(args[0], msg,TheAPI.getTimeConventorAPI().getTimeFromString(args[1]));
 			return true;

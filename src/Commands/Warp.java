@@ -3,7 +3,6 @@ package Commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -44,9 +43,8 @@ public class Warp implements CommandExecutor, TabCompleter {
 			if(args.length==1) {
 		if(s instanceof Player) {
 		if(warp(args)!=null) {
-			float x_head = Loader.config.getInt("Warps."+warp(args)+".X_Pos_Head");
-			float z_head = Loader.config.getInt("Warps."+warp(args)+".Z_Pos_Head");
-			 if(Bukkit.getWorld(Loader.config.getString("Warps."+warp(args)+".World"))==null) {
+			 Location loc = TheAPI.getStringUtils().getLocationFromString(Loader.config.getString("Warps."+warp(args)));
+			 if(loc==null) {
 				Loader.msg(Loader.s("Warp.CantGetLocation")
 						.replace("%warp%", warp(args))
 						.replace("%world%", "-")
@@ -56,8 +54,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 						, s);
 				return true;
 			}
-			 Location loc = new Location(Bukkit.getWorld(Loader.config.getString("Warps."+warp(args)+".World")), Loader.config.getDouble("Warps."+warp(args)+".X"), Loader.config.getDouble("Warps."+warp(args)+".Y") ,Loader.config.getDouble("Warps."+warp(args)+".Z"), x_head, z_head);
-			 boolean needperm = Loader.config.getBoolean("Warps."+warp(args)+".NeedPermission");
+			boolean needperm = Loader.config.getBoolean("Warps."+warp(args)+".NeedPermission");
 			 if(needperm == true) {
 				 if(API.hasPerm(s, "ServerControl.Warp."+warp(args))) {
 					 API.setBack((Player) s);
@@ -107,19 +104,17 @@ public class Warp implements CommandExecutor, TabCompleter {
 					return true;
 				}else {
 						if(warp(args)!=null) {
-							float x_head = Loader.config.getInt("Warps."+warp(args)+".X_Pos_Head");
-							float z_head = Loader.config.getInt("Warps."+warp(args)+".Z_Pos_Head");
-							if(Bukkit.getWorld(Loader.config.getString("Warps."+warp(args)+".World"))==null) {
-									Loader.msg(Loader.s("Warp.CantGetLocation")
+							 Location loc = TheAPI.getStringUtils().getLocationFromString(Loader.config.getString("Warps."+warp(args)));
+							 if(loc==null) {
+								Loader.msg(Loader.s("Warp.CantGetLocation")
 										.replace("%warp%", warp(args))
 										.replace("%world%", "-")
 										.replace("%player%", s.getName())
-										.replace("%playername%", player(s))
+										.replace("%playername%", ((Player)s).getDisplayName())
 										.replace("%prefix%", Loader.s("Prefix"))
 										, s);
-									return true;
-								}
-							Location loc = new Location(Bukkit.getWorld(Loader.config.getString("Warps."+warp(args)+".World")), Loader.config.getDouble("Warps."+warp(args)+".X"), Loader.config.getDouble("Warps."+warp(args)+".Y") ,Loader.config.getDouble("Warps."+warp(args)+".Z"), x_head, z_head);
+								return true;
+							}
 							API.setBack(p);
 							 if(setting.tp_safe)
 									TheAPI.getPlayerAPI(p).safeTeleport(loc);

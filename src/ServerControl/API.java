@@ -22,13 +22,15 @@ import org.bukkit.plugin.Plugin;
 import Commands.Kit;
 import ServerControlEvents.PluginHookEvent;
 import Utils.setting;
+import me.Straiker123.PluginManagerAPI;
 import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
 	
 	 public static boolean existVaultPlugin() {
-		 return TheAPI.getPluginsManagerAPI().getPlugin("Vault") !=null;
+		 return new PluginManagerAPI().getPlugin("Vault") !=null;
 	 }
 	 
 	 public static SPlayer getSPlayer(Player p) {
@@ -53,20 +55,14 @@ public class API {
 			 break;
 		 case HOME:{
 			 String home = null;
+			 User d = TheAPI.getUser(p);
 				List<String> homes = new ArrayList<String>();
-				if(Loader.me.getString("Players."+p.getName()+".Homes")!=null)
-					for(String s :Loader.me.getConfigurationSection("Players."+p.getName()+".Homes").getKeys(false))homes.add(s);
+					for(String s :d.getKeys("Homes"))homes.add(s);
 				if(homes.isEmpty()==false) {
 					home=homes.get(0);
 				}
-				if(home != null && Bukkit.getWorld(Loader.me.getString("Players."+p.getName()+".Homes."+home+".World"))!=null) {
-				World w = Bukkit.getWorld(Loader.me.getString("Players."+p.getName()+".Homes."+home+".World"));
-				double x = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".X");
-				double y = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Y");
-				double z = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Z");
-				float pitch = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Pitch");
-				float yaw = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Yaw");
-					a= new Location(w,x,y,z,yaw,pitch);
+				if(home!=null) {
+				return TheAPI.getStringUtils().getLocationFromString(d.getString("Homes."+home));
 				}else {
 						Loader.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn")
 								.replace("%world%", p.getWorld().getName())
@@ -92,76 +88,11 @@ public class API {
 	 }
 	 
 	 public static void teleportPlayer(Player p, TeleportLocation location) {
-		 switch(location) {
-		 case BED:{
-			 if(p.getBedSpawnLocation()!=null) {
-					if(setting.tp_safe) TheAPI.getPlayerAPI(p).safeTeleport(p.getBedSpawnLocation());
-					else TheAPI.getPlayerAPI(p).teleport(p.getBedSpawnLocation());
-			 }else
-				teleportPlayer(p,TeleportLocation.HOME);
-			 }
-			 break;
-		 case HOME:{
-			 String home = null;
-				List<String> homes = new ArrayList<String>();
-				if(Loader.me.getString("Players."+p.getName()+".Homes")!=null)
-					for(String s :Loader.me.getConfigurationSection("Players."+p.getName()+".Homes").getKeys(false))homes.add(s);
-				if(homes.isEmpty()==false) {
-					home=homes.get(0);
-				}
-				if(home != null) {
-				World w = Bukkit.getWorld(Loader.me.getString("Players."+p.getName()+".Homes."+home+".World"));
-				double x = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".X");
-				double y = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Y");
-				double z = Loader.me.getDouble("Players."+p.getName()+".Homes."+home+".Z");
-				float pitch = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Pitch");
-				float yaw = Loader.me.getInt("Players."+p.getName()+".Homes."+home+".Yaw");
-				if(w != null) { 
-				Location loc = new Location(w,x,y,z,yaw,pitch);
-					Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {
-					public void run() {
-						if(setting.tp_safe)
-							TheAPI.getPlayerAPI(p).safeTeleport(loc);
-						else
-							TheAPI.getPlayerAPI(p).teleport(loc);
-							}}, 1);
-				}else {
-					teleportPlayer(p,TeleportLocation.SPAWN);
-				Loader.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn")
-						.replace("%world%", p.getWorld().getName())
-						.replace("%player%", p.getName())
-						.replace("%playername%", p.getDisplayName())
-						, p);
-				}}else {
-						teleportPlayer(p,TeleportLocation.SPAWN);
-						Loader.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn")
-								.replace("%world%", p.getWorld().getName())
-								.replace("%player%", p.getName())
-								.replace("%playername%", p.getDisplayName())
-								, p);
-				}
-		 }break;
-		 case SPAWN:{
-			 World world = Bukkit.getWorlds().get(0);
-				Location loc=world.getSpawnLocation();
-				if(Loader.config.getString("Spawn")!=null && Bukkit.getWorld(Loader.config.getString("Spawn.World")) != null) {
-					float x_head = Loader.config.getInt("Spawn.X_Pos_Head");
-					float z_head = Loader.config.getInt("Spawn.Z_Pos_Head");
-					 world = Bukkit.getWorld(Loader.config.getString("Spawn.World"));
-					 loc = new Location(world, Loader.config.getDouble("Spawn.X"), Loader.config.getDouble("Spawn.Y") ,Loader.config.getDouble("Spawn.Z"), x_head, z_head);
-				}
-				Location l = loc;
-							Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {
-								public void run() {
-									if(setting.tp_safe) {
-										TheAPI.getPlayerAPI(p).safeTeleport(l);
-									}else {
-										TheAPI.getPlayerAPI(p).teleport(l);
-								}
-								}
-				}, 1);
-		 }break;
-		 }
+		 Location a = getTeleportLocation(p, location);
+		 if(a!=null)
+				if(setting.tp_safe) TheAPI.getPlayerAPI(p).safeTeleport(a);
+				else TheAPI.getPlayerAPI(p).teleport(a);
+		 
 	 }
 	 
 		/**
@@ -205,11 +136,12 @@ public class API {
 	 }
 	 @SuppressWarnings("deprecation")
 	public static String getSeen(String player, SeenType type) {
+		 User s = TheAPI.getUser(player);
 		 String a = "0s";
 		 switch(type) {
 		 case Online:
-			 if(Loader.me.getString("Players."+player+".JoinTime")!=null)
-			 a=TheAPI.getStringUtils().setTimeToString(System.currentTimeMillis()/1000-Loader.me.getLong("Players."+player+".JoinTime"));
+			 if(s.exist("JoinTime"))
+			 a=TheAPI.getStringUtils().setTimeToString(System.currentTimeMillis()/1000-s.getLong("JoinTime"));
 			 break;
 		 case Offline:
 			 a=TheAPI.getStringUtils().setTimeToString(System.currentTimeMillis()/1000-Bukkit.getOfflinePlayer(player).getLastPlayed()/1000);
@@ -229,7 +161,7 @@ public class API {
 	 public static void TeleportBack(Player p) {
 				Location loc = getBack(p.getName());
 				if(loc != null) {
-					 Loader.me.set("Players."+p.getName()+".Back",TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
+					TheAPI.getUser(p).set("Back",TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
 				p.teleport(loc);
 				Loader.msg(Loader.s("Back.Teleporting")
 						.replace("%prefix%", Loader.s("Prefix"))
@@ -240,14 +172,14 @@ public class API {
 	 }
 
 	 public static void setBack(Player p) {
-		 Loader.me.set("Players."+p.getName()+".Back",TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
+		 TheAPI.getUser(p).set("Back",TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
 	 }
 	 public static void setBack(String p, Location l) {
-		 Loader.me.set("Players."+p+".Back",TheAPI.getStringUtils().getLocationAsString(l));
+		 TheAPI.getUser(p).set("Back",TheAPI.getStringUtils().getLocationAsString(l));
 	 }
 	 
 	 public static Location getBack(String p) {
-		 return TheAPI.getStringUtils().getLocationFromString(Loader.me.getString("Players."+p+".Back"));
+		 return TheAPI.getStringUtils().getLocationFromString(TheAPI.getUser(p).getString("Back"));
 	 }
 	 private static boolean has(CommandSender p, List<String> perms) {
 		 int i = 0;

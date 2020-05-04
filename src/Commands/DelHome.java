@@ -13,6 +13,8 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 
 public class DelHome implements CommandExecutor, TabCompleter {
 
@@ -27,8 +29,9 @@ public class DelHome implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 if(args.length == 1) {
-                	if(Loader.me.getString("Players."+p.getName()+".Homes."+args[0])!= null) {
-                	Loader.me.set("Players."+p.getName()+".Homes."+args[0], null);
+                	User d = TheAPI.getUser(s.getName());
+                	if(d.exist("Homes."+args[0])) {
+                	d.setAndSave("Homes."+args[0], null);
                 	Loader.msg(Loader.s("Prefix")+Loader.s("Homes.Deleted")
                     .replace("%player%", p.getName())
                     .replace("%playername%", p.getDisplayName())
@@ -50,7 +53,7 @@ public class DelHome implements CommandExecutor, TabCompleter {
     	if(s instanceof Player) {
     	if(args.length==1) {
         	if(s.hasPermission("ServerControl.DelHome")) {
-        		Set<String> homes = Loader.me.getConfigurationSection("Players."+s.getName()+".Homes").getKeys(false);
+        		Set<String> homes = TheAPI.getUser(s.getName()).getKeys("Homes");
         		if(!homes.isEmpty() && homes != null)
         		c.addAll(StringUtil.copyPartialMatches(args[0], homes, new ArrayList<>()));
             }

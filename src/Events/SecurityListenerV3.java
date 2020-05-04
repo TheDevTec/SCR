@@ -12,11 +12,11 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import ServerControl.PlayerData;
 import ServerControlEvents.PlayerBlockedCommandEvent;
 import Utils.setting;
 import me.Straiker123.TheAPI;
 import me.Straiker123.TheAPI.SudoType;
+import me.Straiker123.User;
 /**
  * 1.2. 2020
  * @author Straiker123
@@ -195,7 +195,7 @@ public class SecurityListenerV3 implements Listener{
 					}
 	
 	private void call(Security swear, Player s, String original, String replace) {
-		PlayerData d = new PlayerData(s.getName());
+		User d = TheAPI.getUser(s);
 		String name = swear == Security.Spam ? "Spam" : "VulgarWords";
 		String r = swear == Security.Spam ? "Spam" : "Swear";
 				Loader.config.set(name, Loader.config.getInt(name) + 1);

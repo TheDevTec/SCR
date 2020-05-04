@@ -1,6 +1,5 @@
 package Utils;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import ServerControl.API;
@@ -75,7 +74,6 @@ public class AFKV2 {
 	  		  TheAPI.broadcastMessage(afkMsg.replace("%player%", d)
 			   .replace("%playername%", s.getDisplayName()));
 	}}
-	FileConfiguration a = Loader.me;
 	public long getTime() {
 		return time-afk;
 	}

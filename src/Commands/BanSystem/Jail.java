@@ -27,7 +27,7 @@ public class Jail implements CommandExecutor {
 				List<String> jails = new ArrayList<String>();
 				if(Loader.config.getString("Jails")!=null) {
 				for(String f:Loader.config.getConfigurationSection("Jails").getKeys(false))jails.add(f);
-					if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+					if (TheAPI.getUser(args[0]).getBoolean("Immune")|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 						Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish")
 						.replace("%punishment%", "Jail").replace("%target%", args[0]), s);
 						return true;
@@ -46,11 +46,12 @@ public class Jail implements CommandExecutor {
 				List<String> jails = new ArrayList<String>();
 				if(Loader.config.getString("Jails")!=null) {
 				for(String f:Loader.config.getConfigurationSection("Jails").getKeys(false))jails.add(f);
-					if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+				if (TheAPI.getUser(args[0]).getBoolean("Immune")|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 						Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "Jail").replace("%target%", args[0]), s);
 						return true;
 					}
-					String msg = BanSystem.BuildString(1, 1, args);
+				String msg = TheAPI.buildString(args);
+				msg=msg.replaceFirst(args[0]+" ", "");
 					API.getBanSystemAPI().setJail(s, args[0], jails.get(TheAPI.generateRandomInt(jails.size())),msg);
 					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.Jail")
 							.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])

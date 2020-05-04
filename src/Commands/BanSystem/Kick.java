@@ -23,8 +23,8 @@ public class Kick implements CommandExecutor {
 		if(args.length==1) {
 			Player p = TheAPI.getPlayer(args[0]);
 			if(p!=null) {
-				if (Loader.me.getBoolean("Players."+p.getName()+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "kick"
+				if (TheAPI.getUser(args[0]).getBoolean("Immune")|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+						Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "kick"
 							).replace("%target%", p.getName()), s);
 					return true;
 				}
@@ -41,12 +41,13 @@ public class Kick implements CommandExecutor {
 		if(args.length>=2) {
 			Player p = TheAPI.getPlayer(args[0]);
 			if(p!=null) {
-				if (Loader.me.getBoolean("Players."+p.getName()+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "kick")
+				if (TheAPI.getUser(args[0]).getBoolean("Immune")|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+						Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "kick")
 							.replace("%target%", p.getName()), s);
 					return true;
 				}
-				String msg = BanSystem.BuildString(1, 1, args);
+				String msg = TheAPI.buildString(args);
+				msg=msg.replaceFirst(args[0]+" ", "");
 			API.getBanSystemAPI().setKick(s, args[0], msg);
 			TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.Kick")
 					.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])

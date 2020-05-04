@@ -2,11 +2,8 @@ package Commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +15,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
 import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 
 public class HomeOther implements CommandExecutor, TabCompleter {
 
@@ -35,16 +33,11 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				if(args.length==2) {
-					if(Loader.me.getString("Players."+args[0]+".Homes."+args[1])!=null) {
-						World w = Bukkit.getWorld(Loader.me.getString("Players."+args[0]+".Homes."+args[1]+".World"));
-						double x = Loader.me.getDouble("Players."+args[0]+".Homes."+args[1]+".X");
-						double y = Loader.me.getDouble("Players."+args[0]+".Homes."+args[1]+".Y");
-						double z = Loader.me.getDouble("Players."+args[0]+".Homes."+args[1]+".Z");
-						float pitch = Loader.me.getInt("Players."+args[0]+".Homes."+args[1]+".Pitch");
-						float yaw = Loader.me.getInt("Players."+args[0]+".Homes."+args[1]+".Yaw");
+					User d = TheAPI.getUser(args[0]);
+					if(d.exist("Homes."+args[1])) {
+						Location loc = TheAPI.getStringUtils().getLocationFromString(d.getString("Homes."+args[1]));
 						API.setBack(p);
-						Location loc = new Location(w,x,y,z,yaw,pitch);
-						if(w!=null){
+						if(loc!=null){
 							if(setting.tp_safe)
 								TheAPI.getPlayerAPI(p).safeTeleport(loc);
 						 else
@@ -69,16 +62,11 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 						Loader.msg(Loader.PlayerNotOnline(args[2]), s);
 						return true;
 					}
-					if(Loader.me.getString("Players."+args[0]+".Homes."+args[1])!=null) {
-						World w = Bukkit.getWorld(Loader.me.getString("Players."+args[0]+".Homes."+args[1]+".World"));
-						double x = Loader.me.getDouble("Players."+args[0]+".Homes."+args[1]+".X");
-						double y = Loader.me.getDouble("Players."+args[0]+".Homes."+args[1]+".Y");
-						double z = Loader.me.getDouble("Players."+args[0]+".Homes."+args[1]+".Z");
-						float pitch = Loader.me.getInt("Players."+args[0]+".Homes."+args[1]+".Pitch");
-						float yaw = Loader.me.getInt("Players."+args[0]+".Homes."+args[1]+".Yaw");
+					User d = TheAPI.getUser(args[0]);
+					if(d.exist("Homes."+args[1])) {
+						Location loc = TheAPI.getStringUtils().getLocationFromString(d.getString("Homes."+args[1]));
 						API.setBack(pl);
-						Location loc = new Location(w,x,y,z,yaw,pitch);
-						if(w!=null){
+						if(loc!=null){
 							if(setting.tp_safe)
 								TheAPI.getPlayerAPI(p).safeTeleport(loc);
 						 else
@@ -112,14 +100,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
     			return null;
     		}
     		if(args.length==2) {
-    			Player t = TheAPI.getPlayer(args[0]);
-    			try {
-            		Set<String> homes = Loader.me.getConfigurationSection("Players."+t.getName()+".Homes").getKeys(false);
-            		if(!homes.isEmpty() && homes != null)
-            		c.addAll(StringUtil.copyPartialMatches(args[1], homes, new ArrayList<>()));
-            		}catch(Exception e) {
-            			
-            		}	
+            		c.addAll(StringUtil.copyPartialMatches(args[1], TheAPI.getUser(args[0]).getKeys("Homes"), new ArrayList<>()));
     			return c;
     		}
     		if(args.length==3) {

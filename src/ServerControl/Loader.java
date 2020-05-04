@@ -41,7 +41,6 @@ public class Loader extends JavaPlugin implements Listener {
     public static FileConfiguration ban;
     public static FileConfiguration scFile;
     public static FileConfiguration config;
-    public static FileConfiguration me;
     public static FileConfiguration tab;
     public static FileConfiguration kit;
 	public static Economy econ;
@@ -108,22 +107,6 @@ public class Loader extends JavaPlugin implements Listener {
 	    		.replace("%command%", cmd).replace("%space%", " - ")
 	    		.replace("%help%", Loader.s("Help."+help)),s);
 		}
-	public static void startConvertMoney() {
-		if(config.getBoolean("MultiEconomy.Enabled")&&!config.getBoolean("MultiEconomy.Converted")) {
-		int amount = 0;
-		EconomyLog("Converting economies..");
-		config.set("MultiEconomy.Converted", true);
-		 Configs.config.save();
-		if(me.getString("Players")!=null) {
-		for(String s:me.getConfigurationSection("Players").getKeys(false)) {
-			if(me.getString("Players."+s+".Money")!=null) {
-			++amount;
-			double money =me.getDouble("Players."+s+".Money");
-			me.set("Players."+s+".Money.default",money);
-			}}}
-		 PlayerData.save();
-			EconomyLog("Converted "+amount+" economies.");
-		}}
 public String isAfk(Player p) {
 		return new SPlayer(p).isAFK() ? tab.getString("AFK.IsAFK") : tab.getString("AFK.IsNotAFK");
 	}
@@ -175,17 +158,8 @@ public void onEnable() {
 		Bukkit.getPluginManager().disablePlugin(this);
 		return;
 		}
-    if(API.existVaultPlugin()) {
+    if(API.existVaultPlugin())
     	setupEco();
-	if(econ!=null)
-    	startConvertMoney();
-	}
-	if(Loader.me.getString("Config-Version")==null) {
-		Loader.me.set("Config-Version",1);
-		for(String s:PlayerData.getPlayers())
-			new PlayerData(s).set("Back", null);
-		 PlayerData.save();
-	}
 	loading=System.currentTimeMillis()/100;
     MultiWorldsUtils.LoadWorlds();
 		if(API.existVaultPlugin()) {

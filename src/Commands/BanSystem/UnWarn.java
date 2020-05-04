@@ -18,7 +18,7 @@ public class UnWarn implements CommandExecutor {
 				return true;
 			}
 			if(args.length==1) {
-				if(Loader.me.getString("Players."+args[0])==null) {
+				if(!TheAPI.existsUser(args[0])) {
 					Loader.msg(Loader.PlayerNotEx(args[0]), s);
 					return true;
 				}

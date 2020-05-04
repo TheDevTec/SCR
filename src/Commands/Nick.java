@@ -20,7 +20,7 @@ public class Nick implements CommandExecutor {
 				return true;
 			}
 			String msg = TheAPI.buildString(args);
-			Loader.me.set("Players."+s.getName()+".DisplayName", msg);
+			TheAPI.getUser(s.getName()).setAndSave("DisplayName", msg);
 			 Loader.msg(Loader.s("Prefix")+Loader.s("NicknameChanged").replace("%nick%", msg).replace("%nickname%", msg), s);
 			return true;
 		}return true;

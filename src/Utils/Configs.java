@@ -11,7 +11,6 @@ import me.Straiker123.TheAPI;
 public class Configs {
 	public static ConfigAPI trans= TheAPI.getConfig("ServerControlReloaded", "Translations");
 	public static ConfigAPI config= TheAPI.getConfig("ServerControlReloaded", "Config");
-	public static ConfigAPI chatme= TheAPI.getConfig("ServerControlReloaded", "ChatMe");
 	public static ConfigAPI bans= TheAPI.getConfig("ServerControlReloaded", "Bans");
 	public static ConfigAPI sb= TheAPI.getConfig("ServerControlReloaded", "Scoreboard");
 	public static ConfigAPI tab= TheAPI.getConfig("ServerControlReloaded", "TabList");
@@ -807,10 +806,6 @@ public class Configs {
 			sb.create();
 			Loader.scFile=sb.getConfig();
 			}
-	public static void ChatMeLoading() {
-				chatme.create();
-				Loader.me=chatme.getConfig();
-				}
 	public static void TabLoading() {
 			Map<String, Object> c = new HashMap<String, Object>();
 			c.put("Tab-Enabled", true);
@@ -889,7 +884,6 @@ public class Configs {
 	Loader.kit=kit.getConfig();
 	}
 	public static void load() {
-		ChatMeLoading();
 		MultiWorldLoading();
 		configLoading();
 		TranslationsLoading();
@@ -902,7 +896,6 @@ public class Configs {
 		trans.reload();
 		config.reload();
 		bans.reload();
-		chatme.reload();
 		kit.reload();
 		mw.reload();
 		sb.reload();
@@ -911,7 +904,6 @@ public class Configs {
 		Loader.config=config.getConfig();
 		Loader.ban=bans.getConfig();
 		Loader.scFile=sb.getConfig();
-		Loader.me=chatme.getConfig();
 		Loader.kit=kit.getConfig();
 		Loader.mw=mw.getConfig();
 		Loader.tab=tab.getConfig();

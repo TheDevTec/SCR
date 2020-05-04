@@ -5,9 +5,9 @@ import org.bukkit.World;
 
 import ServerControl.Loader;
 import Utils.setting;
+import me.Straiker123.Reflections;
 import me.Straiker123.TheAPI;
 import me.Straiker123.TheRunnable;
-import me.Straiker123.Utils.Packets;
 
 public class BigTask {
 	public static TheRunnable r;
@@ -71,7 +71,7 @@ public class BigTask {
 				Bukkit.reload();
 				break;
 			case RESTART:
-				if(Packets.existsClass("net.md_5.bungee.api.ChatColor"))
+				if(Reflections.existsClass("net.md_5.bungee.api.ChatColor"))
 					Bukkit.spigot().restart();
 				else
 				Bukkit.shutdown();

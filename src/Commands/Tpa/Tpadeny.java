@@ -10,7 +10,6 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import Commands.BanSystem.BanSystem;
-import ServerControl.API;
 import ServerControl.Loader;
 import me.Straiker123.TheAPI;
 
@@ -18,7 +17,7 @@ public class Tpadeny implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.Tpdeny")) {
+		if(s.hasPermission("ServerControl.Tpa")||s.hasPermission("ServerControl.Tpahere")) {
 			if(s instanceof Player) {
 			if(args.length==0) {
 				String pd = RequestMap.getRequest(s.getName());

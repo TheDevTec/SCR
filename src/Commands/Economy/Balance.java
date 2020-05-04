@@ -36,7 +36,7 @@ public class Balance implements CommandExecutor, TabCompleter {
 			}return true;}
 		return true;
 		}
-		if(Loader.me.getString("Players."+args[0])!=null) {
+		if(TheAPI.existsUser(args[0])) {
 			if(API.hasPerm(s, "ServerControl.Balance.Other")) {
 
 				String world = Bukkit.getWorlds().get(0).getName();
@@ -49,7 +49,8 @@ public class Balance implements CommandExecutor, TabCompleter {
 						.replace("%player%", args[0])
 						.replace("%playername%", BanSystem.getName(args[0])), s);
 				return true;
-			}return true;}
+			}return true;
+			}
 		return true;
 	}
 	@Override

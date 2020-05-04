@@ -13,12 +13,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import ServerControl.API;
 import ServerControl.API.SeenType;
 import ServerControl.Loader;
 import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 
@@ -52,12 +52,10 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			Loader.Help(s, "/WhoIs <player>", "WhoIs");
 			return true;
 		}
-		String d = Loader.me.getString("Players."+a[0]);
-		if(d==null) {
+		if(!TheAPI.existsUser(a[0])) {
 			Loader.msg(Loader.PlayerNotEx(a[0]),s);
 			return true;
 		}
-		FileConfiguration f = Loader.me;
 		String ip = TheAPI.getPunishmentAPI().getIP(a[0]);
 		if(ip==null)ip="&7Uknown";
 		String what = "Offline";
@@ -70,8 +68,9 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 		}
 		String fly = "Disabled";
 		String god = "Disabled";
-		if(f.getBoolean("Players."+a[0]+".Fly"))fly="Enabled";
-		if(f.getBoolean("Players."+a[0]+".God"))god="Enabled";
+		User f= TheAPI.getUser(a[0]);
+		if(f.getBoolean("Fly"))fly="Enabled";
+		if(f.getBoolean("God"))god="Enabled";
 		String op = "No";
 		for(OfflinePlayer w : Bukkit.getOperators()) {
 			if(w.getName().equals(a[0]))op="Yes";

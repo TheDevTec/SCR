@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import ServerControl.Loader;
 import Utils.setting;
 import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 import me.Straiker123.TheAPI.SudoType;
 
 @SuppressWarnings("deprecation")
@@ -21,7 +22,8 @@ public class RewardsListenerChat implements Listener {
 			Player p = e.getPlayer();
 			String name = p.getName();
 		List<String> only = Loader.config.getStringList("Options.Codes.List");
-		List<String> codes = Loader.me.getStringList("Players."+name+".Taken-Codes");
+		User d = TheAPI.getUser(p);
+		List<String> codes = d.getStringList("Taken-Codes");
 		if(!codes.isEmpty())
 			for(String s : codes)only.remove(s);
 		if(!only.isEmpty())
@@ -55,7 +57,7 @@ public class RewardsListenerChat implements Listener {
 	    						.replace("%vault-group%", Loader.getInstance.getGroup(p))
 	    						.replace("%prefix%", Loader.s("Prefix"))));
 				codes.add(g);
-				Loader.me.set("Players."+name+".Taken-Codes", codes);
+				d.setAndSave("Taken-Codes", codes);
 				}
 		}
 		}

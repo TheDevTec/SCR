@@ -15,7 +15,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 		public static String getEconomyGroup(String p) {
 			String wd = "default";
 			String world = null;
-			String a=Loader.me.getString("Players."+p+".DisconnectWorld");
+			String a=TheAPI.getUser(p).getString("DisconnectWorld");
 			if(TheAPI.getPlayer(p)!=null)world = TheAPI.getPlayer(p).getWorld().getName();
 			else {
 				if(a!=null)world=a;
@@ -84,10 +84,10 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    }
 
 	    private boolean existPath(String player) {
-	    	return Loader.me.getString(get(player, getEconomyGroup(player))) != null;
+	    	return TheAPI.getUser(player).exist(get(player, getEconomyGroup(player)));
 	    }
 	    private boolean existPath(String player, String world) {
-	    	return Loader.me.getString(get(player, getEconomyGroup(player,world))) != null;
+	    	return TheAPI.getUser(player).exist(get(player, getEconomyGroup(player,world)));
 	    }
 	    
 	    @Override
@@ -115,7 +115,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    @Override
 	    public double getBalance(String s) {
 	    	if(s==null)return 0.0;
-	        return Loader.me.getDouble(get(s));
+	        return TheAPI.getUser(s).getDouble(get(s));
 	    }
 
 	    @Override
@@ -126,7 +126,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    @Override
 	    public double getBalance(String s, String world) {
 	    	if(s==null)return 0.0;
-	        return Loader.me.getDouble(get(s,world));
+	        return TheAPI.getUser(s).getDouble(get(s,world));
 	    }
 
 	    @Override
@@ -137,7 +137,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    @Override
 	    public boolean has(String s, double v) {
 	    	if(s==null)return false;
-	    	 double balance = Loader.me.getDouble(get(s));
+	    	 double balance = TheAPI.getUser(s).getDouble(get(s));
 	    	if(balance >= v)return true;
 	        return false;
 	    }
@@ -150,7 +150,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    @Override
 	    public boolean has(String s, String world, double v) {
 	    	if(s==null)return false;
-	    	double balance = Loader.me.getDouble(get(s,world));
+	    	double balance = TheAPI.getUser(s).getDouble(get(s,world));
 		    	if(balance >= v)return true;
 		        return false;
 	    }
@@ -166,8 +166,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 					Loader.EconomyLog("Failed withdrawed $"+v+" from player "+s+", you can't withdraw negative amount");
 					 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+" from player "+s+", you can't withdraw negative amount");
 					}else {
-	    	Loader.me.set(get(s), getBalance(s) - v);
-	    	Configs.chatme.save();
+						TheAPI.getUser(s).setAndSave(get(s), getBalance(s) - v);
 	        Loader.EconomyLog("Succefully withdrawed $"+v+" from player "+s);
 	        return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS, "Succefully withdrawed $"+v+" from player "+s);
 					}
@@ -185,8 +184,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 					Loader.EconomyLog("Failed withdrawed $"+v+" from player "+s+", you can't withdraw negative amount");
 					 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+" from player "+s+", you can't withdraw negative amount");
 					}else {
-	    	Loader.me.set(get(s,getEconomyGroup(s,world)),getBalance(s) - v);
-	    	Configs.chatme.save();
+	    	TheAPI.getUser(s).setAndSave(get(s,getEconomyGroup(s,world)),getBalance(s) - v);
 	        Loader.EconomyLog("Succefully withdrawed $"+v+" from player "+s);
 	        return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS, "Succefully withdrawed $"+v+" from player "+s);
 			}
@@ -203,8 +201,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 				Loader.EconomyLog("Failed deposited $"+v+" to player "+s+", you can't deposite negative amount");
 				 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+" from player "+s+", you can't withdraw negative amount");
 				}else {
-	    	 Loader.me.set(get(s), getBalance(s) + v);
-	    	 Configs.chatme.save();
+	    	 TheAPI.getUser(s).setAndSave(get(s), getBalance(s) + v);
 		        Loader.EconomyLog("Succefully deposited $"+v+" from player "+s);
 	        return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS, "Succefully deposited $"+v+" to player "+s);
 				}
@@ -222,8 +219,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 					Loader.EconomyLog("Failed deposited $"+v+" to player "+s+", you can't deposite negative amount");
 					 return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE, "Failed withdrawed $"+v+" from player "+s+", you can't withdraw negative amount");
 					}else {
-	    	 Loader.me.set(get(s,getEconomyGroup(s,w)), getBalance(s,w) + v);
-	    	 Configs.chatme.save();
+	    	 TheAPI.getUser(s).setAndSave(get(s,getEconomyGroup(s,w)), getBalance(s,w) + v);
 		        Loader.EconomyLog("Succefully deposited $"+v+" from player "+s);
 	        return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS, "Succefully deposited $"+v+" to player "+s);
 					}
@@ -298,8 +294,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    public boolean createPlayerAccount(String s) {
 	    	if(s==null)return false;
 			if(!existPath(s)) {
-	        Loader.me.set(get(s),  Loader.config.getDouble("Options.Economy.Money"));
-	        Configs.chatme.save();
+	        TheAPI.getUser(s).setAndSave(get(s),  Loader.config.getDouble("Options.Economy.Money"));
 	        Loader.EconomyLog("Creating economy account for player "+s);
 	        return true;}
 			return false;
@@ -313,8 +308,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 	    @Override
 	    public boolean createPlayerAccount(String s, String world) {
 	    	if(!existPath(s,world)) {
-		        Loader.me.set(get(s,world),  Loader.config.getDouble("Options.Economy.Money"));
-		        Configs.chatme.save();
+		        TheAPI.getUser(s).setAndSave(get(s,world),  Loader.config.getDouble("Options.Economy.Money"));
 		        Loader.EconomyLog("Creating economy account for player "+s);
 		        return true;}
 				return false;

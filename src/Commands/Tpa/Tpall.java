@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 
 public class Tpall implements CommandExecutor, TabCompleter {
 
@@ -23,13 +24,14 @@ public class Tpall implements CommandExecutor, TabCompleter {
 				ArrayList<String> list = new ArrayList<String>();
 				for(Player p:TheAPI.getOnlinePlayers()) {
 					if(p==s)continue;
-if(!Loader.me.getBoolean("Players."+p.getName()+".TpBlock."+s.getName())&&!Loader.me.getBoolean("Players."+p.getName()+".TpBlock-Global")
+					User d = TheAPI.getUser(p);
+if(!d.getBoolean("TpBlock."+s.getName())&&!d.getBoolean("TpBlock-Global")
 		||
-		Loader.me.getBoolean("Players."+p.getName()+".TpBlock."+s.getName())&&!Loader.me.getBoolean("Players."+p.getName()+".TpBlock-Global")&&s.hasPermission("ServerControl.Tpall.Blocked")
+		d.getBoolean("TpBlock."+s.getName())&&!d.getBoolean("TpBlock-Global")&&s.hasPermission("ServerControl.Tpall.Blocked")
 		||
-		Loader.me.getBoolean("Players."+p.getName()+".TpBlock."+s.getName())&&Loader.me.getBoolean("Players."+p.getName()+".TpBlock-Global")&&s.hasPermission("ServerControl.Tpall.Blocked")
+		d.getBoolean("TpBlock."+s.getName())&&d.getBoolean("TpBlock-Global")&&s.hasPermission("ServerControl.Tpall.Blocked")
 		||
-		!Loader.me.getBoolean("Players."+p.getName()+".TpBlock."+s.getName())&&Loader.me.getBoolean("Players."+p.getName()+".TpBlock-Global")&&s.hasPermission("ServerControl.Tpall.Blocked")
+		!d.getBoolean("TpBlock."+s.getName())&&d.getBoolean("TpBlock-Global")&&s.hasPermission("ServerControl.Tpall.Blocked")
 		) {
 					list.add(p.getName());
 					p.teleport(((Player) s));}}

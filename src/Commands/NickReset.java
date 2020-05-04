@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.TheAPI;
 
 public class NickReset implements CommandExecutor {
 
@@ -16,7 +17,7 @@ public class NickReset implements CommandExecutor {
 			if(API.hasPerm(s, "ServerControl.Nickname")){
 			if(args.length==0) {
 				if(s instanceof Player) {
-				Loader.me.set("Players."+s.getName()+".DisplayName", null);
+				TheAPI.getUser(s.getName()).setAndSave("DisplayName", null);
 				Loader.msg(Loader.s("Prefix")+Loader.s("NicknameReseted"), s);
 				return true;
 				}
@@ -24,11 +25,11 @@ public class NickReset implements CommandExecutor {
 				return true;
 			}
 		String a = args[0];
-		if(Loader.me.getString("Players."+a)==null) {
+		if(!TheAPI.existsUser(a)) {
 			Loader.msg(Loader.PlayerNotEx(a), s);
 		return true;
 		}
-		Loader.me.set("Players."+a+".DisplayName", null);
+		TheAPI.getUser(s.getName()).setAndSave("DisplayName", null);
 		Loader.msg(Loader.s("Prefix")+Loader.s("NicknameResetedOther").replace("%player%", a).replace("%playername%", a), s);
 		return true;
 	}return true;

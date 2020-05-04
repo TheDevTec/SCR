@@ -10,12 +10,14 @@ import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import ServerControl.API;
+import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import ServerControl.API.TeleportLocation;
 import Utils.TabList;
 import Utils.setting;
 import Utils.setting.DeathTp;
+import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 public class DeathEvent implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -25,9 +27,10 @@ public class DeathEvent implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PlayerDeath(PlayerDeathEvent e) {
 		if(e.getEntity().getKiller() instanceof Player) {
-			Loader.me.set("Players."+e.getEntity().getKiller().getName()+".Kills", Loader.me.getInt("Players."+e.getEntity().getKiller().getName()+".Kills") + 1);
+			User s = TheAPI.getUser(e.getEntity().getKiller());
+			s.setAndSave("Kills", s.getInt("Kills") + 1);
 		}
-		Player p = e.getEntity().getPlayer();
+		Player p = e.getEntity();
 		API.setBack(p);
 		if(p.hasPermission("ServerControl.KeepInv")) {
 		e.setKeepInventory(true);
@@ -37,14 +40,15 @@ public class DeathEvent implements Listener {
 		e.setKeepLevel(true);
 		e.setDroppedExp(0);
 		}
-		Loader.me.set("Players."+p.getName()+".Deaths", Loader.me.getInt("Players."+p.getName()+".Deaths") + 1);
+		User s = TheAPI.getUser(p);
+		s.setAndSave("Deaths", s.getInt("Deaths") + 1);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void Respawn(PlayerRespawnEvent e) {
 		Player p = e.getPlayer();
 		if(API.getBanSystemAPI().hasJail(p))
-		e.setRespawnLocation((Location) Loader.config.get("Jails."+Loader.me.getString("Players."+p.getName()+".Jail.Location")));
+		e.setRespawnLocation((Location) Loader.config.get("Jails."+TheAPI.getUser(p).getString("Jail.Location")));
 		else
 			if(setting.deathspawnbol) {
 			if(setting.deathspawn == DeathTp.HOME)

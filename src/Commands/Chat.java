@@ -15,8 +15,8 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import ServerControl.PlayerData;
 import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 
 public class Chat implements CommandExecutor, TabCompleter {
 
@@ -87,13 +87,12 @@ public class Chat implements CommandExecutor, TabCompleter {
         		}return true;}
         	if(args[0].equalsIgnoreCase("Me")){
     			if(API.hasPerm(s, "ServerControl.Me")) {
-    				PlayerData d = new PlayerData(s.getName());
                    if(args.length == 1) {
-           	        if(s instanceof Player == true) {
+           	        if(s instanceof Player) {
            	        	Loader.msg(Loader.s("Prefix")+"&e----------------- &bMe&e -----------------",s);
         	        	Player p =(Player)s;
-        	        if(Loader.me.getString("Players."+p.getName()) != null) {
         	        	Loader.msg("",p);
+        				User d = TheAPI.getUser(s.getName());
         	        	List<String> about = Loader.TranslationsFile.getStringList("AboutYou");
         	        	for(String a: about) {
         	        		
@@ -157,8 +156,6 @@ public class Chat implements CommandExecutor, TabCompleter {
             	        				.replace("%firstjoin%", check(d.getString("FirstJoin"))),p);
         	        			}}
         	        	 return true;
-        	        }
-        	        return true;
         	        }else
                	        if(s instanceof Player == false) {
                	        	Loader.Help(s, "/Chat Me <playe>", "Me");
@@ -167,8 +164,8 @@ public class Chat implements CommandExecutor, TabCompleter {
         	        return true;
         		}
                     if(args.length==2) { 
-                    	if(Loader.me.getString("Players."+args[1])!=null) {
-                    		d=new PlayerData(args[1]);
+                    	if(TheAPI.existsUser(args[1])) {
+            				User d = TheAPI.getUser(s.getName());
             	        	List<String> about = Loader.TranslationsFile.getStringList("AboutYou");
             	        	String world  = d.getString("DisconnectWorld");
             	        	if(TheAPI.getPlayer(args[1])!=null)world=TheAPI.getPlayer(args[1]).getName();

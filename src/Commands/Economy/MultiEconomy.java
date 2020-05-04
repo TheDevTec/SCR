@@ -198,12 +198,11 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				if(args.length==3) {
-					String p = Loader.me.getString("Players."+args[1]);
-					if(p==null) {
+					if(!TheAPI.existsUser(args[1])) {
 						Loader.msg(Loader.PlayerNotEx(args[1]),s);
 						return true;
 					}
-					String group = Loader.me.getString("Players."+args[1]+".Money."+getEconomyGroup(args[2]));
+					String group = TheAPI.getUser(args[1]).getString("Money."+getEconomyGroup(args[2]));
 					if(group==null) {
 						if(getEconomyGroup(args[2])!=null)
 							Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.NoMoney").replace("%group%", getEconomyGroup(args[2]))
@@ -269,10 +268,10 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 							.replace("%economy%", args[3]),s);
 					return true;
 				}
-				double money = Loader.me.getDouble("Players."+p.getName()+".Money."+getEconomyGroup(args[2]));
-				double money2 = Loader.me.getDouble("Players."+p.getName()+".Money."+getEconomyGroup(args[3]));
-				Loader.me.set("Players."+p.getName()+".Money."+getEconomyGroup(args[3]), money);
-				Loader.me.set("Players."+p.getName()+".Money."+getEconomyGroup(args[2]), money2);
+				double money = TheAPI.getUser(p).getDouble("Money."+getEconomyGroup(args[2]));
+				double money2 = TheAPI.getUser(p).getDouble("Money."+getEconomyGroup(args[3]));
+				TheAPI.getUser(p).set("Money."+getEconomyGroup(args[3]), money);
+				TheAPI.getUser(p).setAndSave("Money."+getEconomyGroup(args[2]), money2);
 				Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.Transfer").replace("%group%", getEconomyGroup(args[2]))
 						.replace("%economygroup%", getEconomyGroup(args[2]))
 						.replace("%economy-group%", getEconomyGroup(args[2]))

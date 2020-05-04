@@ -26,10 +26,10 @@ public class PrivateMessage implements CommandExecutor {
 				String to = "";
 				if(args[0].equalsIgnoreCase("CONSOLE")) {
 					if(s instanceof Player ==false) {
-					Loader.me.set("Server.Reply", "CONSOLE");
+					TheAPI.getUser(s.getName()).setAndSave("Server.Reply", "CONSOLE");
 					}else {
-						Loader.me.set("Server.Reply", s.getName());
-						Loader.me.set("Players."+s.getName()+".Reply", "CONSOLE");
+						TheAPI.getUser(s.getName()).setAndSave("Server.Reply", s.getName());
+						TheAPI.getUser(s.getName()).setAndSave("Players."+s.getName()+".Reply", "CONSOLE");
 					}
 					 from = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageFrom").replace("%from%", s.getName()).replace("%to%", "CONSOLE"));
 					 to = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageTo").replace("%from%", s.getName()).replace("%to%", "CONSOLE"));
@@ -45,11 +45,11 @@ public class PrivateMessage implements CommandExecutor {
 					 to = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageTo").replace("%from%", s.getName()).replace("%to%", p.getName()));
 					 to = to.replace("%message%", msg);
 					 from = from.replace("%message%", msg);if(s instanceof Player ==false) {
-						Loader.me.set("Server.Reply", p.getName());
-						Loader.me.set("Players."+p.getName()+".Reply", "CONSOLE");
+						TheAPI.getUser(s.getName()).setAndSave("Reply", "CONSOLE");
+						TheAPI.getUser("CONSOLE").setAndSave("Server", p.getName());
 					}else {
-						Loader.me.set("Players."+s.getName()+".Reply", p.getName());
-						Loader.me.set("Players."+p.getName()+".Reply", s.getName());
+						TheAPI.getUser(s.getName()).setAndSave("Reply", p.getName());
+						TheAPI.getUser(p).setAndSave("Reply", s.getName());
 					}
 					s.sendMessage(to);
 					p.sendMessage(from);

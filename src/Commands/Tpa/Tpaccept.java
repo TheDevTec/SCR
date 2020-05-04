@@ -20,7 +20,7 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender p, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(p, "ServerControl.Tpaccept")) {
+		if(p.hasPermission("ServerControl.Tpa")||p.hasPermission("ServerControl.Tpahere")) {
 			if(p instanceof Player) {
 			if(args.length==0) {
 				String pd = RequestMap.getRequest(p.getName());

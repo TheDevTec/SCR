@@ -17,7 +17,6 @@ import Commands.Mail;
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
-import ServerControl.PlayerData;
 import ServerControl.SPlayer;
 import Utils.AFKV2;
 import Utils.Tasks;
@@ -25,17 +24,17 @@ import Utils.setting;
 import me.Straiker123.StringUtils;
 import me.Straiker123.TheAPI;
 import me.Straiker123.TheAPI.SudoType;
+import me.Straiker123.User;
 
 public class OnPlayerJoin implements Listener {
 	public OnPlayerJoin() {
 		f=Loader.config;
-		c=Loader.me;
 		music = Loader.SoundsChecker();
 		join=setting.join_msg;
 		firsttime = f.getInt("Options.Join.FirstJoin.Wait") > 0 ? 20*f.getInt("Options.Join.FirstJoin.Wait"):1;
 		
 	}
-	FileConfiguration f,c;
+	FileConfiguration f;
 	boolean music,join;
 	int firsttime;
     StringUtils sd = TheAPI.getStringUtils();
@@ -61,8 +60,8 @@ public class OnPlayerJoin implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-		PlayerData data = new PlayerData(p.getName());
 		Tasks.regPlayer(p);
+		User d = TheAPI.getUser(p);
 		if(setting.join_msg) {
 			if(TheAPI.isVanished(p))
 			e.setJoinMessage("");
@@ -76,20 +75,20 @@ public class OnPlayerJoin implements Listener {
 
 		if(!Mail.getMails(p.getName()).isEmpty())
 		Loader.msg(Loader.s("Prefix")+Loader.s("Mail.Notification")
-				.replace("%number%", ""+data.getStringList("Mails").size()), p);
+				.replace("%number%", ""+d.getStringList("Mails").size()), p);
 		if(music)
 			TheAPI.getSoundAPI().playSound(p, f.getString("Options.Sounds.Sound"));
 
 		if(API.getBanSystemAPI().hasJail(p)) {
 			if(setting.tp_safe)
-			TheAPI.getPlayerAPI(p).safeTeleport(sd.getLocationFromString(f.getString("Jails."+data.getString("Jail.Location"))));
+			TheAPI.getPlayerAPI(p).safeTeleport(sd.getLocationFromString(f.getString("Jails."+d.getString("Jail.Location"))));
 			else
-				TheAPI.getPlayerAPI(p).teleport(sd.getLocationFromString(f.getString("Jails."+data.getString("Jail.Location"))));
+				TheAPI.getPlayerAPI(p).teleport(sd.getLocationFromString(f.getString("Jails."+d.getString("Jail.Location"))));
 		}else if(f.getBoolean("OnJoin.SpawnTeleport"))API.teleportPlayer(p, TeleportLocation.SPAWN);
 		
-		data.set("JoinTime",System.currentTimeMillis()/1000);
-		if(!data.existPath("FirstJoin"))
-			data.set("FirstJoin", setting.format_date_time.format(new Date()));
+		d.set("JoinTime",System.currentTimeMillis()/1000);
+		if(!d.exist("FirstJoin"))
+			d.set("FirstJoin", setting.format_date_time.format(new Date()));
 		
 		if(!p.hasPlayedBefore() && setting.join_first) {
 			for(String ss: Loader.TranslationsFile.getStringList("OnJoin.FirstJoin.Messages")) {
@@ -135,9 +134,10 @@ public class OnPlayerJoin implements Listener {
 					e.setQuitMessage(TheAPI.colorize(replaceAll(Loader.s("OnLeave.Leave"),p)));
 			}
 			SPlayer s = new SPlayer(p);
-			s.getData().set("Joins", s.getPlayer().getStatistic(Statistic.LEAVE_GAME));
-		    s.getData().set("LastLeave", setting.format_date_time.format(new Date()));
-		    s.getData().set("DisconnectWorld", p.getWorld().getName());
+			User d = TheAPI.getUser(p);
+			d.set("Joins", s.getPlayer().getStatistic(Statistic.LEAVE_GAME));
+		    d.set("LastLeave", setting.format_date_time.format(new Date()));
+		    d.set("DisconnectWorld", p.getWorld().getName());
 			s.disableFly();
 			s.disableGod();
 			}

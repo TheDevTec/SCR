@@ -20,66 +20,60 @@ public class ReplyPrivateMes implements CommandExecutor {
 		Loader.Help(s,"/Reply <message>", "ReplyPrivateMessage");
 	}
 	if(args.length>=1) {
-		String path = "";
+		String name = "";
 
-		if(s instanceof Player ==false)path="Server.Reply";else {
-			path="Players."+s.getName()+".Reply";
-		}
-		if(Loader.me.getString(path)!=null) {
+		if(s instanceof Player ==false)name="CONSOLE";
+		else name=s.getName();
+		if(TheAPI.existsUser(name)) {
 		String msg=Colors.colorize(TheAPI.buildString(args),false,s);
 		String from = "";
 		String to = "";
 		if(s instanceof Player ==false) {
-			if(Loader.me.getString("Server.Reply").equalsIgnoreCase("CONSOLE")) {
+			if(TheAPI.getUser("CONSOLE").getString("Reply").equalsIgnoreCase("CONSOLE")) {
 				from = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageFrom").replace("%from%", s.getName()).replace("%to%", "CONSOLE"));
 				 to = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageTo").replace("%from%", s.getName()).replace("%to%", "CONSOLE"));
 				 to = to.replace("%message%", msg);
 				 from = from.replace("%message%", msg);
-				if(s instanceof Player ==false) {
-					Loader.me.set("Server.Reply", "CONSOLE");
 					s.sendMessage(to);
 				Bukkit.getConsoleSender().sendMessage(from);
 				return true;
-			}}else {
-			Player p = TheAPI.getPlayer(Loader.me.getString("Server.Reply"));
+			}else {
+			Player p = TheAPI.getPlayer(TheAPI.getUser("CONSOLE").getString("Reply"));
 			if(p!=null) {
 				from = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageFrom").replace("%from%", s.getName()).replace("%to%", p.getName()));
 				 to = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageTo").replace("%from%", s.getName()).replace("%to%", p.getName()));
 				 to = to.replace("%message%", msg);
 				 from = from.replace("%message%", msg);
-				Loader.me.set("Server.Reply", p.getName());
-				Loader.me.set("Players."+p.getName()+".Reply", s.getName());
+				TheAPI.getUser(p).setAndSave("Reply", "CONSOLE");
 				s.sendMessage(to);
-					p.sendMessage(from);
+				p.sendMessage(from);
 				return true;
 			}
-			Loader.msg(Loader.PlayerNotOnline(Loader.me.getString("Server.Reply")), s);
+			Loader.msg(Loader.PlayerNotOnline(TheAPI.getUser("CONSOLE").getString("Reply")), s);
 			return true;
 		}}else {
-		if(Loader.me.getString("Players."+s.getName()+".Reply").equalsIgnoreCase("CONSOLE")) {
+		if(TheAPI.getUser(s.getName()).getString("Reply").equalsIgnoreCase("CONSOLE")) {
 			from = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageFrom").replace("%from%", s.getName()).replace("%to%", "CONSOLE"));
 			 to = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageTo").replace("%from%", s.getName()).replace("%to%", "CONSOLE"));
 			 to = to.replace("%message%", msg);
 			 from = from.replace("%message%", msg);
-			Loader.me.set("Server.Reply", s.getName());
-			Loader.me.set("Players."+s.getName()+".Reply", "CONSOLE");
+			TheAPI.getUser("CONSOLE").setAndSave("Reply", s.getName());
 			s.sendMessage(to);
 			Bukkit.getConsoleSender().sendMessage(from);
 			return true;
 		}else {
-		Player p = TheAPI.getPlayer(Loader.me.getString("Players."+s.getName()+".Reply"));
+		Player p = TheAPI.getPlayer(TheAPI.getUser(s.getName()).getString("Reply"));
 		if(p!=null) {
 			from = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageFrom").replace("%from%", s.getName()).replace("%to%", p.getName()));
 			 to = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageTo").replace("%from%", s.getName()).replace("%to%", p.getName()));
 			 to = to.replace("%message%", msg);
 			 from = from.replace("%message%", msg);
-			Loader.me.set("Players."+s.getName()+".Reply", p.getName());
-			Loader.me.set("Players."+p.getName()+".Reply", s.getName());
+			TheAPI.getUser(p).setAndSave("Reply", s.getName());
 			s.sendMessage(to);
 			p.sendMessage(from);
 			return true;
 		}
-		Loader.msg(Loader.PlayerNotOnline(Loader.me.getString("Players."+s.getName()+".Reply")), s);
+		Loader.msg(Loader.PlayerNotOnline(TheAPI.getUser(s.getName()).getString("Reply")), s);
 		return true;
 	}}}
 		Loader.msg(Loader.s("PrivateMessage.NoPlayerToReply"), s);

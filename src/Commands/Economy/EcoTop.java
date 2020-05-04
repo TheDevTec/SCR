@@ -3,6 +3,7 @@ package Commands.Economy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -34,8 +35,8 @@ public class EcoTop implements CommandExecutor {
 					if(TheAPI.getCooldownAPI("scr.baltop").expired("scr")||m==null) {
 						TheAPI.getCooldownAPI("scr.baltop").createCooldown("scr", 300); //5min update
 						HashMap<String, Double> money = new HashMap<String, Double>();
-						for (String sa : Loader.me.getConfigurationSection("Players").getKeys(false)) {
-							money.put(sa, TheAPI.getEconomyAPI().getBalance(sa,world));
+						for (UUID sa : TheAPI.getUsers()) {
+							money.put(Bukkit.getOfflinePlayer(sa).getName(), TheAPI.getEconomyAPI().getBalance(Bukkit.getOfflinePlayer(sa).getName(),world));
 						}
 						if(m!=null)
 						h.remove(world);
@@ -47,7 +48,6 @@ public class EcoTop implements CommandExecutor {
 						list.add(o.toString()+":"+m.getValue(o));
 					}
 					Pagination<String> g=new Pagination<>(10, list);
-					if (Loader.me.getString("Players") != null) {
 							Loader.msg(Loader.s("Prefix") +"&e----------------- &bTOP 10 Players &e-----------------", s);
 							Loader.msg("",s);
 							int page = 1;
@@ -71,9 +71,6 @@ public class EcoTop implements CommandExecutor {
 										.replace("%money%", API.setMoneyFormat(m.getValue(player), true)), s);
 							}
 							return true;
-						}
-					Loader.msg(Loader.s("Economy.NoPlayers"), s);
-					return true;
 				}
 				return true;
 	}

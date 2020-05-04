@@ -32,7 +32,7 @@ public class Tpa implements CommandExecutor, TabCompleter {
 				}else {
 					String p = d.getName();
 					if(s!=d) {
-					if(!Loader.me.getBoolean("Players."+p+".TpBlock."+s.getName())&&!Loader.me.getBoolean("Players."+p+".TpBlock-Global")) {
+						if(!TheAPI.getUser(d).getBoolean("TpBlock."+s.getName())&&!TheAPI.getUser(d).getBoolean("TpBlock-Global")) {
 						
 						if(!RequestMap.containsRequest(p,s.getName())) {
 						Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaSender").replace("%playername%", d.getDisplayName())

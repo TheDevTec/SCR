@@ -31,7 +31,7 @@ public class FlySpeed implements CommandExecutor {
 		if(flightmodifier>10.0)flightmodifier = 10.0;
 		if(flightmodifier<-10.0)flightmodifier = -10.0;
 		((Player) s).setFlySpeed((float)flightmodifier/10);
-		Loader.me.set("Players."+((Player) s).getName()+".FlySpeed", flightmodifier/10);
+		TheAPI.getUser(s.getName()).setAndSave("FlySpeed", flightmodifier/10);
 		Loader.msg(Loader.s("Prefix")+Loader.s("Fly.FlySpeed")
 		.replace("%player%", s.getName())
 		.replace("%playername%", ((Player) s).getDisplayName())
@@ -46,7 +46,7 @@ public class FlySpeed implements CommandExecutor {
 			if(flightmodifier>10.0)flightmodifier = 10.0;
 			if(flightmodifier<-10.0)flightmodifier = -10.0;
 			target.setFlySpeed((float)flightmodifier/10);
-		Loader.me.set("Players."+target.getName()+".FlySpeed", flightmodifier/10);
+		TheAPI.getUser(target).setAndSave("FlySpeed", flightmodifier/10);
 		Loader.msg(Loader.s("Prefix")+Loader.s("Fly.FlySpeedPlayer")
 				.replace("%player%", target.getName())
 				.replace("%playername%", target.getDisplayName())

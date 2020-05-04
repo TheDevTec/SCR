@@ -19,38 +19,35 @@ public class TempBanIP implements CommandExecutor {
 			return true;
 		}
 		if(args.length==1) {
-				if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+			if (TheAPI.getUser(args[0]).getBoolean("Immune")|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "TempBanIP").replace("%target%", args[0]), s);
 					return true;
 				}
 				String msg = Loader.config.getString("BanSystem.TempBanIP.Reason");
 				TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				TheAPI.getPunishmentAPI().setTempBanIP(args[0], msg,TheAPI.getTimeConventorAPI().getTimeFromString(Loader.config.getString("BanSystem.TempBanIP.Time")));
+				TheAPI.getPunishmentAPI().setTempBanIP(args[0], msg,TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("BanSystem.TempBanIP.Time")));
 				return true;
 			
 		}
 		if(args.length==2) {
-				if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+			if (TheAPI.getUser(args[0]).getBoolean("Immune")|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "TempBanIP").replace("%target%", args[0]), s);
 					return true;
 				}
 				String msg = Loader.config.getString("BanSystem.TempBanIP.Reason");
 				TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				TheAPI.getPunishmentAPI().setTempBanIP(args[0], msg,TheAPI.getTimeConventorAPI().getTimeFromString(args[1]));
+				TheAPI.getPunishmentAPI().setTempBanIP(args[0], msg,TheAPI.getStringUtils().getTimeFromString(args[1]));
 				return true;
 		}
 		if(args.length>=3) {
-				if (Loader.me.getBoolean("Players."+args[0]+".Immune")==true|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+			if (TheAPI.getUser(args[0]).getBoolean("Immune")|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "TempBanIP").replace("%target%", args[0]), s);
 					return true;
 				}
-				String msg = "";
-				  for (int i = 2; i < args.length; ++i) {
-                  msg = String.valueOf(msg) + args[i] + " ";
-				  }
-				  msg=msg.substring(0,msg.length()-1);
+				String msg = TheAPI.buildString(args);
+				msg=msg.replaceFirst(args[0]+" "+args[1]+" ", "");
 				  TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				  TheAPI.getPunishmentAPI().setTempBanIP(args[0], msg,TheAPI.getTimeConventorAPI().getTimeFromString(args[1]));
+				  TheAPI.getPunishmentAPI().setTempBanIP(args[0], msg,TheAPI.getStringUtils().getTimeFromString(args[1]));
 				  return true;
 		}}
 		return true;

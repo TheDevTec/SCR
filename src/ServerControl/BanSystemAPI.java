@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import Commands.BanSystem.BanSystem;
 import Commands.BanSystem.BanSystem.BanType;
 import me.Straiker123.TheAPI;
+import me.Straiker123.User;
 
 public class BanSystemAPI {
 	 public boolean hasJail(String p) {
@@ -34,32 +35,32 @@ public class BanSystemAPI {
 	 }
 	 public long getTempJailStart(String player) {
 			if(player==null)return 0;
-			return Loader.me.getLong("Players."+player+".TempJail.Start");
+			return TheAPI.getUser(player).getLong("TempJail.Start");
 	 }
 	 public long getTempJailTime(String player) {
 			if(player==null)return 0;
-			return  Loader.me.getLong("Players."+player+".TempJail.Time");
+			return  TheAPI.getUser(player).getLong("TempJail.Time");
 	}
 
 	 public void setJail(CommandSender sender,String player, String jail, String reason) {
 		 BanSystem.setPlayer(BanSystem.BanType.JAIL, player, reason, 0, System.currentTimeMillis(), sender);
-		 Loader.me.set("Players."+player+".Jail.Location", jail);
+		 TheAPI.getUser(player).set("Jail.Location", jail);
 		BanSystem.kickPlayer(sender,player,BanType.JAIL);
 	 }
 	 public void setJail(CommandSender sender,Player player, String jail, String reason) {
 		 BanSystem.setPlayer(BanSystem.BanType.JAIL, player.getName(), reason, 0, System.currentTimeMillis(), sender);
-		 Loader.me.set("Players."+player.getName()+".Jail.Location", jail);
+		 TheAPI.getUser(player).set("Jail.Location", jail);
 		BanSystem.kickPlayer(sender,player.getName(),BanType.JAIL);
 	 }
 	 
 	 public void setTempJail(CommandSender sender,String player, String jail, String reason, long time) {
 		 BanSystem.setPlayer(BanSystem.BanType.TEMPJAIL, player, reason, time, System.currentTimeMillis(), sender);
-		 Loader.me.set("Players."+player+".TempJail.Location", jail);
+		 TheAPI.getUser(player).set("TempJail.Location", jail);
 		 BanSystem.kickPlayer(sender,player,BanType.TEMPJAIL);
 	 }
 	 public void setTempJail(CommandSender sender,Player player, String jail, String reason, long time) {
 		 BanSystem.setPlayer(BanSystem.BanType.TEMPJAIL, player.getName(), reason, time, System.currentTimeMillis(), sender);
-		 Loader.me.set("Players."+player.getName()+".TempJail.Location", jail);
+		 TheAPI.getUser(player).set("TempJail.Location", jail);
 		 BanSystem.kickPlayer(sender,player.getName(),BanType.TEMPJAIL);
 	 }
 	 public void setKick(CommandSender sender,String player, String reason) {
@@ -76,9 +77,9 @@ public class BanSystemAPI {
 			if (Loader.config.getBoolean("AutoKickLimit.Kick.Use")==true) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Loader.getInstance, new Runnable() {
 				public void run() {
-		
-	if(Loader.me.getInt("Players."+n+".Kicks") >= Loader.config.getInt("AutoKickLimit.Kick.Number")) {
-		Loader.me.set("Players."+n+".Kicks" ,Loader.me.getInt("Players."+n+".Kicks") - Loader.config.getInt("AutoKickLimit.Kick.Number"));
+					User s = TheAPI.getUser(n);
+	if(s.getInt("Kicks") >= Loader.config.getInt("AutoKickLimit.Kick.Number")) {
+		s.set("Kicks" ,s.getInt("Kicks") - Loader.config.getInt("AutoKickLimit.Kick.Number"));
 		if(Loader.config.getBoolean("AutoKickLimit.Kick.Message.Use")) {
 			if(TheAPI.getPlayer(n)!=null)
 			    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Kick.Message.List")) {

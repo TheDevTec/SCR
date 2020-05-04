@@ -27,8 +27,8 @@ public class Tphere implements CommandExecutor, TabCompleter {
 				Loader.msg(Loader.PlayerNotOnline(args[0]),s);
 				return true;
 			}else {
-			if(!Loader.me.getBoolean("Players."+target.getName()+".TpBlock."+s.getName())&&!Loader.me.getBoolean("Players."+target.getName()+".TpBlock-Global")) {
-			Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.Teleportedhere").replace("%player%",target.getName()).replace("%playername%", target.getDisplayName()), s);
+				if(!TheAPI.getUser(target).getBoolean("TpBlock."+s.getName())&&!TheAPI.getUser(target).getBoolean("TpBlock-Global")) {
+					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.Teleportedhere").replace("%player%",target.getName()).replace("%playername%", target.getDisplayName()), s);
 			target.teleport(((Player) s));
 			return true;
 			}else {

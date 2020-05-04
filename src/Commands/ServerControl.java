@@ -68,7 +68,6 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 	Configs.reload();
 	setting.load();
 	Tasks.reload();
-	Loader.startConvertMoney();
 	MultiWorldsUtils.LoadWorlds();
 	Loader.SoundsChecker();
 	if(setting.timezone) {

@@ -28,8 +28,7 @@ public class Pay implements CommandExecutor {
 					return true;
 				}
 				if(args.length==2) {
-					String t = Loader.me.getString("Players."+args[0]);
-					if(t!=null) {
+					if(TheAPI.existsUser(args[0])) {
 						String moneyfromargs = args[1];
 						if(moneyfromargs.startsWith("-"))moneyfromargs="0.0";
 						double money = API.convertMoney(moneyfromargs);

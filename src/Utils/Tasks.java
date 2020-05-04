@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
 import ServerControl.SPlayer;
+import me.Straiker123.LoaderClass;
 import me.Straiker123.TheAPI;
 
 public class Tasks {
@@ -53,20 +54,21 @@ public class Tasks {
 	}
 	private static void tempfly() {
 		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
-			if(Loader.me.getString("TempFly") !=null && Loader.me.getStringList("TempFly").isEmpty()==false)
-			for(String p:Loader.me.getStringList("TempFly")) {
+			if(LoaderClass.data.existPath("TempFly") && !LoaderClass.data.getStringList("TempFly").isEmpty())
+			for(String p:LoaderClass.data.getStringList("TempFly")) {
 				Player s = TheAPI.getPlayer(p);
-				long start = Loader.me.getLong("Players."+p+".TempFly.Start");
-				int end = Loader.me.getInt("Players."+p+".TempFly.Time");
+				long start = TheAPI.getUser(s).getLong("TempFly.Start");
+				int end = TheAPI.getUser(s).getInt("TempFly.Time");
 				long timeout = start/1000 - System.currentTimeMillis()/1000 + end;
 				if(timeout <= 0) {
 					if(s!=null) {
 					TheAPI.sendActionBar(s, "&cTempFly ended");
 					new SPlayer(s).disableFly();
-					List<String> list = Loader.me.getStringList("TempFly");
+					List<String> list = LoaderClass.data.getStringList("TempFly");
 					list.remove(p);
-					Loader.me.set("TempFly",list);
-					Loader.me.set("Players."+p+".TempFly",null);
+					LoaderClass.data.set("TempFly",list);
+					LoaderClass.data.save();
+					TheAPI.getUser(s).setAndSave("TempFly",null);
 					}
 				}
 				if(timeout == 5 || timeout == 4 || timeout == 3 || timeout == 2 || timeout == 1 
