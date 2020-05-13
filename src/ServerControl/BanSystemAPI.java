@@ -6,11 +6,11 @@ import java.util.Date;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import Commands.BanSystem.BanSystem;
 import Commands.BanSystem.BanSystem.BanType;
 import me.Straiker123.TheAPI;
+import me.Straiker123.TheAPI.SudoType;
 import me.Straiker123.User;
 
 public class BanSystemAPI {
@@ -86,14 +86,9 @@ public class BanSystemAPI {
 			    		Loader.msg(cmds.replace("%player%", n).replace("%number%", ""+Loader.config.getInt("AutoKickLimit.Kick.Number")),TheAPI.getPlayer(n));
 	    	}}
 	         if(Loader.config.getBoolean("AutoKickLimit.Spam.Commands.Use")==true) {
-	new BukkitRunnable() {
-		@Override
-		public void run() {
 	    	for(String cmds: Loader.config.getStringList("AutoKickLimit.Spam.Commands.List")) {
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), TheAPI.colorize(cmds.replace("%player%", n).replace("%number%", ""+Loader.config.getInt("AutoKickLimit.Kick.Number"))));
-		  }}
-	}.runTask(Loader.getInstance);{
-	}}}}}, 20);}
+			TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", n).replace("%number%", ""+Loader.config.getInt("AutoKickLimit.Kick.Number"))));
+		  }}}}}, 20);}
 			 if(TheAPI.getPlayer(n)!=null)
 			if(BanSystem.getLaterWarn(n)!=null && Loader.ban.getBoolean("Warn."+n+".WarnLater.Wait")==true) {
 				Loader.ban.set("Warn."+n+".WarnLater.Wait", false);

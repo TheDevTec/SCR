@@ -28,7 +28,7 @@ public class Butcher implements CommandExecutor {
 		}else {
 			int killed = 0;
 			if(radius > 1000000)radius = 1000000;
-			for(Entity e: a.getNearbyEntities(w, radius, radius, radius)) {
+			for(Entity e: TheAPI.getBlocksAPI().getNearbyEntities(w, radius)) {
 				if(e instanceof Player == false) {
 					++killed;
 					e.remove();

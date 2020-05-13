@@ -16,6 +16,7 @@ import ServerControl.SPlayer;
 import me.Straiker123.LoaderClass;
 import me.Straiker123.TheAPI;
 
+@SuppressWarnings("deprecation")
 public class Tasks {
 	public Tasks() {
 		a = Loader.getInstance;
@@ -53,7 +54,7 @@ public class Tasks {
 		load();
 	}
 	private static void tempfly() {
-		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
+		tasks.add(Bukkit.getScheduler().scheduleAsyncRepeatingTask(a, new Runnable(){ public void run(){
 			if(LoaderClass.data.existPath("TempFly") && !LoaderClass.data.getStringList("TempFly").isEmpty())
 			for(String p:LoaderClass.data.getStringList("TempFly")) {
 				Player s = TheAPI.getPlayer(p);
@@ -83,7 +84,7 @@ public class Tasks {
 	private static void scoreboard() {
 		int r = Loader.scFile.getInt("RefleshTick");
 		if(r <= 0)r=1;
-		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
+		tasks.add(Bukkit.getScheduler().scheduleAsyncRepeatingTask(a, new Runnable(){ public void run(){
 			for(Player p:TheAPI.getOnlinePlayers())
 				ScoreboardStats.createScoreboard(p);
 		
@@ -93,7 +94,7 @@ public class Tasks {
 		if(Loader.mw.getInt("SavingTask.Delay") < 600){
 			Loader.mw.set("SavingTask.Delay", 600);
 		}
-		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){
+		tasks.add(Bukkit.getScheduler().scheduleAsyncRepeatingTask(a, new Runnable(){
 			int now = 0;
 			public void run(){
 				List<World> w = Bukkit.getWorlds();
@@ -119,7 +120,7 @@ public class Tasks {
 
 	private static void other() {
 		FileConfiguration f=Loader.config;
-		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
+		tasks.add(Bukkit.getScheduler().scheduleAsyncRepeatingTask(a, new Runnable(){ public void run(){
 			for(Player p : TheAPI.getOnlinePlayers())
 			Loader.setupChatFormat(p);
 		    if(setting.motd) {
@@ -136,11 +137,11 @@ public class Tasks {
 		}
 		int r = Loader.tab.getInt("NameTag-RefleshTick");
 		if(r <= 0)r=1;
-	tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
+	tasks.add(Bukkit.getScheduler().scheduleAsyncRepeatingTask(a, new Runnable(){ public void run(){
 		for(Player p : TheAPI.getOnlinePlayers())
 			TabList.setFooterHeader(p);
 		}},20,Loader.tab.getInt("RefleshTick")));
-	tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
+	tasks.add(Bukkit.getScheduler().scheduleAsyncRepeatingTask(a, new Runnable(){ public void run(){
 		for(Player p : TheAPI.getOnlinePlayers())
 		TabList.setNameTag(p);
 		}},20,r));
@@ -148,7 +149,7 @@ public class Tasks {
 	private static void vipslot() {
 		if(setting.vip_add)
 	    TheAPI.setMaxPlayers(Bukkit.getMaxPlayers() + Loader.config.getInt("Options.VIPSlots.SlotsToAdd"));
-		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable(){ public void run(){
+		tasks.add(Bukkit.getScheduler().scheduleAsyncRepeatingTask(a, new Runnable(){ public void run(){
 	    	   	 for(Player online:TheAPI.getOnlinePlayers()) {
 	    	   	 if(!players.contains(online.getName())) {
 	    	   		 if(!online.hasPermission("ServerControl.JoinFullServer"))players.add(online.getName());
@@ -158,7 +159,7 @@ public class Tasks {
 	}
 	
 	private static void automessage() {
-		tasks.add(Bukkit.getScheduler().scheduleSyncRepeatingTask(a, new Runnable() {
+		tasks.add(Bukkit.getScheduler().scheduleAsyncRepeatingTask(a, new Runnable() {
 			@Override
 			public void run() {
 		    	if(TheAPI.getOnlinePlayers().size()<Loader.config.getInt("Options.AutoMessage.MinimalPlayers"))return;
