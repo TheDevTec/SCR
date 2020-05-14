@@ -215,7 +215,7 @@ commands:
     Tpahere:
         description: Send request to specified player for teleport him to you
         usage: /<command> <player>
-        permission: servercontrol.tpdeny
+        permission: servercontrol.tpahere
     Tpaall:
         description: Send request to all players for teleport to you
         usage: /<command>
