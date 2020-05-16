@@ -71,7 +71,7 @@ public class SetWarp implements CommandExecutor {
 			Loader.config.set("Warps."+args[0]+".X_Pos_Head", local.getYaw());
 			Loader.config.set("Warps."+args[0]+".Z_Pos_Head", local.getPitch());
 			Loader.config.set("Warps."+args[0]+".NeedPermission", true);
-			Loader.msg(Loader.s(Loader.s("Prefix")+"Warp.CreatedWithPerm")
+			Loader.msg(Loader.s("Prefix")+Loader.s("Warp.CreatedWithPerm")
 						.replace("%warp%", args[0])
 						.replace("%world%", Loader.config.getString("Warps."+args[0]+".World"))
 						.replace("%player%", s.getName())
