@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import Commands.BanSystem.BanSystem;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.Straiker123.TheAPI;
@@ -47,7 +46,7 @@ public class Balance implements CommandExecutor, TabCompleter {
 						.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[0],world), true))
 						.replace("%prefix%", Loader.s("Prefix"))
 						.replace("%player%", args[0])
-						.replace("%playername%", BanSystem.getName(args[0])), s);
+						.replace("%playername%", args[0]), s);
 				return true;
 			}return true;
 			}

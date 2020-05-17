@@ -25,14 +25,12 @@ public class UnJail implements CommandExecutor {
 					if(TheAPI.getPlayer(args[0])!=null)
 						API.teleportPlayer(TheAPI.getPlayer(args[0]), TeleportLocation.SPAWN);
 					Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.unJailed")
-					.replace("%playername%", BanSystem.getName(args[0]))
+					.replace("%playername%", args[0])
 					.replace("%player%", args[0]), s);
-					TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.UnJail")
-							.replace("%operator%", s.getName()).replace("%player%", args[0])
-							.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.UnJail");
-					
 					return true;
 				}
-				BanSystem.notExist(s, args);
+				if(TheAPI.existsUser(args[0])) Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.PlayerHasNotBan")
+				.replace("%player%", args[0]).replace("%playername%", args[0]),s);else
+					Loader.msg(Loader.PlayerNotEx(args[0]),s);
 				return true;
 			}}return true;}}

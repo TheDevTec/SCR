@@ -76,45 +76,6 @@ public class SecurityListenerV3 implements Listener{
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCommand(PlayerCommandPreprocessEvent e) {
 		Player p = e.getPlayer();
-		Commands.BanSystem.BanSystem.KickMaxWarns(p.getName());
-		if(API.getBanSystemAPI().hasJail(p)||API.getBanSystemAPI().hasTempJail(p)) {
-			e.setCancelled(true);
-			return;
-		}
-		if(TheAPI.getPunishmentAPI().hasMute(p.getName())){
-			if(Loader.config.getBoolean("BanSystem.Mute.DisableCmds")){
-				String mes = e.getMessage().toLowerCase();
-				for(String aw:Loader.config.getStringList("BanSystem.Mute.DisabledCmds")) {
-			if(mes.startsWith(aw.toLowerCase())||mes.startsWith("bukkit:"+aw.toLowerCase())||
-					mes.startsWith("minecraft:"+aw.toLowerCase())){
-			e.setCancelled(true);
-			Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.Muted")
-			.replace("%player%", p.getName())
-			.replace("%reason%", TheAPI.getPunishmentAPI().getMuteReason(p.getName()))
-			.replace("%playername%", p.getDisplayName()), p);
-		}}}}else
-		if(TheAPI.getPunishmentAPI().hasTempMute(p.getName())) {
-			if(Loader.config.getBoolean("BanSystem.Mute.DisableCmds")){
-				String mes = e.getMessage().toLowerCase();
-				for(String aw:Loader.config.getStringList("BanSystem.Mute.DisabledCmds")) {
-			if(mes.startsWith(aw.toLowerCase())||mes.startsWith("bukkit:"+aw.toLowerCase())||
-					mes.startsWith("minecraft:"+aw.toLowerCase())){
-				int cooldownTime = Loader.ban.getInt("Mute."+p.getName()+".TempMute.Init");
-				long time = Loader.ban.getLong("Mute."+p.getName()+".TempMute.Start");
-	                long secondsLeft = time / 1000L - System.currentTimeMillis() / 1000L;
-	                secondsLeft =secondsLeft*-1;
-	                if(secondsLeft>0&&secondsLeft<cooldownTime) {
-	        			e.setCancelled(true);
-	        			Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.TempMuted")
-	        			.replace("%player%", p.getName())
-	        			.replace("%reason%", TheAPI.getPunishmentAPI().getTempMuteReason(p.getName()))
-	        			.replace("%time%", TheAPI.getStringUtils().setTimeToString((cooldownTime-secondsLeft)))
-	        			.replace("%long%", TheAPI.getStringUtils().setTimeToString((cooldownTime-secondsLeft)))
-	        			.replace("%playername%", p.getDisplayName()), p);
-	                    return;
-	                }
-	                Loader.ban.set("Mute."+p.getName()+".TempMute", null);
-	                }}}}else
 		 if(!p.hasPermission("ServerControl.CommandsAccess") && setting.cmdblock) {
 		   	    for (String cen: Loader.config.getStringList("Options.CommandsBlocker.List")) {
 		   	    	String mes = e.getMessage().toLowerCase();

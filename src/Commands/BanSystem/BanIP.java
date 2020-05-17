@@ -24,9 +24,7 @@ public class BanIP implements CommandExecutor {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "Ban-IP").replace("%target%", args[0]), s);
 					return true;
 				}
-				String msg = Loader.config.getString("BanSystem.BanIP");
-				TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				TheAPI.getPunishmentAPI().setBanIP(args[0], msg);
+				TheAPI.getPunishmentAPI().banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text").replace("%reason%", Loader.config.getString("BanSystem.BanIP.Reason")));
 				return true;
 			
 		}
@@ -37,8 +35,7 @@ public class BanIP implements CommandExecutor {
 				}
 			String msg = TheAPI.buildString(args);
 			msg=msg.replaceFirst(args[0]+" ", "");
-			TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-			TheAPI.getPunishmentAPI().setBanIP(args[0], msg);
+			TheAPI.getPunishmentAPI().banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text").replace("%reason%", Loader.config.getString("BanSystem.BanIP.Reason")));
 			return true;
 		}}return true;
 	}

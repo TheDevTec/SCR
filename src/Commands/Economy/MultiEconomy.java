@@ -13,7 +13,6 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import Commands.BanSystem.BanSystem;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.Straiker123.TheAPI;
@@ -210,7 +209,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 								.replace("%economy-group%", getEconomyGroup(args[2]))
 								.replace("%economy%", getEconomyGroup(args[2]))
 								.replace("%player%", args[1])
-								.replace("%playername%", BanSystem.getName(args[1])),s);
+								.replace("%playername%", args[1]), s);
 						else
 							Loader.msg(Loader.s("Prefix")+Loader.s("MultiEconomy.NotExist").replace("%group%", args[2])
 								.replace("%economygroup%", args[2])
@@ -224,7 +223,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 							.replace("%economy%", getEconomyGroup(args[2]))
 							.replace("%money%", API.setMoneyFormat(TheAPI.getStringUtils().getDouble(group), true))
 							.replace("%player%", args[1])
-							.replace("%playername%", BanSystem.getName(args[1])),s);
+							.replace("%playername%", args[1]), s);
 					return true;
 			}
 		}
@@ -277,7 +276,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 						.replace("%economy-group%", getEconomyGroup(args[2]))
 						.replace("%economy%", getEconomyGroup(args[2]))
 						.replace("%player%", args[1])
-						.replace("%playername%", BanSystem.getName(args[1])),s);
+						.replace("%playername%", args[1]), s);
 				return true;
 				}
 			}

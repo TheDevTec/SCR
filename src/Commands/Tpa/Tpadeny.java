@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import Commands.BanSystem.BanSystem;
 import ServerControl.Loader;
 import me.Straiker123.TheAPI;
 
@@ -31,7 +30,7 @@ public class Tpadeny implements CommandExecutor, TabCompleter {
 		        case TPA:
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.Tpadeny")
 		            .replace("%player%",pd)
-		            .replace("%playername%", BanSystem.getName(pd)), p);
+		            .replace("%playername%", pd), p);
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaDenied")
 		            .replace("%player%",p.getName())
 		            .replace("%playername%", p.getDisplayName()),d);
@@ -40,7 +39,7 @@ public class Tpadeny implements CommandExecutor, TabCompleter {
 		        case TPAHERE:
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.Tpaheredeny")
 		            .replace("%player%",pd)
-		            .replace("%playername%", BanSystem.getName(pd)), p);
+		            .replace("%playername%", pd), p);
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpahereDenied")
 		            .replace("%player%",p.getName())
 		            .replace("%playername%", p.getDisplayName()),d);

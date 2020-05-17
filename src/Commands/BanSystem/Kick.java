@@ -28,11 +28,7 @@ public class Kick implements CommandExecutor {
 							).replace("%target%", p.getName()), s);
 					return true;
 				}
-				String msg = Loader.config.getString("BanSystem.Kick");
-				API.getBanSystemAPI().setKick(s, args[0], msg);
-				TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.Kick")
-						.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])
-						.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.Kick");
+				TheAPI.getPunishmentAPI().kick(args[0], Loader.config.getString("BanSystem.Kick.Text").replace("%reason%", Loader.config.getString("BanSystem.Kick.Reason")));
 				return true;
 			}
 			Loader.msg(Loader.PlayerNotOnline(args[0]), s);
@@ -48,10 +44,7 @@ public class Kick implements CommandExecutor {
 				}
 				String msg = TheAPI.buildString(args);
 				msg=msg.replaceFirst(args[0]+" ", "");
-			API.getBanSystemAPI().setKick(s, args[0], msg);
-			TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.Kick")
-					.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])
-					.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.Kick");
+				TheAPI.getPunishmentAPI().kick(args[0], Loader.config.getString("BanSystem.Kick.Text").replace("%reason%", msg));
 			return true;
 			}
 			Loader.msg(Loader.PlayerNotOnline(args[0]), s);

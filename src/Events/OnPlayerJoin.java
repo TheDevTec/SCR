@@ -79,7 +79,7 @@ public class OnPlayerJoin implements Listener {
 		if(music)
 			TheAPI.getSoundAPI().playSound(p, f.getString("Options.Sounds.Sound"));
 
-		if(API.getBanSystemAPI().hasJail(p)) {
+		if(TheAPI.getPunishmentAPI().getBanList(p.getName()).isJailed()||TheAPI.getPunishmentAPI().getBanList(p.getName()).isTempJailed()) {
 			if(setting.tp_safe)
 			TheAPI.getPlayerAPI(p).safeTeleport(sd.getLocationFromString(f.getString("Jails."+d.getString("Jail.Location"))));
 			else

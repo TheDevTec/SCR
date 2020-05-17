@@ -24,8 +24,7 @@ public class TempBanIP implements CommandExecutor {
 					return true;
 				}
 				String msg = Loader.config.getString("BanSystem.TempBanIP.Reason");
-				TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				TheAPI.getPunishmentAPI().setTempBanIP(args[0], msg,TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("BanSystem.TempBanIP.Time")));
+				TheAPI.getPunishmentAPI().tempbanIP(args[0], Loader.config.getString("BanSystem.TempBanIP.Text").replace("%reason%", msg),TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("BanSystem.TempBanIP.Time")));
 				return true;
 			
 		}
@@ -35,8 +34,7 @@ public class TempBanIP implements CommandExecutor {
 					return true;
 				}
 				String msg = Loader.config.getString("BanSystem.TempBanIP.Reason");
-				TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				TheAPI.getPunishmentAPI().setTempBanIP(args[0], msg,TheAPI.getStringUtils().getTimeFromString(args[1]));
+				TheAPI.getPunishmentAPI().tempbanIP(args[0], Loader.config.getString("BanSystem.TempBanIP.Text").replace("%reason%", msg),TheAPI.getStringUtils().getTimeFromString(args[1]));
 				return true;
 		}
 		if(args.length>=3) {
@@ -46,8 +44,7 @@ public class TempBanIP implements CommandExecutor {
 				}
 				String msg = TheAPI.buildString(args);
 				msg=msg.replaceFirst(args[0]+" "+args[1]+" ", "");
-				  TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				  TheAPI.getPunishmentAPI().setTempBanIP(args[0], msg,TheAPI.getStringUtils().getTimeFromString(args[1]));
+				  TheAPI.getPunishmentAPI().tempbanIP(args[0], Loader.config.getString("BanSystem.TempBanIP.Text").replace("%reason%", msg),TheAPI.getStringUtils().getTimeFromString(args[1]));
 				  return true;
 		}}
 		return true;

@@ -5,9 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import Commands.BanSystem.BanSystem;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
 
 public class Tpcancel implements CommandExecutor {
 
@@ -20,11 +18,10 @@ public class Tpcancel implements CommandExecutor {
 			        	Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.NoRequest"),s);
 			            return true;
 			        }
-					Player d = TheAPI.getPlayer(pd);
 					Player p = (Player)s;
 			            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.Cancelled")
 			            .replace("%player%",p.getName())
-			            .replace("%playername%", BanSystem.getName(pd)), d);
+			            .replace("%playername%", pd), p);
 			            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaCancel")
 			            .replace("%player%",p.getName())
 			            .replace("%playername%", p.getDisplayName()),p);

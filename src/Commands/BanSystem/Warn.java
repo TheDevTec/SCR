@@ -25,13 +25,14 @@ public class Warn implements CommandExecutor {
 							.replace("%target%", args[0]), s);
 					return true;
 				}
-				API.getBanSystemAPI().setWarn(args[0], s, Loader.config.getString("BanSystem.Warn.Reason"));
-				TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.Warn")
-						.replace("%operator%", s.getName()).replace("%reason%", Loader.config.getString("BanSystem.Warn.Reason")).replace("%player%", args[0])
-						.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.Warn");
+				TheAPI.getUser(args[0]).setAndSave("warns",1+TheAPI.getUser(args[0]).getInt("warns"));
+				TheAPI.getPunishmentAPI().warn(args[0], Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%", Loader.config.getString("BanSystem.Warn.Reason")));
 				return true;
 			}
-			BanSystem.notExist(s, args);
+			if(TheAPI.existsUser(args[0])) Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.PlayerHasNotBan")
+			.replace("%player%", args[0]).replace("%playername%", args[0]),s);
+			else
+				Loader.msg(Loader.PlayerNotEx(args[0]),s);
 			return true;}
 		if(args.length>=2) {
 			if(TheAPI.existsUser(args[0])) {
@@ -42,13 +43,13 @@ public class Warn implements CommandExecutor {
 				}
 				String msg = TheAPI.buildString(args);
 				msg = msg.replaceFirst(args[0]+" ",	"");
-				API.getBanSystemAPI().setWarn(args[0], s, msg);
-				TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.Warn")
-						.replace("%operator%", s.getName()).replace("%reason%", msg).replace("%player%", args[0])
-						.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.Warn");
+				TheAPI.getUser(args[0]).setAndSave("warns",1+TheAPI.getUser(args[0]).getInt("warns"));
+				TheAPI.getPunishmentAPI().warn(args[0], Loader.config.getString("BanSystem.Warn.Text").replace("%reason%", msg));
 				return true;
 			}
-			BanSystem.notExist(s, args);
+			if(TheAPI.existsUser(args[0])) Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.PlayerHasNotBan")
+			.replace("%player%", args[0]).replace("%playername%", args[0]),s);else
+				Loader.msg(Loader.PlayerNotEx(args[0]),s);
 			return true;
 			
 		}

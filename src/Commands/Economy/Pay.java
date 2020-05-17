@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import Commands.BanSystem.BanSystem;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
@@ -41,7 +40,7 @@ public class Pay implements CommandExecutor {
 							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%player%", args[0])
-							.replace("%playername%", BanSystem.getName(args[0])), s);
+							.replace("%playername%", args[0]), s);
 					if(get(args[0])!=null) {
 						Loader.msg(Loader.s("Economy.PaidFrom")
 							.replace("%money%",API.setMoneyFormat(money, true))
@@ -55,7 +54,7 @@ public class Pay implements CommandExecutor {
 								.replace("%money%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
 								.replace("%currently%",API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
 								.replace("%player%", args[0])
-								.replace("%playername%", BanSystem.getName(args[0])), s);
+								.replace("%playername%", args[0]), s);
 						return true;}
 					if(args[0].equals("*")) {
 						Repeat.a(s,"pay * "+API.convertMoney(args[1]));

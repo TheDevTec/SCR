@@ -47,7 +47,7 @@ public class DeathEvent implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void Respawn(PlayerRespawnEvent e) {
 		Player p = e.getPlayer();
-		if(API.getBanSystemAPI().hasJail(p))
+		if(TheAPI.getPunishmentAPI().getBanList(p.getName()).isJailed()||TheAPI.getPunishmentAPI().getBanList(p.getName()).isTempJailed())
 		e.setRespawnLocation((Location) Loader.config.get("Jails."+TheAPI.getUser(p).getString("Jail.Location")));
 		else
 			if(setting.deathspawnbol) {

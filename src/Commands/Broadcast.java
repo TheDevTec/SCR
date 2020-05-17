@@ -4,7 +4,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import Commands.BanSystem.BanSystem;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.Straiker123.TheAPI;
@@ -20,7 +19,7 @@ public class Broadcast implements CommandExecutor {
 			}
 			if(args.length>=1) {
 				String msg = TheAPI.buildString(args);
-				TheAPI.broadcastMessage(Loader.config.getString("Format.Broadcast").replace("%sender%", BanSystem.getName(s.getName()))
+				TheAPI.broadcastMessage(Loader.config.getString("Format.Broadcast").replace("%sender%", s.getName())
 						.replace("%message%", msg));
 				return true;
 			}}

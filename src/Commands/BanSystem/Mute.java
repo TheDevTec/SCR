@@ -24,8 +24,7 @@ public class Mute implements CommandExecutor {
 					return true;
 				}
 				String msg = Loader.config.getString("BanSystem.Mute.Reason");
-				TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				TheAPI.getPunishmentAPI().setMute(args[0], msg);
+				TheAPI.getPunishmentAPI().mute(args[0], Loader.config.getString("BanSystem.Mute.Text").replace("%reason%", msg));
 				return true;
 		}
 		if(args.length>=2) {
@@ -35,8 +34,7 @@ public class Mute implements CommandExecutor {
 				}
 			String msg = TheAPI.buildString(args);
 			msg=msg.replaceFirst(args[0]+" ", "");
-			TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-			TheAPI.getPunishmentAPI().setMute(args[0], msg);
+			TheAPI.getPunishmentAPI().mute(args[0], Loader.config.getString("BanSystem.Mute.Text").replace("%reason%", msg));
 			return true;
 		}}
 		return true;

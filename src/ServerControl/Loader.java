@@ -16,7 +16,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import Commands.BanSystem.BanSystem;
 import Commands.Tpa.RequestMap;
 import Utils.AFKV2;
 import Utils.Colors;
@@ -38,7 +37,6 @@ public class Loader extends JavaPlugin implements Listener {
     public static FileConfiguration TranslationsFile;
     public static FileConfiguration chatLogFile;
     public static FileConfiguration mw;
-    public static FileConfiguration ban;
     public static FileConfiguration scFile;
     public static FileConfiguration config;
     public static FileConfiguration tab;
@@ -138,7 +136,6 @@ private void regClasses() {
 	try {
 		new API();
 		new MultiWorldsUtils();
-		new BanSystem();
 		new RequestMap();
 		new ScoreboardStats();
 		new Utils.Tasks();
@@ -362,7 +359,6 @@ private void CommmandsRegister() {
 	CmdC("unjail", new Commands.BanSystem.UnJail()); 
 	CmdC("setjail", new Commands.BanSystem.SetJail());
 	CmdC("deljail", new Commands.BanSystem.DelJail());
-	CmdC("unwarn", new Commands.BanSystem.UnWarn());
 	CmdC("Mem", new Commands.RAM());
 	CmdC("Chunks", new Commands.Chunks());
 	CmdC("ClearChat", new Commands.ClearChat());

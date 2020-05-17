@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import Commands.BanSystem.BanSystem;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.Straiker123.TheAPI;
@@ -38,12 +37,12 @@ public class TpaBlock implements CommandExecutor, TabCompleter {
 					if(s.getName()!=args[0]) {
 					if(!TheAPI.getUser(s.getName()).getBoolean("TpBlock."+args[0])) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaBlock.Blocked")
-					.replace("%player%", args[0]).replace("%playername%", BanSystem.getName(args[0])), s);
+					.replace("%player%", args[0]).replace("%playername%", args[0]), s);
 					TheAPI.getUser(s.getName()).setAndSave("TpBlock."+args[0], true);
 					return true;
 					}else {
 						Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaBlock.UnBlocked")
-						.replace("%player%", args[0]).replace("%playername%", BanSystem.getName(args[0])), s);
+						.replace("%player%", args[0]).replace("%playername%", args[0]), s);
 						TheAPI.getUser(s.getName()).setAndSave("TpBlock."+args[0], null);
 						return true;
 					}

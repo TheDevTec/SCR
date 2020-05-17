@@ -10,7 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import Commands.BanSystem.BanSystem;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
@@ -34,21 +33,20 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 		            API.setBack(d);
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.Tpaccept")
 		            .replace("%player%",pd)
-		            .replace("%playername%", BanSystem.getName(pd)), p);
+		            .replace("%playername%", pd), p);
 		            if(setting.tp_safe)
 		            	TheAPI.getPlayerAPI(d).safeTeleport(((Player)p).getLocation().add(0,-1,0));
 		            else
 		            d.teleport(((Player)p).getLocation());
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaAccepted")
-		            .replace("%player%",p.getName())
-		            .replace("%playername%", BanSystem.getName(p.getName())),d);
+		            .replace("%player%",p.getName()).replace("%playername%", p.getName()), d);
 		            RequestMap.removeRequest(p.getName(),pd);
 		            break;
 		        case TPAHERE:
 		            API.setBack((Player)p);
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.Tpahereccept")
 		            .replace("%player%",pd)
-		            .replace("%playername%", BanSystem.getName(pd)), p);
+		            .replace("%playername%", pd), p);
 		            Location loc = d.getLocation();
 		            if(setting.tp_onreqloc && RequestMap.getLocation(p.getName(), pd)!=null)
 		            	loc=RequestMap.getLocation(p.getName(), pd);
@@ -58,7 +56,7 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 		            ((Player)p).teleport(loc);
 		            Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpahereAccepted")
 		            .replace("%player%",p.getName())
-		            .replace("%playername%", BanSystem.getName(p.getName())),d);
+		            .replace("%playername%", pd), p);
 		            RequestMap.removeRequest(p.getName(),pd);
 		            break;
 		        }

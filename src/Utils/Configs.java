@@ -11,7 +11,6 @@ import me.Straiker123.TheAPI;
 public class Configs {
 	public static ConfigAPI trans= TheAPI.getConfig("ServerControlReloaded", "Translations");
 	public static ConfigAPI config= TheAPI.getConfig("ServerControlReloaded", "Config");
-	public static ConfigAPI bans= TheAPI.getConfig("ServerControlReloaded", "Bans");
 	public static ConfigAPI sb= TheAPI.getConfig("ServerControlReloaded", "Scoreboard");
 	public static ConfigAPI tab= TheAPI.getConfig("ServerControlReloaded", "TabList");
 	public static ConfigAPI mw=TheAPI.getConfig("ServerControlReloaded", "MultiWorlds");
@@ -89,43 +88,21 @@ public class Configs {
 			c.put("AFK.IsAFK", "%playername% &cis AFK");
 			c.put("AFK.NoLongerAFK", "%playername% &7is no longer AFK");
 			c.put("PrivateMessage.NoPlayerToReply", "&6You have nobody to reply to");
-			c.put("BanSystem.Broadcast.Ban", "&6Operator &c%operator% &6banned &c%playername%&r &6for &c%reason%");
-			c.put("BanSystem.Broadcast.TempBan", "&6Operator &c%operator% &6temp-banned &c%playername%&r &6for &c%reason%&r &6on &c%time%");
-			c.put("BanSystem.Broadcast.TempBanIP", "&6Operator &c%operator% &6temp-ip banned &c%playername%&r &6for &c%reason%&r &6on &c%time%");
-			c.put("BanSystem.Broadcast.BanIP", "&6Operator &c%operator% &6ip banned &c%playername%&r &6for &c%reason%");
-			c.put("BanSystem.Broadcast.Mute", "&6Operator &c%operator% &6muted &c%playername%&r &6for &c%reason%");
-			c.put("BanSystem.Broadcast.TempMute", "&6Operator &c%operator% &6temp-muted &c%playername%&r &6for &c%reason%&r &6on &c%time%");
-			c.put("BanSystem.Broadcast.Warn", "&6Operator &c%operator% &6warned &c%playername%&r &6for &c%reason%");
-			c.put("BanSystem.Broadcast.Kick", "&6Operator &c%operator% &6kicked &c%playername%&r &6for &c%reason%");
-			c.put("BanSystem.Broadcast.Jail", "&6Operator &c%operator% &6arrested &c%playername%&r &6for &c%reason%");
-			c.put("BanSystem.Broadcast.TempJail", "&6Operator &c%operator% &6temp-arrested &c%playername%&r &6for &c%reason%&6 on &c%time%");
-			c.put("BanSystem.Broadcast.UnBan", "&6Operator &c%operator% &6unbanned &c%playername%");
-			c.put("BanSystem.Broadcast.UnBanIP", "&6Operator &c%operator% &6unbanned ip of &c%playername%");
-			c.put("BanSystem.Broadcast.UnMute", "&6Operator &c%operator% &6unmuted &c%playername%");
-			c.put("BanSystem.Broadcast.UnJail", "&6Operator &c%operator% &6unjailed &c%playername%");
-			c.put("BanSystem.Broadcast.UnWarn", "&6Operator &c%operator% &6unwarned &c%playername%");
 			c.put("BanSystem.UnMute", "&6Player %playername% &6has been unmuted");
 			c.put("BanSystem.UnMuted", "&6You are no longer muted");
 			c.put("BanSystem.Warn", "&6Player %playername% &6was warned for &c%reason%");
-			c.put("BanSystem.Warned", "&6You were warned for &c%reason% &6by operator &c%warnedby%");
-			c.put("BanSystem.WarnLater", "&6You were warned for &c%reason% &6by operator &c%warnedby% &6at &c%time%");
 			c.put("BanSystem.Muted", "&cYou are muted for &c%reason%");
 			c.put("BanSystem.Kick", "&6Player %playername% &6has been kicked for %reason%");
-			c.put("BanSystem.NotWarned", "&6Player %playername% &6has not been warned");
-			c.put("BanSystem.unWarned", "&6Player %playername% &6was unwarned");
 			c.put("BanSystem.CantKickYourself", "&6Hey %playername%&6, you can't kick yourself..");
 			c.put("BanSystem.CantBanYourself", "&6Hey %playername%&6, you can't ban yourself..");
 			c.put("BanSystem.CantMuteYourself", "&6Hey %playername%&6, you can't mute yourself..");
 			c.put("BanSystem.CantJailYourself", "&6Hey %playername%&6, you can't jail yourself..");
 			c.put("BanSystem.MissingJail", "&6Missing jail, first set jail using command /setJail <name>");
 			c.put("BanSystem.TempMute", "&6Player %playername% &6has been muted for &c%reason% &6on &c%time%");
-			c.put("BanSystem.TempMuted", "&cYou are muted for &c%reason% &6on &c%time%");
 			c.put("BanSystem.Mute", "&6Player %playername% &6has been muted for &c%reason%");
 			c.put("BanSystem.Ban", "&6Player %playername% &6has been banned for &c%reason%");
-			c.put("BanSystem.Jail", "&6Player %playername% &6has been jailed for &c%reason%");
-			c.put("BanSystem.TempJail", "&6Player %playername% &6has been TempJailed for &c%reason% &6on time &c%time%");
-			c.put("BanSystem.Arrested", "&6You are arrested for &c%reason%");
-			c.put("BanSystem.TempArrested", "&6You are temparrested for &c%reason% &6on &c%time%");
+			c.put("BanSystem.Jail", "&6Player %playername% &6has been arrested for &c%reason%");
+			c.put("BanSystem.TempJail", "&6Player %playername% &6has been temp-arrested for &c%reason% &6on time &c%time%");
 			c.put("BanSystem.UnBan", "&6Player %playername% &6has been unbanned");
 			c.put("BanSystem.UnBanIP", "&6Player %playername% &6has been unIPbanned");
 			c.put("BanSystem.TempBan", "&6Player %playername% &6has been temp-banned for &c%reason% &6on &c%time%");
@@ -644,17 +621,30 @@ public class Configs {
 		c.put("Options.CommandsBlocker.Use", true);
 		c.put("Options.CommandsBlocker.List", Arrays.asList("pl","plugins","version","ihasbukkit","spigot","reload","stop","restart"));
 		c.put("StaffList", Arrays.asList("owner","admin","operator","helper","builder","developer"));
+		c.put("BanSystem.TempMute.Text", "&cYou are temp-muted for &6%reason%&c on &6%time%");
 		c.put("BanSystem.TempMute.Reason", "Unknown");
 		c.put("BanSystem.TempMute.Time", "1h");
-		c.put("BanSystem.Kick", "Unknown");
-		c.put("BanSystem.Ban", "Unknown");
+		c.put("BanSystem.Kick.Text", "&cYou are kicked for &6%reason%\n&7www.example.com");
+		c.put("BanSystem.Kick.Reason", "Unknown");
+		c.put("BanSystem.Ban.Text", "&cYou are banned for &6%reason%\n&7www.example.com");
+		c.put("BanSystem.Ban.Reason", "Unknown");
+		c.put("BanSystem.TempBanIP.Text", "&cYou are temp-ipbanned for &6%reason%&c on &6%time%\n&7www.example.com");
 		c.put("BanSystem.TempBanIP.Reason", "Unknown");
 		c.put("BanSystem.TempBanIP.Time", "7d");
+		c.put("BanSystem.TempBan.Text", "&cYou are temp-banned for &6%reason%&c on &6%time%\n&7www.example.com");
 		c.put("BanSystem.TempBan.Reason", "Unknown");
 		c.put("BanSystem.TempBan.Time", "1h");
-		c.put("BanSystem.BanIP", "Unknown");
+		c.put("BanSystem.BanIP.Text", "&cYou are ipbanned for &6%reason%\n&7www.example.com");
+		c.put("BanSystem.BanIP.Reason", "Unknown");
 		c.put("BanSystem.Mute.Reason", "Unknown");
+		c.put("BanSystem.Mute.Text", "&cYou are muted for &6%reason%");
 		c.put("BanSystem.Jail.Reason", "Unknown");
+		c.put("BanSystem.Jail.Text", "&cYou are arrested for &6%reason%");
+		c.put("BanSystem.TempJail.Reason", "Unknown");
+		c.put("BanSystem.TempJail.Time", "1h");
+		c.put("BanSystem.TempJail.Text", "&cYou are temp-arrested for &6%reason%&c on &6%time%");
+
+		c.put("BanSystem.Warn.Text", "&7----------\n&cWarning\n&cReason: &6%reason%\n&7----------");
 		c.put("BanSystem.Warn.Reason", "Unknown");
 			if(!config.existPath("BanSystem.Warn.Operations")) {
 			c.put("BanSystem.Warn.Operations.1.Commands", Arrays.asList("eco take %player% 20"));
@@ -763,12 +753,7 @@ public class Configs {
 		config.create();
 		Loader.config=config.getConfig();
 	}
-	public static void BansLoading() {
-			bans.addDefault("Ban","");
-			bans.addDefault("Mute","");
-			bans.create();
-			Loader.ban=bans.getConfig();
-			}
+
 	public static void ScoreboardLoading() {
 			Map<String, Object> c = new HashMap<String, Object>();
 			c.put("Scoreboard-Enabled", true);
@@ -890,19 +875,16 @@ public class Configs {
 		ScoreboardLoading();
 		TabLoading();
 		KitLoading();
-		BansLoading();
 	}
 	public static void reload() {
 		trans.reload();
 		config.reload();
-		bans.reload();
 		kit.reload();
 		mw.reload();
 		sb.reload();
 		tab.reload();
 		Loader.TranslationsFile=trans.getConfig();
 		Loader.config=config.getConfig();
-		Loader.ban=bans.getConfig();
 		Loader.scFile=sb.getConfig();
 		Loader.kit=kit.getConfig();
 		Loader.mw=mw.getConfig();
@@ -911,7 +893,6 @@ public class Configs {
 	public static void save() {
 		trans.save();
 		config.save();
-		bans.save();
 		kit.save();
 		mw.save();
 		sb.save();

@@ -133,10 +133,6 @@ commands:
         description: Remove existing jail
         usage: /<command> <name>
         permission: servercontrol.deljail
-    unWarn:
-        description: unWarn player
-        usage: /<command> <player>
-        permission: servercontrol.unwarn
     Give:
         description: Give player item/block
         usage: /<command> <player> <item> <amount>

@@ -236,14 +236,6 @@ public class API {
 			 return false;
 			 }
 
-		 /**
-		  * API where you can set ban/mute.. and get information about ban/mute..
-		  * @return BanSystemAPI
-		  */
-		 public static BanSystemAPI getBanSystemAPI() {
-			 return new BanSystemAPI();
-		 }
-		 
 	public static String setMoneyFormat(double money, boolean colorized) {
 		String a = ""+money;
 				 String get =new DecimalFormat("#,##0.00").format(money);

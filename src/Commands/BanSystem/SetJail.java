@@ -20,12 +20,12 @@ public class SetJail implements CommandExecutor {
 				return true;
 			}
 			if(args.length==1) {
-				if(Loader.config.getString("Jails."+args[0])!=null) {
+				if(TheAPI.getPunishmentAPI().getjails().contains(args[0])) {
 					Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.JailAlreadyExist").replace("%jail%", args[0]), s);
 					return true;
 				}
 				Player p = (Player)s;
-				Loader.config.set("Jails."+args[0], TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
+				TheAPI.getPunishmentAPI().setjail(p.getLocation(), args[0]);
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.CreatedJail").replace("%jail%", args[0]), s);
 				return true;
 			}

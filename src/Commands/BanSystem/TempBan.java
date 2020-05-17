@@ -23,8 +23,7 @@ public class TempBan implements CommandExecutor {
 					return true;
 				}
 				String msg = Loader.config.getString("BanSystem.TempBan.Reason");
-				TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				TheAPI.getPunishmentAPI().setTempBan(args[0], msg,TheAPI.getTimeConventorAPI().getTimeFromString(Loader.config.getString("BanSystem.TempBan.Time")));
+				TheAPI.getPunishmentAPI().tempban(args[0], Loader.config.getString("BanSystem.TempBan.Text").replace("%reason%", msg),TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("BanSystem.TempBan.Time")));
 				return true;
 			
 		}
@@ -34,8 +33,7 @@ public class TempBan implements CommandExecutor {
 					return true;
 				}
 				String msg = Loader.config.getString("BanSystem.TempBan.Reason");
-				TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				TheAPI.getPunishmentAPI().setTempBan(args[0], msg,TheAPI.getTimeConventorAPI().getTimeFromString(args[1]));
+				TheAPI.getPunishmentAPI().tempban(args[0], Loader.config.getString("BanSystem.TempBan.Text").replace("%reason%", msg),TheAPI.getStringUtils().getTimeFromString(args[1]));
 				return true;
 		}
 		if(args.length>=3) {
@@ -45,8 +43,7 @@ public class TempBan implements CommandExecutor {
 				}
 			String msg = TheAPI.buildString(args);
 			msg=msg.replaceFirst(args[0]+" "+args[1]+" ", "");
-			TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-			TheAPI.getPunishmentAPI().setTempBan(args[0], msg,TheAPI.getTimeConventorAPI().getTimeFromString(args[1]));
+			TheAPI.getPunishmentAPI().tempban(args[0], Loader.config.getString("BanSystem.TempBan.Text").replace("%reason%", msg),TheAPI.getStringUtils().getTimeFromString(args[1]));
 			return true;
 		}}
 		return true;

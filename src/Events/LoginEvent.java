@@ -44,6 +44,7 @@ public Loader plugin=Loader.getInstance;
 			e.disallow(Result.KICK_OTHER, TheAPI.colorize(kickString));
 			return;
 			}
+		
 if(setting.vip && TheAPI.getMaxPlayers()==TheAPI.getOnlinePlayers().size()-1) {
 	boolean has = p.hasPermission("ServerControl.JoinFullServer");
 	int max = TheAPI.getMaxPlayers()+(setting.vip_add ? f.getInt("Options.VIPSlots.SlotsToAdd") : 0);

@@ -24,10 +24,9 @@ public class TempMute implements CommandExecutor {
 					return true;
 				}
 				String msg = Loader.config.getString("BanSystem.TempMute.Reason");
-				long cooldownTime = TheAPI.getTimeConventorAPI().getTimeFromString(Loader.config.getString("BanSystem.TempMute.Time"));
+				long cooldownTime = TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("BanSystem.TempMute.Time"));
 
-				TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				TheAPI.getPunishmentAPI().setTempMute(args[0], msg,cooldownTime);
+				TheAPI.getPunishmentAPI().tempmute(args[0], Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%", msg),cooldownTime);
 				return true;
 			
 		}
@@ -38,8 +37,7 @@ public class TempMute implements CommandExecutor {
 				}
 				String msg = Loader.config.getString("BanSystem.TempMute.Reason");
 
-				TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				TheAPI.getPunishmentAPI().setTempMute(args[0], msg,TheAPI.getTimeConventorAPI().getTimeFromString(args[1]));
+				TheAPI.getPunishmentAPI().tempmute(args[0], Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%", msg),TheAPI.getStringUtils().getTimeFromString(args[1]));
 				return true;
 		}
 		if(args.length>=3) {
@@ -49,8 +47,7 @@ public class TempMute implements CommandExecutor {
 				}
 			String msg = TheAPI.buildString(args);
 			msg=msg.replaceFirst(args[0]+" "+args[1]+" ", "");
-			TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-			TheAPI.getPunishmentAPI().setTempMute(args[0], msg,TheAPI.getTimeConventorAPI().getTimeFromString(args[1]));
+			TheAPI.getPunishmentAPI().tempmute(args[0], Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%", msg),TheAPI.getStringUtils().getTimeFromString(args[1]));
 			return true;
 		}}
 		return true;

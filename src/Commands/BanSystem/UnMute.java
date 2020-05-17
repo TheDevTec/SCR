@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.PlayerBanList;
 import me.Straiker123.TheAPI;
 
 public class UnMute implements CommandExecutor {
@@ -18,20 +19,18 @@ public class UnMute implements CommandExecutor {
 			return true;
 		}
 		if(args.length==1) {
-			if(TheAPI.getPunishmentAPI().hasMute(args[0])||TheAPI.getPunishmentAPI().hasTempMute(args[0])) {
+			PlayerBanList p  =TheAPI.getPunishmentAPI().getBanList(args[0]);
+			if(p.isMuted()||p.isTempMuted()) {
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.UnMute").replace("%player%", args[0])
 						.replace("%playername%", args[0]),s);
 
-				TheAPI.getPunishmentAPI().unMute(args[0]);
-				TheAPI.getPunishmentAPI().unTempMute(args[0]);
+				TheAPI.getPunishmentAPI().unmute(args[0]);
 				if(TheAPI.getPlayer(args[0])!=null)Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.UnMuted")
 				.replace("%player%", args[0]).replace("%playername%", args[0]),TheAPI.getPlayer(args[0]));
-				TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.UnMute")
-						.replace("%operator%", s.getName()).replace("%player%", args[0])
-						.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.UnMute");
 				return true;
 			}
-			BanSystem.notMuted(s, args);
+			Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.PlayerNotMuted").replace("%player%", args[0])
+					.replace("%playername%", args[0]),s);
 			return true;
 			
 		}}return true;

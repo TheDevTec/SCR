@@ -17,8 +17,10 @@ import org.bukkit.command.TabCompleter;
 import ServerControl.API;
 import ServerControl.API.SeenType;
 import ServerControl.Loader;
+import me.Straiker123.PlayerBanList;
 import me.Straiker123.TheAPI;
 import me.Straiker123.User;
+import me.Straiker123.PlayerBanList.PunishmentType;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 
@@ -85,34 +87,34 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 		Loader.msg("&6IP: &a"+ip.replaceFirst("/", ""),s);
 		Loader.msg("&6Country: &a"+getCountry(ip),s);
 		Loader.msg("&6Punishment: &a",s);
-		if(TheAPI.getPunishmentAPI().hasMute(a[0])) {
+		PlayerBanList d  =TheAPI.getPunishmentAPI().getBanList(a[0]);
+		if(d.isMuted()) {
 			Loader.msg("  &6Muted", s);
 		}
-		if(TheAPI.getPunishmentAPI().hasTempMute(a[0])) {
-			
-			long tmtime = TheAPI.getPunishmentAPI().getTempMuteExpireTime(a[0]);
+		if(d.isTempMuted()) {
+			long tmtime = d.getExpire(PunishmentType.TEMPMUTE);
 			Loader.msg("  &6TempMuted: &a"+TheAPI.getStringUtils().setTimeToString(tmtime), s);
 		}
-		if(API.getBanSystemAPI().hasJail(a[0])) {
+		if(d.isJailed()) {
 			Loader.msg("  &6Jailed", s);
 		}
-		if(API.getBanSystemAPI().hasTempJail(a[0])) {
-			long tjtime = API.getBanSystemAPI().getTempJailTime(a[0]);
+		if(d.isTempJailed()) {
+			long tjtime = d.getExpire(PunishmentType.TEMPJAIL);
 			Loader.msg("  &6Temp-arrested: &a"+TheAPI.getStringUtils().setTimeToString(tjtime), s);
 		}
-		if(TheAPI.getPunishmentAPI().hasBan(a[0])) {
+		if(d.isBanned()) {
 			Loader.msg("  &6Banned", s);
 		}
-		if(TheAPI.getPunishmentAPI().hasTempBan(a[0])) {
-			long tbtime = TheAPI.getPunishmentAPI().getTempBanExpireTime(a[0]);
+		if(d.isTempBanned()) {
+			long tbtime = d.getExpire(PunishmentType.TEMPBAN);
 			Loader.msg("  &6TempBanned: &a"+TheAPI.getStringUtils().setTimeToString(tbtime), s);
 		}
 
-		if(TheAPI.getPunishmentAPI().hasBanIP(a[0])) {
+		if(d.isIPBanned()) {
 			Loader.msg("  &6IPBanned", s);
 		}
-		if(TheAPI.getPunishmentAPI().hasTempBanIP(a[0])) {
-			long tbiptime = TheAPI.getPunishmentAPI().getTempBanIPExpireTime(a[0]);
+		if(d.isTempIPBanned()) {
+			long tbiptime = d.getExpire(PunishmentType.TEMPBANIP);
 			Loader.msg("  &6TempIPBanned: &a"+TheAPI.getStringUtils().setTimeToString(tbiptime), s);
 		}
 		Loader.msg("&8---------------",s);

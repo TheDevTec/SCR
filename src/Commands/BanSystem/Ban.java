@@ -24,9 +24,7 @@ public class Ban implements CommandExecutor {
 					Loader.msg(Loader.s("Prefix")+Loader.s("Immune.NoPunish").replace("%punishment%", "Ban").replace("%target%", args[0]), s);
 					return true;
 				}
-				String msg = Loader.config.getString("BanSystem.Ban");
-				TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-				TheAPI.getPunishmentAPI().setBan(args[0], msg);
+				TheAPI.getPunishmentAPI().ban(args[0], Loader.config.getString("BanSystem.Ban.Text").replace("%reason%", Loader.config.getString("BanSystem.Ban.Reason")));
 				return true;
 		}
 		if(args.length>=2) {
@@ -36,8 +34,7 @@ public class Ban implements CommandExecutor {
 				}
 				String msg = TheAPI.buildString(args);
 				msg=msg.replaceFirst(args[0]+" ", "");
-			TheAPI.getPunishmentAPI().setSilent(Loader.config.getBoolean("BanSystem.Broadcast-Silent"));
-			TheAPI.getPunishmentAPI().setBan(args[0], msg);
+			TheAPI.getPunishmentAPI().ban(args[0],Loader.config.getString("BanSystem.Ban.Text").replace("%reason%", Loader.config.getString("BanSystem.Ban.Reason")));
 			return true;
 		}}
 		return true;

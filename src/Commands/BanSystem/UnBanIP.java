@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.PlayerBanList;
 import me.Straiker123.TheAPI;
 
 public class UnBanIP implements CommandExecutor {
@@ -16,21 +17,19 @@ public class UnBanIP implements CommandExecutor {
 			Loader.Help(s, "/UnBanIP <player>", "BanSystem.UnBanIP");
 			return true;
 		}
-		if(args.length==1) {
-			if(TheAPI.getPunishmentAPI().hasBanIP(args[0])||TheAPI.getPunishmentAPI().hasTempBanIP(args[0])) {
+		PlayerBanList p  =TheAPI.getPunishmentAPI().getBanList(args[0]);
+			if(p.isIPBanned()||p.isTempIPBanned()) {
 				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.UnBanIP").replace("%player%", args[0]).replace("%playername%", args[0]),s);
 
-				TheAPI.getPunishmentAPI().unBanIP(args[0]);
-				TheAPI.getPunishmentAPI().unTempBanIP(args[0]);
-				TheAPI.broadcast(Loader.s("Prefix")+Loader.s("BanSystem.Broadcast.UnBanIP")
-						.replace("%operator%", s.getName()).replace("%player%", args[0])
-						.replace("%playername%", BanSystem.getName(args[0])), "servercontrol.UnBanIP");
+				TheAPI.getPunishmentAPI().unbanIP(args[0]);
 				return true;
 				}
-			BanSystem.notExist(s, args);
+			if(TheAPI.existsUser(args[0])) Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.PlayerHasNotBan")
+			.replace("%player%", args[0]).replace("%playername%", args[0]),s);else
+				Loader.msg(Loader.PlayerNotEx(args[0]),s);
 			return true;
 			
-		}}return true;
+		}return true;
 	}
 
 }

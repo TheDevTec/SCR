@@ -55,7 +55,7 @@ public class AFkPlayerEvents implements Listener {
 					   .replace("%playername%", e.getPlayer().getDisplayName()));
 		  	  if(Loader.afk.containsKey(e.getPlayer().getName()))
 		   Loader.afk.get(e.getPlayer().getName()).save();
-			if(API.getBanSystemAPI().hasJail(e.getPlayer()))e.setCancelled(true);
+			if(TheAPI.getPunishmentAPI().getBanList(e.getPlayer().getName()).isJailed()||TheAPI.getPunishmentAPI().getBanList(e.getPlayer().getName()).isTempJailed())e.setCancelled(true);
 	   }
 	   @EventHandler(priority = EventPriority.LOWEST)
 	   public void onCaughtFish(PlayerFishEvent e) {
@@ -73,6 +73,6 @@ public class AFkPlayerEvents implements Listener {
 					   .replace("%playername%", e.getPlayer().getDisplayName()));
 		  	  if(Loader.afk.containsKey(e.getPlayer().getName()))
 		   Loader.afk.get(e.getPlayer().getName()).save();
-			if(API.getBanSystemAPI().hasJail(e.getPlayer()))e.setCancelled(true);
+			if(TheAPI.getPunishmentAPI().getBanList(e.getPlayer().getName()).isJailed()||TheAPI.getPunishmentAPI().getBanList(e.getPlayer().getName()).isTempJailed())e.setCancelled(true);
 	   }
 }
