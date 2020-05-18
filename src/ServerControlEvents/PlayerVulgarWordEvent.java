@@ -11,13 +11,14 @@ public class PlayerVulgarWordEvent extends Event implements Cancellable {
 	Player player;
 	String edited;
 	String message;
-    boolean canceled;
-	
+	boolean canceled;
+
 	public PlayerVulgarWordEvent(Player p, String edited, String normal) {
-		player=p;
-		this.edited=edited;
-		message=normal;
+		player = p;
+		this.edited = edited;
+		message = normal;
 	}
+
 	public String getWord() {
 		return API.getValueOfVulgarWord(edited);
 	}
@@ -29,14 +30,14 @@ public class PlayerVulgarWordEvent extends Event implements Cancellable {
 	public Player getPlayer() {
 		return player;
 	}
-	
+
 	private static final HandlerList handler = new HandlerList();
-	
+
 	@Override
 	public HandlerList getHandlers() {
 		return handler;
 	}
-	
+
 	public static HandlerList getHandlerList() {
 		return handler;
 	}
@@ -48,5 +49,6 @@ public class PlayerVulgarWordEvent extends Event implements Cancellable {
 
 	@Override
 	public void setCancelled(boolean cancel) {
-			canceled=cancel;
-	}}
+		canceled = cancel;
+	}
+}

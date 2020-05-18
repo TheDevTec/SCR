@@ -16,19 +16,21 @@ public class KillAll implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.KillAll")) {
+		if (API.hasPerm(s, "ServerControl.KillAll")) {
 			int amount = 0;
 			List<String> pl = new ArrayList<String>();
-			for(Player p :TheAPI.getOnlinePlayers()) {
+			for (Player p : TheAPI.getOnlinePlayers()) {
 				boolean i = p.isDead();
 				p.setHealth(0);
-				if(p.isDead() &&!i) {
-				pl.add(p.getName());
-				++amount;
+				if (p.isDead() && !i) {
+					pl.add(p.getName());
+					++amount;
 				}
 			}
-				Loader.msg(Loader.s("Kill.KilledAll").replace("%amount%", amount+"").replace("%players%", TheAPI.getStringUtils().join(pl,",")), s);
-				return true;
+			Loader.msg(Loader.s("Kill.KilledAll").replace("%amount%", amount + "").replace("%players%",
+					TheAPI.getStringUtils().join(pl, ",")), s);
+			return true;
 		}
 		return true;
-	}}
+	}
+}

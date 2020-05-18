@@ -10,17 +10,18 @@ public class PlayerBlockedCommandEvent extends Event implements Cancellable {
 	Player player;
 	String message;
 	String sd;
-    boolean canceled=true;
-	
-	public PlayerBlockedCommandEvent(Player p, String m,String ww) {
-		player=p;
-		message=m;
-		sd=ww;
+	boolean canceled = true;
+
+	public PlayerBlockedCommandEvent(Player p, String m, String ww) {
+		player = p;
+		message = m;
+		sd = ww;
 	}
 
 	public String getCommand() {
 		return message;
 	}
+
 	public String getBlockCommand() {
 		return sd;
 	}
@@ -28,14 +29,14 @@ public class PlayerBlockedCommandEvent extends Event implements Cancellable {
 	public Player getPlayer() {
 		return player;
 	}
-	
+
 	private static final HandlerList handler = new HandlerList();
-	
+
 	@Override
 	public HandlerList getHandlers() {
 		return handler;
 	}
-	
+
 	public static HandlerList getHandlerList() {
 		return handler;
 	}
@@ -47,5 +48,6 @@ public class PlayerBlockedCommandEvent extends Event implements Cancellable {
 
 	@Override
 	public void setCancelled(boolean cancel) {
-			canceled=cancel;
-	}}
+		canceled = cancel;
+	}
+}

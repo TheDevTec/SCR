@@ -13,25 +13,27 @@ public class Craft implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.Workbench")) {
-			if(s instanceof Player) {
-				if(args.length==0) {
-					Loader.msg(Loader.s("Prefix")+Loader.s("Inventory.OpeningCraftTable"), s);
-					((Player)s).openWorkbench(((Player) s).getLocation(), true);
+		if (API.hasPerm(s, "ServerControl.Workbench")) {
+			if (s instanceof Player) {
+				if (args.length == 0) {
+					Loader.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningCraftTable"), s);
+					((Player) s).openWorkbench(((Player) s).getLocation(), true);
 					return true;
 				}
-				if(args.length==1) {
+				if (args.length == 1) {
 					Player t = TheAPI.getPlayer(args[0]);
-					if(t==null) {
+					if (t == null) {
 						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
 					}
-					Loader.msg(Loader.s("Prefix")+Loader.s("Inventory.OpeningCraftTableForTarget").replace("%target%",t.getDisplayName()), s);
-					((Player)t).openWorkbench(((Player) t).getLocation(), true);
+					Loader.msg(Loader.s("Prefix")
+							+ Loader.s("Inventory.OpeningCraftTableForTarget").replace("%target%", t.getDisplayName()),
+							s);
+					t.openWorkbench(t.getLocation(), true);
 					return true;
 				}
 			}
-			Loader.msg(Loader.s("Prefix")+Loader.s("ConsoleErrorMessage"), s);
+			Loader.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

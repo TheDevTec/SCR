@@ -13,24 +13,29 @@ public class UnJail implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.unJail")) {
-			if(args.length==0) { 
+		if (API.hasPerm(s, "ServerControl.unJail")) {
+			if (args.length == 0) {
 				Loader.Help(s, "/unJail <player>", "BanSystem.unJail");
 				return true;
 			}
-			if(args.length==1) {
-				if(TheAPI.existsUser(args[0])) {
+			if (args.length == 1) {
+				if (TheAPI.existsUser(args[0])) {
 					TheAPI.getUser(args[0]).set("Jail", null);
 					TheAPI.getUser(args[0]).setAndSave("TempJail", null);
-					if(TheAPI.getPlayer(args[0])!=null)
+					if (TheAPI.getPlayer(args[0]) != null)
 						API.teleportPlayer(TheAPI.getPlayer(args[0]), TeleportLocation.SPAWN);
-					Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.unJailed")
-					.replace("%playername%", args[0])
-					.replace("%player%", args[0]), s);
+					Loader.msg(Loader.s("Prefix") + Loader.s("BanSystem.unJailed").replace("%playername%", args[0])
+							.replace("%player%", args[0]), s);
 					return true;
 				}
-				if(TheAPI.existsUser(args[0])) Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.PlayerHasNotBan")
-				.replace("%player%", args[0]).replace("%playername%", args[0]),s);else
-					Loader.msg(Loader.PlayerNotEx(args[0]),s);
+				if (TheAPI.existsUser(args[0]))
+					Loader.msg(Loader.s("Prefix") + Loader.s("BanSystem.PlayerHasNotBan").replace("%player%", args[0])
+							.replace("%playername%", args[0]), s);
+				else
+					Loader.msg(Loader.PlayerNotEx(args[0]), s);
 				return true;
-			}}return true;}}
+			}
+		}
+		return true;
+	}
+}

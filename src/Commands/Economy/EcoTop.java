@@ -19,60 +19,62 @@ import me.Straiker123.RankingAPI;
 import me.Straiker123.TheAPI;
 
 public class EcoTop implements CommandExecutor {
-	//world, rankingapi
-	MultiMap<String> h= TheAPI.getMultiMap();
+	// world, rankingapi
+	MultiMap<String> h = TheAPI.getMultiMap();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(TheAPI.getEconomyAPI().getEconomy()==null) {
-			Loader.msg(Loader.s("Prefix")+"&cMissing Vault plugin for economy.",s);
+		if (TheAPI.getEconomyAPI().getEconomy() == null) {
+			Loader.msg(Loader.s("Prefix") + "&cMissing Vault plugin for economy.", s);
 			return true;
 		}
-				if (API.hasPerm(s, "ServerControl.BalanceTop")) {
-					String world = Bukkit.getWorlds().get(0).getName();
-					if(s instanceof Player)world=((Player) s).getWorld().getName();
-						RankingAPI m = (h.containsKey(world) ? (RankingAPI)h.getValues(world).get(0) : null);
-					if(TheAPI.getCooldownAPI("scr.baltop").expired("scr")||m==null) {
-						TheAPI.getCooldownAPI("scr.baltop").createCooldown("scr", 300); //5min update
-						HashMap<String, Double> money = new HashMap<String, Double>();
-						for (UUID sa : TheAPI.getUsers()) {
-							money.put(Bukkit.getOfflinePlayer(sa).getName(), TheAPI.getEconomyAPI().getBalance(Bukkit.getOfflinePlayer(sa).getName(),world));
-						}
-						if(m!=null)
-						h.remove(world);
-						m=TheAPI.getRankingAPI(money);
-						h.put(world,m);
-					}
-					List<String> list = new ArrayList<String>();
-					for(Object o : m.getKeySet()) {
-						list.add(o.toString()+":"+m.getValue(o));
-					}
-					Pagination<String> g=new Pagination<>(10, list);
-							Loader.msg(Loader.s("Prefix") +"&e----------------- &bTOP 10 Players &e-----------------", s);
-							Loader.msg("",s);
-							int page = 1;
-							if(args.length!=0)
-								page=TheAPI.getStringUtils().getInt(args[0]);
-							if(g.totalPages() < page)page=g.totalPages();
-							if(1 > page)page=1;
-							--page;
-							HashMap<String, Double> money = new HashMap<String, Double>();
-							for (String sa : g.getPage(page)) {
-								String[] f = sa.split(":");
-								money.put(f[0], TheAPI.getStringUtils().getDouble(f[1]));
-							}
-							RankingAPI ms =TheAPI.getRankingAPI(money);
-							for (int i = 1; i <ms.getKeySet().size()+1; i++) {
-								String player = ms.getObject(i).toString();
-								Loader.msg(Loader.config.getString("Options.Economy.BalanceTop")
-										.replace("%position%",i+"")
-										.replace("%player%", player)
-										.replace("%playername%", player(player))
-										.replace("%money%", API.setMoneyFormat(m.getValue(player), true)), s);
-							}
-							return true;
+		if (API.hasPerm(s, "ServerControl.BalanceTop")) {
+			String world = Bukkit.getWorlds().get(0).getName();
+			if (s instanceof Player)
+				world = ((Player) s).getWorld().getName();
+			RankingAPI m = (h.containsKey(world) ? (RankingAPI) h.getValues(world).get(0) : null);
+			if (TheAPI.getCooldownAPI("scr.baltop").expired("scr") || m == null) {
+				TheAPI.getCooldownAPI("scr.baltop").createCooldown("scr", 300); // 5min update
+				HashMap<String, Double> money = new HashMap<String, Double>();
+				for (UUID sa : TheAPI.getUsers()) {
+					money.put(Bukkit.getOfflinePlayer(sa).getName(),
+							TheAPI.getEconomyAPI().getBalance(Bukkit.getOfflinePlayer(sa).getName(), world));
 				}
-				return true;
+				if (m != null)
+					h.remove(world);
+				m = TheAPI.getRankingAPI(money);
+				h.put(world, m);
+			}
+			List<String> list = new ArrayList<String>();
+			for (Object o : m.getKeySet()) {
+				list.add(o.toString() + ":" + m.getValue(o));
+			}
+			Pagination<String> g = new Pagination<>(10, list);
+			Loader.msg(Loader.s("Prefix") + "&e----------------- &bTOP 10 Players &e-----------------", s);
+			Loader.msg("", s);
+			int page = 1;
+			if (args.length != 0)
+				page = TheAPI.getStringUtils().getInt(args[0]);
+			if (g.totalPages() < page)
+				page = g.totalPages();
+			if (1 > page)
+				page = 1;
+			--page;
+			HashMap<String, Double> money = new HashMap<String, Double>();
+			for (String sa : g.getPage(page)) {
+				String[] f = sa.split(":");
+				money.put(f[0], TheAPI.getStringUtils().getDouble(f[1]));
+			}
+			RankingAPI ms = TheAPI.getRankingAPI(money);
+			for (int i = 1; i < ms.getKeySet().size() + 1; i++) {
+				String player = ms.getObject(i).toString();
+				Loader.msg(Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", i + "")
+						.replace("%player%", player).replace("%playername%", player(player))
+						.replace("%money%", API.setMoneyFormat(m.getValue(player), true)), s);
+			}
+			return true;
+		}
+		return true;
 	}
 
 	public String player(String s) {

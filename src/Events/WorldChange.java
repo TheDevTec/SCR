@@ -15,7 +15,7 @@ import Utils.setting;
 public class WorldChange implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSleep(PlayerBedEnterEvent e) {
-		if(setting.singeplayersleep) {
+		if (setting.singeplayersleep) {
 			e.getPlayer().getWorld().setTime(1000);
 		}
 	}
@@ -24,24 +24,26 @@ public class WorldChange implements Listener {
 	public void OnPlayerWorldChangeEvent(PlayerChangedWorldEvent e) {
 		SPlayer a = new SPlayer(e.getPlayer());
 		a.createEconomyAccount();
-		if(a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
+		if (a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
 			a.enableFly();
-		else
-			if(a.hasTempFlyEnabled())a.enableTempFly();
-		if(a.hasPermission("servercontrol.god") && a.hasGodEnabled())
-		a.enableGod();
+		else if (a.hasTempFlyEnabled())
+			a.enableTempFly();
+		if (a.hasPermission("servercontrol.god") && a.hasGodEnabled())
+			a.enableGod();
 		a.setGamamode();
-		if(Loader.scFile.getBoolean("Scoreboard-PerWorld"))
+		if (Loader.scFile.getBoolean("Scoreboard-PerWorld"))
 			ScoreboardStats.createScoreboard(e.getPlayer());
-		
-		}
+
+	}
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChangeGamamode(PlayerGameModeChangeEvent e) {
 		SPlayer a = new SPlayer(e.getPlayer());
-		if(a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
+		if (a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
 			a.enableFly();
-		else
-			if(a.hasTempFlyEnabled())a.enableTempFly();
-		if(a.hasPermission("servercontrol.god") && a.hasGodEnabled())
-		a.enableGod();
-		}}
+		else if (a.hasTempFlyEnabled())
+			a.enableTempFly();
+		if (a.hasPermission("servercontrol.god") && a.hasGodEnabled())
+			a.enableGod();
+	}
+}

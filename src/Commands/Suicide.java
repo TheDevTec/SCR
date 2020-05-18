@@ -13,12 +13,12 @@ public class Suicide implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.Suicide")){
-			if(s instanceof Player) {
-				Player p = (Player)s;
+		if (API.hasPerm(s, "ServerControl.Suicide")) {
+			if (s instanceof Player) {
+				Player p = (Player) s;
 				p.setHealth(0);
-				if(p.isDead())
-					TheAPI.broadcastMessage(API.replacePlayerName(Loader.s("Kill.Suicide"),p));
+				if (p.isDead())
+					TheAPI.broadcastMessage(API.replacePlayerName(Loader.s("Kill.Suicide"), p));
 				return true;
 			}
 			Loader.Help(s, "/Kill <player>", "Kill");

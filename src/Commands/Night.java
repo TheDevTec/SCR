@@ -15,45 +15,55 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.Loader;
 
-public class Night implements CommandExecutor, TabCompleter{
+public class Night implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 
-		if(args.length==0) {
-			if(s instanceof Player) {
-			if(API.hasPerm(s, "ServerControl.Night")) {
-				((Player) s).getLocation().getWorld().setTime(13000);
-				Loader.msg(Loader.s("Prefix")+Loader.s("Time.Night")
-				.replace("%world%", ((Player) s).getLocation().getWorld().getName())
-						,s);
+		if (args.length == 0) {
+			if (s instanceof Player) {
+				if (API.hasPerm(s, "ServerControl.Night")) {
+					((Player) s).getLocation().getWorld().setTime(13000);
+					Loader.msg(Loader.s("Prefix") + Loader.s("Time.Night").replace("%world%",
+							((Player) s).getLocation().getWorld().getName()), s);
+					return true;
+				}
 				return true;
-			}return true;}
+			}
 			Loader.Help(s, "/Night <world>", "Time");
 			return true;
 		}
-		if(args.length==1) {
-			if(API.hasPerm(s, "ServerControl.Night")) {
-			if(Bukkit.getWorld(args[0])!=null) {
-				Bukkit.getWorld(args[0]).setTime(13000);
-				Loader.msg(Loader.s("Prefix")+Loader.s("Time.Night")
-				.replace("%world%", args[0]),s);
+		if (args.length == 1) {
+			if (API.hasPerm(s, "ServerControl.Night")) {
+				if (Bukkit.getWorld(args[0]) != null) {
+					Bukkit.getWorld(args[0]).setTime(13000);
+					Loader.msg(Loader.s("Prefix") + Loader.s("Time.Night").replace("%world%", args[0]), s);
+					return true;
+				}
+				Loader.msg(Loader.s("Prefix") + Loader.s("Time.WorldNotExists").replace("%world%", args[0]), s);
 				return true;
 			}
-			Loader.msg(Loader.s("Prefix")+Loader.s("Time.WorldNotExists")
-			.replace("%world%", args[0]),s);return true;
-			}return true;}
+			return true;
+		}
 		return false;
+	}
+
+	public List<String> worlds() {
+		List<String> list = new ArrayList<String>();
+		for (World p2 : Bukkit.getWorlds()) {
+			list.add(p2.getName());
+		}
+		return list;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
+		List<String> c = new ArrayList<>();
+		if (cmd.getName().equalsIgnoreCase("Night") && args.length == 1) {
+			if (s.hasPermission("ServerControl.Night")) {
+				c.addAll(StringUtil.copyPartialMatches(args[0], worlds(), new ArrayList<>()));
+			}
+		}
+		return c;
+	}
 }
-	  public List<String> worlds() {
-	        List<String> list = new ArrayList<String>();
-	        for (World p2 : Bukkit.getWorlds()) {
-	                list.add(p2.getName());}
-	        return list;}
-  @Override
-  public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-  	List<String> c = new ArrayList<>();
-  	if(cmd.getName().equalsIgnoreCase("Night") && args.length==1) {
-      	if(s.hasPermission("ServerControl.Night")) {
-      		c.addAll(StringUtil.copyPartialMatches(args[0], worlds(), new ArrayList<>()));}}
-      return c;}}

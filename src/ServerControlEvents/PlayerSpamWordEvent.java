@@ -12,13 +12,14 @@ public class PlayerSpamWordEvent extends Event implements Cancellable {
 	Player player;
 	String word;
 	String message;
-    boolean canceled;
-	
-	public PlayerSpamWordEvent(Player p, String w,String m) {
-		player=p;
-		word=w;
-		message=m;
+	boolean canceled;
+
+	public PlayerSpamWordEvent(Player p, String w, String m) {
+		player = p;
+		word = w;
+		message = m;
 	}
+
 	public String getWord() {
 		return API.getValueOfSpamWord(word);
 	}
@@ -30,14 +31,14 @@ public class PlayerSpamWordEvent extends Event implements Cancellable {
 	public Player getPlayer() {
 		return player;
 	}
-	
+
 	private static final HandlerList handler = new HandlerList();
-	
+
 	@Override
 	public HandlerList getHandlers() {
 		return handler;
 	}
-	
+
 	public static HandlerList getHandlerList() {
 		return handler;
 	}
@@ -49,5 +50,6 @@ public class PlayerSpamWordEvent extends Event implements Cancellable {
 
 	@Override
 	public void setCancelled(boolean cancel) {
-			canceled=cancel;
-	}}
+		canceled = cancel;
+	}
+}

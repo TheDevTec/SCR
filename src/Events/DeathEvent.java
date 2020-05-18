@@ -18,27 +18,29 @@ import Utils.setting;
 import Utils.setting.DeathTp;
 import me.Straiker123.TheAPI;
 import me.Straiker123.User;
+
 public class DeathEvent implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PlayerDeath(PlayerAdvancementDoneEvent e) {
 		TabList.setNameTag(e.getPlayer());
 	}
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PlayerDeath(PlayerDeathEvent e) {
-		if(e.getEntity().getKiller() instanceof Player) {
+		if (e.getEntity().getKiller() instanceof Player) {
 			User s = TheAPI.getUser(e.getEntity().getKiller());
 			s.setAndSave("Kills", s.getInt("Kills") + 1);
 		}
 		Player p = e.getEntity();
 		API.setBack(p);
-		if(p.hasPermission("ServerControl.KeepInv")) {
-		e.setKeepInventory(true);
-		e.getDrops().clear();
+		if (p.hasPermission("ServerControl.KeepInv")) {
+			e.setKeepInventory(true);
+			e.getDrops().clear();
 		}
-		if(p.hasPermission("ServerControl.KeepExp")) {
-		e.setKeepLevel(true);
-		e.setDroppedExp(0);
+		if (p.hasPermission("ServerControl.KeepExp")) {
+			e.setKeepLevel(true);
+			e.setDroppedExp(0);
 		}
 		User s = TheAPI.getUser(p);
 		s.setAndSave("Deaths", s.getInt("Deaths") + 1);
@@ -47,28 +49,24 @@ public class DeathEvent implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void Respawn(PlayerRespawnEvent e) {
 		Player p = e.getPlayer();
-		if(TheAPI.getPunishmentAPI().getBanList(p.getName()).isJailed()||TheAPI.getPunishmentAPI().getBanList(p.getName()).isTempJailed())
-		e.setRespawnLocation((Location) Loader.config.get("Jails."+TheAPI.getUser(p).getString("Jail.Location")));
-		else
-			if(setting.deathspawnbol) {
-			if(setting.deathspawn == DeathTp.HOME)
+		if (TheAPI.getPunishmentAPI().getBanList(p.getName()).isJailed()
+				|| TheAPI.getPunishmentAPI().getBanList(p.getName()).isTempJailed())
+			e.setRespawnLocation((Location) Loader.config.get("Jails." + TheAPI.getUser(p).getString("Jail.Location")));
+		else if (setting.deathspawnbol) {
+			if (setting.deathspawn == DeathTp.HOME)
 				e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.HOME));
-			else
-			if(setting.deathspawn == DeathTp.BED)
+			else if (setting.deathspawn == DeathTp.BED)
 				e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.BED));
-			else
-			if(setting.deathspawn == DeathTp.SPAWN) {
+			else if (setting.deathspawn == DeathTp.SPAWN) {
 				e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.SPAWN));
-			Loader.msg(Loader.s("Spawn.TeleportedToSpawn")
-					.replace("%world%", ((Player)p).getWorld().getName())
-					.replace("%player%", p.getName())
-					.replace("%playername%", ((Player)p).getDisplayName())
-					, p);
-			}}
+				Loader.msg(Loader.s("Spawn.TeleportedToSpawn").replace("%world%", p.getWorld().getName())
+						.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
+			}
+		}
 		SPlayer a = new SPlayer(p);
-		if(a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
-		a.enableFly();
-		if(a.hasPermission("servercontrol.god") && a.hasGodEnabled())
-		a.enableGod();
+		if (a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
+			a.enableFly();
+		if (a.hasPermission("servercontrol.god") && a.hasGodEnabled())
+			a.enableGod();
 	}
-	}
+}

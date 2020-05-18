@@ -9,11 +9,11 @@ public class PlayerAdvertisementEvent extends Event implements Cancellable {
 
 	Player player;
 	String message;
-    boolean canceled;
-	
+	boolean canceled;
+
 	public PlayerAdvertisementEvent(Player p, String m) {
-		player=p;
-		message=m;
+		player = p;
+		message = m;
 	}
 
 	public String getMessage() {
@@ -23,14 +23,14 @@ public class PlayerAdvertisementEvent extends Event implements Cancellable {
 	public Player getPlayer() {
 		return player;
 	}
-	
+
 	private static final HandlerList handler = new HandlerList();
-	
+
 	@Override
 	public HandlerList getHandlers() {
 		return handler;
 	}
-	
+
 	public static HandlerList getHandlerList() {
 		return handler;
 	}
@@ -42,5 +42,6 @@ public class PlayerAdvertisementEvent extends Event implements Cancellable {
 
 	@Override
 	public void setCancelled(boolean cancel) {
-			canceled=cancel;
-	}}
+		canceled = cancel;
+	}
+}

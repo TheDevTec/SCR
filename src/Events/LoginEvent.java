@@ -16,53 +16,62 @@ import Utils.setting;
 import me.Straiker123.TheAPI;
 
 public class LoginEvent implements Listener {
-public Loader plugin=Loader.getInstance;
+	public Loader plugin = Loader.getInstance;
+
 	private void bc(Player p) {
-				if(setting.vip_join) {
-					TheAPI.broadcastMessage(Loader.config.getString("Options.VIPSlots.Text.BroadcastVIPJoin")
-							.replace("%players_max%", String.valueOf(TheAPI.getMaxPlayers() + (setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)))
+		if (setting.vip_join) {
+			TheAPI.broadcastMessage(
+					Loader.config.getString("Options.VIPSlots.Text.BroadcastVIPJoin")
+							.replace("%players_max%", String.valueOf(TheAPI.getMaxPlayers()
+									+ (setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)))
 							.replace("%online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
-							.replace("%player%", p.getName())
-							.replace("%playername%", p.getDisplayName())
+							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 							.replace("%prefix%", Loader.s("Prefix"))
-							.replace("%time%",setting.format_time.format(new Date()))
-							.replace("%date%",setting.format_date.format(new Date()))
-							.replace("%date-time%",setting.format_date_time.format(new Date())));
-					}}
+							.replace("%time%", setting.format_time.format(new Date()))
+							.replace("%date%", setting.format_date.format(new Date()))
+							.replace("%date-time%", setting.format_date_time.format(new Date())));
+		}
+	}
+
 	FileConfiguration f = Loader.config;
 	String kickString;
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void JoinEvent(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
 		Loader.setupChatFormat(p);
-		if(setting.lock_server && !p.hasPermission("ServerControl.Maintenance")) {
-			String kickString="";
-			for(String sk : f.getStringList("Options.Maintenance.KickMessages")) {
-			      sk = sk.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName());
-			      kickString += sk + "\n";
-		}
+		if (setting.lock_server && !p.hasPermission("ServerControl.Maintenance")) {
+			String kickString = "";
+			for (String sk : f.getStringList("Options.Maintenance.KickMessages")) {
+				sk = sk.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName());
+				kickString += sk + "\n";
+			}
 			e.disallow(Result.KICK_OTHER, TheAPI.colorize(kickString));
 			return;
-			}
-		
-if(setting.vip && TheAPI.getMaxPlayers()==TheAPI.getOnlinePlayers().size()-1) {
-	boolean has = p.hasPermission("ServerControl.JoinFullServer");
-	int max = TheAPI.getMaxPlayers()+(setting.vip_add ? f.getInt("Options.VIPSlots.SlotsToAdd") : 0);
-		    Player randomPlayer = Tasks.players.isEmpty() ? null : TheAPI.getRandomPlayer();
-		    if(has) {
-			if (TheAPI.getMaxPlayers() > max && randomPlayer == null) {
-				e.disallow(Result.KICK_FULL, TheAPI.colorize(f.getString("Options.VIPSlots.FullServer")));
-				return;
-			}
-			if(setting.vip_kick) {
-			if (TheAPI.getMaxPlayers() > max && randomPlayer != null) {
-				Tasks.players.remove(randomPlayer.getName());
-				randomPlayer.kickPlayer(TheAPI.colorize(f.getString("Options.VIPSlots.Text.Kick")));
-				bc(p);
-				e.allow();
-				return;
-			}}}else
-			if (TheAPI.getOnlinePlayers().size() >= TheAPI.getMaxPlayers()) {
+		}
+
+		if (setting.vip && TheAPI.getMaxPlayers() == TheAPI.getOnlinePlayers().size() - 1) {
+			boolean has = p.hasPermission("ServerControl.JoinFullServer");
+			int max = TheAPI.getMaxPlayers() + (setting.vip_add ? f.getInt("Options.VIPSlots.SlotsToAdd") : 0);
+			Player randomPlayer = Tasks.players.isEmpty() ? null : TheAPI.getRandomPlayer();
+			if (has) {
+				if (TheAPI.getMaxPlayers() > max && randomPlayer == null) {
+					e.disallow(Result.KICK_FULL, TheAPI.colorize(f.getString("Options.VIPSlots.FullServer")));
+					return;
+				}
+				if (setting.vip_kick) {
+					if (TheAPI.getMaxPlayers() > max && randomPlayer != null) {
+						Tasks.players.remove(randomPlayer.getName());
+						randomPlayer.kickPlayer(TheAPI.colorize(f.getString("Options.VIPSlots.Text.Kick")));
+						bc(p);
+						e.allow();
+						return;
+					}
+				}
+			} else if (TheAPI.getOnlinePlayers().size() >= TheAPI.getMaxPlayers()) {
 				e.disallow(Result.KICK_FULL, TheAPI.colorize(f.getString("Options.VIPSlots.Text.Kick")));
 				return;
-			}}}}
+			}
+		}
+	}
+}

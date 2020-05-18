@@ -13,23 +13,25 @@ public class SetJail implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.setJail")) {
-			if(s instanceof Player) {
-			if(args.length==0) {
-				Loader.Help(s, "/setJail <name>", "BanSystem.setJail");
-				return true;
-			}
-			if(args.length==1) {
-				if(TheAPI.getPunishmentAPI().getjails().contains(args[0])) {
-					Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.JailAlreadyExist").replace("%jail%", args[0]), s);
+		if (API.hasPerm(s, "ServerControl.setJail")) {
+			if (s instanceof Player) {
+				if (args.length == 0) {
+					Loader.Help(s, "/setJail <name>", "BanSystem.setJail");
 					return true;
 				}
-				Player p = (Player)s;
-				TheAPI.getPunishmentAPI().setjail(p.getLocation(), args[0]);
-				Loader.msg(Loader.s("Prefix")+Loader.s("BanSystem.CreatedJail").replace("%jail%", args[0]), s);
-				return true;
+				if (args.length == 1) {
+					if (TheAPI.getPunishmentAPI().getjails().contains(args[0])) {
+						Loader.msg(
+								Loader.s("Prefix") + Loader.s("BanSystem.JailAlreadyExist").replace("%jail%", args[0]),
+								s);
+						return true;
+					}
+					Player p = (Player) s;
+					TheAPI.getPunishmentAPI().setjail(p.getLocation(), args[0]);
+					Loader.msg(Loader.s("Prefix") + Loader.s("BanSystem.CreatedJail").replace("%jail%", args[0]), s);
+					return true;
+				}
 			}
-		}
 			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}

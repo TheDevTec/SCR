@@ -14,39 +14,42 @@ public class EnderChest implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.EnderChest")) {
-			if(s instanceof Player) {
-				if(args.length==0) {
-					Loader.msg(Loader.s("Prefix")+Loader.s("Inventory.OpeningEnderChest"), s);
-					TheAPI.getPlayerAPI((Player)s).invsee((Player)s, InvseeType.ENDERCHEST);
+		if (API.hasPerm(s, "ServerControl.EnderChest")) {
+			if (s instanceof Player) {
+				if (args.length == 0) {
+					Loader.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChest"), s);
+					TheAPI.getPlayerAPI((Player) s).invsee((Player) s, InvseeType.ENDERCHEST);
 					return true;
 				}
-				if(args.length==1) {
+				if (args.length == 1) {
 					Player p = TheAPI.getPlayer(args[0]);
-					if(p==null) {
+					if (p == null) {
 						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
-					} 
-					Loader.msg(Loader.s("Prefix")+Loader.s("Inventory.OpeningEnderChestOther").replace("%playername%",p.getDisplayName()), s);
-					TheAPI.getPlayerAPI((Player)s).invsee((Player)p, InvseeType.ENDERCHEST);
+					}
+					Loader.msg(Loader.s("Prefix")
+							+ Loader.s("Inventory.OpeningEnderChestOther").replace("%playername%", p.getDisplayName()),
+							s);
+					TheAPI.getPlayerAPI((Player) s).invsee(p, InvseeType.ENDERCHEST);
 					return true;
-					
+
 				}
-				if(args.length==2) {
+				if (args.length == 2) {
 					Player p = TheAPI.getPlayer(args[0]);
-					Player t = TheAPI.getPlayer(args[1]); 
-					if(p==null) {
+					Player t = TheAPI.getPlayer(args[1]);
+					if (p == null) {
 						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
-					} 
-					if(t==null) {
+					}
+					if (t == null) {
 						Loader.msg(Loader.PlayerNotOnline(args[1]), s);
 						return true;
 					}
-					Loader.msg(Loader.s("Prefix")+Loader.s("Inventory.OpeningEnderChestOther").replace("%playername%",p.getDisplayName()).replace("%target%",t.getDisplayName()), s);
-					TheAPI.getPlayerAPI((Player)t).invsee((Player)p, InvseeType.ENDERCHEST);
+					Loader.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChestOther")
+							.replace("%playername%", p.getDisplayName()).replace("%target%", t.getDisplayName()), s);
+					TheAPI.getPlayerAPI(t).invsee(p, InvseeType.ENDERCHEST);
 					return true;
-					
+
 				}
 			}
 			Loader.msg(Loader.s("ConsoleErrorMessage"), s);

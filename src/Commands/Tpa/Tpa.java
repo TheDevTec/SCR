@@ -17,50 +17,53 @@ public class Tpa implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender f, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(f, "ServerControl.Tpa")) {
-			if(f instanceof Player) {
-				Player s = (Player)f;
-			if(args.length==0) {
-				Loader.Help(s, "/Tpa <player>", "TpaSystem.Tpa");
-				return true;
-			}
-			if(args.length==1) {
-				Player d = TheAPI.getPlayer(args[0]);
-				if(d==null) {
-					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+		if (API.hasPerm(f, "ServerControl.Tpa")) {
+			if (f instanceof Player) {
+				Player s = (Player) f;
+				if (args.length == 0) {
+					Loader.Help(s, "/Tpa <player>", "TpaSystem.Tpa");
 					return true;
-				}else {
-					String p = d.getName();
-					if(s!=d) {
-						if(!TheAPI.getUser(d).getBoolean("TpBlock."+s.getName())&&!TheAPI.getUser(d).getBoolean("TpBlock-Global")) {
-						
-						if(!RequestMap.containsRequest(p,s.getName())) {
-						Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaSender").replace("%playername%", d.getDisplayName())
-								.replace("%player%", p), s);
-						Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaTarget").replace("%playername%", ((Player) s).getDisplayName())
-								.replace("%player%", s.getName()), d);
-					RequestMap.addRequest(s.getName(), p, RequestMap.Type.TPA);
-					return true;
-					}else {
-						Loader.msg(Loader.s("Prefix")+API.replacePlayerName(Loader.s("TpaSystem.AlreadyHaveRequest"),p), s);
+				}
+				if (args.length == 1) {
+					Player d = TheAPI.getPlayer(args[0]);
+					if (d == null) {
+						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+						return true;
+					} else {
+						String p = d.getName();
+						if (s != d) {
+							if (!TheAPI.getUser(d).getBoolean("TpBlock." + s.getName())
+									&& !TheAPI.getUser(d).getBoolean("TpBlock-Global")) {
+
+								if (!RequestMap.containsRequest(p, s.getName())) {
+									Loader.msg(
+											Loader.s("Prefix") + Loader.s("TpaSystem.TpaSender")
+													.replace("%playername%", d.getDisplayName()).replace("%player%", p),
+											s);
+									Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaTarget")
+											.replace("%playername%", s.getDisplayName())
+											.replace("%player%", s.getName()), d);
+									RequestMap.addRequest(s.getName(), p, RequestMap.Type.TPA);
+									return true;
+								} else {
+									Loader.msg(Loader.s("Prefix")
+											+ API.replacePlayerName(Loader.s("TpaSystem.AlreadyHaveRequest"), p), s);
+									return true;
+								}
+
+							}
+							Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlocked")
+									.replace("%playername%", d.getDisplayName()).replace("%player%", p), s);
+							return true;
+						}
+						Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.CantSendRequestToSelf")
+								.replace("%playername%", d.getDisplayName()).replace("%player%", p), s);
 						return true;
 					}
-					
 				}
-					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.TpaBlocked")
-					.replace("%playername%", d.getDisplayName())
-					.replace("%player%", p), s);
-					return true;
-				}
-					Loader.msg(Loader.s("Prefix")+Loader.s("TpaSystem.CantSendRequestToSelf")
-					.replace("%playername%", d.getDisplayName())
-					.replace("%player%", p), s);
-				return true;	
-				}
+				return true;
 			}
-			return true;
-			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"),f);
+			Loader.msg(Loader.s("ConsoleErrorMessage"), f);
 			return true;
 		}
 		return true;
@@ -69,10 +72,9 @@ public class Tpa implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		List<String> c = new ArrayList<>();
-			if(args.length==1)
+		if (args.length == 1)
 			return null;
-		
-		
+
 		return c;
 	}
 

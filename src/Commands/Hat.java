@@ -16,33 +16,32 @@ public class Hat implements CommandExecutor {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s, "ServerControl.Hat")) {
-			if(s instanceof Player) {
-				Player p = (Player)s;
-				if(p.getItemInHand().getType()==Material.AIR) {
+		if (API.hasPerm(s, "ServerControl.Hat")) {
+			if (s instanceof Player) {
+				Player p = (Player) s;
+				if (p.getItemInHand().getType() == Material.AIR) {
 					Loader.msg(Loader.s("Hat.HandIsEmpty"), s);
 					return true;
 				}
-				if(args.length==0) {
-					if(p.getInventory().getHelmet()!=null)
-					p.getInventory().addItem(p.getInventory().getHelmet());
+				if (args.length == 0) {
+					if (p.getInventory().getHelmet() != null)
+						p.getInventory().addItem(p.getInventory().getHelmet());
 					p.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
 					p.getInventory().setItemInHand(new ItemStack(Material.AIR));
 					Loader.msg(Loader.s("Hat.Equiped"), s);
 					return true;
 				}
-				if(args.length==1) {
+				if (args.length == 1) {
 					Player t = TheAPI.getPlayer(args[0]);
-					if(t== null) {
+					if (t == null) {
 						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
 					}
-					if(t.getInventory().getHelmet()!=null)
-					t.getInventory().addItem(t.getInventory().getHelmet());
+					if (t.getInventory().getHelmet() != null)
+						t.getInventory().addItem(t.getInventory().getHelmet());
 					t.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
 					p.getInventory().setItemInHand(new ItemStack(Material.AIR));
-					Loader.msg(Loader.s("Hat.EquipedToOther")
-							.replace("%target%", t.getName()), s);
+					Loader.msg(Loader.s("Hat.EquipedToOther").replace("%target%", t.getName()), s);
 					return true;
 				}
 			}

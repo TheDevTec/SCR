@@ -12,19 +12,26 @@ public class Helpop implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(API.hasPerm(s,"ServerControl.Helpop")) {
-		if(args.length==0) {
-			Loader.Help(s, "/Helpop <message>", "Helpop");
-			return true;
-		}
-		if(args.length>=1) {
-			TheAPI.broadcast(API.replacePlayerName(Loader.config.getString("Format.Helpop"), s.getName()).replace("%sender%", s.getName()).replace("%message%", TheAPI.buildString(args)), "ServerControl.Helpop.Receive");
-			if(!s.hasPermission("ServerControl.Helpop.Receive")) {
-				Loader.msg(API.replacePlayerName(Loader.config.getString("Format.Helpop"), s.getName()).replace("%sender%", s.getName()).replace("%message%", TheAPI.buildString(args)), s);
+		if (API.hasPerm(s, "ServerControl.Helpop")) {
+			if (args.length == 0) {
+				Loader.Help(s, "/Helpop <message>", "Helpop");
 				return true;
 			}
-			return true;
-		}}
+			if (args.length >= 1) {
+				TheAPI.broadcast(
+						API.replacePlayerName(Loader.config.getString("Format.Helpop"), s.getName())
+								.replace("%sender%", s.getName()).replace("%message%", TheAPI.buildString(args)),
+						"ServerControl.Helpop.Receive");
+				if (!s.hasPermission("ServerControl.Helpop.Receive")) {
+					Loader.msg(
+							API.replacePlayerName(Loader.config.getString("Format.Helpop"), s.getName())
+									.replace("%sender%", s.getName()).replace("%message%", TheAPI.buildString(args)),
+							s);
+					return true;
+				}
+				return true;
+			}
+		}
 		return true;
 	}
 }

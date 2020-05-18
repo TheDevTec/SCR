@@ -13,25 +13,28 @@ public class NickReset implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		
-			if(API.hasPerm(s, "ServerControl.Nickname")){
-			if(args.length==0) {
-				if(s instanceof Player) {
-				TheAPI.getUser(s.getName()).setAndSave("DisplayName", null);
-				Loader.msg(Loader.s("Prefix")+Loader.s("NicknameReseted"), s);
-				return true;
+
+		if (API.hasPerm(s, "ServerControl.Nickname")) {
+			if (args.length == 0) {
+				if (s instanceof Player) {
+					TheAPI.getUser(s.getName()).setAndSave("DisplayName", null);
+					Loader.msg(Loader.s("Prefix") + Loader.s("NicknameReseted"), s);
+					return true;
 				}
 				Loader.Help(s, "/NickReset <player>", "NickReset");
 				return true;
 			}
-		String a = args[0];
-		if(!TheAPI.existsUser(a)) {
-			Loader.msg(Loader.PlayerNotEx(a), s);
-		return true;
+			String a = args[0];
+			if (!TheAPI.existsUser(a)) {
+				Loader.msg(Loader.PlayerNotEx(a), s);
+				return true;
+			}
+			TheAPI.getUser(s.getName()).setAndSave("DisplayName", null);
+			Loader.msg(Loader.s("Prefix")
+					+ Loader.s("NicknameResetedOther").replace("%player%", a).replace("%playername%", a), s);
+			return true;
 		}
-		TheAPI.getUser(s.getName()).setAndSave("DisplayName", null);
-		Loader.msg(Loader.s("Prefix")+Loader.s("NicknameResetedOther").replace("%player%", a).replace("%playername%", a), s);
 		return true;
-	}return true;
-	
-}}
+
+	}
+}
