@@ -100,7 +100,7 @@ public class Tasks {
 					ScoreboardStats.createScoreboard(p);
 
 			}
-		}.repeatingAsync(20, r));
+		}.repeating(20, r));
 	}
 
 	private static void savetask() {
