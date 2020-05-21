@@ -2,7 +2,6 @@ package Events;
 
 import java.util.Date;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,6 +12,7 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 import ServerControl.Loader;
 import Utils.Tasks;
 import Utils.setting;
+import me.Straiker123.ConfigAPI;
 import me.Straiker123.TheAPI;
 
 public class LoginEvent implements Listener {
@@ -33,7 +33,7 @@ public class LoginEvent implements Listener {
 		}
 	}
 
-	FileConfiguration f = Loader.config;
+	ConfigAPI f = Loader.config;
 	String kickString;
 
 	@EventHandler(priority = EventPriority.LOWEST)

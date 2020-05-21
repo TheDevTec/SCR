@@ -21,7 +21,7 @@ public class RAM implements CommandExecutor {
 				Loader.msg(Loader.s("Prefix") + "&e----------------- &bRAM &e-----------------", s);
 				Loader.msg("", s);
 				if (setting.ram) {
-					List<String> normal = Loader.TranslationsFile.getStringList("RAM.Info.Normal");
+					List<String> normal = Loader.trans.getStringList("RAM.Info.Normal");
 					for (String ss : normal) {
 
 						Loader.msg(
@@ -33,7 +33,7 @@ public class RAM implements CommandExecutor {
 					}
 					return true;
 				}
-				List<String> normal = Loader.TranslationsFile.getStringList("RAM.Info.Percent");
+				List<String> normal = Loader.trans.getStringList("RAM.Info.Percent");
 				for (String sss : normal) {
 					Loader.msg(Loader.s("Prefix")
 							+ sss.replace("%used_ram%", TheAPI.getMemoryAPI().getUsedMemory(true) + "")

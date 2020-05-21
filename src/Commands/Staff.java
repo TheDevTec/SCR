@@ -48,7 +48,7 @@ public class Staff implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (API.hasPerm(s, "ServerControl.Staff")) {
 			sortPlayers();
-			for (String a : Loader.TranslationsFile.getStringList("PlayerList.Staff")) {
+			for (String a : Loader.trans.getStringList("PlayerList.Staff")) {
 				Loader.msg(a.replace("%online%", p.size() + "").replace("%max_players%", Bukkit.getMaxPlayers() + "")
 						.replace("%prefix%", Loader.s("Prefix")).replace("%staff%", getStaff()), s);
 			}

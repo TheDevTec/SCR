@@ -2,10 +2,10 @@ package Utils;
 
 import java.text.SimpleDateFormat;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
+import me.Straiker123.ConfigAPI;
 
 public class setting {
 	public static enum DeathTp {
@@ -34,7 +34,7 @@ public class setting {
 	 **/
 	public static void load() {
 
-		FileConfiguration f = Loader.config;
+		ConfigAPI f = Loader.config;
 		format_date_time = new SimpleDateFormat(f.getString("Format.DateWithTime"));
 		format_time = new SimpleDateFormat(f.getString("Format.Time"));
 		format_date = new SimpleDateFormat(f.getString("Format.Date"));
@@ -94,8 +94,8 @@ public class setting {
 		tab_footer = Loader.tab.getBoolean("Footer-Enabled");
 		tab_nametag = Loader.tab.getBoolean("ModifyNameTags");
 		tab_sort = Loader.tab.getBoolean("SortTabList");
-		sb = Loader.scFile.getBoolean("Scoreboard-Enabled");
-		sb_world = Loader.scFile.getBoolean("Scoreboard-PerWorld");
+		sb = Loader.sb.getBoolean("Scoreboard-Enabled");
+		sb_world = Loader.sb.getBoolean("Scoreboard-PerWorld");
 		save = Loader.mw.getBoolean("SavingTask.Enabled");
 		vip = f.getBoolean("Options.VIPSlots.Use");
 		vip_add = f.getBoolean("Options.VIPSlots.AddSlots");

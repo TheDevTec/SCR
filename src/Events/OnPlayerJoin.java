@@ -4,7 +4,6 @@ package Events;
 import java.util.Date;
 
 import org.bukkit.Statistic;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,6 +19,7 @@ import ServerControl.SPlayer;
 import Utils.AFKV2;
 import Utils.Tasks;
 import Utils.setting;
+import me.Straiker123.ConfigAPI;
 import me.Straiker123.StringUtils;
 import me.Straiker123.TheAPI;
 import me.Straiker123.TheAPI.SudoType;
@@ -35,7 +35,7 @@ public class OnPlayerJoin implements Listener {
 
 	}
 
-	FileConfiguration f;
+	ConfigAPI f;
 	boolean music, join;
 	int firsttime;
 	StringUtils sd = TheAPI.getStringUtils();
@@ -96,7 +96,7 @@ public class OnPlayerJoin implements Listener {
 			d.set("FirstJoin", setting.format_date_time.format(new Date()));
 
 		if (!p.hasPlayedBefore() && setting.join_first) {
-			for (String ss : Loader.TranslationsFile.getStringList("OnJoin.FirstJoin.Messages")) {
+			for (String ss : Loader.trans.getStringList("OnJoin.FirstJoin.Messages")) {
 				Loader.msg(replaceAll(ss, p), p);
 			}
 			if (!TheAPI.isVanished(p))
@@ -114,7 +114,7 @@ public class OnPlayerJoin implements Listener {
 			API.teleportPlayer(p, TeleportLocation.SPAWN);
 		} else {
 			if (setting.join_motd) {
-				for (String ss : Loader.TranslationsFile.getStringList("OnJoin.Messages")) {
+				for (String ss : Loader.trans.getStringList("OnJoin.Messages")) {
 					Loader.msg(replaceAll(ss, p), p);
 				}
 			}

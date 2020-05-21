@@ -5,16 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ServerControl.Loader;
-import me.Straiker123.ConfigAPI;
-import me.Straiker123.TheAPI;
 
 public class Configs {
-	public static ConfigAPI trans = TheAPI.getConfig("ServerControlReloaded", "Translations");
-	public static ConfigAPI config = TheAPI.getConfig("ServerControlReloaded", "Config");
-	public static ConfigAPI sb = TheAPI.getConfig("ServerControlReloaded", "Scoreboard");
-	public static ConfigAPI tab = TheAPI.getConfig("ServerControlReloaded", "TabList");
-	public static ConfigAPI mw = TheAPI.getConfig("ServerControlReloaded", "MultiWorlds");
-	public static ConfigAPI kit = TheAPI.getConfig("ServerControlReloaded", "Kits");
 
 	public static void TranslationsLoading() {
 		Map<String, Object> c = new HashMap<String, Object>();
@@ -488,10 +480,9 @@ public class Configs {
 		c.put("Immune.OnOther", "&6You &aenabled &6immunity of player &a%target%");
 		c.put("Immune.OffOther", "&6You &cdisabled &6immunity of player &c%target%");
 		c.put("Immune.NoPunish", "&6You can't &c%punishment% %target%&6, his immunity is enabled.");
-		trans.setHeader("*************************\n" + "*** Created by DevTec ***\n" + "*************************\n");
-		trans.addDefaults(c);
-		trans.create();
-		Loader.TranslationsFile = trans.getConfig();
+		Loader.trans.setHeader("*************************\n" + "*** Created by DevTec ***\n" + "*************************\n");
+		Loader.trans.addDefaults(c);
+		Loader.trans.create();
 	}
 
 	public static void configLoading() {
@@ -509,7 +500,7 @@ public class Configs {
 		c.put("Options.Codes.Random-Command", Arrays.asList("eco give %player% 50", "eco give %player% 150",
 				"give %player% diamond 2", "give %player% iron_block 1", "xp give %player% 150"));
 		c.put("Options.Codes.Commands", Arrays.asList("eco give %player% 25"));
-		if (!config.existPath("Options.Disable-Items")) {
+		if (!Loader.config.existPath("Options.Disable-Items")) {
 			c.put("Options.Disable-Items.Worlds.Creative", Arrays.asList("Bedrock", "TNT", "TNT_Minecart"));
 			c.put("Options.Disable-Items.Worlds.world", Arrays.asList("Bedrock"));
 			c.put("Options.Disable-Items.Worlds.world_nether", Arrays.asList("Bedrock"));
@@ -549,7 +540,7 @@ public class Configs {
 		c.put("Options.Economy.BalanceTop", "&6%position%. &c%playername% &a&o(%money%&a&o)");
 		c.put("Options.Economy.Log", false);
 		c.put("Options.Economy.MultiEconomy.Use", false);
-		if (!config.existPath("Options.Economy.MultiEconomy.Types")) {
+		if (!Loader.config.existPath("Options.Economy.MultiEconomy.Types")) {
 			c.put("Options.Economy.MultiEconomy.Types.default",
 					Arrays.asList("world", "world_nether", "world_the_end"));
 			c.put("Options.Economy.MultiEconomy.Types.SkyBlock",
@@ -654,7 +645,7 @@ public class Configs {
 
 		c.put("BanSystem.Warn.Text", "&7----------\n&cWarning\n&cReason: &6%reason%\n&7----------");
 		c.put("BanSystem.Warn.Reason", "Unknown");
-		if (!config.existPath("BanSystem.Warn.Operations")) {
+		if (!Loader.config.existPath("BanSystem.Warn.Operations")) {
 			c.put("BanSystem.Warn.Operations.1.Commands", Arrays.asList("eco take %player% 20"));
 			c.put("BanSystem.Warn.Operations.1.Messages", Arrays.asList("&0[&4Warning&0] &cYou have last 20 warnings"));
 			c.put("BanSystem.Warn.Operations.5.Commands",
@@ -669,7 +660,7 @@ public class Configs {
 		c.put("BanSystem.Mute.DisableCmds", true);
 		c.put("BanSystem.Mute.DisabledCmds", Arrays.asList("m", "r", "tell", "msg", "message", "pm", "w", "say"));
 		c.put("Chat-Groups-Enabled", true);
-		if (!config.existPath("Chat-Groups.DefaultFormat")) {
+		if (!Loader.config.existPath("Chat-Groups.DefaultFormat")) {
 			c.put("Chat-Groups.DefaultFormat.Chat", "%player% &8> &f%message%");
 			c.put("Chat-Groups.DefaultFormat.Name", "&7%vault-group% &f%player%");
 			c.put("Chat-Groups.default.Chat", "%player% &8> &f%message%");
@@ -681,7 +672,7 @@ public class Configs {
 			c.put("Chat-Groups.owner.Chat", "%player% &8> &3%message%");
 			c.put("Chat-Groups.owner.Name", "&3&lOwner &f%player%");
 		}
-		if (!config.existPath("Homes.default")) {
+		if (!Loader.config.existPath("Homes.default")) {
 			c.put("Homes.default", 3);
 			c.put("Homes.vip", 3);
 			c.put("Homes.helper", 4);
@@ -753,7 +744,7 @@ public class Configs {
 		c.put("SpamWords.SimiliarMessage", true);
 		c.put("SpamWords.DoubledLetters.Use", true);
 		c.put("SpamWords.Words", Arrays.asList("?????", "!!!!!", "....."));
-		config.setHeader("+-------------------------------------------------------------------+ #\r\n"
+		Loader.config.setHeader("+-------------------------------------------------------------------+ #\r\n"
 				+ "| Info: https://dev.bukkit.org/projects/server-control-reloaded     | #\r\n"
 				+ "+-------------------------------------------------------------------+ #\r\n"
 				+ "Options for RespawnTeleport are: Home, Bed, Spawn" + "PlaceHolders for AutoMessage:\n"
@@ -763,9 +754,8 @@ public class Configs {
 				+ "+-------------------------------------------+ #\r\n"
 				+ "| INFO: TimeZones! List of time zones:      | #\r\n"
 				+ "+- https://greenwichmeantime.com/time-zone -+ #");
-		config.addDefaults(c);
-		config.create();
-		Loader.config = config.getConfig();
+		Loader.config.addDefaults(c);
+		Loader.config.create();
 	}
 
 	public static void ScoreboardLoading() {
@@ -783,7 +773,7 @@ public class Configs {
 		c.put("PerWorld.skyblock.Lines",
 				Arrays.asList("&r&lMoney: &a%money%$", "&r&lHealth:  &a%health%", "&r&lFood:  &a%food%"));
 
-		sb.setHeader("%money%   player money balance\n" + "%online%   online players on server\n"
+		Loader.sb.setHeader("%money%   player money balance\n" + "%online%   online players on server\n"
 				+ "%max_players%   maximum players on server\n" + "%time%   server time\n" + "%date%   server date\n"
 				+ "%world%   world name of player\n" + "%health%, %hp%   player healths\n"
 				+ "%food%   player food level\n" + "%group%   player vault group\n" + "%ping%   player server ping\n"
@@ -792,9 +782,8 @@ public class Configs {
 				+ "%ram_free_percentage%   free memory of server in percentage\n"
 				+ "%ram_usage_percentage%   used memory of server in percentage\n" + "%kills%   killed players\n"
 				+ "%afk%   afk placeholder");
-		sb.addDefaults(c);
-		sb.create();
-		Loader.scFile = sb.getConfig();
+		Loader.sb.addDefaults(c);
+		Loader.sb.create();
 	}
 
 	public static void TabLoading() {
@@ -815,7 +804,7 @@ public class Configs {
 		c.put("NameTag-RefleshTick", 80);
 		c.put("AFK.IsAFK", " &4&l*AFK*");
 		c.put("AFK.IsNotAFK", "");
-		if (!tab.existPath("Groups.default")) {
+		if (!Loader.tab.existPath("Groups.default")) {
 			c.put("Groups.default.Prefix", "&7Default ");
 			c.put("Groups.default.Suffix", "%afk%");
 			c.put("Groups.default.Priorite", "z");
@@ -828,8 +817,8 @@ public class Configs {
 			c.put("PerWorldTabList.world1.Header", Arrays.asList("&2TabList in world %world%",
 					"&6Health: &a%hp%$   &6Food: &a%food%", "&7--------------------------------"));
 		}
-		tab.addDefaults(c);
-		tab.setHeader("%money%   player money balance\n" + "%online%   online players on server\n"
+		Loader.tab.addDefaults(c);
+		Loader.tab.setHeader("%money%   player money balance\n" + "%online%   online players on server\n"
 				+ "%max_players%   maximum players on server\n" + "%time%   server time\n" + "%date%   server date\n"
 				+ "%world%   world name of player\n" + "%health%, %hp%   player healths\n"
 				+ "%food%   player food level\n" + "%group%   player vault group\n" + "%ping%   player server ping\n"
@@ -838,8 +827,7 @@ public class Configs {
 				+ "%ram_free_percentage%   free memory of server in percentage\n"
 				+ "%ram_usage_percentage%   used memory of server in percentage\n" + "%kills%   killed players\n"
 				+ "%afk%   afk placeholder");
-		tab.create();
-		Loader.tab = tab.getConfig();
+		Loader.tab.create();
 	}
 
 	public static void MultiWorldLoading() {
@@ -847,14 +835,13 @@ public class Configs {
 		c.put("ModifyMobsSpawnRates", false);
 		c.put("SavingTask.Enabled", true);
 		c.put("SavingTask.Delay", 3600);
-		mw.addDefaults(c);
-		mw.create();
-		Loader.mw = mw.getConfig();
+		Loader.mw.addDefaults(c);
+		Loader.mw.create();
 	}
 
 	public static void KitLoading() {
 		Map<String, Object> c = new HashMap<String, Object>();
-		if (!kit.existPath("Kits")) {
+		if (!Loader.kit.existPath("Kits")) {
 			c.put("Kits.Default.Items.Stone.Amount", 16);
 			c.put("Kits.Default.Items.Stone_Pickaxe.Amount", 1);
 			c.put("Kits.Default.Items.Stone_Pickaxe.CustomName", "&8Normal pickaxe");
@@ -869,9 +856,8 @@ public class Configs {
 			c.put("Kits.VIP.Price", 60);
 			c.put("Kits.VIP.Cooldown", 3600);
 		}
-		kit.addDefaults(c);
-		kit.create();
-		Loader.kit = kit.getConfig();
+		Loader.kit.addDefaults(c);
+		Loader.kit.create();
 	}
 
 	public static void load() {
@@ -884,26 +870,11 @@ public class Configs {
 	}
 
 	public static void reload() {
-		trans.reload();
-		config.reload();
-		kit.reload();
-		mw.reload();
-		sb.reload();
-		tab.reload();
-		Loader.TranslationsFile = trans.getConfig();
-		Loader.config = config.getConfig();
-		Loader.scFile = sb.getConfig();
-		Loader.kit = kit.getConfig();
-		Loader.mw = mw.getConfig();
-		Loader.tab = tab.getConfig();
-	}
-
-	public static void save() {
-		trans.save();
-		config.save();
-		kit.save();
-		mw.save();
-		sb.save();
-		tab.save();
+		Loader.trans.reload();
+		Loader.config.reload();
+		Loader.kit.reload();
+		Loader.mw.reload();
+		Loader.sb.reload();
+		Loader.tab.reload();
 	}
 }

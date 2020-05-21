@@ -80,7 +80,7 @@ public class ListCmd implements CommandExecutor {
 				for (String d : Loader.vault.getGroups()) {
 					w.add(d);
 				}
-			for (String a : Loader.TranslationsFile.getStringList("PlayerList.Normal")) {
+			for (String a : Loader.trans.getStringList("PlayerList.Normal")) {
 				if (!w.isEmpty())
 					for (String wa : w) {
 						a = a.replace("%" + wa + "%", getPlayersInGroup(wa));

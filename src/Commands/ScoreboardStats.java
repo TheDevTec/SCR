@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 import Utils.setting;
 import me.Straiker123.TheAPI;
 
@@ -18,8 +17,7 @@ public class ScoreboardStats implements CommandExecutor {
 		if (API.hasPerm(s, "ServerCotrol.Scoreboard")) {
 			Loader.msg(Loader.s("Prefix") + "&e----------------- &bScoreboard Reload &e-----------------", s);
 			Loader.msg("", s);
-			Configs.sb.reload();
-			Loader.scFile = Configs.sb.getConfig();
+			Loader.sb.reload();
 			Utils.ScoreboardStats.removeScoreboard();
 			if (setting.sb) {
 				for (Player p : TheAPI.getOnlinePlayers())

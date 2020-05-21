@@ -106,7 +106,7 @@ public class Chat implements CommandExecutor, TabCompleter {
 						Player p = (Player) s;
 						Loader.msg("", p);
 						User d = TheAPI.getUser(s.getName());
-						List<String> about = Loader.TranslationsFile.getStringList("AboutYou");
+						List<String> about = Loader.trans.getStringList("AboutYou");
 						for (String a : about) {
 
 							if (Bukkit.getPluginManager().getPlugin("Vault") != null
@@ -173,7 +173,7 @@ public class Chat implements CommandExecutor, TabCompleter {
 				if (args.length == 2) {
 					if (TheAPI.existsUser(args[1])) {
 						User d = TheAPI.getUser(s.getName());
-						List<String> about = Loader.TranslationsFile.getStringList("AboutYou");
+						List<String> about = Loader.trans.getStringList("AboutYou");
 						String world = d.getString("DisconnectWorld");
 						if (TheAPI.getPlayer(args[1]) != null)
 							world = TheAPI.getPlayer(args[1]).getName();

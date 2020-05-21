@@ -31,7 +31,7 @@ public class WorldChange implements Listener {
 		if (a.hasPermission("servercontrol.god") && a.hasGodEnabled())
 			a.enableGod();
 		a.setGamamode();
-		if (Loader.scFile.getBoolean("Scoreboard-PerWorld"))
+		if (Loader.sb.getBoolean("Scoreboard-PerWorld"))
 			ScoreboardStats.createScoreboard(e.getPlayer());
 
 	}

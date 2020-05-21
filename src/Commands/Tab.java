@@ -13,7 +13,6 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 import Utils.TabList;
 import me.Straiker123.TheAPI;
 
@@ -38,8 +37,7 @@ public class Tab implements CommandExecutor, TabCompleter {
 				Loader.msg(Loader.s("Prefix") + "&e----------------- &bTab Reloading &e-----------------", s);
 				Loader.msg("", s);
 				TabList.removeTab();
-				Configs.tab.reload();
-				Loader.tab = Configs.tab.getConfig();
+				Loader.tab.reload();
 				for (Player p : TheAPI.getOnlinePlayers()) {
 					TabList.setFooterHeader(p);
 					TabList.setNameTag(p);

@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
+import me.Straiker123.ConfigAPI;
 import me.Straiker123.ScoreboardAPIV2;
 import me.Straiker123.TheAPI;
 
 public class ScoreboardStats {
 	public ScoreboardStats() {
-		f = Loader.scFile;
+		f = Loader.sb;
 	}
 
-	static FileConfiguration f;
+	static ConfigAPI f;
 	static HashMap<Player, ScoreboardAPIV2> setup = new HashMap<Player, ScoreboardAPIV2>();
 
 	public static void createScoreboard(Player p) {

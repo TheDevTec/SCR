@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -26,6 +25,7 @@ import Utils.ScoreboardStats;
 import Utils.TabList;
 import Utils.VaultHook;
 import Utils.setting;
+import me.Straiker123.ConfigAPI;
 import me.Straiker123.TheAPI;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -34,13 +34,13 @@ import net.milkbowl.vault.permission.Permission;
 public class Loader extends JavaPlugin implements Listener {
 	public static List<Plugin> addons = new ArrayList<Plugin>();
 	public static HashMap<String, AFKV2> afk = new HashMap<String, AFKV2>();
-	public static FileConfiguration TranslationsFile;
-	public static FileConfiguration chatLogFile;
-	public static FileConfiguration mw;
-	public static FileConfiguration scFile;
-	public static FileConfiguration config;
-	public static FileConfiguration tab;
-	public static FileConfiguration kit;
+	public static ConfigAPI trans = TheAPI.getConfig("ServerControlReloaded", "Translations");
+	public static ConfigAPI config = TheAPI.getConfig("ServerControlReloaded", "Config");
+	public static ConfigAPI sb = TheAPI.getConfig("ServerControlReloaded", "Scoreboard");
+	public static ConfigAPI tab = TheAPI.getConfig("ServerControlReloaded", "TabList");
+	public static ConfigAPI mw = TheAPI.getConfig("ServerControlReloaded", "MultiWorlds");
+	public static ConfigAPI kit = TheAPI.getConfig("ServerControlReloaded", "Kits");
+	
 	public static Economy econ;
 	public static Loader getInstance;
 
@@ -262,7 +262,6 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		TabList.removeTab();
 		ScoreboardStats.removeScoreboard();
-		Configs.save();
 		if (mw.getString("Worlds") != null)
 			for (String w : mw.getStringList("Worlds")) {
 				if (Bukkit.getWorld(w) != null && !mw.getBoolean("WorldsSettings." + w + ".AutoSave")) {
@@ -352,8 +351,8 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static String s(String s) {
-		if (TranslationsFile.getString(s) != null)
-			return TranslationsFile.getString(s);
+		if (trans.exist(s))
+			return trans.getString(s);
 		else {
 			warn("String '" + s
 					+ "' isn't exist in Tranlations.yml, please report this bug on https://github.com/Straiker123/ServerControlReloaded");

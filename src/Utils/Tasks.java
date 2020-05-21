@@ -8,11 +8,11 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
 import ServerControl.SPlayer;
+import me.Straiker123.ConfigAPI;
 import me.Straiker123.LoaderClass;
 import me.Straiker123.TheAPI;
 import me.Straiker123.Scheduler.Tasker;
@@ -90,7 +90,7 @@ public class Tasks {
 	}
 
 	private static void scoreboard() {
-		int r = Loader.scFile.getInt("RefleshTick");
+		int r = Loader.sb.getInt("RefleshTick");
 		if (r <= 0)
 			r = 1;
 		tasks.add(new Tasker() {
@@ -138,7 +138,7 @@ public class Tasks {
 	}
 
 	private static void other() {
-		FileConfiguration f = Loader.config;
+		ConfigAPI f = Loader.config;
 		tasks.add(new Tasker() {
 			@Override
 			public void run() {
