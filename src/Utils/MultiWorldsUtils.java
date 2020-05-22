@@ -54,6 +54,7 @@ public class MultiWorldsUtils {
 			if (Bukkit.getWorld(on.getWorld().getName()) != null) {
 				String[] f = { "SURVIVAL", "CREATIVE", "ADVENTURE", "SPECTATOR" };
 				for (String waww : f) {
+					if(Loader.mw.exist("WorldsSettings." + on.getWorld().getName() + ".GameMode"))
 					if (Loader.mw.getString("WorldsSettings." + on.getWorld().getName() + ".GameMode")
 							.equalsIgnoreCase(waww)) {
 						on.setGameMode(GameMode.valueOf(
