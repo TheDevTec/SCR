@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.EnchantmentAPI;
 import me.Straiker123.TheAPI;
 
 public class EnchantTable implements CommandExecutor, TabCompleter {
@@ -79,9 +80,9 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 	public void e(ItemStack hand, int level, String enechant, CommandSender s) {
 		try {
 			if (level <= 0) {
-				hand.removeEnchantment(TheAPI.getEnchantmentAPI().getByName(enechant));
+				hand.removeEnchantment(TheAPI.getEnchantmentAPI(enechant).getEnchantment());
 			} else
-				hand.addUnsafeEnchantment(TheAPI.getEnchantmentAPI().getByName(enechant), level);
+				hand.addUnsafeEnchantment(TheAPI.getEnchantmentAPI(enechant).getEnchantment(), level);
 			Loader.msg(Loader.s("Prefix") + Loader.s("Enchant.Enchanted").replace("%enchant%", enechant)
 					.replace("%level%", String.valueOf(level)).replace("%item%", hand.getType().name()), s);
 			return;
@@ -108,8 +109,8 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 					c.addAll(StringUtil.copyPartialMatches(args[0], enchs, new ArrayList<>()));
 				}
 				if (args.length == 2) {
-					if (TheAPI.getEnchantmentAPI().isEnchantment(args[0]))
-						c.add(TheAPI.getEnchantmentAPI().getByName(args[0]).getMaxLevel() + "");
+					if (me.Straiker123.EnchantmentAPI.byName(args[0]) != null)
+						c.add(EnchantmentAPI.byName(args[0]).getEnchantment().getMaxLevel() + "");
 				}
 			}
 		}

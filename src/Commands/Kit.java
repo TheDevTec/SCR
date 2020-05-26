@@ -17,6 +17,7 @@ import ServerControl.Loader;
 import Utils.Repeat;
 import Utils.XMaterial;
 import me.Straiker123.CooldownAPI;
+import me.Straiker123.EnchantmentAPI;
 import me.Straiker123.ItemCreatorAPI;
 import me.Straiker123.TheAPI;
 
@@ -152,7 +153,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 					for (String enchs : Loader.kit
 							.getStringList("Kits." + kitName + ".Items." + def + ".Enchantments")) {
 						String nonum = enchs.replace(":", "").replaceAll("[0-9]+", "").replaceAll(" ", "");
-						if (!TheAPI.getEnchantmentAPI().isEnchantment(nonum)) {
+						if (EnchantmentAPI.byName(nonum)!=null) {
 							Loader.warn(
 									"Error when giving kit '" + kitName + "', enchant '" + nonum + "' is invalid !");
 						} else {

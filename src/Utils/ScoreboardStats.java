@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
+import com.google.common.collect.Maps;
+
 import ServerControl.Loader;
 import me.Straiker123.ConfigAPI;
-import me.Straiker123.ScoreboardAPIV2;
+import me.Straiker123.ScoreboardAPI;
 import me.Straiker123.TheAPI;
 
 public class ScoreboardStats {
@@ -17,12 +19,12 @@ public class ScoreboardStats {
 	}
 
 	static ConfigAPI f;
-	static HashMap<Player, ScoreboardAPIV2> setup = new HashMap<Player, ScoreboardAPIV2>();
+	static HashMap<Player, ScoreboardAPI> setup = Maps.newHashMap();
 
 	public static void createScoreboard(Player p) {
 		if (!setup.containsKey(p))
-			setup.put(p, TheAPI.getScoreboardAPIV2(p));
-		ScoreboardAPIV2 a = setup.get(p);
+			setup.put(p, TheAPI.getScoreboardAPI(p));
+		ScoreboardAPI a = setup.get(p);
 		String getName = null;
 		List<String> getLine = new ArrayList<String>();
 		if (setting.sb_world) {
@@ -38,17 +40,18 @@ public class ScoreboardStats {
 			getName = f.getString("Name");
 			getLine = f.getStringList("Lines");
 		}
-		a.setTitle(getName);
+		a.setDisplayName(getName);
+		int line = getLine.size();
 		for (String ss : getLine) {
-			a.addLine(TheAPI.getPlaceholderAPI().setPlaceholders(p, TabList.replace(ss, p)));
+			a.setLine(line,TheAPI.getPlaceholderAPI().setPlaceholders(p, TabList.replace(ss, p)));
+			--line;
 		}
-		a.create();
 	}
-
+//chaos otevøèi chrom
 	public static void removeScoreboard() {
-		for (Player p : TheAPI.getOnlinePlayers()) {
-			p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
-		}
+		for (Player p : setup.keySet()) {
+			setup.get(p).destroy();
+		} //stáhni z DC update
 		setup.clear();
 	}
 

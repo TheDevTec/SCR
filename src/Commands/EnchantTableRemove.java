@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.Straiker123.EnchantmentAPI;
 import me.Straiker123.TheAPI;
 
 public class EnchantTableRemove implements CommandExecutor, TabCompleter {
@@ -52,7 +53,7 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 					Material a = p.getItemInHand().getType();
 					if (a != Material.AIR) {
 						if (p.getItemInHand().getEnchantments()
-								.containsKey(TheAPI.getEnchantmentAPI().getByName(args[0]))) {
+								.containsKey(EnchantmentAPI.byName(args[0]).getEnchantment())) {
 							e(p.getItemInHand(), args[0], s);
 							return true;
 						}
@@ -80,8 +81,8 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 		try {
 			Loader.msg(Loader.s("Prefix") + Loader.s("Enchant.EnchantRemoved").replace("%enchant%", enechant)
 					.replace("%level%",
-							String.valueOf(hand.getEnchantmentLevel(TheAPI.getEnchantmentAPI().getByName(enechant))))
-					.replace("%item%", hand.getType().name()), s);
+							String.valueOf(hand.getEnchantmentLevel(EnchantmentAPI.byName(enechant).getEnchantment()))
+					.replace("%item%", hand.getType().name())),s );
 			return;
 		} catch (Exception error) {
 			Loader.msg(Loader.s("Prefix") + Loader.s("Enchant.EnchantNotExist").replace("%enchant%", enechant)
