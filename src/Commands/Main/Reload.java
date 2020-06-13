@@ -38,7 +38,7 @@ public class Reload implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		return true;
-	}
+	}//jak jako líbí?? ty to dáváš na random? :D ?!
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {

@@ -37,6 +37,7 @@ public class BigTask {
 
 					@Override
 					public void run() {
+						TheAPI.broadcastMessage("run"+f);
 						if (f <= 0) {
 							end();
 							return;
@@ -50,7 +51,7 @@ public class BigTask {
 						}
 						--f;
 					}
-				}.repeatingAsync(20, 20);
+				}.repeating(0, 20);//toto jsi zmìnil a už to nejde :D
 				return true;
 			}
 			return false;

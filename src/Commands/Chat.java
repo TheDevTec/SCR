@@ -172,7 +172,7 @@ public class Chat implements CommandExecutor, TabCompleter {
 				}
 				if (args.length == 2) {
 					if (TheAPI.existsUser(args[1])) {
-						User d = TheAPI.getUser(s.getName());
+						User d = TheAPI.getUser(args[1]);
 						List<String> about = Loader.trans.getStringList("AboutYou");
 						String world = d.getString("DisconnectWorld");
 						if (TheAPI.getPlayer(args[1]) != null)

@@ -10,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import Commands.Main.BigTask;
+import Commands.Main.BigTask.TaskType;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControlEvents.PlayerBlockedCommandEvent;
@@ -172,6 +174,30 @@ public class SecurityListenerV3 implements Listener {
 				}
 			}
 			e.setMessage(build);
+		}
+		if(!e.isCancelled()) {
+			Bukkit.broadcastMessage(e.getMessage());
+			if(e.getMessage().toLowerCase().startsWith("/reload")||e.getMessage().toLowerCase().startsWith("/rl")) {
+			if (API.hasPerm(p, "ServerControl.Reload")) {
+				String[] args = e.getMessage().split(" ");
+				if (args.length == 0) {
+					BigTask.start(TaskType.RELOAD, Loader.config.getLong("Options.WarningSystem.Reload.PauseTime"));
+					return;
+				}
+				if (args[0].equalsIgnoreCase("cancel")) {
+					if (BigTask.r != -1)
+						BigTask.cancel();
+					return;
+				}
+				if (args[0].equalsIgnoreCase("now")) {
+					BigTask.start(TaskType.RELOAD, 0);
+					return;
+				}
+				if (BigTask.r == -1)
+					BigTask.start(TaskType.RELOAD, TheAPI.getStringUtils().getTimeFromString(args[0]));
+				return;
+			}}
+			return;
 		}
 	}
 
