@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class PNight implements CommandExecutor {
 
@@ -17,7 +17,7 @@ public class PNight implements CommandExecutor {
 			if (s instanceof Player) {
 				if (API.hasPerm(s, "ServerControl.PlayerNight")) {
 					((Player) s).setPlayerTime(13000, true);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Time.Night").replace("%world%",
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Time.Night").replace("%world%",
 							((Player) s).getLocation().getWorld().getName()), s);
 					return true;
 				}
@@ -30,10 +30,10 @@ public class PNight implements CommandExecutor {
 			if (API.hasPerm(s, "ServerControl.PlayerNight")) {
 				if (TheAPI.getPlayer(args[0]) != null) {
 					TheAPI.getPlayer(args[0]).setPlayerTime(13000, true);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Time.Night").replace("%world%", args[0]), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Time.Night").replace("%world%", args[0]), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.s("Time.WorldNotExists").replace("%world%", args[0]), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Time.WorldNotExists").replace("%world%", args[0]), s);
 				return true;
 			}
 			return true;

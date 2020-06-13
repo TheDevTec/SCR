@@ -14,8 +14,8 @@ import ServerControl.Loader;
 import Utils.Colors;
 import Utils.MultiWorldsGUI;
 import Utils.setting;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.User;
 
 @SuppressWarnings("deprecation")
 public class ChatFormat implements Listener {
@@ -98,7 +98,7 @@ public class ChatFormat implements Listener {
 		if (setting.lock_chat) {
 			if (!p.hasPermission("ServerControl.ChatLock")) {
 				e.setCancelled(true);
-				Loader.msg(Loader.s("Prefix") + Loader.s("ChatLock.ChatIsLockedErrorPlayerMessage"), p);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("ChatLock.ChatIsLockedErrorPlayerMessage"), p);
 				TheAPI.broadcast(Loader.s("Prefix")
 						+ Loader.s("ChatLock.BroadCastMessageChatLock").replace("%player%", p.getName())
 								.replace("%playername%", p.getDisplayName()).replace("%message%", e.getMessage()),

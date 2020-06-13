@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Tpaccept implements CommandExecutor, TabCompleter {
 
@@ -25,27 +25,27 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 					String pd = RequestMap.getRequest(p.getName());
 					if (pd == null || TheAPI.getPlayer(pd) == null
 							|| pd != null && !RequestMap.containsRequest(p.getName(), pd)) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.NoRequest"), p);
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.NoRequest"), p);
 						return true;
 					}
 					Player d = TheAPI.getPlayer(pd);
 					switch (RequestMap.getTeleportType(p.getName(), pd)) {
 					case TPA:
 						API.setBack(d);
-						Loader.msg(Loader.s("Prefix")
+						TheAPI.msg(Loader.s("Prefix")
 								+ Loader.s("TpaSystem.Tpaccept").replace("%player%", pd).replace("%playername%", pd),
 								p);
 						if (setting.tp_safe)
 							TheAPI.getPlayerAPI(d).safeTeleport(((Player) p).getLocation().add(0, -1, 0));
 						else
 							d.teleport(((Player) p).getLocation());
-						Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaAccepted")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaAccepted")
 								.replace("%player%", p.getName()).replace("%playername%", p.getName()), d);
 						RequestMap.removeRequest(p.getName(), pd);
 						break;
 					case TPAHERE:
 						API.setBack((Player) p);
-						Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.Tpahereccept").replace("%player%", pd)
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.Tpahereccept").replace("%player%", pd)
 								.replace("%playername%", pd), p);
 						Location loc = d.getLocation();
 						if (setting.tp_onreqloc && RequestMap.getLocation(p.getName(), pd) != null)
@@ -54,7 +54,7 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 							TheAPI.getPlayerAPI((Player) p).safeTeleport(loc.add(0, -1, 0));
 						else
 							((Player) p).teleport(loc);
-						Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpahereAccepted")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpahereAccepted")
 								.replace("%player%", p.getName()).replace("%playername%", pd), p);
 						RequestMap.removeRequest(p.getName(), pd);
 						break;
@@ -63,7 +63,7 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 				}
 				return true;
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), p);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), p);
 			return true;
 		}
 		return true;

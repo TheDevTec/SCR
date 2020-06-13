@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
+import me.DevTec.TheAPI;
 
 public class Maintenance implements CommandExecutor {
 
@@ -18,18 +19,18 @@ public class Maintenance implements CommandExecutor {
 				if (setting.lock_server) {
 					Loader.config.set("Options.Maintenance.Enabled", false);
 					setting.lock_server = false;
-					Loader.msg(Loader.s("Prefix") + "&e----------------- &bMaintenance is Disabled &e-----------------",
+					TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bMaintenance is Disabled &e-----------------",
 							s);
-					Loader.msg("", s);
-					Loader.msg(Loader.s("Prefix") + Loader.s("MaintenanceMode.TurnOff"), s);
+					TheAPI.msg("", s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("MaintenanceMode.TurnOff"), s);
 					return true;
 				}
 
 				Loader.config.set("Options.Maintenance.Enabled", true);
 				setting.lock_server = true;
-				Loader.msg(Loader.s("Prefix") + "&e----------------- &bMaintenance is Enabled &e-----------------", s);
-				Loader.msg("", s);
-				Loader.msg(Loader.s("Prefix") + Loader.s("MaintenanceMode.TurnOn"), s);
+				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bMaintenance is Enabled &e-----------------", s);
+				TheAPI.msg("", s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("MaintenanceMode.TurnOn"), s);
 				return true;
 			}
 			return true;

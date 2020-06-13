@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class EnchantTableRemoveAll implements CommandExecutor {
 	@SuppressWarnings("deprecation")
@@ -31,22 +31,22 @@ public class EnchantTableRemoveAll implements CommandExecutor {
 								p.getItemInHand().removeEnchantment(ea);
 
 							}
-							Loader.msg(Loader.s("Prefix") + Loader.s("Enchant.EnchantsRemoved")
+							TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.EnchantsRemoved")
 									.replace("%enchants%", TheAPI.getStringUtils().join(enchants, ", "))
 									.replace("%level%", "none").replace("%item%", a.name()), s);
 							return true;
 						}
 
-						Loader.msg(Loader.s("Prefix") + Loader.s("Enchant.NoEnchants").replace("%enchant%", "none")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.NoEnchants").replace("%enchant%", "none")
 								.replace("%level%", "none").replace("%item%", a.name()), s);
 						return true;
 					}
-					Loader.msg(Loader.s("Prefix") + Loader.s("Enchant.HandIsEmpty").replace("%enchant%", "none")
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.HandIsEmpty").replace("%enchant%", "none")
 							.replace("%level%", "none").replace("%item%", "none"), s);
 					return true;
 				}
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 

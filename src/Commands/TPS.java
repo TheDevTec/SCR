@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class TPS implements CommandExecutor {
 
@@ -14,9 +14,9 @@ public class TPS implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 
 		if (API.hasPerm(s, "ServerControl.TPS")) {
-			Loader.msg(Loader.s("Prefix") + "&e----------------- &bTPS &e-----------------", s);
-			Loader.msg("", s);
-			Loader.msg(Loader.s("Prefix") + Loader.s("TPS").replace("%tps%", TheAPI.getServerTPS() + ""), s);
+			TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bTPS &e-----------------", s);
+			TheAPI.msg("", s);
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("TPS").replace("%tps%", TheAPI.getServerTPS() + ""), s);
 			return true;
 
 		}

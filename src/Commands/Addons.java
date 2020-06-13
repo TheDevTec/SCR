@@ -8,7 +8,7 @@ import org.bukkit.plugin.Plugin;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Addons implements CommandExecutor {
 	public Plugin find(String a) {
@@ -27,18 +27,18 @@ public class Addons implements CommandExecutor {
 				Loader.Help(s, "/Addons Enable <addon>", "Addons.Enable");
 				Loader.Help(s, "/Addons Disable <addon>", "Addons.Disable");
 			}
-			Loader.msg(Loader.s("Prefix") + "&6Hooked addons:", s);
+			TheAPI.msg(Loader.s("Prefix") + "&6Hooked addons:", s);
 			for (Plugin f : Loader.addons)
-				Loader.msg(Loader.s("Prefix") + getAddon(f.getName()), s);
+				TheAPI.msg(Loader.s("Prefix") + getAddon(f.getName()), s);
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("enable")) {
 			if (API.hasPerm(s, "ServerControl.Addons")) {
 				String plugin = TheAPI.getPluginsManagerAPI().getPlugin(args[0]).getName();
 				if (TheAPI.getPluginsManagerAPI().enablePlugin(plugin))
-					Loader.msg(Loader.s("Prefix") + "&6Addon " + plugin + " &aenabled", s);
+					TheAPI.msg(Loader.s("Prefix") + "&6Addon " + plugin + " &aenabled", s);
 				else
-					Loader.msg(Loader.s("Prefix") + "&cError when enabling addon &4" + plugin, s);
+					TheAPI.msg(Loader.s("Prefix") + "&cError when enabling addon &4" + plugin, s);
 				return true;
 			}
 			return true;
@@ -48,9 +48,9 @@ public class Addons implements CommandExecutor {
 			if (API.hasPerm(s, "ServerControl.Addons")) {
 				String plugin = TheAPI.getPluginsManagerAPI().getPlugin(args[0]).getName();
 				if (TheAPI.getPluginsManagerAPI().disablePlugin(plugin))
-					Loader.msg(Loader.s("Prefix") + "&6Addon " + plugin + " &cdisabled", s);
+					TheAPI.msg(Loader.s("Prefix") + "&6Addon " + plugin + " &cdisabled", s);
 				else
-					Loader.msg(Loader.s("Prefix") + "&cError when disabling addon &4" + plugin, s);
+					TheAPI.msg(Loader.s("Prefix") + "&cError when disabling addon &4" + plugin, s);
 				return true;
 			}
 			return true;

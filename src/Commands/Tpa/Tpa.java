@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Tpa implements CommandExecutor, TabCompleter {
 
@@ -27,7 +27,7 @@ public class Tpa implements CommandExecutor, TabCompleter {
 				if (args.length == 1) {
 					Player d = TheAPI.getPlayer(args[0]);
 					if (d == null) {
-						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+						TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
 					} else {
 						String p = d.getName();
@@ -36,34 +36,34 @@ public class Tpa implements CommandExecutor, TabCompleter {
 									&& !TheAPI.getUser(d).getBoolean("TpBlock-Global")) {
 
 								if (!RequestMap.containsRequest(p, s.getName())) {
-									Loader.msg(
+									TheAPI.msg(
 											Loader.s("Prefix") + Loader.s("TpaSystem.TpaSender")
 													.replace("%playername%", d.getDisplayName()).replace("%player%", p),
 											s);
-									Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaTarget")
+									TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaTarget")
 											.replace("%playername%", s.getDisplayName())
 											.replace("%player%", s.getName()), d);
 									RequestMap.addRequest(s.getName(), p, RequestMap.Type.TPA);
 									return true;
 								} else {
-									Loader.msg(Loader.s("Prefix")
+									TheAPI.msg(Loader.s("Prefix")
 											+ API.replacePlayerName(Loader.s("TpaSystem.AlreadyHaveRequest"), p), s);
 									return true;
 								}
 
 							}
-							Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlocked")
+							TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlocked")
 									.replace("%playername%", d.getDisplayName()).replace("%player%", p), s);
 							return true;
 						}
-						Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.CantSendRequestToSelf")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.CantSendRequestToSelf")
 								.replace("%playername%", d.getDisplayName()).replace("%player%", p), s);
 						return true;
 					}
 				}
 				return true;
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), f);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), f);
 			return true;
 		}
 		return true;

@@ -16,8 +16,8 @@ import ServerControl.SPlayer;
 import Utils.TabList;
 import Utils.setting;
 import Utils.setting.DeathTp;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.User;
 
 public class DeathEvent implements Listener {
 
@@ -49,6 +49,7 @@ public class DeathEvent implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void Respawn(PlayerRespawnEvent e) {
 		Player p = e.getPlayer();
+		try {
 		if (TheAPI.getPunishmentAPI().getBanList(p.getName()).isJailed()
 				|| TheAPI.getPunishmentAPI().getBanList(p.getName()).isTempJailed())
 			e.setRespawnLocation((Location) Loader.config.get("Jails." + TheAPI.getUser(p).getString("Jail.Location")));
@@ -59,10 +60,10 @@ public class DeathEvent implements Listener {
 				e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.BED));
 			else if (setting.deathspawn == DeathTp.SPAWN) {
 				e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.SPAWN));
-				Loader.msg(Loader.s("Spawn.TeleportedToSpawn").replace("%world%", p.getWorld().getName())
+				TheAPI.msg(Loader.s("Spawn.TeleportedToSpawn").replace("%world%", p.getWorld().getName())
 						.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
 			}
-		}
+		}}catch(Exception eere) {}
 		SPlayer a = new SPlayer(p);
 		if (a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
 			a.enableFly();

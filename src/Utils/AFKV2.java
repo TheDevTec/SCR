@@ -4,9 +4,9 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.StringUtils;
-import me.Straiker123.TheAPI;
-import me.Straiker123.Scheduler.Tasker;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
+import me.DevTec.Scheduler.Tasker;
 
 public class AFKV2 {
 	String d;

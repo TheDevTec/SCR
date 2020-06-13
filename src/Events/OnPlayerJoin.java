@@ -19,12 +19,12 @@ import ServerControl.SPlayer;
 import Utils.AFKV2;
 import Utils.Tasks;
 import Utils.setting;
-import me.Straiker123.ConfigAPI;
-import me.Straiker123.StringUtils;
-import me.Straiker123.TheAPI;
-import me.Straiker123.TheAPI.SudoType;
-import me.Straiker123.User;
-import me.Straiker123.Scheduler.Tasker;
+import me.DevTec.ConfigAPI;
+import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.SudoType;
+import me.DevTec.Other.StringUtils;
+import me.DevTec.Other.User;
+import me.DevTec.Scheduler.Tasker;
 
 public class OnPlayerJoin implements Listener {
 	public OnPlayerJoin() {
@@ -73,7 +73,7 @@ public class OnPlayerJoin implements Listener {
 		Loader.afk.put(p.getName(), v);
 
 		if (!Mail.getMails(p.getName()).isEmpty())
-			Loader.msg(
+			TheAPI.msg(
 					Loader.s("Prefix")
 							+ Loader.s("Mail.Notification").replace("%number%", "" + d.getStringList("Mails").size()),
 					p);
@@ -97,7 +97,7 @@ public class OnPlayerJoin implements Listener {
 
 		if (!p.hasPlayedBefore() && setting.join_first) {
 			for (String ss : Loader.trans.getStringList("OnJoin.FirstJoin.Messages")) {
-				Loader.msg(replaceAll(ss, p), p);
+				TheAPI.msg(replaceAll(ss, p), p);
 			}
 			if (!TheAPI.isVanished(p))
 				TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.FirstJoin.BroadCast"), p));
@@ -115,7 +115,7 @@ public class OnPlayerJoin implements Listener {
 		} else {
 			if (setting.join_motd) {
 				for (String ss : Loader.trans.getStringList("OnJoin.Messages")) {
-					Loader.msg(replaceAll(ss, p), p);
+					TheAPI.msg(replaceAll(ss, p), p);
 				}
 			}
 		}

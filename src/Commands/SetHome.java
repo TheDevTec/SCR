@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.User;
 
 public class SetHome implements CommandExecutor {
 
@@ -22,14 +22,14 @@ public class SetHome implements CommandExecutor {
 					if (args.length == 0) {
 						TheAPI.getUser(s.getName()).setAndSave("Homes.home",
 								TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
-						Loader.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%home%", "home"), s);
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%home%", "home"), s);
 						return true;
 					}
 				} else {
 					if (args.length == 0) {
 						TheAPI.getUser(s.getName()).setAndSave("Homes.home",
 								TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
-						Loader.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%player%", p.getName())
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%player%", p.getName())
 								.replace("%playername%", p.getDisplayName()).replace("%home%", "home"), s);
 						return true;
 					}
@@ -38,7 +38,7 @@ public class SetHome implements CommandExecutor {
 						if (Loader.config.getString("Homes." + Loader.vault.getPrimaryGroup(p)) != null) {
 							if (d.getKeys("Homes").size() >= Loader.config
 									.getInt("Homes." + Loader.vault.getPrimaryGroup(p))) {
-								Loader.msg(
+								TheAPI.msg(
 										Loader.s("Prefix")
 												+ Loader.s("Homes.LimitReached").replace("%limit%",
 														String.valueOf(Loader.config
@@ -48,12 +48,12 @@ public class SetHome implements CommandExecutor {
 							}
 							d.setAndSave("Homes." + args[0],
 									TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
-							Loader.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%player%", p.getName())
+							TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%player%", p.getName())
 									.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]), s);
 							return true;
 						}
 						d.setAndSave("Homes." + args[0], TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
-						Loader.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%player%", p.getName())
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%player%", p.getName())
 								.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]), s);
 						return true;
 					}
@@ -61,7 +61,7 @@ public class SetHome implements CommandExecutor {
 			}
 			return true;
 		}
-		Loader.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
+		TheAPI.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 		return true;
 	}
 }

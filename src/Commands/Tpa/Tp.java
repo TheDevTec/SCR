@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Tp implements CommandExecutor, TabCompleter {
 
@@ -30,13 +30,13 @@ public class Tp implements CommandExecutor, TabCompleter {
 							Loader.Help(s, "/Tp <x> <y> <z>", "TpaSystem.Tp");
 							return true;
 						} else {
-							Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+							TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 							return true;
 						}
 					} else {
 						if (!TheAPI.getUser(target).getBoolean("TpBlock." + s.getName())
 								&& !TheAPI.getUser(target).getBoolean("TpBlock-Global")) {
-							Loader.msg(Loader.s("Prefix")
+							TheAPI.msg(Loader.s("Prefix")
 									+ Loader.s("TpaSystem.Teleported").replace("%player%", target.getName())
 											.replace("%playername%", target.getDisplayName()),
 									s);
@@ -45,7 +45,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 							return true;
 						} else {
 							if (s.hasPermission("ServerControl.Tp.Blocked")) {
-								Loader.msg(Loader.s("Prefix")
+								TheAPI.msg(Loader.s("Prefix")
 										+ Loader.s("TpaSystem.Teleported").replace("%player%", target.getName())
 												.replace("%playername%", target.getDisplayName()),
 										s);
@@ -53,7 +53,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 								((Player) s).teleport(target);
 								return true;
 							} else {
-								Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpBlocked")
+								TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpBlocked")
 										.replace("%playername%", target.getDisplayName())
 										.replace("%player%", target.getName()), s);
 								return true;
@@ -99,7 +99,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 							return true;
 
 						} else {
-							Loader.msg(Loader.PlayerNotOnline(args[1]), s);
+							TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 							return true;
 						}
 					}
@@ -121,7 +121,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 					String playername1 = args[1];
 					if (p1 != null)
 						playername1 = p1.getDisplayName();
-					Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpPlayerToPlayer")
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpPlayerToPlayer")
 							.replace("%firstplayer%", player).replace("%firstplayername%", playername)
 							.replace("%lastplayer%", player1).replace("%lastplayername%", playername1), s);
 					API.setBack(p0);
@@ -137,7 +137,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 						if (TheAPI.getStringUtils().isInt(args[0]) && TheAPI.getStringUtils().isInt(args[1])
 								&& TheAPI.getStringUtils().isInt(args[2])) {
 							if (s instanceof Player) {
-								Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpLocation")
+								TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpLocation")
 										.replace("%playername%", ((Player) s).getDisplayName())
 										.replace("%player%", ((Player) s).getName())
 										.replace("%world%", ((Player) s).getWorld().getName()).replace("%x%", args[0])
@@ -173,7 +173,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 					if (p != null) {
 						if (TheAPI.getStringUtils().isInt(args[1]) && TheAPI.getStringUtils().isInt(args[2])
 								&& TheAPI.getStringUtils().isInt(args[3])) {
-							Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpLocationPlayer")
+							TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpLocationPlayer")
 									.replace("%world%", p.getWorld().getName())
 									.replace("%playername%", p.getDisplayName()).replace("%player%", p.getName())
 									.replace("%x%", args[1]).replace("%y%", args[2]).replace("%z%", args[3]), s);

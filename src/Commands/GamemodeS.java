@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class GamemodeS implements CommandExecutor {
 
@@ -19,7 +19,7 @@ public class GamemodeS implements CommandExecutor {
 				if (s instanceof Player) {
 					Player p = (Player) s;
 					p.setGameMode(GameMode.SURVIVAL);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Gamemode.Changed").replace("%gamemode%", "Survival"), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Changed").replace("%gamemode%", "Survival"), s);
 					return true;
 				}
 				Loader.Help(s, "/Gms <player>", "Gamemode");
@@ -29,11 +29,11 @@ public class GamemodeS implements CommandExecutor {
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null) {
 					p.setGameMode(GameMode.SURVIVAL);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Gamemode.ChangedOther").replace("%gamemode%", "Survival")
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.ChangedOther").replace("%gamemode%", "Survival")
 							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), s);
 					return true;
 				}
-				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
 		}

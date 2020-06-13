@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Gamemode implements CommandExecutor {
 
@@ -48,11 +48,11 @@ public class Gamemode implements CommandExecutor {
 				if (API.hasPerm(s, "ServerControl.Gamemode." + gamemode)) {
 					if (gamemode != null) {
 						((Player) s).setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
-						Loader.msg(Loader.s("Prefix") + Loader.s("Gamemode.Changed").replace("%gamemode%", gamemode),
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Changed").replace("%gamemode%", gamemode),
 								s);
 						return true;
 					}
-					Loader.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
 					return true;
 				}
 				return true;
@@ -62,7 +62,7 @@ public class Gamemode implements CommandExecutor {
 				Loader.Help(s, "/GameMode " + args[0] + " <player>", "Gamemode");
 				return true;
 			}
-			Loader.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
 			return true;
 		}
 		if (args.length == 2) {
@@ -91,16 +91,16 @@ public class Gamemode implements CommandExecutor {
 				if (gamemode != null) {
 					if (p != null) {
 						p.setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
-						Loader.msg(
+						TheAPI.msg(
 								Loader.s("Prefix") + Loader.s("Gamemode.ChangedOther").replace("%gamemode%", gamemode)
 										.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),
 								s);
 						return true;
 					}
-					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
 				return true;
 			}
 			return true;

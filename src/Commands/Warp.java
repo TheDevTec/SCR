@@ -14,7 +14,7 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Warp implements CommandExecutor, TabCompleter {
 
@@ -34,7 +34,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 		if (API.hasPerm(s, "ServerControl.Warp")) {
 			if (Loader.config.getString("Warps") != null) {
 				if (args.length == 0) {
-					Loader.msg(Loader.s("Warp.List").replace("%warps%", TheAPI.getStringUtils().join(warpss(s), ", "))
+					TheAPI.msg(Loader.s("Warp.List").replace("%warps%", TheAPI.getStringUtils().join(warpss(s), ", "))
 							.replace("%player%", s.getName()).replace("%prefix%", Loader.s("Prefix")), s);
 					return true;
 				}
@@ -44,7 +44,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 							Location loc = TheAPI.getStringUtils()
 									.getLocationFromString(Loader.config.getString("Warps." + warp(args)));
 							if (loc == null) {
-								Loader.msg(Loader.s("Warp.CantGetLocation").replace("%warp%", warp(args))
+								TheAPI.msg(Loader.s("Warp.CantGetLocation").replace("%warp%", warp(args))
 										.replace("%world%", "-").replace("%player%", s.getName())
 										.replace("%playername%", ((Player) s).getDisplayName())
 										.replace("%prefix%", Loader.s("Prefix")), s);
@@ -58,7 +58,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 										TheAPI.getPlayerAPI((Player) s).safeTeleport(loc);
 									else
 										TheAPI.getPlayerAPI((Player) s).teleport(loc);
-									Loader.msg(Loader.s("Warp.Warping").replace("%warp%", warp(args))
+									TheAPI.msg(Loader.s("Warp.Warping").replace("%warp%", warp(args))
 											.replace("%world%", loc.getWorld().getName())
 											.replace("%player%", s.getName())
 											.replace("%playername%", ((Player) s).getDisplayName())
@@ -72,32 +72,32 @@ public class Warp implements CommandExecutor, TabCompleter {
 								TheAPI.getPlayerAPI((Player) s).safeTeleport(loc);
 							else
 								TheAPI.getPlayerAPI((Player) s).teleport(loc);
-							Loader.msg(Loader.s("Warp.Warping").replace("%warp%", warp(args))
+							TheAPI.msg(Loader.s("Warp.Warping").replace("%warp%", warp(args))
 									.replace("%world%", loc.getWorld().getName()).replace("%player%", s.getName())
 									.replace("%playername%", ((Player) s).getDisplayName())
 									.replace("%prefix%", Loader.s("Prefix")), s);
 							return true;
 						}
-						Loader.msg(Loader.s("Warp.NotExists").replace("%warp%", args[0])
+						TheAPI.msg(Loader.s("Warp.NotExists").replace("%warp%", args[0])
 								.replace("%player%", s.getName()).replace("%playername%", ((Player) s).getDisplayName())
 								.replace("%prefix%", Loader.s("Prefix")), s);
 						return true;
 					} else {
-						Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+						TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 						return true;
 					}
 				}
 				if (args.length == 2) {
 					Player p = TheAPI.getPlayer(args[1]);
 					if (p == null) {
-						Loader.msg(Loader.PlayerNotOnline(args[1]), s);
+						TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 						return true;
 					} else {
 						if (warp(args) != null) {
 							Location loc = TheAPI.getStringUtils()
 									.getLocationFromString(Loader.config.getString("Warps." + warp(args)));
 							if (loc == null) {
-								Loader.msg(Loader.s("Warp.CantGetLocation").replace("%warp%", warp(args))
+								TheAPI.msg(Loader.s("Warp.CantGetLocation").replace("%warp%", warp(args))
 										.replace("%world%", "-").replace("%player%", s.getName())
 										.replace("%playername%", ((Player) s).getDisplayName())
 										.replace("%prefix%", Loader.s("Prefix")), s);
@@ -108,28 +108,28 @@ public class Warp implements CommandExecutor, TabCompleter {
 								TheAPI.getPlayerAPI(p).safeTeleport(loc);
 							else
 								TheAPI.getPlayerAPI(p).teleport(loc);
-							Loader.msg(Loader.s("Warp.Warping").replace("%warp%", warp(args))
+							TheAPI.msg(Loader.s("Warp.Warping").replace("%warp%", warp(args))
 									.replace("%world%", loc.getWorld().getName()).replace("%player%", p.getName())
 									.replace("%playername%", p.getDisplayName())
 									.replace("%prefix%", Loader.s("Prefix")), p);
-							Loader.msg(Loader.s("Warp.PlayerWarped").replace("%warp%", warp(args))
+							TheAPI.msg(Loader.s("Warp.PlayerWarped").replace("%warp%", warp(args))
 									.replace("%world%", loc.getWorld().getName()).replace("%player%", p.getName())
 									.replace("%playername%", p.getDisplayName())
 									.replace("%prefix%", Loader.s("Prefix")), s);
 							return true;
 						}
-						Loader.msg(
+						TheAPI.msg(
 								Loader.s("Warp.NotExists").replace("%warp%", args[0]).replace("%player%", s.getName())
 										.replace("%playername%", player(s)).replace("%prefix%", Loader.s("Prefix")),
 								s);
 						return true;
 					}
 				}
-				Loader.msg(Loader.s("Warp.NoWarps").replace("%prefix%", Loader.s("Prefix")), s);
+				TheAPI.msg(Loader.s("Warp.NoWarps").replace("%prefix%", Loader.s("Prefix")), s);
 				return true;
 			}
 		}
-		Loader.msg(Loader.s("Warp.NoWarps").replace("%prefix%", Loader.s("Prefix")), s);
+		TheAPI.msg(Loader.s("Warp.NoWarps").replace("%prefix%", Loader.s("Prefix")), s);
 		return true;
 	}
 

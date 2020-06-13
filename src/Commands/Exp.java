@@ -15,7 +15,7 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Exp implements CommandExecutor, TabCompleter {
 	public Exp() {
@@ -50,11 +50,11 @@ public class Exp implements CommandExecutor, TabCompleter {
 						Repeat.a(s, "xp set * " + TheAPI.getStringUtils().getInt(args[2]));
 						return true;
 					}
-					Loader.msg(Loader.PlayerNotOnline(args[1]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 					return true;
 				}
 				TheAPI.getPlayerAPI(p).setExp(TheAPI.getStringUtils().getInt(args[2]));
-				Loader.msg(Loader.s("Prefix") + Loader.s("Xp.Set").replace("%player%", p.getName())
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Set").replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName())
 						.replace("%amount%", "" + TheAPI.getStringUtils().getInt(args[2])), s);
 				return true;
@@ -69,10 +69,10 @@ public class Exp implements CommandExecutor, TabCompleter {
 				}
 				Player p = TheAPI.getPlayer(args[1]);
 				if (p == null) {
-					Loader.msg(Loader.PlayerNotOnline(args[1]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.s("Xp.Balance").replace("%player%", p.getName())
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Balance").replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName())
 						.replace("%amount%", "" + TheAPI.getPlayerAPI(p).getExp()), s);
 				return true;
@@ -91,11 +91,11 @@ public class Exp implements CommandExecutor, TabCompleter {
 						Repeat.a(s, "xp give * " + TheAPI.getStringUtils().getInt(args[2]));
 						return true;
 					}
-					Loader.msg(Loader.PlayerNotOnline(args[1]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 					return true;
 				}
 				TheAPI.getPlayerAPI(p).giveExp(TheAPI.getStringUtils().getInt(args[2]));
-				Loader.msg(Loader.s("Prefix") + Loader.s("Xp.Given").replace("%player%", p.getName())
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Given").replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName())
 						.replace("%amount%", "" + TheAPI.getStringUtils().getInt(args[2])), s);
 				return true;
@@ -114,11 +114,11 @@ public class Exp implements CommandExecutor, TabCompleter {
 						Repeat.a(s, "xp take * " + TheAPI.getStringUtils().getInt(args[2]));
 						return true;
 					}
-					Loader.msg(Loader.PlayerNotOnline(args[1]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 					return true;
 				}
 				TheAPI.getPlayerAPI(p).takeExp(TheAPI.getStringUtils().getInt(args[2]));
-				Loader.msg(Loader.s("Prefix") + Loader.s("Xp.Taken").replace("%player%", p.getName())
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Taken").replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName())
 						.replace("%amount%", "" + TheAPI.getStringUtils().getInt(args[2])), s);
 				return true;

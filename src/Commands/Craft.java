@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Craft implements CommandExecutor {
 
@@ -16,24 +16,24 @@ public class Craft implements CommandExecutor {
 		if (API.hasPerm(s, "ServerControl.Workbench")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
-					Loader.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningCraftTable"), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningCraftTable"), s);
 					((Player) s).openWorkbench(((Player) s).getLocation(), true);
 					return true;
 				}
 				if (args.length == 1) {
 					Player t = TheAPI.getPlayer(args[0]);
 					if (t == null) {
-						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+						TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
 					}
-					Loader.msg(Loader.s("Prefix")
+					TheAPI.msg(Loader.s("Prefix")
 							+ Loader.s("Inventory.OpeningCraftTableForTarget").replace("%target%", t.getDisplayName()),
 							s);
 					t.openWorkbench(t.getLocation(), true);
 					return true;
 				}
 			}
-			Loader.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

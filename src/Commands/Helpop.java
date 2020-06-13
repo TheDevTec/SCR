@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Helpop implements CommandExecutor {
 
@@ -23,7 +23,7 @@ public class Helpop implements CommandExecutor {
 								.replace("%sender%", s.getName()).replace("%message%", TheAPI.buildString(args)),
 						"ServerControl.Helpop.Receive");
 				if (!s.hasPermission("ServerControl.Helpop.Receive")) {
-					Loader.msg(
+					TheAPI.msg(
 							API.replacePlayerName(Loader.config.getString("Format.Helpop"), s.getName())
 									.replace("%sender%", s.getName()).replace("%message%", TheAPI.buildString(args)),
 							s);

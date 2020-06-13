@@ -11,7 +11,8 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import me.Straiker123.Scheduler.Tasker;
+import me.DevTec.TheAPI;
+import me.DevTec.Scheduler.Tasker;
 
 public class Fly implements CommandExecutor {
 
@@ -29,14 +30,14 @@ public class Fly implements CommandExecutor {
 					return true;
 				}
 				Loader.Help(s, "/Fly <player> <on/off>", "Fly");
-				Loader.msg(Loader.s("Prefix") + Loader.s("Fly.Usage"), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Usage"), s);
 				return true;
 			}
 			return true;
 		}
 		if (args.length == 1) {
 			if (Bukkit.getServer().getPlayer(args[0]) == null) {
-				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
 			SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
@@ -60,7 +61,7 @@ public class Fly implements CommandExecutor {
 		}
 		if (args.length == 2) {
 			if (Bukkit.getServer().getPlayer(args[0]) == null) {
-				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
 			SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
@@ -70,9 +71,9 @@ public class Fly implements CommandExecutor {
 						if (task.get(target) != null)
 							Tasker.cancelTask(task.get(target));
 						target.disableFly();
-						Loader.msg(Loader.s("Prefix") + Loader.s("Fly.Disabled").replace("%player%", target.getName())
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Disabled").replace("%player%", target.getName())
 								.replace("%playername%", target.getDisplayName()), target.getPlayer());
-						Loader.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyDisabled")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyDisabled")
 								.replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()),
 								s);
 						return true;
@@ -81,16 +82,16 @@ public class Fly implements CommandExecutor {
 						if (task.get(target) != null)
 							Tasker.cancelTask(task.get(target));
 						target.enableFly();
-						Loader.msg(Loader.s("Prefix") + Loader.s("Fly.Enabled").replace("%player%", target.getName())
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Enabled").replace("%player%", target.getName())
 								.replace("%playername%", target.getDisplayName()), target.getPlayer());
-						Loader.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyEnabled")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyEnabled")
 								.replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()),
 								s);
 						return true;
 					}
 					if (!args[1].equalsIgnoreCase("on") && !args[1].equalsIgnoreCase("true")
 							&& !args[1].equalsIgnoreCase("off") && !args[1].equalsIgnoreCase("false")) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("Fly.Usage"), s);
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Usage"), s);
 						return true;
 					}
 				}
@@ -101,7 +102,7 @@ public class Fly implements CommandExecutor {
 						if (task.get(target) != null)
 							Tasker.cancelTask(task.get(target));
 						target.disableFly();
-						Loader.msg(Loader.s("Prefix") + Loader.s("Fly.Disabled").replace("%player%", target.getName())
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Disabled").replace("%player%", target.getName())
 								.replace("%playername%", target.getDisplayName()), target.getPlayer());
 						return true;
 					}
@@ -109,13 +110,13 @@ public class Fly implements CommandExecutor {
 						if (task.get(target) != null)
 							Tasker.cancelTask(task.get(target));
 						target.enableFly();
-						Loader.msg(Loader.s("Prefix") + Loader.s("Fly.Enabled").replace("%player%", target.getName())
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Enabled").replace("%player%", target.getName())
 								.replace("%playername%", target.getDisplayName()), target.getPlayer());
 						return true;
 					}
 					if (!args[1].equalsIgnoreCase("on") && !args[1].equalsIgnoreCase("true")
 							&& !args[1].equalsIgnoreCase("off") && !args[1].equalsIgnoreCase("false")) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("Fly.Usage"), s);
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Usage"), s);
 						return true;
 					}
 				}

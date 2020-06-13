@@ -16,9 +16,9 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControlEvents.PlayerBlockedCommandEvent;
 import Utils.setting;
-import me.Straiker123.TheAPI;
-import me.Straiker123.TheAPI.SudoType;
-import me.Straiker123.User;
+import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.SudoType;
+import me.DevTec.Other.User;
 
 /**
  * 1.2. 2020
@@ -98,7 +98,7 @@ public class SecurityListenerV3 implements Listener {
 					Bukkit.getPluginManager().callEvent(ed);
 					if (ed.isCancelled()) {
 						e.setCancelled(true);
-						Loader.msg(Loader.s("NotPermissionsMessage"), p);
+						TheAPI.msg(Loader.s("NotPermissionsMessage"), p);
 						if (Loader.config.getBoolean("TasksOnSend.BlockedCommand-Broadcast"))
 							TheAPI.broadcast(
 									Loader.s("Prefix") + Loader.s("Security.TryingSendBlockedCommand")
@@ -176,9 +176,9 @@ public class SecurityListenerV3 implements Listener {
 			e.setMessage(build);
 		}
 		if(!e.isCancelled()) {
-			Bukkit.broadcastMessage(e.getMessage());
 			if(e.getMessage().toLowerCase().startsWith("/reload")||e.getMessage().toLowerCase().startsWith("/rl")) {
 			if (API.hasPerm(p, "ServerControl.Reload")) {
+				e.setCancelled(true);
 				String[] args = e.getMessage().split(" ");
 				if (args.length == 0) {
 					BigTask.start(TaskType.RELOAD, Loader.config.getLong("Options.WarningSystem.Reload.PauseTime"));
@@ -196,8 +196,50 @@ public class SecurityListenerV3 implements Listener {
 				if (BigTask.r == -1)
 					BigTask.start(TaskType.RELOAD, TheAPI.getStringUtils().getTimeFromString(args[0]));
 				return;
-			}}
-			return;
+			}return;}
+			if(e.getMessage().toLowerCase().startsWith("/restart")) {
+			if (API.hasPerm(p, "ServerControl.Restart")) {
+				e.setCancelled(true);
+				String[] args = e.getMessage().split(" ");
+				if (args.length == 0) {
+					BigTask.start(TaskType.RESTART, Loader.config.getLong("Options.WarningSystem.Restart.PauseTime"));
+					return;
+				}
+				if (args[0].equalsIgnoreCase("cancel")) {
+					if (BigTask.r != -1)
+						BigTask.cancel();
+					return;
+				}
+				if (args[0].equalsIgnoreCase("now")) {
+					BigTask.start(TaskType.RESTART, 0);
+					return;
+				}
+				if (BigTask.r == -1)
+					BigTask.start(TaskType.RESTART, TheAPI.getStringUtils().getTimeFromString(args[0]));
+				return;
+			}return;}
+			if(e.getMessage().toLowerCase().startsWith("/stop")) {
+			if (API.hasPerm(p, "ServerControl.Stop")) {
+				e.setCancelled(true);
+				String[] args = e.getMessage().split(" ");
+				if (args.length == 0) {
+					BigTask.start(TaskType.STOP, Loader.config.getLong("Options.WarningSystem.Stop.PauseTime"));
+					return;
+				}
+				if (args[0].equalsIgnoreCase("cancel")) {
+					if (BigTask.r != -1)
+						BigTask.cancel();
+					return;
+				}
+				if (args[0].equalsIgnoreCase("now")) {
+					BigTask.start(TaskType.STOP, 0);
+					return;
+				}
+				if (BigTask.r == -1)
+					BigTask.start(TaskType.STOP, TheAPI.getStringUtils().getTimeFromString(args[0]));
+				return;
+			}return;}
+			
 		}
 	}
 
@@ -230,7 +272,7 @@ public class SecurityListenerV3 implements Listener {
 				d.set(name, d.getInt(name) - Loader.config.getInt("AutoKickLimit." + r + ".Number"));
 				if (Loader.config.getBoolean("AutoKickLimit." + r + ".Message.Use")) {
 					for (String cmds : Loader.config.getStringList("AutoKickLimit." + r + ".Message.List")) {
-						Loader.msg(cmds.replace("%player%", s.getName()).replace("%number%",
+						TheAPI.msg(cmds.replace("%player%", s.getName()).replace("%number%",
 								Loader.config.getInt("AutoKickLimit." + r + ".Number") + ""), s);
 					}
 				}
@@ -250,7 +292,7 @@ public class SecurityListenerV3 implements Listener {
 				d.set("Kicks", d.getInt("Kicks") - Loader.config.getInt("AutoKickLimit.Kick.Number"));
 				if (Loader.config.getBoolean("AutoKickLimit.Kick.Message.Use")) {
 					for (String cmds : Loader.config.getStringList("AutoKickLimit.Kick.Message.List")) {
-						Loader.msg(cmds.replace("%player%", s.getName()).replace("%number%",
+						TheAPI.msg(cmds.replace("%player%", s.getName()).replace("%number%",
 								Loader.config.getInt("AutoKickLimit.Kick.Number") + ""), s);
 					}
 				}

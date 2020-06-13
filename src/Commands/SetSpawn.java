@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.TheAPI;
 
 public class SetSpawn implements CommandExecutor {
 
@@ -25,10 +26,10 @@ public class SetSpawn implements CommandExecutor {
 				Loader.config.set("Spawn.Z", local.getZ());
 				Loader.config.set("Spawn.X_Pos_Head", local.getYaw());
 				Loader.config.set("Spawn.Z_Pos_Head", local.getPitch());
-				Loader.msg(Loader.s("Spawn.SpawnSet"), s);
+				TheAPI.msg(Loader.s("Spawn.SpawnSet"), s);
 				return true;
 			} else {
-				Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+				TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 				return true;
 			}
 		}

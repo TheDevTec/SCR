@@ -9,7 +9,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
 import Utils.Repeat;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class AFK implements CommandExecutor {
 
@@ -53,7 +53,7 @@ public class AFK implements CommandExecutor {
 					Repeat.a(s, "AFK *");
 					return true;
 				}
-				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
 			return true;

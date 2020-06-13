@@ -11,28 +11,29 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.google.common.collect.Maps;
+
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Pagination;
-import me.Straiker123.MultiMap;
-import me.Straiker123.RankingAPI;
-import me.Straiker123.TheAPI;
+import me.DevTec.RankingAPI;
+import me.DevTec.TheAPI;
 
 public class EcoTop implements CommandExecutor {
 	// world, rankingapi
-	MultiMap<String> h = TheAPI.getMultiMap();
+	HashMap<String, RankingAPI> h = Maps.newHashMap();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (TheAPI.getEconomyAPI().getEconomy() == null) {
-			Loader.msg(Loader.s("Prefix") + "&cMissing Vault plugin for economy.", s);
+			TheAPI.msg(Loader.s("Prefix") + "&cMissing Vault plugin for economy.", s);
 			return true;
 		}
 		if (API.hasPerm(s, "ServerControl.BalanceTop")) {
 			String world = Bukkit.getWorlds().get(0).getName();
 			if (s instanceof Player)
 				world = ((Player) s).getWorld().getName();
-			RankingAPI m = (h.containsKey(world) ? (RankingAPI) h.getValues(world).get(0) : null);
+			RankingAPI m = h.containsKey(world) ? h.get(world) : null;
 			if (TheAPI.getCooldownAPI("scr.baltop").expired("scr") || m == null) {
 				TheAPI.getCooldownAPI("scr.baltop").createCooldown("scr", 300); // 5min update
 				HashMap<String, Double> money = new HashMap<String, Double>();
@@ -50,8 +51,8 @@ public class EcoTop implements CommandExecutor {
 				list.add(o.toString() + ":" + m.getValue(o));
 			}
 			Pagination<String> g = new Pagination<>(10, list);
-			Loader.msg(Loader.s("Prefix") + "&e----------------- &bTOP 10 Players &e-----------------", s);
-			Loader.msg("", s);
+			TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bTOP 10 Players &e-----------------", s);
+			TheAPI.msg("", s);
 			int page = 1;
 			if (args.length != 0)
 				page = TheAPI.getStringUtils().getInt(args[0]);
@@ -68,7 +69,7 @@ public class EcoTop implements CommandExecutor {
 			RankingAPI ms = TheAPI.getRankingAPI(money);
 			for (int i = 1; i < ms.getKeySet().size() + 1; i++) {
 				String player = ms.getObject(i).toString();
-				Loader.msg(Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", i + "")
+				TheAPI.msg(Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", i + "")
 						.replace("%player%", player).replace("%playername%", player(player))
 						.replace("%money%", API.setMoneyFormat(m.getValue(player), true)), s);
 			}

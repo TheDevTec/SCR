@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class TempFly implements CommandExecutor {
 
@@ -34,7 +34,7 @@ public class TempFly implements CommandExecutor {
 			if (args.length == 2) {
 				SPlayer t = new SPlayer(TheAPI.getPlayer(args[0]));
 				if (t.getPlayer() == null) {
-					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
 				}
 				int sec = (int) TheAPI.getStringUtils().getTimeFromString(args[1]);
@@ -46,7 +46,7 @@ public class TempFly implements CommandExecutor {
 					return true;
 				}
 				if (API.hasPerm(s, "ServerControl.TempFly.Other")) {
-					Loader.msg(Loader.s("Prefix") + Loader.s("TempFly.EnabledOther").replace("%player%", t.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("TempFly.EnabledOther").replace("%player%", t.getName())
 							.replace("%playername%", t.getName()).replace("%target%", t.getName())
 							.replace("%time%", TheAPI.getStringUtils().setTimeToString(sec)), s);
 

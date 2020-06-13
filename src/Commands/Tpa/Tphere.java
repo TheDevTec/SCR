@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Tphere implements CommandExecutor, TabCompleter {
 
@@ -24,26 +24,26 @@ public class Tphere implements CommandExecutor, TabCompleter {
 			if (args.length == 1) {
 				Player target = TheAPI.getPlayer(args[0]);
 				if (target == null) {
-					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
 				} else {
 					if (!TheAPI.getUser(target).getBoolean("TpBlock." + s.getName())
 							&& !TheAPI.getUser(target).getBoolean("TpBlock-Global")) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.Teleportedhere")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.Teleportedhere")
 								.replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()),
 								s);
 						target.teleport(((Player) s));
 						return true;
 					} else {
 						if (s.hasPermission("ServerControl.Tphere.Blocked")) {
-							Loader.msg(Loader.s("Prefix")
+							TheAPI.msg(Loader.s("Prefix")
 									+ Loader.s("TpaSystem.Teleportedhere").replace("%player%", target.getName())
 											.replace("%playername%", target.getDisplayName()),
 									s);
 							target.teleport(((Player) s));
 							return true;
 						} else {
-							Loader.msg(Loader.s("Prefix")
+							TheAPI.msg(Loader.s("Prefix")
 									+ Loader.s("TpaSystem.TpBlocked").replace("%playername%", target.getDisplayName())
 											.replace("%player%", target.getName()),
 									s);

@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Back implements CommandExecutor {
 
@@ -24,7 +24,7 @@ public class Back implements CommandExecutor {
 			}
 			Player p = TheAPI.getPlayer(args[0]);
 			if (p == null) {
-				Loader.msg(Loader.PlayerNotEx(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
 				return true;
 			}
 			if (p == s) {
@@ -33,7 +33,7 @@ public class Back implements CommandExecutor {
 			}
 			if (p != s) {
 				if (API.hasPerm(s, "ServerControl.Back.Other")) {
-					Loader.msg(Loader.s("Prefix") + Loader.s("Back.PlayerTeleported").replace("%player%", p.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Back.PlayerTeleported").replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName()), s);
 					API.TeleportBack(p);
 					return true;

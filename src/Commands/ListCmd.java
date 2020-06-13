@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class ListCmd implements CommandExecutor {
 	HashMap<Player, String> p = new HashMap<Player, String>(); // Player, group;
@@ -85,7 +85,7 @@ public class ListCmd implements CommandExecutor {
 					for (String wa : w) {
 						a = a.replace("%" + wa + "%", getPlayersInGroup(wa));
 					}
-				Loader.msg(a.replace("%online%", TheAPI.getOnlinePlayers().size() + "")
+				TheAPI.msg(a.replace("%online%", TheAPI.getOnlinePlayers().size() + "")
 						.replace("%max_players%", Bukkit.getMaxPlayers() + "").replace("%staff%", Staff.getStaff())
 						.replace("%players%", normalPlayers()).replace("%all%", allPlayers())
 						.replace("%prefix%", Loader.s("Prefix")), s);

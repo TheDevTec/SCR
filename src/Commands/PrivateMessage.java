@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Colors;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class PrivateMessage implements CommandExecutor {
 
@@ -60,7 +60,7 @@ public class PrivateMessage implements CommandExecutor {
 						p.sendMessage(from);
 						return true;
 					}
-					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
 				}
 			}

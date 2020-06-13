@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class WalkSpeed implements CommandExecutor {
 
@@ -43,7 +43,7 @@ public class WalkSpeed implements CommandExecutor {
 						flightmodifier = -10.0;
 					((Player) s).setWalkSpeed((float) flightmodifier / 10);
 					TheAPI.getUser(s.getName()).setAndSave("WalkSpeed", flightmodifier / 10);
-					Loader.msg(Loader.s("Prefix") + Loader.s("WalkSpeed.WalkSpeed").replace("%player%", s.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("WalkSpeed.WalkSpeed").replace("%player%", s.getName())
 							.replace("%playername%", ((Player) s).getDisplayName())
 							.replace("%speed%", String.valueOf(flightmodifier)), s);
 					return true;
@@ -62,15 +62,15 @@ public class WalkSpeed implements CommandExecutor {
 						flightmodifier = -10.0;
 					target.setWalkSpeed((float) flightmodifier / 10);
 					TheAPI.getUser(target).setAndSave("WalkSpeed", flightmodifier / 10);
-					Loader.msg(Loader.s("Prefix") + Loader.s("WalkSpeed.WalkSpeedPlayer")
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("WalkSpeed.WalkSpeedPlayer")
 							.replace("%player%", target.getName()).replace("%playername%", target.getDisplayName())
 							.replace("%speed%", String.valueOf(flightmodifier)), target);
-					Loader.msg(Loader.s("Prefix") + Loader.s("WalkSpeed.WalkSpeed")
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("WalkSpeed.WalkSpeed")
 							.replace("%player%", target.getName()).replace("%playername%", target.getDisplayName())
 							.replace("%speed%", String.valueOf(flightmodifier)), s);
 					return true;
 				}
-				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
 			return true;

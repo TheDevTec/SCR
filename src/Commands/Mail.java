@@ -13,7 +13,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Mail implements CommandExecutor, TabCompleter {
 
@@ -40,7 +40,7 @@ public class Mail implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				for (String mail : getMails(s.getName())) {
-					Loader.msg(mail, s);
+					TheAPI.msg(mail, s);
 				}
 				return true;
 			}
@@ -57,7 +57,7 @@ public class Mail implements CommandExecutor, TabCompleter {
 		}
 		if (args.length > 2 && args[0].equalsIgnoreCase("Send") && API.hasPerm(s, "ServerControl.Mail.Send")) {
 			if (!TheAPI.existsUser(args[1])) {
-				Loader.msg(Loader.PlayerNotEx(args[1]), s);
+				TheAPI.msg(Loader.PlayerNotEx(args[1]), s);
 				return true;
 			}
 			String msg = "";
@@ -71,7 +71,7 @@ public class Mail implements CommandExecutor, TabCompleter {
 			Player p = TheAPI.getPlayer(args[1]);
 			if (p != null && p.getName().equals(args[1])) {
 				int number = getMails(p.getName()).size();
-				Loader.msg(Loader.s("Prefix") + Loader.s("Mail.Notification").replace("%number%", "" + number), p);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Mail.Notification").replace("%number%", "" + number), p);
 			}
 			return true;
 		}

@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.TheAPI;
 
 public class Repair implements CommandExecutor, TabCompleter {
 
@@ -29,11 +30,11 @@ public class Repair implements CommandExecutor, TabCompleter {
 					if (hand != Material.AIR) {
 						if (p.getInventory().getItemInHand().getDurability() != 0)
 							p.getItemInHand().setDurability((short) 0);
-						Loader.msg(Loader.s("Prefix") + Loader.s("Repair.Repaired"), s);
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.Repaired"), s);
 						return true;
 					}
 
-					Loader.msg(Loader.s("Prefix") + Loader.s("Repair.HandIsEmpty"), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.HandIsEmpty"), s);
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("all")) {
@@ -43,7 +44,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 							if (t.getDurability() != 0)
 								t.setDurability((short) 0);
 					}
-					Loader.msg(Loader.s("Prefix") + Loader.s("Repair.RepairedAll"), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.RepairedAll"), s);
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("hand")) {
@@ -51,11 +52,11 @@ public class Repair implements CommandExecutor, TabCompleter {
 					if (hand != Material.AIR) {
 						if (p.getInventory().getItemInHand().getDurability() != 0)
 							p.getItemInHand().setDurability((short) 0);
-						Loader.msg(Loader.s("Prefix") + Loader.s("Repair.Repaired"), s);
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.Repaired"), s);
 						return true;
 					}
 
-					Loader.msg(Loader.s("Prefix") + Loader.s("Repair.HandIsEmpty"), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.HandIsEmpty"), s);
 					return true;
 				}
 				if (!args[0].equalsIgnoreCase("hand") || !args[0].equalsIgnoreCase("all")) {
@@ -63,17 +64,17 @@ public class Repair implements CommandExecutor, TabCompleter {
 					if (hand != Material.AIR) {
 						if (p.getInventory().getItemInHand().getDurability() != 0)
 							p.getItemInHand().setDurability((short) 0);
-						Loader.msg(Loader.s("Prefix") + Loader.s("Repair.Repaired"), s);
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.Repaired"), s);
 						return true;
 					}
 
-					Loader.msg(Loader.s("Prefix") + Loader.s("Repair.HandIsEmpty"), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.HandIsEmpty"), s);
 					return true;
 				}
 			}
 			return true;
 		}
-		Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+		TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 		return true;
 	}
 

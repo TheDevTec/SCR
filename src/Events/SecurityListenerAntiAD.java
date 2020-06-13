@@ -18,7 +18,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControlEvents.PlayerAdvertisementEvent;
 import Utils.setting;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 @SuppressWarnings("deprecation")
 public class SecurityListenerAntiAD implements Listener {

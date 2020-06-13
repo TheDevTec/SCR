@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
-import me.Straiker123.TheAPI.SudoType;
+import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.SudoType;
 
 public class Sudo implements CommandExecutor {
 
@@ -37,16 +37,16 @@ public class Sudo implements CommandExecutor {
 						msg = msg.replaceFirst("/", "");
 						TheAPI.sudo(target, SudoType.COMMAND, msg);
 						String st = API.replacePlayerName(Loader.s("Sudo.SendCommand"), target);
-						Loader.msg(Loader.s("Prefix") + st.replace("%command%", msg), s);
+						TheAPI.msg(Loader.s("Prefix") + st.replace("%command%", msg), s);
 						return true;
 					} else {
 						TheAPI.sudo(target, SudoType.CHAT, msg);
 						String st = API.replacePlayerName(Loader.s("Sudo.SendMessage"), target);
-						Loader.msg(Loader.s("Prefix") + st.replace("%message%", msg), s);
+						TheAPI.msg(Loader.s("Prefix") + st.replace("%message%", msg), s);
 						return true;
 					}
 				}
-				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
 		}

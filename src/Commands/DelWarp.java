@@ -13,6 +13,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.TheAPI;
 
 public class DelWarp implements CommandExecutor, TabCompleter {
 
@@ -26,12 +27,12 @@ public class DelWarp implements CommandExecutor, TabCompleter {
 			if (args[0] != null) {
 				if (Loader.config.getString("Warps." + args[0]) != null) {
 					Loader.config.set("Warps." + args[0], null);
-					Loader.msg(Loader.s("Warp.Deleted").replace("%warp%", args[0]).replace("%player%", s.getName())
+					TheAPI.msg(Loader.s("Warp.Deleted").replace("%warp%", args[0]).replace("%player%", s.getName())
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%playername%", ((Player) s).getDisplayName()), s);
 					return true;
 				} else {
-					Loader.msg(
+					TheAPI.msg(
 							Loader.s("Warp.NotExists").replace("%player%", s.getName())
 									.replace("%prefix%", Loader.s("Prefix"))
 									.replace("%playername%", ((Player) s).getDisplayName()).replace("%warp%", args[0]),

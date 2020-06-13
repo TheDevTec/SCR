@@ -9,8 +9,8 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import ServerControl.Loader;
 import Utils.setting;
-import me.Straiker123.CooldownAPI;
-import me.Straiker123.TheAPI;
+import me.DevTec.CooldownAPI;
+import me.DevTec.TheAPI;
 
 @SuppressWarnings("deprecation")
 public class SecurityListenerCooldowns implements Listener {
@@ -23,7 +23,7 @@ public class SecurityListenerCooldowns implements Listener {
 		if (setting.cool_chat && !p.hasPermission("ServerControl.CooldownBypass.Chat")
 				&& Loader.config.getInt("Options.Cooldowns.Chat.Time") > 0) {
 			if (!s.expired(p.getName())) {
-				Loader.msg(Loader.s("Prefix") + Loader.s("Cooldown.ToSendMessage").replace("%timer%",
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Cooldown.ToSendMessage").replace("%timer%",
 						TheAPI.getStringUtils().setTimeToString(s.getTimeToExpire(p.getName()))), p);
 				e.setCancelled(true);
 				return;
@@ -49,7 +49,7 @@ public class SecurityListenerCooldowns implements Listener {
 							as.createCooldown(p, TheAPI.getStringUtils().getInt(c[1]));
 						} else {
 							e.setCancelled(true);
-							Loader.msg(
+							TheAPI.msg(
 									Loader.s("Prefix") + Loader.s("Cooldown.ToSendCommand").replace("%timer%",
 											TheAPI.getStringUtils().setTimeToString(as.getTimeToExpire(p.getName()))),
 									p);
@@ -60,7 +60,7 @@ public class SecurityListenerCooldowns implements Listener {
 			if (!find && setting.cool_cmd && time > 0) {
 				if (!a.expired(p.getName())) {
 					e.setCancelled(true);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Cooldown.ToSendCommand").replace("%timer%",
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Cooldown.ToSendCommand").replace("%timer%",
 							TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(p.getName()))), p);
 				} else
 					a.createCooldown(p.getName(), time);

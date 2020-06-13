@@ -2,6 +2,7 @@ package Events;
 
 import org.bukkit.CropState;
 import org.bukkit.Material;
+import org.bukkit.NetherWartsState;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,10 +10,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Crops;
 import org.bukkit.material.MaterialData;
+import org.bukkit.material.NetherWarts;
 
 import Utils.XMaterial;
 import Utils.setting;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 @SuppressWarnings("deprecation")
 public class FarmingSystem implements Listener {
@@ -24,7 +26,19 @@ public class FarmingSystem implements Listener {
 			return;
 		BlockState s = e.getClickedBlock().getState();
 		MaterialData md = s.getData();
-
+		if (e.getClickedBlock().getType().name().equals("NETHER_WARTS")) {
+			NetherWarts data = (NetherWarts)md;
+			if(data.getState()==NetherWartsState.RIPE) {
+			data.setState(NetherWartsState.SEEDED);
+			s.setData(data);
+			s.update();
+            e.setCancelled(true); 
+            int random = TheAPI.generateRandomInt(5);
+			if (random == 0)
+				random = 1;
+			TheAPI.giveItem(e.getPlayer(), new ItemStack(XMaterial.NETHER_WART.parseMaterial(), random));
+        }
+    }
 		if (md instanceof Crops)
 			if (((Crops) md).getState() == CropState.RIPE) {
 				if (e.getClickedBlock().getType().name().equals("WHEAT")

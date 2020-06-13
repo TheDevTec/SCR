@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Vanish implements CommandExecutor {
 
@@ -20,11 +20,11 @@ public class Vanish implements CommandExecutor {
 					Player p = (Player) s;
 					if (!TheAPI.isVanished(p)) {
 						TheAPI.vanish(p, "ServerControl.Vanish", true);
-						Loader.msg(Loader.s("Prefix") + Loader.s("Vanish.Enabled"), s);
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Vanish.Enabled"), s);
 						return true;
 					}
 					TheAPI.vanish(p, "ServerControl.Vanish", false);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Vanish.Disabled"), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Vanish.Disabled"), s);
 					return true;
 				}
 				Loader.Help(s, "/Vanish <player>", "Vanish");
@@ -35,20 +35,20 @@ public class Vanish implements CommandExecutor {
 				if (t != null) {
 					if (!TheAPI.isVanished(t)) {
 						TheAPI.vanish(t, "ServerControl.Vanish", true);
-						Loader.msg(Loader.s("Prefix") + Loader.s("Vanish.Enabled").replace("%player%", t.getName())
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Vanish.Enabled").replace("%player%", t.getName())
 								.replace("%playername%", t.getDisplayName()), t);
-						Loader.msg(Loader.s("Prefix") + Loader.s("Vanish.EnabledPlayer")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Vanish.EnabledPlayer")
 								.replace("%player%", t.getName()).replace("%playername%", t.getDisplayName()), s);
 						return true;
 					}
 					TheAPI.vanish(t, "ServerControl.Vanish", false);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Vanish.Disabled").replace("%player%", t.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Vanish.Disabled").replace("%player%", t.getName())
 							.replace("%playername%", t.getDisplayName()), t);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Vanish.DisabledPlayer").replace("%player%", t.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Vanish.DisabledPlayer").replace("%player%", t.getName())
 							.replace("%playername%", t.getDisplayName()), s);
 					return true;
 				}
-				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
 		}

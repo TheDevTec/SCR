@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Jail implements CommandExecutor {
 
@@ -24,7 +24,7 @@ public class Jail implements CommandExecutor {
 				if (Loader.config.getString("Jails") != null) {
 					if (TheAPI.getUser(args[0]).getBoolean("Immune")
 							|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "Jail")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "Jail")
 								.replace("%target%", args[0]), s);
 						return true;
 					}
@@ -32,14 +32,14 @@ public class Jail implements CommandExecutor {
 							.replace("%reason%", Loader.config.getString("BanSystem.Jail.Reason")));
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.s("BanSystem.MissingJail"), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.MissingJail"), s);
 				return true;
 			}
 			if (args.length >= 2) {
 				if (!TheAPI.getPunishmentAPI().getjails().isEmpty()) {
 					if (TheAPI.getUser(args[0]).getBoolean("Immune")
 							|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "Jail")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "Jail")
 								.replace("%target%", args[0]), s);
 						return true;
 					}
@@ -51,7 +51,7 @@ public class Jail implements CommandExecutor {
 
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.s("BanSystem.MissingJail"), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.MissingJail"), s);
 				return true;
 			}
 

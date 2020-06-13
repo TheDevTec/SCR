@@ -17,7 +17,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Item implements CommandExecutor, TabCompleter {
 
@@ -64,7 +64,7 @@ public class Item implements CommandExecutor, TabCompleter {
 							}
 							item.setItemMeta(m);
 
-							Loader.msg(Loader.s("Prefix")
+							TheAPI.msg(Loader.s("Prefix")
 									+ Loader.s("Item.Unbreakable.true").replace("%item%", item.getType().name()), s);
 							return true;
 						} else if (args[1].equalsIgnoreCase("false") || args[1].equalsIgnoreCase("no")) {
@@ -82,7 +82,7 @@ public class Item implements CommandExecutor, TabCompleter {
 								m.setUnbreakable(false);
 							}
 							item.setItemMeta(m);
-							Loader.msg(Loader.s("Prefix")
+							TheAPI.msg(Loader.s("Prefix")
 									+ Loader.s("Item.Unbreakable.false").replace("%item%", item.getType().name()), s);
 							return true;
 						} else {
@@ -103,13 +103,13 @@ public class Item implements CommandExecutor, TabCompleter {
 						if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("yes")) {
 							m.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 							item.setItemMeta(m);
-							Loader.msg(Loader.s("Prefix")
+							TheAPI.msg(Loader.s("Prefix")
 									+ Loader.s("Item.HideEnchants.true").replace("%item%", item.getType().name()), s);
 							return true;
 						} else if (args[1].equalsIgnoreCase("false") || args[1].equalsIgnoreCase("no")) {
 							m.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 							item.setItemMeta(m);
-							Loader.msg(Loader.s("Prefix")
+							TheAPI.msg(Loader.s("Prefix")
 									+ Loader.s("Item.HideEnchants.false").replace("%item%", item.getType().name()), s);
 							return true;
 						} else {
@@ -128,12 +128,12 @@ public class Item implements CommandExecutor, TabCompleter {
 
 						if (args[1].equalsIgnoreCase("Lines")) {
 							int tests = 0;
-							Loader.msg(Loader.s("Prefix")
+							TheAPI.msg(Loader.s("Prefix")
 									+ Loader.s("Item.SetLore.Lines-List").replace("%item%", item.getType().name()), s);
 							List<String> lore = m.getLore();
 							if (lore != null)
 								for (String ss : lore) {
-									Loader.msg(Loader.s("Prefix") + Loader.s("Item.SetLore.Lines-Format")
+									TheAPI.msg(Loader.s("Prefix") + Loader.s("Item.SetLore.Lines-Format")
 											.replace("%position%", tests + "").replace("%lore%", ss), s);
 									tests = tests + 1;
 								}
@@ -161,7 +161,7 @@ public class Item implements CommandExecutor, TabCompleter {
 
 							m.setLore(lore);
 							item.setItemMeta(m);
-							Loader.msg(Loader.s("Prefix") + Loader.s("Item.SetLore.Add")
+							TheAPI.msg(Loader.s("Prefix") + Loader.s("Item.SetLore.Add")
 									.replace("%item%", item.getType().name()).replace("%lore%", name), s);
 							return true;
 						}
@@ -175,13 +175,13 @@ public class Item implements CommandExecutor, TabCompleter {
 								lore.remove(TheAPI.getStringUtils().getInt(args[2]));
 								m.setLore(lore);
 								item.setItemMeta(m);
-								Loader.msg(Loader.s("Prefix")
+								TheAPI.msg(Loader.s("Prefix")
 										+ Loader.s("Item.SetLore.Remove").replace("%item%", item.getType().name())
 												.replace("%line%", "" + TheAPI.getStringUtils().getInt(args[2])),
 										s);
 								return true;
 							} catch (Exception e) {
-								Loader.msg(Loader.s("Prefix")
+								TheAPI.msg(Loader.s("Prefix")
 										+ Loader.s("Item.SetLore.RemoveError").replace("%item%", item.getType().name())
 												.replace("%line%", "" + TheAPI.getStringUtils().getInt(args[2])),
 										s);
@@ -209,7 +209,7 @@ public class Item implements CommandExecutor, TabCompleter {
 
 						m.setDisplayName(TheAPI.colorize(name));
 						item.setItemMeta(m);
-						Loader.msg(
+						TheAPI.msg(
 								Loader.s("Prefix") + Loader.s("Item.SetName").replace("%item%", item.getType().name())
 										.replace("%name%", name).replace("%displayname%", name),
 								s);
@@ -227,10 +227,10 @@ public class Item implements CommandExecutor, TabCompleter {
 						return true;
 					}
 				}
-				Loader.msg(Loader.s("Item.HandIsEmpty"), s);
+				TheAPI.msg(Loader.s("Item.HandIsEmpty"), s);
 				return true;
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

@@ -22,9 +22,9 @@ import org.bukkit.plugin.Plugin;
 import Commands.Kit;
 import ServerControlEvents.PluginHookEvent;
 import Utils.setting;
-import me.Straiker123.PluginManagerAPI;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
+import me.DevTec.PluginManagerAPI;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.User;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
@@ -63,7 +63,7 @@ public class API {
 			if (home != null) {
 				return TheAPI.getStringUtils().getLocationFromString(d.getString("Homes." + home));
 			} else {
-				Loader.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn").replace("%world%", p.getWorld().getName())
+				TheAPI.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn").replace("%world%", p.getWorld().getName())
 						.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
 				a = getTeleportLocation(p, TeleportLocation.SPAWN);
 			}
@@ -176,10 +176,10 @@ public class API {
 		if (loc != null) {
 			TheAPI.getUser(p).set("Back", TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
 			p.teleport(loc);
-			Loader.msg(Loader.s("Back.Teleporting").replace("%prefix%", Loader.s("Prefix"))
+			TheAPI.msg(Loader.s("Back.Teleporting").replace("%prefix%", Loader.s("Prefix"))
 					.replace("%playername%", p.getDisplayName()).replace("%player%", p.getName()), p);
 		} else
-			Loader.msg(Loader.s("Back.CantGetLocation"), p);
+			TheAPI.msg(Loader.s("Back.CantGetLocation"), p);
 	}
 
 	public static void setBack(Player p) {

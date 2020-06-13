@@ -4,9 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class TempMute implements CommandExecutor {
 
@@ -21,7 +22,7 @@ public class TempMute implements CommandExecutor {
 			if (args.length == 1) {
 				if (TheAPI.getUser(args[0]).getBoolean("Immune")
 						|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-					Loader.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "TempMute")
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "TempMute")
 							.replace("%target%", args[0]), s);
 					return true;
 				}
@@ -37,7 +38,7 @@ public class TempMute implements CommandExecutor {
 			if (args.length == 2) {
 				if (TheAPI.getUser(args[0]).getBoolean("Immune")
 						|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-					Loader.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "TempMute")
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "TempMute")
 							.replace("%target%", args[0]), s);
 					return true;
 				}
@@ -51,7 +52,7 @@ public class TempMute implements CommandExecutor {
 			if (args.length >= 3) {
 				if (TheAPI.getUser(args[0]).getBoolean("Immune")
 						|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-					Loader.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "TempMute")
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "TempMute")
 							.replace("%target%", args[0]), s);
 					return true;
 				}

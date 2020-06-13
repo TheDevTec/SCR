@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 @SuppressWarnings("deprecation")
 public class AFkPlayerEvents implements Listener {

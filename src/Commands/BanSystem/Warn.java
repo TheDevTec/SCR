@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Warn implements CommandExecutor {
 	@SuppressWarnings("deprecation")
@@ -22,7 +22,7 @@ public class Warn implements CommandExecutor {
 				if (TheAPI.existsUser(args[0])) {
 					if (TheAPI.getUser(args[0]).getBoolean("Immune")
 							|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "Warn")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "Warn")
 								.replace("%target%", args[0]), s);
 						return true;
 					}
@@ -32,17 +32,17 @@ public class Warn implements CommandExecutor {
 					return true;
 				}
 				if (TheAPI.existsUser(args[0]))
-					Loader.msg(Loader.s("Prefix") + Loader.s("BanSystem.PlayerHasNotBan").replace("%player%", args[0])
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.PlayerHasNotBan").replace("%player%", args[0])
 							.replace("%playername%", args[0]), s);
 				else
-					Loader.msg(Loader.PlayerNotEx(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
 				return true;
 			}
 			if (args.length >= 2) {
 				if (TheAPI.existsUser(args[0])) {
 					if (TheAPI.getUser(args[0]).getBoolean("Immune")
 							|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "Warn")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "Warn")
 								.replace("%target%", args[0]), s);
 						return true;
 					}
@@ -54,10 +54,10 @@ public class Warn implements CommandExecutor {
 					return true;
 				}
 				if (TheAPI.existsUser(args[0]))
-					Loader.msg(Loader.s("Prefix") + Loader.s("BanSystem.PlayerHasNotBan").replace("%player%", args[0])
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.PlayerHasNotBan").replace("%player%", args[0])
 							.replace("%playername%", args[0]), s);
 				else
-					Loader.msg(Loader.PlayerNotEx(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
 				return true;
 
 			}

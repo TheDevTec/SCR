@@ -5,10 +5,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
 import Utils.Repeat;
+import me.DevTec.TheAPI;
 
 public class Heal implements CommandExecutor {
 	@Override
@@ -22,7 +24,7 @@ public class Heal implements CommandExecutor {
 			}
 			Player p = (Player) s;
 			new SPlayer(p).heal();
-			Loader.msg(Loader.s("Prefix") + Loader.s("Heal.Healed").replace("%player%", p.getName())
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Healed").replace("%player%", p.getName())
 					.replace("%playername%", p.getDisplayName()), s);
 			return true;
 		}
@@ -33,21 +35,21 @@ public class Heal implements CommandExecutor {
 			}
 			Player target = Bukkit.getServer().getPlayer(args[0]);
 			if (target == null) {
-				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
 			if (target == s) {
 				Player p = (Player) s;
 				new SPlayer(p).heal();
-				Loader.msg(Loader.s("Prefix") + Loader.s("Heal.Healed").replace("%player%", p.getName())
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Healed").replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName()), s);
 				return true;
 			}
 			if (API.hasPerm(s, "ServerControl.Heal.Other")) {
 				new SPlayer(target).heal();
-				Loader.msg(Loader.s("Prefix") + Loader.s("Heal.Healed").replace("%player%", target.getName())
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Healed").replace("%player%", target.getName())
 						.replace("%playername%", target.getDisplayName()), target);
-				Loader.msg(Loader.s("Prefix") + Loader.s("Heal.SpecifyPlayerHealed")
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.SpecifyPlayerHealed")
 						.replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()), s);
 				return true;
 			}

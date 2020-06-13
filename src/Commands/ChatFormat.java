@@ -12,11 +12,12 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.TheAPI;
 
 public class ChatFormat implements CommandExecutor, TabCompleter {
 
 	private void msg(String s, CommandSender a) {
-		Loader.msg(s, a);
+		TheAPI.msg(s, a);
 	}
 
 	@Override

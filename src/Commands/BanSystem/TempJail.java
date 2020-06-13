@@ -11,7 +11,7 @@ import org.bukkit.command.TabCompleter;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class TempJail implements CommandExecutor, TabCompleter {
 
@@ -25,12 +25,12 @@ public class TempJail implements CommandExecutor, TabCompleter {
 			}
 			if (TheAPI.getUser(args[0]).getBoolean("Immune")
 					|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-				Loader.msg(Loader.s("Prefix")
+				TheAPI.msg(Loader.s("Prefix")
 						+ Loader.s("Immune.NoPunish").replace("%punishment%", "Mute").replace("%target%", args[0]), s);
 				return true;
 			}
 			if (Loader.config.getString("Jails") == null) {
-				Loader.msg(Loader.s("Prefix") + Loader.s("BanSystem.MissingJail"), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.MissingJail"), s);
 				return true;
 			}
 			if (args.length == 2) {

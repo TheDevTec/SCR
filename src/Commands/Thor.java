@@ -10,7 +10,7 @@ import org.bukkit.util.BlockIterator;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Thor implements CommandExecutor {
 
@@ -35,7 +35,7 @@ public class Thor implements CommandExecutor {
 				Player p2 = (Player) s;
 				Block b = getTargetBlock(p2, 100);
 				b.getWorld().strikeLightning(b.getLocation());
-				Loader.msg(Loader.s("Prefix") + Loader.s("ThorOnBlock"), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("ThorOnBlock"), s);
 				return true;
 			}
 			if (args.length == 1) {
@@ -46,11 +46,11 @@ public class Thor implements CommandExecutor {
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null) {
 					p.getWorld().strikeLightning(p.getLocation());
-					Loader.msg(Loader.s("Prefix") + Loader.s("Thor").replace("%player%", p.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Thor").replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName()), s);
 					return true;
 				}
-				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
 			return true;

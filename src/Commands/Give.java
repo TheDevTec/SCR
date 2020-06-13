@@ -2,7 +2,9 @@ package Commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,12 +17,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.StringUtil;
 
+import com.google.common.collect.Maps;
+
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
 import Utils.XMaterial;
-import me.Straiker123.MultiMap;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Give implements CommandExecutor, TabCompleter {
 	List<String> list = new ArrayList<String>();
@@ -108,7 +111,7 @@ public class Give implements CommandExecutor, TabCompleter {
 		int args3 = 0; // level
 		int args4 = 0; // time
 		boolean multi = false;
-		MultiMap<PotionEffectType> a = TheAPI.getMultiMap();
+		HashMap<PotionEffectType, String> a = Maps.newHashMap();
 		if (s.toUpperCase().startsWith("POTION_OF_")) {
 			args1 = XMaterial.POTION.parseMaterial();
 			args2 = s.toUpperCase().replaceFirst("POTION_OF_", "").replaceAll("[0-9]", "");
@@ -342,18 +345,18 @@ public class Give implements CommandExecutor, TabCompleter {
 			break;
 		case "TURTLE_MASTER":
 			multi = true;
-			a.put(PotionEffectType.SLOW, 4, 20);
-			a.put(PotionEffectType.DAMAGE_RESISTANCE, 3, 20);
+			a.put(PotionEffectType.SLOW, 4+":"+20);
+			a.put(PotionEffectType.DAMAGE_RESISTANCE, 3+":"+20);
 			break;
 		case "TURTLE_MASTER2":
 			multi = true;
-			a.put(PotionEffectType.SLOW, 4, 40);
-			a.put(PotionEffectType.DAMAGE_RESISTANCE, 3, 40);
+			a.put(PotionEffectType.SLOW, 4+":"+40);
+			a.put(PotionEffectType.DAMAGE_RESISTANCE, 3+":"+40);
 			break;
 		case "TURTLE_MASTER3":
 			multi = true;
-			a.put(PotionEffectType.SLOW, 4, 20);
-			a.put(PotionEffectType.DAMAGE_RESISTANCE, 4, 20);
+			a.put(PotionEffectType.SLOW, 4+":"+20);
+			a.put(PotionEffectType.DAMAGE_RESISTANCE, 4+":"+20);
 			break;
 
 		case "CONDUIT_POWER":
@@ -386,8 +389,8 @@ public class Give implements CommandExecutor, TabCompleter {
 		ItemStack h = new ItemStack(args1);
 		PotionMeta g = (PotionMeta) h.getItemMeta();
 		if (multi) {
-			for (PotionEffectType f : a.getKeySet()) { // effect
-				Object[] o = a.getValues(f).toArray();// values
+			for (PotionEffectType f : a.keySet()) { // effect
+				String[] o = a.get(f).split(":");// values
 				int i = TheAPI.getStringUtils().getInt(o[0].toString());
 				int ib = TheAPI.getStringUtils().getInt(o[1].toString());
 				g.addCustomEffect(new PotionEffect(f, i * 20, (ib == 0 ? 1 : ib)), true);
@@ -433,17 +436,17 @@ public class Give implements CommandExecutor, TabCompleter {
 									TheAPI.giveItem(p, XMaterial.matchXMaterial(g).get().parseMaterial(), 1);
 								else
 									TheAPI.giveItem(p, getPotion(g));
-								Loader.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Give.Given"), p)
+								TheAPI.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Give.Given"), p)
 										.replace("%amount%", "1").replace("%item%", getItem(g)), s);
 								return true;
 							} catch (Exception e) {
-								Loader.msg(Loader.s("Prefix") + Loader.s("Give.UknownItem").replace("%item%", g), s);
+								TheAPI.msg(Loader.s("Prefix") + Loader.s("Give.UknownItem").replace("%item%", g), s);
 								return true;
 							}
 						}
 						return true;
 					}
-					Loader.msg(Loader.s("Prefix") + Loader.s("Give.UknownItem").replace("%item%", args[0]), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Give.UknownItem").replace("%item%", args[0]), s);
 					return true;
 				}
 				Loader.Help(s, "/Give <player> <item> <amount>", "Give");
@@ -468,20 +471,20 @@ public class Give implements CommandExecutor, TabCompleter {
 								a.setAmount(TheAPI.getStringUtils().getInt(args[1]));
 								TheAPI.giveItem(ps, a);
 							}
-							Loader.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Give.Given"), ps)
+							TheAPI.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Give.Given"), ps)
 									.replace("%amount%", TheAPI.getStringUtils().getInt(args[1]) + "")
 									.replace("%item%", getItem(g)), s);
 							return true;
 
 						} catch (Exception e) {
-							Loader.msg(Loader.s("Prefix") + Loader.s("Give.UknownItem").replace("%item%", g), s);
+							TheAPI.msg(Loader.s("Prefix") + Loader.s("Give.UknownItem").replace("%item%", g), s);
 							return true;
 						}
 					}
 					if (s instanceof Player == false)
-						Loader.msg(Loader.PlayerNotOnline(args[1]), s);
+						TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 					else
-						Loader.msg(Loader.s("Prefix") + Loader.s("Give.UknownItem").replace("%item%", g), s);
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Give.UknownItem").replace("%item%", g), s);
 					return true;
 
 				}
@@ -492,11 +495,11 @@ public class Give implements CommandExecutor, TabCompleter {
 						TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).get().parseMaterial(), 1);
 					else
 						TheAPI.giveItem(ps, getPotion(g));
-					Loader.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Give.Given"), ps)
+					TheAPI.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Give.Given"), ps)
 							.replace("%item%", getItem(g)).replace("%amount%", "1"), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.s("Give.UknownItem").replace("%item%", g), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Give.UknownItem").replace("%item%", g), s);
 				return true;
 			}
 			if (args.length == 3) {
@@ -517,13 +520,13 @@ public class Give implements CommandExecutor, TabCompleter {
 							a.setAmount(TheAPI.getStringUtils().getInt(args[2]));
 							TheAPI.giveItem(ps, a);
 						}
-						Loader.msg(Loader.s("Prefix")
+						TheAPI.msg(Loader.s("Prefix")
 								+ API.replacePlayerName(Loader.s("Give.Given"), ps).replace("%item%", getItem(g))
 										.replace("%amount%", TheAPI.getStringUtils().getInt(args[2]) + ""),
 								s);
 						return true;
 					}
-					Loader.msg(Loader.s("Prefix") + Loader.s("Give.UknownItem").replace("%item%", g), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Give.UknownItem").replace("%item%", g), s);
 					return true;
 				}
 				if (args[0].equals("*")) {
@@ -531,7 +534,7 @@ public class Give implements CommandExecutor, TabCompleter {
 							+ TheAPI.getStringUtils().getInt(args[2]));
 					return true;
 				}
-				Loader.msg(Loader.PlayerNotOnline(args[1]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 				return true;
 			}
 

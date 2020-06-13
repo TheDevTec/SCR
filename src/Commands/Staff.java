@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Staff implements CommandExecutor {
 
@@ -49,7 +49,7 @@ public class Staff implements CommandExecutor {
 		if (API.hasPerm(s, "ServerControl.Staff")) {
 			sortPlayers();
 			for (String a : Loader.trans.getStringList("PlayerList.Staff")) {
-				Loader.msg(a.replace("%online%", p.size() + "").replace("%max_players%", Bukkit.getMaxPlayers() + "")
+				TheAPI.msg(a.replace("%online%", p.size() + "").replace("%max_players%", Bukkit.getMaxPlayers() + "")
 						.replace("%prefix%", Loader.s("Prefix")).replace("%staff%", getStaff()), s);
 			}
 			return true;

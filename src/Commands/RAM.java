@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class RAM implements CommandExecutor {
 
@@ -18,13 +18,13 @@ public class RAM implements CommandExecutor {
 
 		if (API.hasPerm(s, "ServerControl.RAM")) {
 			if (args.length == 0) {
-				Loader.msg(Loader.s("Prefix") + "&e----------------- &bRAM &e-----------------", s);
-				Loader.msg("", s);
+				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bRAM &e-----------------", s);
+				TheAPI.msg("", s);
 				if (setting.ram) {
 					List<String> normal = Loader.trans.getStringList("RAM.Info.Normal");
 					for (String ss : normal) {
 
-						Loader.msg(
+						TheAPI.msg(
 								Loader.s("Prefix")
 										+ ss.replace("%free_ram%", TheAPI.getMemoryAPI().getFreeMemory(false) + "")
 												.replace("%max_ram%", TheAPI.getMemoryAPI().getMaxMemory() + "")
@@ -35,7 +35,7 @@ public class RAM implements CommandExecutor {
 				}
 				List<String> normal = Loader.trans.getStringList("RAM.Info.Percent");
 				for (String sss : normal) {
-					Loader.msg(Loader.s("Prefix")
+					TheAPI.msg(Loader.s("Prefix")
 							+ sss.replace("%used_ram%", TheAPI.getMemoryAPI().getUsedMemory(true) + "")
 									.replace("%max_ram%", TheAPI.getMemoryAPI().getMaxMemory() + "")
 									.replace("%free_ram%", TheAPI.getMemoryAPI().getFreeMemory(true) + ""),
@@ -46,13 +46,13 @@ public class RAM implements CommandExecutor {
 			}
 			if (ServerControl.clearing == false) {
 				ServerControl.clearing = true;
-				Loader.msg(Loader.s("Prefix") + Loader.s("RAM.Clearing"), s);
-				Loader.msg(Loader.s("Prefix")
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("RAM.Clearing"), s);
+				TheAPI.msg(Loader.s("Prefix")
 						+ Loader.s("RAM.Cleared").replace("%cleared%", TheAPI.getMemoryAPI().clearMemory() + ""), s);
 				ServerControl.clearing = false;
 				return true;
 			}
-			Loader.msg(Loader.s("Prefix") + Loader.s("RAM.AlreadyClearing"), s);
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("RAM.AlreadyClearing"), s);
 			return true;
 		}
 		return true;

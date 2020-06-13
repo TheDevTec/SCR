@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
-import me.Straiker123.NameTagAPI;
-import me.Straiker123.TheAPI;
+import me.DevTec.NameTagAPI;
+import me.DevTec.TheAPI;
 
 public class NameTagChanger {
 	static HashMap<Player, NameTagAPI> t = new HashMap<Player, NameTagAPI>();

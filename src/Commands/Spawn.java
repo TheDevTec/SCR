@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Spawn implements CommandExecutor {
 
@@ -19,7 +19,7 @@ public class Spawn implements CommandExecutor {
 				if (s instanceof Player) {
 					API.setBack((Player) s);
 					API.teleportPlayer((Player) s, TeleportLocation.SPAWN);
-					Loader.msg(Loader.s("Spawn.TeleportedToSpawn").replace("%world%", ((Player) s).getWorld().getName())
+					TheAPI.msg(Loader.s("Spawn.TeleportedToSpawn").replace("%world%", ((Player) s).getWorld().getName())
 							.replace("%player%", s.getName()).replace("%playername%", ((Player) s).getDisplayName()),
 							s);
 					return true;
@@ -30,22 +30,22 @@ public class Spawn implements CommandExecutor {
 			}
 			Player p = TheAPI.getPlayer(args[0]);
 			if (p == null) {
-				Loader.msg(Loader.PlayerNotEx(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
 				return true;
 			}
 			if (p == s) {
 				API.setBack(p);
 				API.teleportPlayer(p, TeleportLocation.SPAWN);
-				Loader.msg(Loader.s("Spawn.TeleportedToSpawn").replace("%world%", p.getWorld().getName())
+				TheAPI.msg(Loader.s("Spawn.TeleportedToSpawn").replace("%world%", p.getWorld().getName())
 						.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
 				return true;
 			}
 			if (API.hasPerm(s, "ServerControl.Spawn.Other")) {
 				API.setBack(p);
 				API.teleportPlayer(p, TeleportLocation.SPAWN);
-				Loader.msg(Loader.s("Spawn.TeleportedToSpawn").replace("%world%", p.getWorld().getName())
+				TheAPI.msg(Loader.s("Spawn.TeleportedToSpawn").replace("%world%", p.getWorld().getName())
 						.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
-				Loader.msg(Loader.s("Spawn.PlayerTeleportedToSpawn").replace("%world%", p.getWorld().getName())
+				TheAPI.msg(Loader.s("Spawn.PlayerTeleportedToSpawn").replace("%world%", p.getWorld().getName())
 						.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), s);
 				return true;
 			}

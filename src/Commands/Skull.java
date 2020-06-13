@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.ItemCreatorAPI;
-import me.Straiker123.TheAPI;
+import me.DevTec.ItemCreatorAPI;
+import me.DevTec.TheAPI;
 
 @SuppressWarnings("deprecation")
 public class Skull implements CommandExecutor {
@@ -39,7 +39,7 @@ public class Skull implements CommandExecutor {
 					w.setSkullType(SkullType.PLAYER);
 					w.setDisplayName("&6" + player + "'s Head");
 					TheAPI.giveItem((Player) s, w.create());
-					Loader.msg(Loader.s("Skull-Given").replace("%head%", player), s);
+					TheAPI.msg(Loader.s("Skull-Given").replace("%head%", player), s);
 					return true;
 				}
 				Loader.Help(s, "/Skull <name> <player>", "SkullOther");
@@ -54,11 +54,11 @@ public class Skull implements CommandExecutor {
 					w.setSkullType(SkullType.PLAYER);
 					w.setDisplayName("&6" + player + "'s Head");
 					TheAPI.giveItem((Player) s, w.create());
-					Loader.msg(Loader.s("Skull-GivenToPlayer").replace("%head%", player)
+					TheAPI.msg(Loader.s("Skull-GivenToPlayer").replace("%head%", player)
 							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), s);
 					return true;
 				} else {
-					Loader.msg(Loader.PlayerNotOnline(args[1]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 					return true;
 				}
 			}

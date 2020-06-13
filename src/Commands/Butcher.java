@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Butcher implements CommandExecutor {
 
@@ -53,13 +53,13 @@ public class Butcher implements CommandExecutor {
 				if (s instanceof Player == false) {
 					World w = Bukkit.getWorld(args[0]);
 					if (w == null) {
-						Loader.msg(Loader.s("Butcher.WorldIsInvalid").replace("%world%", args[0]), s);
+						TheAPI.msg(Loader.s("Butcher.WorldIsInvalid").replace("%world%", args[0]), s);
 						return true;
 					}
-					Loader.msg(Loader.s("Butcher.Killed").replace("%amount%", butcher(w, null, 0) + ""), s);
+					TheAPI.msg(Loader.s("Butcher.Killed").replace("%amount%", butcher(w, null, 0) + ""), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Butcher.Killed").replace("%amount%", butcher(((Player) s).getWorld(),
+				TheAPI.msg(Loader.s("Butcher.Killed").replace("%amount%", butcher(((Player) s).getWorld(),
 						((Player) s).getLocation(), TheAPI.getStringUtils().getInt(args[0])) + ""), s);
 				return true;
 			}

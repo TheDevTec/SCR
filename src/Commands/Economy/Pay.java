@@ -8,14 +8,14 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Pay implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (TheAPI.getEconomyAPI().getEconomy() == null) {
-			Loader.msg(Loader.s("Prefix") + "&cMissing Vault plugin for economy.", s);
+			TheAPI.msg(Loader.s("Prefix") + "&cMissing Vault plugin for economy.", s);
 			return true;
 		}
 
@@ -37,13 +37,13 @@ public class Pay implements CommandExecutor {
 							TheAPI.getEconomyAPI().withdrawPlayer(p, p.getWorld().getName(), money);
 							TheAPI.getEconomyAPI().depositPlayer(args[0], p.getWorld().getName(), money);
 
-							Loader.msg(Loader.s("Economy.PaidTo").replace("%money%", API.setMoneyFormat(money, true))
+							TheAPI.msg(Loader.s("Economy.PaidTo").replace("%money%", API.setMoneyFormat(money, true))
 									.replace("%currently%",
 											API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
 									.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[0])
 									.replace("%playername%", args[0]), s);
 							if (get(args[0]) != null) {
-								Loader.msg(Loader.s("Economy.PaidFrom")
+								TheAPI.msg(Loader.s("Economy.PaidFrom")
 										.replace("%money%", API.setMoneyFormat(money, true))
 										.replace("%currently%",
 												API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[0]), true))
@@ -52,7 +52,7 @@ public class Pay implements CommandExecutor {
 							}
 							return true;
 						}
-						Loader.msg(Loader.s("Economy.NoMoney")
+						TheAPI.msg(Loader.s("Economy.NoMoney")
 								.replace("%money%",
 										API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
 								.replace("%currently%",
@@ -64,7 +64,7 @@ public class Pay implements CommandExecutor {
 						Repeat.a(s, "pay * " + API.convertMoney(args[1]));
 						return true;
 					}
-					Loader.msg(Loader.PlayerNotEx(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
 					return true;
 				}
 			}

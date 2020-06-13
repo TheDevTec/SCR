@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class PRain implements CommandExecutor {
 
@@ -18,7 +18,7 @@ public class PRain implements CommandExecutor {
 			if (s instanceof Player) {
 				if (API.hasPerm(s, "ServerControl.PlayerWeather")) {
 					((Player) s).setPlayerWeather(WeatherType.DOWNFALL);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Weather.Rain").replace("%world%",
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Weather.Rain").replace("%world%",
 							((Player) s).getLocation().getWorld().getName()), s);
 					return true;
 				}
@@ -31,10 +31,10 @@ public class PRain implements CommandExecutor {
 			if (API.hasPerm(s, "ServerControl.PlayerWeather")) {
 				if (TheAPI.getPlayer(args[0]) != null) {
 					TheAPI.getPlayer(args[0]).setPlayerWeather(WeatherType.DOWNFALL);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Weather.Rain").replace("%world%", args[0]), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Weather.Rain").replace("%world%", args[0]), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.PlayerNotOnline(args[0]).replace("%world%", args[0]), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.PlayerNotOnline(args[0]).replace("%world%", args[0]), s);
 				return true;
 			}
 			return true;

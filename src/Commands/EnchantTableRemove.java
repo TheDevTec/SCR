@@ -15,8 +15,8 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.EnchantmentAPI;
-import me.Straiker123.TheAPI;
+import me.DevTec.EnchantmentAPI;
+import me.DevTec.TheAPI;
 
 public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 	List<String> enchs = new ArrayList<String>();
@@ -57,20 +57,20 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 							e(p.getItemInHand(), args[0], s);
 							return true;
 						}
-						Loader.msg(Loader.s("Prefix") + Loader.s("Enchant.NoEnchant").replace("%enchant%", args[0])
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.NoEnchant").replace("%enchant%", args[0])
 								.replace("%level%", "0").replace("%item%", a.name()), s);
 						return true;
 					}
 
-					Loader.msg(Loader.s("Prefix") + Loader.s("Enchant.EnchantNotExist").replace("%enchant%", args[0])
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.EnchantNotExist").replace("%enchant%", args[0])
 							.replace("%level%", "0").replace("%item%", a.name()), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.s("Enchant.HandIsEmpty").replace("%enchant%", "none")
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.HandIsEmpty").replace("%enchant%", "none")
 						.replace("%level%", "none").replace("%item%", "none"), s);
 				return true;
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 
@@ -79,13 +79,13 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 
 	public void e(ItemStack hand, String enechant, CommandSender s) {
 		try {
-			Loader.msg(Loader.s("Prefix") + Loader.s("Enchant.EnchantRemoved").replace("%enchant%", enechant)
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.EnchantRemoved").replace("%enchant%", enechant)
 					.replace("%level%",
 							String.valueOf(hand.getEnchantmentLevel(EnchantmentAPI.byName(enechant).getEnchantment()))
 					.replace("%item%", hand.getType().name())),s );
 			return;
 		} catch (Exception error) {
-			Loader.msg(Loader.s("Prefix") + Loader.s("Enchant.EnchantNotExist").replace("%enchant%", enechant)
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.EnchantNotExist").replace("%enchant%", enechant)
 					.replace("%level%", "0").replace("%item%", hand.getType().name()), s);
 			return;
 		}

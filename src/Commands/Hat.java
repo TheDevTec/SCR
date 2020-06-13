@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Hat implements CommandExecutor {
 
@@ -20,7 +20,7 @@ public class Hat implements CommandExecutor {
 			if (s instanceof Player) {
 				Player p = (Player) s;
 				if (p.getItemInHand().getType() == Material.AIR) {
-					Loader.msg(Loader.s("Hat.HandIsEmpty"), s);
+					TheAPI.msg(Loader.s("Hat.HandIsEmpty"), s);
 					return true;
 				}
 				if (args.length == 0) {
@@ -28,24 +28,24 @@ public class Hat implements CommandExecutor {
 						p.getInventory().addItem(p.getInventory().getHelmet());
 					p.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
 					p.getInventory().setItemInHand(new ItemStack(Material.AIR));
-					Loader.msg(Loader.s("Hat.Equiped"), s);
+					TheAPI.msg(Loader.s("Hat.Equiped"), s);
 					return true;
 				}
 				if (args.length == 1) {
 					Player t = TheAPI.getPlayer(args[0]);
 					if (t == null) {
-						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+						TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
 					}
 					if (t.getInventory().getHelmet() != null)
 						t.getInventory().addItem(t.getInventory().getHelmet());
 					t.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
 					p.getInventory().setItemInHand(new ItemStack(Material.AIR));
-					Loader.msg(Loader.s("Hat.EquipedToOther").replace("%target%", t.getName()), s);
+					TheAPI.msg(Loader.s("Hat.EquipedToOther").replace("%target%", t.getName()), s);
 					return true;
 				}
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

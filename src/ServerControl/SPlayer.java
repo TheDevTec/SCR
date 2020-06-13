@@ -11,10 +11,10 @@ import com.earth2me.essentials.Essentials;
 
 import Events.AFKPlus;
 import Utils.setting;
-import me.Straiker123.LoaderClass;
-import me.Straiker123.PlayerAPI;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
+import me.DevTec.PlayerAPI;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.LoaderClass;
+import me.DevTec.Other.User;
 
 public class SPlayer {
 	Player s;
@@ -50,7 +50,7 @@ public class SPlayer {
 	public void enableTempFly(int stop) {
 		User s = TheAPI.getUser(this.s);
 		enableTempFly();
-		Loader.msg(
+		TheAPI.msg(
 				Loader.s("Prefix")
 						+ Loader.s("TempFly.Enabled").replace("%time%", TheAPI.getStringUtils().setTimeToString(stop)),
 				getPlayer());
@@ -149,17 +149,17 @@ public class SPlayer {
 
 	public void toggleGod(CommandSender toggler) {
 		if (hasGodEnabled()) {
-			Loader.msg(Loader.s("Prefix") + Loader.s("God.Disabled").replace("%player%", getName())
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("God.Disabled").replace("%player%", getName())
 					.replace("%playername%", s.getDisplayName()), s);
 			if (toggler != null)
-				Loader.msg(Loader.s("Prefix") + Loader.s("God.SpecifiedPlayerGodDisabled")
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("God.SpecifiedPlayerGodDisabled")
 						.replace("%player%", getName()).replace("%playername%", s.getDisplayName()), toggler);
 			disableGod();
 		} else {
-			Loader.msg(Loader.s("Prefix") + Loader.s("God.Enabled").replace("%player%", getName())
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("God.Enabled").replace("%player%", getName())
 					.replace("%playername%", s.getDisplayName()), s);
 			if (toggler != null)
-				Loader.msg(Loader.s("Prefix") + Loader.s("God.SpecifiedPlayerGodEnabled").replace("%player%", getName())
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("God.SpecifiedPlayerGodEnabled").replace("%player%", getName())
 						.replace("%playername%", s.getDisplayName()), toggler);
 			enableGod();
 		}
@@ -167,17 +167,17 @@ public class SPlayer {
 
 	public void toggleFly(CommandSender toggler) {
 		if (hasFlyEnabled()) {
-			Loader.msg(Loader.s("Prefix") + Loader.s("Fly.Disabled").replace("%player%", getName())
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Disabled").replace("%player%", getName())
 					.replace("%playername%", s.getDisplayName()), s);
 			if (toggler != null)
-				Loader.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyDisabled")
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyDisabled")
 						.replace("%player%", getName()).replace("%playername%", s.getDisplayName()), toggler);
 			disableFly();
 		} else {
-			Loader.msg(Loader.s("Prefix") + Loader.s("Fly.Enabled").replace("%player%", getName())
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Enabled").replace("%player%", getName())
 					.replace("%playername%", s.getDisplayName()), s);
 			if (toggler != null)
-				Loader.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyEnabled").replace("%player%", getName())
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyEnabled").replace("%player%", getName())
 						.replace("%playername%", s.getDisplayName()), toggler);
 			enableFly();
 		}

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Kick implements CommandExecutor {
 
@@ -25,7 +25,7 @@ public class Kick implements CommandExecutor {
 				if (p != null) {
 					if (TheAPI.getUser(args[0]).getBoolean("Immune")
 							|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "kick")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "kick")
 								.replace("%target%", p.getName()), s);
 						return true;
 					}
@@ -33,7 +33,7 @@ public class Kick implements CommandExecutor {
 							.replace("%reason%", Loader.config.getString("BanSystem.Kick.Reason")));
 					return true;
 				}
-				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
 			if (args.length >= 2) {
@@ -41,7 +41,7 @@ public class Kick implements CommandExecutor {
 				if (p != null) {
 					if (TheAPI.getUser(args[0]).getBoolean("Immune")
 							|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "kick")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "kick")
 								.replace("%target%", p.getName()), s);
 						return true;
 					}
@@ -51,7 +51,7 @@ public class Kick implements CommandExecutor {
 							Loader.config.getString("BanSystem.Kick.Text").replace("%reason%", msg));
 					return true;
 				}
-				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
 		}

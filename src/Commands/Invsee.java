@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.PlayerAPI.InvseeType;
-import me.Straiker123.TheAPI;
+import me.DevTec.PlayerAPI.InvseeType;
+import me.DevTec.TheAPI;
 
 public class Invsee implements CommandExecutor {
 
@@ -23,10 +23,10 @@ public class Invsee implements CommandExecutor {
 				if (s instanceof Player) {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p == null) {
-						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+						TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
 					}
-					Loader.msg(Loader.s("Prefix")
+					TheAPI.msg(Loader.s("Prefix")
 							+ API.replacePlayerName(Loader.s("Inventory.OpeningInvsee"), p.getName()), s);
 					TheAPI.getPlayerAPI((Player) s).invsee(p, InvseeType.INVENTORY);
 					return true;
@@ -38,14 +38,14 @@ public class Invsee implements CommandExecutor {
 				Player p = TheAPI.getPlayer(args[0]);
 				Player t = TheAPI.getPlayer(args[1]);
 				if (p == null) {
-					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
 				}
 				if (t == null) {
-					Loader.msg(Loader.PlayerNotOnline(args[1]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix")
+				TheAPI.msg(Loader.s("Prefix")
 						+ API.replacePlayerName(Loader.s("Inventory.OpeningInvseeForTarget"), p.getName())
 								.replace("%target%", t.getDisplayName()),
 						s);

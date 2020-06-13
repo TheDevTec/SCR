@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.User;
 
 public class Tpall implements CommandExecutor, TabCompleter {
 
@@ -36,12 +36,12 @@ public class Tpall implements CommandExecutor, TabCompleter {
 						p.teleport(((Player) s));
 					}
 				}
-				Loader.msg(Loader.s("Prefix")
+				TheAPI.msg(Loader.s("Prefix")
 						+ Loader.s("TpaSystem.Tpall").replace("%players%", TheAPI.getStringUtils().join(list, ", ")),
 						s);
 				return true;
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

@@ -15,8 +15,8 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.User;
 
 public class Chat implements CommandExecutor, TabCompleter {
 
@@ -42,8 +42,8 @@ public class Chat implements CommandExecutor, TabCompleter {
 		if (args.length == 0 || args[0].equalsIgnoreCase("Help")) {
 			if (API.hasPerm(s, "ServerControl.Help")) {
 				if (args.length == 0 || args.length == 1) {
-					Loader.msg(Loader.s("Prefix") + "&e----------------- &bHelp&e -----------------", s);
-					Loader.msg("", s);
+					TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bHelp&e -----------------", s);
+					TheAPI.msg("", s);
 					if (s.hasPermission("ServerControl.Me.Other"))
 						Loader.Help(s, "/Chat Me <player>", "Me");
 					else if (s.hasPermission("ServerControl.Me"))
@@ -59,16 +59,16 @@ public class Chat implements CommandExecutor, TabCompleter {
 				if (args.length == 2) {
 					for (String v : All)
 						if (args[1].equalsIgnoreCase(v)) {
-							Loader.msg(Loader.s("Prefix") + "&e----------------- &bHelp for &b" + v
+							TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bHelp for &b" + v
 									+ "&e -----------------", s);
-							Loader.msg("", s);
+							TheAPI.msg("", s);
 							Loader.Help(s, "/Chat " + v, v);
 							return true;
 						}
-					Loader.msg(Loader.s("Prefix") + "&e----------------- &bHelp " + "&4" + args[1]
+					TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bHelp " + "&4" + args[1]
 							+ " &e-----------------", s);
-					Loader.msg("", s);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Help.NoHelpForCommand").replace("%command%", args[1]), s);
+					TheAPI.msg("", s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Help.NoHelpForCommand").replace("%command%", args[1]), s);
 					return true;
 				}
 			}
@@ -76,24 +76,24 @@ public class Chat implements CommandExecutor, TabCompleter {
 		}
 		if (args[0].equalsIgnoreCase("Version") || args[0].equalsIgnoreCase("info")) {
 			if (API.hasPerm(s, "ServerControl.Info")) {
-				Loader.msg(Loader.s("Prefix") + "&e----------------- &bVersion&e -----------------", s);
-				Loader.msg("", s);
-				Loader.msg(Loader.s("Prefix") + "&7Version of ServerControlReloaded: &eV"
+				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bVersion&e -----------------", s);
+				TheAPI.msg("", s);
+				TheAPI.msg(Loader.s("Prefix") + "&7Version of ServerControlReloaded: &eV"
 						+ TheAPI.getPluginsManagerAPI().getVersion("ServerControlReloaded"), s);
-				Loader.msg(Loader.s("Prefix") + "&7Version of TheAPI: &eV"
+				TheAPI.msg(Loader.s("Prefix") + "&7Version of TheAPI: &eV"
 						+ TheAPI.getPluginsManagerAPI().getVersion("TheAPI"), s);
-				Loader.msg(Loader.s("Prefix") + "&7Version of Server: &e" + Bukkit.getServer().getBukkitVersion(), s);
-				Loader.msg(Loader.s("Prefix") + "&7Our discord: &ehttps://discord.gg/z4kK66g", s);
+				TheAPI.msg(Loader.s("Prefix") + "&7Version of Server: &e" + Bukkit.getServer().getBukkitVersion(), s);
+				TheAPI.msg(Loader.s("Prefix") + "&7Our discord: &ehttps://discord.gg/z4kK66g", s);
 				return true;
 			}
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("General")) {
 			if (API.hasPerm(s, "ServerControl.General")) {
-				Loader.msg(Loader.s("Prefix") + "&e----------------- &bGeneral&e -----------------", s);
-				Loader.msg("", s);
-				Loader.msg(Loader.s("Prefix") + Loader.config.getInt("VulgarWords") + " of swear words", s);
-				Loader.msg(Loader.s("Prefix") + Loader.config.getInt("Spam") + " of spam", s);
+				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bGeneral&e -----------------", s);
+				TheAPI.msg("", s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.config.getInt("VulgarWords") + " of swear words", s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.config.getInt("Spam") + " of spam", s);
 				return true;
 			}
 			return true;
@@ -102,9 +102,9 @@ public class Chat implements CommandExecutor, TabCompleter {
 			if (API.hasPerm(s, "ServerControl.Me")) {
 				if (args.length == 1) {
 					if (s instanceof Player) {
-						Loader.msg(Loader.s("Prefix") + "&e----------------- &bMe&e -----------------", s);
+						TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bMe&e -----------------", s);
 						Player p = (Player) s;
-						Loader.msg("", p);
+						TheAPI.msg("", p);
 						User d = TheAPI.getUser(s.getName());
 						List<String> about = Loader.trans.getStringList("AboutYou");
 						for (String a : about) {
@@ -113,7 +113,7 @@ public class Chat implements CommandExecutor, TabCompleter {
 									&& TheAPI.getEconomyAPI().getEconomy() != null) {
 								String money = API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true);
 								if (Loader.vault != null) {
-									Loader.msg(a.replace("%playername%", p.getDisplayName())
+									TheAPI.msg(a.replace("%playername%", p.getDisplayName())
 											.replace("%prefix%", Loader.s("Prefix")).replace("%player%", p.getName())
 											.replace("%joins%", "" + (p.getStatistic(Statistic.LEAVE_GAME) + 1))
 											.replace("%leaves%", "" + p.getStatistic(Statistic.LEAVE_GAME))
@@ -129,7 +129,7 @@ public class Chat implements CommandExecutor, TabCompleter {
 											.replace("%firstjoin%", check(d.getString("FirstJoin"))), p);
 								}
 								if (Loader.vault == null) {
-									Loader.msg(a.replace("%playername%", p.getDisplayName())
+									TheAPI.msg(a.replace("%playername%", p.getDisplayName())
 											.replace("%prefix%", Loader.s("Prefix")).replace("%player%", p.getName())
 											.replace("%joins%", "" + (p.getStatistic(Statistic.LEAVE_GAME) + 1))
 											.replace("%leaves%", "" + p.getStatistic(Statistic.LEAVE_GAME))
@@ -146,7 +146,7 @@ public class Chat implements CommandExecutor, TabCompleter {
 								}
 							}
 							if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
-								Loader.msg(a.replace("%playername%", p.getDisplayName())
+								TheAPI.msg(a.replace("%playername%", p.getDisplayName())
 										.replace("%prefix%", Loader.s("Prefix")).replace("%player%", p.getName())
 										.replace("%joins%", "" + d.getInt("Joins"))
 										.replace("%leaves%", "" + (d.getInt("Joins") - 1))
@@ -181,7 +181,7 @@ public class Chat implements CommandExecutor, TabCompleter {
 						for (String a : about) {
 							if (Loader.getInstance.getServer().getPluginManager().getPlugin("Vault") != null) {
 								if (Loader.vault != null) {
-									Loader.msg(a.replace("%playername%", this.online(args))
+									TheAPI.msg(a.replace("%playername%", this.online(args))
 											.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[1])
 											.replace("%joins%", "" + d.getInt("Joins"))
 											.replace("%leaves%", "" + (d.getInt("Joins") - 1))
@@ -196,7 +196,7 @@ public class Chat implements CommandExecutor, TabCompleter {
 											.replace("%firstjoin%", check(d.getString("FirstJoin"))), s);
 								}
 								if (Loader.vault == null) {
-									Loader.msg(a.replace("%playername%", this.online(args))
+									TheAPI.msg(a.replace("%playername%", this.online(args))
 											.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[1])
 											.replace("%joins%", "" + d.getInt("Joins"))
 											.replace("%leaves%", "" + (d.getInt("Joins") - 1))
@@ -212,7 +212,7 @@ public class Chat implements CommandExecutor, TabCompleter {
 								}
 							}
 							if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
-								Loader.msg(a.replace("%playername%", this.online(args))
+								TheAPI.msg(a.replace("%playername%", this.online(args))
 										.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[1])
 										.replace("%joins%", "" + d.getInt("Joins"))
 										.replace("%leaves%", "" + (d.getInt("Joins") - 1))
@@ -231,13 +231,13 @@ public class Chat implements CommandExecutor, TabCompleter {
 						}
 						return true;
 					}
-					Loader.msg(Loader.PlayerNotEx(args[1]), s);
+					TheAPI.msg(Loader.PlayerNotEx(args[1]), s);
 					return true;
 				}
 			}
 			return true;
 		}
-		Loader.msg(Loader.s("Prefix") + Loader.s("UknownCommand"), s);
+		TheAPI.msg(Loader.s("Prefix") + Loader.s("UknownCommand"), s);
 		return true;
 	}
 

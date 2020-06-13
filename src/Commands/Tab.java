@@ -14,14 +14,14 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.TabList;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Tab implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String awd, String[] args) {
 		if (args.length == 0) {
-			Loader.msg(Loader.s("Prefix") + "Tablist created by Straiker123, Discord: https://discord.gg/cZax8d4", s);
+			TheAPI.msg(Loader.s("Prefix") + "Tablist created by Straiker123, Discord: https://discord.gg/cZax8d4", s);
 			if (s.hasPermission("ServerCotrol.TAB")) {
 				Loader.Help(s, "/TAB Prefix <group> <value>", "TabList.Prefix");
 				Loader.Help(s, "/TAB Suffix <group> <value>", "TabList.Suffix");
@@ -34,15 +34,15 @@ public class Tab implements CommandExecutor, TabCompleter {
 		}
 		if (API.hasPerm(s, "ServerCotrol.TAB")) {
 			if (args[0].equalsIgnoreCase("Reload")) {
-				Loader.msg(Loader.s("Prefix") + "&e----------------- &bTab Reloading &e-----------------", s);
-				Loader.msg("", s);
+				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bTab Reloading &e-----------------", s);
+				TheAPI.msg("", s);
 				TabList.removeTab();
 				Loader.tab.reload();
 				for (Player p : TheAPI.getOnlinePlayers()) {
 					TabList.setFooterHeader(p);
 					TabList.setNameTag(p);
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.s("ConfigReloaded"), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("ConfigReloaded"), s);
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("create")) {
@@ -51,10 +51,10 @@ public class Tab implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				if (Loader.tab.getString("Groups." + args[1]) != null) {
-					Loader.msg(Loader.s("Prefix") + Loader.s("TabList.AlreadyExist").replace("%group%", args[1]), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("TabList.AlreadyExist").replace("%group%", args[1]), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.s("TabList.GroupCreated").replace("%group%", args[1]), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("TabList.GroupCreated").replace("%group%", args[1]), s);
 				Loader.tab.set("Groups." + args[1], "");
 				return true;
 			}
@@ -64,10 +64,10 @@ public class Tab implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				if (Loader.tab.getString("Groups." + args[1]) == null) {
-					Loader.msg(Loader.s("Prefix") + Loader.s("TabList.DoNotExist").replace("%group%", args[1]), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("TabList.DoNotExist").replace("%group%", args[1]), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.s("TabList.GroupDeleted").replace("%group%", args[1]), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("TabList.GroupDeleted").replace("%group%", args[1]), s);
 				Loader.tab.set("Groups." + args[1], null);
 				return true;
 			}
@@ -83,7 +83,7 @@ public class Tab implements CommandExecutor, TabCompleter {
 					return true;
 				}
 			if (args[0].equalsIgnoreCase("priorite")) {
-				Loader.msg(Loader.s("Prefix")
+				TheAPI.msg(Loader.s("Prefix")
 						+ Loader.s("TabList.PrioriteSet").replace("%priorite%", args[2]).replace("%group%", args[1]),
 						s);
 				Loader.tab.set("Groups." + args[1] + ".Priorite", args[2]);
@@ -92,7 +92,7 @@ public class Tab implements CommandExecutor, TabCompleter {
 			if (args[0].equalsIgnoreCase("prefix")) {
 				String msg = TheAPI.buildString(args);
 				msg = msg.replaceFirst(args[0] + " " + args[1] + " ", "");
-				Loader.msg(
+				TheAPI.msg(
 						Loader.s("Prefix")
 								+ Loader.s("TabList.PrefixSet").replace("%prefix%", msg).replace("%group%", args[1]),
 						s);
@@ -102,7 +102,7 @@ public class Tab implements CommandExecutor, TabCompleter {
 			if (args[0].equalsIgnoreCase("suffix")) {
 				String msg = TheAPI.buildString(args);
 				msg = msg.replaceFirst(args[0] + " " + args[1] + " ", "");
-				Loader.msg(
+				TheAPI.msg(
 						Loader.s("Prefix")
 								+ Loader.s("TabList.SuffixSet").replace("%suffix%", msg).replace("%group%", args[1]),
 						s);

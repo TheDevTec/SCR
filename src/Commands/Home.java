@@ -16,8 +16,8 @@ import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
 import Utils.setting;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.User;
 
 public class Home implements CommandExecutor, TabCompleter {
 
@@ -37,7 +37,7 @@ public class Home implements CommandExecutor, TabCompleter {
 								TheAPI.getPlayerAPI(p).safeTeleport(loc);
 							else
 								TheAPI.getPlayerAPI(p).teleport(loc);
-							Loader.msg(
+							TheAPI.msg(
 									Loader.s("Prefix") + Loader.s("Homes.Teleporting").replace("%player%", p.getName())
 											.replace("%playername%", p.getDisplayName()).replace("%home%", "home"),
 									s);
@@ -46,7 +46,7 @@ public class Home implements CommandExecutor, TabCompleter {
 					}
 					API.setBack(p);
 					API.teleportPlayer(p, TeleportLocation.SPAWN);
-					Loader.msg(Loader.s("Prefix")
+					TheAPI.msg(Loader.s("Prefix")
 							+ Loader.s("Spawn.NoHomesTeleportedToSpawn").replace("%world%", p.getWorld().getName())
 									.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),
 							s);
@@ -61,21 +61,21 @@ public class Home implements CommandExecutor, TabCompleter {
 								TheAPI.getPlayerAPI(p).safeTeleport(loc);
 							else
 								TheAPI.getPlayerAPI(p).teleport(loc);
-							Loader.msg(
+							TheAPI.msg(
 									Loader.s("Prefix") + Loader.s("Homes.Teleporting").replace("%player%", p.getName())
 											.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]),
 									s);
 							return true;
 						}
 					}
-					Loader.msg(Loader.s("Prefix") + Loader.s("Homes.NotExists").replace("%player%", p.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.NotExists").replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]), s);
 					return true;
 				}
 			}
 			return true;
 		}
-		Loader.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
+		TheAPI.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 		return true;
 	}
 

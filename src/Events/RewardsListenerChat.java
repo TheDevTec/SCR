@@ -10,9 +10,9 @@ import org.bukkit.event.player.PlayerChatEvent;
 
 import ServerControl.Loader;
 import Utils.setting;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
-import me.Straiker123.TheAPI.SudoType;
+import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.SudoType;
+import me.DevTec.Other.User;
 
 @SuppressWarnings("deprecation")
 public class RewardsListenerChat implements Listener {
@@ -30,7 +30,7 @@ public class RewardsListenerChat implements Listener {
 			if (!only.isEmpty())
 				for (String g : only) {
 					if (e.getMessage().toLowerCase().contains(g.toLowerCase())) {
-						Loader.msg(Loader.config.getString("Options.Codes.Message").replace("%player%", name)
+						TheAPI.msg(Loader.config.getString("Options.Codes.Message").replace("%player%", name)
 								.replace("%code%", g).replace("%playername%", p.getDisplayName())
 								.replace("%group%", Loader.getInstance.getGroup(p))
 								.replace("%group-prefix%", Loader.getInstance.getPrefix(p))

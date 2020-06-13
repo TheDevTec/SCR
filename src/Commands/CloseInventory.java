@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class CloseInventory implements CommandExecutor {
 
@@ -26,10 +26,10 @@ public class CloseInventory implements CommandExecutor {
 						Repeat.a(s, "closeinv *");
 						return true;
 					}
-					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
 				}
-				Loader.msg(
+				TheAPI.msg(
 						Loader.s("Prefix") + Loader.s("Inventory.ClosePlayersInventory")
 								.replace("%player%", p.getDisplayName()).replace("%playername%", p.getDisplayName()),
 						s);

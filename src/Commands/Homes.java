@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.User;
 
 public class Homes implements CommandExecutor {
 
@@ -26,22 +26,22 @@ public class Homes implements CommandExecutor {
 						for (String a : d.getKeys("Homes"))
 							ne.add(a);
 						if (!ne.isEmpty()) {
-							Loader.msg(Loader.s("Prefix") + Loader.s("Homes.List").replace("%player%", p.getName())
+							TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.List").replace("%player%", p.getName())
 									.replace("%playername%", p.getDisplayName())
 									.replace("%list%", TheAPI.getStringUtils().join(ne, ", ")), s);
 							return true;
 						}
-						Loader.msg(Loader.s("Prefix") + Loader.s("Homes.ListEmpty").replace("%player%", p.getName())
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.ListEmpty").replace("%player%", p.getName())
 								.replace("%playername%", p.getDisplayName()), s);
 						return true;
 					}
-					Loader.msg(Loader.s("Prefix") + Loader.s("Homes.ListEmpty").replace("%player%", p.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.ListEmpty").replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName()), s);
 					return true;
 				}
 				return true;
 			}
-			Loader.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 
@@ -53,17 +53,17 @@ public class Homes implements CommandExecutor {
 					for (String a : d.getKeys("Homes"))
 						ne.add(a);
 					if (!ne.isEmpty()) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("Homes.ListOther").replace("%target%", args[0])
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.ListOther").replace("%target%", args[0])
 								.replace("%playername%", args[0])
 								.replace("%list%", TheAPI.getStringUtils().join(ne, ", ")), s);
 						return true;
 					}
-					Loader.msg(Loader.s("Prefix")
+					TheAPI.msg(Loader.s("Prefix")
 							+ Loader.s("Homes.ListEmpty").replace("%target%", args[0]).replace("%playername%", args[0]),
 							s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix")
+				TheAPI.msg(Loader.s("Prefix")
 						+ Loader.s("Homes.ListEmpty").replace("%target%", args[0]).replace("%playername%", args[0]), s);
 				return true;
 			}

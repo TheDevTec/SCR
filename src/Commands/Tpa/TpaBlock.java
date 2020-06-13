@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class TpaBlock implements CommandExecutor, TabCompleter {
 
@@ -21,12 +21,12 @@ public class TpaBlock implements CommandExecutor, TabCompleter {
 			if (s instanceof Player) {
 				if (args.length == 0) {
 					if (!TheAPI.getUser(s.getName()).getBoolean("TpBlock-Global")) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlock.Blocked-Global")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlock.Blocked-Global")
 								.replace("%player%", "All").replace("%playername%", "All"), s);
 						TheAPI.getUser(s.getName()).setAndSave("TpBlock-Global", true);
 						return true;
 					} else {
-						Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlock.UnBlocked-Global")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlock.UnBlocked-Global")
 								.replace("%player%", "All").replace("%playername%", "All"), s);
 						TheAPI.getUser(s.getName()).setAndSave("TpBlock-Global", null);
 						return true;
@@ -36,28 +36,28 @@ public class TpaBlock implements CommandExecutor, TabCompleter {
 					if (TheAPI.existsUser(args[0])) {
 						if (s.getName() != args[0]) {
 							if (!TheAPI.getUser(s.getName()).getBoolean("TpBlock." + args[0])) {
-								Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlock.Blocked")
+								TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlock.Blocked")
 										.replace("%player%", args[0]).replace("%playername%", args[0]), s);
 								TheAPI.getUser(s.getName()).setAndSave("TpBlock." + args[0], true);
 								return true;
 							} else {
-								Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlock.UnBlocked")
+								TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlock.UnBlocked")
 										.replace("%player%", args[0]).replace("%playername%", args[0]), s);
 								TheAPI.getUser(s.getName()).setAndSave("TpBlock." + args[0], null);
 								return true;
 							}
 						}
-						Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.CantBlockSelf")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.CantBlockSelf")
 								.replace("%playername%", ((Player) s).getDisplayName())
 								.replace("%player%", s.getName()), s);
 						return true;
 					}
-					Loader.msg(Loader.PlayerNotEx(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
 					return true;
 				}
 				return true;
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 
 		}

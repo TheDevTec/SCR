@@ -18,7 +18,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Spawner implements CommandExecutor, TabCompleter {
 
@@ -72,7 +72,7 @@ public class Spawner implements CommandExecutor, TabCompleter {
 							ss.setSpawnCount(TheAPI.getStringUtils().getInt(args[1]));
 							ss.update();
 						}
-						Loader.msg(Loader.s("Spawner.AmountSet")
+						TheAPI.msg(Loader.s("Spawner.AmountSet")
 								.replace("%amount%", "" + TheAPI.getStringUtils().getInt(args[1]))
 								.replace("%world%", b.getWorld().getName()).replace("%x%", String.valueOf(b.getX()))
 								.replace("%z%", String.valueOf(b.getZ())).replace("%y%", String.valueOf(b.getY())), s);
@@ -90,7 +90,7 @@ public class Spawner implements CommandExecutor, TabCompleter {
 							ss.setRequiredPlayerRange(TheAPI.getStringUtils().getInt(args[1]));
 							ss.update();
 						}
-						Loader.msg(Loader.s("Spawner.RangePlayerSet")
+						TheAPI.msg(Loader.s("Spawner.RangePlayerSet")
 								.replace("%range%", "" + TheAPI.getStringUtils().getInt(args[1]))
 								.replace("%world%", b.getWorld().getName()).replace("%x%", String.valueOf(b.getX()))
 								.replace("%z%", String.valueOf(b.getZ())).replace("%y%", String.valueOf(b.getY())), s);
@@ -110,7 +110,7 @@ public class Spawner implements CommandExecutor, TabCompleter {
 						ss.setDelay(TheAPI.getStringUtils().getInt(args[1]));
 						ss.update();
 					}
-					Loader.msg(
+					TheAPI.msg(
 							Loader.s("Spawner.TimeSet").replace("%time%", "" + TheAPI.getStringUtils().getInt(args[1]))
 									.replace("%world%", b.getWorld().getName()).replace("%x%", String.valueOf(b.getX()))
 									.replace("%z%", String.valueOf(b.getZ())).replace("%y%", String.valueOf(b.getY())),
@@ -130,20 +130,20 @@ public class Spawner implements CommandExecutor, TabCompleter {
 							CreatureSpawner ss = (CreatureSpawner) b.getState();
 							ss.setSpawnedType(type);
 							ss.update();
-							Loader.msg(Loader.s("Spawner.Set").replace("%mob%", type.name())
+							TheAPI.msg(Loader.s("Spawner.Set").replace("%mob%", type.name())
 									.replace("%world%", b.getWorld().getName()).replace("%x%", String.valueOf(b.getX()))
 									.replace("%z%", String.valueOf(b.getZ())).replace("%y%", String.valueOf(b.getY())),
 									s);
 							return true;
 						} else {
-							Loader.msg(Loader.s("Spawner.InvalidMob").replace("%mob%", args[1])
+							TheAPI.msg(Loader.s("Spawner.InvalidMob").replace("%mob%", args[1])
 									.replace("%world%", b.getWorld().getName()).replace("%x%", String.valueOf(b.getX()))
 									.replace("%z%", String.valueOf(b.getZ())).replace("%y%", String.valueOf(b.getY())),
 									s);
 							return true;
 						}
 					}
-					Loader.msg(
+					TheAPI.msg(
 							Loader.s("Spawner.BlockIsNotSpawner").replace("%block%", b.getType().name())
 									.replace("%world%", b.getWorld().getName()).replace("%x%", String.valueOf(b.getX()))
 									.replace("%z%", String.valueOf(b.getZ())).replace("%y%", String.valueOf(b.getY())),
@@ -158,7 +158,7 @@ public class Spawner implements CommandExecutor, TabCompleter {
 				}
 				return true;
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

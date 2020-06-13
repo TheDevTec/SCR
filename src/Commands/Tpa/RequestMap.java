@@ -7,14 +7,14 @@ import org.bukkit.Location;
 
 import ServerControl.Loader;
 import Utils.setting;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.User;
 
 /**
  * 
  * @author waskerSK
  * 
- *         Updated by Straiker123
+ * Updated by StraikerinaCZ
  */
 public class RequestMap {
 	public static void addRequest(String target, String sender, Type tp) {

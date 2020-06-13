@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class UnJail implements CommandExecutor {
 
@@ -24,15 +24,15 @@ public class UnJail implements CommandExecutor {
 					TheAPI.getUser(args[0]).setAndSave("TempJail", null);
 					if (TheAPI.getPlayer(args[0]) != null)
 						API.teleportPlayer(TheAPI.getPlayer(args[0]), TeleportLocation.SPAWN);
-					Loader.msg(Loader.s("Prefix") + Loader.s("BanSystem.unJailed").replace("%playername%", args[0])
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.unJailed").replace("%playername%", args[0])
 							.replace("%player%", args[0]), s);
 					return true;
 				}
 				if (TheAPI.existsUser(args[0]))
-					Loader.msg(Loader.s("Prefix") + Loader.s("BanSystem.PlayerHasNotBan").replace("%player%", args[0])
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.PlayerHasNotBan").replace("%player%", args[0])
 							.replace("%playername%", args[0]), s);
 				else
-					Loader.msg(Loader.PlayerNotEx(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
 				return true;
 			}
 		}

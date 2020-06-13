@@ -14,6 +14,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.TheAPI;
 
 public class Rain implements CommandExecutor, TabCompleter {
 
@@ -25,7 +26,7 @@ public class Rain implements CommandExecutor, TabCompleter {
 				if (API.hasPerm(s, "ServerControl.Weather")) {
 					((Player) s).getLocation().getWorld().setStorm(true);
 					((Player) s).getLocation().getWorld().setWeatherDuration(100000000);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Weather.Rain").replace("%world%",
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Weather.Rain").replace("%world%",
 							((Player) s).getLocation().getWorld().getName()), s);
 					return true;
 				}
@@ -38,10 +39,10 @@ public class Rain implements CommandExecutor, TabCompleter {
 			if (API.hasPerm(s, "ServerControl.Weather")) {
 				if (Bukkit.getWorld(args[0]) != null) {
 					Bukkit.getWorld(args[0]).setStorm(true);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Weather.Rain").replace("%world%", args[0]), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Weather.Rain").replace("%world%", args[0]), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.s("Weather.WorldNotExists").replace("%world%", args[0]), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Weather.WorldNotExists").replace("%world%", args[0]), s);
 				return true;
 			}
 			return true;

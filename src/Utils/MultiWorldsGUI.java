@@ -17,10 +17,10 @@ import org.bukkit.inventory.ItemStack;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.GUICreatorAPI;
-import me.Straiker123.GUICreatorAPI.Options;
-import me.Straiker123.ItemCreatorAPI;
-import me.Straiker123.TheAPI;
+import me.DevTec.ItemCreatorAPI;
+import me.DevTec.TheAPI;
+import me.DevTec.GUI.GUICreatorAPI;
+import me.DevTec.GUI.GUICreatorAPI.Options;
 
 public class MultiWorldsGUI {
 
@@ -93,7 +93,7 @@ public class MultiWorldsGUI {
 							p.getLocation().getYaw());
 					Loader.mw.set("WorldsSettings." + p.getWorld().getName() + ".Spawn.Z_Pos_Head",
 							p.getLocation().getPitch());
-					Loader.msg(Loader.s("Prefix")
+					TheAPI.msg(Loader.s("Prefix")
 							+ Loader.s("MultiWorld.SpawnSet").replace("%world%", p.getWorld().getName()), p);
 				}
 			}
@@ -476,10 +476,10 @@ public class MultiWorldsGUI {
 					ww.remove(w.getName());
 					Loader.mw.set("Worlds", worlds);
 					if (TheAPI.getWorldsManager().delete(w, true)) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("MultiWorld.Deleted").replace("%world%", w.getName()),
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.Deleted").replace("%world%", w.getName()),
 								p);
 					} else {
-						Loader.msg(Loader.s("Prefix")
+						TheAPI.msg(Loader.s("Prefix")
 								+ Loader.s("MultiWorld.CantBeDeleted").replace("%world%", w.getName()), p);
 					}
 					openInvDelete(p);
@@ -568,7 +568,7 @@ public class MultiWorldsGUI {
 					TheAPI.getPlayerAPI(p).setGodOnTime(20);
 					TheAPI.getPlayerAPI(p).teleport(loc);
 
-					Loader.msg(
+					TheAPI.msg(
 							Loader.s("Prefix") + Loader.s("MultiWorld.TeleportedWorld").replace("%world%", w.getName()),
 							p);
 				}
@@ -855,6 +855,7 @@ public class MultiWorldsGUI {
 			}
 		});
 		a.addItem(createItem("&6Do Fall Damage", XMaterial.IRON_BOOTS, Arrays.asList(ddfire + "")), d);
+		if(Loader.mw.exist("WorldsSettings." + w.getName() + ".Gamerule"))
 		for (String ds : Loader.mw.getConfigurationSection("WorldsSettings." + w.getName() + ".Gamerule")
 				.getKeys(false)) {
 			d.remove(Options.RUNNABLE);

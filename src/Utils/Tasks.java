@@ -12,10 +12,10 @@ import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import me.Straiker123.ConfigAPI;
-import me.Straiker123.LoaderClass;
-import me.Straiker123.TheAPI;
-import me.Straiker123.Scheduler.Tasker;
+import me.DevTec.ConfigAPI;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.LoaderClass;
+import me.DevTec.Scheduler.Tasker;
 
 public class Tasks {
 	public Tasks() {

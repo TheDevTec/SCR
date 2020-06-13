@@ -11,10 +11,10 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.XMaterial;
-import me.Straiker123.GUICreatorAPI;
-import me.Straiker123.GUICreatorAPI.Options;
-import me.Straiker123.ItemCreatorAPI;
-import me.Straiker123.TheAPI;
+import me.DevTec.ItemCreatorAPI;
+import me.DevTec.TheAPI;
+import me.DevTec.GUI.GUICreatorAPI;
+import me.DevTec.GUI.GUICreatorAPI.Options;
 
 public class Trash implements CommandExecutor {
 
@@ -22,11 +22,11 @@ public class Trash implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (API.hasPerm(s, "ServerControl.Trash")) {
 			if (s instanceof Player) {
-				Loader.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningTrash"), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningTrash"), s);
 				openInv((Player) s);
 				return true;
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

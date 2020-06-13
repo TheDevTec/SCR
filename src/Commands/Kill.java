@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Kill implements CommandExecutor {
 
@@ -20,7 +20,7 @@ public class Kill implements CommandExecutor {
 					boolean i = p.isDead();
 					p.setHealth(0);
 					if (p.isDead() && !i)
-						Loader.msg(API.replacePlayerName(Loader.s("Kill.Killed"), p), s);
+						TheAPI.msg(API.replacePlayerName(Loader.s("Kill.Killed"), p), s);
 					return true;
 				} else {
 					Loader.Help(s, "/Kill <player>", "Kill");
@@ -29,13 +29,13 @@ public class Kill implements CommandExecutor {
 			}
 			Player p = TheAPI.getPlayer(args[0]);
 			if (p == null) {
-				Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
 			boolean i = p.isDead();
 			p.setHealth(0);
 			if (p.isDead() && !i)
-				Loader.msg(API.replacePlayerName(Loader.s("Kill.Killed"), p), s);
+				TheAPI.msg(API.replacePlayerName(Loader.s("Kill.Killed"), p), s);
 		}
 		return true;
 	}

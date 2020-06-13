@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Colors;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class ReplyPrivateMes implements CommandExecutor {
 
@@ -55,7 +55,7 @@ public class ReplyPrivateMes implements CommandExecutor {
 								p.sendMessage(from);
 								return true;
 							}
-							Loader.msg(Loader.PlayerNotOnline(TheAPI.getUser("CONSOLE").getString("Reply")), s);
+							TheAPI.msg(Loader.PlayerNotOnline(TheAPI.getUser("CONSOLE").getString("Reply")), s);
 							return true;
 						}
 					} else {
@@ -84,12 +84,12 @@ public class ReplyPrivateMes implements CommandExecutor {
 								p.sendMessage(from);
 								return true;
 							}
-							Loader.msg(Loader.PlayerNotOnline(TheAPI.getUser(s.getName()).getString("Reply")), s);
+							TheAPI.msg(Loader.PlayerNotOnline(TheAPI.getUser(s.getName()).getString("Reply")), s);
 							return true;
 						}
 					}
 				}
-				Loader.msg(Loader.s("PrivateMessage.NoPlayerToReply"), s);
+				TheAPI.msg(Loader.s("PrivateMessage.NoPlayerToReply"), s);
 				return true;
 			}
 		}

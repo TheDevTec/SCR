@@ -13,8 +13,8 @@ import org.bukkit.event.block.SignChangeEvent;
 
 import ServerControl.Loader;
 import Utils.Colors;
-import me.Straiker123.SignAPI.SignAction;
-import me.Straiker123.TheAPI;
+import me.DevTec.SignAPI.SignAction;
+import me.DevTec.TheAPI;
 
 public class Signs implements Listener {
 	public Loader ps = Loader.getInstance;

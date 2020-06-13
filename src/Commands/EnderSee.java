@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
-import me.Straiker123.PlayerAPI.InvseeType;
+import me.DevTec.PlayerAPI.InvseeType;
+import me.DevTec.TheAPI;
 
 public class EnderSee implements CommandExecutor {
 
@@ -17,7 +17,7 @@ public class EnderSee implements CommandExecutor {
 		if (API.hasPerm(s, "ServerControl.EnderChest")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
-					Loader.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChest"), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChest"), s);
 					TheAPI.getPlayerAPI((Player) s).invsee((Player) s, InvseeType.ENDERCHEST);
 					return true;
 				}
@@ -25,12 +25,12 @@ public class EnderSee implements CommandExecutor {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p != null) {
 						if (p == s) {
-							Loader.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChest"), s);
+							TheAPI.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChest"), s);
 							TheAPI.getPlayerAPI((Player) s).invsee((Player) s, InvseeType.ENDERCHEST);
 							return true;
 						} else {
 							if (API.hasPerm(s, "ServerControl.EnderSee")) {
-								Loader.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChestOther")
+								TheAPI.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChestOther")
 										.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),
 										s);
 
@@ -40,11 +40,11 @@ public class EnderSee implements CommandExecutor {
 							return true;
 						}
 					}
-					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
 				}
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 

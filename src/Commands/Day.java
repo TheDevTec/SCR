@@ -14,6 +14,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.TheAPI;
 
 public class Day implements CommandExecutor, TabCompleter {
 
@@ -24,7 +25,7 @@ public class Day implements CommandExecutor, TabCompleter {
 			if (s instanceof Player) {
 				if (API.hasPerm(s, "ServerControl.Day")) {
 					((Player) s).getLocation().getWorld().setTime(1000);
-					Loader.msg(Loader.s("Prefix")
+					TheAPI.msg(Loader.s("Prefix")
 							+ Loader.s("Time.Day").replace("%world%", ((Player) s).getLocation().getWorld().getName()),
 							s);
 					return true;
@@ -38,10 +39,10 @@ public class Day implements CommandExecutor, TabCompleter {
 			if (API.hasPerm(s, "ServerControl.Day")) {
 				if (Bukkit.getWorld(args[0]) != null) {
 					Bukkit.getWorld(args[0]).setTime(1000);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Time.Day").replace("%world%", args[0]), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Time.Day").replace("%world%", args[0]), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + Loader.s("Time.WorldNotExists").replace("%world%", args[0]), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Time.WorldNotExists").replace("%world%", args[0]), s);
 				return true;
 			}
 			return true;

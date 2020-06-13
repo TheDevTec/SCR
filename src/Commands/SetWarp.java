@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.TheAPI;
 
 public class SetWarp implements CommandExecutor {
 
@@ -21,7 +22,7 @@ public class SetWarp implements CommandExecutor {
 
 					return true;
 				} else {
-					Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+					TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 					return true;
 				}
 			}
@@ -39,19 +40,19 @@ public class SetWarp implements CommandExecutor {
 							Loader.config.set("Warps." + args[0] + ".X_Pos_Head", local.getYaw());
 							Loader.config.set("Warps." + args[0] + ".Z_Pos_Head", local.getPitch());
 							Loader.config.set("Warps." + args[0] + ".NeedPermission", false);
-							Loader.msg(Loader.s("Warp.Created").replace("%warp%", args[0])
+							TheAPI.msg(Loader.s("Warp.Created").replace("%warp%", args[0])
 									.replace("%world%", Loader.config.getString("Warps." + args[0] + ".World"))
 									.replace("%player%", s.getName()).replace("%prefix%", Loader.s("Prefix"))
 									.replace("%playername%", ((Player) s).getDisplayName()), s);
 							return true;
 						} else {
-							Loader.msg(Loader.s("Warp.AlreadyExists").replace("%player%", s.getName())
+							TheAPI.msg(Loader.s("Warp.AlreadyExists").replace("%player%", s.getName())
 									.replace("%playername%", ((Player) s).getDisplayName()).replace("%warp%", args[0]),
 									s);
 							return true;
 						}
 					} else {
-						Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+						TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 						return true;
 					}
 				}
@@ -69,19 +70,19 @@ public class SetWarp implements CommandExecutor {
 						Loader.config.set("Warps." + args[0] + ".X_Pos_Head", local.getYaw());
 						Loader.config.set("Warps." + args[0] + ".Z_Pos_Head", local.getPitch());
 						Loader.config.set("Warps." + args[0] + ".NeedPermission", true);
-						Loader.msg(Loader.s("Prefix") + Loader.s("Warp.CreatedWithPerm").replace("%warp%", args[0])
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Warp.CreatedWithPerm").replace("%warp%", args[0])
 								.replace("%world%", Loader.config.getString("Warps." + args[0] + ".World"))
 								.replace("%player%", s.getName()).replace("%prefix%", Loader.s("Prefix"))
 								.replace("%playername%", ((Player) s).getDisplayName())
 								.replace("%permission%", "ServerControl.Warp." + args[0]), s);
 						return true;
 					} else {
-						Loader.msg(Loader.s("Prefix") + Loader.s("Warp.AlreadyExists").replace("%player%", s.getName())
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Warp.AlreadyExists").replace("%player%", s.getName())
 								.replace("%playername%", ((Player) s).getDisplayName()).replace("%warp%", args[0]), s);
 						return true;
 					}
 				} else {
-					Loader.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 					return true;
 				}
 			}

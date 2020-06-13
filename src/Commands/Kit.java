@@ -16,10 +16,10 @@ import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
 import Utils.XMaterial;
-import me.Straiker123.CooldownAPI;
-import me.Straiker123.EnchantmentAPI;
-import me.Straiker123.ItemCreatorAPI;
-import me.Straiker123.TheAPI;
+import me.DevTec.CooldownAPI;
+import me.DevTec.EnchantmentAPI;
+import me.DevTec.ItemCreatorAPI;
+import me.DevTec.TheAPI;
 
 public class Kit implements CommandExecutor, TabCompleter {
 	public List<String> kits(CommandSender p) {
@@ -65,14 +65,14 @@ public class Kit implements CommandExecutor, TabCompleter {
 				} else {
 					if (TheAPI.getEconomyAPI().has(s, Loader.kit.getDouble("Kits." + KitName + ".Price"))) {
 						setupKit(p, KitName);
-						Loader.msg(
+						TheAPI.msg(
 								Loader.s("Prefix") + Loader.s("Kit.Used").replace("%kit%", getKitName(KitName))
 										.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),
 								p);
 						TheAPI.getEconomyAPI().withdrawPlayer(s, Loader.kit.getDouble("Kits." + KitName + ".Price"));
 						return;
 					}
-					Loader.msg(Loader.s("Economy.NoMoney")
+					TheAPI.msg(Loader.s("Economy.NoMoney")
 							.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s), true))
 							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s), true))
 							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
@@ -83,7 +83,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 					if (TheAPI.getEconomyAPI().has(s, Loader.kit.getDouble("Kits." + KitName + ".Price"))) {
 						CooldownAPI a = TheAPI.getCooldownAPI("Kit." + KitName);
 						if (!a.expired(s)) {
-							Loader.msg(Loader.s("Prefix") + Loader.s("Kit.Cooldown")
+							TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.Cooldown")
 									.replace("%cooldown%",
 											TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(s)))
 									.replace("%kit%", getKitName(KitName)).replace("%player%", p.getName())
@@ -91,7 +91,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 							return;
 						}
 						setupKit(p, KitName);
-						Loader.msg(
+						TheAPI.msg(
 								Loader.s("Prefix") + Loader.s("Kit.Used").replace("%kit%", getKitName(KitName))
 										.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),
 								p);
@@ -100,7 +100,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 								Loader.kit.getDouble("Kits." + getKitName(KitName) + ".Price"));
 						return;
 					}
-					Loader.msg(Loader.s("Economy.NoMoney")
+					TheAPI.msg(Loader.s("Economy.NoMoney")
 							.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s), true))
 							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s), true))
 							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
@@ -108,14 +108,14 @@ public class Kit implements CommandExecutor, TabCompleter {
 				} else {
 					CooldownAPI a = TheAPI.getCooldownAPI("Kit." + KitName);
 					if (!a.expired(s)) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("Kit.Cooldown")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.Cooldown")
 								.replace("%cooldown%", TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(s)))
 								.replace("%kit%", getKitName(KitName)).replace("%player%", p.getName())
 								.replace("%playername%", p.getDisplayName()), p);
 						return;
 					}
 					setupKit(p, KitName);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Kit.Used").replace("%kit%", getKitName(KitName))
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.Used").replace("%kit%", getKitName(KitName))
 							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
 					a.createCooldown(s, Loader.kit.getDouble("Kits." + KitName + ".Cooldown"));
 					return;
@@ -169,7 +169,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (args.length == 0) {
-			Loader.msg(Loader.s("Prefix") + Loader.s("Kit.List").replace("%player%", s.getName())
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.List").replace("%player%", s.getName())
 					.replace("%kits%", TheAPI.getStringUtils().join(kits(s), ", "))
 					.replace("%playername%", s.getName()), s);
 			return true;
@@ -186,19 +186,19 @@ public class Kit implements CommandExecutor, TabCompleter {
 					Loader.Help(s, "/Kit " + kit + " <player>", "Kit-Give");
 					return true;
 				}
-				Loader.msg(Loader.s("NotPermissionsMessage").replace("%player%", s.getName())
+				TheAPI.msg(Loader.s("NotPermissionsMessage").replace("%player%", s.getName())
 						.replace("%playername%", s.getName()).replace("%permission%", "servercontrol.kit." + kit), s);
 				return true;
 			}
 
-			Loader.msg(Loader.s("Prefix") + Loader.s("Kit.NotExists").replace("%kit%", args[0])
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.NotExists").replace("%kit%", args[0])
 					.replace("%player%", s.getName()).replace("%playername%", s.getName()), s);
 			return true;
 		}
 		if (args.length == 2) {
 			String kit = getKitName(args[0]);
 			if (kit == null) {
-				Loader.msg(Loader.s("Prefix") + Loader.s("Kit.NotExists").replace("%kit%", args[0])
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.NotExists").replace("%kit%", args[0])
 						.replace("%player%", s.getName()).replace("%playername%", s.getName()), s);
 				return true;
 			}
@@ -206,11 +206,11 @@ public class Kit implements CommandExecutor, TabCompleter {
 			if (t != null) {
 				if (t != s) {
 					if (API.hasPerm(s, "servercontrol.kit.give")) {
-						Loader.msg(
+						TheAPI.msg(
 								Loader.s("Prefix") + Loader.s("Kit.Got").replace("%kit%", getKitName(args[0]))
 										.replace("%player%", t.getName()).replace("%playername%", t.getDisplayName()),
 								t);
-						Loader.msg(
+						TheAPI.msg(
 								Loader.s("Prefix") + Loader.s("Kit.Given").replace("%kit%", getKitName(args[0]))
 										.replace("%player%", t.getName()).replace("%playername%", t.getDisplayName()),
 								s);
@@ -227,7 +227,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 				Repeat.a(s, "kit " + kit + " *");
 				return true;
 			}
-			Loader.msg(Loader.PlayerNotOnline(args[1]), s);
+			TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 			return true;
 		}
 		return false;

@@ -25,8 +25,9 @@ import Utils.ScoreboardStats;
 import Utils.TabList;
 import Utils.VaultHook;
 import Utils.setting;
-import me.Straiker123.ConfigAPI;
-import me.Straiker123.TheAPI;
+import me.DevTec.ConfigAPI;
+import me.DevTec.TheAPI;
+import me.DevTec.Scheduler.Tasker;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -109,7 +110,7 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static void Help(CommandSender s, String cmd, String help) {
-		msg(config.getString("HelpFormat").replace("%prefix%", Loader.s("Prefix")).replace("%command%", cmd)
+		TheAPI.msg(config.getString("HelpFormat").replace("%prefix%", Loader.s("Prefix")).replace("%command%", cmd)
 				.replace("%space%", " - ").replace("%help%", Loader.s("Help." + help)), s);
 	}
 
@@ -249,31 +250,31 @@ public class Loader extends JavaPlugin implements Listener {
 			new Metrics(this);
 		} catch (Exception er) {
 		}
-		msg(Loader.s("Prefix") + "&aPlugin loaded in " + (System.currentTimeMillis() / 100 - loading) + "ms",
+		TheAPI.msg(Loader.s("Prefix") + "&aPlugin loaded in " + (System.currentTimeMillis() / 100 - loading) + "ms",
 				Bukkit.getConsoleSender());
 		loading = 0;
 	}
 
 	@Override
 	public void onDisable() {
-		for (Player p : TheAPI.getOnlinePlayers()) {
-			p.setFlying(false);
-			p.setAllowFlight(false);
-		}
-		TabList.removeTab();
-		ScoreboardStats.removeScoreboard();
-		if (mw.getString("Worlds") != null)
-			for (String w : mw.getStringList("Worlds")) {
-				if (Bukkit.getWorld(w) != null && !mw.getBoolean("WorldsSettings." + w + ".AutoSave")) {
-					Loader.info("Saving world '" + w + "'");
-					Bukkit.getWorld(w).save();
-					Loader.info("World '" + w + "' saved");
+		new Tasker() {
+			public void run() {
+				for (Player p : TheAPI.getOnlinePlayers()) {
+					p.setFlying(false);
+					p.setAllowFlight(false);
 				}
+				TabList.removeTab();
+				ScoreboardStats.removeScoreboard();
+				if (mw.getString("Worlds") != null)
+					for (String w : mw.getStringList("Worlds")) {
+						if (Bukkit.getWorld(w) != null && !mw.getBoolean("WorldsSettings." + w + ".AutoSave")) {
+							Loader.info("Saving world '" + w + "'");
+							Bukkit.getWorld(w).save();
+							Loader.info("World '" + w + "' saved");
+						}
+					}
 			}
-	}
-
-	public static void msg(String message, CommandSender s) {
-		s.sendMessage(TheAPI.colorize(message));
+		}.runTask();
 	}
 
 	public static void warn(String s) {
@@ -569,11 +570,11 @@ public class Loader extends JavaPlugin implements Listener {
 
 	public static boolean SoundsChecker() {
 		if (setting.sound && !TheAPI.getSoundAPI().existSound(config.getString("Options.Sounds.Sound"))) {
-			msg("", TheAPI.getConsole());
-			msg("", TheAPI.getConsole());
-			msg(Loader.s("Prefix") + Loader.s("SoundErrorMessage"), TheAPI.getConsole());
-			msg("", TheAPI.getConsole());
-			msg("", TheAPI.getConsole());
+			TheAPI.msg("", TheAPI.getConsole());
+			TheAPI.msg("", TheAPI.getConsole());
+			TheAPI.msg(Loader.s("Prefix") + Loader.s("SoundErrorMessage"), TheAPI.getConsole());
+			TheAPI.msg("", TheAPI.getConsole());
+			TheAPI.msg("", TheAPI.getConsole());
 			return false;
 		}
 		return true;

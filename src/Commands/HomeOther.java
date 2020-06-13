@@ -14,8 +14,8 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.User;
 
 public class HomeOther implements CommandExecutor, TabCompleter {
 
@@ -42,13 +42,13 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 								TheAPI.getPlayerAPI(p).safeTeleport(loc);
 							else
 								TheAPI.getPlayerAPI(p).teleport(loc);
-							Loader.msg(Loader.s("Prefix") + Loader.s("Homes.TeleportingToOther")
+							TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.TeleportingToOther")
 									.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 									.replace("%target%", args[0]).replace("%home%", args[1]), s);
 							return true;
 						}
 					}
-					Loader.msg(Loader.s("Prefix") + Loader.s("Homes.NotExistsOther").replace("%player%", p.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.NotExistsOther").replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName()).replace("%target%", args[0])
 							.replace("%home%", args[1]), s);
 					return true;
@@ -56,7 +56,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 				if (args.length == 3) {
 					Player pl = TheAPI.getPlayer(args[2]);
 					if (pl == null) {
-						Loader.msg(Loader.PlayerNotOnline(args[2]), s);
+						TheAPI.msg(Loader.PlayerNotOnline(args[2]), s);
 						return true;
 					}
 					User d = TheAPI.getUser(args[0]);
@@ -68,13 +68,13 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 								TheAPI.getPlayerAPI(p).safeTeleport(loc);
 							else
 								TheAPI.getPlayerAPI(p).teleport(loc);
-							Loader.msg(Loader.s("Prefix") + Loader.s("Homes.TeleportingOtherToOther")
+							TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.TeleportingOtherToOther")
 									.replace("%player%", pl.getName()).replace("%playername%", pl.getDisplayName())
 									.replace("%target%", args[0]).replace("%home%", args[1]), s);
 							return true;
 						}
 					}
-					Loader.msg(Loader.s("Prefix") + Loader.s("Homes.NotExistsOther").replace("%player%", p.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.NotExistsOther").replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName()).replace("%target%", args[0])
 							.replace("%home%", args[1]), s);
 					return true;
@@ -83,7 +83,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 			}
 			return true;
 		}
-		Loader.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
+		TheAPI.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 		return true;
 	}
 

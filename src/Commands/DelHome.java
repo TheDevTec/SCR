@@ -13,8 +13,8 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
-import me.Straiker123.User;
+import me.DevTec.TheAPI;
+import me.DevTec.Other.User;
 
 public class DelHome implements CommandExecutor, TabCompleter {
 
@@ -31,18 +31,18 @@ public class DelHome implements CommandExecutor, TabCompleter {
 					User d = TheAPI.getUser(s.getName());
 					if (d.exist("Homes." + args[0])) {
 						d.setAndSave("Homes." + args[0], null);
-						Loader.msg(Loader.s("Prefix") + Loader.s("Homes.Deleted").replace("%player%", p.getName())
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Deleted").replace("%player%", p.getName())
 								.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]), s);
 						return true;
 					}
-					Loader.msg(Loader.s("Prefix") + Loader.s("Homes.NotExists").replace("%home%", args[0]), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.NotExists").replace("%home%", args[0]), s);
 					return true;
 				}
 				return true;
 			}
 			return true;
 		}
-		Loader.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
+		TheAPI.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 		return true;
 	}
 

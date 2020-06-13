@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Feed implements CommandExecutor {
 
@@ -19,7 +19,7 @@ public class Feed implements CommandExecutor {
 				if (s instanceof Player) {
 					Player p = (Player) s;
 					p.setFoodLevel(20);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Heal.Feed").replace("%player%", p.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Feed").replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName()), s);
 					return true;
 				}
@@ -33,21 +33,21 @@ public class Feed implements CommandExecutor {
 						Repeat.a(s, "feed *");
 						return true;
 					}
-					Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
 				}
 				if (p == s) {
 					p.setFoodLevel(20);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Heal.Feed").replace("%player%", p.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Feed").replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName()), s);
 					return true;
 
 				}
 				if (API.hasPerm(s, "ServerControl.Feed.Other")) {
 					p.setFoodLevel(20);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Heal.Feed").replace("%player%", p.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Feed").replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName()), p);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Heal.PlayerFeed").replace("%player%", p.getName())
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.PlayerFeed").replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName()), s);
 					return true;
 				}
@@ -55,7 +55,7 @@ public class Feed implements CommandExecutor {
 			}
 			return true;
 		}
-		Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+		TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 		return true;
 	}
 

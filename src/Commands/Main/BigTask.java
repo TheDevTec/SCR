@@ -5,9 +5,9 @@ import org.bukkit.World;
 
 import ServerControl.Loader;
 import Utils.setting;
-import me.Straiker123.Reflections;
-import me.Straiker123.TheAPI;
-import me.Straiker123.Scheduler.Tasker;
+import me.DevTec.TheAPI;
+import me.DevTec.NMS.Reflections;
+import me.DevTec.Scheduler.Tasker;
 
 public class BigTask {
 	public static int r = -1;
@@ -37,7 +37,6 @@ public class BigTask {
 
 					@Override
 					public void run() {
-						TheAPI.broadcastMessage("run"+f);
 						if (f <= 0) {
 							end();
 							return;

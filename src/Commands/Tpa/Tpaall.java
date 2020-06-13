@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Tpaall implements CommandExecutor, TabCompleter {
 
@@ -33,13 +33,13 @@ public class Tpaall implements CommandExecutor, TabCompleter {
 					}
 				}
 				if (!list.isEmpty())
-					Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.Tpaall").replace("%players%",
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.Tpaall").replace("%players%",
 							TheAPI.getStringUtils().join(list, ", ")), s);
 				else
-					Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.Tpaall").replace("%players%", "---"), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.Tpaall").replace("%players%", "---"), s);
 				return true;
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

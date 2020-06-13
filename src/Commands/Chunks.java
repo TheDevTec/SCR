@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.MultiWorldsUtils;
+import me.DevTec.TheAPI;
 
 public class Chunks implements CommandExecutor, TabCompleter {
 
@@ -24,22 +25,22 @@ public class Chunks implements CommandExecutor, TabCompleter {
 		if (API.hasPerm(s, "ServerControl.Chunks")) {
 			if (cmd.getName().equalsIgnoreCase("Chunks")) {
 				if (args.length == 0) {
-					Loader.msg(Loader.s("Prefix") + "&e----------------- &bChunks &e-----------------", s);
-					Loader.msg("", s);
+					TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bChunks &e-----------------", s);
+					TheAPI.msg("", s);
 					int chunks = 0;
 					for (World w : Bukkit.getWorlds()) {
 						chunks = chunks + w.getLoadedChunks().length;
-						Loader.msg(Loader.s("Prefix") + Loader.s("Chunks.Loaded").replace("%world%", w.getName())
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Chunks.Loaded").replace("%world%", w.getName())
 								.replace("%chunks%", String.valueOf(w.getLoadedChunks().length)), s);
 					}
-					Loader.msg(Loader.s("Prefix") + Loader.s("Chunks.TotalLoaded")
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Chunks.TotalLoaded")
 							.replace("%worlds%", String.valueOf(Bukkit.getWorlds().size()))
 							.replace("%chunks%", String.valueOf(chunks)), s);
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("Unload")) {
-					Loader.msg(Loader.s("Prefix") + "&e----------------- &bChunks &e-----------------", s);
-					Loader.msg("", s);
+					TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bChunks &e-----------------", s);
+					TheAPI.msg("", s);
 					MultiWorldsUtils.unloadWorlds(s);
 					return true;
 				}

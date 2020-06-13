@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class KillAll implements CommandExecutor {
 
@@ -27,7 +27,7 @@ public class KillAll implements CommandExecutor {
 					++amount;
 				}
 			}
-			Loader.msg(Loader.s("Kill.KilledAll").replace("%amount%", amount + "").replace("%players%",
+			TheAPI.msg(Loader.s("Kill.KilledAll").replace("%amount%", amount + "").replace("%players%",
 					TheAPI.getStringUtils().join(pl, ",")), s);
 			return true;
 		}

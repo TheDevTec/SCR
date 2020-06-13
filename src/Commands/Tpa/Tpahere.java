@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Tpahere implements CommandExecutor, TabCompleter {
 
@@ -26,7 +26,7 @@ public class Tpahere implements CommandExecutor, TabCompleter {
 				if (args.length == 1) {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p == null) {
-						Loader.msg(Loader.PlayerNotOnline(args[0]), s);
+						TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 						return true;
 					} else {
 						if (p != s) {
@@ -34,26 +34,26 @@ public class Tpahere implements CommandExecutor, TabCompleter {
 							if (!TheAPI.getUser(p).getBoolean("TpBlock." + s.getName())
 									&& !TheAPI.getUser(p).getBoolean("TpBlock-Global")) {
 								if (!RequestMap.containsRequest(p.getName(), s.getName())) {
-									Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpahereSender")
+									TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpahereSender")
 											.replace("%playername%", p.getDisplayName())
 											.replace("%player%", p.getName()), s);
-									Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpahereTarget")
+									TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpahereTarget")
 											.replace("%playername%", ((Player) s).getDisplayName())
 											.replace("%player%", s.getName()), p);
 									RequestMap.addRequest(s.getName(), p.getName(), RequestMap.Type.TPAHERE);
 									return true;
 								} else {
-									Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.AlreadyHaveRequest"), s);
+									TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.AlreadyHaveRequest"), s);
 									return true;
 								}
 
 							}
-							Loader.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlocked")
+							TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlocked")
 									.replace("%playername%", p.getDisplayName()).replace("%player%", p.getName()), s);
 							return true;
 						}
 
-						Loader.msg(
+						TheAPI.msg(
 								Loader.s("Prefix") + Loader.s("TpaSystem.CantSendRequestToSelf")
 										.replace("%playername%", p.getDisplayName()).replace("%player%", p.getName()),
 								s);
@@ -62,7 +62,7 @@ public class Tpahere implements CommandExecutor, TabCompleter {
 				}
 				return true;
 			}
-			Loader.msg(Loader.s("ConsoleErrorMessage"), s);
+			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

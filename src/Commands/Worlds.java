@@ -18,7 +18,7 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.MultiWorldsGUI;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Worlds implements CommandExecutor, TabCompleter {
 
@@ -40,15 +40,15 @@ public class Worlds implements CommandExecutor, TabCompleter {
 		if (args[0].equalsIgnoreCase("tp")) {
 			if (API.hasPerm(s, "ServerControl.MultiWorld.Tp")) {
 				if (args.length == 1) {
-					Loader.msg(Loader.s("Prefix") + ChatColor.YELLOW + "----------------- " + ChatColor.DARK_AQUA + "Tp"
+					TheAPI.msg(Loader.s("Prefix") + ChatColor.YELLOW + "----------------- " + ChatColor.DARK_AQUA + "Tp"
 							+ ChatColor.YELLOW + " -----------------", s);
-					Loader.msg("", s);
+					TheAPI.msg("", s);
 					this.tp(s);
 					return true;
 				}
 				if (args.length == 2) {
 					if (Bukkit.getWorld(args[1]) == null) {
-						Loader.msg(Loader.s("Prefix") + Loader.s("MultiWorld.NotExists").replace("%world%", args[1]),
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.NotExists").replace("%world%", args[1]),
 								s);
 						return true;
 					}
@@ -64,7 +64,7 @@ public class Worlds implements CommandExecutor, TabCompleter {
 						Player p2 = (Player) s;
 						API.setBack(p2);
 						p2.teleport(loc);
-						Loader.msg(
+						TheAPI.msg(
 								Loader.s("Prefix") + Loader.s("MultiWorld.TeleportedWorld").replace("%world%", args[1]),
 								s);
 						return true;
@@ -74,7 +74,7 @@ public class Worlds implements CommandExecutor, TabCompleter {
 				} else if (args.length == 3 && s.hasPermission("ServerControl.MultiWorld.tp.other")) {
 					final Player target = TheAPI.getPlayer(args[2]);
 					if (target == null) {
-						Loader.msg(Loader.PlayerNotOnline(args[2]), s);
+						TheAPI.msg(Loader.PlayerNotOnline(args[2]), s);
 						return true;
 					}
 					if (Bukkit.getWorld(args[1]) != null) {
@@ -88,14 +88,14 @@ public class Worlds implements CommandExecutor, TabCompleter {
 						Location loc = new Location(world, x, y, z, x_head, z_head);
 						API.setBack(target);
 						target.teleport(loc);
-						Loader.msg(Loader.s("Prefix") + Loader.s("MultiWorld.PlayerTeleportedWorld")
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.PlayerTeleportedWorld")
 								.replace("%world%", args[1]).replace("%player%", target.getName()), s);
-						Loader.msg(
+						TheAPI.msg(
 								Loader.s("Prefix") + Loader.s("MultiWorld.TeleportedWorld").replace("%world%", args[1]),
 								target);
 						return true;
 					}
-					Loader.msg(Loader.s("Prefix") + Loader.s("MultiWorld.NotExists").replace("%world%", args[1]), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.NotExists").replace("%world%", args[1]), s);
 					return true;
 				}
 			}

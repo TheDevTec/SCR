@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class DelJail implements CommandExecutor {
 
@@ -19,11 +19,11 @@ public class DelJail implements CommandExecutor {
 			}
 			if (args.length == 1) {
 				if (!TheAPI.getPunishmentAPI().getjails().contains(args[0])) {
-					Loader.msg(Loader.s("Prefix") + Loader.s("BanSystem.JailNotExist").replace("%jail%", args[0]), s);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.JailNotExist").replace("%jail%", args[0]), s);
 					return true;
 				}
 				TheAPI.getPunishmentAPI().deljail(args[0]);
-				Loader.msg(Loader.s("Prefix") + Loader.s("BanSystem.DeletedJail").replace("%jail%", args[0]), s);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.DeletedJail").replace("%jail%", args[0]), s);
 				return true;
 			}
 		}

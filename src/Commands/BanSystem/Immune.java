@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Immune implements CommandExecutor {
 
@@ -22,7 +22,7 @@ public class Immune implements CommandExecutor {
 				Player p = (Player) s;
 				boolean im = TheAPI.getUser(p).getBoolean("Immune");
 				TheAPI.getUser(p).setAndSave("Immune", !im);
-				Loader.msg(Loader.s("Prefix") + Loader.s("Immune." + (im ? "Disable" : "Enabled")), p);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune." + (im ? "Disable" : "Enabled")), p);
 				return true;
 			}
 			if (args.length == 1) {
@@ -30,8 +30,8 @@ public class Immune implements CommandExecutor {
 					Player p = (Player) s;
 					boolean im = TheAPI.getUser(args[0]).getBoolean("Immune");
 					TheAPI.getUser(args[0]).setAndSave("Immune", !im);
-					Loader.msg(Loader.s("Prefix") + Loader.s("Immune." + (im ? "Disable" : "Enabled")), p);
-					Loader.msg(
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune." + (im ? "Disable" : "Enabled")), p);
+					TheAPI.msg(
 							Loader.s("Prefix")
 									+ Loader.s("Immune." + (im ? "Off" : "On") + "Other").replace("%target%", args[0]),
 							p);

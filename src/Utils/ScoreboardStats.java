@@ -9,9 +9,9 @@ import org.bukkit.entity.Player;
 import com.google.common.collect.Maps;
 
 import ServerControl.Loader;
-import me.Straiker123.ConfigAPI;
-import me.Straiker123.ScoreboardAPI;
-import me.Straiker123.TheAPI;
+import me.DevTec.ConfigAPI;
+import me.DevTec.ScoreboardAPI;
+import me.DevTec.TheAPI;
 
 public class ScoreboardStats {
 	public ScoreboardStats() {

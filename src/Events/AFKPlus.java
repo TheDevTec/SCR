@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 import net.lapismc.afkplus.api.AFKStartEvent;
 import net.lapismc.afkplus.api.AFKStopEvent;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;

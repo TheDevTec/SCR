@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.API.SeenType;
 import ServerControl.Loader;
-import me.Straiker123.TheAPI;
+import me.DevTec.TheAPI;
 
 public class Seen implements CommandExecutor {
 	List<String> getS(String a) {
@@ -32,19 +32,19 @@ public class Seen implements CommandExecutor {
 			}
 			if (TheAPI.existsUser(args[0])) {
 				if (TheAPI.getPlayer(args[0]) != null && TheAPI.getPlayer(args[0]).getName().equals(args[0])) {
-					Loader.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Seen.Online"), args[0])
+					TheAPI.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Seen.Online"), args[0])
 							.replace("%online%", API.getSeen(args[0], SeenType.Online)), s);
 					return true;
 				}
-				Loader.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Seen.Offline"), args[0])
+				TheAPI.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Seen.Offline"), args[0])
 						.replace("%offline%", API.getSeen(args[0], SeenType.Offline)), s);
 				return true;
 			}
 			List<String> sim = getS(args[0]);
 			if (sim.isEmpty())
-				Loader.msg(Loader.PlayerNotEx(args[0]), s);
+				TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
 			else {
-				Loader.msg(Loader.s("Seen.SimiliarNames").replace("%names%", TheAPI.getStringUtils().join(sim, ", "))
+				TheAPI.msg(Loader.s("Seen.SimiliarNames").replace("%names%", TheAPI.getStringUtils().join(sim, ", "))
 						.replace("%list%", TheAPI.getStringUtils().join(sim, ", ")), s);
 			}
 			return true;
