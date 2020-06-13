@@ -55,11 +55,12 @@ public class MultiWorldsGUI {
 		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		a.setTitle("&cMultiWorlds Editor");
 		a.setSize(54);
+		a.open();
 		prepareInv(a);
-		HashMap<Options, Object> create = new HashMap<Options, Object>();
-		create.put(Options.CANT_BE_TAKEN, true);
-		create.put(Options.CANT_PUT_ITEM, true);
-		create.put(Options.RUNNABLE, new Runnable() {
+		HashMap<Options, Object> w = new HashMap<Options, Object>();
+		w.put(Options.CANT_BE_TAKEN, true);
+		w.put(Options.CANT_PUT_ITEM, true);
+		w.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if (API.hasPerm(p, "ServerControl.MultiWorld.Create")) {
@@ -67,10 +68,10 @@ public class MultiWorldsGUI {
 				}
 			}
 		});
-
-		HashMap<Options, Object> delete = new HashMap<Options, Object>();
-		delete.put(Options.CANT_BE_TAKEN, true);
-		delete.put(Options.RUNNABLE, new Runnable() {
+		a.setItem(20, createItem("&aCreate", XMaterial.GREEN_WOOL,
+				Arrays.asList("&7This will send you to World &acreate &7menu")), w);
+		w.remove(Options.RUNNABLE);
+		w.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if (API.hasPerm(p, "ServerControl.MultiWorld.Delete")) {
@@ -78,10 +79,11 @@ public class MultiWorldsGUI {
 				}
 			}
 		});
+		a.setItem(21, createItem("&cDelete", XMaterial.RED_WOOL,
+				Arrays.asList("&7This will send you to World &cdelete &7menu")), w);
 
-		HashMap<Options, Object> setspawn = new HashMap<Options, Object>();
-		setspawn.put(Options.CANT_BE_TAKEN, true);
-		setspawn.put(Options.RUNNABLE, new Runnable() {
+		w.remove(Options.RUNNABLE);
+		w.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if (API.hasPerm(p, "ServerControl.MultiWorld.SetSpawn")) {
@@ -98,14 +100,10 @@ public class MultiWorldsGUI {
 				}
 			}
 		});
-
-		a.setItem(20, createItem("&aCreate", XMaterial.GREEN_WOOL,
-				Arrays.asList("&7This will send you to World &acreate &7menu")), create);
-		a.setItem(21, createItem("&cDelete", XMaterial.RED_WOOL,
-				Arrays.asList("&7This will send you to World &cdelete &7menu")), delete);
-		HashMap<Options, Object> load = new HashMap<Options, Object>();
-		load.put(Options.CANT_BE_TAKEN, true);
-		load.put(Options.RUNNABLE, new Runnable() {
+		a.setItem(30, createItem("&6&lSetSpawn", XMaterial.COMPASS,
+				Arrays.asList("&7This will &6set world spawn &7to your location")), w);
+		w.remove(Options.RUNNABLE);
+		w.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if (API.hasPerm(p, "ServerControl.MultiWorld.Load")) {
@@ -113,9 +111,10 @@ public class MultiWorldsGUI {
 				}
 			}
 		});
-		HashMap<Options, Object> unload = new HashMap<Options, Object>();
-		unload.put(Options.CANT_BE_TAKEN, true);
-		unload.put(Options.RUNNABLE, new Runnable() {
+		a.setItem(23, createItem("&bLoad", XMaterial.LIGHT_BLUE_WOOL,
+				Arrays.asList("&7This will send you to World &bload &7menu")), w);
+		w.remove(Options.RUNNABLE);
+		w.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if (API.hasPerm(p, "ServerControl.MultiWorld.Unload")) {
@@ -123,13 +122,10 @@ public class MultiWorldsGUI {
 				}
 			}
 		});
-		a.setItem(23, createItem("&bLoad", XMaterial.LIGHT_BLUE_WOOL,
-				Arrays.asList("&7This will send you to World &bload &7menu")), load);
 		a.setItem(24, createItem("&eUnload", XMaterial.YELLOW_WOOL,
-				Arrays.asList("&7This will send you to World &eunload &7menu")), unload);
-		HashMap<Options, Object> set = new HashMap<Options, Object>();
-		set.put(Options.CANT_BE_TAKEN, true);
-		set.put(Options.RUNNABLE, new Runnable() {
+				Arrays.asList("&7This will send you to World &eunload &7menu")), w);
+		w.remove(Options.RUNNABLE);
+		w.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if (API.hasPerm(p, "ServerControl.MultiWorld.Set")) {
@@ -137,13 +133,9 @@ public class MultiWorldsGUI {
 				}
 			}
 		});
-		a.setItem(29, createItem("&2World settings", Arrays.asList("&7This will send you to World &2Set &7menu")), set);
-		a.setItem(30, createItem("&6&lSetSpawn", XMaterial.COMPASS,
-				Arrays.asList("&7This will &6set world spawn &7to your location")), setspawn);
-		HashMap<Options, Object> tp = new HashMap<Options, Object>();
-		tp.put(Options.CANT_BE_TAKEN, true);
-		tp.put(Options.CANT_PUT_ITEM, true);
-		tp.put(Options.RUNNABLE, new Runnable() {
+		a.setItem(29, createItem("&2World settings", Arrays.asList("&7This will send you to World &2Set &7menu")), w);
+		w.remove(Options.RUNNABLE);
+		w.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if (API.hasPerm(p, "ServerControl.MultiWorld.Tp")) {
@@ -153,10 +145,9 @@ public class MultiWorldsGUI {
 		});
 		a.setItem(33,
 				createItem("&5Teleport", XMaterial.ENDER_PEARL, Arrays.asList("&7This will &5teleport you to world")),
-				tp);
-		HashMap<Options, Object> list = new HashMap<Options, Object>();
-		list.put(Options.CANT_BE_TAKEN, true);
-		list.put(Options.RUNNABLE, new Runnable() {
+				w);
+		w.remove(Options.RUNNABLE);
+		w.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if (API.hasPerm(p, "ServerControl.MultiWorld.List")) {
@@ -165,19 +156,19 @@ public class MultiWorldsGUI {
 			}
 		});
 		a.setItem(32, createItem("&eWorld List and Info", XMaterial.BOOK,
-				Arrays.asList("&7Click to see", "&7all worlds and informations about worlds")), list);
-		a.open();
+				Arrays.asList("&7Click to see", "&7all worlds and informations about worlds")), w);
 	}
 
 	public static void openInvList(Player p) {
 		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		a.setTitle("&bWorlds list");
 		a.setSize(54);
+		a.open();
 		prepareInv(a);
+		HashMap<Options, Object> d = new HashMap<Options, Object>();
+		d.put(Options.CANT_BE_TAKEN, true);
+		d.put(Options.CANT_PUT_ITEM, true);
 		for (World w : Bukkit.getWorlds()) {
-			HashMap<Options, Object> help = new HashMap<Options, Object>();
-			help.put(Options.CANT_BE_TAKEN, true);
-			help.put(Options.CANT_PUT_ITEM, true);
 			List<String> lore = new ArrayList<String>();
 			String m = "GRASS_BLOCK";
 			String start = "&2";
@@ -223,30 +214,25 @@ public class MultiWorldsGUI {
 			lore.add("&7 - Loaded Chunks: " + w.getLoadedChunks().length);
 			lore.add("&7 - Entities: " + w.getEntities().size());
 			lore.add("&7 - Players: " + w.getPlayers().size());
-
-			a.addItem(createItem(start + w.getName(), XMaterial.valueOf(m), lore), help);
+			a.addItem(createItem(start + w.getName(), XMaterial.valueOf(m), lore), d);
 		}
-		HashMap<Options, Object> back = new HashMap<Options, Object>();
-		back.put(Options.CANT_BE_TAKEN, true);
-		back.put(Options.RUNNABLE, new Runnable() {
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				openInv(p);
 			}
 		});
-		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null), back);
-
-		a.open();
+		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null), d);
 	}
 
 	public static void openInvGen(Player p) {
 		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		a.setTitle("&2World creator - Generator");
 		a.setSize(54);
+		a.open();
 		prepareInv(a);
 		HashMap<Options, Object> d = new HashMap<Options, Object>();
 		d.put(Options.CANT_BE_TAKEN, true);
-
 		d.put(Options.CANT_PUT_ITEM, true);
 		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
@@ -256,71 +242,65 @@ public class MultiWorldsGUI {
 			}
 		});
 		a.setItem(20, createItem("&2Normal", XMaterial.GRASS_BLOCK, Arrays.asList("&7Default generator")), d);
-
-		HashMap<Options, Object> n = new HashMap<Options, Object>();
-		n.put(Options.CANT_BE_TAKEN, true);
-		n.put(Options.RUNNABLE, new Runnable() {
+		d.remove(Options.RUNNABLE);
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				TheAPI.getUser(p).setAndSave("MultiWorlds-Generator", "NETHER");
 				openInvCreate(p);
 			}
 		});
-		a.setItem(22, createItem("&cNether", XMaterial.NETHERRACK, Arrays.asList("&7Nether generator")), n);
-		HashMap<Options, Object> t = new HashMap<Options, Object>();
-		t.put(Options.CANT_BE_TAKEN, true);
-		t.put(Options.RUNNABLE, new Runnable() {
+		a.setItem(22, createItem("&cNether", XMaterial.NETHERRACK, Arrays.asList("&7Nether generator")), d);
+		d.remove(Options.RUNNABLE);
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				TheAPI.getUser(p).setAndSave("MultiWorlds-Generator", "THE_END");
 				openInvCreate(p);
 			}
 		});
-		a.setItem(31, createItem("&8The End", XMaterial.END_STONE, Arrays.asList("&7The End generator")), t);
-		HashMap<Options, Object> f = new HashMap<Options, Object>();
-		f.put(Options.CANT_BE_TAKEN, true);
-		f.put(Options.RUNNABLE, new Runnable() {
+		a.setItem(31, createItem("&8The End", XMaterial.END_STONE, Arrays.asList("&7The End generator")), d);
+		d.remove(Options.RUNNABLE);
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				TheAPI.getUser(p).setAndSave("MultiWorlds-Generator", "FLAT");
 				openInvCreate(p);
 			}
 		});
-		a.setItem(29, createItem("&aFlat", XMaterial.GRASS_BLOCK, Arrays.asList("&7Flat generator")), f);
-		HashMap<Options, Object> v = new HashMap<Options, Object>();
-		v.put(Options.CANT_BE_TAKEN, true);
-		v.put(Options.RUNNABLE, new Runnable() {
+		a.setItem(29, createItem("&aFlat", XMaterial.GRASS_BLOCK, Arrays.asList("&7Flat generator")), d);
+		d.remove(Options.RUNNABLE);
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				TheAPI.getUser(p).setAndSave("MultiWorlds-Generator", "THE_VOID");
 				openInvCreate(p);
 			}
 		});
-		a.setItem(33, createItem("&7Void", XMaterial.GLASS, Arrays.asList("&7Void generator")), v);
-
-		HashMap<Options, Object> back = new HashMap<Options, Object>();
-		back.put(Options.CANT_BE_TAKEN, true);
-		back.put(Options.RUNNABLE, new Runnable() {
+		a.setItem(33, createItem("&7Void", XMaterial.GLASS, Arrays.asList("&7Void generator")), d);
+		d.remove(Options.RUNNABLE);
+		d.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				openInvCreate(p);
 			}
 		});
-		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null), back);
-		a.open();
+		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null),d);
 	}
 
 	public static void openInvLoad(Player p) {
 		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		a.setTitle("&bWorld loader");
 		a.setSize(54);
+		a.open();
 		prepareInv(a);
+		HashMap<Options, Object> help = new HashMap<Options, Object>();
+		help.put(Options.CANT_BE_TAKEN, true);
+		help.put(Options.CANT_PUT_ITEM, true);
 		if (Loader.mw.getString("Unloaded-Worlds") != null
 				&& Loader.mw.getStringList("Unloaded-Worlds").isEmpty() == false)
 			for (String w : Loader.mw.getStringList("Unloaded-Worlds")) {
-				HashMap<Options, Object> help = new HashMap<Options, Object>();
-				help.put(Options.CANT_BE_TAKEN, true);
-				help.put(Options.CANT_PUT_ITEM, true);
+				help.remove(Options.RUNNABLE);
 				help.put(Options.RUNNABLE, new Runnable() {
 					@Override
 					public void run() {
@@ -349,28 +329,26 @@ public class MultiWorldsGUI {
 							Arrays.asList("&7Click to load world", "&7 - The Void")), help);
 				}
 			}
-		HashMap<Options, Object> back = new HashMap<Options, Object>();
-		back.put(Options.CANT_BE_TAKEN, true);
-		back.put(Options.RUNNABLE, new Runnable() {
+		help.remove(Options.RUNNABLE);
+		help.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				openInv(p);
 			}
 		});
-		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null), back);
-
-		a.open();
+		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null), help);
 	}
 
 	public static void openInvCreate(Player p) {
 		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		a.setTitle("&2World creator");
 		a.setSize(54);
+		a.open();
 		prepareInv(a);
-		HashMap<Options, Object> help = new HashMap<Options, Object>();
-		help.put(Options.CANT_BE_TAKEN, true);
-		help.put(Options.CANT_PUT_ITEM, true);
-		help.put(Options.RUNNABLE, new Runnable() {
+		HashMap<Options, Object> w = new HashMap<Options, Object>();
+		w.put(Options.CANT_BE_TAKEN, true);
+		w.put(Options.CANT_PUT_ITEM, true);
+		w.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				p.closeInventory();
@@ -383,14 +361,12 @@ public class MultiWorldsGUI {
 		if (TheAPI.getUser(p).exist("MultiWorlds-Create")) {
 			ad = "&a" + TheAPI.getUser(p).getString("MultiWorlds-Create");
 			String name = "&7 - " + ad;
-			a.setItem(20, createItem("&aWorld Name", XMaterial.GREEN_WOOL, Arrays.asList("&7World name", name)), help);
+			a.setItem(20, createItem("&aWorld Name", XMaterial.GREEN_WOOL, Arrays.asList("&7World name", name)), w);
 		} else {
 			String name = "&7 - " + ad;
-			a.setItem(20, createItem("&aWorld Name", XMaterial.RED_WOOL, Arrays.asList("&7World name", name)), help);
+			a.setItem(20, createItem("&aWorld Name", XMaterial.RED_WOOL, Arrays.asList("&7World name", name)), w);
 		}
-
-		HashMap<Options, Object> w = new HashMap<Options, Object>();
-		w.put(Options.CANT_BE_TAKEN, true);
+		w.remove(Options.RUNNABLE);
 		w.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
@@ -409,9 +385,8 @@ public class MultiWorldsGUI {
 			a.setItem(24, createItem("&aGenerator type", XMaterial.RED_WOOL, Arrays.asList("&7World generator", get)),
 					w);
 		}
-		HashMap<Options, Object> c = new HashMap<Options, Object>();
-		c.put(Options.CANT_BE_TAKEN, true);
-		c.put(Options.RUNNABLE, new Runnable() {
+		w.remove(Options.RUNNABLE);
+		w.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				if (TheAPI.getUser(p).exist("MultiWorlds-Create") && TheAPI.getUser(p).exist("MultiWorlds-Generator")) {
@@ -437,15 +412,14 @@ public class MultiWorldsGUI {
 				|| TheAPI.getUser(p).exist("MultiWorlds-Create") && !TheAPI.getUser(p).exist("MultiWorlds-Generator"))
 			m = "ORANGE_TERRACOTTA";
 
-		if (TheAPI.getUser(p).exist("Players." + p.getName() + ".MultiWorlds-Create")
-				&& TheAPI.getUser(p).exist("Players." + p.getName() + ".MultiWorlds-Generator"))
+		if (TheAPI.getUser(p).exist("MultiWorlds-Create")
+				&& TheAPI.getUser(p).exist("MultiWorlds-Generator"))
 			m = "GREEN_TERRACOTTA";
 		a.setItem(40, createItem("&aCreate", XMaterial.valueOf(m),
-				Arrays.asList("&7Current options", "&7 - &aGenerator: &6" + aads, "&7 - &aWorld name: &6" + aad)), c);
+				Arrays.asList("&7Current options", "&7 - &aGenerator: &6" + aads, "&7 - &aWorld name: &6" + aad)), w);
 
-		HashMap<Options, Object> back = new HashMap<Options, Object>();
-		back.put(Options.CANT_BE_TAKEN, true);
-		back.put(Options.RUNNABLE, new Runnable() {
+		w.remove(Options.RUNNABLE);
+		w.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				TheAPI.getUser(p).set("MultiWorlds-Generator", null);
@@ -453,20 +427,20 @@ public class MultiWorldsGUI {
 				openInv(p);
 			}
 		});
-		a.setItem(49, createItem("&cCancel", XMaterial.BARRIER, null), back);
-
-		a.open();
+		a.setItem(49, createItem("&cCancel", XMaterial.BARRIER, null), w);
 	}
 
 	public static void openInvDelete(Player p) {
 		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		a.setTitle("&cWorld remover");
 		a.setSize(54);
+		a.open();
 		prepareInv(a);
+		HashMap<Options, Object> help = new HashMap<Options, Object>();
+		help.put(Options.CANT_BE_TAKEN, true);
+		help.put(Options.CANT_PUT_ITEM, true);
 		for (World w : Bukkit.getWorlds()) {
-			HashMap<Options, Object> help = new HashMap<Options, Object>();
-			help.put(Options.CANT_BE_TAKEN, true);
-			help.put(Options.CANT_PUT_ITEM, true);
+			help.remove(Options.RUNNABLE);
 			help.put(Options.RUNNABLE, new Runnable() {
 				@Override
 				public void run() {
@@ -494,28 +468,27 @@ public class MultiWorldsGUI {
 			else if (w.getEnvironment() == Environment.THE_END)
 				a.addItem(createItem(w.getName(), XMaterial.END_STONE, Arrays.asList("&7Click to delete world")), help);
 		}
-		HashMap<Options, Object> back = new HashMap<Options, Object>();
-		back.put(Options.CANT_BE_TAKEN, true);
-		back.put(Options.RUNNABLE, new Runnable() {
+		help.remove(Options.RUNNABLE);
+		help.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				openInv(p);
 			}
 		});
-		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null), back);
-
-		a.open();
+		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null), help);
 	}
 
 	public static void openInvUnload(Player p) {
 		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		a.setTitle("&eWorld unloader");
 		a.setSize(54);
+		a.open();
+		HashMap<Options, Object> help = new HashMap<Options, Object>();
+		help.put(Options.CANT_BE_TAKEN, true);
+		help.put(Options.CANT_PUT_ITEM, true);
 		prepareInv(a);
 		for (World w : Bukkit.getWorlds()) {
-			HashMap<Options, Object> help = new HashMap<Options, Object>();
-			help.put(Options.CANT_BE_TAKEN, true);
-			help.put(Options.CANT_PUT_ITEM, true);
+			help.remove(Options.RUNNABLE);
 			help.put(Options.RUNNABLE, new Runnable() {
 				@Override
 				public void run() {
@@ -530,28 +503,27 @@ public class MultiWorldsGUI {
 			else if (w.getEnvironment() == Environment.THE_END)
 				a.addItem(createItem(w.getName(), XMaterial.END_STONE, Arrays.asList("&7Click to load world")), help);
 		}
-		HashMap<Options, Object> back = new HashMap<Options, Object>();
-		back.put(Options.CANT_BE_TAKEN, true);
-		back.put(Options.RUNNABLE, new Runnable() {
+		help.remove(Options.RUNNABLE);
+		help.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				openInv(p);
 			}
 		});
-		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null), back);
-
-		a.open();
+		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null), help);
 	}
 
 	public static void openInvTeleport(Player p) {
 		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		a.setTitle("&5World teleporter");
 		a.setSize(54);
+		a.open();
 		prepareInv(a);
+		HashMap<Options, Object> help = new HashMap<Options, Object>();
+		help.put(Options.CANT_BE_TAKEN, true);
+		help.put(Options.CANT_PUT_ITEM, true);
 		for (World w : Bukkit.getWorlds()) {
-			HashMap<Options, Object> help = new HashMap<Options, Object>();
-			help.put(Options.CANT_BE_TAKEN, true);
-			help.put(Options.CANT_PUT_ITEM, true);
+			help.remove(Options.RUNNABLE);
 			help.put(Options.RUNNABLE, new Runnable() {
 				@Override
 				public void run() {
@@ -583,23 +555,21 @@ public class MultiWorldsGUI {
 				a.addItem(createItem(w.getName(), XMaterial.END_STONE,
 						Arrays.asList("&7Click to teleport to the world '" + w.getName() + "'")), help);
 		}
-		HashMap<Options, Object> back = new HashMap<Options, Object>();
-		back.put(Options.CANT_BE_TAKEN, true);
-		back.put(Options.RUNNABLE, new Runnable() {
+		help.remove(Options.RUNNABLE);
+		help.put(Options.RUNNABLE, new Runnable() {
 			@Override
 			public void run() {
 				openInv(p);
 			}
 		});
-		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null), back);
-
-		a.open();
+		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null), help);
 	}
 
 	public static void openInvSet(Player p) {
 		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		a.setTitle("&6World setting");
 		a.setSize(54);
+		a.open();
 		prepareInv(a);
 		HashMap<Options, Object> back = new HashMap<Options, Object>();
 		back.put(Options.CANT_BE_TAKEN, true);
@@ -612,9 +582,8 @@ public class MultiWorldsGUI {
 		});
 		a.setItem(49, createItem("&cBack", XMaterial.BARRIER, null), back);
 		for (World w : Bukkit.getWorlds()) {
-			HashMap<Options, Object> help = new HashMap<Options, Object>();
-			help.put(Options.CANT_BE_TAKEN, true);
-			help.put(Options.RUNNABLE, new Runnable() {
+			back.remove(Options.RUNNABLE);
+			back.put(Options.RUNNABLE, new Runnable() {
 				@Override
 				public void run() {
 					openInvSetWorld(p, w);
@@ -622,21 +591,21 @@ public class MultiWorldsGUI {
 			});
 			if (w.getEnvironment() == Environment.NORMAL)
 				a.addItem(createItem(w.getName(), XMaterial.GRASS_BLOCK,
-						Arrays.asList("&7Click to open setting of world '" + w.getName() + "'")), help);
+						Arrays.asList("&7Click to open setting of world '" + w.getName() + "'")), back);
 			else if (w.getEnvironment() == Environment.NETHER)
 				a.addItem(createItem(w.getName(), XMaterial.NETHERRACK,
-						Arrays.asList("&7Click to open setting of world '" + w.getName() + "'")), help);
+						Arrays.asList("&7Click to open setting of world '" + w.getName() + "'")), back);
 			else if (w.getEnvironment() == Environment.THE_END)
 				a.addItem(createItem(w.getName(), XMaterial.END_STONE,
-						Arrays.asList("&7Click to open setting of world '" + w.getName() + "'")), help);
+						Arrays.asList("&7Click to open setting of world '" + w.getName() + "'")), back);
 		}
-		a.open();
 	}
 
 	public static void openInvSetWorld(Player p, World w) {
 		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		a.setTitle("&6World setting - " + w.getName());
 		a.setSize(54);
+		a.open();
 		smallInv(a);
 		HashMap<Options, Object> d = new HashMap<Options, Object>();
 		d.put(Options.CANT_BE_TAKEN, true);
@@ -982,7 +951,6 @@ public class MultiWorldsGUI {
 							Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))),
 					d);
 		}
-		a.open();
 	}
 
 	private static void smallInv(GUICreatorAPI a) {
