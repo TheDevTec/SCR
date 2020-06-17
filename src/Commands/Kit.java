@@ -81,8 +81,8 @@ public class Kit implements CommandExecutor, TabCompleter {
 			} else {
 				if (economy) {
 					if (TheAPI.getEconomyAPI().has(s, Loader.kit.getDouble("Kits." + KitName + ".Price"))) {
-						CooldownAPI a = TheAPI.getCooldownAPI("Kit." + KitName);
-						if (!a.expired(s)) {
+						CooldownAPI a = TheAPI.getCooldownAPI(s);
+						if (!a.expired("Kit." + KitName)) {
 							TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.Cooldown")
 									.replace("%cooldown%",
 											TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(s)))
@@ -95,7 +95,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 								Loader.s("Prefix") + Loader.s("Kit.Used").replace("%kit%", getKitName(KitName))
 										.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),
 								p);
-						a.createCooldown(s, Loader.kit.getDouble("Kits." + KitName + ".Cooldown"));
+						a.createCooldown("Kit." + KitName, Loader.kit.getDouble("Kits." + KitName + ".Cooldown"));
 						TheAPI.getEconomyAPI().withdrawPlayer(s,
 								Loader.kit.getDouble("Kits." + getKitName(KitName) + ".Price"));
 						return;
@@ -106,8 +106,8 @@ public class Kit implements CommandExecutor, TabCompleter {
 							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
 					return;
 				} else {
-					CooldownAPI a = TheAPI.getCooldownAPI("Kit." + KitName);
-					if (!a.expired(s)) {
+					CooldownAPI a = TheAPI.getCooldownAPI(s);
+					if (!a.expired("Kit." + KitName)) {
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.Cooldown")
 								.replace("%cooldown%", TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(s)))
 								.replace("%kit%", getKitName(KitName)).replace("%player%", p.getName())
@@ -117,7 +117,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 					setupKit(p, KitName);
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.Used").replace("%kit%", getKitName(KitName))
 							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
-					a.createCooldown(s, Loader.kit.getDouble("Kits." + KitName + ".Cooldown"));
+					a.createCooldown("Kit." + KitName, Loader.kit.getDouble("Kits." + KitName + ".Cooldown"));
 					return;
 				}
 			}

@@ -19,13 +19,13 @@ public class ScoreboardStats {
 	}
 
 	static ConfigAPI f;
-	static HashMap<Player, ScoreboardAPI> setup = Maps.newHashMap();
+	static HashMap<Player, ScoreboardAPI> setup = Maps.newHashMap(); //prevent recreating 1000x scoreboard
 
 	public static void createScoreboard(Player p) {
 		if (!setup.containsKey(p))
-			setup.put(p, TheAPI.getScoreboardAPI(p));
+			setup.put(p, TheAPI.getScoreboardAPI(p, true));
 		ScoreboardAPI a = setup.get(p);
-		String getName = null;
+		String getName = "SCR";
 		List<String> getLine = new ArrayList<String>();
 		if (setting.sb_world) {
 			if (f.getString("PerWorld." + p.getWorld().getName() + ".Name") != null)
@@ -47,16 +47,17 @@ public class ScoreboardStats {
 			--line;
 		}
 	}
-//chaos otevøèi chrom
+	
 	public static void removeScoreboard() {
 		for (Player p : setup.keySet()) {
 			setup.get(p).destroy();
-		} //stáhni z DC update
+		}
 		setup.clear();
 	}
 
 	public static void removeScoreboard(Player p) {
+		if(setup.containsKey(p))
+		setup.get(p).destroy();
 		setup.remove(p);
-		p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
 	}
 }

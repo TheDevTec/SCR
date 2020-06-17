@@ -140,7 +140,7 @@ public class Eco implements Economy {
 
 	@Override
 	public double getBalance(String s, String world) {
-		if (s == null)
+		if (s == null||world==null)
 			return 0.0;
 		return TheAPI.getUser(s).getDouble(get(s, world));
 	}

@@ -14,21 +14,20 @@ import me.DevTec.TheAPI;
 
 @SuppressWarnings("deprecation")
 public class SecurityListenerCooldowns implements Listener {
-	CooldownAPI a = TheAPI.getCooldownAPI("Cooldown.Cmds");
-	CooldownAPI s = TheAPI.getCooldownAPI("Cooldown.Msgs");
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void CooldownChat(PlayerChatEvent e) {
 		Player p = e.getPlayer();
 		if (setting.cool_chat && !p.hasPermission("ServerControl.CooldownBypass.Chat")
 				&& Loader.config.getInt("Options.Cooldowns.Chat.Time") > 0) {
-			if (!s.expired(p.getName())) {
+			CooldownAPI s = TheAPI.getCooldownAPI(p.getName());
+			if (!s.expired("Cooldown.Msgs")) {
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("Cooldown.ToSendMessage").replace("%timer%",
-						TheAPI.getStringUtils().setTimeToString(s.getTimeToExpire(p.getName()))), p);
+						TheAPI.getStringUtils().setTimeToString(s.getTimeToExpire("Cooldown.Msgs"))), p);
 				e.setCancelled(true);
 				return;
 			} else
-				s.createCooldown(p.getName(), Loader.config.getInt("Cooldown.Chat"));
+				s.createCooldown("Cooldown.Msgs", Loader.config.getInt("Cooldown.Chat"));
 		}
 	}
 
@@ -38,32 +37,31 @@ public class SecurityListenerCooldowns implements Listener {
 		if (!p.hasPermission("ServerControl.CooldownBypass.Commands")) {
 			int time = Loader.config.getInt("Options.Cooldowns.Commands.Time");
 			boolean find = false;
+			CooldownAPI as = TheAPI.getCooldownAPI(p.getName());
 			if (setting.cool_percmd)
 				for (String s : Loader.config.getStringList("Options.Cooldowns.Commands.PerCommand.List")) {
 					String[] c = s.split(":");
 					if (e.getMessage().replaceFirst("/", "").toLowerCase().startsWith(c[0].toLowerCase())
 							|| c[0].equalsIgnoreCase(e.getMessage().replaceFirst("/", ""))) {
 						find = true;
-						CooldownAPI as = TheAPI.getCooldownAPI("Cooldown.Cmds." + c[0]);
-						if (as.expired(p)) {
-							as.createCooldown(p, TheAPI.getStringUtils().getInt(c[1]));
+						if (as.expired("Cooldown.Cmds." + c[0])) {
+							as.createCooldown("Cooldown.Cmds." + c[0], TheAPI.getStringUtils().getInt(c[1]));
 						} else {
 							e.setCancelled(true);
 							TheAPI.msg(
 									Loader.s("Prefix") + Loader.s("Cooldown.ToSendCommand").replace("%timer%",
-											TheAPI.getStringUtils().setTimeToString(as.getTimeToExpire(p.getName()))),
-									p);
+											TheAPI.getStringUtils().setTimeToString(as.getTimeToExpire("Cooldown.Cmds." + c[0]))),p);
 						}
 						break;
 					}
 				}
 			if (!find && setting.cool_cmd && time > 0) {
-				if (!a.expired(p.getName())) {
+				if (!as.expired("Cooldown.Cmdss")) {
 					e.setCancelled(true);
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("Cooldown.ToSendCommand").replace("%timer%",
-							TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(p.getName()))), p);
+							TheAPI.getStringUtils().setTimeToString(as.getTimeToExpire("Cooldown.Cmdss"))), p);
 				} else
-					a.createCooldown(p.getName(), time);
+					as.createCooldown("Cooldown.Cmdss", time);
 			}
 		}
 	}

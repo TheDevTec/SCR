@@ -28,7 +28,6 @@ import Utils.VaultHook;
 import Utils.setting;
 import me.DevTec.ConfigAPI;
 import me.DevTec.TheAPI;
-import me.DevTec.Scheduler.Tasker;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -259,7 +258,7 @@ public class Loader extends JavaPlugin implements Listener {
 
 	@Override
 	public void onDisable() {
-		new Tasker() {
+		TheAPI.getNMSAPI().postToMainThread(new Runnable() {
 			public void run() {
 				for (Player p : TheAPI.getOnlinePlayers()) {
 					p.setFlying(false);
@@ -276,7 +275,7 @@ public class Loader extends JavaPlugin implements Listener {
 						}
 					}
 			}
-		}.runTask();
+		});
 	}
 
 	public static void warn(String s) {
