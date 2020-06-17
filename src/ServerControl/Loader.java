@@ -19,6 +19,7 @@ import Commands.Tpa.RequestMap;
 import Utils.AFKV2;
 import Utils.Colors;
 import Utils.Configs;
+import Utils.Converter;
 import Utils.Metrics;
 import Utils.MultiWorldsUtils;
 import Utils.ScoreboardStats;
@@ -224,6 +225,7 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.getConsole()
 				.sendMessage(TheAPI.colorize(Loader.s("Prefix") + "&8*********************************************"));
 		Tasks();
+		Converter.convert();
 	}
 
 	public void Tasks() {

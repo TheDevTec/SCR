@@ -80,7 +80,7 @@ public class Eco implements Economy {
 	}
 
 	private String getPaths(String player, String group) {
-		String path = "Players." + player + ".Money";
+		String path = "Money";
 		if (Loader.config.getBoolean("Options.Economy.MultiEconomy.Use"))
 			path = path + "." + group;
 		return path;
