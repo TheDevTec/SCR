@@ -51,6 +51,7 @@ public class ScoreboardStats {
 	
 	public static void removeScoreboard() {
 		for (Player p : setup.keySet()) {
+			if(p.isOnline())
 			setup.get(p).destroy();
 		}
 		setup.clear();

@@ -17,8 +17,8 @@ public class ScoreboardStats implements CommandExecutor {
 		if (API.hasPerm(s, "ServerCotrol.Scoreboard")) {
 			TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bScoreboard Reload &e-----------------", s);
 			TheAPI.msg("", s);
-			Loader.sb.reload();
 			Utils.ScoreboardStats.removeScoreboard();
+			Loader.sb.reload();
 			if (setting.sb) {
 				for (Player p : TheAPI.getOnlinePlayers())
 					Utils.ScoreboardStats.createScoreboard(p);
