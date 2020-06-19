@@ -25,10 +25,10 @@ public class Eco implements Economy {
 		if (a == null)
 			a = Bukkit.getWorlds().get(0).getName();
 		for (String f : Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
-			for (String g : Loader.config.getStringList("Options.Economy.MultiEconomy.Types." + f)) {
-				if (g.equals(world))
-					wd = f;
-			}
+				if (Loader.config.getStringList("Options.Economy.MultiEconomy.Types." + f).contains(world)) {
+					wd=f;
+					break;
+				}
 		}
 		return wd;
 	}
@@ -36,13 +36,13 @@ public class Eco implements Economy {
 	public static String getEconomyGroup(String p, String world) {
 		String wd = "default";
 		for (String f : Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
-			for (String g : Loader.config.getStringList("Options.Economy.MultiEconomy.Types." + f)) {
-				if (g.equals(world))
-					wd = f;
+			if (Loader.config.getStringList("Options.Economy.MultiEconomy.Types." + f).contains(world)) {
+				wd=f;
+				break;
 			}
 		}
 		return wd;
-	}
+	} // :(
 
 	@Override
 	public boolean isEnabled() {
@@ -191,10 +191,13 @@ public class Eco implements Economy {
 					"Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 		} else {
 			TheAPI.getUser(s).setAndSave(get(s), getBalance(s) - v);
+			
 			Loader.EconomyLog("Succefully withdrawed $" + v + " from player " + s);
+			
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS,
 					"Succefully withdrawed $" + v + " from player " + s);
-		}
+		}//vault... je... HUMUS. :D TheVault používat nemùžeme :( poè? :(  nejsou na to pluginy jako jobs, shopy atd.. :D Hmmm a co hook z SCR (teto class) do TheVault
+		//proè? :D idk XD .-.
 	}
 
 	@Override
@@ -212,10 +215,12 @@ public class Eco implements Economy {
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
 					"Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 		} else {
-			TheAPI.getUser(s).setAndSave(get(s, getEconomyGroup(s, world)), getBalance(s) - v);
-			Loader.EconomyLog("Succefully withdrawed $" + v + " from player " + s);
+			TheAPI.broadcastMessage(get(s, getEconomyGroup(s, world))+":"+(getBalance(s,world) - v)+":"+world);
+			TheAPI.getUser(s).setAndSave(get(s, getEconomyGroup(s, world)), getBalance(s,world) - v);
+			Loader.EconomyLog("Succefully withdrawed $" + v + " from player " + s); //otevøu mi sebe jako usera v files
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS,
-					"Succefully withdrawed $" + v + " from player " + s);
+					"Succefully withdrawed $" + v + " from player " + s); //vault je prostì velký trash plný chyb a teï jednu vyøešit.. zázrak se musí stát
+			//ty tady umíš zázraky
 		}
 	}
 
@@ -245,7 +250,6 @@ public class Eco implements Economy {
 	public EconomyResponse depositPlayer(OfflinePlayer f, double v) {
 		return depositPlayer(f.getName(), v);
 	}
-
 	@Override
 	public EconomyResponse depositPlayer(String s, String w, double v) {
 		if (s == null)

@@ -227,7 +227,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 											Loader.s("Economy.PaidFrom")
 													.replace("%money%", API.setMoneyFormat(money, true))
 													.replace("%currently%", API.setMoneyFormat(
-															TheAPI.getEconomyAPI().getBalance(s.getName()), true))
+															TheAPI.getEconomyAPI().getBalance(args[1]), true))
 													.replace("%prefix%", Loader.s("Prefix"))
 													.replace("%player%", s.getName()).replace("%playername%",
 															((Player) s).getDisplayName()),

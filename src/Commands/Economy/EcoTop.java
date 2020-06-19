@@ -37,7 +37,7 @@ public class EcoTop implements CommandExecutor {
 			RankingAPI m = h.containsKey(world) ? h.get(world) : null;
 			if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
 				TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300); // 5min update
-				HashMap<String, BigDecimal> money = new HashMap<String, BigDecimal>();
+				HashMap<String, BigDecimal> money = Maps.newHashMap();
 				for (UUID sa : TheAPI.getUsers()) {
 					if(Bukkit.getOfflinePlayer(sa).getName().equals("ServerControlReloaded"))continue;
 					money.put(Bukkit.getOfflinePlayer(sa).getName(),
@@ -45,7 +45,7 @@ public class EcoTop implements CommandExecutor {
 				}
 				if (m != null)
 					h.remove(world);
-				m = new RankingAPI(money);
+				m = TheAPI.getRankingAPI(money);//vážnì jsi mi poslal nejnovìjší TheAPI? :D
 				h.put(world, m);
 			}
 			List<String> list = new ArrayList<String>();

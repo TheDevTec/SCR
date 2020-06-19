@@ -138,8 +138,9 @@ public class Tp implements CommandExecutor, TabCompleter {
 					}
 				}
 			}
-			if (API.hasPerm(s, "ServerControl.Tp.Location")) {
-				if (args.length == 3) {
+			if (args.length == 3) {
+				if (API.hasPerm(s, "ServerControl.Tp.Location")) {
+				
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p == null) {
 						if (TheAPI.getStringUtils().isInt(args[0]) && TheAPI.getStringUtils().isInt(args[1])
@@ -176,7 +177,9 @@ public class Tp implements CommandExecutor, TabCompleter {
 						Loader.Help(s, "/Tp <player> <player>", "TpaSystem.Tp");
 					return true;
 				}
-				if (args.length == 4) {
+			}
+			if (args.length == 4) {
+				if (API.hasPerm(s, "ServerControl.Tp.Location")) {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p != null) {
 						if (TheAPI.getStringUtils().isInt(args[1]) && TheAPI.getStringUtils().isInt(args[2])
