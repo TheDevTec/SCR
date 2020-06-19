@@ -50,7 +50,7 @@ public class BigTask {
 						}
 						--f;
 					}
-				}.repeating(0, 20);//toto jsi zmìnil a už to nejde :D
+				}.repeatingAsync(0, 20);
 				return true;
 			}
 			return false;

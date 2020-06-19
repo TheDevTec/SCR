@@ -27,6 +27,7 @@ public class DelWarp implements CommandExecutor, TabCompleter {
 			if (args[0] != null) {
 				if (Loader.config.getString("Warps." + args[0]) != null) {
 					Loader.config.set("Warps." + args[0], null);
+					Loader.config.save();
 					TheAPI.msg(Loader.s("Warp.Deleted").replace("%warp%", args[0]).replace("%player%", s.getName())
 							.replace("%prefix%", Loader.s("Prefix"))
 							.replace("%playername%", ((Player) s).getDisplayName()), s);

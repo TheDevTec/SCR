@@ -37,7 +37,6 @@ public class Converter {
 					continue;
 					}else
 					user.set(s, sec.get(s));
-					//Bukkit.getConsoleSender().sendMessage(s+" nìco:"+sec.get(s));
 				}
 				user.save();
 			}

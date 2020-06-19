@@ -33,15 +33,17 @@ public class SetWarp implements CommandExecutor {
 							Player p = (Player) s;
 							Location local = p.getLocation();
 
-							Loader.config.set("Warps." + args[0] + ".World", ((Player) s).getWorld().getName());
+							/*Loader.config.set("Warps." + args[0] + ".World", ((Player) s).getWorld().getName());
 							Loader.config.set("Warps." + args[0] + ".X", local.getX());
 							Loader.config.set("Warps." + args[0] + ".Y", local.getY());
 							Loader.config.set("Warps." + args[0] + ".Z", local.getZ());
 							Loader.config.set("Warps." + args[0] + ".X_Pos_Head", local.getYaw());
-							Loader.config.set("Warps." + args[0] + ".Z_Pos_Head", local.getPitch());
+							Loader.config.set("Warps." + args[0] + ".Z_Pos_Head", local.getPitch());*/
 							Loader.config.set("Warps." + args[0] + ".NeedPermission", false);
+							Loader.config.set("Warps." + args[0], TheAPI.getStringUtils().getLocationAsString(local));
+							Loader.config.save();
 							TheAPI.msg(Loader.s("Warp.Created").replace("%warp%", args[0])
-									.replace("%world%", Loader.config.getString("Warps." + args[0] + ".World"))
+									.replace("%world%", local.getWorld().getName())
 									.replace("%player%", s.getName()).replace("%prefix%", Loader.s("Prefix"))
 									.replace("%playername%", ((Player) s).getDisplayName()), s);
 							return true;
@@ -63,15 +65,17 @@ public class SetWarp implements CommandExecutor {
 						Player p = (Player) s;
 						Location local = p.getLocation();
 
-						Loader.config.set("Warps." + args[0] + ".World", ((Player) s).getWorld().getName());
+						/*Loader.config.set("Warps." + args[0] + ".World", ((Player) s).getWorld().getName());
 						Loader.config.set("Warps." + args[0] + ".X", local.getX());
 						Loader.config.set("Warps." + args[0] + ".Y", local.getY());
 						Loader.config.set("Warps." + args[0] + ".Z", local.getZ());
 						Loader.config.set("Warps." + args[0] + ".X_Pos_Head", local.getYaw());
-						Loader.config.set("Warps." + args[0] + ".Z_Pos_Head", local.getPitch());
+						Loader.config.set("Warps." + args[0] + ".Z_Pos_Head", local.getPitch());*/
 						Loader.config.set("Warps." + args[0] + ".NeedPermission", true);
+						Loader.config.set("Warps." + args[0], TheAPI.getStringUtils().getLocationAsString(local));
+						Loader.config.save();
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Warp.CreatedWithPerm").replace("%warp%", args[0])
-								.replace("%world%", Loader.config.getString("Warps." + args[0] + ".World"))
+								.replace("%world%", local.getWorld().getName())
 								.replace("%player%", s.getName()).replace("%prefix%", Loader.s("Prefix"))
 								.replace("%playername%", ((Player) s).getDisplayName())
 								.replace("%permission%", "ServerControl.Warp." + args[0]), s);

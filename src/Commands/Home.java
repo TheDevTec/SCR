@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +16,7 @@ import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
 import Utils.setting;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.Position;
 import me.DevTec.Other.User;
 
 public class Home implements CommandExecutor, TabCompleter {
@@ -30,11 +30,11 @@ public class Home implements CommandExecutor, TabCompleter {
 			if (API.hasPerm(s, "ServerControl.Home")) {
 				if (args.length == 0) {
 					if (d.exist("Homes.home")) {
-						Location loc = TheAPI.getStringUtils().getLocationFromString(d.getString("Homes.home"));
+						Position loc = Position.fromString(d.getString("Homes.home"));
 						API.setBack(p);
 						if (loc != null) {
 							if (setting.tp_safe)
-								TheAPI.getPlayerAPI(p).safeTeleport(loc);
+								TheAPI.getPlayerAPI(p).safeTeleport(loc.toLocation());
 							else
 								TheAPI.getPlayerAPI(p).teleport(loc);
 							TheAPI.msg(
@@ -54,13 +54,13 @@ public class Home implements CommandExecutor, TabCompleter {
 				}
 				if (args.length == 1) {
 					if (d.exist("Homes." + args[0])) {
-						Location loc = TheAPI.getStringUtils().getLocationFromString(d.getString("Homes." + args[0]));
+						Position loc2 = Position.fromString(d.getString("Homes." + args[0])); 
 						API.setBack(p);
-						if (loc != null) {
-							if (setting.tp_safe)
-								TheAPI.getPlayerAPI(p).safeTeleport(loc);
+						if (loc2 != null) {
+							if(setting.tp_safe)
+								TheAPI.getPlayerAPI(p).safeTeleport(loc2.toLocation());
 							else
-								TheAPI.getPlayerAPI(p).teleport(loc);
+								TheAPI.getPlayerAPI(p).teleport(loc2);
 							TheAPI.msg(
 									Loader.s("Prefix") + Loader.s("Homes.Teleporting").replace("%player%", p.getName())
 											.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]),
