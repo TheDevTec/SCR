@@ -44,7 +44,7 @@ public class EcoTop implements CommandExecutor {
 							new BigDecimal(TheAPI.getEconomyAPI().getBalance(Bukkit.getOfflinePlayer(sa).getName(), world)));
 				}
 				if (m != null)
-					h.remove(world);
+					h.remove(world); 
 				m = TheAPI.getRankingAPI(money);
 				h.put(world, m);
 			}
