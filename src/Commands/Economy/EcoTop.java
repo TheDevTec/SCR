@@ -45,7 +45,7 @@ public class EcoTop implements CommandExecutor {
 				}
 				if (m != null)
 					h.remove(world);
-				m = TheAPI.getRankingAPI(money);//vážnì jsi mi poslal nejnovìjší TheAPI? :D
+				m = TheAPI.getRankingAPI(money);
 				h.put(world, m);
 			}
 			List<String> list = new ArrayList<String>();

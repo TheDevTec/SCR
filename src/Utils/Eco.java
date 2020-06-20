@@ -35,14 +35,25 @@ public class Eco implements Economy {
 
 	public static String getEconomyGroup(String p, String world) {
 		String wd = "default";
+		String wd2 = null;
 		for (String f : Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
-			if (Loader.config.getStringList("Options.Economy.MultiEconomy.Types." + f).contains(world)) {
+			if(wd!="default") {
+				//Bukkit.broadcastMessage("1: Break");
+				break;
+			}
+			for(String s:Loader.config.getStringList("Options.Economy.MultiEconomy.Types."+f))
+			if (s.equals(world)) {
+				//Bukkit.broadcastMessage("2: Hráè: "+p+" svìt: "+world+" - "+wd+" : "+f);
+				wd2=f;
 				wd=f;
+				//Bukkit.broadcastMessage("2.5: Upraveno na: "+wd);
 				break;
 			}
 		}
-		return wd;
-	} // :(
+		if(wd2==null)wd2= "default";
+		//Bukkit.broadcastMessage("3: "+wd2);
+		return wd2;
+	}
 
 	@Override
 	public boolean isEnabled() {
@@ -196,8 +207,7 @@ public class Eco implements Economy {
 			
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS,
 					"Succefully withdrawed $" + v + " from player " + s);
-		}//vault... je... HUMUS. :D TheVault používat nemùžeme :( poè? :(  nejsou na to pluginy jako jobs, shopy atd.. :D Hmmm a co hook z SCR (teto class) do TheVault
-		//proè? :D idk XD .-.
+		}
 	}
 
 	@Override
@@ -215,12 +225,14 @@ public class Eco implements Economy {
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
 					"Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 		} else {
-			TheAPI.broadcastMessage(get(s, getEconomyGroup(s, world))+":"+(getBalance(s,world) - v)+":"+world);
-			TheAPI.getUser(s).setAndSave(get(s, getEconomyGroup(s, world)), getBalance(s,world) - v);
-			Loader.EconomyLog("Succefully withdrawed $" + v + " from player " + s); //otevøu mi sebe jako usera v files
+			//TheAPI.broadcastMessage("withraw -- Player: "+s);
+			//TheAPI.broadcastMessage(get(s, getEconomyGroup(s, world))+":"+(getBalance(s,world) - v)+":"+world);
+			//TheAPI.broadcastMessage(" ");
+			
+			TheAPI.getUser(s).setAndSave(get(s, world), getBalance(s,world) - v);
+			Loader.EconomyLog("Succefully withdrawed $" + v + " from player " + s);
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS,
-					"Succefully withdrawed $" + v + " from player " + s); //vault je prostì velký trash plný chyb a teï jednu vyøešit.. zázrak se musí stát
-			//ty tady umíš zázraky
+					"Succefully withdrawed $" + v + " from player " + s);
 		}
 	}
 
@@ -260,7 +272,9 @@ public class Eco implements Economy {
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
 					"Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 		} else {
-			TheAPI.getUser(s).setAndSave(get(s, getEconomyGroup(s, w)), getBalance(s, w) + v);
+			//TheAPI.broadcastMessage("Deposit players: "+s);
+			TheAPI.getUser(s).setAndSave(get(s,w), getBalance(s, w) + v);
+			//TheAPI.broadcastMessage(" ");
 			Loader.EconomyLog("Succefully deposited $" + v + " from player " + s);
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS,
 					"Succefully deposited $" + v + " to player " + s);

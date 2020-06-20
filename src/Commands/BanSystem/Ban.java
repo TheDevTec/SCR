@@ -29,6 +29,9 @@ public class Ban implements CommandExecutor {
 				}
 				TheAPI.getPunishmentAPI().ban(args[0], Loader.config.getString("BanSystem.Ban.Text").replace("%reason%",
 						Loader.config.getString("BanSystem.Ban.Reason")));
+				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Ban").replace("%playername%", args[0])
+						.replace("%reason%", Loader.config.getString("BanSystem.Ban.Reason")).replace("%operator%", s.getName())
+						));
 				return true;
 			}
 			if (args.length >= 2) {
@@ -41,8 +44,22 @@ public class Ban implements CommandExecutor {
 				}
 				String msg = TheAPI.buildString(args);
 				msg = msg.replaceFirst(args[0] + " ", "");
-				TheAPI.getPunishmentAPI().ban(args[0], Loader.config.getString("BanSystem.Ban.Text").replace("%reason%",
-						Loader.config.getString("BanSystem.Ban.Reason")));
+				TheAPI.getPunishmentAPI().ban(args[0], Loader.config.getString("BanSystem.Ban.Text").replace("%reason%",msg));
+				if(msg.endsWith("-s")) {
+					msg = msg.replace("-s", "");
+					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Ban").replace("%playername%", args[0])
+							.replace("%reason%", msg).replace("%operator%", s.getName())+" &f[Silent]"
+							),"servercontrol.seesilent");
+					
+					TheAPI.sendMessage(Loader.s("BanSystem.Ban").replace("%playername%", args[0])
+							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
+					return true;
+				}
+				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Ban").replace("%playername%", args[0])
+						.replace("%reason%", msg).replace("%operator%", s.getName())
+						));
+				TheAPI.sendMessage(Loader.s("BanSystem.Ban").replace("%playername%", args[0])
+						.replace("%reason%", msg).replace("%operator%", s.getName()), s);
 				return true;
 			}
 		}

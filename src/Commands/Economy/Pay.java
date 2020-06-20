@@ -9,11 +9,9 @@ import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
 import me.DevTec.TheAPI;
-import me.DevTec.Other.LoaderClass;
 
 public class Pay implements CommandExecutor {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (TheAPI.getEconomyAPI().getEconomy() == null) {
@@ -32,7 +30,7 @@ public class Pay implements CommandExecutor {
 					if (args[0].equals("*")) {
 						Repeat.a(s, "pay * " + API.convertMoney(args[1]));
 						return true;
-					}//èekej
+					}
 					if (TheAPI.existsUser(args[0])) {
 						String moneyfromargs = args[1];
 						if (moneyfromargs.startsWith("-"))
@@ -41,8 +39,8 @@ public class Pay implements CommandExecutor {
 						if (TheAPI.getEconomyAPI().has(p.getName(), money)
 								|| s.hasPermission("ServerControl.Economy.InMinus")) {
 							String w = p.getWorld().getName();
-							LoaderClass.plugin.economy.withdrawPlayer(p.getName(),w, money);
-							LoaderClass.plugin.economy.depositPlayer(args[0],w, money);
+							TheAPI.getEconomyAPI().withdrawPlayer(p.getName(),w, money);
+							TheAPI.getEconomyAPI().depositPlayer(args[0],w, money);
 							TheAPI.msg(Loader.s("Economy.PaidTo")
 									.replace("%money%", API.setMoneyFormat(money, true))
 									.replace("%currently%",
@@ -50,17 +48,17 @@ public class Pay implements CommandExecutor {
 													true))
 									.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[0])
 									.replace("%playername%", args[0]), s);
-							if (get(args[1]) != null && get(args[0]).getWorld().getName()
+							if (get(args[0]) != null && get(args[0]).getWorld().getName()
 									.equals(TheAPI.getPlayer(s.getName()).getWorld().getName())) {
 								TheAPI.msg(
 										Loader.s("Economy.PaidFrom")
 												.replace("%money%", API.setMoneyFormat(money, true))
 												.replace("%currently%", API.setMoneyFormat(
-														TheAPI.getEconomyAPI().getBalance(s.getName()), true))
+														TheAPI.getEconomyAPI().getBalance(args[0]), true))
 												.replace("%prefix%", Loader.s("Prefix"))
 												.replace("%player%", s.getName()).replace("%playername%",
 														((Player) s).getDisplayName()),
-										get(args[0]));
+										TheAPI.getPlayer(args[0]));
 							}
 							return true;
 						}
