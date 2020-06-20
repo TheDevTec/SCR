@@ -39,6 +39,7 @@ public class EcoTop implements CommandExecutor {
 				TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300); // 5min update
 				HashMap<String, BigDecimal> money = Maps.newHashMap();
 				for (UUID sa : TheAPI.getUsers()) {
+					if(Bukkit.getOfflinePlayer(sa).getName()==null)continue;
 					if(Bukkit.getOfflinePlayer(sa).getName().equals("ServerControlReloaded"))continue;
 					money.put(Bukkit.getOfflinePlayer(sa).getName(),
 							new BigDecimal(TheAPI.getEconomyAPI().getBalance(Bukkit.getOfflinePlayer(sa).getName(), world)));
