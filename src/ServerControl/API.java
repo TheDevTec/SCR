@@ -353,7 +353,7 @@ public class API {
 			str = str.replace(w, "");
 		}
 		Matcher m = Pattern
-				.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{5,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?")
+				.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{3,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?")
 				.matcher(str.toLowerCase());
 		return m.find();
 	}
@@ -372,16 +372,12 @@ public class API {
 		if (getAdvertisement(where)) {
 			Matcher m = Pattern.compile("(?:\\d{1,3}[.,\\-:;\\/()=?}+ ]{1,4}){3}\\d{1,3}").matcher(where.toLowerCase());
 			while (m.find()) {
-				for (int i = 0; i < m.groupCount() + 1; ++i) {
-					matches.add(m.group(i));
-				}
+				matches.add(m.group());
 			}
 			m = Pattern.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{5,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?")
 					.matcher(where.toLowerCase());
 			while (m.find()) {
-				for (int i = 0; i < m.groupCount(); ++i) {
-					matches.add(m.group(i));
-				}
+				matches.add(m.group());
 			}
 		}
 		return matches;
