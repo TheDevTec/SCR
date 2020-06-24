@@ -374,7 +374,7 @@ public class API {
 			while (m.find()) {
 				matches.add(m.group());
 			}
-			m = Pattern.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{5,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?")
+			m = Pattern.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{3,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?")
 					.matcher(where.toLowerCase());
 			while (m.find()) {
 				matches.add(m.group());
