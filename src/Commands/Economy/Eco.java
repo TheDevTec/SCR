@@ -212,8 +212,9 @@ public class Eco implements CommandExecutor, TabCompleter {
 							double money = API.convertMoney(args[2]);
 							if (TheAPI.getEconomyAPI().has(p.getName(), money)
 									|| s.hasPermission("ServerControl.Economy.InMinus")) {
-								TheAPI.getEconomyAPI().withdrawPlayer(p.getName(), money);
-								TheAPI.getEconomyAPI().depositPlayer(args[1], money);
+								String w = p.getWorld().getName();
+								TheAPI.getEconomyAPI().withdrawPlayer(p.getName(),w, money);
+								TheAPI.getEconomyAPI().depositPlayer(args[1],w, money);
 								TheAPI.msg(Loader.s("Economy.PaidTo")
 										.replace("%money%", API.setMoneyFormat(money, true))
 										.replace("%currently%",
@@ -227,7 +228,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 											Loader.s("Economy.PaidFrom")
 													.replace("%money%", API.setMoneyFormat(money, true))
 													.replace("%currently%", API.setMoneyFormat(
-															TheAPI.getEconomyAPI().getBalance(s.getName()), true))
+															TheAPI.getEconomyAPI().getBalance(args[1]), true))
 													.replace("%prefix%", Loader.s("Prefix"))
 													.replace("%player%", s.getName()).replace("%playername%",
 															((Player) s).getDisplayName()),

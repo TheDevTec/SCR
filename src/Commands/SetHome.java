@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.Position;
 import me.DevTec.Other.User;
 
 public class SetHome implements CommandExecutor {
@@ -21,14 +22,14 @@ public class SetHome implements CommandExecutor {
 				if (Loader.vault == null) {
 					if (args.length == 0) {
 						TheAPI.getUser(s.getName()).setAndSave("Homes.home",
-								TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
+								new Position(p.getLocation()).toString());
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%home%", "home"), s);
 						return true;
 					}
 				} else {
 					if (args.length == 0) {
 						TheAPI.getUser(s.getName()).setAndSave("Homes.home",
-								TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
+								new Position(p.getLocation()).toString());
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%player%", p.getName())
 								.replace("%playername%", p.getDisplayName()).replace("%home%", "home"), s);
 						return true;
@@ -47,12 +48,12 @@ public class SetHome implements CommandExecutor {
 								return true;
 							}
 							d.setAndSave("Homes." + args[0],
-									TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
+									new Position(p.getLocation()).toString());
 							TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%player%", p.getName())
 									.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]), s);
 							return true;
 						}
-						d.setAndSave("Homes." + args[0], TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
+						d.setAndSave("Homes." + args[0], new Position(p.getLocation()).toString());
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%player%", p.getName())
 								.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]), s);
 						return true;

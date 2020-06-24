@@ -12,6 +12,7 @@ import ServerControl.Loader;
 import me.DevTec.ConfigAPI;
 import me.DevTec.ScoreboardAPI;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.ScoreboardType;
 
 public class ScoreboardStats {
 	public ScoreboardStats() {
@@ -23,7 +24,7 @@ public class ScoreboardStats {
 
 	public static void createScoreboard(Player p) {
 		if (!setup.containsKey(p))
-			setup.put(p, TheAPI.getScoreboardAPI(p, true));
+			setup.put(p, TheAPI.getScoreboardAPI(p, ScoreboardType.PACKETS));
 		ScoreboardAPI a = setup.get(p);
 		String getName = "SCR";
 		List<String> getLine = new ArrayList<String>();
@@ -50,6 +51,7 @@ public class ScoreboardStats {
 	
 	public static void removeScoreboard() {
 		for (Player p : setup.keySet()) {
+			if(p.isOnline())
 			setup.get(p).destroy();
 		}
 		setup.clear();

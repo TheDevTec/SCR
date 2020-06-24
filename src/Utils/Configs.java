@@ -107,6 +107,9 @@ public class Configs {
 		c.put("BanSystem.CreatedJail", "&6Create new jail %jail% at your location");
 		c.put("BanSystem.JailNotExist", "&6Jail %jail% doesn't exist");
 		c.put("BanSystem.DeletedJail", "&6Deleted jail %jail%");
+		
+		c.put("BanSystem.Broadcast.Ban", "&6Operator %operator% banned player %player% for %reason%");
+		
 		c.put("ClearInventory.PlayerInvCleared", "&6Inventory of &c%player% &6has been cleared");
 		c.put("ClearInventory.NoMoney", "&cYou must have &6$%money% &cto purchase your inventory back");
 		c.put("ClearInventory.NoConfirm", "&6You have no confirm request");

@@ -37,15 +37,16 @@ public class EcoTop implements CommandExecutor {
 			RankingAPI m = h.containsKey(world) ? h.get(world) : null;
 			if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
 				TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300); // 5min update
-				HashMap<String, BigDecimal> money = new HashMap<String, BigDecimal>();
+				HashMap<String, BigDecimal> money = Maps.newHashMap();
 				for (UUID sa : TheAPI.getUsers()) {
+					if(Bukkit.getOfflinePlayer(sa).getName()==null)continue;
 					if(Bukkit.getOfflinePlayer(sa).getName().equals("ServerControlReloaded"))continue;
 					money.put(Bukkit.getOfflinePlayer(sa).getName(),
 							new BigDecimal(TheAPI.getEconomyAPI().getBalance(Bukkit.getOfflinePlayer(sa).getName(), world)));
 				}
 				if (m != null)
-					h.remove(world);
-				m = new RankingAPI(money);
+					h.remove(world); 
+				m = TheAPI.getRankingAPI(money);
 				h.put(world, m);
 			}
 			List<String> list = new ArrayList<String>();

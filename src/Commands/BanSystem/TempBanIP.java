@@ -15,7 +15,7 @@ public class TempBanIP implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (API.hasPerm(s, "ServerControl.TempBan")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/TempBan <player> <time> <reason>", "BanSystem.TempBan");
+				Loader.Help(s, "/TempBanIP <player> <time> <reason>", "BanSystem.TempBan");
 				return true;
 			}
 			if (args.length == 1) {

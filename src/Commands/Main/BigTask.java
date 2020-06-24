@@ -1,7 +1,6 @@
 package Commands.Main;
 
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 
 import ServerControl.Loader;
 import Utils.setting;
@@ -50,7 +49,7 @@ public class BigTask {
 						}
 						--f;
 					}
-				}.repeating(0, 20);//toto jsi zmìnil a už to nejde :D
+				}.repeatingAsync(0, 20);
 				return true;
 			}
 			return false;
@@ -75,9 +74,9 @@ public class BigTask {
 			Tasker.cancelTask(r);
 			r = -1;
 			TheAPI.broadcastMessage("&eSaving worlds and data of players..");
-			for (World w : Bukkit.getWorlds()) {
+			/*for (World w : Bukkit.getWorlds()) {
 				w.save();
-			}
+			}*/
 			Bukkit.savePlayers();
 			TheAPI.broadcastMessage(
 					"&c" + (s == TaskType.STOP ? "Stopping" : (s == TaskType.RELOAD ? "Reloading" : "Restarting"))

@@ -25,23 +25,34 @@ public class Eco implements Economy {
 		if (a == null)
 			a = Bukkit.getWorlds().get(0).getName();
 		for (String f : Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
-			for (String g : Loader.config.getStringList("Options.Economy.MultiEconomy.Types." + f)) {
-				if (g.equals(world))
-					wd = f;
-			}
+				if (Loader.config.getStringList("Options.Economy.MultiEconomy.Types." + f).contains(world)) {
+					wd=f;
+					break;
+				}
 		}
 		return wd;
 	}
 
 	public static String getEconomyGroup(String p, String world) {
 		String wd = "default";
+		String wd2 = null;
 		for (String f : Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
-			for (String g : Loader.config.getStringList("Options.Economy.MultiEconomy.Types." + f)) {
-				if (g.equals(world))
-					wd = f;
+			if(wd!="default") {
+				//Bukkit.broadcastMessage("1: Break");
+				break;
+			}
+			for(String s:Loader.config.getStringList("Options.Economy.MultiEconomy.Types."+f))
+			if (s.equals(world)) {
+				//Bukkit.broadcastMessage("2: Hráè: "+p+" svìt: "+world+" - "+wd+" : "+f);
+				wd2=f;
+				wd=f;
+				//Bukkit.broadcastMessage("2.5: Upraveno na: "+wd);
+				break;
 			}
 		}
-		return wd;
+		if(wd2==null)wd2= "default";
+		//Bukkit.broadcastMessage("3: "+wd2);
+		return wd2;
 	}
 
 	@Override
@@ -191,7 +202,9 @@ public class Eco implements Economy {
 					"Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 		} else {
 			TheAPI.getUser(s).setAndSave(get(s), getBalance(s) - v);
+			
 			Loader.EconomyLog("Succefully withdrawed $" + v + " from player " + s);
+			
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS,
 					"Succefully withdrawed $" + v + " from player " + s);
 		}
@@ -212,7 +225,11 @@ public class Eco implements Economy {
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
 					"Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 		} else {
-			TheAPI.getUser(s).setAndSave(get(s, getEconomyGroup(s, world)), getBalance(s) - v);
+			//TheAPI.broadcastMessage("withraw -- Player: "+s);
+			//TheAPI.broadcastMessage(get(s, getEconomyGroup(s, world))+":"+(getBalance(s,world) - v)+":"+world);
+			//TheAPI.broadcastMessage(" ");
+			
+			TheAPI.getUser(s).setAndSave(get(s, world), getBalance(s,world) - v);
 			Loader.EconomyLog("Succefully withdrawed $" + v + " from player " + s);
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS,
 					"Succefully withdrawed $" + v + " from player " + s);
@@ -245,7 +262,6 @@ public class Eco implements Economy {
 	public EconomyResponse depositPlayer(OfflinePlayer f, double v) {
 		return depositPlayer(f.getName(), v);
 	}
-
 	@Override
 	public EconomyResponse depositPlayer(String s, String w, double v) {
 		if (s == null)
@@ -256,7 +272,9 @@ public class Eco implements Economy {
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
 					"Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 		} else {
-			TheAPI.getUser(s).setAndSave(get(s, getEconomyGroup(s, w)), getBalance(s, w) + v);
+			//TheAPI.broadcastMessage("Deposit players: "+s);
+			TheAPI.getUser(s).setAndSave(get(s,w), getBalance(s, w) + v);
+			//TheAPI.broadcastMessage(" ");
 			Loader.EconomyLog("Succefully deposited $" + v + " from player " + s);
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS,
 					"Succefully deposited $" + v + " to player " + s);
