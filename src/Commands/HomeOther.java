@@ -95,6 +95,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 				return null;
 			}
 			if (args.length == 2) {
+				if(TheAPI.getUser(args[0]).getKeys("Homes")!=null)
 				c.addAll(StringUtil.copyPartialMatches(args[1], TheAPI.getUser(args[0]).getKeys("Homes"),
 						new ArrayList<>()));
 				return c;

@@ -128,7 +128,7 @@ public class Configs {
 				"&6You gave &a$%money% &6to &a%playername%&6, currently &a%player% &6has &a$%currently%");
 		c.put("Economy.Taken", "&c$%money% has been taken from your account, you now have &a$%currently%");
 		c.put("Economy.TakenFromPlayer",
-				"&6You took &c$%money% &6from &c%playername%&6, currently &c%player% &6has &c$%currently");
+				"&6You took &c$%money% &6from &c%playername%&6, currently &c%player% &6has &c$%currently%");
 		c.put("Economy.Reseted", "&6Your account has been reset, you now have &a$%currently%");
 		c.put("Economy.ResetedPlayer", "&6You &creset &6account of player &c%playername%");
 		c.put("Economy.PaidTo", "&6You paid &e$%money% &6to player &e%playername%");
