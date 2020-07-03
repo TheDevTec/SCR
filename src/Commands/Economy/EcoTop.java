@@ -22,8 +22,10 @@ import me.DevTec.TheAPI;
 
 public class EcoTop implements CommandExecutor {
 	// world, rankingapi
+	@SuppressWarnings("rawtypes")
 	HashMap<String, RankingAPI> h = Maps.newHashMap();
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (TheAPI.getEconomyAPI().getEconomy() == null) {
