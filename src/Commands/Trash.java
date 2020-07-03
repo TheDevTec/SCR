@@ -38,20 +38,16 @@ public class Trash implements CommandExecutor {
 
 		ItemCreatorAPI b = TheAPI.getItemCreatorAPI(Material.LAVA_BUCKET);
 		b.setDisplayName("&6Clear");
-		GUICreatorAPI s = TheAPI.getGUICreatorAPI(p);
-		s.setSize(54);
-		s.setTitle(Loader.s("TrashTitle"));
+		GUICreatorAPI s = TheAPI.getGUICreatorAPI(Loader.s("TrashTitle"), 54, p);
 		HashMap<Options, Object> set = new HashMap<Options, Object>();
 		set.put(Options.CANT_BE_TAKEN, true);
 
 		HashMap<Options, Object> clear = new HashMap<Options, Object>();
 		clear.put(Options.CANT_BE_TAKEN, true);
 		clear.put(Options.RUNNABLE, new Runnable() {
-			@Override
 			public void run() {
 				Trash.openInv(p);
-			}
-		});
+			}});
 		s.setItem(45, a.create(), set);
 		s.setItem(46, a.create(), set);
 		s.setItem(47, a.create(), set);
@@ -61,7 +57,6 @@ public class Trash implements CommandExecutor {
 		s.setItem(51, a.create(), set);
 		s.setItem(52, a.create(), set);
 		s.setItem(53, a.create(), set);
-		s.open();
 	}
 
 }

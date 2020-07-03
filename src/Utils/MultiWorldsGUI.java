@@ -52,10 +52,7 @@ public class MultiWorldsGUI {
 	}
 
 	public static void openInv(Player p) {
-		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
-		a.setTitle("&cMultiWorlds Editor");
-		a.setSize(54);
-		a.open();
+		GUICreatorAPI a = TheAPI.getGUICreatorAPI("&cMultiWorlds Editor",54,p);
 		prepareInv(a);
 		HashMap<Options, Object> w = new HashMap<Options, Object>();
 		w.put(Options.CANT_BE_TAKEN, true);
@@ -160,10 +157,7 @@ public class MultiWorldsGUI {
 	}
 
 	public static void openInvList(Player p) {
-		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
-		a.setTitle("&bWorlds list");
-		a.setSize(54);
-		a.open();
+		GUICreatorAPI a = TheAPI.getGUICreatorAPI("&bWorlds list",54,p);
 		prepareInv(a);
 		HashMap<Options, Object> d = new HashMap<Options, Object>();
 		d.put(Options.CANT_BE_TAKEN, true);
@@ -226,10 +220,7 @@ public class MultiWorldsGUI {
 	}
 
 	public static void openInvGen(Player p) {
-		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
-		a.setTitle("&2World creator - Generator");
-		a.setSize(54);
-		a.open();
+		GUICreatorAPI a = TheAPI.getGUICreatorAPI("&2World creator - Generator",54,p);
 		prepareInv(a);
 		HashMap<Options, Object> d = new HashMap<Options, Object>();
 		d.put(Options.CANT_BE_TAKEN, true);
@@ -289,10 +280,7 @@ public class MultiWorldsGUI {
 	}
 
 	public static void openInvLoad(Player p) {
-		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
-		a.setTitle("&bWorld loader");
-		a.setSize(54);
-		a.open();
+		GUICreatorAPI a = TheAPI.getGUICreatorAPI("&bWorld loader",54,p);
 		prepareInv(a);
 		HashMap<Options, Object> help = new HashMap<Options, Object>();
 		help.put(Options.CANT_BE_TAKEN, true);
@@ -340,10 +328,7 @@ public class MultiWorldsGUI {
 	}
 
 	public static void openInvCreate(Player p) {
-		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
-		a.setTitle("&2World creator");
-		a.setSize(54);
-		a.open();
+		GUICreatorAPI a = TheAPI.getGUICreatorAPI("&2World creator",54,p);
 		prepareInv(a);
 		HashMap<Options, Object> w = new HashMap<Options, Object>();
 		w.put(Options.CANT_BE_TAKEN, true);
@@ -431,10 +416,7 @@ public class MultiWorldsGUI {
 	}
 
 	public static void openInvDelete(Player p) {
-		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
-		a.setTitle("&cWorld remover");
-		a.setSize(54);
-		a.open();
+		GUICreatorAPI a = TheAPI.getGUICreatorAPI("&cWorld remover",54,p);
 		prepareInv(a);
 		HashMap<Options, Object> help = new HashMap<Options, Object>();
 		help.put(Options.CANT_BE_TAKEN, true);
@@ -479,10 +461,7 @@ public class MultiWorldsGUI {
 	}
 
 	public static void openInvUnload(Player p) {
-		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
-		a.setTitle("&eWorld unloader");
-		a.setSize(54);
-		a.open();
+		GUICreatorAPI a = TheAPI.getGUICreatorAPI("&eWorld unloader",54,p);
 		HashMap<Options, Object> help = new HashMap<Options, Object>();
 		help.put(Options.CANT_BE_TAKEN, true);
 		help.put(Options.CANT_PUT_ITEM, true);
@@ -514,10 +493,7 @@ public class MultiWorldsGUI {
 	}
 
 	public static void openInvTeleport(Player p) {
-		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
-		a.setTitle("&5World teleporter");
-		a.setSize(54);
-		a.open();
+		GUICreatorAPI a = TheAPI.getGUICreatorAPI("&5World teleporter",54,p);
 		prepareInv(a);
 		HashMap<Options, Object> help = new HashMap<Options, Object>();
 		help.put(Options.CANT_BE_TAKEN, true);
@@ -566,10 +542,7 @@ public class MultiWorldsGUI {
 	}
 
 	public static void openInvSet(Player p) {
-		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
-		a.setTitle("&6World setting");
-		a.setSize(54);
-		a.open();
+		GUICreatorAPI a = TheAPI.getGUICreatorAPI("&6World setting",54,p);
 		prepareInv(a);
 		HashMap<Options, Object> back = new HashMap<Options, Object>();
 		back.put(Options.CANT_BE_TAKEN, true);
@@ -602,10 +575,7 @@ public class MultiWorldsGUI {
 	}
 
 	public static void openInvSetWorld(Player p, World w) {
-		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
-		a.setTitle("&6World setting - " + w.getName());
-		a.setSize(54);
-		a.open();
+		GUICreatorAPI a = TheAPI.getGUICreatorAPI("&6World setting - " + w.getName(),54,p);
 		smallInv(a);
 		HashMap<Options, Object> d = new HashMap<Options, Object>();
 		d.put(Options.CANT_BE_TAKEN, true);

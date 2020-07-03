@@ -28,12 +28,10 @@ public class gui {
 		case n:
 			break;
 		}
-		GUICreatorAPI a = TheAPI.getGUICreatorAPI(p);
 		String w = t;
 		if (w == null)
 			w = "";
-		a.setTitle("&4Server Control Reloaded &cManager" + w);
-		a.setSize(9);
+		GUICreatorAPI a = TheAPI.getGUICreatorAPI("&4Server Control Reloaded &cManager" + w,9,p);
 		if (t == null) {
 			HashMap<Options, Object> s = new HashMap<Options, Object>();
 			s.put(Options.CANT_PUT_ITEM, true);
@@ -117,7 +115,6 @@ public class gui {
 			});
 			a.setItem(0, item("&cBack", XMaterial.ARROW), s);
 		}
-		a.open();
 	}
 
 	public static ItemStack item(String name, XMaterial typ) {

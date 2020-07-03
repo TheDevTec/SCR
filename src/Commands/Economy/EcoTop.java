@@ -25,7 +25,6 @@ public class EcoTop implements CommandExecutor {
 	@SuppressWarnings("rawtypes")
 	HashMap<String, RankingAPI> h = Maps.newHashMap();
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (TheAPI.getEconomyAPI().getEconomy() == null) {
@@ -36,7 +35,8 @@ public class EcoTop implements CommandExecutor {
 			String world = Bukkit.getWorlds().get(0).getName();
 			if (s instanceof Player)
 				world = ((Player) s).getWorld().getName();
-			RankingAPI m = h.containsKey(world) ? h.get(world) : null;
+			@SuppressWarnings("unchecked")
+			RankingAPI<String> m = h.containsKey(world) ? h.get(world) : null;
 			if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
 				TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300); // 5min update
 				HashMap<String, BigDecimal> money = Maps.newHashMap();
@@ -48,11 +48,11 @@ public class EcoTop implements CommandExecutor {
 				}
 				if (m != null)
 					h.remove(world); 
-				m = TheAPI.getRankingAPI(money);
+				m = new RankingAPI<String>(money);
 				h.put(world, m);
 			}
 			List<String> list = new ArrayList<String>();
-			for (Object o : m.getKeySet()) {
+			for (String o : m.getKeySet()) {
 				if(o!=null && m.getHashMap().containsKey(o))
 				list.add(o.toString() + ":" + m.getValue(o));
 			}
@@ -72,7 +72,7 @@ public class EcoTop implements CommandExecutor {
 				String[] f = sa.split(":");
 				money.put(f[0], new BigDecimal(f[1]));
 			}
-			RankingAPI ms = new RankingAPI(money);
+			RankingAPI<String> ms = new RankingAPI<String>(money);
 			for (int i = 1; i < ms.getKeySet().size() + 1; i++) {
 				String player = ms.getObject(i).toString();
 				TheAPI.msg(Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", i + "")
