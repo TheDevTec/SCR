@@ -38,20 +38,16 @@ public class Eco implements Economy {
 		String wd2 = null;
 		for (String f : Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
 			if(wd!="default") {
-				//Bukkit.broadcastMessage("1: Break");
 				break;
 			}
 			for(String s:Loader.config.getStringList("Options.Economy.MultiEconomy.Types."+f))
 			if (s.equals(world)) {
-				//Bukkit.broadcastMessage("2: Hráè: "+p+" svìt: "+world+" - "+wd+" : "+f);
 				wd2=f;
 				wd=f;
-				//Bukkit.broadcastMessage("2.5: Upraveno na: "+wd);
 				break;
 			}
 		}
 		if(wd2==null)wd2= "default";
-		//Bukkit.broadcastMessage("3: "+wd2);
 		return wd2;
 	}
 
@@ -225,10 +221,6 @@ public class Eco implements Economy {
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
 					"Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 		} else {
-			//TheAPI.broadcastMessage("withraw -- Player: "+s);
-			//TheAPI.broadcastMessage(get(s, getEconomyGroup(s, world))+":"+(getBalance(s,world) - v)+":"+world);
-			//TheAPI.broadcastMessage(" ");
-			
 			TheAPI.getUser(s).setAndSave(get(s, world), getBalance(s,world) - v);
 			Loader.EconomyLog("Succefully withdrawed $" + v + " from player " + s);
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS,
@@ -272,9 +264,7 @@ public class Eco implements Economy {
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
 					"Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 		} else {
-			//TheAPI.broadcastMessage("Deposit players: "+s);
 			TheAPI.getUser(s).setAndSave(get(s,w), getBalance(s, w) + v);
-			//TheAPI.broadcastMessage(" ");
 			Loader.EconomyLog("Succefully deposited $" + v + " from player " + s);
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS,
 					"Succefully deposited $" + v + " to player " + s);

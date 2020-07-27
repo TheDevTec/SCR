@@ -1,15 +1,13 @@
 package Utils;
 
-import java.util.HashMap;
-
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import ServerControl.Loader;
 import me.DevTec.ItemCreatorAPI;
-import me.DevTec.TheAPI;
 import me.DevTec.GUI.GUICreatorAPI;
-import me.DevTec.GUI.GUICreatorAPI.Options;
+import me.DevTec.GUI.ItemGUI;
 
 public class gui {
 	public static enum Type {
@@ -17,109 +15,62 @@ public class gui {
 	}
 
 	public static void openGUI(Player p, Type type) {
-		String t = null;
-		switch (type) {
-		case Cmd:
-			t = " &6Commands";
-			break;
-		case Chat:
-			t = " &6Chat";
-			break;
-		case n:
-			break;
-		}
-		String w = t;
-		if (w == null)
-			w = "";
-		GUICreatorAPI a = TheAPI.getGUICreatorAPI("&4Server Control Reloaded &cManager" + w,9,p);
-		if (t == null) {
-			HashMap<Options, Object> s = new HashMap<Options, Object>();
-			s.put(Options.CANT_PUT_ITEM, true);
-			s.put(Options.CANT_BE_TAKEN, true);
-			s.put(Options.RUNNABLE, new Runnable() {
+		GUICreatorAPI a = new GUICreatorAPI("&eSCR Manager" + (type==Type.Cmd?" of Commands":(type==Type.Chat?" of Chat":"")),9,p);
+		if (Type.n==type) {
+			a.setItem(0, new ItemGUI(item("&cClose", XMaterial.BARRIER)) {
 				@Override
-				public void run() {
-					p.getOpenInventory().close();
+				public void onClick(Player s, GUICreatorAPI g, ClickType c) {
+					g.close(s);
 				}
 			});
-			a.setItem(0, item("&cClose", XMaterial.BARRIER), s);
-			s.remove(Options.RUNNABLE);
-			s.put(Options.RUNNABLE, new Runnable() {
+			a.setItem(3, new ItemGUI(item("&6Chat", XMaterial.PAPER)) {
 				@Override
-				public void run() {
-					openGUI(p, Type.Chat);
+				public void onClick(Player s, GUICreatorAPI g, ClickType c) {
+					openGUI(s, Type.Chat);
 				}
 			});
-			a.setItem(3, item("&6Chat", XMaterial.PAPER), s);
-			s.remove(Options.RUNNABLE);
-			s.put(Options.RUNNABLE, new Runnable() {
+			a.setItem(5, new ItemGUI(item("&6Commands", XMaterial.COMMAND_BLOCK)) {
 				@Override
-				public void run() {
-					openGUI(p, Type.Cmd);
+				public void onClick(Player s, GUICreatorAPI g, ClickType c) {
+					openGUI(s, Type.Cmd);
 				}
 			});
-			a.setItem(5, item("&6Commands", XMaterial.COMMAND_BLOCK), s);
 		} else {
-			String path = "Chat.";
-			if (type == Type.Cmd)
-				path = "Commands.";
-
-			String pat = path;
-			XMaterial spam = XMaterial.LIME_DYE;
-			if (!Loader.config.getBoolean(path + "AntiSpam"))
-				spam = XMaterial.RED_DYE;
-			HashMap<Options, Object> s = new HashMap<Options, Object>();
-			s.put(Options.CANT_PUT_ITEM, true);
-			s.put(Options.CANT_BE_TAKEN, true);
-			s.put(Options.RUNNABLE, new Runnable() {
+			String path = type == Type.Cmd?"Commands.":"Chat.";
+			a.setItem(3, new ItemGUI(item("&eAntiSpam", Loader.config.getBoolean(path + "AntiSpam")?XMaterial.LIME_DYE:XMaterial.RED_DYE)) {
 				@Override
-				public void run() {
-					Loader.config.set(pat + ".AntiSpam", !Loader.config.getBoolean(pat + ".AntiSpam"));
-					openGUI(p, type);
+				public void onClick(Player s, GUICreatorAPI g, ClickType c) {
+					Loader.config.set(path + ".AntiSpam", !Loader.config.getBoolean(path + ".AntiSpam"));
+					openGUI(s, type);
 				}
 			});
-			a.setItem(3, item("&cAntiSpam", spam), s);
 
-			XMaterial spams = XMaterial.LIME_DYE;
-			if (!Loader.config.getBoolean(path + "Caps"))
-				spams = XMaterial.RED_DYE;
-
-			s.remove(Options.RUNNABLE);
-			s.put(Options.RUNNABLE, new Runnable() {
+			a.setItem(4, new ItemGUI(item("&eCaps", Loader.config.getBoolean(path + "Caps")?XMaterial.LIME_DYE:XMaterial.RED_DYE)) {
 				@Override
-				public void run() {
-					Loader.config.set(pat + ".Caps", !Loader.config.getBoolean(pat + ".Caps"));
-					openGUI(p, type);
+				public void onClick(Player s, GUICreatorAPI g, ClickType c) {
+					Loader.config.set(path + ".Caps", !Loader.config.getBoolean(path + ".Caps"));
+					openGUI(s, type);
 				}
 			});
-			a.setItem(4, item("&6Caps", spams), s);
 
-			XMaterial sw = XMaterial.LIME_DYE;
-			if (!Loader.config.getBoolean(path + "AntiSwear"))
-				sw = XMaterial.RED_DYE;
-			s.remove(Options.RUNNABLE);
-			s.put(Options.RUNNABLE, new Runnable() {
+			a.setItem(5, new ItemGUI(item("&eAntiSwear", Loader.config.getBoolean(path + "AntiSwear")?XMaterial.LIME_DYE:XMaterial.RED_DYE)) {
 				@Override
-				public void run() {
-					Loader.config.set(pat + ".AntiSwear", !Loader.config.getBoolean(pat + ".AntiSwear"));
-					openGUI(p, type);
+				public void onClick(Player s, GUICreatorAPI g, ClickType c) {
+					Loader.config.set(path + ".AntiSwear", !Loader.config.getBoolean(path + ".AntiSwear"));
+					openGUI(s, type);
 				}
 			});
-			a.setItem(5, item("&cAntiSwear", sw), s);
-			s.remove(Options.RUNNABLE);
-			s.put(Options.RUNNABLE, new Runnable() {
+
+			a.setItem(0, new ItemGUI(item("&cBack", XMaterial.ARROW)) {
 				@Override
-				public void run() {
-					openGUI(p, Type.n);
+				public void onClick(Player s, GUICreatorAPI g, ClickType c) {
+					openGUI(s, Type.n);
 				}
 			});
-			a.setItem(0, item("&cBack", XMaterial.ARROW), s);
 		}
 	}
-
+	
 	public static ItemStack item(String name, XMaterial typ) {
-		ItemCreatorAPI a = TheAPI.getItemCreatorAPI(typ.parseMaterial());
-		a.setDisplayName(name);
-		return a.create();
+		return ItemCreatorAPI.create(typ.parseMaterial(), 1, name);
 	}
 }

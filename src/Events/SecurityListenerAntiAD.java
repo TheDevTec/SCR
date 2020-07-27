@@ -26,7 +26,7 @@ public class SecurityListenerAntiAD implements Listener {
 
 	public String getMatches(String where) {
 		String list = null;
-		if (API.getAdvertisementMatches(where).isEmpty() == false)
+		if (!API.getAdvertisementMatches(where).isEmpty())
 			list = TheAPI.getStringUtils().join(API.getAdvertisementMatches(where), ", ");
 		return list;
 	}
@@ -38,7 +38,7 @@ public class SecurityListenerAntiAD implements Listener {
 
 		if (setting.ad_chat) {
 			if (!p.hasPermission("ServerControl.Advertisement")) {
-				if (API.getAdvertisement(message)) {
+				if (getMatches(message)!=null) {
 					PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(event.getPlayer(), event.getMessage());
 					Bukkit.getPluginManager().callEvent(ed);
 					if (!ed.isCancelled()) {
@@ -56,7 +56,7 @@ public class SecurityListenerAntiAD implements Listener {
 		String message = event.getMessage().toLowerCase();
 		if (setting.ad_cmd) {
 			if (!p.hasPermission("ServerControl.Advertisement")) {
-				if (API.getAdvertisement(message)) {
+				if (getMatches(message)!=null) {
 					PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(event.getPlayer(), event.getMessage());
 					Bukkit.getPluginManager().callEvent(ed);
 					if (!ed.isCancelled()) {
@@ -74,8 +74,7 @@ public class SecurityListenerAntiAD implements Listener {
 		if (setting.ad_sign) {
 			if (!p.hasPermission("ServerControl.Advertisement")) {
 				for (String line : e.getLines()) {
-
-					if (API.getAdvertisement(line)) {
+					if (getMatches(line)!=null) {
 						PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(e.getPlayer(), line);
 						Bukkit.getPluginManager().callEvent(ed);
 						if (!ed.isCancelled()) {
@@ -99,7 +98,7 @@ public class SecurityListenerAntiAD implements Listener {
 					page = page + " " + line;
 				}
 				page = page.replace(" ", "");
-				if (API.getAdvertisement(page)) {
+				if (getMatches(page)!=null) {
 					PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(e.getPlayer(), page);
 					Bukkit.getPluginManager().callEvent(ed);
 					if (!ed.isCancelled()) {
@@ -121,7 +120,7 @@ public class SecurityListenerAntiAD implements Listener {
 						String displayName = "";
 						if (event.getCurrentItem().getItemMeta().hasDisplayName())
 							displayName = event.getCurrentItem().getItemMeta().getDisplayName();
-						if (API.getAdvertisement(displayName)) {
+						if (getMatches(displayName)!=null) {
 							PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p, displayName);
 							Bukkit.getPluginManager().callEvent(ed);
 							if (!ed.isCancelled()) {
@@ -142,7 +141,7 @@ public class SecurityListenerAntiAD implements Listener {
 		if (setting.ad_itempick) {
 			if (!p.hasPermission("ServerControl.Advertisement")) {
 				if (displayName != null) {
-					if (API.getAdvertisement(displayName)) {
+					if (getMatches(displayName)!=null) {
 						PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p, displayName);
 						Bukkit.getPluginManager().callEvent(ed);
 						if (!ed.isCancelled()) {
@@ -163,7 +162,7 @@ public class SecurityListenerAntiAD implements Listener {
 		if (setting.ad_itemdrop) {
 			if (!p.hasPermission("ServerControl.Advertisement")) {
 				if (displayName != null) {
-					if (API.getAdvertisement(displayName)) {
+					if (getMatches(displayName)!=null) {
 						PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p, displayName);
 						Bukkit.getPluginManager().callEvent(ed);
 						if (!ed.isCancelled()) {

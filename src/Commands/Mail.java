@@ -95,9 +95,9 @@ public class Mail implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		List<String> c = new ArrayList<>();
-		if (s.hasPermission("ServerControl.Mail.Read")) { // pokud má permise ...
+		if (s.hasPermission("ServerControl.Mail.Read")) { // pokud mÂ» permise ...
 			if (args.length == 1) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Read", "Clear"), new ArrayList<>())); // pøidá
+				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Read", "Clear"), new ArrayList<>())); // pÂ»idÂ»
 																														// tam
 																														// Read
 																														// a
@@ -106,11 +106,11 @@ public class Mail implements CommandExecutor, TabCompleter {
 		}
 		if (s.hasPermission("ServerControl.Mail.Send")) {
 			if (args.length == 1) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Send"), new ArrayList<>())); // Pøidá
+				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Send"), new ArrayList<>())); // PÂ»idÂ»
 																											// Send
 			}
 			if (args[0].equalsIgnoreCase("Send") && args.length == 2)
-				return null; // returne online hráèe
+				return null; // returne online hrÂ»Â»e
 			if (args.length >= 3)
 				return Arrays.asList("?");
 		}

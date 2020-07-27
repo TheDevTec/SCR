@@ -31,7 +31,7 @@ public class Back implements CommandExecutor {
 				API.TeleportBack(p);
 				return true;
 			}
-			if (p != s) {//tak co? XD MYŠ
+			if (p != s) {//tak co? XD MYÂ»
 				if (API.hasPerm(s, "ServerControl.Back.Other")) {
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("Back.PlayerTeleported").replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName()), s);

@@ -58,8 +58,7 @@ public class Worlds implements CommandExecutor, TabCompleter {
 						double z = Loader.mw.getDouble("WorldsSettings." + args[1] + ".Spawn.Z");
 						float x_head = Loader.mw.getLong("WorldsSettings." + args[1] + ".Spawn.X_Pos_Head");
 						float z_head = Loader.mw.getLong("WorldsSettings." + args[1] + ".Spawn.Z_Pos_Head");
-						World world = Bukkit
-								.getWorld(Loader.mw.getString("WorldsSettings." + args[1] + ".Spawn.World"));
+						World world = Bukkit.getWorld(args[1]);
 						Location loc = new Location(world, x, y, z, x_head, z_head);
 						Player p2 = (Player) s;
 						API.setBack(p2);
@@ -83,8 +82,7 @@ public class Worlds implements CommandExecutor, TabCompleter {
 						double z = Loader.mw.getDouble("WorldsSettings." + args[1] + ".Spawn.Z");
 						float x_head = Loader.mw.getLong("WorldsSettings." + args[1] + ".Spawn.X_Pos_Head");
 						float z_head = Loader.mw.getLong("WorldsSettings." + args[1] + ".Spawn.Z_Pos_Head");
-						World world = Bukkit
-								.getWorld(Loader.mw.getString("WorldsSettings." + args[1] + ".Spawn.World"));
+						World world = Bukkit.getWorld(args[1]);
 						Location loc = new Location(world, x, y, z, x_head, z_head);
 						API.setBack(target);
 						target.teleport(loc);

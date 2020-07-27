@@ -1,20 +1,19 @@
 package Commands;
 
-import java.util.HashMap;
-
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+
+import com.google.common.collect.Lists;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import Utils.XMaterial;
-import me.DevTec.ItemCreatorAPI;
+import Utils.MultiWorldsGUI;
 import me.DevTec.TheAPI;
 import me.DevTec.GUI.GUICreatorAPI;
-import me.DevTec.GUI.GUICreatorAPI.Options;
+import me.DevTec.GUI.ItemGUI;
 
 public class Trash implements CommandExecutor {
 
@@ -31,32 +30,21 @@ public class Trash implements CommandExecutor {
 		}
 		return true;
 	}
+	
+	private static ItemGUI clear;
+	static {
+		clear=new ItemGUI(MultiWorldsGUI.createItem("&6Clear", Lists.newArrayList())) {
+			public void onClick(Player s, GUICreatorAPI g, ClickType c) {
+				for (int i = 0; i < 45; ++i)
+				g.remove(i);
+			}
+		};
+	}
 
 	public static void openInv(Player p) {
-		ItemCreatorAPI a = TheAPI.getItemCreatorAPI(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial());
-		a.setDisplayName(" ");
-
-		ItemCreatorAPI b = TheAPI.getItemCreatorAPI(Material.LAVA_BUCKET);
-		b.setDisplayName("&6Clear");
-		GUICreatorAPI s = TheAPI.getGUICreatorAPI(Loader.s("TrashTitle"), 54, p);
-		HashMap<Options, Object> set = new HashMap<Options, Object>();
-		set.put(Options.CANT_BE_TAKEN, true);
-
-		HashMap<Options, Object> clear = new HashMap<Options, Object>();
-		clear.put(Options.CANT_BE_TAKEN, true);
-		clear.put(Options.RUNNABLE, new Runnable() {
-			public void run() {
-				Trash.openInv(p);
-			}});
-		s.setItem(45, a.create(), set);
-		s.setItem(46, a.create(), set);
-		s.setItem(47, a.create(), set);
-		s.setItem(48, a.create(), set);
-		s.setItem(49, b.create(), clear);
-		s.setItem(50, a.create(), set);
-		s.setItem(51, a.create(), set);
-		s.setItem(52, a.create(), set);
-		s.setItem(53, a.create(), set);
+		GUICreatorAPI s = new GUICreatorAPI(Loader.s("TrashTitle"), 54, p);
+		MultiWorldsGUI.smallInv(s);
+		s.setItem(49, clear);
 	}
 
 }

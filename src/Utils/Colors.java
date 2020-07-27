@@ -19,22 +19,22 @@ public class Colors {
 		String b = s;
 		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
 			for (int i = 0; i < 9; ++i)
-				b = b.replace("&" + i, "§" + i);
-			b = b.replace("&a", "§a");
-			b = b.replace("&b", "§b");
-			b = b.replace("&c", "§c");
-			b = b.replace("&d", "§d");
-			b = b.replace("&e", "§e");
-			b = b.replace("&f", "§f");
+				b = b.replace("&" + i, "Â§" + i);
+			b = b.replace("&a", "Â§a");
+			b = b.replace("&b", "Â§b");
+			b = b.replace("&c", "Â§c");
+			b = b.replace("&d", "Â§d");
+			b = b.replace("&e", "Â§e");
+			b = b.replace("&f", "Â§f");
 		}
 		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Format"))) {
-			b = b.replace("&l", "§l");
-			b = b.replace("&o", "§o");
-			b = b.replace("&m", "§m");
-			b = b.replace("&n", "§n");
+			b = b.replace("&l", "Â§l");
+			b = b.replace("&o", "Â§o");
+			b = b.replace("&m", "Â§m");
+			b = b.replace("&n", "Â§n");
 		}
 		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Magic"))) {
-			b = b.replace("&k", "§k");
+			b = b.replace("&k", "Â§k");
 		}
 		return b;
 	}
