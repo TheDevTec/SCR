@@ -10,6 +10,7 @@ import me.DevTec.GUI.GUICreatorAPI;
 import me.DevTec.GUI.ItemGUI;
 
 public class gui {
+	
 	public static enum Type {
 		n, Chat, Cmd
 	}

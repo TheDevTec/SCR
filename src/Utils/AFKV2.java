@@ -41,7 +41,7 @@ public class AFKV2 {
 						rkick = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
 				}
 				boolean is = isAfk();
-				if (setting.afk_auto) {
+				if (setting.afk_auto) { //to je část kódu.. start a konec
 					if (is) {
 						if (!bc && !mp) {
 							bc = true;
