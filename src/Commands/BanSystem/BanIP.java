@@ -42,6 +42,21 @@ public class BanIP implements CommandExecutor {
 				msg = msg.replaceFirst(args[0] + " ", "");
 				TheAPI.getPunishmentAPI().banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text")
 						.replace("%reason%", Loader.config.getString("BanSystem.BanIP.Reason")));
+				if(msg.endsWith("-s")) {
+					msg = msg.replace("-s", "");
+					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Ban").replace("%playername%", args[0]) //TODO - upravit path
+							.replace("%reason%", msg).replace("%operator%", s.getName())+" &f[Silent]"
+							),"servercontrol.seesilent");
+					
+					TheAPI.sendMessage(Loader.s("BanSystem.Ban").replace("%playername%", args[0])
+							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
+					return true;
+				}
+				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Ban").replace("%playername%", args[0])
+						.replace("%reason%", msg).replace("%operator%", s.getName())
+						));
+				TheAPI.sendMessage(Loader.s("BanSystem.Ban").replace("%playername%", args[0])
+						.replace("%reason%", msg).replace("%operator%", s.getName()), s);
 				return true;
 			}
 		}

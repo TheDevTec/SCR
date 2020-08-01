@@ -157,7 +157,9 @@ public class Tp implements CommandExecutor, TabCompleter {
 										TheAPI.getStringUtils().getDouble(args[2]));
 
 								API.setBack(((Player) s));
-								TheAPI.getPlayerAPI((Player) s).safeTeleport(loc);
+								if (setting.tp_safe)
+									TheAPI.getPlayerAPI((Player) s).safeTeleport(loc);
+								else ((Player) s).teleport(loc);
 								return true;
 							} else {
 								if (s.hasPermission("ServerControl.Tp.Location"))
@@ -189,10 +191,14 @@ public class Tp implements CommandExecutor, TabCompleter {
 									.replace("%playername%", p.getDisplayName()).replace("%player%", p.getName())
 									.replace("%x%", args[1]).replace("%y%", args[2]).replace("%z%", args[3]), s);
 							API.setBack(p);
-							TheAPI.getPlayerAPI(p)
-									.safeTeleport(new Location(p.getWorld(), TheAPI.getStringUtils().getDouble(args[1]),
-											TheAPI.getStringUtils().getDouble(args[2]),
-											TheAPI.getStringUtils().getDouble(args[3])));
+							if (setting.tp_safe)
+								TheAPI.getPlayerAPI(p)
+								.safeTeleport(new Location(p.getWorld(), TheAPI.getStringUtils().getDouble(args[1]),
+										TheAPI.getStringUtils().getDouble(args[2]),
+										TheAPI.getStringUtils().getDouble(args[3])));
+							else p.teleport(new Location(p.getWorld(), TheAPI.getStringUtils().getDouble(args[1]),
+									TheAPI.getStringUtils().getDouble(args[2]),
+									TheAPI.getStringUtils().getDouble(args[3])));
 							return true;
 						}
 					} else {
