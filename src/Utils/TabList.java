@@ -30,17 +30,17 @@ public class TabList {
 	}
 
 	public static String getPrefix(Player p, boolean nametag) {
-		if (Loader.tab.getString("Groups." + group(p) + ".Prefix") != null) {
+		if (Loader.tab.getString("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Prefix") != null) {
 			return replace(Loader.tab.getString("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Prefix"), p);
 		}
-		return Loader.getInstance.getPrefix(p);
+		return null;
 	}
 
 	public static String getSuffix(Player p, boolean nametag) {
-		if (Loader.tab.getString("Groups." + group(p) + ".Suffix") != null) {
+		if (Loader.tab.getString("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Suffix") != null) {
 			return replace(Loader.tab.getString("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Suffix"), p);
 		}
-		return Loader.getInstance.getSuffix(p);
+		return null;
 	}
 
 	public static String replace(String header, Player p) {
@@ -81,8 +81,13 @@ public class TabList {
 	}
 
 	public static void setNameTag(Player p) {
-		TheAPI.getTabListAPI().setTabListName(p, TheAPI.colorize(TabList.replace(TabList.getPrefix(p, false), p)) + p.getName() + TheAPI.colorize(TabList.replace(TabList.getSuffix(p, false), p)));
-		NameTagChanger.setNameTag(p, TheAPI.colorize(TabList.replace(TabList.getPrefix(p, true), p)), TheAPI.colorize(TabList.replace(TabList.getSuffix(p, true), p)));
+		String p1 = TabList.getPrefix(p, true);
+		String p2 = TabList.getPrefix(p, false);
+		String s1 = TabList.getSuffix(p, true);
+		String s2 = TabList.getSuffix(p, false);
+		
+		TheAPI.getTabListAPI().setTabListName(p, (p2!=null?TheAPI.colorize(TabList.replace(p2, p)):"") + (p.getCustomName()!=null?p.getCustomName():p.getName()) + (s2!=null?TheAPI.colorize(TabList.replace(s2, p)):""));
+		NameTagChanger.setNameTag(p, p1!=null?TheAPI.colorize(TabList.replace(p1, p)):"", s1!=null?TheAPI.colorize(TabList.replace(s1, p)):"");
 	}
 
 	static int test;
