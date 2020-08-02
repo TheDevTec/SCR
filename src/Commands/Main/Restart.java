@@ -25,8 +25,7 @@ public class Restart implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("cancel")) {
-				if (BigTask.r != -1)
-					BigTask.cancel();
+				BigTask.cancel();
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("now")) {

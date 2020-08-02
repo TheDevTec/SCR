@@ -25,8 +25,7 @@ public class Reload implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("cancel")) {
-				if (BigTask.r != -1)
-					BigTask.cancel();
+				BigTask.cancel();
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("now")) {
@@ -38,7 +37,7 @@ public class Reload implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		return true;
-	}//jak jako l»b»?? ty to d»v» na random? :D ?!
+	}
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {

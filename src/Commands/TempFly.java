@@ -22,7 +22,7 @@ public class TempFly implements CommandExecutor {
 			if (args.length == 1) {
 				if (TheAPI.getStringUtils().getInt(args[0]) > 0 && s instanceof Player) {
 					if (API.hasPerm(s, "ServerControl.TempFly")) {
-						new SPlayer(TheAPI.getPlayer(s.getName()))
+						API.getSPlayer(TheAPI.getPlayer(s.getName()))
 								.enableTempFly((int) TheAPI.getStringUtils().getTimeFromString(args[1]));
 						return true;
 					}
@@ -32,7 +32,7 @@ public class TempFly implements CommandExecutor {
 				return true;
 			}
 			if (args.length == 2) {
-				SPlayer t = new SPlayer(TheAPI.getPlayer(args[0]));
+				SPlayer t = API.getSPlayer(TheAPI.getPlayer(args[0]));
 				if (t.getPlayer() == null) {
 					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;

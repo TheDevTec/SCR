@@ -1,6 +1,7 @@
 package Commands.Main;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 import ServerControl.Loader;
 import Utils.setting;
@@ -10,15 +11,6 @@ import me.DevTec.Scheduler.Tasker;
 
 public class BigTask {
 	public static int r = -1;
-
-	public static boolean cancel() {
-		if (r != -1) {
-			Tasker.cancelTask(r);
-			r = -1;
-			return true;
-		}
-		return false;
-	}
 
 	public static enum TaskType {
 		STOP, RESTART, RELOAD
@@ -49,7 +41,7 @@ public class BigTask {
 						}
 						--f;
 					}
-				}.repeatingAsync(0, 20);
+				}.repeating(0, 20);
 				return true;
 			}
 			return false;
@@ -59,7 +51,7 @@ public class BigTask {
 		}
 	}
 
-	public static void cancel(TaskType t) {
+	public static void cancel() {
 		if (r != -1) {
 			Tasker.cancelTask(r);
 			r = -1;
@@ -74,9 +66,9 @@ public class BigTask {
 			Tasker.cancelTask(r);
 			r = -1;
 			TheAPI.broadcastMessage("&eSaving worlds and data of players..");
-			/*for (World w : Bukkit.getWorlds()) {
+			for (World w : Bukkit.getWorlds()) {
 				w.save();
-			}*/
+			}
 			Bukkit.savePlayers();
 			TheAPI.broadcastMessage(
 					"&c" + (s == TaskType.STOP ? "Stopping" : (s == TaskType.RELOAD ? "Reloading" : "Restarting"))

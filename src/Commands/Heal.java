@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import ServerControl.SPlayer;
 import Utils.Repeat;
 import me.DevTec.TheAPI;
 
@@ -23,7 +22,7 @@ public class Heal implements CommandExecutor {
 				return true;
 			}
 			Player p = (Player) s;
-			new SPlayer(p).heal();
+			API.getSPlayer(p).heal();
 			TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Healed").replace("%player%", p.getName())
 					.replace("%playername%", p.getDisplayName()), s);
 			return true;
@@ -40,13 +39,13 @@ public class Heal implements CommandExecutor {
 			}
 			if (target == s) {
 				Player p = (Player) s;
-				new SPlayer(p).heal();
+				API.getSPlayer(p).heal();
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Healed").replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName()), s);
 				return true;
 			}
 			if (API.hasPerm(s, "ServerControl.Heal.Other")) {
-				new SPlayer(target).heal();
+				API.getSPlayer(target).heal();
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Healed").replace("%player%", target.getName())
 						.replace("%playername%", target.getDisplayName()), target);
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.SpecifyPlayerHealed")

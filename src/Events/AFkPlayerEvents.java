@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import Utils.AFKV2;
 import me.DevTec.TheAPI;
 
 @SuppressWarnings("deprecation")
@@ -26,8 +27,7 @@ public class AFkPlayerEvents implements Listener {
 				TheAPI.broadcastMessage(
 						Loader.s("Prefix") + Loader.s("AFK.NoLongerAFK").replace("%player%", e.getPlayer().getName())
 								.replace("%playername%", e.getPlayer().getDisplayName()));
-			if (Loader.afk.containsKey(e.getPlayer().getName()))
-				Loader.afk.get(e.getPlayer().getName()).save();
+			AFKV2.save(API.getSPlayer(e.getPlayer()));
 		}
 	}
 
@@ -37,8 +37,7 @@ public class AFkPlayerEvents implements Listener {
 			TheAPI.broadcastMessage(
 					Loader.s("Prefix") + Loader.s("AFK.NoLongerAFK").replace("%player%", e.getPlayer().getName())
 							.replace("%playername%", e.getPlayer().getDisplayName()));
-		if (Loader.afk.containsKey(e.getPlayer().getName()))
-			Loader.afk.get(e.getPlayer().getName()).save();
+		AFKV2.save(API.getSPlayer(e.getPlayer()));
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -48,8 +47,7 @@ public class AFkPlayerEvents implements Listener {
 				TheAPI.broadcastMessage(
 						Loader.s("Prefix") + Loader.s("AFK.NoLongerAFK").replace("%player%", e.getPlayer().getName())
 								.replace("%playername%", e.getPlayer().getDisplayName()));
-			if (Loader.afk.containsKey(e.getPlayer().getName()))
-				Loader.afk.get(e.getPlayer().getName()).save();
+			AFKV2.save(API.getSPlayer(e.getPlayer()));
 		}
 	}
 
@@ -59,8 +57,7 @@ public class AFkPlayerEvents implements Listener {
 			TheAPI.broadcastMessage(
 					Loader.s("Prefix") + Loader.s("AFK.NoLongerAFK").replace("%player%", e.getPlayer().getName())
 							.replace("%playername%", e.getPlayer().getDisplayName()));
-		if (Loader.afk.containsKey(e.getPlayer().getName()))
-			Loader.afk.get(e.getPlayer().getName()).save();
+		AFKV2.save(API.getSPlayer(e.getPlayer()));
 		if (TheAPI.getPunishmentAPI().getBanList(e.getPlayer().getName()).isJailed()
 				|| TheAPI.getPunishmentAPI().getBanList(e.getPlayer().getName()).isTempJailed())
 			e.setCancelled(true);
@@ -72,8 +69,7 @@ public class AFkPlayerEvents implements Listener {
 			TheAPI.broadcastMessage(
 					Loader.s("Prefix") + Loader.s("AFK.NoLongerAFK").replace("%player%", e.getPlayer().getName())
 							.replace("%playername%", e.getPlayer().getDisplayName()));
-		if (Loader.afk.containsKey(e.getPlayer().getName()))
-			Loader.afk.get(e.getPlayer().getName()).save();
+		AFKV2.save(API.getSPlayer(e.getPlayer()));
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -82,8 +78,7 @@ public class AFkPlayerEvents implements Listener {
 			TheAPI.broadcastMessage(
 					Loader.s("Prefix") + Loader.s("AFK.NoLongerAFK").replace("%player%", e.getPlayer().getName())
 							.replace("%playername%", e.getPlayer().getDisplayName()));
-		if (Loader.afk.containsKey(e.getPlayer().getName()))
-			Loader.afk.get(e.getPlayer().getName()).save();
+		AFKV2.save(API.getSPlayer(e.getPlayer()));
 		if (TheAPI.getPunishmentAPI().getBanList(e.getPlayer().getName()).isJailed()
 				|| TheAPI.getPunishmentAPI().getBanList(e.getPlayer().getName()).isTempJailed())
 			e.setCancelled(true);

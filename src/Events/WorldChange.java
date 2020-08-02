@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 
+import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
 import Utils.ScoreboardStats;
@@ -22,7 +23,7 @@ public class WorldChange implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void OnPlayerWorldChangeEvent(PlayerChangedWorldEvent e) {
-		SPlayer a = new SPlayer(e.getPlayer());
+		SPlayer a = API.getSPlayer(e.getPlayer());
 		a.createEconomyAccount();
 		if (a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
 			a.enableFly();
@@ -38,7 +39,7 @@ public class WorldChange implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChangeGamamode(PlayerGameModeChangeEvent e) {
-		SPlayer a = new SPlayer(e.getPlayer());
+		SPlayer a = API.getSPlayer(e.getPlayer());
 		if (a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
 			a.enableFly();
 		else if (a.hasTempFlyEnabled())

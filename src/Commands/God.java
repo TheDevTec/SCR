@@ -19,7 +19,7 @@ public class God implements CommandExecutor, Listener {
 
 		if (args.length == 0) {
 			if (s instanceof Player) {
-				SPlayer p = new SPlayer((Player) s);
+				SPlayer p = API.getSPlayer((Player) s);
 				if (API.hasPerm(s, "ServerControl.God")) {
 					p.toggleGod(null);
 					return true;
@@ -34,7 +34,7 @@ public class God implements CommandExecutor, Listener {
 				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
-			SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
+			SPlayer target = API.getSPlayer(Bukkit.getServer().getPlayer(args[0]));
 			if (target == s) {
 				if (API.hasPerm(s, "ServerControl.God")) {
 					target.toggleGod(null);
@@ -53,7 +53,7 @@ public class God implements CommandExecutor, Listener {
 				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
-			SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
+			SPlayer target = API.getSPlayer(Bukkit.getServer().getPlayer(args[0]));
 			if (s == target.getPlayer()) {
 				if (API.hasPerm(s, "ServerControl.God")) {
 					if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {

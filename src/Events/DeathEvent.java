@@ -64,7 +64,7 @@ public class DeathEvent implements Listener {
 						.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
 			}
 		}}catch(Exception eere) {}
-		SPlayer a = new SPlayer(p);
+		SPlayer a = API.getSPlayer(p);
 		if (a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
 			a.enableFly();
 		if (a.hasPermission("servercontrol.god") && a.hasGodEnabled())

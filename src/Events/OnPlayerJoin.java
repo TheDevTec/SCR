@@ -16,7 +16,6 @@ import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import Utils.AFKV2;
 import Utils.Tasks;
 import Utils.setting;
 import me.DevTec.ConfigAPI;
@@ -59,6 +58,7 @@ public class OnPlayerJoin implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
+		Loader.setupChatFormat(p);
 		Tasks.regPlayer(p);
 		User d = TheAPI.getUser(p);
 		if (setting.join_msg) {
@@ -67,10 +67,6 @@ public class OnPlayerJoin implements Listener {
 			else
 				e.setJoinMessage(TheAPI.colorize(replaceAll(Loader.s("OnJoin.Join"), p)));
 		}
-
-		AFKV2 v = new AFKV2(p.getName());
-		v.start();
-		Loader.afk.put(p.getName(), v);
 
 		if (!Mail.getMails(p.getName()).isEmpty())
 			TheAPI.msg(
@@ -121,7 +117,7 @@ public class OnPlayerJoin implements Listener {
 		}
 		if (!TheAPI.getEconomyAPI().hasAccount(p))
 			TheAPI.getEconomyAPI().createAccount(p);
-		SPlayer s = new SPlayer(p);
+		SPlayer s = API.getSPlayer(p);
 		if (s.hasPermission("ServerControl.FlySpeedOnJoin"))
 			s.setFlySpeed();
 		if (s.hasPermission("ServerControl.WalkSpeedOnJoin"))
@@ -145,7 +141,7 @@ public class OnPlayerJoin implements Listener {
 			else
 				e.setQuitMessage(TheAPI.colorize(replaceAll(Loader.s("OnLeave.Leave"), p)));
 		}
-		SPlayer s = new SPlayer(p);
+		SPlayer s = API.getSPlayer(p);
 		User d = TheAPI.getUser(p);
 		d.set("Joins", s.getPlayer().getStatistic(Statistic.LEAVE_GAME));
 		d.set("LastLeave", setting.format_date_time.format(new Date()));

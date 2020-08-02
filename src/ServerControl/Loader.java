@@ -1,7 +1,6 @@
 package ServerControl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -34,7 +33,6 @@ import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
 	public static List<Plugin> addons = new ArrayList<Plugin>();
-	public static HashMap<String, AFKV2> afk = new HashMap<String, AFKV2>();
 	public static ConfigAPI trans = TheAPI.getConfig("ServerControlReloaded", "Translations");
 	public static ConfigAPI config = TheAPI.getConfig("ServerControlReloaded", "Config");
 	public static ConfigAPI sb = TheAPI.getConfig("ServerControlReloaded", "Scoreboard");
@@ -77,15 +75,14 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static void setupChatFormat(Player p) {
-		if (config.getString("Chat-Groups." + FormatgetGroup(p) + ".Name") != null) {
+		if (config.exist("Chat-Groups." + FormatgetGroup(p) + ".Name")) {
 			String g = TheAPI.colorize(TheAPI.getPlaceholderAPI().setPlaceholders(p,
-					config.getString("Chat-Groups." + FormatgetGroup(p) + ".Name")));
-			g = g.replace("%", "%%");
+					config.getString("Chat-Groups." + FormatgetGroup(p) + ".Name"))).replace("%", "%%");
 			g = Events.ChatFormat.r(p, g, null, false);
 			g = g.replace("%%", "%");
 			API.setDisplayName(p, Colors.colorize(g, false, p));
 		} else
-			API.setDisplayName(p, Loader.getInstance.getPrefix(p) + p.getName() + Loader.getInstance.getSuffix(p));
+			API.setDisplayName(p, getInstance.getPrefix(p) + p.getName() + getInstance.getSuffix(p));
 	}
 
 	public static String PlayerNotEx(String s) {
@@ -115,7 +112,7 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public String isAfk(Player p) {
-		return new SPlayer(p).isAFK() ? tab.getString("AFK.IsAFK") : tab.getString("AFK.IsNotAFK");
+		return API.getSPlayer(p).isAFK() ? tab.getString("AFK.IsAFK") : tab.getString("AFK.IsNotAFK");
 	}
 
 	private String getColoredPing(Player p) {
@@ -233,10 +230,9 @@ public class Loader extends JavaPlugin implements Listener {
 		for (World wa : Bukkit.getWorlds()) {
 			MultiWorldsUtils.DefaultSet(wa, Loader.mw.getString("WorldsSettings." + wa.getName() + ".Generator"));
 		}
+		AFKV2.start();
 		for (Player p : TheAPI.getOnlinePlayers()) {
-			afk.put(p.getName(), new AFKV2(p.getName()));
-			afk.get(p.getName()).start();
-			SPlayer s = new SPlayer(p);
+			SPlayer s = API.getSPlayer(p);
 			if (s.hasTempFlyEnabled())
 				s.enableTempFly();
 			else if (s.hasPermission("servercontrol.fly") && s.hasFlyEnabled())

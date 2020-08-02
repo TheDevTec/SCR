@@ -10,6 +10,7 @@ import org.bukkit.potion.PotionEffect;
 import com.earth2me.essentials.Essentials;
 
 import Events.AFKPlus;
+import Utils.AFKV2;
 import Utils.setting;
 import me.DevTec.PlayerAPI;
 import me.DevTec.TheAPI;
@@ -17,9 +18,11 @@ import me.DevTec.Other.LoaderClass;
 import me.DevTec.Other.User;
 
 public class SPlayer {
-	Player s;
-	PlayerAPI d;
-
+	private final Player s;
+	private final PlayerAPI d;
+	public int afk=0, kick=0;
+	public boolean bc, mp, manual;
+	
 	public SPlayer(Player p) {
 		s = p;
 		d = TheAPI.getPlayerAPI(p);
@@ -102,9 +105,7 @@ public class SPlayer {
 				return true;
 		} catch (Exception er) {
 		}
-		return Loader.afk.containsKey(getName())
-				? (Loader.afk.get(getName()).isAfk() || Loader.afk.get(getName()).isManualAfk())
-				: false;
+		return (AFKV2.isAfk(this) || AFKV2.isManualAfk(this));
 	}
 
 	public void msg(String msg) {
@@ -113,9 +114,9 @@ public class SPlayer {
 
 	public void setAFK(boolean afk) {
 		if (!afk) {
-			Loader.afk.get(s.getName()).save();
+			AFKV2.save(this);
 		} else {
-			Loader.afk.get(s.getName()).setAFK();
+			AFKV2.setAFK(this);
 		}
 	}
 

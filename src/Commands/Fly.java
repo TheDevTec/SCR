@@ -23,7 +23,7 @@ public class Fly implements CommandExecutor {
 		if (args.length == 0) {
 			if (API.hasPerm(s, "ServerControl.Fly")) {
 				if (s instanceof Player) {
-					SPlayer p = new SPlayer((Player) s);
+					SPlayer p = API.getSPlayer((Player) s);
 					if (task.get(p) != null)
 						Tasker.cancelTask(task.get(p));
 					p.toggleFly(null);
@@ -40,7 +40,7 @@ public class Fly implements CommandExecutor {
 				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
-			SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
+			SPlayer target = API.getSPlayer(Bukkit.getServer().getPlayer(args[0]));
 			if (target.getPlayer() == s) {
 				if (API.hasPerm(s, "ServerControl.Fly")) {
 					if (task.get(target) != null)
@@ -64,7 +64,7 @@ public class Fly implements CommandExecutor {
 				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 				return true;
 			}
-			SPlayer target = new SPlayer(Bukkit.getServer().getPlayer(args[0]));
+			SPlayer target = API.getSPlayer(Bukkit.getServer().getPlayer(args[0]));
 			if (target.getPlayer() != s) {
 				if (API.hasPerm(s, "ServerControl.Fly.Other")) {
 					if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {

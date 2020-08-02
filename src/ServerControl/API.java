@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -17,6 +18,9 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import Commands.Kit;
 import ServerControlEvents.PluginHookEvent;
@@ -33,7 +37,16 @@ public class API {
 	}
 
 	public static SPlayer getSPlayer(Player p) {
-		return new SPlayer(p);
+		if(!cache.containsKey(p.getName())) {
+			cache.put(p.getName(), new SPlayer(p));
+		}
+		return cache.get(p.getName());
+	}
+
+	public static List<SPlayer> getSPlayers() {
+		List<SPlayer> s = Lists.newArrayList();
+		for(Player p : TheAPI.getOnlinePlayers())s.add(getSPlayer(p));
+		return s;
 	}
 
 	public static enum TeleportLocation {
@@ -302,8 +315,6 @@ public class API {
 	      return (new DecimalFormat("#,###0.00t")).format((new BigDecimal(a)).divide(new BigDecimal("1000000000000"))).replaceAll("\\.00", ""); 
 	    if (s.length >= 4 && s.length < 5) 
 	      return (new DecimalFormat("#,###0.00b")).format((new BigDecimal(a)).divide(new BigDecimal(1000000000))).replaceAll("\\.00", ""); 
-	    //1000000000000
-	    //1000000000
 	    if (s.length >= 3 && s.length < 4)
 	      return (new DecimalFormat("#,###0.00m")).format((new BigDecimal(a)).divide(new BigDecimal(1000000))).replaceAll("\\.00", ""); 
 	    if (s.length >= 2 && s.length < 3)
@@ -311,8 +322,10 @@ public class API {
 	    return get;
 	  }
 
+	private static HashMap<String, SPlayer> cache = Maps.newHashMap();
+	
 	public static boolean isAFK(Player p) {
-		return new SPlayer(p).isAFK();
+		return getSPlayer(p).isAFK();
 	}
 
 	public static boolean getVulgarWord(String string) {

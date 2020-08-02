@@ -10,8 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import ServerControl.API;
 import ServerControl.Loader;
-import ServerControl.SPlayer;
 import me.DevTec.ConfigAPI;
 import me.DevTec.TheAPI;
 import me.DevTec.Other.LoaderClass;
@@ -70,7 +70,7 @@ public class Tasks {
 						if (timeout <= 0) {
 							if (s != null) {
 								TheAPI.sendActionBar(s, "&cTempFly ended");
-								new SPlayer(s).disableFly();
+								API.getSPlayer(s).disableFly();
 								List<String> list = LoaderClass.data.getStringList("TempFly");
 								list.remove(p);
 								LoaderClass.data.set("TempFly", list);

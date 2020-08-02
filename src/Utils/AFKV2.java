@@ -1,103 +1,75 @@
 package Utils;
 
-import org.bukkit.entity.Player;
-
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.SPlayer;
 import me.DevTec.TheAPI;
-import me.DevTec.Other.StringUtils;
 import me.DevTec.Scheduler.Tasker;
 
 public class AFKV2 {
-	String d;
 
-	public AFKV2(String p) {
-		d = p;
-	}
+	private static String afkMsg = Loader.s("Prefix") + Loader.s("AFK.IsAFK");
+	private static long time = TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK")),
+			rkick = TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
 
-	StringUtils ss = TheAPI.getStringUtils();
-	String afkMsg = Loader.s("Prefix") + Loader.s("AFK.IsAFK");
-	int afk, kick;
-	long time = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK")),
-			rkick = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
-
-	public void start() {
+	public static void start() {
 		new Tasker() {
-			int f = 0;
-
 			@Override
 			public void run() {
-				Player s = TheAPI.getPlayer(d);
-				if (s == null) {
-					Loader.afk.remove(d);
-					cancel();
-					return;
-				}
-				if (f == 5) {
-					f = 0;
-					time = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
-					afkMsg = Loader.s("Prefix") + Loader.s("AFK.IsAFK");
-					if (setting.afk_kick)
-						rkick = ss.getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
-				}
-				boolean is = isAfk();
-				if (setting.afk_auto) { //to je část kódu.. start a konec
+				for(SPlayer s : API.getSPlayers()) {
+				boolean is = getTime(s) <= 0;
+				if (setting.afk_auto) {
 					if (is) {
-						if (!bc && !mp) {
-							bc = true;
-							mp = true;
-							if (!API.getSPlayer(s).hasVanish())
+						if (!s.bc && !s.mp) {
+							s.bc = true;
+							s.mp = true;
+							if (!s.hasVanish())
 								TheAPI.broadcastMessage(
-										afkMsg.replace("%player%", d).replace("%playername%", s.getDisplayName()));
+										afkMsg.replace("%player%", s.getName()).replace("%playername%", s.getDisplayName()));
 						}
 						if (setting.afk_kick && is) {
-							if (kick >= rkick) {
+							if (s.kick >= rkick) {
 								if (!s.hasPermission("servercontrol.afk.bypass"))
-									s.kickPlayer(TheAPI.colorize(Loader.config.getString("Options.AFK.KickMessage")));
+									if(s.getPlayer()!=null && s.getPlayer().isOnline())
+									s.getPlayer().kickPlayer(TheAPI.colorize(Loader.config.getString("Options.AFK.KickMessage")));
 								cancel();
 								return;
 							} else
-								++kick;
+								++s.kick;
 						}
 					}
 				} else
-					++afk;
+					++s.afk;
+				}
 			}
 		}.repeatingAsync(20, 20);
 	}
 
-	boolean mp, manual;
-
-	public void setAFK() {
-		save();
-		mp = true;
-		manual = true;
-		Player s = TheAPI.getPlayer(d);
-		if (s != null) {
-			if (!API.getSPlayer(s).hasVanish())
-				TheAPI.broadcastMessage(afkMsg.replace("%player%", d).replace("%playername%", s.getDisplayName()));
-		}
+	public static void setAFK(SPlayer s) {
+		save(s);
+		s.mp = true;
+		s.manual = true;
+			if (!s.hasVanish())
+				TheAPI.broadcastMessage(afkMsg.replace("%player%", s.getName()).replace("%playername%", s.getDisplayName()));
 	}
 
-	public long getTime() {
-		return time - afk;
+	public static long getTime(SPlayer s) {
+		return time - s.afk;
 	}
 
-	boolean bc;
-
-	public void save() {
-		afk = 0;
-		kick = 0;
-		manual = false;
-		mp = false;
-		bc = false;
+	public static void save(SPlayer s) {
+		s.afk = 0;
+		s.kick = 0;
+		s.manual = false;
+		s.mp = false;
+		s.bc = false;
 	}
 
-	public boolean isManualAfk() {
-		return manual;
+	public static boolean isManualAfk(SPlayer s) {
+		return s.manual;
 	}
 
-	public boolean isAfk() {
-		return getTime() <= 0;
+	public static boolean isAfk(SPlayer s) {
+		return getTime(s) <= 0;
 	}
 }

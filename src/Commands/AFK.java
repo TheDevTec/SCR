@@ -18,7 +18,7 @@ public class AFK implements CommandExecutor {
 		if (args.length == 0) {
 			if (API.hasPerm(s, "ServerControl.AFK")) {
 				if (s instanceof Player) {
-					SPlayer p = new SPlayer((Player) s);
+					SPlayer p = API.getSPlayer((Player) s);
 					if (p.isAFK()) {
 						p.setAFK(false);
 						if (!p.hasVanish())
@@ -37,7 +37,7 @@ public class AFK implements CommandExecutor {
 		}
 		if (args.length == 1) {
 			if (API.hasPerm(s, "ServerControl.AFK")) {
-				SPlayer p = new SPlayer(TheAPI.getPlayer(args[0]));
+				SPlayer p = API.getSPlayer(TheAPI.getPlayer(args[0]));
 				if (p.getPlayer() != null) {
 					if (p.isAFK()) {
 						p.setAFK(false);
