@@ -85,7 +85,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 						if (!a.expired("Kit." + KitName)) {
 							TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.Cooldown")
 									.replace("%cooldown%",
-											TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(s)))
+											TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire("Kit." + KitName)))
 									.replace("%kit%", getKitName(KitName)).replace("%player%", p.getName())
 									.replace("%playername%", p.getDisplayName()), p);
 							return;
@@ -109,7 +109,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 					CooldownAPI a = TheAPI.getCooldownAPI(s);
 					if (!a.expired("Kit." + KitName)) {
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.Cooldown")
-								.replace("%cooldown%", TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire(s)))
+								.replace("%cooldown%", TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire("Kit." + KitName)))
 								.replace("%kit%", getKitName(KitName)).replace("%player%", p.getName())
 								.replace("%playername%", p.getDisplayName()), p);
 						return;
