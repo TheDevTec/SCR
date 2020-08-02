@@ -41,7 +41,7 @@ public class BigTask {
 						}
 						--f;
 					}
-				}.repeating(0, 20);
+				}.repeatingAsync(0, 20);
 				return true;
 			}
 			return false;
@@ -65,6 +65,10 @@ public class BigTask {
 		if (r != -1) {
 			Tasker.cancelTask(r);
 			r = -1;
+			new Tasker() {
+				
+				@Override
+				public void run() {
 			TheAPI.broadcastMessage("&eSaving worlds and data of players..");
 			for (World w : Bukkit.getWorlds()) {
 				w.save();
@@ -87,6 +91,7 @@ public class BigTask {
 				Bukkit.shutdown();
 				break;
 			}
-		}
-	}
+			}
+		}.runTask();
+	}}
 }
