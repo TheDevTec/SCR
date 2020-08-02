@@ -18,23 +18,24 @@ public class Colors {
 			p = "Sign";
 		String b = s;
 		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
-			for (int i = 0; i < 9; ++i)
-				b = b.replace("&" + i, "§" + i);
-			b = b.replace("&a", "§a");
-			b = b.replace("&b", "§b");
-			b = b.replace("&c", "§c");
-			b = b.replace("&d", "§d");
-			b = b.replace("&e", "§e");
-			b = b.replace("&f", "§f");
+			for (int i = 0; i < 10; ++i)
+				b = b.replace("&" + i, ChatColor.getByChar(i+"")+"");
+			b = b.replace("&a", ChatColor.getByChar("a")+"");
+			b = b.replace("&b", ChatColor.getByChar("b")+"");
+			b = b.replace("&c", ChatColor.getByChar("c")+"");
+			b = b.replace("&d", ChatColor.getByChar("d")+"");
+			b = b.replace("&e", ChatColor.getByChar("e")+"");
+			b = b.replace("&f", ChatColor.getByChar("f")+"");
+			b = b.replace("&r", ChatColor.getByChar("r")+"");
 		}
 		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Format"))) {
-			b = b.replace("&l", "§l");
-			b = b.replace("&o", "§o");
-			b = b.replace("&m", "§m");
-			b = b.replace("&n", "§n");
+			b = b.replace("&l", ChatColor.getByChar("l")+"");
+			b = b.replace("&o", ChatColor.getByChar("o")+"");
+			b = b.replace("&m", ChatColor.getByChar("m")+"");
+			b = b.replace("&n", ChatColor.getByChar("n")+"");
 		}
 		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Magic"))) {
-			b = b.replace("&k", "§k");
+			b = b.replace("&k", ChatColor.getByChar("k")+"");
 		}
 		return b;
 	}

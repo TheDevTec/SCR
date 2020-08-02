@@ -146,10 +146,10 @@ public class Tasks {
 					Loader.setupChatFormat(p);
 				if (setting.motd) {
 					if (!setting.lock_server || setting.lock_server && !setting.motd_maintenance)
-						TheAPI.setServerMotd(f.getString("Options.ServerList.MOTD.Text.Normal").replace("%next%", "\n")
+						TheAPI.setMotd(f.getString("Options.ServerList.MOTD.Text.Normal").replace("%next%", "\n")
 								.replace("%line%", "\n"));
 					else
-						TheAPI.setServerMotd(f.getString("Options.ServerList.MOTD.Text.Maintenance")
+						TheAPI.setMotd(f.getString("Options.ServerList.MOTD.Text.Maintenance")
 								.replace("%next%", "\n").replace("%line%", "\n"));
 				}
 			}
