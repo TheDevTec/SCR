@@ -33,7 +33,7 @@ public class Trash implements CommandExecutor {
 	
 	private static ItemGUI clear;
 	static {
-		clear=new ItemGUI(MultiWorldsGUI.createItem("&6Clear", Lists.newArrayList())) {
+		clear=new ItemGUI(MultiWorldsGUI.createItem("&6Clear", Utils.XMaterial.LAVA_BUCKET, Lists.newArrayList())) {
 			public void onClick(Player s, GUICreatorAPI g, ClickType c) {
 				for (int i = 0; i < 45; ++i)
 				g.remove(i);
@@ -43,6 +43,7 @@ public class Trash implements CommandExecutor {
 
 	public static void openInv(Player p) {
 		GUICreatorAPI s = new GUICreatorAPI(Loader.s("TrashTitle"), 54, p);
+		s.setInsertable(true);
 		MultiWorldsGUI.smallInv(s);
 		s.setItem(49, clear);
 	}
