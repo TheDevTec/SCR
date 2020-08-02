@@ -76,10 +76,7 @@ public class TabList {
 				.replace("%ram_free_percentage%", TheAPI.getMemoryAPI().getFreeMemory(true) + "%")
 				.replace("%ram_usage%", TheAPI.getMemoryAPI().getUsedMemory(false) + "")
 				.replace("%ram_usage_percentage%", TheAPI.getMemoryAPI().getUsedMemory(true) + "%")
-				.replace("%ram_max%", TheAPI.getMemoryAPI().getMaxMemory() + "").replace("%ram_max_percentage%", "100%") // lol,
-																															// why
-																															// ?
-																															// :D
+				.replace("%ram_max%", TheAPI.getMemoryAPI().getMaxMemory() + "").replace("%ram_max_percentage%", "100%")																								// :D
 				.replace("%afk%", Loader.getInstance.isAfk(p));
 	}
 

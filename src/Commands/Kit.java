@@ -152,8 +152,8 @@ public class Kit implements CommandExecutor, TabCompleter {
 				if (Loader.kit.getString("Kits." + kitName + ".Items." + def + ".Enchantments") != null)
 					for (String enchs : Loader.kit
 							.getStringList("Kits." + kitName + ".Items." + def + ".Enchantments")) {
-						String nonum = enchs.replace(":", "").replaceAll("[0-9]+", "").replaceAll(" ", "");
-						if (EnchantmentAPI.byName(nonum)!=null) {
+						String nonum = enchs.replace(":", "").replaceAll("[0-9 ]+", "").toUpperCase();
+						if (EnchantmentAPI.byName(nonum)==null) {
 							Loader.warn(
 									"Error when giving kit '" + kitName + "', enchant '" + nonum + "' is invalid !");
 						} else {
