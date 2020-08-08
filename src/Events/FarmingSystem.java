@@ -31,7 +31,7 @@ public class FarmingSystem implements Listener {
 			if(data.getState()==NetherWartsState.RIPE) {
 			data.setState(NetherWartsState.SEEDED);
 			s.setData(data);
-			s.update();
+			s.update(true,false);
             e.setCancelled(true); 
             int random = TheAPI.generateRandomInt(5);
 			if (random == 0)
@@ -44,7 +44,8 @@ public class FarmingSystem implements Listener {
 				if (e.getClickedBlock().getType().name().equals("WHEAT")
 						|| e.getClickedBlock().getType().name().equals("CROPS")) {
 					((Crops) md).setState(CropState.SEEDED);
-					s.update(true);
+					s.setData(md);
+					s.update(true,false);
 					int random = TheAPI.generateRandomInt(2);
 					if (random == 0)
 						random = 1;
@@ -54,7 +55,8 @@ public class FarmingSystem implements Listener {
 				try {
 					if (e.getClickedBlock().getType().name().equals("BEETROOTS")) {
 						((Crops) md).setState(CropState.SEEDED);
-						s.update(true);
+						s.setData(md);
+						s.update(true,false);
 						int random = TheAPI.generateRandomInt(3);
 						if (random == 0)
 							random = 1;
@@ -66,7 +68,8 @@ public class FarmingSystem implements Listener {
 				try {
 					if (e.getClickedBlock().getType().name().contains("POTATO")) {
 						((Crops) md).setState(CropState.SEEDED);
-						s.update(true);
+						s.setData(md);
+						s.update(true,false);
 						int random = TheAPI.generateRandomInt(4);
 						if (random == 0)
 							random = 1;
@@ -77,7 +80,7 @@ public class FarmingSystem implements Listener {
 				try {
 					if (e.getClickedBlock().getType().name().contains("CARROT")) {
 						((Crops) md).setState(CropState.SEEDED);
-						s.update(true);
+						s.update(true,false);
 						int random = TheAPI.generateRandomInt(4);
 						if (random == 0)
 							random = 1;

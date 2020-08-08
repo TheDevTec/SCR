@@ -133,6 +133,7 @@ public class MultiWorldsUtils {
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".AutoSave", as.isAutoSave());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".PvP", as.getPVP());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".CreatePortal", true);
+		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".NoMobs", false);
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".PortalTeleport", true);
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".DoFireDamage", true);
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".DoDrownDamage", true);
@@ -194,15 +195,13 @@ public class MultiWorldsUtils {
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Spawn.Z_Pos_Head", 0);
 		Loader.mw.save();
 		if (Loader.mw.getString("WorldsSettings." + as.getName()) != null) {
-			for (String s : Loader.mw.getConfigurationSection("").getKeys(false)) {
-
+			for (String s : Loader.mw.getKeys("WorldsSettings." + as.getName()+".Gamerule")) {
 				if (s.equalsIgnoreCase("MAX_COMMAND_CHAIN_LENGTH") || s.equalsIgnoreCase("RANDOM_TICK_SPEED")
 						|| s.equalsIgnoreCase("MAX_ENTITY_CRAMMING") || s.equalsIgnoreCase("RANDOM_TICK_SPEED")) {
-					as.setGameRuleValue(s, "" + Loader.mw.getInt("WorldsSettings." + as.getName() + ".GameRule." + s));
+					as.setGameRuleValue(s, "" + Loader.mw.getInt("WorldsSettings." + as.getName() + ".Gamerule." + s));
 				} else
 					as.setGameRuleValue(s,
-							"" + Loader.mw.getDouble("WorldsSettings." + as.getName() + ".GameRule." + s));
-
+							"" + Loader.mw.getDouble("WorldsSettings." + as.getName() + ".Gamerule." + s));
 			}
 			String dif = null;
 			dif = Loader.mw.getString("WorldsSettings." + as.getName() + ".Difficulty").toUpperCase();
@@ -221,36 +220,27 @@ public class MultiWorldsUtils {
 				mo = Loader.mw.getInt("WorldsSettings." + as.getName() + ".TicksPerMonsterSpawn");
 			}
 			String biome = Loader.mw.getString("WorldsSettings." + as.getName() + ".Generator");
+			if (dif.equalsIgnoreCase("EASY") || dif.equalsIgnoreCase("NORMAL") || dif.equalsIgnoreCase("HARD") || dif.equalsIgnoreCase("PEACEFUL")) {
+				as.setDifficulty(Difficulty.valueOf(dif.toUpperCase()));
 
-			if (!dif.equals("EASY") && !dif.equals("NORMAL") && !dif.equals("HARD") && !dif.equals("PEACEFUL")) {
+			}else {
 				Loader.getInstance.getLogger()
-						.warning("Setting Difficulty of world '" + as.getName() + "' is unknown !");
+				.warning("Setting Difficulty of world '" + as.getName() + "' is unknown !");
 				Loader.getInstance.getLogger().warning("Setting the default difficulty..");
 				as.setDifficulty(Difficulty.EASY);
 			}
-			if (dif.equals("EASY") || dif.equals("NORMAL") || dif.equals("HARD") || dif.equals("PEACEFUL")) {
-				as.setDifficulty(Difficulty.valueOf(dif));
-
-			}
-			if (keepspawn == true || keepspawn == false) {
-				as.setKeepSpawnInMemory(keepspawn);
-			}
-			if (autosave == true || autosave == false) {
-				as.setAutoSave(autosave);
-			}
-			if (pvp == true || pvp == false) {
-				as.setPVP(pvp);
-			}
-			as.setTicksPerAnimalSpawns(an);
-			as.setTicksPerMonsterSpawns(mo);
-			if (biome.equalsIgnoreCase("FLAT")) {
+			as.setKeepSpawnInMemory(keepspawn);
+			as.setAutoSave(autosave);
+			as.setPVP(pvp);
+			if (biome.equalsIgnoreCase("FLAT"))
 				as.setBiome(0, 15, Biome.PLAINS);
-			}
 			if (Loader.mw.getBoolean("ModifyMobsSpawnRates")) {
 				as.setMonsterSpawnLimit(monster); // max spawning of monsters (zombies..) is defaulty 300
 				as.setAnimalSpawnLimit(animal); // max spawning of animals (cows..) is defaulty 150
 				as.setWaterAnimalSpawnLimit(animal / 2); // max spawning of water animals (squids..) is defaulty 75
 				as.setAmbientSpawnLimit((animal / 2) / 2); // max spawning of ambient mobs (bats..) is defaulty 37.5
+				as.setTicksPerAnimalSpawns(an);
+				as.setTicksPerMonsterSpawns(mo);
 			}
 		}
 	}

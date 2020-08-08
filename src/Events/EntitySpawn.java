@@ -19,9 +19,8 @@ public class EntitySpawn implements Listener {
 				|| e.getSpawnReason().name().contains("BUILD") || e.getSpawnReason() == SpawnReason.SILVERFISH_BLOCK
 				|| e.getSpawnReason() == SpawnReason.BREEDING)
 			if (e instanceof Player == false
-					&& Loader.mw.getBoolean("WorldsSettings." + e.getLocation().getWorld().getName() + ".NoMobs")) {
+					&& Loader.mw.getBoolean("WorldsSettings." + e.getEntity().getWorld().getName() + ".NoMobs"))
 				e.setCancelled(true);
-			}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
