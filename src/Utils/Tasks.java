@@ -14,7 +14,6 @@ import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.ConfigAPI;
 import me.DevTec.TheAPI;
-import me.DevTec.Other.LoaderClass;
 import me.DevTec.Scheduler.Tasker;
 
 public class Tasks {
@@ -61,9 +60,7 @@ public class Tasks {
 		tasks.add(new Tasker() {
 			@Override
 			public void run() {
-				if (LoaderClass.data.existPath("TempFly") && !LoaderClass.data.getStringList("TempFly").isEmpty())
-					for (String p : LoaderClass.data.getStringList("TempFly")) {
-						Player s = TheAPI.getPlayer(p);
+				for(Player s : TheAPI.getOnlinePlayers()) {
 						long start = TheAPI.getUser(s).getLong("TempFly.Start");
 						int end = TheAPI.getUser(s).getInt("TempFly.Time");
 						long timeout = start / 1000 - System.currentTimeMillis() / 1000 + end;
@@ -71,21 +68,15 @@ public class Tasks {
 							if (s != null) {
 								TheAPI.sendActionBar(s, "&cTempFly ended");
 								API.getSPlayer(s).disableFly();
-								List<String> list = LoaderClass.data.getStringList("TempFly");
-								list.remove(p);
-								LoaderClass.data.set("TempFly", list);
-								LoaderClass.data.save();
 								TheAPI.getUser(s).setAndSave("TempFly", null);
 							}
 						}
 						if (timeout == 5 || timeout == 4 || timeout == 3 || timeout == 2 || timeout == 1
 								|| timeout == 15 || timeout == 10 || timeout == 30) {
 							if (s != null)
-								TheAPI.sendActionBar(s,
-										"&6TempFly ends in &c" + TheAPI.getStringUtils().setTimeToString(timeout));
+								TheAPI.sendActionBar(s,"&6TempFly ends in &c" + TheAPI.getStringUtils().setTimeToString(timeout));
 						}
-					}
-			}
+					}}
 		}.repeatingAsync(20, 20));
 	}
 

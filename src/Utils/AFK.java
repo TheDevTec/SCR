@@ -6,7 +6,7 @@ import ServerControl.SPlayer;
 import me.DevTec.TheAPI;
 import me.DevTec.Scheduler.Tasker;
 
-public class AFKV2 {
+public class AFK {
 
 	private static String afkMsg = Loader.s("Prefix") + Loader.s("AFK.IsAFK");
 	private static long time = TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK")),

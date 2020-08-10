@@ -15,7 +15,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import Commands.Tpa.RequestMap;
-import Utils.AFKV2;
+import Utils.AFK;
 import Utils.Colors;
 import Utils.Configs;
 import Utils.Converter;
@@ -230,7 +230,7 @@ public class Loader extends JavaPlugin implements Listener {
 		for (World wa : Bukkit.getWorlds()) {
 			MultiWorldsUtils.DefaultSet(wa, Loader.mw.getString("WorldsSettings." + wa.getName() + ".Generator"));
 		}
-		AFKV2.start();
+		AFK.start();
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			SPlayer s = API.getSPlayer(p);
 			if (s.hasTempFlyEnabled())

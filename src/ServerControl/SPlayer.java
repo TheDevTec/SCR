@@ -1,20 +1,16 @@
 package ServerControl;
 
-import java.util.List;
-
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
-import com.earth2me.essentials.Essentials;
-
 import Events.AFKPlus;
-import Utils.AFKV2;
+import Utils.AFK;
 import Utils.setting;
 import me.DevTec.PlayerAPI;
 import me.DevTec.TheAPI;
-import me.DevTec.Other.LoaderClass;
+import me.DevTec.Other.Ref;
 import me.DevTec.Other.User;
 
 public class SPlayer {
@@ -59,53 +55,45 @@ public class SPlayer {
 				getPlayer());
 		s.set("TempFly.Start", System.currentTimeMillis());
 		s.set("TempFly.Time", stop);
-		if (!hasTempFlyEnabled()) {
-			List<String> w = LoaderClass.data.getStringList("TempFly");
-			w.add(getName());
-			LoaderClass.data.set("TempFly", w);
-			LoaderClass.data.save();
-		}
-
+		if (!hasTempFlyEnabled())
+			s.setAndSave("TempFly.Use", true);
 	}
 
 	public void enableTempFly() {
-		d.setFly(true, true);
+		if (hasTempFlyEnabled()) {
+			s.setAllowFlight(true);
+			s.setFlying(true);
+		}
 	}
 
 	public void enableFly() {
 		if (hasTempFlyEnabled()) {
-			List<String> w = LoaderClass.data.getStringList("TempFly");
-			w.remove(getName());
-			LoaderClass.data.set("TempFly", w);
-			LoaderClass.data.save();
+			TheAPI.getUser(s).setAndSave("TempFly.Use", false);
 		}
-		d.setFly(true, true);
+		s.setAllowFlight(true);
+		s.setFlying(true);
+		TheAPI.getUser(s).setAndSave("Fly", true);
 	}
 
 	public void disableFly() {
 		if (hasTempFlyEnabled()) {
-			List<String> w = LoaderClass.data.getStringList("TempFly");
-			w.remove(getName());
-			LoaderClass.data.set("TempFly", w);
-			LoaderClass.data.save();
+			TheAPI.getUser(s).setAndSave("TempFly.Use", false);
 		}
-		d.setFly(false, false);
+		s.setFlying(false);
+		s.setAllowFlight(false);
+		TheAPI.getUser(s).setAndSave("Fly", false);
 	}
 
 	public boolean isAFK() {
+		if (AFKPlus.AFKPlus.containsKey(getName()) && AFKPlus.AFKPlus.get(getName()).isAFK())
+			return true;
 		try {
-			if (TheAPI.getPluginsManagerAPI().isEnabledPlugin("AFKPlus") && AFKPlus.AFKPlus.get(s).isAFK())
+			Object user = Ref.invoke(Ref.cast(Ref.getClass("com.earth2me.essentials.Essentials"), TheAPI.getPluginsManagerAPI().getPlugin("Essentials")), Ref.method(Ref.getClass("com.earth2me.essentials.Essentials"), "getUser", Player.class), s);
+			if (TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials") && user!=null&& (boolean)Ref.invoke(user, "isAfk"))
 				return true;
 		} catch (Exception er) {
 		}
-		try {
-			if (TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials")
-					&& ((Essentials) TheAPI.getPluginsManagerAPI().getPlugin("Essentials")).getUser(s) != null
-					&& ((Essentials) TheAPI.getPluginsManagerAPI().getPlugin("Essentials")).getUser(s).isAfk())
-				return true;
-		} catch (Exception er) {
-		}
-		return (AFKV2.isAfk(this) || AFKV2.isManualAfk(this));
+		return (AFK.isAfk(this) || AFK.isManualAfk(this));
 	}
 
 	public void msg(String msg) {
@@ -114,9 +102,9 @@ public class SPlayer {
 
 	public void setAFK(boolean afk) {
 		if (!afk) {
-			AFKV2.save(this);
+			AFK.save(this);
 		} else {
-			AFKV2.setAFK(this);
+			AFK.setAFK(this);
 		}
 	}
 
@@ -248,8 +236,7 @@ public class SPlayer {
 	}
 
 	public boolean hasTempFlyEnabled() {
-		return LoaderClass.data.existPath("TempFly") ? LoaderClass.data.getStringList("TempFly").contains(getName())
-				: false;
+		return TheAPI.getUser(s).getBoolean("TempFly.Use");
 	}
 
 	public boolean hasVanish() {
