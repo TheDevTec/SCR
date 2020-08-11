@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.NetherWartsState;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -19,11 +20,9 @@ import me.DevTec.TheAPI;
 @SuppressWarnings("deprecation")
 public class FarmingSystem implements Listener {
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick(PlayerInteractEvent e) {
-
-		if (e.isCancelled() || !setting.farming)
-			return;
+		if (e.isCancelled() || !setting.farming)return;
 		BlockState s = e.getClickedBlock().getState();
 		MaterialData md = s.getData();
 		if (e.getClickedBlock().getType().name().equals("NETHER_WARTS")) {
