@@ -20,10 +20,10 @@ public class TempFly implements CommandExecutor {
 				return true;
 			}
 			if (args.length == 1) {
-				if (TheAPI.getStringUtils().getInt(args[0]) > 0 && s instanceof Player) {
+				if (s instanceof Player) {
 					if (API.hasPerm(s, "ServerControl.TempFly")) {
 						API.getSPlayer(TheAPI.getPlayer(s.getName()))
-								.enableTempFly((int) TheAPI.getStringUtils().getTimeFromString(args[1]));
+								.enableTempFly((int) TheAPI.getStringUtils().getTimeFromString(args[0]));
 						return true;
 					}
 					return true;

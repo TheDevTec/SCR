@@ -8,25 +8,22 @@ import org.bukkit.potion.PotionEffect;
 import Events.AFKPlus;
 import Utils.AFK;
 import Utils.setting;
-import me.DevTec.PlayerAPI;
 import me.DevTec.TheAPI;
 import me.DevTec.Other.Ref;
 import me.DevTec.Other.User;
 
 public class SPlayer {
-	private final Player s;
-	private final PlayerAPI d;
+	private final String s;
 	public int afk=0, kick=0;
 	public boolean bc, mp, manual;
 	
 	public SPlayer(Player p) {
-		s = p;
-		d = TheAPI.getPlayerAPI(p);
+		s = p.getName();
 	}
 
 	@SuppressWarnings("deprecation")
 	public void setHP() {
-		d.setHealth(s.getMaxHealth());
+		TheAPI.getPlayer(s).setHealth(TheAPI.getPlayer(s).getMaxHealth());
 	}
 
 	public void heal() {
@@ -34,16 +31,16 @@ public class SPlayer {
 		setFood();
 		setAir();
 		setFire();
-		for (PotionEffect e : s.getActivePotionEffects())
-			s.removePotionEffect(e.getType());
+		for (PotionEffect e : TheAPI.getPlayer(s).getActivePotionEffects())
+			TheAPI.getPlayer(s).removePotionEffect(e.getType());
 	}
 
 	public void setFood() {
-		d.setFood(20);
+		TheAPI.getPlayer(s).setFoodLevel(20);
 	}
 
 	public void setAir() {
-		d.setAir(s.getMaximumAir());
+		TheAPI.getPlayer(s).setRemainingAir(TheAPI.getPlayer(s).getMaximumAir());
 	}
 
 	public void enableTempFly(int stop) {
@@ -61,8 +58,8 @@ public class SPlayer {
 
 	public void enableTempFly() {
 		if (hasTempFlyEnabled()) {
-			s.setAllowFlight(true);
-			s.setFlying(true);
+			TheAPI.getPlayer(s).setAllowFlight(true);
+			TheAPI.getPlayer(s).setFlying(true);
 		}
 	}
 
@@ -70,8 +67,8 @@ public class SPlayer {
 		if (hasTempFlyEnabled()) {
 			TheAPI.getUser(s).setAndSave("TempFly.Use", false);
 		}
-		s.setAllowFlight(true);
-		s.setFlying(true);
+		TheAPI.getPlayer(s).setAllowFlight(true);
+		TheAPI.getPlayer(s).setFlying(true);
 		TheAPI.getUser(s).setAndSave("Fly", true);
 	}
 
@@ -79,8 +76,8 @@ public class SPlayer {
 		if (hasTempFlyEnabled()) {
 			TheAPI.getUser(s).setAndSave("TempFly.Use", false);
 		}
-		s.setFlying(false);
-		s.setAllowFlight(false);
+		TheAPI.getPlayer(s).setFlying(false);
+		TheAPI.getPlayer(s).setAllowFlight(false);
 		TheAPI.getUser(s).setAndSave("Fly", false);
 	}
 
@@ -97,7 +94,7 @@ public class SPlayer {
 	}
 
 	public void msg(String msg) {
-		TheAPI.msg(msg, s);
+		TheAPI.msg(msg, TheAPI.getPlayer(s));
 	}
 
 	public void setAFK(boolean afk) {
@@ -109,47 +106,47 @@ public class SPlayer {
 	}
 
 	public void setFire() {
-		s.setFireTicks(-20);
+		TheAPI.getPlayer(s).setFireTicks(-20);
 	}
 
 	public String getName() {
-		return s.getName();
+		return s;
 	}
 
 	public String getDisplayName() {
-		return s.getDisplayName();
+		return TheAPI.getPlayer(s).getDisplayName();
 	}
 
 	public String getCustomName() {
-		return s.getDisplayName();
+		return TheAPI.getPlayer(s).getDisplayName();
 	}
 
 	public int getFoodLevel() {
-		return s.getFoodLevel();
+		return TheAPI.getPlayer(s).getFoodLevel();
 	}
 
 	public double getHealth() {
-		return s.getHealth();
+		return TheAPI.getPlayer(s).getHealth();
 	}
 
 	public Player getPlayer() {
-		return s;
+		return TheAPI.getPlayer(s);
 	}
 
 	public void toggleGod(CommandSender toggler) {
 		if (hasGodEnabled()) {
 			TheAPI.msg(Loader.s("Prefix") + Loader.s("God.Disabled").replace("%player%", getName())
-					.replace("%playername%", s.getDisplayName()), s);
+					.replace("%playername%", TheAPI.getPlayer(s).getDisplayName()), TheAPI.getPlayer(s));
 			if (toggler != null)
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("God.SpecifiedPlayerGodDisabled")
-						.replace("%player%", getName()).replace("%playername%", s.getDisplayName()), toggler);
+						.replace("%player%", getName()).replace("%playername%", TheAPI.getPlayer(s).getDisplayName()), toggler);
 			disableGod();
 		} else {
 			TheAPI.msg(Loader.s("Prefix") + Loader.s("God.Enabled").replace("%player%", getName())
-					.replace("%playername%", s.getDisplayName()), s);
+					.replace("%playername%", TheAPI.getPlayer(s).getDisplayName()), TheAPI.getPlayer(s));
 			if (toggler != null)
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("God.SpecifiedPlayerGodEnabled").replace("%player%", getName())
-						.replace("%playername%", s.getDisplayName()), toggler);
+						.replace("%playername%", TheAPI.getPlayer(s).getDisplayName()), toggler);
 			enableGod();
 		}
 	}
@@ -157,60 +154,60 @@ public class SPlayer {
 	public void toggleFly(CommandSender toggler) {
 		if (hasFlyEnabled()) {
 			TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Disabled").replace("%player%", getName())
-					.replace("%playername%", s.getDisplayName()), s);
+					.replace("%playername%",TheAPI.getPlayer(s).getDisplayName()), TheAPI.getPlayer(s));
 			if (toggler != null)
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyDisabled")
-						.replace("%player%", getName()).replace("%playername%", s.getDisplayName()), toggler);
+						.replace("%player%", getName()).replace("%playername%", TheAPI.getPlayer(s).getDisplayName()), toggler);
 			disableFly();
 		} else {
 			TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Enabled").replace("%player%", getName())
-					.replace("%playername%", s.getDisplayName()), s);
+					.replace("%playername%", TheAPI.getPlayer(s).getDisplayName()), TheAPI.getPlayer(s));
 			if (toggler != null)
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyEnabled").replace("%player%", getName())
-						.replace("%playername%", s.getDisplayName()), toggler);
+						.replace("%playername%", TheAPI.getPlayer(s).getDisplayName()), toggler);
 			enableFly();
 		}
 	}
 
 	public void setWalkSpeed() {
 		User d = TheAPI.getUser(this.s);
-		if (s.hasPermission("ServerControl.WalkSpeed") && d.exist("WalkSpeed")) {
+		if (TheAPI.getPlayer(s).hasPermission("ServerControl.WalkSpeed") && d.exist("WalkSpeed")) {
 			if (d.getDouble("WalkSpeed") == 0.0)
-				s.setWalkSpeed(2);
+				TheAPI.getPlayer(s).setWalkSpeed(2);
 			else if (d.getDouble("WalkSpeed") > 10.0)
-				s.setWalkSpeed(10);
+				TheAPI.getPlayer(s).setWalkSpeed(10);
 			else if (d.getDouble("WalkSpeed") < 10.0)
-				s.setWalkSpeed((float) d.getDouble("WalkSpeed"));
+				TheAPI.getPlayer(s).setWalkSpeed((float) d.getDouble("WalkSpeed"));
 		}
 	}
 
 	public void setFlySpeed() {
 		User d = TheAPI.getUser(this.s);
-		if (s.hasPermission("ServerControl.FlySpeed") && d.exist("FlySpeed")) {
+		if (TheAPI.getPlayer(s).hasPermission("ServerControl.FlySpeed") && d.exist("FlySpeed")) {
 			if (d.getDouble("FlySpeed") == 0.0)
-				s.setWalkSpeed(2);
+				TheAPI.getPlayer(s).setWalkSpeed(2);
 			else if (d.getDouble("FlySpeed") > 10.0)
-				s.setWalkSpeed(10);
+				TheAPI.getPlayer(s).setWalkSpeed(10);
 			else if (d.getDouble("FlySpeed") < 10.0)
-				s.setWalkSpeed((float) d.getDouble("FlySpeed"));
+				TheAPI.getPlayer(s).setWalkSpeed((float) d.getDouble("FlySpeed"));
 		}
 	}
 
 	public void enableGod() {
-		d.setGod(true);
+		TheAPI.getPlayerAPI(TheAPI.getPlayer(s)).setGod(true);
 		heal();
 	}
 
 	public boolean hasPermission(String perm) {
-		return s.hasPermission(perm);
+		return TheAPI.getPlayer(s).hasPermission(perm);
 	}
 
 	public boolean hasPerm(String perm) {
-		return s.hasPermission(perm);
+		return TheAPI.getPlayer(s).hasPermission(perm);
 	}
 
 	public void disableGod() {
-		d.setGod(false);
+		TheAPI.getPlayerAPI(TheAPI.getPlayer(s)).setGod(false);
 	}
 
 	public void createEconomyAccount() {
@@ -219,20 +216,20 @@ public class SPlayer {
 	}
 
 	public void setGamamode() {
-		if (!s.hasPermission("ServerControl.GamemodeChangePrevent")) {
-			if (Loader.mw.getString("WorldsSettings." + s.getWorld().getName() + ".GameMode") != null && GameMode
-					.valueOf(Loader.mw.getString("WorldsSettings." + s.getWorld().getName() + ".GameMode")) != null)
-				s.setGameMode(GameMode
-						.valueOf(Loader.mw.getString("WorldsSettings." + s.getWorld().getName() + ".GameMode")));
+		if (!TheAPI.getPlayer(s).hasPermission("ServerControl.GamemodeChangePrevent")) {
+			if (Loader.mw.getString("WorldsSettings." + TheAPI.getPlayer(s).getWorld().getName() + ".GameMode") != null && GameMode
+					.valueOf(Loader.mw.getString("WorldsSettings." + TheAPI.getPlayer(s).getWorld().getName() + ".GameMode")) != null)
+				TheAPI.getPlayer(s).setGameMode(GameMode
+						.valueOf(Loader.mw.getString("WorldsSettings." + TheAPI.getPlayer(s).getWorld().getName() + ".GameMode")));
 		}
 	}
 
 	public boolean hasFlyEnabled() {
-		return d.allowedFly();
+		return TheAPI.getPlayerAPI(TheAPI.getPlayer(s)).allowedFly();
 	}
 
 	public boolean hasGodEnabled() {
-		return d.allowedGod();
+		return TheAPI.getPlayerAPI(TheAPI.getPlayer(s)).allowedGod();
 	}
 
 	public boolean hasTempFlyEnabled() {
@@ -244,6 +241,6 @@ public class SPlayer {
 	}
 
 	public void setVanish(boolean v) {
-		TheAPI.vanish(s, "ServerControl.Vanish", v);
+		TheAPI.vanish(TheAPI.getPlayer(s), "ServerControl.Vanish", v);
 	}
 }

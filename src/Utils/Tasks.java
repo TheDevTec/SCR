@@ -61,6 +61,7 @@ public class Tasks {
 			@Override
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
+					if(!TheAPI.getUser(s).getBoolean("TempFly.Use"))continue;
 						long start = TheAPI.getUser(s).getLong("TempFly.Start");
 						int end = TheAPI.getUser(s).getInt("TempFly.Time");
 						long timeout = start / 1000 - System.currentTimeMillis() / 1000 + end;
