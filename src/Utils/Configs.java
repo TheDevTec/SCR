@@ -813,7 +813,7 @@ public class Configs {
 		Loader.tab.addDefault("Footer", Arrays.asList("&7--------------------------------",
 				"&bTime: &a%time%   &bOnline: &a%online% &0/ &a%max_players%"));
 		Loader.tab.addDefault("RefleshTick", 20);
-		Loader.tab.addDefault("NameTag-RefleshTick", 80);
+		Loader.tab.addDefault("NameTag-RefleshTick", 20);
 		Loader.tab.addDefault("AFK.IsAFK", " &4&l*AFK*");
 		Loader.tab.addDefault("AFK.IsNotAFK", "");
 		if (!Loader.tab.existPath("Groups.default")) {
