@@ -40,7 +40,7 @@ public class TabList {
 		if (Loader.tab.getString("Groups." + group(p) + ".Name") != null) {
 			return replace(Loader.tab.getString("Groups." + group(p) + ".Name"), p);
 		}
-		return replace("%prefix% %player% %suffix%",p);
+		return "%prefix% "+p.getName()+" %suffix%";
 	}
 
 	public static String getSuffix(Player p, boolean nametag) {
@@ -95,10 +95,9 @@ public class TabList {
 		String p2 = TabList.getPrefix(p, false);
 		String s1 = TabList.getSuffix(p, true);
 		String s2 = TabList.getSuffix(p, false);
-		String name = getNameFormat(p);
-		name=name.replace("%prefix%", (p2!=null?TheAPI.colorize(TabList.replace(p2, p)):"")).replace("%suffix%", (s2!=null?TheAPI.colorize(TabList.replace(s2, p)):""));
+		String name = getNameFormat(p).replace("%prefix%", (p2!=null?TabList.replace(p2, p):"")).replace("%suffix%", (s2!=null?TabList.replace(s2, p):""));
 		TheAPI.getTabListAPI().setTabListName(p,name);
-		NameTagChanger.setNameTag(p, p1!=null?TheAPI.colorize(TabList.replace(p1, p)):"", s1!=null?TheAPI.colorize(TabList.replace(s1, p)):"");
+		NameTagChanger.setNameTag(p, p1!=null?TabList.replace(p1, p):"", s1!=null?TabList.replace(s1, p):"");
 	}
 
 	static int test;
