@@ -36,6 +36,13 @@ public class TabList {
 		return null;
 	}
 
+	public static String getNameFormat(Player p) {
+		if (Loader.tab.getString("Groups." + group(p) + ".Name") != null) {
+			return replace(Loader.tab.getString("Groups." + group(p) + ".Name"), p);
+		}
+		return replace("%prefix% %player% %suffix%",p);
+	}
+
 	public static String getSuffix(Player p, boolean nametag) {
 		if (Loader.tab.getString("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Suffix") != null) {
 			return replace(Loader.tab.getString("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Suffix"), p);
@@ -53,7 +60,9 @@ public class TabList {
 		String displayname = p.getName();
 		if (p.getDisplayName() != null)
 			displayname = p.getDisplayName();
-		return TheAPI.getPlaceholderAPI().setPlaceholders(p, header.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), false))
+		return TheAPI.colorize(TheAPI.getPlaceholderAPI().setPlaceholders(p, header
+				
+				.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), false))
 				.replace("%colored_money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true))
 				.replace("%online%", TheAPI.getOnlinePlayers().size() + "")
 				.replace("%max_players%", TheAPI.getMaxPlayers() + "")
@@ -70,14 +79,15 @@ public class TabList {
 				.replace("%suffix%", Loader.getInstance.getSuffix(p)).replace("%group%", getGroup(p))
 				.replace("%tps%", TheAPI.getServerTPS() + "").replace("%ping%", Loader.getInstance.pingPlayer(p) + "")
 				.replace("%kills%", "" + p.getStatistic(Statistic.PLAYER_KILLS))
-				.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS)).replace("%player%", p.getName())
+				.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS))
+				.replace("%player%", p.getName())
 				.replace("%playername%", displayname).replace("%customname%", customname)
 				.replace("%ram_free%", TheAPI.getMemoryAPI().getFreeMemory(false) + "")
 				.replace("%ram_free_percentage%", TheAPI.getMemoryAPI().getFreeMemory(true) + "%")
 				.replace("%ram_usage%", TheAPI.getMemoryAPI().getUsedMemory(false) + "")
 				.replace("%ram_usage_percentage%", TheAPI.getMemoryAPI().getUsedMemory(true) + "%")
 				.replace("%ram_max%", TheAPI.getMemoryAPI().getMaxMemory() + "").replace("%ram_max_percentage%", "100%")																								// :D
-				.replace("%afk%", Loader.getInstance.isAfk(p)));
+				.replace("%afk%", Loader.getInstance.isAfk(p))));
 	}
 
 	public static void setNameTag(Player p) {
@@ -85,8 +95,9 @@ public class TabList {
 		String p2 = TabList.getPrefix(p, false);
 		String s1 = TabList.getSuffix(p, true);
 		String s2 = TabList.getSuffix(p, false);
-		
-		TheAPI.getTabListAPI().setTabListName(p, (p2!=null?TheAPI.colorize(TabList.replace(p2, p)):"") + (p.getCustomName()!=null?p.getCustomName():p.getName()) + (s2!=null?TheAPI.colorize(TabList.replace(s2, p)):""));
+		String name = getNameFormat(p);
+		name=name.replace("%prefix%", (p2!=null?TheAPI.colorize(TabList.replace(p2, p)):"")).replace("%suffix%", (s2!=null?TheAPI.colorize(TabList.replace(s2, p)):""));
+		TheAPI.getTabListAPI().setTabListName(p,name);
 		NameTagChanger.setNameTag(p, p1!=null?TheAPI.colorize(TabList.replace(p1, p)):"", s1!=null?TheAPI.colorize(TabList.replace(s1, p)):"");
 	}
 
