@@ -510,16 +510,20 @@ public class Configs {
 		Loader.config.addDefault("Options.Disable-Items.Use", true);
 		Loader.config.addDefault("Options.TimeZone.Use", false);
 		Loader.config.addDefault("Options.TimeZone.Zone", "Europe/Prague");
+		
 		Loader.config.addDefault("Options.Colors.Chat.Use", true);
 		Loader.config.addDefault("Options.Colors.Chat.Required-Permission", true);
 		Loader.config.addDefault("Options.Colors.Chat.Permission.Color", "ServerControl.ChatColor");
 		Loader.config.addDefault("Options.Colors.Chat.Permission.Format", "ServerControl.ChatColor.Format");
 		Loader.config.addDefault("Options.Colors.Chat.Permission.Magic", "ServerControl.ChatColor.Magic");
+		Loader.config.addDefault("Options.Colors.Chat.Permission.Hex", "ServerControl.ChatColor.Hex");
 		Loader.config.addDefault("Options.Colors.Sign.Use", true);
 		Loader.config.addDefault("Options.Colors.Sign.Required-Permission", true);
 		Loader.config.addDefault("Options.Colors.Sign.Permission.Color", "ServerControl.SignColor");
 		Loader.config.addDefault("Options.Colors.Sign.Permission.Format", "ServerControl.SignColor.Format");
 		Loader.config.addDefault("Options.Colors.Sign.Permission.Magic", "ServerControl.SignColor.Magic");
+		Loader.config.addDefault("Options.Colors.Sign.Permission.Hex", "ServerControl.SignColor.Hex");
+		
 		Loader.config.addDefault("Options.Sounds.Use", true);
 		Loader.config.addDefault("Options.Sounds.Sound", "ENTITY_PLAYER_LEVELUP");
 		Loader.config.addDefault("Options.Teleport.SafeLocation", true);
