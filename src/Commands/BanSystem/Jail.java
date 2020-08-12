@@ -30,6 +30,11 @@ public class Jail implements CommandExecutor {
 					}
 					TheAPI.getPunishmentAPI().jail(args[0], Loader.config.getString("BanSystem.Jail.Text")
 							.replace("%reason%", Loader.config.getString("BanSystem.Jail.Reason")));
+					Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Jail").replace("%playername%", args[0])
+							.replace("%reason%", Loader.config.getString("BanSystem.BanIP.Reason")).replace("%operator%", s.getName())
+							));
+					TheAPI.sendMessage(Loader.s("BanSystem.Jail").replace("%playername%", args[0])
+							.replace("%reason%", Loader.config.getString("BanSystem.Jail.Reason")).replace("%operator%", s.getName()), s);
 					return true;
 				}
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.MissingJail"), s);
@@ -45,10 +50,26 @@ public class Jail implements CommandExecutor {
 					}
 					String msg = TheAPI.buildString(args);
 					msg = msg.replaceFirst(args[0] + " ", "");
-
+					if(msg.endsWith("-s")) {
+						msg = msg.replace("-s", "");
+						Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Jail").replace("%playername%", args[0]) //TODO - upravit path
+								.replace("%reason%", msg).replace("%operator%", s.getName())+" &f[Silent]"
+								),"servercontrol.seesilent");
+						
+						TheAPI.sendMessage(Loader.s("BanSystem.Jail").replace("%playername%", args[0])
+								.replace("%reason%", msg).replace("%operator%", s.getName()), s);
+						return true;
+					}
+					
+					
 					TheAPI.getPunishmentAPI().jail(args[0],
 							Loader.config.getString("BanSystem.Jail.Text").replace("%reason%", msg));
 
+					Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Jail").replace("%playername%", args[0])
+							.replace("%reason%", msg).replace("%operator%", s.getName())
+							));
+					TheAPI.sendMessage(Loader.s("BanSystem.Jail").replace("%playername%", args[0])
+							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
 					return true;
 				}
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.MissingJail"), s);

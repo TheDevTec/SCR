@@ -30,6 +30,11 @@ public class Mute implements CommandExecutor {
 				String msg = Loader.config.getString("BanSystem.Mute.Reason");
 				TheAPI.getPunishmentAPI().mute(args[0],
 						Loader.config.getString("BanSystem.Mute.Text").replace("%reason%", msg));
+				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Mute").replace("%playername%", args[0])
+						.replace("%reason%", Loader.config.getString("BanSystem.TempBan.Reason")).replace("%operator%", s.getName())//toto se pošle všem
+						));
+				TheAPI.sendMessage(Loader.s("BanSystem.Mute").replace("%playername%", args[0])
+						.replace("%reason%", Loader.config.getString("BanSystem.Mute.Reason")).replace("%operator%", s.getName()), s);//toto tobì
 				return true;
 			}
 			if (args.length >= 2) {
@@ -44,6 +49,16 @@ public class Mute implements CommandExecutor {
 				msg = msg.replaceFirst(args[0] + " ", "");
 				TheAPI.getPunishmentAPI().mute(args[0],
 						Loader.config.getString("BanSystem.Mute.Text").replace("%reason%", msg));
+				if(msg.endsWith("-s")) {
+					msg = msg.replace("-s", "");
+					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Mute").replace("%playername%", args[0]) //TODO - upravit path
+							.replace("%reason%", msg).replace("%operator%", s.getName())+" &f[Silent]"
+							),"servercontrol.seesilent");
+					
+					TheAPI.sendMessage(Loader.s("BanSystem.Mute").replace("%playername%", args[0])
+							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
+					return true;
+				}
 				return true;
 			}
 		}

@@ -38,6 +38,11 @@ public class TempJail implements CommandExecutor, TabCompleter {
 				long time = TheAPI.getStringUtils().getTimeFromString(args[1]);
 				TheAPI.getPunishmentAPI().tempjail(args[0],
 						Loader.config.getString("BanSystem.TempJail.Text").replace("%reason%", msg), time);
+				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempJail").replace("%playername%", args[0])
+						.replace("%reason%", msg).replace("%operator%", s.getName()).replace("%time%", args[1])
+						));
+				TheAPI.sendMessage(Loader.s("BanSystem.TempJail").replace("%playername%", args[0])
+						.replace("%reason%",msg).replace("%time%", args[1]), s);
 				return true;
 			}
 			if (args.length >= 3) {
@@ -46,6 +51,21 @@ public class TempJail implements CommandExecutor, TabCompleter {
 				long time = TheAPI.getStringUtils().getTimeFromString(args[1]);
 				TheAPI.getPunishmentAPI().tempjail(args[0],
 						Loader.config.getString("BanSystem.TempJail.Text").replace("%reason%", msg), time);
+				if(msg.endsWith("-s")) {
+					msg = msg.replace("-s", "");
+					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempJail").replace("%playername%", args[0]) //TODO - upravit path
+							.replace("%reason%", msg).replace("%operator%", s.getName())+" &f[Silent]"
+							),"servercontrol.seesilent");
+					
+					TheAPI.sendMessage(Loader.s("BanSystem.TempJail").replace("%playername%", args[0])
+							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
+					return true;
+				}
+				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempJail").replace("%playername%", args[0])
+						.replace("%reason%", msg).replace("%operator%", s.getName())
+						));
+				TheAPI.sendMessage(Loader.s("BanSystem.TempJail").replace("%playername%", args[0])
+						.replace("%reason%", msg).replace("%operator%", s.getName()), s);
 				return true;
 			}
 		}

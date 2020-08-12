@@ -89,6 +89,7 @@ public class Configs {
 		Loader.trans.addDefault("BanSystem.CantJailYourself", "&6Hey %playername%&6, you can't jail yourself..");
 		Loader.trans.addDefault("BanSystem.MissingJail", "&6Missing jail, first set jail using command /setJail <name>");
 		Loader.trans.addDefault("BanSystem.TempMute", "&6Player %playername% &6has been muted for &c%reason% &6on &c%time%");
+		Loader.trans.addDefault("BanSystem.TempBanIP", "&6Player %playername% &6has been tempbannedIP for &c%reason% &6on &c%time%");
 		Loader.trans.addDefault("BanSystem.Mute", "&6Player %playername% &6has been muted for &c%reason%");
 		Loader.trans.addDefault("BanSystem.Ban", "&6Player %playername% &6has been banned for &c%reason%");
 		Loader.trans.addDefault("BanSystem.Jail", "&6Player %playername% &6has been arrested for &c%reason%");
@@ -99,14 +100,26 @@ public class Configs {
 		Loader.trans.addDefault("BanSystem.BanIP", "&6Player %playername% &6has been ip banned for &c%reason%");
 		Loader.trans.addDefault("BanSystem.PlayerHasNotBan", "&6Player %playername% hasn''t been banned");
 		Loader.trans.addDefault("BanSystem.PlayerNotMuted", "&6Player %player% isn't muted");
+		Loader.trans.addDefault("BanSystem.PlayerNotWarned", "&6Player %player% isn't warned");
 		Loader.trans.addDefault("BanSystem.unJailed", "&6Player %player% was unjailed");
 		Loader.trans.addDefault("BanSystem.JailAlreadyExist", "&6Jail %jail% already exists");
 		Loader.trans.addDefault("BanSystem.CreatedJail", "&6Create new jail %jail% at your location");
 		Loader.trans.addDefault("BanSystem.JailNotExist", "&6Jail %jail% doesn't exist");
 		Loader.trans.addDefault("BanSystem.DeletedJail", "&6Deleted jail %jail%");
-		
 		Loader.trans.addDefault("BanSystem.Broadcast.Ban", "&6Operator %operator% banned player %player% for %reason%");
-		
+		Loader.trans.addDefault("BanSystem.Broadcast.TempBanIP", "&6Operator %operator% &6temp-bannedIP player %player% for &c%reason% &6on &c%time%");
+		Loader.trans.addDefault("BanSystem.Broadcast.BanIP", "&6Operator %operator% bannedIP player %player% for %reason%");
+		Loader.trans.addDefault("BanSystem.Broadcast.TempMute", "&6Operator %operator% temp-muted player %player% for %reason% on %time%");
+		Loader.trans.addDefault("BanSystem.Broadcast.Mute", "&6Operator %operator% muted player %player% for %reason%");
+		Loader.trans.addDefault("BanSystem.Broadcast.Kick", "&6Operator %operator% kicked player %player% for %reason%");
+		Loader.trans.addDefault("BanSystem.Broadcast.Jail", "&6Operator %operator% arrested player %player% for %reason%");
+		Loader.trans.addDefault("BanSystem.Broadcast.TempJail", "&6Operator %operator% temp-arrested player %player% for %reason% on %time%");
+		Loader.trans.addDefault("BanSystem.Broadcast.Warn", "&6Operator %operator% warned player %player% for %reason%");
+		Loader.trans.addDefault("BanSystem.Broadcast.UnBan", "&6Operator %operator% unbanned player %player%");
+		Loader.trans.addDefault("BanSystem.Broadcast.UnBanIP", "&6Operator %operator% unbannedIP player %player%");
+		Loader.trans.addDefault("BanSystem.Broadcast.UnJail", "&6Operator %operator% unjailed player %player% for %reason% on %time%");
+		Loader.trans.addDefault("BanSystem.Broadcast.UnMute", "&6Operator %operator% unmuted player %player% for %reason% on %time%");
+
 		Loader.trans.addDefault("ClearInventory.PlayerInvCleared", "&6Inventory of &c%player% &6has been cleared");
 		Loader.trans.addDefault("ClearInventory.NoMoney", "&cYou must have &6$%money% &cto purchase your inventory back");
 		Loader.trans.addDefault("ClearInventory.NoConfirm", "&6You have no confirm request");
