@@ -31,7 +31,7 @@ public class Mute implements CommandExecutor {
 				TheAPI.getPunishmentAPI().mute(args[0],
 						Loader.config.getString("BanSystem.Mute.Text").replace("%reason%", msg));
 				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Mute").replace("%playername%", args[0])
-						.replace("%reason%", Loader.config.getString("BanSystem.TempBan.Reason")).replace("%operator%", s.getName())//toto se pošle všem
+						.replace("%reason%", Loader.config.getString("BanSystem.Mute.Reason")).replace("%operator%", s.getName())//toto se pošle všem
 						));
 				TheAPI.sendMessage(Loader.s("BanSystem.Mute").replace("%playername%", args[0])
 						.replace("%reason%", Loader.config.getString("BanSystem.Mute.Reason")).replace("%operator%", s.getName()), s);//toto tobì

@@ -108,6 +108,7 @@ public class Configs {
 		Loader.trans.addDefault("BanSystem.DeletedJail", "&6Deleted jail %jail%");
 		Loader.trans.addDefault("BanSystem.Broadcast.Ban", "&6Operator %operator% banned player %player% for %reason%");
 		Loader.trans.addDefault("BanSystem.Broadcast.TempBanIP", "&6Operator %operator% &6temp-bannedIP player %player% for &c%reason% &6on &c%time%");
+		Loader.trans.addDefault("BanSystem.Broadcast.TempBan", "&6Operator %operator% &6temp-banned player %player% for &c%reason% &6on &c%time%");
 		Loader.trans.addDefault("BanSystem.Broadcast.BanIP", "&6Operator %operator% bannedIP player %player% for %reason%");
 		Loader.trans.addDefault("BanSystem.Broadcast.TempMute", "&6Operator %operator% temp-muted player %player% for %reason% on %time%");
 		Loader.trans.addDefault("BanSystem.Broadcast.Mute", "&6Operator %operator% muted player %player% for %reason%");

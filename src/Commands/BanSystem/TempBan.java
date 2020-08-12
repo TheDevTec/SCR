@@ -78,14 +78,14 @@ public class TempBan implements CommandExecutor {
 							),"servercontrol.seesilent");
 					
 					TheAPI.sendMessage(Loader.s("BanSystem.TempBan").replace("%playername%", args[0])
-							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
+							.replace("%reason%", msg).replace("%time%", args[1]).replace("%operator%", s.getName()), s);
 					return true;
 				}
 				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempBan").replace("%playername%", args[0])
-						.replace("%reason%", msg).replace("%operator%", s.getName())
+						.replace("%reason%", msg).replace("%time%", args[1]).replace("%operator%", s.getName())
 						));
 				TheAPI.sendMessage(Loader.s("BanSystem.TempBan").replace("%playername%", args[0])
-						.replace("%reason%", msg).replace("%operator%", s.getName()), s);
+						.replace("%reason%", msg).replace("%time%", args[1]).replace("%operator%", s.getName()), s);
 				return true;
 			}
 		}

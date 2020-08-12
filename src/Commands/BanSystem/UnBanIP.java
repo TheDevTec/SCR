@@ -25,11 +25,14 @@ public class UnBanIP implements CommandExecutor {
 						s);
 
 				TheAPI.getPunishmentAPI().unbanIP(args[0]);
-				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.UnBanIP").replace("%playername%", args[0])
+				Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.UnBanIP").replace("%playername%", args[0])
 						.replace("%operator%", s.getName())
-						));
+						+" &f[Silent]"
+						),"servercontrol.seesilent");
+				
 				TheAPI.sendMessage(Loader.s("BanSystem.UnBanIP").replace("%playername%", args[0])
-						.replace("%operator%", s.getName()), s);
+						.replace("%operator%", s.getName())
+						, s);
 				return true;
 			}
 			if (TheAPI.existsUser(args[0]))

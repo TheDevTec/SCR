@@ -27,11 +27,14 @@ public class UnJail implements CommandExecutor {
 						API.teleportPlayer(TheAPI.getPlayer(args[0]), TeleportLocation.SPAWN);
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.unJailed").replace("%playername%", args[0])
 							.replace("%player%", args[0]), s);
-					Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.UnJail").replace("%playername%", args[0])
+					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.UnJail").replace("%playername%", args[0])
 							.replace("%operator%", s.getName())
-							));
+							+" &f[Silent]"
+							),"servercontrol.seesilent");
+					
 					TheAPI.sendMessage(Loader.s("BanSystem.UnJail").replace("%playername%", args[0])
-							.replace("%operator%", s.getName()), s);
+							.replace("%operator%", s.getName())
+							, s);
 					return true;
 				}
 				if (TheAPI.existsUser(args[0]))

@@ -29,11 +29,14 @@ public class UnMute implements CommandExecutor {
 					if (TheAPI.getPlayer(args[0]) != null)
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.UnMuted").replace("%player%", args[0])
 								.replace("%playername%", args[0]), TheAPI.getPlayer(args[0]));
-					Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.UnMute").replace("%playername%", args[0])
+					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.UnMute").replace("%playername%", args[0])
 							.replace("%operator%", s.getName())
-							));
+							+" &f[Silent]"
+							),"servercontrol.seesilent");
+					
 					TheAPI.sendMessage(Loader.s("BanSystem.UnMute").replace("%playername%", args[0])
-							.replace("%operator%", s.getName()), s);
+							.replace("%operator%", s.getName())
+							, s);
 					return true;
 				}
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.PlayerNotMuted").replace("%player%", args[0])
