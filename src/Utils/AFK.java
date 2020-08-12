@@ -19,6 +19,7 @@ public class AFK {
 				for(SPlayer s : API.getSPlayers()) {
 				boolean is = getTime(s) <= 0;
 				if (setting.afk_auto) {
+					
 					if (is) {
 						if (!s.bc && !s.mp) {
 							s.bc = true;
@@ -38,8 +39,8 @@ public class AFK {
 								++s.kick;
 						}
 					}
-				} else
 					++s.afk;
+				}
 				}
 			}
 		}.repeatingAsync(20, 20);
