@@ -79,6 +79,7 @@ public class FarmingSystem implements Listener {
 				try {
 					if (e.getClickedBlock().getType().name().contains("CARROT")) {
 						((Crops) md).setState(CropState.SEEDED);
+						s.setData(md);
 						s.update(true,false);
 						int random = TheAPI.generateRandomInt(4);
 						if (random == 0)

@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
-import ServerControl.SPlayer;
 import Utils.TabList;
 import Utils.setting;
 import Utils.setting.DeathTp;
@@ -64,10 +63,5 @@ public class DeathEvent implements Listener {
 						.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
 			}
 		}}catch(Exception eere) {}
-		SPlayer a = API.getSPlayer(p);
-		if (a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
-			a.enableFly();
-		if (a.hasPermission("servercontrol.god") && a.hasGodEnabled())
-			a.enableGod();
 	}
 }
