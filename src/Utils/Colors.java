@@ -1,6 +1,6 @@
 package Utils;
 
-import java.util.regex.Matcher;   
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
@@ -26,7 +26,22 @@ public class Colors {
 			p = "Sign";
 		String b = s;
 		
-		
+		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Hex"))) {
+			if(b.contains("#"))
+					if (Integer.valueOf(TheAPI.getServerVersion().split("_")[1]) >= 16) {
+						b=b.replace("&x", "Â§x");
+						Matcher match = pattern.matcher(b);
+			            while (match.find()) {
+			                String color = match.group();
+			                StringBuilder magic = new StringBuilder("Â§x");
+			                char[] c = color.substring(1).toCharArray();
+			                for(int i = 0; i < c.length; ++i) {
+			                    magic.append("&"+c[i]);
+			                }
+			                b = b.replace(color, magic.toString() + "");
+			            }
+			        }
+			}
 		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
 			for (int i = 0; i < 10; ++i)
 				b = b.replace("&" + i, ChatColor.getByChar(i+"")+"");
@@ -47,21 +62,7 @@ public class Colors {
 		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Magic"))) {
 			b = b.replace("&k", ChatColor.getByChar("k")+"");
 		}
-		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Hex"))) {
-		if (Integer.valueOf(TheAPI.getServerVersion().split("_")[1]) >= 16) {
-			Matcher match = pattern.matcher(b);
-			while (match.find()) {
-				String color = b.substring(match.start(), match.end());
-				Integer.parseInt(color.substring(1), 16);
-				StringBuilder magic = new StringBuilder("§x");
-				char[] var2 = color.substring(1).toCharArray();
-		        for(int var4 = 0; var4 < var2.length; ++var4) {
-		            char c = var2[var4];
-		            magic.append('§').append(c);
-		        }
-				b = b.replace(color,  magic.toString() + "");
-			}
-		}}
+		
 		return b;
 	}
 	
