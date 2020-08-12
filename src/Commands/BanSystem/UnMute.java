@@ -30,9 +30,7 @@ public class UnMute implements CommandExecutor {
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.UnMuted").replace("%player%", args[0])
 								.replace("%playername%", args[0]), TheAPI.getPlayer(args[0]));
 					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.UnMute").replace("%playername%", args[0])
-							.replace("%operator%", s.getName())
-							+" &f[Silent]"
-							),"servercontrol.seesilent");
+							.replace("%operator%", s.getName())),"servercontrol.seesilent");
 					
 					TheAPI.sendMessage(Loader.s("BanSystem.UnMute").replace("%playername%", args[0])
 							.replace("%operator%", s.getName())

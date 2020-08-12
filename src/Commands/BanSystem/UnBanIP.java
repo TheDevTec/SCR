@@ -26,9 +26,7 @@ public class UnBanIP implements CommandExecutor {
 
 				TheAPI.getPunishmentAPI().unbanIP(args[0]);
 				Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.UnBanIP").replace("%playername%", args[0])
-						.replace("%operator%", s.getName())
-						+" &f[Silent]"
-						),"servercontrol.seesilent");
+						.replace("%operator%", s.getName())),"servercontrol.seesilent");
 				
 				TheAPI.sendMessage(Loader.s("BanSystem.UnBanIP").replace("%playername%", args[0])
 						.replace("%operator%", s.getName())

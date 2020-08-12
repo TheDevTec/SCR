@@ -28,9 +28,7 @@ public class UnJail implements CommandExecutor {
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.unJailed").replace("%playername%", args[0])
 							.replace("%player%", args[0]), s);
 					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.UnJail").replace("%playername%", args[0])
-							.replace("%operator%", s.getName())
-							+" &f[Silent]"
-							),"servercontrol.seesilent");
+							.replace("%operator%", s.getName())),"servercontrol.seesilent");
 					
 					TheAPI.sendMessage(Loader.s("BanSystem.UnJail").replace("%playername%", args[0])
 							.replace("%operator%", s.getName())

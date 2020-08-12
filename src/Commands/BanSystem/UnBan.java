@@ -24,10 +24,8 @@ public class UnBan implements CommandExecutor {
 						+ Loader.s("BanSystem.UnBan").replace("%player%", args[0]).replace("%playername%", args[0]), s);
 				TheAPI.getPunishmentAPI().unban(args[0]);
 				
-				Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.UnBan").replace("%playername%", args[0])
-						.replace("%operator%", s.getName())
-						+" &f[Silent]"
-						),"servercontrol.seesilent");
+				Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.UnBan").replace("%playername%", args[0]))
+						,"servercontrol.seesilent");
 				
 				TheAPI.sendMessage(Loader.s("BanSystem.UnBan").replace("%playername%", args[0])
 						.replace("%operator%", s.getName())
