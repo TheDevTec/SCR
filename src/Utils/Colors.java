@@ -36,7 +36,7 @@ public class Colors {
 			                StringBuilder magic = new StringBuilder("§x");
 			                char[] c = color.substring(1).toCharArray();
 			                for(int i = 0; i < c.length; ++i) {
-			                    magic.append("&"+c[i]);
+			                    magic.append(("&"+c[i]).toLowerCase());
 			                }
 			                b = b.replace(color, magic.toString() + "");
 			            }
