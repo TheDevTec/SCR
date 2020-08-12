@@ -820,6 +820,7 @@ public class Configs {
 			Loader.tab.addDefault("Groups.default.TabList.Prefix", "&7Player &r");
 			Loader.tab.addDefault("Groups.default.TabList.Suffix", "%afk%");
 			Loader.tab.addDefault("Groups.default.NameTag.Prefix", "&7Player &r");
+			Loader.tab.addDefault("Groups.default.Name", "%prefix% %playername% %suffix%");
 			Loader.tab.addDefault("Groups.default.Priorite", "z");
 			Loader.tab.addDefault("PerPlayerTabList.timtower.Footer",
 					Arrays.asList("&7--------------------------------", "&6Money: &a%money%$   &6Rank: &a%group%"));
