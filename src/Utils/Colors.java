@@ -29,7 +29,7 @@ public class Colors {
 		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Hex"))) {
 			if(b.contains("#"))
 					if (Integer.valueOf(TheAPI.getServerVersion().split("_")[1]) >= 16) {
-						b=b.replace("&x", "Â§x");
+						b=b.replace("&x", "§x");
 						Matcher match = pattern.matcher(b);
 			            while (match.find()) {
 			                String color = match.group();
