@@ -33,15 +33,14 @@ public class TempBanIP implements CommandExecutor {
 				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempBanIP")
 						.replace("%playername%", args[0])
 						.replace("%reason%", Loader.config.getString("BanSystem.TempBan.Reason"))
-						.replace("%operator%", s.getName())//toto se pošle všem
-						.replace("%time%", args[1])
+						.replace("%operator%", s.getName())
+						.replace("%time%", TheAPI.getStringUtils().setTimeToString(TheAPI.getStringUtils().getTimeFromString(args[1])))
 						));
 				TheAPI.sendMessage(Loader.s("BanSystem.TempBanIP")
 						.replace("%playername%", args[0])
 						.replace("%reason%", Loader.config.getString("BanSystem.TempBanIP.Reason"))
-						.replace("%time%", args[1])
-						.replace("%operator%", s.getName()), s);//toto tobì
-				
+						.replace("%time%", TheAPI.getStringUtils().setTimeToString(TheAPI.getStringUtils().getTimeFromString(args[1])))
+						.replace("%operator%", s.getName()), s);
 				return true;
 
 			}
@@ -52,15 +51,21 @@ public class TempBanIP implements CommandExecutor {
 							.replace("%target%", args[0]), s);
 					return true;
 				}
+				
 				String msg = Loader.config.getString("BanSystem.TempBanIP.Reason");
 				TheAPI.getPunishmentAPI().tempbanIP(args[0],
 						Loader.config.getString("BanSystem.TempBanIP.Text").replace("%reason%", msg),
 						TheAPI.getStringUtils().getTimeFromString(args[1]));
-				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempBanIP").replace("%playername%", args[0])
-						.replace("%reason%", msg).replace("%operator%", s.getName()).replace("%time%", args[1])
+				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempBanIP")
+						.replace("%playername%", args[0])
+						.replace("%reason%", msg)
+						.replace("%operator%", s.getName())
+						.replace("%time%", TheAPI.getStringUtils().setTimeToString(TheAPI.getStringUtils().getTimeFromString(args[1])))
 						));
-				TheAPI.sendMessage(Loader.s("BanSystem.TempBanIP").replace("%playername%", args[0])
-						.replace("%reason%",msg).replace("%time%", args[1]), s);
+				TheAPI.sendMessage(Loader.s("BanSystem.TempBanIP")
+						.replace("%playername%", args[0])
+						.replace("%reason%",msg)
+						.replace("%time%", TheAPI.getStringUtils().setTimeToString(TheAPI.getStringUtils().getTimeFromString(args[1]))), s);
 			}
 			if (args.length >= 3) {
 				if (TheAPI.getUser(args[0]).getBoolean("Immune")
@@ -76,19 +81,31 @@ public class TempBanIP implements CommandExecutor {
 						TheAPI.getStringUtils().getTimeFromString(args[1]));
 				if(msg.endsWith("-s")) {
 					msg = msg.replace("-s", "");
-					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempBanIP").replace("%playername%", args[0]) //TODO - upravit path
-							.replace("%reason%", msg).replace("%operator%", s.getName())+" &f[Silent]"
+					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempBanIP")
+							.replace("%playername%", args[0]) //TODO - upravit path
+							.replace("%reason%", msg)
+							.replace("%time%", TheAPI.getStringUtils().setTimeToString(TheAPI.getStringUtils().getTimeFromString(args[1])))
+							.replace("%operator%", s.getName())+" &f[Silent]"
 							),"servercontrol.seesilent");
 					
-					TheAPI.sendMessage(Loader.s("BanSystem.TempBanIP").replace("%playername%", args[0])
-							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
+					TheAPI.sendMessage(Loader.s("BanSystem.TempBanIP")
+							.replace("%playername%", args[0])
+							.replace("%reason%", msg)
+							.replace("%time%", TheAPI.getStringUtils().setTimeToString(TheAPI.getStringUtils().getTimeFromString(args[1])))
+							.replace("%operator%", s.getName()), s);
 					return true;
 				}
-				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempBanIP").replace("%playername%", args[0])
-						.replace("%reason%", msg).replace("%operator%", s.getName())
+				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempBanIP")
+						.replace("%playername%", args[0])
+						.replace("%reason%", msg)
+						.replace("%time%", TheAPI.getStringUtils().setTimeToString(TheAPI.getStringUtils().getTimeFromString(args[1])))
+						.replace("%operator%", s.getName())
 						));
-				TheAPI.sendMessage(Loader.s("BanSystem.TempBanIP").replace("%playername%", args[0])
-						.replace("%reason%", msg).replace("%operator%", s.getName()), s);
+				TheAPI.sendMessage(Loader.s("BanSystem.TempBanIP")
+						.replace("%playername%", args[0])
+						.replace("%reason%", msg)
+						.replace("%time%", TheAPI.getStringUtils().setTimeToString(TheAPI.getStringUtils().getTimeFromString(args[1])))
+						.replace("%operator%", s.getName()), s);
 				return true;
 			}
 		}
