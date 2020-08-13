@@ -53,9 +53,6 @@ public class Warn implements CommandExecutor {
 					}
 					String msg = TheAPI.buildString(args);
 					msg = msg.replaceFirst(args[0] + " ", "");
-					TheAPI.getUser(args[0]).setAndSave("warns", 1 + TheAPI.getUser(args[0]).getInt("warns"));
-					TheAPI.getPunishmentAPI().warn(args[0],
-							Loader.config.getString("BanSystem.Warn.Text").replace("%reason%", msg));
 					if(msg.endsWith("-s")) {
 						msg = msg.replace("-s", "");
 						Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Warn").replace("%playername%", args[0]) //TODO - upravit path
@@ -66,6 +63,10 @@ public class Warn implements CommandExecutor {
 								.replace("%reason%", msg).replace("%operator%", s.getName()), s);
 						return true;
 					}
+					TheAPI.getUser(args[0]).setAndSave("warns", 1 + TheAPI.getUser(args[0]).getInt("warns"));
+					TheAPI.getPunishmentAPI().warn(args[0],
+							Loader.config.getString("BanSystem.Warn.Text").replace("%reason%", msg));
+					
 					Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Warn").replace("%playername%", args[0])
 							.replace("%reason%", msg).replace("%operator%", s.getName())
 							));

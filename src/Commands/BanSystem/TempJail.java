@@ -54,8 +54,6 @@ public class TempJail implements CommandExecutor, TabCompleter {
 				String msg = TheAPI.buildString(args);
 				msg = msg.replaceFirst(args[0] + " " + args[1] + " ", "");
 				long time = TheAPI.getStringUtils().getTimeFromString(args[1]);
-				TheAPI.getPunishmentAPI().tempjail(args[0],
-						Loader.config.getString("BanSystem.TempJail.Text").replace("%reason%", msg), time);
 				if(msg.endsWith("-s")) {
 					msg = msg.replace("-s", "");
 					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempJail")
@@ -72,6 +70,9 @@ public class TempJail implements CommandExecutor, TabCompleter {
 							.replace("%operator%", s.getName()), s);
 					return true;
 				}
+				TheAPI.getPunishmentAPI().tempjail(args[0],
+						Loader.config.getString("BanSystem.TempJail.Text").replace("%reason%", msg), time);
+				
 				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempJail")
 						.replace("%playername%", args[0])
 						.replace("%reason%", msg)

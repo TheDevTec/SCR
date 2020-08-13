@@ -44,7 +44,6 @@ public class Ban implements CommandExecutor {
 				}
 				String msg = TheAPI.buildString(args);
 				msg = msg.replaceFirst(args[0] + " ", "");
-				TheAPI.getPunishmentAPI().ban(args[0], Loader.config.getString("BanSystem.Ban.Text").replace("%reason%",msg));
 				if(msg.endsWith("-s")) {
 					msg = msg.replace("-s", "");
 					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Ban").replace("%playername%", args[0])
@@ -55,6 +54,8 @@ public class Ban implements CommandExecutor {
 							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
 					return true;
 				}
+				TheAPI.getPunishmentAPI().ban(args[0], Loader.config.getString("BanSystem.Ban.Text").replace("%reason%",msg));
+				
 				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Ban").replace("%playername%", args[0])
 						.replace("%reason%", msg).replace("%operator%", s.getName())
 						));

@@ -54,8 +54,6 @@ public class Kick implements CommandExecutor {
 					}
 					String msg = TheAPI.buildString(args);
 					msg = msg.replaceFirst(args[0] + " ", "");
-					TheAPI.getPunishmentAPI().kick(args[0],
-							Loader.config.getString("BanSystem.Kick.Text").replace("%reason%", msg));
 					if(msg.endsWith("-s")) {
 						msg = msg.replace("-s", "");
 						Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Kick").replace("%playername%", args[0]) //TODO - upravit path
@@ -66,6 +64,9 @@ public class Kick implements CommandExecutor {
 								.replace("%reason%", msg).replace("%operator%", s.getName()), s);
 						return true;
 					}
+					TheAPI.getPunishmentAPI().kick(args[0],
+							Loader.config.getString("BanSystem.Kick.Text").replace("%reason%", msg));
+					
 					Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Kick").replace("%playername%", args[0])
 							.replace("%reason%", msg).replace("%operator%", s.getName())
 							));

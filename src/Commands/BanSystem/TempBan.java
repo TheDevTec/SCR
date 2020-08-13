@@ -78,10 +78,6 @@ public class TempBan implements CommandExecutor {
 				}
 				String msg = TheAPI.buildString(args);
 				msg = msg.replaceFirst(args[0] + " " + args[1] + " ", "");
-				TheAPI.getPunishmentAPI().tempban(args[0],
-						Loader.config.getString("BanSystem.TempBan.Text").replace("%reason%", msg),
-						TheAPI.getStringUtils().getTimeFromString(args[1]));
-				
 				if(msg.endsWith("-s")) {
 					msg = msg.replace("-s", "");
 					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempBan")
@@ -98,6 +94,10 @@ public class TempBan implements CommandExecutor {
 							.replace("%operator%", s.getName()), s);
 					return true;
 				}
+				TheAPI.getPunishmentAPI().tempban(args[0],
+						Loader.config.getString("BanSystem.TempBan.Text").replace("%reason%", msg),
+						TheAPI.getStringUtils().getTimeFromString(args[1]));
+				
 				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempBan")
 						.replace("%playername%", args[0])
 						.replace("%reason%", msg)

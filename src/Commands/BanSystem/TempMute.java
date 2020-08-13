@@ -79,10 +79,6 @@ public class TempMute implements CommandExecutor {
 				}
 				String msg = TheAPI.buildString(args);
 				msg = msg.replaceFirst(args[0] + " " + args[1] + " ", "");
-				TheAPI.getPunishmentAPI().tempmute(args[0],
-						Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%", msg),
-						TheAPI.getStringUtils().getTimeFromString(args[1]));
-				
 				if(msg.endsWith("-s")) {
 					msg = msg.replace("-s", "");
 					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempMute")
@@ -99,6 +95,10 @@ public class TempMute implements CommandExecutor {
 							.replace("%time%", TheAPI.getStringUtils().setTimeToString(TheAPI.getStringUtils().getTimeFromString(args[1]))), s);
 					return true;
 				}
+				TheAPI.getPunishmentAPI().tempmute(args[0],
+						Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%", msg),
+						TheAPI.getStringUtils().getTimeFromString(args[1]));
+				
 				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempMute")
 						.replace("%playername%", args[0])
 						.replace("%reason%", msg)

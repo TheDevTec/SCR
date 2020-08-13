@@ -47,8 +47,6 @@ public class Mute implements CommandExecutor {
 				}
 				String msg = TheAPI.buildString(args);
 				msg = msg.replaceFirst(args[0] + " ", "");
-				TheAPI.getPunishmentAPI().mute(args[0],
-						Loader.config.getString("BanSystem.Mute.Text").replace("%reason%", msg));
 				if(msg.endsWith("-s")) {
 					msg = msg.replace("-s", "");
 					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Mute").replace("%playername%", args[0]) //TODO - upravit path
@@ -59,6 +57,9 @@ public class Mute implements CommandExecutor {
 							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
 					return true;
 				}
+				TheAPI.getPunishmentAPI().mute(args[0],
+						Loader.config.getString("BanSystem.Mute.Text").replace("%reason%", msg));
+				
 				return true;
 			}
 		}
