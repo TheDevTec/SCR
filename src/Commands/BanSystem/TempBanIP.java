@@ -30,11 +30,18 @@ public class TempBanIP implements CommandExecutor {
 						Loader.config.getString("BanSystem.TempBanIP.Text").replace("%reason%", msg),
 						TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("BanSystem.TempBanIP.Time")));
 				
-				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempBanIP").replace("%playername%", args[0])
-						.replace("%reason%", Loader.config.getString("BanSystem.TempBan.Reason")).replace("%operator%", s.getName())//toto se pošle všem
+				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempBanIP")
+						.replace("%playername%", args[0])
+						.replace("%reason%", Loader.config.getString("BanSystem.TempBan.Reason"))
+						.replace("%operator%", s.getName())//toto se pošle všem
+						.replace("%time%", args[1])
 						));
-				TheAPI.sendMessage(Loader.s("BanSystem.TempBanIP").replace("%playername%", args[0])
-						.replace("%reason%", Loader.config.getString("BanSystem.TempBanIP.Reason")).replace("%operator%", s.getName()), s);//toto tobì
+				TheAPI.sendMessage(Loader.s("BanSystem.TempBanIP")
+						.replace("%playername%", args[0])
+						.replace("%reason%", Loader.config.getString("BanSystem.TempBanIP.Reason"))
+						.replace("%time%", args[1])
+						.replace("%operator%", s.getName()), s);//toto tobì
+				
 				return true;
 
 			}
