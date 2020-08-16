@@ -31,6 +31,7 @@ import me.DevTec.PluginManagerAPI;
 import me.DevTec.SoundAPI;
 import me.DevTec.TheAPI;
 import me.DevTec.NMS.NMSAPI;
+import me.DevTec.Other.LoaderClass;
 import me.DevTec.Other.StringUtils;
 import me.DevTec.Placeholders.PlaceholderAPI;
 import net.milkbowl.vault.chat.Chat;
@@ -137,9 +138,16 @@ public class Loader extends JavaPlugin implements Listener {
 			return getColoredPing(who);
 		return String.valueOf(TheAPI.getPlayerPing(who));
 	}
-
+	private boolean disabling;
 	@Override
 	public void onLoad() {
+		int count = 0;
+		for(String s : LoaderClass.plugin.getDescription().getVersion().split("."))
+			count+=Integer.valueOf(s);
+		if(count < 9) {
+			disabling = true;
+			return;
+		}
 		getInstance = this;
 		Configs.load();
 		regClasses();
@@ -172,6 +180,16 @@ public class Loader extends JavaPlugin implements Listener {
 
 	@Override
 	public void onEnable() {
+		if(disabling) {
+			TheAPI.msg("&0[&cServerControlReloaded&0] &7You are using old version of TheAPI", TheAPI.getConsole());
+			TheAPI.msg("&0[&cServerControlReloaded&0] &7Please update TheAPI to newest version!", TheAPI.getConsole());
+			TheAPI.msg("&0[&cServerControlReloaded&0] &7Links:", TheAPI.getConsole());
+			TheAPI.msg("&0[&cServerControlReloaded&0] &7 Discord: &ehttps://discord.io/spigotdevtec", TheAPI.getConsole());
+			TheAPI.msg("&0[&cServerControlReloaded&0] &7 Github: &ehttps://github.com/TheDevTec/TheAPI", TheAPI.getConsole());
+			TheAPI.msg("&0[&cServerControlReloaded&0] &7 Spigot: &ehttps://www.spigotmc.org/resources/theapi-1-7-10-up-to-1-16-2.72679/", TheAPI.getConsole());
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
 		if (ver() == null) {
 			TheAPI.getConsole().sendMessage(
 					TheAPI.colorize(Loader.s("Prefix") + "&8*********************************************"));
@@ -260,6 +278,7 @@ public class Loader extends JavaPlugin implements Listener {
 
 	@Override
 	public void onDisable() {
+		if(disabling)return;
 		NMSAPI.postToMainThread(new Runnable() {
 			public void run() {
 				for (Player p : TheAPI.getOnlinePlayers()) {
