@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Bans.PunishmentAPI;
 
 public class Kick implements CommandExecutor {
 
@@ -30,7 +31,7 @@ public class Kick implements CommandExecutor {
 						return true;
 						
 					}
-					TheAPI.getPunishmentAPI().kick(args[0], Loader.config.getString("BanSystem.Kick.Text")
+					PunishmentAPI.kick(args[0], Loader.config.getString("BanSystem.Kick.Text")
 							.replace("%reason%", Loader.config.getString("BanSystem.Kick.Reason")));
 					
 					Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Kick").replace("%playername%", args[0])
@@ -64,7 +65,7 @@ public class Kick implements CommandExecutor {
 								.replace("%reason%", msg).replace("%operator%", s.getName()), s);
 						return true;
 					}
-					TheAPI.getPunishmentAPI().kick(args[0],
+					PunishmentAPI.kick(args[0],
 							Loader.config.getString("BanSystem.Kick.Text").replace("%reason%", msg));
 					
 					Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Kick").replace("%playername%", args[0])

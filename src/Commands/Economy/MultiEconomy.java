@@ -15,7 +15,9 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.EconomyAPI;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class MultiEconomy implements CommandExecutor, TabCompleter {
 	private String getEconomyGroup(String ss) {
@@ -30,7 +32,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (TheAPI.getEconomyAPI().getEconomy() == null) {
+		if (EconomyAPI.getEconomy() == null) {
 			TheAPI.msg(Loader.s("Prefix") + "&cMissing Vault plugin for economy.", s);
 			return true;
 		}
@@ -70,7 +72,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 								.replace("%economygroup%", getEconomyGroup(args[1]))
 								.replace("%economy-group%", getEconomyGroup(args[1]))
 								.replace("%economy%", getEconomyGroup(args[1]))
-								.replace("%worlds%", TheAPI.getStringUtils().join(worlds, ", ")),
+								.replace("%worlds%", StringUtils.join(worlds, ", ")),
 						s);
 				return true;
 			}
@@ -238,7 +240,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 							.replace("%economygroup%", getEconomyGroup(args[2]))
 							.replace("%economy-group%", getEconomyGroup(args[2]))
 							.replace("%economy%", getEconomyGroup(args[2]))
-							.replace("%money%", API.setMoneyFormat(TheAPI.getStringUtils().getDouble(group), true))
+							.replace("%money%", API.setMoneyFormat(StringUtils.getDouble(group), true))
 							.replace("%player%", args[1]).replace("%playername%", args[1]), s);
 					return true;
 				}
@@ -250,7 +252,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 					groups.add(ss);
 				}
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiEconomy.Groups").replace("%groups%",
-						TheAPI.getStringUtils().join(groups, ", ")), s);
+						StringUtils.join(groups, ", ")), s);
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("transfer")) {

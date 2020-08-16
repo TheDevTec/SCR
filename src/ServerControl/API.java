@@ -27,13 +27,14 @@ import ServerControlEvents.PluginHookEvent;
 import Utils.setting;
 import me.DevTec.PluginManagerAPI;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 import me.DevTec.Other.User;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
 
 	public static boolean existVaultPlugin() {
-		return new PluginManagerAPI().getPlugin("Vault") != null;
+		return PluginManagerAPI.getPlugin("Vault") != null;
 	}
 
 	public static SPlayer getSPlayer(Player p) {
@@ -73,7 +74,7 @@ public class API {
 				home = homes.get(0);
 			}
 			if (home != null) {
-				return TheAPI.getStringUtils().getLocationFromString(d.getString("Homes." + home));
+				return StringUtils.getLocationFromString(d.getString("Homes." + home));
 			} else {
 				TheAPI.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn").replace("%world%", p.getWorld().getName())
 						.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
@@ -103,9 +104,9 @@ public class API {
 		Location a = getTeleportLocation(p, location);
 		if (a != null)
 			if (setting.tp_safe)
-				TheAPI.getPlayerAPI(p).safeTeleport(a);
+				safeTeleport(p,a);
 			else
-				TheAPI.getPlayerAPI(p).teleport(a);
+				p.teleport(a);
 
 	}
 
@@ -130,7 +131,7 @@ public class API {
 	}
 
 	public static double convertMoney(String s) {
-		double a = TheAPI.getStringUtils().getDouble(s);
+		double a = StringUtils.getDouble(s);
 		double mille = a * 1000;
 		double million = mille * 1000;
 		double billion = million * 1000;
@@ -163,10 +164,10 @@ public class API {
 		switch (type) {
 		case Online:
 			if (s.exist("JoinTime"))
-				a = TheAPI.getStringUtils().setTimeToString(System.currentTimeMillis() / 1000 - s.getLong("JoinTime"));
+				a = StringUtils.setTimeToString(System.currentTimeMillis() / 1000 - s.getLong("JoinTime"));
 			break;
 		case Offline:
-			a = TheAPI.getStringUtils().setTimeToString(
+			a = StringUtils.setTimeToString(
 					System.currentTimeMillis() / 1000 - Bukkit.getOfflinePlayer(player).getLastPlayed() / 1000);
 			break;
 		}
@@ -186,7 +187,7 @@ public class API {
 	public static void TeleportBack(Player p) {
 		Location loc = getBack(p.getName());
 		if (loc != null) {
-			TheAPI.getUser(p).set("Back", TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
+			TheAPI.getUser(p).set("Back", StringUtils.getLocationAsString(p.getLocation()));
 			p.teleport(loc);
 			TheAPI.msg(Loader.s("Back.Teleporting").replace("%prefix%", Loader.s("Prefix"))
 					.replace("%playername%", p.getDisplayName()).replace("%player%", p.getName()), p);
@@ -195,15 +196,15 @@ public class API {
 	}
 
 	public static void setBack(Player p) {
-		TheAPI.getUser(p).set("Back", TheAPI.getStringUtils().getLocationAsString(p.getLocation()));
+		TheAPI.getUser(p).set("Back", StringUtils.getLocationAsString(p.getLocation()));
 	}
 
 	public static void setBack(String p, Location l) {
-		TheAPI.getUser(p).set("Back", TheAPI.getStringUtils().getLocationAsString(l));
+		TheAPI.getUser(p).set("Back", StringUtils.getLocationAsString(l));
 	}
 
 	public static Location getBack(String p) {
-		return TheAPI.getStringUtils().getLocationFromString(TheAPI.getUser(p).getString("Back"));
+		return StringUtils.getLocationFromString(TheAPI.getUser(p).getString("Back"));
 	}
 
 	private static boolean has(CommandSender p, List<String> perms) {
@@ -221,7 +222,7 @@ public class API {
 		}
 		p.sendMessage(TheAPI.colorize(
 				Loader.s("NotPermissionsMessage").replace("%player%", p.getName()).replace("%playername%", p.getName())
-						.replace("%permission%", TheAPI.getStringUtils().join(perms, ", "))));
+						.replace("%permission%", StringUtils.join(perms, ", "))));
 		return false;
 	}
 
@@ -465,5 +466,9 @@ public class API {
 			return server_name;
 		}
 		return "UKNOWN";
+	}
+
+	public static void safeTeleport(Player s, Location location) {
+		s.teleport(location);
 	}
 }

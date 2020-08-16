@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class SetWarp implements CommandExecutor {
 
@@ -40,7 +41,7 @@ public class SetWarp implements CommandExecutor {
 							Loader.config.set("Warps." + args[0] + ".X_Pos_Head", local.getYaw());
 							Loader.config.set("Warps." + args[0] + ".Z_Pos_Head", local.getPitch());*/
 							Loader.config.set("Warps." + args[0] + ".NeedPermission", false);
-							Loader.config.set("Warps." + args[0], TheAPI.getStringUtils().getLocationAsString(local));
+							Loader.config.set("Warps." + args[0], StringUtils.getLocationAsString(local));
 							Loader.config.save();
 							TheAPI.msg(Loader.s("Warp.Created").replace("%warp%", args[0])
 									.replace("%world%", local.getWorld().getName())
@@ -72,7 +73,7 @@ public class SetWarp implements CommandExecutor {
 						Loader.config.set("Warps." + args[0] + ".X_Pos_Head", local.getYaw());
 						Loader.config.set("Warps." + args[0] + ".Z_Pos_Head", local.getPitch());*/
 						Loader.config.set("Warps." + args[0] + ".NeedPermission", true);
-						Loader.config.set("Warps." + args[0], TheAPI.getStringUtils().getLocationAsString(local));
+						Loader.config.set("Warps." + args[0], StringUtils.getLocationAsString(local));
 						Loader.config.save();
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Warp.CreatedWithPerm").replace("%warp%", args[0])
 								.replace("%world%", local.getWorld().getName())

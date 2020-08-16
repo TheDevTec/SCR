@@ -11,6 +11,7 @@ import ServerControl.Loader;
 import Utils.setting;
 import me.DevTec.CooldownAPI;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 @SuppressWarnings("deprecation")
 public class SecurityListenerCooldowns implements Listener {
@@ -23,7 +24,7 @@ public class SecurityListenerCooldowns implements Listener {
 			CooldownAPI s = TheAPI.getCooldownAPI(p.getName());
 			if (!s.expired("Cooldown.Msgs")) {
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("Cooldown.ToSendMessage").replace("%timer%",
-						TheAPI.getStringUtils().setTimeToString(s.getTimeToExpire("Cooldown.Msgs"))), p);
+						StringUtils.setTimeToString(s.getTimeToExpire("Cooldown.Msgs"))), p);
 				e.setCancelled(true);
 				return;
 			} else
@@ -45,12 +46,12 @@ public class SecurityListenerCooldowns implements Listener {
 							|| c[0].equalsIgnoreCase(e.getMessage().replaceFirst("/", ""))) {
 						find = true;
 						if (as.expired("Cooldown.Cmds." + c[0])) {
-							as.createCooldown("Cooldown.Cmds." + c[0], TheAPI.getStringUtils().getInt(c[1]));
+							as.createCooldown("Cooldown.Cmds." + c[0], StringUtils.getInt(c[1]));
 						} else {
 							e.setCancelled(true);
 							TheAPI.msg(
 									Loader.s("Prefix") + Loader.s("Cooldown.ToSendCommand").replace("%timer%",
-											TheAPI.getStringUtils().setTimeToString(as.getTimeToExpire("Cooldown.Cmds." + c[0]))),p);
+											StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmds." + c[0]))),p);
 						}
 						break;
 					}
@@ -59,7 +60,7 @@ public class SecurityListenerCooldowns implements Listener {
 				if (!as.expired("Cooldown.Cmdss")) {
 					e.setCancelled(true);
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("Cooldown.ToSendCommand").replace("%timer%",
-							TheAPI.getStringUtils().setTimeToString(as.getTimeToExpire("Cooldown.Cmdss"))), p);
+							StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmdss"))), p);
 				} else
 					as.createCooldown("Cooldown.Cmdss", time);
 			}

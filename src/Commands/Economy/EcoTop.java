@@ -17,8 +17,10 @@ import com.google.common.collect.Maps;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Pagination;
+import me.DevTec.EconomyAPI;
 import me.DevTec.RankingAPI;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class EcoTop implements CommandExecutor {
 	// world, rankingapi
@@ -27,7 +29,7 @@ public class EcoTop implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (TheAPI.getEconomyAPI().getEconomy() == null) {
+		if (EconomyAPI.getEconomy() == null) {
 			TheAPI.msg(Loader.s("Prefix") + "&cMissing Vault plugin for economy.", s);
 			return true;
 		}
@@ -44,7 +46,7 @@ public class EcoTop implements CommandExecutor {
 					if(Bukkit.getOfflinePlayer(sa).getName()==null)continue;
 					if(Bukkit.getOfflinePlayer(sa).getName().equals("ServerControlReloaded"))continue;
 					money.put(Bukkit.getOfflinePlayer(sa).getName(),
-							new BigDecimal(TheAPI.getEconomyAPI().getBalance(Bukkit.getOfflinePlayer(sa).getName(), world)));
+							new BigDecimal(EconomyAPI.getBalance(Bukkit.getOfflinePlayer(sa).getName(), world)));
 				}
 				if (m != null)
 					h.remove(world); 
@@ -61,7 +63,7 @@ public class EcoTop implements CommandExecutor {
 			TheAPI.msg("", s);
 			int page = 1;
 			if (args.length != 0)
-				page = TheAPI.getStringUtils().getInt(args[0]);
+				page = StringUtils.getInt(args[0]);
 			if (g.totalPages() < page)
 				page = g.totalPages();
 			if (1 > page)

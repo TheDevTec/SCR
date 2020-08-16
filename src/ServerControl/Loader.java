@@ -26,7 +26,13 @@ import Utils.TabList;
 import Utils.VaultHook;
 import Utils.setting;
 import me.DevTec.ConfigAPI;
+import me.DevTec.EconomyAPI;
+import me.DevTec.PluginManagerAPI;
+import me.DevTec.SoundAPI;
 import me.DevTec.TheAPI;
+import me.DevTec.NMS.NMSAPI;
+import me.DevTec.Other.StringUtils;
+import me.DevTec.Placeholders.PlaceholderAPI;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -76,7 +82,7 @@ public class Loader extends JavaPlugin implements Listener {
 
 	public static void setupChatFormat(Player p) {
 		if (config.exist("Chat-Groups." + FormatgetGroup(p) + ".Name")) {
-			String g = TheAPI.colorize(TheAPI.getPlaceholderAPI().setPlaceholders(p,
+			String g = TheAPI.colorize(PlaceholderAPI.setPlaceholders(p,
 					config.getString("Chat-Groups." + FormatgetGroup(p) + ".Name"))).replace("%", "%%");
 			g = Events.ChatFormat.r(p, g, null, false);
 			g = g.replace("%%", "%");
@@ -203,7 +209,7 @@ public class Loader extends JavaPlugin implements Listener {
 			TheAPI.getConsole().sendMessage(
 					TheAPI.colorize(Loader.s("Prefix") + "&8*********************************************"));
 		}
-		if (TheAPI.getPluginsManagerAPI().isEnabledPlugin("PlaceholderAPI")) {
+		if (PluginManagerAPI.isEnabledPlugin("PlaceholderAPI")) {
 			TheAPI.getConsole().sendMessage(
 					TheAPI.colorize(Loader.s("Prefix") + "&8*********************************************"));
 			TheAPI.getConsole()
@@ -238,8 +244,8 @@ public class Loader extends JavaPlugin implements Listener {
 			else if (s.hasPermission("servercontrol.fly") && s.hasFlyEnabled())
 				s.enableFly();
 			setupChatFormat(p);
-			if (TheAPI.getEconomyAPI().getEconomy() != null)
-				TheAPI.getEconomyAPI().createAccount(p);
+			if (EconomyAPI.getEconomy() != null)
+				EconomyAPI.createAccount(p);
 		}
 		Utils.Tasks.load();
 		MultiWorldsUtils.EnableWorldCheck();
@@ -254,7 +260,7 @@ public class Loader extends JavaPlugin implements Listener {
 
 	@Override
 	public void onDisable() {
-		TheAPI.getNMSAPI().postToMainThread(new Runnable() {
+		NMSAPI.postToMainThread(new Runnable() {
 			public void run() {
 				for (Player p : TheAPI.getOnlinePlayers()) {
 					p.setFlying(false);
@@ -398,8 +404,8 @@ public class Loader extends JavaPlugin implements Listener {
 			for (String s : Loader.kit.getConfigurationSection("Kits").getKeys(false)) {
 				TheAPI.getConsole().sendMessage(TheAPI.colorize(
 						Loader.s("Prefix") + "&2Kits: Name: " + s + ", Cooldown: "
-								+ TheAPI.getStringUtils()
-										.setTimeToString(TheAPI.getStringUtils()
+								+ StringUtils
+										.setTimeToString(StringUtils
 												.getTimeFromString(Loader.kit.getString("Kits." + s + ".Cooldown")))
 								+ ", Price: $" + API.setMoneyFormat(kit.getDouble("Kits." + s + ".Price"), false)));
 			}
@@ -559,14 +565,14 @@ public class Loader extends JavaPlugin implements Listener {
 		EventC(new Events.FarmingSystem());
 		EventC(new Events.EntitySpawn());
 		try {
-			if (TheAPI.getPluginsManagerAPI().isEnabledPlugin("AFKPlus"))
+			if (PluginManagerAPI.isEnabledPlugin("AFKPlus"))
 				EventC(new Events.AFKPlus());
 		} catch (Exception e) {
 		}
 	}
 
 	public static boolean SoundsChecker() {
-		if (setting.sound && !TheAPI.getSoundAPI().existSound(config.getString("Options.Sounds.Sound"))) {
+		if (setting.sound && !new SoundAPI().existSound(config.getString("Options.Sounds.Sound"))) {
 			TheAPI.msg("", TheAPI.getConsole());
 			TheAPI.msg("", TheAPI.getConsole());
 			TheAPI.msg(Loader.s("Prefix") + Loader.s("SoundErrorMessage"), TheAPI.getConsole());

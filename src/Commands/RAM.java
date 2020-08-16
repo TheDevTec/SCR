@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
+import me.DevTec.MemoryAPI;
 import me.DevTec.TheAPI;
 
 public class RAM implements CommandExecutor {
@@ -26,9 +27,9 @@ public class RAM implements CommandExecutor {
 
 						TheAPI.msg(
 								Loader.s("Prefix")
-										+ ss.replace("%free_ram%", TheAPI.getMemoryAPI().getFreeMemory(false) + "")
-												.replace("%max_ram%", TheAPI.getMemoryAPI().getMaxMemory() + "")
-												.replace("%used_ram%", TheAPI.getMemoryAPI().getUsedMemory(false) + ""),
+										+ ss.replace("%free_ram%", MemoryAPI.getFreeMemory(false) + "")
+												.replace("%max_ram%", MemoryAPI.getMaxMemory() + "")
+												.replace("%used_ram%", MemoryAPI.getUsedMemory(false) + ""),
 								s);
 					}
 					return true;
@@ -36,9 +37,9 @@ public class RAM implements CommandExecutor {
 				List<String> normal = Loader.trans.getStringList("RAM.Info.Percent");
 				for (String sss : normal) {
 					TheAPI.msg(Loader.s("Prefix")
-							+ sss.replace("%used_ram%", TheAPI.getMemoryAPI().getUsedMemory(true) + "")
-									.replace("%max_ram%", TheAPI.getMemoryAPI().getMaxMemory() + "")
-									.replace("%free_ram%", TheAPI.getMemoryAPI().getFreeMemory(true) + ""),
+							+ sss.replace("%used_ram%", MemoryAPI.getUsedMemory(true) + "")
+									.replace("%max_ram%", MemoryAPI.getMaxMemory() + "")
+									.replace("%free_ram%", MemoryAPI.getFreeMemory(true) + ""),
 							s);
 
 				}
@@ -48,7 +49,7 @@ public class RAM implements CommandExecutor {
 				ServerControl.clearing = true;
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("RAM.Clearing"), s);
 				TheAPI.msg(Loader.s("Prefix")
-						+ Loader.s("RAM.Cleared").replace("%cleared%", TheAPI.getMemoryAPI().clearMemory() + ""), s);
+						+ Loader.s("RAM.Cleared").replace("%cleared%", MemoryAPI.clearMemory() + ""), s);
 				ServerControl.clearing = false;
 				return true;
 			}

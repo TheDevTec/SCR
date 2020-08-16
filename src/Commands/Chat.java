@@ -15,6 +15,8 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.EconomyAPI;
+import me.DevTec.PluginManagerAPI;
 import me.DevTec.TheAPI;
 import me.DevTec.Other.User;
 
@@ -79,9 +81,9 @@ public class Chat implements CommandExecutor, TabCompleter {
 				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bVersion&e -----------------", s);
 				TheAPI.msg("", s);
 				TheAPI.msg(Loader.s("Prefix") + "&7Version of ServerControlReloaded: &eV"
-						+ TheAPI.getPluginsManagerAPI().getVersion("ServerControlReloaded"), s);
+						+ PluginManagerAPI.getVersion("ServerControlReloaded"), s);
 				TheAPI.msg(Loader.s("Prefix") + "&7Version of TheAPI: &eV"
-						+ TheAPI.getPluginsManagerAPI().getVersion("TheAPI"), s);
+						+ PluginManagerAPI.getVersion("TheAPI"), s);
 				TheAPI.msg(Loader.s("Prefix") + "&7Version of Server: &e" + Bukkit.getServer().getBukkitVersion(), s);
 				TheAPI.msg(Loader.s("Prefix") + "&7Our discord: &ehttps://discord.gg/z4kK66g", s);
 				return true;
@@ -110,8 +112,8 @@ public class Chat implements CommandExecutor, TabCompleter {
 						for (String a : about) {
 
 							if (Bukkit.getPluginManager().getPlugin("Vault") != null
-									&& TheAPI.getEconomyAPI().getEconomy() != null) {
-								String money = API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true);
+									&& EconomyAPI.getEconomy() != null) {
+								String money = API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true);
 								if (Loader.vault != null) {
 									TheAPI.msg(a.replace("%playername%", p.getDisplayName())
 											.replace("%prefix%", Loader.s("Prefix")).replace("%player%", p.getName())
@@ -177,7 +179,7 @@ public class Chat implements CommandExecutor, TabCompleter {
 						String world = d.getString("DisconnectWorld");
 						if (TheAPI.getPlayer(args[1]) != null)
 							world = TheAPI.getPlayer(args[1]).getName();
-						String money = API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[1]), true);
+						String money = API.setMoneyFormat(EconomyAPI.getBalance(args[1]), true);
 						for (String a : about) {
 							if (Loader.getInstance.getServer().getPluginManager().getPlugin("Vault") != null) {
 								if (Loader.vault != null) {

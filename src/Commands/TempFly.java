@@ -9,6 +9,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class TempFly implements CommandExecutor {
 
@@ -23,7 +24,7 @@ public class TempFly implements CommandExecutor {
 				if (s instanceof Player) {
 					if (API.hasPerm(s, "ServerControl.TempFly")) {
 						API.getSPlayer(TheAPI.getPlayer(s.getName()))
-								.enableTempFly((int) TheAPI.getStringUtils().getTimeFromString(args[0]));
+								.enableTempFly((int) StringUtils.getTimeFromString(args[0]));
 						return true;
 					}
 					return true;
@@ -37,7 +38,7 @@ public class TempFly implements CommandExecutor {
 					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
 				}
-				int sec = (int) TheAPI.getStringUtils().getTimeFromString(args[1]);
+				int sec = (int) StringUtils.getTimeFromString(args[1]);
 				if (t.getPlayer() == s) {
 					if (API.hasPerm(s, "ServerControl.TempFly")) {
 						t.enableTempFly(sec);
@@ -48,7 +49,7 @@ public class TempFly implements CommandExecutor {
 				if (API.hasPerm(s, "ServerControl.TempFly.Other")) {
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("TempFly.EnabledOther").replace("%player%", t.getName())
 							.replace("%playername%", t.getName()).replace("%target%", t.getName())
-							.replace("%time%", TheAPI.getStringUtils().setTimeToString(sec)), s);
+							.replace("%time%", StringUtils.setTimeToString(sec)), s);
 
 					t.enableTempFly(sec);
 					return true;

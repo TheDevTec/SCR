@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class ListCmd implements CommandExecutor {
 	HashMap<Player, String> p = new HashMap<Player, String>(); // Player, group;
@@ -45,7 +46,7 @@ public class ListCmd implements CommandExecutor {
 		}
 		if (w.isEmpty())
 			return "0";
-		return TheAPI.getStringUtils().join(w, ", ");
+		return StringUtils.join(w, ", ");
 	}
 
 	public String allPlayers() {
@@ -55,7 +56,7 @@ public class ListCmd implements CommandExecutor {
 		}
 		if (w.isEmpty())
 			return "0";
-		return TheAPI.getStringUtils().join(w, ", ");
+		return StringUtils.join(w, ", ");
 	}
 
 	public String getPlayersInGroup(String f) {
@@ -67,7 +68,7 @@ public class ListCmd implements CommandExecutor {
 		}
 		if (w.isEmpty())
 			return "";
-		return TheAPI.getStringUtils().join(w, " ");
+		return StringUtils.join(w, " ");
 	}
 
 	@Override

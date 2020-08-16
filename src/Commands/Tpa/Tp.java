@@ -14,6 +14,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class Tp implements CommandExecutor, TabCompleter {
 
@@ -27,7 +28,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 				if (s instanceof Player) {
 					Player target = TheAPI.getPlayer(args[0]);
 					if (target == null) {
-						if (TheAPI.getStringUtils().isInt(args[0])) {
+						if (StringUtils.isInt(args[0])) {
 							Loader.Help(s, "/Tp <x> <y> <z>", "TpaSystem.Tp");
 							return true;
 						} else {
@@ -43,7 +44,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 									s);
 							API.setBack(((Player) s));
 							if (setting.tp_safe)
-								TheAPI.getPlayerAPI((Player) s).safeTeleport(target.getLocation());
+								API.safeTeleport((Player) s,target.getLocation());
 							else ((Player) s).teleport(target);
 							return true;
 						} else {
@@ -67,7 +68,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 					}
 				}
 				if (TheAPI.getPlayer(args[0]) == null) {
-					if (TheAPI.getStringUtils().isInt(args[0])) {
+					if (StringUtils.isInt(args[0])) {
 						Loader.Help(s, "/Tp <player> <x> <y> <z>", "TpaSystem.Tp");
 						return true;
 					} else if (s.hasPermission("ServerControl.Tp.Location"))
@@ -89,13 +90,13 @@ public class Tp implements CommandExecutor, TabCompleter {
 					Player p1 = TheAPI.getPlayer(args[1]);
 					if (p1 == null) {
 						if (s instanceof Player) {
-							if (p0 != null && TheAPI.getStringUtils().isInt(args[1])) {
+							if (p0 != null && StringUtils.isInt(args[1])) {
 								if (s.hasPermission("ServerControl.Tp.Location"))
 									Loader.Help(s, "/Tp <player player|player x y z>", "TpaSystem.Tp");
 								else
 									Loader.Help(s, "/Tp <player> <player>", "TpaSystem.Tp");
 								return true;
-							} else if (p0 == null && TheAPI.getStringUtils().isInt(args[1])) {
+							} else if (p0 == null && StringUtils.isInt(args[1])) {
 								if (s.hasPermission("ServerControl.Tp.Location"))
 									Loader.Help(s, "/Tp <player player|player x y z>", "TpaSystem.Tp");
 								else
@@ -130,7 +131,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 								.replace("%lastplayer%", player1).replace("%lastplayername%", playername1), s);
 						API.setBack(p0);
 						if (setting.tp_safe)
-						TheAPI.getPlayerAPI(p0).safeTeleport(p1.getLocation());
+							API.safeTeleport(p0,p1.getLocation());
 						else
 							p0.teleport(p1.getLocation());
 						return true;
@@ -143,8 +144,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 				
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p == null) {
-						if (TheAPI.getStringUtils().isInt(args[0]) && TheAPI.getStringUtils().isInt(args[1])
-								&& TheAPI.getStringUtils().isInt(args[2])) {
+						if (StringUtils.isInt(args[0]) && StringUtils.isInt(args[1])
+								&& StringUtils.isInt(args[2])) {
 							if (s instanceof Player) {
 								TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpLocation")
 										.replace("%playername%", ((Player) s).getDisplayName())
@@ -152,13 +153,13 @@ public class Tp implements CommandExecutor, TabCompleter {
 										.replace("%world%", ((Player) s).getWorld().getName()).replace("%x%", args[0])
 										.replace("%y%", args[1]).replace("%z%", args[2]), s);
 								Location loc = new Location(((Player) s).getWorld(),
-										TheAPI.getStringUtils().getDouble(args[0]),
-										TheAPI.getStringUtils().getDouble(args[1]),
-										TheAPI.getStringUtils().getDouble(args[2]));
+										StringUtils.getDouble(args[0]),
+										StringUtils.getDouble(args[1]),
+										StringUtils.getDouble(args[2]));
 
 								API.setBack(((Player) s));
 								if (setting.tp_safe)
-									TheAPI.getPlayerAPI((Player) s).safeTeleport(loc);
+									API.safeTeleport((Player)s,loc);
 								else ((Player) s).teleport(loc);
 								return true;
 							} else {
@@ -184,21 +185,20 @@ public class Tp implements CommandExecutor, TabCompleter {
 				if (API.hasPerm(s, "ServerControl.Tp.Location")) {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p != null) {
-						if (TheAPI.getStringUtils().isInt(args[1]) && TheAPI.getStringUtils().isInt(args[2])
-								&& TheAPI.getStringUtils().isInt(args[3])) {
+						if (StringUtils.isInt(args[1]) && StringUtils.isInt(args[2])
+								&& StringUtils.isInt(args[3])) {
 							TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpLocationPlayer")
 									.replace("%world%", p.getWorld().getName())
 									.replace("%playername%", p.getDisplayName()).replace("%player%", p.getName())
 									.replace("%x%", args[1]).replace("%y%", args[2]).replace("%z%", args[3]), s);
 							API.setBack(p);
 							if (setting.tp_safe)
-								TheAPI.getPlayerAPI(p)
-								.safeTeleport(new Location(p.getWorld(), TheAPI.getStringUtils().getDouble(args[1]),
-										TheAPI.getStringUtils().getDouble(args[2]),
-										TheAPI.getStringUtils().getDouble(args[3])));
-							else p.teleport(new Location(p.getWorld(), TheAPI.getStringUtils().getDouble(args[1]),
-									TheAPI.getStringUtils().getDouble(args[2]),
-									TheAPI.getStringUtils().getDouble(args[3])));
+								API.safeTeleport(p,new Location(p.getWorld(), StringUtils.getDouble(args[1]),
+										StringUtils.getDouble(args[2]),
+										StringUtils.getDouble(args[3])));
+							else p.teleport(new Location(p.getWorld(), StringUtils.getDouble(args[1]),
+									StringUtils.getDouble(args[2]),
+									StringUtils.getDouble(args[3])));
 							return true;
 						}
 					} else {

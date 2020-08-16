@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class EnchantTableRemoveAll implements CommandExecutor {
 	@SuppressWarnings("deprecation")
@@ -32,7 +33,7 @@ public class EnchantTableRemoveAll implements CommandExecutor {
 
 							}
 							TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.EnchantsRemoved")
-									.replace("%enchants%", TheAPI.getStringUtils().join(enchants, ", "))
+									.replace("%enchants%", StringUtils.join(enchants, ", "))
 									.replace("%level%", "none").replace("%item%", a.name()), s);
 							return true;
 						}

@@ -16,12 +16,13 @@ import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.WorldsManager.WorldsManager;
 
 public class MultiWorldsUtils {
 	public static void UnloadWorld(String w, CommandSender sender) {
 		if (Bukkit.getWorld(w) == null)
 			return;
-		if (!TheAPI.getWorldsManager().unloadWorld(w, true)) {
+		if (!WorldsManager.unloadWorld(w, true)) {
 			TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.DoNotUnloaded").replace("%world%", w), sender);
 			return;
 		} else {
@@ -98,19 +99,19 @@ public class MultiWorldsUtils {
 				List<String> worlds = Loader.mw.getStringList("Worlds");
 				switch (type) {
 				case FLAT:
-					TheAPI.getWorldsManager().create(w, Environment.NORMAL, WorldType.FLAT, true, 0);
+					WorldsManager.create(w, Environment.NORMAL, WorldType.FLAT, true, 0);
 					break;
 				case NETHER:
-					TheAPI.getWorldsManager().create(w, Environment.NETHER, WorldType.NORMAL, true, 0);
+					WorldsManager.create(w, Environment.NETHER, WorldType.NORMAL, true, 0);
 					break;
 				case NORMAL:
-					TheAPI.getWorldsManager().create(w, Environment.NORMAL, WorldType.NORMAL, true, 0);
+					WorldsManager.create(w, Environment.NORMAL, WorldType.NORMAL, true, 0);
 					break;
 				case THE_END:
-					TheAPI.getWorldsManager().create(w, Environment.THE_END, WorldType.NORMAL, true, 0);
+					WorldsManager.create(w, Environment.THE_END, WorldType.NORMAL, true, 0);
 					break;
 				case THE_VOID:
-					TheAPI.getWorldsManager().create(w, Environment.NORMAL, null, true, 0);
+					WorldsManager.create(w, Environment.NORMAL, null, true, 0);
 					break;
 				}
 				wws.remove(w);
@@ -253,19 +254,19 @@ public class MultiWorldsUtils {
 					continue;
 				String biome = Loader.mw.getString("WorldsSettings." + w + ".Generator");
 				if (biome.equalsIgnoreCase("NETHER")) {
-					TheAPI.getWorldsManager().create(w, Environment.NETHER, WorldType.NORMAL, true, 0);
+					WorldsManager.create(w, Environment.NETHER, WorldType.NORMAL, true, 0);
 				}
 				if (biome.equalsIgnoreCase("THE_END")) {
-					TheAPI.getWorldsManager().create(w, Environment.THE_END, WorldType.NORMAL, true, 0);
+					WorldsManager.create(w, Environment.THE_END, WorldType.NORMAL, true, 0);
 				}
 				if (biome.equalsIgnoreCase("NORMAL") || biome.equalsIgnoreCase("none")) {
-					TheAPI.getWorldsManager().create(w, Environment.NORMAL, WorldType.NORMAL, true, 0);
+					WorldsManager.create(w, Environment.NORMAL, WorldType.NORMAL, true, 0);
 				}
 				if (biome.equalsIgnoreCase("FLAT")) {
-					TheAPI.getWorldsManager().create(w, Environment.NORMAL, WorldType.FLAT, true, 0);
+					WorldsManager.create(w, Environment.NORMAL, WorldType.FLAT, true, 0);
 				}
 				if (biome.equalsIgnoreCase("THE_VOID")) {
-					TheAPI.getWorldsManager().create(w, Environment.NORMAL, null, true, 0);
+					WorldsManager.create(w, Environment.NORMAL, null, true, 0);
 				}
 			}
 		for (World wa : Bukkit.getWorlds()) {
@@ -280,19 +281,19 @@ public class MultiWorldsUtils {
 		List<String> ww = Loader.mw.getStringList("Unloaded-Worlds");
 		String biome = Loader.mw.getString("WorldsSettings." + s + ".Generator");
 		if (biome.equalsIgnoreCase("NETHER")) {
-			TheAPI.getWorldsManager().create(s, Environment.NETHER, WorldType.NORMAL, true, 0);
+			WorldsManager.create(s, Environment.NETHER, WorldType.NORMAL, true, 0);
 		}
 		if (biome.equalsIgnoreCase("THE_END")) {
-			TheAPI.getWorldsManager().create(s, Environment.THE_END, WorldType.NORMAL, true, 0);
+			WorldsManager.create(s, Environment.THE_END, WorldType.NORMAL, true, 0);
 		}
 		if (biome.equalsIgnoreCase("NORMAL") || biome.equalsIgnoreCase("none")) {
-			TheAPI.getWorldsManager().create(s, Environment.NORMAL, WorldType.NORMAL, true, 0);
+			WorldsManager.create(s, Environment.NORMAL, WorldType.NORMAL, true, 0);
 		}
 		if (biome.equalsIgnoreCase("FLAT")) {
-			TheAPI.getWorldsManager().create(s, Environment.NORMAL, WorldType.FLAT, true, 0);
+			WorldsManager.create(s, Environment.NORMAL, WorldType.FLAT, true, 0);
 		}
 		if (biome.equalsIgnoreCase("THE_VOID")) {
-			TheAPI.getWorldsManager().create(s, Environment.NORMAL, null, true, 0);
+			WorldsManager.create(s, Environment.NORMAL, null, true, 0);
 		}
 		worlds.add(s);
 		ww.remove(s);
@@ -305,6 +306,7 @@ public class MultiWorldsUtils {
 
 	public static void CreateWorld(String s, CommandSender sender) {
 		String biome = Loader.mw.getString("WorldsSettings." + s + ".Generator");
+		if(biome==null)biome="NORMAL";
 		List<String> wws = Loader.mw.getStringList("Deleted-Worlds");
 		List<String> worlds = Loader.mw.getStringList("Worlds");
 		if (Bukkit.getWorld(s) != null) {
@@ -313,19 +315,19 @@ public class MultiWorldsUtils {
 		}
 		if (Bukkit.getWorld(s) == null) {
 			if (biome.equalsIgnoreCase("NETHER")) {
-				TheAPI.getWorldsManager().create(s, Environment.NETHER, WorldType.NORMAL, true, 0);
+				WorldsManager.create(s, Environment.NETHER, WorldType.NORMAL, true, 0);
 			}
 			if (biome.equalsIgnoreCase("THE_END")) {
-				TheAPI.getWorldsManager().create(s, Environment.THE_END, WorldType.NORMAL, true, 0);
+				WorldsManager.create(s, Environment.THE_END, WorldType.NORMAL, true, 0);
 			}
 			if (biome.equalsIgnoreCase("NORMAL") || biome.equalsIgnoreCase("none")) {
-				TheAPI.getWorldsManager().create(s, Environment.NORMAL, WorldType.NORMAL, true, 0);
+				WorldsManager.create(s, Environment.NORMAL, WorldType.NORMAL, true, 0);
 			}
 			if (biome.equalsIgnoreCase("FLAT")) {
-				TheAPI.getWorldsManager().create(s, Environment.NORMAL, WorldType.FLAT, true, 0);
+				WorldsManager.create(s, Environment.NORMAL, WorldType.FLAT, true, 0);
 			}
 			if (biome.equalsIgnoreCase("THE_VOID")) {
-				TheAPI.getWorldsManager().create(s, Environment.NORMAL, null, true, 0);
+				WorldsManager.create(s, Environment.NORMAL, null, true, 0);
 			}
 			wws.remove(s);
 			worlds.add(s);

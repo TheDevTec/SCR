@@ -23,14 +23,16 @@ import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
 import Utils.XMaterial;
+import me.DevTec.ItemCreatorAPI;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class Give implements CommandExecutor, TabCompleter {
 	List<String> list = new ArrayList<String>();
 
 	public Give() {
 		for (Material ss : Material.values()) {
-			if (TheAPI.getItemCreatorAPI(ss).isItem(false))
+			if (new ItemCreatorAPI(ss).isItem(false))
 				list.add(ss.name());
 		}
 		for (String add : Arrays.asList("POTION_OF_", "SPLASH_POTION_OF_", "LINGERING_POTION_OF_")) {
@@ -115,17 +117,17 @@ public class Give implements CommandExecutor, TabCompleter {
 		if (s.toUpperCase().startsWith("POTION_OF_")) {
 			args1 = XMaterial.POTION.parseMaterial();
 			args2 = s.toUpperCase().replaceFirst("POTION_OF_", "").replaceAll("[0-9]", "");
-			args3 = TheAPI.getStringUtils().getInt(s);
+			args3 = StringUtils.getInt(s);
 		}
 		if (s.toUpperCase().startsWith("SPLASH_POTION_OF_")) {
 			args1 = XMaterial.SPLASH_POTION.parseMaterial();
 			args2 = s.toUpperCase().replaceFirst("SPLASH_POTION_OF_", "").replaceAll("[0-9]", "");
-			args3 = TheAPI.getStringUtils().getInt(s);
+			args3 = StringUtils.getInt(s);
 		}
 		if (s.toUpperCase().startsWith("LINGERING_POTION_OF_")) {
 			args1 = XMaterial.LINGERING_POTION.parseMaterial();
 			args2 = s.toUpperCase().replaceFirst("LINGERING_POTION_OF_", "").replaceAll("[0-9]", "");
-			args3 = TheAPI.getStringUtils().getInt(s);
+			args3 = StringUtils.getInt(s);
 
 		}
 		if (args1 == null)
@@ -391,8 +393,8 @@ public class Give implements CommandExecutor, TabCompleter {
 		if (multi) {
 			for (PotionEffectType f : a.keySet()) { // effect
 				String[] o = a.get(f).split(":");// values
-				int i = TheAPI.getStringUtils().getInt(o[0].toString());
-				int ib = TheAPI.getStringUtils().getInt(o[1].toString());
+				int i = StringUtils.getInt(o[0].toString());
+				int ib = StringUtils.getInt(o[1].toString());
 				g.addCustomEffect(new PotionEffect(f, i * 20, (ib == 0 ? 1 : ib)), true);
 			}
 		} else
@@ -468,11 +470,11 @@ public class Give implements CommandExecutor, TabCompleter {
 								TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).get().parseMaterial(), 1);
 							else {
 								ItemStack a = getPotion(g);
-								a.setAmount(TheAPI.getStringUtils().getInt(args[1]));
+								a.setAmount(StringUtils.getInt(args[1]));
 								TheAPI.giveItem(ps, a);
 							}
 							TheAPI.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Give.Given"), ps)
-									.replace("%amount%", TheAPI.getStringUtils().getInt(args[1]) + "")
+									.replace("%amount%", StringUtils.getInt(args[1]) + "")
 									.replace("%item%", getItem(g)), s);
 							return true;
 
@@ -514,15 +516,15 @@ public class Give implements CommandExecutor, TabCompleter {
 						if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
 								&& !g.startsWith("POTION_OF_"))
 							TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).get().parseMaterial(),
-									TheAPI.getStringUtils().getInt(args[2]));
+									StringUtils.getInt(args[2]));
 						else {
 							ItemStack a = getPotion(g);
-							a.setAmount(TheAPI.getStringUtils().getInt(args[2]));
+							a.setAmount(StringUtils.getInt(args[2]));
 							TheAPI.giveItem(ps, a);
 						}
 						TheAPI.msg(Loader.s("Prefix")
 								+ API.replacePlayerName(Loader.s("Give.Given"), ps).replace("%item%", getItem(g))
-										.replace("%amount%", TheAPI.getStringUtils().getInt(args[2]) + ""),
+										.replace("%amount%", StringUtils.getInt(args[2]) + ""),
 								s);
 						return true;
 					}
@@ -531,7 +533,7 @@ public class Give implements CommandExecutor, TabCompleter {
 				}
 				if (args[0].equals("*")) {
 					Repeat.a(s, "give * " + args[1].toLowerCase().replaceFirst("minecraft:", "").toUpperCase() + " "
-							+ TheAPI.getStringUtils().getInt(args[2]));
+							+ StringUtils.getInt(args[2]));
 					return true;
 				}
 				TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);

@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.PlayerAPI.InvseeType;
 import me.DevTec.TheAPI;
 
 public class EnderChest implements CommandExecutor {
@@ -18,7 +17,7 @@ public class EnderChest implements CommandExecutor {
 			if (s instanceof Player) {
 				if (args.length == 0) {
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChest"), s);
-					TheAPI.getPlayerAPI((Player) s).invsee((Player) s, InvseeType.ENDERCHEST);
+					((Player)s).openInventory(((Player)s).getEnderChest());
 					return true;
 				}
 				if (args.length == 1) {
@@ -30,7 +29,7 @@ public class EnderChest implements CommandExecutor {
 					TheAPI.msg(Loader.s("Prefix")
 							+ Loader.s("Inventory.OpeningEnderChestOther").replace("%playername%", p.getDisplayName()),
 							s);
-					TheAPI.getPlayerAPI((Player) s).invsee(p, InvseeType.ENDERCHEST);
+					((Player)s).openInventory(p.getEnderChest());
 					return true;
 
 				}
@@ -47,7 +46,7 @@ public class EnderChest implements CommandExecutor {
 					}
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChestOther")
 							.replace("%playername%", p.getDisplayName()).replace("%target%", t.getDisplayName()), s);
-					TheAPI.getPlayerAPI(t).invsee(p, InvseeType.ENDERCHEST);
+					t.openInventory(p.getEnderChest());
 					return true;
 
 				}

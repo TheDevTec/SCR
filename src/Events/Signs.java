@@ -13,6 +13,7 @@ import org.bukkit.event.block.SignChangeEvent;
 
 import ServerControl.Loader;
 import Utils.Colors;
+import me.DevTec.SignAPI;
 import me.DevTec.SignAPI.SignAction;
 import me.DevTec.TheAPI;
 
@@ -46,7 +47,7 @@ public class Signs implements Listener {
 				e.setLine(1, TheAPI.colorize("&a" + warp(f)));
 				e.getBlock().getState().update();
 				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Warp " + warp(f)));
-				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+				SignAPI.setActions((Sign) e.getBlock().getState(), a);
 			}
 		}
 		if (l.equalsIgnoreCase("[workbench]") && p.hasPermission("ServerControl.SignCreate.Workbench")) {
@@ -54,60 +55,60 @@ public class Signs implements Listener {
 			e.getBlock().getState().update();
 
 			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Workbench"));
-			TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+			SignAPI.setActions((Sign) e.getBlock().getState(), a);
 		}
 		if (l.equalsIgnoreCase("[Enderchest]") && p.hasPermission("ServerControl.SignCreate.EnderChest")) {
 			e.setLine(0, TheAPI.colorize("&0[&9EnderChest&0]"));
 			e.getBlock().getState().update();
 
 			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Enderchest"));
-			TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+			SignAPI.setActions((Sign) e.getBlock().getState(), a);
 		}
 		if (l.equalsIgnoreCase("[Suicide]") && p.hasPermission("ServerControl.SignCreate.Suicide")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Suicide&0]"));
 			e.getBlock().getState().update();
 			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Suicide"));
-			TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+			SignAPI.setActions((Sign) e.getBlock().getState(), a);
 		}
 		if (l.equalsIgnoreCase("[repair]") && p.hasPermission("ServerControl.SignCreate.Repair")) {
 			if (f == null) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.getBlock().getState().update();
 				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Repair Hand"));
-				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+				SignAPI.setActions((Sign) e.getBlock().getState(), a);
 			}
 			if (f.equalsIgnoreCase("Hand")) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.setLine(1, TheAPI.colorize("&aHand"));
 				e.getBlock().getState().update();
 				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Repair Hand"));
-				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+				SignAPI.setActions((Sign) e.getBlock().getState(), a);
 			}
 			if (f.equalsIgnoreCase("All")) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.setLine(1, TheAPI.colorize("&aAll"));
 				e.getBlock().getState().update();
 				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Repair All"));
-				TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+				SignAPI.setActions((Sign) e.getBlock().getState(), a);
 			}
 		}
 		if (l.equalsIgnoreCase("[Feed]") && p.hasPermission("ServerControl.SignCreate.Feed")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Feed&0]"));
 			e.getBlock().getState().update();
 			a.put(SignAction.CONSOLE_COMMANDS, Arrays.asList("Feed %player%"));
-			TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+			SignAPI.setActions((Sign) e.getBlock().getState(), a);
 		}
 		if (l.equalsIgnoreCase("[Trash]") && p.hasPermission("ServerControl.SignCreate.Trash")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Trash&0]"));
 			e.getBlock().getState().update();
 			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Trash"));
-			TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+			SignAPI.setActions((Sign) e.getBlock().getState(), a);
 		}
 		if (l.equalsIgnoreCase("[Heal]") && p.hasPermission("ServerControl.SignCreate.Heal")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Heal&0]"));
 			e.getBlock().getState().update();
 			a.put(SignAction.CONSOLE_COMMANDS, Arrays.asList("Heal %player%"));
-			TheAPI.getSignAPI().setActions((Sign) e.getBlock().getState(), a);
+			SignAPI.setActions((Sign) e.getBlock().getState(), a);
 		}
 	}
 }

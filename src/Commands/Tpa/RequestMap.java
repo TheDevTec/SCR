@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import ServerControl.Loader;
 import Utils.setting;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 import me.DevTec.Other.User;
 
 /**
@@ -23,7 +24,7 @@ public class RequestMap {
 		s.setAndSave("Tp." + target + ".Time", System.currentTimeMillis() / 1000);
 		if (setting.tp_onreqloc)
 			s.setAndSave("Tp." + target + ".Location",
-					TheAPI.getStringUtils().getLocationAsString(TheAPI.getPlayer(target).getLocation()));
+					StringUtils.getLocationAsString(TheAPI.getPlayer(target).getLocation()));
 	}
 
 	public static void removeRequest(String target, String sender) {
@@ -47,7 +48,7 @@ public class RequestMap {
 	public static Location getLocation(String p, String t) {
 		User s = TheAPI.getUser(p);
 		if (s.exist("Tp." + t + ".Location"))
-			return TheAPI.getStringUtils().getLocationFromString(s.getString("Tp." + t + ".Location"));
+			return StringUtils.getLocationFromString(s.getString("Tp." + t + ".Location"));
 		return null;
 	}
 
@@ -60,8 +61,7 @@ public class RequestMap {
 	}
 
 	public static boolean containsRequest(String target, String sender) {
-		if (TheAPI.getUser(target).getLong("Tp." + sender + ".Time") - System.currentTimeMillis() / 1000 + TheAPI
-				.getStringUtils().getTimeFromString(Loader.config.getString("Options.Teleport.RequestTime")) > 0)
+		if (TheAPI.getUser(target).getLong("Tp." + sender + ".Time") - System.currentTimeMillis() / 1000 + StringUtils.getTimeFromString(Loader.config.getString("Options.Teleport.RequestTime")) > 0)
 			return true;
 		else {
 			removeRequest(target, sender);

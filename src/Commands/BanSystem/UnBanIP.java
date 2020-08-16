@@ -9,6 +9,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
 import me.DevTec.Bans.PlayerBanList;
+import me.DevTec.Bans.PunishmentAPI;
 
 public class UnBanIP implements CommandExecutor {
 	@Override
@@ -18,13 +19,13 @@ public class UnBanIP implements CommandExecutor {
 				Loader.Help(s, "/UnBanIP <player>", "BanSystem.UnBanIP");
 				return true;
 			}
-			PlayerBanList p = TheAPI.getPunishmentAPI().getBanList(args[0]);
+			PlayerBanList p = PunishmentAPI.getBanList(args[0]);
 			if (p.isIPBanned() || p.isTempIPBanned()) {
 				TheAPI.msg(Loader.s("Prefix")
 						+ Loader.s("BanSystem.UnBanIP").replace("%player%", args[0]).replace("%playername%", args[0]),
 						s);
 
-				TheAPI.getPunishmentAPI().unbanIP(args[0]);
+				PunishmentAPI.unbanIP(args[0]);
 				Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.UnBanIP").replace("%playername%", args[0])
 						.replace("%operator%", s.getName())),"servercontrol.seesilent");
 				

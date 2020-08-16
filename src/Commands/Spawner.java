@@ -19,6 +19,7 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class Spawner implements CommandExecutor, TabCompleter {
 
@@ -69,11 +70,11 @@ public class Spawner implements CommandExecutor, TabCompleter {
 						Block b = getTargetBlock(p, 10);
 						if (b.getType().name() == "SPAWNER") {
 							CreatureSpawner ss = (CreatureSpawner) b.getState();
-							ss.setSpawnCount(TheAPI.getStringUtils().getInt(args[1]));
+							ss.setSpawnCount(StringUtils.getInt(args[1]));
 							ss.update();
 						}
 						TheAPI.msg(Loader.s("Spawner.AmountSet")
-								.replace("%amount%", "" + TheAPI.getStringUtils().getInt(args[1]))
+								.replace("%amount%", "" + StringUtils.getInt(args[1]))
 								.replace("%world%", b.getWorld().getName()).replace("%x%", String.valueOf(b.getX()))
 								.replace("%z%", String.valueOf(b.getZ())).replace("%y%", String.valueOf(b.getY())), s);
 						return true;
@@ -87,11 +88,11 @@ public class Spawner implements CommandExecutor, TabCompleter {
 						Block b = getTargetBlock(p, 10);
 						if (b.getType().name() == "SPAWNER") {
 							CreatureSpawner ss = (CreatureSpawner) b.getState();
-							ss.setRequiredPlayerRange(TheAPI.getStringUtils().getInt(args[1]));
+							ss.setRequiredPlayerRange(StringUtils.getInt(args[1]));
 							ss.update();
 						}
 						TheAPI.msg(Loader.s("Spawner.RangePlayerSet")
-								.replace("%range%", "" + TheAPI.getStringUtils().getInt(args[1]))
+								.replace("%range%", "" + StringUtils.getInt(args[1]))
 								.replace("%world%", b.getWorld().getName()).replace("%x%", String.valueOf(b.getX()))
 								.replace("%z%", String.valueOf(b.getZ())).replace("%y%", String.valueOf(b.getY())), s);
 						return true;
@@ -107,11 +108,11 @@ public class Spawner implements CommandExecutor, TabCompleter {
 					Block b = getTargetBlock(p, 10);
 					if (b.getType().name() == "SPAWNER") {
 						CreatureSpawner ss = (CreatureSpawner) b.getState();
-						ss.setDelay(TheAPI.getStringUtils().getInt(args[1]));
+						ss.setDelay(StringUtils.getInt(args[1]));
 						ss.update();
 					}
 					TheAPI.msg(
-							Loader.s("Spawner.TimeSet").replace("%time%", "" + TheAPI.getStringUtils().getInt(args[1]))
+							Loader.s("Spawner.TimeSet").replace("%time%", "" + StringUtils.getInt(args[1]))
 									.replace("%world%", b.getWorld().getName()).replace("%x%", String.valueOf(b.getX()))
 									.replace("%z%", String.valueOf(b.getZ())).replace("%y%", String.valueOf(b.getY())),
 							s);

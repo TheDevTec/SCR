@@ -18,6 +18,7 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class Item implements CommandExecutor, TabCompleter {
 
@@ -172,18 +173,18 @@ public class Item implements CommandExecutor, TabCompleter {
 							}
 							try {
 								List<String> lore = m.getLore();
-								lore.remove(TheAPI.getStringUtils().getInt(args[2]));
+								lore.remove(StringUtils.getInt(args[2]));
 								m.setLore(lore);
 								item.setItemMeta(m);
 								TheAPI.msg(Loader.s("Prefix")
 										+ Loader.s("Item.SetLore.Remove").replace("%item%", item.getType().name())
-												.replace("%line%", "" + TheAPI.getStringUtils().getInt(args[2])),
+												.replace("%line%", "" + StringUtils.getInt(args[2])),
 										s);
 								return true;
 							} catch (Exception e) {
 								TheAPI.msg(Loader.s("Prefix")
 										+ Loader.s("Item.SetLore.RemoveError").replace("%item%", item.getType().name())
-												.replace("%line%", "" + TheAPI.getStringUtils().getInt(args[2])),
+												.replace("%line%", "" + StringUtils.getInt(args[2])),
 										s);
 								return true;
 							}

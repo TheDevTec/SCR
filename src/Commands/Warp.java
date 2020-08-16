@@ -15,6 +15,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class Warp implements CommandExecutor, TabCompleter {
 
@@ -34,14 +35,14 @@ public class Warp implements CommandExecutor, TabCompleter {
 		if (API.hasPerm(s, "ServerControl.Warp")) {
 			if (Loader.config.getString("Warps") != null) {
 				if (args.length == 0) {
-					TheAPI.msg(Loader.s("Warp.List").replace("%warps%", TheAPI.getStringUtils().join(warpss(s), ", "))
+					TheAPI.msg(Loader.s("Warp.List").replace("%warps%", StringUtils.join(warpss(s), ", "))
 							.replace("%player%", s.getName()).replace("%prefix%", Loader.s("Prefix")), s);
 					return true;
 				}
 				if (args.length == 1) {
 					if (s instanceof Player) {
 						if (warp(args) != null) {
-							Location loc = TheAPI.getStringUtils()
+							Location loc = StringUtils
 									.getLocationFromString(Loader.config.getString("Warps." + warp(args)));
 							if (loc == null) {
 								TheAPI.msg(Loader.s("Warp.CantGetLocation").replace("%warp%", warp(args))
@@ -55,9 +56,9 @@ public class Warp implements CommandExecutor, TabCompleter {
 								if (API.hasPerm(s, "ServerControl.Warp." + warp(args))) {
 									API.setBack((Player) s);
 									if (setting.tp_safe)
-										TheAPI.getPlayerAPI((Player) s).safeTeleport(loc);
+										API.safeTeleport((Player)s, loc);
 									else
-										TheAPI.getPlayerAPI((Player) s).teleport(loc);
+										((Player) s).teleport(loc);
 									TheAPI.msg(Loader.s("Warp.Warping").replace("%warp%", warp(args))
 											.replace("%world%", loc.getWorld().getName())
 											.replace("%player%", s.getName())
@@ -69,9 +70,9 @@ public class Warp implements CommandExecutor, TabCompleter {
 							}
 							API.setBack((Player) s);
 							if (setting.tp_safe)
-								TheAPI.getPlayerAPI((Player) s).safeTeleport(loc);
+								API.safeTeleport((Player)s, loc);
 							else
-								TheAPI.getPlayerAPI((Player) s).teleport(loc);
+								((Player) s).teleport(loc);
 							TheAPI.msg(Loader.s("Warp.Warping").replace("%warp%", warp(args))
 									.replace("%world%", loc.getWorld().getName()).replace("%player%", s.getName())
 									.replace("%playername%", ((Player) s).getDisplayName())
@@ -94,7 +95,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 						return true;
 					} else {
 						if (warp(args) != null) {
-							Location loc = TheAPI.getStringUtils()
+							Location loc = StringUtils
 									.getLocationFromString(Loader.config.getString("Warps." + warp(args)));
 							if (loc == null) {
 								TheAPI.msg(Loader.s("Warp.CantGetLocation").replace("%warp%", warp(args))
@@ -105,9 +106,9 @@ public class Warp implements CommandExecutor, TabCompleter {
 							}
 							API.setBack(p);
 							if (setting.tp_safe)
-								TheAPI.getPlayerAPI(p).safeTeleport(loc);
+								API.safeTeleport(p, loc);
 							else
-								TheAPI.getPlayerAPI(p).teleport(loc);
+								p.teleport(loc);
 							TheAPI.msg(Loader.s("Warp.Warping").replace("%warp%", warp(args))
 									.replace("%world%", loc.getWorld().getName()).replace("%player%", p.getName())
 									.replace("%playername%", p.getDisplayName())

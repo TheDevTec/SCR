@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Bans.PunishmentAPI;
 
 public class SetJail implements CommandExecutor {
 
@@ -20,14 +21,14 @@ public class SetJail implements CommandExecutor {
 					return true;
 				}
 				if (args.length == 1) {
-					if (TheAPI.getPunishmentAPI().getjails().contains(args[0])) {
+					if (PunishmentAPI.getjails().contains(args[0])) {
 						TheAPI.msg(
 								Loader.s("Prefix") + Loader.s("BanSystem.JailAlreadyExist").replace("%jail%", args[0]),
 								s);
 						return true;
 					}
 					Player p = (Player) s;
-					TheAPI.getPunishmentAPI().setjail(p.getLocation(), args[0]);
+					PunishmentAPI.setjail(p.getLocation(), args[0]);
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.CreatedJail").replace("%jail%", args[0]), s);
 					return true;
 				}

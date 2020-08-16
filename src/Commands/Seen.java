@@ -12,6 +12,7 @@ import ServerControl.API;
 import ServerControl.API.SeenType;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class Seen implements CommandExecutor {
 	List<String> getS(String a) {
@@ -44,8 +45,8 @@ public class Seen implements CommandExecutor {
 			if (sim.isEmpty())
 				TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
 			else {
-				TheAPI.msg(Loader.s("Seen.SimiliarNames").replace("%names%", TheAPI.getStringUtils().join(sim, ", "))
-						.replace("%list%", TheAPI.getStringUtils().join(sim, ", ")), s);
+				TheAPI.msg(Loader.s("Seen.SimiliarNames").replace("%names%", StringUtils.join(sim, ", "))
+						.replace("%list%", StringUtils.join(sim, ", ")), s);
 			}
 			return true;
 

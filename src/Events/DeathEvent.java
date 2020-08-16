@@ -16,6 +16,7 @@ import Utils.TabList;
 import Utils.setting;
 import Utils.setting.DeathTp;
 import me.DevTec.TheAPI;
+import me.DevTec.Bans.PunishmentAPI;
 import me.DevTec.Other.User;
 
 public class DeathEvent implements Listener {
@@ -49,8 +50,8 @@ public class DeathEvent implements Listener {
 	public void Respawn(PlayerRespawnEvent e) {
 		Player p = e.getPlayer();
 		try {
-		if (TheAPI.getPunishmentAPI().getBanList(p.getName()).isJailed()
-				|| TheAPI.getPunishmentAPI().getBanList(p.getName()).isTempJailed())
+		if (PunishmentAPI.getBanList(p.getName()).isJailed()
+				|| PunishmentAPI.getBanList(p.getName()).isTempJailed())
 			e.setRespawnLocation((Location) Loader.config.get("Jails." + TheAPI.getUser(p).getString("Jail.Location")));
 		else if (setting.deathspawnbol) {
 			if (setting.deathspawn == DeathTp.HOME)

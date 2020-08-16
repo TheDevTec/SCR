@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 import me.DevTec.Other.User;
 
 public class Homes implements CommandExecutor {
@@ -28,7 +29,7 @@ public class Homes implements CommandExecutor {
 						if (!ne.isEmpty()) {
 							TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.List").replace("%player%", p.getName())
 									.replace("%playername%", p.getDisplayName())
-									.replace("%list%", TheAPI.getStringUtils().join(ne, ", ")), s);
+									.replace("%list%", StringUtils.join(ne, ", ")), s);
 							return true;
 						}
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.ListEmpty").replace("%player%", p.getName())
@@ -55,7 +56,7 @@ public class Homes implements CommandExecutor {
 					if (!ne.isEmpty()) {
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.ListOther").replace("%target%", args[0])
 								.replace("%playername%", args[0])
-								.replace("%list%", TheAPI.getStringUtils().join(ne, ", ")), s);
+								.replace("%list%", StringUtils.join(ne, ", ")), s);
 						return true;
 					}
 					TheAPI.msg(Loader.s("Prefix")

@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.PlayerAPI.InvseeType;
 import me.DevTec.TheAPI;
 
 public class Invsee implements CommandExecutor {
@@ -28,7 +27,7 @@ public class Invsee implements CommandExecutor {
 					}
 					TheAPI.msg(Loader.s("Prefix")
 							+ API.replacePlayerName(Loader.s("Inventory.OpeningInvsee"), p.getName()), s);
-					TheAPI.getPlayerAPI((Player) s).invsee(p, InvseeType.INVENTORY);
+					((Player)s).openInventory(p.getInventory());
 					return true;
 				}
 				Loader.Help(s, "/Invsee <player> <target>", "Invsee");
@@ -49,7 +48,7 @@ public class Invsee implements CommandExecutor {
 						+ API.replacePlayerName(Loader.s("Inventory.OpeningInvseeForTarget"), p.getName())
 								.replace("%target%", t.getDisplayName()),
 						s);
-				TheAPI.getPlayerAPI(t).invsee(p, InvseeType.INVENTORY);
+				t.openInventory(p.getInventory());
 				return true;
 
 			}

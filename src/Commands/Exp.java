@@ -16,6 +16,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class Exp implements CommandExecutor, TabCompleter {
 	public Exp() {
@@ -29,42 +30,64 @@ public class Exp implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (args.length == 0) {
 			if (s.hasPermission("servercontrol.xp.give"))
-				Loader.Help(s, "/Xp Give <player> <amount>", "Xp.Give");
+				Loader.Help(s, "/Xp Give <player> <amount> <xp/level>", "Xp.Give");
 			if (s.hasPermission("servercontrol.xp.take"))
-				Loader.Help(s, "/Xp Take <player> <amount>", "Xp.Take");
+				Loader.Help(s, "/Xp Take <player> <amount> <xp/level>", "Xp.Take");
 			if (s.hasPermission("servercontrol.xp.balance"))
-				Loader.Help(s, "/Xp Balance <player>", "Xp.Balance");
+				Loader.Help(s, "/Xp Balance <player> <xp/level>", "Xp.Balance");
 			if (s.hasPermission("servercontrol.xp.set"))
-				Loader.Help(s, "/Xp Set <player>", "Xp.Set");
+				Loader.Help(s, "/Xp Set <player> <xp/level>", "Xp.Set");
 			return true;
 		}
 		if (isAlias(args[0], "set")) {
 			if (API.hasPerm(s, "servercontrol.xp.set")) {
 				if (args.length == 1 || args.length == 2) {
-					Loader.Help(s, "/Xp Set <player> <amount>", "Xp.Set");
+					Loader.Help(s, "/Xp Set <player> <amount> <xp/level>", "Xp.Set");
 					return true;
 				}
 				Player p = TheAPI.getPlayer(args[1]);
-				if (p == null) {
-					if (args[0].equals("*")) {
-						Repeat.a(s, "xp set * " + TheAPI.getStringUtils().getInt(args[2]));
+				if(args.length==3) {
+					if (p == null) {
+						if (args[0].equals("*")) {
+							Repeat.a(s, "xp set * " + StringUtils.getInt(args[2]));
+							return true;
+						}
+						TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 						return true;
 					}
-					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
+					float add = StringUtils.getInt(args[2]);
+					p.setExp(add>0?add:0);
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Taken").replace("%player%", p.getName())
+							.replace("%playername%", p.getDisplayName())
+							.replace("%amount%", "" + StringUtils.getInt(args[2])), s);
 					return true;
-				}
-				TheAPI.getPlayerAPI(p).setExp(TheAPI.getStringUtils().getInt(args[2]));
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Set").replace("%player%", p.getName())
-						.replace("%playername%", p.getDisplayName())
-						.replace("%amount%", "" + TheAPI.getStringUtils().getInt(args[2])), s);
-				return true;
+					}
+					if (p == null) {
+						if (args[0].equals("*")) {
+							Repeat.a(s, "xp set * " + StringUtils.getInt(args[2])+" "+args[3]);
+							return true;
+						}
+						TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
+						return true;
+					}
+					if(args[3].toLowerCase().contains("level")) {
+						int add = StringUtils.getInt(args[2]);
+						p.setLevel(add>0?add:0);
+					}else {
+						float add = StringUtils.getInt(args[2]);
+						p.setExp(add>0?add:0);
+					}
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Set").replace("%player%", p.getName())
+							.replace("%playername%", p.getDisplayName())
+							.replace("%amount%", "" + StringUtils.getInt(args[2])), s);
+					return true;
 			}
 			return true;
 		}
 		if (isAlias(args[0], "balance")) {
 			if (API.hasPerm(s, "servercontrol.xp.balance")) {
 				if (args.length == 1) {
-					Loader.Help(s, "/Xp Balance <player>", "Xp.Balance");
+					Loader.Help(s, "/Xp Balance <player> <xp/level>", "Xp.Balance");
 					return true;
 				}
 				Player p = TheAPI.getPlayer(args[1]);
@@ -74,7 +97,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 				}
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Balance").replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName())
-						.replace("%amount%", "" + TheAPI.getPlayerAPI(p).getExp()), s);
+						.replace("%amount%", "" +((args.length>=3?args[2].toLowerCase().contains("level"):false)?p.getLevel(): p.getExp())), s);
 				return true;
 			}
 			return true;
@@ -82,57 +105,99 @@ public class Exp implements CommandExecutor, TabCompleter {
 		if (isAlias(args[0], "give")) {
 			if (API.hasPerm(s, "servercontrol.xp.give")) {
 				if (args.length == 1 || args.length == 2) {
-					Loader.Help(s, "/Xp Give <player> <amount>", "Xp.Give");
+					Loader.Help(s, "/Xp Give <player> <amount> <xp/level>", "Xp.Give");
 					return true;
 				}
 				Player p = TheAPI.getPlayer(args[1]);
+				if(args.length==3) {
 				if (p == null) {
 					if (args[0].equals("*")) {
-						Repeat.a(s, "xp give * " + TheAPI.getStringUtils().getInt(args[2]));
+						Repeat.a(s, "xp give * " + StringUtils.getInt(args[2]));
 						return true;
 					}
 					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 					return true;
 				}
-				TheAPI.getPlayerAPI(p).giveExp(TheAPI.getStringUtils().getInt(args[2]));
+				float add = p.getExp()+StringUtils.getInt(args[2]);
+				p.setExp(add>0?add:0);
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Taken").replace("%player%", p.getName())
+						.replace("%playername%", p.getDisplayName())
+						.replace("%amount%", "" + StringUtils.getInt(args[2])), s);
+				return true;
+				}
+				if (p == null) {
+					if (args[0].equals("*")) {
+						Repeat.a(s, "xp give * " + StringUtils.getInt(args[2])+" "+args[3]);
+						return true;
+					}
+					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
+					return true;
+				}
+				if(args[3].toLowerCase().contains("level")) {
+					int add = p.getLevel()+StringUtils.getInt(args[2]);
+					p.setLevel(add>0?add:0);
+				}else {
+					float add = p.getExp()+StringUtils.getInt(args[2]);
+					p.setExp(add>0?add:0);
+				}
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Given").replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName())
-						.replace("%amount%", "" + TheAPI.getStringUtils().getInt(args[2])), s);
+						.replace("%amount%", "" + StringUtils.getInt(args[2])), s);
 				return true;
-			}
-			return true;
-		}
+		}return true;}
 		if (isAlias(args[0], "take")) {
 			if (API.hasPerm(s, "servercontrol.xp.take")) {
 				if (args.length == 1 || args.length == 2) {
-					Loader.Help(s, "/Xp Take <player> <amount>", "Xp.Take");
+					Loader.Help(s, "/Xp Take <player> <amount> <xp/level>", "Xp.Take");
 					return true;
 				}
 				Player p = TheAPI.getPlayer(args[1]);
+				if(args.length==3) {
 				if (p == null) {
 					if (args[0].equals("*")) {
-						Repeat.a(s, "xp take * " + TheAPI.getStringUtils().getInt(args[2]));
+						Repeat.a(s, "xp take * " + StringUtils.getInt(args[2]));
 						return true;
 					}
 					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
 					return true;
 				}
-				TheAPI.getPlayerAPI(p).takeExp(TheAPI.getStringUtils().getInt(args[2]));
+				float take = p.getExp()-StringUtils.getInt(args[2]);
+				p.setExp(take<0?0:take);
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Taken").replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName())
-						.replace("%amount%", "" + TheAPI.getStringUtils().getInt(args[2])), s);
+						.replace("%amount%", "" + StringUtils.getInt(args[2])), s);
+				return true;
+				}
+				if (p == null) {
+					if (args[0].equals("*")) {
+						Repeat.a(s, "xp take * " + StringUtils.getInt(args[2])+" "+args[3]);
+						return true;
+					}
+					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
+					return true;
+				}
+				if(args[3].toLowerCase().contains("level")) {
+					int take = p.getLevel()-StringUtils.getInt(args[2]);
+					p.setLevel(take<0?0:take);
+				}else {
+					float take = p.getExp()-StringUtils.getInt(args[2]);
+					p.setExp(take<0?0:take);
+				}
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Taken").replace("%player%", p.getName())
+						.replace("%playername%", p.getDisplayName())
+						.replace("%amount%", "" + StringUtils.getInt(args[2])), s);
 				return true;
 			}
 			return true;
 		}
 		if (s.hasPermission("servercontrol.xp.give"))
-			Loader.Help(s, "/Xp Give <player> <amount>", "Xp.Give");
+			Loader.Help(s, "/Xp Give <player> <amount> <xp/level>", "Xp.Give");
 		if (s.hasPermission("servercontrol.xp.take"))
-			Loader.Help(s, "/Xp Take <player> <amount>", "Xp.Take");
+			Loader.Help(s, "/Xp Take <player> <amount> <xp/level>", "Xp.Take");
 		if (s.hasPermission("servercontrol.xp.balance"))
-			Loader.Help(s, "/Xp Balance <player>", "Xp.Balance");
+			Loader.Help(s, "/Xp Balance <player> <xp/level>", "Xp.Balance");
 		if (s.hasPermission("servercontrol.xp.set"))
-			Loader.Help(s, "/Xp Set <player>", "Xp.Set");
+			Loader.Help(s, "/Xp Set <player> <xp/level>", "Xp.Set");
 		return true;
 	}
 

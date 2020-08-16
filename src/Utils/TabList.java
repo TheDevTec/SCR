@@ -8,7 +8,12 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.EconomyAPI;
+import me.DevTec.MemoryAPI;
+import me.DevTec.TabListAPI;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
+import me.DevTec.Placeholders.PlaceholderAPI;
 
 public class TabList {
 	private static String group(Player p) {
@@ -60,10 +65,10 @@ public class TabList {
 		String displayname = p.getName();
 		if (p.getDisplayName() != null)
 			displayname = p.getDisplayName();
-		return TheAPI.colorize(TheAPI.getPlaceholderAPI().setPlaceholders(p, header
+		return TheAPI.colorize(PlaceholderAPI.setPlaceholders(p, header
 				
-				.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), false))
-				.replace("%colored_money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true))
+				.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), false))
+				.replace("%colored_money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true))
 				.replace("%online%", TheAPI.getOnlinePlayers().size() + "")
 				.replace("%max_players%", TheAPI.getMaxPlayers() + "")
 				.replace("%ping%", Loader.getInstance.pingPlayer(p))
@@ -81,11 +86,11 @@ public class TabList {
 				.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS))
 				.replace("%player%", p.getName())
 				.replace("%playername%", displayname).replace("%customname%", customname)
-				.replace("%ram_free%", TheAPI.getMemoryAPI().getFreeMemory(false) + "")
-				.replace("%ram_free_percentage%", TheAPI.getMemoryAPI().getFreeMemory(true) + "%")
-				.replace("%ram_usage%", TheAPI.getMemoryAPI().getUsedMemory(false) + "")
-				.replace("%ram_usage_percentage%", TheAPI.getMemoryAPI().getUsedMemory(true) + "%")
-				.replace("%ram_max%", TheAPI.getMemoryAPI().getMaxMemory() + "").replace("%ram_max_percentage%", "100%")																								// :D
+				.replace("%ram_free%", MemoryAPI.getFreeMemory(false) + "")
+				.replace("%ram_free_percentage%", MemoryAPI.getFreeMemory(true) + "%")
+				.replace("%ram_usage%", MemoryAPI.getUsedMemory(false) + "")
+				.replace("%ram_usage_percentage%", MemoryAPI.getUsedMemory(true) + "%")
+				.replace("%ram_max%", MemoryAPI.getMaxMemory() + "").replace("%ram_max_percentage%", "100%")																								// :D
 				.replace("%afk%", Loader.getInstance.isAfk(p))));
 	}
 
@@ -95,7 +100,7 @@ public class TabList {
 		String s1 = TabList.getSuffix(p, true);
 		String s2 = TabList.getSuffix(p, false);
 		String name = getNameFormat(p).replace("%prefix%", (p2!=null?TabList.replace(p2, p):"")).replace("%suffix%", (s2!=null?TabList.replace(s2, p):""));
-		TheAPI.getTabListAPI().setTabListName(p,name);
+		TabListAPI.setTabListName(p,name);
 		NameTagChanger.setNameTag(p, p1!=null?TabList.replace(p1, p):"", s1!=null?TabList.replace(s1, p):"");
 	}
 
@@ -105,14 +110,14 @@ public class TabList {
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			NameTagChanger.remove(p);
 			p.setPlayerListName(p.getName());
-			TheAPI.getTabListAPI().setHeaderFooter(p, "", "");
+			TabListAPI.setHeaderFooter(p, "", "");
 		}
 	}
 
 	private static String get(String path, Player p) {
 		if (setting.tab_header || setting.tab_footer) {
 			if (Loader.tab.getStringList(path) != null) {
-				String a = TheAPI.getStringUtils().join(Loader.tab.getStringList(path), "\n");
+				String a = StringUtils.join(Loader.tab.getStringList(path), "\n");
 				return replace(a, p);
 			}
 		}
@@ -134,6 +139,6 @@ public class TabList {
 	}
 
 	public static void setFooterHeader(Player p) {
-		TheAPI.getTabListAPI().setHeaderFooter(p, getPath(p, "Header"), getPath(p, "Footer"));
+		TabListAPI.setHeaderFooter(p, getPath(p, "Header"), getPath(p, "Footer"));
 	}
 }

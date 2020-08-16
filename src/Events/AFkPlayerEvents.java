@@ -16,6 +16,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import Utils.AFK;
 import me.DevTec.TheAPI;
+import me.DevTec.Bans.PunishmentAPI;
 
 @SuppressWarnings("deprecation")
 public class AFkPlayerEvents implements Listener {
@@ -60,8 +61,8 @@ public class AFkPlayerEvents implements Listener {
 					Loader.s("Prefix") + Loader.s("AFK.NoLongerAFK").replace("%player%", e.getPlayer().getName())
 							.replace("%playername%", e.getPlayer().getDisplayName()));
 		AFK.save(API.getSPlayer(e.getPlayer()));
-		if (TheAPI.getPunishmentAPI().getBanList(e.getPlayer().getName()).isJailed()
-				|| TheAPI.getPunishmentAPI().getBanList(e.getPlayer().getName()).isTempJailed())
+		if (PunishmentAPI.getBanList(e.getPlayer().getName()).isJailed()
+				|| PunishmentAPI.getBanList(e.getPlayer().getName()).isTempJailed())
 			e.setCancelled(true);
 	}
 
@@ -81,8 +82,8 @@ public class AFkPlayerEvents implements Listener {
 					Loader.s("Prefix") + Loader.s("AFK.NoLongerAFK").replace("%player%", e.getPlayer().getName())
 							.replace("%playername%", e.getPlayer().getDisplayName()));
 		AFK.save(API.getSPlayer(e.getPlayer()));
-		if (TheAPI.getPunishmentAPI().getBanList(e.getPlayer().getName()).isJailed()
-				|| TheAPI.getPunishmentAPI().getBanList(e.getPlayer().getName()).isTempJailed())
+		if (PunishmentAPI.getBanList(e.getPlayer().getName()).isJailed()
+				|| PunishmentAPI.getBanList(e.getPlayer().getName()).isTempJailed())
 			e.setCancelled(true);
 	}
 
@@ -93,8 +94,8 @@ public class AFkPlayerEvents implements Listener {
 					Loader.s("Prefix") + Loader.s("AFK.NoLongerAFK").replace("%player%", e.getWhoClicked().getName())
 							.replace("%playername%", ((Player) e.getWhoClicked()).getDisplayName()));
 		AFK.save(API.getSPlayer((Player) e.getWhoClicked()));
-		if (TheAPI.getPunishmentAPI().getBanList(e.getWhoClicked().getName()).isJailed()
-				|| TheAPI.getPunishmentAPI().getBanList(e.getWhoClicked().getName()).isTempJailed())
+		if (PunishmentAPI.getBanList(e.getWhoClicked().getName()).isJailed()
+				|| PunishmentAPI.getBanList(e.getWhoClicked().getName()).isTempJailed())
 			e.setCancelled(true);
 	}
 }

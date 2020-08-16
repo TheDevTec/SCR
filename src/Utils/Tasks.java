@@ -13,7 +13,9 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.ConfigAPI;
+import me.DevTec.MemoryAPI;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 import me.DevTec.Scheduler.Tasker;
 
 public class Tasks {
@@ -75,7 +77,7 @@ public class Tasks {
 						if (timeout == 5 || timeout == 4 || timeout == 3 || timeout == 2 || timeout == 1
 								|| timeout == 15 || timeout == 10 || timeout == 30) {
 							if (s != null)
-								TheAPI.sendActionBar(s,"&6TempFly ends in &c" + TheAPI.getStringUtils().setTimeToString(timeout));
+								TheAPI.sendActionBar(s,"&6TempFly ends in &c" + StringUtils.setTimeToString(timeout));
 						}
 					}}
 		}.repeatingAsync(20, 20));
@@ -199,9 +201,9 @@ public class Tasks {
 				List<String> l = Loader.config.getStringList("Options.AutoMessage.Messages");
 				if (setting.am_random) {
 					TheAPI.broadcastMessage(TheAPI.getRandomFromList(l).toString()
-							.replace("%used_ram%", TheAPI.getMemoryAPI().getUsedMemory(false) + "")
-							.replace("%free_ram%", TheAPI.getMemoryAPI().getFreeMemory(false) + "")
-							.replace("%max_ram%", TheAPI.getMemoryAPI().getMaxMemory() + "")
+							.replace("%used_ram%", MemoryAPI.getUsedMemory(false) + "")
+							.replace("%free_ram%", MemoryAPI.getFreeMemory(false) + "")
+							.replace("%max_ram%", MemoryAPI.getMaxMemory() + "")
 							.replace("%online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
 							.replace("%max_players%", String.valueOf(Bukkit.getMaxPlayers()))
 							.replace("%time%",
@@ -214,9 +216,9 @@ public class Tasks {
 						tests = 0;
 					}
 					TheAPI.broadcastMessage(l.get(tests).toString()
-							.replace("%used_ram%", TheAPI.getMemoryAPI().getUsedMemory(false) + "")
-							.replace("%free_ram%", TheAPI.getMemoryAPI().getFreeMemory(false) + "")
-							.replace("%max_ram%", TheAPI.getMemoryAPI().getMaxMemory() + "")
+							.replace("%used_ram%", MemoryAPI.getUsedMemory(false) + "")
+							.replace("%free_ram%", MemoryAPI.getFreeMemory(false) + "")
+							.replace("%max_ram%", MemoryAPI.getMaxMemory() + "")
 							.replace("%online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
 							.replace("%max_players%", String.valueOf(Bukkit.getMaxPlayers()))
 							.replace("%time%",
@@ -229,6 +231,6 @@ public class Tasks {
 			}
 
 		}.repeatingAsync(20, 20
-				* TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.AutoMessage.Interval"))));
+				* StringUtils.getTimeFromString(Loader.config.getString("Options.AutoMessage.Interval"))));
 	}
 }

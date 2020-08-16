@@ -8,8 +8,11 @@ import org.bukkit.potion.PotionEffect;
 import Events.AFKPlus;
 import Utils.AFK;
 import Utils.setting;
+import me.DevTec.EconomyAPI;
+import me.DevTec.PluginManagerAPI;
 import me.DevTec.TheAPI;
 import me.DevTec.Other.Ref;
+import me.DevTec.Other.StringUtils;
 import me.DevTec.Other.User;
 
 public class SPlayer {
@@ -48,7 +51,7 @@ public class SPlayer {
 		enableTempFly();
 		TheAPI.msg(
 				Loader.s("Prefix")
-						+ Loader.s("TempFly.Enabled").replace("%time%", TheAPI.getStringUtils().setTimeToString(stop)),
+						+ Loader.s("TempFly.Enabled").replace("%time%", StringUtils.setTimeToString(stop)),
 				getPlayer());
 		s.set("TempFly.Start", System.currentTimeMillis());
 		s.set("TempFly.Time", stop);
@@ -85,8 +88,8 @@ public class SPlayer {
 		if (AFKPlus.AFKPlus.containsKey(getName()) && AFKPlus.AFKPlus.get(getName()).isAFK())
 			return true;
 		try {
-			Object user = Ref.invoke(Ref.cast(Ref.getClass("com.earth2me.essentials.Essentials"), TheAPI.getPluginsManagerAPI().getPlugin("Essentials")), Ref.method(Ref.getClass("com.earth2me.essentials.Essentials"), "getUser", Player.class), s);
-			if (TheAPI.getPluginsManagerAPI().isEnabledPlugin("Essentials") && user!=null&& (boolean)Ref.invoke(user, "isAfk"))
+			Object user = Ref.invoke(Ref.cast(Ref.getClass("com.earth2me.essentials.Essentials"), PluginManagerAPI.getPlugin("Essentials")), Ref.method(Ref.getClass("com.earth2me.essentials.Essentials"), "getUser", Player.class), s);
+			if (PluginManagerAPI.isEnabledPlugin("Essentials") && user!=null&& (boolean)Ref.invoke(user, "isAfk"))
 				return true;
 		} catch (Exception er) {
 		}
@@ -194,7 +197,7 @@ public class SPlayer {
 	}
 
 	public void enableGod() {
-		TheAPI.getPlayerAPI(getPlayer()).setGod(true);
+		TheAPI.getUser(s).setAndSave("God", true);
 		heal();
 	}
 
@@ -208,12 +211,12 @@ public class SPlayer {
 	}
 
 	public void disableGod() {
-		TheAPI.getPlayerAPI(getPlayer()).setGod(false);
+		TheAPI.getUser(s).setAndSave("God", false);
 	}
 
 	public void createEconomyAccount() {
-		if (setting.eco_multi && TheAPI.getEconomyAPI().getEconomy() != null)
-			TheAPI.getEconomyAPI().createAccount(s);
+		if (setting.eco_multi && EconomyAPI.getEconomy() != null)
+			EconomyAPI.createAccount(s);
 	}
 
 	public void setGamamode() {
@@ -226,11 +229,11 @@ public class SPlayer {
 	}
 
 	public boolean hasFlyEnabled() {
-		return TheAPI.getPlayerAPI(getPlayer()).allowedFly();
+		return TheAPI.getUser(s).getBoolean("Fly")||getPlayer()!=null&&getPlayer().isFlying();
 	}
 
 	public boolean hasGodEnabled() {
-		return TheAPI.getPlayerAPI(getPlayer()).allowedGod();
+		return TheAPI.getUser(s).getBoolean("God");
 	}
 
 	public boolean hasTempFlyEnabled() {

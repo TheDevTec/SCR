@@ -18,7 +18,9 @@ import Utils.Configs;
 import Utils.MultiWorldsUtils;
 import Utils.Tasks;
 import Utils.setting;
+import me.DevTec.PluginManagerAPI;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class ServerControl implements CommandExecutor, TabCompleter {
 
@@ -65,10 +67,10 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bList &e-----------------", s);
 				TheAPI.msg("", s);
 				TheAPI.msg(Loader.s("Prefix") + "&cSwear words: "
-						+ TheAPI.getStringUtils().join(Loader.config.getStringList("SwearWords"), ", "), s);
+						+ StringUtils.join(Loader.config.getStringList("SwearWords"), ", "), s);
 				TheAPI.msg(
 						Loader.s("Prefix") + "&cSpam words: "
-								+ TheAPI.getStringUtils().join(Loader.config.getStringList("SpamWords.Words"), ", "),
+								+ StringUtils.join(Loader.config.getStringList("SpamWords.Words"), ", "),
 						s);
 				return true;
 			}
@@ -104,9 +106,9 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bVersion&e -----------------", s);
 				TheAPI.msg("", s);
 				TheAPI.msg(Loader.s("Prefix") + "&7Version of ServerControlReloaded: &eV"
-						+ TheAPI.getPluginsManagerAPI().getVersion("ServerControlReloaded"), s);
+						+ PluginManagerAPI.getVersion("ServerControlReloaded"), s);
 				TheAPI.msg(Loader.s("Prefix") + "&7Version of TheAPI: &eV"
-						+ TheAPI.getPluginsManagerAPI().getVersion("TheAPI"), s);
+						+ PluginManagerAPI.getVersion("TheAPI"), s);
 				TheAPI.msg(Loader.s("Prefix") + "&7Version of Server: &e" + Bukkit.getServer().getBukkitVersion(), s);
 				TheAPI.msg(Loader.s("Prefix") + "&7Our discord: &ehttps://discord.gg/z4kK66g", s);
 				return true;

@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Bans.PunishmentAPI;
 
 public class Warn implements CommandExecutor {
 	@SuppressWarnings("deprecation")
@@ -27,7 +28,7 @@ public class Warn implements CommandExecutor {
 						return true;
 					}
 					TheAPI.getUser(args[0]).setAndSave("warns", 1 + TheAPI.getUser(args[0]).getInt("warns"));
-					TheAPI.getPunishmentAPI().warn(args[0], Loader.config.getString("BanSystem.Warn.Text")
+					PunishmentAPI.warn(args[0], Loader.config.getString("BanSystem.Warn.Text")
 							.replace("%reason%", Loader.config.getString("BanSystem.Warn.Reason")));
 					Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Warn").replace("%playername%", args[0])
 							.replace("%reason%", Loader.config.getString("BanSystem.Warn.Reason")).replace("%operator%", s.getName())
@@ -64,7 +65,7 @@ public class Warn implements CommandExecutor {
 						return true;
 					}
 					TheAPI.getUser(args[0]).setAndSave("warns", 1 + TheAPI.getUser(args[0]).getInt("warns"));
-					TheAPI.getPunishmentAPI().warn(args[0],
+					PunishmentAPI.warn(args[0],
 							Loader.config.getString("BanSystem.Warn.Text").replace("%reason%", msg));
 					
 					Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Warn").replace("%playername%", args[0])

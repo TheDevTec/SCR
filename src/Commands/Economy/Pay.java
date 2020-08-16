@@ -8,13 +8,14 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
+import me.DevTec.EconomyAPI;
 import me.DevTec.TheAPI;
 
 public class Pay implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (TheAPI.getEconomyAPI().getEconomy() == null) {
+		if (EconomyAPI.getEconomy() == null) {
 			TheAPI.msg(Loader.s("Prefix") + "&cMissing Vault plugin for economy.", s);
 			return true;
 		}
@@ -36,15 +37,15 @@ public class Pay implements CommandExecutor {
 						if (moneyfromargs.startsWith("-"))
 							moneyfromargs = "0.0";
 						double money = API.convertMoney(args[1]);
-						if (TheAPI.getEconomyAPI().has(p.getName(), money)
+						if (EconomyAPI.has(p.getName(), money)
 								|| s.hasPermission("ServerControl.Economy.InMinus")) {
 							String w = p.getWorld().getName();
-							TheAPI.getEconomyAPI().withdrawPlayer(p.getName(),w, money);
-							TheAPI.getEconomyAPI().depositPlayer(args[0],w, money);
+							EconomyAPI.withdrawPlayer(p.getName(),w, money);
+							EconomyAPI.depositPlayer(args[0],w, money);
 							TheAPI.msg(Loader.s("Economy.PaidTo")
 									.replace("%money%", API.setMoneyFormat(money, true))
 									.replace("%currently%",
-											API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()),
+											API.setMoneyFormat(EconomyAPI.getBalance(s.getName()),
 													true))
 									.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[0])
 									.replace("%playername%", args[0]), s);
@@ -54,7 +55,7 @@ public class Pay implements CommandExecutor {
 										Loader.s("Economy.PaidFrom")
 												.replace("%money%", API.setMoneyFormat(money, true))
 												.replace("%currently%", API.setMoneyFormat(
-														TheAPI.getEconomyAPI().getBalance(args[0]), true))
+														EconomyAPI.getBalance(args[0]), true))
 												.replace("%prefix%", Loader.s("Prefix"))
 												.replace("%player%", s.getName()).replace("%playername%",
 														((Player) s).getDisplayName()),
@@ -64,9 +65,9 @@ public class Pay implements CommandExecutor {
 						}
 						TheAPI.msg(Loader.s("Economy.NoMoney")
 								.replace("%money%",
-										API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
+										API.setMoneyFormat(EconomyAPI.getBalance(s.getName()), true))
 								.replace("%currently%",
-										API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s.getName()), true))
+										API.setMoneyFormat(EconomyAPI.getBalance(s.getName()), true))
 								.replace("%player%", args[0]).replace("%playername%", args[0]), s);
 						return true;
 					}

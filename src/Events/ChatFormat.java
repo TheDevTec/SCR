@@ -16,6 +16,7 @@ import Utils.MultiWorldsGUI;
 import Utils.setting;
 import me.DevTec.TheAPI;
 import me.DevTec.Other.User;
+import me.DevTec.Placeholders.PlaceholderAPI;
 
 @SuppressWarnings("deprecation")
 public class ChatFormat implements Listener {
@@ -80,7 +81,7 @@ public class ChatFormat implements Listener {
 				TheAPI.getCooldownAPI("world-create").removeCooldown(p.getName());
 				d.setAndSave("MultiWorlds-Create", null);
 				d.setAndSave("MultiWorlds-Generator", null);
-				TheAPI.getPlayerAPI(p).sendTitle("", "&6Cancelled");
+				TheAPI.sendTitle(p,"", "&6Cancelled");
 				return;
 			}
 			if (TheAPI.getCooldownAPI("world-create").expired(p.getName())) {
@@ -109,7 +110,7 @@ public class ChatFormat implements Listener {
 			if (Loader.config.getString("Chat-Groups." + Loader.FormatgetGroup(p) + ".Chat") != null) {
 				m = Loader.config.getString("Chat-Groups." + Loader.FormatgetGroup(p) + ".Chat").replace("%", "%%");
 
-				String format = TheAPI.getPlaceholderAPI().setPlaceholders(p,
+				String format = PlaceholderAPI.setPlaceholders(p,
 						Loader.config.getString("Chat-Groups." + Loader.FormatgetGroup(p) + ".Chat"));
 				if (format != null) {
 					format = format.replace("%", "%%");

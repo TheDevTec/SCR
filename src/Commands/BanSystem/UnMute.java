@@ -9,6 +9,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
 import me.DevTec.Bans.PlayerBanList;
+import me.DevTec.Bans.PunishmentAPI;
 
 public class UnMute implements CommandExecutor {
 
@@ -20,12 +21,12 @@ public class UnMute implements CommandExecutor {
 				return true;
 			}
 			if (args.length == 1) {
-				PlayerBanList p = TheAPI.getPunishmentAPI().getBanList(args[0]);
+				PlayerBanList p = PunishmentAPI.getBanList(args[0]);
 				if (p.isMuted() || p.isTempMuted()) {
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.UnMute").replace("%player%", args[0])
 							.replace("%playername%", args[0]), s);
 
-					TheAPI.getPunishmentAPI().unmute(args[0]);
+					PunishmentAPI.unmute(args[0]);
 					if (TheAPI.getPlayer(args[0]) != null)
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.UnMuted").replace("%player%", args[0])
 								.replace("%playername%", args[0]), TheAPI.getPlayer(args[0]));

@@ -39,9 +39,9 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 						API.setBack(p);
 						if (loc != null) {
 							if (setting.tp_safe)
-								TheAPI.getPlayerAPI(p).safeTeleport(loc.toLocation());
+								API.safeTeleport((Player)s,loc.toLocation());
 							else
-								TheAPI.getPlayerAPI(p).teleport(loc);
+								((Player)s).teleport(loc.toLocation());
 							TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.TeleportingToOther")
 									.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 									.replace("%target%", args[0]).replace("%home%", args[1]), s);
@@ -65,9 +65,9 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 						API.setBack(pl);
 						if (loc != null) {
 							if (setting.tp_safe)
-								TheAPI.getPlayerAPI(p).safeTeleport(loc.toLocation());
+								API.safeTeleport(pl,loc.toLocation());
 							else
-								TheAPI.getPlayerAPI(p).teleport(loc);
+								pl.teleport(loc.toLocation());
 							TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.TeleportingOtherToOther")
 									.replace("%player%", pl.getName()).replace("%playername%", pl.getDisplayName())
 									.replace("%target%", args[0]).replace("%home%", args[1]), s);

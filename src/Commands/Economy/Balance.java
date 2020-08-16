@@ -11,13 +11,14 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.EconomyAPI;
 import me.DevTec.TheAPI;
 
 public class Balance implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (TheAPI.getEconomyAPI().getEconomy() == null) {
+		if (EconomyAPI.getEconomy() == null) {
 			TheAPI.msg(Loader.s("Prefix") + "&cMissing Vault plugin for economy.", s);
 			return true;
 		}
@@ -27,9 +28,9 @@ public class Balance implements CommandExecutor, TabCompleter {
 					Player p = (Player) s;
 					TheAPI.msg(Loader.s("Economy.Balance")
 							.replace("%money%",
-									API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true))
+									API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true))
 							.replace("%currently%",
-									API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(p.getName()), true))
+									API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true))
 							.replace("%prefix%", Loader.s("Prefix")).replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName()), s);
 					return true;
@@ -46,9 +47,9 @@ public class Balance implements CommandExecutor, TabCompleter {
 					world = ((Player) s).getWorld().getName();
 
 				TheAPI.msg(Loader.s("Economy.BalanceOther")
-						.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[0], world), true))
+						.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(args[0], world), true))
 						.replace("%currently%",
-								API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(args[0], world), true))
+								API.setMoneyFormat(EconomyAPI.getBalance(args[0], world), true))
 						.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[0])
 						.replace("%playername%", args[0]), s);
 				return true;

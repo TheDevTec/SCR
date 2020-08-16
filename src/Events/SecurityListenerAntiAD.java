@@ -19,6 +19,7 @@ import ServerControl.Loader;
 import ServerControlEvents.PlayerAdvertisementEvent;
 import Utils.setting;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 @SuppressWarnings("deprecation")
 public class SecurityListenerAntiAD implements Listener {
@@ -27,7 +28,7 @@ public class SecurityListenerAntiAD implements Listener {
 	public String getMatches(String where) {
 		String list = null;
 		if (!API.getAdvertisementMatches(where).isEmpty())
-			list = TheAPI.getStringUtils().join(API.getAdvertisementMatches(where), ", ");
+			list = StringUtils.join(API.getAdvertisementMatches(where), ", ");
 		return list;
 	}
 

@@ -8,6 +8,7 @@ import org.bukkit.plugin.Plugin;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.PluginManagerAPI;
 import me.DevTec.TheAPI;
 
 public class Addons implements CommandExecutor {
@@ -34,8 +35,8 @@ public class Addons implements CommandExecutor {
 		}
 		if (args[0].equalsIgnoreCase("enable")) {
 			if (API.hasPerm(s, "ServerControl.Addons")) {
-				String plugin = TheAPI.getPluginsManagerAPI().getPlugin(args[0]).getName();
-				if (TheAPI.getPluginsManagerAPI().enablePlugin(plugin))
+				String plugin = PluginManagerAPI.getPlugin(args[0]).getName();
+				if (PluginManagerAPI.enablePlugin(plugin))
 					TheAPI.msg(Loader.s("Prefix") + "&6Addon " + plugin + " &aenabled", s);
 				else
 					TheAPI.msg(Loader.s("Prefix") + "&cError when enabling addon &4" + plugin, s);
@@ -46,8 +47,8 @@ public class Addons implements CommandExecutor {
 
 		if (args[0].equalsIgnoreCase("disable")) {
 			if (API.hasPerm(s, "ServerControl.Addons")) {
-				String plugin = TheAPI.getPluginsManagerAPI().getPlugin(args[0]).getName();
-				if (TheAPI.getPluginsManagerAPI().disablePlugin(plugin))
+				String plugin = PluginManagerAPI.getPlugin(args[0]).getName();
+				if (PluginManagerAPI.disablePlugin(plugin))
 					TheAPI.msg(Loader.s("Prefix") + "&6Addon " + plugin + " &cdisabled", s);
 				else
 					TheAPI.msg(Loader.s("Prefix") + "&cError when disabling addon &4" + plugin, s);

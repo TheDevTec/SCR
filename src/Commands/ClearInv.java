@@ -16,6 +16,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.EconomyAPI;
 import me.DevTec.TheAPI;
 import me.DevTec.Other.User;
 
@@ -137,7 +138,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 				if (API.hasPerm(s, "ServerControl.ClearInventory.Undo")) {
 					if (undo.containsKey(p)) {
 
-						if (take == 0 || TheAPI.getEconomyAPI().getEconomy() == null) {
+						if (take == 0 || EconomyAPI.getEconomy() == null) {
 							for (ItemStack item : undo.get(p)) {
 								TheAPI.giveItem(p, item);
 							}
@@ -145,13 +146,13 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 							TheAPI.msg(fs + f("ClearInventory.InventoryRetrievedForFree"), s);
 
 							return true;
-						} else if (take != 0 && TheAPI.getEconomyAPI().getEconomy() != null) {
+						} else if (take != 0 && EconomyAPI.getEconomy() != null) {
 
-							if (TheAPI.getEconomyAPI().has(p, take)) {
+							if (EconomyAPI.has(p, take)) {
 								for (ItemStack item : undo.get(p)) {
 									TheAPI.giveItem(p, item);
 								}
-								TheAPI.getEconomyAPI().withdrawPlayer(p, take);
+								EconomyAPI.withdrawPlayer(p, take);
 								undo.remove(p);
 								TheAPI.msg(fs + f("ClearInventory.InventoryRetrievedForMoney").replace("%money%",
 										value(take)), s);

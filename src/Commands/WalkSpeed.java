@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class WalkSpeed implements CommandExecutor {
 
@@ -36,7 +37,7 @@ public class WalkSpeed implements CommandExecutor {
 				return true;
 			} else {
 				if (API.hasPerm(s, "ServerControl.WalkSpeed")) {
-					double flightmodifier = TheAPI.getStringUtils().getDouble(args[0]);
+					double flightmodifier = StringUtils.getDouble(args[0]);
 					if (flightmodifier > 10.0)
 						flightmodifier = 10.0;
 					if (flightmodifier < -10.0)
@@ -55,7 +56,7 @@ public class WalkSpeed implements CommandExecutor {
 			if (API.hasPerm(s, "ServerControl.WalkSpeed")) {
 				Player target = TheAPI.getPlayer(args[0]);
 				if (target != null) {
-					double flightmodifier = TheAPI.getStringUtils().getDouble(args[1]);
+					double flightmodifier = StringUtils.getDouble(args[1]);
 					if (flightmodifier > 10.0)
 						flightmodifier = 10.0;
 					if (flightmodifier < -10.0)

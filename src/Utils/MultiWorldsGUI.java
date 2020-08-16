@@ -24,6 +24,7 @@ import me.DevTec.TheAPI;
 import me.DevTec.GUI.GUICreatorAPI;
 import me.DevTec.GUI.ItemGUI;
 import me.DevTec.Scheduler.Tasker;
+import me.DevTec.WorldsManager.WorldsManager;
 
 public class MultiWorldsGUI {
 
@@ -289,7 +290,7 @@ public class MultiWorldsGUI {
 				@Override
 				public void onClick(Player s, GUICreatorAPI g, ClickType c) {
 					g.close(s);
-					TheAPI.getPlayerAPI(s).sendTitle("&2Write world name", "&2To the chat.");
+					TheAPI.sendTitle(s,"&2Write world name", "&2To the chat.");
 					TheAPI.sendActionBar(s, "&6Type &0'&ccancel&0' &6to cancel.");
 					TheAPI.getCooldownAPI("world-create").createCooldown(s.getName(), 30);
 				}
@@ -318,11 +319,13 @@ public class MultiWorldsGUI {
 			@Override
 			public void onClick(Player s, GUICreatorAPI g, ClickType c) {
 				if (TheAPI.getUser(p).exist("MultiWorlds-Create") && TheAPI.getUser(p).exist("MultiWorlds-Generator")) {
-					openInv(p);
+					g.close(s);
 					Loader.mw.set("WorldsSettings." + TheAPI.getUser(p).getString("MultiWorlds-Create") + ".Generator",
 							TheAPI.getUser(p).getString("MultiWorlds-Generator"));
 					new Tasker() {
 						public void run() {
+							Loader.mw.set("WorldsSettings." + TheAPI.getUser(p).getString("MultiWorlds-Create") + ".Generator",TheAPI.getUser(p).getString("MultiWorlds-Generator"));
+							Loader.mw.save();
 							MultiWorldsUtils.CreateWorld(TheAPI.getUser(p).getString("MultiWorlds-Create"), p);
 							TheAPI.getUser(p).set("MultiWorlds-Generator", null);
 							TheAPI.getUser(p).setAndSave("MultiWorlds-Create", null);
@@ -348,7 +351,7 @@ public class MultiWorldsGUI {
 						worlds.remove(w.getName());
 						ww.remove(w.getName());
 						Loader.mw.set("Worlds", worlds);
-						if (TheAPI.getWorldsManager().delete(w, true)) {
+						if (WorldsManager.delete(w, true)) {
 							TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.Deleted").replace("%world%", w.getName()),s);
 						} else {
 							TheAPI.msg(Loader.s("Prefix")
@@ -392,8 +395,8 @@ public class MultiWorldsGUI {
 					int z_head = Loader.mw.getInt("WorldsSettings." + w.getName() + ".Spawn.Z_Pos_Head");
 					Location loc = new Location(w, x,y, z, x_head, z_head);
 					API.setBack(s);
-					TheAPI.getPlayerAPI(s).setGodOnTime(20);
-					TheAPI.getPlayerAPI(s).teleport(loc);
+					s.setNoDamageTicks(20);
+					s.teleport(loc);
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.TeleportedWorld").replace("%world%", w.getName()),s);
 				}
 			});

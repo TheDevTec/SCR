@@ -6,6 +6,7 @@ import ServerControl.Loader;
 import Utils.setting;
 import me.DevTec.TheAPI;
 import me.DevTec.NMS.Reflections;
+import me.DevTec.Other.StringUtils;
 import me.DevTec.Scheduler.Tasker;
 
 public class BigTask {
@@ -36,7 +37,7 @@ public class BigTask {
 									+ (t == TaskType.STOP ? "Stop" : (t == TaskType.RELOAD ? "Reload" : "Restart"))
 									+ ".Messages"))
 								TheAPI.broadcastMessage(
-										s.replace("%time%", "" + TheAPI.getStringUtils().setTimeToString(f)));
+										s.replace("%time%", "" + StringUtils.setTimeToString(f)));
 						}
 						--f;
 					}

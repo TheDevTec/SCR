@@ -19,29 +19,31 @@ import ServerControl.SPlayer;
 import Utils.Tasks;
 import Utils.setting;
 import me.DevTec.ConfigAPI;
+import me.DevTec.EconomyAPI;
+import me.DevTec.SoundAPI;
 import me.DevTec.TheAPI;
 import me.DevTec.TheAPI.SudoType;
+import me.DevTec.Bans.PunishmentAPI;
 import me.DevTec.Other.StringUtils;
 import me.DevTec.Other.User;
+import me.DevTec.Placeholders.PlaceholderAPI;
 import me.DevTec.Scheduler.Tasker;
 
 public class OnPlayerJoin implements Listener {
 	public OnPlayerJoin() {
 		f = Loader.config;
 		music = Loader.SoundsChecker();
-		join = setting.join_msg;
 		firsttime = f.getInt("Options.Join.FirstJoin.Wait") > 0 ? 20 * f.getInt("Options.Join.FirstJoin.Wait") : 1;
 
 	}
 
-	ConfigAPI f;
-	boolean music, join;
-	int firsttime;
-	StringUtils sd = TheAPI.getStringUtils();
+	private ConfigAPI f;
+	private boolean music;
+	private int firsttime;
 
 	public static String replaceAll(String s, Player p) {
 		String name = p.getDisplayName();
-		return TheAPI.getPlaceholderAPI().setPlaceholders(p, s.replace("%players_max%", TheAPI.getMaxPlayers() + "")
+		return PlaceholderAPI.setPlaceholders(p, s.replace("%players_max%", TheAPI.getMaxPlayers() + "")
 				.replace("%online%", TheAPI.getOnlinePlayers().size() - 1 + "").replace("%player%", name)
 				.replace("%playername%", name)
 				.replace("%customname%", p.getCustomName() != null ? p.getCustomName() : name)
@@ -74,16 +76,14 @@ public class OnPlayerJoin implements Listener {
 							+ Loader.s("Mail.Notification").replace("%number%", "" + d.getStringList("Mails").size()),
 					p);
 		if (music)
-			TheAPI.getSoundAPI().playSound(p, f.getString("Options.Sounds.Sound"));
+			new SoundAPI().playSound(p, f.getString("Options.Sounds.Sound"));
 
-		if (TheAPI.getPunishmentAPI().getBanList(p.getName()).isJailed()
-				|| TheAPI.getPunishmentAPI().getBanList(p.getName()).isTempJailed()) {
+		if (PunishmentAPI.getBanList(p.getName()).isJailed()
+				|| PunishmentAPI.getBanList(p.getName()).isTempJailed()) {
 			if (setting.tp_safe)
-				TheAPI.getPlayerAPI(p)
-						.safeTeleport(sd.getLocationFromString(f.getString("Jails." + d.getString("Jail.Location"))));
+				API.safeTeleport(p,StringUtils.getLocationFromString(f.getString("Jails." + d.getString("Jail.Location"))));
 			else
-				TheAPI.getPlayerAPI(p)
-						.teleport(sd.getLocationFromString(f.getString("Jails." + d.getString("Jail.Location"))));
+				p.teleport(StringUtils.getLocationFromString(f.getString("Jails." + d.getString("Jail.Location"))));
 		} else if (f.getBoolean("OnJoin.SpawnTeleport"))
 			API.teleportPlayer(p, TeleportLocation.SPAWN);
 
@@ -115,8 +115,8 @@ public class OnPlayerJoin implements Listener {
 				}
 			}
 		}
-		if (!TheAPI.getEconomyAPI().hasAccount(p))
-			TheAPI.getEconomyAPI().createAccount(p);
+		if (!EconomyAPI.hasAccount(p))
+			EconomyAPI.createAccount(p);
 		SPlayer s = API.getSPlayer(p);
 		if (s.hasPermission("ServerControl.FlySpeedOnJoin"))
 			s.setFlySpeed();

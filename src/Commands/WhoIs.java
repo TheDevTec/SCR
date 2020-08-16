@@ -20,6 +20,8 @@ import ServerControl.Loader;
 import me.DevTec.TheAPI;
 import me.DevTec.Bans.PlayerBanList;
 import me.DevTec.Bans.PlayerBanList.PunishmentType;
+import me.DevTec.Bans.PunishmentAPI;
+import me.DevTec.Other.StringUtils;
 import me.DevTec.Other.User;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
@@ -59,7 +61,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 				TheAPI.msg(Loader.PlayerNotEx(a[0]), s);
 				return true;
 			}
-			String ip = TheAPI.getPunishmentAPI().getIP(a[0]);
+			String ip = PunishmentAPI.getIP(a[0]);
 			if (ip == null)
 				ip = "&7Uknown";
 			String what = "Offline";
@@ -93,27 +95,27 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			TheAPI.msg("&6IP: &a" + ip.replaceFirst("/", ""), s);
 			TheAPI.msg("&6Country: &a" + getCountry(ip), s);
 			TheAPI.msg("&6Punishment: &a", s);
-			PlayerBanList d = TheAPI.getPunishmentAPI().getBanList(a[0]);
+			PlayerBanList d = PunishmentAPI.getBanList(a[0]);
 			if (d.isMuted()) {
 				TheAPI.msg("  &6Muted", s);
 			}
 			if (d.isTempMuted()) {
 				long tmtime = d.getExpire(PunishmentType.TEMPMUTE);
-				TheAPI.msg("  &6TempMuted: &a" + TheAPI.getStringUtils().setTimeToString(tmtime), s);
+				TheAPI.msg("  &6TempMuted: &a" + StringUtils.setTimeToString(tmtime), s);
 			}
 			if (d.isJailed()) {
 				TheAPI.msg("  &6Jailed", s);
 			}
 			if (d.isTempJailed()) {
 				long tjtime = d.getExpire(PunishmentType.TEMPJAIL);
-				TheAPI.msg("  &6Temp-arrested: &a" + TheAPI.getStringUtils().setTimeToString(tjtime), s);
+				TheAPI.msg("  &6Temp-arrested: &a" + StringUtils.setTimeToString(tjtime), s);
 			}
 			if (d.isBanned()) {
 				TheAPI.msg("  &6Banned", s);
 			}
 			if (d.isTempBanned()) {
 				long tbtime = d.getExpire(PunishmentType.TEMPBAN);
-				TheAPI.msg("  &6TempBanned: &a" + TheAPI.getStringUtils().setTimeToString(tbtime), s);
+				TheAPI.msg("  &6TempBanned: &a" + StringUtils.setTimeToString(tbtime), s);
 			}
 
 			if (d.isIPBanned()) {
@@ -121,7 +123,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			}
 			if (d.isTempIPBanned()) {
 				long tbiptime = d.getExpire(PunishmentType.TEMPBANIP);
-				TheAPI.msg("  &6TempIPBanned: &a" + TheAPI.getStringUtils().setTimeToString(tbiptime), s);
+				TheAPI.msg("  &6TempIPBanned: &a" + StringUtils.setTimeToString(tbiptime), s);
 			}
 			TheAPI.msg("&8---------------", s);
 			return true;

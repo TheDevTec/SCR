@@ -192,7 +192,7 @@ public class SecurityListenerV3 implements Listener {
 					return;
 				}
 				if (BigTask.r == -1)
-					BigTask.start(TaskType.RELOAD, TheAPI.getStringUtils().getTimeFromString(args[0]));
+					BigTask.start(TaskType.RELOAD, StringUtils.getTimeFromString(args[0]));
 				return;
 			}return;}
 			if(e.getMessage().toLowerCase().startsWith("/restart")) {
@@ -213,7 +213,7 @@ public class SecurityListenerV3 implements Listener {
 					return;
 				}
 				if (BigTask.r == -1)
-					BigTask.start(TaskType.RESTART, TheAPI.getStringUtils().getTimeFromString(args[0]));
+					BigTask.start(TaskType.RESTART, StringUtils.getTimeFromString(args[0]));
 				return;
 			}return;}
 			if(e.getMessage().toLowerCase().startsWith("/stop")) {
@@ -234,7 +234,7 @@ public class SecurityListenerV3 implements Listener {
 					return;
 				}
 				if (BigTask.r == -1)
-					BigTask.start(TaskType.STOP, TheAPI.getStringUtils().getTimeFromString(args[0]));
+					BigTask.start(TaskType.STOP, StringUtils.getTimeFromString(args[0]));
 				return;
 			}return;}
 			

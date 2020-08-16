@@ -13,6 +13,7 @@ import me.DevTec.ConfigAPI;
 import me.DevTec.ScoreboardAPI;
 import me.DevTec.TheAPI;
 import me.DevTec.Other.ScoreboardType;
+import me.DevTec.Placeholders.PlaceholderAPI;
 
 public class ScoreboardStats {
 	public ScoreboardStats() {
@@ -44,7 +45,7 @@ public class ScoreboardStats {
 		a.setDisplayName(getName);
 		int line = getLine.size();
 		for (String ss : getLine) {
-			a.setLine(line,TheAPI.getPlaceholderAPI().setPlaceholders(p, TabList.replace(ss, p)));
+			a.setLine(line,PlaceholderAPI.setPlaceholders(p, TabList.replace(ss, p)));
 			--line;
 		}
 	}

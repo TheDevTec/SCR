@@ -17,9 +17,11 @@ import ServerControl.Loader;
 import Utils.Repeat;
 import Utils.XMaterial;
 import me.DevTec.CooldownAPI;
+import me.DevTec.EconomyAPI;
 import me.DevTec.EnchantmentAPI;
 import me.DevTec.ItemCreatorAPI;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class Kit implements CommandExecutor, TabCompleter {
 	public List<String> kits(CommandSender p) {
@@ -63,29 +65,29 @@ public class Kit implements CommandExecutor, TabCompleter {
 					setupKit(p, KitName);
 					return;
 				} else {
-					if (TheAPI.getEconomyAPI().has(s, Loader.kit.getDouble("Kits." + KitName + ".Price"))) {
+					if (EconomyAPI.has(s, Loader.kit.getDouble("Kits." + KitName + ".Price"))) {
 						setupKit(p, KitName);
 						TheAPI.msg(
 								Loader.s("Prefix") + Loader.s("Kit.Used").replace("%kit%", getKitName(KitName))
 										.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),
 								p);
-						TheAPI.getEconomyAPI().withdrawPlayer(s, Loader.kit.getDouble("Kits." + KitName + ".Price"));
+						EconomyAPI.withdrawPlayer(s, Loader.kit.getDouble("Kits." + KitName + ".Price"));
 						return;
 					}
 					TheAPI.msg(Loader.s("Economy.NoMoney")
-							.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s), true))
-							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s), true))
+							.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(s), true))
+							.replace("%currently%", API.setMoneyFormat(EconomyAPI.getBalance(s), true))
 							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
 					return;
 				}
 			} else {
 				if (economy) {
-					if (TheAPI.getEconomyAPI().has(s, Loader.kit.getDouble("Kits." + KitName + ".Price"))) {
+					if (EconomyAPI.has(s, Loader.kit.getDouble("Kits." + KitName + ".Price"))) {
 						CooldownAPI a = TheAPI.getCooldownAPI(s);
 						if (!a.expired("Kit." + KitName)) {
 							TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.Cooldown")
 									.replace("%cooldown%",
-											TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire("Kit." + KitName)))
+											StringUtils.setTimeToString(a.getTimeToExpire("Kit." + KitName)))
 									.replace("%kit%", getKitName(KitName)).replace("%player%", p.getName())
 									.replace("%playername%", p.getDisplayName()), p);
 							return;
@@ -96,20 +98,20 @@ public class Kit implements CommandExecutor, TabCompleter {
 										.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),
 								p);
 						a.createCooldown("Kit." + KitName, Loader.kit.getDouble("Kits." + KitName + ".Cooldown"));
-						TheAPI.getEconomyAPI().withdrawPlayer(s,
+						EconomyAPI.withdrawPlayer(s,
 								Loader.kit.getDouble("Kits." + getKitName(KitName) + ".Price"));
 						return;
 					}
 					TheAPI.msg(Loader.s("Economy.NoMoney")
-							.replace("%money%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s), true))
-							.replace("%currently%", API.setMoneyFormat(TheAPI.getEconomyAPI().getBalance(s), true))
+							.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(s), true))
+							.replace("%currently%", API.setMoneyFormat(EconomyAPI.getBalance(s), true))
 							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
 					return;
 				} else {
 					CooldownAPI a = TheAPI.getCooldownAPI(s);
 					if (!a.expired("Kit." + KitName)) {
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.Cooldown")
-								.replace("%cooldown%", TheAPI.getStringUtils().setTimeToString(a.getTimeToExpire("Kit." + KitName)))
+								.replace("%cooldown%", StringUtils.setTimeToString(a.getTimeToExpire("Kit." + KitName)))
 								.replace("%kit%", getKitName(KitName)).replace("%player%", p.getName())
 								.replace("%playername%", p.getDisplayName()), p);
 						return;
@@ -137,7 +139,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 					return;
 				}
 
-				ItemCreatorAPI a = TheAPI.getItemCreatorAPI(m);
+				ItemCreatorAPI a = new ItemCreatorAPI(m);
 				int numb = 1;
 				if (Loader.kit.getInt("Kits." + kitName + ".Items." + def + ".Amount") != 0)
 					numb = Loader.kit.getInt("Kits." + kitName + ".Items." + def + ".Amount");
@@ -160,7 +162,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 							Loader.warn(
 									"Error when giving kit '" + kitName + "', enchant '" + nonum + "' is invalid !");
 						} else {
-							a.addEnchantment(nonum, TheAPI.getStringUtils()
+							a.addEnchantment(nonum, StringUtils
 									.getInt(enchs.replace(":", "").replace("_", "").replace(" ", "")));
 						}
 					}
@@ -173,7 +175,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (args.length == 0) {
 			TheAPI.msg(Loader.s("Prefix") + Loader.s("Kit.List").replace("%player%", s.getName())
-					.replace("%kits%", TheAPI.getStringUtils().join(kits(s), ", "))
+					.replace("%kits%", StringUtils.join(kits(s), ", "))
 					.replace("%playername%", s.getName()), s);
 			return true;
 		}

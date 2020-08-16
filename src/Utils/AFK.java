@@ -4,13 +4,14 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 import me.DevTec.Scheduler.Tasker;
 
 public class AFK {
 
 	private static String afkMsg = Loader.s("Prefix") + Loader.s("AFK.IsAFK");
-	private static long time = TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK")),
-			rkick = TheAPI.getStringUtils().getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
+	private static long time = StringUtils.getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK")),
+			rkick = StringUtils.getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
 
 	public static void start() {
 		new Tasker() {

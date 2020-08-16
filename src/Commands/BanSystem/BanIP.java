@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Bans.PunishmentAPI;
 
 public class BanIP implements CommandExecutor {
 
@@ -26,7 +27,7 @@ public class BanIP implements CommandExecutor {
 							.replace("%target%", args[0]), s);
 					return true;
 				}
-				TheAPI.getPunishmentAPI().banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text")
+				PunishmentAPI.banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text")
 						.replace("%reason%", Loader.config.getString("BanSystem.BanIP.Reason")));
 				
 				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.BanIP").replace("%playername%", args[0])
@@ -56,7 +57,7 @@ public class BanIP implements CommandExecutor {
 							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
 					return true;
 				}
-				TheAPI.getPunishmentAPI().banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text")
+				PunishmentAPI.banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text")
 						.replace("%reason%", Loader.config.getString("BanSystem.BanIP.Reason")));
 				
 				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.BanIP").replace("%playername%", args[0])

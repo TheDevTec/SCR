@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Blocks.BlocksAPI;
+import me.DevTec.Other.StringUtils;
 
 public class Butcher implements CommandExecutor {
 
@@ -29,7 +31,7 @@ public class Butcher implements CommandExecutor {
 			int killed = 0;
 			if (radius > 1000000)
 				radius = 1000000;
-			for (Entity e : TheAPI.getBlocksAPI().getNearbyEntities(w, radius)) {
+			for (Entity e : BlocksAPI.getNearbyEntities(w, radius)) {
 				if (e instanceof Player == false) {
 					++killed;
 					e.remove();
@@ -60,7 +62,7 @@ public class Butcher implements CommandExecutor {
 					return true;
 				}
 				TheAPI.msg(Loader.s("Butcher.Killed").replace("%amount%", butcher(((Player) s).getWorld(),
-						((Player) s).getLocation(), TheAPI.getStringUtils().getInt(args[0])) + ""), s);
+						((Player) s).getLocation(), StringUtils.getInt(args[0])) + ""), s);
 				return true;
 			}
 		}

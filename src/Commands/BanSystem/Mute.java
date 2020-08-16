@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Bans.PunishmentAPI;
 
 public class Mute implements CommandExecutor {
 
@@ -28,13 +29,13 @@ public class Mute implements CommandExecutor {
 					return true;
 				}
 				String msg = Loader.config.getString("BanSystem.Mute.Reason");
-				TheAPI.getPunishmentAPI().mute(args[0],
+				PunishmentAPI.mute(args[0],
 						Loader.config.getString("BanSystem.Mute.Text").replace("%reason%", msg));
 				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Mute").replace("%playername%", args[0])
-						.replace("%reason%", Loader.config.getString("BanSystem.Mute.Reason")).replace("%operator%", s.getName())//toto se pošle všem
+						.replace("%reason%", Loader.config.getString("BanSystem.Mute.Reason")).replace("%operator%", s.getName())//toto se poï¿½le vï¿½em
 						));
 				TheAPI.sendMessage(Loader.s("BanSystem.Mute").replace("%playername%", args[0])
-						.replace("%reason%", Loader.config.getString("BanSystem.Mute.Reason")).replace("%operator%", s.getName()), s);//toto tobì
+						.replace("%reason%", Loader.config.getString("BanSystem.Mute.Reason")).replace("%operator%", s.getName()), s);//toto tobï¿½
 				return true;
 			}
 			if (args.length >= 2) {
@@ -57,7 +58,7 @@ public class Mute implements CommandExecutor {
 							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
 					return true;
 				}
-				TheAPI.getPunishmentAPI().mute(args[0],
+				PunishmentAPI.mute(args[0],
 						Loader.config.getString("BanSystem.Mute.Text").replace("%reason%", msg));
 				
 				return true;

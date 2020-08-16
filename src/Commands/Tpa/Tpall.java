@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 import me.DevTec.Other.User;
 
 public class Tpall implements CommandExecutor, TabCompleter {
@@ -37,7 +38,7 @@ public class Tpall implements CommandExecutor, TabCompleter {
 					}
 				}
 				TheAPI.msg(Loader.s("Prefix")
-						+ Loader.s("TpaSystem.Tpall").replace("%players%", TheAPI.getStringUtils().join(list, ", ")),
+						+ Loader.s("TpaSystem.Tpall").replace("%players%", StringUtils.join(list, ", ")),
 						s);
 				return true;
 			}

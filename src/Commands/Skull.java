@@ -34,7 +34,7 @@ public class Skull implements CommandExecutor {
 			if (args.length == 1) {
 				if (s instanceof Player) {
 					String player = args[0];
-					ItemCreatorAPI w = TheAPI.getItemCreatorAPI(getMaterial());
+					ItemCreatorAPI w = new ItemCreatorAPI(getMaterial());
 					w.setOwner(player);
 					w.setSkullType(SkullType.PLAYER);
 					w.setDisplayName("&6" + player + "'s Head");
@@ -49,7 +49,7 @@ public class Skull implements CommandExecutor {
 				Player p = TheAPI.getPlayer(args[1]);
 				if (p != null) {
 					String player = args[0];
-					ItemCreatorAPI w = TheAPI.getItemCreatorAPI(getMaterial());
+					ItemCreatorAPI w = new ItemCreatorAPI(getMaterial());
 					w.setOwner(player);
 					w.setSkullType(SkullType.PLAYER);
 					w.setDisplayName("&6" + player + "'s Head");

@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Bans.PunishmentAPI;
 
 public class DelJail implements CommandExecutor {
 
@@ -18,11 +19,11 @@ public class DelJail implements CommandExecutor {
 				return true;
 			}
 			if (args.length == 1) {
-				if (!TheAPI.getPunishmentAPI().getjails().contains(args[0])) {
+				if (!PunishmentAPI.getjails().contains(args[0])) {
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.JailNotExist").replace("%jail%", args[0]), s);
 					return true;
 				}
-				TheAPI.getPunishmentAPI().deljail(args[0]);
+				PunishmentAPI.deljail(args[0]);
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.DeletedJail").replace("%jail%", args[0]), s);
 				return true;
 			}

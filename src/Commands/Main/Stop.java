@@ -13,7 +13,7 @@ import org.bukkit.util.StringUtil;
 import Commands.Main.BigTask.TaskType;
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class Stop implements CommandExecutor, TabCompleter {
 
@@ -33,7 +33,7 @@ public class Stop implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (BigTask.r == -1)
-				BigTask.start(TaskType.STOP, TheAPI.getStringUtils().getTimeFromString(args[0]));
+				BigTask.start(TaskType.STOP, StringUtils.getTimeFromString(args[0]));
 			return true;
 		}
 		return true;

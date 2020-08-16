@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.StringUtils;
 
 public class Staff implements CommandExecutor {
 
@@ -41,7 +42,7 @@ public class Staff implements CommandExecutor {
 	public static String getStaff() {
 		if (p.isEmpty())
 			return "0";
-		return TheAPI.getStringUtils().join(p, ", ");
+		return StringUtils.join(p, ", ");
 	}
 
 	@Override
