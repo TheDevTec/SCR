@@ -108,7 +108,7 @@ public class Item implements CommandExecutor, TabCompleter {
 									+ Loader.s("Item.HideEnchants.true").replace("%item%", item.getType().name()), s);
 							return true;
 						} else if (args[1].equalsIgnoreCase("false") || args[1].equalsIgnoreCase("no")) {
-							m.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+							m.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
 							item.setItemMeta(m);
 							TheAPI.msg(Loader.s("Prefix")
 									+ Loader.s("Item.HideEnchants.false").replace("%item%", item.getType().name()), s);
