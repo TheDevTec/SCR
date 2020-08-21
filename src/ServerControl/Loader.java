@@ -402,32 +402,16 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public String ver() {
+		if(TheAPI.isOlderThan(7))return null;
 		String v = null;
 		String r = TheAPI.getServerVersion();
 		if (r.equals("v1_7_R4")) { // required testing!
 			v = "1.7.10";
-		}
-		if (r.contains("1_8")) { // required testing! (1.8 to 1.8.8)
-			v = "1.8+";
-		}
-		if (r.contains("1_9")) {
-			v = "1.9+";
-		}
-		if (r.contains("1_10")) {
-			v = "1.10+";
-		}
-		if (r.contains("1_11")) {
-			v = "1.11+";
-		}
-		if (r.contains("1_12")) {
-			v = "1.12+";
-		}
+		}else
 		if (r.equalsIgnoreCase("glowstone")) {
 			v = "Glowstone";
-		}
-		if (TheAPI.isNewVersion()) {// v1_15_1 ... 1_15
+		}else
 			v = r.substring(1, 5).replace("_", ".") + "+";
-		}
 		return v;
 	}
 
