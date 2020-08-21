@@ -6,13 +6,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
-import Utils.TabList;
 import Utils.setting;
 import Utils.setting.DeathTp;
 import me.DevTec.TheAPI;
@@ -20,11 +18,6 @@ import me.DevTec.Bans.PunishmentAPI;
 import me.DevTec.Other.User;
 
 public class DeathEvent implements Listener {
-
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void PlayerDeath(PlayerAdvancementDoneEvent e) {
-		TabList.setNameTag(e.getPlayer());
-	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PlayerDeath(PlayerDeathEvent e) {

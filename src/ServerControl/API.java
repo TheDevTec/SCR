@@ -19,9 +19,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import Commands.Kit;
 import ServerControlEvents.PluginHookEvent;
 import Utils.setting;
@@ -45,7 +42,7 @@ public class API {
 	}
 
 	public static List<SPlayer> getSPlayers() {
-		List<SPlayer> s = Lists.newArrayList();
+		List<SPlayer> s = new ArrayList<>();
 		for(Player p : TheAPI.getOnlinePlayers())s.add(getSPlayer(p));
 		return s;
 	}
@@ -323,7 +320,7 @@ public class API {
 	    return get;
 	  }
 
-	private static HashMap<String, SPlayer> cache = Maps.newHashMap();
+	private static HashMap<String, SPlayer> cache = new HashMap<>();
 	
 	public static boolean isAFK(Player p) {
 		return getSPlayer(p).isAFK();

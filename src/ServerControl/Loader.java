@@ -15,6 +15,22 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import Commands.Tpa.RequestMap;
+import Events.AFKPlus;
+import Events.AFkPlayerEvents;
+import Events.ChatFormat;
+import Events.CreatePortal;
+import Events.DeathEvent;
+import Events.DisableItems;
+import Events.EntitySpawn;
+import Events.FarmingSystem;
+import Events.LoginEvent;
+import Events.OnPlayerJoin;
+import Events.RewardsListenerChat;
+import Events.SecurityListenerAntiAD;
+import Events.SecurityListenerCooldowns;
+import Events.SecurityListenerV3;
+import Events.Signs;
+import Events.WorldChange;
 import Utils.AFK;
 import Utils.Colors;
 import Utils.Configs;
@@ -23,6 +39,7 @@ import Utils.Metrics;
 import Utils.MultiWorldsUtils;
 import Utils.ScoreboardStats;
 import Utils.TabList;
+import Utils.Tasks;
 import Utils.VaultHook;
 import Utils.setting;
 import me.DevTec.ConfigAPI;
@@ -85,7 +102,7 @@ public class Loader extends JavaPlugin implements Listener {
 		if (config.exist("Chat-Groups." + FormatgetGroup(p) + ".Name")) {
 			String g = TheAPI.colorize(PlaceholderAPI.setPlaceholders(p,
 					config.getString("Chat-Groups." + FormatgetGroup(p) + ".Name"))).replace("%", "%%");
-			g = Events.ChatFormat.r(p, g, null, false);
+			g = ChatFormat.r(p, g, null, false);
 			g = g.replace("%%", "%");
 			API.setDisplayName(p, Colors.colorize(g, false, p));
 		} else
@@ -169,7 +186,7 @@ public class Loader extends JavaPlugin implements Listener {
 			new MultiWorldsUtils();
 			new RequestMap();
 			new ScoreboardStats();
-			new Utils.Tasks();
+			new Tasks();
 			setting.load();
 		} catch (NoClassDefFoundError | Exception e) {
 			Bukkit.getLogger().severe(TheAPI.colorize(Loader.s("Prefix") + "&cError when loading classes"));
@@ -265,8 +282,9 @@ public class Loader extends JavaPlugin implements Listener {
 			if (EconomyAPI.getEconomy() != null)
 				EconomyAPI.createAccount(p);
 		}
-		Utils.Tasks.load();
+		Tasks.load();
 		MultiWorldsUtils.EnableWorldCheck();
+		if(TheAPI.isNewerThan(7))
 		try {
 			new Metrics(this);
 		} catch (Exception er) {
@@ -568,24 +586,24 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	private void EventsRegister() {
-		EventC(new Events.DisableItems());
-		EventC(new Events.SecurityListenerAntiAD());
-		EventC(new Events.OnPlayerJoin());
-		EventC(new Events.SecurityListenerCooldowns());
-		EventC(new Events.ChatFormat());
-		EventC(new Events.RewardsListenerChat());
-		EventC(new Events.LoginEvent());
-		EventC(new Events.SecurityListenerV3());
-		EventC(new Events.DeathEvent());
-		EventC(new Events.AFkPlayerEvents());
-		EventC(new Events.WorldChange());
-		EventC(new Events.CreatePortal());
-		EventC(new Events.Signs());
-		EventC(new Events.FarmingSystem());
-		EventC(new Events.EntitySpawn());
+		EventC(new DisableItems());
+		EventC(new SecurityListenerAntiAD());
+		EventC(new OnPlayerJoin());
+		EventC(new SecurityListenerCooldowns());
+		EventC(new ChatFormat());
+		EventC(new RewardsListenerChat());
+		EventC(new LoginEvent());
+		EventC(new SecurityListenerV3());
+		EventC(new DeathEvent());
+		EventC(new AFkPlayerEvents());
+		EventC(new WorldChange());
+		EventC(new CreatePortal());
+		EventC(new Signs());
+		EventC(new FarmingSystem());
+		EventC(new EntitySpawn());
 		try {
 			if (PluginManagerAPI.isEnabledPlugin("AFKPlus"))
-				EventC(new Events.AFKPlus());
+				EventC(new AFKPlus());
 		} catch (Exception e) {
 		}
 	}

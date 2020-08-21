@@ -22,11 +22,22 @@
  */
 package Utils;
 
-import com.google.common.base.Enums;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.WordUtils;
@@ -34,12 +45,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
+import com.google.common.base.Enums;
 
 /**
  * <b>XMaterial</b> - Data Values/Pre-flattening<br>
@@ -1305,9 +1311,7 @@ public enum XMaterial {
      *
      * @since 1.0.0
      */
-    private static final Cache<String, XMaterial> NAME_CACHE = CacheBuilder.newBuilder()
-            .expireAfterAccess(15, TimeUnit.MINUTES)
-            .build();
+    private static final HashMap<String, XMaterial> NAME_CACHE = new HashMap<>();
     /*
      * A set of all the legacy names without duplicates.
      * <p>
@@ -1328,27 +1332,7 @@ public enum XMaterial {
      *
      * @since 3.0.0
      */
-    private static final Cache<XMaterial, Optional<Material>> PARSED_CACHE = CacheBuilder.newBuilder()
-            .expireAfterAccess(10, TimeUnit.MINUTES)
-            .build();
-    /**
-     * This is used for {@link #isOneOf(Collection)}
-     *
-     * @since 3.4.0
-     */
-    private static final LoadingCache<String, Pattern> CACHED_REGEX = CacheBuilder.newBuilder()
-            .expireAfterAccess(1, TimeUnit.HOURS)
-            .build(new CacheLoader<String, Pattern>() {
-                @Override
-                public Pattern load(@Nonnull String str) {
-                    try {
-                        return Pattern.compile(str);
-                    } catch (PatternSyntaxException ex) {
-                        ex.printStackTrace();
-                        return null;
-                    }
-                }
-            });
+    private static final HashMap<XMaterial, Optional<Material>> PARSED_CACHE = new HashMap<>();
     /**
      * The current version of the server in the a form of a major version.
      *
@@ -1461,7 +1445,7 @@ public enum XMaterial {
     @Nullable
     private static XMaterial requestOldXMaterial(@Nonnull String name, byte data) {
         String holder = name + data;
-        XMaterial cache = NAME_CACHE.getIfPresent(holder);
+        XMaterial cache = NAME_CACHE.getOrDefault(holder, null);
         if (cache != null) return cache;
 
         for (XMaterial material : VALUES) {
@@ -1795,71 +1779,6 @@ public enum XMaterial {
     }
 
     /**
-     * Checks if the list of given material names matches the given base material.
-     * Mostly used for configs.
-     * <p>
-     * Supports {@link String#contains} {@code CONTAINS:NAME} and Regular Expression {@code REGEX:PATTERN} formats.
-     * <p>
-     * <b>Example:</b>
-     * <blockquote><pre>
-     *     XMaterial material = {@link #matchXMaterial(ItemStack)};
-     *     if (material.isOneOf(plugin.getConfig().getStringList("disabled-items")) return;
-     * </pre></blockquote>
-     * <br>
-     * <b>{@code CONTAINS} Examples:</b>
-     * <pre>
-     *     {@code "CONTAINS:CHEST" -> CHEST, ENDERCHEST, TRAPPED_CHEST -> true}
-     *     {@code "cOnTaINS:dYe" -> GREEN_DYE, YELLOW_DYE, BLUE_DYE, INK_SACK -> true}
-     * </pre>
-     * <p>
-     * <b>{@code REGEX} Examples</b>
-     * <pre>
-     *     {@code "REGEX:^.+_.+_.+$" -> Every Material with 3 underlines or more: SHULKER_SPAWN_EGG, SILVERFISH_SPAWN_EGG, SKELETON_HORSE_SPAWN_EGG}
-     *     {@code "REGEX:^.{1,3}$" -> Material names that have 3 letters only: BED, MAP, AIR}
-     * </pre>
-     * <p>
-     * The reason that there are tags for {@code CONTAINS} and {@code REGEX}
-     * is for the performance.
-     * Please avoid using the {@code REGEX} tag if you can use the {@code CONTAINS} tag.
-     * It'll have a huge impact on performance.
-     * Please avoid using {@code (capturing groups)} there's no use for them in this case.
-     * If you want to use groups, use {@code (?: non-capturing groups)}. It's faster.
-     * <p>
-     * You can make a cache for pre-compiled RegEx patterns from your config.
-     * It's better, but not much faster since these patterns are not that complex.
-     * <p>
-     * Want to learn RegEx? You can mess around in <a href="https://regexr.com/">RegExr</a> website.
-     *
-     * @param materials the material names to check base material on.
-     * @return true if one of the given material names is similar to the base material.
-     * @since 3.1.1
-     */
-    public boolean isOneOf(@Nullable Collection<String> materials) {
-        if (materials == null || materials.isEmpty()) return false;
-        String name = this.name();
-
-        for (String comp : materials) {
-            String checker = comp.toUpperCase(Locale.ENGLISH);
-            if (checker.startsWith("CONTAINS:")) {
-                comp = format(checker.substring(9));
-                if (name.contains(comp)) return true;
-                continue;
-            }
-            if (checker.startsWith("REGEX:")) {
-                comp = comp.substring(6);
-                Pattern pattern = CACHED_REGEX.getUnchecked(comp);
-                if (pattern != null && pattern.matcher(name).matches()) return true;
-                continue;
-            }
-
-            // Direct Object Equals
-            Optional<XMaterial> xMat = matchXMaterial(comp);
-            if (xMat.isPresent() && xMat.get() == this) return true;
-        }
-        return false;
-    }
-
-    /**
      * Gets the version which this material was added in.
      * If the material doesn't have a version it'll return 0;
      *
@@ -2040,7 +1959,7 @@ public enum XMaterial {
      */
     @Nullable
     public Material parseMaterial(boolean suggest) {
-        Optional<Material> cache = PARSED_CACHE.getIfPresent(this);
+        Optional<Material> cache = PARSED_CACHE.getOrDefault(this, null);
         if (cache != null) return cache.orElse(null);
         Material mat;
 

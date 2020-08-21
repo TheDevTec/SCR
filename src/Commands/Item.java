@@ -50,8 +50,7 @@ public class Item implements CommandExecutor, TabCompleter {
 							return true;
 						}
 						if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("yes")) {
-							if (TheAPI.getServerVersion().contains("1_10") || TheAPI.getServerVersion().contains("1_9")
-									|| TheAPI.getServerVersion().contains("1_8")) {
+							if (TheAPI.isOlderThan(11)) {
 								List<String> lore = new ArrayList<String>();
 								if (m.getLore() != null) {
 									for (String ss : m.getLore()) {
@@ -92,6 +91,7 @@ public class Item implements CommandExecutor, TabCompleter {
 
 						}
 					}
+					if (TheAPI.isNewerThan(7)) {
 					if (args[0].equalsIgnoreCase("HideEnchants")) {
 						if (args.length == 1) {
 							Loader.Help(s, "/Item HideEnchants <yes/no>", "Item.HideEnchants");
@@ -118,7 +118,7 @@ public class Item implements CommandExecutor, TabCompleter {
 							return true;
 
 						}
-					}
+					}}
 					if (args[0].equalsIgnoreCase("SetLore")) {
 						if (args.length == 1) {
 							Loader.Help(s, "/Item SetLore Add <lore>", "Item.SetLore.Add");

@@ -6,12 +6,15 @@ import java.util.Date;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
+import com.avaje.ebeaninternal.server.lib.util.NotFoundException;
+
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.EconomyAPI;
 import me.DevTec.MemoryAPI;
 import me.DevTec.TabListAPI;
 import me.DevTec.TheAPI;
+import me.DevTec.Other.Ref;
 import me.DevTec.Other.StringUtils;
 import me.DevTec.Placeholders.PlaceholderAPI;
 
@@ -65,6 +68,13 @@ public class TabList {
 		String displayname = p.getName();
 		if (p.getDisplayName() != null)
 			displayname = p.getDisplayName();
+		
+		double hp = 0.0;
+		try {
+			hp=(double)p.getHealth();
+		}catch(Exception e) {
+			hp=(double)Ref.invoke(p, "getHealthScale");
+		}
 		return TheAPI.colorize(PlaceholderAPI.setPlaceholders(p, header
 				
 				.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), false))
@@ -74,8 +84,8 @@ public class TabList {
 				.replace("%ping%", Loader.getInstance.pingPlayer(p))
 				.replace("%time%", new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
 				.replace("%date%", new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()))
-				.replace("%world%", p.getWorld().getName()).replace("%hp%", p.getHealth() + "")
-				.replace("%health%", p.getHealth() + "").replace("%food%", p.getFoodLevel() + "")
+				.replace("%world%", p.getWorld().getName()).replace("%hp%", hp + "")
+				.replace("%health%", hp+ "").replace("%food%", p.getFoodLevel() + "")
 				.replace("%x%", p.getLocation().getBlockX() + "").replace("%y%", p.getLocation().getBlockY() + "")
 				.replace("%z%", p.getLocation().getBlockZ() + "").replace("%vault-group%", group)
 				.replace("%vault-prefix%", Loader.getInstance.getPrefix(p))
