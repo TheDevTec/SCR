@@ -6,8 +6,6 @@ import java.util.Date;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
-import com.avaje.ebeaninternal.server.lib.util.NotFoundException;
-
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.EconomyAPI;
