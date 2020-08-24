@@ -29,7 +29,11 @@ import me.DevTec.TheAPI.WorldsAPI.WorldsAPI;
 public class MultiWorldsGUI {
 
 	public static ItemStack createItem(String name, XMaterial material, List<String> lore) {
-		return ItemCreatorAPI.create(material.parseMaterial(),1,name,lore,material.getData());
+		return ItemCreatorAPI.create(material.parseMaterial(),1,name,lore,(int)material.getData());
+	}
+
+	public static ItemStack createItem(String name, XMaterial material) {
+		return ItemCreatorAPI.create(material.parseMaterial(),1,name,(int)material.getData());
 	}
 
 	public static ItemStack createItem(String name, List<String> lore) {

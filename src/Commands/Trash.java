@@ -6,12 +6,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
-import com.google.common.collect.Lists;
-
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.MultiWorldsGUI;
+import Utils.XMaterial;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.ItemCreatorAPI;
 import me.DevTec.TheAPI.GUIAPI.GUI;
 import me.DevTec.TheAPI.GUIAPI.ItemGUI;
 
@@ -33,7 +33,7 @@ public class Trash implements CommandExecutor {
 	
 	private static ItemGUI clear;
 	static {
-		clear=new ItemGUI(MultiWorldsGUI.createItem("&6Clear", Utils.XMaterial.LAVA_BUCKET, Lists.newArrayList())) {
+		clear=new ItemGUI(ItemCreatorAPI.create(XMaterial.LAVA_BUCKET.parseMaterial(), 1, "&6Clear")) {
 			public void onClick(Player s, GUI g, ClickType c) {
 				for (int i = 0; i < 45; ++i)
 				g.remove(i);
