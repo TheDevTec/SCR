@@ -496,9 +496,14 @@ public class API {
 	public static void safeTeleport(Player s, Location location) {
 		if(!isSafe(location)) {
 			Location safe = findSafeLocation(location);
-			if(safe!=null)
+			if(safe!=null) {
+				s.setNoDamageTicks(40);
 				s.teleport(safe);
-		}else s.teleport(location);
+			}
+		}else {
+			s.setNoDamageTicks(40);
+			s.teleport(location);
+		}
 	}
 	
 	public static boolean isSafe(Location loc) {
@@ -551,7 +556,7 @@ public class API {
         boolean d = false;
         switch (i) {
         case 1:
-            if (!c(2, c) && Material.matchMaterial(c).isBlock())
+            if (!c(2, c) && !c.contains("LAVA") && Material.matchMaterial(c).isBlock())
                 d = true;
             break;
         case 2:
