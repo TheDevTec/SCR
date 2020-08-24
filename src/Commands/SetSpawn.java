@@ -19,7 +19,10 @@ public class SetSpawn implements CommandExecutor {
 			if (s instanceof Player) {
 				Player p = (Player) s;
 				Location local = p.getLocation();
+				try {
 				p.getWorld().setSpawnLocation(local);
+				}catch(NoSuchMethodError err) {
+				}
 				Loader.config.set("Spawn.World", p.getWorld().getName());
 				Loader.config.set("Spawn.X", local.getX());
 				Loader.config.set("Spawn.Y", local.getY() + 1);

@@ -40,29 +40,31 @@ public class Gamemode implements CommandExecutor {
 					|| args[0].equalsIgnoreCase("3"))
 				gamemode = "Spectator";
 			else {
-
 				gamemode = null;
 
 			}
+			
+			if(TheAPI.isOlderThan(8)) {
+				if(gamemode.equals("Spectator")) {
+				TheAPI.msg("&cUnsupported GameMode type", s);
+				return true;
+				}
+			}
+			
+			if(gamemode == null) {
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
+				return true;
+			}
 			if (s instanceof Player) {
 				if (API.hasPerm(s, "ServerControl.Gamemode." + gamemode)) {
-					if (gamemode != null) {
 						((Player) s).setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Changed").replace("%gamemode%", gamemode),
 								s);
 						return true;
-					}
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
-					return true;
 				}
 				return true;
 			}
-			if (gamemode != null) {
-
-				Loader.Help(s, "/GameMode " + args[0] + " <player>", "Gamemode");
-				return true;
-			}
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
+			Loader.Help(s, "/GameMode " + args[0] + " <player>", "Gamemode");
 			return true;
 		}
 		if (args.length == 2) {
@@ -82,13 +84,22 @@ public class Gamemode implements CommandExecutor {
 					|| args[0].equalsIgnoreCase("3"))
 				gamemode = "Spectator";
 			else {
-
 				gamemode = null;
-
 			}
+			if(TheAPI.isOlderThan(8)) {
+				if(gamemode.equals("Spectator")) {
+				TheAPI.msg("&cUnsupported GameMode type", s);
+				return true;
+				}
+			}
+			
+			if(gamemode == null) {
+				TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
+				return true;
+			}
+			
 			if (API.hasPerm(s, "ServerControl.Gamemode." + gamemode)) {
 				Player p = TheAPI.getPlayer(args[1]);
-				if (gamemode != null) {
 					if (p != null) {
 						p.setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
 						TheAPI.msg(
@@ -99,9 +110,6 @@ public class Gamemode implements CommandExecutor {
 					}
 					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
 					return true;
-				}
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
-				return true;
 			}
 			return true;
 		}

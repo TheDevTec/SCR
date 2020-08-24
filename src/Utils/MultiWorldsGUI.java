@@ -173,6 +173,10 @@ public class MultiWorldsGUI {
 							s.getLocation().getYaw());
 					Loader.mw.set("WorldsSettings." + world+ ".Spawn.Z_Pos_Head",
 							s.getLocation().getPitch());
+					try {
+						s.getWorld().setSpawnLocation(s.getLocation());
+						}catch(NoSuchMethodError err) {
+						}
 					TheAPI.msg(Loader.s("Prefix")
 							+ Loader.s("MultiWorld.SpawnSet").replace("%world%", world), s);
 				}

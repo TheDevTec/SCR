@@ -14,6 +14,10 @@ public class GamemodeSP implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+		if(TheAPI.isOlderThan(8)) {
+			TheAPI.msg("&cUnsupported GameMode type", s);
+			return true;
+		}
 		if (API.hasPerm(s, "ServerControl.Gamemode.Spectator")) {
 			if (args.length == 0) {
 				if (s instanceof Player) {
