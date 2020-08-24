@@ -26,7 +26,6 @@ import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.BlocksAPI.BlockGetter;
-import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
 import me.DevTec.TheAPI.Utils.Position;
 import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
@@ -86,7 +85,7 @@ public class API {
 		case SPAWN: {
 			World world = Bukkit.getWorlds().get(0);
 			Location loc = world.getSpawnLocation();
-			if (Loader.config.getString("Spawn") != null
+			if (Loader.config.exists("Spawn")
 					&& Bukkit.getWorld(Loader.config.getString("Spawn.World")) != null) {
 				float x_head = Loader.config.getInt("Spawn.X_Pos_Head");
 				float z_head = Loader.config.getInt("Spawn.Z_Pos_Head");
@@ -337,7 +336,7 @@ public class API {
 		if (s.length >= 3 && s.length < 4)
 	    	a= (new DecimalFormat("#,###0.00m")).format(money.divide(new BigDecimal(1000000))).replaceAll("\\.00", ""); 
 			else
-		if (s.length >= 2 && s.length < 3)
+		if (s.length > 2 && s.length < 3)
 	    	a= (new DecimalFormat("#,###0.00k")).format(money.divide(new BigDecimal(1000))).replaceAll("\\.00", ""); 
 	    if(colorized) {
 	    	if(a.equals("0"))a="&e0";
@@ -496,29 +495,52 @@ public class API {
 		}
 		return "UKNOWN";
 	}
-
+	
+	//Can be teleport cancelled if plugin not find any safe location!
 	public static void safeTeleport(Player s, Location location) {
-		if(!isSafe(location))
-		s.teleport(findSafeLocation(location));
-		else s.teleport(location);
+		if(!isSafe(location)) {
+			Location safe = findSafeLocation(location);
+			if(safe!=null)
+				s.teleport(safe);
+		}else s.teleport(location);
 	}
 	
 	public static boolean isSafe(Location loc) {
-		Material under = loc.clone().add(0, -1, 0).getBlock().getType();
+		Material under = loc.clone().add(0,-1,0).getBlock().getType();
 		Material current = loc.getBlock().getType();
-		Material above = loc.clone().add(0, 1, 0).getBlock().getType();
+		Material above = loc.clone().add(0,1,0).getBlock().getType();
 		return c(1, under.name()) && c(2, current.name()) && c(2, above.name());
 	}
 	
-	public static Location findSafeLocation(Location find) {
-		Location f = find;
-		BlockGetter g = BlocksAPI.get(find.clone().add(0,0,4), find.clone().add(-4,0,0));
+	public static Location findSafeLocation(Location start) {
+		Location f = null;
+		BlockGetter g = new BlockGetter(new Position(start.clone().add(0,-6,0)), new Position(start.clone().add(0,6,0)));
 		while(g.has()) {
 			Position a1 = g.get();
+			a1.setX(start.getX());
+			a1.setZ(start.getZ());
 			if(isSafe(a1.toLocation())) {
-				f=a1.toLocation();
+				f=start;
+				f.setY(a1.getY());
 				break;
 		}}
+		if(f==null) {
+		g = new BlockGetter(new Position(start.clone().add(2,2,2)), new Position(start.clone().add(-2,-2,-2)));
+		while(g.has()) {
+			Position a1 = g.get();
+			a1.setX(a1.getX()+0.5);
+			a1.setZ(a1.getZ()+0.5);
+			if(isSafe(a1.toLocation())) {
+				Location safef=a1.toLocation();
+				safef.setPitch(start.getPitch());
+				safef.setYaw(start.getYaw());
+				if(f==null)f=safef;
+				else {
+					if(f.distance(start) > safef.distance(start))
+						f=safef;
+				}
+		}}
+		}
 		return f;
 	}
 	
@@ -526,15 +548,12 @@ public class API {
         boolean d = false;
         switch (i) {
         case 1:
-            if (!c.contains("AIR") && !c.contains("LAVA") && !c.contains("BUTTON") && !c.contains("DOOR")
-                    && !c.contains("SIGN") && !c.contains("TORCH") && !c.contains("RED_MUSHROOM")
-                    && !c.contains("BROWN_MUSHROOM")
-                    && Material.matchMaterial(c).isBlock())
+            if (!c(2, c) && Material.matchMaterial(c).isBlock())
                 d = true;
             break;
         case 2:
-            if (c.contains("AIR") || c.contains("BUTTON") || c.contains("DOOR") || c.contains("SIGN")
-                    || c.contains("TORCH") || c.equals("MUSHROOM_STEM") || c.contains("WATER"))
+            if (c.contains("AIR") || c.equals("SEAGRASS") || c.equals("LONG_GRASS") || c.equals("FLOWER") || c.contains("BUTTON") || c.contains("DOOR") || c.contains("SIGN")
+                    || c.contains("TORCH") || c.equals("MUSHROOM_STEM") || c.contains("WATER")||c.contains("RED_MUSHROOM") || c.contains("BROWN_MUSHROOM"))
                 d = true;
             break;
         }

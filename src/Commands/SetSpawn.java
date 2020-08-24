@@ -25,10 +25,11 @@ public class SetSpawn implements CommandExecutor {
 				}
 				Loader.config.set("Spawn.World", p.getWorld().getName());
 				Loader.config.set("Spawn.X", local.getX());
-				Loader.config.set("Spawn.Y", local.getY() + 1);
+				Loader.config.set("Spawn.Y", local.getY());
 				Loader.config.set("Spawn.Z", local.getZ());
 				Loader.config.set("Spawn.X_Pos_Head", local.getYaw());
 				Loader.config.set("Spawn.Z_Pos_Head", local.getPitch());
+				Loader.config.save();
 				TheAPI.msg(Loader.s("Spawn.SpawnSet"), s);
 				return true;
 			} else {
