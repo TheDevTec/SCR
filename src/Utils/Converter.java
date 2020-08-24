@@ -5,10 +5,10 @@ import java.io.File;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
-import me.DevTec.ConfigAPI;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.Position;
-import me.DevTec.Other.User;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
+import me.DevTec.TheAPI.Utils.Position;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class Converter {
 	public static void convert() {

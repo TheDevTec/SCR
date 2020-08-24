@@ -30,8 +30,8 @@ import org.bukkit.plugin.ServicePriority;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import me.DevTec.TheAPI;
-import me.DevTec.Scheduler.Tasker;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Scheduler.Tasker;
 
 public class Metrics {
 

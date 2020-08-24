@@ -7,10 +7,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/EclipseUtils/AFKPlus.jar"/>
-	<classpathentry kind="lib" path="C:/EclipseUtils/PAPI.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Residence.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Vault.jar"/>
-	<classpathentry kind="lib" path="C:/EclipseUtils/TheAPI.jar" sourcepath="/TheAPI"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Spigot.jar"/>
+	<classpathentry kind="lib" path="C:/EclipseUtils/TheAPI.jar" sourcepath="/TheAPI"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

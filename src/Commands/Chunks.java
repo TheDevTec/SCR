@@ -15,7 +15,7 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.MultiWorldsUtils;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
 
 public class Chunks implements CommandExecutor, TabCompleter {
 

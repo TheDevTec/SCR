@@ -8,8 +8,8 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI;
-import me.DevTec.Bans.PunishmentAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 
 public class Jail implements CommandExecutor {
 

@@ -18,9 +18,9 @@ import Utils.Configs;
 import Utils.MultiWorldsUtils;
 import Utils.Tasks;
 import Utils.setting;
-import me.DevTec.PluginManagerAPI;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.StringUtils;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.PluginManagerAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class ServerControl implements CommandExecutor, TabCompleter {
 

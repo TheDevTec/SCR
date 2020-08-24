@@ -12,11 +12,11 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.ConfigAPI;
-import me.DevTec.MemoryAPI;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.StringUtils;
-import me.DevTec.Scheduler.Tasker;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.MemoryAPI;
+import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
+import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Tasks {
 	public Tasks() {

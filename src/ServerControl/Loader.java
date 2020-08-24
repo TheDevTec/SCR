@@ -42,15 +42,15 @@ import Utils.TabList;
 import Utils.Tasks;
 import Utils.VaultHook;
 import Utils.setting;
-import me.DevTec.ConfigAPI;
-import me.DevTec.EconomyAPI;
-import me.DevTec.PluginManagerAPI;
-import me.DevTec.SoundAPI;
-import me.DevTec.TheAPI;
-import me.DevTec.NMS.NMSAPI;
-import me.DevTec.Other.LoaderClass;
-import me.DevTec.Other.StringUtils;
-import me.DevTec.Placeholders.PlaceholderAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.PluginManagerAPI;
+import me.DevTec.TheAPI.APIs.SoundAPI;
+import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
+import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
+import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
+import me.DevTec.TheAPI.Utils.TheAPIUtils.LoaderClass;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -593,7 +593,7 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static boolean SoundsChecker() {
-		if (setting.sound && !new SoundAPI().existSound(config.getString("Options.Sounds.Sound"))) {
+		if (setting.sound && !SoundAPI.existSound(config.getString("Options.Sounds.Sound"))) {
 			TheAPI.msg("", TheAPI.getConsole());
 			TheAPI.msg("", TheAPI.getConsole());
 			TheAPI.msg(Loader.s("Prefix") + Loader.s("SoundErrorMessage"), TheAPI.getConsole());

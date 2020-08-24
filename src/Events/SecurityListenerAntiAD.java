@@ -18,8 +18,8 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControlEvents.PlayerAdvertisementEvent;
 import Utils.setting;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.StringUtils;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 @SuppressWarnings("deprecation")
 public class SecurityListenerAntiAD implements Listener {

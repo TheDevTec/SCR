@@ -10,7 +10,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
 
 public class Tpadeny implements CommandExecutor, TabCompleter {
 

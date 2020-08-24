@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.User;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class ClearConfirmToggle implements CommandExecutor {
 

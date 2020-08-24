@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
 
 public class UnJail implements CommandExecutor {
 

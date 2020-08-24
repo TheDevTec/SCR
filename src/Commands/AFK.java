@@ -9,7 +9,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
 import Utils.Repeat;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
 
 public class AFK implements CommandExecutor {
 

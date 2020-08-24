@@ -4,10 +4,10 @@ import org.bukkit.Bukkit;
 
 import ServerControl.Loader;
 import Utils.setting;
-import me.DevTec.TheAPI;
-import me.DevTec.NMS.Reflections;
-import me.DevTec.Other.StringUtils;
-import me.DevTec.Scheduler.Tasker;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.Reflections.Reflections;
 
 public class BigTask {
 	public static int r = -1;

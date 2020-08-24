@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
 
 public class ChatLock implements CommandExecutor {
 

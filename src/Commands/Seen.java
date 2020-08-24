@@ -11,8 +11,8 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.API.SeenType;
 import ServerControl.Loader;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.StringUtils;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Seen implements CommandExecutor {
 	List<String> getS(String a) {

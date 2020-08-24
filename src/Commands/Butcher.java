@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI;
-import me.DevTec.Blocks.BlocksAPI;
-import me.DevTec.Other.StringUtils;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Butcher implements CommandExecutor {
 
@@ -29,8 +29,8 @@ public class Butcher implements CommandExecutor {
 			return killed;
 		} else {
 			int killed = 0;
-			if (radius > 1000000)
-				radius = 1000000;
+			if (radius > 100000)
+				radius = 100000;
 			for (Entity e : BlocksAPI.getNearbyEntities(w, radius)) {
 				if (e instanceof Player == false) {
 					++killed;

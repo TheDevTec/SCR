@@ -10,7 +10,7 @@ import org.bukkit.event.Listener;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
 
 public class God implements CommandExecutor, Listener {
 

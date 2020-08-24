@@ -15,8 +15,8 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.EnchantmentAPI;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.EnchantmentAPI;
 
 public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 	List<String> enchs = new ArrayList<String>();

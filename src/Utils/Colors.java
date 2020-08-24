@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import ServerControl.Loader;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
 
 
 public class Colors {
@@ -28,8 +28,8 @@ public class Colors {
 		
 		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Hex"))) {
 			if(b.contains("#"))
-					if (Integer.valueOf(TheAPI.getServerVersion().split("_")[1]) >= 16) {
-						b=b.replace("&x", "§x");
+					if (TheAPI.isNewerThan(15)) {
+						b=b.replace("&x", "ï¿½x");
 						Matcher match = pattern.matcher(b);
 			            while (match.find()) {
 			                String color = match.group();

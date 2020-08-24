@@ -17,8 +17,8 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.StringUtils;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Item implements CommandExecutor, TabCompleter {
 

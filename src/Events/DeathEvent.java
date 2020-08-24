@@ -13,9 +13,9 @@ import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
 import Utils.setting;
 import Utils.setting.DeathTp;
-import me.DevTec.TheAPI;
-import me.DevTec.Bans.PunishmentAPI;
-import me.DevTec.Other.User;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class DeathEvent implements Listener {
 

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -17,10 +18,10 @@ import com.google.common.collect.Maps;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Pagination;
-import me.DevTec.EconomyAPI;
-import me.DevTec.RankingAPI;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.StringUtils;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
+import me.DevTec.TheAPI.SortedMap.RankingAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class EcoTop implements CommandExecutor {
 	// world, rankingapi
@@ -38,7 +39,7 @@ public class EcoTop implements CommandExecutor {
 			if (s instanceof Player)
 				world = ((Player) s).getWorld().getName();
 			@SuppressWarnings("unchecked")
-			RankingAPI<String> m = h.containsKey(world) ? h.get(world) : null;
+			RankingAPI<String, BigDecimal> m = h.containsKey(world) ? h.get(world) : null;
 			if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
 				TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300); // 5min update
 				HashMap<String, BigDecimal> money = Maps.newHashMap();
@@ -50,12 +51,12 @@ public class EcoTop implements CommandExecutor {
 				}
 				if (m != null)
 					h.remove(world); 
-				m = new RankingAPI<String>(money);
+				m = new RankingAPI<String, BigDecimal>(money);
 				h.put(world, m);
 			}
 			List<String> list = new ArrayList<String>();
 			for (String o : m.getKeySet()) {
-				if(o!=null && m.getHashMap().containsKey(o))
+				if(o!=null && m.containsKey(o))
 				list.add(o.toString() + ":" + m.getValue(o));
 			}
 			Pagination<String> g = new Pagination<>(10, list);
@@ -74,12 +75,14 @@ public class EcoTop implements CommandExecutor {
 				String[] f = sa.split(":");
 				money.put(f[0], new BigDecimal(f[1]));
 			}
-			RankingAPI<String> ms = new RankingAPI<String>(money);
-			for (int i = 1; i < ms.getKeySet().size() + 1; i++) {
-				String player = ms.getObject(i).toString();
+			RankingAPI<String, BigDecimal> ms = new RankingAPI<String, BigDecimal>(money);
+			int i = 0;
+			for(Entry<String, BigDecimal> item : ms.entrySet()){
+				if(i==10)break;
+				++i;
 				TheAPI.msg(Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", i + "")
-						.replace("%player%", player).replace("%playername%", player(player))
-						.replace("%money%", API.setMoneyFormat(m.getValue(player).doubleValue(), true)), s);
+						.replace("%player%", item.getKey()).replace("%playername%", player(item.getKey()))
+						.replace("%money%", API.setMoneyFormat(item.getValue(), true)), s);
 			}
 			return true;
 		}

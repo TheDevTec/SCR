@@ -15,9 +15,9 @@ import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
 import Utils.setting;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.Position;
-import me.DevTec.Other.User;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.Position;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class Home implements CommandExecutor, TabCompleter {
 

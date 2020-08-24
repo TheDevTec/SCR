@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import me.DevTec.TheAPI;
-import me.DevTec.Scheduler.Tasker;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Scheduler.Tasker;
 
 public class Fly implements CommandExecutor {
 

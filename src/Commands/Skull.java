@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.ItemCreatorAPI;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.ItemCreatorAPI;
 
 @SuppressWarnings("deprecation")
 public class Skull implements CommandExecutor {

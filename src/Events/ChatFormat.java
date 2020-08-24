@@ -14,9 +14,9 @@ import ServerControl.Loader;
 import Utils.Colors;
 import Utils.MultiWorldsGUI;
 import Utils.setting;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.User;
-import me.DevTec.Placeholders.PlaceholderAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 @SuppressWarnings("deprecation")
 public class ChatFormat implements Listener {

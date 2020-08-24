@@ -13,7 +13,7 @@ import org.bukkit.util.StringUtil;
 import Commands.Main.BigTask.TaskType;
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.Other.StringUtils;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Restart implements CommandExecutor, TabCompleter {
 

@@ -14,9 +14,9 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControlEvents.PlayerBlockedCommandEvent;
 import Utils.setting;
-import me.DevTec.TheAPI;
-import me.DevTec.TheAPI.SudoType;
-import me.DevTec.Other.User;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.TheAPI.SudoType;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 /**
  * 1.2. 2020

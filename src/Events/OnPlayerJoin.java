@@ -18,16 +18,16 @@ import ServerControl.Loader;
 import ServerControl.SPlayer;
 import Utils.Tasks;
 import Utils.setting;
-import me.DevTec.ConfigAPI;
-import me.DevTec.EconomyAPI;
-import me.DevTec.SoundAPI;
-import me.DevTec.TheAPI;
-import me.DevTec.TheAPI.SudoType;
-import me.DevTec.Bans.PunishmentAPI;
-import me.DevTec.Other.StringUtils;
-import me.DevTec.Other.User;
-import me.DevTec.Placeholders.PlaceholderAPI;
-import me.DevTec.Scheduler.Tasker;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.TheAPI.SudoType;
+import me.DevTec.TheAPI.APIs.SoundAPI;
+import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
+import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
+import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
+import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
+import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class OnPlayerJoin implements Listener {
 	public OnPlayerJoin() {
@@ -76,7 +76,7 @@ public class OnPlayerJoin implements Listener {
 							+ Loader.s("Mail.Notification").replace("%number%", "" + d.getStringList("Mails").size()),
 					p);
 		if (music)
-			new SoundAPI().playSound(p, f.getString("Options.Sounds.Sound"));
+			SoundAPI.playSound(p, f.getString("Options.Sounds.Sound"));
 
 		if (PunishmentAPI.getBanList(p.getName()).isJailed()
 				|| PunishmentAPI.getBanList(p.getName()).isTempJailed()) {

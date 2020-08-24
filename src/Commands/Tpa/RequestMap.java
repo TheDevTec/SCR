@@ -7,9 +7,9 @@ import org.bukkit.Location;
 
 import ServerControl.Loader;
 import Utils.setting;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.StringUtils;
-import me.DevTec.Other.User;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 /**
  * 

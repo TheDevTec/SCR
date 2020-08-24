@@ -15,8 +15,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.AFK;
-import me.DevTec.TheAPI;
-import me.DevTec.Bans.PunishmentAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 
 @SuppressWarnings("deprecation")
 public class AFkPlayerEvents implements Listener {

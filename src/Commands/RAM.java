@@ -9,8 +9,8 @@ import org.bukkit.command.CommandSender;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
-import me.DevTec.MemoryAPI;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.MemoryAPI;
 
 public class RAM implements CommandExecutor {
 

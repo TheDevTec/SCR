@@ -8,12 +8,12 @@ import org.bukkit.potion.PotionEffect;
 import Events.AFKPlus;
 import Utils.AFK;
 import Utils.setting;
-import me.DevTec.EconomyAPI;
-import me.DevTec.PluginManagerAPI;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.Ref;
-import me.DevTec.Other.StringUtils;
-import me.DevTec.Other.User;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.PluginManagerAPI;
+import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class SPlayer {
 	private final String s;

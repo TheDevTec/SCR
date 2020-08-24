@@ -17,12 +17,12 @@ import org.bukkit.command.TabCompleter;
 import ServerControl.API;
 import ServerControl.API.SeenType;
 import ServerControl.Loader;
-import me.DevTec.TheAPI;
-import me.DevTec.Bans.PlayerBanList;
-import me.DevTec.Bans.PlayerBanList.PunishmentType;
-import me.DevTec.Bans.PunishmentAPI;
-import me.DevTec.Other.StringUtils;
-import me.DevTec.Other.User;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList;
+import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList.PunishmentType;
+import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 

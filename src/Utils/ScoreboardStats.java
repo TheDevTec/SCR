@@ -9,11 +9,11 @@ import org.bukkit.entity.Player;
 import com.google.common.collect.Maps;
 
 import ServerControl.Loader;
-import me.DevTec.ConfigAPI;
-import me.DevTec.ScoreboardAPI;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.ScoreboardType;
-import me.DevTec.Placeholders.PlaceholderAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
+import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
+import me.DevTec.TheAPI.ScoreboardAPI.ScoreboardAPI;
+import me.DevTec.TheAPI.ScoreboardAPI.ScoreboardType;
 
 public class ScoreboardStats {
 	public ScoreboardStats() {

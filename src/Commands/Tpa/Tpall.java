@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.StringUtils;
-import me.DevTec.Other.User;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class Tpall implements CommandExecutor, TabCompleter {
 

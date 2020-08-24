@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
-import me.DevTec.EconomyAPI;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 
 public class Pay implements CommandExecutor {
 

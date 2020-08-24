@@ -16,8 +16,9 @@ import com.google.common.collect.Lists;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.EnchantmentAPI;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.EnchantmentAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class EnchantTable implements CommandExecutor, TabCompleter {
 	List<String> enchs = Lists.newArrayList();
@@ -48,7 +49,7 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 				}
 				if (args.length == 2) {
 					if (a != Material.AIR) {
-						e(p.getItemInHand(), TheAPI.getNumbersAPI(args[1]).getInt(), args[0], s);
+						e(p.getItemInHand(), StringUtils.getInt(args[1]), args[0], s);
 						return true;
 					}
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.HandIsEmpty").replace("%enchant%", args[0])

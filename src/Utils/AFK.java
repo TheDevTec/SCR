@@ -3,9 +3,9 @@ package Utils;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.StringUtils;
-import me.DevTec.Scheduler.Tasker;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class AFK {
 

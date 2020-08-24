@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI;
-import me.DevTec.TheAPI.SudoType;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.TheAPI.SudoType;
 
 public class Sudo implements CommandExecutor {
 

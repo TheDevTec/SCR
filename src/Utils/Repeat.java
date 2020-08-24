@@ -3,8 +3,8 @@ package Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.DevTec.TheAPI;
-import me.DevTec.TheAPI.SudoType;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.TheAPI.SudoType;
 
 public class Repeat {
 	public static void a(CommandSender s, String c) {

@@ -8,8 +8,8 @@ import org.bukkit.plugin.Plugin;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.PluginManagerAPI;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 
 public class Addons implements CommandExecutor {
 	public Plugin find(String a) {

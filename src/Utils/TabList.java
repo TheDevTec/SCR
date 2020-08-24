@@ -8,13 +8,13 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.EconomyAPI;
-import me.DevTec.MemoryAPI;
-import me.DevTec.TabListAPI;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.Ref;
-import me.DevTec.Other.StringUtils;
-import me.DevTec.Placeholders.PlaceholderAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.MemoryAPI;
+import me.DevTec.TheAPI.APIs.TabListAPI;
+import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
+import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class TabList {
 	private static String group(Player p) {

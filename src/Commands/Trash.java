@@ -11,9 +11,9 @@ import com.google.common.collect.Lists;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.MultiWorldsGUI;
-import me.DevTec.TheAPI;
-import me.DevTec.GUI.GUICreatorAPI;
-import me.DevTec.GUI.ItemGUI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.GUIAPI.GUI;
+import me.DevTec.TheAPI.GUIAPI.ItemGUI;
 
 public class Trash implements CommandExecutor {
 
@@ -34,7 +34,7 @@ public class Trash implements CommandExecutor {
 	private static ItemGUI clear;
 	static {
 		clear=new ItemGUI(MultiWorldsGUI.createItem("&6Clear", Utils.XMaterial.LAVA_BUCKET, Lists.newArrayList())) {
-			public void onClick(Player s, GUICreatorAPI g, ClickType c) {
+			public void onClick(Player s, GUI g, ClickType c) {
 				for (int i = 0; i < 45; ++i)
 				g.remove(i);
 			}
@@ -42,7 +42,7 @@ public class Trash implements CommandExecutor {
 	}
 
 	public static void openInv(Player p) {
-		GUICreatorAPI s = new GUICreatorAPI(Loader.s("TrashTitle"), 54, p);
+		GUI s = new GUI(Loader.s("TrashTitle"), 54, p);
 		s.setInsertable(true);
 		MultiWorldsGUI.smallInv(s);
 		s.setItem(49, clear);

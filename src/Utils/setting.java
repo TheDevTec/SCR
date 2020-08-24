@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
-import me.DevTec.ConfigAPI;
+import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
 
 public class setting {
 	public static enum DeathTp {

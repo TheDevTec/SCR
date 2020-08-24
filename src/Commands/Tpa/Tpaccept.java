@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
 
 public class Tpaccept implements CommandExecutor, TabCompleter {
 

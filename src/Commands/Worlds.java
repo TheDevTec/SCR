@@ -18,7 +18,7 @@ import org.bukkit.util.StringUtil;
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.MultiWorldsGUI;
-import me.DevTec.TheAPI;
+import me.DevTec.TheAPI.TheAPI;
 
 public class Worlds implements CommandExecutor, TabCompleter {
 

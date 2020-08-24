@@ -9,9 +9,9 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import ServerControl.Loader;
 import Utils.setting;
-import me.DevTec.CooldownAPI;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.StringUtils;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.CooldownAPI.CooldownAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 @SuppressWarnings("deprecation")
 public class SecurityListenerCooldowns implements Listener {

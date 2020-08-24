@@ -16,12 +16,12 @@ import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Repeat;
 import Utils.XMaterial;
-import me.DevTec.CooldownAPI;
-import me.DevTec.EconomyAPI;
-import me.DevTec.EnchantmentAPI;
-import me.DevTec.ItemCreatorAPI;
-import me.DevTec.TheAPI;
-import me.DevTec.Other.StringUtils;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.EnchantmentAPI;
+import me.DevTec.TheAPI.APIs.ItemCreatorAPI;
+import me.DevTec.TheAPI.CooldownAPI.CooldownAPI;
+import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Kit implements CommandExecutor, TabCompleter {
 	public List<String> kits(CommandSender p) {
