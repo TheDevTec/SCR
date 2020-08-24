@@ -2,7 +2,6 @@ package ServerControl;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -450,8 +449,7 @@ public class API {
 			props.load(is);
 			is.close();
 			ip = props.getProperty("server-ip");
-		} catch (IOException ed) {
-			ed.printStackTrace();
+		} catch (Exception ed) {
 		}
 
 		if (ip != null) {
@@ -468,8 +466,7 @@ public class API {
 			props.load(is);
 			is.close();
 			port = props.getProperty("server-port");
-		} catch (IOException ed) {
-			ed.printStackTrace();
+		} catch (Exception ed) {
 		}
 
 		if (port != null) {
@@ -486,8 +483,7 @@ public class API {
 			props.load(is);
 			is.close();
 			server_name = props.getProperty("server-name");
-		} catch (IOException ed) {
-			ed.printStackTrace();
+		} catch (Exception ed) {
 		}
 
 		if (server_name != null) {
@@ -520,12 +516,19 @@ public class API {
 			a1.setX(start.getX());
 			a1.setZ(start.getZ());
 			if(isSafe(a1.toLocation())) {
+				if(f==null) {
+					f=start;
+					f.setY(a1.getY());
+				}
+				else {
+					if(f.distance(start) > a1.toLocation().distance(start))
+						f.setY(a1.getY());
+				}
 				f=start;
 				f.setY(a1.getY());
-				break;
 		}}
 		if(f==null) {
-		g = new BlockGetter(new Position(start.clone().add(2,2,2)), new Position(start.clone().add(-2,-2,-2)));
+		g = new BlockGetter(new Position(start.clone().add(4,4,4)), new Position(start.clone().add(-4,-4,-4)));
 		while(g.has()) {
 			Position a1 = g.get();
 			a1.setX(a1.getX()+0.5);
