@@ -36,7 +36,7 @@ public class AFK implements CommandExecutor {
 			return true;
 		}
 		if (args.length == 1) {
-			if (API.hasPerm(s, "ServerControl.AFK")) {
+			if (API.hasPerm(s, "ServerControl.AFK.Other")) {
 				SPlayer p = API.getSPlayer(TheAPI.getPlayer(args[0]));
 				if (p.getPlayer() != null) {
 					if (p.isAFK()) {

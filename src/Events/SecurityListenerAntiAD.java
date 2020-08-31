@@ -119,7 +119,7 @@ public class SecurityListenerAntiAD implements Listener {
 				if (event.getSlotType() == InventoryType.SlotType.RESULT) {
 					if (!p.hasPermission("ServerControl.Advertisement")) {
 						String displayName = "";
-						if (event.getCurrentItem().getItemMeta().hasDisplayName())
+						if (event.getCurrentItem().hasItemMeta() && event.getCurrentItem().getItemMeta().hasDisplayName())
 							displayName = event.getCurrentItem().getItemMeta().getDisplayName();
 						if (getMatches(displayName)!=null) {
 							PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p, displayName);

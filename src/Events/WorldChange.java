@@ -40,10 +40,11 @@ public class WorldChange implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChangeGamamode(PlayerGameModeChangeEvent e) {
 		SPlayer a = API.getSPlayer(e.getPlayer());
+		if (a.hasTempFlyEnabled())
+			a.enableTempFly();
+		else
 		if (a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
 			a.enableFly();
-		else if (a.hasTempFlyEnabled())
-			a.enableTempFly();
 		if (a.hasPermission("servercontrol.god") && a.hasGodEnabled())
 			a.enableGod();
 	}

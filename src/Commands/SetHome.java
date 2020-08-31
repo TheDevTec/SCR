@@ -37,7 +37,7 @@ public class SetHome implements CommandExecutor {
 					if (args.length == 1) {
 						User d = TheAPI.getUser(s.getName());
 						if (Loader.config.getString("Homes." + Loader.vault.getPrimaryGroup(p)) != null) {
-							if (d.getKeys("Homes").size() >= Loader.config
+							if ((d.exist("Homes")?d.getKeys("Homes").size():0) >= Loader.config
 									.getInt("Homes." + Loader.vault.getPrimaryGroup(p))) {
 								TheAPI.msg(
 										Loader.s("Prefix")
