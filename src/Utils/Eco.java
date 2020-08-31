@@ -33,7 +33,7 @@ public class Eco implements Economy {
 		return wd;
 	}
 
-	public static String getEconomyGroup(String p, String world) {
+	public static String getEconomyGroupByWorld(String world) {
 		String wd = "default";
 		String wd2 = null;
 		for (String f : Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
@@ -98,7 +98,7 @@ public class Eco implements Economy {
 	}
 
 	private String get(String player, String world) {
-		return getPaths(player, getEconomyGroup(player, world));
+		return getPaths(player, getEconomyGroupByWorld(world));
 	}
 
 	private boolean existPath(String player) {
@@ -106,7 +106,7 @@ public class Eco implements Economy {
 	}
 
 	private boolean existPath(String player, String world) {
-		return TheAPI.getUser(player).exist(get(player, getEconomyGroup(player, world)));
+		return TheAPI.getUser(player).exist(get(player, getEconomyGroupByWorld(world)));
 	}
 
 	@Override

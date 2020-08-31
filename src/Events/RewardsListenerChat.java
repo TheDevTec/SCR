@@ -8,6 +8,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
+import com.google.common.collect.Lists;
+
 import ServerControl.Loader;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
@@ -23,7 +25,7 @@ public class RewardsListenerChat implements Listener {
 			String name = p.getName();
 			List<String> only = Loader.config.getStringList("Options.Codes.List");
 			User d = TheAPI.getUser(p);
-			List<String> codes = d.getStringList("Taken-Codes");
+			List<String> codes = d.exist("Taken-Codes")?d.getStringList("Taken-Codes"):Lists.newArrayList();
 			if (!codes.isEmpty())
 				for (String s : codes)
 					only.remove(s);

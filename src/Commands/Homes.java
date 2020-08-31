@@ -1,6 +1,7 @@
 package Commands;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,9 +24,7 @@ public class Homes implements CommandExecutor {
 				if (API.hasPerm(s, "ServerControl.Home")) {
 					User d = TheAPI.getUser(p);
 					if (d.exist("Homes")) {
-						ArrayList<String> ne = new ArrayList<String>();
-						for (String a : d.getKeys("Homes"))
-							ne.add(a);
+						List<String> ne = new ArrayList<>(d.getKeys("Homes"));
 						if (!ne.isEmpty()) {
 							TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.List").replace("%player%", p.getName())
 									.replace("%playername%", p.getDisplayName())
@@ -50,9 +49,7 @@ public class Homes implements CommandExecutor {
 			if (API.hasPerm(s, "ServerControl.Home.Other")) {
 				User d = TheAPI.getUser(args[0]);
 				if (d.exist("Homes")) {
-					ArrayList<String> ne = new ArrayList<String>();
-					for (String a : d.getKeys("Homes"))
-						ne.add(a);
+					List<String> ne = new ArrayList<String>(d.getKeys("Homes"));
 					if (!ne.isEmpty()) {
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.ListOther").replace("%target%", args[0])
 								.replace("%playername%", args[0])

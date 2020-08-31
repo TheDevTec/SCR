@@ -151,6 +151,7 @@ public class Tasks {
 	}
 
 	private static void tab() {
+		if(setting.tab_sort)
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			if (!ss.containsKey(p.getName()))
 				regPlayer(p);
@@ -169,7 +170,7 @@ public class Tasks {
 			@Override
 			public void run() {
 				for (Player p : TheAPI.getOnlinePlayers())
-					TabList.setNameTag(p);
+					TabList.setName(p);
 			}
 		}.repeatingAsync(20, r));
 	}

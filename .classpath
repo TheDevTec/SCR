@@ -10,6 +10,6 @@
 	<classpathentry kind="lib" path="C:/EclipseUtils/Residence.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Vault.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Spigot.jar"/>
-	<classpathentry kind="lib" path="C:/EclipseUtils/TheAPI.jar" sourcepath="/TheAPI"/>
+	<classpathentry kind="lib" path="C:/Build/TheAPI.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

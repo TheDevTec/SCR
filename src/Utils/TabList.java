@@ -20,9 +20,8 @@ public class TabList {
 	private static String group(Player p) {
 		if (API.existVaultPlugin()) {
 			if (Loader.perms != null && Loader.vault != null)
-				if (Loader.perms.getPrimaryGroup(p) != null) {
+				if (Loader.perms.getPrimaryGroup(p) != null)
 					return Loader.perms.getPrimaryGroup(p);
-				}
 			return "default";
 		}
 		return "default";
@@ -36,23 +35,20 @@ public class TabList {
 	}
 
 	public static String getPrefix(Player p, boolean nametag) {
-		if (Loader.tab.getString("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Prefix") != null) {
+		if (Loader.tab.exist("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Prefix"))
 			return replace(Loader.tab.getString("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Prefix"), p);
-		}
 		return null;
 	}
 
 	public static String getNameFormat(Player p) {
-		if (Loader.tab.getString("Groups." + group(p) + ".Name") != null) {
+		if (Loader.tab.exist("Groups." + group(p) + ".Name"))
 			return replace(Loader.tab.getString("Groups." + group(p) + ".Name"), p);
-		}
 		return "%prefix% "+p.getName()+" %suffix%";
 	}
 
 	public static String getSuffix(Player p, boolean nametag) {
-		if (Loader.tab.getString("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Suffix") != null) {
+		if (Loader.tab.exist("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Suffix"))
 			return replace(Loader.tab.getString("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Suffix"), p);
-		}
 		return null;
 	}
 
@@ -74,7 +70,6 @@ public class TabList {
 			hp=(double)Ref.invoke(p, "getHealthScale");
 		}
 		return TheAPI.colorize(PlaceholderAPI.setPlaceholders(p, header
-				
 				.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), false))
 				.replace("%colored_money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true))
 				.replace("%online%", TheAPI.getOnlinePlayers().size() + "")
@@ -98,26 +93,25 @@ public class TabList {
 				.replace("%ram_free_percentage%", MemoryAPI.getFreeMemory(true) + "%")
 				.replace("%ram_usage%", MemoryAPI.getUsedMemory(false) + "")
 				.replace("%ram_usage_percentage%", MemoryAPI.getUsedMemory(true) + "%")
-				.replace("%ram_max%", MemoryAPI.getMaxMemory() + "").replace("%ram_max_percentage%", "100%")																								// :D
+				.replace("%ram_max%", MemoryAPI.getMaxMemory() + "").replace("%ram_max_percentage%", "100%")
 				.replace("%afk%", Loader.getInstance.isAfk(p))));
 	}
-
-	public static void setNameTag(Player p) {
-		String p1 = TabList.getPrefix(p, true);
-		String p2 = TabList.getPrefix(p, false);
-		String s1 = TabList.getSuffix(p, true);
-		String s2 = TabList.getSuffix(p, false);
-		String name = getNameFormat(p).replace("%prefix%", (p2!=null?TabList.replace(p2, p):"")).replace("%suffix%", (s2!=null?TabList.replace(s2, p):""));
-		TabListAPI.setTabListName(p,name);
-		NameTagChanger.setNameTag(p, p1!=null?TabList.replace(p1, p):"", s1!=null?TabList.replace(s1, p):"");
+	
+	public static void setName(Player p) {
+		String p1 = getPrefix(p, true);
+		String p2 = getPrefix(p, false);
+		String s1 = getSuffix(p, true);
+		String s2 = getSuffix(p, false);
+		String name = getNameFormat(p).replace("%prefix%", (p2!=null?replace(p2, p):"")).replace("%suffix%", (s2!=null?replace(s2, p):""));
+		TabListAPI.setTabListName(p, name);
+		NameTagChanger.setNameTag(p, p1!=null?replace(p1, p):"", s1!=null?replace(s1, p):"");
 	}
-
+	
 	static int test;
-
 	public static void removeTab() {
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			NameTagChanger.remove(p);
-			p.setPlayerListName(p.getName());
+			TabListAPI.setTabListName(p,p.getName());
 			TabListAPI.setHeaderFooter(p, "", "");
 		}
 	}

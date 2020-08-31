@@ -25,23 +25,20 @@ public class Colors {
 		if (sign)
 			p = "Sign";
 		String b = s;
-		
-		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Hex"))) {
-			if(b.contains("#"))
-					if (TheAPI.isNewerThan(15)) {
-						b=b.replace("&x", "�x");
-						Matcher match = pattern.matcher(b);
-			            while (match.find()) {
-			                String color = match.group();
-			                StringBuilder magic = new StringBuilder("§x");
-			                char[] c = color.substring(1).toCharArray();
-			                for(int i = 0; i < c.length; ++i) {
-			                    magic.append(("&"+c[i]).toLowerCase());
-			                }
-			                b = b.replace(color, magic.toString() + "");
-			            }
-			        }
+
+		if (TheAPI.isNewerThan(15) && b.contains("#")) {
+			if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Hex"))) {
+				b=b.replace("&x", "§x");
+				Matcher match = pattern.matcher(b);
+			    while (match.find()) {
+			        String color = match.group();
+			        StringBuilder magic = new StringBuilder("§x");
+			        char[] c = color.substring(1).toCharArray();
+			        for(int i = 0; i < c.length; ++i)magic.append(("&"+c[i]).toLowerCase());
+			        b = b.replace(color, magic.toString() + "");
+			    }
 			}
+		}
 		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
 			for (int i = 0; i < 10; ++i)
 				b = b.replace("&" + i, ChatColor.getByChar(i+"")+"");

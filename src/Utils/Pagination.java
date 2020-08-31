@@ -3,6 +3,7 @@ package Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 public class Pagination<T> extends ArrayList<T> {
@@ -19,6 +20,11 @@ public class Pagination<T> extends ArrayList<T> {
 	}
 
 	public Pagination(int pageSize, List<T> objects) {
+		this.pageSize = pageSize;
+		addAll(objects);
+	}
+
+	public Pagination(int pageSize, Set<T> objects) {
 		this.pageSize = pageSize;
 		addAll(objects);
 	}

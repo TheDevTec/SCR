@@ -40,7 +40,7 @@ public class Tab implements CommandExecutor, TabCompleter {
 				Loader.tab.reload();
 				for (Player p : TheAPI.getOnlinePlayers()) {
 					TabList.setFooterHeader(p);
-					TabList.setNameTag(p);
+					TabList.setName(p);
 				}
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("ConfigReloaded"), s);
 				return true;

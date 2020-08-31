@@ -26,6 +26,11 @@ public class SetHome implements CommandExecutor {
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%home%", "home"), s);
 						return true;
 					}
+						User d = TheAPI.getUser(s.getName());
+						d.setAndSave("Homes." + args[0], new Position(p.getLocation()).toString());
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%player%", p.getName())
+								.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]), s);
+						return true;
 				} else {
 					if (args.length == 0) {
 						TheAPI.getUser(s.getName()).setAndSave("Homes.home",
@@ -34,11 +39,9 @@ public class SetHome implements CommandExecutor {
 								.replace("%playername%", p.getDisplayName()).replace("%home%", "home"), s);
 						return true;
 					}
-					if (args.length == 1) {
 						User d = TheAPI.getUser(s.getName());
-						if (Loader.config.getString("Homes." + Loader.vault.getPrimaryGroup(p)) != null) {
-							if ((d.exist("Homes")?d.getKeys("Homes").size():0) >= Loader.config
-									.getInt("Homes." + Loader.vault.getPrimaryGroup(p))) {
+						if (Loader.config.exists("Homes." + Loader.vault.getPrimaryGroup(p))) {
+							if (d.getKeys("Homes").size() >= Loader.config.getInt("Homes." + Loader.vault.getPrimaryGroup(p))) {
 								TheAPI.msg(
 										Loader.s("Prefix")
 												+ Loader.s("Homes.LimitReached").replace("%limit%",
@@ -57,7 +60,6 @@ public class SetHome implements CommandExecutor {
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Created").replace("%player%", p.getName())
 								.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]), s);
 						return true;
-					}
 				}
 			}
 			return true;

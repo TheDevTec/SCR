@@ -11,6 +11,8 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import com.google.common.collect.Lists;
+
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
@@ -85,7 +87,11 @@ public class Mail implements CommandExecutor, TabCompleter {
 	}
 
 	public static List<String> getMails(String p) {
+		try {
 		return TheAPI.getUser(p).getStringList("Mails");
+		}catch(Exception er) {
+			return Lists.newArrayList();
+		}
 	}
 
 	public static void removeALL(CommandSender p) {

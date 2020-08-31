@@ -2,7 +2,6 @@ package Commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -42,6 +41,23 @@ public class Home implements CommandExecutor, TabCompleter {
 											.replace("%playername%", p.getDisplayName()).replace("%home%", "home"),
 									s);
 							return true;
+						}
+					}else {
+						if(!d.getKeys("Homes").isEmpty()) {
+							String home = (String) d.getKeys("Homes").toArray()[0];
+							Position loc2 = Position.fromString(d.getString("Homes." + home)); 
+							API.setBack(p);
+							if (loc2 != null) {
+								if(setting.tp_safe)
+									API.safeTeleport((Player)s,loc2.toLocation());
+								else
+									((Player)s).teleport(loc2.toLocation());
+								TheAPI.msg(
+										Loader.s("Prefix") + Loader.s("Homes.Teleporting").replace("%player%", p.getName())
+												.replace("%playername%", p.getDisplayName()).replace("%home%", home),
+										s);
+								return true;
+							}
 						}
 					}
 					API.setBack(p);
@@ -86,9 +102,7 @@ public class Home implements CommandExecutor, TabCompleter {
 			if (args.length == 1) {
 				if (s.hasPermission("ServerControl.Home")) {
 					try {
-						Set<String> homes = TheAPI.getUser(s.getName()).getKeys("Homes");
-						if (!homes.isEmpty() && homes != null)
-							c.addAll(StringUtil.copyPartialMatches(args[0], homes, new ArrayList<>()));
+						c.addAll(StringUtil.copyPartialMatches(args[0], TheAPI.getUser(s.getName()).getKeys("Homes"), new ArrayList<>()));
 					} catch (Exception e) {
 
 					}
