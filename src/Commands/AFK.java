@@ -37,6 +37,10 @@ public class AFK implements CommandExecutor {
 		}
 		if (args.length == 1) {
 			if (API.hasPerm(s, "ServerControl.AFK.Other")) {
+				if (args[0].equals("*")) {
+					Repeat.a(s, "AFK *");
+					return true;
+				}
 				SPlayer p = API.getSPlayer(TheAPI.getPlayer(args[0]));
 				if (p.getPlayer() != null) {
 					if (p.isAFK()) {
@@ -47,10 +51,6 @@ public class AFK implements CommandExecutor {
 					} else {
 						p.setAFK(true);
 					}
-					return true;
-				}
-				if (args[0].equals("*")) {
-					Repeat.a(s, "AFK *");
 					return true;
 				}
 				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
