@@ -1,9 +1,6 @@
-# ServerControlReloaded
-Current version of ServerControlReloaded on this GitHub is 7.2
-
 ## Download ServerControlReloaded:
 - Spigot (Dev builds): https://www.spigotmc.org/resources/server-control-reloaded.71147/
-- Bukkit (Release only): https://dev.bukkit.org/projects/server-control-reloaded
+- Bukkit: https://dev.bukkit.org/projects/server-control-reloaded
 
 
 ## Required:
