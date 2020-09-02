@@ -1,7 +1,6 @@
 package Commands;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,16 +22,11 @@ public class Homes implements CommandExecutor {
 				Player p = (Player) s;
 				if (API.hasPerm(s, "ServerControl.Home")) {
 					User d = TheAPI.getUser(p);
-					if (d.exist("Homes")) {
-						List<String> ne = new ArrayList<>(d.getKeys("Homes"));
-						if (!ne.isEmpty()) {
-							TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.List").replace("%player%", p.getName())
-									.replace("%playername%", p.getDisplayName())
-									.replace("%list%", StringUtils.join(ne, ", ")), s);
-							return true;
-						}
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.ListEmpty").replace("%player%", p.getName())
-								.replace("%playername%", p.getDisplayName()), s);
+					Set<String> ne = d.getKeys("Homes");
+					if (!ne.isEmpty()) {
+						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.List").replace("%player%", p.getName())
+								.replace("%playername%", p.getDisplayName())
+								.replace("%list%", StringUtils.join(ne, ", ")), s);
 						return true;
 					}
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.ListEmpty").replace("%player%", p.getName())
@@ -48,21 +42,16 @@ public class Homes implements CommandExecutor {
 		if (args.length == 1) {
 			if (API.hasPerm(s, "ServerControl.Home.Other")) {
 				User d = TheAPI.getUser(args[0]);
-				if (d.exist("Homes")) {
-					List<String> ne = new ArrayList<String>(d.getKeys("Homes"));
-					if (!ne.isEmpty()) {
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.ListOther").replace("%target%", args[0])
-								.replace("%playername%", args[0])
-								.replace("%list%", StringUtils.join(ne, ", ")), s);
-						return true;
-					}
-					TheAPI.msg(Loader.s("Prefix")
-							+ Loader.s("Homes.ListEmpty").replace("%target%", args[0]).replace("%playername%", args[0]),
-							s);
+				Set<String> ne = d.getKeys("Homes");
+				if (!ne.isEmpty()) {
+					TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.ListOther").replace("%target%", args[0])
+							.replace("%playername%", args[0])
+							.replace("%list%", StringUtils.join(ne, ", ")), s);
 					return true;
 				}
 				TheAPI.msg(Loader.s("Prefix")
-						+ Loader.s("Homes.ListEmpty").replace("%target%", args[0]).replace("%playername%", args[0]), s);
+						+ Loader.s("Homes.ListEmpty").replace("%target%", args[0]).replace("%playername%", args[0]),
+						s);
 				return true;
 			}
 			return true;

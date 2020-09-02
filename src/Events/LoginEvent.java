@@ -14,6 +14,7 @@ import Utils.Tasks;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class LoginEvent implements Listener {
 	public Loader plugin = Loader.getInstance;
@@ -33,23 +34,17 @@ public class LoginEvent implements Listener {
 		}
 	}
 
-	ConfigAPI f = Loader.config;
-	String kickString;
+	private static String kickString= StringUtils.join(Loader.config.getStringList("Options.Maintenance.KickMessages"), "\n");
+	private ConfigAPI f = Loader.config;
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void JoinEvent(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
 		Loader.setupChatFormat(p);
 		if (setting.lock_server && !p.hasPermission("ServerControl.Maintenance")) {
-			String kickString = "";
-			for (String sk : f.getStringList("Options.Maintenance.KickMessages")) {
-				sk = sk.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName());
-				kickString += sk + "\n";
-			}
-			e.disallow(Result.KICK_OTHER, TheAPI.colorize(kickString));
+			e.disallow(Result.KICK_OTHER, TheAPI.colorize(kickString.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())));
 			return;
 		}
-
 		if (setting.vip && TheAPI.getMaxPlayers() == TheAPI.getOnlinePlayers().size() - 1) {
 			boolean has = p.hasPermission("ServerControl.JoinFullServer");
 			int max = TheAPI.getMaxPlayers() + (setting.vip_add ? f.getInt("Options.VIPSlots.SlotsToAdd") : 0);

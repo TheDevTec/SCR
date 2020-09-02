@@ -17,6 +17,7 @@ import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 
 @SuppressWarnings("deprecation")
 public class ChatFormat implements Listener {
@@ -24,18 +25,17 @@ public class ChatFormat implements Listener {
 	String m;
 
 	public static String r(Player p, String s, String msg, boolean a) {
-
 		String group = Loader.FormatgetGroup(p);
 		if (Loader.vault != null)
 			group = Loader.vault.getPrimaryGroup(p);
 		String name = p.getName();
 		String displayname = name;
 		if (a) {
-			displayname = p.getDisplayName();
+			displayname = NMSAPI.getNMSPlayerAPI(p).getDisplayName();
 			name = displayname;
 		} else {
 			User d = TheAPI.getUser(p);
-			if (d.getString("DisplayName") != null) {
+			if (d.exists("DisplayName")) {
 				name = d.getString("DisplayName");
 				displayname = d.getString("DisplayName");
 			}
@@ -74,21 +74,21 @@ public class ChatFormat implements Listener {
 	public void set(PlayerChatEvent e) {
 		Player p = e.getPlayer();
 		Loader.setupChatFormat(p);
-		if (TheAPI.getCooldownAPI("world-create").getStart(p.getName()) != -1) {
+		if (TheAPI.getCooldownAPI(p.getName()).getStart("world-create") != -1) {
 			e.setCancelled(true);
 			if (e.getMessage().toLowerCase().equals("cancel")) {
 				User d = TheAPI.getUser(p);
-				TheAPI.getCooldownAPI("world-create").removeCooldown(p.getName());
+				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
 				d.setAndSave("MultiWorlds-Create", null);
 				d.setAndSave("MultiWorlds-Generator", null);
 				TheAPI.sendTitle(p,"", "&6Cancelled");
 				return;
 			}
-			if (TheAPI.getCooldownAPI("world-create").expired(p.getName())) {
-				TheAPI.getCooldownAPI("world-create").removeCooldown(p.getName());
+			if (TheAPI.getCooldownAPI(p.getName()).expired("world-create")) {
+				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
 				MultiWorldsGUI.openInvCreate(p);
 			} else {
-				TheAPI.getCooldownAPI("world-create").removeCooldown(p.getName());
+				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
 				TheAPI.getUser(p).setAndSave("MultiWorlds-Create", Colors.remove(e.getMessage()));
 				MultiWorldsGUI.openInvCreate(p);
 			}

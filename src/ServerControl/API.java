@@ -28,6 +28,7 @@ import me.DevTec.TheAPI.BlocksAPI.BlockGetter;
 import me.DevTec.TheAPI.Utils.Position;
 import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
@@ -235,11 +236,11 @@ public class API {
 	}
 
 	public static void setDisplayName(Player p, String name) {
-		p.setDisplayName(name);
+		NMSAPI.getNMSPlayerAPI(p).setDisplayName(name);
 	}
 
 	public static void setCustomName(Player p, String name) {
-		p.setCustomName(name);
+		NMSAPI.getNMSPlayerAPI(p).setDisplayName(name);
 	}
 
 	public static List<String> getKits() {
