@@ -1,3 +1,5 @@
+# ServerControlReloaded
+
 ## Download ServerControlReloaded:
 - Spigot (Dev builds): https://www.spigotmc.org/resources/server-control-reloaded.71147/
 - Bukkit: https://dev.bukkit.org/projects/server-control-reloaded
