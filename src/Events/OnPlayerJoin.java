@@ -3,7 +3,6 @@ package Events;
 
 import java.util.Date;
 
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -130,6 +129,10 @@ public class OnPlayerJoin implements Listener {
 		}
 		if (s.hasGodEnabled() && s.hasPermission("servercontrol.godonjoin") && s.hasPermission("servercontrol.god"))
 			s.enableGod();
+		
+		int j = d.getInt("Joins");
+		j=j+1;
+		d.setAndSave("Joins", j);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -143,7 +146,6 @@ public class OnPlayerJoin implements Listener {
 		}
 		SPlayer s = API.getSPlayer(p);
 		User d = TheAPI.getUser(p);
-		d.set("Joins", s.getPlayer().getStatistic(Statistic.LEAVE_GAME));
 		d.set("LastLeave", setting.format_date_time.format(new Date()));
 		d.set("DisconnectWorld", p.getWorld().getName());
 		s.disableFly();

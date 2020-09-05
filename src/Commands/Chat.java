@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Statistic;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -117,30 +116,30 @@ public class Chat implements CommandExecutor, TabCompleter {
 								if (Loader.vault != null) {
 									TheAPI.msg(a.replace("%playername%", p.getDisplayName())
 											.replace("%prefix%", Loader.s("Prefix")).replace("%player%", p.getName())
-											.replace("%joins%", "" + (p.getStatistic(Statistic.LEAVE_GAME) + 1))
-											.replace("%leaves%", "" + p.getStatistic(Statistic.LEAVE_GAME))
+											.replace("%joins%", "" + d.getInt("Joins"))
+											.replace("%leaves%", "" + (d.getInt("Joins") - 1))
 											.replace("%vulgarwords%", "" + d.getInt("VulgarWords"))
 											.replace("%spams%", "" + d.getInt("Spam"))
 											.replace("%kicks%", "" + d.getInt("Kicks")).replace("%vault-money%", money)
 											.replace("%money%", money)
 											.replace("%vault-group%", Loader.vault.getPrimaryGroup(p))
 											.replace("%group%", Loader.vault.getPrimaryGroup(p))
-											.replace("%kills%", "" + p.getStatistic(Statistic.PLAYER_KILLS))
-											.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS))
+											.replace("%kills%", "" + d.getInt("Kills"))
+											.replace("%deaths%", "" + d.getInt("Deaths"))
 											.replace("%lastleave%", check(d.getString("LastLeave")))
 											.replace("%firstjoin%", check(d.getString("FirstJoin"))), p);
 								}
 								if (Loader.vault == null) {
 									TheAPI.msg(a.replace("%playername%", p.getDisplayName())
 											.replace("%prefix%", Loader.s("Prefix")).replace("%player%", p.getName())
-											.replace("%joins%", "" + (p.getStatistic(Statistic.LEAVE_GAME) + 1))
-											.replace("%leaves%", "" + p.getStatistic(Statistic.LEAVE_GAME))
+											.replace("%joins%", "" + d.getInt("Joins"))
+											.replace("%leaves%", "" + (d.getInt("Joins") - 1))
 											.replace("%vulgarwords%", "" + d.getInt("VulgarWords"))
 											.replace("%spams%", "" + d.getInt("Spam"))
 											.replace("%kicks%", "" + d.getInt("Kicks")).replace("%vault-money%", money)
 											.replace("%money%", money)
-											.replace("%kills%", "" + p.getStatistic(Statistic.PLAYER_KILLS))
-											.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS))
+											.replace("%kills%", "" + d.getInt("Kills"))
+											.replace("%deaths%", "" + d.getInt("Deaths"))
 											.replace("%vault-group%", "Install groups plugin")
 											.replace("%group%", "Install groups plugin")
 											.replace("%lastleave%", check(d.getString("LastLeave")))
@@ -155,8 +154,8 @@ public class Chat implements CommandExecutor, TabCompleter {
 										.replace("%vulgarwords%", "" + d.getInt("VulgarWords"))
 										.replace("%spams%", "" + d.getInt("Spam"))
 										.replace("%kicks%", "" + d.getInt("Kicks"))
-										.replace("%kills%", "" + p.getStatistic(Statistic.PLAYER_KILLS))
-										.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS))
+										.replace("%kills%", "" + d.getInt("Kills"))
+										.replace("%deaths%", "" + d.getInt("Deaths"))
 										.replace("%vault-money%", "Please install Vault plugin and economy plugin.")
 										.replace("%money%", "Please install Vault plugin and economy plugin.")
 										.replace("%vault-group%", "Please install plugin Vault")
