@@ -144,11 +144,10 @@ public class OnPlayerJoin implements Listener {
 			else
 				e.setQuitMessage(TheAPI.colorize(replaceAll(Loader.s("OnLeave.Leave"), p)));
 		}
-		SPlayer s = API.getSPlayer(p);
 		User d = TheAPI.getUser(p);
 		d.set("LastLeave", setting.format_date_time.format(new Date()));
 		d.set("DisconnectWorld", p.getWorld().getName());
-		s.disableFly();
-		s.disableGod();
+		p.setFlying(false);
+		p.setAllowFlight(false);
 	}
 }

@@ -18,6 +18,8 @@ public class NickReset implements CommandExecutor {
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					TheAPI.getUser(s.getName()).setAndSave("DisplayName", null);
+					if(TheAPI.getPlayerOrNull(s.getName())!=null)
+						TheAPI.getPlayerOrNull(s.getName()).setCustomName(null);
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("NicknameReseted"), s);
 					return true;
 				}
@@ -30,6 +32,8 @@ public class NickReset implements CommandExecutor {
 				return true;
 			}
 			TheAPI.getUser(s.getName()).setAndSave("DisplayName", null);
+			if(TheAPI.getPlayerOrNull(a)!=null)
+				TheAPI.getPlayerOrNull(a).setCustomName(null);
 			TheAPI.msg(Loader.s("Prefix")
 					+ Loader.s("NicknameResetedOther").replace("%player%", a).replace("%playername%", a), s);
 			return true;

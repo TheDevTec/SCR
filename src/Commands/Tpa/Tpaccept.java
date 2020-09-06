@@ -23,8 +23,7 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 			if (p instanceof Player) {
 				if (args.length == 0) {
 					String pd = RequestMap.getRequest(p.getName());
-					if (pd == null || TheAPI.getPlayer(pd) == null
-							|| pd != null && !RequestMap.containsRequest(p.getName(), pd)) {
+					if (pd == null) {
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.NoRequest"), p);
 						return true;
 					}
@@ -36,7 +35,7 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 								+ Loader.s("TpaSystem.Tpaccept").replace("%player%", pd).replace("%playername%", pd),
 								p);
 						if (setting.tp_safe)
-							API.safeTeleport((Player)p,((Player) p).getLocation().add(0, -1, 0));
+							API.safeTeleport((Player)p,((Player) p).getLocation());
 						else
 							d.teleport(((Player) p).getLocation());
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaAccepted")
@@ -51,7 +50,7 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 						if (setting.tp_onreqloc && RequestMap.getLocation(p.getName(), pd) != null)
 							loc = RequestMap.getLocation(p.getName(), pd);
 						if (setting.tp_safe)
-							API.safeTeleport((Player)p,loc.add(0, -1, 0));
+							API.safeTeleport((Player)p,loc);
 						else
 							((Player) p).teleport(loc);
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpahereAccepted")

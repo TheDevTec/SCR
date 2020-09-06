@@ -43,7 +43,8 @@ public class Tpahere implements CommandExecutor, TabCompleter {
 									RequestMap.addRequest(s.getName(), p.getName(), RequestMap.Type.TPAHERE);
 									return true;
 								} else {
-									TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.AlreadyHaveRequest"), s);
+									TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.AlreadyHaveRequest").replace("%playername%", p.getDisplayName())
+											.replace("%player%", p.getName()), s);
 									return true;
 								}
 

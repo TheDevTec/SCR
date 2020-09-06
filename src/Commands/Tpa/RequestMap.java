@@ -22,6 +22,7 @@ public class RequestMap {
 		User s = TheAPI.getUser(sender);
 		s.set("Tp." + target + ".Type", tp.toString());
 		s.setAndSave("Tp." + target + ".Time", System.currentTimeMillis() / 1000);
+		if(tp==Type.TPAHERE)
 		if (setting.tp_onreqloc)
 			s.setAndSave("Tp." + target + ".Location",
 					StringUtils.getLocationAsString(TheAPI.getPlayer(target).getLocation()));
@@ -36,7 +37,7 @@ public class RequestMap {
 		if (s.exist("Tp")) {
 			List<String> f = new ArrayList<String>();
 			for (String d : s.getKeys("Tp"))
-				if (TheAPI.getPlayer(d) != null)
+				if (TheAPI.getPlayerOrNull(d) != null && containsRequest(p, d))
 					f.add(d);
 			if (!f.isEmpty())
 				return f.get(0);

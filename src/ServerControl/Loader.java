@@ -101,12 +101,13 @@ public class Loader extends JavaPlugin implements Listener {
 	public static void setupChatFormat(Player p) {
 		if (config.exist("Chat-Groups." + FormatgetGroup(p) + ".Name")) {
 			String g = TheAPI.colorize(PlaceholderAPI.setPlaceholders(p,
-					config.getString("Chat-Groups." + FormatgetGroup(p) + ".Name"))).replace("%", "%%");
+					config.getString("Chat-Groups." + FormatgetGroup(p) + ".Name")));
 			g = ChatFormat.r(p, g, null, false);
-			g = g.replace("%%", "%");
 			API.setDisplayName(p, Colors.colorize(g, false, p));
 		} else
 			API.setDisplayName(p, getInstance.getPrefix(p) + p.getName() + getInstance.getSuffix(p));
+		if(TheAPI.getUser(p).exist("DisplayName"))
+		NMSAPI.getNMSPlayerAPI(p).setCustomName(TheAPI.colorize(PlaceholderAPI.setPlaceholders(p, TheAPI.getUser(p).getString("DisplayName"))));
 	}
 
 	public static String PlayerNotEx(String s) {

@@ -47,7 +47,8 @@ public class Tpa implements CommandExecutor, TabCompleter {
 									return true;
 								} else {
 									TheAPI.msg(Loader.s("Prefix")
-											+ API.replacePlayerName(Loader.s("TpaSystem.AlreadyHaveRequest"), p), s);
+											+ API.replacePlayerName(Loader.s("TpaSystem.AlreadyHaveRequest").replace("%playername%", d.getDisplayName())
+													.replace("%player%", d.getName()), p), s);
 									return true;
 								}
 

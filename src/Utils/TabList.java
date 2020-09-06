@@ -2,9 +2,12 @@ package Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
+
+import com.google.common.collect.Lists;
 
 import ServerControl.API;
 import ServerControl.Loader;
@@ -43,7 +46,7 @@ public class TabList {
 	public static String getNameFormat(Player p) {
 		if (Loader.tab.exist("Groups." + group(p) + ".Name"))
 			return replace(Loader.tab.getString("Groups." + group(p) + ".Name"), p);
-		return "%prefix% "+p.getName()+" %suffix%";
+		return "%tab-prefix% "+p.getName()+" %tab-suffix%";
 	}
 
 	public static String getSuffix(Player p, boolean nametag) {
@@ -53,48 +56,98 @@ public class TabList {
 	}
 
 	public static String replace(String header, Player p) {
-		String customname = p.getName();
-		String group = Loader.FormatgetGroup(p);
+		header=TheAPI.colorize(header);
+		if(header.contains("%money%"))
+				header=header.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), false));
+		if(header.contains("%colored_money%"))
+			header=header.replace("%colored_money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true));
+		if(header.contains("%online%")) {
+			List<Player> seen = Lists.newArrayList();
+			for(Player s : TheAPI.getPlayers())
+				if(!TheAPI.canSee(p,s))
+					seen.add(s);
+			header=header.replace("%online%", seen.size() + "");
+		}
+		if(header.contains("%max_players%"))
+			header=header.replace("%max_players%", TheAPI.getMaxPlayers() + "");
+		if(header.contains("%ping%"))
+			header=header.replace("%ping%", Loader.getInstance.pingPlayer(p));
+		;if(header.contains("%time%"))
+			header=header.replace("%time%", new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
+		;if(header.contains("%date%"))
+			header=header.replace("%date%", new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()))
+		;if(header.contains("%world%"))
+			header=header.replace("%world%", p.getWorld().getName())
+		;if(header.contains("%hp%")) {
+			double hp = 0.0;
+			try {
+				hp=(double)p.getHealth();
+			}catch(Exception e) {
+				hp=(double)Ref.invoke(p, "getHealthScale");
+			}
+			header=header.replace("%hp%", hp + "");
+		}
+		if(header.contains("%health%")) {
+			double hp = 0.0;
+			try {
+				hp=(double)p.getHealth();
+			}catch(Exception e) {
+				hp=(double)Ref.invoke(p, "getHealthScale");
+			}
+			header=header.replace("%health%", hp+ "");
+		}
+		if(header.contains("%food%"))
+			header=header.replace("%food%", p.getFoodLevel() + "")
+		;if(header.contains("%x%"))
+			header=header.replace("%x%", p.getLocation().getBlockX() + "").replace("%y%", p.getLocation().getBlockY() + "")
+		;if(header.contains("%z%"))
+			header=header.replace("%z%", p.getLocation().getBlockZ() + "");
+		if(header.contains("%vault-group%")) {
+			String group = Loader.FormatgetGroup(p);
 		if (Loader.vault != null)
 			group = Loader.vault.getPrimaryGroup(p);
+			header=header.replace("%vault-group%", group);
+		}
+		;if(header.contains("%vault-prefix%"))
+			header=header.replace("%vault-prefix%", Loader.getInstance.getPrefix(p))
+		;if(header.contains("%vault-suffix%"))
+			header=header.replace("%vault-suffix%", Loader.getInstance.getSuffix(p))
+		;if(header.contains("%group%"))
+			header=header.replace("%group%", getGroup(p))
+		;if(header.contains("%tps%"))
+			header=header.replace("%tps%", TheAPI.getServerTPS() + "")
+		;if(header.contains("%kills%"))
+			header=header.replace("%kills%", "" + p.getStatistic(Statistic.PLAYER_KILLS))
+		;if(header.contains("%deaths%"))
+			header=header.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS))
+		;if(header.contains("%player%"))
+			header=header.replace("%player%", p.getName())
+		;if(header.contains("%playername%")) {
+			String displayname = p.getName();
+			if (p.getDisplayName() != null)
+				displayname = p.getDisplayName();
+			header=header.replace("%playername%", displayname);
+		}
+		if(header.contains("%customname%")) {
+			String customname = p.getName();
 		if (p.getCustomName() != null)
 			customname = p.getCustomName();
-		String displayname = p.getName();
-		if (p.getDisplayName() != null)
-			displayname = p.getDisplayName();
-		
-		double hp = 0.0;
-		try {
-			hp=(double)p.getHealth();
-		}catch(Exception e) {
-			hp=(double)Ref.invoke(p, "getHealthScale");
-		}
-		return TheAPI.colorize(PlaceholderAPI.setPlaceholders(p, header
-				.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), false))
-				.replace("%colored_money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true))
-				.replace("%online%", TheAPI.getOnlinePlayers().size() + "")
-				.replace("%max_players%", TheAPI.getMaxPlayers() + "")
-				.replace("%ping%", Loader.getInstance.pingPlayer(p))
-				.replace("%time%", new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
-				.replace("%date%", new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()))
-				.replace("%world%", p.getWorld().getName()).replace("%hp%", hp + "")
-				.replace("%health%", hp+ "").replace("%food%", p.getFoodLevel() + "")
-				.replace("%x%", p.getLocation().getBlockX() + "").replace("%y%", p.getLocation().getBlockY() + "")
-				.replace("%z%", p.getLocation().getBlockZ() + "").replace("%vault-group%", group)
-				.replace("%vault-prefix%", Loader.getInstance.getPrefix(p))
-				.replace("%vault-suffix%", Loader.getInstance.getSuffix(p))
-				.replace("%group%", getGroup(p))
-				.replace("%tps%", TheAPI.getServerTPS() + "").replace("%ping%", Loader.getInstance.pingPlayer(p) + "")
-				.replace("%kills%", "" + p.getStatistic(Statistic.PLAYER_KILLS))
-				.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS))
-				.replace("%player%", p.getName())
-				.replace("%playername%", displayname).replace("%customname%", customname)
-				.replace("%ram_free%", MemoryAPI.getFreeMemory(false) + "")
-				.replace("%ram_free_percentage%", MemoryAPI.getFreeMemory(true) + "%")
-				.replace("%ram_usage%", MemoryAPI.getUsedMemory(false) + "")
-				.replace("%ram_usage_percentage%", MemoryAPI.getUsedMemory(true) + "%")
-				.replace("%ram_max%", MemoryAPI.getMaxMemory() + "").replace("%ram_max_percentage%", "100%")
-				.replace("%afk%", Loader.getInstance.isAfk(p))));
+		if(TheAPI.getUser(p).exists("DisplayName"))
+			customname = TheAPI.getUser(p).getString("DisplayName");
+			header=header.replace("%customname%", customname);
+		}if(header.contains("%ram_free%"))
+			header=header.replace("%ram_free%", MemoryAPI.getFreeMemory(false) + "")
+		;if(header.contains("%ram_free_percentage%"))
+			header=header.replace("%ram_free_percentage%", MemoryAPI.getFreeMemory(true) + "%")
+		;if(header.contains("%ram_usage%"))
+			header=header.replace("%ram_usage%", MemoryAPI.getUsedMemory(false) + "")
+		;if(header.contains("%ram_usage_percentage%"))
+			header=header.replace("%ram_usage_percentage%", MemoryAPI.getUsedMemory(true) + "%")
+		;if(header.contains("%ram_max%"))
+			header=header.replace("%ram_max%", MemoryAPI.getMaxMemory() + "").replace("%ram_max_percentage%", "100%")
+		;if(header.contains("%afk%"))
+			header=header.replace("%afk%", Loader.getInstance.isAfk(p));
+		return PlaceholderAPI.setPlaceholders(p, header);
 	}
 	
 	public static void setName(Player p) {
@@ -102,7 +155,7 @@ public class TabList {
 		String p2 = getPrefix(p, false);
 		String s1 = getSuffix(p, true);
 		String s2 = getSuffix(p, false);
-		String name = getNameFormat(p).replace("%prefix%", (p2!=null?replace(p2, p):"")).replace("%suffix%", (s2!=null?replace(s2, p):""));
+		String name = getNameFormat(p).replace("%tab-prefix%", (p2!=null?replace(p2, p):"")).replace("%tab-suffix%", (s2!=null?replace(s2, p):""));
 		TabListAPI.setTabListName(p, name);
 		NameTagChanger.setNameTag(p, p1!=null?replace(p1, p):"", s1!=null?replace(s1, p):"");
 	}

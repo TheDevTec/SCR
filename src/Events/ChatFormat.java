@@ -1,8 +1,5 @@
 package Events;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,11 +10,11 @@ import org.bukkit.event.player.PlayerChatEvent;
 import ServerControl.Loader;
 import Utils.Colors;
 import Utils.MultiWorldsGUI;
+import Utils.TabList;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
-import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 
 @SuppressWarnings("deprecation")
 public class ChatFormat implements Listener {
@@ -25,41 +22,9 @@ public class ChatFormat implements Listener {
 	String m;
 
 	public static String r(Player p, String s, String msg, boolean a) {
-		String group = Loader.FormatgetGroup(p);
-		if (Loader.vault != null)
-			group = Loader.vault.getPrimaryGroup(p);
-		String name = p.getName();
-		String displayname = name;
-		if (a) {
-			displayname = NMSAPI.getNMSPlayerAPI(p).getDisplayName();
-			name = displayname;
-		} else {
-			User d = TheAPI.getUser(p);
-			if (d.exists("DisplayName")) {
-				name = d.getString("DisplayName");
-				displayname = d.getString("DisplayName");
-			}
-		}
-		String customname = p.getName();
-		if (p.getCustomName() != null)
-			customname = p.getCustomName();
-		s = s.replace("%%player%%", name).replace("%%group%%", Loader.FormatgetGroup(p))
-				.replace("%%time%%", new SimpleDateFormat("HH:mm:ss").format(new Date()))
-				.replace("%%x%%", String.valueOf(p.getLocation().getBlockX()))
-				.replace("%%y%%", String.valueOf(p.getLocation().getBlockY()))
-				.replace("%%z%%", String.valueOf(p.getLocation().getBlockZ())).replace("%%vault-group%%", group)
-				.replace("%%vault-prefix%%", Loader.getInstance.getPrefix(p))
-				.replace("%%prefix%%", Loader.getInstance.getPrefix(p))
-				.replace("%%vault-suffix%%", Loader.getInstance.getSuffix(p))
-				.replace("%%suffix%%", Loader.getInstance.getSuffix(p)).replace("%%world%%", p.getWorld().getName())
-				.replace("%%hp%%", String.valueOf(p.getHealth())).replace("%%customname%%", customname)
-				.replace("%%playercustomname%%", customname).replace("%%playername%%", displayname)
-				.replace("%%health%%", String.valueOf(p.getHealth()))
-				.replace("%%food%%", String.valueOf(p.getFoodLevel()))
-				.replace("%%foodlevel%%", String.valueOf(p.getFoodLevel()))
-				.replace("%%level%%", String.valueOf(p.getLevel()));
+		s = TabList.replace(s, p);
 		if (msg != null)
-			s = s.replace("%%message%%", msg);
+			s = s.replace("%message%", msg);
 		return s;
 	}
 
@@ -108,16 +73,12 @@ public class ChatFormat implements Listener {
 		}
 		if (Loader.config.getBoolean("Chat-Groups-Enabled") == true) {
 			if (Loader.config.getString("Chat-Groups." + Loader.FormatgetGroup(p) + ".Chat") != null) {
-				m = Loader.config.getString("Chat-Groups." + Loader.FormatgetGroup(p) + ".Chat").replace("%", "%%");
+				m = Loader.config.getString("Chat-Groups." + Loader.FormatgetGroup(p) + ".Chat");
 
 				String format = PlaceholderAPI.setPlaceholders(p,
 						Loader.config.getString("Chat-Groups." + Loader.FormatgetGroup(p) + ".Chat"));
 				if (format != null) {
-					format = format.replace("%", "%%");
-					format = TheAPI.colorize(format);
-					format = r(p, format, e.getMessage(), true);
-
-					e.setFormat(format);
+					e.setFormat(r(p, TheAPI.colorize(format), e.getMessage(), true).replace("%", "%%"));
 				}
 			}
 		}

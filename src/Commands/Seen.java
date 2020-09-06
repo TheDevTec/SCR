@@ -1,12 +1,13 @@
 package Commands;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import com.google.common.collect.Lists;
 
 import ServerControl.API;
 import ServerControl.API.SeenType;
@@ -16,9 +17,10 @@ import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Seen implements CommandExecutor {
 	List<String> getS(String a) {
-		List<String> l = new ArrayList<String>();
+		if(a==null)return Lists.newArrayList();
+		List<String> l = Lists.newArrayList();
 		for (UUID s : TheAPI.getUsers()) {
-			if (TheAPI.getUser(s).getName().equalsIgnoreCase(a))
+			if (TheAPI.getUser(s).getName()!=null && TheAPI.getUser(s).getName().equalsIgnoreCase(a))
 				l.add(TheAPI.getUser(s).getName());
 		}
 		return l;
@@ -32,7 +34,7 @@ public class Seen implements CommandExecutor {
 				return true;
 			}
 			if (TheAPI.existsUser(args[0])) {
-				if (TheAPI.getPlayer(args[0]) != null && TheAPI.getPlayer(args[0]).getName().equals(args[0])) {
+				if (TheAPI.getPlayerOrNull(args[0]) != null) {
 					TheAPI.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Seen.Online"), args[0])
 							.replace("%online%", API.getSeen(args[0], SeenType.Online)), s);
 					return true;

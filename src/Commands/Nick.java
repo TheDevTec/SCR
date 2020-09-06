@@ -21,6 +21,8 @@ public class Nick implements CommandExecutor {
 				}
 				String msg = TheAPI.buildString(args);
 				TheAPI.getUser(s.getName()).setAndSave("DisplayName", msg);
+				if(TheAPI.getPlayerOrNull(s.getName())!=null)
+					TheAPI.getPlayerOrNull(s.getName()).setCustomName(TheAPI.colorize(msg));
 				TheAPI.msg(Loader.s("Prefix")
 						+ Loader.s("NicknameChanged").replace("%nick%", msg).replace("%nickname%", msg), s);
 				return true;

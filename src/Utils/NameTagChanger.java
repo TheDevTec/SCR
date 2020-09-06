@@ -45,7 +45,8 @@ public class NameTagChanger {
 	}
 
 	public static void remove(Player p) {
-		t.get(p).resetNameTag();
+		if(p==null)return;
+		new NameTagAPI(p, "", "").resetNameTag();
 		t.remove(p);
 	}
 }
