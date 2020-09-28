@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import Commands.Kit;
+import ServerControl.Loader.Placeholder;
 import ServerControlEvents.PluginHookEvent;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
@@ -76,8 +77,7 @@ public class API {
 			if (home != null) {
 				return StringUtils.getLocationFromString(d.getString("Homes." + home));
 			} else {
-				TheAPI.msg(Loader.s("Spawn.NoHomesTeleportedToSpawn").replace("%world%", p.getWorld().getName())
-						.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
+				Loader.sendMessages(p, "Home.TpSpawn");
 				a = getTeleportLocation(p, TeleportLocation.SPAWN);
 			}
 		}
@@ -178,8 +178,6 @@ public class API {
 		PluginHookEvent event = new PluginHookEvent(plugin);
 		Bukkit.getPluginManager().callEvent(event);
 		if (!event.isCancelled()) {
-			TheAPI.getConsole().sendMessage(TheAPI
-					.colorize(Loader.s("Prefix") + "&aHooked addon &0'&6" + plugin.getName() + "&0' &ato the plugin."));
 			event.Hook();
 		}
 	}
@@ -189,10 +187,10 @@ public class API {
 		if (loc != null) {
 			TheAPI.getUser(p).set("Back", StringUtils.getLocationAsString(p.getLocation()));
 			p.teleport(loc);
-			TheAPI.msg(Loader.s("Back.Teleporting").replace("%prefix%", Loader.s("Prefix"))
-					.replace("%playername%", p.getDisplayName()).replace("%player%", p.getName()), p);
+
+			Loader.sendMessages(p, "Back.Teleport.You");
 		} else
-			TheAPI.msg(Loader.s("Back.CantGetLocation"), p);
+			Loader.sendMessages(p, "Back.WrongLocation");
 	}
 
 	public static void setBack(Player p) {
@@ -220,9 +218,7 @@ public class API {
 		if (has(p, perms)) {
 			return true;
 		}
-		p.sendMessage(TheAPI.colorize(
-				Loader.s("NotPermissionsMessage").replace("%player%", p.getName()).replace("%playername%", p.getName())
-						.replace("%permission%", StringUtils.join(perms, ", "))));
+		Loader.sendMessages(p, "NoPerms", Placeholder.c().add("%permission%", StringUtils.join(perms, ", ")));
 		return false;
 	}
 
@@ -230,8 +226,7 @@ public class API {
 		if (s.hasPermission(permission)) {
 			return true;
 		}
-		s.sendMessage(TheAPI.colorize(Loader.s("NotPermissionsMessage").replace("%player%", s.getName())
-				.replace("%playername%", s.getName()).replace("%permission%", permission)));
+		Loader.sendMessages(s, "NoPerms", Placeholder.c().add("%permission%", permission));
 		return false;
 	}
 
@@ -245,7 +240,7 @@ public class API {
 
 	public static List<String> getKits() {
 		List<String> list = new ArrayList<String>();
-		for (String name : Loader.kit.getConfigurationSection("Kits").getKeys(false)) {
+		for (String name : Loader.kit.getKeys("Kits")) {
 			list.add(name);
 		}
 		return list;

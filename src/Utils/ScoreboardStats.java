@@ -6,22 +6,16 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.Maps;
-
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
+import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.ScoreboardAPI.ScoreboardAPI;
 import me.DevTec.TheAPI.ScoreboardAPI.ScoreboardType;
 
 public class ScoreboardStats {
-	public ScoreboardStats() {
-		f = Loader.sb;
-	}
-
-	static ConfigAPI f;
-	static HashMap<Player, ScoreboardAPI> setup = Maps.newHashMap(); //prevent recreating 1000x scoreboard
+	
+	static HashMap<Player, ScoreboardAPI> setup = new HashMap<>(); //prevent recreating 1000x scoreboard
 
 	public static void createScoreboard(Player p) {
 		if (!setup.containsKey(p))
@@ -29,6 +23,7 @@ public class ScoreboardStats {
 		ScoreboardAPI a = setup.get(p);
 		String getName = "SCR";
 		List<String> getLine = new ArrayList<String>();
+		Config f = Loader.sb;
 		if (setting.sb_world) {
 			if (f.getString("PerWorld." + p.getWorld().getName() + ".Name") != null)
 				getName = "PerWorld." + p.getWorld().getName() + ".Name";

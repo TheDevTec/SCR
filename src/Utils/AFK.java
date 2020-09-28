@@ -8,26 +8,24 @@ import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class AFK {
-
-	private static String afkMsg = Loader.s("Prefix") + Loader.s("AFK.IsAFK");
-	private static long time = StringUtils.getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK")),
-			rkick = StringUtils.getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
+	private static int task;
+	private static long time, rkick;
 
 	public static void start() {
-		new Tasker() {
+		time = StringUtils.getTimeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
+		rkick = StringUtils.getTimeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
+		task=new Tasker() {
 			@Override
 			public void run() {
 				for(SPlayer s : API.getSPlayers()) {
 				boolean is = getTime(s) <= 0;
 				if (setting.afk_auto) {
-					
 					if (is) {
 						if (!s.bc && !s.mp) {
 							s.bc = true;
 							s.mp = true;
 							if (!s.hasVanish())
-								TheAPI.broadcastMessage(
-										afkMsg.replace("%player%", s.getName()).replace("%playername%", s.getDisplayName()));
+								Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
 						}
 						if (setting.afk_kick && is) {
 							if (s.kick >= rkick) {
@@ -52,7 +50,7 @@ public class AFK {
 		s.mp = true;
 		s.manual = true;
 			if (!s.hasVanish())
-				TheAPI.broadcastMessage(afkMsg.replace("%player%", s.getName()).replace("%playername%", s.getDisplayName()));
+				Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
 	}
 
 	public static long getTime(SPlayer s) {
@@ -73,5 +71,9 @@ public class AFK {
 
 	public static boolean isAfk(SPlayer s) {
 		return getTime(s) <= 0;
+	}
+
+	public static void stop() {
+		Tasker.cancelTask(task);
 	}
 }

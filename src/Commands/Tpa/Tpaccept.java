@@ -35,7 +35,7 @@ public class Tpaccept implements CommandExecutor, TabCompleter {
 								+ Loader.s("TpaSystem.Tpaccept").replace("%player%", pd).replace("%playername%", pd),
 								p);
 						if (setting.tp_safe)
-							API.safeTeleport((Player)p,((Player) p).getLocation());
+							API.safeTeleport(d,((Player) p).getLocation());
 						else
 							d.teleport(((Player) p).getLocation());
 						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaAccepted")

@@ -113,7 +113,7 @@ public class Give implements CommandExecutor, TabCompleter {
 		int args3 = 0; // level
 		int args4 = 0; // time
 		boolean multi = false;
-		HashMap<PotionEffectType, String> a = Maps.newHashMap();
+		HashMap<PotionEffectType, String> a = new HashMap<>();
 		if (s.toUpperCase().startsWith("POTION_OF_")) {
 			args1 = XMaterial.POTION.parseMaterial();
 			args2 = s.toUpperCase().replaceFirst("POTION_OF_", "").replaceAll("[0-9]", "");

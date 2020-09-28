@@ -8,6 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
 import ServerControl.Loader;
+import ServerControl.Loader.Item;
+import ServerControl.Loader.Placeholder;
 import Utils.Colors;
 import Utils.MultiWorldsGUI;
 import Utils.TabList;
@@ -64,19 +66,17 @@ public class ChatFormat implements Listener {
 		if (setting.lock_chat) {
 			if (!p.hasPermission("ServerControl.ChatLock")) {
 				e.setCancelled(true);
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("ChatLock.ChatIsLockedErrorPlayerMessage"), p);
-				TheAPI.broadcast(Loader.s("Prefix")
-						+ Loader.s("ChatLock.BroadCastMessageChatLock").replace("%player%", p.getName())
-								.replace("%playername%", p.getDisplayName()).replace("%message%", e.getMessage()),
-						"ServerControl.ChatLock.Notify");
+				Loader.sendMessages(p, "ChatLock.IsLocked");
+				Loader.sendBroadcasts(p, "ChatLock.Message", Placeholder.c().add("%player%", p.getName())
+						.add("%playername%", p.getDisplayName()).add("%message%", e.getMessage()), "ServerControl.ChatLock.Notify");
 			}
 		}
 		if (Loader.config.getBoolean("Chat-Groups-Enabled") == true) {
-			if (Loader.config.getString("Chat-Groups." + Loader.FormatgetGroup(p) + ".Chat") != null) {
-				m = Loader.config.getString("Chat-Groups." + Loader.FormatgetGroup(p) + ".Chat");
+			if (Loader.config.getString("Chat-Groups." + Loader.get(p,Item.GROUP) + ".Chat") != null) {
+				m = Loader.config.getString("Chat-Groups." +Loader.get(p,Item.GROUP) + ".Chat");
 
 				String format = PlaceholderAPI.setPlaceholders(p,
-						Loader.config.getString("Chat-Groups." + Loader.FormatgetGroup(p) + ".Chat"));
+						Loader.config.getString("Chat-Groups." + Loader.get(p,Item.GROUP) + ".Chat"));
 				if (format != null) {
 					e.setFormat(r(p, TheAPI.colorize(format), e.getMessage(), true).replace("%", "%%"));
 				}

@@ -22,7 +22,7 @@ public class Signs implements Listener {
 
 	public String warp(String ss) {
 		if (Loader.config.getString("Warps") != null)
-			for (String s : Loader.config.getConfigurationSection("Warps").getKeys(false)) {
+			for (String s : Loader.config.getKeys("Warps")) {
 				if (s.toLowerCase().equalsIgnoreCase(ss)) {
 					return s;
 				}

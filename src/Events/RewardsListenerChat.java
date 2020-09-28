@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import com.google.common.collect.Lists;
 
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.TheAPI.SudoType;
@@ -22,7 +23,6 @@ public class RewardsListenerChat implements Listener {
 	public void ChatListener(PlayerChatEvent e) {
 		if (setting.code) {
 			Player p = e.getPlayer();
-			String name = p.getName();
 			List<String> only = Loader.config.getStringList("Options.Codes.List");
 			User d = TheAPI.getUser(p);
 			List<String> codes = d.exist("Taken-Codes")?d.getStringList("Taken-Codes"):Lists.newArrayList();
@@ -32,33 +32,14 @@ public class RewardsListenerChat implements Listener {
 			if (!only.isEmpty())
 				for (String g : only) {
 					if (e.getMessage().toLowerCase().contains(g.toLowerCase())) {
-						TheAPI.msg(Loader.config.getString("Options.Codes.Message").replace("%player%", name)
-								.replace("%code%", g).replace("%playername%", p.getDisplayName())
-								.replace("%group%", Loader.getInstance.getGroup(p))
-								.replace("%group-prefix%", Loader.getInstance.getPrefix(p))
-								.replace("%group-suffix%", Loader.getInstance.getSuffix(p))
-								.replace("%vault-group%", Loader.getInstance.getGroup(p))
-								.replace("%prefix%", Loader.s("Prefix")), p);
+						TheAPI.msg(Loader.placeholder(p, Loader.config.getString("Options.Codes.Message"), Placeholder.c().add("%code%", g)),p);
 						for (String cmds : Loader.config.getStringList("Options.Codes.Commands")) {
 							TheAPI.sudoConsole(SudoType.COMMAND,
-									TheAPI.colorize(cmds.replace("%player%", name).replace("%code%", g)
-											.replace("%playername%", p.getDisplayName())
-											.replace("%group%", Loader.getInstance.getGroup(p))
-											.replace("%group-prefix%", Loader.getInstance.getPrefix(p))
-											.replace("%group-suffix%", Loader.getInstance.getSuffix(p))
-											.replace("%vault-group%", Loader.getInstance.getGroup(p))
-											.replace("%prefix%", Loader.s("Prefix"))));
+									TheAPI.colorize(Loader.placeholder(p, cmds, Placeholder.c().add("%code%", g))));
 						}
 						TheAPI.sudoConsole(SudoType.COMMAND,
-								TheAPI.colorize(TheAPI
-										.getRandomFromList(Loader.config.getStringList("Options.Codes.Random-Command"))
-										.toString().replace("%player%", name).replace("%code%", g)
-										.replace("%playername%", p.getDisplayName())
-										.replace("%group%", Loader.getInstance.getGroup(p))
-										.replace("%group-prefix%", Loader.getInstance.getPrefix(p))
-										.replace("%group-suffix%", Loader.getInstance.getSuffix(p))
-										.replace("%vault-group%", Loader.getInstance.getGroup(p))
-										.replace("%prefix%", Loader.s("Prefix"))));
+								TheAPI.colorize(Loader.placeholder(p, TheAPI
+										.getRandomFromList(Loader.config.getStringList("Options.Codes.Random-Command")), Placeholder.c().add("%code%", g))));
 						codes.add(g);
 						d.setAndSave("Taken-Codes", codes);
 					}

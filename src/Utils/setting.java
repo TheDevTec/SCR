@@ -1,11 +1,14 @@
 package Utils;
 
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
-import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.SoundAPI;
+import me.DevTec.TheAPI.ConfigAPI.Config;
 
 public class setting {
 	public static enum DeathTp {
@@ -20,6 +23,7 @@ public class setting {
 			ad_itempick, spam_chat, spam_cmd, swear_chat, swear_cmd, join_spawn, join_msg, join_motd, join_first,
 			join_first_give, join_first_percmd, leave, cool_cmd, cool_chat, cool_percmd, color_chat_perm,
 			color_sign_perm, tp_safe, tp_onreqloc, ram, spam_double, caps_chat, caps_cmd, deathspawnbol;
+	public static String prefix;
 	public static DeathTp deathspawn;
 	public static boolean farming;
 
@@ -33,8 +37,9 @@ public class setting {
 	 * mobs and send to the console a warning about these chunks
 	 **/
 	public static void load() {
-
-		ConfigAPI f = Loader.config;
+		Config f = Loader.config;
+		prefix = (String) Loader.getTranslation("Prefix");
+		TheAPI.msg(setting.prefix + "&7Loading settings..", TheAPI.getConsole());
 		format_date_time = new SimpleDateFormat(f.getString("Format.DateWithTime"));
 		format_time = new SimpleDateFormat(f.getString("Format.Time"));
 		format_date = new SimpleDateFormat(f.getString("Format.Date"));
@@ -54,6 +59,7 @@ public class setting {
 		color_sign_perm = f.getBoolean("Options.Colors.Sign.RequiredPermission");
 		disable_item = f.getBoolean("Options.Disable-Items.Use");
 		deathspawnbol = f.getBoolean("Options.Use-RespawnTeleport");
+		if(deathspawnbol)
 		try {
 			deathspawn = DeathTp.valueOf(f.getString("Options.RespawnTeleport").toUpperCase());
 		} catch (Exception er) {
@@ -64,18 +70,20 @@ public class setting {
 		join_spawn = f.getBoolean("Options.Join.TeleportToSpawn");
 		join_msg = f.getBoolean("Options.Join.CustomJoinMessage");
 		join_motd = f.getBoolean("Options.Join.MOTD");
+		join_first = f.getBoolean("Options.Join.FirstJoin.Use");
+		if(join_first) {
 		join_first_give = f.getBoolean("Options.Join.FirstJoin.GiveKit");
 		join_first_percmd = f.getBoolean("Options.Join.PerformCommands.Use");
-		join_first = f.getBoolean("Options.Join.FirstJoin.Use");
+		}
 		leave = f.getBoolean("Options.Leave.CustomLeaveMessage");
 		cool_cmd = f.getBoolean("Options.Cooldowns.Commands.Use");
 		cool_percmd = f.getBoolean("Options.Cooldowns.Commands.PerCommand.Use");
 		cool_chat = f.getBoolean("Options.Cooldowns.Chat.Use");
 		spam_chat = f.getBoolean("Options.Security.AntiSpam.Chat");
-		caps_cmd = f.getBoolean("Options.Security.AntiCaps.Commands");
-		caps_chat = f.getBoolean("Options.Security.AntiCaps.Chat");
-		spam_double = f.getBoolean("SpamWords.DoubledLetters.Use");
 		spam_cmd = f.getBoolean("Options.Security.AntiSpam.Commands");
+		spam_double = f.getBoolean("SpamWords.DoubledLetters.Use");
+		caps_chat = f.getBoolean("Options.Security.AntiCaps.Chat");
+		caps_cmd = f.getBoolean("Options.Security.AntiCaps.Commands");
 		swear_chat = f.getBoolean("Options.Security.AntiSwear.Chat");
 		swear_cmd = f.getBoolean("Options.Security.AntiSwear.Commands");
 		ad_book = f.getBoolean("Options.Security.AntiAD.Book");
@@ -89,13 +97,13 @@ public class setting {
 		eco_log = f.getBoolean("Options.Economy.Log");
 		eco = f.getBoolean("Options.Economy.DisablePluginEconomy");
 		eco_other = f.getBoolean("Options.Economy.CanUseOtherEconomy");
-		tab = Loader.tab.getBoolean("Tab-Enabled");
+		tab = Loader.tab.getBoolean("Enabled");
 		tab_header = Loader.tab.getBoolean("Header-Enabled");
 		tab_footer = Loader.tab.getBoolean("Footer-Enabled");
 		tab_nametag = Loader.tab.getBoolean("ModifyNameTags");
 		tab_sort = Loader.tab.getBoolean("SortTabList");
-		sb = Loader.sb.getBoolean("Scoreboard-Enabled");
-		sb_world = Loader.sb.getBoolean("Scoreboard-PerWorld");
+		sb = Loader.sb.getBoolean("Enabled");
+		sb_world = Loader.sb.getBoolean("PerWorld");
 		save = Loader.mw.getBoolean("SavingTask.Enabled");
 		vip = f.getBoolean("Options.VIPSlots.Use");
 		vip_add = f.getBoolean("Options.VIPSlots.AddSlots");
@@ -109,6 +117,19 @@ public class setting {
 		lock_server = f.getBoolean("Options.Maintenance.Enabled");
 		am = f.getBoolean("Options.AutoMessage.Use");
 		am_random = f.getBoolean("Options.AutoMessage.Random");
+		if (sound && !SoundAPI.existSound(Loader.config.getString("Options.Sounds.Sound")))
+			TheAPI.msg(prefix + "&4ERROR: &7Sound &e"+Loader.config.getString("Options.Sounds.Sound")+" &7doesn't exist", TheAPI.getConsole());
+		try {
+			if (timezone)
+				TimeZone.setDefault(TimeZone.getTimeZone(f.getString("Options.TimeZone.Zone")));
+		} catch (Exception e) {
+			TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + "&4ERROR: &7Invalid time zone: &c" + f.getString("Options.TimeZone.Zone"), TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + "&4ERROR: &7List of available time zones:", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + "&4ERROR:  &ehttps://greenwichmeantime.com/time-zone/", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
+		}
+		TheAPI.msg(setting.prefix + "&7Settings loaded", TheAPI.getConsole());
 	}
 
 	public static void getManager(Player s) {

@@ -97,7 +97,7 @@ public class Kit implements CommandExecutor, TabCompleter {
 								Loader.s("Prefix") + Loader.s("Kit.Used").replace("%kit%", getKitName(KitName))
 										.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),
 								p);
-						a.createCooldown("Kit." + KitName, Loader.kit.getDouble("Kits." + KitName + ".Cooldown"));
+						a.createCooldown("Kit." + KitName, StringUtils.getTimeFromString(Loader.kit.getString("Kits." + KitName + ".Cooldown")));
 						EconomyAPI.withdrawPlayer(s,
 								Loader.kit.getDouble("Kits." + getKitName(KitName) + ".Price"));
 						return;

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
 import Events.AFKPlus;
+import ServerControl.Loader.Placeholder;
 import Utils.AFK;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
@@ -49,10 +50,7 @@ public class SPlayer {
 	public void enableTempFly(int stop) {
 		User s = TheAPI.getUser(this.s);
 		enableTempFly();
-		TheAPI.msg(
-				Loader.s("Prefix")
-						+ Loader.s("TempFly.Enabled").replace("%time%", StringUtils.setTimeToString(stop)),
-				getPlayer());
+		Loader.sendMessages(getPlayer(), "Fly.Temp.Enabled.You", Placeholder.c().add("%time%", StringUtils.setTimeToString(stop)));
 		s.set("TempFly.Start", System.currentTimeMillis());
 		s.set("TempFly.Time", stop);
 		if (!hasTempFlyEnabled())
@@ -138,36 +136,28 @@ public class SPlayer {
 
 	public void toggleGod(CommandSender toggler) {
 		if (hasGodEnabled()) {
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("God.Disabled").replace("%player%", getName())
-					.replace("%playername%", getPlayer().getDisplayName()), getPlayer());
+			Loader.sendMessages(getPlayer(), "God.Disabled.Other.Receiver");
 			if (toggler != null)
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("God.SpecifiedPlayerGodDisabled")
-						.replace("%player%", getName()).replace("%playername%", getPlayer().getDisplayName()), toggler);
+			Loader.sendMessages(toggler, "God.Disabled.Other.Sender", Placeholder.c().add("%player%", getName()).add("%playername%", getPlayer().getDisplayName()).add("%customname%", getPlayer().getCustomName()));
 			disableGod();
 		} else {
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("God.Enabled").replace("%player%", getName())
-					.replace("%playername%", getPlayer().getDisplayName()), getPlayer());
+			Loader.sendMessages(getPlayer(), "God.Enabled.Other.Receiver");
 			if (toggler != null)
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("God.SpecifiedPlayerGodEnabled").replace("%player%", getName())
-						.replace("%playername%", getPlayer().getDisplayName()), toggler);
+			Loader.sendMessages(toggler, "God.Enabled.Other.Sender", Placeholder.c().add("%player%", getName()).add("%playername%", getPlayer().getDisplayName()).add("%customname%", getPlayer().getCustomName()));
 			enableGod();
 		}
 	}
 
 	public void toggleFly(CommandSender toggler) {
 		if (hasFlyEnabled()) {
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Disabled").replace("%player%", getName())
-					.replace("%playername%",getPlayer().getDisplayName()), getPlayer());
+			Loader.sendMessages(getPlayer(), "Fly.Disabled.Other.Receiver");
 			if (toggler != null)
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyDisabled")
-						.replace("%player%", getName()).replace("%playername%", getPlayer().getDisplayName()), toggler);
+			Loader.sendMessages(toggler, "Fly.Disabled.Other.Sender", Placeholder.c().add("%player%", getName()).add("%playername%", getPlayer().getDisplayName()).add("%customname%", getPlayer().getCustomName()));
 			disableFly();
 		} else {
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Enabled").replace("%player%", getName())
-					.replace("%playername%", getPlayer().getDisplayName()), getPlayer());
+			Loader.sendMessages(getPlayer(), "Fly.Enabled.Other.Receiver");
 			if (toggler != null)
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyEnabled").replace("%player%", getName())
-						.replace("%playername%", getPlayer().getDisplayName()), toggler);
+			Loader.sendMessages(toggler, "Fly.Enabled.Other.Sender", Placeholder.c().add("%player%", getName()).add("%playername%", getPlayer().getDisplayName()).add("%customname%", getPlayer().getCustomName()));
 			enableFly();
 		}
 	}

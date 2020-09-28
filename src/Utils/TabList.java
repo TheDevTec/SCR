@@ -11,6 +11,7 @@ import com.google.common.collect.Lists;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Item;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.MemoryAPI;
 import me.DevTec.TheAPI.APIs.TabListAPI;
@@ -38,25 +39,26 @@ public class TabList {
 	}
 
 	public static String getPrefix(Player p, boolean nametag) {
-		if (Loader.tab.exist("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Prefix"))
+		if (Loader.tab.exists("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Prefix"))
 			return replace(Loader.tab.getString("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Prefix"), p);
 		return null;
 	}
 
 	public static String getNameFormat(Player p) {
-		if (Loader.tab.exist("Groups." + group(p) + ".Name"))
+		if (Loader.tab.exists("Groups." + group(p) + ".Name"))
 			return replace(Loader.tab.getString("Groups." + group(p) + ".Name"), p);
 		return "%tab-prefix% "+p.getName()+" %tab-suffix%";
 	}
 
 	public static String getSuffix(Player p, boolean nametag) {
-		if (Loader.tab.exist("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Suffix"))
+		if (Loader.tab.exists("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Suffix"))
 			return replace(Loader.tab.getString("Groups." + group(p) + "."+(nametag?"NameTag":"TabList")+".Suffix"), p);
 		return null;
 	}
 
 	public static String replace(String header, Player p) {
 		header=TheAPI.colorize(header);
+		if(p!=null) {
 		if(header.contains("%money%"))
 				header=header.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), false));
 		if(header.contains("%colored_money%"))
@@ -68,14 +70,8 @@ public class TabList {
 					seen.add(s);
 			header=header.replace("%online%", seen.size() + "");
 		}
-		if(header.contains("%max_players%"))
-			header=header.replace("%max_players%", TheAPI.getMaxPlayers() + "");
 		if(header.contains("%ping%"))
 			header=header.replace("%ping%", Loader.getInstance.pingPlayer(p));
-		;if(header.contains("%time%"))
-			header=header.replace("%time%", new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
-		;if(header.contains("%date%"))
-			header=header.replace("%date%", new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()))
 		;if(header.contains("%world%"))
 			header=header.replace("%world%", p.getWorld().getName())
 		;if(header.contains("%hp%")) {
@@ -103,20 +99,18 @@ public class TabList {
 		;if(header.contains("%z%"))
 			header=header.replace("%z%", p.getLocation().getBlockZ() + "");
 		if(header.contains("%vault-group%")) {
-			String group = Loader.FormatgetGroup(p);
+			String group = Loader.get(p, Item.GROUP);
 		if (Loader.vault != null)
 			group = Loader.vault.getPrimaryGroup(p);
 			header=header.replace("%vault-group%", group);
 		}
-		;if(header.contains("%vault-prefix%"))
-			header=header.replace("%vault-prefix%", Loader.getInstance.getPrefix(p))
+		if(header.contains("%vault-prefix%"))
+			header=header.replace("%vault-prefix%", Loader.get(p, Item.PREFIX))
 		;if(header.contains("%vault-suffix%"))
-			header=header.replace("%vault-suffix%", Loader.getInstance.getSuffix(p))
+			header=header.replace("%vault-suffix%", Loader.get(p, Item.SUFFIX))
 		;if(header.contains("%group%"))
-			header=header.replace("%group%", getGroup(p))
-		;if(header.contains("%tps%"))
-			header=header.replace("%tps%", TheAPI.getServerTPS() + "")
-		;if(header.contains("%kills%"))
+			header=header.replace("%group%", getGroup(p));
+		if(header.contains("%kills%"))
 			header=header.replace("%kills%", "" + p.getStatistic(Statistic.PLAYER_KILLS))
 		;if(header.contains("%deaths%"))
 			header=header.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS))
@@ -135,7 +129,21 @@ public class TabList {
 		if(TheAPI.getUser(p).exists("DisplayName"))
 			customname = TheAPI.getUser(p).getString("DisplayName");
 			header=header.replace("%customname%", customname);
-		}if(header.contains("%ram_free%"))
+		}
+		if(header.contains("%afk%"))
+			header=header.replace("%afk%", Loader.isAfk(p));
+		}else
+			if(header.contains("%online%"))
+				header=header.replace("%online%", TheAPI.getPlayers().size()+"");
+		if(header.contains("%max_players%"))
+			header=header.replace("%max_players%", TheAPI.getMaxPlayers() + "");
+		;if(header.contains("%time%"))
+			header=header.replace("%time%", new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
+		;if(header.contains("%date%"))
+			header=header.replace("%date%", new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()));
+		;if(header.contains("%tps%"))
+			header=header.replace("%tps%", TheAPI.getServerTPS() + "")
+		;if(header.contains("%ram_free%"))
 			header=header.replace("%ram_free%", MemoryAPI.getFreeMemory(false) + "")
 		;if(header.contains("%ram_free_percentage%"))
 			header=header.replace("%ram_free_percentage%", MemoryAPI.getFreeMemory(true) + "%")
@@ -145,8 +153,7 @@ public class TabList {
 			header=header.replace("%ram_usage_percentage%", MemoryAPI.getUsedMemory(true) + "%")
 		;if(header.contains("%ram_max%"))
 			header=header.replace("%ram_max%", MemoryAPI.getMaxMemory() + "").replace("%ram_max_percentage%", "100%")
-		;if(header.contains("%afk%"))
-			header=header.replace("%afk%", Loader.getInstance.isAfk(p));
+		;
 		return PlaceholderAPI.setPlaceholders(p, header);
 	}
 	

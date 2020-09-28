@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.ItemCreatorAPI;
 import me.DevTec.TheAPI.GUIAPI.GUI;
@@ -177,8 +178,7 @@ public class MultiWorldsGUI {
 						s.getWorld().setSpawnLocation(s.getLocation());
 						}catch(NoSuchMethodError err) {
 						}
-					TheAPI.msg(Loader.s("Prefix")
-							+ Loader.s("MultiWorld.SpawnSet").replace("%world%", world), s);
+					Loader.sendMessages(s, "MultiWorld.Spawn.Set", Placeholder.c().add("%world%", world));
 				}
 			}
 		};
@@ -268,7 +268,7 @@ public class MultiWorldsGUI {
 	public static void openInvLoad(Player p) {
 		GUI a = new GUI("&bWorld loader",54,p);
 		prepareInv(a);
-		if (Loader.mw.exist("Unloaded-Worlds"))
+		if (Loader.mw.exists("Unloaded-Worlds"))
 			for (String w : Loader.mw.getStringList("Unloaded-Worlds")) {
 				String biome = Loader.mw.getString("WorldsSettings." + w + ".Generator");
 				if (biome == null)
@@ -359,12 +359,8 @@ public class MultiWorldsGUI {
 						worlds.remove(w.getName());
 						ww.remove(w.getName());
 						Loader.mw.set("Worlds", worlds);
-						if (WorldsAPI.delete(w, true)) {
-							TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.Deleted").replace("%world%", w.getName()),s);
-						} else {
-							TheAPI.msg(Loader.s("Prefix")
-									+ Loader.s("MultiWorld.CantBeDeleted").replace("%world%", w.getName()), s);
-						}
+						if (WorldsAPI.delete(w, true))
+							Loader.sendMessages(s, "MultiWorld.Delete", Placeholder.c().add("%world%", w.getName()));
 					}
 				});
 		}
@@ -405,7 +401,7 @@ public class MultiWorldsGUI {
 					API.setBack(s);
 					s.setNoDamageTicks(20);
 					s.teleport(loc);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.TeleportedWorld").replace("%world%", w.getName()),s);
+					Loader.sendMessages(s, "MultiWorld.Teleport.You", Placeholder.c().add("%world%", w.getName()));
 				}
 			});
 		}
@@ -469,10 +465,10 @@ public class MultiWorldsGUI {
 				}
 			}
 		});
-		a.setItem(11,new ItemGUI(createItem("&6GameMode", XMaterial.BRICKS, Arrays.asList(Loader.mw.exist("WorldsSettings." + w.getName() + ".GameMode")?Loader.mw.getString("WorldsSettings." + w.getName() + ".GameMode"):"SURVIVAL"))) {
+		a.setItem(11,new ItemGUI(createItem("&6GameMode", XMaterial.BRICKS, Arrays.asList(Loader.mw.exists("WorldsSettings." + w.getName() + ".GameMode")?Loader.mw.getString("WorldsSettings." + w.getName() + ".GameMode"):"SURVIVAL"))) {
 			@Override
 			public void onClick(Player s, GUI gui, ClickType c) {
-				String g = Loader.mw.exist("WorldsSettings." + w.getName() + ".GameMode")?Loader.mw.getString("WorldsSettings." + w.getName() + ".GameMode"):"SURVIVAL";
+				String g = Loader.mw.exists("WorldsSettings." + w.getName() + ".GameMode")?Loader.mw.getString("WorldsSettings." + w.getName() + ".GameMode"):"SURVIVAL";
 				switch(c) {
 				case LEFT:
 				case SHIFT_LEFT:
@@ -607,9 +603,8 @@ public class MultiWorldsGUI {
 			}
 		});
 		int i = 20;
-		if(Loader.mw.exist("WorldsSettings." + w.getName() + ".Gamerule"))
-		for (String ds : Loader.mw.getConfigurationSection("WorldsSettings." + w.getName() + ".Gamerule")
-				.getKeys(false)) {
+		if(Loader.mw.exists("WorldsSettings." + w.getName() + ".Gamerule"))
+		for (String ds : Loader.mw.getKeys("WorldsSettings." + w.getName() + ".Gamerule")) {
 			++i;
 			int slot = i;
 			if (ds.equalsIgnoreCase("MAX_COMMAND_CHAIN_LENGTH") || ds.equalsIgnoreCase("RANDOM_TICK_SPEED")

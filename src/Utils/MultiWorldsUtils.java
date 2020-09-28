@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.WorldsAPI.WorldsAPI;
 
@@ -22,10 +23,7 @@ public class MultiWorldsUtils {
 	public static void UnloadWorld(String w, CommandSender sender) {
 		if (Bukkit.getWorld(w) == null)
 			return;
-		if (!WorldsAPI.unloadWorld(w, true)) {
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.DoNotUnloaded").replace("%world%", w), sender);
-			return;
-		} else {
+		if (WorldsAPI.unloadWorld(w, true)) {
 			List<String> worlds = Loader.mw.getStringList("Worlds");
 			List<String> ww = Loader.mw.getStringList("Unloaded-Worlds");
 			worlds.remove(w);
@@ -33,7 +31,7 @@ public class MultiWorldsUtils {
 			Loader.mw.set("Worlds", worlds);
 			Loader.mw.set("Unloaded-Worlds", ww);
 			Loader.mw.save();
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.Unloaded").replace("%world%", w), sender);
+			Loader.sendMessages(sender, "MultiWorld.Unload", Placeholder.c().add("%world%", w));
 			return;
 		}
 	}
@@ -48,7 +46,7 @@ public class MultiWorldsUtils {
 		}
 		for (World world : Bukkit.getWorlds())
 			chunk = chunk - world.getLoadedChunks().length;
-		TheAPI.msg(Loader.s("Prefix") + Loader.s("Chunks.Unloaded").replace("%chunks%", String.valueOf(chunk)), s);
+		Loader.sendMessages(s, "Chunks.Unload", Placeholder.c().add("%chunks%", chunk+""));
 	}
 
 	public static void EnableWorldCheck() {
@@ -56,7 +54,7 @@ public class MultiWorldsUtils {
 			if (Bukkit.getWorld(on.getWorld().getName()) != null) {
 				String[] f = { "SURVIVAL", "CREATIVE", "ADVENTURE", "SPECTATOR" };
 				for (String waww : f) {
-					if(Loader.mw.exist("WorldsSettings." + on.getWorld().getName() + ".GameMode"))
+					if(Loader.mw.exists("WorldsSettings." + on.getWorld().getName() + ".GameMode"))
 					if (Loader.mw.getString("WorldsSettings." + on.getWorld().getName() + ".GameMode")
 							.equalsIgnoreCase(waww)) {
 						on.setGameMode(GameMode.valueOf(
@@ -90,10 +88,10 @@ public class MultiWorldsUtils {
 			return;
 		if (exist(w)) {
 			if (Bukkit.getWorld(w) != null) {
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.AlreadyExists").replace("%world%", w), s);
+				Loader.sendMessages(s, "MultiWorld.Loaded", Placeholder.c().add("%world%", w));
 			} else if (Loader.mw.getStringList("Unloaded-Worlds").contains(w)
 					|| Loader.mw.getStringList("Worlds").contains(w)) {
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.AlreadyExists").replace("%world%", w), s);
+				Loader.sendMessages(s, "MultiWorld.Exists", Placeholder.c().add("%world%", w));
 			} else {
 				List<String> wws = Loader.mw.getStringList("Deleted-Worlds");
 				List<String> worlds = Loader.mw.getStringList("Worlds");
@@ -120,10 +118,10 @@ public class MultiWorldsUtils {
 				Loader.mw.set("Worlds", worlds);
 				Loader.mw.save();
 				DefaultSet(Bukkit.getWorld(w), type.toString());
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.WorldImported").replace("%world%", w), s);
+				Loader.sendMessages(s, "MultiWorld.Import", Placeholder.c().add("%world%", w));
 			}
 		} else
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.NotFoundImport").replace("%world%", w), s);
+			Loader.sendMessages(s, "MultiWorld.NotExists", Placeholder.c().add("%world%", w));
 	}
 
 	@SuppressWarnings("deprecation")
@@ -269,9 +267,8 @@ public class MultiWorldsUtils {
 					WorldsAPI.create(w, Environment.NORMAL, null, true, 0);
 				}
 			}
-		for (World wa : Bukkit.getWorlds()) {
+		for (World wa : Bukkit.getWorlds())
 			DefaultSet(wa, Loader.mw.getString("WorldsSettings." + wa.getName() + ".Generator"));
-		}
 	}
 
 	public static void LoadWorld(String s, CommandSender sender) {
@@ -301,7 +298,7 @@ public class MultiWorldsUtils {
 		Loader.mw.set("Unloaded-Worlds", ww);
 		Loader.mw.save();
 		DefaultSet(Bukkit.getWorld(s), biome);
-		TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.Loaded").replace("%world%", s), sender);
+		Loader.sendMessages(sender, "MultiWorld.Load", Placeholder.c().add("%world%", s));
 	}
 
 	public static void CreateWorld(String s, CommandSender sender) {
@@ -310,8 +307,8 @@ public class MultiWorldsUtils {
 		List<String> wws = Loader.mw.getStringList("Deleted-Worlds");
 		List<String> worlds = Loader.mw.getStringList("Worlds");
 		if (Bukkit.getWorld(s) != null) {
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.AlreadyCreated").replace("%world%", s), sender);
-
+			Loader.sendMessages(sender, "MultiWorld.Loaded", Placeholder.c().add("%world%", s));
+			return;
 		}
 		if (Bukkit.getWorld(s) == null) {
 			if (biome.equalsIgnoreCase("NETHER")) {
@@ -335,7 +332,7 @@ public class MultiWorldsUtils {
 			Loader.mw.set("Worlds", worlds);
 			Loader.mw.save();
 			DefaultSet(Bukkit.getWorld(s), biome);
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("MultiWorld.Created").replace("%world%", s), sender);
+			Loader.sendMessages(sender, "MultiWorld.Create", Placeholder.c().add("%world%", s));
 		}
 	}
 }

@@ -13,7 +13,7 @@ import ServerControl.Loader;
 import Utils.Tasks;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
+import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class LoginEvent implements Listener {
@@ -27,7 +27,7 @@ public class LoginEvent implements Listener {
 									+ (setting.vip_add ? Loader.config.getInt("Options.VIPSlots.SlotsToAdd") : 0)))
 							.replace("%online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
 							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
-							.replace("%prefix%", Loader.s("Prefix"))
+							.replace("%prefix%", setting.prefix)
 							.replace("%time%", setting.format_time.format(new Date()))
 							.replace("%date%", setting.format_date.format(new Date()))
 							.replace("%date-time%", setting.format_date_time.format(new Date())));
@@ -35,8 +35,7 @@ public class LoginEvent implements Listener {
 	}
 
 	private static String kickString= StringUtils.join(Loader.config.getStringList("Options.Maintenance.KickMessages"), "\n");
-	private ConfigAPI f = Loader.config;
-
+	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void JoinEvent(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
@@ -46,6 +45,7 @@ public class LoginEvent implements Listener {
 			return;
 		}
 		if (setting.vip && TheAPI.getMaxPlayers() == TheAPI.getOnlinePlayers().size() - 1) {
+			Config f = Loader.config;
 			boolean has = p.hasPermission("ServerControl.JoinFullServer");
 			int max = TheAPI.getMaxPlayers() + (setting.vip_add ? f.getInt("Options.VIPSlots.SlotsToAdd") : 0);
 			Player randomPlayer = Tasks.players.isEmpty() ? null : TheAPI.getRandomPlayer();

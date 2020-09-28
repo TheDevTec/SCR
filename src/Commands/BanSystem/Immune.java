@@ -16,25 +16,24 @@ public class Immune implements CommandExecutor {
 		if (API.hasPerm(s, "ServerControl.Immune")) {
 			if (args.length == 0) {
 				if (!(s instanceof Player)) {
-					Loader.Help(s, "/Immune <player> <true/false>", "BanSystem.Immune");
+					TheAPI.msg("/Immune <player>", s);
 					return true;
 				}
 				Player p = (Player) s;
 				boolean im = TheAPI.getUser(p).getBoolean("Immune");
 				TheAPI.getUser(p).setAndSave("Immune", !im);
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune." + (im ? "Disable" : "Enabled")), p);
+				String aw = "Immune." + (im ? "Disable.Other." : "Enabled.Other.");
+				Loader.sendMessages(s, aw+"You");
 				return true;
 			}
 			if (args.length == 1) {
 				if (API.hasPerm(s, "ServerControl.Immune.Other")) {
-					Player p = (Player) s;
 					boolean im = TheAPI.getUser(args[0]).getBoolean("Immune");
 					TheAPI.getUser(args[0]).setAndSave("Immune", !im);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune." + (im ? "Disable" : "Enabled")), p);
-					TheAPI.msg(
-							Loader.s("Prefix")
-									+ Loader.s("Immune." + (im ? "Off" : "On") + "Other").replace("%target%", args[0]),
-							p);
+					String aw = "Immune." + (im ? "Disable.Other." : "Enabled.Other.");
+					Loader.sendMessages(s, aw+"Sender");
+					if(TheAPI.getPlayerOrNull(args[0])!=null)
+					Loader.sendMessages(TheAPI.getPlayerOrNull(args[0]), aw+"Receiver");
 					return true;
 				}
 				return true;

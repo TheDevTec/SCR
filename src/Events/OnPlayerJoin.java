@@ -14,13 +14,14 @@ import Commands.Mail;
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import ServerControl.SPlayer;
 import Utils.Tasks;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.TheAPI.SudoType;
 import me.DevTec.TheAPI.APIs.SoundAPI;
-import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
+import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
@@ -29,16 +30,6 @@ import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class OnPlayerJoin implements Listener {
-	public OnPlayerJoin() {
-		f = Loader.config;
-		music = Loader.SoundsChecker();
-		firsttime = f.getInt("Options.Join.FirstJoin.Wait") > 0 ? 20 * f.getInt("Options.Join.FirstJoin.Wait") : 1;
-
-	}
-
-	private ConfigAPI f;
-	private boolean music;
-	private int firsttime;
 
 	public static String replaceAll(String s, Player p) {
 		String name = p.getDisplayName();
@@ -46,10 +37,9 @@ public class OnPlayerJoin implements Listener {
 				.replace("%online%", TheAPI.getOnlinePlayers().size() - 1 + "").replace("%player%", name)
 				.replace("%playername%", name)
 				.replace("%customname%", p.getCustomName() != null ? p.getCustomName() : name)
-				.replace("%prefix%", Loader.s("Prefix")).replace("%time%", setting.format_time.format(new Date()))
+				.replace("%prefix%", setting.prefix).replace("%time%", setting.format_time.format(new Date()))
 				.replace("%date%", setting.format_date.format(new Date()))
 				.replace("%date-time%", setting.format_date_time.format(new Date()))
-				.replace("%server_support%", Loader.getInstance.ver())
 				.replace("%version%", "V" + Loader.getInstance.getDescription().getVersion())
 				.replace("%server_time%", setting.format_time.format(new Date()))
 				.replace("%server_name%", API.getServerName())
@@ -66,17 +56,13 @@ public class OnPlayerJoin implements Listener {
 			if (TheAPI.isVanished(p))
 				e.setJoinMessage("");
 			else
-				e.setJoinMessage(TheAPI.colorize(replaceAll(Loader.s("OnJoin.Join"), p)));
+				e.setJoinMessage(TheAPI.colorize(replaceAll(Loader.getTranslation("Join.Text").toString(), p)));
 		}
-
+		Config f = Loader.config;
 		if (!Mail.getMails(p.getName()).isEmpty())
-			TheAPI.msg(
-					Loader.s("Prefix")
-							+ Loader.s("Mail.Notification").replace("%number%", "" + d.getStringList("Mails").size()),
-					p);
-		if (music)
+			Loader.sendMessages(p,"Mail.Notification", Placeholder.c().add("%amount%", "" + d.getStringList("Mails").size()));
+		if (setting.sound)
 			SoundAPI.playSound(p, f.getString("Options.Sounds.Sound"));
-
 		if (PunishmentAPI.getBanList(p.getName()).isJailed()
 				|| PunishmentAPI.getBanList(p.getName()).isTempJailed()) {
 			if (setting.tp_safe)
@@ -95,7 +81,7 @@ public class OnPlayerJoin implements Listener {
 				TheAPI.msg(replaceAll(ss, p), p);
 			}
 			if (!TheAPI.isVanished(p))
-				TheAPI.broadcastMessage(replaceAll(Loader.s("OnJoin.FirstJoin.BroadCast"), p));
+				Loader.sendBroadcasts(p,"Join.FirstJoin.Text");
 			new Tasker() {
 				@Override
 				public void run() {
@@ -105,7 +91,7 @@ public class OnPlayerJoin implements Listener {
 					if (setting.join_first_give && f.getString("Options.Join.FirstJoin.Kit") != null)
 						API.giveKit(p.getName(), f.getString("Options.Join.FirstJoin.Kit"), false, false);
 				}
-			}.laterAsync(firsttime);
+			}.laterAsync(f.getInt("Options.Join.FirstJoin.Wait") > 0 ? 20 * f.getInt("Options.Join.FirstJoin.Wait") : 1);
 			API.teleportPlayer(p, TeleportLocation.SPAWN);
 		} else {
 			if (setting.join_motd) {
@@ -142,7 +128,7 @@ public class OnPlayerJoin implements Listener {
 			if (TheAPI.isVanished(p))
 				e.setQuitMessage(null);
 			else
-				e.setQuitMessage(TheAPI.colorize(replaceAll(Loader.s("OnLeave.Leave"), p)));
+				e.setQuitMessage(TheAPI.colorize(replaceAll(Loader.getTranslation("Quit").toString(), p)));
 		}
 		User d = TheAPI.getUser(p);
 		d.set("LastLeave", setting.format_date_time.format(new Date()));

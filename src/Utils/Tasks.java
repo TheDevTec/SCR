@@ -1,8 +1,6 @@
 package Utils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,16 +11,12 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.APIs.MemoryAPI;
-import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
+import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Tasks {
-	public Tasks() {
-		a = Loader.getInstance;
-	}
-
+	
 	public static List<String> players = new ArrayList<String>();
 	static List<Integer> tasks = new ArrayList<Integer>();
 	static HashMap<String, String> ss = new HashMap<String, String>();
@@ -30,6 +24,7 @@ public class Tasks {
 	static int tests;
 
 	public static void load() {
+		a = Loader.getInstance;
 		ss = new HashMap<String, String>();
 		players = new ArrayList<String>();
 		if (setting.am)
@@ -132,7 +127,7 @@ public class Tasks {
 	}
 
 	private static void other() {
-		ConfigAPI f = Loader.config;
+		Config f = Loader.config;
 		tasks.add(new Tasker() {
 			@Override
 			public void run() {
@@ -201,37 +196,16 @@ public class Tasks {
 					return;
 				List<String> l = Loader.config.getStringList("Options.AutoMessage.Messages");
 				if (setting.am_random) {
-					TheAPI.broadcastMessage(TheAPI.getRandomFromList(l).toString()
-							.replace("%used_ram%", MemoryAPI.getUsedMemory(false) + "")
-							.replace("%free_ram%", MemoryAPI.getFreeMemory(false) + "")
-							.replace("%max_ram%", MemoryAPI.getMaxMemory() + "")
-							.replace("%online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
-							.replace("%max_players%", String.valueOf(Bukkit.getMaxPlayers()))
-							.replace("%time%",
-									new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
-							.replace("%date%",
-									new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()))
-							.replace("%prefix%", Loader.s("Prefix")));
+					TheAPI.broadcastMessage(TabList.replace(TheAPI.getRandomFromList(l).toString(), null));
 				} else {
 					if (l.size() <= tests) {
 						tests = 0;
 					}
-					TheAPI.broadcastMessage(l.get(tests).toString()
-							.replace("%used_ram%", MemoryAPI.getUsedMemory(false) + "")
-							.replace("%free_ram%", MemoryAPI.getFreeMemory(false) + "")
-							.replace("%max_ram%", MemoryAPI.getMaxMemory() + "")
-							.replace("%online%", String.valueOf(TheAPI.getOnlinePlayers().size()))
-							.replace("%max_players%", String.valueOf(Bukkit.getMaxPlayers()))
-							.replace("%time%",
-									new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
-							.replace("%date%",
-									new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()))
-							.replace("%prefix%", Loader.s("Prefix")));
+					TheAPI.broadcastMessage(TabList.replace(l.get(tests).toString(), null));
 					tests = tests + 1;
 				}
 			}
 
-		}.repeatingAsync(20, 20
-				* StringUtils.getTimeFromString(Loader.config.getString("Options.AutoMessage.Interval"))));
+		}.repeatingAsync(20, 20* StringUtils.getTimeFromString(Loader.config.getString("Options.AutoMessage.Interval"))));
 	}
 }

@@ -96,14 +96,7 @@ public class SecurityListenerV3 implements Listener {
 					Bukkit.getPluginManager().callEvent(ed);
 					if (ed.isCancelled()) {
 						e.setCancelled(true);
-						TheAPI.msg(Loader.s("NotPermissionsMessage"), p);
-						if (Loader.config.getBoolean("TasksOnSend.BlockedCommand-Broadcast"))
-							TheAPI.broadcast(
-									Loader.s("Prefix") + Loader.s("Security.TryingSendBlockedCommand")
-											.replace("%player%", p.getName())
-											.replace("%playername%".toLowerCase(), p.getDisplayName())
-											.replace("%command%".toLowerCase(), e.getMessage()),
-									"ServerControl.CommandsAccess.Notify");
+						API.hasPerm(p, "ServerControl.CommandsAccess");
 					}
 				}
 			}
@@ -125,8 +118,6 @@ public class SecurityListenerV3 implements Listener {
 			if (setting.caps_cmd) {
 				build = "";
 				if ((up / d.length()) * 100 >= 60 && !p.hasPermission("ServerControl.Caps") && d.length() > 5) {
-					TheAPI.broadcast(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Security.TryingSendCaps"), p)
-							.replace("%message%", message), "ServerControl.Caps");
 					for (String s : d.split(" ")) {
 						if (!is(s)) {
 							build = build + " " + s.toLowerCase();
@@ -252,19 +243,6 @@ public class SecurityListenerV3 implements Listener {
 				TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", s.getName())));
 			}
 		}
-		TheAPI.broadcast(
-				Loader.s("Prefix") + Loader.s("BroadCastMessage" + (swear == Security.Spam ? r : "VulgarWord"))
-						.replace("%player%", s.getName())
-						.replace("%word%",
-								(swear == Security.Spam ? API.getValueOfSpamWord(replace)
-										: API.getValueOfVulgarWord(replace)))
-						.replace("%message%", original),
-				"ServerControl.BroadCastNotify");
-		if (Loader.config.getBoolean("TasksOnSend.Spam.Broadcast")) {
-			TheAPI.broadcastMessage(
-					Loader.s("Prefix") + Loader.s("Security.TryingSend" + (swear == Security.Spam ? r : "VulgarWord"))
-							.replace("%player%", s.getDisplayName()));
-		}
 		if (Loader.config.getBoolean("AutoKickLimit." + r + ".Use")) {
 			if (d.getInt(name) >= Loader.config.getInt("AutoKickLimit." + r + ".Number")) {
 				d.set(name, d.getInt(name) - Loader.config.getInt("AutoKickLimit." + r + ".Number"));
@@ -335,9 +313,6 @@ public class SecurityListenerV3 implements Listener {
 						? up / ((double) d.length() / 100) >= 60 && !p.hasPermission("ServerControl.Caps")
 								&& d.length() > 5
 						: false) {
-					TheAPI.broadcast(Loader.s("Prefix")
-							+ API.replacePlayerName(Loader.s("Security.TryingSendCaps"), p).replace("%message%", build),
-							"ServerControl.Caps");
 					build = "";
 					if (d.split(" ").length == 0) {
 						if (!is(d)) {
@@ -358,10 +333,6 @@ public class SecurityListenerV3 implements Listener {
 			if (Loader.config.getBoolean("SpamWords.SimiliarMessage")) {
 				if (isSim(p, e.getMessage())) {
 					e.setCancelled(true);
-					TheAPI.broadcast(
-							Loader.s("Prefix") + Loader.s("Security.TriedSendSimiliarMessage")
-									.replace("%player%", p.getName()).replace("%message%", e.getMessage()),
-							"ServerControl.Admin");
 					return;
 				}
 			}

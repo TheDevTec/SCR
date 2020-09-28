@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import ServerControlEvents.PlayerAdvertisementEvent;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
@@ -43,7 +44,7 @@ public class SecurityListenerAntiAD implements Listener {
 					PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(event.getPlayer(), event.getMessage());
 					Bukkit.getPluginManager().callEvent(ed);
 					if (!ed.isCancelled()) {
-						sendBroadcast(p, getMatches(message), AdType.Other);
+						sendBroadcast(p, getMatches(message), AdType.OTHER);
 						event.setCancelled(true);
 					}
 				}
@@ -61,7 +62,7 @@ public class SecurityListenerAntiAD implements Listener {
 					PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(event.getPlayer(), event.getMessage());
 					Bukkit.getPluginManager().callEvent(ed);
 					if (!ed.isCancelled()) {
-						sendBroadcast(p, getMatches(message), AdType.Other);
+						sendBroadcast(p, getMatches(message), AdType.OTHER);
 						event.setCancelled(true);
 					}
 				}
@@ -79,7 +80,7 @@ public class SecurityListenerAntiAD implements Listener {
 						PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(e.getPlayer(), line);
 						Bukkit.getPluginManager().callEvent(ed);
 						if (!ed.isCancelled()) {
-							sendBroadcast(p, getMatches(line), AdType.Other);
+							sendBroadcast(p, getMatches(line), AdType.OTHER);
 							e.setCancelled(true);
 							e.getBlock().breakNaturally();
 						}
@@ -103,7 +104,7 @@ public class SecurityListenerAntiAD implements Listener {
 					PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(e.getPlayer(), page);
 					Bukkit.getPluginManager().callEvent(ed);
 					if (!ed.isCancelled()) {
-						sendBroadcast(p, getMatches(page), AdType.Other);
+						sendBroadcast(p, getMatches(page), AdType.OTHER);
 						e.setCancelled(true);
 					}
 				}
@@ -125,7 +126,7 @@ public class SecurityListenerAntiAD implements Listener {
 							PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p, displayName);
 							Bukkit.getPluginManager().callEvent(ed);
 							if (!ed.isCancelled()) {
-								sendBroadcast(p, getMatches(displayName), AdType.Other);
+								sendBroadcast(p, getMatches(displayName), AdType.OTHER);
 								event.setCancelled(true);
 							}
 						}
@@ -146,7 +147,7 @@ public class SecurityListenerAntiAD implements Listener {
 						PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p, displayName);
 						Bukkit.getPluginManager().callEvent(ed);
 						if (!ed.isCancelled()) {
-							sendBroadcast(p, getMatches(displayName), AdType.PickUpItem);
+							sendBroadcast(p, getMatches(displayName), AdType.ITEM);
 							event.setCancelled(true);
 							event.getItem().remove();
 						}
@@ -167,7 +168,7 @@ public class SecurityListenerAntiAD implements Listener {
 						PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p, displayName);
 						Bukkit.getPluginManager().callEvent(ed);
 						if (!ed.isCancelled()) {
-							sendBroadcast(p, getMatches(displayName), AdType.DropItem);
+							sendBroadcast(p, getMatches(displayName), AdType.ITEM);
 							event.getItemDrop().remove();
 						}
 					}
@@ -177,46 +178,21 @@ public class SecurityListenerAntiAD implements Listener {
 	}
 
 	public static enum AdType {
-		DropItem, PickUpItem, Other
+		ITEM, OTHER
 	}
 
 	public void sendBroadcast(Player p, String message, AdType type) {
-		String AD = "Advertisement";
+		String AD = "Broadcast.Advertisement";
 		switch (type) {
-		case DropItem:
-			AD = "DropItem";
-			TheAPI.broadcast(
-					Loader.s("Prefix")
-							+ Loader.s("BroadCastMessageAdvertisement" + AD).replace("%playername%", p.getDisplayName())
-									.replace("%player%", p.getName()).replace("%message%", message),
-					"ServerControl.Advertisement");
+		case ITEM:
+			AD += ".Item";
 			break;
-		case PickUpItem:
-			AD = "PickupItem";
-			TheAPI.broadcast(
-					Loader.s("Prefix")
-							+ Loader.s("BroadCastMessageAdvertisement" + AD).replace("%playername%", p.getDisplayName())
-									.replace("%player%", p.getName()).replace("%message%", message),
-					"ServerControl.Advertisement");
-			break;
-		case Other:
-			TheAPI.broadcast(
-					Loader.s("Prefix")
-							+ Loader.s("BroadCastMessageAdvertisement").replace("%playername%", p.getDisplayName())
-									.replace("%player%", p.getName()).replace("%message%", message),
-					"ServerControl.Advertisement");
+		case OTHER:
 			break;
 		}
-		if (Loader.config.getBoolean("TasksOnSend.Advertisement.Broadcast")) {
-			TheAPI.broadcastMessage(
-					Loader.s("Security.TryingSendAdvertisement").replace("%playername%", p.getDisplayName())
-							.replace("%player%", p.getName()).replace("%prefix%", Loader.s("Prefix")));
-		}
-		if (Loader.config.getBoolean("TasksOnSend.Advertisement.Use-Commands")) {
-			for (String cmds : Loader.config.getStringList("TasksOnSend.Advertisement.Commands")) {
-				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(),
-						TheAPI.colorize(cmds.replace("%player%", p.getName())));
-			}
-		}
+		Loader.sendBroadcasts(p, AD, Placeholder.c().add("%message%", message), "ServerControl.Advertisement");
+		if (Loader.config.getBoolean("Task.Ad.Use")) 
+			for (String cmds : Loader.config.getStringList("Task.Ad.Commands"))
+				TheAPI.sudoConsole(TheAPI.colorize(Loader.placeholder(p, cmds, null)));
 	}
 }

@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.CooldownAPI.CooldownAPI;
@@ -23,8 +24,7 @@ public class SecurityListenerCooldowns implements Listener {
 				&& Loader.config.getInt("Options.Cooldowns.Chat.Time") > 0) {
 			CooldownAPI s = TheAPI.getCooldownAPI(p.getName());
 			if (!s.expired("Cooldown.Msgs")) {
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Cooldown.ToSendMessage").replace("%timer%",
-						StringUtils.setTimeToString(s.getTimeToExpire("Cooldown.Msgs"))), p);
+				Loader.sendMessages(p, "Cooldowns.Messages", Placeholder.c().add("%time%", StringUtils.setTimeToString(s.getTimeToExpire("Cooldown.Msgs"))));
 				e.setCancelled(true);
 				return;
 			} else
@@ -49,9 +49,7 @@ public class SecurityListenerCooldowns implements Listener {
 							as.createCooldown("Cooldown.Cmds." + c[0], StringUtils.getInt(c[1]));
 						} else {
 							e.setCancelled(true);
-							TheAPI.msg(
-									Loader.s("Prefix") + Loader.s("Cooldown.ToSendCommand").replace("%timer%",
-											StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmds." + c[0]))),p);
+							Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmds." + c[0]))));
 						}
 						break;
 					}
@@ -59,8 +57,7 @@ public class SecurityListenerCooldowns implements Listener {
 			if (!find && setting.cool_cmd && time > 0) {
 				if (!as.expired("Cooldown.Cmdss")) {
 					e.setCancelled(true);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Cooldown.ToSendCommand").replace("%timer%",
-							StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmdss"))), p);
+					Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmdss"))));
 				} else
 					as.createCooldown("Cooldown.Cmdss", time);
 			}

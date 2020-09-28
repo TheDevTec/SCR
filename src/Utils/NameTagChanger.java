@@ -4,13 +4,11 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.Maps;
-
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.NameTagAPI;
 
 public class NameTagChanger {
-	static HashMap<Player, NameTagAPI> t = Maps.newHashMap();
+	static HashMap<Player, NameTagAPI> t = new HashMap<>();
 
 	public static void setNameTag(Player p, String prefix, String suffix) {
 		if(!Tasks.ss.containsKey(p.getName()))

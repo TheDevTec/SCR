@@ -53,8 +53,7 @@ public class DeathEvent implements Listener {
 				e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.BED));
 			else if (setting.deathspawn == DeathTp.SPAWN) {
 				e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.SPAWN));
-				TheAPI.msg(Loader.s("Spawn.TeleportedToSpawn").replace("%world%", p.getWorld().getName())
-						.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), p);
+				Loader.sendMessages(p, "Spawn.Teleport.You");
 			}
 		}}catch(Exception eere) {}
 	}

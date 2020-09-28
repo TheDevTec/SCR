@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 
@@ -17,54 +18,45 @@ public class BanIP implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (API.hasPerm(s, "ServerControl.BanIP")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/Ban-IP <player> <reason>", "BanSystem.BanIP");
+				TheAPI.msg("/BanIP <player/ip> <reason>", s);
 				return true;
 			}
 			if (args.length == 1) {
 				if (TheAPI.getUser(args[0]).getBoolean("Immune")
 						|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "Ban-IP")
-							.replace("%target%", args[0]), s);
+					Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 					return true;
 				}
-				PunishmentAPI.banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text")
-						.replace("%reason%", Loader.config.getString("BanSystem.BanIP.Reason")));
-				
-				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.BanIP").replace("%playername%", args[0])
-						.replace("%reason%", Loader.config.getString("BanSystem.BanIP.Reason")).replace("%operator%", s.getName())
-						));
-				TheAPI.sendMessage(Loader.s("BanSystem.BanIP").replace("%playername%", args[0])
-						.replace("%reason%", Loader.config.getString("BanSystem.BanIP.Reason")).replace("%operator%", s.getName()), s);
+				PunishmentAPI.banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text").replace("%reason%",Loader.config.getString("BanSystem.BanIP.Reason")));
+				Loader.sendMessages(s, "BanSystem.BanIP", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%ip%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.BanIP.Reason")));
+				Loader.sendBroadcasts(s, "BanSystem.Broadcast.BanIP", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%ip%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.BanIP.Reason")));
 				return true;
 
 			}
 			if (args.length >= 2) {
 				if (TheAPI.getUser(args[0]).getBoolean("Immune")
 						|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "Ban-IP")
-							.replace("%target%", args[0]), s);
+					Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 					return true;
 				}
 				String msg = TheAPI.buildString(args);
 				msg = msg.replaceFirst(args[0] + " ", "");
-				if(msg.endsWith("-s")) {
-					msg = msg.replace("-s", "");
-					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.BanIP").replace("%playername%", args[0]) //TODO - upravit path
-							.replace("%reason%", msg).replace("%operator%", s.getName())+" &f[Silent]"
-							),"servercontrol.seesilent");
-					
-					TheAPI.sendMessage(Loader.s("BanSystem.BanIP").replace("%playername%", args[0])
-							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
+				if(msg.endsWith("-s")||msg.endsWith("- s")) {
+					msg = msg.endsWith("- s")?msg.substring(0, msg.length()-3):msg.substring(0, msg.length()-2);
+					PunishmentAPI.banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text").replace("%reason%",msg));
+					Loader.sendMessages(s, "BanSystem.BanIP", Placeholder.c().replace("%operator%", s.getName())
+							.replace("%ip%", args[0]).replace("%reason%", msg+" &f[Silent]"));
+					Loader.sendBroadcasts(s, "BanSystem.Broadcast.BanIP", Placeholder.c().replace("%operator%", s.getName())
+							.replace("%ip%", args[0]).replace("%reason%", msg+" &f[Silent]"),"servercontrol.silent");
 					return true;
 				}
-				PunishmentAPI.banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text")
-						.replace("%reason%", Loader.config.getString("BanSystem.BanIP.Reason")));
-				
-				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.BanIP").replace("%playername%", args[0])
-						.replace("%reason%", msg).replace("%operator%", s.getName())
-						));
-				TheAPI.sendMessage(Loader.s("BanSystem.BanIP").replace("%playername%", args[0])
-						.replace("%reason%", msg).replace("%operator%", s.getName()), s);
+				PunishmentAPI.banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text").replace("%reason%",msg));
+				Loader.sendMessages(s, "BanSystem.BanIP", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%ip%", args[0]).replace("%reason%", msg));
+				Loader.sendBroadcasts(s, "BanSystem.Broadcast.BanIP", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%ip%", args[0]).replace("%reason%", msg));
 				return true;
 			}
 		}

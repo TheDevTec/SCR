@@ -32,6 +32,7 @@ import org.json.simple.JSONObject;
 
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Utils.TheAPIUtils.LoaderClass;
 
 public class Metrics {
 
@@ -75,29 +76,13 @@ public class Metrics {
 	// The uuid of the server
 	private static String serverUUID;
 
-	// The plugin
-	private final Plugin plugin;
-
 	// A list with all custom charts
 	private final List<CustomChart> charts = new ArrayList<>();
 
-	/**
-	 * Class constructor.
-	 *
-	 * @param plugin The plugin which stats should be submitted.
-	 */
-	public Metrics(Plugin plugin) {
-		if (plugin == null) {
-			throw new IllegalArgumentException("Plugin cannot be null!");
-		}
-		this.plugin = plugin;
-
-		// Get the config file
-		File bStatsFolder = new File(plugin.getDataFolder().getParentFile(), "bStats");
+	public Metrics() {
+		File bStatsFolder = new File("plugins/bStats");
 		File configFile = new File(bStatsFolder, "config.yml");
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-
-		// Check if the config file exists
 		if (!config.isSet("serverUuid")) {
 
 			// Add default values
@@ -143,7 +128,7 @@ public class Metrics {
 				}
 			}
 			// Register our service
-			Bukkit.getServicesManager().register(Metrics.class, this, plugin, ServicePriority.Normal);
+			Bukkit.getServicesManager().register(Metrics.class, this, LoaderClass.plugin, ServicePriority.Normal);
 			if (!found) {
 				// We are the first!
 				startSubmitting();
@@ -162,19 +147,20 @@ public class Metrics {
 		charts.add(chart);
 	}
 
+	private Timer t;
+	public Timer getTimer() {
+		return t;
+	}
+	
 	private void startSubmitting() {
-		final Timer timer = new Timer(true); // We use a timer cause the Bukkit scheduler is affected by server lags
-		timer.scheduleAtFixedRate(new TimerTask() {
+		t = new Timer(true);
+		t.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				if (!plugin.isEnabled()) { // Plugin was disabled
-					timer.cancel();
+				if (!LoaderClass.plugin.isEnabled()) {
+					t.cancel();
 					return;
 				}
-				// Nevertheless we want our code to run in the Bukkit main thread, so we have to
-				// use the Bukkit scheduler
-				// Don't be afraid! The connection to the bStats server is still async, only the
-				// stats collection is sync ;)
 				new Tasker() {
 					@Override
 					public void run() {
@@ -189,8 +175,8 @@ public class Metrics {
 	public JSONObject getPluginData() {
 		JSONObject data = new JSONObject();
 
-		String pluginName = plugin.getDescription().getName();
-		String pluginVersion = plugin.getDescription().getVersion();
+		String pluginName = LoaderClass.plugin.getDescription().getName();
+		String pluginVersion = LoaderClass.plugin.getDescription().getVersion();
 
 		data.put("pluginName", pluginName); // Append the name of the plugin
 		data.put("pluginVersion", pluginVersion); // Append the version of the plugin
@@ -268,11 +254,11 @@ public class Metrics {
 			public void run() {
 				try {
 					// Send the data
-					sendData(plugin, data);
+					sendData(LoaderClass.plugin, data);
 				} catch (Exception e) {
 					// Something went wrong! :(
 					if (logFailedRequests) {
-						plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + plugin.getName(),
+						LoaderClass.plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + LoaderClass.plugin.getName(),
 								e);
 					}
 				}

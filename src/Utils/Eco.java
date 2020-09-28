@@ -24,7 +24,7 @@ public class Eco implements Economy {
 		}
 		if (a == null)
 			a = Bukkit.getWorlds().get(0).getName();
-		for (String f : Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
+		for (String f : Loader.config.getKeys("Options.Economy.MultiEconomy.Types")) {
 				if (Loader.config.getStringList("Options.Economy.MultiEconomy.Types." + f).contains(world)) {
 					wd=f;
 					break;
@@ -36,7 +36,7 @@ public class Eco implements Economy {
 	public static String getEconomyGroupByWorld(String world) {
 		String wd = "default";
 		String wd2 = null;
-		for (String f : Loader.config.getConfigurationSection("Options.Economy.MultiEconomy.Types").getKeys(false)) {
+		for (String f : Loader.config.getKeys("Options.Economy.MultiEconomy.Types")) {
 			if(wd!="default") {
 				break;
 			}

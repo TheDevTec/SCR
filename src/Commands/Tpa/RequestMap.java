@@ -29,7 +29,7 @@ public class RequestMap {
 	}
 
 	public static void removeRequest(String target, String sender) {
-		TheAPI.getUser(target).setAndSave("Tp." + sender, null);
+		TheAPI.getUser(sender).setAndSave("Tp." + target, null);
 	}
 
 	public static String getRequest(String p) {

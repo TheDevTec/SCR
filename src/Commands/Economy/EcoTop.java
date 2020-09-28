@@ -22,7 +22,7 @@ import me.DevTec.TheAPI.SortedMap.RankingAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class EcoTop implements CommandExecutor {
-	private HashMap<String, Pagination<Entry<String, Double>>> h = Maps.newHashMap();
+	private HashMap<String, Pagination<Entry<String, Double>>> h = new HashMap<>();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -37,7 +37,7 @@ public class EcoTop implements CommandExecutor {
 			Pagination<Entry<String, Double>> m = h.containsKey(world) ? h.get(world) : null;
 			if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
 				TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300); // 5min update
-				HashMap<String, Double> money = Maps.newHashMap();
+				HashMap<String, Double> money = new HashMap<>();
 				for (UUID sa : TheAPI.getUsers()) {
 					if(Bukkit.getOfflinePlayer(sa).getName()==null||Bukkit.getOfflinePlayer(sa).getName().equals("ServerControlReloaded"))continue;
 					money.put(Bukkit.getOfflinePlayer(sa).getName(),EconomyAPI.getBalance(Bukkit.getOfflinePlayer(sa).getName(), world));
