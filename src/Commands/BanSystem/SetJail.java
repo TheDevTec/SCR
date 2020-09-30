@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 
@@ -17,23 +18,20 @@ public class SetJail implements CommandExecutor {
 		if (API.hasPerm(s, "ServerControl.setJail")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
-					Loader.Help(s, "/setJail <name>", "BanSystem.setJail");
+					TheAPI.msg("/setJail <jailName>", s);
 					return true;
 				}
 				if (args.length == 1) {
 					if (PunishmentAPI.getjails().contains(args[0])) {
-						TheAPI.msg(
-								Loader.s("Prefix") + Loader.s("BanSystem.JailAlreadyExist").replace("%jail%", args[0]),
-								s);
+						Loader.sendMessages(s, "Jail.Exists", Placeholder.c().replace("%jail%", args[0]));
 						return true;
 					}
 					Player p = (Player) s;
 					PunishmentAPI.setjail(p.getLocation(), args[0]);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("BanSystem.CreatedJail").replace("%jail%", args[0]), s);
+					Loader.sendMessages(s, "Jail.Create", Placeholder.c().replace("%jail%", args[0]));
 					return true;
 				}
 			}
-			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

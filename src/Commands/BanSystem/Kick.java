@@ -4,10 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 
@@ -18,68 +18,48 @@ public class Kick implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (API.hasPerm(s, "ServerControl.Kick")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/Kick <player> <reason>", "BanSystem.Kick");
+				TheAPI.msg("/Kick <player> <reason>", s);
 				return true;
 			}
 			if (args.length == 1) {
-				Player p = TheAPI.getPlayer(args[0]);
-				if (p != null) {
-					if (TheAPI.getUser(args[0]).getBoolean("Immune")
-							|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "kick")
-								.replace("%target%", p.getName()), s);
-						return true;
-						
-					}
-					PunishmentAPI.kick(args[0], Loader.config.getString("BanSystem.Kick.Text")
-							.replace("%reason%", Loader.config.getString("BanSystem.Kick.Reason")));
-					
-					Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Kick").replace("%playername%", args[0])
-							.replace("%reason%", Loader.config.getString("BanSystem.Kick.Reason")).replace("%operator%", s.getName())
-							));
-					TheAPI.sendMessage(Loader.s("BanSystem.Kick").replace("%playername%", args[0])
-							.replace("%reason%", Loader.config.getString("BanSystem.Kick.Reason")).replace("%operator%", s.getName()), s);
+				if (TheAPI.getUser(args[0]).getBoolean("Immune")
+						|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+					Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 					return true;
 				}
-				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+				PunishmentAPI.kick(args[0], Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",
+						Loader.config.getString("BanSystem.Kick.Reason")));
+				Loader.sendMessages(s, "BanSystem.Kick", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.Kick.Reason")));
+				Loader.sendBroadcasts(s, "BanSystem.Broadcast.Kick", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.Kick.Reason")));
 				return true;
 			}
 			if (args.length >= 2) {
-				Player p = TheAPI.getPlayer(args[0]);
-				if (p != null) {
-					if (TheAPI.getUser(args[0]).getBoolean("Immune")
-							|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "kick")
-								.replace("%target%", p.getName()), s);
-						return true;
-					}
-					String msg = TheAPI.buildString(args);
-					msg = msg.replaceFirst(args[0] + " ", "");
-					if(msg.endsWith("-s")) {
-						msg = msg.replace("-s", "");
-						Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Kick").replace("%playername%", args[0]) //TODO - upravit path
-								.replace("%reason%", msg).replace("%operator%", s.getName())+" &f[Silent]"
-								),"servercontrol.seesilent");
-						
-						TheAPI.sendMessage(Loader.s("BanSystem.Kick").replace("%playername%", args[0])
-								.replace("%reason%", msg).replace("%operator%", s.getName()), s);
-						return true;
-					}
-					PunishmentAPI.kick(args[0],
-							Loader.config.getString("BanSystem.Kick.Text").replace("%reason%", msg));
-					
-					Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.Kick").replace("%playername%", args[0])
-							.replace("%reason%", msg).replace("%operator%", s.getName())
-							));
-					TheAPI.sendMessage(Loader.s("BanSystem.Kick").replace("%playername%", args[0])
-							.replace("%reason%", msg).replace("%operator%", s.getName()), s);
+				if (TheAPI.getUser(args[0]).getBoolean("Immune")
+						|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+					Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 					return true;
 				}
-				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+				String msg = TheAPI.buildString(args);
+				msg = msg.replaceFirst(args[0] + " ", "");
+				if(msg.endsWith("-s")||msg.endsWith("- s")) {
+					msg = msg.endsWith("- s")?msg.substring(0, msg.length()-3):msg.substring(0, msg.length()-2);
+					PunishmentAPI.kick(args[0], Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",msg));
+					Loader.sendMessages(s, "BanSystem.Kick", Placeholder.c().replace("%operator%", s.getName())
+							.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"));
+					Loader.sendBroadcasts(s, "BanSystem.Broadcast.Kick", Placeholder.c().replace("%operator%", s.getName())
+							.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"), "servercontrol.silent");
+					return true;
+				}
+				PunishmentAPI.kick(args[0], Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",msg));
+				Loader.sendMessages(s, "BanSystem.Kick", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg));
+				Loader.sendBroadcasts(s, "BanSystem.Broadcast.Kick", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg));
 				return true;
 			}
 		}
 		return true;
 	}
-
 }

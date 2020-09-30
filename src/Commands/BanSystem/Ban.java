@@ -62,5 +62,4 @@ public class Ban implements CommandExecutor {
 		}
 		return true;
 	}
-
 }

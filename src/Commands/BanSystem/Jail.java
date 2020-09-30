@@ -67,7 +67,6 @@ public class Jail implements CommandExecutor {
 				Loader.sendMessages(s, "Jail.Empty");
 				return true;
 			}
-
 		}
 		return true;
 	}
