@@ -1,0 +1,406 @@
+BanSystem:
+  # Bans
+  Ban:
+    Name: "ban"
+    Aliases:
+    - "permaban"
+    Permission: "SCR.Command.Ban"
+    Help: "/Ban <player> <reason> - Perma ban player"
+    Enabled: true
+  BanIP:
+    Name: "banip"
+    Aliases:
+    - "permabanip"
+    - "permaban-ip"
+    - "ipban"
+    - "ban-ip"
+    - "ip-ban"
+    Permission: "SCR.Command.BanIP"
+    Help: "/BanIP <player/IP> <reason> - Perma ban ip address"
+    Enabled: true
+  TempBan:
+    Name: "tempban"
+    Permission: "SCR.Command.TempBan"
+    Help: "/TempBan <player> <time> <reason> - Perma ban player"
+    Enabled: true
+  TempBanIP:
+    Name: "tempbanip"
+    Aliases:
+    - "tempban-ip"
+    Permission: "SCR.Command.TempBanIP"
+    Help: "/TempBanIP <player/IP> <time> <reason> - Perma ban player"
+    Enabled: true
+  UnBan:
+    Name: "unban"
+    Aliases:
+    - "pardon"
+    - "ub"
+    Permission: "SCR.Command.UnBan"
+    Help: "/UnBan <player> - Unban player"
+    Enabled: true
+  UnBanIP:
+    Name: "unbanip"
+    Aliases:
+    - "pardonip"
+    - "pardon-ip"
+    - "ub-ip"
+    - "ubip"
+    Permission: "SCR.Command.UnBanIP"
+    Help: "/UnBanIP <player/IP> - Unban ip address"
+    Enabled: true
+    
+  # Jails
+  Jail:
+    Name: "jail"
+    Aliases:
+    - "jail"
+    - "arrest"
+    - "permajail"
+    Permission: "SCR.Command.Jail"
+    Help: "/Jail <player> <reason> - Jail player"
+    Enabled: true
+  TempJail:
+    Name: "tempjail"
+    Aliases:
+    - "temparrest"
+    Permission: "SCR.Command.TempJail"
+    Help: "/TempJail <player> <time> <reason> - Temp-jail player"
+    Enabled: true
+  UnJail:
+    Name: "unjail"
+    Aliases:
+    - "pardonjail"
+    - "pardon-jail"
+    Permission: "SCR.Command.UnJail"
+    Help: "/UnJail <player> - Unjail player"
+    Enabled: true
+  
+  # Mutes
+  Mute:
+    Name: "mute"
+    Permission: "SCR.Command.Mute"
+    Help: "/Mute <player> <reason> - Mute player"
+    Enabled: true
+  TempMute:
+    Name: "tempmute"
+    Permission: "SCR.Command.TempMute"
+    Help: "/TempMute <player> <time> <reason> - Temp-mute player"
+    Enabled: true
+  UnMute:
+    Name: "unmute"
+    Permission: "SCR.Command.UnMute"
+    Help: "/UnMute <player> - UnMute player"
+    Enabled: true
+    
+  # Other
+  Warn:
+    Name: "warn"
+    Permission: "SCR.Command.Warn"
+    Help: "/Warn <player> <reason> - Warn player"
+    Enabled: true
+    
+Economy:
+  Balance:
+    Name: "balance"
+    Aliases:
+    - "money"
+    Permission: "SCR.Command.Balance"
+    Help: "/Balance <player>"
+    Enabled: true
+  BalanceTop:
+    Name: "balancetop"
+    Aliases:
+    - "baltop"
+    - "ecotop"
+    - "economytop"
+    Permission: "SCR.Command.BalanceTop"
+    Help: "/BalanceTop <page>"
+    Enabled: true
+  Economy:
+    Name: "economy"
+    Aliases:
+    - "eco"
+    Permission: "SCR.Command.Economy"
+    Help:
+    - "/Economy give <player> <money>"
+    - "/Economy take <player> <money>"
+    - "/Economy set <player> <money>"
+    - "/Economy reset <player>"
+    Enabled: true
+  Pay:
+    Name: "pay"
+    Aliases:
+    - "sendmoney"
+    Permission: "SCR.Command.Pay"
+    Help: "/Pay <player> <money> - Send player money"
+    Enabled: true
+  MultiEconomy:
+    Name: "multieconomy"
+    Aliases:
+    - "multieco"
+    Permission: "SCR.Command.MultiEconomy"
+    Help:
+    - "/MultiEconomy Transfer <player> <target-group> <group>"
+    - "/MultiEconomy Money <player> <group>"
+    - "/MultiEconomy Create <group>"
+    - "/MultiEconomy Delete <group>"
+    - "/MultiEconomy Add <group> <world>"
+    - "/MultiEconomy Remove <group> <world>"
+    - "/MultiEconomy Worlds <group>"
+    - "/MultiEconomy Groups"
+    Enabled: true
+    
+Server:
+  Stop:
+    Name: "stop"
+    Aliases:
+    - "pause"
+    Permission: "SCR.Command.Stop"
+    Help: "/Stop <time/now/cancel>"
+    Enabled: true
+    Override-Event: true
+  Restart:
+    Name: "restart"
+    Aliases:
+    - "reboot"
+    Permission: "SCR.Command.Restart"
+    Help: "/Restart <time/now/cancel>"
+    Enabled: true
+    Override-Event: true
+  Reload:
+    Name: "reload"
+    Aliases:
+    - "rl"
+    Permission: "SCR.Command.Reload"
+    Help: "/Reload <time/now/cancel>"
+    Enabled: true
+    Override-Event: true
+
+Teleport:
+  Tpa:
+    Name: "tpa"
+    Permission: "SCR.Command.Tpa"
+    Help: "/Tpa <player> - Send player request to teleport you to player"
+    Enabled: true
+  TpaHere:
+    Name: "tpahere"
+    Permission: "SCR.Command.TpaHere"
+    Help: "/TpaHere <player> - Send request to teleport player to your position"
+    Enabled: true
+  TpaHereAll:
+    Name: "tpahereall"
+    Aliases:
+    - "tpaall"
+    Permission: "SCR.Command.TpaHereAll"
+    Help: "/TpaHereAll - Send request to all players to teleport to your position"
+    Enabled: true
+  Tp:
+    Name: "tp"
+    Permission: "SCR.Command.Tp"
+    Help: "/Tp <player/X Y Z> - Teleport you to player or to position in world"
+    Enabled: true
+  TpHere:
+    Name: "tphere"
+    Permission: "SCR.Command.TpHere"
+    Help: "/TpHere <player> - Teleport player to your position"
+    Enabled: true
+  TpHereAll:
+    Name: "tphereall"
+    Aliases:
+    - "tpall"
+    Permission: "SCR.Command.TpHereAll"
+    Help: "/TpHereAll - Teleport all players to your position"
+    Enabled: true
+  TpAccept:
+    Name: "tpaccept"
+    Aliases:
+    - "tpyes"
+    - "tpallow"
+    Permission: "SCR.Command.TpAccept"
+    Help: "/TpAccept - Accept teleport request"
+    Enabled: true
+  TpDeny:
+    Name: "tpdeny"
+    Aliases:
+    - "tpno"
+    - "tpadeny"
+    - "tpano"
+    Permission: "SCR.Command.TpDeny"
+    Help: "/TpDeny - Deny teleport request"
+    Enabled: true
+  TpCancel:
+    Name: "tpcancel"
+    Aliases:
+    - "tpacancel"
+    Permission: "SCR.Command.TpCancel"
+    Help: "/TpCancel - Cancel your teleport request"
+    Enabled: true
+  TpToggle:
+    Name: "tptoggle"
+    Aliases:
+    - "tpblock"
+    - "tpatoggle"
+    - "tpablock"
+    Permission: "SCR.Command.TpToggle"
+    Help: "/TpToggle <player> - Block teleport requests from player"
+    Enabled: true
+    
+Enchantment:
+  Enchant:
+    Name: "tptoggle"
+    Aliases:
+    - "ench"
+    Permission: "SCR.Command.Enchant"
+    Help: "/Enchant <enchantment> <level> - Enchant item in your hand with enchantment"
+    Enabled: true
+  EnchantRemove:
+    Name: "tptoggle"
+    Aliases:
+    - "removeenchant"
+    - "removeench"
+    - "enchremove"
+    Permission: "SCR.Command.EnchantRemove"
+    Help: "/EnchantRemove <enchantment> - Remove enchantment from item in your hand"
+    Enabled: true
+  EnchantRemoveAll:
+    Name: "tptoggle"
+    Aliases:
+    - "removeallenchant"
+    - "removeallench"
+    - "removeallenchants"
+    - "removeallenchs"
+    - "enchremoveall"
+    Permission: "SCR.Command.EnchantRemoveAll"
+    Help: "/EnchantRemoveAll - Remove all enchantments from item in your hand"
+    Enabled: true
+    
+Inventory:
+  CloseInventory:
+    Name: "closeinventory"
+    Aliases:
+    - "closeinv"
+    Permission: "SCR.Command.CloseInventory"
+    Help: "/CloseInventory <player> - Close player's opened inventory"
+    Enabled: true
+  ClearInventory:
+    Name: "clearinventory"
+    Aliases:
+    - "ci"
+    - "clearinv"
+    - "clear"
+    Permission: "SCR.Command.ClearInventory"
+    Help: "/ClearInventory <player> - Clear player's inventory"
+    Enabled: true
+  ClearInventoryToggle:
+    Name: "clearinventorytoggle"
+    Aliases:
+    - "citoggle"
+    - "clearinvtoggle"
+    - "cleartoggle"
+    Permission: "SCR.Command.ClearInventoryToggle"
+    Help: "/ClearInventoryToggle - Toggle request to confirm to clear inventory"
+    Enabled: true
+  EnderChest:
+    Name: "enderchest"
+    Aliases:
+    - "endersee"
+    - "esee"
+    - "echest"
+    Permission: "SCR.Command.EnderChest"
+    Help: "/EnderChest <player> - Open player's enderchest"
+    Enabled: true
+  Inventory:
+    Name: "inventory"
+    Aliases:
+    - "invsee"
+    - "inventorysee"
+    Permission: "SCR.Command.Inventory"
+    Help: "/Inventory <player> - Open player's inventory"
+    Enabled: true
+    
+GameMode:
+  GameMode:
+    Name: "gamemode"
+    Aliases:
+    - "gm"
+    Permission: "SCR.Command.GameMode"
+    Help: "/GameMode <player> <0/1/2/3> - Change player's gamemode"
+    Enabled: true
+  GameModeAdventure:
+    Name: "gamemodeadventure"
+    Aliases:
+    - "gma"
+    Permission: "SCR.Command.GameModeAdventure"
+    Help: "/GameModeAdventure <player> - Change player's gamemode to adventure"
+    Enabled: true
+  GameModeCreative:
+    Name: "gamemodecreative"
+    Aliases:
+    - "gmc"
+    Permission: "SCR.Command.GameModeCreative"
+    Help: "/GameModeCreative <player> - Change player's gamemode to creative"
+    Enabled: true
+  GameModeSurvival:
+    Name: "gamemodesurvival"
+    Aliases:
+    - "gms"
+    Permission: "SCR.Command.GameModeSurvival"
+    Help: "/GameModeSurvival <player> - Change player's gamemode to survival"
+    Enabled: true
+  # If your server version is lower than 1.8, disable this command
+  GameModeSpectator:
+    Name: "gamemodespectator"
+    Aliases:
+    - "gmsp"
+    Permission: "SCR.Command.GameModeSpectator"
+    Help: "/GameModeCreative <player> - Change player's gamemode to spectator"
+    Enabled: true
+  
+Weather:
+  Rain:
+    Name: "rain"
+    Permission: "SCR.Command.Rain"
+    Help: "/Rain <world> - Change weather in world to rainy"
+    Enabled: true
+  Sun:
+    Name: "sun"
+    Permission: "SCR.Command.Sun"
+    Help: "/Sun <world> - Change weather in world to sunny"
+    Enabled: true
+  Thunder:
+    Name: "thunder"
+    Aliases:
+    - "storm"
+    Permission: "SCR.Command.Thunder"
+    Help: "/Rain <world> - Change weather in world to thunder"
+    Enabled: true
+  PlayerRain:
+    Name: "playerrain"
+    Aliases:
+    - "prain"
+    Permission: "SCR.Command.PlayerRain"
+    Help: "/PlayerRain <player> - Change player's weather to rainy"
+    Enabled: true
+  PlayerSun:
+    Name: "playersun"
+    Aliases:
+    - "psun"
+    Permission: "SCR.Command.PlayerSun"
+    Help: "/PlayerSun <player> - Change player's weather to sunny"
+    Enabled: true
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

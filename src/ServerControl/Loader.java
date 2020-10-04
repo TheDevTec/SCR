@@ -1,6 +1,5 @@
 package ServerControl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -11,7 +10,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -55,8 +53,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
-	public static List<Plugin> addons = new ArrayList<>();
-	public static Config config, sb, tab, mw, kit, trans;
+	public static Config config, sb, tab, mw, kit, trans, events, cmds;
 	
 	public static Economy econ;
 	public static Loader getInstance;
@@ -437,75 +434,73 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	private void CommmandsRegister() {
-		CmdC("stop", new Commands.Main.Stop());
-		CmdC("reload", new Commands.Main.Reload());
-		CmdC("restart", new Commands.Main.Restart());
-		CmdC("addons", new Commands.Addons());
-		CmdC("give", new Commands.Give());
-		CmdC("Kill", new Commands.Kill());
-		CmdC("KillAll", new Commands.KillAll());
-		CmdC("Butcher", new Commands.Butcher());
+		CmdC("stop", new Commands.Server.Stop());
+		CmdC("reload", new Commands.Server.Reload());
+		CmdC("restart", new Commands.Server.Restart());
+		CmdC("give", new Commands.Other.Give());
+		CmdC("Kill", new Commands.Kill.Kill());
+		CmdC("KillAll", new Commands.Kill.KillAll());
+		CmdC("Butcher", new Commands.Other.Butcher());
 		CmdC("jail", new Commands.BanSystem.Jail());
 		CmdC("TempBanIP", new Commands.BanSystem.TempBanIP());
 		CmdC("unjail", new Commands.BanSystem.UnJail());
 		CmdC("setjail", new Commands.BanSystem.SetJail());
 		CmdC("deljail", new Commands.BanSystem.DelJail());
-		CmdC("Mem", new Commands.RAM());
-		CmdC("Chunks", new Commands.Chunks());
-		CmdC("ClearChat", new Commands.ClearChat());
-		CmdC("SCR", new Commands.ServerControl());
-		CmdC("Chat", new Commands.Chat());
-		CmdC("Maintenance", new Commands.Maintenance());
-		CmdC("Clear", new Commands.ClearInv());
-		CmdC("God", new Commands.God());
-		CmdC("Heal", new Commands.Heal());
-		CmdC("Fly", new Commands.Fly());
-		CmdC("FlySpeed", new Commands.FlySpeed());
-		CmdC("WalkSpeed", new Commands.WalkSpeed());
-		CmdC("TPS", new Commands.TPS());
-		CmdC("AFK", new Commands.AFK());
-		CmdC("MultiWorlds", new Commands.Worlds());
-		CmdC("TabList", new Commands.Tab());
-		CmdC("suicide", new Commands.Suicide());
-		CmdC("SetSpawn", new Commands.SetSpawn());
-		CmdC("Spawn", new Commands.Spawn());
-		CmdC("SetWarp", new Commands.SetWarp());
-		CmdC("DelWarp", new Commands.DelWarp());
-		CmdC("Warps", new Commands.Warp());
-		CmdC("Skull", new Commands.Skull());
+		CmdC("Mem", new Commands.Info.RAM());
+		CmdC("Chunks", new Commands.Info.Chunks());
+		CmdC("ClearChat", new Commands.Message.ClearChat());
+		CmdC("SCR", new Commands.Info.ServerControl());
+		CmdC("Maintenance", new Commands.Info.Maintenance());
+		CmdC("Clear", new Commands.Inventory.ClearInv());
+		CmdC("God", new Commands.Other.God());
+		CmdC("Heal", new Commands.Other.Heal());
+		CmdC("Fly", new Commands.Other.Fly());
+		CmdC("FlySpeed", new Commands.Speed.FlySpeed());
+		CmdC("WalkSpeed", new Commands.Speed.WalkSpeed());
+		CmdC("TPS", new Commands.Info.TPS());
+		CmdC("AFK", new Commands.Other.AFK());
+		CmdC("MultiWorlds", new Commands.Other.MultiWorlds());
+		CmdC("TabList", new Commands.Other.Tab());
+		CmdC("suicide", new Commands.Kill.Suicide());
+		CmdC("SetSpawn", new Commands.Warps.SetSpawn());
+		CmdC("Spawn", new Commands.Warps.Spawn());
+		CmdC("SetWarp", new Commands.Warps.SetWarp());
+		CmdC("DelWarp", new Commands.Warps.DelWarp());
+		CmdC("Warps", new Commands.Warps.Warp());
+		CmdC("Skull", new Commands.Other.Skull());
 		CmdC("BalanceTop", new Commands.Economy.EcoTop());
 		CmdC("Money", new Commands.Economy.Eco());
 		CmdC("Pay", new Commands.Economy.Pay());
-		CmdC("Home", new Commands.Home());
-		CmdC("SetHome", new Commands.SetHome());
-		CmdC("DelHome", new Commands.DelHome());
-		CmdC("Homes", new Commands.Homes());
-		CmdC("Back", new Commands.Back());
-		CmdC("Return", new Commands.Back());
-		CmdC("Vanish", new Commands.Vanish());
-		CmdC("Sun", new Commands.Sun());
-		CmdC("Thunder", new Commands.Thunder());
-		CmdC("Strorm", new Commands.Thunder());
-		CmdC("Rain", new Commands.Rain());
-		CmdC("Day", new Commands.Day());
-		CmdC("Night", new Commands.Night());
-		CmdC("Kit", new Commands.Kit());
-		CmdC("ChatLock", new Commands.ChatLock());
-		CmdC("GameMode", new Commands.Gamemode());
-		CmdC("GMS", new Commands.GamemodeS());
-		CmdC("GMC", new Commands.GamemodeC());
-		CmdC("GMSP", new Commands.GamemodeSP());
-		CmdC("hat", new Commands.Hat());
-		CmdC("GMA", new Commands.GamemodeA());
-		CmdC("pm", new Commands.PrivateMessage());
-		CmdC("helpop", new Commands.Helpop());
-		CmdC("reply", new Commands.ReplyPrivateMes());
-		CmdC("ClearConfirmToggle", new Commands.ClearConfirmToggle());
+		CmdC("Home", new Commands.Warps.Home());
+		CmdC("SetHome", new Commands.Warps.SetHome());
+		CmdC("DelHome", new Commands.Warps.DelHome());
+		CmdC("Homes", new Commands.Warps.Homes());
+		CmdC("Back", new Commands.Warps.Back());
+		CmdC("Return", new Commands.Warps.Back());
+		CmdC("Vanish", new Commands.Other.Vanish());
+		CmdC("Sun", new Commands.Weather.Sun());
+		CmdC("Thunder", new Commands.Weather.Thunder());
+		CmdC("Strorm", new Commands.Weather.Thunder());
+		CmdC("Rain", new Commands.Weather.Rain());
+		CmdC("Day", new Commands.Time.Day());
+		CmdC("Night", new Commands.Time.Night());
+		CmdC("Kit", new Commands.Other.Kit());
+		CmdC("ChatLock", new Commands.Other.ChatLock());
+		CmdC("GameMode", new Commands.Gamemode.Gamemode());
+		CmdC("GMS", new Commands.Gamemode.GamemodeS());
+		CmdC("GMC", new Commands.Gamemode.GamemodeC());
+		CmdC("GMSP", new Commands.Gamemode.GamemodeSP());
+		CmdC("hat", new Commands.Other.Hat());
+		CmdC("GMA", new Commands.Gamemode.GamemodeA());
+		CmdC("pm", new Commands.Message.PrivateMessage());
+		CmdC("helpop", new Commands.Message.Helpop());
+		CmdC("reply", new Commands.Message.ReplyPrivateMes());
+		CmdC("ClearConfirmToggle", new Commands.Inventory.ClearConfirmToggle());
 		CmdC("Kick", new Commands.BanSystem.Kick());
 		CmdC("Ban", new Commands.BanSystem.Ban());
 		CmdC("Immune", new Commands.BanSystem.Immune());
 		CmdC("TempBan", new Commands.BanSystem.TempBan());
-		CmdC("ChatFormat", new Commands.ChatFormat());
+		CmdC("ChatFormat", new Commands.Info.ChatFormat());
 		CmdC("BanIP", new Commands.BanSystem.BanIP());
 		CmdC("UnBan-IP", new Commands.BanSystem.UnBanIP());
 		CmdC("UnBan", new Commands.BanSystem.UnBan());
@@ -513,18 +508,18 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("mute", new Commands.BanSystem.Mute());
 		CmdC("unmute", new Commands.BanSystem.UnMute());
 		CmdC("warn", new Commands.BanSystem.Warn());
-		CmdC("craft", new Commands.Craft());
-		CmdC("enderchest", new Commands.EnderChest());
-		CmdC("endersee", new Commands.EnderSee());
-		CmdC("Seen", new Commands.Seen());
-		CmdC("List", new Commands.ListCmd());
-		CmdC("Staff", new Commands.Staff());
-		CmdC("Trash", new Commands.Trash());
-		CmdC("Invsee", new Commands.Invsee());
-		CmdC("Enchant", new Commands.EnchantTable());
-		CmdC("EnchantRemove", new Commands.EnchantTableRemove());
-		CmdC("EnchantRemoveAll", new Commands.EnchantTableRemoveAll());
-		CmdC("broadcast", new Commands.Broadcast());
+		CmdC("craft", new Commands.Other.Craft());
+		CmdC("enderchest", new Commands.Inventory.EnderChest());
+		CmdC("endersee", new Commands.Inventory.EnderSee());
+		CmdC("Seen", new Commands.Info.Seen());
+		CmdC("List", new Commands.Info.ListCmd());
+		CmdC("Staff", new Commands.Info.Staff());
+		CmdC("Trash", new Commands.Other.Trash());
+		CmdC("Invsee", new Commands.Inventory.Invsee());
+		CmdC("Enchant", new Commands.Enchantment.EnchantTable());
+		CmdC("EnchantRemove", new Commands.Enchantment.EnchantTableRemove());
+		CmdC("EnchantRemoveAll", new Commands.Enchantment.EnchantTableRemoveAll());
+		CmdC("broadcast", new Commands.Message.Broadcast());
 		CmdC("multieconomy", new Commands.Economy.MultiEconomy());
 		CmdC("tp", new Commands.Tpa.Tp());
 		CmdC("tphere", new Commands.Tpa.Tphere());
@@ -535,30 +530,30 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("tpall", new Commands.Tpa.Tpall());
 		CmdC("tpaccept", new Commands.Tpa.Tpaccept());
 		CmdC("tpadeny", new Commands.Tpa.Tpadeny());
-		CmdC("Repair", new Commands.Repair());
-		CmdC("Feed", new Commands.Feed());
-		CmdC("item", new Commands.Item());
-		CmdC("board", new Commands.ScoreboardStats());
-		CmdC("thor", new Commands.Thor());
-		CmdC("spawner", new Commands.Spawner());
-		CmdC("sudo", new Commands.Sudo());
-		CmdC("exp", new Commands.Exp());
-		CmdC("nick", new Commands.Nick());
-		CmdC("nickreset", new Commands.NickReset());
-		CmdC("WhoIs", new Commands.WhoIs());
-		CmdC("closeinv", new Commands.CloseInventory());
-		CmdC("homeother", new Commands.HomeOther());
-		CmdC("tempfly", new Commands.TempFly());
+		CmdC("Repair", new Commands.Other.Repair());
+		CmdC("Feed", new Commands.Other.Feed());
+		CmdC("item", new Commands.Other.Item());
+		CmdC("board", new Commands.Other.ScoreboardStats());
+		CmdC("thor", new Commands.Other.Thor());
+		CmdC("spawner", new Commands.Other.Spawner());
+		CmdC("sudo", new Commands.Message.Sudo());
+		CmdC("exp", new Commands.Other.Exp());
+		CmdC("nick", new Commands.Nickname.Nick());
+		CmdC("nickreset", new Commands.Nickname.NickReset());
+		CmdC("WhoIs", new Commands.Info.WhoIs());
+		CmdC("closeinv", new Commands.Inventory.CloseInventory());
+		CmdC("homeother", new Commands.Warps.HomeOther());
+		CmdC("tempfly", new Commands.Other.TempFly());
 		CmdC("tpcancel", new Commands.Tpa.Tpcancel());
-		CmdC("mail", new Commands.Mail());
+		CmdC("mail", new Commands.Message.Mail());
 
 		CmdC("balance", new Commands.Economy.Balance());
 		CmdC("tempjail", new Commands.BanSystem.TempJail());
 
-		CmdC("psun", new Commands.PSun());
-		CmdC("prain", new Commands.PRain());
-		CmdC("pday", new Commands.PDay());
-		CmdC("pnight", new Commands.PNight());
+		CmdC("psun", new Commands.Weather.PSun());
+		CmdC("prain", new Commands.Weather.PRain());
+		CmdC("pday", new Commands.Time.PDay());
+		CmdC("pnight", new Commands.Time.PNight());
 	}
 
 	private void EventC(Listener l) {
@@ -586,5 +581,9 @@ public class Loader extends JavaPlugin implements Listener {
 				EventC(new AFKPlus());
 		} catch (Exception e) {
 		}
+	}
+
+	public static boolean has(CommandSender s, String cmd) {
+		return s.hasPermission("");
 	}
 }

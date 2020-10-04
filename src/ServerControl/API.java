@@ -17,11 +17,9 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
-import Commands.Kit;
+import Commands.Other.Kit;
 import ServerControl.Loader.Placeholder;
-import ServerControlEvents.PluginHookEvent;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
@@ -172,14 +170,6 @@ public class API {
 			break;
 		}
 		return a;
-	}
-
-	public static void hookAddon(Plugin plugin) {
-		PluginHookEvent event = new PluginHookEvent(plugin);
-		Bukkit.getPluginManager().callEvent(event);
-		if (!event.isCancelled()) {
-			event.Hook();
-		}
 	}
 
 	public static void TeleportBack(Player p) {

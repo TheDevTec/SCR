@@ -26,16 +26,13 @@ public class Immune implements CommandExecutor {
 				Loader.sendMessages(s, aw+"You");
 				return true;
 			}
-			if (args.length == 1) {
-				if (API.hasPerm(s, "ServerControl.Immune.Other")) {
-					boolean im = TheAPI.getUser(args[0]).getBoolean("Immune");
-					TheAPI.getUser(args[0]).setAndSave("Immune", !im);
-					String aw = "Immune." + (im ? "Disable.Other." : "Enabled.Other.");
-					Loader.sendMessages(s, aw+"Sender");
-					if(TheAPI.getPlayerOrNull(args[0])!=null)
-					Loader.sendMessages(TheAPI.getPlayerOrNull(args[0]), aw+"Receiver");
-					return true;
-				}
+			if (API.hasPerm(s, "ServerControl.Immune.Other")) {
+				boolean im = TheAPI.getUser(args[0]).getBoolean("Immune");
+				TheAPI.getUser(args[0]).setAndSave("Immune", !im);
+				String aw = "Immune." + (im ? "Disable.Other." : "Enabled.Other.");
+				Loader.sendMessages(s, aw+"Sender");
+				if(TheAPI.getPlayerOrNull(args[0])!=null)
+				Loader.sendMessages(TheAPI.getPlayerOrNull(args[0]), aw+"Receiver");
 				return true;
 			}
 			return true;

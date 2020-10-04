@@ -154,8 +154,7 @@ AFK:
       End: "%prefix% You set &e%player% &7no longer AFK"
 
 # Translations for /Reply command
-PrivateMessage:
-  NoReply: "%prefix% You have no one to respond to"
+NoReply: "%prefix% You have no one to respond to"
 
 BanSystem:
   # Mutes
@@ -219,7 +218,13 @@ BanSystem:
   Warn:
     Sender: "%prefix% You warn &e%player% &7for &r%reason%"
     Admins: "%prefix% &e%operator% &7warned &e%player% &7for &r%reason%"
-
+  # Other
+  Not:
+    Banned: "%prefix% &e%player% &7isn't banned"
+    IPBanned: "%prefix% IP address &e%ip% &7isn't banned"
+    Muted: "%prefix% &e%player% &7isn't muted"
+    Arrested: "%prefix% &e%player% &7isn't arrested"
+    
 # Translations for /Jail command
 Jail:
   Create: "%prefix% Jail &e%jail% &7created"
@@ -301,6 +306,7 @@ Enchant:
 
 # Translations for tp commands
 TpSystem:
+  NoReqeust: "%prefix% You don't have any request"
   Tpa:
     Send:
       Sender: "%prefix% You sent teleport request to &e%player%"
@@ -494,27 +500,6 @@ Spawn:
       Receiver: "%prefix% Teleporting to spawn"
   Set: "%prefix% Server spawn set at &e%x%&7, &e%y%&7, &e%z%"
   
-# Translations for join event
-Join:
-  Text: "%prefix% &e%playername% &ajoined the game"
-  FirstJoin:
-    Motd:
-    - "%prefix% »==========«"
-    - "%prefix% Welcome on our server, &e%playername%"
-    - "%prefix% Server time: &e%time%"
-    - "%prefix% »==========«"
-    Text:
-    - "%prefix% Welcome &e%player% &7on our server!"
-    - "%prefix% &e%playername% &ajoined the game"
-  Motd:
-  - "%prefix% »==========«"
-  - "%prefix% Welcome back, &e%playername%"
-  - "%prefix% Server time: &e%time%"
-  - "%prefix% »==========«"
-  
-# Translations for quit event
-Quit: "%prefix% &e%playername% &9left the game"
-  
 # Translations for /Maintenance command
 Maintenance:
   Enabled: "%prefix% Maintenance mode turned &eon"
@@ -599,21 +584,7 @@ Back:
     Other:
       Sender: "%prefix% Teleporting &e%player% &7back to previous location"
       Receiver: "%prefix% Teleporting back to previous location"
-  
-# Translations for broadcasts
-Broadcast:
-  Vulgar: "%prefix% &dAntiSwear: &e%player% &7tried to be vulgar (&e%message%&7 -> &e%word%&7)"
-  Spam:
-    Similiar: "%prefix% &dAntiSpam: &e%player% &7tried to spam (&e%message%&7)"
-    Spam: "%prefix% &dAntiSpam: &e%player% &7tried to spam (&e%message%&7)"
-  Caps: ""
-  Chatlock: "%prefix% &dChatLock: &e%player% &7tried to chat (&e%message%&7)"
-  Mute: "%prefix% &dMute: &e%player% &7tried to chat (&e%message%&7)"
-  BlockCmd: ""
-  Advertisement:
-    Item: "%prefix% &dAntiAD: &e%player% &7tried to take/drop item with AD (&e%message%&7 -> &e%word%&7)"
-    Chat: "%prefix% &dAntiAD: &e%player% &7tried to write AD (&e%message%&7 -> &e%word%&7)"
-
+      
 Immune:
   Enabled:
     You: "%prefix% Your immunity has been &eenabled"

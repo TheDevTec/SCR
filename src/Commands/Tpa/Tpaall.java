@@ -40,7 +40,6 @@ public class Tpaall implements CommandExecutor, TabCompleter {
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.Tpaall").replace("%players%", "---"), s);
 				return true;
 			}
-			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

@@ -64,7 +64,6 @@ public class Tpa implements CommandExecutor, TabCompleter {
 				}
 				return true;
 			}
-			TheAPI.msg(Loader.s("ConsoleErrorMessage"), f);
 			return true;
 		}
 		return true;

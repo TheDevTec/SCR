@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
@@ -18,102 +19,58 @@ public class TempMute implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (API.hasPerm(s, "ServerControl.TempMute")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/TempMute <player> <time> <reason>", "BanSystem.TempMute");
+				TheAPI.msg("/TempMute <player> <time> <reason>", s);
 				return true;
 			}
 			if (args.length == 1) {
 				if (TheAPI.getUser(args[0]).getBoolean("Immune")
 						|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "TempMute")
-							.replace("%target%", args[0]), s);
+					Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 					return true;
 				}
-				String msg = Loader.config.getString("BanSystem.TempMute.Reason");
-				long cooldownTime = StringUtils
-						.getTimeFromString(Loader.config.getString("BanSystem.TempMute.Time"));
-
-				PunishmentAPI.tempmute(args[0],
-						Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%", msg), cooldownTime);
-				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempMute")
-						.replace("%playername%", args[0])
-						.replace("%reason%", msg).replace("%operator%", s.getName())
-						.replace("%time%", ""+StringUtils.setTimeToString(cooldownTime))
-						));
-				TheAPI.sendMessage(Loader.s("BanSystem.TempMute")
-						.replace("%playername%", args[0])
-						.replace("%reason%", msg)
-						.replace("%operator%", s.getName())
-						.replace("%time%", ""+StringUtils.setTimeToString(cooldownTime)), s);
+				PunishmentAPI.tempmute(args[0], Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%",
+						Loader.config.getString("BanSystem.TempMute.Reason")), StringUtils.getTimeFromString(Loader.config.getString("BanSystem.TempMute.Time")));
+				Loader.sendMessages(s, "BanSystem.TempBanIP.Sender", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.TempMute.Reason")).replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[2]))));
+				Loader.sendBroadcasts(s, "BanSystem.TempMute.Admins", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.TempMute.Reason")).replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[2]))));
 				return true;
-
 			}
 			if (args.length == 2) {
 				if (TheAPI.getUser(args[0]).getBoolean("Immune")
 						|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "TempMute")
-							.replace("%target%", args[0]), s);
+					Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 					return true;
 				}
-				String msg = Loader.config.getString("BanSystem.TempMute.Reason");
-
-				PunishmentAPI.tempmute(args[0],
-						Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%", msg),
-						StringUtils.getTimeFromString(args[1]));
-				
-				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempMute")
-						.replace("%playername%", args[0])
-						.replace("%reason%", msg)
-						.replace("%operator%", s.getName())
-						.replace("%time%", StringUtils.setTimeToString(StringUtils.getTimeFromString(args[1])))
-						));
-				TheAPI.sendMessage(Loader.s("BanSystem.TempMute")
-						.replace("%playername%", args[0])
-						.replace("%reason%", msg).replace("%operator%", s.getName())
-						.replace("%time%", StringUtils.setTimeToString(StringUtils.getTimeFromString(args[1]))), s);
+				PunishmentAPI.tempmute(args[0], Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%",
+						Loader.config.getString("BanSystem.TempMute.Reason")), StringUtils.getTimeFromString(args[2]));
+				Loader.sendMessages(s, "BanSystem.TempMute.Sender", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.TempMute.Reason")).replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[2]))));
+				Loader.sendBroadcasts(s, "BanSystem.TempMute.Admins", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.TempMute.Reason")).replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[2]))));
 				return true;
 			}
-			if (args.length >= 3) {
-				if (TheAPI.getUser(args[0]).getBoolean("Immune")
-						|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Immune.NoPunish").replace("%punishment%", "TempMute")
-							.replace("%target%", args[0]), s);
-					return true;
-				}
-				String msg = TheAPI.buildString(args);
-				msg = msg.replaceFirst(args[0] + " " + args[1] + " ", "");
-				if(msg.endsWith("-s")) {
-					msg = msg.replace("-s", "");
-					Bukkit.broadcast(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempMute")
-							.replace("%playername%", args[0])
-							.replace("%reason%", msg)
-							.replace("%operator%", s.getName())
-							.replace("%time%", StringUtils.setTimeToString(StringUtils.getTimeFromString(args[1])))+" &f[Silent]"
-							),"servercontrol.seesilent");
-					
-					TheAPI.sendMessage(Loader.s("BanSystem.TempMute")
-							.replace("%playername%", args[0])
-							.replace("%reason%", msg)
-							.replace("%operator%", s.getName())
-							.replace("%time%", StringUtils.setTimeToString(StringUtils.getTimeFromString(args[1]))), s);
-					return true;
-				}
-				PunishmentAPI.tempmute(args[0],
-						Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%", msg),
-						StringUtils.getTimeFromString(args[1]));
-				
-				Bukkit.broadcastMessage(TheAPI.colorize(Loader.s("BanSystem.Broadcast.TempMute")
-						.replace("%playername%", args[0])
-						.replace("%reason%", msg)
-						.replace("%operator%", s.getName())
-						.replace("%time%", StringUtils.setTimeToString(StringUtils.getTimeFromString(args[1])))
-						));
-				TheAPI.sendMessage(Loader.s("BanSystem.TempMute")
-						.replace("%playername%", args[0])
-						.replace("%reason%", msg)
-						.replace("%operator%", s.getName())
-						.replace("%time%", StringUtils.setTimeToString(StringUtils.getTimeFromString(args[1]))), s);
+			if (TheAPI.getUser(args[0]).getBoolean("Immune")
+					|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+				Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 				return true;
 			}
+			String msg = StringUtils.buildString(2, args);
+			if(msg.endsWith("-s")||msg.endsWith("- s")) {
+				msg = msg.endsWith("- s")?msg.substring(0, msg.length()-3):msg.substring(0, msg.length()-2);
+				PunishmentAPI.tempmute(args[0], Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%",msg), StringUtils.timeFromString(args[2]));
+				Loader.sendMessages(s, "BanSystem.TempMute.Sender", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]").replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[2]))));
+				Loader.sendBroadcasts(s, "BanSystem.TempMute.Admins", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]").replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[2]))), "servercontrol.silent");
+				return true;
+			}
+			PunishmentAPI.tempmute(args[0], Loader.config.getString("BanSystem.TempMute.Text").replace("%reason%",msg), StringUtils.timeFromString(args[2]));
+			Loader.sendMessages(s, "BanSystem.TempMute.Sender", Placeholder.c().replace("%operator%", s.getName())
+					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg).replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[2]))));
+			Loader.sendBroadcasts(s, "BanSystem.TempMute.Admins", Placeholder.c().replace("%operator%", s.getName())
+					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg).replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[2]))));
+			return true;
 		}
 		return true;
 	}

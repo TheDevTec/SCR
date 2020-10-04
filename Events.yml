@@ -1,0 +1,51 @@
+# On player join
+onJoin:
+  # First time join to the server
+  First:
+    Messages:
+    - "%prefix% »==========«"
+    - "%prefix% Welcome on our server, &e%playername%"
+    - "%prefix% Server time: &e%time%"
+    - "%prefix% »==========«"
+    Commands:
+    - "kit %player% default"
+    Broadcast:
+    - "%prefix% Welcome &e%player% &7on our server!"
+    - "%prefix% Player &e%player% &7joined the game"
+    Text: "none"
+  # Join to the server (Not first time)
+  Messages:
+    - "%prefix% »==========«"
+    - "%prefix% Welcome back, &e%player%"
+    - "%prefix% Server time: &e%time%"
+    - "%prefix% »==========«"
+  Text: "%prefix% Player &e%player% &7joined the game"
+# On player quit
+onQuit:
+  Text: "%prefix% Player &e%player% &7left the game"
+
+# On player chat
+onChat:
+  # Types: REGEX, CONTAINS, EQUALS
+  # Convert types: LOWERCASE, UPPERCASE, NONE
+  Rules:
+    1:
+      # Example: "What an idiot" -> "What an good boy"
+      Type: "REGEX"
+      Convert: "LOWERCASE"
+      # idiot -> 1d1ot -> 1d10t
+      Text: "([i1]+[ ]*[^A-Za-z0-9]*[d]+[ ]*[^A-Za-z0-9]*[i1]+[ ]*[^A-Za-z0-9]*[o0]+[ ]*[^A-Za-z0-9]*[t]+)*?"
+      Replacement:
+        Use: true
+        # replace word "idiot" with "good boy"
+        Text: "good boy"
+    2:
+      # Example: "Hello, I'm from devtec discord!" -> "Hello, I'm from Spigot & Bukkit DevTec discord!"
+      Type: "EQUALS"
+      Convert: "LOWERCASE"
+      # devtec -> d3vt3c
+      Text: "([d]+[ ]*[^A-Za-z0-9]*[e3]+[ ]*[^A-Za-z0-9]*[v]+[ ]*[^A-Za-z0-9]*[t]+[ ]*[^A-Za-z0-9]*[e3]+[ ]*[^A-Za-z0-9]*[c]+)*?"
+      Replacement:
+        Use: true
+        # replace word "devtec" or "DeVtEc" with "Spigot & Bukkit DevTec"
+        Text: "Spigot & Bukkit DevTec"

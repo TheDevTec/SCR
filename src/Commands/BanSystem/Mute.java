@@ -10,6 +10,7 @@ import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Mute implements CommandExecutor {
 
@@ -29,36 +30,33 @@ public class Mute implements CommandExecutor {
 				}
 				PunishmentAPI.mute(args[0], Loader.config.getString("BanSystem.Mute.Text").replace("%reason%",
 						Loader.config.getString("BanSystem.Mute.Reason")));
-				Loader.sendMessages(s, "BanSystem.Mute", Placeholder.c().replace("%operator%", s.getName())
+				Loader.sendMessages(s, "BanSystem.Mute.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.Mute.Reason")));
-				Loader.sendBroadcasts(s, "BanSystem.Broadcast.Mute", Placeholder.c().replace("%operator%", s.getName())
+				Loader.sendBroadcasts(s, "BanSystem.Mute.Admins", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.Mute.Reason")));
 				return true;
 			}
-			if (args.length >= 2) {
-				if (TheAPI.getUser(args[0]).getBoolean("Immune")
-						|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
-					Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
-					return true;
-				}
-				String msg = TheAPI.buildString(args);
-				msg = msg.replaceFirst(args[0] + " ", "");
-				if(msg.endsWith("-s")||msg.endsWith("- s")) {
-					msg = msg.endsWith("- s")?msg.substring(0, msg.length()-3):msg.substring(0, msg.length()-2);
-					PunishmentAPI.mute(args[0], Loader.config.getString("BanSystem.Mute.Text").replace("%reason%",msg));
-					Loader.sendMessages(s, "BanSystem.Mute", Placeholder.c().replace("%operator%", s.getName())
-							.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"));
-					Loader.sendBroadcasts(s, "BanSystem.Broadcast.Mute", Placeholder.c().replace("%operator%", s.getName())
-							.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"), "servercontrol.silent");
-					return true;
-				}
+			if (TheAPI.getUser(args[0]).getBoolean("Immune")
+					|| Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(args[0]))) {
+				Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
+				return true;
+			}
+			String msg = StringUtils.buildString(1, args);
+			if(msg.endsWith("-s")||msg.endsWith("- s")) {
+				msg = msg.endsWith("- s")?msg.substring(0, msg.length()-3):msg.substring(0, msg.length()-2);
 				PunishmentAPI.mute(args[0], Loader.config.getString("BanSystem.Mute.Text").replace("%reason%",msg));
-				Loader.sendMessages(s, "BanSystem.Mute", Placeholder.c().replace("%operator%", s.getName())
-						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg));
-				Loader.sendBroadcasts(s, "BanSystem.Broadcast.Mute", Placeholder.c().replace("%operator%", s.getName())
-						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg));
+				Loader.sendMessages(s, "BanSystem.Mute.Sender", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"));
+				Loader.sendBroadcasts(s, "BanSystem.Mute.Admins", Placeholder.c().replace("%operator%", s.getName())
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"), "servercontrol.silent");
 				return true;
 			}
+			PunishmentAPI.mute(args[0], Loader.config.getString("BanSystem.Mute.Text").replace("%reason%",msg));
+			Loader.sendMessages(s, "BanSystem.Mute.Sender", Placeholder.c().replace("%operator%", s.getName())
+					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg));
+			Loader.sendBroadcasts(s, "BanSystem.Mute.Admins", Placeholder.c().replace("%operator%", s.getName())
+					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg));
+			return true;	
 		}
 		return true;
 	}

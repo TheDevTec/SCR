@@ -12,6 +12,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
+import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
@@ -47,7 +48,7 @@ public class Tasks {
 
 	public static void reload() {
 		for (Integer t : tasks)
-			Tasker.cancelTask(t);
+			Scheduler.cancelTask(t);
 		tests = 0;
 		tasks.clear();
 		load();
@@ -75,7 +76,7 @@ public class Tasks {
 								TheAPI.sendActionBar(s,"&6TempFly ends in &c" + StringUtils.setTimeToString(timeout));
 						}
 					}}
-		}.repeatingAsync(20, 20));
+		}.runRepeating(0, 20));
 	}
 
 	private static void scoreboard() {
@@ -89,7 +90,7 @@ public class Tasks {
 					ScoreboardStats.createScoreboard(p);
 
 			}
-		}.repeating(20, r));
+		}.runRepeating(0, r));
 	}
 
 	private static void savetask() {
@@ -111,7 +112,7 @@ public class Tasks {
 				}
 				++now;
 			}
-		}.repeatingAsync(20, 20 * Loader.mw.getInt("SavingTask.Delay")));
+		}.runRepeating(0, 20 * Loader.mw.getInt("SavingTask.Delay")));
 	}
 
 	public static void regPlayer(Player p) {
@@ -142,7 +143,7 @@ public class Tasks {
 								.replace("%next%", "\n").replace("%line%", "\n"));
 				}
 			}
-		}.repeatingAsync(100, 100));
+		}.runRepeating(0, 100));
 	}
 
 	private static void tab() {
@@ -160,14 +161,14 @@ public class Tasks {
 				for (Player p : TheAPI.getOnlinePlayers())
 					TabList.setFooterHeader(p);
 			}
-		}.repeatingAsync(20, Loader.tab.getInt("RefleshTick")));
+		}.runRepeating(0, Loader.tab.getInt("RefleshTick")));
 		tasks.add(new Tasker() {
 			@Override
 			public void run() {
 				for (Player p : TheAPI.getOnlinePlayers())
 					TabList.setName(p);
 			}
-		}.repeatingAsync(20, r));
+		}.runRepeating(0, r));
 	}
 
 	private static void vipslot() {
@@ -185,7 +186,7 @@ public class Tasks {
 					}
 				}
 			}
-		}.repeatingAsync(20, 200));
+		}.runRepeating(0, 200));
 	}
 
 	private static void automessage() {
@@ -206,6 +207,6 @@ public class Tasks {
 				}
 			}
 
-		}.repeatingAsync(20, 20* StringUtils.getTimeFromString(Loader.config.getString("Options.AutoMessage.Interval"))));
+		}.runRepeating(0, 20* StringUtils.getTimeFromString(Loader.config.getString("Options.AutoMessage.Interval"))));
 	}
 }

@@ -25,6 +25,7 @@ import me.DevTec.TheAPI.APIs.ItemCreatorAPI;
 import me.DevTec.TheAPI.GUIAPI.GUI;
 import me.DevTec.TheAPI.GUIAPI.ItemGUI;
 import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 import me.DevTec.TheAPI.WorldsAPI.WorldsAPI;
 
 public class MultiWorldsGUI {
@@ -334,11 +335,16 @@ public class MultiWorldsGUI {
 						public void run() {
 							Loader.mw.set("WorldsSettings." + TheAPI.getUser(p).getString("MultiWorlds-Create") + ".Generator",TheAPI.getUser(p).getString("MultiWorlds-Generator"));
 							Loader.mw.save();
-							MultiWorldsUtils.CreateWorld(TheAPI.getUser(p).getString("MultiWorlds-Create"), p);
+							NMSAPI.postToMainThread(new Runnable() {
+								@Override
+								public void run() {
+									MultiWorldsUtils.CreateWorld(TheAPI.getUser(p).getString("MultiWorlds-Create"), p);
+								}
+							});
 							TheAPI.getUser(p).set("MultiWorlds-Generator", null);
 							TheAPI.getUser(p).setAndSave("MultiWorlds-Create", null);
 						}
-					}.later(5);
+					}.runLater(5);
 				}
 			}
 		});

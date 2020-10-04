@@ -6,29 +6,27 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class Tpcancel implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (s.hasPermission("ServerControl.Tpa") || s.hasPermission("ServerControl.Tpahere")) {
+		if (s.hasPermission("ServerControl.TpCancel")) {
 			if (s instanceof Player) {
-				String pd = RequestMap.getRequest(s.getName());
-				if (pd == null || !RequestMap.containsRequest(s.getName(), pd)) {
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.NoRequest"), s);
+				Player a = RequestMap.getFirst(s.getName());
+				if (a==null) {
+					Loader.sendMessages(s, "TpSystem.NoRequest");
 					return true;
 				}
-				Player p = (Player) s;
-				TheAPI.msg(Loader.s("Prefix")
-						+ Loader.s("TpaSystem.Cancelled").replace("%player%", p.getName()).replace("%playername%", pd),
-						p);
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaCancel").replace("%player%", p.getName())
-						.replace("%playername%", p.getDisplayName()), p);
-				RequestMap.removeRequest(p.getName(), pd);
+				int type = TheAPI.getUser(s.getName()).getInt("teleport."+a.getName()+".a");
+				Loader.sendMessages(s, "TpSystem.Cancel."+(type==0?"Tpa":"Tpahere")+".Sender", Placeholder.c()
+						.replace("%player%", a.getName()).replace("%playername%", a.getDisplayName()));
+				Loader.sendMessages(a, "TpSystem.Cancel."+(type==0?"Tpa":"Tpahere")+".Receiver", Placeholder.c()
+						.replace("%player%", s.getName()).replace("%playername%", ((Player)s).getDisplayName()));
 				return true;
 			}
-			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

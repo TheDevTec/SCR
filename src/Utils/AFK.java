@@ -4,6 +4,7 @@ import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
@@ -42,7 +43,7 @@ public class AFK {
 				}
 				}
 			}
-		}.repeatingAsync(20, 20);
+		}.runRepeating(0, 20);
 	}
 
 	public static void setAFK(SPlayer s) {
@@ -74,6 +75,6 @@ public class AFK {
 	}
 
 	public static void stop() {
-		Tasker.cancelTask(task);
+		Scheduler.cancelTask(task);
 	}
 }

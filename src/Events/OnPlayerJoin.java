@@ -10,7 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import Commands.Mail;
+import Commands.Message.Mail;
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
@@ -91,7 +91,7 @@ public class OnPlayerJoin implements Listener {
 					if (setting.join_first_give && f.getString("Options.Join.FirstJoin.Kit") != null)
 						API.giveKit(p.getName(), f.getString("Options.Join.FirstJoin.Kit"), false, false);
 				}
-			}.laterAsync(f.getInt("Options.Join.FirstJoin.Wait") > 0 ? 20 * f.getInt("Options.Join.FirstJoin.Wait") : 1);
+			}.runLater(f.getInt("Options.Join.FirstJoin.Wait") > 0 ? 20 * f.getInt("Options.Join.FirstJoin.Wait") : 1);
 			API.teleportPlayer(p, TeleportLocation.SPAWN);
 		} else {
 			if (setting.join_motd) {

@@ -63,7 +63,6 @@ public class Tpahere implements CommandExecutor, TabCompleter {
 				}
 				return true;
 			}
-			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;
