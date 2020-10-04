@@ -78,8 +78,8 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 	}
 	
-	public static void Help(CommandSender s, String cmd) {
-		Object o = cmds.get(cmd+".Help");
+	public static void Help(CommandSender s, String cmd, String section) {
+		Object o = cmds.get(section+"."+cmd+".Help");
 		if(o==null)return;
 		if(o instanceof List<?>) {
 			for(Object d : (List<?>)o)
@@ -94,6 +94,7 @@ public class Loader extends JavaPlugin implements Listener {
 		if(placeholders!=null)
 		for(Entry<String, String> placeholder : placeholders.get().entrySet())
 			string=string.replace(placeholder.getKey(), placeholder.getValue());
+		if(sender!=null) {
 		if(sender instanceof Player)
 			string=TabList.replace(string, (Player)sender);
 		else
@@ -101,6 +102,7 @@ public class Loader extends JavaPlugin implements Listener {
 					.replace("%playername%", sender.getName())
 					.replace("%customname%", sender.getName());
 		string=string.replace("%op%", ""+sender.isOp());
+		}
 		return PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender : null, string);
 	}
 	
