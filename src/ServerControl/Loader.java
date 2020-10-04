@@ -78,6 +78,16 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 	}
 	
+	public static void Help(CommandSender s, String cmd) {
+		Object o = cmds.get(cmd+".Help");
+		if(o==null)return;
+		if(o instanceof List<?>) {
+			for(Object d : (List<?>)o)
+			TheAPI.msg(d+"", s);
+		}else
+			TheAPI.msg(o+"", s);
+	}
+	
 	public static String placeholder(CommandSender sender, String string, Placeholder placeholders) {
 		if(setting.prefix!=null)
 			string=string.replace("%prefix%", setting.prefix);
@@ -142,7 +152,7 @@ public class Loader extends JavaPlugin implements Listener {
 			for(String s : (List<String>)o)
 				TheAPI.broadcastMessage(placeholder(whoIsSelected, s, placeholders));
 		}else
-		TheAPI.broadcastMessage(placeholder(whoIsSelected, o.toString(), placeholders));
+		TheAPI.bcMsg(placeholder(whoIsSelected, o.toString(), placeholders));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -153,7 +163,7 @@ public class Loader extends JavaPlugin implements Listener {
 			for(String s : (List<String>)o)
 				TheAPI.broadcast(placeholder(whoIsSelected, s, placeholders), perms);
 		}else
-		TheAPI.broadcast(placeholder(whoIsSelected, o.toString(), placeholders), perms);
+		TheAPI.bc(placeholder(whoIsSelected, o.toString(), placeholders), perms);
 	}
 	
 	public static enum Item {

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
+import ServerControl.Loader.Placeholder;
 import Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 
@@ -22,15 +23,13 @@ public class AFK implements CommandExecutor {
 					if (p.isAFK()) {
 						p.setAFK(false);
 						if (!p.hasVanish())
-							TheAPI.broadcastMessage(Loader.s("Prefix") + Loader.s("AFK.NoLongerAFK")
-									.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()));
+							Loader.sendBroadcasts(p.getPlayer(), "AFK.End");
 					} else {
 						p.setAFK(true);
 					}
 					return true;
 				}
-
-				Loader.Help(s, "/AFK <player>", "AFK-Other");
+				TheAPI.msg("/AFK <player>", s);
 				return true;
 			}
 			return true;
@@ -44,16 +43,19 @@ public class AFK implements CommandExecutor {
 				SPlayer p = API.getSPlayer(TheAPI.getPlayer(args[0]));
 				if (p.getPlayer() != null) {
 					if (p.isAFK()) {
+						Loader.sendMessages(s, "AFK.Command.Other.End");
+						Loader.sendMessages(p.getPlayer(), "AFK.Command.End");
 						p.setAFK(false);
 						if (!p.hasVanish())
-							TheAPI.broadcastMessage(Loader.s("Prefix") + Loader.s("AFK.NoLongerAFK")
-									.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()));
+							Loader.sendBroadcasts(p.getPlayer(), "AFK.End");
 					} else {
+						Loader.sendMessages(s, "AFK.Command.Other.Start");
+						Loader.sendMessages(p.getPlayer(), "AFK.Command.Start");
 						p.setAFK(true);
 					}
 					return true;
 				}
-				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+				Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", args[0]).add("%playername%", args[0]));
 				return true;
 			}
 			return true;
