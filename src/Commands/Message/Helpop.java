@@ -14,7 +14,7 @@ public class Helpop implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (API.hasPerm(s, "ServerControl.Helpop")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/Helpop <message>", "Helpop");
+				Loader.Help(s, "/Helpop <message>", "Message");
 				return true;
 			}
 			if (args.length >= 1) {

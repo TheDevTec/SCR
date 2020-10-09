@@ -13,6 +13,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class Mail implements CommandExecutor, TabCompleter {
@@ -57,7 +58,7 @@ public class Mail implements CommandExecutor, TabCompleter {
 		}
 		if (args.length > 2 && args[0].equalsIgnoreCase("Send") && API.hasPerm(s, "ServerControl.Mail.Send")) {
 			if (!TheAPI.existsUser(args[1])) {
-				TheAPI.msg(Loader.PlayerNotEx(args[1]), s);
+				Loader.sendMessages(s, "Missing.Player.NotExist", Placeholder.c().add("%player%", args[1]));
 				return true;
 			}
 			String msg = TheAPI.buildString(args).replaceFirst(args[0]+" "+args[1]+" ", "");
@@ -65,7 +66,7 @@ public class Mail implements CommandExecutor, TabCompleter {
 			TheAPI.sendActionBar((Player) s, Loader.s("Mails.Sent").replace("%player%", args[1]));
 			Player p = TheAPI.getPlayerOrNull(args[1]);
 			if (p != null) {
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Mail.Notification").replace("%number%", "" +  getMails(p.getName()).size()), p);
+				Loader.sendMessages(p, "Mail.Received", Placeholder.c().add("%amount%", "" + getMails(p.getName()).size()));
 			}
 			return true;
 		}

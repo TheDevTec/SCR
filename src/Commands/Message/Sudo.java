@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.TheAPI.SudoType;
 
@@ -16,7 +17,7 @@ public class Sudo implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (API.hasPerm(s, "ServerControl.Sudo")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/Sudo <player> <arguments>", "Sudo");
+				Loader.Help(s, "/Sudo <player> <arguments>", "Message");
 				return true;
 			}
 			if (args.length == 1) {
@@ -36,17 +37,15 @@ public class Sudo implements CommandExecutor {
 					if (msg.startsWith("/")) {
 						msg = msg.replaceFirst("/", "");
 						TheAPI.sudo(target, SudoType.COMMAND, msg);
-						String st = API.replacePlayerName(Loader.s("Sudo.SendCommand"), target);
-						TheAPI.msg(Loader.s("Prefix") + st.replace("%command%", msg), s);
+						Loader.sendMessages(s, "Sudo.Command", Placeholder.c().add("%command%", msg).add("%player%", target.getName()));
 						return true;
 					} else {
 						TheAPI.sudo(target, SudoType.CHAT, msg);
-						String st = API.replacePlayerName(Loader.s("Sudo.SendMessage"), target);
-						TheAPI.msg(Loader.s("Prefix") + st.replace("%message%", msg), s);
+						Loader.sendMessages(s, "Sudo.Message", Placeholder.c().add("%message%", msg).add("%player%", target.getName()));
 						return true;
 					}
 				}
-				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+				Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", target.getName()));
 				return true;
 			}
 		}

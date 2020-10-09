@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class ClearChat implements CommandExecutor {
@@ -24,30 +25,26 @@ public class ClearChat implements CommandExecutor {
 						}
 					}
 				}
-				TheAPI.broadcastMessage(Loader.s("Prefix") + Loader.s("ClearChat.ByConsole"));
+				Loader.sendBroadcasts(s, "ClearChat.Cleared.Console");
 			}
 			if (args.length == 1) {
 				Player target = Bukkit.getServer().getPlayer(args[0]);
 				if (target == s) {
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("ClearChat.NoClearOwnChat").replace("%player%", args[0]),
-							s);
+					Loader.sendMessages(s, "ClearChat.NoClearOwnChat", Placeholder.c().add("%player%", args[0]));
 				}
 				if (target != s) {
 					if (target == null) {
-						TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+						Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", target.getName()).add("%playername%", target.getName()));
 					}
 					if (target != null) {
 						if (!target.hasPermission("ServerControl.ClearChat.Bypass")) {
 							for (int i = 0; i < 250; i++) {
 								TheAPI.msg("", target);
 							}
-							TheAPI.msg(Loader.s("ClearChat.SpecifedChatCleared").replace("%player%", target.getName()),
-									s);
-							TheAPI.msg(Loader.s("Prefix") + Loader.s("ClearChat.ByConsole"), target);
+							Loader.sendMessages(s, "ClearChat.Specific", Placeholder.c().add("%player%", target.getName()));
+							Loader.sendMessages(target, "ClearChat.Cleared.Console");
 						} else if (target.hasPermission("ServerControl.ClearChat.Bypass")) {
-							TheAPI.msg(
-									Loader.s("ClearChat.SpecifedChatHaveBypass").replace("%player%", target.getName()),
-									s);
+							Loader.sendMessages(s, "ClearChat.SpecificChatHaveBypass", Placeholder.c().add("%player%", target.getName()));
 						}
 					}
 				}
@@ -66,8 +63,7 @@ public class ClearChat implements CommandExecutor {
 							}
 						}
 					}
-					TheAPI.broadcastMessage(Loader.s("Prefix") + Loader.s("ClearChat.ByPlayer")
-							.replace("%playername%", p.getDisplayName()).replace("%player%", p.getName()));
+					Loader.sendBroadcasts(p, "ClarChat.Cleared.Player", Placeholder.c().add("%player%", p.getName()));
 				}
 				return true;
 			}
@@ -76,14 +72,12 @@ public class ClearChat implements CommandExecutor {
 				if (API.hasPerm(s, "ServerControl.ClearChat")) {
 					Player target = Bukkit.getServer().getPlayer(args[0]);
 					if (target == s) {
-						TheAPI.msg(
-								Loader.s("Prefix") + Loader.s("ClearChat.NoClearOwnChat").replace("%player%", args[0]),
-								s);
+								Loader.sendMessages(p, "ClearChat.NoClearOwnChat", Placeholder.c().add("%player%", args[0]));
 						return true;
 					}
 					if (target != s) {
 						if (target == null) {
-							TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+							Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", target.getName()).add("%playername%", target.getName()));
 							return true;
 						}
 						if (target != null) {
@@ -91,18 +85,11 @@ public class ClearChat implements CommandExecutor {
 								for (int i = 0; i < 250; i++) {
 									TheAPI.msg("", target);
 								}
-								TheAPI.msg(
-										Loader.s("ClearChat.SpecifedChatCleared").replace("%player%", target.getName())
-												.replace("%playername%", target.getDisplayName()),
-										s);
-								TheAPI.msg(Loader.s("Prefix") + Loader.s("ClearChat.ByPlayer")
-										.replace("%playername%", p.getDisplayName()).replace("%player%", p.getName()),
-										target);
+								Loader.sendMessages(s, "ClearChat.Specific", Placeholder.c().add("%player%", target.getName()));
+								Loader.sendMessages(target, "ClearChat.Cleared.Player", Placeholder.c().add("%player%", p.getName()));
 								return true;
 							} else if (target.hasPermission("ServerControl.ClearChat.Bypass")) {
-								TheAPI.msg(Loader.s("ClearChat.SpecifedChatHaveBypass")
-										.replace("%player%", target.getName())
-										.replace("%playername%", target.getDisplayName()), s);
+								Loader.sendMessages(s, "ClearChat.SpecificChatHaveBypass", Placeholder.c().add("%player%", target.getName()));
 								return true;
 							}
 						}
