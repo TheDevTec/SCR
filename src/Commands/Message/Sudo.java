@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
@@ -31,7 +30,7 @@ public class Sudo implements CommandExecutor {
 			}
 			if (args.length >= 2) {
 				Player target = TheAPI.getPlayer(args[0]);
-				if (target != null) {
+				if (args[0] != null) {
 					String msg = TheAPI.buildString(args);
 					msg = msg.replaceFirst(args[0] + " ", "");
 					if (msg.startsWith("/")) {

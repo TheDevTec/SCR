@@ -32,7 +32,7 @@ public class ClearChat implements CommandExecutor {
 					Loader.sendMessages(s, "ClearChat.NoClearOwnChat", Placeholder.c().add("%player%", args[0]));
 				}
 				if (target != s) {
-					if (target == null) {
+					if (args[0] == null) {
 						Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", target.getName()).add("%playername%", target.getName()));
 					}
 					if (target != null) {
@@ -75,7 +75,7 @@ public class ClearChat implements CommandExecutor {
 						return true;
 					}
 					if (target != s) {
-						if (target == null) {
+						if (args[0] == null) {
 							Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", target.getName()).add("%playername%", target.getName()));
 							return true;
 						}
