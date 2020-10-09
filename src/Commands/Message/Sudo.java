@@ -21,7 +21,7 @@ public class Sudo implements CommandExecutor {
 			}
 			if (args.length == 1) {
 				Player target = TheAPI.getPlayer(args[0]);
-				if (target != null) {
+				if (args[0] != null) {
 					Loader.Help(s, "/Sudo " + target.getName() + " <arguments>", "Sudo");
 					return true;
 				}

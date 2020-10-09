@@ -35,7 +35,7 @@ public class ClearChat implements CommandExecutor {
 					if (args[0] == null) {
 						Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", target.getName()).add("%playername%", target.getName()));
 					}
-					if (target != null) {
+					if (args[0] != null) {
 						if (!target.hasPermission("ServerControl.ClearChat.Bypass")) {
 							for (int i = 0; i < 250; i++) {
 								TheAPI.msg("", target);
@@ -79,7 +79,7 @@ public class ClearChat implements CommandExecutor {
 							Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", target.getName()).add("%playername%", target.getName()));
 							return true;
 						}
-						if (target != null) {
+						if (args[0] != null) {
 							if (!target.hasPermission("ServerControl.ClearChat.Bypass")) {
 								for (int i = 0; i < 250; i++) {
 									TheAPI.msg("", target);
