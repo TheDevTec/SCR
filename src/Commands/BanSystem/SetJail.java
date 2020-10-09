@@ -32,6 +32,7 @@ public class SetJail implements CommandExecutor {
 			}
 			return true;
 		}
+		Loader.noPerms(s, "SetJail", "BanSystem");
 		return true;
 	}
 

@@ -58,6 +58,7 @@ public class EcoTop implements CommandExecutor {
 			}
 			return true;
 		}
+		Loader.noPerms(s, "BalanceTop", "Economy");
 		return true;
 	}
 

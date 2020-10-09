@@ -239,13 +239,14 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 				return true;
 			}
 		}
+		Loader.noPerms(s, "MultiEconomy", "Economy");
 		return true;
 	}
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		List<String> c = new ArrayList<>();
-		if (s.hasPermission("ServerControl.MultiEconomy")) {
+		if (Loader.has(s, "MultiEconomy", "Economy")) {
 			if (args.length == 1) {
 				c.addAll(StringUtil.copyPartialMatches(args[0],
 						Arrays.asList("Money", "Transfer", "Create", "Delete", "Add", "Remove", "Worlds", "Groups"),

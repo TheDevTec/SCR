@@ -36,6 +36,7 @@ public class UnJail implements CommandExecutor {
 			Loader.sendMessages(s, "BanSystem.Not.Arrested", Placeholder.c().replace("%playername%", args[0]).replace("%player%", args[0]));
 			return true;
 		}
+		Loader.noPerms(s, "UnJail", "BanSystem");
 		return true;
 	}
 }

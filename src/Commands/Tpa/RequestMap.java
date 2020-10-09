@@ -54,11 +54,14 @@ public class RequestMap {
 			Loader.sendMessages(sender, "TpSystem.NoRequest");
 		}else {
 			String first = aw.get(0);
+			int type = TheAPI.getUser(first).getInt("teleport."+sender.getName()+".a");
 			remove(sender.getName(), first);
-			Loader.sendMessages(sender, "TpSystem.Cancel.Sender", Placeholder.c().add("%player%", first).add("%playername%", TheAPI.getPlayerOrNull(first)!=null?TheAPI.getPlayerOrNull(first).getDisplayName():first));
-			if(TheAPI.getPlayerOrNull(first)!=null)
-				Loader.sendMessages(TheAPI.getPlayerOrNull(first), "TpSystem.Cancel.Receiver",
-						Placeholder.c().add("%player%", sender.getName()).add("%playername%", sender.getDisplayName()));
+			Player a = TheAPI.getPlayerOrNull(first);
+			Loader.sendMessages(sender, "TpSystem.Cancel."+(type==0?"Tpa":"Tpahere")+".Sender", Placeholder.c()
+					.replace("%player%", a==null?first:a.getName()).replace("%playername%", a==null?first:a.getDisplayName()));
+			if(a!=null)
+			Loader.sendMessages(a, "TpSystem.Cancel."+(type==0?"Tpa":"Tpahere")+".Receiver", Placeholder.c()
+					.replace("%player%", sender.getName()).replace("%playername%", sender.getDisplayName()));
 		}
 	}
 

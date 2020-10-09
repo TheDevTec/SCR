@@ -1,13 +1,9 @@
 package Commands.BanSystem;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
@@ -15,7 +11,7 @@ import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
-public class TempJail implements CommandExecutor, TabCompleter {
+public class TempJail implements CommandExecutor {
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -75,17 +71,7 @@ public class TempJail implements CommandExecutor, TabCompleter {
 					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg).replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[2]))));
 			return true;
 		}
+		Loader.noPerms(s, "TempJail", "BanSystem");
 		return true;
-	}
-
-	@Override
-	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (s.hasPermission("ServerControl.TempJail")) {
-			if (args.length == 1) {
-				return null;
-			}
-		}
-		return c;
 	}
 }

@@ -36,6 +36,7 @@ public class Immune implements CommandExecutor {
 			}
 			return true;
 		}
+		Loader.noPerms(s, "Immune", "BanSystem");
 		return true;
 	}
 }

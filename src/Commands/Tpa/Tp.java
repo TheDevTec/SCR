@@ -1,13 +1,9 @@
 package Commands.Tpa;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import ServerControl.API;
@@ -17,7 +13,7 @@ import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
-public class Tp implements CommandExecutor, TabCompleter {
+public class Tp implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -37,7 +33,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 							return true;
 						}
 					} else {
-						if (!s.hasPermission("ServerControl.Tp.Blocked") && !RequestMap.isBlocking(target.getName(), s.getName())) {
+						if (Loader.has(s, "Tp", "TpSystem", "Blocked") || !Loader.has(s, "Tp", "TpSystem", "Blocked") && !RequestMap.isBlocking(target.getName(), s.getName())) {
 							Loader.sendMessages(s, "TpSystem.Tp.YouToPlayer", Placeholder.c().replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()));
 							API.setBack(((Player) s));
 							if (setting.tp_safe)
@@ -96,6 +92,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 	
 					}
 				}
+				Loader.noPerms(s, "Tp", "TpSystem","Other");
+				return true;
 			}
 			if (args.length == 3) {
 				if (Loader.has(s, "Tp","TpSystem","Location")) {
@@ -124,6 +122,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 							Loader.Help(s, "Tp", "TpSystem");
 							return true;
 				}
+				Loader.noPerms(s, "Tp", "TpSystem","Location");
 				return true;
 			}
 			if (args.length == 4) {
@@ -158,6 +157,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 					Loader.Help(s, "Tp", "TpSystem");
 					return true;
 				}
+				Loader.noPerms(s, "Tp", "TpSystem","Location");
+				return true;
 			}
 			if (args.length == 5) {
 				if (Loader.has(s, "Tp","TpSystem","Location")) {
@@ -191,6 +192,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 					Loader.Help(s, "Tp", "TpSystem");
 					return true;
 				}
+				Loader.noPerms(s, "Tp", "TpSystem","Location");
+				return true;
 			}
 			if (args.length >= 6) {
 				if (Loader.has(s, "Tp","TpSystem","Location")) {
@@ -224,19 +227,12 @@ public class Tp implements CommandExecutor, TabCompleter {
 					Loader.Help(s, "Tp", "TpSystem");
 					return true;
 				}
+				Loader.noPerms(s, "Tp", "TpSystem","Location");
+				return true;
 			}
 			return true;
-
 		}
+		Loader.noPerms(s, "Tp", "TpSystem");
 		return true;
 	}
-
-	@Override
-	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (args.length == 1 || args.length == 2)
-			return null;
-		return c;
-	}
-
 }

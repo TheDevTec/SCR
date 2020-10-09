@@ -33,6 +33,7 @@ public class Tpa implements CommandExecutor {
 			}
 			return true;
 		}
+		Loader.noPerms(f, "Tpa", "TpSystem");
 		return true;
 	}
 }

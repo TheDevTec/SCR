@@ -1,73 +1,44 @@
 package Commands.Tpa;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
 
-public class TpaBlock implements CommandExecutor, TabCompleter {
+public class TpaBlock implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.TpBlock")) {
+		if (Loader.has(s, "TpBlock", "TpSystem")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
-					if (!TheAPI.getUser(s.getName()).getBoolean("TpBlock-Global")) {
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlock.Blocked-Global")
-								.replace("%player%", "All").replace("%playername%", "All"), s);
-						TheAPI.getUser(s.getName()).setAndSave("TpBlock-Global", true);
-						return true;
-					} else {
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlock.UnBlocked-Global")
-								.replace("%player%", "All").replace("%playername%", "All"), s);
-						TheAPI.getUser(s.getName()).setAndSave("TpBlock-Global", null);
-						return true;
-					}
+					boolean state = TheAPI.getUser((Player)s).getBoolean("TpBlock-Global");
+					Loader.sendMessages(s, "TpSystem.Block.Global."+(state?"Off":"On"));
+					TheAPI.getUser(s.getName()).setAndSave("TpBlock-Global", !state);
+					return true;
 				}
 				if (args.length == 1) {
 					if (TheAPI.existsUser(args[0])) {
-						if (s.getName() != args[0]) {
-							if (!TheAPI.getUser(s.getName()).getBoolean("TpBlock." + args[0])) {
-								TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlock.Blocked")
-										.replace("%player%", args[0]).replace("%playername%", args[0]), s);
-								TheAPI.getUser(s.getName()).setAndSave("TpBlock." + args[0], true);
-								return true;
-							} else {
-								TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.TpaBlock.UnBlocked")
-										.replace("%player%", args[0]).replace("%playername%", args[0]), s);
-								TheAPI.getUser(s.getName()).setAndSave("TpBlock." + args[0], null);
-								return true;
-							}
+						if (s.getName().equals(args[0])) {
+							boolean state = TheAPI.getUser((Player)s).getBoolean("TpBlock." + args[0]);
+							Loader.sendMessages(s, "TpSystem.Block."+(state?"Remove":"Add"));
+							TheAPI.getUser(s.getName()).setAndSave("TpBlock." + args[0], !state);
+							return true;
 						}
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.CantBlockSelf")
-								.replace("%playername%", ((Player) s).getDisplayName())
-								.replace("%player%", s.getName()), s);
+						Loader.sendMessages(s, "TpSystem.Block.BlockSelf");
 						return true;
 					}
-					TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
+					Loader.notExist(s,args[0]);
 					return true;
 				}
 				return true;
 			}
 			return true;
-
 		}
+		Loader.noPerms(s, "TpBlock", "TpSystem");
 		return true;
-	}
-
-	@Override
-	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (args.length == 1)
-			return null;
-		return c;
 	}
 }

@@ -57,6 +57,7 @@ public class Pay implements CommandExecutor {
 					}
 			}
 		}
+		Loader.noPerms(s, "Pay", "Economy");
 		return true;
 	}
 }

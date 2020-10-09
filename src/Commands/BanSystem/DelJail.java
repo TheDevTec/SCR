@@ -27,6 +27,7 @@ public class DelJail implements CommandExecutor {
 				return true;
 			}
 		}
+		Loader.noPerms(s, "DelJail", "BanSystem");
 		return true;
 	}
 

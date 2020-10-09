@@ -12,7 +12,7 @@ public class Tpahere implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender f, Command arg1, String arg2, String[] args) {
-		if (Loader.has(f, "Tpa", "TpSystem")) {
+		if (Loader.has(f, "TpaHere", "TpSystem")) {
 			if (f instanceof Player) {
 				Player s = (Player) f;
 				if (args.length == 0) {
@@ -33,6 +33,7 @@ public class Tpahere implements CommandExecutor {
 			}
 			return true;
 		}
+		Loader.noPerms(f, "TpaHere", "TpSystem");
 		return true;
 	}
 }

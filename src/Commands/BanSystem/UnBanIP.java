@@ -29,6 +29,7 @@ public class UnBanIP implements CommandExecutor {
 			Loader.sendMessages(s, "BanSystem.Not.Banned", Placeholder.c().replace("%playername%", args[0]).replace("%player%", args[0]));
 			return true;
 		}
+		Loader.noPerms(s, "UnBanIP", "BanSystem");
 		return true;
 	}
 }

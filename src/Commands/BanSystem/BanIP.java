@@ -57,6 +57,7 @@ public class BanIP implements CommandExecutor {
 					.replace("%ip%", args[0]).replace("%reason%", msg));
 			return true;
 		}
+		Loader.noPerms(s, "BanIP", "BanSystem");
 		return true;
 	}
 

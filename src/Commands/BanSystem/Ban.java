@@ -57,6 +57,7 @@ public class Ban implements CommandExecutor {
 					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg));
 			return true;
 		}
+		Loader.noPerms(s, "Ban", "BanSystem");
 		return true;
 	}
 }

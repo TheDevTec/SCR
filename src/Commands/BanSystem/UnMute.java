@@ -30,6 +30,7 @@ public class UnMute implements CommandExecutor {
 			Loader.sendMessages(s, "BanSystem.Not.Muted", Placeholder.c().replace("%ip%", args[0]));
 			return true;
 		}
+		Loader.noPerms(s, "UnMute", "BanSystem");
 		return true;
 	}
 

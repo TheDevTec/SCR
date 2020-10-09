@@ -65,6 +65,7 @@ public class Jail implements CommandExecutor {
 			Loader.sendMessages(s, "Jail.Empty");
 			return true;
 		}
+		Loader.noPerms(s, "Jail", "BanSystem");
 		return true;
 	}
 

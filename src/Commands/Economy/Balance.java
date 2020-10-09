@@ -21,7 +21,7 @@ public class Balance implements CommandExecutor {
 		}
 		if (args.length == 0) {
 			if (s instanceof Player) {
-				if (Loader.has(s, "Economy", "Economy", "Balance")) {
+				if (Loader.has(s, "Balance", "Economy", "Balance")) {
 					Loader.sendMessages(s, "Economy.Balance.You");
 					return true;
 				}
@@ -40,6 +40,7 @@ public class Balance implements CommandExecutor {
 			}
 			return true;
 		}
+		Loader.noPerms(s, "Balance", "Economy", "Balance");
 		return true;
 	}
 }

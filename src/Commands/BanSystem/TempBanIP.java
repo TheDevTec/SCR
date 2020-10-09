@@ -70,6 +70,7 @@ public class TempBanIP implements CommandExecutor {
 					.replace("%ip%", args[0]).replace("%reason%", msg).replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[2]))));
 			return true;
 		}
+		Loader.noPerms(s, "TempBanIP", "BanSystem");
 		return true;
 	}
 }

@@ -39,6 +39,7 @@ public class Tpaall implements CommandExecutor {
 			}
 			return true;
 		}
+		Loader.noPerms(s, "TpaAll", "TpSystem");
 		return true;
 	}
 }

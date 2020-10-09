@@ -57,6 +57,7 @@ public class Mute implements CommandExecutor {
 					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg));
 			return true;	
 		}
+		Loader.noPerms(s, "Mute", "BanSystem");
 		return true;
 	}
 }

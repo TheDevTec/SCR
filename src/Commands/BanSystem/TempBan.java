@@ -70,6 +70,7 @@ public class TempBan implements CommandExecutor {
 					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg).replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[2]))));
 			return true;
 		}
+		Loader.noPerms(s, "TempBan", "BanSystem");
 		return true;
 	}
 }
