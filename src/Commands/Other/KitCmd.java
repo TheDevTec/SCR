@@ -14,9 +14,10 @@ import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import Utils.Kit;
 import Utils.Repeat;
+import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.CooldownAPI.CooldownAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
-import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class KitCmd implements CommandExecutor, TabCompleter {
 	public List<String> kits(CommandSender p) {

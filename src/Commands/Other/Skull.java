@@ -40,6 +40,7 @@ public class Skull implements CommandExecutor {
 				return true;
 			}
 		}
+		Loader.noPerms(s, "Skull", "Other");
 		return true;
 	}
 

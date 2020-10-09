@@ -18,10 +18,8 @@ public class Trash implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Trash", "Other")) {
-			if (s instanceof Player) {
+			if (s instanceof Player)
 				Trash.s.open((Player) s);
-				return true;
-			}
 			return true;
 		}
 		Loader.noPerms(s, "Trash", "Other");

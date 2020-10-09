@@ -16,8 +16,9 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
-import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Spawner implements CommandExecutor, TabCompleter {
 
@@ -114,6 +115,7 @@ public class Spawner implements CommandExecutor, TabCompleter {
 				return true;
 			}
 		}
+		Loader.noPerms(s, "Spawner", "Other");
 		return true;
 	}
 

@@ -16,6 +16,7 @@ import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Exp implements CommandExecutor, TabCompleter {
 	public Exp() {
@@ -78,6 +79,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 					}
 					return true;
 			}
+			Loader.noPerms(s, "Experiences", "Other", "Set");
 			return true;
 		}
 		if (isAlias(args[0], "balance")) {
@@ -96,6 +98,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 						.replace("%amount%", "" + ((args.length>=3?args[2].toLowerCase().contains("level"):false)?p.getLevel(): p.getExp())).replace("%type%", Loader.getTranslation("Experiences.Words."+(((args.length>=3?args[2].toLowerCase().contains("level"):false)?"Level": "Exp"))).toString()));
 				return true;
 			}
+			Loader.noPerms(s, "Experiences", "Other", "Balance");
 			return true;
 		}
 		if (isAlias(args[0], "give")) {
@@ -143,7 +146,10 @@ public class Exp implements CommandExecutor, TabCompleter {
 							.replace("%amount%", "" + StringUtils.getFloat(args[2])).replace("%type%", Loader.getTranslation("Experiences.Words.Exp").toString()));
 					}
 				return true;
-		}return true;}
+		}
+		Loader.noPerms(s, "Experiences", "Other", "Give");
+		return true;
+		}
 		if (isAlias(args[0], "take")) {
 			if (Loader.has(s, "Experiences", "Other", "Remove")) {
 				if (args.length == 1 || args.length == 2) {
@@ -190,6 +196,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 					}
 				return true;
 			}
+			Loader.noPerms(s, "Experiences", "Other", "Remove");
 			return true;
 		}
 		Loader.Help(s, "Experiences", "Other");
@@ -212,26 +219,26 @@ public class Exp implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		List<String> c = new ArrayList<>();
 		if (args.length == 1) {
-			if (s.hasPermission("servercontrol.xp.balance"))
+			if (Loader.has(s, "Experiences", "Other", "Balance"))
 				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Balance"), new ArrayList<>()));
-			if (s.hasPermission("servercontrol.xp.give"))
+			if (Loader.has(s, "Experiences", "Other", "Give"))
 				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Give"), new ArrayList<>()));
-			if (s.hasPermission("servercontrol.xp.take"))
+			if (Loader.has(s, "Experiences", "Other", "Remove"))
 				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Take"), new ArrayList<>()));
-			if (s.hasPermission("servercontrol.xp.set"))
+			if (Loader.has(s, "Experiences", "Other", "Set"))
 				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Set"), new ArrayList<>()));
 		}
-		if (isAlias(args[0], "balance") && s.hasPermission("servercontrol.xp.balance")
-				|| isAlias(args[0], "take") && s.hasPermission("servercontrol.xp.take")
-				|| isAlias(args[0], "give") && s.hasPermission("servercontrol.xp.give")
-				|| isAlias(args[0], "set") && s.hasPermission("servercontrol.xp.set")) {
+		if (isAlias(args[0], "balance") && Loader.has(s, "Experiences", "Other", "Balance")
+				|| isAlias(args[0], "take") && Loader.has(s, "Experiences", "Other", "Remove")
+				|| isAlias(args[0], "give") && Loader.has(s, "Experiences", "Other", "Give")
+				|| isAlias(args[0], "set") && Loader.has(s, "Experiences", "Other", "Set")) {
 			if (args.length == 2) {
 				return null;
 			}
 			if (args.length == 3) {
-				if (isAlias(args[0], "take") && s.hasPermission("servercontrol.xp.take")
-						|| isAlias(args[0], "give") && s.hasPermission("servercontrol.xp.give")
-						|| isAlias(args[0], "set") && s.hasPermission("servercontrol.xp.set"))
+				if (isAlias(args[0], "take") && Loader.has(s, "Experiences", "Other", "Remove")
+						|| isAlias(args[0], "give") && Loader.has(s, "Experiences", "Other", "Give")
+						|| isAlias(args[0], "set") && Loader.has(s, "Experiences", "Other", "Set"))
 					c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("?"), new ArrayList<>()));
 			}
 		}

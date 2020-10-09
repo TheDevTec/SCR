@@ -31,35 +31,34 @@ public class AFK implements CommandExecutor {
 				Loader.Help(s, "AFK", "Other");
 				return true;
 			}
+			Loader.noPerms(s, "AFK", "Other");
 			return true;
 		}
-		if (args.length == 1) {
-			if (Loader.has(s, "AFK", "Other", "Other")) {
-				if (args[0].equals("*")) {
-					Repeat.a(s, "AFK *");
-					return true;
-				}
-				Player player = TheAPI.getPlayer(args[0]);
-				if(player==null) {
-					Loader.notOnline(s, args[0]);
-					return true;
-				}
-				SPlayer p = API.getSPlayer(player);
-					if (p.isAFK()) {
-						Loader.sendMessages(s, "AFK.Command.Other.End");
-						Loader.sendMessages(p.getPlayer(), "AFK.Command.End");
-						p.setAFK(false);
-						if (!p.hasVanish())
-							Loader.sendBroadcasts(p.getPlayer(), "AFK.End");
-					} else {
-						Loader.sendMessages(s, "AFK.Command.Other.Start");
-						Loader.sendMessages(p.getPlayer(), "AFK.Command.Start");
-						p.setAFK(true);
-					}
-					return true;
+		if (Loader.has(s, "AFK", "Other", "Other")) {
+			if (args[0].equals("*")) {
+				Repeat.a(s, "AFK *");
+				return true;
 			}
-			return true;
+			Player player = TheAPI.getPlayer(args[0]);
+			if(player==null) {
+				Loader.notOnline(s, args[0]);
+				return true;
+			}
+			SPlayer p = API.getSPlayer(player);
+				if (p.isAFK()) {
+					Loader.sendMessages(s, "AFK.Command.Other.End");
+					Loader.sendMessages(p.getPlayer(), "AFK.Command.End");
+					p.setAFK(false);
+					if (!p.hasVanish())
+						Loader.sendBroadcasts(p.getPlayer(), "AFK.End");
+				} else {
+					Loader.sendMessages(s, "AFK.Command.Other.Start");
+					Loader.sendMessages(p.getPlayer(), "AFK.Command.Start");
+					p.setAFK(true);
+				}
+				return true;
 		}
-		return false;
+		Loader.noPerms(s, "AFK", "Other", "Other");
+		return true;
 	}
 }

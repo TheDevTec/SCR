@@ -15,7 +15,6 @@ public class Thor implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-
 		if (Loader.has(s, "Thor","Other")) {
 			if (args.length == 0) {
 				if(s instanceof Player) {
@@ -28,18 +27,16 @@ public class Thor implements CommandExecutor {
 				Loader.Help(s, "Thor", "Other");
 				return true;
 			}
-			if (args.length == 1) {
-				Player p = TheAPI.getPlayer(args[0]);
-				if (p != null) {
-					p.getWorld().strikeLightning(p.getLocation());
-					Loader.sendMessages(s, "Thor.Player", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName()));
-					return true;
-				}
-				Loader.notOnline(s, args[0]);
+			Player p = TheAPI.getPlayer(args[0]);
+			if (p != null) {
+				p.getWorld().strikeLightning(p.getLocation());
+				Loader.sendMessages(s, "Thor.Player", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName()));
 				return true;
 			}
+			Loader.notOnline(s, args[0]);
 			return true;
 		}
+		Loader.noPerms(s, "Thor", "Other");
 		return true;
 	}
 

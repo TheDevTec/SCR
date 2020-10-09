@@ -25,6 +25,7 @@ public class ScoreboardStats implements CommandExecutor {
 			TheAPI.msg(setting.prefix+"Scoreboard reloaded", s);
 			return true;
 		}
+		Loader.noPerms(s, "Scoreboard", "Other");
 		return true;
 	}
 

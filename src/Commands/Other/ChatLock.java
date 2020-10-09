@@ -25,6 +25,7 @@ public class ChatLock implements CommandExecutor {
 			setting.lock_chat = false;
 			return true;
 		}
+		Loader.noPerms(s, "ChatLock", "Other");
 		return true;
 	}
 }

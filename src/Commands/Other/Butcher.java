@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Butcher implements CommandExecutor {
 
@@ -78,6 +79,7 @@ public class Butcher implements CommandExecutor {
 					((Player) s).getLocation(), StringUtils.getInt(args[0]), EntityType.valueOf(args[1].toUpperCase())) + ""));
 			return true;
 		}
+		Loader.noPerms(s, "Butcher", "Other");
 		return true;
 	}
 }

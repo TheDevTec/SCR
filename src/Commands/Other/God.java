@@ -39,15 +39,23 @@ public class God implements CommandExecutor, TabCompleter {
 		if (args.length == 1) {
 			if(s instanceof Player) {
 			if (args[0].equalsIgnoreCase("off") || args[0].equalsIgnoreCase("false")) {
+				if (Loader.has(s, "God", "Other")) {
 				target = API.getSPlayer((Player)s);
 				target.disableGod();
 				Loader.sendMessages(s, "God.Disabled.You");
 				return true;
+				}
+				Loader.noPerms(s, "God", "Other");
+				return true;
 			}
 			if (args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("true")) {
+				if (Loader.has(s, "God", "Other")) {
 				target = API.getSPlayer((Player)s);
 				target.enableGod();
 				Loader.sendMessages(s, "God.Enabled.You");
+				return true;
+				}
+				Loader.noPerms(s, "God", "Other");
 				return true;
 			}}
 			if (TheAPI.getPlayer(args[0]) == null) {
@@ -119,7 +127,7 @@ public class God implements CommandExecutor, TabCompleter {
 				return true;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	@Override

@@ -27,6 +27,7 @@ public class Heal implements CommandExecutor {
 			Loader.Help(s, "Heal", "Other");
 			return true;
 			}
+			Loader.noPerms(s, "Heal", "Other");
 			return true;
 		}
 		if (args.length == 1) {
@@ -48,6 +49,7 @@ public class Heal implements CommandExecutor {
 				Loader.sendMessages(s, "Heal.You");
 				return true;
 				}
+				Loader.noPerms(s, "Hat", "Other");
 				return true;
 			}
 			if (Loader.has(s, "Heal", "Other","Other")) {
@@ -61,6 +63,7 @@ public class Heal implements CommandExecutor {
 						.replace("%playername%", s.getName()));
 				return true;
 			}
+			Loader.noPerms(s, "Hat", "Other", "Other");
 			return true;
 		}
 		return true;

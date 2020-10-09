@@ -12,13 +12,12 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import com.google.common.util.concurrent.AbstractScheduledService.Scheduler;
-
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import ServerControl.SPlayer;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 
 public class Fly implements CommandExecutor, TabCompleter {
@@ -45,19 +44,27 @@ public class Fly implements CommandExecutor, TabCompleter {
 		if (args.length == 1) {
 			if(s instanceof Player) {
 			if (args[0].equalsIgnoreCase("off") || args[0].equalsIgnoreCase("false")) {
+				if (Loader.has(s, "Fly", "Other")) {
 				target = API.getSPlayer((Player)s);
 				if (task.get(target) != null)
 					Scheduler.cancelTask(task.get(target));
 				target.disableFly();
 				Loader.sendMessages(s, "Fly.Disabled.You");
 				return true;
+				}
+				Loader.noPerms(s, "Fly", "Other");
+				return true;
 			}
 			if (args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("true")) {
+				if (Loader.has(s, "Fly", "Other")) {
 				target = API.getSPlayer((Player)s);
 				if (task.get(target) != null)
 					Scheduler.cancelTask(task.get(target));
 				target.enableFly();
 				Loader.sendMessages(s, "Fly.Enabled.You");
+				return true;
+				}
+				Loader.noPerms(s, "Fly", "Other");
 				return true;
 			}}
 			if (TheAPI.getPlayer(args[0]) == null) {
@@ -141,7 +148,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 				return true;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	@Override

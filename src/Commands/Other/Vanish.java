@@ -29,24 +29,27 @@ public class Vanish implements CommandExecutor {
 				Loader.Help(s, "Vanish", "Other");
 				return true;
 			}
-			if (args.length == 1) {
-				Player t = TheAPI.getPlayer(args[0]);
-				if (t != null) {
-					if (!TheAPI.isVanished(t)) {
-						TheAPI.vanish(t, "ServerControl.Vanish", true);
-						Loader.sendMessages(s, "Vanish.Enabled.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
-						Loader.sendMessages(s, "Vanish.Enabled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
-						return true;
-					}
-					TheAPI.vanish(t, "ServerControl.Vanish", false);
-					Loader.sendMessages(s, "Vanish.Disabled.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
-					Loader.sendMessages(s, "Vanish.Disabled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
+			if (Loader.has(s, "Vanish", "Other", "Other")) {
+			Player t = TheAPI.getPlayer(args[0]);
+			if (t != null) {
+				if (!TheAPI.isVanished(t)) {
+					TheAPI.vanish(t, "ServerControl.Vanish", true);
+					Loader.sendMessages(s, "Vanish.Enabled.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
+					Loader.sendMessages(s, "Vanish.Enabled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
 					return true;
 				}
-				Loader.notOnline(s, args[0]);
+				TheAPI.vanish(t, "ServerControl.Vanish", false);
+				Loader.sendMessages(s, "Vanish.Disabled.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
+				Loader.sendMessages(s, "Vanish.Disabled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
 				return true;
 			}
+			Loader.notOnline(s, args[0]);
+			return true;
+			}
+			Loader.noPerms(s, "Vanish", "Other", "Other");
+			return true;
 		}
+		Loader.noPerms(s, "Vanish", "Other");
 		return true;
 	}
 }

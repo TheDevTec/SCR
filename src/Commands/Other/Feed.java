@@ -25,6 +25,7 @@ public class Feed implements CommandExecutor {
 				Loader.Help(s, "Feed", "Other");
 				return true;
 				}
+				Loader.noPerms(s, "Feed", "Other");
 				return true;
 			}
 			if (args.length == 1) {
@@ -43,6 +44,7 @@ public class Feed implements CommandExecutor {
 					Loader.sendMessages(s, "Feed.You");
 					return true;
 					}
+					Loader.noPerms(s, "Feed", "Other");
 					return true;
 				}
 				if (Loader.has(s, "Feed", "Other","Other")) {
@@ -53,6 +55,7 @@ public class Feed implements CommandExecutor {
 							.replace("%playername%", s.getName()));
 					return true;
 				}
+				Loader.noPerms(s, "Feed", "Other", "Other");
 				return true;
 			}
 			return true;
