@@ -24,25 +24,23 @@ public class DelHome implements CommandExecutor, TabCompleter {
 			Player p = (Player) s;
 			if (Loader.has(s, "DelHome", "Warps")) {
 				if (args.length == 0) {
-					Loader.Help(s, "/DelHome <home>", "Warps");
+					Loader.Help(s, "DelHome", "Warps");
 					return true;
 				}
-				if (args.length == 1) {
-					User d = TheAPI.getUser(s.getName());
-					if (d.exist("Homes." + args[0])) {
-						d.setAndSave("Homes." + args[0], null);
-						Loader.sendMessages(s, "Home.Delete", Placeholder.c()
-								.add("%player%", p.getName())
-								.add("%playername%", p.getDisplayName())
-								.add("%home%", args[0]));
-						return true;
-					}
-					Loader.sendMessages(s, "Home.NotExist", Placeholder.c()
+				User d = TheAPI.getUser(s.getName());
+				if (d.exist("Homes." + args[0])) {
+					d.setAndSave("Homes." + args[0], null);
+					Loader.sendMessages(s, "Home.Delete", Placeholder.c()
+							.add("%player%", p.getName())
+							.add("%playername%", p.getDisplayName())
 							.add("%home%", args[0]));
 					return true;
 				}
+				Loader.sendMessages(s, "Home.NotExist", Placeholder.c()
+						.add("%home%", args[0]));
 				return true;
 			}
+			Loader.noPerms(s, "DelHome", "Warps");
 			return true;
 		}
 		return true;

@@ -34,7 +34,7 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 			if (s instanceof Player) {
 				Player p = (Player) s;
 				if (args.length == 0) {
-					Loader.Help(s, "/Enchant <enchant> <level>", "Enchant");
+					Loader.Help(s, "Enchant", "Enchantment");
 					return true;
 				}
 				Material a = p.getItemInHand().getType();
@@ -58,7 +58,7 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 			}
 			return true;
 		}
-
+		Loader.noPerms(s, "Enchant", "Enchantment");
 		return true;
 	}
 

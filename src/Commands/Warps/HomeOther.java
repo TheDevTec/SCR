@@ -25,20 +25,16 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 		if (s instanceof Player) {
 			Player p = (Player) s;
 			if (Loader.has(s, "HomeOther", "Warps")) {
-				if (args.length == 0) {
-					Loader.Help(s, "/homeother <player> <home> <target>", "Warps");
-					return true;
-				}
-				if (args.length == 1) {
-					Loader.Help(s, "/homeother <player> <home> <target>", "Warps");
+				if (args.length <= 1) {
+					Loader.Help(s, "HomeOther", "Warps");
 					return true;
 				}
 				if (args.length == 2) {
 					User d = TheAPI.getUser(args[0]);
 					if (d.exist("Homes." + args[1])) {
 						Position loc = Position.fromString(d.getString("Homes." + args[1]));
-						API.setBack(p);
 						if (loc != null) {
+							API.setBack(p);
 							if (setting.tp_safe)
 								API.safeTeleport((Player)s,loc.toLocation());
 							else
@@ -59,16 +55,14 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 				if (args.length == 3) {
 					Player pl = TheAPI.getPlayer(args[2]);
 					if (pl == null) {
-						Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
-								.add("%player%", args[2])
-								.add("%playername%", args[2]));
+						Loader.notOnline(s, args[2]);
 						return true;
 					}
 					User d = TheAPI.getUser(args[0]);
 					if (d.exist("Homes." + args[1])) {
 						Position loc = Position.fromString(d.getString("Homes." + args[1]));
-						API.setBack(pl);
 						if (loc != null) {
+							API.setBack(pl);
 							if (setting.tp_safe)
 								API.safeTeleport(pl,loc.toLocation());
 							else
@@ -88,6 +82,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 				}
 				return true;
 			}
+			Loader.noPerms(s, "HomeOther", "Warps");
 			return true;
 		}
 		return true;

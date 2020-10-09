@@ -32,7 +32,6 @@ public class Warp implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
-
 		if (Loader.has(s, "Warp", "Warps")) {
 			if (Loader.config.getString("Warps") != null) {
 				if (args.length == 0) {
@@ -43,8 +42,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 				if (args.length == 1) {
 					if (s instanceof Player) {
 						if (warp(args) != null) {
-							Location loc = StringUtils
-									.getLocationFromString(Loader.config.getString("Warps." + warp(args)));
+							Location loc = StringUtils.getLocationFromString(Loader.config.getString("Warps." + warp(args)));
 							if (loc == null) {
 								Loader.sendMessages(s, "Warp.WrongLocation", Placeholder.c()
 										.add("%warp%", warp(args)));
@@ -52,7 +50,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 							}
 							boolean needperm = Loader.config.getBoolean("Warps." + warp(args) + ".NeedPermission");
 							if (needperm == true) {
-								if (Loader.has(s, "Warp" + warp(args), "Warps")) {
+								if (s.hasPermission(Loader.cmds.getString("Warps.Warp.SubPermissions.PerWarp")+"."+warp(args))) {
 									API.setBack((Player) s);
 									if (setting.tp_safe)
 										API.safeTeleport((Player)s, loc);
@@ -62,6 +60,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 											.add("%warp%", warp(args)));
 									return true;
 								}
+								Loader.sendMessages(s, "NoPerms", Placeholder.c().add("%permission%", Loader.cmds.getString("Warps.Warp.SubPermissions.PerWarp")+"."+warp(args)));
 								return true;
 							}
 							API.setBack((Player) s);
@@ -76,21 +75,17 @@ public class Warp implements CommandExecutor, TabCompleter {
 						Loader.sendMessages(s, "Warp.NotExist", Placeholder.c()
 								.add("%warp%", args[0]));
 						return true;
-					} else {
-						return true;
 					}
+					return true;
 				}
 				if (args.length == 2) {
 					Player p = TheAPI.getPlayer(args[1]);
 					if (p == null) {
-						Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
-								.add("%player%", args[1])
-								.add("%playername%", args[1]));
+						Loader.notOnline(s, args[1]);
 						return true;
 					} else {
 						if (warp(args) != null) {
-							Location loc = StringUtils
-									.getLocationFromString(Loader.config.getString("Warps." + warp(args)));
+							Location loc = StringUtils.getLocationFromString(Loader.config.getString("Warps." + warp(args)));
 							if (loc == null) {
 								Loader.sendMessages(s, "Warp.WrongLocation", Placeholder.c()
 										.add("%warp%", warp(args)));
@@ -118,7 +113,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 				return true;
 			}
 		}
-		Loader.sendMessages(s, "Warp.Empty");
+		Loader.noPerms(s, "Warp", "Warps");
 		return true;
 	}
 

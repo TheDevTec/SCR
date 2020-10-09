@@ -25,6 +25,7 @@ public class Balance implements CommandExecutor {
 					Loader.sendMessages(s, "Economy.Balance.You");
 					return true;
 				}
+				Loader.noPerms(s, "Balance", "Economy", "Balance");
 				return true;
 			}
 			return true;
@@ -38,9 +39,10 @@ public class Balance implements CommandExecutor {
 						.replace("%player%", args[0]).replace("%playername%", args[0]));
 				return true;
 			}
+			Loader.noPerms(s, "Economy", "Economy", "BalanceOther");
 			return true;
 		}
-		Loader.noPerms(s, "Balance", "Economy", "Balance");
+		Loader.notExist(s, args[0]);
 		return true;
 	}
 }

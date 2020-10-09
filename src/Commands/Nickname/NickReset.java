@@ -13,7 +13,6 @@ public class NickReset implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-
 		if (Loader.has(s, "Nickname", "Nickname")) {
 			if (args.length == 0) {
 				if (s instanceof Player) {
@@ -25,14 +24,12 @@ public class NickReset implements CommandExecutor {
 							.add("%playername%", ((Player) s).getDisplayName()));
 					return true;
 				}
-				Loader.Help(s, "/NickReset <player>", "NickReset");
+				Loader.Help(s, "Nickname", "Nickname");
 				return true;
 			}
 			String a = args[0];
 			if (!TheAPI.existsUser(a)) {
-				Loader.sendMessages(s, "Missing.Player.NotExist", Placeholder.c()
-						.add("%player%", a)
-						.add("%playername%", a));
+				Loader.notExist(s, a);
 				return true;
 			}
 			TheAPI.getUser(s.getName()).setAndSave("DisplayName", null);
@@ -43,6 +40,7 @@ public class NickReset implements CommandExecutor {
 					.add("%playername%", a));
 			return true;
 		}
+		Loader.noPerms(s, "Nickname", "Nickname");
 		return true;
 
 	}

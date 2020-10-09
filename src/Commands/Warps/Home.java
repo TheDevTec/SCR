@@ -31,8 +31,8 @@ public class Home implements CommandExecutor, TabCompleter {
 				if (args.length == 0) {
 					if (d.exist("Homes.home")) {
 						Position loc = Position.fromString(d.getString("Homes.home"));
-						API.setBack(p);
 						if (loc != null) {
+							API.setBack(p);
 							if (setting.tp_safe)
 								API.safeTeleport((Player)s,loc.toLocation());
 							else
@@ -41,21 +41,24 @@ public class Home implements CommandExecutor, TabCompleter {
 									.add("%home%", "home"));
 							return true;
 						}
-					}else {
-						if(!d.getKeys("Homes").isEmpty()) {
-							String home = (String) d.getKeys("Homes").toArray()[0];
-							Position loc2 = Position.fromString(d.getString("Homes." + home)); 
-							API.setBack(p);
-							if (loc2 != null) {
-								if(setting.tp_safe)
-									API.safeTeleport((Player)s,loc2.toLocation());
-								else
-									((Player)s).teleport(loc2.toLocation());
-								Loader.sendMessages(s, "Home.Teleporting", Placeholder.c()
-										.add("%home%", home));
-								return true;
-							}
+						return true;
+					}
+					if(!d.getKeys("Homes").isEmpty()) {
+						String home = (String) d.getKeys("Homes").toArray()[0];
+						Position loc2 = Position.fromString(d.getString("Homes." + home)); 
+						API.setBack(p);
+						if (loc2 != null) {
+							if(setting.tp_safe)
+								API.safeTeleport((Player)s,loc2.toLocation());
+							else
+								((Player)s).teleport(loc2.toLocation());
+							Loader.sendMessages(s, "Home.Teleporting", Placeholder.c()
+									.add("%home%", home));
+							return true;
 						}
+						Loader.sendMessages(s, "Home.NotExist", Placeholder.c()
+								.add("%home%", args[0]));
+						return true;
 					}
 					API.setBack(p);
 					API.teleportPlayer(p, TeleportLocation.SPAWN);
@@ -64,9 +67,9 @@ public class Home implements CommandExecutor, TabCompleter {
 				}
 				if (args.length == 1) {
 					if (d.exist("Homes." + args[0])) {
-						Position loc2 = Position.fromString(d.getString("Homes." + args[0])); 
-						API.setBack(p);
+						Position loc2 = Position.fromString(d.getString("Homes." + args[0]));
 						if (loc2 != null) {
+							API.setBack(p);
 							if(setting.tp_safe)
 								API.safeTeleport((Player)s,loc2.toLocation());
 							else
@@ -81,6 +84,7 @@ public class Home implements CommandExecutor, TabCompleter {
 					return true;
 				}
 			}
+			Loader.noPerms(s, "Home", "Warps");
 			return true;
 		}
 		return true;

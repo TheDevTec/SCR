@@ -409,6 +409,8 @@ Time:
 Weather:
   Sun: "%prefix% You set &esunny &7weather in world &e%world%"
   Rain: "%prefix% You set &erainy &7weather in world &e%world%"
+  PSun: "%prefix% You set &esunny &7weather for &e%player%"
+  PRain: "%prefix% You set &erainy &7weather for &e%player%"
   Thunder: "%prefix% You set &erainy &7weather with &ethunder &7in world &e%world%"
 
 # Translations for MultiWorld command

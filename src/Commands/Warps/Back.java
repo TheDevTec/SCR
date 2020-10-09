@@ -20,32 +20,32 @@ public class Back implements CommandExecutor {
 					API.TeleportBack((Player) s);
 					return true;
 				}
-				Loader.Help(s, "/Back <player>", "Warps");
+				Loader.Help(s, "Back", "Warps");
 				return true;
 			}
 			Player p = TheAPI.getPlayer(args[0]);
 			if (p == null) {
-				Loader.sendMessages(s, "Missing.Player.NotExist", Placeholder.c()
-						.add("%player%", args[0])
-						.add("%playername%", args[0]));
+				Loader.notOnline(s, args[0]);
 				return true;
 			}
 			if (p == s) {
 				API.TeleportBack(p);
 				return true;
 			}
-			if (p != s) {
-				if (Loader.has(s, "Back", "Warps", "Other")) {
-					Loader.sendMessages(s, "Back.Teleport.Other.Sender", Placeholder.c()
-							.add("%player%", p.getName())
-							.add("%playername%", p.getDisplayName()));
-					API.TeleportBack(p);
-					return true;
-				}
+			if (Loader.has(s, "Back", "Warps", "Other")) {
+				Loader.sendMessages(s, "Back.Teleport.Other.Sender", Placeholder.c()
+						.add("%player%", p.getName())
+						.add("%playername%", p.getDisplayName()));
+				Loader.sendMessages(p, "Back.Teleport.Other.Receiver", Placeholder.c()
+						.add("%player%", s.getName())
+						.add("%playername%", s.getName()));
+				API.TeleportBack(p);
 				return true;
 			}
+			Loader.noPerms(s, "Back", "Warps", "Other");
+			return true;
 		}
-
+		Loader.noPerms(s, "Back", "Warps");
 		return true;
 	}
 }

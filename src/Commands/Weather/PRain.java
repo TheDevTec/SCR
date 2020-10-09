@@ -16,32 +16,31 @@ public class PRain implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (args.length == 0) {
 			if (s instanceof Player) {
-				if (Loader.has(s, "PlayerWeather", "Weather")) {
+				if (Loader.has(s, "PRain", "Weather")) {
 					((Player) s).setPlayerWeather(WeatherType.DOWNFALL);
-					Loader.sendMessages(s, "Weather.Rain", Placeholder.c()
-							.add("%world%", ((Player) s).getLocation().getWorld().getName()));
+					Loader.sendMessages(s, "Weather.PRain", Placeholder.c()
+							.add("%player%", s.getName()).add("%player%", ((Player) s).getDisplayName()));
 					return true;
 				}
+				Loader.noPerms(s, "PRain", "Weather");
 				return true;
 			}
-			Loader.Help(s, "/Rain <world>", "Weather");
+			Loader.Help(s, "PRain", "Weather");
 			return true;
 		}
-		if (args.length == 1) {
-			if (Loader.has(s, "PlayerWeather", "Weather")) {
-				if (TheAPI.getPlayer(args[0]) != null) {
-					TheAPI.getPlayer(args[0]).setPlayerWeather(WeatherType.DOWNFALL);
-					Loader.sendMessages(s, "Weather.Rain", Placeholder.c()
-							.add("%world%", args[0]));
-					return true;
-				}
-				Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
-						.add("%player%", args[0]));
+		if (Loader.has(s, "PRain", "Weather")) {
+			if (TheAPI.getPlayer(args[0]) != null) {
+				TheAPI.getPlayer(args[0]).setPlayerWeather(WeatherType.DOWNFALL);
+				Loader.sendMessages(s, "Weather.PRain", Placeholder.c()
+						.add("%player%", TheAPI.getPlayer(args[0]).getName())
+						.add("%playername%", TheAPI.getPlayer(args[0]).getDisplayName()));
 				return true;
 			}
+			Loader.notOnline(s, args[0]);
 			return true;
 		}
-		return false;
+		Loader.noPerms(s, "PRain", "Weather");
+		return true;
 	}
 
 }

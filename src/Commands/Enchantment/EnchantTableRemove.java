@@ -42,10 +42,10 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "Enchant", "Enchantment")) {
+		if (Loader.has(s, "EnchantRemove", "Enchantment")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
-					Loader.Help(s, "/EnchantRemove <enchant>", "EnchantRemove");
+					Loader.Help(s, "EnchantRemove", "Enchantment");
 					return true;
 				}
 				if (args.length == 1) {
@@ -70,7 +70,7 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 			}
 			return true;
 		}
-
+		Loader.noPerms(s, "EnchantRemove", "Enchantment");
 		return true;
 	}
 

@@ -19,36 +19,34 @@ public class Rain implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-
 		if (args.length == 0) {
 			if (s instanceof Player) {
-				if (Loader.has(s, "Weather", "Weather")) {
+				if (Loader.has(s, "Rain", "Weather")) {
 					((Player) s).getLocation().getWorld().setStorm(true);
 					((Player) s).getLocation().getWorld().setWeatherDuration(100000000);
 					Loader.sendMessages(s, "Weather.Rain", Placeholder.c()
 							.add("%world%", ((Player) s).getLocation().getWorld().getName()));
 					return true;
 				}
+				Loader.noPerms(s, "Rain", "Weather");
 				return true;
 			}
-			Loader.Help(s, "/Rain <world>", "Weather");
+			Loader.Help(s, "Rain", "Weather");
 			return true;
 		}
-		if (args.length == 1) {
-			if (Loader.has(s, "Weather", "Weather")) {
-				if (Bukkit.getWorld(args[0]) != null) {
-					Bukkit.getWorld(args[0]).setStorm(true);
-					Loader.sendMessages(s, "Weather.Rain", Placeholder.c()
-							.add("%world%", args[0]));
-					return true;
-				}
-				Loader.sendMessages(s, "Missing.World", Placeholder.c()
+		if (Loader.has(s, "Rain", "Weather")) {
+			if (Bukkit.getWorld(args[0]) != null) {
+				Bukkit.getWorld(args[0]).setStorm(true);
+				Loader.sendMessages(s, "Weather.Rain", Placeholder.c()
 						.add("%world%", args[0]));
 				return true;
 			}
+			Loader.sendMessages(s, "Missing.World", Placeholder.c()
+					.add("%world%", args[0]));
 			return true;
 		}
-		return false;
+		Loader.noPerms(s, "Rain", "Weather");
+		return true;
 	}
 
 	public List<String> worlds() {

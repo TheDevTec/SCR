@@ -1,6 +1,5 @@
 package Commands.Warps;
 
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,31 +13,25 @@ public class SetSpawn implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
-
-		if (Loader.has(s, "SetSpawn", "Warps")) {
 			if (s instanceof Player) {
+				if (Loader.has(s, "SetSpawn", "Warps")) {
 				Player p = (Player) s;
-				Location local = p.getLocation();
+				Position local = new Position(p.getLocation());
 				try {
-				p.getWorld().setSpawnLocation(local);
+				p.getWorld().setSpawnLocation(local.toLocation());
 				}catch(NoSuchMethodError err) {
 				}
-				Loader.config.set("Spawn.World", p.getWorld().getName());
-				Loader.config.set("Spawn.X", local.getX());
-				Loader.config.set("Spawn.Y", local.getY());
-				Loader.config.set("Spawn.Z", local.getZ());
-				Loader.config.set("Spawn.X_Pos_Head", local.getYaw());
-				Loader.config.set("Spawn.Z_Pos_Head", local.getPitch());
-				Loader.config.set("Spawn", new Position(local).toString());
+				Loader.config.set("Spawn", local.toString());
 				Loader.config.save();
 				Loader.sendMessages(s, "Spawn.Set", Placeholder.c()
-						.add("%x%", ""+local.getX())
-						.add("y", ""+local.getBlockY())
-						.add("%z%", ""+local.getZ()));
-				return true;
-			} else {
+						.add("%x%", String.format("%2.02f", local.getX()).replaceFirst("\\.00", ""))
+						.add("%y%", String.format("%2.02f", local.getY()).replaceFirst("\\.00", ""))
+						.add("%z%", String.format("%2.02f", local.getZ()).replaceFirst("\\.00", ""))
+						.add("%world%", local.getWorldName()));
 				return true;
 			}
+			Loader.noPerms(s, "SetSpawn", "Warps");
+			return true;
 		}
 		return true;
 	}

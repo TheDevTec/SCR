@@ -23,15 +23,13 @@ public class Spawn implements CommandExecutor {
 					Loader.sendMessages(s, "Spawn.Teleported.You");
 					return true;
 				} else {
-					Loader.Help(s, "/Spawn <player>", "Warps");
+					Loader.Help(s, "Spawn", "Warps");
 					return true;
 				}
 			}
 			Player p = TheAPI.getPlayer(args[0]);
 			if (p == null) {
-				Loader.sendMessages(s, "Missing.Player.NotExist", Placeholder.c()
-						.add("%player%", args[0])
-						.add("%playername%", args[0]));
+				Loader.notOnline(s, args[0]);
 				return true;
 			}
 			if (p == s) {
@@ -49,8 +47,10 @@ public class Spawn implements CommandExecutor {
 						.add("%playername%", p.getDisplayName()));
 				return true;
 			}
+			Loader.noPerms(s, "Spawn", "Warps", "Other");
 			return true;
 		}
+		Loader.noPerms(s, "Spawn", "Warps");
 		return true;
 	}
 }

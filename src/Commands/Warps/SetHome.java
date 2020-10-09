@@ -58,6 +58,7 @@ public class SetHome implements CommandExecutor {
 						return true;
 				}
 			}
+			Loader.noPerms(s, "SetHome", "Warps");
 			return true;
 		}
 		return true;

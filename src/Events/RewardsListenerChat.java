@@ -1,5 +1,6 @@
 package Events;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Player;
@@ -8,14 +9,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
-import com.google.common.collect.Lists;
-import com.mojang.authlib.yggdrasil.response.User;
-
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.TheAPI.SudoType;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 @SuppressWarnings("deprecation")
 public class RewardsListenerChat implements Listener {
@@ -25,7 +24,7 @@ public class RewardsListenerChat implements Listener {
 			Player p = e.getPlayer();
 			List<String> only = Loader.config.getStringList("Options.Codes.List");
 			User d = TheAPI.getUser(p);
-			List<String> codes = d.exist("Taken-Codes")?d.getStringList("Taken-Codes"):Lists.newArrayList();
+			List<String> codes = d.exist("Taken-Codes")?d.getStringList("Taken-Codes"):new ArrayList<>();
 			if (!codes.isEmpty())
 				for (String s : codes)
 					only.remove(s);

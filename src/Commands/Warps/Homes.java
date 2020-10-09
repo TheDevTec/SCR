@@ -20,7 +20,7 @@ public class Homes implements CommandExecutor {
 		if (args.length == 0) {
 			if (s instanceof Player) {
 				Player p = (Player) s;
-				if (Loader.has(s, "Home", "Warps")) {
+				if (Loader.has(s, "Homes", "Warps")) {
 					User d = TheAPI.getUser(p);
 					Set<String> ne = d.getKeys("Homes");
 					if (!ne.isEmpty()) {
@@ -31,29 +31,27 @@ public class Homes implements CommandExecutor {
 					Loader.sendMessages(s, "Home.EmptyList");
 					return true;
 				}
+				Loader.noPerms(s, "Homes", "Warps");
 				return true;
 			}
 			return true;
 		}
-
-		if (args.length == 1) {
-			if (Loader.has(s, "Home", "Warps", "Other")) {
-				User d = TheAPI.getUser(args[0]);
-				Set<String> ne = d.getKeys("Homes");
-				if (!ne.isEmpty()) {
-					Loader.sendMessages(s, "Home.Other.List", Placeholder.c()
-							.add("%homes%", StringUtils.join(ne, ", "))
-							.add("%player%", args[0])
-							.add("%playername%", args[0]));
-					return true;
-				}
-				Loader.sendMessages(s, "Home.Other.EmptyList", Placeholder.c()
+		if (Loader.has(s, "Homes", "Warps", "Other")) {
+			User d = TheAPI.getUser(args[0]);
+			Set<String> ne = d.getKeys("Homes");
+			if (!ne.isEmpty()) {
+				Loader.sendMessages(s, "Home.Other.List", Placeholder.c()
+						.add("%homes%", StringUtils.join(ne, ", "))
 						.add("%player%", args[0])
 						.add("%playername%", args[0]));
 				return true;
 			}
+			Loader.sendMessages(s, "Home.Other.EmptyList", Placeholder.c()
+					.add("%player%", args[0])
+					.add("%playername%", args[0]));
 			return true;
 		}
+		Loader.noPerms(s, "Homes", "Warps", "Other");
 		return true;
 	}
 }

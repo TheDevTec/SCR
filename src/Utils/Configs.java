@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import ServerControl.Loader;
 import me.DevTec.TheAPI.ConfigAPI.Config;
+import me.DevTec.TheAPI.Utils.TheAPIUtils.Validator;
 
 public class Configs {
 	

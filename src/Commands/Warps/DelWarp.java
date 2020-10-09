@@ -19,23 +19,21 @@ public class DelWarp implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "DelWarp", "Warps")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/DelWarp <warp>", "Warps");
+				Loader.Help(s, "DelWarp", "Warps");
 				return true;
 			}
-			if (args[0] != null) {
-				if (Loader.config.getString("Warps." + args[0]) != null) {
-					Loader.config.set("Warps." + args[0], null);
-					Loader.config.save();
-					Loader.sendMessages(s, "Warp.Deleted", Placeholder.c()
-							.add("%warp%", args[0]));
-					return true;
-				} else {
-					Loader.sendMessages(s, "Warp.NotExist", Placeholder.c()
-							.add("%warp%", args[0]));
-					return true;
-				}
+			if (Loader.config.exists("Warps." + args[0])) {
+				Loader.config.remove("Warps." + args[0]);
+				Loader.config.save();
+				Loader.sendMessages(s, "Warp.Deleted", Placeholder.c()
+						.add("%warp%", args[0]));
+				return true;
 			}
+			Loader.sendMessages(s, "Warp.NotExist", Placeholder.c()
+					.add("%warp%", args[0]));
+			return true;
 		}
+		Loader.noPerms(s, "DelWarp", "Warps");
 		return true;
 	}
 

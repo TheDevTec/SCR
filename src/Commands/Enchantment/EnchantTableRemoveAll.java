@@ -15,7 +15,7 @@ public class EnchantTableRemoveAll implements CommandExecutor {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "Enchant", "Enchantment")) {
+		if (Loader.has(s, "EnchantRemoveAll", "Enchantment")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
 					Player p = (Player) s;
@@ -42,7 +42,7 @@ public class EnchantTableRemoveAll implements CommandExecutor {
 			}
 			return true;
 		}
-
+		Loader.noPerms(s, "EnchantRemoveAll", "Enchantment");
 		return true;
 	}
 

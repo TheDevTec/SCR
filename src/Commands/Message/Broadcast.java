@@ -13,16 +13,15 @@ public class Broadcast implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Broadcast", "Message")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/Broadcast <message>", "Broadcast");
+				Loader.Help(s, "Broadcast", "Message");
 				return true;
 			}
-			if (args.length >= 1) {
-				String msg = TheAPI.buildString(args);
-				TheAPI.broadcastMessage(Loader.config.getString("Format.Broadcast").replace("%sender%", s.getName())
-						.replace("%message%", msg));
-				return true;
-			}
+			String msg = TheAPI.buildString(args);
+			TheAPI.broadcastMessage(Loader.config.getString("Format.Broadcast").replace("%sender%", s.getName())
+					.replace("%message%", msg));
+			return true;
 		}
+		Loader.noPerms(s, "Broadcast", "Message");
 		return true;
 	}
 

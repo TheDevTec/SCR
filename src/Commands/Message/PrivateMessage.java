@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
-import ServerControl.Loader.Placeholder;
 import Utils.Colors;
 import me.DevTec.TheAPI.TheAPI;
 
@@ -17,7 +16,7 @@ public class PrivateMessage implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "PrivateMessage", "Message")) {
 			if (args.length == 0 || args.length == 1) {
-				Loader.Help(s, "/Msg <player> <message>", "Message");
+				Loader.Help(s, "PrivateMessage", "Message");
 			}
 			if (args.length >= 2) {
 
@@ -60,11 +59,12 @@ public class PrivateMessage implements CommandExecutor {
 						p.sendMessage(from);
 						return true;
 					}
-					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", args[0]));
+					Loader.notOnline(s, args[0]);
 					return true;
 				}
 			}
 		}
+		Loader.noPerms(s, "PrivateMessage", "Message");
 		return true;
 	}
 

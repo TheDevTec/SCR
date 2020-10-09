@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
-import ServerControl.Loader.Placeholder;
 import Utils.Colors;
 import me.DevTec.TheAPI.TheAPI;
 
@@ -17,7 +16,7 @@ public class ReplyPrivateMes implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "PrivateMessage", "Message")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/Reply <message>", "Message");
+				Loader.Help(s, "Reply", "Message");
 			}
 			if (args.length >= 1) {
 				String name = "";
@@ -55,7 +54,7 @@ public class ReplyPrivateMes implements CommandExecutor {
 								p.sendMessage(from);
 								return true;
 							}
-							Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", args[0]));
+							Loader.notOnline(s, TheAPI.getUser(s.getName()).getString("Reply"));
 							return true;
 						}
 					} else {
@@ -84,7 +83,7 @@ public class ReplyPrivateMes implements CommandExecutor {
 								p.sendMessage(from);
 								return true;
 							}
-							Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", args[0]));
+							Loader.notOnline(s, TheAPI.getUser(s.getName()).getString("Reply"));
 							return true;
 						}
 					}
@@ -93,6 +92,7 @@ public class ReplyPrivateMes implements CommandExecutor {
 				return true;
 			}
 		}
+		Loader.noPerms(s, "Reply", "Message");
 		return true;
 	}
 

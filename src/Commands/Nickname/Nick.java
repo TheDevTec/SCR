@@ -16,7 +16,7 @@ public class Nick implements CommandExecutor {
 		if (s instanceof Player) {
 			if (Loader.has(s, "Nickname", "Nickname")) {
 				if (args.length == 0) {
-					Loader.Help(s, "/Nick <nickname>", "Nick");
+					Loader.Help(s, "Nickname", "Nickname");
 					return true;
 				}
 				String msg = TheAPI.buildString(args);
@@ -28,6 +28,7 @@ public class Nick implements CommandExecutor {
 						.add("%nick%", msg));
 				return true;
 			}
+			Loader.noPerms(s, "Nickname", "Nickname");
 			return true;
 		}
 		return true;

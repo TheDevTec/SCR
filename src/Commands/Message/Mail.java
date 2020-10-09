@@ -14,24 +14,23 @@ import org.bukkit.util.StringUtil;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Mail implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String label, String[] args) {
-
+		if(!Loader.has(s, "Mail", "Message")) {
+			Loader.noPerms(s, "Mail", "Message");
+			return true;
+		}
 		if (args.length == 0) {
-			if (s.hasPermission("ServerControl.Mail.Send"))
-				TheAPI.msg("/Mail Send <player> <text>", s);
-			if (s.hasPermission("ServerControl.Mail.Read")) {
-				TheAPI.msg("/Mail Clear", s);
-				TheAPI.msg("/Mail Read", s);
-			}
+			Loader.Help(s, "Mail", "Message");
 			return true;
 		}
 		if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("Send") && Loader.has(s, "Mail", "Message", "Send")) {
-				TheAPI.msg("/Mail Send <player> <text>", s);
+				Loader.Help(s, "Mail", "Message");
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("Read") && Loader.has(s, "Mail", "Message", "Read")) {
@@ -39,9 +38,8 @@ public class Mail implements CommandExecutor, TabCompleter {
 					TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Empty").toString());
 					return true;
 				}
-				for (String mail : getMails(s.getName())) {
+				for (String mail : getMails(s.getName()))
 					TheAPI.msg(mail, s);
-				}
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("Clear") && Loader.has(s, "Mail", "Message", "Read")) {
@@ -57,10 +55,10 @@ public class Mail implements CommandExecutor, TabCompleter {
 		}
 		if (args.length > 2 && args[0].equalsIgnoreCase("Send") && Loader.has(s, "Mail", "Message", "Send")) {
 			if (!TheAPI.existsUser(args[1])) {
-				Loader.sendMessages(s, "Missing.Player.NotExist", Placeholder.c().add("%player%", args[1]));
+				Loader.notExist(s, args[1]);
 				return true;
 			}
-			String msg = TheAPI.buildString(args).replaceFirst(args[0]+" "+args[1]+" ", "");
+			String msg = StringUtils.buildString(2, args);
 			add(s, "&8" + s.getName() + ": &8" + msg, args[1]);
 			TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Sent").toString().replace("%player%", args[1]));
 			Player p = TheAPI.getPlayerOrNull(args[1]);
