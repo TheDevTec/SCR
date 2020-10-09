@@ -7,11 +7,11 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.ScoreboardAPI.ScoreboardAPI;
 import me.DevTec.TheAPI.ScoreboardAPI.ScoreboardType;
+import me.DevTec.TheAPI.TheAPI;
 
 public class ScoreboardStats {
 	

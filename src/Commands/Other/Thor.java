@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
+import me.DevTec.TheAPI.TheAPI;
 
 public class Thor implements CommandExecutor {
 

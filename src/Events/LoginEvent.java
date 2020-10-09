@@ -12,9 +12,8 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 import ServerControl.Loader;
 import Utils.Tasks;
 import Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
-import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.TheAPI;
 
 public class LoginEvent implements Listener {
 	public Loader plugin = Loader.getInstance;

@@ -31,13 +31,13 @@ public class Mail implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if (args.length == 1) {
-			if (args[0].equalsIgnoreCase("Send") && API.hasPerm(s, "ServerControl.Mail.Send")) {
+			if (args[0].equalsIgnoreCase("Send") && Loader.has(s, "Mail", "Message", "Send")) {
 				TheAPI.msg("/Mail Send <player> <text>", s);
 				return true;
 			}
-			if (args[0].equalsIgnoreCase("Read") && API.hasPerm(s, "ServerControl.Mail.Read")) {
+			if (args[0].equalsIgnoreCase("Read") && Loader.has(s, "Mail", "Message", "Read")) {
 				if (getMails(s.getName()).isEmpty()) {
-					TheAPI.sendActionBar((Player) s, Loader.s("Mail.Empty"));
+					TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Empty").toString());
 					return true;
 				}
 				for (String mail : getMails(s.getName())) {
@@ -45,25 +45,25 @@ public class Mail implements CommandExecutor, TabCompleter {
 				}
 				return true;
 			}
-			if (args[0].equalsIgnoreCase("Clear") && API.hasPerm(s, "ServerControl.Mail.Read")) {
+			if (args[0].equalsIgnoreCase("Clear") && Loader.has(s, "Mail", "Message", "Read")) {
 				if (getMails(s.getName()).isEmpty()) {
-					TheAPI.sendActionBar((Player) s,Loader.s("Mail.Empty"));
+					TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Empty").toString());
 					return true;
 				}
 				removeALL(s);
-				TheAPI.sendActionBar((Player) s, Loader.s("Mail.Clear"));
+				TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Clear").toString());
 				return true;
 			}
 
 		}
-		if (args.length > 2 && args[0].equalsIgnoreCase("Send") && API.hasPerm(s, "ServerControl.Mail.Send")) {
+		if (args.length > 2 && args[0].equalsIgnoreCase("Send") && Loader.has(s, "Mail", "Message", "Send")) {
 			if (!TheAPI.existsUser(args[1])) {
 				Loader.sendMessages(s, "Missing.Player.NotExist", Placeholder.c().add("%player%", args[1]));
 				return true;
 			}
 			String msg = TheAPI.buildString(args).replaceFirst(args[0]+" "+args[1]+" ", "");
 			add(s, "&8" + s.getName() + ": &8" + msg, args[1]);
-			TheAPI.sendActionBar((Player) s, Loader.s("Mails.Sent").replace("%player%", args[1]));
+			TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Sent").toString().replace("%player%", args[1]));
 			Player p = TheAPI.getPlayerOrNull(args[1]);
 			if (p != null) {
 				Loader.sendMessages(p, "Mail.Received", Placeholder.c().add("%amount%", "" + getMails(p.getName()).size()));

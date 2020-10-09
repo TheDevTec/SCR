@@ -6,16 +6,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI.TheAPI;
+import ServerControl.Loader.Placeholder;
+import me.DevTec.TheAPI.Utils.Position;
 
 public class SetSpawn implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 
-		if (API.hasPerm(s, "ServerControl.SetSpawn")) {
+		if (Loader.has(s, "SetSpawn", "Warps")) {
 			if (s instanceof Player) {
 				Player p = (Player) s;
 				Location local = p.getLocation();
@@ -29,11 +29,14 @@ public class SetSpawn implements CommandExecutor {
 				Loader.config.set("Spawn.Z", local.getZ());
 				Loader.config.set("Spawn.X_Pos_Head", local.getYaw());
 				Loader.config.set("Spawn.Z_Pos_Head", local.getPitch());
+				Loader.config.set("Spawn", new Position(local).toString());
 				Loader.config.save();
-				TheAPI.msg(Loader.s("Spawn.SpawnSet"), s);
+				Loader.sendMessages(s, "Spawn.Set", Placeholder.c()
+						.add("%x%", ""+local.getX())
+						.add("y", ""+local.getBlockY())
+						.add("%z%", ""+local.getZ()));
 				return true;
 			} else {
-				TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 				return true;
 			}
 		}

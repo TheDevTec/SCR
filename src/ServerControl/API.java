@@ -17,14 +17,14 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import com.mojang.authlib.yggdrasil.response.User;
+
 import Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.BlocksAPI.BlockGetter;
-import me.DevTec.TheAPI.Utils.Position;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
+import net.minecraft.server.v1_16_R1.Position;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;

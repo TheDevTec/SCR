@@ -16,9 +16,8 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.TheAPI;
 
 public class Spawner implements CommandExecutor, TabCompleter {
 

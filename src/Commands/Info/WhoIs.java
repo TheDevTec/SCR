@@ -14,15 +14,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import com.mojang.authlib.yggdrasil.response.User;
+
 import ServerControl.API;
 import ServerControl.API.SeenType;
 import ServerControl.Loader;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList;
 import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList.PunishmentType;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.TheAPI;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 

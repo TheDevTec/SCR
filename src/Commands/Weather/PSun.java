@@ -6,8 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class PSun implements CommandExecutor {
@@ -16,10 +16,10 @@ public class PSun implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (args.length == 0) {
 			if (s instanceof Player) {
-				if (API.hasPerm(s, "ServerControl.PlayerWeather")) {
+				if (Loader.has(s, "PlayerWeather", "Weather")) {
 					((Player) s).setPlayerWeather(WeatherType.CLEAR);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Weather.Sun").replace("%world%",
-							((Player) s).getLocation().getWorld().getName()), s);
+					Loader.sendMessages(s, "Weather.Sun", Placeholder.c()
+							.add("%world%", ((Player) s).getLocation().getWorld().getName()));
 					return true;
 				}
 				return true;
@@ -28,13 +28,15 @@ public class PSun implements CommandExecutor {
 			return true;
 		}
 		if (args.length == 1) {
-			if (API.hasPerm(s, "ServerControl.PlayerWeather")) {
+			if (Loader.has(s, "PlayerWeather", "Weather")) {
 				if (TheAPI.getPlayer(args[0]) != null) {
 					TheAPI.getPlayer(args[0]).setPlayerWeather(WeatherType.CLEAR);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Weather.Sun").replace("%world%", args[0]), s);
+					Loader.sendMessages(s, "Weather.Rain", Placeholder.c()
+							.add("%world%", args[0]));
 					return true;
 				}
-				TheAPI.msg(Loader.s("Prefix") + Loader.PlayerNotOnline(args[0]).replace("%world%", args[0]), s);
+				Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+						.add("%player%", args[0]));
 				return true;
 			}
 			return true;

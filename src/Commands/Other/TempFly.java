@@ -10,7 +10,6 @@ import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import ServerControl.SPlayer;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class TempFly implements CommandExecutor {
 

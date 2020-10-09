@@ -9,16 +9,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class EnchantTableRemoveAll implements CommandExecutor {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Enchant")) {
+		if (Loader.has(s, "Enchant", "Enchantment")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
 					Player p = (Player) s;
@@ -32,22 +29,17 @@ public class EnchantTableRemoveAll implements CommandExecutor {
 								p.getItemInHand().removeEnchantment(ea);
 
 							}
-							TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.EnchantsRemoved")
-									.replace("%enchants%", StringUtils.join(enchants, ", "))
-									.replace("%level%", "none").replace("%item%", a.name()), s);
+							Loader.sendMessages(s, "Enchant.Remove.All");
 							return true;
 						}
 
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.NoEnchants").replace("%enchant%", "none")
-								.replace("%level%", "none").replace("%item%", a.name()), s);
+						Loader.sendMessages(s, "Missing.Enchant.NoEnchant");
 						return true;
 					}
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Enchant.HandIsEmpty").replace("%enchant%", "none")
-							.replace("%level%", "none").replace("%item%", "none"), s);
+					Loader.sendMessages(s, "Missing.HandEmpty");
 					return true;
 				}
 			}
-			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 

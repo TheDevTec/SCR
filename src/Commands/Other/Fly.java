@@ -12,12 +12,13 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import com.google.common.util.concurrent.AbstractScheduledService.Scheduler;
+
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import ServerControl.SPlayer;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 
 public class Fly implements CommandExecutor, TabCompleter {

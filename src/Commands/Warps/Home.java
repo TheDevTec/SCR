@@ -12,6 +12,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
+import ServerControl.Loader.Placeholder;
 import ServerControl.Loader;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
@@ -26,7 +27,7 @@ public class Home implements CommandExecutor, TabCompleter {
 		if (s instanceof Player) {
 			Player p = (Player) s;
 			User d = TheAPI.getUser(p);
-			if (API.hasPerm(s, "ServerControl.Home")) {
+			if (Loader.has(s, "Home", "Warps")) {
 				if (args.length == 0) {
 					if (d.exist("Homes.home")) {
 						Position loc = Position.fromString(d.getString("Homes.home"));
@@ -36,10 +37,8 @@ public class Home implements CommandExecutor, TabCompleter {
 								API.safeTeleport((Player)s,loc.toLocation());
 							else
 								((Player)s).teleport(loc.toLocation());
-							TheAPI.msg(
-									Loader.s("Prefix") + Loader.s("Homes.Teleporting").replace("%player%", p.getName())
-											.replace("%playername%", p.getDisplayName()).replace("%home%", "home"),
-									s);
+							Loader.sendMessages(s, "Home.Teleporting", Placeholder.c()
+									.add("%home%", "home"));
 							return true;
 						}
 					}else {
@@ -52,20 +51,15 @@ public class Home implements CommandExecutor, TabCompleter {
 									API.safeTeleport((Player)s,loc2.toLocation());
 								else
 									((Player)s).teleport(loc2.toLocation());
-								TheAPI.msg(
-										Loader.s("Prefix") + Loader.s("Homes.Teleporting").replace("%player%", p.getName())
-												.replace("%playername%", p.getDisplayName()).replace("%home%", home),
-										s);
+								Loader.sendMessages(s, "Home.Teleporting", Placeholder.c()
+										.add("%home%", home));
 								return true;
 							}
 						}
 					}
 					API.setBack(p);
 					API.teleportPlayer(p, TeleportLocation.SPAWN);
-					TheAPI.msg(Loader.s("Prefix")
-							+ Loader.s("Spawn.NoHomesTeleportedToSpawn").replace("%world%", p.getWorld().getName())
-									.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),
-							s);
+					Loader.sendMessages(s, "Home.TpSpawn");
 					return true;
 				}
 				if (args.length == 1) {
@@ -77,21 +71,18 @@ public class Home implements CommandExecutor, TabCompleter {
 								API.safeTeleport((Player)s,loc2.toLocation());
 							else
 								((Player)s).teleport(loc2.toLocation());
-							TheAPI.msg(
-									Loader.s("Prefix") + Loader.s("Homes.Teleporting").replace("%player%", p.getName())
-											.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]),
-									s);
+							Loader.sendMessages(s, "Home.Teleporting", Placeholder.c()
+									.add("%home%", args[0]));
 							return true;
 						}
 					}
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.NotExists").replace("%player%", p.getName())
-							.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]), s);
+					Loader.sendMessages(s, "Home.NotExist", Placeholder.c()
+							.add("%home%", args[0]));
 					return true;
 				}
 			}
 			return true;
 		}
-		TheAPI.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 		return true;
 	}
 

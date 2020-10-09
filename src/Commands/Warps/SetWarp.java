@@ -6,9 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI.TheAPI;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class SetWarp implements CommandExecutor {
@@ -16,14 +15,13 @@ public class SetWarp implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 
-		if (API.hasPerm(s, "ServerControl.SetWarp")) {
+		if (Loader.has(s, "SetWarp", "Warps")) {
 			if (args.length == 0) {
 				if (s instanceof Player) {
-					Loader.Help(s, "/SetWarp <warp> <yes - requred permission>", "Warp.SetWarp");
+					Loader.Help(s, "/SetWarp <warp> <yes - requred permission>", "Warps");
 
 					return true;
 				} else {
-					TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 					return true;
 				}
 			}
@@ -43,19 +41,15 @@ public class SetWarp implements CommandExecutor {
 							Loader.config.set("Warps." + args[0] + ".NeedPermission", false);
 							Loader.config.set("Warps." + args[0], StringUtils.getLocationAsString(local));
 							Loader.config.save();
-							TheAPI.msg(Loader.s("Warp.Created").replace("%warp%", args[0])
-									.replace("%world%", local.getWorld().getName())
-									.replace("%player%", s.getName()).replace("%prefix%", Loader.s("Prefix"))
-									.replace("%playername%", ((Player) s).getDisplayName()), s);
+							Loader.sendMessages(s, "Warp.Created.Normal", Placeholder.c()
+									.add("%warp%", args[0]));
 							return true;
 						} else {
-							TheAPI.msg(Loader.s("Warp.AlreadyExists").replace("%player%", s.getName())
-									.replace("%playername%", ((Player) s).getDisplayName()).replace("%warp%", args[0]),
-									s);
+							Loader.sendMessages(s, "Warp.Exist", Placeholder.c()
+									.add("%warp%", args[0]));
 							return true;
 						}
 					} else {
-						TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 						return true;
 					}
 				}
@@ -75,19 +69,16 @@ public class SetWarp implements CommandExecutor {
 						Loader.config.set("Warps." + args[0] + ".NeedPermission", true);
 						Loader.config.set("Warps." + args[0], StringUtils.getLocationAsString(local));
 						Loader.config.save();
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Warp.CreatedWithPerm").replace("%warp%", args[0])
-								.replace("%world%", local.getWorld().getName())
-								.replace("%player%", s.getName()).replace("%prefix%", Loader.s("Prefix"))
-								.replace("%playername%", ((Player) s).getDisplayName())
-								.replace("%permission%", "ServerControl.Warp." + args[0]), s);
+						Loader.sendMessages(s, "Warp.Created.WithPerms", Placeholder.c()
+								.add("%warp%", args[0])
+								.add("%permission%", "ServerControl.Warp." + args[0]));
 						return true;
 					} else {
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Warp.AlreadyExists").replace("%player%", s.getName())
-								.replace("%playername%", ((Player) s).getDisplayName()).replace("%warp%", args[0]), s);
+						Loader.sendMessages(s, "Warp.Exist", Placeholder.c()
+								.add("%warp%", args[0]));
 						return true;
 					}
 				} else {
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 					return true;
 				}
 			}

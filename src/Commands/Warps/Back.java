@@ -7,34 +7,38 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class Back implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Back")) {
+		if (Loader.has(s, "Back", "Warps")) {
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					API.TeleportBack((Player) s);
 					return true;
 				}
-				Loader.Help(s, "/Back <player>", "Back");
+				Loader.Help(s, "/Back <player>", "Warps");
 				return true;
 			}
 			Player p = TheAPI.getPlayer(args[0]);
 			if (p == null) {
-				TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
+				Loader.sendMessages(s, "Missing.Player.NotExist", Placeholder.c()
+						.add("%player%", args[0])
+						.add("%playername%", args[0]));
 				return true;
 			}
 			if (p == s) {
 				API.TeleportBack(p);
 				return true;
 			}
-			if (p != s) {//tak co? XD MY»
-				if (API.hasPerm(s, "ServerControl.Back.Other")) {
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Back.PlayerTeleported").replace("%player%", p.getName())
-							.replace("%playername%", p.getDisplayName()), s);
+			if (p != s) {
+				if (Loader.has(s, "Back", "Warps", "Other")) {
+					Loader.sendMessages(s, "Back.Teleport.Other.Sender", Placeholder.c()
+							.add("%player%", p.getName())
+							.add("%playername%", p.getDisplayName()));
 					API.TeleportBack(p);
 					return true;
 				}

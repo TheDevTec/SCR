@@ -9,13 +9,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
 import com.google.common.collect.Lists;
+import com.mojang.authlib.yggdrasil.response.User;
 
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.TheAPI.SudoType;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 @SuppressWarnings("deprecation")
 public class RewardsListenerChat implements Listener {

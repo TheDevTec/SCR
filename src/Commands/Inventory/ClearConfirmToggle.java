@@ -5,10 +5,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.mojang.authlib.yggdrasil.response.User;
+
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class ClearConfirmToggle implements CommandExecutor {
 

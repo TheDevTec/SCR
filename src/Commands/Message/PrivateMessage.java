@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import Utils.Colors;
@@ -16,7 +15,7 @@ public class PrivateMessage implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.PrivateMessage")) {
+		if (Loader.has(s, "PrivateMessage", "Message")) {
 			if (args.length == 0 || args.length == 1) {
 				Loader.Help(s, "/Msg <player> <message>", "Message");
 			}

@@ -12,6 +12,7 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.Position;
@@ -23,13 +24,13 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (s instanceof Player) {
 			Player p = (Player) s;
-			if (API.hasPerm(s, "ServerControl.HomeOther")) {
+			if (Loader.has(s, "HomeOther", "Warps")) {
 				if (args.length == 0) {
-					Loader.Help(s, "/homeother <player> <home> <target>", "Homes.HomeOther");
+					Loader.Help(s, "/homeother <player> <home> <target>", "Warps");
 					return true;
 				}
 				if (args.length == 1) {
-					Loader.Help(s, "/homeother <player> <home> <target>", "Homes.HomeOther");
+					Loader.Help(s, "/homeother <player> <home> <target>", "Warps");
 					return true;
 				}
 				if (args.length == 2) {
@@ -42,21 +43,25 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 								API.safeTeleport((Player)s,loc.toLocation());
 							else
 								((Player)s).teleport(loc.toLocation());
-							TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.TeleportingToOther")
-									.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
-									.replace("%target%", args[0]).replace("%home%", args[1]), s);
+							Loader.sendMessages(s, "Home.Other.Teleporting", Placeholder.c()
+									.add("%home%", args[1])
+									.add("%player%", p.getName())
+									.add("%playername%", p.getDisplayName()));
 							return true;
 						}
 					}
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.NotExistsOther").replace("%player%", p.getName())
-							.replace("%playername%", p.getDisplayName()).replace("%target%", args[0])
-							.replace("%home%", args[1]), s);
+					Loader.sendMessages(s, "Home.Other.NotExist", Placeholder.c()
+							.add("%home%", args[1])
+							.add("%player%", p.getName())
+							.add("%playername%", p.getDisplayName()));
 					return true;
 				}
 				if (args.length == 3) {
 					Player pl = TheAPI.getPlayer(args[2]);
 					if (pl == null) {
-						TheAPI.msg(Loader.PlayerNotOnline(args[2]), s);
+						Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+								.add("%player%", args[2])
+								.add("%playername%", args[2]));
 						return true;
 					}
 					User d = TheAPI.getUser(args[0]);
@@ -68,22 +73,23 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 								API.safeTeleport(pl,loc.toLocation());
 							else
 								pl.teleport(loc.toLocation());
-							TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.TeleportingOtherToOther")
-									.replace("%player%", pl.getName()).replace("%playername%", pl.getDisplayName())
-									.replace("%target%", args[0]).replace("%home%", args[1]), s);
+							Loader.sendMessages(s, "Home.Other.Teleporting", Placeholder.c()
+									.add("%home%", args[1])
+									.add("%player%", p.getName())
+									.add("%playername%", p.getDisplayName()));
 							return true;
 						}
 					}
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.NotExistsOther").replace("%player%", p.getName())
-							.replace("%playername%", p.getDisplayName()).replace("%target%", args[0])
-							.replace("%home%", args[1]), s);
+					Loader.sendMessages(s, "Home.Other.NotExist", Placeholder.c()
+							.add("%home%", args[1])
+							.add("%player%", p.getName())
+							.add("%playername%", p.getDisplayName()));
 					return true;
 				}
 				return true;
 			}
 			return true;
 		}
-		TheAPI.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 		return true;
 	}
 

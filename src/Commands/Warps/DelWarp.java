@@ -8,36 +8,30 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI.TheAPI;
+import ServerControl.Loader.Placeholder;
 
 public class DelWarp implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
-		if (API.hasPerm(s, "ServerControl.DelWarp")) {
+		if (Loader.has(s, "DelWarp", "Warps")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/DelWarp <warp>", "Warp.DelWarp");
+				Loader.Help(s, "/DelWarp <warp>", "Warps");
 				return true;
 			}
 			if (args[0] != null) {
 				if (Loader.config.getString("Warps." + args[0]) != null) {
 					Loader.config.set("Warps." + args[0], null);
 					Loader.config.save();
-					TheAPI.msg(Loader.s("Warp.Deleted").replace("%warp%", args[0]).replace("%player%", s.getName())
-							.replace("%prefix%", Loader.s("Prefix"))
-							.replace("%playername%", ((Player) s).getDisplayName()), s);
+					Loader.sendMessages(s, "Warp.Deleted", Placeholder.c()
+							.add("%warp%", args[0]));
 					return true;
 				} else {
-					TheAPI.msg(
-							Loader.s("Warp.NotExists").replace("%player%", s.getName())
-									.replace("%prefix%", Loader.s("Prefix"))
-									.replace("%playername%", ((Player) s).getDisplayName()).replace("%warp%", args[0]),
-							s);
+					Loader.sendMessages(s, "Warp.NotExist", Placeholder.c()
+							.add("%warp%", args[0]));
 					return true;
 				}
 			}
@@ -50,7 +44,7 @@ public class DelWarp implements CommandExecutor, TabCompleter {
 		List<String> c = new ArrayList<>();
 		if (cmd.getName().equalsIgnoreCase("DelWarp") && args.length == 1) {
 			if (s.hasPermission("ServerControl.DelWarp")) {
-				Set<String> homes = Loader.config.getConfigurationSection("Warps").getKeys(false);
+				Set<String> homes = Loader.config.getKeys("Warps");
 				if (!homes.isEmpty() && homes != null)
 					c.addAll(StringUtil.copyPartialMatches(args[0], homes, new ArrayList<>()));
 			}

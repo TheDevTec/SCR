@@ -18,7 +18,6 @@ import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
 
 @SuppressWarnings("deprecation")
 public class SecurityListenerAntiAD implements Listener {

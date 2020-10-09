@@ -257,4 +257,5 @@ Format:
   DateWithTime: "dd.MM.yyyy HH:mm:ss"
   Broadcast: "&0[&4Broadcast&0] &a%message%"
   PrivateMessageTo: "&8(&7You -> &e%to%&8)&7: &e%message%"
-  PrivateMessageFrom: "&8(&e%from% -> &7You8)&7: &e%message%"
+  PrivateMessageFrom: "&8(&e%from% -> &7You&8)&7: &e%message%"
+  HelpOp: "&0[&4HelpOp&0] &7%sender%&7: &c%message%"

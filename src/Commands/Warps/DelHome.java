@@ -11,8 +11,8 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
@@ -22,27 +22,29 @@ public class DelHome implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (s instanceof Player) {
 			Player p = (Player) s;
-			if (API.hasPerm(s, "ServerControl.DelHome")) {
+			if (Loader.has(s, "DelHome", "Warps")) {
 				if (args.length == 0) {
-					Loader.Help(s, "/DelHome <home>", "DelHome");
+					Loader.Help(s, "/DelHome <home>", "Warps");
 					return true;
 				}
 				if (args.length == 1) {
 					User d = TheAPI.getUser(s.getName());
 					if (d.exist("Homes." + args[0])) {
 						d.setAndSave("Homes." + args[0], null);
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.Deleted").replace("%player%", p.getName())
-								.replace("%playername%", p.getDisplayName()).replace("%home%", args[0]), s);
+						Loader.sendMessages(s, "Home.Delete", Placeholder.c()
+								.add("%player%", p.getName())
+								.add("%playername%", p.getDisplayName())
+								.add("%home%", args[0]));
 						return true;
 					}
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Homes.NotExists").replace("%home%", args[0]), s);
+					Loader.sendMessages(s, "Home.NotExist", Placeholder.c()
+							.add("%home%", args[0]));
 					return true;
 				}
 				return true;
 			}
 			return true;
 		}
-		TheAPI.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 		return true;
 	}
 

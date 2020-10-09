@@ -6,9 +6,9 @@ import java.util.TimeZone;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.SoundAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
+import me.DevTec.TheAPI.TheAPI;
 
 public class setting {
 	public static enum DeathTp {

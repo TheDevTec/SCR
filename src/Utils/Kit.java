@@ -12,7 +12,6 @@ import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI.APIs.EnchantmentAPI;
 import me.DevTec.TheAPI.APIs.ItemCreatorAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Kit {
 	private List<ItemStack> a = new ArrayList<>();

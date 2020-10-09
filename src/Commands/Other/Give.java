@@ -21,9 +21,8 @@ import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import Utils.Repeat;
 import Utils.XMaterial;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.ItemCreatorAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.TheAPI;
 
 public class Give implements CommandExecutor, TabCompleter {
 	List<String> list = new ArrayList<String>();

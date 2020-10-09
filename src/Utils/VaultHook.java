@@ -1,11 +1,11 @@
 package Utils;
 
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import net.milkbowl.vault.economy.Economy;
 
 public class VaultHook {
 

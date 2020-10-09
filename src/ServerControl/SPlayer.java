@@ -1,20 +1,21 @@
 package ServerControl;
 
+import java.sql.Ref;
+
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
+import com.mojang.authlib.yggdrasil.response.User;
+
 import Events.AFKPlus;
 import ServerControl.Loader.Placeholder;
 import Utils.AFK;
 import Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
-import me.DevTec.TheAPI.Utils.Reflections.Ref;
+import me.DevTec.TheAPI.TheAPI;
 
 public class SPlayer {
 	private final String s;

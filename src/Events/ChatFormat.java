@@ -7,6 +7,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
+import com.mojang.authlib.yggdrasil.response.User;
+
 import ServerControl.Loader;
 import ServerControl.Loader.Item;
 import ServerControl.Loader.Placeholder;
@@ -14,9 +16,8 @@ import Utils.Colors;
 import Utils.MultiWorldsGUI;
 import Utils.TabList;
 import Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.TheAPI;
 
 @SuppressWarnings("deprecation")
 public class ChatFormat implements Listener {

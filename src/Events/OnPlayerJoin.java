@@ -10,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.mojang.authlib.yggdrasil.response.User;
+
 import Commands.Message.Mail;
 import Commands.Other.KitCmd;
 import ServerControl.API;
@@ -19,16 +21,14 @@ import ServerControl.Loader.Placeholder;
 import ServerControl.SPlayer;
 import Utils.Tasks;
 import Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.TheAPI.SudoType;
 import me.DevTec.TheAPI.APIs.SoundAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.TheAPI.SudoType;
 
 public class OnPlayerJoin implements Listener {
 

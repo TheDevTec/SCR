@@ -13,9 +13,9 @@ import org.bukkit.event.block.SignChangeEvent;
 
 import ServerControl.Loader;
 import Utils.Colors;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.SignAPI;
 import me.DevTec.TheAPI.APIs.SignAPI.SignAction;
+import me.DevTec.TheAPI.TheAPI;
 
 public class Signs implements Listener {
 	public Loader ps = Loader.getInstance;

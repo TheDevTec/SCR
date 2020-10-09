@@ -8,14 +8,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import com.mojang.authlib.yggdrasil.response.User;
+
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
 import Utils.setting;
 import Utils.setting.DeathTp;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.TheAPI;
 
 public class DeathEvent implements Listener {
 

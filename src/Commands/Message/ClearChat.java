@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
@@ -53,7 +52,7 @@ public class ClearChat implements CommandExecutor {
 		if (s instanceof Player == true) {
 			Player p = (Player) s;
 			if (args.length == 0) {
-				if (API.hasPerm(s, "ServerControl.ClearChat")) {
+				if (Loader.has(s, "ClearChat", "Message")) {
 					for (int i = 0; i < 250; i++) {
 						for (Player online : TheAPI.getOnlinePlayers()) {
 
@@ -69,7 +68,7 @@ public class ClearChat implements CommandExecutor {
 			}
 			if (args.length == 1) {
 
-				if (API.hasPerm(s, "ServerControl.ClearChat")) {
+				if (Loader.has(s, "ClearChat", "Message")) {
 					Player target = Bukkit.getServer().getPlayer(args[0]);
 					if (target == s) {
 								Loader.sendMessages(p, "ClearChat.NoClearOwnChat", Placeholder.c().add("%player%", args[0]));

@@ -15,7 +15,7 @@ public class Sudo implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Sudo")) {
+		if (Loader.has(s, "Sudo", "Message")) {
 			if (args.length == 0) {
 				Loader.Help(s, "/Sudo <player> <arguments>", "Message");
 				return true;

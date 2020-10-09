@@ -1,12 +1,12 @@
 package Utils;
 
+import com.google.common.util.concurrent.AbstractScheduledService.Scheduler;
+
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.SPlayer;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.TheAPI;
 
 public class AFK {
 	private static int task;

@@ -20,11 +20,11 @@ import com.google.common.collect.Lists;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.ItemCreatorAPI;
 import me.DevTec.TheAPI.GUIAPI.GUI;
 import me.DevTec.TheAPI.GUIAPI.ItemGUI;
 import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 import me.DevTec.TheAPI.WorldsAPI.WorldsAPI;
 
