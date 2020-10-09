@@ -60,7 +60,9 @@ Missing:
   TargetHandEmpty: "%prefix% &e%player%&7's hand is empty" 
   Entity: "%prefix% Entity &e%entity% &7doesn't exist"
   Gamemode: "%prefix% Gamemode &e%gamemode% &7doesn't exist"
-  Enchant: "%prefix% Enchant &e%enchant% &7doesn't exist"
+  Enchant:
+    NotExist: "%prefix% Enchant &e%enchant% &7doesn't exist"
+    NoEnchant: "%prefix% You have no enchant on item"
   
 # Translations for /Butcher command
 Butcher:
@@ -269,6 +271,11 @@ Home:
   Delete: "%prefix% Home &e%home% &7deleted"
   Limit: "%prefix% You have reached limit of homes"
   TpSpawn: "%prefix% You have no home, teleporting to spawn"
+  Other:
+    NotExist: "%prefix% The &e%player%'s &7home &e%home% &7doesn't exist"
+    Teleporting: "%prefix% Teleporting to home &e%home% &7of &e%player%"
+    List: "%prefix% &e%player%&7's &7homes: &e%homes%"
+    EmptyList: "%prefix% &e%player% &7doesn't have any home"
 
 # Translations for /Chunk command
 Chunks:
