@@ -5,8 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class NickReset implements CommandExecutor {
@@ -14,13 +14,15 @@ public class NickReset implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 
-		if (API.hasPerm(s, "ServerControl.Nickname")) {
+		if (Loader.has(s, "Nickname", "Nickname")) {
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					TheAPI.getUser(s.getName()).setAndSave("DisplayName", null);
 					if(TheAPI.getPlayerOrNull(s.getName())!=null)
 						TheAPI.getPlayerOrNull(s.getName()).setCustomName(null);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("NicknameReseted"), s);
+					Loader.sendMessages(s, "Nickname.Reset", Placeholder.c()
+							.add("%player%", s.getName())
+							.add("%playername%", ((Player) s).getDisplayName()));
 					return true;
 				}
 				Loader.Help(s, "/NickReset <player>", "NickReset");
@@ -28,14 +30,17 @@ public class NickReset implements CommandExecutor {
 			}
 			String a = args[0];
 			if (!TheAPI.existsUser(a)) {
-				TheAPI.msg(Loader.PlayerNotEx(a), s);
+				Loader.sendMessages(s, "Missing.Player.NotExist", Placeholder.c()
+						.add("%player%", a)
+						.add("%playername%", a));
 				return true;
 			}
 			TheAPI.getUser(s.getName()).setAndSave("DisplayName", null);
 			if(TheAPI.getPlayerOrNull(a)!=null)
 				TheAPI.getPlayerOrNull(a).setCustomName(null);
-			TheAPI.msg(Loader.s("Prefix")
-					+ Loader.s("NicknameResetedOther").replace("%player%", a).replace("%playername%", a), s);
+			Loader.sendMessages(s, "Nickname.Reset", Placeholder.c()
+					.add("%player%", a)
+					.add("%playername%", a));
 			return true;
 		}
 		return true;
