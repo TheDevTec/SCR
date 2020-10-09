@@ -2,7 +2,6 @@ package Events;
 
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,18 +9,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import ServerControl.API;
 import ServerControl.Loader;
-import ServerControlEvents.PlayerBlockedCommandEvent;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.TheAPI.SudoType;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 /**
- * 1.2. 2020
+ * 6.10. 2020
  * 
- * @author Straiker123
+ * @author StraikerinaCZ
  *
  */
 @SuppressWarnings("deprecation")
@@ -92,12 +87,7 @@ public class SecurityListenerV3 implements Listener {
 				String mes = e.getMessage().toLowerCase();
 				if (mes.startsWith("/" + cen.toLowerCase()) || mes.startsWith("/bukkit:" + cen.toLowerCase())
 						|| mes.startsWith("/minecraft:" + cen.toLowerCase())) {
-					PlayerBlockedCommandEvent ed = new PlayerBlockedCommandEvent(p, e.getMessage(), cen);
-					Bukkit.getPluginManager().callEvent(ed);
-					if (ed.isCancelled()) {
 						e.setCancelled(true);
-						API.hasPerm(p, "ServerControl.CommandsAccess");
-					}
 				}
 			}
 		} else if (!p.hasPermission("ServerControl.Admin")) {
@@ -129,157 +119,9 @@ public class SecurityListenerV3 implements Listener {
 					build = build.replaceFirst(" ", "");
 				}
 			}
-			message = build;
-			if (setting.swear_cmd && API.getVulgarWord(build) || setting.spam_cmd && API.getSpamWord(build)) {
-				if (API.getVulgarWord(build)) {
-					e.setCancelled(true);
-					call((API.getVulgarWord(build) ? Security.Swear : Security.Spam), p, e.getMessage(), build);
-					return;
-				} else if (API.getVulgarWord(build.replace(" ", ""))) {
-					e.setCancelled(true);
-					call((API.getVulgarWord(build) ? Security.Swear : Security.Spam), p, e.getMessage(),
-							build.replace(" ", ""));
-					return;
-				} else if (API.getVulgarWord(build.replaceAll("[^a-zA-Z0-9]+", ""))) {
-					e.setCancelled(true);
-					call((API.getVulgarWord(build) ? Security.Swear : Security.Spam), p, e.getMessage(),
-							build.replaceAll("[^a-zA-Z0-9]+", ""));
-					return;
-				} else if (API.getVulgarWord(build.replaceAll("[a-zA-Z0-9]+", ""))) {
-					e.setCancelled(true);
-					call((API.getVulgarWord(build) ? Security.Swear : Security.Spam), p, e.getMessage(),
-							build.replaceAll("[a-zA-Z0-9]+", ""));
-					return;
-				} else if (API.getVulgarWord(build.replaceAll("[^a-zA-Z0-9]+", "").replace(" ", ""))) {
-					e.setCancelled(true);
-					call((API.getVulgarWord(build) ? Security.Swear : Security.Spam), p, e.getMessage(),
-							build.replaceAll("[^a-zA-Z0-9]+", "").replace(" ", ""));
-					return;
-				} else if (API.getVulgarWord(build.replaceAll("[a-zA-Z0-9]+", "").replace(" ", ""))) {
-					e.setCancelled(true);
-					call((API.getVulgarWord(build) ? Security.Swear : Security.Spam), p, e.getMessage(),
-							build.replaceAll("[a-zA-Z0-9]+", "").replace(" ", ""));
-					return;
-				}
-			}
 			e.setMessage(build);
 		}
-		/*if(!e.isCancelled()) {
-			if(e.getMessage().toLowerCase().startsWith("/reload")||e.getMessage().toLowerCase().startsWith("/rl")) {
-			if (API.hasPerm(p, "ServerControl.Reload")) {
-				e.setCancelled(true);
-				String[] args = e.getMessage().split(" ");
-				if (args.length == 0) {
-					BigTask.start(TaskType.RELOAD, Loader.config.getLong("Options.WarningSystem.Reload.PauseTime"));
-					return;
-				}
-				if (args[0].equalsIgnoreCase("cancel")) {
-					if (BigTask.r != -1)
-						BigTask.cancel();
-					return;
-				}
-				if (args[0].equalsIgnoreCase("now")) {
-					BigTask.start(TaskType.RELOAD, 0);
-					return;
-				}
-				if (BigTask.r == -1)
-					BigTask.start(TaskType.RELOAD, StringUtils.getTimeFromString(args[0]));
-				return;
-			}return;}
-			if(e.getMessage().toLowerCase().startsWith("/restart")) {
-			if (API.hasPerm(p, "ServerControl.Restart")) {
-				e.setCancelled(true);
-				String[] args = e.getMessage().split(" ");
-				if (args.length == 0) {
-					BigTask.start(TaskType.RESTART, Loader.config.getLong("Options.WarningSystem.Restart.PauseTime"));
-					return;
-				}
-				if (args[0].equalsIgnoreCase("cancel")) {
-					if (BigTask.r != -1)
-						BigTask.cancel();
-					return;
-				}
-				if (args[0].equalsIgnoreCase("now")) {
-					BigTask.start(TaskType.RESTART, 0);
-					return;
-				}
-				if (BigTask.r == -1)
-					BigTask.start(TaskType.RESTART, StringUtils.getTimeFromString(args[0]));
-				return;
-			}return;}
-			if(e.getMessage().toLowerCase().startsWith("/stop")) {
-			if (API.hasPerm(p, "ServerControl.Stop")) {
-				e.setCancelled(true);
-				String[] args = e.getMessage().split(" ");
-				if (args.length == 0) {
-					BigTask.start(TaskType.STOP, Loader.config.getLong("Options.WarningSystem.Stop.PauseTime"));
-					return;
-				}
-				if (args[0].equalsIgnoreCase("cancel")) {
-					if (BigTask.r != -1)
-						BigTask.cancel();
-					return;
-				}
-				if (args[0].equalsIgnoreCase("now")) {
-					BigTask.start(TaskType.STOP, 0);
-					return;
-				}
-				if (BigTask.r == -1)
-					BigTask.start(TaskType.STOP, StringUtils.getTimeFromString(args[0]));
-				return;
-			}return;}
-			
-		}*/
-	}
-
-	private void call(Security swear, Player s, String original, String replace) {
-		User d = TheAPI.getUser(s);
-		String name = swear == Security.Spam ? "Spam" : "VulgarWords";
-		String r = swear == Security.Spam ? "Spam" : "Swear";
-		Loader.config.set(name, Loader.config.getInt(name) + 1);
-		d.set(name, d.getInt(name) + 1);
-		if (Loader.config.getBoolean("TasksOnSend." + r + ".Use-Commands")) {
-			for (String cmds : Loader.config.getStringList("TasksOnSend." + r + ".Commands")) {
-				TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", s.getName())));
-			}
-		}
-		if (Loader.config.getBoolean("AutoKickLimit." + r + ".Use")) {
-			if (d.getInt(name) >= Loader.config.getInt("AutoKickLimit." + r + ".Number")) {
-				d.set(name, d.getInt(name) - Loader.config.getInt("AutoKickLimit." + r + ".Number"));
-				if (Loader.config.getBoolean("AutoKickLimit." + r + ".Message.Use")) {
-					for (String cmds : Loader.config.getStringList("AutoKickLimit." + r + ".Message.List")) {
-						TheAPI.msg(cmds.replace("%player%", s.getName()).replace("%number%",
-								Loader.config.getInt("AutoKickLimit." + r + ".Number") + ""), s);
-					}
-				}
-				if (Loader.config.getBoolean("AutoKickLimit." + r + ".Commands.Use")) {
-					for (String cmds : Loader.config.getStringList("AutoKickLimit." + r + ".Commands.List")) {
-						TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", s.getName())
-								.replace("%number%", Loader.config.getInt("AutoKickLimit." + r + ".Number") + "")));
-						if (cmds.toLowerCase().startsWith("kick")) {
-							d.set("Kicks", d.getInt("Kicks") + 1);
-						}
-					}
-				}
-			}
-		}
-		if (Loader.config.getBoolean("AutoKickLimit.Kick.Use")) {
-			if (d.getInt("Kicks") >= Loader.config.getInt("AutoKickLimit.Kick.Number")) {
-				d.set("Kicks", d.getInt("Kicks") - Loader.config.getInt("AutoKickLimit.Kick.Number"));
-				if (Loader.config.getBoolean("AutoKickLimit.Kick.Message.Use")) {
-					for (String cmds : Loader.config.getStringList("AutoKickLimit.Kick.Message.List")) {
-						TheAPI.msg(cmds.replace("%player%", s.getName()).replace("%number%",
-								Loader.config.getInt("AutoKickLimit.Kick.Number") + ""), s);
-					}
-				}
-				if (Loader.config.getBoolean("AutoKickLimit.Kick.Commands.Use")) {
-					for (String cmds : Loader.config.getStringList("AutoKickLimit.Kick.Commands.List")) {
-						TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(cmds.replace("%player%", s.getName())
-								.replace("%number%", Loader.config.getInt("AutoKickLimit.Kick.Number") + "")));
-					}
-				}
-			}
-		}
+		
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -333,38 +175,6 @@ public class SecurityListenerV3 implements Listener {
 			if (Loader.config.getBoolean("SpamWords.SimiliarMessage")) {
 				if (isSim(p, e.getMessage())) {
 					e.setCancelled(true);
-					return;
-				}
-			}
-			if (setting.swear_chat && API.getVulgarWord(build) || setting.spam_chat && API.getSpamWord(build)) {
-				if (API.getVulgarWord(build)) {
-					e.setCancelled(true);
-					call((API.getVulgarWord(build) ? Security.Swear : Security.Spam), p, message, build);
-					return;
-				} else if (API.getVulgarWord(build.replace(" ", ""))) {
-					e.setCancelled(true);
-					call((API.getVulgarWord(build) ? Security.Swear : Security.Spam), p, message,
-							build.replace(" ", ""));
-					return;
-				} else if (API.getVulgarWord(build.replaceAll("[^a-zA-Z0-9]+", ""))) {
-					e.setCancelled(true);
-					call((API.getVulgarWord(build) ? Security.Swear : Security.Spam), p, message,
-							build.replaceAll("[^a-zA-Z0-9]+", ""));
-					return;
-				} else if (API.getVulgarWord(build.replaceAll("[a-zA-Z0-9]+", ""))) {
-					e.setCancelled(true);
-					call((API.getVulgarWord(build) ? Security.Swear : Security.Spam), p, message,
-							build.replaceAll("[a-zA-Z0-9]+", ""));
-					return;
-				} else if (API.getVulgarWord(build.replaceAll("[^a-zA-Z0-9]+", "").replace(" ", ""))) {
-					e.setCancelled(true);
-					call((API.getVulgarWord(build) ? Security.Swear : Security.Spam), p, message,
-							build.replaceAll("[^a-zA-Z0-9]+", "").replace(" ", ""));
-					return;
-				} else if (API.getVulgarWord(build.replaceAll("[a-zA-Z0-9]+", "").replace(" ", ""))) {
-					e.setCancelled(true);
-					call((API.getVulgarWord(build) ? Security.Swear : Security.Spam), p, message,
-							build.replaceAll("[a-zA-Z0-9]+", "").replace(" ", ""));
 					return;
 				}
 			}

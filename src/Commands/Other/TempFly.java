@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import ServerControl.SPlayer;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
@@ -15,49 +16,47 @@ public class TempFly implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.TempFly")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/TempFly <Player> <Time>", "TempFly");
+				Loader.Help(s, "TempFly", "Other");
 				return true;
 			}
 			if (args.length == 1) {
 				if (s instanceof Player) {
-					if (API.hasPerm(s, "ServerControl.TempFly")) {
+					if (Loader.has(s, "TempFly", "Other")) {
 						API.getSPlayer(TheAPI.getPlayer(s.getName()))
-								.enableTempFly((int) StringUtils.getTimeFromString(args[0]));
+								.enableTempFly(StringUtils.getTimeFromString(args[0]));
 						return true;
 					}
 					return true;
 				}
-				Loader.Help(s, "/TempFly <Player> <Time>", "TempFly");
+				Loader.Help(s, "TempFly", "Other");
 				return true;
 			}
 			if (args.length == 2) {
-				SPlayer t = API.getSPlayer(TheAPI.getPlayer(args[0]));
-				if (t.getPlayer() == null) {
-					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+				Player player = TheAPI.getPlayer(args[0]);
+				if (player == null) {
+					Loader.notOnline(s,args[0]);
 					return true;
 				}
-				int sec = (int) StringUtils.getTimeFromString(args[1]);
+				SPlayer t = API.getSPlayer(player);
+				long sec = StringUtils.getTimeFromString(args[1]);
 				if (t.getPlayer() == s) {
-					if (API.hasPerm(s, "ServerControl.TempFly")) {
+					if (Loader.has(s, "TempFly", "Other")) {
 						t.enableTempFly(sec);
 						return true;
 					}
 					return true;
 				}
-				if (API.hasPerm(s, "ServerControl.TempFly.Other")) {
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("TempFly.EnabledOther").replace("%player%", t.getName())
-							.replace("%playername%", t.getName()).replace("%target%", t.getName())
-							.replace("%time%", StringUtils.setTimeToString(sec)), s);
-
+				if (Loader.has(s, "TempFly", "Other", "Other")) {
+					Loader.sendMessages(s, "Fly.Temp.Enabled.Other.Sender", Placeholder.c().replace("%player%", player.getName())
+							.replace("%playername%", player.getDisplayName()).replace("%time%", StringUtils.setTimeToString(sec)));
+					Loader.sendMessages(player, "Fly.Temp.Enabled.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
+							.replace("%playername%", s.getName()).replace("%time%", StringUtils.setTimeToString(sec)));
 					t.enableTempFly(sec);
 					return true;
 				}
 				return true;
 			}
-			return true;
-		}
 		return true;
 	}
 }

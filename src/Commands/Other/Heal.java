@@ -1,30 +1,32 @@
 package Commands.Other;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 
 public class Heal implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
-		if (!API.hasPerm(s, "ServerControl.Heal"))
-			return true;
 		if (args.length == 0) {
-			if (s instanceof Player == false) {
-				Loader.Help(s, "/Heal <player>", "Heal");
+			if (Loader.has(s, "Heal", "Other")) {
+			if (s instanceof Player) {
+				Player p = (Player) s;
+				p.setFoodLevel(20);
+				p.setRemainingAir(p.getMaximumAir());
+				p.setFireTicks(-20);
+				p.setHealth(20.0);
+				Loader.sendMessages(s, "Heal.You");
 				return true;
 			}
-			Player p = (Player) s;
-			API.getSPlayer(p).heal();
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Healed").replace("%player%", p.getName())
-					.replace("%playername%", p.getDisplayName()), s);
+			Loader.Help(s, "Heal", "Other");
+			return true;
+			}
 			return true;
 		}
 		if (args.length == 1) {
@@ -32,29 +34,35 @@ public class Heal implements CommandExecutor {
 				Repeat.a(s, "heal *");
 				return true;
 			}
-			Player target = Bukkit.getServer().getPlayer(args[0]);
-			if (target == null) {
-				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+			Player p = TheAPI.getPlayer(args[0]);
+			if(p==null) {
+				Loader.notOnline(s, args[0]);
 				return true;
 			}
-			if (target == s) {
-				Player p = (Player) s;
-				API.getSPlayer(p).heal();
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Healed").replace("%player%", p.getName())
-						.replace("%playername%", p.getDisplayName()), s);
+			if (p == s) {
+				if (Loader.has(s, "Heal", "Other")) {
+					p.setFoodLevel(20);
+					p.setRemainingAir(p.getMaximumAir());
+					p.setFireTicks(-20);
+					p.setHealth(20.0);
+				Loader.sendMessages(s, "Heal.You");
+				return true;
+				}
 				return true;
 			}
-			if (API.hasPerm(s, "ServerControl.Heal.Other")) {
-				API.getSPlayer(target).heal();
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Healed").replace("%player%", target.getName())
-						.replace("%playername%", target.getDisplayName()), target);
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.SpecifyPlayerHealed")
-						.replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()), s);
+			if (Loader.has(s, "Heal", "Other","Other")) {
+				p.setFoodLevel(20);
+				p.setRemainingAir(p.getMaximumAir());
+				p.setFireTicks(-20);
+				p.setHealth(20.0);
+				Loader.sendMessages(s, "Heal.Other.Sender", Placeholder.c().replace("%player%", p.getName())
+						.replace("%playername%", p.getDisplayName()));
+				Loader.sendMessages(p, "Heal.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
+						.replace("%playername%", s.getName()));
 				return true;
 			}
 			return true;
 		}
-
-		return false;
+		return true;
 	}
 }

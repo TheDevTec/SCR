@@ -5,35 +5,33 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class Craft implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Workbench")) {
+		if (Loader.has(s, "Workbench", "Other")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningCraftTable"), s);
+					Loader.sendMessages(s, "Inventory.Workbench.You");
 					((Player) s).openWorkbench(((Player) s).getLocation(), true);
 					return true;
 				}
 				if (args.length == 1) {
 					Player t = TheAPI.getPlayer(args[0]);
 					if (t == null) {
-						TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+						Loader.notOnline(s, args[0]);
 						return true;
 					}
-					TheAPI.msg(Loader.s("Prefix")
-							+ Loader.s("Inventory.OpeningCraftTableForTarget").replace("%target%", t.getDisplayName()),
-							s);
+					Loader.sendMessages(s, "Inventory.Workbench.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
+					Loader.sendMessages(t, "Inventory.Workbench.Other.Target", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
 					t.openWorkbench(t.getLocation(), true);
 					return true;
 				}
 			}
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

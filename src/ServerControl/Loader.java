@@ -33,6 +33,7 @@ import Utils.AFK;
 import Utils.Colors;
 import Utils.Configs;
 import Utils.Converter;
+import Utils.Kit;
 import Utils.Metrics;
 import Utils.MultiWorldsUtils;
 import Utils.ScoreboardStats;
@@ -426,13 +427,15 @@ public class Loader extends JavaPlugin implements Listener {
 		} catch (Exception er) {
 			//unsuported
 		}
+		getInstance.kits.clear();
 		TheAPI.msg(setting.prefix + "&7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
 		Configs.load();
 		TheAPI.msg(setting.prefix + "&7Loading kits:", TheAPI.getConsole());
 		for (String s : Loader.kit.getKeys("Kits")) {
 			TheAPI.msg(setting.prefix + "  &e"+s+"&7:", TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "    &7Cooldown: " + StringUtils.setTimeToString(StringUtils.getTimeFromString(Loader.kit.getString("Kits." + s + ".Cooldown"))), TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "    &7Cost: &e$" + API.setMoneyFormat(kit.getDouble("Kits." + s + ".Price"), false), TheAPI.getConsole());
+			Kit.load(s);
+			TheAPI.msg(setting.prefix + "    &7Cooldown: " + StringUtils.setTimeToString(getInstance.kits.get(s.toLowerCase()).getDelay()), TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + "    &7Cost: &e$" + API.setMoneyFormat(getInstance.kits.get(s.toLowerCase()).getCost(), false), TheAPI.getConsole());
 		}
 		setting.load();
 		Converter.convert();
@@ -496,13 +499,14 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Rain", new Commands.Weather.Rain());
 		CmdC("Day", new Commands.Time.Day());
 		CmdC("Night", new Commands.Time.Night());
-		CmdC("Kit", new Commands.Other.Kit());
+		CmdC("Kit", new Commands.Other.KitCmd());
 		CmdC("ChatLock", new Commands.Other.ChatLock());
 		CmdC("GameMode", new Commands.Gamemode.Gamemode());
 		CmdC("GMS", new Commands.Gamemode.GamemodeS());
 		CmdC("GMC", new Commands.Gamemode.GamemodeC());
 		CmdC("GMSP", new Commands.Gamemode.GamemodeSP());
 		CmdC("hat", new Commands.Other.Hat());
+		if(TheAPI.isNewerThan(7))
 		CmdC("GMA", new Commands.Gamemode.GamemodeA());
 		CmdC("pm", new Commands.Message.PrivateMessage());
 		CmdC("helpop", new Commands.Message.Helpop());
@@ -594,8 +598,37 @@ public class Loader extends JavaPlugin implements Listener {
 		} catch (Exception e) {
 		}
 	}
+	
+	public static void notOnline(CommandSender s, String player) {
+		sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", player).add("%playername%", player));
+	}
+	
+	public static void notExist(CommandSender s, String player) {
+		sendMessages(s, "Missing.Player.NotExist", Placeholder.c().add("%player%", player).add("%playername%", player));
+	}
 
-	public static boolean has(CommandSender s, String cmd) {
-		return s.hasPermission("");
+	public static boolean has(CommandSender s, String cmd, String section) {
+		return cmds.exists(section+"."+cmd+".Permission")?s.hasPermission(cmds.getString(section+"."+cmd+".Permission")):true;
+	}
+
+	public static void noPerms(CommandSender s, String cmd, String section) {
+		sendMessages(s, "NoPerms", Placeholder.c().add("%permission%", cmds.getString(section+"."+cmd+".Permission")));
+	}
+
+	public static void noPerms(CommandSender s, String cmd, String section, String sub) {
+		sendMessages(s, "NoPerms", Placeholder.c().add("%permission%", cmds.getString(section+"."+cmd+".SubPermissions."+sub)));
+	}
+
+	public static boolean has(CommandSender s, String cmd, String section, String subPerm) {
+		return cmds.exists(section+"."+cmd+".SubPermissions."+subPerm)?s.hasPermission(cmds.getString(section+"."+cmd+".SubPermissions."+subPerm)):true;
+	}
+
+	public HashMap<String, Kit> kits = new HashMap<>();
+	public static Kit getKit(String kitName) {
+		return getInstance.kits.getOrDefault(kitName.toLowerCase(), null);
+	}
+
+	public static boolean hasKits(CommandSender p, String name) {
+		return kit.exists("Kit."+name+".Permission")?p.hasPermission(kit.getString("Kit."+name+".Permission")):true;
 	}
 }

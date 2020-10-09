@@ -15,11 +15,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import Commands.Other.Kit;
-import ServerControl.Loader.Placeholder;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
@@ -108,26 +105,6 @@ public class API {
 
 	}
 
-	/**
-	 * Replace player placeholdes (%player% and %playername%)
-	 */
-	public static String replacePlayerName(String where, Player player) {
-		String playername = player.getDisplayName();
-		String playerr = player.getName();
-		return where.replace("%player%", playerr).replace("%playername%", playername);
-	}
-
-	/**
-	 * Replace player placeholdes (%player% and %playername%)
-	 */
-	public static String replacePlayerName(String where, String player) {
-		String playername = player;
-		if (TheAPI.getPlayer(player) != null)
-			playername = TheAPI.getPlayer(player).getDisplayName();
-		String playerr = player;
-		return where.replace("%player%", playerr).replace("%playername%", playername);
-	}
-
 	public static double convertMoney(String s) {
 		double a = StringUtils.getDouble(s);
 		double mille = a * 1000;
@@ -195,65 +172,12 @@ public class API {
 		return StringUtils.getLocationFromString(TheAPI.getUser(p).getString("Back"));
 	}
 
-	private static boolean has(CommandSender p, List<String> perms) {
-		int i = 0;
-		for (String s : perms)
-			if (p.hasPermission(s))
-				++i;
-		return i == perms.size() - 1;
-
-	}
-
-	public static boolean hasPerms(CommandSender p, List<String> perms) {
-		if (has(p, perms)) {
-			return true;
-		}
-		Loader.sendMessages(p, "NoPerms", Placeholder.c().add("%permission%", StringUtils.join(perms, ", ")));
-		return false;
-	}
-
-	public static boolean hasPerm(CommandSender s, String permission) {
-		if (s.hasPermission(permission)) {
-			return true;
-		}
-		Loader.sendMessages(s, "NoPerms", Placeholder.c().add("%permission%", permission));
-		return false;
-	}
-
 	public static void setDisplayName(Player p, String name) {
 		NMSAPI.getNMSPlayerAPI(p).setDisplayName(name);
 	}
 
 	public static void setCustomName(Player p, String name) {
 		NMSAPI.getNMSPlayerAPI(p).setDisplayName(name);
-	}
-
-	public static List<String> getKits() {
-		List<String> list = new ArrayList<String>();
-		for (String name : Loader.kit.getKeys("Kits")) {
-			list.add(name);
-		}
-		return list;
-	}
-
-	public static void giveKit(String player, String KitName) {
-		if (getKitFromString(KitName) != null)
-			Kit.giveKit(player, KitName, false, false);
-	}
-
-	public static void giveKit(String player, String KitName, boolean cooldown, boolean economy) {
-		if (getKitFromString(KitName) != null)
-			Kit.giveKit(player, KitName, cooldown, economy);
-	}
-
-	public static String getKitFromString(String string) {
-		return Kit.getKitName(string);
-	}
-
-	public static boolean isKit(String string) {
-		if (getKitFromString(string) != null)
-			return true;
-		return false;
 	}
 
 	public static String setMoneyFormat(BigDecimal money, boolean colorized) {
@@ -340,42 +264,6 @@ public class API {
 	
 	public static boolean isAFK(Player p) {
 		return getSPlayer(p).isAFK();
-	}
-
-	public static boolean getVulgarWord(String string) {
-		List<String> words = Loader.config.getStringList("SwearWords");
-		for (String word : words)
-			if (string.toLowerCase().contains(word.toLowerCase())) {
-				return true;
-			}
-		return false;
-	}
-
-	public static String getValueOfVulgarWord(String string) {
-		List<String> words = Loader.config.getStringList("SwearWords");
-		for (String word : words)
-			if (string.toLowerCase().contains(word.toLowerCase())) {
-				return String.valueOf(word);
-			}
-		return "";
-	}
-
-	public static boolean getSpamWord(String string) {
-		List<String> words = Loader.config.getStringList("SpamWords.Words");
-		for (String word : words)
-			if (string.toLowerCase().contains(word.toLowerCase())) {
-				return true;
-			}
-		return false;
-	}
-
-	public static String getValueOfSpamWord(String string) {
-		List<String> words = Loader.config.getStringList("SpamWords.Words");
-		for (String word : words)
-			if (string.toLowerCase().contains(word.toLowerCase())) {
-				return String.valueOf(word);
-			}
-		return "";
 	}
 
 	private static boolean checkForDomain(String str) {

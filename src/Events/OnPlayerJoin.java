@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import Commands.Message.Mail;
+import Commands.Other.KitCmd;
 import ServerControl.API;
 import ServerControl.API.TeleportLocation;
 import ServerControl.Loader;
@@ -89,7 +90,7 @@ public class OnPlayerJoin implements Listener {
 						for (String cmds : f.getStringList("Options.Join.FirstJoin.PerformCommands.List"))
 							TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(replaceAll(cmds, p)));
 					if (setting.join_first_give && f.getString("Options.Join.FirstJoin.Kit") != null)
-						API.giveKit(p.getName(), f.getString("Options.Join.FirstJoin.Kit"), false, false);
+						KitCmd.giveKit(p, Loader.getKit(f.getString("Options.Join.FirstJoin.Kit")), false, false, false);
 				}
 			}.runLater(f.getInt("Options.Join.FirstJoin.Wait") > 0 ? 20 * f.getInt("Options.Join.FirstJoin.Wait") : 1);
 			API.teleportPlayer(p, TeleportLocation.SPAWN);

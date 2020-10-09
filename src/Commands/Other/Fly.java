@@ -1,128 +1,162 @@
 package Commands.Other;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import ServerControl.SPlayer;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Scheduler.Scheduler;
+import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 
-public class Fly implements CommandExecutor {
-
+public class Fly implements CommandExecutor, TabCompleter {
 	public static HashMap<SPlayer, Integer> task = new HashMap<SPlayer, Integer>();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (args.length == 0) {
-			if (API.hasPerm(s, "ServerControl.Fly")) {
+			if (Loader.has(s, "Fly", "Other")) {
 				if (s instanceof Player) {
 					SPlayer p = API.getSPlayer((Player) s);
 					if (task.get(p) != null)
-						Tasker.cancelTask(task.get(p));
+						Scheduler.cancelTask(task.get(p));
 					p.toggleFly(null);
 					return true;
 				}
-				Loader.Help(s, "/Fly <player> <on/off>", "Fly");
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Usage"), s);
+				Loader.Help(s, "Fly", "Other");
 				return true;
 			}
+			Loader.noPerms(s, "Fly", "Other");
 			return true;
 		}
+		SPlayer target = null;
 		if (args.length == 1) {
-			if (Bukkit.getServer().getPlayer(args[0]) == null) {
-				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+			if(s instanceof Player) {
+			if (args[0].equalsIgnoreCase("off") || args[0].equalsIgnoreCase("false")) {
+				target = API.getSPlayer((Player)s);
+				if (task.get(target) != null)
+					Scheduler.cancelTask(task.get(target));
+				target.disableFly();
+				Loader.sendMessages(s, "Fly.Disabled.You");
 				return true;
 			}
-			SPlayer target = API.getSPlayer(Bukkit.getServer().getPlayer(args[0]));
+			if (args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("true")) {
+				target = API.getSPlayer((Player)s);
+				if (task.get(target) != null)
+					Scheduler.cancelTask(task.get(target));
+				target.enableFly();
+				Loader.sendMessages(s, "Fly.Enabled.You");
+				return true;
+			}}
+			if (TheAPI.getPlayer(args[0]) == null) {
+				Loader.notOnline(s, args[0]);
+				return true;
+			}
+			target = API.getSPlayer(TheAPI.getPlayer(args[0]));
 			if (target.getPlayer() == s) {
-				if (API.hasPerm(s, "ServerControl.Fly")) {
+				if (Loader.has(s, "Fly", "Other")) {
 					if (task.get(target) != null)
-						Tasker.cancelTask(task.get(target));
+						Scheduler.cancelTask(task.get(target));
 					target.toggleFly(null);
 					return true;
 				}
+				Loader.noPerms(s, "Fly", "Other");
 				return true;
 			} else {
-				if (API.hasPerm(s, "ServerControl.Fly.Other")) {
+				if (Loader.has(s, "Fly", "Other", "Other")) {
 					if (task.get(target) != null)
-						Tasker.cancelTask(task.get(target));
+						Scheduler.cancelTask(task.get(target));
 					target.toggleFly(s);
 					return true;
 				}
+				Loader.noPerms(s, "Fly", "Other", "Other");
 				return true;
 			}
 		}
+		if (TheAPI.getPlayer(args[0]) == null) {
+			Loader.notOnline(s, args[0]);
+			return true;
+		}
+		target = API.getSPlayer(TheAPI.getPlayer(args[0]));
 		if (args.length == 2) {
-			if (Bukkit.getServer().getPlayer(args[0]) == null) {
-				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
-				return true;
-			}
-			SPlayer target = API.getSPlayer(Bukkit.getServer().getPlayer(args[0]));
 			if (target.getPlayer() != s) {
-				if (API.hasPerm(s, "ServerControl.Fly.Other")) {
+				if (Loader.has(s, "Fly", "Other", "Other")) {
 					if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
 						if (task.get(target) != null)
-							Tasker.cancelTask(task.get(target));
+							Scheduler.cancelTask(task.get(target));
 						target.disableFly();
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Disabled").replace("%player%", target.getName())
-								.replace("%playername%", target.getDisplayName()), target.getPlayer());
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyDisabled")
-								.replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()),
-								s);
+						Loader.sendMessages(s, "Fly.Disabled.Other.Sender", Placeholder.c().replace("%player%", target.getName())
+								.replace("%playername%", target.getDisplayName()));
+						Loader.sendMessages(target.getPlayer(), "Fly.Disabled.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
+								.replace("%playername%", s.getName()));
 						return true;
 					}
 					if (args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true")) {
 						if (task.get(target) != null)
-							Tasker.cancelTask(task.get(target));
+							Scheduler.cancelTask(task.get(target));
 						target.enableFly();
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Enabled").replace("%player%", target.getName())
-								.replace("%playername%", target.getDisplayName()), target.getPlayer());
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.SpecifiedPlayerFlyEnabled")
-								.replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()),
-								s);
+						Loader.sendMessages(s, "Fly.Enabled.Other.Sender", Placeholder.c().replace("%player%", target.getName())
+								.replace("%playername%", target.getDisplayName()));
+						Loader.sendMessages(target.getPlayer(), "Fly.Enabled.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
+								.replace("%playername%", s.getName()));
 						return true;
 					}
-					if (!args[1].equalsIgnoreCase("on") && !args[1].equalsIgnoreCase("true")
-							&& !args[1].equalsIgnoreCase("off") && !args[1].equalsIgnoreCase("false")) {
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Usage"), s);
-						return true;
-					}
+					Loader.Help(s, "Fly", "Other");
+					return true;
 				}
+				Loader.noPerms(s, "Fly", "Other", "Other");
 				return true;
 			} else {
-				if (API.hasPerm(s, "ServerControl.Fly")) {
+				if (Loader.has(s, "Fly", "Other")) {
 					if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
 						if (task.get(target) != null)
-							Tasker.cancelTask(task.get(target));
+							Scheduler.cancelTask(task.get(target));
 						target.disableFly();
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Disabled").replace("%player%", target.getName())
-								.replace("%playername%", target.getDisplayName()), target.getPlayer());
+						Loader.sendMessages(s, "Fly.Disabled.You");
 						return true;
 					}
 					if (args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true")) {
 						if (task.get(target) != null)
-							Tasker.cancelTask(task.get(target));
+							Scheduler.cancelTask(task.get(target));
 						target.enableFly();
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Enabled").replace("%player%", target.getName())
-								.replace("%playername%", target.getDisplayName()), target.getPlayer());
+						Loader.sendMessages(s, "Fly.Enabled.You");
 						return true;
 					}
-					if (!args[1].equalsIgnoreCase("on") && !args[1].equalsIgnoreCase("true")
-							&& !args[1].equalsIgnoreCase("off") && !args[1].equalsIgnoreCase("false")) {
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.Usage"), s);
-						return true;
-					}
+					Loader.Help(s, "Fly", "Other");
+					return true;
 				}
+				Loader.noPerms(s, "Fly", "Other");
 				return true;
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender s, Command arg1, String a, String[] args) {
+		List<String> c = new ArrayList<>();
+		if(args.length==1) {
+			if(Loader.has(s, "Fly", "Other")) {
+				List<String> list = Arrays.asList("On","Off");
+				if(Loader.has(s, "Fly", "Other", "Other"))
+				list.addAll(NMSAPI.getOnlinePlayersNames());
+				else list.add(s.getName());
+				c.addAll(StringUtil.copyPartialMatches(args[0], list, new ArrayList<>()));
+		}}
+		if(args.length==2)
+			if(Loader.has(s, "Fly", "Other"))
+				c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("On","Off"), new ArrayList<>()));
+		return c;
 	}
 }

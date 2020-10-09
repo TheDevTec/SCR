@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
@@ -14,8 +13,8 @@ public class ScoreboardStats implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerCotrol.Scoreboard")) {
-			TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bScoreboard Reload &e-----------------", s);
+		if (Loader.has(s, "Scoreboard", "Other")) {
+			TheAPI.msg(setting.prefix+"Reloading Scoreboard..", s);
 			TheAPI.msg("", s);
 			Utils.ScoreboardStats.removeScoreboard();
 			Loader.sb.reload();
@@ -23,7 +22,7 @@ public class ScoreboardStats implements CommandExecutor {
 				for (Player p : TheAPI.getOnlinePlayers())
 					Utils.ScoreboardStats.createScoreboard(p);
 			}
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("ConfigReloaded"), s);
+			TheAPI.msg(setting.prefix+"Scoreboard reloaded", s);
 			return true;
 		}
 		return true;

@@ -6,11 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import Utils.MultiWorldsGUI;
 import Utils.XMaterial;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.ItemCreatorAPI;
 import me.DevTec.TheAPI.GUIAPI.GUI;
 import me.DevTec.TheAPI.GUIAPI.ItemGUI;
@@ -19,19 +17,19 @@ public class Trash implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Trash")) {
+		if (Loader.has(s, "Trash", "Other")) {
 			if (s instanceof Player) {
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningTrash"), s);
-				openInv((Player) s);
+				Trash.s.open((Player) s);
 				return true;
 			}
-			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
+		Loader.noPerms(s, "Trash", "Other");
 		return true;
 	}
 	
 	private static ItemGUI clear;
+	private static GUI s;
 	static {
 		clear=new ItemGUI(ItemCreatorAPI.create(XMaterial.LAVA_BUCKET.parseMaterial(), 1, "&6Clear")) {
 			public void onClick(Player s, GUI g, ClickType c) {
@@ -39,13 +37,9 @@ public class Trash implements CommandExecutor {
 				g.remove(i);
 			}
 		};
-	}
-
-	public static void openInv(Player p) {
-		GUI s = new GUI(Loader.s("TrashTitle"), 54, p);
+		s = new GUI(Loader.getTranslation("Trash").toString(), 54);
 		s.setInsertable(true);
 		MultiWorldsGUI.smallInv(s);
 		s.setItem(49, clear);
 	}
-
 }

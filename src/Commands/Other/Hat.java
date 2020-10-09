@@ -7,8 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class Hat implements CommandExecutor {
@@ -16,11 +16,11 @@ public class Hat implements CommandExecutor {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Hat")) {
+		if (Loader.has(s, "Hat", "Other")) {
 			if (s instanceof Player) {
 				Player p = (Player) s;
 				if (p.getItemInHand().getType() == Material.AIR) {
-					TheAPI.msg(Loader.s("Hat.HandIsEmpty"), s);
+					Loader.sendMessages(s, "Missing.HandEmpty");
 					return true;
 				}
 				if (args.length == 0) {
@@ -28,24 +28,24 @@ public class Hat implements CommandExecutor {
 						p.getInventory().addItem(p.getInventory().getHelmet());
 					p.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
 					p.getInventory().setItemInHand(new ItemStack(Material.AIR));
-					TheAPI.msg(Loader.s("Hat.Equiped"), s);
+					Loader.sendMessages(s, "Hat.Equipped.You", Placeholder.c().replace("%item%", p.getInventory().getHelmet().getType().name()));
 					return true;
 				}
 				if (args.length == 1) {
 					Player t = TheAPI.getPlayer(args[0]);
 					if (t == null) {
-						TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+						Loader.notOnline(s,args[0]);
 						return true;
 					}
 					if (t.getInventory().getHelmet() != null)
 						t.getInventory().addItem(t.getInventory().getHelmet());
 					t.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
 					p.getInventory().setItemInHand(new ItemStack(Material.AIR));
-					TheAPI.msg(Loader.s("Hat.EquipedToOther").replace("%target%", t.getName()), s);
+					Loader.sendMessages(s, "Hat.Equipped.Other.Sender", Placeholder.c().replace("%player%", t.getName()).replace("%playername%", t.getDisplayName()).replace("%item%", t.getInventory().getHelmet().getType().name()));
+					Loader.sendMessages(t, "Hat.Equipped.Other.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", s.getName()).replace("%item%", t.getInventory().getHelmet().getType().name()));
 					return true;
 				}
 			}
-			TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
 			return true;
 		}
 		return true;

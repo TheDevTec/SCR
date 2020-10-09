@@ -1,56 +1,41 @@
 package Commands.Other;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
 
 public class Thor implements CommandExecutor {
-
-	public final Block getTargetBlock(Player player, int range) {
-		BlockIterator iter = new BlockIterator(player, range);
-		Block lastBlock = iter.next();
-		while (iter.hasNext()) {
-			lastBlock = iter.next();
-			if (lastBlock.getType() == Material.AIR) {
-				continue;
-			}
-			break;
-		}
-		return lastBlock;
-	}
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 
-		if (API.hasPerm(s, "ServerControl.Thor")) {
+		if (Loader.has(s, "Thor","Other")) {
 			if (args.length == 0) {
+				if(s instanceof Player) {
 				Player p2 = (Player) s;
-				Block b = getTargetBlock(p2, 100);
+				Block b = BlocksAPI.getLookingBlock(p2, 100);
 				b.getWorld().strikeLightning(b.getLocation());
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("ThorOnBlock"), s);
+				Loader.sendMessages(s, "Thor.Block");
+				return true;
+				}
+				Loader.Help(s, "Thor", "Other");
 				return true;
 			}
 			if (args.length == 1) {
-				if (args[0].equalsIgnoreCase("help")) {
-					Loader.Help(s, "/Thor ", "ThorOnBlock");
-					Loader.Help(s, "/Thor <player>", "Thor");
-				}
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null) {
 					p.getWorld().strikeLightning(p.getLocation());
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Thor").replace("%player%", p.getName())
-							.replace("%playername%", p.getDisplayName()), s);
+					Loader.sendMessages(s, "Thor.Player", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName()));
 					return true;
 				}
-				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+				Loader.notOnline(s, args[0]);
 				return true;
 			}
 			return true;

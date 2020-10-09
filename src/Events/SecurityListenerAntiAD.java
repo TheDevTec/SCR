@@ -1,6 +1,5 @@
 package Events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,7 +16,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
-import ServerControlEvents.PlayerAdvertisementEvent;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
@@ -41,12 +39,8 @@ public class SecurityListenerAntiAD implements Listener {
 		if (setting.ad_chat) {
 			if (!p.hasPermission("ServerControl.Advertisement")) {
 				if (getMatches(message)!=null) {
-					PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(event.getPlayer(), event.getMessage());
-					Bukkit.getPluginManager().callEvent(ed);
-					if (!ed.isCancelled()) {
 						sendBroadcast(p, getMatches(message), AdType.OTHER);
 						event.setCancelled(true);
-					}
 				}
 			}
 		}
@@ -59,12 +53,8 @@ public class SecurityListenerAntiAD implements Listener {
 		if (setting.ad_cmd) {
 			if (!p.hasPermission("ServerControl.Advertisement")) {
 				if (getMatches(message)!=null) {
-					PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(event.getPlayer(), event.getMessage());
-					Bukkit.getPluginManager().callEvent(ed);
-					if (!ed.isCancelled()) {
 						sendBroadcast(p, getMatches(message), AdType.OTHER);
 						event.setCancelled(true);
-					}
 				}
 			}
 		}
@@ -77,13 +67,9 @@ public class SecurityListenerAntiAD implements Listener {
 			if (!p.hasPermission("ServerControl.Advertisement")) {
 				for (String line : e.getLines()) {
 					if (getMatches(line)!=null) {
-						PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(e.getPlayer(), line);
-						Bukkit.getPluginManager().callEvent(ed);
-						if (!ed.isCancelled()) {
 							sendBroadcast(p, getMatches(line), AdType.OTHER);
 							e.setCancelled(true);
 							e.getBlock().breakNaturally();
-						}
 					}
 				}
 			}
@@ -101,12 +87,8 @@ public class SecurityListenerAntiAD implements Listener {
 				}
 				page = page.replace(" ", "");
 				if (getMatches(page)!=null) {
-					PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(e.getPlayer(), page);
-					Bukkit.getPluginManager().callEvent(ed);
-					if (!ed.isCancelled()) {
 						sendBroadcast(p, getMatches(page), AdType.OTHER);
 						e.setCancelled(true);
-					}
 				}
 			}
 		}
@@ -123,12 +105,8 @@ public class SecurityListenerAntiAD implements Listener {
 						if (event.getCurrentItem().hasItemMeta() && event.getCurrentItem().getItemMeta().hasDisplayName())
 							displayName = event.getCurrentItem().getItemMeta().getDisplayName();
 						if (getMatches(displayName)!=null) {
-							PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p, displayName);
-							Bukkit.getPluginManager().callEvent(ed);
-							if (!ed.isCancelled()) {
 								sendBroadcast(p, getMatches(displayName), AdType.OTHER);
 								event.setCancelled(true);
-							}
 						}
 					}
 				}
@@ -144,13 +122,9 @@ public class SecurityListenerAntiAD implements Listener {
 			if (!p.hasPermission("ServerControl.Advertisement")) {
 				if (displayName != null) {
 					if (getMatches(displayName)!=null) {
-						PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p, displayName);
-						Bukkit.getPluginManager().callEvent(ed);
-						if (!ed.isCancelled()) {
 							sendBroadcast(p, getMatches(displayName), AdType.ITEM);
 							event.setCancelled(true);
 							event.getItem().remove();
-						}
 					}
 				}
 			}
@@ -165,12 +139,8 @@ public class SecurityListenerAntiAD implements Listener {
 			if (!p.hasPermission("ServerControl.Advertisement")) {
 				if (displayName != null) {
 					if (getMatches(displayName)!=null) {
-						PlayerAdvertisementEvent ed = new PlayerAdvertisementEvent(p, displayName);
-						Bukkit.getPluginManager().callEvent(ed);
-						if (!ed.isCancelled()) {
 							sendBroadcast(p, getMatches(displayName), AdType.ITEM);
 							event.getItemDrop().remove();
-						}
 					}
 				}
 			}

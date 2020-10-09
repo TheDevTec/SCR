@@ -5,8 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 
@@ -14,49 +14,48 @@ public class Feed implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Feed")) {
 			if (args.length == 0) {
+				if (Loader.has(s, "Feed", "Other")) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
 					p.setFoodLevel(20);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Feed").replace("%player%", p.getName())
-							.replace("%playername%", p.getDisplayName()), s);
+					Loader.sendMessages(s, "Feed.You");
 					return true;
 				}
-				Loader.Help(s, "/Feed <player>", "Feed");
+				Loader.Help(s, "Feed", "Other");
+				return true;
+				}
 				return true;
 			}
 			if (args.length == 1) {
+				if (args[0].equals("*")) {
+					Repeat.a(s, "feed *");
+					return true;
+				}
 				Player p = TheAPI.getPlayer(args[0]);
-				if (p == null) {
-					if (args[0].equals("*")) {
-						Repeat.a(s, "feed *");
-						return true;
-					}
-					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+				if(p==null) {
+					Loader.notOnline(s, args[0]);
 					return true;
 				}
 				if (p == s) {
+					if (Loader.has(s, "Feed", "Other")) {
 					p.setFoodLevel(20);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Feed").replace("%player%", p.getName())
-							.replace("%playername%", p.getDisplayName()), s);
+					Loader.sendMessages(s, "Feed.You");
 					return true;
-
+					}
+					return true;
 				}
-				if (API.hasPerm(s, "ServerControl.Feed.Other")) {
+				if (Loader.has(s, "Feed", "Other","Other")) {
 					p.setFoodLevel(20);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.Feed").replace("%player%", p.getName())
-							.replace("%playername%", p.getDisplayName()), p);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Heal.PlayerFeed").replace("%player%", p.getName())
-							.replace("%playername%", p.getDisplayName()), s);
+					Loader.sendMessages(s, "Feed.Other.Sender", Placeholder.c().replace("%player%", p.getName())
+							.replace("%playername%", p.getDisplayName()));
+					Loader.sendMessages(p, "Feed.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
+							.replace("%playername%", s.getName()));
 					return true;
 				}
 				return true;
 			}
 			return true;
-		}
-		TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
-		return true;
 	}
 
 }

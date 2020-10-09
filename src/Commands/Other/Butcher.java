@@ -7,23 +7,25 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI.TheAPI;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Butcher implements CommandExecutor {
 
-	public static int butcher(World a, Location w, int radius) {
+	public static int butcher(World a, Location w, int radius, EntityType type) {
 		if (radius == 0) {
 			int killed = 0;
 			for (Entity e : a.getEntities()) {
 				if (e instanceof Player == false) {
+					if(e.getType()==type) {
 					++killed;
 					e.remove();
+				}
 				}
 			}
 			return killed;
@@ -33,8 +35,10 @@ public class Butcher implements CommandExecutor {
 				radius = 100000;
 			for (Entity e : BlocksAPI.getNearbyEntities(w, radius)) {
 				if (e instanceof Player == false) {
+					if(e.getType()==type) {
 					++killed;
 					e.remove();
+					}
 				}
 			}
 			return killed;
@@ -43,28 +47,37 @@ public class Butcher implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Butcher")) {
+		if (Loader.has(s, "Butcher", "Other")) {
 			if (args.length == 0) {
-				if (s instanceof Player)
-					Loader.Help(s, "/Butcher <radius>", "Butcher");
-				else
-					Loader.Help(s, "/Butcher <world>", "Butcher");
+				Loader.Help(s, "Butcher", "Other");
 				return true;
 			}
 			if (args.length == 1) {
 				if (s instanceof Player == false) {
 					World w = Bukkit.getWorld(args[0]);
 					if (w == null) {
-						TheAPI.msg(Loader.s("Butcher.WorldIsInvalid").replace("%world%", args[0]), s);
+						Loader.sendMessages(s, "Missing.World", Placeholder.c().add("%world%", args[0]));
 						return true;
 					}
-					TheAPI.msg(Loader.s("Butcher.Killed").replace("%amount%", butcher(w, null, 0) + ""), s);
+					Loader.sendMessages(s, "Butcher.Killed", Placeholder.c().add("%amount%", butcher(w, null, 0,null) + ""));
 					return true;
 				}
-				TheAPI.msg(Loader.s("Butcher.Killed").replace("%amount%", butcher(((Player) s).getWorld(),
-						((Player) s).getLocation(), StringUtils.getInt(args[0])) + ""), s);
+				Loader.sendMessages(s, "Butcher.Killed", Placeholder.c().add("%amount%", butcher(((Player) s).getWorld(),
+						((Player) s).getLocation(), StringUtils.getInt(args[0]),null) + ""));
 				return true;
 			}
+			if (s instanceof Player == false) {
+				World w = Bukkit.getWorld(args[0]);
+				if (w == null) {
+					Loader.sendMessages(s, "Missing.World", Placeholder.c().add("%world%", args[0]));
+					return true;
+				}
+				Loader.sendMessages(s, "Butcher.Killed", Placeholder.c().add("%amount%", butcher(w, null, 0, EntityType.valueOf(args[1].toUpperCase())) + ""));
+				return true;
+			}
+			Loader.sendMessages(s, "Butcher.Killed", Placeholder.c().add("%amount%", butcher(((Player) s).getWorld(),
+					((Player) s).getLocation(), StringUtils.getInt(args[0]), EntityType.valueOf(args[1].toUpperCase())) + ""));
+			return true;
 		}
 		return true;
 	}

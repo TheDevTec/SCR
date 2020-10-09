@@ -13,8 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class Repair implements CommandExecutor, TabCompleter {
@@ -22,59 +22,74 @@ public class Repair implements CommandExecutor, TabCompleter {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+		if(args.length<2) {
 		if (s instanceof Player) {
-			if (API.hasPerm(s, "ServerControl.Repair")) {
+			if (Loader.has(s, "Repair", "Other")) {
 				Player p = (Player) s;
 				if (args.length == 0) {
 					Material hand = p.getItemInHand().getType();
 					if (hand != Material.AIR) {
-						if (p.getInventory().getItemInHand().getDurability() != 0)
-							p.getItemInHand().setDurability((short) 0);
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.Repaired"), s);
-						return true;
+						p.getItemInHand().setDurability((short) 0);
+					Loader.sendMessages(s, "Repair.Hand.You");
+					return true;
 					}
-
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.HandIsEmpty"), s);
+					Loader.sendMessages(s, "Missing.HandEmpty");
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("all")) {
 					ItemStack[] items = p.getInventory().getContents();
 					for (ItemStack t : items) {
-						if (t != null)
-							if (t.getDurability() != 0)
-								t.setDurability((short) 0);
+						if (t != null && t.getType()!=Material.AIR)
+							t.setDurability((short) 0);
 					}
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.RepairedAll"), s);
+					Loader.sendMessages(s, "Repair.All.You");
 					return true;
 				}
-				if (args[0].equalsIgnoreCase("hand")) {
 					Material hand = p.getItemInHand().getType();
 					if (hand != Material.AIR) {
-						if (p.getInventory().getItemInHand().getDurability() != 0)
-							p.getItemInHand().setDurability((short) 0);
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.Repaired"), s);
-						return true;
-					}
-
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.HandIsEmpty"), s);
+						p.getItemInHand().setDurability((short) 0);
+					Loader.sendMessages(s, "Repair.Hand.You");
 					return true;
-				}
-				if (!args[0].equalsIgnoreCase("hand") || !args[0].equalsIgnoreCase("all")) {
-					Material hand = p.getItemInHand().getType();
-					if (hand != Material.AIR) {
-						if (p.getInventory().getItemInHand().getDurability() != 0)
-							p.getItemInHand().setDurability((short) 0);
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.Repaired"), s);
-						return true;
 					}
-
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Repair.HandIsEmpty"), s);
+					Loader.sendMessages(s, "Missing.HandEmpty");
 					return true;
-				}
 			}
+			Loader.noPerms(s, "Repair", "Other");
 			return true;
 		}
-		TheAPI.msg(Loader.s("ConsoleErrorMessage"), s);
+		Loader.Help(s, "Repair", "Other");
+		return true;
+		}
+		if (Loader.has(s, "Repair", "Other", "Other")) {
+			Player p = TheAPI.getPlayer(args[2]);
+			if(p==null) {
+				Loader.notOnline(s, args[2]);
+				return true;
+			}
+			if (args[0].equalsIgnoreCase("all")) {
+				ItemStack[] items = p.getInventory().getContents();
+				for (ItemStack t : items) {
+					if (t != null && t.getType()!=Material.AIR)
+						t.setDurability((short) 0);
+				}
+				Loader.sendMessages(s, "Repair.All.Other.Sender");
+				Loader.sendMessages(p, "Repair.All.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
+						.replace("%playername%", s.getName()));
+				return true;
+			}
+			Material hand = p.getItemInHand().getType();
+			if (hand != Material.AIR) {
+				p.getItemInHand().setDurability((short) 0);
+				Loader.sendMessages(s, "Repair.Hand.Other.Sender");
+				Loader.sendMessages(p, "Repair.Hand.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
+						.replace("%playername%", s.getName()));
+			return true;
+			}
+			Loader.sendMessages(s, "Missing.TargetHandEmpty", Placeholder.c().replace("%player%", p.getName())
+					.replace("%playername%", p.getDisplayName()));
+			return true;
+		}
+		Loader.noPerms(s, "Repair", "Other", "Other");
 		return true;
 	}
 
@@ -83,8 +98,9 @@ public class Repair implements CommandExecutor, TabCompleter {
 		List<String> c = new ArrayList<String>();
 		List<String> s = Arrays.asList("Hand", "All");
 		if (args.length == 1)
-			if (API.hasPerm(arg0, "ServerControl.Repair"))
+			if (Loader.has(arg0, "Repair", "Other"))
 				c.addAll(StringUtil.copyPartialMatches(args[0], s, new ArrayList<>()));
+		if(args.length==2)return null;
 		return c;
 	}
 

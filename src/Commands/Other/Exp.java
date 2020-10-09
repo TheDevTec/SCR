@@ -12,8 +12,8 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
@@ -29,175 +29,171 @@ public class Exp implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (args.length == 0) {
-			if (s.hasPermission("servercontrol.xp.give"))
-				Loader.Help(s, "/Xp Give <player> <amount> <xp/level>", "Xp.Give");
-			if (s.hasPermission("servercontrol.xp.take"))
-				Loader.Help(s, "/Xp Take <player> <amount> <xp/level>", "Xp.Take");
-			if (s.hasPermission("servercontrol.xp.balance"))
-				Loader.Help(s, "/Xp Balance <player> <xp/level>", "Xp.Balance");
-			if (s.hasPermission("servercontrol.xp.set"))
-				Loader.Help(s, "/Xp Set <player> <xp/level>", "Xp.Set");
+			Loader.Help(s, "Experiences", "Other");
 			return true;
 		}
 		if (isAlias(args[0], "set")) {
-			if (API.hasPerm(s, "servercontrol.xp.set")) {
+			if (Loader.has(s, "Experiences", "Other", "Set")) {
 				if (args.length == 1 || args.length == 2) {
-					Loader.Help(s, "/Xp Set <player> <amount> <xp/level>", "Xp.Set");
+					Loader.Help(s, "Experiences", "Other");
 					return true;
 				}
 				Player p = TheAPI.getPlayer(args[1]);
 				if(args.length==3) {
 					if (p == null) {
 						if (args[0].equals("*")) {
-							Repeat.a(s, "xp set * " + StringUtils.getInt(args[2]));
+							Repeat.a(s, "xp set * " + StringUtils.getFloat(args[2]));
 							return true;
 						}
-						TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
+						Loader.notOnline(s, args[1]);
 						return true;
 					}
-					float add = StringUtils.getInt(args[2]);
+					float add = StringUtils.getFloat(args[2]);
 					p.setExp(add>0?add:0);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Taken").replace("%player%", p.getName())
+					Loader.sendMessages(s, "Experiences.Set", Placeholder.c().replace("%player%", p.getName())
 							.replace("%playername%", p.getDisplayName())
-							.replace("%amount%", "" + StringUtils.getInt(args[2])), s);
+							.replace("%amount%", "" + StringUtils.getFloat(args[2])).replace("%type%", Loader.getTranslation("Experiences.Words.Exp").toString()));
 					return true;
 					}
 					if (p == null) {
 						if (args[0].equals("*")) {
-							Repeat.a(s, "xp set * " + StringUtils.getInt(args[2])+" "+args[3]);
+							Repeat.a(s, "xp set * " + StringUtils.getFloat(args[2])+" "+args[3]);
 							return true;
 						}
-						TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
+						Loader.notOnline(s, args[1]);
 						return true;
 					}
 					if(args[3].toLowerCase().contains("level")) {
 						int add = StringUtils.getInt(args[2]);
 						p.setLevel(add>0?add:0);
+						Loader.sendMessages(s, "Experiences.Set", Placeholder.c().replace("%player%", p.getName())
+								.replace("%playername%", p.getDisplayName())
+								.replace("%amount%", "" + StringUtils.getFloat(args[2])).replace("%type%", Loader.getTranslation("Experiences.Words.level").toString()));
+						
 					}else {
-						float add = StringUtils.getInt(args[2]);
+						float add = StringUtils.getFloat(args[2]);
 						p.setExp(add>0?add:0);
+						Loader.sendMessages(s, "Experiences.Set", Placeholder.c().replace("%player%", p.getName())
+								.replace("%playername%", p.getDisplayName())
+								.replace("%amount%", "" + StringUtils.getFloat(args[2])).replace("%type%", Loader.getTranslation("Experiences.Words.Exp").toString()));
 					}
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Set").replace("%player%", p.getName())
-							.replace("%playername%", p.getDisplayName())
-							.replace("%amount%", "" + StringUtils.getInt(args[2])), s);
 					return true;
 			}
 			return true;
 		}
 		if (isAlias(args[0], "balance")) {
-			if (API.hasPerm(s, "servercontrol.xp.balance")) {
+			if (Loader.has(s, "Experiences", "Other", "Balance")) {
 				if (args.length == 1) {
-					Loader.Help(s, "/Xp Balance <player> <xp/level>", "Xp.Balance");
+					Loader.Help(s, "Experiences", "Other");
 					return true;
 				}
 				Player p = TheAPI.getPlayer(args[1]);
 				if (p == null) {
-					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
+					Loader.notOnline(s, args[1]);
 					return true;
 				}
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Balance").replace("%player%", p.getName())
+				Loader.sendMessages(s, "Experiences.Balance", Placeholder.c().replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName())
-						.replace("%amount%", "" +((args.length>=3?args[2].toLowerCase().contains("level"):false)?p.getLevel(): p.getExp())), s);
+						.replace("%amount%", "" + ((args.length>=3?args[2].toLowerCase().contains("level"):false)?p.getLevel(): p.getExp())).replace("%type%", Loader.getTranslation("Experiences.Words."+(((args.length>=3?args[2].toLowerCase().contains("level"):false)?"Level": "Exp"))).toString()));
 				return true;
 			}
 			return true;
 		}
 		if (isAlias(args[0], "give")) {
-			if (API.hasPerm(s, "servercontrol.xp.give")) {
+			if (Loader.has(s, "Experiences", "Other", "Give")) {
 				if (args.length == 1 || args.length == 2) {
-					Loader.Help(s, "/Xp Give <player> <amount> <xp/level>", "Xp.Give");
+					Loader.Help(s, "Experiences", "Other");
 					return true;
 				}
 				Player p = TheAPI.getPlayer(args[1]);
 				if(args.length==3) {
 				if (p == null) {
 					if (args[0].equals("*")) {
-						Repeat.a(s, "xp give * " + StringUtils.getInt(args[2]));
+						Repeat.a(s, "xp give * " + StringUtils.getFloat(args[2]));
 						return true;
 					}
-					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
+					Loader.notOnline(s, args[1]);
 					return true;
 				}
-				float add = p.getExp()+StringUtils.getInt(args[2]);
+				float add = p.getExp()+StringUtils.getFloat(args[2]);
 				p.setExp(add>0?add:0);
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Taken").replace("%player%", p.getName())
+				Loader.sendMessages(s, "Experiences.Given", Placeholder.c().replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName())
-						.replace("%amount%", "" + StringUtils.getInt(args[2])), s);
+						.replace("%amount%", "" + StringUtils.getFloat(args[2])).replace("%type%", Loader.getTranslation("Experiences.Words.Exp").toString()));
 				return true;
 				}
 				if (p == null) {
 					if (args[0].equals("*")) {
-						Repeat.a(s, "xp give * " + StringUtils.getInt(args[2])+" "+args[3]);
+						Repeat.a(s, "xp give * " + StringUtils.getFloat(args[2])+" "+args[3]);
 						return true;
 					}
-					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
+					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", args[1]).add("%playername%", args[1]));
 					return true;
 				}
 				if(args[3].toLowerCase().contains("level")) {
 					int add = p.getLevel()+StringUtils.getInt(args[2]);
 					p.setLevel(add>0?add:0);
-				}else {
-					float add = p.getExp()+StringUtils.getInt(args[2]);
+					Loader.sendMessages(s, "Experiences.Given", Placeholder.c().replace("%player%", p.getName())
+							.replace("%playername%", p.getDisplayName())
+							.replace("%amount%", "" + StringUtils.getFloat(args[2])).replace("%type%", Loader.getTranslation("Experiences.Words.Level").toString()));
+					}else {
+					float add = p.getExp()+StringUtils.getFloat(args[2]);
 					p.setExp(add>0?add:0);
-				}
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Given").replace("%player%", p.getName())
-						.replace("%playername%", p.getDisplayName())
-						.replace("%amount%", "" + StringUtils.getInt(args[2])), s);
+					Loader.sendMessages(s, "Experiences.Given", Placeholder.c().replace("%player%", p.getName())
+							.replace("%playername%", p.getDisplayName())
+							.replace("%amount%", "" + StringUtils.getFloat(args[2])).replace("%type%", Loader.getTranslation("Experiences.Words.Exp").toString()));
+					}
 				return true;
 		}return true;}
 		if (isAlias(args[0], "take")) {
-			if (API.hasPerm(s, "servercontrol.xp.take")) {
+			if (Loader.has(s, "Experiences", "Other", "Remove")) {
 				if (args.length == 1 || args.length == 2) {
-					Loader.Help(s, "/Xp Take <player> <amount> <xp/level>", "Xp.Take");
+					Loader.Help(s, "Experiences", "Other");
 					return true;
 				}
 				Player p = TheAPI.getPlayer(args[1]);
 				if(args.length==3) {
 				if (p == null) {
 					if (args[0].equals("*")) {
-						Repeat.a(s, "xp take * " + StringUtils.getInt(args[2]));
+						Repeat.a(s, "xp take * " + StringUtils.getFloat(args[2]));
 						return true;
 					}
-					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
+					Loader.notOnline(s, args[1]);
 					return true;
 				}
-				float take = p.getExp()-StringUtils.getInt(args[2]);
+				float take = p.getExp()-StringUtils.getFloat(args[2]);
 				p.setExp(take<0?0:take);
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Taken").replace("%player%", p.getName())
+				Loader.sendMessages(s, "Experiences.Taken", Placeholder.c().replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName())
-						.replace("%amount%", "" + StringUtils.getInt(args[2])), s);
+						.replace("%amount%", "" + StringUtils.getFloat(args[2])).replace("%type%", Loader.getTranslation("Experiences.Words.Exp").toString()));
 				return true;
 				}
 				if (p == null) {
 					if (args[0].equals("*")) {
-						Repeat.a(s, "xp take * " + StringUtils.getInt(args[2])+" "+args[3]);
+						Repeat.a(s, "xp take * " + StringUtils.getFloat(args[2])+" "+args[3]);
 						return true;
 					}
-					TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
+					Loader.notOnline(s, args[1]);
 					return true;
 				}
 				if(args[3].toLowerCase().contains("level")) {
 					int take = p.getLevel()-StringUtils.getInt(args[2]);
 					p.setLevel(take<0?0:take);
-				}else {
-					float take = p.getExp()-StringUtils.getInt(args[2]);
+					Loader.sendMessages(s, "Experiences.Taken", Placeholder.c().replace("%player%", p.getName())
+							.replace("%playername%", p.getDisplayName())
+							.replace("%amount%", "" + StringUtils.getFloat(args[2])).replace("%type%", Loader.getTranslation("Experiences.Words.Level").toString()));
+					}else {
+					float take = p.getExp()-StringUtils.getFloat(args[2]);
 					p.setExp(take<0?0:take);
-				}
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Xp.Taken").replace("%player%", p.getName())
-						.replace("%playername%", p.getDisplayName())
-						.replace("%amount%", "" + StringUtils.getInt(args[2])), s);
+					Loader.sendMessages(s, "Experiences.Taken", Placeholder.c().replace("%player%", p.getName())
+							.replace("%playername%", p.getDisplayName())
+							.replace("%amount%", "" + StringUtils.getFloat(args[2])).replace("%type%", Loader.getTranslation("Experiences.Words.Exp").toString()));
+					}
 				return true;
 			}
 			return true;
 		}
-		if (s.hasPermission("servercontrol.xp.give"))
-			Loader.Help(s, "/Xp Give <player> <amount> <xp/level>", "Xp.Give");
-		if (s.hasPermission("servercontrol.xp.take"))
-			Loader.Help(s, "/Xp Take <player> <amount> <xp/level>", "Xp.Take");
-		if (s.hasPermission("servercontrol.xp.balance"))
-			Loader.Help(s, "/Xp Balance <player> <xp/level>", "Xp.Balance");
-		if (s.hasPermission("servercontrol.xp.set"))
-			Loader.Help(s, "/Xp Set <player> <xp/level>", "Xp.Set");
+		Loader.Help(s, "Experiences", "Other");
 		return true;
 	}
 

@@ -47,7 +47,7 @@ public class SPlayer {
 		getPlayer().setRemainingAir(getPlayer().getMaximumAir());
 	}
 
-	public void enableTempFly(int stop) {
+	public void enableTempFly(long stop) {
 		User s = TheAPI.getUser(this.s);
 		enableTempFly();
 		Loader.sendMessages(getPlayer(), "Fly.Temp.Enabled.You", Placeholder.c().add("%time%", StringUtils.setTimeToString(stop)));
