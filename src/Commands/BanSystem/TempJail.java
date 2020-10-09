@@ -9,7 +9,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
@@ -21,9 +20,9 @@ public class TempJail implements CommandExecutor, TabCompleter {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.TempJail")) {
+		if (Loader.has(s, "TempJail", "BanSystem")) {
 			if (args.length == 0) {
-				TheAPI.msg("/TempJail <player> <time> <reason>", s);
+				Loader.Help(s, "TempJail", "BanSystem");
 				return true;
 			}
 			if (args.length == 1) {

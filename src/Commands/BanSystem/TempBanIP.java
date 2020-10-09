@@ -5,7 +5,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
@@ -16,9 +15,9 @@ public class TempBanIP implements CommandExecutor {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.TempBanIP")) {
+		if (Loader.has(s, "TempBanIP", "BanSystem")) {
 			if (args.length == 0) {
-				TheAPI.msg("/TempBanIP <player/IP> <time> <reason>", s);
+				Loader.Help(s, "TempBanIP", "BanSystem");
 				return true;
 			}
 			if (args.length == 1) {

@@ -6,47 +6,39 @@ import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
-public class Tpaall implements CommandExecutor, TabCompleter {
+public class Tpaall implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Tpaall")) {
+		if (Loader.has(s, "TpaAll", "TpSystem")) {
 			if (s instanceof Player) {
-				ArrayList<String> list = new ArrayList<String>();
+				List<String> list = new ArrayList<String>();
 				for (Player d : TheAPI.getOnlinePlayers()) {
 					if (d == s)
 						continue;
 					String p = d.getName();
-					if (!RequestMap.containsRequest(p, s.getName())) {
+					if (!RequestMap.has(p, s.getName())) {
 						if (!TheAPI.getUser(p).getBoolean("TpBlock." + s.getName())
 								&& !TheAPI.getUser(p).getBoolean("TpBlock-Global")) {
 							list.add(p);
-							RequestMap.addRequest(s.getName(), p, RequestMap.Type.TPAHERE);
+							RequestMap.add((Player)s, p, 1);
 						}
 					}
 				}
-				if (!list.isEmpty())
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.Tpaall").replace("%players%",
-							StringUtils.join(list, ", ")), s);
-				else
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("TpaSystem.Tpaall").replace("%players%", "---"), s);
+				Loader.sendMessages(s, "TpSystem.TpaAll", Placeholder.c().replace("%list%",
+							list.isEmpty()?"none":StringUtils.join(list, ", ")).replace("%amount%",
+									list.size()+""));
 				return true;
 			}
 			return true;
 		}
 		return true;
-	}
-
-	@Override
-	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		return new ArrayList<>();
 	}
 }

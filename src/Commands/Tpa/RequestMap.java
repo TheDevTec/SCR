@@ -18,21 +18,55 @@ import me.DevTec.TheAPI.Utils.DataKeeper.User;
  * 
  * @author waskerSK
  * 
- * Updated by StraikerinaCZ
+ * 9.10. 2020
+ * Updated by StraikerinaCZ (DevTec)
  */
 public class RequestMap {
 	//Types: 0 = TPA, 1 = TPAHERE
 	public static void add(Player sender, String target, int type) {
+		if(has(sender.getName(), target)) {
+			Loader.sendMessages(sender, "TpSystem.HaveRequest", Placeholder.c().replace("%player%", target).replace("%playername%", target)
+					.replace("%type%", TheAPI.getUser(sender.getUniqueId()).getInt("teleport." + target + ".b")==0?"TPA":"TPAHERE"));
+			return;
+		}
+		if(isBlocking(target, sender.getName())) {
+			Loader.sendMessages(sender, "TpSystem.Block.IsBlocked.Request", Placeholder.c().replace("%player%", target).replace("%playername%", target));
+			return;
+		}
 		User s = TheAPI.getUser(sender.getUniqueId());
 		s.set("teleport." + target + ".a", type);
 		s.setAndSave("teleport." + target + ".b", System.currentTimeMillis()/1000);
 		if(type==1) //Tpahere
 		if (setting.tp_onreqloc)
 			s.setAndSave("teleport." + target + ".c", new Position(sender.getLocation()).toString()); //teleport target to request position
+
+		User d = TheAPI.getUser(target);
+		d.setAndSave("tpcancel."+sender.getName(), type);
+	}
+	
+	public static boolean isBlocking(String sender, String target) {
+		return TheAPI.getUser(sender).getBoolean("TpBlock." + target) || TheAPI.getUser(sender).getBoolean("TpBlock-Global");
+	}
+	
+	public static void cancel(Player sender) {
+		List<String> aw = new ArrayList<>(TheAPI.getUser(sender.getUniqueId()).getKeys("tpcancel"));
+		if(aw.isEmpty()) {
+			Loader.sendMessages(sender, "TpSystem.NoRequest");
+		}else {
+			String first = aw.get(0);
+			remove(sender.getName(), first);
+			Loader.sendMessages(sender, "TpSystem.Cancel.Sender", Placeholder.c().add("%player%", first).add("%playername%", TheAPI.getPlayerOrNull(first)!=null?TheAPI.getPlayerOrNull(first).getDisplayName():first));
+			if(TheAPI.getPlayerOrNull(first)!=null)
+				Loader.sendMessages(TheAPI.getPlayerOrNull(first), "TpSystem.Cancel.Receiver",
+						Placeholder.c().add("%player%", sender.getName()).add("%playername%", sender.getDisplayName()));
+		}
 	}
 
 	public static void remove(String sender, String target) {
-		TheAPI.getUser(sender).setAndSave("teleport." + target, null);
+		TheAPI.getUser(sender).getData().remove("teleport." + target);
+		TheAPI.getUser(sender).save();
+		TheAPI.getUser(target).getData().remove("tpcancel." + sender);
+		TheAPI.getUser(target).save();
 	}
 
 	public static Player getFirst(String sender) {

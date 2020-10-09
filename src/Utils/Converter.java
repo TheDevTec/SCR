@@ -2,46 +2,55 @@ package Utils;
 
 import java.io.File;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-
+import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.ConfigAPI.ConfigAPI;
+import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.Utils.Position;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class Converter {
 	public static void convert() {
 		if(new File("plugins/ServerControlReloaded/ChatMe.yml").exists()) {
-			ConfigAPI me = TheAPI.getConfig("ServerControlReloaded", "ChatMe");
-			if(!me.exist("Players")) {
-				Bukkit.getConsoleSender().sendMessage("Players dosn't exist!");
-				return;
-			}
-			me.create();
-			for(String playername: me.getConfigurationSection("Players").getKeys(false)) {
+			Config me = new Config("ServerControlReloaded/ChatMe.yml");
+			if(!me.exists("Players")) {
+				me.getData().getFile().delete();
+			}else {
+			for(String playername: me.getKeys("Players")) {
 				User user = TheAPI.getUser(playername);
-				ConfigurationSection sec = me.getConfigurationSection("Players."+playername);
-				for(String s : sec.getKeys(true)) {
+				for(String s : me.getKeys("Players."+playername,true)) {
 					if(s.startsWith("Homes")) {
 						if(!s.endsWith("Homes")) continue;
-						for(String home : me.getConfigurationSection("Players."+playername+".Homes").getKeys(false)) {
-							ConfigAPI mee = TheAPI.getConfig("ServerControlReloaded", "ChatMe");
-							double x = mee.getDouble("Players."+playername+".Homes."+home+".X");
-							double y = mee.getDouble("Players."+playername+".Homes."+home+".Y");
-							double z = mee.getDouble("Players."+playername+".Homes."+home+".Z");
-							float yaw = (float)mee.getLong("Players."+playername+".Homes."+home+".Yaw");
-							float pitch = (float)mee.getLong("Players."+playername+".Homes."+home+".Pitch");
-							user.set("Homes."+home, new Position(mee.getString("Players."+playername+".Homes."+home+".World"), x, y, z, yaw, pitch).toString());
+						for(String home : me.getKeys("Players."+playername+".Homes")) {
+							double x = me.getDouble("Players."+playername+".Homes."+home+".X");
+							double y = me.getDouble("Players."+playername+".Homes."+home+".Y");
+							double z = me.getDouble("Players."+playername+".Homes."+home+".Z");
+							float yaw = (float)me.getLong("Players."+playername+".Homes."+home+".Yaw");
+							float pitch = (float)me.getLong("Players."+playername+".Homes."+home+".Pitch");
+							user.set("Homes."+home, new Position(me.getString("Players."+playername+".Homes."+home+".World"), x, y, z, yaw, pitch).toString());
 						}
 					continue;
 					}else
-					user.set(s, sec.get(s));
+					user.set(s, me.get("Players."+playername+"."+s));
 				}
 				user.save();
 			}
-			me.delete();
+			me.getData().getFile().delete();
+		}}
+		if(new File("plugins/ServerControlReloaded/Config.yml").exists()) {
+			if(Loader.config.exists("Spawn") && Loader.config.get("Spawn") == null) { //old format
+				Position n = null;
+				try {
+				n=new Position(Loader.config.getString("Spawn.World"), Loader.config.getDouble("Spawn.X"), Loader.config.getDouble("Spawn.Y"), Loader.config.getDouble("Spawn.Z"), Loader.config.getFloat("Spawn.X_Pos_Head"), Loader.config.getFloat("Spawn.Z_Pos_Head"));
+				}catch(Exception er) {}
+				Loader.config.set("Spawn.World", null);
+				Loader.config.set("Spawn.X", null);
+				Loader.config.set("Spawn.Y", null);
+				Loader.config.set("Spawn.Z", null);
+				Loader.config.set("Spawn.X_Pos_Head", null);
+				Loader.config.set("Spawn.Z_Pos_Head", null);
+				Loader.config.set("Spawn", n!=null?n.toString():null);
+				Loader.config.save();
+			}
 		}
-		
 	}
 }

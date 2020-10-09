@@ -14,112 +14,43 @@ import org.bukkit.util.StringUtil;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 
 public class Eco implements CommandExecutor, TabCompleter {
-
-	public void give(CommandSender s) {
-		Loader.Help(s, "/Eco give <player> <money>", "Economy.Give");
-	}
-
-	public void take(CommandSender s) {
-		Loader.Help(s, "/Eco take <player> <money>", "Economy.Take");
-	}
-
-	public void reset(CommandSender s) {
-		Loader.Help(s, "/Eco reset <player>", "Economy.Reset");
-	}
-
-	public void pay(CommandSender s) {
-		Loader.Help(s, "/Eco pay <player> <money>", "Economy.Pay");
-	}
-
-	public void bal(CommandSender s) {
-		Loader.Help(s, "/Eco <player>", "Economy.Balance");
-	}
-
-	public void set(CommandSender s) {
-		Loader.Help(s, "/Eco set <player> <money>", "Economy.Set");
-	}
-
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (EconomyAPI.getEconomy() == null) {
-			TheAPI.msg(Loader.s("Prefix") + "&cMissing Vault plugin for economy.", s);
 			return true;
 		}
 
 		if (args.length == 0) {
 			if (s instanceof Player) {
-				if (API.hasPerm(s, "ServerControl.Balance")) {
-					Player p = (Player) s;
-					TheAPI.msg(Loader.s("Economy.Balance")
-							.replace("%money%",
-									API.setMoneyFormat(EconomyAPI.getBalance(s.getName()), true))
-							.replace("%currently%",
-									API.setMoneyFormat(EconomyAPI.getBalance(s.getName()), true))
-							.replace("%prefix%", Loader.s("Prefix")).replace("%player%", s.getName())
-							.replace("%playername%", p.getDisplayName()), s);
+				if (Loader.has(s, "Economy", "Economy", "Balance")) {
+					Loader.sendMessages(s, "Economy.Balance.You");
 					return true;
 				}
 				return true;
 			}
-			TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bHelp &e-----------------", s);
-			TheAPI.msg("", s);
-			bal(s);
-			give(s);
-			take(s);
-			set(s);
-			reset(s);
-			return true;
-		}
-
-		if (args[0].equalsIgnoreCase("Help")) {
-			TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bHelp &e-----------------", s);
-			TheAPI.msg("", s);
-			if (s instanceof Player)
-				if (s.hasPermission("ServerControl.Pay"))
-					pay(s);
-			if (s.hasPermission("ServerControl.Balance.Other"))
-				bal(s);
-
-			if (s.hasPermission("ServerControl.Economy.Give")) {
-				give(s);
-			}
-			if (s.hasPermission("ServerControl.Economy.Take")) {
-				take(s);
-			}
-			if (s.hasPermission("ServerControl.Economy.Reset")) {
-				reset(s);
-			}
-			if (s.hasPermission("ServerControl.Economy.Set")) {
-				set(s);
-			}
+			Loader.Help(s, "Economy", "Economy");
 			return true;
 		}
 		if (TheAPI.existsUser(args[0])) {
-			if (API.hasPerm(s, "ServerControl.Balance.Other")) {
-
-				String world = Bukkit.getWorlds().get(0).getName();
-				if (TheAPI.getPlayer(s.getName()) != null)
-					world = ((Player) s).getWorld().getName();
-
-				TheAPI.msg(Loader.s("Economy.BalanceOther")
+			if (Loader.has(s, "Economy", "Economy", "BalanceOther")) {
+				String world = s instanceof Player ? ((Player) s).getWorld().getName() :Bukkit.getWorlds().get(0).getName();
+				Loader.sendMessages(s, "Economy.Balance.Other", Placeholder.c()
 						.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(args[0], world), true))
-						.replace("%currently%",
-								API.setMoneyFormat(EconomyAPI.getBalance(args[0], world), true))
-						.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[0])
-						.replace("%playername%", args[0]), s);
+						.replace("%player%", args[0]).replace("%playername%", args[0]));
 				return true;
 			}
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("Give")) {
-			if (API.hasPerm(s, "ServerControl.Economy.Give")) {
+			if (Loader.has(s, "Economy", "Economy", "Give")) {
 				if (args.length == 1 || args.length == 2) {
-					give(s);
+					Loader.Help(s, "Economy", "Economy");
 					return true;
 				}
 				if (args.length == 3) {
@@ -130,26 +61,14 @@ public class Eco implements CommandExecutor, TabCompleter {
 					if (TheAPI.existsUser(args[1])) {
 						double given = API.convertMoney(args[2]);
 						EconomyAPI.depositPlayer(args[1], given);
-						TheAPI.msg(Loader.s("Economy.GivenToPlayer").replace("%money%", API.setMoneyFormat(given, true))
-								.replace("%currently%",
-										API.setMoneyFormat(EconomyAPI.getBalance(args[1]), true))
-								.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[1])
-								.replace("%playername%", args[1]), s);
-						if (TheAPI.getPlayer(args[1]) != null) {
-							TheAPI.msg(
-									Loader.s("Economy.Given").replace("%money%", API.setMoneyFormat(given, true))
-											.replace("%currently%",
-													API.setMoneyFormat(EconomyAPI.getBalance(args[1]),
-															true))
-											.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[1])
-											.replace("%playername%", args[1]),
-									get(args[1]));
-							return true;
-						}
+						Loader.sendMessages(s, "Economy.Give.Sender", Placeholder.c().replace("%player%", args[1]).replace("%playername%", args[1])
+								.replace("%money%", API.setMoneyFormat(given, true)));
+						if(TheAPI.getPlayerOrNull(args[1])!=null)
+						Loader.sendMessages(TheAPI.getPlayerOrNull(args[1]), "Economy.Give.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", s.getName())
+								.replace("%money%", API.setMoneyFormat(given, true)));
 						return true;
 					}
-
-					TheAPI.msg(Loader.PlayerNotEx(args[1]), s);
+					Loader.notExist(s, args[1]);
 					return true;
 
 				}
@@ -157,9 +76,9 @@ public class Eco implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("Take")) {
-			if (API.hasPerm(s, "ServerControl.Economy.Take")) {
+			if (Loader.has(s, "Economy", "Economy", "Take")) {
 				if (args.length == 1 || args.length == 2) {
-					take(s);
+					Loader.Help(s, "Economy", "Economy");
 					return true;
 				}
 				if (args.length == 3) {
@@ -170,39 +89,25 @@ public class Eco implements CommandExecutor, TabCompleter {
 					if (TheAPI.existsUser(args[1])) {
 						double taken = API.convertMoney(args[2]);
 						EconomyAPI.withdrawPlayer(args[1], taken);
-						TheAPI.msg(
-								Loader.s("Economy.TakenFromPlayer").replace("%money%", API.setMoneyFormat(taken, true))
-										.replace("%currently%",
-												API.setMoneyFormat(EconomyAPI.getBalance(args[1]), true))
-										.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[1])
-										.replace("%playername%", args[1]),
-								s);
-
-						if (TheAPI.getPlayer(args[1]) != null) {
-							TheAPI.msg(
-									Loader.s("Economy.Taken").replace("%money%", API.setMoneyFormat(taken, true))
-											.replace("%currently%",
-													API.setMoneyFormat(EconomyAPI.getBalance(args[1]),
-															true))
-											.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[1])
-											.replace("%playername%", args[1]),
-									get(args[1]));
-							return true;
-						}
+						Loader.sendMessages(s, "Economy.Take.Sender", Placeholder.c().replace("%player%", args[1]).replace("%playername%", args[1])
+								.replace("%money%", API.setMoneyFormat(taken, true)));
+						if(TheAPI.getPlayerOrNull(args[1])!=null)
+						Loader.sendMessages(TheAPI.getPlayerOrNull(args[1]), "Economy.Take.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", s.getName())
+								.replace("%money%", API.setMoneyFormat(taken, true)));
 						return true;
 					}
-					TheAPI.msg(Loader.PlayerNotEx(args[1]), s);
+					Loader.notExist(s, args[1]);
 					return true;
 				}
 			}
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("Pay")) {
-			if (API.hasPerm(s, "ServerControl.Pay")) {
+			if (Loader.has(s, "Economy", "Economy", "Pay")) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
 					if (args.length == 1 || args.length == 2) {
-						pay(s);
+						Loader.Help(s, "Economy", "Economy");
 						return true;
 					}
 					if (args.length == 3) {
@@ -216,119 +121,69 @@ public class Eco implements CommandExecutor, TabCompleter {
 								String w = p.getWorld().getName();
 								EconomyAPI.withdrawPlayer(p.getName(),w, money);
 								EconomyAPI.depositPlayer(args[1],w, money);
-								TheAPI.msg(Loader.s("Economy.PaidTo")
-										.replace("%money%", API.setMoneyFormat(money, true))
-										.replace("%currently%",
-												API.setMoneyFormat(EconomyAPI.getBalance(s.getName()),
-														true))
-										.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[1])
-										.replace("%playername%", args[1]), s);
-								if (get(args[1]) != null && get(args[1]).getWorld().getName()
-										.equals(TheAPI.getPlayer(s.getName()).getWorld().getName())) {
-									TheAPI.msg(
-											Loader.s("Economy.PaidFrom")
-													.replace("%money%", API.setMoneyFormat(money, true))
-													.replace("%currently%", API.setMoneyFormat(
-															EconomyAPI.getBalance(args[1]), true))
-													.replace("%prefix%", Loader.s("Prefix"))
-													.replace("%player%", s.getName()).replace("%playername%",
-															((Player) s).getDisplayName()),
-											get(args[1]));
-								}
+								Loader.sendMessages(s, "Economy.Pay.Sender", Placeholder.c().replace("%player%", args[1]).replace("%playername%", args[1])
+										.replace("%money%", API.setMoneyFormat(money, true)));
+								if(TheAPI.getPlayerOrNull(args[1])!=null)
+								Loader.sendMessages(TheAPI.getPlayerOrNull(args[1]), "Economy.Pay.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", s.getName())
+										.replace("%money%", API.setMoneyFormat(money, true)));
 								return true;
 							}
-							TheAPI.msg(Loader.s("Economy.NoMoney")
-									.replace("%money%",
-											API.setMoneyFormat(EconomyAPI.getBalance(s.getName()), true))
-									.replace("%currently%",
-											API.setMoneyFormat(EconomyAPI.getBalance(s.getName()), true))
-									.replace("%player%", args[1]).replace("%playername%", args[1]), s);
+							Loader.sendMessages(s, "Economy.NotEnought");
 							return true;
 						}
-						TheAPI.msg(Loader.PlayerNotEx(args[1]), s);
+						Loader.notExist(s, args[1]);
 						return true;
 					}
 				}
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("UknownCommand"), s);
 				return true;
 			}
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("Reset")) {
-			if (API.hasPerm(s, "ServerControl.Economy.Reset")) {
+			if (Loader.has(s, "Economy", "Economy", "Reset")) {
 				if (args.length == 1) {
-					reset(s);
+					Loader.Help(s, "Economy", "Economy");
 					return true;
 				}
 				if (args.length == 2) {
 					if (TheAPI.existsUser(args[1])) {
 						reset(args[1], Loader.config.getDouble("Economy.DefaultMoney"));
-						TheAPI.msg(Loader.s("Economy.ResetedPlayer")
-								.replace("%money%",
-										API.setMoneyFormat(EconomyAPI.getBalance(args[1]), true))
-								.replace("%currently%",
-										API.setMoneyFormat(EconomyAPI.getBalance(args[1]), true))
-								.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[1])
-								.replace("%playername%", args[1]), s);
-						if (TheAPI.getPlayer(args[1]) != null) {
-							TheAPI.msg(Loader.s("Economy.Reseted")
-									.replace("%money%",
-											API.setMoneyFormat(EconomyAPI.getBalance(args[1]), true))
-									.replace("%currently%",
-											API.setMoneyFormat(EconomyAPI.getBalance(args[1]), true))
-									.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[1])
-									.replace("%playername%", args[1]), get(args[1]));
-							return true;
-						}
+						Loader.sendMessages(s, "Economy.Reset.Sender", Placeholder.c().replace("%player%", args[1]).replace("%playername%", args[1])
+								.replace("%money%", API.setMoneyFormat(Loader.config.getDouble("Economy.DefaultMoney"), true)));
+						if(TheAPI.getPlayerOrNull(args[1])!=null)
+						Loader.sendMessages(TheAPI.getPlayerOrNull(args[1]), "Economy.Reset.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", s.getName())
+								.replace("%money%", API.setMoneyFormat(Loader.config.getDouble("Economy.DefaultMoney"), true)));
 						return true;
 					}
-					TheAPI.msg(Loader.PlayerNotEx(args[1]), s);
+					Loader.notExist(s, args[1]);
 					return true;
 				}
 			}
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("Set")) {
-			if (API.hasPerm(s, "ServerControl.Economy.Set")) {
+			if (Loader.has(s, "Economy", "Economy", "Set")) {
 				if (args.length == 1 || args.length == 2) {
-					set(s);
+					Loader.Help(s, "Economy", "Economy");
 					return true;
 				}
 				if (args.length == 3) {
 					if (TheAPI.existsUser(args[1])) {
 						reset(args[1], API.convertMoney(args[2]));
-						TheAPI.msg(Loader.s("Economy.SetPlayer")
-								.replace("%money%",
-										API.setMoneyFormat(EconomyAPI.getBalance(args[1]), true))
-								.replace("%currently%",
-										API.setMoneyFormat(EconomyAPI.getBalance(args[1]), true))
-								.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[1])
-								.replace("%playername%", args[1]), s);
-						if (TheAPI.getPlayer(args[1]) != null) {
-							TheAPI.msg(Loader.s("Economy.Set")
-									.replace("%money%",
-											API.setMoneyFormat(EconomyAPI.getBalance(args[1]), true))
-									.replace("%currently%",
-											API.setMoneyFormat(EconomyAPI.getBalance(args[1]), true))
-									.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[1])
-									.replace("%playername%", args[1]), get(args[1]));
-							return true;
-						}
+						Loader.sendMessages(s, "Economy.Set.Sender", Placeholder.c().replace("%player%", args[1]).replace("%playername%", args[1])
+								.replace("%money%", API.setMoneyFormat(API.convertMoney(args[2]), true)));
+						if(TheAPI.getPlayerOrNull(args[1])!=null)
+						Loader.sendMessages(TheAPI.getPlayerOrNull(args[1]), "Economy.Set.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", s.getName())
+								.replace("%money%", API.setMoneyFormat(API.convertMoney(args[2]), true)));
 						return true;
 					}
-					TheAPI.msg(Loader.PlayerNotEx(args[1]), s);
+					Loader.notExist(s, args[1]);
 					return true;
 				}
 			}
 			return true;
 		}
-		if (!TheAPI.existsUser(args[0]) && !args[0].equalsIgnoreCase("Reset") && !args[0].equalsIgnoreCase("Take")
-				&& !args[0].equalsIgnoreCase("Pay") && !args[0].equalsIgnoreCase("Set")
-				&& !args[0].equalsIgnoreCase("Give")) {
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("UknownCommand"), s);
-			return true;
-		}
-		return false;
+		return true;
 	}
 
 	private void reset(String i, double money) {
@@ -340,13 +195,6 @@ public class Eco implements CommandExecutor, TabCompleter {
 			EconomyAPI.withdrawPlayer(i, money * -1);
 		} else
 			EconomyAPI.depositPlayer(i, money);
-	}
-
-	private Player get(String args) {
-		if (TheAPI.getPlayer(args) != null) {
-			return TheAPI.getPlayer(args);
-		}
-		return null;
 	}
 
 	@Override

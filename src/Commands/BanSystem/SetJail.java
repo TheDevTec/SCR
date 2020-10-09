@@ -5,20 +5,18 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 
 public class SetJail implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.setJail")) {
+		if (Loader.has(s, "SetJail", "BanSystem")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
-					TheAPI.msg("/setJail <jailName>", s);
+					Loader.Help(s, "SetJail", "BanSystem");
 					return true;
 				}
 				if (args.length == 1) {

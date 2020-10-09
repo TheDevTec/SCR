@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
 
@@ -13,10 +12,10 @@ public class Immune implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String label, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Immune")) {
+		if (Loader.has(s, "Immune", "BanSystem")) {
 			if (args.length == 0) {
 				if (!(s instanceof Player)) {
-					TheAPI.msg("/Immune <player>", s);
+					Loader.Help(s, "Immune", "BanSystem");
 					return true;
 				}
 				Player p = (Player) s;
@@ -26,7 +25,7 @@ public class Immune implements CommandExecutor {
 				Loader.sendMessages(s, aw+"You");
 				return true;
 			}
-			if (API.hasPerm(s, "ServerControl.Immune.Other")) {
+			if (Loader.has(s, "Immune", "BanSystem", "Other")) {
 				boolean im = TheAPI.getUser(args[0]).getBoolean("Immune");
 				TheAPI.getUser(args[0]).setAndSave("Immune", !im);
 				String aw = "Immune." + (im ? "Disable.Other." : "Enabled.Other.");

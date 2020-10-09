@@ -5,7 +5,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
@@ -17,9 +16,9 @@ public class BanIP implements CommandExecutor {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.BanIP")) {
+		if (Loader.has(s, "BanIP", "BanSystem")) {
 			if (args.length == 0) {
-				TheAPI.msg("/BanIP <player/ip> <reason>", s);
+				Loader.Help(s, "BanIP", "BanSystem");
 				return true;
 			}
 			if (args.length == 1) {

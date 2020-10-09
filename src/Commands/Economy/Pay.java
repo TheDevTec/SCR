@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
@@ -16,15 +17,14 @@ public class Pay implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (EconomyAPI.getEconomy() == null) {
-			TheAPI.msg(Loader.s("Prefix") + "&cMissing Vault plugin for economy.", s);
 			return true;
 		}
 
-		if (API.hasPerm(s, "ServerControl.Pay")) {
+		if (Loader.has(s, "Pay", "Economy")) {
 			if (s instanceof Player) {
 				Player p = (Player) s;
-				if (args.length == 0 || args.length == 1) {
-					Loader.Help(s, "/Pay <player> <money>", "Economy.Pay");
+				if (args.length <= 1) {
+					Loader.Help(s, "Pay", "Economy");
 					return true;
 				}
 				if (args.length == 2) {
@@ -42,47 +42,21 @@ public class Pay implements CommandExecutor {
 							String w = p.getWorld().getName();
 							EconomyAPI.withdrawPlayer(p.getName(),w, money);
 							EconomyAPI.depositPlayer(args[0],w, money);
-							TheAPI.msg(Loader.s("Economy.PaidTo")
-									.replace("%money%", API.setMoneyFormat(money, true))
-									.replace("%currently%",
-											API.setMoneyFormat(EconomyAPI.getBalance(s.getName()),
-													true))
-									.replace("%prefix%", Loader.s("Prefix")).replace("%player%", args[0])
-									.replace("%playername%", args[0]), s);
-							if (get(args[0]) != null && get(args[0]).getWorld().getName()
-									.equals(TheAPI.getPlayer(s.getName()).getWorld().getName())) {
-								TheAPI.msg(
-										Loader.s("Economy.PaidFrom")
-												.replace("%money%", API.setMoneyFormat(money, true))
-												.replace("%currently%", API.setMoneyFormat(
-														EconomyAPI.getBalance(args[0]), true))
-												.replace("%prefix%", Loader.s("Prefix"))
-												.replace("%player%", s.getName()).replace("%playername%",
-														((Player) s).getDisplayName()),
-										TheAPI.getPlayer(args[0]));
-							}
+							Loader.sendMessages(s, "Economy.Pay.Sender", Placeholder.c().replace("%player%", args[0]).replace("%playername%", args[0])
+									.replace("%money%", API.setMoneyFormat(money, true)));
+							if(TheAPI.getPlayerOrNull(args[0])!=null)
+							Loader.sendMessages(TheAPI.getPlayerOrNull(args[0]), "Economy.Pay.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", s.getName())
+									.replace("%money%", API.setMoneyFormat(money, true)));
 							return true;
 						}
-						TheAPI.msg(Loader.s("Economy.NoMoney")
-								.replace("%money%",
-										API.setMoneyFormat(EconomyAPI.getBalance(s.getName()), true))
-								.replace("%currently%",
-										API.setMoneyFormat(EconomyAPI.getBalance(s.getName()), true))
-								.replace("%player%", args[0]).replace("%playername%", args[0]), s);
+						Loader.sendMessages(s, "Economy.NotEnought");
 						return true;
 					}
-					TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
+					Loader.notExist(s,args[0]);
 					return true;
 					}
 			}
 		}
 		return true;
-	}
-
-	public Player get(String args) {
-		if (TheAPI.getPlayer(args) != null) {
-			return TheAPI.getPlayer(args);
-		}
-		return null;
 	}
 }

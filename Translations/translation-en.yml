@@ -141,9 +141,8 @@ Economy:
       NotInGroup: "%prefix% World &e%world% &7isn't added in economy group &e%economy-group%"
       Added: "%prefix% World &e%world% &7added to economy group &e%economy-group%"
       Removed: "%prefix% World &e%world% &7removed from economy group &e%economy-group%"
-    NoMoney: "%prefix% &e%player% &7doesn't have money in economy group &e%economy-group%"
     Money: "%prefix% &e%player% &7has &e$%money% &7in economy group &e%economy-group%"
-    Transfer: "%prefix% Transferred economy of &e%player% &7to economy group &e%economy-group%"
+    Transfer: "%prefix% Transferred economy of &e%player% &7of economy group &e%from% &7to economy group &e%to%"
 
 # Translations for /Nickname and /NicknameReset commands
 Nickname:
@@ -316,6 +315,8 @@ Enchant:
 # Translations for tp commands
 TpSystem:
   NoRequest: "%prefix% You don't have any request"
+  SendRequestToSelf: "%prefix% You can't send request to self"
+  HaveRequest: "%prefix% &e%player% &7already have teleport request from you"
   Tpa:
     Send:
       Sender: "%prefix% You sent teleport request to &e%player%"
@@ -361,6 +362,8 @@ TpSystem:
     Location:
       YouToLocation: "%prefix% Teleporting to &e%x%&7, &e%y%&7, &e%z%"
       PlayerToLocation: "%prefix% Teleporting &e%player% &7to &e%x%&7, &e%y%&7, &e%z%"
+  TpaAll: "%prefix% Sent request to &e%amount% &7players to teleport to your position"
+  TpAll: "%prefix% Teleport to your position &e%amount% &7players"
   Block:
     IsBlocked:
       Teleport: "%prefix% Teleportation was cancelled, player is blocking teleports from you"

@@ -10,8 +10,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.Maps;
-
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.Eco;
@@ -27,10 +25,9 @@ public class EcoTop implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (EconomyAPI.getEconomy() == null) {
-			TheAPI.msg(Loader.s("Prefix") + "&cMissing Vault plugin for economy.", s);
 			return true;
 		}
-		if (API.hasPerm(s, "ServerControl.BalanceTop")) {
+		if (Loader.has(s, "BalanceTop", "Economy")) {
 			String world = Eco.getEconomyGroupByWorld(Bukkit.getWorlds().get(0).getName());
 			if (s instanceof Player)
 				world = Eco.getEconomyGroupByWorld(((Player) s).getWorld().getName());
@@ -47,11 +44,10 @@ public class EcoTop implements CommandExecutor {
 				m = new Pagination<>(10,new RankingAPI<>(money).entrySet());
 				h.put(world, m);
 			}
-			TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bTOP 10 Players &e-----------------", s);
-			TheAPI.msg("", s);
 			int page =args.length!=0?StringUtils.getInt(args[0]):1;
 			--page;
 			if(m.totalPages()<=page)page=m.totalPages()-1;
+			TheAPI.msg("&7=====» &cBalanceTop &e"+(page+1)+"/"+(m.totalPages()+1)+" &7«=====", s);
 			int i = 0;
 			for(Entry<String, Double> sf : m.getPage(page)){
 				String key = sf.getKey();
@@ -66,8 +62,8 @@ public class EcoTop implements CommandExecutor {
 	}
 
 	public String player(String s) {
-		if (TheAPI.getPlayer(s) != null)
-			return TheAPI.getPlayer(s).getDisplayName();
+		if (TheAPI.getPlayerOrNull(s) != null)
+			return TheAPI.getPlayerOrNull(s).getDisplayName();
 		return s;
 	}
 }
