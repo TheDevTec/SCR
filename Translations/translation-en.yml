@@ -88,6 +88,12 @@ Experiences:
   Given: "%prefix% Added &e%amount% &7%type% to &e%player%"
   Taken: "%prefix% Removed &e%amount% &7type% from &e%player%"
   Set: "%prefix% &e%player%&7's %type% have been set to &e%amount%"
+
+# Translations for /invsee, /endersee, /closeinv /enderchest
+Inventory:
+  ClearConfirm: "%prefix% Please confirm your request to clear your inventory"
+  InvCleared: "%prefix% You have cleared your inventory"
+  PlayerInvCleared: "%prefix% &e%player%&7's inventory has been cleared"
   
 # Translations for /Item command
 Item:

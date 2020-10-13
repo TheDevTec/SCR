@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 
@@ -14,9 +15,9 @@ public class CloseInventory implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.CloseInventory")) {
+		if (Loader.has(s, "CloseInventory", "Inventory")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/closeinv <player> ", "Inventory.CloseInventory");
+				Loader.Help(s, "/closeinv <player> ", "Inventory");
 				return true;
 			}
 			if (args.length == 1) {
@@ -26,7 +27,9 @@ public class CloseInventory implements CommandExecutor {
 						Repeat.a(s, "closeinv *");
 						return true;
 					}
-					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+							.add("%player%", args[0])
+							.add("%playername%", args[0]));
 					return true;
 				}
 				TheAPI.msg(

@@ -14,18 +14,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
 
-import com.mojang.authlib.yggdrasil.response.User;
-
-import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class ClearInv implements CommandExecutor, TabCompleter {
 
-	public String f(String string) {
-		return Loader.s(string);
-	}
 
 	public String value(int i) {
 		return String.valueOf(i);
@@ -36,26 +32,27 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 
-		String fs = f("Prefix");
-
 		if (s instanceof Player == false) {
 			if (args.length == 0) {
-				Loader.Help(s, "/ClearInv <player>", "ClearInv");
+				Loader.Help(s, "/ClearInv <player>", "Inventory");
 				return true;
 			}
 			if (args.length == 1) {
 				Player target = Bukkit.getServer().getPlayer(args[0]);
 				if (target == null) {
-					TheAPI.msg(fs + f("ClearInventory.PlayerNotOnline").replace("%player%", args[0]), s);
+					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+							.add("%player%", args[1])
+							.add("%playername%", args[1]));
 					return true;
 				}
-				TheAPI.msg(fs + f("ClearInventory.PlayerInvCleared").replace("%player%", target.getName()), s);
+				Loader.sendMessages(s, "Inventory.PlayerInvCleared", Placeholder.c()
+						.add("%player%", target.getName())
+						.add("%playername%", target.getDisplayName()));
 				undo.put(target, target.getInventory().getContents());
-				TheAPI.msg(fs + f("ClearInventory.InvCleared"), target);
+				Loader.sendMessages(target, "Inventory.InvCleared");
 				target.getInventory().clear();
 				return true;
 			}
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("UknownCommand"), s);
 			return true;
 		} else {
 			Player p = (Player) s;
@@ -63,52 +60,58 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 			int take = Loader.config.getInt("Options.Cost-ClearInvUndo");
 
 			if (args.length == 0) {
-				if (API.hasPerm(s, "ServerControl.ClearInventory")) {
+				if (Loader.has(s, "ClearInventory", "Inventory")) {
 					if (!d.getBoolean("ClearInvConfirm")) {
 						d.setAndSave("ClearInvCooldown", System.currentTimeMillis() / 1000);
-						TheAPI.msg(fs + f("ClearInventory.ConfirmClearInv"), s);
+						Loader.sendMessages(s, "Inventory.ClearConfirm");
 						return true;
 					} else {
 						if (d.getString("ClearInvCooldown") != null)
 							d.setAndSave("ClearInvCooldown", null);
 						undo.put(p, p.getInventory().getContents());
-						TheAPI.msg(fs + f("ClearInventory.InvCleared"), s);
+						Loader.sendMessages(s, "Inventory.InvCleared");
 						p.getInventory().clear();
 						return true;
 					}
 				}
+				Loader.noPerms(s, "ClearInventory", "Inventory");
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("Other")) {
-				if (API.hasPerm(s, "ServerControl.ClearInventory.Other")) {
+				if (Loader.has(s, "ClearInventory", "Inventory", "Inventory")) {
 					if (args.length == 1) {
-						Loader.Help(s, "/Clear Other <player>", "ClearInv.Other");
+						Loader.Help(s, "/Clear Other <player>", "Inventory");
 						return true;
 					}
 					Player target = Bukkit.getServer().getPlayer(args[1]);
 					if (target == null) {
-						TheAPI.msg(Loader.PlayerNotOnline(args[1]), s);
+						Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+								.add("%player%", args[1])
+								.add("%playername%", args[1]));
 						return true;
 					}
 					if (target != null) {
-						TheAPI.msg(fs + f("ClearInventory.PlayerInvCleared").replace("%player%", target.getName()), s);
+						Loader.sendMessages(s, "Inventory.PlayerInvCleared", Placeholder.c()
+								.add("%player%", target.getName())
+								.add("%playername%", target.getDisplayName()));
 						undo.put(target, target.getInventory().getContents());
-						TheAPI.msg(fs + f("ClearInventory.InvCleared"), target);
+						Loader.sendMessages(target, "Inventory.InvCleared");
 						target.getInventory().clear();
 						return true;
 					}
 				}
+				Loader.noPerms(s, "ClearInventory", "Inventory", "Inventory");
 				return true;
 			}
 			if (!d.getBoolean("ClearInvConfirm")) {
 				if (args[0].equalsIgnoreCase("Confirm")) {
 
-					if (API.hasPerm(s, "ServerControl.ClearInventory")) {
+					if (Loader.has(s, "ClearInventory", "Inventory")) {
 						long reset = d.getLong("ClearInvCooldown") - System.currentTimeMillis() / 1000;
 						reset = reset * -1;
 						if (reset < 60) {
 							undo.put(p, p.getInventory().getContents());
-							TheAPI.msg(fs + f("ClearInventory.InvCleared"), s);
+							Loader.sendMessages(s, "Inventory.InvCleared");
 							d.setAndSave("ClearInvCooldown", null);
 							p.getInventory().clear();
 							return true;
@@ -116,27 +119,29 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 						TheAPI.msg(fs + f("ClearInventory.NoConfirm"), s);
 						return true;
 					}
+					Loader.noPerms(s, "ClearInventory", "Inventory", "Inventory");
 					return true;
 				}
 			}
 			if (args[0].equalsIgnoreCase("Clear")) {
-				if (API.hasPerm(s, "ServerControl.ClearInventory")) {
+				if (Loader.has(s, "ClearInventory", "Inventory")) {
 					if (!d.getBoolean("ClearInvConfirm")) {
 						d.setAndSave("ClearInvCooldown", System.currentTimeMillis() / 1000);
-						TheAPI.msg(fs + f("ClearInventory.ConfirmClearInv"), s);
+						Loader.sendMessages(s, "Inventory.ClearConfirm");
 						return true;
 					} else {
 						if (d.getString("ClearInvCooldown") != null)
 							d.setAndSave("ClearInvCooldown", null);
 						undo.put(p, p.getInventory().getContents());
-						TheAPI.msg(fs + f("ClearInventory.InvCleared"), s);
+						Loader.sendMessages(target, "Inventory.InvCleared");
 						p.getInventory().clear();
 						return true;
 					}
 				}
+				Loader.noPerms(s, "ClearInventory", "Inventory", "Inventory");
 			}
 			if (args[0].equalsIgnoreCase("Undo")) {
-				if (API.hasPerm(s, "ServerControl.ClearInventory.Undo")) {
+				if (Loader.has(s, "ClearInventory", "Inventory", "Undo")) {
 					if (undo.containsKey(p)) {
 
 						if (take == 0 || EconomyAPI.getEconomy() == null) {
@@ -169,21 +174,21 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 
 					}
 				}
+				Loader.noPerms(s, "ClearInventory", "Inventory", "Undo");
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("Help")) {
 				if (s.hasPermission("ServerControl.ClearInventory")) {
-					Loader.Help(s, "/Clear", "ClearInv.Clear");
+					Loader.Help(s, "/Clear", "Inventory");
 					if (!d.getBoolean("ClearInvConfirm"))
-						Loader.Help(s, "/Clear Confirm", "ClearInv.Confirm");
+						Loader.Help(s, "/Clear Confirm", "Inventory");
 				}
 				if (s.hasPermission("ServerControl.ClearInventory.Other"))
-					Loader.Help(s, "/Clear Other <player>", "ClearInv.Other");
+					Loader.Help(s, "/Clear Other <player>", "Inventory");
 				if (s.hasPermission("ServerControl.ClearInventory.Undo"))
-					Loader.Help(s, "/Clear Undo", "ClearInv.Undo");
+					Loader.Help(s, "/Clear Undo", "Inventory");
 				return true;
 			}
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("UknownCommand"), s);
 			return true;
 		}
 	}
