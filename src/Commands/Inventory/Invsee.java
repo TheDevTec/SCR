@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
@@ -16,7 +15,7 @@ public class Invsee implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Invsee", "Inventory")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/Invsee <player> <target>", "Invsee");
+				Loader.Help(s, "/Invsee <player> <target>", "Inventory");
 				return true;
 			}
 			if (args.length == 1) {
@@ -28,12 +27,13 @@ public class Invsee implements CommandExecutor {
 								.add("%playername%", args[0]));
 						return true;
 					}
-					TheAPI.msg(Loader.s("Prefix")
-							+ API.replacePlayerName(Loader.s("Inventory.OpeningInvsee"), p.getName()), s);
+					Loader.sendMessages(s, "Inventory.InvSee.Opening.You", Placeholder.c()
+							.add("%player%", p.getName())
+							.add("%playername%", p.getDisplayName()));
 					((Player)s).openInventory(p.getInventory());
 					return true;
 				}
-				Loader.Help(s, "/Invsee <player> <target>", "Invsee");
+				Loader.Help(s, "/Invsee <player> <target>", "Inventory");
 				return true;
 			}
 			if (args.length == 2) {
@@ -51,10 +51,9 @@ public class Invsee implements CommandExecutor {
 							.add("%playername%", args[1]));
 					return true;
 				}
-				TheAPI.msg(Loader.s("Prefix")
-						+ API.replacePlayerName(Loader.s("Inventory.OpeningInvseeForTarget"), p.getName())
-								.replace("%target%", t.getDisplayName()),
-						s);
+				Loader.sendMessages(s, "Inventory.InvSee.Opening.Other.Sender", Placeholder.c()
+						.add("%target%", t.getName())
+						.add("%player%", p.getName()));
 				t.openInventory(p.getInventory());
 				return true;
 

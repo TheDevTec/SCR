@@ -45,11 +45,13 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 							.add("%playername%", args[1]));
 					return true;
 				}
-				Loader.sendMessages(s, "Inventory.PlayerInvCleared", Placeholder.c()
+				Loader.sendMessages(s, "Inventory.InvClear.Clear.Other.Sender", Placeholder.c()
 						.add("%player%", target.getName())
 						.add("%playername%", target.getDisplayName()));
 				undo.put(target, target.getInventory().getContents());
-				Loader.sendMessages(target, "Inventory.InvCleared");
+				Loader.sendMessages(target, "Inventory.InvClear.Clear.Other.Receiver", Placeholder.c()
+						.add("%player%", s.getName())
+						.add("%playername%", s.getName()));
 				target.getInventory().clear();
 				return true;
 			}
@@ -63,7 +65,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 				if (Loader.has(s, "ClearInventory", "Inventory")) {
 					if (!d.getBoolean("ClearInvConfirm")) {
 						d.setAndSave("ClearInvCooldown", System.currentTimeMillis() / 1000);
-						Loader.sendMessages(s, "Inventory.ClearConfirm");
+						Loader.sendMessages(s, "Inventory.ClearInv.Confirm");
 						return true;
 					} else {
 						if (d.getString("ClearInvCooldown") != null)
@@ -91,11 +93,13 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					if (target != null) {
-						Loader.sendMessages(s, "Inventory.PlayerInvCleared", Placeholder.c()
+						Loader.sendMessages(s, "Inventory.InvClear.Clear.Other.Sender", Placeholder.c()
 								.add("%player%", target.getName())
 								.add("%playername%", target.getDisplayName()));
 						undo.put(target, target.getInventory().getContents());
-						Loader.sendMessages(target, "Inventory.InvCleared");
+						Loader.sendMessages(target, "Inventory.InvClear.Clear.Other.Receiver", Placeholder.c()
+								.add("%player%", s.getName())
+								.add("%playername%", s.getName()));
 						target.getInventory().clear();
 						return true;
 					}
@@ -111,12 +115,12 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 						reset = reset * -1;
 						if (reset < 60) {
 							undo.put(p, p.getInventory().getContents());
-							Loader.sendMessages(s, "Inventory.InvCleared");
+							Loader.sendMessages(s, "Inventory.InvClear.Clear.You");
 							d.setAndSave("ClearInvCooldown", null);
 							p.getInventory().clear();
 							return true;
 						}
-						TheAPI.msg(fs + f("ClearInventory.NoConfirm"), s);
+						Loader.sendMessages(s, "Inventory.ClearInv.NoConfirm");
 						return true;
 					}
 					Loader.noPerms(s, "ClearInventory", "Inventory", "Inventory");
@@ -133,7 +137,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 						if (d.getString("ClearInvCooldown") != null)
 							d.setAndSave("ClearInvCooldown", null);
 						undo.put(p, p.getInventory().getContents());
-						Loader.sendMessages(target, "Inventory.InvCleared");
+						Loader.sendMessages(s, "Inventory.InvClear.Clear.You");
 						p.getInventory().clear();
 						return true;
 					}
@@ -149,7 +153,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 								TheAPI.giveItem(p, item);
 							}
 							undo.remove(p);
-							TheAPI.msg(fs + f("ClearInventory.InventoryRetrievedForFree"), s);
+							Loader.sendMessages(s, "Inventory.InvClear.Retrieve.ForFree");
 
 							return true;
 						} else if (take != 0 && EconomyAPI.getEconomy() != null) {
@@ -160,18 +164,18 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 								}
 								EconomyAPI.withdrawPlayer(p, take);
 								undo.remove(p);
-								TheAPI.msg(fs + f("ClearInventory.InventoryRetrievedForMoney").replace("%money%",
-										value(take)), s);
+								Loader.sendMessages(s, "Inventory.InvClear.Retrieve.ForMoney", Placeholder.c()
+										.add("%money%", value(take)));
 								return true;
 							} else {
-								TheAPI.msg(fs + f("ClearInventory.NoMoney").replace("%money%", value(take)), s);
+								Loader.sendMessages(s, "Inventory.InvClear.Retrieve.NoMoney", Placeholder.c()
+										.add("%money%", value(take)));
 								return true;
 							}
 						}
 					} else if (!undo.containsKey(p)) {
-						TheAPI.msg(fs + f("ClearInventory.NoInventoryRetrieved").replace("%money%", value(take)), s);
+						Loader.sendMessages(s, "Invenotory.InvClear.Retrieve.NoInventory");
 						return true;
-
 					}
 				}
 				Loader.noPerms(s, "ClearInventory", "Inventory", "Undo");

@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
@@ -17,7 +16,7 @@ public class EnderSee implements CommandExecutor {
 		if (Loader.has(s, "EnderChest", "Inventory")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChest"), s);
+					Loader.sendMessages(s, "Inventory.EnderChest.Opening.You");
 					((Player)s).openInventory(((Player)s).getEnderChest());
 					return true;
 				}
@@ -25,14 +24,14 @@ public class EnderSee implements CommandExecutor {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p != null) {
 						if (p == s) {
-							TheAPI.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChest"), s);
+							Loader.sendMessages(s, "Inventory.EnderChest.Opening.You");
 							((Player)s).openInventory(((Player)s).getEnderChest());
 							return true;
 						} else {
 							if (Loader.has(s, "EnderSee", "Inventory")) {
-								TheAPI.msg(Loader.s("Prefix") + Loader.s("Inventory.OpeningEnderChestOther")
-										.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),
-										s);
+								Loader.sendMessages(s, "Inventory.EnderChest.Opening.Other.Sender", Placeholder.c()
+										.add("%player%", p.getName())
+										.add("%playername%", p.getDisplayName()));
 
 								((Player)s).openInventory(p.getEnderChest());
 								return true;

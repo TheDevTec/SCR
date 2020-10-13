@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import Utils.Repeat;
@@ -32,10 +31,9 @@ public class CloseInventory implements CommandExecutor {
 							.add("%playername%", args[0]));
 					return true;
 				}
-				TheAPI.msg(
-						Loader.s("Prefix") + Loader.s("Inventory.ClosePlayersInventory")
-								.replace("%player%", p.getDisplayName()).replace("%playername%", p.getDisplayName()),
-						s);
+					Loader.sendMessages(s, "Inventory.Closed", Placeholder.c()
+							.add("%player%", p.getName())
+							.add("%playername%", p.getDisplayName()));
 				p.closeInventory();
 				return true;
 			}
