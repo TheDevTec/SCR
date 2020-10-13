@@ -12,9 +12,8 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import ServerControl.API;
 import ServerControl.Loader;
-import me.DevTec.TheAPI.TheAPI;
+import ServerControl.Loader.Placeholder;
 
 public class Night implements CommandExecutor, TabCompleter {
 
@@ -23,27 +22,28 @@ public class Night implements CommandExecutor, TabCompleter {
 
 		if (args.length == 0) {
 			if (s instanceof Player) {
-				if (API.hasPerm(s, "ServerControl.Night")) {
+				if (Loader.has(s, "Night", "Time")) {
 					((Player) s).getLocation().getWorld().setTime(13000);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Time.Night").replace("%world%",
-							((Player) s).getLocation().getWorld().getName()), s);
+					Loader.sendMessages(s, "Time.Night", Placeholder.c().add("%world%", ((Player) s).getLocation().getWorld().getName()));
 					return true;
 				}
+				Loader.noPerms(s, "Night", "Time");
 				return true;
 			}
 			Loader.Help(s, "/Night <world>", "Time");
 			return true;
 		}
 		if (args.length == 1) {
-			if (API.hasPerm(s, "ServerControl.Night")) {
+			if (Loader.has(s, "Night", "Time")) {
 				if (Bukkit.getWorld(args[0]) != null) {
 					Bukkit.getWorld(args[0]).setTime(13000);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Time.Night").replace("%world%", args[0]), s);
+					Loader.sendMessages(s, "Time.Night", Placeholder.c().add("%world%", args[0]));
 					return true;
 				}
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Time.WorldNotExists").replace("%world%", args[0]), s);
+				Loader.sendMessages(s, "Missing.World", Placeholder.c().add("%world%", (args[0])));
 				return true;
 			}
+			Loader.noPerms(s, "Night", "Time");
 			return true;
 		}
 		return false;
