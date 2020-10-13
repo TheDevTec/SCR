@@ -40,7 +40,7 @@ public class Converter {
 			if(Loader.config.exists("Spawn") && Loader.config.get("Spawn") == null) { //old format
 				Position n = null;
 				try {
-				n=new Position(Loader.config.getString("Spawn.World"), Loader.config.getDouble("Spawn.X"), Loader.config.getDouble("Spawn.Y"), Loader.config.getDouble("Spawn.Z"), Loader.config.getFloat("Spawn.X_Pos_Head"), Loader.config.getFloat("Spawn.Z_Pos_Head"));
+				n=new Position(Loader.config.getString("Spawn.World"), Loader.config.getDouble("Spawn.X"), Loader.config.getDouble("Spawn.Y"), Loader.config.getDouble("Spawn.Z"), Loader.config.getData().getFloat("Spawn.X_Pos_Head"), Loader.config.getData().getFloat("Spawn.Z_Pos_Head"));
 				}catch(Exception er) {}
 				Loader.config.set("Spawn.World", null);
 				Loader.config.set("Spawn.X", null);
