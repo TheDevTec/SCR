@@ -431,6 +431,8 @@ Repair:
 Time:
   Day: "%prefix% You set &eday &7in world &e%world%"
   Night: "%prefix% You set &enight &7in world &e%world%"
+  PDay: "%prefix% You set &eday &7for &e%player%"
+  PNight: "%prefix% You set &enight &7for &e%player%"
 
 # Translations for weather commands
 Weather:
