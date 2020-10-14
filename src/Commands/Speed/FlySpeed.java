@@ -5,9 +5,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class FlySpeed implements CommandExecutor {
 	public void speed(CommandSender s) {
@@ -22,10 +23,11 @@ public class FlySpeed implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (args.length == 0) {
-			if (API.hasPerm(s, "ServerControl.FlySpeed")) {
+			if (Loader.has(s, "FlySpeed", "Speed")) { // API.hasPerm(s, "ServerControl.FlySpeed")
 				speed(s);
 				return true;
 			}
+			Loader.noPerms(s, "FlySpeed", "Speed");
 			return true;
 		}
 		if (args.length == 1) {
@@ -33,7 +35,7 @@ public class FlySpeed implements CommandExecutor {
 				speed(s);
 				return true;
 			} else {
-				if (API.hasPerm(s, "ServerControl.FlySpeed")) {
+				if (Loader.has(s, "FlySpeed", "Speed")) {
 					double flightmodifier = StringUtils.getDouble(args[0]);
 					if (flightmodifier > 10.0)
 						flightmodifier = 10.0;
@@ -41,16 +43,15 @@ public class FlySpeed implements CommandExecutor {
 						flightmodifier = -10.0;
 					((Player) s).setFlySpeed((float) flightmodifier / 10);
 					TheAPI.getUser(s.getName()).setAndSave("FlySpeed", flightmodifier / 10);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.FlySpeed").replace("%player%", s.getName())
-							.replace("%playername%", ((Player) s).getDisplayName())
-							.replace("%speed%", String.valueOf(flightmodifier)), s);
+					Loader.sendMessages(s, "Speed.Fly.You", Placeholder.c().add("%speed%", String.valueOf(flightmodifier)));
 					return true;
 				}
+				Loader.noPerms(s, "FlySpeed", "Speed");
 				return true;
 			}
 		}
 		if (args.length == 2) {
-			if (API.hasPerm(s, "ServerControl.FlySpeed")) {
+			if (Loader.has(s, "FlySpeed", "Speed", "Other")) {
 				Player target = TheAPI.getPlayer(args[0]);
 				if (target != null) {
 					double flightmodifier = StringUtils.getDouble(args[1]);
@@ -60,17 +61,17 @@ public class FlySpeed implements CommandExecutor {
 						flightmodifier = -10.0;
 					target.setFlySpeed((float) flightmodifier / 10);
 					TheAPI.getUser(target).setAndSave("FlySpeed", flightmodifier / 10);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.FlySpeedPlayer").replace("%player%", target.getName())
-							.replace("%playername%", target.getDisplayName())
-							.replace("%speed%", String.valueOf(flightmodifier)), s);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Fly.FlySpeed").replace("%player%", target.getName())
-							.replace("%playername%", target.getDisplayName())
-							.replace("%speed%", String.valueOf(flightmodifier)), target);
+					Loader.sendMessages(s, "Speed.Fly.Other.Sender", Placeholder.c().add("%speed%", String.valueOf(flightmodifier))
+							.add("%player%", target.getName()).add("%playername%", target.getDisplayName()));
+
+					Loader.sendMessages(target, "Speed.Fly.Other.Receiver", Placeholder.c().add("%speed%", String.valueOf(flightmodifier)));
+					
 					return true;
 				}
-				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+				Loader.notOnline(s, args[0]);
 				return true;
 			}
+			Loader.noPerms(s, "FlySpeed", "Speed", "Other");
 			return true;
 		}
 		return false;
