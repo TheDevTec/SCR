@@ -6,20 +6,20 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class GamemodeA implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Gamemode.Adventure")) {
+		if (Loader.has(s, "Gamemode.Adventure", "Gamemode")) {
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
 					p.setGameMode(GameMode.ADVENTURE);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Changed").replace("%gamemode%", "Adventure"), s);
+					Loader.sendMessages(p, "Gamemode.Your.Adventure");
 					return true;
 				}
 				Loader.Help(s, "/Gma <player>", "Gamemode");
@@ -29,14 +29,19 @@ public class GamemodeA implements CommandExecutor {
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null) {
 					p.setGameMode(GameMode.ADVENTURE);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.ChangedOther").replace("%gamemode%", "Adventure")
-							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), s);
+					Loader.sendMessages(p, "Gamemode.Other.Adventure.Receiver");
+					
+					Loader.sendMessages(s, "Gamemode.Other.Adventure.Sender", Placeholder.c()
+							.add("%player%", p.getName())
+							.add("%playername%", p.getDisplayName()));
 					return true;
 				}
-				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+				Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+						.add("%player%", args[0]));
 				return true;
 			}
 		}
+		Loader.noPerms(s, "Gamemode.Adventure", "Gamemode");
 		return true;
 	}
 }

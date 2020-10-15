@@ -312,12 +312,12 @@ Chunks:
 
 # Translations for gamemode commands
 Gamemode:
-  Change:
     Your:
       Survival: "%prefix% Your gamemode has been set to &eSurvival"
       Creative: "%prefix% Your gamemode has been set to &eCreative"
       Adventure: "%prefix% Your gamemode has been set to &eAdventure"
       Spectator: "%prefix% Your gamemode has been set to &eSpectator"
+      Custom: "%prefix% Your gamemode has been set to &e%gamemode%"
     Other:
       Survival:
         Sender: "%prefix% Gamemode of &e%player% &7has been set to &eSurvival"
@@ -331,6 +331,9 @@ Gamemode:
       Spectator:
         Sender: "%prefix% Gamemode of &e%player% &7has been set to &eSpectator"
         Receiver: "%prefix% Your gamemode has been set to &eSpectator"
+      Custom:
+        Sender: "%prefix% Gamemode of &e%player% &7has been set to &e%gamemode%"
+        Receiver: "%prefix% Your gamemode has been set to &e%gamemode%"
 
 # Translations for TPS command
 TPS:

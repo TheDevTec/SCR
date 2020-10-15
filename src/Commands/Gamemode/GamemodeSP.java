@@ -6,8 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class GamemodeSP implements CommandExecutor {
@@ -18,12 +18,12 @@ public class GamemodeSP implements CommandExecutor {
 			TheAPI.msg("&cUnsupported GameMode type", s);
 			return true;
 		}
-		if (API.hasPerm(s, "ServerControl.Gamemode.Spectator")) {
+		if (Loader.has(s, "Gamemode.Spectator", "Gamemode")) {
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
 					p.setGameMode(GameMode.SPECTATOR);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Changed").replace("%gamemode%", "Spectator"), s);
+					Loader.sendMessages(p, "Gamemode.Your.Spectator");
 					return true;
 				}
 				Loader.Help(s, "/Gmsp <player>", "Gamemode");
@@ -33,14 +33,19 @@ public class GamemodeSP implements CommandExecutor {
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null) {
 					p.setGameMode(GameMode.SPECTATOR);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.ChangedOther").replace("%gamemode%", "Spectator")
-							.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()), s);
+					Loader.sendMessages(p, "Gamemode.Other.Spectator.Receiver");
+					
+					Loader.sendMessages(s, "Gamemode.Other.Spectator.Sender", Placeholder.c()
+							.add("%player%", p.getName())
+							.add("%playername%", p.getDisplayName()));	
 					return true;
 				}
-				TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+				Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+						.add("%player%", args[0]));
 				return true;
 			}
 		}
+		Loader.noPerms(s, "Gamemode.Spectator", "Gamemode");
 		return true;
 	}
 }

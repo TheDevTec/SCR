@@ -6,8 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class Gamemode implements CommandExecutor {
@@ -16,10 +16,11 @@ public class Gamemode implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 
 		if (args.length == 0) {
-			if (API.hasPerm(s, "ServerControl.Gamemode")) {
+			if (Loader.has(s, "ServerControl.Gamemode", "Gamemode")) {
 				Loader.Help(s, "/GameMode <s|c|a|sp> <player>", "Gamemode");
 				return true;
 			}
+			Loader.noPerms(s, "ServerControl.Gamemode", "Gamemode");
 			return true;
 		}
 		String gamemode = null;
@@ -52,16 +53,18 @@ public class Gamemode implements CommandExecutor {
 			}
 			
 			if(gamemode == null) {
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
+				Loader.sendMessages(s, "Missing.Gamemode", Placeholder.c()
+						.add("%gamemode%", args[0]));
 				return true;
 			}
 			if (s instanceof Player) {
-				if (API.hasPerm(s, "ServerControl.Gamemode." + gamemode)) {
+				if (Loader.has(s, "Gamemode." + gamemode, "Gamemode")) {
 						((Player) s).setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
-						TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Changed").replace("%gamemode%", gamemode),
-								s);
+						Loader.sendMessages(s, "Gamemode.Your.Custom", Placeholder.c()
+								.add("%gamemode%", gamemode));
 						return true;
 				}
+				Loader.noPerms(s, "Gamemode" + gamemode, "Gamemode");
 				return true;
 			}
 			Loader.Help(s, "/GameMode " + args[0] + " <player>", "Gamemode");
@@ -94,23 +97,29 @@ public class Gamemode implements CommandExecutor {
 			}
 			
 			if(gamemode == null) {
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("Gamemode.Invalid").replace("%gamemode%", args[0]), s);
+				Loader.sendMessages(s, "Missing.Gamemode", Placeholder.c()
+						.add("%gamemode%", args[0]));
 				return true;
 			}
 			
-			if (API.hasPerm(s, "ServerControl.Gamemode." + gamemode)) {
+			if (Loader.has(s, "Gamemode." + gamemode, "Gamemode")) {
 				Player p = TheAPI.getPlayer(args[1]);
 					if (p != null) {
 						p.setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
-						TheAPI.msg(
-								Loader.s("Prefix") + Loader.s("Gamemode.ChangedOther").replace("%gamemode%", gamemode)
-										.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName()),
-								s);
+						Loader.sendMessages(p, "Gamemode.Other.Custom.Receiver", Placeholder.c()
+								.add("%gamemode%", gamemode));
+						
+						Loader.sendMessages(s, "Gamemode.Other.Custom.Sender", Placeholder.c()
+								.add("%player%", p.getName())
+								.add("%playername%", p.getDisplayName())
+								.add("%gamemode%", gamemode));
 						return true;
 					}
-					TheAPI.msg(Loader.PlayerNotOnline(args[0]), s);
+					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+							.add("%player%", args[0]));
 					return true;
 			}
+			Loader.noPerms(s, "Gamemode." + gamemode, "Gamemode");
 			return true;
 		}
 
