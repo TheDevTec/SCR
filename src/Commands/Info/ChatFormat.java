@@ -36,7 +36,7 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("create")) {
-			if (API.hasPerm(s, "ServerControl.ChatFormat.Create")) {
+			if (Loader.has(s, "ChatFormat.Create", "Info")) {
 				if (args.length == 1) {
 					msg("&6/ChatFormat Create <group> &7- &5Create new group", s);
 					return true;
@@ -51,11 +51,12 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 				msg("&aGroup with name &2'" + g + "' &acreated", s);
 				return true;
 			}
+			Loader.noPerms(s, "ChatFormat.Create", "Info");
 			return true;
 		}
 
 		if (args[0].equalsIgnoreCase("delete")) {
-			if (API.hasPerm(s, "ServerControl.ChatFormat.Delete")) {
+			if (Loader.has(s, "ChatFormat.Delete", "Info")) {
 				if (args.length == 1) {
 					msg("&6/ChatFormat Delete <group> &7- &5Delete group", s);
 					return true;
@@ -70,11 +71,12 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 				msg("&6Group with name &c'" + g + "' &6deleted", s);
 				return true;
 			}
+			Loader.noPerms(s, "ChatFormat.Delete", "Info");
 			return true;
 		}
 
 		if (args[0].equalsIgnoreCase("set")) {
-			if (API.hasPerm(s, "ServerControl.ChatFormat.Set")) {
+			if (Loader.has(s, "ChatFormat.Set", "Info")) {
 				if (args.length == 1 || args.length == 2 || args.length == 3) {
 					msg("&6/ChatFormat Set <group> <chat/name> <value> &7- &5Set name/chat format of group", s);
 					return true;
@@ -108,19 +110,21 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 				return true;
 
 			}
+			Loader.noPerms(s, "ChatFormat.Set", "Info");
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("list")) {
-			if (API.hasPerm(s, "ServerControl.ChatFormat.List")) {
+			if (Loader.has(s, "ChatFormat.List", "Info")) {
 				msg("&9---< &bList of groups &9>----", s);
-				for (String d : Loader.config.getConfigurationSection("Chat-Groups").getKeys(false))
+				for (String d : Loader.config.getKeys("Chat-Groups"))
 					msg("&9- &b" + d, s);
 				return true;
 			}
+			Loader.noPerms(s, "ChatFormat.List", "Info");
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("info")) {
-			if (API.hasPerm(s, "ServerControl.ChatFormat.Info")) {
+			if (Loader.has(s, "ChatFormat.Info", "Info")) {
 				if (args.length == 1) {
 					msg("&6/ChatFormat Info <group> &7- &5Informations about group", s);
 					return true;
@@ -135,6 +139,7 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 				msg("&9Chat: " + Loader.config.getString("Chat-Groups." + g + ".Chat"), s);
 				return true;
 			}
+			Loader.noPerms(s, "ChatFormat.Info", "Info");
 			return true;
 		}
 
@@ -161,11 +166,11 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 					|| args[0].equalsIgnoreCase("delete") && s.hasPermission("ServerControl.ChatFormat.Delete")
 					|| args[0].equalsIgnoreCase("set") && s.hasPermission("ServerControl.ChatFormat.Set"))
 				c.addAll(StringUtil.copyPartialMatches(args[1],
-						Loader.config.getConfigurationSection("Chat-Groups").getKeys(false), new ArrayList<>()));
+						Loader.config.getKeys("Chat-Groups"), new ArrayList<>()));
 
 			if (args[0].equalsIgnoreCase("create") && s.hasPermission("ServerControl.ChatFormat.Create")) {
 				if (Loader.config.getString("Chat-Groups") != null)
-					for (String a : Loader.config.getConfigurationSection("Chat-Groups").getKeys(false))
+					for (String a : Loader.config.getKeys("Chat-Groups"))
 						if (args[1].equals(a))
 							c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("AlreadyExists"),
 									new ArrayList<>()));
@@ -177,7 +182,7 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 								}
 							} else
 								list = Arrays.asList("?");
-							list.removeAll(Loader.config.getConfigurationSection("Chat-Groups").getKeys(false));
+							list.removeAll(Loader.config.getKeys("Chat-Groups"));
 							c.addAll(StringUtil.copyPartialMatches(args[1], list, new ArrayList<>()));
 						}
 				c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));

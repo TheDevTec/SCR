@@ -22,6 +22,7 @@ import ServerControl.Loader;
 import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList;
 import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList.PunishmentType;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.TheAPI;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
@@ -47,7 +48,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] a) {
-		if (API.hasPerm(s, "ServerControl.WhoIs")) {
+		if (Loader.has(s, "WhoIs", "Info")) {
 			if (a.length == 0) {
 				Loader.Help(s, "/WhoIs <player>", "WhoIs");
 				return true;
@@ -150,6 +151,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			}
 			return true;
 		}
+		Loader.noPerms(s, "WhoIs", "Info");
 		return true;
 	}
 

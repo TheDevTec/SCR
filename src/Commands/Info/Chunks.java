@@ -12,6 +12,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.util.StringUtil;
 
+import com.bekvon.bukkit.residence.Placeholders.Placeholder;
+
 import ServerControl.API;
 import ServerControl.Loader;
 import Utils.MultiWorldsUtils;
@@ -22,7 +24,7 @@ public class Chunks implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 
-		if (API.hasPerm(s, "ServerControl.Chunks")) {
+		if (Loader.has(s, "Chunks", "Info")) {
 			if (cmd.getName().equalsIgnoreCase("Chunks")) {
 				if (args.length == 0) {
 					TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bChunks &e-----------------", s);
@@ -46,6 +48,7 @@ public class Chunks implements CommandExecutor, TabCompleter {
 				}
 			}
 		}
+		Loader.noPerms(s, "Chunks", "Info");
 		return true;
 	}
 

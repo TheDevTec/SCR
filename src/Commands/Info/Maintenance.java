@@ -13,7 +13,7 @@ public class Maintenance implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
-			if (API.hasPerm(s, "ServerControl.Maintenance")) {
+			if (Loader.has(s, "Maintenance", "Info")) {
 				if (setting.lock_server) {
 					Loader.config.set("Options.Maintenance.Enabled", false);
 					Loader.config.save();
@@ -33,6 +33,7 @@ public class Maintenance implements CommandExecutor {
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("MaintenanceMode.TurnOn"), s);
 				return true;
 			}
+			Loader.noPerms(s, "Maintenance", "Info");
 			return true;
 	}
 }

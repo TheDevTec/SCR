@@ -13,6 +13,7 @@ import ServerControl.API;
 import ServerControl.API.SeenType;
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Seen implements CommandExecutor {
 	List<String> getS(String a) {
@@ -27,7 +28,7 @@ public class Seen implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Seen")) {
+		if (Loader.has(s, "Seen", "Info")) {
 			if (args.length == 0) {
 				Loader.Help(s, "/Seen <player>", "Seen");
 				return true;
@@ -52,6 +53,7 @@ public class Seen implements CommandExecutor {
 			return true;
 
 		}
+		Loader.noPerms(s, "Seen", "Info");
 		return true;
 	}
 

@@ -29,7 +29,7 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 
 		if (args.length == 0 || args.length == 1 && args[0].equalsIgnoreCase("Help")) {
-			if (API.hasPerm(s, "ServerControl.Help")) {
+			if (Loader.has(s, "Help", "Info")) {
 				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bHelp&e -----------------", s);
 				TheAPI.msg("", s);
 				if (s.hasPermission("ServerControl.Reload"))
@@ -58,11 +58,12 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 				}
 				return true;
 			}
+			Loader.noPerms(s, "Help", "Info");
 			return true;
 		}
 
 		if (args[0].equalsIgnoreCase("List")) {
-			if (API.hasPerm(s, "ServerControl.List")) {
+			if (Loader.has(s, "List", "Info")) {
 				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bList &e-----------------", s);
 				TheAPI.msg("", s);
 				TheAPI.msg(Loader.s("Prefix") + "&cSwear words: "
@@ -73,10 +74,11 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 						s);
 				return true;
 			}
+			Loader.noPerms(s, "List", "Info");
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("Reload")) {
-			if (API.hasPerm(s, "ServerControl.Reload")) {
+			if (Loader.has(s, "Reload", "Info")) {
 				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bReloading config&e -----------------", s);
 				TheAPI.msg("", s);
 				Configs.reload();
@@ -97,11 +99,12 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 				TheAPI.msg(Loader.s("Prefix") + Loader.s("ConfigReloaded"), s);
 				return true;
 			}
+			Loader.noPerms(s, "Reload", "Info");
 			return true;
 		}
 
 		if (args[0].equalsIgnoreCase("Version") || args[0].equalsIgnoreCase("info")) {
-			if (API.hasPerm(s, "ServerControl.Info")) {
+			if (Loader.has(s, "Info", "Info")) {
 				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bVersion&e -----------------", s);
 				TheAPI.msg("", s);
 				TheAPI.msg(Loader.s("Prefix") + "&7Version of ServerControlReloaded: &eV"
@@ -112,6 +115,7 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 				TheAPI.msg(Loader.s("Prefix") + "&7Our discord: &ehttps://discord.gg/z4kK66g", s);
 				return true;
 			}
+			Loader.noPerms(s, "Info", "Info");
 			return true;
 		}
 		TheAPI.msg(Loader.s("Prefix") + Loader.s("UknownCommand"), s);

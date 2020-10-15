@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class ListCmd implements CommandExecutor {
 	HashMap<Player, String> p = new HashMap<Player, String>(); // Player, group;
@@ -72,7 +73,7 @@ public class ListCmd implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.List")) {
+		if (Loader.has(s, "List", "Info")) {
 			ArrayList<String> w = new ArrayList<String>();
 			sortPlayers();
 			w.clear();
@@ -92,6 +93,7 @@ public class ListCmd implements CommandExecutor {
 			}
 			return true;
 		}
+		Loader.noPerms(s, "List", "Info");
 		return true;
 
 	}

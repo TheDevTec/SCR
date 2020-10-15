@@ -17,7 +17,7 @@ public class RAM implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 
-		if (API.hasPerm(s, "ServerControl.RAM")) {
+		if (Loader.has(s, "RAM", "Info")) {
 			if (args.length == 0) {
 				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bRAM &e-----------------", s);
 				TheAPI.msg("", s);
@@ -56,6 +56,7 @@ public class RAM implements CommandExecutor {
 			TheAPI.msg(Loader.s("Prefix") + Loader.s("RAM.AlreadyClearing"), s);
 			return true;
 		}
+		Loader.noPerms(s, "RAM", "Info");
 		return true;
 	}
 }
