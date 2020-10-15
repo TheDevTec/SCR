@@ -11,14 +11,14 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.util.StringUtil;
 
 import Commands.Server.BigTask.TaskType;
-import ServerControl.API;
 import ServerControl.Loader;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Reload implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (API.hasPerm(s, "ServerControl.Reload")) {
+		if (Loader.has(s, "Reload", "Server")) {
 			if (args.length == 0) {
 				BigTask.start(TaskType.RELOAD, Loader.config.getLong("Options.WarningSystem.Reload.PauseTime"));
 				return true;
@@ -35,6 +35,7 @@ public class Reload implements CommandExecutor, TabCompleter {
 				BigTask.start(TaskType.RELOAD, StringUtils.getTimeFromString(args[0]));
 			return true;
 		}
+		Loader.noPerms(s, "Reload", "Server");
 		return true;
 	}
 
