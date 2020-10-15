@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import ServerControl.API;
 import ServerControl.API.SeenType;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
@@ -35,20 +36,25 @@ public class Seen implements CommandExecutor {
 			}
 			if (TheAPI.existsUser(args[0])) {
 				if (TheAPI.getPlayerOrNull(args[0]) != null) {
-					TheAPI.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Seen.Online"), args[0])
-							.replace("%online%", API.getSeen(args[0], SeenType.Online)), s);
+					Loader.sendMessages(s, "Seen.Online", Placeholder.c()
+							.add("%player%", args[0])
+							.add("%playername%", args[0])
+							.add("%online%", API.getSeen(args[0], SeenType.Online)));
 					return true;
 				}
-				TheAPI.msg(Loader.s("Prefix") + API.replacePlayerName(Loader.s("Seen.Offline"), args[0])
-						.replace("%offline%", API.getSeen(args[0], SeenType.Offline)), s);
+				
+				Loader.sendMessages(s, "Seen.Offline", Placeholder.c()
+						.add("%player%", args[0])
+						.add("%playername%", args[0])
+						.add("%online%", API.getSeen(args[0], SeenType.Offline)));
 				return true;
 			}
 			List<String> sim = getS(args[0]);
 			if (sim.isEmpty())
-				TheAPI.msg(Loader.PlayerNotEx(args[0]), s);
+				Loader.sendMessages(s, "Missing.Player.NotExist", Placeholder.c().add("%player%", args[0]));
 			else {
-				TheAPI.msg(Loader.s("Seen.SimiliarNames").replace("%names%", StringUtils.join(sim, ", "))
-						.replace("%list%", StringUtils.join(sim, ", ")), s);
+				Loader.sendMessages(s, "Seen.Similar", Placeholder.c()
+						.add("%names%", StringUtils.join(sim, ", ")));
 			}
 			return true;
 

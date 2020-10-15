@@ -76,8 +76,9 @@ Memory:
   - "%prefix% Used MEM: &e%used_ram% &7MB"
   - "%prefix% Max MEM: &e%max_ram% &7MB"
   Clear: "%prefix% Clearing memory, please wait.."
-  Clearing: "%prefix% Memory is clearing, please wait.."
+  AlreadyClearing: "%prefix% Memory is already clearing, please wait.."
   Cleared: "%prefix% Memory cleared (&e%amount% &7MB)"
+  MemoryLine: "%prefix% &7----------------- &rRAM &7-----------------"
   
 # Translations for /Exp command
 Experiences:
@@ -306,6 +307,7 @@ Home:
 
 # Translations for /Chunk command
 Chunks:
+  ChunkLine: "%prefix% &e----------------- &bChunks &e-----------------"
   Load: "%prefix% &e%world%&7: &e%chunks% &7chunks"
   Unload: "%prefix% Unloaded &e%chunks% &7chunks"
   TotalLoad: "%prefix% Total is loaded &e%chunks% &7chunks"
@@ -551,6 +553,8 @@ Spawn:
   
 # Translations for /Maintenance command
 Maintenance:
+  EnabledLine: "%prefix% &7----------------- &7Maintenance is Enabled &7-----------------"
+  DisabledLine: "%prefix% &7----------------- &7Maintenance is Disabled &7-----------------"
   Enabled: "%prefix% Maintenance mode turned &eon"
   Disabled: "%prefix% Maintenance mode turned &eoff"
  

@@ -6,11 +6,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import Utils.setting;
-import me.DevTec.TheAPI.APIs.MemoryAPI;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.MemoryAPI;
 
 public class RAM implements CommandExecutor {
 
@@ -19,41 +19,38 @@ public class RAM implements CommandExecutor {
 
 		if (Loader.has(s, "RAM", "Info")) {
 			if (args.length == 0) {
-				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bRAM &e-----------------", s);
+				Loader.sendMessages(s, "Memory.MemoryLine");
 				TheAPI.msg("", s);
 				if (setting.ram) {
 					List<String> normal = Loader.trans.getStringList("RAM.Info.Normal");
 					for (String ss : normal) {
-
-						TheAPI.msg(
-								Loader.s("Prefix")
-										+ ss.replace("%free_ram%", MemoryAPI.getFreeMemory(false) + "")
-												.replace("%max_ram%", MemoryAPI.getMaxMemory() + "")
-												.replace("%used_ram%", MemoryAPI.getUsedMemory(false) + ""),
-								s);
+						
+						Loader.sendMessages(s, "Memory.Info", Placeholder.c()
+								.add("%free_ram%", MemoryAPI.getFreeMemory(false) + "")
+								.add("%max_ram%", MemoryAPI.getMaxMemory() + "")
+								.add("%used_ram%", MemoryAPI.getUsedMemory(false) + ""));
 					}
 					return true;
 				}
 				List<String> normal = Loader.trans.getStringList("RAM.Info.Percent");
 				for (String sss : normal) {
-					TheAPI.msg(Loader.s("Prefix")
-							+ sss.replace("%used_ram%", MemoryAPI.getUsedMemory(true) + "")
-									.replace("%max_ram%", MemoryAPI.getMaxMemory() + "")
-									.replace("%free_ram%", MemoryAPI.getFreeMemory(true) + ""),
-							s);
+					Loader.sendMessages(s, "Memory.Info", Placeholder.c()
+							.add("%free_ram%", MemoryAPI.getFreeMemory(false) + "")
+							.add("%max_ram%", MemoryAPI.getMaxMemory() + "")
+							.add("%used_ram%", MemoryAPI.getUsedMemory(false) + ""));
 
 				}
 				return true;
 			}
 			if (ServerControl.clearing == false) {
 				ServerControl.clearing = true;
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("RAM.Clearing"), s);
-				TheAPI.msg(Loader.s("Prefix")
-						+ Loader.s("RAM.Cleared").replace("%cleared%", MemoryAPI.clearMemory() + ""), s);
+				Loader.sendMessages(s, "Memory.Clearing");
+				Loader.sendMessages(s, "Memory.Cleared", Placeholder.c()
+						.add("%amount%", MemoryAPI.clearMemory() + ""));
 				ServerControl.clearing = false;
 				return true;
 			}
-			TheAPI.msg(Loader.s("Prefix") + Loader.s("RAM.AlreadyClearing"), s);
+			Loader.sendMessages(s, "Memory.AlreadyClearing");
 			return true;
 		}
 		Loader.noPerms(s, "RAM", "Info");

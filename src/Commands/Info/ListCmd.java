@@ -89,7 +89,7 @@ public class ListCmd implements CommandExecutor {
 				TheAPI.msg(a.replace("%online%", TheAPI.getOnlinePlayers().size() + "")
 						.replace("%max_players%", Bukkit.getMaxPlayers() + "").replace("%staff%", Staff.getStaff())
 						.replace("%players%", normalPlayers()).replace("%all%", allPlayers())
-						.replace("%prefix%", Loader.s("Prefix")), s);
+						.replace("%prefix%", Loader.getTranslation("Prefix").toString()), s);
 			}
 			return true;
 		}

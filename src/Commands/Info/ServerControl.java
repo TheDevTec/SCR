@@ -19,6 +19,7 @@ import Utils.MultiWorldsUtils;
 import Utils.Tasks;
 import Utils.setting;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.TheAPI;
 
 public class ServerControl implements CommandExecutor, TabCompleter {
@@ -30,7 +31,7 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 
 		if (args.length == 0 || args.length == 1 && args[0].equalsIgnoreCase("Help")) {
 			if (Loader.has(s, "Help", "Info")) {
-				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bHelp&e -----------------", s);
+				TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&7----------------- &eHelp&7 -----------------", s);
 				TheAPI.msg("", s);
 				if (s.hasPermission("ServerControl.Reload"))
 					Loader.Help(s, "/ServerControl Reload", "Reload");
@@ -44,14 +45,14 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 				if (args.length == 2) {
 					for (String v : All)
 						if (args[1].equalsIgnoreCase(v)) {
-							TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bHelp for " + "&b" + v
-									+ "&e -----------------", s);
+							TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&7----------------- &eHelp for " + "&3" + v
+									+ "&7 -----------------", s);
 							TheAPI.msg("", s);
 							Loader.Help(s, "/ServerControl " + v, v);
 							return true;
 						}
-					TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bHelp " + "&4" + args[1]
-							+ " &e-----------------", s);
+					TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&7----------------- &eHelp " + "&3" + args[1]
+							+ " &7-----------------", s);
 					TheAPI.msg("", s);
 					TheAPI.msg(Loader.s("Prefix") + Loader.s("Help.NoHelpForCommand").replace("%command%", args[1]), s);
 					return true;
@@ -64,12 +65,12 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 
 		if (args[0].equalsIgnoreCase("List")) {
 			if (Loader.has(s, "List", "Info")) {
-				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bList &e-----------------", s);
+				TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&7----------------- &eList &7-----------------", s);
 				TheAPI.msg("", s);
-				TheAPI.msg(Loader.s("Prefix") + "&cSwear words: "
+				TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&cSwear words: "
 						+ StringUtils.join(Loader.config.getStringList("SwearWords"), ", "), s);
 				TheAPI.msg(
-						Loader.s("Prefix") + "&cSpam words: "
+						Loader.getTranslation("Prefix").toString() + "&cSpam words: "
 								+ StringUtils.join(Loader.config.getStringList("SpamWords.Words"), ", "),
 						s);
 				return true;
@@ -79,9 +80,9 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 		}
 		if (args[0].equalsIgnoreCase("Reload")) {
 			if (Loader.has(s, "Reload", "Info")) {
-				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bReloading config&e -----------------", s);
+				TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&7----------------- &eReloading config&7 -----------------", s);
 				TheAPI.msg("", s);
-				Configs.reload();
+				Loader.config.reload();
 				setting.load();
 				Tasks.reload();
 				MultiWorldsUtils.LoadWorlds();
@@ -96,7 +97,7 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 						TheAPI.msg(" &6https://greenwichmeantime.com/time-zone/", TheAPI.getConsole());
 					}
 				}
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("ConfigReloaded"), s);
+				Loader.sendMessages(s, "Config");
 				return true;
 			}
 			Loader.noPerms(s, "Reload", "Info");
@@ -105,20 +106,19 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 
 		if (args[0].equalsIgnoreCase("Version") || args[0].equalsIgnoreCase("info")) {
 			if (Loader.has(s, "Info", "Info")) {
-				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bVersion&e -----------------", s);
+				TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&7----------------- &eVersion&7 -----------------", s);
 				TheAPI.msg("", s);
-				TheAPI.msg(Loader.s("Prefix") + "&7Version of ServerControlReloaded: &eV"
+				TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&7Version of ServerControlReloaded: &eV"
 						+ PluginManagerAPI.getVersion("ServerControlReloaded"), s);
-				TheAPI.msg(Loader.s("Prefix") + "&7Version of TheAPI: &eV"
+				TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&7Version of TheAPI: &eV"
 						+ PluginManagerAPI.getVersion("TheAPI"), s);
-				TheAPI.msg(Loader.s("Prefix") + "&7Version of Server: &e" + Bukkit.getServer().getBukkitVersion(), s);
-				TheAPI.msg(Loader.s("Prefix") + "&7Our discord: &ehttps://discord.gg/z4kK66g", s);
+				TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&7Version of Server: &e" + Bukkit.getServer().getBukkitVersion(), s);
+				TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&7Our discord: &ehttps://discord.gg/z4kK66g", s);
 				return true;
 			}
 			Loader.noPerms(s, "Info", "Info");
 			return true;
 		}
-		TheAPI.msg(Loader.s("Prefix") + Loader.s("UknownCommand"), s);
 		return true;
 	}
 

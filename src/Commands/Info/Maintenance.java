@@ -4,7 +4,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
@@ -18,19 +17,18 @@ public class Maintenance implements CommandExecutor {
 					Loader.config.set("Options.Maintenance.Enabled", false);
 					Loader.config.save();
 					setting.lock_server = false;
-					TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bMaintenance is Disabled &e-----------------",
-							s);
+					Loader.sendMessages(s, "Maintenance.DisabledLine");
 					TheAPI.msg("", s);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("MaintenanceMode.TurnOff"), s);
+					Loader.sendMessages(s, "Maintenance.Disabled");
 					return true;
 				}
 
 				Loader.config.set("Options.Maintenance.Enabled", true);
 				Loader.config.save();
 				setting.lock_server = true;
-				TheAPI.msg(Loader.s("Prefix") + "&e----------------- &bMaintenance is Enabled &e-----------------", s);
+				Loader.sendMessages(s, "Maintenance.EnabledLine");
 				TheAPI.msg("", s);
-				TheAPI.msg(Loader.s("Prefix") + Loader.s("MaintenanceMode.TurnOn"), s);
+				Loader.sendMessages(s, "Maintenance.Enabled");
 				return true;
 			}
 			Loader.noPerms(s, "Maintenance", "Info");

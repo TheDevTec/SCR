@@ -14,16 +14,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import com.mojang.authlib.yggdrasil.response.User;
-
 import ServerControl.API;
 import ServerControl.API.SeenType;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
+import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList;
 import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList.PunishmentType;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 
@@ -54,7 +54,8 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (!TheAPI.existsUser(a[0])) {
-				TheAPI.msg(Loader.PlayerNotEx(a[0]), s);
+				Loader.sendMessages(s, "Missing.Player.NotExist", Placeholder.c()
+						.add("%player%", a[0]));
 				return true;
 			}
 			String ip = PunishmentAPI.getIP(a[0]);

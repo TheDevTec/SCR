@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.API;
 import ServerControl.Loader;
+import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
@@ -49,10 +50,10 @@ public class Staff implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Staff", "Info")) {
 			sortPlayers();
-			for (String a : Loader.trans.getStringList("PlayerList.Staff")) {
-				TheAPI.msg(a.replace("%online%", p.size() + "").replace("%max_players%", Bukkit.getMaxPlayers() + "")
-						.replace("%prefix%", Loader.s("Prefix")).replace("%staff%", getStaff()), s);
-			}
+				Loader.sendMessages(s, "List.Staff", Placeholder.c()
+						.add("%online%", p.size() + "")
+						.add("%max_players%", Bukkit.getMaxPlayers() + "")
+						.add("%staff%", getStaff()));
 			return true;
 		}
 		Loader.noPerms(s, "Staff", "Info");
