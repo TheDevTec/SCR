@@ -560,6 +560,7 @@ Maintenance:
  
 # Translations for /Vanish command
 Vanish:
+  Active: "&eYou are invisible"
   Enabled:
     You: "%prefix% Vanish has been &eenabled"
     Other:
