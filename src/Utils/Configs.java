@@ -38,6 +38,7 @@ public class Configs {
 		Loader.sb.addDefault("PerWorld.skyblock.Name", "&eSkyBlock");
 		Loader.sb.addDefault("PerWorld.skyblock.Lines",
 				Arrays.asList("&r&lMoney: &a%money%$", "&r&lHealth:  &a%health%", "&r&lFood:  &a%food%"));
+		Loader.sb.save();
 		}
 	}
 
@@ -73,6 +74,7 @@ public class Configs {
 					Arrays.asList("&7--------------------------------", "&6Online: &a%online%$   &6Rank: &a%group%"));
 			Loader.tab.addDefault("PerWorldTabList.world1.Header", Arrays.asList("&2TabList in world %world%",
 					"&6Health: &a%hp%$   &6Food: &a%food%", "&7--------------------------------"));
+			Loader.tab.save();
 		}
 	}
 
@@ -81,6 +83,7 @@ public class Configs {
 		Loader.mw.addDefault("ModifyMobsSpawnRates", false);
 		Loader.mw.addDefault("SavingTask.Enabled", true);
 		Loader.mw.addDefault("SavingTask.Delay", 3600);
+		Loader.mw.save();
 	}
 
 	private static void KitLoading() {
@@ -99,6 +102,7 @@ public class Configs {
 			Loader.kit.addDefault("Kits.VIP.Items.Iron_Pickaxe.Enchantments", Arrays.asList("SHARPNESS:4", "UNBREAKING:2"));
 			Loader.kit.addDefault("Kits.VIP.Price", 60);
 			Loader.kit.addDefault("Kits.VIP.Cooldown", 3600);
+			Loader.kit.save();
 		}
 	}
 }

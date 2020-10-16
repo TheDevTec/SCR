@@ -255,7 +255,7 @@ public class Loader extends JavaPlugin implements Listener {
 	public void onLoad() {
 		getInstance = this;
 		english = new Config("ServerControlReloaded/translation-en.yml"); //load default english
-		reload();
+		Configs.load();
 	}
 	private static long loading;
 
