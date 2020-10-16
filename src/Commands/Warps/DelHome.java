@@ -2,7 +2,6 @@ package Commands.Warps;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -52,7 +51,7 @@ public class DelHome implements CommandExecutor, TabCompleter {
 		if (s instanceof Player) {
 			if (args.length == 1) {
 				if (s.hasPermission("ServerControl.DelHome")) {
-					Set<String> homes = TheAPI.getUser(s.getName()).getKeys("Homes");
+					List<String> homes = TheAPI.getUser(s.getName()).getKeys("Homes");
 					if (!homes.isEmpty() && homes != null)
 						c.addAll(StringUtil.copyPartialMatches(args[0], homes, new ArrayList<>()));
 				}
