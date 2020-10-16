@@ -1,7 +1,5 @@
 package Commands.Info;
 
-import java.util.List;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,24 +20,16 @@ public class RAM implements CommandExecutor {
 				Loader.sendMessages(s, "Memory.MemoryLine");
 				TheAPI.msg("", s);
 				if (setting.ram) {
-					List<String> normal = Loader.trans.getStringList("RAM.Info.Normal");
-					for (String ss : normal) {
-						
-						Loader.sendMessages(s, "Memory.Info", Placeholder.c()
-								.add("%free_ram%", MemoryAPI.getFreeMemory(false) + "")
-								.add("%max_ram%", MemoryAPI.getMaxMemory() + "")
-								.add("%used_ram%", MemoryAPI.getUsedMemory(false) + ""));
-					}
+					Loader.sendMessages(s, "Memory.Info", Placeholder.c()
+							.add("%free_ram%", MemoryAPI.getFreeMemory(true) + "")
+							.add("%max_ram%", MemoryAPI.getMaxMemory() + "")
+							.add("%used_ram%", MemoryAPI.getUsedMemory(true) + ""));
 					return true;
 				}
-				List<String> normal = Loader.trans.getStringList("RAM.Info.Percent");
-				for (String sss : normal) {
-					Loader.sendMessages(s, "Memory.Info", Placeholder.c()
-							.add("%free_ram%", MemoryAPI.getFreeMemory(false) + "")
-							.add("%max_ram%", MemoryAPI.getMaxMemory() + "")
-							.add("%used_ram%", MemoryAPI.getUsedMemory(false) + ""));
-
-				}
+				Loader.sendMessages(s, "Memory.Info", Placeholder.c()
+						.add("%free_ram%", MemoryAPI.getFreeMemory(false) + "")
+						.add("%max_ram%", MemoryAPI.getMaxMemory() + "")
+						.add("%used_ram%", MemoryAPI.getUsedMemory(false) + ""));
 				return true;
 			}
 			if (ServerControl.clearing == false) {
