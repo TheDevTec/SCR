@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import ServerControl.Loader;
-import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class Helpop implements CommandExecutor {
@@ -17,13 +16,10 @@ public class Helpop implements CommandExecutor {
 				Loader.Help(s, "Helpop", "Message");
 				return true;
 			}
-			Loader.sendBroadcasts(s, Loader.config.getString("Format.HelpOp"), Placeholder.c()
-				.add("%sender%", s.getName())
-				.add("%message%", TheAPI.buildString(args)), Loader.cmds.exists("Message.Helpop.SubPermissions.Receive")?Loader.cmds.getString("Message.Helpop.SubPermissions.Receive"):"SCR.Command.Helpop.Receive"); 
+			TheAPI.broadcast(Loader.config.getString("Format.HelpOp").replace("%sender%", s.getName())
+					.replace("%sendername%", TheAPI.getPlayerOrNull(s.getName())!=null?TheAPI.getPlayerOrNull(s.getName()).getDisplayName():s.getName()).replace("%message%", TheAPI.buildString(args)), Loader.cmds.exists("Message.Helpop.SubPermissions.Receive")?Loader.cmds.getString("Message.Helpop.SubPermissions.Receive"):"SCR.Command.Helpop.Receive");
 			if (!Loader.has(s, "Helpop", "Message", "Receive")) {
-				Loader.sendMessages(s, Loader.config.getString("Format.HelpOp"), Placeholder.c()
-					.add("%sender%", s.getName())
-					.add("%message%", TheAPI.buildString(args)));
+				TheAPI.msg(Loader.config.getString("Format.HelpOp").replace("%sender%", s.getName()).replace("%sendername%", TheAPI.getPlayerOrNull(s.getName())!=null?TheAPI.getPlayerOrNull(s.getName()).getDisplayName():s.getName()).replace("%message%", TheAPI.buildString(args)), s);
 				return true;
 			}
 			return true;
