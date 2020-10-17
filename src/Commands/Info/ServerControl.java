@@ -12,15 +12,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.util.StringUtil;
 
-import ServerControl.API;
 import ServerControl.Loader;
-import Utils.Configs;
 import Utils.MultiWorldsUtils;
 import Utils.Tasks;
 import Utils.setting;
+import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.TheAPI;
 
 public class ServerControl implements CommandExecutor, TabCompleter {
 
@@ -41,22 +39,6 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 				}
 				if (s.hasPermission("ServerControl.List"))
 					Loader.Help(s, "/ServerControl List", "List");
-
-				if (args.length == 2) {
-					for (String v : All)
-						if (args[1].equalsIgnoreCase(v)) {
-							TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&7----------------- &eHelp for " + "&3" + v
-									+ "&7 -----------------", s);
-							TheAPI.msg("", s);
-							Loader.Help(s, "/ServerControl " + v, v);
-							return true;
-						}
-					TheAPI.msg(Loader.getTranslation("Prefix").toString() + "&7----------------- &eHelp " + "&3" + args[1]
-							+ " &7-----------------", s);
-					TheAPI.msg("", s);
-					TheAPI.msg(Loader.s("Prefix") + Loader.s("Help.NoHelpForCommand").replace("%command%", args[1]), s);
-					return true;
-				}
 				return true;
 			}
 			Loader.noPerms(s, "Help", "Info");
@@ -86,7 +68,6 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 				setting.load();
 				Tasks.reload();
 				MultiWorldsUtils.LoadWorlds();
-				Loader.SoundsChecker();
 				if (setting.timezone) {
 					try {
 						TimeZone.setDefault(TimeZone.getTimeZone(Loader.config.getString("Options.TimeZone.Zone")));
@@ -122,16 +103,13 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 		return true;
 	}
 
-	final List<String> All = Arrays.asList("Info", "Version", "Help", "Reload");
+	final List<String> All = Arrays.asList("Info", "Version", "Reload");
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		List<String> c = new ArrayList<>();
 		if (args.length == 1) {
 
-			if (s.hasPermission("ServerControl.Help")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Help"), new ArrayList<>()));
-			}
 			if (s.hasPermission("ServerControl.Reload")) {
 				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Reload"), new ArrayList<>()));
 			}
