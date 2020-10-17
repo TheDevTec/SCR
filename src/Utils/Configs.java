@@ -1,16 +1,21 @@
 package Utils;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.NoSuchFileException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ServerControl.Loader;
 import me.DevTec.TheAPI.ConfigAPI.Config;
+import me.DevTec.TheAPI.Utils.DataKeeper.Data;
 import me.DevTec.TheAPI.Utils.TheAPIUtils.Validator;
-import me.DevTec.TheAPI.Utils.ZIP.JarReader;
 
 public class Configs {
 	
@@ -49,9 +54,35 @@ public class Configs {
 	}
 
 	private static void copyDefauts(JavaPlugin parent) {
-	    for(JarEntry entry : new JarReader(parent.getDataFolder()).getEntries()) {
-	        parent.saveResource(entry.getName(), false);
-	    }
+		try {
+			JarFile file = new JarFile(parent.getDataFolder());
+			if (file != null) {
+				   Enumeration<? extends JarEntry> entries = file.entries();
+				   if (entries != null)
+				      while (entries.hasMoreElements()) {
+				    	 Data data = new Data();
+				    	 JarEntry entry = entries.nextElement();
+				    	 if(!entry.isDirectory())
+				    	 if(entry.getName().startsWith("Configs")) {
+				    		 InputStream is = file.getInputStream(entry);
+				    		 int readBytes;
+				    		 ArrayList<Character> c = new ArrayList<>();
+				    		 while ((readBytes = is.read()) != -1) {
+				    			 c.add((char) readBytes);
+				    		 }
+				    		 data.reload(new String(ArrayUtils.toPrimitive(c.toArray(new Character[c.size()]))));
+				    		 File f = new File("plugins/ServerControlReloaded/"+(entry.getName().replaceFirst("Configs/", "")));
+				    		 if(!f.exists()) {
+				    			 f.getParentFile().mkdir();
+				    			 f.createNewFile();
+				    		 }
+				    		 data.setFile(f);
+				    		 data.save();
+			          }
+			    }
+			}
+			file.close();
+	}catch(Exception erer) {}
 	}
 	
 	private static void TabLoading() {
