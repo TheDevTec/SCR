@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.Loader;
 import Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
 
 public class Maintenance implements CommandExecutor {
 
@@ -17,8 +16,6 @@ public class Maintenance implements CommandExecutor {
 					Loader.config.set("Options.Maintenance.Enabled", false);
 					Loader.config.save();
 					setting.lock_server = false;
-					Loader.sendMessages(s, "Maintenance.DisabledLine");
-					TheAPI.msg("", s);
 					Loader.sendMessages(s, "Maintenance.Disabled");
 					return true;
 				}
@@ -26,8 +23,6 @@ public class Maintenance implements CommandExecutor {
 				Loader.config.set("Options.Maintenance.Enabled", true);
 				Loader.config.save();
 				setting.lock_server = true;
-				Loader.sendMessages(s, "Maintenance.EnabledLine");
-				TheAPI.msg("", s);
 				Loader.sendMessages(s, "Maintenance.Enabled");
 				return true;
 			}

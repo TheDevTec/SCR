@@ -15,7 +15,6 @@ import org.bukkit.util.StringUtil;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import Utils.MultiWorldsUtils;
-import me.DevTec.TheAPI.TheAPI;
 
 public class Chunks implements CommandExecutor, TabCompleter {
 
@@ -25,8 +24,6 @@ public class Chunks implements CommandExecutor, TabCompleter {
 		if (Loader.has(s, "Chunks", "Info")) {
 			if (cmd.getName().equalsIgnoreCase("Chunks")) {
 				if (args.length == 0) {
-					Loader.sendMessages(s, "Chunk.ChunkLine");
-					TheAPI.msg("", s);
 					int chunks = 0;
 					for (World w : Bukkit.getWorlds()) {
 						chunks = chunks + w.getLoadedChunks().length;
@@ -39,8 +36,6 @@ public class Chunks implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("Unload")) {
-					Loader.sendMessages(s, "Chunk.ChunkLine");
-					TheAPI.msg("", s);
 					MultiWorldsUtils.unloadWorlds(s);
 					return true;
 				}

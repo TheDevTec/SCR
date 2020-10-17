@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.MemoryAPI;
 
 public class RAM implements CommandExecutor {
@@ -17,8 +16,6 @@ public class RAM implements CommandExecutor {
 
 		if (Loader.has(s, "RAM", "Info")) {
 			if (args.length == 0) {
-				Loader.sendMessages(s, "Memory.MemoryLine");
-				TheAPI.msg("", s);
 				if (setting.ram) {
 					Loader.sendMessages(s, "Memory.Info", Placeholder.c()
 							.add("%free_ram%", MemoryAPI.getFreeMemory(true) + "")

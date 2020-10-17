@@ -22,6 +22,7 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+	if (Loader.has(s, "ChatFormat", "Info")) {
 		if (args.length == 0) {
 			if (s.hasPermission("ServerControl.ChatFormat.List"))
 				msg("&6/ChatFormat List &7- &5List of groups", s);
@@ -36,7 +37,7 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("create")) {
-			if (Loader.has(s, "ChatFormat.Create", "Info")) {
+			if (Loader.has(s, "ChatFormat", "Info")) {
 				if (args.length == 1) {
 					msg("&6/ChatFormat Create <group> &7- &5Create new group", s);
 					return true;
@@ -145,6 +146,8 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 
 		return false;
 	}
+	return true;
+}
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {

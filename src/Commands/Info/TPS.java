@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.TheAPI.TPSType;
 
 public class TPS implements CommandExecutor {
 
@@ -15,7 +16,10 @@ public class TPS implements CommandExecutor {
 
 		if (Loader.has(s, "TPS", "Info")) {
 			Loader.sendMessages(s, "TPS", Placeholder.c()
-					.add("%tps%", TheAPI.getServerTPS() + ""));
+					.add("%tps%", TheAPI.getServerTPS() + "")
+					.add("%tps-from-1%", TheAPI.getServerTPS(TPSType.ONE_MINUTE) + "")
+					.add("%tps-from-5%", TheAPI.getServerTPS(TPSType.FIVE_MINUTES) + "")
+					.add("%tps-from-15%", TheAPI.getServerTPS(TPSType.FIFTEEN_MINUTES) + ""));
 			return true;
 
 		}
