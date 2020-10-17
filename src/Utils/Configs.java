@@ -1,34 +1,30 @@
 package Utils;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.nio.file.NoSuchFileException;
-import java.util.ArrayList;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import ServerControl.Loader;
 import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.Utils.DataKeeper.Data;
-import me.DevTec.TheAPI.Utils.TheAPIUtils.Validator;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class Configs {
 	
 	public static void load() {
-		copyDefauts(Loader.getInstance);
+		copyDefauts();
 		Loader.config = new Config("ServerControlReloaded/Config.yml");
 		String lang = Loader.config.getString("Options.Language");
-		if(lang!=null)
-		if(!new File("ServerControlReloaded/translation-"+lang+".yml").exists()) {
-			Validator.send("File translation-"+lang+".yml doesn't exist", new NoSuchFileException("File translation-"+lang+".yml doesn't exist"));
+		if(lang!=null) {
+			if(!new File("plugins/ServerControlReloaded/Translations/translation-"+lang+".yml").exists())
 			lang="en";
-		}
-		Loader.trans = new Config("ServerControlReloaded/translation-"+lang+".yml");
+		}else lang="en";
+		Loader.trans = new Config("ServerControlReloaded/Translations/translation-"+lang+".yml");
 		MultiWorldLoading();
 		ScoreboardLoading();
 		TabLoading();
@@ -49,29 +45,29 @@ public class Configs {
 		Loader.sb.addDefault("PerWorld.skyblock.Name", "&eSkyBlock");
 		Loader.sb.addDefault("PerWorld.skyblock.Lines",
 				Arrays.asList("&r&lMoney: &a%money%$", "&r&lHealth:  &a%health%", "&r&lFood:  &a%food%"));
-		Loader.sb.save();
 		}
+		Loader.sb.save();
 	}
-
-	private static void copyDefauts(JavaPlugin parent) {
+	
+	private static void copyDefauts() {
 		try {
-			JarFile file = new JarFile(parent.getDataFolder());
+			JarFile file = new JarFile(new File("plugins/"+new File(Ref.getClass(Loader.getInstance.getDescription().getMain()).getProtectionDomain()
+					  .getCodeSource().getLocation().getPath()).getName()));
 			if (file != null) {
 				   Enumeration<? extends JarEntry> entries = file.entries();
 				   if (entries != null)
 				      while (entries.hasMoreElements()) {
 				    	 Data data = new Data();
 				    	 JarEntry entry = entries.nextElement();
-				    	 if(!entry.isDirectory())
-				    	 if(entry.getName().startsWith("Configs")) {
-				    		 InputStream is = file.getInputStream(entry);
-				    		 int readBytes;
-				    		 ArrayList<Character> c = new ArrayList<>();
-				    		 while ((readBytes = is.read()) != -1) {
-				    			 c.add((char) readBytes);
-				    		 }
-				    		 data.reload(new String(ArrayUtils.toPrimitive(c.toArray(new Character[c.size()]))));
-				    		 File f = new File("plugins/ServerControlReloaded/"+(entry.getName().replaceFirst("Configs/", "")));
+				    	 if(entry.getName().startsWith("Configs/")) {
+				    		 if(entry.getName().endsWith("/"))continue;
+				    		 BufferedReader is = new BufferedReader(new InputStreamReader(file.getInputStream(entry), StandardCharsets.UTF_8));
+				    		 String s = "";
+				    		 String readBytes;
+				    		 while ((readBytes = is.readLine()) != null)
+				    			 s+=readBytes+System.lineSeparator();
+				    		 data.reload(s);
+				    		 File f = new File("plugins/ServerControlReloaded/"+entry.getName().replaceFirst("Configs/", ""));
 				    		 if(!f.exists()) {
 				    			 f.getParentFile().mkdir();
 				    			 f.createNewFile();
@@ -117,8 +113,8 @@ public class Configs {
 					Arrays.asList("&7--------------------------------", "&6Online: &a%online%$   &6Rank: &a%group%"));
 			Loader.tab.addDefault("PerWorldTabList.world1.Header", Arrays.asList("&2TabList in world %world%",
 					"&6Health: &a%hp%$   &6Food: &a%food%", "&7--------------------------------"));
-			Loader.tab.save();
 		}
+		Loader.tab.save();
 	}
 
 	private static void MultiWorldLoading() {
@@ -145,7 +141,7 @@ public class Configs {
 			Loader.kit.addDefault("Kits.VIP.Items.Iron_Pickaxe.Enchantments", Arrays.asList("SHARPNESS:4", "UNBREAKING:2"));
 			Loader.kit.addDefault("Kits.VIP.Price", 60);
 			Loader.kit.addDefault("Kits.VIP.Cooldown", 3600);
-			Loader.kit.save();
 		}
+		Loader.kit.save();
 	}
 }
