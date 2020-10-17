@@ -69,13 +69,10 @@ public class Configs {
 				    		 while ((readBytes = is.readLine()) != null)
 				    			 s+=readBytes+System.lineSeparator();
 				    		 data.reload(s);
-				    		 File f = new File("plugins/ServerControlReloaded/"+entry.getName().replaceFirst("Configs/", ""));
-				    		 if(!f.exists()) {
-				    			 f.getParentFile().mkdir();
-				    			 f.createNewFile();
-				    		 }
-				    		 data.setFile(f);
-				    		 data.save();
+				    		 Config c = new Config(entry.getName().replaceFirst("Configs/", ""));
+				    		 for(String sr : data.getKeys(true))
+				    		 c.addDefault(sr, data.get(sr));
+				    		 c.save();
 			          }
 			    }
 			}
