@@ -15,10 +15,7 @@ import me.DevTec.TheAPI.Utils.ZIP.JarReader;
 public class Configs {
 	
 	public static void load() {
-		copyDefauts(Loader.getInstance, "Commands.yml");
-		copyDefauts(Loader.getInstance, "Config.yml");
-		copyDefauts(Loader.getInstance, "Events.yml");
-		copyDefauts(Loader.getInstance, "Translations");
+		copyDefauts(Loader.getInstance);
 		Loader.config = new Config("ServerControlReloaded/Config.yml");
 		String lang = Loader.config.getString("Options.Language");
 		if(lang!=null)
@@ -51,13 +48,9 @@ public class Configs {
 		}
 	}
 
-	private static void copyDefauts(JavaPlugin parent, String file) {
+	private static void copyDefauts(JavaPlugin parent) {
 	    for(JarEntry entry : new JarReader(parent.getDataFolder()).getEntries()) {
-	        String name = entry.getName();
-	        if (entry.isDirectory()) {
-	            copyDefauts(parent, file+"/"+name);
-	        }else
-	        parent.saveResource(name, false);
+	        parent.saveResource(entry.getName(), false);
 	    }
 	}
 	
