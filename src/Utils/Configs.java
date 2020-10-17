@@ -52,14 +52,14 @@ public class Configs {
 	}
 
 	private static void copyDefauts(JavaPlugin parent, String file) {
-	    for(JarEntry entry : new JarReader(new File(parent.getDataFolder(), file)).getEntries()) {
+	    for(JarEntry entry : new JarReader(parent.getDataFolder()).getEntries()) {
 	        String name = entry.getName();
-	        if (!name.startsWith(file + "/") || entry.isDirectory()) {
-	            if(entry.isDirectory())
-	                copyDefauts(parent, file+"/"+name);
-	            continue;
-	        }
+	        if(name.equals(file)) {
+	        if (entry.isDirectory()) {
+	            copyDefauts(parent, file+"/"+name);
+	        }else
 	        parent.saveResource(name, false);
+	        }
 	    }
 	}
 	
