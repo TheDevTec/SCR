@@ -25,6 +25,8 @@ public class Configs {
 			lang="en";
 		}else lang="en";
 		Loader.trans = new Config("ServerControlReloaded/Translations/translation-"+lang+".yml");
+		Loader.cmds = new Config("ServerControlReloaded/Commands.yml");
+		Loader.events = new Config("ServerControlReloaded/Events.yml");
 		MultiWorldLoading();
 		ScoreboardLoading();
 		TabLoading();
