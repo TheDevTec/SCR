@@ -3,16 +3,25 @@ package Utils;
 import java.io.File;
 import java.nio.file.NoSuchFileException;
 import java.util.Arrays;
+import java.util.jar.JarEntry;
+
+import org.bukkit.plugin.java.JavaPlugin;
 
 import ServerControl.Loader;
 import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.Utils.TheAPIUtils.Validator;
+import me.DevTec.TheAPI.Utils.ZIP.JarReader;
 
 public class Configs {
 	
 	public static void load() {
+		copyDefauts(Loader.getInstance, "Commands.yml");
+		copyDefauts(Loader.getInstance, "Config.yml");
+		copyDefauts(Loader.getInstance, "Events.yml");
+		copyDefauts(Loader.getInstance, "Translations");
 		Loader.config = new Config("ServerControlReloaded/Config.yml");
 		String lang = Loader.config.getString("Options.Language");
+		if(lang!=null)
 		if(!new File("ServerControlReloaded/translation-"+lang+".yml").exists()) {
 			Validator.send("File translation-"+lang+".yml doesn't exist", new NoSuchFileException("File translation-"+lang+".yml doesn't exist"));
 			lang="en";
@@ -42,6 +51,18 @@ public class Configs {
 		}
 	}
 
+	private static void copyDefauts(JavaPlugin parent, String file) {
+	    for(JarEntry entry : new JarReader(new File(parent.getDataFolder(), file)).getEntries()) {
+	        String name = entry.getName();
+	        if (!name.startsWith(file + "/") || entry.isDirectory()) {
+	            if(entry.isDirectory())
+	                copyDefauts(parent, file+"/"+name);
+	            continue;
+	        }
+	        parent.saveResource(name, false);
+	    }
+	}
+	
 	private static void TabLoading() {
 		Loader.tab=new Config("ServerControlReloaded/TabList.yml");
 		Loader.tab.addDefault("Tab-Enabled", true);

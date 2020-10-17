@@ -38,7 +38,7 @@ public class setting {
 	 **/
 	public static void load() {
 		Config f = Loader.config;
-		prefix = (String) Loader.getTranslation("Prefix");
+		prefix = Loader.getTranslation("Prefix").toString();
 		TheAPI.msg(setting.prefix + "&7Loading settings..", TheAPI.getConsole());
 		format_date_time = new SimpleDateFormat(f.getString("Format.DateWithTime"));
 		format_time = new SimpleDateFormat(f.getString("Format.Time"));
