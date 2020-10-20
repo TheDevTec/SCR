@@ -69,7 +69,7 @@ public class Configs {
 				    		 while ((readBytes = is.readLine()) != null)
 				    			 s+=readBytes+System.lineSeparator();
 				    		 data.reload(s);
-				    		 Config c = new Config(entry.getName().replaceFirst("Configs/", ""));
+				    		 Config c = new Config("ServerControlReloaded/"+entry.getName().replaceFirst("Configs/", ""));
 				    		 for(String sr : data.getKeys(true))
 				    		 c.addDefault(sr, data.get(sr));
 				    		 c.save();
