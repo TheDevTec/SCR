@@ -201,6 +201,8 @@ Teleport:
     Enabled: true
   TpHere:
     Name: "tphere"
+    Aliases:
+    - "s"
     Permission: "SCR.Command.TpHere"
     Help: "/TpHere <player> - Teleport player to your position"
     Enabled: true
@@ -388,6 +390,373 @@ Weather:
     Permission: "SCR.Command.PlayerSun"
     Help: "/PlayerSun <player> - Change player's weather to sunny"
     Enabled: true
+
+Message:
+  Broadcast:
+    Name: "broadcast"
+    Aliases:
+    - "bc"
+    Permission: "SCR.Command.Broadcast"
+    Help: "/Broadcast <message> - Send message to online players"
+    Enabled: true
+  ClearChat:
+    Name: "clearchat"
+    Aliases:
+    - "cc"
+    Permission: "SCR.Command.ClearChat"
+    Help: "/ClearChat - Delete server chat"
+    Enabled: true
+  Helpop:
+    Name: "helpop"
+    Aliases:
+    - "adminchat"
+    - "ac"
+    - "staffchat"
+    - "sc"
+    Permission: "SCR.Command.Helpop"
+    Help: "/Helpop <message> - Send message to online admins"
+    Enabled: true
+  PrivateMessage:
+    Name: "privatemessage"
+    Aliases:
+    - "pm"
+    - "msg"
+    Permission: "SCR.Command.PrivateMessage"
+    Help: "/Privatemessage <player> <message> - Send private message to player"
+    Enabled: true
+  ReplyPrivateMsg:
+    Name: "reply"
+    Aliases:
+    - "r"
+    Permission: "SCR.Command.PrivateMessage"
+    Help: "/R <message> - Send message to last chat with player in private message"
+    Enabled: true
+  Sudo:
+    Name: "sudo"
+    Aliases:
+    - ""
+    Permission: "SCR.Command.Sudo"
+    Help: "/Sudo <player> <message/command> - Send message or command for player"
+    Enabled: true
+Kill:
+  Kill:
+    Name: "kill"
+    Permission: "SCR.Command.Kill"
+    Help: "/Kill <player> - Kill player"
+    Enabled: true
+  KillAll:
+    Name: "killall"
+    Permission: "SCR.Command.KillAll"
+    Help: "/KillAll - Kill all players on server"
+    Enabled: true
+  Suicide:
+    Name: "suicide"
+    Permission: "SCR.Command.Suicide"
+    Help: "/Suicide - Suicide yourself"
+    Enabled: true
+NickName:
+  Nick:
+    Name: "nickname"
+    Aliases:
+    - "nick"
+    Permission: "SCR.Command.Nickname"
+    Help: "/Nick <nickname> - Change your name"
+    Enabled: true
+  NickReset:
+    Name: "nicknamereset"
+    Aliases:
+    - "nickreset"
+    Permission: "SCR.Command.NicknameReset"
+    Help: "/NicknameReset - Reset your name to original"
+    Enabled: true
+Speed:
+  WalkSpeed:
+    Name: "walkspeed"
+    Aliases:
+    - "ws"
+    Permission: "SCR.Command.WalkSpeed"
+    Help: "/WalkSpeed <number> - Change speed of walk"
+    Enabled: true
+  FlySpeed:
+    Name: "flyspeed"
+    Aliases:
+    - "fs"
+    Permission: "SCR.Command.FlySpeed"
+    Help: "/FlySpeed <number> - Change speed of flight"
+    Enabled: true
+Time:
+  Day:
+    Name: "day"
+    Permission: "SCR.Command.Day"
+    Help: "/Day <world> - Change time to day in your world, or targeted"
+    Enabled: true
+  Night:
+    Name: "night"
+    Permission: "SCR.Command.Night"
+    Help: "/Night <world> - Change time to night in your world, or targeted"
+    Enabled: true
+  PNight:
+    Name: "playernight"
+    Aliases:
+    - "pnight"
+    Permission: "SCR.Command.PlayerNight"
+    Help: "/PlayerNight - Change your time to night"
+    Enabled: true
+  PDay:
+    Name: "playerday"
+    Aliases:
+    - "pday"
+    Permission: "SCR.Command.PlayerDay"
+    Help: "/PlayerDay - Change your time to day"
+    Enabled: true
+Warps:
+  Back:
+    Name: "back"
+    Permission: "SCR.Command.Back"
+    Help: "/Back - Teleports you to last location"
+    Enabled: true
+  DelHome:
+    Name: "delhome"
+    Permission: "SCR.Command.Home"
+    Help: "/DelHome <home> - Delete your home"
+    Enabled: true
+  DelWarp:
+    Name: "delwarp"
+    Permission: "SCR.Command.DelWarp"
+    Help: "/DelWarp <warp> - Delete warp"
+    Enabled: true
+  Home:
+    Name: "home"
+    Permission: "SCR.Command.Home"
+    Help: "/Home <home> - Teleports you to your home"
+    Enabled: true
+  HomeOther:
+    Name: "homeother"
+    Permission: "SCR.Command.HomeOther"
+    Help: "/HomeOther <player> <home> - Teleports you to targeted player home"
+    Enabled: true
+  Homes:
+    Name: "homes"
+    Permission: "SCR.Command.Home"
+    Help: "/Homes - Lists of your homes"
+    Enabled: true
+  SetHome:
+    Name: "sethome"
+    Permission: "SCR.Command.Home"
+    Help: "/SetHome <home> - Set home on your location"
+    Enabled: true
+  SetSpawn:
+    Name: "setspawn"
+    Permission: "SCR.Command.SetSpawn"
+    Help: "/SetSpawn - Set global spawn on your location"
+    Enabled: true
+  SetWarp:
+    Name: "setwarp"
+    Permission: "SCR.Command.SetWarp"
+    Help: "/SetWarp <warp> - Set warp on your location"
+    Enabled: true
+  Spawn:
+    Name: "spawn"
+    Permission: "SCR.Command.Spawn"
+    Help: "/Spawn - Teleports you to global spawn"
+    Enabled: true
+  Warp:
+    Name: "warp"
+    Permission: "SCR.Command.Warp"
+    Help: "/Warp <warp> - Teleports you to warp"
+    Enabled: true
+Info:
+  ChatFormat:
+    Name: "chatformat"
+    Aliases:
+    - "chatf"
+    - "cf"
+    Permission: "SCR.Command.ChatFormat"
+    Help: "/ChatFormat - Set/Create/Delete/Info/List chatformats"
+    Enabled: true
+  Chunks:
+    Name: "chunk"
+    Permission: "SCR.Command.Chunks"
+    Help: "/Chunk - List all chunks"
+    Enabled: true
+  ListCmd:
+    Name: "list"
+    Permission: "SCR.Command.List"
+    Help: "/List - List online players"
+    Enabled: true
+  Maintenance:
+    Name: "maintenance"
+    Permission: "SCR.Command.Maintenance"
+    Help: "/Maintenance <on/off> - Turn on/off maintenance mode"
+    Enabled: true
+  RAM:
+    Name: "ram"
+    Permission: "SCR.Command.Ram"
+    Help: "/Ram - Shows ram info"
+    Enabled: true
+  Seen:
+    Name: "seen"
+    Permission: "SCR.Command.Seen"
+    Help: "/Seen <player> - Show player online/offline time"
+    Enabled: true
+  ServerControl:
+    Name: "servercontrol"
+    Aliases:
+    - "scr"
+    Permission: "SCR.Command.ServerControl"
+    Help: "/ServerControl - Show info about plugin"
+    Enabled: true
+  Staff:
+    Name: "staff"
+    Permission: "SCR.Command.Staff"
+    Help: "/Staff - Show online staffs"
+    Enabled: true
+  TPS:
+    Name: "tps"
+    Permission: "SCR.Command.Tps"
+    Help: "/Tps - Shows tps info"
+    Enabled: true
+  WhoIs:
+    Name: "whois"
+    Aliases:
+    - "who"
+    Permission: "SCR.Command.WhoIs"
+    Help: "/WhoIs <player> - Shows info about player"
+    Enabled: true
+Other:
+  AFK:
+    Name: "afk"
+    Permission: "SCR.Command.Afk"
+    Help: "/Afk - Set your status to afk"
+    Enabled: true
+  Butcher:
+    Name: "butcher"
+    Permission: "SCR.Command.Butcher"
+    Help: "/Butcher <number> - Kill entities"
+    Enabled: true
+  ChatLock:
+    Name: "chatlock"
+    Aliases:
+    - "cl"
+    Permission: "SCR.Command.ChatLock"
+    Help: "/ChatLock - Lock the server chat"
+    Enabled: true
+  Craft:
+    Name: "craft"
+    Aliases:
+    - "wb"
+    Permission: "SCR.Command.Craft"
+    Help: "/Craft - Opens virtual crafting table"
+    Enabled: true
+  Exp:
+    Name: "exp"
+    Permission: "SCR.Command.Exp"
+    Help: "/Exp - Set/Remove experiences"
+    Enabled: true
+  Feed:
+    Name: "feed"
+    Permission: "SCR.Command.Feed"
+    Help: "/Feed - Set your hunger bar to full"
+    Enabled: true
+  Fly:
+    Name: "fly"
+    Permission: "SCR.Command.Fly"
+    Help: "/Fly - Allow you to flight"
+    Enabled: true
+  Give:
+    Name: "give"
+    Aliases:
+    - "g"
+    Permission: "SCR.Command.Give"
+    Help: "/Give <item> - Gives you a item"
+    Enabled: true
+  God:
+    Name: "god"
+    Permission: "SCR.Command.God"
+    Help: "/God - Turn on/off invinciblity"
+    Enabled: true
+  Hat:
+    Name: "hat"
+    Permission: "SCR.Command.Hat"
+    Help: "/Hat - Set block, which you have in main hand to your head"
+    Enabled: true
+  Heal:
+    Name: "heal"
+    Permission: "SCR.Command.Heal"
+    Help: "/Heal - Heal yourself"
+    Enabled: true
+  Item:
+    Name: "item"
+    Aliases:
+    - "i"
+    Permission: "SCR.Command.Item"
+    Help: "/Item - Change lore/color/enchantments of item in your main hand"
+    Enabled: true
+  KitCmd:
+    Name: "kit"
+    Permission: "SCR.Command.Kit"
+    Help: "/Kit - Gives a selected kit to player"
+    Enabled: true
+  MultiWorlds:
+    Name: "multiworld"
+    Aliases:
+    - "mw"
+    Permission: "SCR.Command.MultiWorld"
+    Help: "/MultiWorld - Create/Delete/Edit selected world"
+    Enabled: true
+  Repair:
+    Name: "repair"
+    Permission: "SCR.Command.Repair"
+    Help: "/Repair - Repair item in your hand"
+    Enabled: true
+  ScoreBoardStats:
+    Name: "scoreboard"
+    Aliases:
+    - "sb"
+    Permission: "SCR.Command.ScoreBoard"
+    Help: "/ScoreBoard - Changes info in scoreboard"
+    Enabled: true
+  Skull:
+    Name: "skull"
+    Permission: "SCR.Command.Skull"
+    Help: "/Skull - Gives a player skull"
+    Enabled: true
+  Spawner:
+    Name: "spawner"
+    Permission: "SCR.Command.Spawner"
+    Help: "/Spawner - Edit features in spawner"
+    Enabled: true
+  Tab:
+    Name: "tablist"
+    Aliases:
+    - "tabl"
+    - "tab"
+    Permission: "SCR.Command.TabList"
+    Help: "/TabList - Changes info in tablist"
+    Enabled: true
+  TempFly:
+    Name: "tempfly"
+    Permission: "SCR.Command.TempFly"
+    Help: "/TempFly <player> <time> - Allow player to flight on selected time"
+    Enabled: true
+  Thor:
+    Name: "thor"
+    Permission: "SCR.Command.Thor"
+    Help: "/Thor - Summon lighting strike on player, or block"
+    Enabled: true
+  Trash:
+    Name: "trash"
+    Permission: "SCR.Command.Trash"
+    Help: "/Trash - Opens in trash GUI"
+    Enabled: true
+  Vanish:
+    Name: "vanish"
+    Aliases:
+    - "v"
+    Permission: "SCR.Command.Vanish"
+    Help: "/Vanish - Set vanish mode to on/off"
+    Enabled: true
+    
   
   
   
