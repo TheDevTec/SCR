@@ -24,15 +24,15 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 	if (Loader.has(s, "ChatFormat", "Info")) {
 		if (args.length == 0) {
-			if (s.hasPermission("ServerControl.ChatFormat.List"))
+			if (Loader.has(s, "ChatFormat.List", "Info"))
 				msg("&6/ChatFormat List &7- &5List of groups", s);
-			if (s.hasPermission("ServerControl.ChatFormat.Info"))
+			if (Loader.has(s, "ChatFormat.Info", "Info"))
 				msg("&6/ChatFormat Info <group> &7- &5Informations about group", s);
-			if (s.hasPermission("ServerControl.ChatFormat.Create"))
+			if (Loader.has(s, "ChatFormat.Create", "Info"))
 				msg("&6/ChatFormat Create <group> &7- &5Create new group", s);
-			if (s.hasPermission("ServerControl.ChatFormat.Delete"))
+			if (Loader.has(s, "ChatFormat.Delete", "Info"))
 				msg("&6/ChatFormat Delete <group> &7- &5Delete group", s);
-			if (s.hasPermission("ServerControl.ChatFormat.Set"))
+			if (Loader.has(s, "ChatFormat.Set", "Info"))
 				msg("&6/ChatFormat Set <group> <chat/name> <value> &7- &5Set name/chat format of group", s);
 			return true;
 		}
