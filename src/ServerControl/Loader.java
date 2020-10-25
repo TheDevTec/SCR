@@ -1,5 +1,6 @@
 package ServerControl;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -8,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -441,8 +443,13 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
 	}
 
-	private void CmdC(String s, CommandExecutor p) {
-		getCommand(s).setExecutor(p);
+	private void CmdC(String section, String command, CommandExecutor p) {
+		if(cmds.getBoolean(section+"."+command+".Enabled")) {
+		PluginCommand cmd = TheAPI.createCommand(cmds.getString(section+"."+command+".Command"), this);
+		cmd.setAliases(cmds.get(section+"."+command+".Aliases") instanceof List<?> ? (List<String>)cmds.get(section+"."+command+".Aliases"):Arrays.asList(cmds.get(section+"."+command+".Aliases").toString()));
+		cmd.setPermission(cmds.getString(section+"."+command+".Permission"));
+		cmd.setExecutor(p);
+		}
 	}
 
 	private void CommmandsRegisters() {
