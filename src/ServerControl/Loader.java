@@ -270,18 +270,18 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
+		Task();
 		reload();
 		TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "&eINFO: &7Newest versions of &eTheAPI &7can be found on Spigot:", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "       https://www.spigotmc.org/resources/theapi.72679/", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
-		Tasks();
 	}
 
 	private static Metrics metrics;
-	public void Tasks() {
+	public void Task() {
 		EventsRegister();
-		CommmandsRegister();
+		CommmandsRegisters();
 	}
 
 	@Override
@@ -445,7 +445,7 @@ public class Loader extends JavaPlugin implements Listener {
 		getCommand(s).setExecutor(p);
 	}
 
-	private void CommmandsRegister() {
+	private void CommmandsRegisters() {
 		CmdC("stop", new Commands.Server.Stop());
 		CmdC("reload", new Commands.Server.Reload());
 		CmdC("restart", new Commands.Server.Restart());
