@@ -60,6 +60,7 @@ public class EnderChest implements CommandExecutor {
 			}
 			return true;
 		}
+		Loader.noPerms(s, "EnderChest", "Inventory");
 		return true;
 	}
 

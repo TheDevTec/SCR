@@ -16,11 +16,11 @@ public class Gamemode implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 
 		if (args.length == 0) {
-			if (Loader.has(s, "ServerControl.Gamemode", "Gamemode")) {
+			if (Loader.has(s, "Gamemode", "Gamemode")) {
 				Loader.Help(s, "/GameMode <s|c|a|sp> <player>", "Gamemode");
 				return true;
 			}
-			Loader.noPerms(s, "ServerControl.Gamemode", "Gamemode");
+			Loader.noPerms(s, "Gamemode", "Gamemode");
 			return true;
 		}
 		String gamemode = null;
@@ -64,7 +64,7 @@ public class Gamemode implements CommandExecutor {
 								.add("%gamemode%", gamemode));
 						return true;
 				}
-				Loader.noPerms(s, "Gamemode" + gamemode, "Gamemode");
+				Loader.noPerms(s, "Gamemode." + gamemode, "Gamemode");
 				return true;
 			}
 			Loader.Help(s, "/GameMode " + args[0] + " <player>", "Gamemode");

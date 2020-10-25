@@ -59,6 +59,7 @@ public class Invsee implements CommandExecutor {
 
 			}
 		}
+		Loader.noPerms(s, "Invsee", "Inventory");
 		return true;
 	}
 

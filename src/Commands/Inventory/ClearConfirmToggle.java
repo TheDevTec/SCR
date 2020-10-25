@@ -34,6 +34,7 @@ public class ClearConfirmToggle implements CommandExecutor {
 				}
 			}
 		}
+		Loader.noPerms(s, "ClearInventory", "Inventory");
 		return true;
 	}
 }

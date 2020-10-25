@@ -110,7 +110,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 			if (!d.getBoolean("ClearInvConfirm")) {
 				if (args[0].equalsIgnoreCase("Confirm")) {
 
-					if (Loader.has(s, "ClearInventory", "Inventory")) {
+					if (Loader.has(s, "ClearInventory", "Inventory", "Inventory")) {
 						long reset = d.getLong("ClearInvCooldown") - System.currentTimeMillis() / 1000;
 						reset = reset * -1;
 						if (reset < 60) {
@@ -128,7 +128,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 				}
 			}
 			if (args[0].equalsIgnoreCase("Clear")) {
-				if (Loader.has(s, "ClearInventory", "Inventory")) {
+				if (Loader.has(s, "ClearInventory", "Inventory", "Inventory")) {
 					if (!d.getBoolean("ClearInvConfirm")) {
 						d.setAndSave("ClearInvCooldown", System.currentTimeMillis() / 1000);
 						Loader.sendMessages(s, "Inventory.ClearConfirm");
@@ -182,14 +182,14 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("Help")) {
-				if (s.hasPermission("ServerControl.ClearInventory")) {
+				if (Loader.has(s, "ClearInventory", "Inventory")) {
 					Loader.Help(s, "/Clear", "Inventory");
 					if (!d.getBoolean("ClearInvConfirm"))
 						Loader.Help(s, "/Clear Confirm", "Inventory");
 				}
-				if (s.hasPermission("ServerControl.ClearInventory.Other"))
+				if (Loader.has(s, "ClearInventory", "Inventory", "Other"))
 					Loader.Help(s, "/Clear Other <player>", "Inventory");
-				if (s.hasPermission("ServerControl.ClearInventory.Undo"))
+				if (Loader.has(s, "ClearInventory", "Inventory", "Undo"))
 					Loader.Help(s, "/Clear Undo", "Inventory");
 				return true;
 			}

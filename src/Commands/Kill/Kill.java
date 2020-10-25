@@ -37,6 +37,7 @@ public class Kill implements CommandExecutor {
 			if (p.isDead() && !i)
 				Loader.sendMessages(s, "Kill.Killed", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName()));
 		}
+		Loader.noPerms(s, "Kill", "Kill");
 		return true;
 	}
 }

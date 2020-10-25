@@ -22,6 +22,7 @@ public class Suicide implements CommandExecutor {
 			Loader.Help(s, "Kill", "Kill");
 			return true;
 		}
+		Loader.noPerms(s, "Suicide", "Kill");
 		return true;
 	}
 

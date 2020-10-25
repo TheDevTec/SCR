@@ -39,7 +39,7 @@ public class CloseInventory implements CommandExecutor {
 			}
 			return true;
 		}
-
+		Loader.noPerms(s, "CloseInventory", "Inventory");
 		return true;
 	}
 

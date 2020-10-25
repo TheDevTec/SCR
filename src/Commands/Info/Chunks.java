@@ -51,7 +51,7 @@ public class Chunks implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		List<String> c = new ArrayList<>();
 		if (cmd.getName().equalsIgnoreCase("chunks") && args.length == 1) {
-			if (s.hasPermission("ServerControl.Chunks")) {
+			if (Loader.has(s, "Chunks", "Info")) {
 				c.addAll(StringUtil.copyPartialMatches(args[0], Unload, new ArrayList<>()));
 			}
 		}

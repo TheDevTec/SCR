@@ -143,7 +143,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		List<String> c = new ArrayList<>();
 		if (args.length == 1) {
-			if (s.hasPermission("ServerControl.Warp")) {
+			if (Loader.has(s, "Warp", "Warps")) {
 				c.addAll(StringUtil.copyPartialMatches(args[0], warpss(s), new ArrayList<>()));
 			}
 		}

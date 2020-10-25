@@ -61,7 +61,7 @@ public class Night implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		List<String> c = new ArrayList<>();
 		if (cmd.getName().equalsIgnoreCase("Night") && args.length == 1) {
-			if (s.hasPermission("ServerControl.Night")) {
+			if (Loader.has(s, "Night", "Time")) {
 				c.addAll(StringUtil.copyPartialMatches(args[0], worlds(), new ArrayList<>()));
 			}
 		}

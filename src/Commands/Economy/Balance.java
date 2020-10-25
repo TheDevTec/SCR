@@ -21,11 +21,11 @@ public class Balance implements CommandExecutor {
 		}
 		if (args.length == 0) {
 			if (s instanceof Player) {
-				if (Loader.has(s, "Balance", "Economy", "Balance")) {
+				if (Loader.has(s, "Economy", "Economy", "Balance")) {
 					Loader.sendMessages(s, "Economy.Balance.You");
 					return true;
 				}
-				Loader.noPerms(s, "Balance", "Economy", "Balance");
+				Loader.noPerms(s, "Economy", "Economy", "Balance");
 				return true;
 			}
 			return true;

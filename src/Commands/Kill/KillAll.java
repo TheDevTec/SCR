@@ -31,6 +31,7 @@ public class KillAll implements CommandExecutor {
 					.replace("%amount%", pl.size()+""));
 			return true;
 		}
+		Loader.noPerms(s, "KillAll", "Kill");
 		return true;
 	}
 }

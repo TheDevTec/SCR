@@ -28,7 +28,7 @@ public class EnderSee implements CommandExecutor {
 							((Player)s).openInventory(((Player)s).getEnderChest());
 							return true;
 						} else {
-							if (Loader.has(s, "EnderSee", "Inventory")) {
+							if (Loader.has(s, "EnderChest", "Inventory")) {
 								Loader.sendMessages(s, "Inventory.EnderChest.Opening.Other.Sender", Placeholder.c()
 										.add("%player%", p.getName())
 										.add("%playername%", p.getDisplayName()));
@@ -47,7 +47,7 @@ public class EnderSee implements CommandExecutor {
 			}
 			return true;
 		}
-
+		Loader.noPerms(s, "EnderChest", "Inventory");
 		return true;
 	}
 

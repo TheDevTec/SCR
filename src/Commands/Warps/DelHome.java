@@ -50,7 +50,7 @@ public class DelHome implements CommandExecutor, TabCompleter {
 		List<String> c = new ArrayList<>();
 		if (s instanceof Player) {
 			if (args.length == 1) {
-				if (s.hasPermission("ServerControl.DelHome")) {
+				if (Loader.has(s, "DelHome", "Warps")) {
 					List<String> homes = TheAPI.getUser(s.getName()).getKeys("Homes");
 					if (!homes.isEmpty() && homes != null)
 						c.addAll(StringUtil.copyPartialMatches(args[0], homes, new ArrayList<>()));

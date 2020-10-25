@@ -105,6 +105,9 @@ Economy:
     Aliases:
     - "money"
     Permission: "SCR.Command.Balance"
+    SubPermission:
+    - "SCR.Command.Economy.Balance"
+    - "SCR.Command.Economy.BalanceOther"
     Help: "/Balance <player>"
     Enabled: true
   BalanceTop:
@@ -121,6 +124,14 @@ Economy:
     Aliases:
     - "eco"
     Permission: "SCR.Command.Economy"
+    SubPermission:
+    - "SCR.Command.Economy.Balance"
+    - "SCR.Command.Economy.BalanceOther"
+    - "SCR.Command.Economy.Give"
+    - "SCR.Command.Economy.Take"
+    - "SCR.Command.Economy.Pay"
+    - "SCR.Command.Economy.Set"
+    - "SCR.Command.Economy.Reset"
     Help:
     - "/Economy give <player> <money>"
     - "/Economy take <player> <money>"
@@ -197,6 +208,9 @@ Teleport:
   Tp:
     Name: "tp"
     Permission: "SCR.Command.Tp"
+    SubPermission:
+    - "SCR.Command.Tp.Location"
+    - "SCR.Command.Tp.Other"
     Help: "/Tp <player/X Y Z> - Teleport you to player or to position in world"
     Enabled: true
   TpHere:
@@ -249,14 +263,14 @@ Teleport:
     
 Enchantment:
   Enchant:
-    Name: "tptoggle"
+    Name: "enchant"
     Aliases:
     - "ench"
     Permission: "SCR.Command.Enchant"
     Help: "/Enchant <enchantment> <level> - Enchant item in your hand with enchantment"
     Enabled: true
   EnchantRemove:
-    Name: "tptoggle"
+    Name: "enchantremove"
     Aliases:
     - "removeenchant"
     - "removeench"
@@ -265,7 +279,7 @@ Enchantment:
     Help: "/EnchantRemove <enchantment> - Remove enchantment from item in your hand"
     Enabled: true
   EnchantRemoveAll:
-    Name: "tptoggle"
+    Name: "enchantremoveall"
     Aliases:
     - "removeallenchant"
     - "removeallench"
@@ -291,6 +305,10 @@ Inventory:
     - "clearinv"
     - "clear"
     Permission: "SCR.Command.ClearInventory"
+    SubPermission:
+    - "SCR.Command.ClearInventory.Inventory"
+    - "SCR.Command.ClearInventory.Undo"
+    - "SCR.Command.ClearInventory.Other"
     Help: "/ClearInventory <player> - Clear player's inventory"
     Enabled: true
   ClearInventoryToggle:
@@ -300,6 +318,8 @@ Inventory:
     - "clearinvtoggle"
     - "cleartoggle"
     Permission: "SCR.Command.ClearInventoryToggle"
+    SubPermission:
+    - "SCR.Command.ClearInventoryToggle.Clear"
     Help: "/ClearInventoryToggle - Toggle request to confirm to clear inventory"
     Enabled: true
   EnderChest:
@@ -404,6 +424,8 @@ Message:
     Aliases:
     - "cc"
     Permission: "SCR.Command.ClearChat"
+    SubPermission:
+    - "SCR.Command.ClearChat.Bypass"
     Help: "/ClearChat - Delete server chat"
     Enabled: true
   Helpop:
@@ -475,6 +497,8 @@ Speed:
     Aliases:
     - "ws"
     Permission: "SCR.Command.WalkSpeed"
+    SubPermission:
+    - "SCR.Command.WalkSpeed.Other"
     Help: "/WalkSpeed <number> - Change speed of walk"
     Enabled: true
   FlySpeed:
@@ -482,6 +506,8 @@ Speed:
     Aliases:
     - "fs"
     Permission: "SCR.Command.FlySpeed"
+    SubPermission:
+    - "SCR.Command.FlySpeed.Other"
     Help: "/FlySpeed <number> - Change speed of flight"
     Enabled: true
 Time:
@@ -500,6 +526,8 @@ Time:
     Aliases:
     - "pnight"
     Permission: "SCR.Command.PlayerNight"
+    SubPermission:
+    - "SCR.Command.PlayerNight.Other"
     Help: "/PlayerNight - Change your time to night"
     Enabled: true
   PDay:
@@ -507,12 +535,16 @@ Time:
     Aliases:
     - "pday"
     Permission: "SCR.Command.PlayerDay"
+    SubPermission:
+    - "SCR.Command.PlayerDay.Other"
     Help: "/PlayerDay - Change your time to day"
     Enabled: true
 Warps:
   Back:
     Name: "back"
     Permission: "SCR.Command.Back"
+    SubPermission:
+    - "SCR.Command.Back.Other"
     Help: "/Back - Teleports you to last location"
     Enabled: true
   DelHome:
@@ -538,6 +570,8 @@ Warps:
   Homes:
     Name: "homes"
     Permission: "SCR.Command.Home"
+    SubPermission:
+    - "SCR.Command.Homes.Other"
     Help: "/Homes - Lists of your homes"
     Enabled: true
   SetHome:
@@ -558,6 +592,8 @@ Warps:
   Spawn:
     Name: "spawn"
     Permission: "SCR.Command.Spawn"
+    SubPermission:
+    - "SCR.Command.Spawn.Other"
     Help: "/Spawn - Teleports you to global spawn"
     Enabled: true
   Warp:
@@ -572,6 +608,12 @@ Info:
     - "chatf"
     - "cf"
     Permission: "SCR.Command.ChatFormat"
+    SubPermission:
+    - "SCR.Command.ChatFormat.List"
+    - "SCR.Command.ChatFormat.Create"
+    - "SCR.Command.ChatFormat.Info"
+    - "SCR.Command.ChatFormat.Delete"
+    - "SCR.Command.ChatFormat.Set"
     Help: "/ChatFormat - Set/Create/Delete/Info/List chatformats"
     Enabled: true
   Chunks:
@@ -627,6 +669,8 @@ Other:
   AFK:
     Name: "afk"
     Permission: "SCR.Command.Afk"
+    SubPermission:
+    - "SCR.Command.Afk.Other"
     Help: "/Afk - Set your status to afk"
     Enabled: true
   Butcher:
@@ -651,16 +695,25 @@ Other:
   Exp:
     Name: "exp"
     Permission: "SCR.Command.Exp"
+    SubPermission:
+    - "SCR.Command.Exp.Set"
+    - "SCR.Command.Exp.Balance"
+    - "SCR.Command.Exp.Give"
+    - "SCR.Command.Exp.Remove"
     Help: "/Exp - Set/Remove experiences"
     Enabled: true
   Feed:
     Name: "feed"
     Permission: "SCR.Command.Feed"
+    SubPermission:
+    - "SCR.Command.Feed.Other"
     Help: "/Feed - Set your hunger bar to full"
     Enabled: true
   Fly:
     Name: "fly"
     Permission: "SCR.Command.Fly"
+    SubPermission:
+    - "SCR.Command.Fly.Other"
     Help: "/Fly - Allow you to flight"
     Enabled: true
   Give:
@@ -673,16 +726,22 @@ Other:
   God:
     Name: "god"
     Permission: "SCR.Command.God"
+    SubPermission:
+    - "SCR.Command.God.Other"
     Help: "/God - Turn on/off invinciblity"
     Enabled: true
   Hat:
     Name: "hat"
     Permission: "SCR.Command.Hat"
+    SubPermission:
+    - "SCR.Command.Hat.Other"
     Help: "/Hat - Set block, which you have in main hand to your head"
     Enabled: true
   Heal:
     Name: "heal"
     Permission: "SCR.Command.Heal"
+    SubPermission:
+    - "SCR.Command.Heal.Other"
     Help: "/Heal - Heal yourself"
     Enabled: true
   Item:
@@ -695,6 +754,9 @@ Other:
   KitCmd:
     Name: "kit"
     Permission: "SCR.Command.Kit"
+    SubPermission:
+    - "SCR.Command.Kit.List"
+    - "SCR.Command.Kit.Give"
     Help: "/Kit - Gives a selected kit to player"
     Enabled: true
   MultiWorlds:
@@ -707,6 +769,8 @@ Other:
   Repair:
     Name: "repair"
     Permission: "SCR.Command.Repair"
+    SubPermission:
+    - "SCR.Command.Repair.Other"
     Help: "/Repair - Repair item in your hand"
     Enabled: true
   ScoreBoardStats:
@@ -737,6 +801,8 @@ Other:
   TempFly:
     Name: "tempfly"
     Permission: "SCR.Command.TempFly"
+    SubPermission:
+    - "SCR.Command.TempFly.Other"
     Help: "/TempFly <player> <time> - Allow player to flight on selected time"
     Enabled: true
   Thor:
@@ -754,6 +820,8 @@ Other:
     Aliases:
     - "v"
     Permission: "SCR.Command.Vanish"
+    SubPermission:
+    - "SCR.Command.Vanish.Other"
     Help: "/Vanish - Set vanish mode to on/off"
     Enabled: true
     

@@ -61,7 +61,7 @@ public class Day implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		List<String> c = new ArrayList<>();
 		if (cmd.getName().equalsIgnoreCase("day") && args.length == 1) {
-			if (s.hasPermission("ServerControl.Day")) {
+			if (Loader.has(s, "Day", "Time")) {
 				c.addAll(StringUtil.copyPartialMatches(args[0], worlds(), new ArrayList<>()));
 			}
 		}

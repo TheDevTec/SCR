@@ -34,7 +34,7 @@ public class Craft implements CommandExecutor {
 			}
 			return true;
 		}
-		Loader.noPerms(s, "Workbench", "Other");
+		Loader.noPerms(s, "Workbemch", "Other");
 		return true;
 	}
 
