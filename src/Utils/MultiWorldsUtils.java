@@ -61,10 +61,8 @@ public class MultiWorldsUtils {
 								Loader.mw.getString("WorldsSettings." + on.getWorld().getName() + ".GameMode")));
 					}
 				}
-			}
-			if (Bukkit.getWorld(on.getWorld().getName()) == null) {
+			}else
 				on.kickPlayer("Unable to find world");
-			}
 		}
 	}
 
@@ -245,30 +243,10 @@ public class MultiWorldsUtils {
 	}
 
 	public static void LoadWorlds() {
-		List<String> worlds = Loader.mw.getStringList("Worlds");
-		if (worlds.isEmpty() == false)
-			for (String w : worlds) {
-				if (Bukkit.getWorld(w) != null)
-					continue;
-				String biome = Loader.mw.getString("WorldsSettings." + w + ".Generator");
-				if (biome.equalsIgnoreCase("NETHER")) {
-					WorldsAPI.create(w, Environment.NETHER, WorldType.NORMAL, true, 0);
-				}
-				if (biome.equalsIgnoreCase("THE_END")) {
-					WorldsAPI.create(w, Environment.THE_END, WorldType.NORMAL, true, 0);
-				}
-				if (biome.equalsIgnoreCase("NORMAL") || biome.equalsIgnoreCase("none")) {
-					WorldsAPI.create(w, Environment.NORMAL, WorldType.NORMAL, true, 0);
-				}
-				if (biome.equalsIgnoreCase("FLAT")) {
-					WorldsAPI.create(w, Environment.NORMAL, WorldType.FLAT, true, 0);
-				}
-				if (biome.equalsIgnoreCase("THE_VOID")) {
-					WorldsAPI.create(w, Environment.NORMAL, null, true, 0);
-				}
-			}
 		for (World wa : Bukkit.getWorlds())
 			DefaultSet(wa, Loader.mw.getString("WorldsSettings." + wa.getName() + ".Generator"));
+		for (String w : Loader.mw.getStringList("Worlds"))
+			LoadWorld(w, null);
 	}
 
 	public static void LoadWorld(String s, CommandSender sender) {
@@ -298,6 +276,7 @@ public class MultiWorldsUtils {
 		Loader.mw.set("Unloaded-Worlds", ww);
 		Loader.mw.save();
 		DefaultSet(Bukkit.getWorld(s), biome);
+		if(sender!=null)
 		Loader.sendMessages(sender, "MultiWorld.Load", Placeholder.c().add("%world%", s));
 	}
 
@@ -309,8 +288,7 @@ public class MultiWorldsUtils {
 		if (Bukkit.getWorld(s) != null) {
 			Loader.sendMessages(sender, "MultiWorld.Loaded", Placeholder.c().add("%world%", s));
 			return;
-		}
-		if (Bukkit.getWorld(s) == null) {
+		}else {
 			if (biome.equalsIgnoreCase("NETHER")) {
 				WorldsAPI.create(s, Environment.NETHER, WorldType.NORMAL, true, 0);
 			}

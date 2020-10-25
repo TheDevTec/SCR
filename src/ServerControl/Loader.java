@@ -66,10 +66,6 @@ public class Loader extends JavaPlugin implements Listener {
 			return this;
 		}
 
-		public HashMap<String, String> get() {
-			return set;
-		}
-
 		public static Placeholder c() {
 			return new Placeholder();
 		}
@@ -93,7 +89,7 @@ public class Loader extends JavaPlugin implements Listener {
 		if(setting.prefix!=null)
 			string=string.replace("%prefix%", setting.prefix);
 		if(placeholders!=null)
-		for(Entry<String, String> placeholder : placeholders.get().entrySet())
+		for(Entry<String, String> placeholder : placeholders.set.entrySet())
 			string=string.replace(placeholder.getKey(), placeholder.getValue());
 		if(sender!=null) {
 		if(sender instanceof Player)

@@ -10,8 +10,8 @@ import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class Converter {
 	public static void convert() {
-		if(new File("plugins/ServerControlReloaded/ChatMe.yml").exists()) {
-			Config me = new Config("ServerControlReloaded/ChatMe.yml");
+		if(new File("plugins/ServerControlReloaded/ChatMe.yml").exists() || new File("plugins/ServerControlReloaded/ChatMe.dat").exists()) {
+			Config me = new Config(new File("plugins/ServerControlReloaded/ChatMe.yml").exists()?"ServerControlReloaded/ChatMe.yml":"ServerControlReloaded/ChatMe.dat");
 			if(!me.exists("Players")) {
 				me.getData().getFile().delete();
 			}else {
