@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -59,6 +60,10 @@ public class Kit {
 				a.addItemFlag(ItemFlag.HIDE_UNBREAKABLE);
 			if (Loader.kit.getBoolean("Kits." + name + ".Items." + def + ".Unbreakable"))
 				a.setUnbreakable(true);
+			if (Loader.kit.exists("Kits." + name + ".Items." + def + ".Color")) {
+				java.awt.Color c = java.awt.Color.getColor(Loader.kit.getString("Kits." + name + ".Items." + def + ".Color"));
+				a.setColor(Color.fromRGB(c.getRGB()));
+			}
 			a.setDisplayName(Loader.kit.getString("Kits." + name + ".Items." + def + ".CustomName"));
 			if (Loader.kit.getString("Kits." + name + ".Items." + def + ".Enchantments") != null)
 				for (String enchs : Loader.kit.getStringList("Kits." + name + ".Items." + def + ".Enchantments")) {

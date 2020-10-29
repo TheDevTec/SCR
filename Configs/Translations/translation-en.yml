@@ -614,10 +614,10 @@ Heal:
   
 # Translations for /Feed command
 Feed:
-  You: "%prefix% You were fed"
+  You: "%prefix% You have been fed"
   Other:
-    Sender: "%prefix% &e%player% &7was fed"
-    Receiver: "%prefix% You were fed"
+    Sender: "%prefix% &e%player% &7has been fed"
+    Receiver: "%prefix% You have been fed"
   
 # Translations for /ChatLock command
 ChatLock:
