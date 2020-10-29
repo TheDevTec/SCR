@@ -276,14 +276,11 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.msg(setting.prefix + "&eINFO: &7Newest versions of &eTheAPI &7can be found on Spigot:", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "       https://www.spigotmc.org/resources/theapi.72679/", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
-		Task();
-	}
-
-	private static Metrics metrics;
-	public void Task() {
 		EventsRegister();
 		CommmandsRegister();
 	}
+
+	private static Metrics metrics;
 
 	@Override
 	public void onDisable() {
