@@ -74,21 +74,21 @@ public class Signs implements Listener {
 			if (f == null) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.getBlock().getState().update();
-				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Repair Hand"));
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("servercontrolreloaded:repair Hand"));
 				SignAPI.setActions((Sign) e.getBlock().getState(), a);
 			}
 			if (f.equalsIgnoreCase("Hand")) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.setLine(1, TheAPI.colorize("&aHand"));
 				e.getBlock().getState().update();
-				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Repair Hand"));
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("servercontrolreloaded:repair Hand"));
 				SignAPI.setActions((Sign) e.getBlock().getState(), a);
 			}
 			if (f.equalsIgnoreCase("All")) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.setLine(1, TheAPI.colorize("&aAll"));
 				e.getBlock().getState().update();
-				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Repair All"));
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("servercontrolreloaded:repair All"));
 				SignAPI.setActions((Sign) e.getBlock().getState(), a);
 			}
 		}
