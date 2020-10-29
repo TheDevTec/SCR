@@ -1,6 +1,6 @@
 package ServerControl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -445,15 +444,14 @@ public class Loader extends JavaPlugin implements Listener {
 
 	private void CmdC(String section, String command, CommandExecutor p) {
 		if(cmds.getBoolean(section+"."+command+".Enabled")) {
-			PluginCommand cmd = TheAPI.createCommand(cmds.getString(section+"."+command+".Name"), this);
-			if (cmds.exists(section+"."+command+".Aliases")) {
-				if(cmds.get(section+"."+command+".Aliases") instanceof List<?>) {
-					cmd.setAliases(cmds.getStringList(section+"."+command+".Aliases"));
-				}else
-					cmd.setAliases(Arrays.asList(cmds.getString(section+"."+command+".Aliases")));
+			List<String> aliases = new ArrayList<>();
+			if(cmds.exists(section+"."+command+".Aliases")) {
+			if(cmds.get(section+"."+command+".Aliases") instanceof List)
+				aliases=cmds.getStringList(section+"."+command+".Aliases");
+			else aliases.add(cmds.getString(section+"."+command+".Aliases"));
 			}
-			cmd.setExecutor(p);
-			TheAPI.registerCommand(cmd);
+			TheAPI.createAndRegisterCommand(cmds.getString(section+"."+command+".Name"), cmds.exists(section+"."+command+".Permission")?cmds.getString(section+"."+command+".Permission"):null, p
+					, aliases);
 		}
 	}
 
