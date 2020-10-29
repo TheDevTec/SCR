@@ -631,9 +631,12 @@ Info:
     Permission: "SCR.Command.Maintenance"
     Help: "/Maintenance <on/off> - Turn on/off maintenance mode"
     Enabled: true
-  RAM:
-    Name: "ram"
-    Permission: "SCR.Command.Ram"
+  Memory:
+    Name: "memory"
+    Permission: "SCR.Command.Memory"
+    Aliases:
+    - "ram"
+    - "mem"
     Help: "/Ram - Shows ram info"
     Enabled: true
   Seen:
@@ -763,7 +766,7 @@ Other:
     Name: "multiworld"
     Aliases:
     - "mw"
-    Permission: "SCR.Command.MultiWorld"
+    Permission: "SCR.Command.MultiWorlds"
     Help: "/MultiWorld - Create/Delete/Edit selected world"
     Enabled: true
   Repair:
@@ -790,12 +793,12 @@ Other:
     Permission: "SCR.Command.Spawner"
     Help: "/Spawner - Edit features in spawner"
     Enabled: true
-  Tab:
+  Tablist:
     Name: "tablist"
     Aliases:
-    - "tabl"
     - "tab"
-    Permission: "SCR.Command.TabList"
+    - "tabl"
+    Permission: "SCR.Command.Tablist"
     Help: "/TabList - Changes info in tablist"
     Enabled: true
   TempFly:

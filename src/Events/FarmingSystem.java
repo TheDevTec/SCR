@@ -25,7 +25,7 @@ public class FarmingSystem implements Listener {
 		if (e.isCancelled() || !setting.farming)return;
 		BlockState s = e.getClickedBlock().getState();
 		MaterialData md = s.getData();
-		if (e.getClickedBlock().getType().name().equals("NETHER_WARTS")) {
+		if (e.getClickedBlock().getType()==Material.LEGACY_NETHER_WARTS) {
 			NetherWarts data = (NetherWarts)md;
 			if(data.getState()==NetherWartsState.RIPE) {
 			data.setState(NetherWartsState.SEEDED);
@@ -36,8 +36,8 @@ public class FarmingSystem implements Listener {
 			if (random == 0)
 				random = 1;
 			TheAPI.giveItem(e.getPlayer(), new ItemStack(XMaterial.NETHER_WART.parseMaterial(), random));
-        }
-    }
+			}
+		}
 		if (md instanceof Crops)
 			if (((Crops) md).getState() == CropState.RIPE) {
 				if (e.getClickedBlock().getType().name().equals("WHEAT")

@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.BlocksAPI.BlockGetter;
 import me.DevTec.TheAPI.Utils.Position;
 import me.DevTec.TheAPI.Utils.StringUtils;
@@ -28,10 +27,6 @@ import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
-
-	public static boolean existVaultPlugin() {
-		return PluginManagerAPI.getPlugin("Vault") != null;
-	}
 
 	public static SPlayer getSPlayer(Player p) {
 		if(!cache.containsKey(p.getName())) {

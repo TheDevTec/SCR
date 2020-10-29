@@ -9,9 +9,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class ListCmd implements CommandExecutor {
@@ -19,7 +19,7 @@ public class ListCmd implements CommandExecutor {
 
 	public String getGroup(Player a) {
 		try {
-			if (API.existVaultPlugin())
+			if (PluginManagerAPI.getPlugin("Vault") != null)
 				if (Loader.vault != null)
 					if (Loader.vault.getPrimaryGroup(a) != null)
 						return Loader.vault.getPrimaryGroup(a);
@@ -77,7 +77,7 @@ public class ListCmd implements CommandExecutor {
 			ArrayList<String> w = new ArrayList<String>();
 			sortPlayers();
 			w.clear();
-			if (API.existVaultPlugin() && Loader.vault != null)
+			if (PluginManagerAPI.getPlugin("Vault") != null && Loader.vault != null)
 				for (String d : Loader.vault.getGroups()) {
 					w.add(d);
 				}

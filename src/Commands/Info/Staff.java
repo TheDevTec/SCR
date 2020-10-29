@@ -9,10 +9,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Staff implements CommandExecutor {
@@ -21,7 +21,7 @@ public class Staff implements CommandExecutor {
 
 	private static String getGroup(Player a) {
 		try {
-			if (API.existVaultPlugin())
+			if (PluginManagerAPI.getPlugin("Vault") != null)
 				if (Loader.vault != null)
 					if (Loader.vault.getPrimaryGroup(a) != null)
 						return Loader.vault.getPrimaryGroup(a);

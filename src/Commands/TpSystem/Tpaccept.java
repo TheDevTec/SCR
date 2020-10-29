@@ -1,4 +1,4 @@
-package Commands.Tpa;
+package Commands.TpSystem;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -7,17 +7,16 @@ import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
 
-public class Tpadeny implements CommandExecutor {
+public class Tpaccept implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "TpDeny", "TpSystem")) {
+		if (Loader.has(s, "TpaAccept", "TpSystem")) {
 			if (s instanceof Player) {
-				RequestMap.deny((Player)s);
+				RequestMap.accept((Player)s);
 				return true;
-			}
-		}
-		Loader.noPerms(s, "TpDeny", "TpSystem");
+		}}
+		Loader.noPerms(s, "TpaAccept", "TpSystem");
 		return true;
 	}
 }

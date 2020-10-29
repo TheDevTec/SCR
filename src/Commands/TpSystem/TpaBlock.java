@@ -1,4 +1,4 @@
-package Commands.Tpa;
+package Commands.TpSystem;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

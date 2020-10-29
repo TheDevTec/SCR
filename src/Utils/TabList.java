@@ -14,6 +14,7 @@ import ServerControl.Loader;
 import ServerControl.Loader.Item;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.MemoryAPI;
+import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.APIs.TabListAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
@@ -22,7 +23,7 @@ import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class TabList {
 	private static String group(Player p) {
-		if (API.existVaultPlugin()) {
+		if (PluginManagerAPI.getPlugin("Vault") != null) {
 			if (Loader.perms != null && Loader.vault != null)
 				if (Loader.perms.getPrimaryGroup(p) != null)
 					return Loader.perms.getPrimaryGroup(p);

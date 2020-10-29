@@ -1,4 +1,4 @@
-package Commands.Tpa;
+package Commands.TpSystem;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -8,11 +8,11 @@ import org.bukkit.entity.Player;
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
 
-public class Tpahere implements CommandExecutor {
+public class Tpa implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender f, Command arg1, String arg2, String[] args) {
-		if (Loader.has(f, "TpaHere", "TpSystem")) {
+		if (Loader.has(f, "Tpa", "TpSystem")) {
 			if (f instanceof Player) {
 				Player s = (Player) f;
 				if (args.length == 0) {
@@ -25,7 +25,7 @@ public class Tpahere implements CommandExecutor {
 					return true;
 				}
 				if (s != d) {
-					RequestMap.add(s, d.getName(), 1);
+					RequestMap.add(s, d.getName(), 0);
 					return true;
 				}
 				Loader.sendMessages(s, "TpSystem.SendRequestToSelf");
@@ -33,7 +33,7 @@ public class Tpahere implements CommandExecutor {
 			}
 			return true;
 		}
-		Loader.noPerms(f, "TpaHere", "TpSystem");
+		Loader.noPerms(f, "Tpa", "TpSystem");
 		return true;
 	}
 }

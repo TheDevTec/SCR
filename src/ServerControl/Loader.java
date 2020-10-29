@@ -176,7 +176,7 @@ public class Loader extends JavaPlugin implements Listener {
 		switch(type) {
 		case GROUP:
 			try {
-				if (API.existVaultPlugin())
+				if (PluginManagerAPI.getPlugin("Vault") != null)
 					if (vault != null) {
 						if (Loader.config.getString("Chat-Groups." + Loader.vault.getPrimaryGroup(p)) != null)
 							return vault.getPrimaryGroup(p);
@@ -186,14 +186,14 @@ public class Loader extends JavaPlugin implements Listener {
 				return "DefaultFormat";
 			}
 		case PREFIX:
-			if (API.existVaultPlugin() && vault != null) {
+			if (PluginManagerAPI.getPlugin("Vault") != null && vault != null) {
 				if (getGroup(p) != null && vault.getGroupPrefix(p.getWorld().getName(), getGroup(p)) != null)
 					return vault.getGroupPrefix(p.getWorld().getName(), getGroup(p));
 				return "";
 			}
 			return "";
 		case SUFFIX:
-			if (API.existVaultPlugin() && vault != null) {
+			if (PluginManagerAPI.getPlugin("Vault") != null && vault != null) {
 				if (getGroup(p) != null && vault.getGroupSuffix(p.getWorld().getName(), getGroup(p)) != null)
 					return vault.getGroupSuffix(p.getWorld().getName(), getGroup(p));
 				return "";
@@ -217,7 +217,7 @@ public class Loader extends JavaPlugin implements Listener {
 
 	public static String getGroup(Player p) {
 		try {
-			if (API.existVaultPlugin()) {
+			if (PluginManagerAPI.getPlugin("Vault") != null) {
 				if (Loader.vault != null && Loader.vault.getPrimaryGroup(p) != null)
 					return Loader.vault.getPrimaryGroup(p);
 				return "";
@@ -272,18 +272,18 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
-		Task();
 		reload();
 		TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "&eINFO: &7Newest versions of &eTheAPI &7can be found on Spigot:", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "       https://www.spigotmc.org/resources/theapi.72679/", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
+		Task();
 	}
 
 	private static Metrics metrics;
 	public void Task() {
 		EventsRegister();
-		CommmandsRegisters();
+		CommmandsRegister();
 	}
 
 	@Override
@@ -381,23 +381,23 @@ public class Loader extends JavaPlugin implements Listener {
 			return;
 		}
 		MultiWorldsUtils.LoadWorlds();
-		if (API.existVaultPlugin()) {
+		if (PluginManagerAPI.getPlugin("Vault") != null) {
 			setupEco();
 			setupVault();
 			setupPermisions();
 			if (vault == null) {
-				TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
-				TheAPI.msg(setting.prefix + "&eINFO: &7Missing Permissions plugin for Groups (TabList and ChatFormat).", TheAPI.getConsole());
-				TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
+				TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+				TheAPI.msg(setting.prefix + " &eINFO: &7Missing Permissions plugin for Groups (TabList and ChatFormat).", TheAPI.getConsole());
+				TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			}
 		} else {
-			TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "&eINFO: &7Missing Vault plugin for Economy.", TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + " &eINFO: &7Missing Vault plugin for Economy.", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		}
 		}
-		TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
-		TheAPI.msg(setting.prefix + "&7"+(aad == 0 ? "L" : "Rel")+"oading of ServerControlReloaded:", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading of ServerControlReloaded:", TheAPI.getConsole());
 		if(aad==1) {
 			if(metrics!=null) {
 				Bukkit.getServicesManager().unregister(metrics);
@@ -427,157 +427,189 @@ public class Loader extends JavaPlugin implements Listener {
 			//unsuported
 		}
 		getInstance.kits.clear();
-		TheAPI.msg(setting.prefix + "&7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
 		Configs.load();
-		TheAPI.msg(setting.prefix + "&7Loading kits:", TheAPI.getConsole());
-		for (String s : Loader.kit.getKeys("Kits")) {
-			TheAPI.msg(setting.prefix + "  &e"+s+"&7:", TheAPI.getConsole());
-			Kit.load(s);
-			TheAPI.msg(setting.prefix + "    &7Cooldown: " + StringUtils.setTimeToString(getInstance.kits.get(s.toLowerCase()).getDelay()), TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "    &7Cost: &e$" + API.setMoneyFormat(getInstance.kits.get(s.toLowerCase()).getCost(), false), TheAPI.getConsole());
-		}
 		setting.load();
 		Converter.convert();
-		TheAPI.msg(setting.prefix + "&7ServerControlReloaded "+(aad == 0 ? "l" : "rel")+"oading took "+(System.currentTimeMillis()-loading)+"ms", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + " &7Loading kits:", TheAPI.getConsole());
+		for (String s : Loader.kit.getKeys("Kits")) {
+			TheAPI.msg(setting.prefix + "   &e"+s+"&7:", TheAPI.getConsole());
+			Kit kit = Kit.load(s);
+			TheAPI.msg(setting.prefix + "     &7Cooldown: " + StringUtils.setTimeToString(kit.getDelay()), TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + "     &7Cost: &e$" + API.setMoneyFormat(kit.getCost(), false), TheAPI.getConsole());
+		}
+		TheAPI.msg(setting.prefix + " &7ServerControlReloaded "+(aad == 0 ? "l" : "rel")+"oading took "+(System.currentTimeMillis()-loading)+"ms", TheAPI.getConsole());
 		aad=1;
-		TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 	}
 
 	private void CmdC(String section, String command, CommandExecutor p) {
 		if(cmds.getBoolean(section+"."+command+".Enabled")) {
-		PluginCommand cmd = TheAPI.createCommand(cmds.getString(section+"."+command+".Command"), this);
-		cmd.setAliases(cmds.get(section+"."+command+".Aliases") instanceof List<?> ? (List<String>)cmds.get(section+"."+command+".Aliases"):Arrays.asList(cmds.get(section+"."+command+".Aliases").toString()));
-		cmd.setPermission(cmds.getString(section+"."+command+".Permission"));
-		cmd.setExecutor(p);
+			PluginCommand cmd = TheAPI.createCommand(cmds.getString(section+"."+command+".Name"), this);
+			if (cmds.exists(section+"."+command+".Aliases")) {
+				if(cmds.get(section+"."+command+".Aliases") instanceof List<?>) {
+					cmd.setAliases(cmds.getStringList(section+"."+command+".Aliases"));
+				}else
+					cmd.setAliases(Arrays.asList(cmds.getString(section+"."+command+".Aliases")));
+			}
+			cmd.setExecutor(p);
+			TheAPI.registerCommand(cmd);
 		}
 	}
 
-	private void CommmandsRegisters() {
-		CmdC("stop", new Commands.Server.Stop());
-		CmdC("reload", new Commands.Server.Reload());
-		CmdC("restart", new Commands.Server.Restart());
-		CmdC("give", new Commands.Other.Give());
-		CmdC("Kill", new Commands.Kill.Kill());
-		CmdC("KillAll", new Commands.Kill.KillAll());
-		CmdC("Butcher", new Commands.Other.Butcher());
-		CmdC("jail", new Commands.BanSystem.Jail());
-		CmdC("TempBanIP", new Commands.BanSystem.TempBanIP());
-		CmdC("unjail", new Commands.BanSystem.UnJail());
-		CmdC("setjail", new Commands.BanSystem.SetJail());
-		CmdC("deljail", new Commands.BanSystem.DelJail());
-		CmdC("Mem", new Commands.Info.RAM());
-		CmdC("Chunks", new Commands.Info.Chunks());
-		CmdC("ClearChat", new Commands.Message.ClearChat());
-		CmdC("SCR", new Commands.Info.ServerControl());
-		CmdC("Maintenance", new Commands.Info.Maintenance());
-		CmdC("Clear", new Commands.Inventory.ClearInv());
-		CmdC("God", new Commands.Other.God());
-		CmdC("Heal", new Commands.Other.Heal());
-		CmdC("Fly", new Commands.Other.Fly());
-		CmdC("FlySpeed", new Commands.Speed.FlySpeed());
-		CmdC("WalkSpeed", new Commands.Speed.WalkSpeed());
-		CmdC("TPS", new Commands.Info.TPS());
-		CmdC("AFK", new Commands.Other.AFK());
-		CmdC("MultiWorlds", new Commands.Other.MultiWorlds());
-		CmdC("TabList", new Commands.Other.Tab());
-		CmdC("suicide", new Commands.Kill.Suicide());
-		CmdC("SetSpawn", new Commands.Warps.SetSpawn());
-		CmdC("Spawn", new Commands.Warps.Spawn());
-		CmdC("SetWarp", new Commands.Warps.SetWarp());
-		CmdC("DelWarp", new Commands.Warps.DelWarp());
-		CmdC("Warps", new Commands.Warps.Warp());
-		CmdC("Skull", new Commands.Other.Skull());
-		CmdC("BalanceTop", new Commands.Economy.EcoTop());
-		CmdC("Money", new Commands.Economy.Eco());
-		CmdC("Pay", new Commands.Economy.Pay());
-		CmdC("Home", new Commands.Warps.Home());
-		CmdC("SetHome", new Commands.Warps.SetHome());
-		CmdC("DelHome", new Commands.Warps.DelHome());
-		CmdC("Homes", new Commands.Warps.Homes());
-		CmdC("Back", new Commands.Warps.Back());
-		CmdC("Return", new Commands.Warps.Back());
-		CmdC("Vanish", new Commands.Other.Vanish());
-		CmdC("Sun", new Commands.Weather.Sun());
-		CmdC("Thunder", new Commands.Weather.Thunder());
-		CmdC("Strorm", new Commands.Weather.Thunder());
-		CmdC("Rain", new Commands.Weather.Rain());
-		CmdC("Day", new Commands.Time.Day());
-		CmdC("Night", new Commands.Time.Night());
-		CmdC("Kit", new Commands.Other.KitCmd());
-		CmdC("ChatLock", new Commands.Other.ChatLock());
-		CmdC("GameMode", new Commands.Gamemode.Gamemode());
-		CmdC("GMS", new Commands.Gamemode.GamemodeS());
-		CmdC("GMC", new Commands.Gamemode.GamemodeC());
-		CmdC("GMSP", new Commands.Gamemode.GamemodeSP());
-		CmdC("hat", new Commands.Other.Hat());
+	private void CommmandsRegister() {
+		//Server
+		CmdC("Server", "Stop" , new Commands.Server.Stop());
+		CmdC("Server", "Reload", new Commands.Server.Reload());
+		CmdC("Server", "Restart", new Commands.Server.Restart());
+		
+		//Kill
+		CmdC("Kill", "Kill",new Commands.Kill.Kill());
+		CmdC("Kill", "KillAll",new Commands.Kill.KillAll());
+		CmdC("Kill", "Suicide",new Commands.Kill.Suicide());
+		
+		//Info
+		CmdC("Info", "Memory",new Commands.Info.RAM());
+		CmdC("Info", "Chunks",new Commands.Info.Chunks());
+		CmdC("Info", "SCR",new Commands.Info.ServerControl());
+		CmdC("Info","Seen", new Commands.Info.Seen());
+		CmdC("Info","ChatFormat", new Commands.Info.ChatFormat());
+		CmdC("Info","List", new Commands.Info.ListCmd());
+		CmdC("Info","Staff", new Commands.Info.Staff());
+		CmdC("Info", "TPS",new Commands.Info.TPS());
+		CmdC("Info","WhoIs", new Commands.Info.WhoIs());
+		CmdC("Info", "Maintenance",new Commands.Info.Maintenance());
+		
+		//Speed
+		CmdC("Speed", "FlySpeed",new Commands.Speed.FlySpeed());
+		CmdC("Speed", "WalkSpeed",new Commands.Speed.WalkSpeed());
+		
+		//Warps
+		CmdC("Warps", "SetSpawn",new Commands.Warps.SetSpawn());
+		CmdC("Warps", "Spawn",new Commands.Warps.Spawn());
+		CmdC("Warps", "SetWarp",new Commands.Warps.SetWarp());
+		CmdC("Warps", "DelWarp",new Commands.Warps.DelWarp());
+		CmdC("Warps", "Warp",new Commands.Warps.Warp());
+		CmdC("Warps", "Home",new Commands.Warps.Home());
+		CmdC("Warps","homeother", new Commands.Warps.HomeOther());
+		CmdC("Warps", "SetHome",new Commands.Warps.SetHome());
+		CmdC("Warps", "DelHome",new Commands.Warps.DelHome());
+		CmdC("Warps", "Homes",new Commands.Warps.Homes());
+		CmdC("Warps", "Back",new Commands.Warps.Back());
+		
+		//Economy
+		CmdC("Economy", "BalanceTop",new Commands.Economy.EcoTop());
+		CmdC("Economy", "Balance",new Commands.Economy.Balance());
+		CmdC("Economy", "Economy",new Commands.Economy.Eco());
+		CmdC("Economy", "Pay",new Commands.Economy.Pay());
+		CmdC("Economy","multieconomy", new Commands.Economy.MultiEconomy());
+		
+		//Weather
+		CmdC("Weather", "Sun",new Commands.Weather.Sun());
+		CmdC("Weather", "Thunder",new Commands.Weather.Thunder());
+		CmdC("Weather", "Rain",new Commands.Weather.Rain());
+		CmdC("Weather", "PSun",new Commands.Weather.PSun());
+		CmdC("Weather", "PRain",new Commands.Weather.PRain());
+		
+		//Time
+		CmdC("Time", "Day",new Commands.Time.Day());
+		CmdC("Time", "Night",new Commands.Time.Night());
+		CmdC("Time", "PDay",new Commands.Time.PDay());
+		CmdC("Time", "PNight",new Commands.Time.PNight());
+		
+		//Message
+		CmdC("Message", "ChatLock",new Commands.Other.ChatLock());
+		CmdC("Message","mail", new Commands.Message.Mail());
+		CmdC("Message","sudo", new Commands.Message.Sudo());
+		CmdC("Message","broadcast", new Commands.Message.Broadcast());
+		CmdC("Message", "PrivateMessage", new Commands.Message.PrivateMessage());
+		CmdC("Message", "ClearChat",new Commands.Message.ClearChat());
+		CmdC("Message","helpop", new Commands.Message.Helpop());
+		CmdC("Message","reply", new Commands.Message.ReplyPrivateMes());
+		
+		//Gamemode
+		CmdC("Gamemode", "Gamemode",new Commands.Gamemode.Gamemode());
+		CmdC("Gamemode", "GamemodeS",new Commands.Gamemode.GamemodeS());
+		CmdC("Gamemode", "GamemodeC",new Commands.Gamemode.GamemodeC());
+		CmdC("Gamemode", "GamemodeA",new Commands.Gamemode.GamemodeA());
 		if(TheAPI.isNewerThan(7))
-		CmdC("GMA", new Commands.Gamemode.GamemodeA());
-		CmdC("pm", new Commands.Message.PrivateMessage());
-		CmdC("helpop", new Commands.Message.Helpop());
-		CmdC("reply", new Commands.Message.ReplyPrivateMes());
-		CmdC("ClearConfirmToggle", new Commands.Inventory.ClearConfirmToggle());
-		CmdC("Kick", new Commands.BanSystem.Kick());
-		CmdC("Ban", new Commands.BanSystem.Ban());
-		CmdC("Immune", new Commands.BanSystem.Immune());
-		CmdC("TempBan", new Commands.BanSystem.TempBan());
-		CmdC("ChatFormat", new Commands.Info.ChatFormat());
-		CmdC("BanIP", new Commands.BanSystem.BanIP());
-		CmdC("UnBan-IP", new Commands.BanSystem.UnBanIP());
-		CmdC("UnBan", new Commands.BanSystem.UnBan());
-		CmdC("tempmute", new Commands.BanSystem.TempMute());
-		CmdC("mute", new Commands.BanSystem.Mute());
-		CmdC("unmute", new Commands.BanSystem.UnMute());
-		CmdC("warn", new Commands.BanSystem.Warn());
-		CmdC("craft", new Commands.Other.Craft());
-		CmdC("enderchest", new Commands.Inventory.EnderChest());
-		CmdC("endersee", new Commands.Inventory.EnderSee());
-		CmdC("Seen", new Commands.Info.Seen());
-		CmdC("List", new Commands.Info.ListCmd());
-		CmdC("Staff", new Commands.Info.Staff());
-		CmdC("Trash", new Commands.Other.Trash());
-		CmdC("Invsee", new Commands.Inventory.Invsee());
-		CmdC("Enchant", new Commands.Enchantment.EnchantTable());
-		CmdC("EnchantRemove", new Commands.Enchantment.EnchantTableRemove());
-		CmdC("EnchantRemoveAll", new Commands.Enchantment.EnchantTableRemoveAll());
-		CmdC("broadcast", new Commands.Message.Broadcast());
-		CmdC("multieconomy", new Commands.Economy.MultiEconomy());
-		CmdC("tp", new Commands.Tpa.Tp());
-		CmdC("tphere", new Commands.Tpa.Tphere());
-		CmdC("tpa", new Commands.Tpa.Tpa());
-		CmdC("tpahere", new Commands.Tpa.Tpahere());
-		CmdC("tpblock", new Commands.Tpa.TpaBlock());
-		CmdC("tpaall", new Commands.Tpa.Tpaall());
-		CmdC("tpall", new Commands.Tpa.Tpall());
-		CmdC("tpaccept", new Commands.Tpa.Tpaccept());
-		CmdC("tpadeny", new Commands.Tpa.Tpadeny());
-		CmdC("Repair", new Commands.Other.Repair());
-		CmdC("Feed", new Commands.Other.Feed());
-		CmdC("item", new Commands.Other.Item());
-		CmdC("board", new Commands.Other.ScoreboardStats());
-		CmdC("thor", new Commands.Other.Thor());
-		CmdC("spawner", new Commands.Other.Spawner());
-		CmdC("sudo", new Commands.Message.Sudo());
-		CmdC("exp", new Commands.Other.Exp());
-		CmdC("nick", new Commands.Nickname.Nick());
-		CmdC("nickreset", new Commands.Nickname.NickReset());
-		CmdC("WhoIs", new Commands.Info.WhoIs());
-		CmdC("closeinv", new Commands.Inventory.CloseInventory());
-		CmdC("homeother", new Commands.Warps.HomeOther());
-		CmdC("tempfly", new Commands.Other.TempFly());
-		CmdC("tpcancel", new Commands.Tpa.Tpcancel());
-		CmdC("mail", new Commands.Message.Mail());
-
-		CmdC("balance", new Commands.Economy.Balance());
-		CmdC("tempjail", new Commands.BanSystem.TempJail());
-
-		CmdC("psun", new Commands.Weather.PSun());
-		CmdC("prain", new Commands.Weather.PRain());
-		CmdC("pday", new Commands.Time.PDay());
-		CmdC("pnight", new Commands.Time.PNight());
+		CmdC("Gamemode", "GamemodeSP",new Commands.Gamemode.GamemodeSP());
+			
+		//BanSystem	
+		CmdC("BanSystem","Kick", new Commands.BanSystem.Kick());
+		CmdC("BanSystem","Ban", new Commands.BanSystem.Ban());
+		CmdC("BanSystem","Immune", new Commands.BanSystem.Immune());
+		CmdC("BanSystem","TempBan", new Commands.BanSystem.TempBan());
+		CmdC("BanSystem", "Jail",new Commands.BanSystem.Jail());
+		CmdC("BanSystem", "TempBanIP",new Commands.BanSystem.TempBanIP());
+		CmdC("BanSystem", "UnJail",new Commands.BanSystem.UnJail());
+		CmdC("BanSystem", "SetJail",new Commands.BanSystem.SetJail());
+		CmdC("BanSystem", "DelJail",new Commands.BanSystem.DelJail());
+		CmdC("BanSystem","tempjail", new Commands.BanSystem.TempJail());
+		CmdC("BanSystem","BanIP", new Commands.BanSystem.BanIP());
+		CmdC("BanSystem","UnBan-IP", new Commands.BanSystem.UnBanIP());
+		CmdC("BanSystem","UnBan", new Commands.BanSystem.UnBan());
+		CmdC("BanSystem","tempmute", new Commands.BanSystem.TempMute());
+		CmdC("BanSystem","mute", new Commands.BanSystem.Mute());
+		CmdC("BanSystem","unmute", new Commands.BanSystem.UnMute());
+		CmdC("BanSystem","warn", new Commands.BanSystem.Warn());
+		
+		//Inventory
+		CmdC("Inventory","enderchest", new Commands.Inventory.EnderChest());
+		CmdC("Inventory","endersee", new Commands.Inventory.EnderSee());
+		CmdC("Inventory","closeinv", new Commands.Inventory.CloseInventory());
+		CmdC("Inventory", "ClearInv",new Commands.Inventory.ClearInv());
+		CmdC("Inventory","ClearConfirmToggle", new Commands.Inventory.ClearConfirmToggle());
+		CmdC("Inventory","Invsee", new Commands.Inventory.Invsee());
+		
+		//Enchantment
+		CmdC("Enchantment","Enchant", new Commands.Enchantment.EnchantTable());
+		CmdC("Enchantment","EnchantRemove", new Commands.Enchantment.EnchantTableRemove());
+		CmdC("Enchantment","EnchantRemoveAll", new Commands.Enchantment.EnchantTableRemoveAll());
+		
+		//TpSystem
+		CmdC("TpSystem","tp", new Commands.TpSystem.Tp());
+		CmdC("TpSystem","tphere", new Commands.TpSystem.Tphere());
+		CmdC("TpSystem","tpcancel", new Commands.TpSystem.Tpcancel());
+		CmdC("TpSystem","tpa", new Commands.TpSystem.Tpa());
+		CmdC("TpSystem","tpahere", new Commands.TpSystem.Tpahere());
+		CmdC("TpSystem","tpblock", new Commands.TpSystem.TpaBlock());
+		CmdC("TpSystem","tpaall", new Commands.TpSystem.Tpaall());
+		CmdC("TpSystem","tpall", new Commands.TpSystem.Tpall());
+		CmdC("TpSystem","tpaccept", new Commands.TpSystem.Tpaccept());
+		CmdC("TpSystem","tpadeny", new Commands.TpSystem.Tpadeny());
+		
+		//Other
+		CmdC("Other","Repair", new Commands.Other.Repair());
+		CmdC("Other","Feed", new Commands.Other.Feed());
+		CmdC("Other","item", new Commands.Other.Item());
+		CmdC("Other","tempfly", new Commands.Other.TempFly());
+		CmdC("Other","board", new Commands.Other.ScoreboardStats());
+		CmdC("Other","Trash", new Commands.Other.Trash());
+		CmdC("Other","thor", new Commands.Other.Thor());
+		CmdC("Other", "Give",new Commands.Other.Give());
+		CmdC("Other", "Kits",new Commands.Other.KitCmd());
+		CmdC("Other","craft", new Commands.Other.Craft());
+		CmdC("Other", "Skull",new Commands.Other.Skull());
+		CmdC("Other", "God",new Commands.Other.God());
+		CmdC("Other", "Heal", new Commands.Other.Heal());
+		CmdC("Other", "Fly",new Commands.Other.Fly());
+		CmdC("Other", "Vanish",new Commands.Other.Vanish());
+		CmdC("Other", "Butcher",new Commands.Other.Butcher());
+		CmdC("Other", "AFK",new Commands.Other.AFK());
+		CmdC("Other", "MultiWorlds",new Commands.Other.MultiWorlds());
+		CmdC("Other", "Tablist",new Commands.Other.Tab());
+		CmdC("Other", "Hat",new Commands.Other.Hat());
+		CmdC("Other","exp", new Commands.Other.Exp());
+		CmdC("Other","spawner", new Commands.Other.Spawner());
+		
+		//Nickname
+		CmdC("Nickname","nick", new Commands.Nickname.Nick());
+		CmdC("Nickname","nickreset", new Commands.Nickname.NickReset());
 	}
 
 	private void EventC(Listener l) {
-		getServer().getPluginManager().registerEvents(l, this);
+		Bukkit.getPluginManager().registerEvents(l, this);
 	}
 
 	private void EventsRegister() {
@@ -593,14 +625,11 @@ public class Loader extends JavaPlugin implements Listener {
 		EventC(new AFkPlayerEvents());
 		EventC(new WorldChange());
 		EventC(new CreatePortal());
+		EventC(new EntitySpawn());
 		EventC(new Signs());
 		EventC(new FarmingSystem());
-		EventC(new EntitySpawn());
-		try {
-			if (PluginManagerAPI.isEnabledPlugin("AFKPlus"))
-				EventC(new AFKPlus());
-		} catch (Exception e) {
-		}
+		if (PluginManagerAPI.getPlugin("AFKPlus")!=null)
+			EventC(new AFKPlus());
 	}
 	
 	public static void notOnline(CommandSender s, String player) {

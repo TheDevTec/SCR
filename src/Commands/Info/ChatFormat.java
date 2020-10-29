@@ -10,9 +10,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.util.StringUtil;
 
-import ServerControl.API;
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 
 public class ChatFormat implements CommandExecutor, TabCompleter {
 
@@ -179,7 +179,7 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 									new ArrayList<>()));
 						else {
 							List<String> list = new ArrayList<String>();
-							if (Loader.vault != null && API.existVaultPlugin()) {
+							if (Loader.vault != null && PluginManagerAPI.getPlugin("Vault") != null) {
 								for (String d : Loader.vault.getGroups()) {
 									list.add(d);
 								}
