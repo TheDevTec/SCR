@@ -61,7 +61,7 @@ public class Kit {
 			if (Loader.kit.getBoolean("Kits." + name + ".Items." + def + ".Unbreakable"))
 				a.setUnbreakable(true);
 			if (Loader.kit.exists("Kits." + name + ".Items." + def + ".Color")) {
-				java.awt.Color c = java.awt.Color.getColor(Loader.kit.getString("Kits." + name + ".Items." + def + ".Color"));
+				java.awt.Color c = java.awt.Color.getColor(Loader.kit.getString("Kits." + name + ".Items." + def + ".Color")); 
 				a.setColor(Color.fromRGB(c.getRGB()));
 			}
 			a.setDisplayName(Loader.kit.getString("Kits." + name + ".Items." + def + ".CustomName"));
