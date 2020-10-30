@@ -70,8 +70,10 @@ public class Configs {
 				    			 s+=readBytes+System.lineSeparator();
 				    		 data.reload(s);
 				    		 Config c = new Config("ServerControlReloaded/"+entry.getName().replaceFirst("Configs/", ""));
-				    		 for(String sr : data.getKeys(true))
-				    		 c.addDefault(sr, data.get(sr));
+				    		 for(String sr : data.getKeys(true)) {
+				    			 c.addDefault(sr, data.get(sr));
+				    			 c.setComments(sr, data.getLines(sr));
+				    		 }
 				    		 c.save();
 			          }
 			    }
