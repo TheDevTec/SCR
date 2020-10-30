@@ -442,8 +442,8 @@ public class Loader extends JavaPlugin implements Listener {
 
 	private void CmdC(String section, String command, CommandExecutor p) {
 		if(cmds.getBoolean(section+"."+command+".Enabled")) {
+			PluginCommand c = TheAPI.createCommand(cmds.getString(section+"."+command+".Name"), this);
 			List<String> aliases = new ArrayList<>();
-			PluginCommand c = TheAPI.createCommand(command, this);
 			if(cmds.exists(section+"."+command+".Aliases")) {
 			if(cmds.get(section+"."+command+".Aliases") instanceof List)
 				aliases=cmds.getStringList(section+"."+command+".Aliases");
@@ -451,7 +451,9 @@ public class Loader extends JavaPlugin implements Listener {
 			}
 			c.setAliases(aliases);
 			c.setExecutor(p);
-			TheAPI.registerCommand(c);
+			c.setPermission(cmds.getString(section+"."+command+".Permission"));
+			c.setUsage("/<command>");
+			TheAPI.createAndRegisterCommand(cmds.getString(section+"."+command+".Name"), cmds.getString(section+"."+command+".Permission"), p, aliases);
 		}
 	}
 
@@ -516,7 +518,6 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Time", "PNight",new Commands.Time.PNight());
 		
 		//Message
-		CmdC("Message", "ChatLock",new Commands.Other.ChatLock());
 		CmdC("Message","mail", new Commands.Message.Mail());
 		CmdC("Message","sudo", new Commands.Message.Sudo());
 		CmdC("Message","broadcast", new Commands.Message.Broadcast());
@@ -578,6 +579,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("TpSystem","tpadeny", new Commands.TpSystem.Tpadeny());
 		
 		//Other
+		CmdC("Other", "ChatLock",new Commands.Other.ChatLock());
 		CmdC("Other","Repair", new Commands.Other.Repair());
 		CmdC("Other","Feed", new Commands.Other.Feed());
 		CmdC("Other","item", new Commands.Other.Item());

@@ -21,24 +21,20 @@ public class Chunks implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "Chunks", "Info")) {
-			if (cmd.getName().equalsIgnoreCase("Chunks")) {
-				if (args.length == 0) {
-					int chunks = 0;
-					for (World w : Bukkit.getWorlds()) {
-						chunks = chunks + w.getLoadedChunks().length;
-						Loader.sendMessages(s, "Chunk.Load", Placeholder.c()
-								.add("%world%", w.getName())
-								.add("%chunks%", String.valueOf(w.getLoadedChunks().length)));
-					}
-					Loader.sendMessages(s, "Chunk.TotalLoad", Placeholder.c()
-							.add("%chunks%", String.valueOf(chunks)));
-					return true;
+			if (args.length == 0) {
+				int chunks = 0;
+				for (World w : Bukkit.getWorlds()) {
+					chunks = chunks + w.getLoadedChunks().length;
+					Loader.sendMessages(s, "Chunks.Load", Placeholder.c()
+							.add("%world%", w.getName())
+							.add("%chunks%", String.valueOf(w.getLoadedChunks().length)));
 				}
-				if (args[0].equalsIgnoreCase("Unload")) {
-					MultiWorldsUtils.unloadWorlds(s);
-					return true;
-				}
+				Loader.sendMessages(s, "Chunks.TotalLoad", Placeholder.c()
+						.add("%chunks%", String.valueOf(chunks)));
+				return true;
 			}
+			MultiWorldsUtils.unloadWorlds(s);
+			return true;
 		}
 		Loader.noPerms(s, "Chunks", "Info");
 		return true;
