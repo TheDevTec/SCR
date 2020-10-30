@@ -42,7 +42,7 @@ public class Kit {
 				m=XMaterial.matchXMaterial(def.toUpperCase()).get().parseMaterial();
 			}catch(Exception e) {}
 			if (m == null) {
-				Bukkit.getLogger().warning("Error when giving kit '" + name + "', material '" + def + "' is invalid !");
+				Bukkit.getLogger().warning("Error when preparing kit '" + name + "', material '" + def + "' is invalid");
 				continue;
 			}
 
@@ -52,12 +52,13 @@ public class Kit {
 				numb = Loader.kit.getInt("Kits." + name + ".Items." + def + ".Amount");
 			a.setAmount(numb);
 			a.setLore(Loader.kit.getStringList("Kits." + name + ".Items." + def + ".Lore"));
-			if (Loader.kit.getBoolean("Kits." + name + ".Items." + def + ".HideEnchants"))
-				a.addItemFlag(ItemFlag.HIDE_ENCHANTS);
-			if (Loader.kit.getBoolean("Kits." + name + ".Items." + def + ".HideAttributes"))
-				a.addItemFlag(ItemFlag.HIDE_ATTRIBUTES);
-			if (Loader.kit.getBoolean("Kits." + name + ".Items." + def + ".HideUnbreakable"))
-				a.addItemFlag(ItemFlag.HIDE_UNBREAKABLE);
+			for (String flag : Loader.kit.getStringList("Kits." + name + ".Items." + def + ".Flags")) {
+				try {
+				a.addItemFlag(ItemFlag.valueOf(flag));
+				}catch(Exception er) {
+					Bukkit.getLogger().warning("Error when preparing kit "+name+", ItemFlag "+flag+" is invalid");
+				}
+			}
 			if (Loader.kit.getBoolean("Kits." + name + ".Items." + def + ".Unbreakable"))
 				a.setUnbreakable(true);
 			if (Loader.kit.exists("Kits." + name + ".Items." + def + ".Color")) {
@@ -69,7 +70,7 @@ public class Kit {
 				for (String enchs : Loader.kit.getStringList("Kits." + name + ".Items." + def + ".Enchantments")) {
 					String nonum = enchs.replace(":", "").replaceAll("[0-9 ]+", "").toUpperCase();
 					if (EnchantmentAPI.byName(nonum)==null)
-						Bukkit.getLogger().warning("Error when giving kit '" + name + "', enchant '" + nonum + "' is invalid !");
+						Bukkit.getLogger().warning("Error when preparing kit '" + name + "', enchant '" + nonum + "' is invalid");
 					else
 						a.addEnchantment(nonum, StringUtils.getInt(enchs.replace(":", "").replace("_", "").replace(" ", "")));
 				}
@@ -85,6 +86,6 @@ public class Kit {
 	}
 
 	public String toString() {
-		return name;
+		return "[Kit:"+name+"]";
 	}
 }

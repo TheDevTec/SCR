@@ -55,14 +55,15 @@ public class Configs {
 		try {
 			JarFile file = new JarFile(new File("plugins/"+new File(Ref.getClass(Loader.getInstance.getDescription().getMain()).getProtectionDomain()
 					  .getCodeSource().getLocation().getPath()).getName()));
-			if (file != null) {
+			boolean found = false;
 				   Enumeration<? extends JarEntry> entries = file.entries();
-				   if (entries != null)
 				      while (entries.hasMoreElements()) {
 				    	 Data data = new Data();
 				    	 JarEntry entry = entries.nextElement();
-				    	 if(entry.getName().startsWith("Configs/")) {
-				    		 if(entry.getName().endsWith("/"))continue;
+				    	 if(!entry.getName().startsWith("Configs/"))
+				    		 if(found)break;
+				    	 if(entry.getName().endsWith("/"))continue;
+				    	 found= true;
 				    		 BufferedReader is = new BufferedReader(new InputStreamReader(file.getInputStream(entry), StandardCharsets.UTF_8));
 				    		 String s = "";
 				    		 String readBytes;
@@ -71,13 +72,13 @@ public class Configs {
 				    		 data.reload(s);
 				    		 Config c = new Config("ServerControlReloaded/"+entry.getName().replaceFirst("Configs/", ""));
 				    		 for(String sr : data.getKeys(true)) {
-				    			 c.addDefault(sr, data.get(sr));
-				    			 c.setComments(sr, data.getLines(sr));
+				    			 if(!c.exists(sr)) {
+				    				 c.set(sr, data.get(sr));
+				    				 c.setComments(sr, data.getLines(sr));
+				    			 }
 				    		 }
 				    		 c.save();
-			          }
 			    }
-			}
 			file.close();
 	}catch(Exception erer) {}
 	}

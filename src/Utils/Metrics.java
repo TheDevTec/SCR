@@ -3,7 +3,6 @@ package Utils;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,15 +22,14 @@ import java.util.zip.GZIPOutputStream;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.TheAPIUtils.LoaderClass;
 
 public class Metrics {
@@ -80,41 +78,12 @@ public class Metrics {
 	private final List<CustomChart> charts = new ArrayList<>();
 
 	public Metrics() {
-		File bStatsFolder = new File("plugins/bStats");
-		File configFile = new File(bStatsFolder, "config.yml");
-		YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-		if (!config.isSet("serverUuid")) {
-
-			// Add default values
-			config.addDefault("enabled", true);
-			// Every server gets it's unique random id.
-			config.addDefault("serverUuid", UUID.randomUUID().toString());
-			// Should failed request be logged?
-			config.addDefault("logFailedRequests", false);
-			// Should the sent data be logged?
-			config.addDefault("logSentData", false);
-			// Should the response text be logged?
-			config.addDefault("logResponseStatusText", false);
-
-			// Inform the server owners about bStats
-			config.options().header(
-					"bStats collects some data for plugin authors like how many servers are using their plugins.\n"
-							+ "To honor their work, you should not disable it.\n"
-							+ "This has nearly no effect on the server performance!\n"
-							+ "Check out https://bStats.org/ to learn more :)")
-					.copyDefaults(true);
-			try {
-				config.save(configFile);
-			} catch (IOException ignored) {
-			}
-		}
-
 		// Load the data
-		enabled = config.getBoolean("enabled", true);
-		serverUUID = config.getString("serverUuid");
-		logFailedRequests = config.getBoolean("logFailedRequests", false);
-		logSentData = config.getBoolean("logSentData", false);
-		logResponseStatusText = config.getBoolean("logResponseStatusText", false);
+		enabled = true;
+		serverUUID = UUID.randomUUID().toString();
+		logFailedRequests = false;
+		logSentData = false;
+		logResponseStatusText = false;
 
 		if (enabled) {
 			boolean found = false;

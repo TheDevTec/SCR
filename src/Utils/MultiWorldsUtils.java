@@ -244,6 +244,7 @@ public class MultiWorldsUtils {
 
 	public static void LoadWorlds() {
 		for (World wa : Bukkit.getWorlds())
+			if(!Loader.mw.exists("WorldsSettings." + wa.getName()))
 			DefaultSet(wa, Loader.mw.getString("WorldsSettings." + wa.getName() + ".Generator"));
 		for (String w : Loader.mw.getStringList("Worlds"))
 			LoadWorld(w, null);

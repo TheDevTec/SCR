@@ -7,7 +7,6 @@ import org.bukkit.potion.PotionEffect;
 
 import Events.AFKPlus;
 import ServerControl.Loader.Placeholder;
-import Utils.AFK;
 import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
@@ -91,7 +90,7 @@ public class SPlayer {
 				return true;
 		} catch (Exception er) {
 		}
-		return (AFK.isAfk(this) || AFK.isManualAfk(this));
+		return (Loader.getInstance.isAfk(this) || Loader.getInstance.isManualAfk(this));
 	}
 
 	public void msg(String msg) {
@@ -100,9 +99,9 @@ public class SPlayer {
 
 	public void setAFK(boolean afk) {
 		if (!afk) {
-			AFK.save(this);
+			Loader.getInstance.save(this);
 		} else {
-			AFK.setAFK(this);
+			Loader.getInstance.setAFK(this);
 		}
 	}
 
