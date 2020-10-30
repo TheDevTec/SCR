@@ -62,6 +62,7 @@ public class Configs {
 				    	 JarEntry entry = entries.nextElement();
 				    	 if(!entry.getName().startsWith("Configs/"))
 				    		 if(found)break;
+				    		 else continue;
 				    	 if(entry.getName().endsWith("/"))continue;
 				    	 found= true;
 				    		 BufferedReader is = new BufferedReader(new InputStreamReader(file.getInputStream(entry), StandardCharsets.UTF_8));

@@ -646,10 +646,11 @@ Info:
     Permission: "SCR.Command.Seen"
     Help: "/Seen <player> - Show player online/offline time"
     Enabled: true
-  ServerControl:
-    Name: "servercontrol"
+  SCR:
+    Name: "scr"
     Aliases:
-    - "scr"
+    - "servercontrol"
+    - "servercontrolreloaded"
     Permission: "SCR.Command.ServerControl"
     Help: "/ServerControl - Show info about plugin"
     Enabled: true
