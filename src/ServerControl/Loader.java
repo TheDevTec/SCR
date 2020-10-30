@@ -537,7 +537,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Warps", "DelWarp",new Commands.Warps.DelWarp());
 		CmdC("Warps", "Warp",new Commands.Warps.Warp());
 		CmdC("Warps", "Home",new Commands.Warps.Home());
-		CmdC("Warps","homeother", new Commands.Warps.HomeOther());
+		CmdC("Warps", "HomeOther", new Commands.Warps.HomeOther());
 		CmdC("Warps", "SetHome",new Commands.Warps.SetHome());
 		CmdC("Warps", "DelHome",new Commands.Warps.DelHome());
 		CmdC("Warps", "Homes",new Commands.Warps.Homes());
@@ -548,7 +548,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Economy", "Balance",new Commands.Economy.Balance());
 		CmdC("Economy", "Economy",new Commands.Economy.Eco());
 		CmdC("Economy", "Pay",new Commands.Economy.Pay());
-		CmdC("Economy","multieconomy", new Commands.Economy.MultiEconomy());
+		CmdC("Economy", "MultiEconomy", new Commands.Economy.MultiEconomy());
 		
 		//Weather
 		CmdC("Weather", "Sun",new Commands.Weather.Sun());
@@ -564,21 +564,21 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Time", "PNight",new Commands.Time.PNight());
 		
 		//Message
-		CmdC("Message","mail", new Commands.Message.Mail());
-		CmdC("Message","sudo", new Commands.Message.Sudo());
-		CmdC("Message","broadcast", new Commands.Message.Broadcast());
+		CmdC("Message","Mail", new Commands.Message.Mail());
+		CmdC("Message","Sudo", new Commands.Message.Sudo());
+		CmdC("Message","Broadcast", new Commands.Message.Broadcast());
 		CmdC("Message", "PrivateMessage", new Commands.Message.PrivateMessage());
 		CmdC("Message", "ClearChat",new Commands.Message.ClearChat());
-		CmdC("Message","helpop", new Commands.Message.Helpop());
-		CmdC("Message","reply", new Commands.Message.ReplyPrivateMes());
+		CmdC("Message","Helpop", new Commands.Message.Helpop());
+		CmdC("Message","Reply", new Commands.Message.ReplyPrivateMes());
 		
 		//Gamemode
-		CmdC("Gamemode", "Gamemode",new Commands.Gamemode.Gamemode());
-		CmdC("Gamemode", "GamemodeS",new Commands.Gamemode.GamemodeS());
-		CmdC("Gamemode", "GamemodeC",new Commands.Gamemode.GamemodeC());
-		CmdC("Gamemode", "GamemodeA",new Commands.Gamemode.GamemodeA());
+		CmdC("Gamemode", "GameMode",new Commands.Gamemode.Gamemode());
+		CmdC("Gamemode", "GameModeSurvival",new Commands.Gamemode.GamemodeS());
+		CmdC("Gamemode", "GameModeCreative",new Commands.Gamemode.GamemodeC());
+		CmdC("Gamemode", "GameModeAdventure",new Commands.Gamemode.GamemodeA());
 		if(TheAPI.isNewerThan(7))
-		CmdC("Gamemode", "GamemodeSP",new Commands.Gamemode.GamemodeSP());
+		CmdC("Gamemode", "GameModeSpectator",new Commands.Gamemode.GamemodeSP());
 			
 		//BanSystem	
 		CmdC("BanSystem","Kick", new Commands.BanSystem.Kick());
@@ -600,12 +600,12 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("BanSystem","warn", new Commands.BanSystem.Warn());
 		
 		//Inventory
-		CmdC("Inventory","enderchest", new Commands.Inventory.EnderChest());
-		CmdC("Inventory","endersee", new Commands.Inventory.EnderSee());
-		CmdC("Inventory","closeinv", new Commands.Inventory.CloseInventory());
-		CmdC("Inventory", "ClearInv",new Commands.Inventory.ClearInv());
+		CmdC("Inventory","EnderChest", new Commands.Inventory.EnderChest());
+		CmdC("Inventory","Endersee", new Commands.Inventory.EnderSee());
+		CmdC("Inventory","CloseInventory", new Commands.Inventory.CloseInventory());
+		CmdC("Inventory", "ClearInventory",new Commands.Inventory.ClearInv());
 		CmdC("Inventory","ClearConfirmToggle", new Commands.Inventory.ClearConfirmToggle());
-		CmdC("Inventory","Invsee", new Commands.Inventory.Invsee());
+		CmdC("Inventory","Inventory", new Commands.Inventory.Invsee());
 		
 		//Enchantment
 		CmdC("Enchantment","Enchant", new Commands.Enchantment.EnchantTable());

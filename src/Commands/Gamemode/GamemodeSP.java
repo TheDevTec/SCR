@@ -18,7 +18,7 @@ public class GamemodeSP implements CommandExecutor {
 			TheAPI.msg("&cUnsupported GameMode type", s);
 			return true;
 		}
-		if (Loader.has(s, "Gamemode.Spectator", "Gamemode")) {
+		if (Loader.has(s, "Gamemode", "Gamemode")) {
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
@@ -45,7 +45,7 @@ public class GamemodeSP implements CommandExecutor {
 				return true;
 			}
 		}
-		Loader.noPerms(s, "Gamemode.Spectator", "Gamemode");
+		Loader.noPerms(s, "Gamemode", "Gamemode");
 		return true;
 	}
 }
