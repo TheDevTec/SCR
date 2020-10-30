@@ -524,7 +524,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Info","Staff", new Commands.Info.Staff());
 		CmdC("Info", "TPS",new Commands.Info.TPS());
 		CmdC("Info","WhoIs", new Commands.Info.WhoIs());
-		CmdC("Info", "Maintenance",new Commands.Info.Maintenance());  
+		CmdC("Info", "Maintenance",new Commands.Info.Maintenance());
 		
 		//Speed
 		CmdC("Speed", "FlySpeed",new Commands.Speed.FlySpeed());
