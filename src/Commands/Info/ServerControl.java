@@ -26,7 +26,7 @@ public class ServerControl implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "SCR", "Info")) {
 			if (args.length == 0) {
-				Loader.Help(s, "SCR", "Info");
+				Loader.Help(s, "ServerControl", "Info");
 				return true;
 				}
 			

@@ -50,7 +50,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] a) {
 		if (Loader.has(s, "WhoIs", "Info")) {
 			if (a.length == 0) {
-				Loader.Help(s, "/WhoIs <player>", "WhoIs");
+				Loader.Help(s, "/WhoIs <player>", "Info");
 				return true;
 			}
 			if (!TheAPI.existsUser(a[0])) {

@@ -618,10 +618,12 @@ Info:
     Enabled: true
   Chunks:
     Name: "chunk"
+    Aliases:
+    - "chunks"
     Permission: "SCR.Command.Chunks"
     Help: "/Chunk - List all chunks"
     Enabled: true
-  ListCmd:
+  List:
     Name: "list"
     Permission: "SCR.Command.List"
     Help: "/List - List online players"

@@ -15,13 +15,14 @@ public class TPS implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 
 		if (Loader.has(s, "TPS", "Info")) {
+			if (args.length == 0) {
 			Loader.sendMessages(s, "TPS", Placeholder.c()
 					.add("%tps%", TheAPI.getServerTPS() + "")
 					.add("%tps-from-1%", TheAPI.getServerTPS(TPSType.ONE_MINUTE) + "")
 					.add("%tps-from-5%", TheAPI.getServerTPS(TPSType.FIVE_MINUTES) + "")
 					.add("%tps-from-15%", TheAPI.getServerTPS(TPSType.FIFTEEN_MINUTES) + ""));
-			return true;
-
+				return true;
+			}
 		}
 		Loader.noPerms(s, "TPS", "Info");
 		return true;

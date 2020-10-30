@@ -31,7 +31,7 @@ public class Seen implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Seen", "Info")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/Seen <player>", "Seen");
+				Loader.Help(s, "/Seen <player>", "Info");
 				return true;
 			}
 			if (TheAPI.existsUser(args[0])) {
@@ -50,9 +50,11 @@ public class Seen implements CommandExecutor {
 				return true;
 			}
 			List<String> sim = getS(args[0]);
-			if (sim.isEmpty())
-				Loader.sendMessages(s, "Missing.Player.NotExist", Placeholder.c().add("%player%", args[0]));
-			else {
+			if (sim.isEmpty()) {
+				Loader.sendMessages(s, "Missing.Player.NotExist", Placeholder.c()
+						.add("%player%", args[0]));
+				return true;
+			} else {
 				Loader.sendMessages(s, "Seen.Similar", Placeholder.c()
 						.add("%names%", StringUtils.join(sim, ", ")));
 			}
