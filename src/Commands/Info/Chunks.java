@@ -20,7 +20,6 @@ public class Chunks implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
-
 		if (Loader.has(s, "Chunks", "Info")) {
 			if (cmd.getName().equalsIgnoreCase("Chunks")) {
 				if (args.length == 0) {

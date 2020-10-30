@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -442,13 +443,15 @@ public class Loader extends JavaPlugin implements Listener {
 	private void CmdC(String section, String command, CommandExecutor p) {
 		if(cmds.getBoolean(section+"."+command+".Enabled")) {
 			List<String> aliases = new ArrayList<>();
+			PluginCommand c = TheAPI.createCommand(command, this);
 			if(cmds.exists(section+"."+command+".Aliases")) {
 			if(cmds.get(section+"."+command+".Aliases") instanceof List)
 				aliases=cmds.getStringList(section+"."+command+".Aliases");
 			else aliases.add(cmds.getString(section+"."+command+".Aliases"));
 			}
-			TheAPI.createAndRegisterCommand(cmds.getString(section+"."+command+".Name"), cmds.exists(section+"."+command+".Permission")?cmds.getString(section+"."+command+".Permission"):null, p
-					, aliases);
+			c.setAliases(aliases);
+			c.setExecutor(p);
+			TheAPI.registerCommand(c);
 		}
 	}
 
