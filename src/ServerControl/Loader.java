@@ -430,7 +430,7 @@ public class Loader extends JavaPlugin implements Listener {
 			c.setAliases(aliases);
 			c.setExecutor(p);
 			c.setPermission(cmds.getString(section+"."+command+".Permission"));
-			TheAPI.createAndRegisterCommand(cmds.getString(section+"."+command+".Name"), cmds.getString(section+"."+command+".Permission"), p, aliases);
+			TheAPI.registerCommand(c);
 		}
 	}
 	
