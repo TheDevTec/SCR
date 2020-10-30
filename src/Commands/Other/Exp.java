@@ -102,7 +102,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if (isAlias(args[0], "give")) {
-			if (Loader.has(s, "Experiences", "Other", "Give")) {
+			if (Loader.has(s, "Experiences", "Other", "Add")) {
 				if (args.length == 1 || args.length == 2) {
 					Loader.Help(s, "Experiences", "Other");
 					return true;
@@ -111,7 +111,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 				if(args.length==3) {
 				if (p == null) {
 					if (args[0].equals("*")) {
-						Repeat.a(s, "xp give * " + StringUtils.getFloat(args[2]));
+						Repeat.a(s, "xp add * " + StringUtils.getFloat(args[2]));
 						return true;
 					}
 					Loader.notOnline(s, args[1]);
@@ -126,7 +126,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 				}
 				if (p == null) {
 					if (args[0].equals("*")) {
-						Repeat.a(s, "xp give * " + StringUtils.getFloat(args[2])+" "+args[3]);
+						Repeat.a(s, "xp add * " + StringUtils.getFloat(args[2])+" "+args[3]);
 						return true;
 					}
 					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c().add("%player%", args[1]).add("%playername%", args[1]));
@@ -160,7 +160,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 				if(args.length==3) {
 				if (p == null) {
 					if (args[0].equals("*")) {
-						Repeat.a(s, "xp take * " + StringUtils.getFloat(args[2]));
+						Repeat.a(s, "xp remove * " + StringUtils.getFloat(args[2]));
 						return true;
 					}
 					Loader.notOnline(s, args[1]);
@@ -175,7 +175,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 				}
 				if (p == null) {
 					if (args[0].equals("*")) {
-						Repeat.a(s, "xp take * " + StringUtils.getFloat(args[2])+" "+args[3]);
+						Repeat.a(s, "xp remove * " + StringUtils.getFloat(args[2])+" "+args[3]);
 						return true;
 					}
 					Loader.notOnline(s, args[1]);

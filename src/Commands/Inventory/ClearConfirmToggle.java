@@ -18,7 +18,7 @@ public class ClearConfirmToggle implements CommandExecutor {
 				if (s instanceof Player == false) {
 					return true;
 				} else {
-					if (Loader.has(s, "ClearInventory", "Inventory", "Clear")) {
+					if (Loader.has(s, "ClearInventory", "Inventory", "Other")) {
 						User d = TheAPI.getUser(s.getName());
 						if (d.getBoolean("ClearInvConfirm") == true) {
 							d.setAndSave("ClearInvConfirm", false);
