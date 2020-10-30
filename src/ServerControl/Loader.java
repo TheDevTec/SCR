@@ -31,7 +31,6 @@ import Events.SecurityListenerCooldowns;
 import Events.SecurityListenerV3;
 import Events.Signs;
 import Events.WorldChange;
-import Utils.AFK;
 import Utils.Colors;
 import Utils.Configs;
 import Utils.Converter;
@@ -48,9 +47,10 @@ import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
+import me.DevTec.TheAPI.Scheduler.Scheduler;
+import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
-import me.DevTec.TheAPI.Utils.TheAPIUtils.LoaderClass;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -248,7 +248,6 @@ public class Loader extends JavaPlugin implements Listener {
 			return getColoredPing(who);
 		return String.valueOf(TheAPI.getPlayerPing(who));
 	}
-	private static boolean disabling;
 	@Override
 	public void onLoad() {
 		getInstance = this;
@@ -260,23 +259,10 @@ public class Loader extends JavaPlugin implements Listener {
 
 	@Override
 	public void onEnable() {
-		if(disabling) {
-			TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "&4ERROR: &7You are using old version of TheAPI", TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "&4ERROR: &7Please update TheAPI to newest version!", TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "&4ERROR: &7Links:", TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "&4ERROR: &7 Discord: &ehttps://discord.io/spigotdevtec", TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "&4ERROR: &7 Github: &ehttps://github.com/TheDevTec/TheAPI", TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "&4ERROR: &7 Spigot: &ehttps://www.spigotmc.org/resources/theapi.72679/", TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
-			Bukkit.getPluginManager().disablePlugin(this);
-			return;
-		}
 		reload();
-		TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
-		TheAPI.msg(setting.prefix + "&eINFO: &7Newest versions of &eTheAPI &7can be found on Spigot:", TheAPI.getConsole());
-		TheAPI.msg(setting.prefix + "       https://www.spigotmc.org/resources/theapi.72679/", TheAPI.getConsole());
-		TheAPI.msg(setting.prefix + "&8*********************************************", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + " &eINFO: &7Newest versions of &eTheAPI &7can be found on Spigot:", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + "        https://www.spigotmc.org/resources/theapi.72679/", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		EventsRegister();
 		CommmandsRegister();
 	}
@@ -285,7 +271,6 @@ public class Loader extends JavaPlugin implements Listener {
 
 	@Override
 	public void onDisable() {
-		if(disabling)return;
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			p.setFlying(false);
 			p.setAllowFlight(false);
@@ -370,13 +355,6 @@ public class Loader extends JavaPlugin implements Listener {
 	public static void reload() {
 		loading = System.currentTimeMillis();
 		if(aad==0) {
-		int count = 0;
-		for(String s : LoaderClass.plugin.getDescription().getVersion().split("\\."))
-			count+=Integer.valueOf(s);
-		if(count < 9) {
-			disabling = true;
-			return;
-		}
 		MultiWorldsUtils.LoadWorlds();
 		if (PluginManagerAPI.getPlugin("Vault") != null) {
 			setupEco();
@@ -394,18 +372,22 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		}
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
-		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading of ServerControlReloaded:", TheAPI.getConsole());
 		if(aad==1) {
 			if(metrics!=null) {
 				Bukkit.getServicesManager().unregister(metrics);
 				metrics.getTimer().cancel();
 			}
 			Tasks.reload();
-			AFK.stop();
+			getInstance.stop();
 		}
+		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
+		Configs.load();
+		TheAPI.msg(setting.prefix + " &7Configs "+(aad == 0 ? "l" : "rel")+"oaded.", TheAPI.getConsole());
+		setting.load();
+		Converter.convert();
 		for (World wa : Bukkit.getWorlds())
 			MultiWorldsUtils.DefaultSet(wa, Loader.mw.getString("WorldsSettings." + wa.getName() + ".Generator"));
-		AFK.start();
+		getInstance.starts();
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			SPlayer s = API.getSPlayer(p);
 			if (s.hasTempFlyEnabled())
@@ -424,18 +406,14 @@ public class Loader extends JavaPlugin implements Listener {
 			//unsuported
 		}
 		getInstance.kits.clear();
-		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
-		Configs.load();
-		setting.load();
-		Converter.convert();
 		TheAPI.msg(setting.prefix + " &7Loading kits:", TheAPI.getConsole());
 		for (String s : Loader.kit.getKeys("Kits")) {
 			TheAPI.msg(setting.prefix + "   &e"+s+"&7:", TheAPI.getConsole());
 			Kit kit = Kit.load(s);
-			TheAPI.msg(setting.prefix + "     &7Cooldown: " + StringUtils.setTimeToString(kit.getDelay()), TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + "     &7Cooldown: &e" + StringUtils.setTimeToString(kit.getDelay()), TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + "     &7Cost: &e$" + API.setMoneyFormat(kit.getCost(), false), TheAPI.getConsole());
 		}
-		TheAPI.msg(setting.prefix + " &7ServerControlReloaded "+(aad == 0 ? "l" : "rel")+"oading took "+(System.currentTimeMillis()-loading)+"ms", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading of SCR took "+(System.currentTimeMillis()-loading)+"ms", TheAPI.getConsole());
 		aad=1;
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 	}
@@ -452,9 +430,77 @@ public class Loader extends JavaPlugin implements Listener {
 			c.setAliases(aliases);
 			c.setExecutor(p);
 			c.setPermission(cmds.getString(section+"."+command+".Permission"));
-			c.setUsage("/<command>");
 			TheAPI.createAndRegisterCommand(cmds.getString(section+"."+command+".Name"), cmds.getString(section+"."+command+".Permission"), p, aliases);
 		}
+	}
+	
+	private static int task;
+	private static long time, rkick;
+
+	public void starts() {
+		time = StringUtils.timeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
+		rkick = StringUtils.timeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
+		task=new Tasker() {
+			@Override
+			public void run() {
+				for(SPlayer s : API.getSPlayers()) {
+				boolean is = getTime(s) <= 0;
+				if (setting.afk_auto) {
+					if (is) {
+						if (!s.bc && !s.mp) {
+							s.bc = true;
+							s.mp = true;
+							if (!s.hasVanish())
+								Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
+						}
+						if (setting.afk_kick && is) {
+							if (s.kick >= rkick) {
+								if (!s.hasPermission("servercontrol.afk.bypass"))
+									if(s.getPlayer()!=null && s.getPlayer().isOnline())
+									s.getPlayer().kickPlayer(TheAPI.colorize(Loader.config.getString("Options.AFK.KickMessage")));
+								cancel();
+								return;
+							} else
+								++s.kick;
+						}
+					}
+					++s.afk;
+				}
+				}
+			}
+		}.runRepeating(0, 20);
+	}
+
+	public void setAFK(SPlayer s) {
+		save(s);
+		s.mp = true;
+		s.manual = true;
+			if (!s.hasVanish())
+				Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
+	}
+
+	public long getTime(SPlayer s) {
+		return time - s.afk;
+	}
+
+	public void save(SPlayer s) {
+		s.afk = 0;
+		s.kick = 0;
+		s.manual = false;
+		s.mp = false;
+		s.bc = false;
+	}
+
+	public boolean isManualAfk(SPlayer s) {
+		return s.manual;
+	}
+
+	public boolean isAfk(SPlayer s) {
+		return getTime(s) <= 0;
+	}
+
+	private void stop() {
+		Scheduler.cancelTask(task);
 	}
 
 	private void CommmandsRegister() {
