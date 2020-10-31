@@ -692,11 +692,14 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static void noPerms(CommandSender s, String cmd, String section, String sub) {
-		sendMessages(s, "NoPerms", Placeholder.c().add("%permission%", cmds.getString(section+"."+cmd+".SubPermissions."+sub)));
+		sendMessages(s, "NoPerms", Placeholder.c().add("%permission%", cmds.getString(section+"."+cmd+".SubPermission."+sub)));
 	}
 
 	public static boolean has(CommandSender s, String cmd, String section, String subPerm) {
-		return cmds.exists(section+"."+cmd+".SubPermissions."+subPerm)?s.hasPermission(cmds.getString(section+"."+cmd+".SubPermissions."+subPerm)):true;
+		return cmds.exists(section+"."+cmd+".SubPermission."+subPerm)?s.hasPermission(cmds.getString(section+"."+cmd+".SubPermission."+subPerm)):true;
+	}
+	public static boolean has(Player s, String cmd, String section, String subPerm) {
+		return cmds.exists(section+"."+cmd+".SubPermission."+subPerm)?s.hasPermission(cmds.getString(section+"."+cmd+".SubPermission."+subPerm)):true;
 	}
 
 	public HashMap<String, Kit> kits = new HashMap<>();

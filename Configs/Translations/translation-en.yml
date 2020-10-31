@@ -632,6 +632,8 @@ ClearChat:
     Console: "%prefix% Chat has been cleared by &eConsole"
     Player: "%prefix% Chat has been cleared by &e%player%"
   Specific: "%prefix% Chat of &e%player% &7has been cleared"
+  SpecificChatHaveBypass: "%prefix% &e%player% &7have bypass permission!"
+  NoClearOwnChat: "%prefix% You cannot clear own chat"
   
 # Translations for /Back command
 Back:

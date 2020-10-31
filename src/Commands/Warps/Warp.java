@@ -21,7 +21,7 @@ import me.DevTec.TheAPI.Utils.StringUtils;
 public class Warp implements CommandExecutor, TabCompleter {
 
 	public String warp(String[] args) {
-		if (Loader.config.getString("Warps") != null)
+		if (Loader.config.exists("Warps"))
 			for (String s : Loader.config.getKeys("Warps")) {
 				if (s.toLowerCase().equalsIgnoreCase(args[0])) {
 					return s;
@@ -130,7 +130,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 
 	public List<String> warpss(CommandSender s) {
 		List<String> w = new ArrayList<>();
-		if (Loader.config.getString("Warps") != null)
+		if (Loader.config.exists("Warps")) 
 			for (String st : Loader.config.getKeys("Warps")) {
 				boolean needperm = Loader.config.getBoolean("Warps." + st + ".NeedPermission");
 				String needperm2 = Loader.config.getString("Warps." + st + ".NeedPermission");
@@ -148,7 +148,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		List<String> c = new ArrayList<>();
 		if (args.length == 1) {
-			if (Loader.has(s, "Warp", "Warps")) {
+			if (Loader.has(s, "Warp", "Warps")) { 
 				c.addAll(StringUtil.copyPartialMatches(args[0], warpss(s), new ArrayList<>()));
 			}
 		}

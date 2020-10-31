@@ -33,7 +33,7 @@ public class SetWarp implements CommandExecutor {
 								.add("%warp%", args[0]));
 						return true;
 					}
-					Loader.sendMessages(s, "Warp.Exist", Placeholder.c()
+					Loader.sendMessages(s, "Warp.Exists", Placeholder.c()//xDDDD
 							.add("%warp%", args[0]));
 					return true;
 				}
