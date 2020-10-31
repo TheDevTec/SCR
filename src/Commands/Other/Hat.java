@@ -36,14 +36,14 @@ public class Hat implements CommandExecutor {
 					if (!check) {
 						Loader.sendMessages(p, "Hat.InvFull.You");
 						return true;
-					} else if (check == true) {
-						if (p.getInventory().getHelmet() != null)
-							p.getInventory().addItem(p.getInventory().getHelmet());
-						p.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
-						p.getInventory().setItemInHand(new ItemStack(Material.AIR));
-						Loader.sendMessages(s, "Hat.Equipped.You", Placeholder.c().replace("%item%", p.getInventory().getHelmet().getType().name()));
-						return true;
 					}
+					if (p.getInventory().getHelmet() != null)
+						p.getInventory().addItem(p.getInventory().getHelmet());
+					p.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
+					p.getInventory().setItemInHand(new ItemStack(Material.AIR));
+					Loader.sendMessages(s, "Hat.Equipped.You", Placeholder.c().replace("%item%", p.getInventory().getHelmet().getType().name()));
+					return true;
+					
 				}
 				if (Loader.has(s, "Hat", "Other", "Other")) {
 					if (args.length == 1) {
@@ -64,15 +64,14 @@ public class Hat implements CommandExecutor {
 					Loader.sendMessages(t, "Hat.Invfull.Other", Placeholder.c()
 							.add("%player%", t.getName())
 							.add("%playername%", t.getDisplayName()));
-				} else if (check) {
-					if (t.getInventory().getHelmet() != null)
-						t.getInventory().addItem(t.getInventory().getHelmet());
-					t.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
-					p.getInventory().setItemInHand(new ItemStack(Material.AIR));
-					Loader.sendMessages(s, "Hat.Equipped.Other.Sender", Placeholder.c().replace("%player%", t.getName()).replace("%playername%", t.getDisplayName()).replace("%item%", t.getInventory().getHelmet().getType().name()));
-					Loader.sendMessages(t, "Hat.Equipped.Other.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", s.getName()).replace("%item%", t.getInventory().getHelmet().getType().name()));
-					return true;
 				}
+				if (t.getInventory().getHelmet() != null)
+					t.getInventory().addItem(t.getInventory().getHelmet());
+				t.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
+				p.getInventory().setItemInHand(new ItemStack(Material.AIR));
+				Loader.sendMessages(s, "Hat.Equipped.Other.Sender", Placeholder.c().replace("%player%", t.getName()).replace("%playername%", t.getDisplayName()).replace("%item%", t.getInventory().getHelmet().getType().name()));
+				Loader.sendMessages(t, "Hat.Equipped.Other.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", s.getName()).replace("%item%", t.getInventory().getHelmet().getType().name()));
+				return true;
 			}
 		}
 				Loader.noPerms(s, "Hat", "Other", "Other");
