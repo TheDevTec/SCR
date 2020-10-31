@@ -33,7 +33,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "Warp", "Warps")) {
-			if (Loader.config.getString("Warps") != null) {
+			if (Loader.config.exists("Warps")) {
 				if (args.length == 0) {
 					Loader.sendMessages(s, "Warp.List", Placeholder.c()
 							.add("%warps%", StringUtils.join(warpss(s), ", ")));
@@ -50,7 +50,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 							}
 							boolean needperm = Loader.config.getBoolean("Warps." + warp(args) + ".NeedPermission");
 							if (needperm == true) {
-								if (s.hasPermission(Loader.cmds.getString("Warps.Warp.SubPermissions.PerWarp")+"."+warp(args))) {
+								if (s.hasPermission(Loader.cmds.getString("Warps.Warp.SubPermission.PerWarp").replace("%warp%", warp(args)))) {
 									API.setBack((Player) s);
 									if (setting.tp_safe)
 										API.safeTeleport((Player)s, loc);
@@ -60,7 +60,9 @@ public class Warp implements CommandExecutor, TabCompleter {
 											.add("%warp%", warp(args)));
 									return true;
 								}
-								Loader.sendMessages(s, "NoPerms", Placeholder.c().add("%permission%", Loader.cmds.getString("Warps.Warp.SubPermissions.PerWarp")+"."+warp(args)));
+								Loader.sendMessages(s, "NoPerms", Placeholder.c()
+										.add("%permission%", Loader.cmds.getString("Warps.Warp.SubPermission.PerWarp")
+										.replace("%warp%", warp(args))));
 								return true;
 							}
 							API.setBack((Player) s);
@@ -112,10 +114,13 @@ public class Warp implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(s, "Warp.Empty");
 				return true;
 			}
+			Loader.sendMessages(s, "Warp.Empty");
+			return true;
 		}
 		Loader.noPerms(s, "Warp", "Warps");
 		return true;
 	}
+	// opraveno ... teď zprovozni /setwarp :)
 
 	public String player(CommandSender s) {
 		if (TheAPI.getPlayer(s.getName()) != null)

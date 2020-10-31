@@ -621,6 +621,8 @@ Warps:
   Warp:
     Name: "warp"
     Permission: "SCR.Command.Warp"
+    SubPermission:
+      PerWarp: "SCR.Command.Warp.%warp%"
     Help: "/Warp <warp> - Teleports you to warp"
     Enabled: true
 Info:
