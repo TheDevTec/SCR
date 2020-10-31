@@ -37,6 +37,7 @@ public class Tphere implements CommandExecutor {
 			Loader.sendMessages(s, "TpSystem.Block.IsBlocked.Teleport", Placeholder.c().replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()));
 			return true;
 		}
+		Loader.noPerms(s, "TpHere", "TpSystem");
 		return true;
 	}
 

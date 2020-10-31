@@ -14,7 +14,7 @@ public class GamemodeS implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "Gamemode.Survival", "Gamemode")) {
+		if (Loader.has(s, "Gamemode", "Gamemode")) {
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
@@ -41,7 +41,7 @@ public class GamemodeS implements CommandExecutor {
 				return true;
 			}
 		}
-		Loader.noPerms(s, "Gamemode.Survival", "Gamemode");
+		Loader.noPerms(s, "Gamemode", "Gamemode");
 		return true;
 	}
 }

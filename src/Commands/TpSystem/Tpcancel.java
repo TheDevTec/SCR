@@ -18,7 +18,7 @@ public class Tpcancel implements CommandExecutor {
 			}
 			return true;
 		}
-		Loader.noPerms(s, "TpCancel", "TpCancel");
+		Loader.noPerms(s, "TpCancel", "TpSystem");
 		return true;
 	}
 

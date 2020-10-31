@@ -13,7 +13,7 @@ public class ScoreboardStats implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "Scoreboard", "Other")) {
+		if (Loader.has(s, "ScoreBoard", "Other")) {
 			TheAPI.msg(setting.prefix+"Reloading Scoreboard..", s);
 			TheAPI.msg("", s);
 			Utils.ScoreboardStats.removeScoreboard();
@@ -25,7 +25,7 @@ public class ScoreboardStats implements CommandExecutor {
 			TheAPI.msg(setting.prefix+"Scoreboard reloaded", s);
 			return true;
 		}
-		Loader.noPerms(s, "Scoreboard", "Other");
+		Loader.noPerms(s, "ScoreBoard", "Other");
 		return true;
 	}
 

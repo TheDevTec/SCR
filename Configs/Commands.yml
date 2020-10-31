@@ -504,14 +504,14 @@ NickName:
     Aliases:
     - "nick"
     Permission: "SCR.Command.Nickname"
-    Help: "/Nick <nickname> - Change your name"
+    Help: "/Nick <nickname> - Change your nickname"
     Enabled: true
   NickReset:
     Name: "nicknamereset"
     Aliases:
     - "nickreset"
     Permission: "SCR.Command.NicknameReset"
-    Help: "/NicknameReset - Reset your name to original"
+    Help: "/NicknameReset - Reset your nickname to original"
     Enabled: true
 Speed:
   WalkSpeed:
@@ -782,7 +782,7 @@ Other:
     Permission: "SCR.Command.Item"
     Help: "/Item - Change lore/color/enchantments of item in your main hand"
     Enabled: true
-  KitCmd:
+  Kit:
     Name: "kit"
     Permission: "SCR.Command.Kit"
     SubPermission:
@@ -804,7 +804,7 @@ Other:
       Other: "SCR.Command.Repair.Other"
     Help: "/Repair - Repair item in your hand"
     Enabled: true
-  ScoreBoardStats:
+  ScoreBoard:
     Name: "scoreboard"
     Aliases:
     - "sb"

@@ -537,7 +537,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Warps", "DelWarp",new Commands.Warps.DelWarp());
 		CmdC("Warps", "Warp",new Commands.Warps.Warp());
 		CmdC("Warps", "Home",new Commands.Warps.Home());
-		CmdC("Warps","homeother", new Commands.Warps.HomeOther());
+		CmdC("Warps", "HomeOther", new Commands.Warps.HomeOther());
 		CmdC("Warps", "SetHome",new Commands.Warps.SetHome());
 		CmdC("Warps", "DelHome",new Commands.Warps.DelHome());
 		CmdC("Warps", "Homes",new Commands.Warps.Homes());
@@ -548,7 +548,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Economy", "Balance",new Commands.Economy.Balance());
 		CmdC("Economy", "Economy",new Commands.Economy.Eco());
 		CmdC("Economy", "Pay",new Commands.Economy.Pay());
-		CmdC("Economy","multieconomy", new Commands.Economy.MultiEconomy());
+		CmdC("Economy", "MultiEconomy", new Commands.Economy.MultiEconomy());
 		
 		//Weather
 		CmdC("Weather", "Sun",new Commands.Weather.Sun());
@@ -564,78 +564,78 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Time", "PNight",new Commands.Time.PNight());
 		
 		//Message
-		CmdC("Message","mail", new Commands.Message.Mail());
-		CmdC("Message","sudo", new Commands.Message.Sudo());
-		CmdC("Message","broadcast", new Commands.Message.Broadcast());
+		CmdC("Message","Mail", new Commands.Message.Mail());
+		CmdC("Message","Sudo", new Commands.Message.Sudo());
+		CmdC("Message","Broadcast", new Commands.Message.Broadcast());
 		CmdC("Message", "PrivateMessage", new Commands.Message.PrivateMessage());
 		CmdC("Message", "ClearChat",new Commands.Message.ClearChat());
-		CmdC("Message","helpop", new Commands.Message.Helpop());
-		CmdC("Message","reply", new Commands.Message.ReplyPrivateMes());
+		CmdC("Message","Helpop", new Commands.Message.Helpop());
+		CmdC("Message","Reply", new Commands.Message.ReplyPrivateMes());
 		
 		//Gamemode
-		CmdC("Gamemode", "Gamemode",new Commands.Gamemode.Gamemode());
-		CmdC("Gamemode", "GamemodeS",new Commands.Gamemode.GamemodeS());
-		CmdC("Gamemode", "GamemodeC",new Commands.Gamemode.GamemodeC());
-		CmdC("Gamemode", "GamemodeA",new Commands.Gamemode.GamemodeA());
+		CmdC("Gamemode", "GameMode",new Commands.Gamemode.Gamemode());
+		CmdC("Gamemode", "GameModeSurvival",new Commands.Gamemode.GamemodeS());
+		CmdC("Gamemode", "GameModeCreative",new Commands.Gamemode.GamemodeC());
+		CmdC("Gamemode", "GameModeAdventure",new Commands.Gamemode.GamemodeA());
 		if(TheAPI.isNewerThan(7))
-		CmdC("Gamemode", "GamemodeSP",new Commands.Gamemode.GamemodeSP());
+		CmdC("Gamemode", "GameModeSpectator",new Commands.Gamemode.GamemodeSP());
 			
 		//BanSystem	
-		CmdC("BanSystem","Kick", new Commands.BanSystem.Kick());
-		CmdC("BanSystem","Ban", new Commands.BanSystem.Ban());
-		CmdC("BanSystem","Immune", new Commands.BanSystem.Immune());
-		CmdC("BanSystem","TempBan", new Commands.BanSystem.TempBan());
+		CmdC("BanSystem", "Kick", new Commands.BanSystem.Kick());
+		CmdC("BanSystem", "Ban", new Commands.BanSystem.Ban());
+		CmdC("BanSystem", "Immune", new Commands.BanSystem.Immune());
+		CmdC("BanSystem", "TempBan", new Commands.BanSystem.TempBan());
 		CmdC("BanSystem", "Jail",new Commands.BanSystem.Jail());
 		CmdC("BanSystem", "TempBanIP",new Commands.BanSystem.TempBanIP());
 		CmdC("BanSystem", "UnJail",new Commands.BanSystem.UnJail());
 		CmdC("BanSystem", "SetJail",new Commands.BanSystem.SetJail());
 		CmdC("BanSystem", "DelJail",new Commands.BanSystem.DelJail());
-		CmdC("BanSystem","tempjail", new Commands.BanSystem.TempJail());
-		CmdC("BanSystem","BanIP", new Commands.BanSystem.BanIP());
-		CmdC("BanSystem","UnBan-IP", new Commands.BanSystem.UnBanIP());
-		CmdC("BanSystem","UnBan", new Commands.BanSystem.UnBan());
-		CmdC("BanSystem","tempmute", new Commands.BanSystem.TempMute());
-		CmdC("BanSystem","mute", new Commands.BanSystem.Mute());
-		CmdC("BanSystem","unmute", new Commands.BanSystem.UnMute());
-		CmdC("BanSystem","warn", new Commands.BanSystem.Warn());
+		CmdC("BanSystem", "TempJail", new Commands.BanSystem.TempJail());
+		CmdC("BanSystem", "BanIP", new Commands.BanSystem.BanIP());
+		CmdC("BanSystem", "UnBan-IP", new Commands.BanSystem.UnBanIP());
+		CmdC("BanSystem", "UnBan", new Commands.BanSystem.UnBan());
+		CmdC("BanSystem", "TempMute", new Commands.BanSystem.TempMute());
+		CmdC("BanSystem", "Mute", new Commands.BanSystem.Mute());
+		CmdC("BanSystem", "UnMute", new Commands.BanSystem.UnMute());
+		CmdC("BanSystem", "Warn", new Commands.BanSystem.Warn());
 		
 		//Inventory
-		CmdC("Inventory","enderchest", new Commands.Inventory.EnderChest());
-		CmdC("Inventory","endersee", new Commands.Inventory.EnderSee());
-		CmdC("Inventory","closeinv", new Commands.Inventory.CloseInventory());
-		CmdC("Inventory", "ClearInv",new Commands.Inventory.ClearInv());
-		CmdC("Inventory","ClearConfirmToggle", new Commands.Inventory.ClearConfirmToggle());
-		CmdC("Inventory","Invsee", new Commands.Inventory.Invsee());
+		CmdC("Inventory", "EnderChest", new Commands.Inventory.EnderChest());
+		CmdC("Inventory", "Endersee", new Commands.Inventory.EnderSee());
+		CmdC("Inventory", "CloseInventory", new Commands.Inventory.CloseInventory());
+		CmdC("Inventory", "ClearInventory",new Commands.Inventory.ClearInv());
+		CmdC("Inventory", "ClearConfirmToggle", new Commands.Inventory.ClearConfirmToggle());
+		CmdC("Inventory", "Inventory", new Commands.Inventory.Invsee());
 		
 		//Enchantment
-		CmdC("Enchantment","Enchant", new Commands.Enchantment.EnchantTable());
-		CmdC("Enchantment","EnchantRemove", new Commands.Enchantment.EnchantTableRemove());
-		CmdC("Enchantment","EnchantRemoveAll", new Commands.Enchantment.EnchantTableRemoveAll());
+		CmdC("Enchantment", "Enchant", new Commands.Enchantment.EnchantTable());
+		CmdC("Enchantment", "EnchantRemove", new Commands.Enchantment.EnchantTableRemove());
+		CmdC("Enchantment", "EnchantRemoveAll", new Commands.Enchantment.EnchantTableRemoveAll());
 		
 		//TpSystem
-		CmdC("TpSystem","tp", new Commands.TpSystem.Tp());
-		CmdC("TpSystem","tphere", new Commands.TpSystem.Tphere());
-		CmdC("TpSystem","tpcancel", new Commands.TpSystem.Tpcancel());
-		CmdC("TpSystem","tpa", new Commands.TpSystem.Tpa());
-		CmdC("TpSystem","tpahere", new Commands.TpSystem.Tpahere());
-		CmdC("TpSystem","tpblock", new Commands.TpSystem.TpaBlock());
-		CmdC("TpSystem","tpaall", new Commands.TpSystem.Tpaall());
-		CmdC("TpSystem","tpall", new Commands.TpSystem.Tpall());
-		CmdC("TpSystem","tpaccept", new Commands.TpSystem.Tpaccept());
-		CmdC("TpSystem","tpadeny", new Commands.TpSystem.Tpadeny());
+		CmdC("TpSystem", "Tp", new Commands.TpSystem.Tp());
+		CmdC("TpSystem", "TpHere", new Commands.TpSystem.Tphere());
+		CmdC("TpSystem", "TpCancel", new Commands.TpSystem.Tpcancel());
+		CmdC("TpSystem", "Tpa", new Commands.TpSystem.Tpa());
+		CmdC("TpSystem", "TpaHere", new Commands.TpSystem.Tpahere());
+		CmdC("TpSystem", "TpToggle", new Commands.TpSystem.TpaBlock());
+		CmdC("TpSystem", "TpaAll", new Commands.TpSystem.Tpaall());
+		CmdC("TpSystem", "TpAll", new Commands.TpSystem.Tpall());
+		CmdC("TpSystem", "TpAccept", new Commands.TpSystem.Tpaccept());
+		CmdC("TpSystem", "TpaDeny", new Commands.TpSystem.Tpadeny());
 		
 		//Other
 		CmdC("Other", "ChatLock",new Commands.Other.ChatLock());
-		CmdC("Other","Repair", new Commands.Other.Repair());
-		CmdC("Other","Feed", new Commands.Other.Feed());
-		CmdC("Other","item", new Commands.Other.Item());
-		CmdC("Other","tempfly", new Commands.Other.TempFly());
-		CmdC("Other","board", new Commands.Other.ScoreboardStats());
-		CmdC("Other","Trash", new Commands.Other.Trash());
-		CmdC("Other","thor", new Commands.Other.Thor());
+		CmdC("Other", "Repair", new Commands.Other.Repair());
+		CmdC("Other", "Feed", new Commands.Other.Feed());
+		CmdC("Other", "Item", new Commands.Other.Item());
+		CmdC("Other", "TempFly", new Commands.Other.TempFly());
+		CmdC("Other", "ScoreBoard", new Commands.Other.ScoreboardStats());
+		CmdC("Other", "Trash", new Commands.Other.Trash());
+		CmdC("Other", "Thor", new Commands.Other.Thor());
 		CmdC("Other", "Give",new Commands.Other.Give());
 		CmdC("Other", "Kits",new Commands.Other.KitCmd());
-		CmdC("Other","craft", new Commands.Other.Craft());
+		CmdC("Other", "Craft", new Commands.Other.Craft());
 		CmdC("Other", "Skull",new Commands.Other.Skull());
 		CmdC("Other", "God",new Commands.Other.God());
 		CmdC("Other", "Heal", new Commands.Other.Heal());
@@ -644,14 +644,14 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "Butcher",new Commands.Other.Butcher());
 		CmdC("Other", "AFK",new Commands.Other.AFK());
 		CmdC("Other", "MultiWorlds",new Commands.Other.MultiWorlds());
-		CmdC("Other", "Tablist",new Commands.Other.Tab());
+		CmdC("Other", "TabList",new Commands.Other.Tab());
 		CmdC("Other", "Hat",new Commands.Other.Hat());
-		CmdC("Other","exp", new Commands.Other.Exp());
-		CmdC("Other","spawner", new Commands.Other.Spawner());
+		CmdC("Other", "Exp", new Commands.Other.Exp());
+		CmdC("Other", "Spawner", new Commands.Other.Spawner());
 		
 		//Nickname
-		CmdC("Nickname","nick", new Commands.Nickname.Nick());
-		CmdC("Nickname","nickreset", new Commands.Nickname.NickReset());
+		CmdC("Nickname", "Nick", new Commands.Nickname.Nick());
+		CmdC("Nickname", "NickReset", new Commands.Nickname.NickReset());
 	}
 
 	private void EventC(Listener l) {

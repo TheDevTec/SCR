@@ -23,19 +23,20 @@ public class Vanish implements CommandExecutor {
 					if (!TheAPI.isVanished(p)) {
 						TheAPI.vanish(p, "ServerControl.Vanish", true);
 						Loader.sendMessages(s, "Vanish.Enabled.You");
-						Scheduler.cancelTask(i);
+						
+						if (i == -1) {
+							i = new Tasker( ) {
+								@Override
+								public void run() {
+									TheAPI.sendActionBar(p, Loader.getTranslation("Vanish.Active").toString());
+								}
+							}.runRepeatingSync(0, 20);
+						}
 						return true;
 					}
 					TheAPI.vanish(p, "ServerControl.Vanish", false);
 					Loader.sendMessages(s, "Vanish.Disabled.You");
-					if (i == -1) {
-						i = new Tasker( ) {
-							@Override
-							public void run() {
-								TheAPI.sendActionBar(p, Loader.getTranslation("Vanish.Active").toString());
-							}
-						}.runRepeatingSync(0, 20);
-					}
+					Scheduler.cancelTask(i);
 					return true;
 				}
 				Loader.Help(s, "Vanish", "Other");

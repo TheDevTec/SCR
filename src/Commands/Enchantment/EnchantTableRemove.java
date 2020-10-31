@@ -39,7 +39,7 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 				enchs.add(sd);
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation", "unlikely-arg-type" })
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "EnchantRemove", "Enchantment")) {
@@ -52,11 +52,10 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 					Player p = (Player) s;
 					Material a = p.getItemInHand().getType();
 					if (a != Material.AIR) {
-						if (p.getItemInHand().getEnchantments()
-								.containsKey(EnchantmentAPI.byName(args[0]).getEnchantment())) {
-							e(p.getItemInHand(), args[0], s);
-							return true;
-						}
+							if (p.getItemInHand().getEnchantments().containsKey(EnchantmentAPI.byName(args[0]) != null)) {
+								e(p.getItemInHand(), args[0], s);
+								return true;
+							}
 						Loader.sendMessages(s, "Missing.Enchant.NoEnchant");
 						return true;
 					}
