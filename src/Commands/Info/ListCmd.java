@@ -2,8 +2,10 @@ package Commands.Info;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,86 +13,81 @@ import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class ListCmd implements CommandExecutor {
-	HashMap<Player, String> p = new HashMap<Player, String>(); // Player, group;
-
-	public String getGroup(Player a) {
-		try {
-			if (PluginManagerAPI.getPlugin("Vault") != null)
-				if (Loader.vault != null)
-					if (Loader.vault.getPrimaryGroup(a) != null)
-						return Loader.vault.getPrimaryGroup(a);
-		} catch (Exception e) {
-			return "default";
-		}
-		return "default";
-	}
-
-	public void sortPlayers() {
-		p.clear();
+	
+	public String joiner(String value) {
+		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
 		for (Player a : TheAPI.getOnlinePlayers()) {
-			if (p.get(a) != null)
-				p.put(a, getGroup(a));
+			String as = Staff.getGroup(a);
+			List<String> s = p.getOrDefault(as, new ArrayList<>());
+			s.add(a.getName());
+			p.put(as, s);
 		}
-	}
-
-	public String normalPlayers() {
-		ArrayList<String> w = new ArrayList<String>();
-		for (Player a : TheAPI.getOnlinePlayers()) {
-			if (!Loader.config.getStringList("StaffList").contains(p.get(a))) {
-				w.add(a.getName());
+		String s = "";
+		for(String group : value.split("[ ]*,[ ]*")) {
+			if(group.equalsIgnoreCase("{staff}")) {
+				if(!Staff.joiner().equals(""))
+				s+=(s.equals("")?"":", ")+Staff.joiner();
+				continue;
 			}
+			//ex. default, vip, supervip
+			String ss = StringUtils.join(p.get(group), ", ");
+			if(!ss.equals("")) //empty
+				//empty String -> ""
+			s+=(s.equals("")?"":", ")+ss;
 		}
-		if (w.isEmpty())
-			return "0";
-		return StringUtils.join(w, ", ");
+		return s;
 	}
-
-	public String allPlayers() {
-		ArrayList<String> w = new ArrayList<String>();
+	
+	public String joinercount(String value) {
+		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
 		for (Player a : TheAPI.getOnlinePlayers()) {
-			w.add(a.getName());
+			String as = Staff.getGroup(a);
+			List<String> s = p.getOrDefault(as, new ArrayList<>());
+			s.add(a.getName());
+			p.put(as, s);
 		}
-		if (w.isEmpty())
-			return "0";
-		return StringUtils.join(w, ", ");
-	}
-
-	public String getPlayersInGroup(String f) {
-		ArrayList<String> w = new ArrayList<String>();
-		for (Player a : TheAPI.getOnlinePlayers()) {
-			if (f.equals(p.get(a))) {
-				w.add(a.getName());
+		int s = 0;
+		for(String group : value.split("[ ]*,[ ]*")) {
+			if(group.equalsIgnoreCase("{staff}")) {
+				s+=StringUtils.getInt(Staff.joinercount());
+				continue;
 			}
+			s+=p.get(group).size();
 		}
-		if (w.isEmpty())
-			return "";
-		return StringUtils.join(w, " ");
+		return s+"";
 	}
+	
+	Pattern a = Pattern.compile("%joiner{(.*?)}%"), b = Pattern.compile("%joiner-count{(.*?)}%");
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "List", "Info")) {
-			ArrayList<String> w = new ArrayList<String>();
-			sortPlayers();
-			w.clear();
-			if (PluginManagerAPI.getPlugin("Vault") != null && Loader.vault != null)
-				for (String d : Loader.vault.getGroups()) {
-					w.add(d);
+			Object o = Loader.getTranslation("List.Normal");
+			if(o==null)return true;
+			if(o instanceof List) {
+				for(String sd : (List<String>)o) {
+					Matcher f = a.matcher(sd);
+					while(f.find())
+						sd.replace(f.group(), joiner(f.group(1)));
+					f = b.matcher(sd);
+					while(f.find())
+						sd.replace(f.group(), joinercount(f.group(1)));
+					TheAPI.msg(Loader.placeholder(s, sd, null), s);
 				}
-			for (String a : Loader.trans.getStringList("PlayerList.Normal")) {
-				if (!w.isEmpty())
-					for (String wa : w) {
-						a = a.replace("%" + wa + "%", getPlayersInGroup(wa));
-					}
-				TheAPI.msg(a.replace("%online%", TheAPI.getOnlinePlayers().size() + "")
-						.replace("%max_players%", Bukkit.getMaxPlayers() + "").replace("%staff%", Staff.getStaff())
-						.replace("%players%", normalPlayers()).replace("%all%", allPlayers())
-						.replace("%prefix%", Loader.getTranslation("Prefix").toString()), s);
+				return true;
 			}
+			String sd = Loader.placeholder(s, o.toString(), null);
+			Matcher f = a.matcher(sd);
+			while(f.find())
+				sd.replace(f.group(), joiner(f.group(1)));
+			f = b.matcher(sd);
+			while(f.find())
+				sd.replace(f.group(), joinercount(f.group(1)));
+			TheAPI.msg(sd, s);
 			return true;
 		}
 		Loader.noPerms(s, "List", "Info");

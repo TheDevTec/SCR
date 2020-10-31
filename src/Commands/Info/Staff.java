@@ -1,9 +1,5 @@
 package Commands.Info;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,13 +9,9 @@ import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Staff implements CommandExecutor {
-
-	private static List<String> p = new ArrayList<String>(); // Player, group;
-
-	private static String getGroup(Player a) {
+	public static String getGroup(Player a) {
 		try {
 			if (PluginManagerAPI.getPlugin("Vault") != null)
 				if (Loader.vault != null)
@@ -30,30 +22,29 @@ public class Staff implements CommandExecutor {
 		}
 		return "default";
 	}
-
-	public static void sortPlayers() {
-		p.clear();
-		for (Player a : TheAPI.getOnlinePlayers()) {
-			if (Loader.config.getStringList("StaffList").contains(getGroup(a))) {
-				p.add(a.getName());
-			}
-		}
+	
+	public static String joiner() {
+		String s = "";
+		for (Player a : TheAPI.getOnlinePlayers())
+			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a)))
+				s+=(s.equals("")?"":", ")+a.getName();
+		return s;
 	}
-
-	public static String getStaff() {
-		if (p.isEmpty())
-			return "0";
-		return StringUtils.join(p, ", ");
+	
+	public static String joinercount() {
+		int s = 0;
+		for (Player a : TheAPI.getOnlinePlayers())
+			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a)))
+				++s;
+		return s+"";
 	}
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Staff", "Info")) {
-			sortPlayers();
 				Loader.sendMessages(s, "List.Staff", Placeholder.c()
-						.add("%online%", p.size() + "")
-						.add("%max_players%", Bukkit.getMaxPlayers() + "")
-						.add("%staff%", getStaff()));
+						.add("%staff_online%", joinercount())
+						.add("%staff%", joiner()));
 			return true;
 		}
 		Loader.noPerms(s, "Staff", "Info");

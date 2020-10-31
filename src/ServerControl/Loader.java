@@ -92,7 +92,7 @@ public class Loader extends JavaPlugin implements Listener {
 			string=string.replace("%prefix%", setting.prefix);
 		if(placeholders!=null)
 		for(Entry<String, String> placeholder : placeholders.set.entrySet())
-			string=string.replace(placeholder.getKey(), placeholder.getValue());
+			string=string.replaceAll(placeholder.getKey(), placeholder.getValue());
 		if(sender!=null) {
 		if(sender instanceof Player)
 			string=TabList.replace(string, (Player)sender);
