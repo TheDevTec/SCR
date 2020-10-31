@@ -20,7 +20,7 @@ public class Spawn implements CommandExecutor {
 				if (s instanceof Player) {
 					API.setBack((Player) s);
 					API.teleportPlayer((Player) s, TeleportLocation.SPAWN);
-					Loader.sendMessages(s, "Spawn.Teleported.You");
+					Loader.sendMessages(s, "Spawn.Teleport.You");
 					return true;
 				} else {
 					Loader.Help(s, "Spawn", "Warps");
@@ -35,14 +35,14 @@ public class Spawn implements CommandExecutor {
 			if (p == s) {
 				API.setBack(p);
 				API.teleportPlayer(p, TeleportLocation.SPAWN);
-				Loader.sendMessages(p, "Spawn.Teleported.You");
+				Loader.sendMessages(p, "Spawn.Teleport.You");
 				return true;
 			}
 			if (Loader.has(s, "Spawn", "Warps", "Other")) {
 				API.setBack(p);
 				API.teleportPlayer(p, TeleportLocation.SPAWN);
-				Loader.sendMessages(p, "Spawn.Other.Sender");
-				Loader.sendMessages(s, "Spawn.Teleported.You", Placeholder.c()
+				Loader.sendMessages(p, "Spawn.Teleport.Other.Receiver");
+				Loader.sendMessages(s, "Spawn.Teleport.Other.Sender", Placeholder.c()
 						.add("%player%", p.getName())
 						.add("%playername%", p.getDisplayName()));
 				return true;

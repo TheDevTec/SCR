@@ -1,4 +1,4 @@
-package Commands.Gamemode;
+package Commands.GameMode;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -16,11 +16,11 @@ public class Gamemode implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 
 		if (args.length == 0) {
-			if (Loader.has(s, "Gamemode", "Gamemode")) {
-				Loader.Help(s, "/GameMode <s|c|a|sp> <player>", "Gamemode");
+			if (Loader.has(s, "GameMode", "GameMode")) {
+				Loader.Help(s, "GameMode", "GameMode");
 				return true;
 			}
-			Loader.noPerms(s, "Gamemode", "Gamemode");
+			Loader.noPerms(s, "GameMode", "GameMode");
 			return true;
 		}
 		String gamemode = null;
@@ -58,16 +58,16 @@ public class Gamemode implements CommandExecutor {
 				return true;
 			}
 			if (s instanceof Player) {
-				if (Loader.has(s, "Gamemode." + gamemode, "Gamemode")) {
+				if (Loader.has(s, "GameMode"+gamemode, "GameMode")) {
 						((Player) s).setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
 						Loader.sendMessages(s, "Gamemode.Your.Custom", Placeholder.c()
 								.add("%gamemode%", gamemode));
 						return true;
 				}
-				Loader.noPerms(s, "Gamemode." + gamemode, "Gamemode");
+				Loader.noPerms(s, "GameMode" + gamemode, "GameMode");
 				return true;
 			}
-			Loader.Help(s, "/GameMode " + args[0] + " <player>", "Gamemode");
+			Loader.Help(s, "GameMode", "GameMode");
 			return true;
 		}
 		if (args.length == 2) {
@@ -102,14 +102,14 @@ public class Gamemode implements CommandExecutor {
 				return true;
 			}
 			
-			if (Loader.has(s, "Gamemode." + gamemode, "Gamemode")) {
+			if (Loader.has(s, "GameMode" + gamemode, "GameMode")) {
 				Player p = TheAPI.getPlayer(args[1]);
 					if (p != null) {
 						p.setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
-						Loader.sendMessages(p, "Gamemode.Other.Custom.Receiver", Placeholder.c()
+						Loader.sendMessages(p, "GameMode.Other.Custom.Receiver", Placeholder.c()
 								.add("%gamemode%", gamemode));
 						
-						Loader.sendMessages(s, "Gamemode.Other.Custom.Sender", Placeholder.c()
+						Loader.sendMessages(s, "GameMode.Other.Custom.Sender", Placeholder.c()
 								.add("%player%", p.getName())
 								.add("%playername%", p.getDisplayName())
 								.add("%gamemode%", gamemode));
@@ -119,7 +119,7 @@ public class Gamemode implements CommandExecutor {
 							.add("%player%", args[0]));
 					return true;
 			}
-			Loader.noPerms(s, "Gamemode." + gamemode, "Gamemode");
+			Loader.noPerms(s, "GameMode" + gamemode, "GameMode");
 			return true;
 		}
 

@@ -75,13 +75,8 @@ public class API {
 		case SPAWN: {
 			World world = Bukkit.getWorlds().get(0);
 			Location loc = world.getSpawnLocation();
-			if (Loader.config.exists("Spawn")
-					&& Bukkit.getWorld(Loader.config.getString("Spawn.World")) != null) {
-				float x_head = Loader.config.getInt("Spawn.X_Pos_Head");
-				float z_head = Loader.config.getInt("Spawn.Z_Pos_Head");
-				world = Bukkit.getWorld(Loader.config.getString("Spawn.World"));
-				loc = new Location(world, Loader.config.getDouble("Spawn.X"), Loader.config.getDouble("Spawn.Y"),
-						Loader.config.getDouble("Spawn.Z"), x_head, z_head);
+			if (Loader.config.exists("Spawn")) {
+				loc=Position.fromString(Loader.config.getString("Spawn")).toLocation();
 			}
 			a = loc;
 		}

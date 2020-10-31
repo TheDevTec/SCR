@@ -20,7 +20,8 @@ public class setting {
 			tab_sort, tab, eco, eco_other, eco_log, eco_multi, ad_book, ad_chat, ad_cmd, ad_sign, ad_anvil, ad_itemdrop,
 			ad_itempick, join_spawn, join_msg, join_motd, join_first,
 			join_first_give, join_first_percmd, leave, cool_cmd, cool_chat, cool_percmd, color_chat_perm,
-			color_sign_perm, tp_safe, tp_onreqloc, ram, spam_double, caps_chat, caps_cmd, deathspawnbol;
+			color_sign_perm, tp_safe, tp_onreqloc, ram, spam_double, caps_chat, caps_cmd, deathspawnbol
+			,list, staff_hide, staff_replace;
 	public static String prefix;
 	public static DeathTp deathspawn;
 	public static boolean farming;
@@ -41,6 +42,9 @@ public class setting {
 		format_date_time = new SimpleDateFormat(f.getString("Format.DateWithTime"));
 		format_time = new SimpleDateFormat(f.getString("Format.Time"));
 		format_date = new SimpleDateFormat(f.getString("Format.Date"));
+		list=f.getBoolean("Options.List-RemoveEmptyLine");
+		staff_hide=f.getBoolean("Options.Staff.HideAllLines");
+		staff_replace=f.getBoolean("Options.Staff.UseReplace");
 		farming = f.getBoolean("Options.FarmingSystem");
 		singeplayersleep = f.getBoolean("Options.SinglePlayerSleep");
 		timezone = f.getBoolean("Options.TimeZone.Use");

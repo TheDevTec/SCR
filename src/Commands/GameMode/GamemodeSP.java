@@ -1,4 +1,4 @@
-package Commands.Gamemode;
+package Commands.GameMode;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -18,24 +18,24 @@ public class GamemodeSP implements CommandExecutor {
 			TheAPI.msg("&cUnsupported GameMode type", s);
 			return true;
 		}
-		if (Loader.has(s, "Gamemode", "Gamemode")) {
+		if (Loader.has(s, "GameModeSpectator", "GameMode")) {
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
 					p.setGameMode(GameMode.SPECTATOR);
-					Loader.sendMessages(p, "Gamemode.Your.Spectator");
+					Loader.sendMessages(p, "GameMode.Your.Spectator");
 					return true;
 				}
-				Loader.Help(s, "/Gmsp <player>", "Gamemode");
+				Loader.Help(s, "GameModeSpectator", "GameMode");
 				return true;
 			}
 			if (args.length == 1) {
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null) {
 					p.setGameMode(GameMode.SPECTATOR);
-					Loader.sendMessages(p, "Gamemode.Other.Spectator.Receiver");
+					Loader.sendMessages(p, "GameMode.Other.Spectator.Receiver");
 					
-					Loader.sendMessages(s, "Gamemode.Other.Spectator.Sender", Placeholder.c()
+					Loader.sendMessages(s, "GameMode.Other.Spectator.Sender", Placeholder.c()
 							.add("%player%", p.getName())
 							.add("%playername%", p.getDisplayName()));	
 					return true;
@@ -45,7 +45,7 @@ public class GamemodeSP implements CommandExecutor {
 				return true;
 			}
 		}
-		Loader.noPerms(s, "Gamemode", "Gamemode");
+		Loader.noPerms(s, "GameModeSpectator", "GameMode");
 		return true;
 	}
 }

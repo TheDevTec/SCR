@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -355,7 +354,6 @@ public class Loader extends JavaPlugin implements Listener {
 	public static void reload() {
 		loading = System.currentTimeMillis();
 		if(aad==0) {
-		MultiWorldsUtils.LoadWorlds();
 		if (PluginManagerAPI.getPlugin("Vault") != null) {
 			setupEco();
 			setupVault();
@@ -385,14 +383,13 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.msg(setting.prefix + " &7Configs "+(aad == 0 ? "l" : "rel")+"oaded.", TheAPI.getConsole());
 		setting.load();
 		Converter.convert();
-		for (World wa : Bukkit.getWorlds())
-			MultiWorldsUtils.DefaultSet(wa, Loader.mw.getString("WorldsSettings." + wa.getName() + ".Generator"));
+		MultiWorldsUtils.LoadWorlds();
 		getInstance.starts();
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			SPlayer s = API.getSPlayer(p);
 			if (s.hasTempFlyEnabled())
 				s.enableTempFly();
-			else if (s.hasPermission("servercontrol.fly") && s.hasFlyEnabled())
+			else if (has(p, "Fly", "Other") && s.hasFlyEnabled())
 				s.enableFly();
 			setupChatFormat(p);
 			if (EconomyAPI.getEconomy() != null)
@@ -406,7 +403,7 @@ public class Loader extends JavaPlugin implements Listener {
 			//unsuported
 		}
 		getInstance.kits.clear();
-		TheAPI.msg(setting.prefix + " &7Loading kits:", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading kits:", TheAPI.getConsole());
 		for (String s : Loader.kit.getKeys("Kits")) {
 			TheAPI.msg(setting.prefix + "   &e"+s+"&7:", TheAPI.getConsole());
 			Kit kit = Kit.load(s);
@@ -517,7 +514,7 @@ public class Loader extends JavaPlugin implements Listener {
 		//Info
 		CmdC("Info", "Memory",new Commands.Info.RAM());
 		CmdC("Info", "Chunks",new Commands.Info.Chunks());
-		CmdC("Info", "SCR",new Commands.Info.ServerControl());
+		CmdC("Info", "SCR",new Commands.Info.SCR());
 		CmdC("Info","Seen", new Commands.Info.Seen());
 		CmdC("Info","ChatFormat", new Commands.Info.ChatFormat());
 		CmdC("Info","List", new Commands.Info.ListCmd());
@@ -573,12 +570,12 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Message","Reply", new Commands.Message.ReplyPrivateMes());
 		
 		//Gamemode
-		CmdC("Gamemode", "GameMode",new Commands.Gamemode.Gamemode());
-		CmdC("Gamemode", "GameModeSurvival",new Commands.Gamemode.GamemodeS());
-		CmdC("Gamemode", "GameModeCreative",new Commands.Gamemode.GamemodeC());
-		CmdC("Gamemode", "GameModeAdventure",new Commands.Gamemode.GamemodeA());
+		CmdC("GameMode", "GameMode",new Commands.GameMode.Gamemode());
+		CmdC("GameMode", "GameModeSurvival",new Commands.GameMode.GamemodeS());
+		CmdC("GameMode", "GameModeCreative",new Commands.GameMode.GamemodeC());
+		CmdC("GameMode", "GameModeAdventure",new Commands.GameMode.GamemodeA());
 		if(TheAPI.isNewerThan(7))
-		CmdC("Gamemode", "GameModeSpectator",new Commands.Gamemode.GamemodeSP());
+		CmdC("GameMode", "GameModeSpectator",new Commands.GameMode.GamemodeSP());
 			
 		//BanSystem	
 		CmdC("BanSystem", "Kick", new Commands.BanSystem.Kick());

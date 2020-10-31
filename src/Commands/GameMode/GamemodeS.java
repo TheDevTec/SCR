@@ -1,4 +1,4 @@
-package Commands.Gamemode;
+package Commands.GameMode;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -14,24 +14,24 @@ public class GamemodeS implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "Gamemode", "Gamemode")) {
+		if (Loader.has(s, "GameModeSurvival", "GameMode")) {
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
 					p.setGameMode(GameMode.SURVIVAL);
-					Loader.sendMessages(p, "Gamemode.Your.Survival");
+					Loader.sendMessages(p, "GameMode.Your.Survival");
 					return true;
 				}
-				Loader.Help(s, "/Gms <player>", "Gamemode");
+				Loader.Help(s, "GameModeSurvival", "GameMode");
 				return true;
 			}
 			if (args.length == 1) {
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null) {
 					p.setGameMode(GameMode.SURVIVAL);
-					Loader.sendMessages(p, "Gamemode.Other.Survival.Receiver");
+					Loader.sendMessages(p, "GameMode.Other.Survival.Receiver");
 					
-					Loader.sendMessages(s, "Gamemode.Other.Survival.Sender", Placeholder.c()
+					Loader.sendMessages(s, "GameMode.Other.Survival.Sender", Placeholder.c()
 							.add("%player%", p.getName())
 							.add("%playername%", p.getDisplayName()));
 					return true;
@@ -41,7 +41,7 @@ public class GamemodeS implements CommandExecutor {
 				return true;
 			}
 		}
-		Loader.noPerms(s, "Gamemode", "Gamemode");
+		Loader.noPerms(s, "GameModeSurvival", "GameMode");
 		return true;
 	}
 }

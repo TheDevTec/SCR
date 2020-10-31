@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
+import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 
@@ -42,9 +43,19 @@ public class Staff implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Staff", "Info")) {
-				Loader.sendMessages(s, "List.Staff", Placeholder.c()
-						.add("%staff_online%", joinercount())
-						.add("%staff%", joiner()));
+			boolean isEmpty = joinercount().equals("0");
+			if(isEmpty && setting.staff_hide) {
+				if(setting.staff_replace) {
+					for(String a : Loader.config.getStringList("Options.Staff.ReplaceWith")){
+						TheAPI.msg(Loader.placeholder(s, a, null), s);
+					}
+					return true;
+				}
+				return true;
+			}else if(!isEmpty || !setting.staff_hide)
+			Loader.sendMessages(s, "List.Staff", Placeholder.c()
+					.add("%staff_online%", joinercount())
+					.add("%staff%", joiner()));
 			return true;
 		}
 		Loader.noPerms(s, "Staff", "Info");

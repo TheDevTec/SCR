@@ -647,6 +647,10 @@ Info:
     Enabled: true
   List:
     Name: "list"
+    Aliases:
+    - "who"
+    - "players"
+    - "online"
     Permission: "SCR.Command.List"
     Help: "/List - List online players"
     Enabled: true
@@ -689,7 +693,7 @@ Info:
   WhoIs:
     Name: "whois"
     Aliases:
-    - "who"
+    - "info"
     Permission: "SCR.Command.WhoIs"
     Help: "/WhoIs <player> - Shows info about player"
     Enabled: true

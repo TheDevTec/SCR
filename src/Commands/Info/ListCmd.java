@@ -1,6 +1,7 @@
 package Commands.Info;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -12,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
+import Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
@@ -33,7 +35,7 @@ public class ListCmd implements CommandExecutor {
 				continue;
 			}
 			//ex. default, vip, supervip
-			String ss = StringUtils.join(p.get(group), ", ");
+			String ss = StringUtils.join(p.getOrDefault(group, Arrays.asList()), ", ");
 			if(!ss.equals("")) //empty
 				//empty String -> ""
 			s+=(s.equals("")?"":", ")+ss;
@@ -55,12 +57,12 @@ public class ListCmd implements CommandExecutor {
 				s+=StringUtils.getInt(Staff.joinercount());
 				continue;
 			}
-			s+=p.get(group).size();
+			s+=p.getOrDefault(group, Arrays.asList()).size();
 		}
 		return s+"";
 	}
 	
-	Pattern a = Pattern.compile("%joiner{(.*?)}%"), b = Pattern.compile("%joiner-count{(.*?)}%");
+	Pattern a = Pattern.compile("%joiner\\{(.*?)\\}%"), b = Pattern.compile("%joiner-count\\{(.*?)\\}%");
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -69,25 +71,30 @@ public class ListCmd implements CommandExecutor {
 			Object o = Loader.getTranslation("List.Normal");
 			if(o==null)return true;
 			if(o instanceof List) {
+				boolean empty = true, contains = false;
 				for(String sd : (List<String>)o) {
 					Matcher f = a.matcher(sd);
-					while(f.find())
-						sd.replace(f.group(), joiner(f.group(1)));
+					while(f.find()) {
+						contains=true;
+						if(!joiner(f.group(1)).equals(""))empty=false;
+						sd=sd.replace(f.group(), joiner(f.group(1)));
+					}
 					f = b.matcher(sd);
 					while(f.find())
-						sd.replace(f.group(), joinercount(f.group(1)));
+						sd=sd.replace(f.group(), joinercount(f.group(1)));
+					if(!contains || !empty || !setting.list)
 					TheAPI.msg(Loader.placeholder(s, sd, null), s);
 				}
 				return true;
 			}
-			String sd = Loader.placeholder(s, o.toString(), null);
+			String sd = o.toString();
 			Matcher f = a.matcher(sd);
 			while(f.find())
-				sd.replace(f.group(), joiner(f.group(1)));
+				sd=sd.replace(f.group(), joiner(f.group(1)));
 			f = b.matcher(sd);
 			while(f.find())
-				sd.replace(f.group(), joinercount(f.group(1)));
-			TheAPI.msg(sd, s);
+				sd=sd.replace(f.group(), joinercount(f.group(1)));
+			TheAPI.msg(Loader.placeholder(s, sd, null), s);
 			return true;
 		}
 		Loader.noPerms(s, "List", "Info");

@@ -36,12 +36,12 @@ Seen:
 # Translations for /List and /Staff commands
 List:
   Staff:
-  - "%prefix% »=== &e%online% &8/ &e%max_players% &7===«"
-  - "%prefix% Staff: &e%joiner{%staff%}%"
+  - "%prefix% »=== &e%staff_online% &7===«"
+  - "%prefix% Staff: &e%staff%"
   Normal:
-  - "%prefix% »=== &e%online% &8/ &e%max_players% &7===«"
-  - "%prefix% VIPs: &e%joiner{%group-vip%, %group-supervip}%"
-  - "%prefix% Default: &e%joiner{%group-default%}%"
+  - "%prefix% »=== &e%math{%joiner-count{default}%+%joiner-count{supervip, vip}%}% &8/ &e%max_players% &7===«"
+  - "%prefix% VIPs: &e%joiner{supervip, vip}%"
+  - "%prefix% Default: &e%joiner{default}%"
   
 # Translations for /Kill and /Suicide commands
 Kill:
@@ -317,7 +317,7 @@ Chunks:
   TotalLoad: "%prefix% Total is loaded &e%chunks% &7chunks"
 
 # Translations for gamemode commands
-Gamemode:
+GameMode:
     Your:
       Survival: "%prefix% Your gamemode has been set to &eSurvival"
       Creative: "%prefix% Your gamemode has been set to &eCreative"
