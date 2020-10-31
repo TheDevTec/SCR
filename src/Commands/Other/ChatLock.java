@@ -19,7 +19,7 @@ public class ChatLock implements CommandExecutor {
 				setting.lock_chat = true;
 				return true;
 			}
-			Loader.sendBroadcasts(s, "ChatLock.UnLock");
+			Loader.sendBroadcasts(s, "ChatLock.Unlock");
 			Loader.config.set("Options.ChatLock", false);
 			Loader.config.save();
 			setting.lock_chat = false;
