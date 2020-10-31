@@ -129,6 +129,9 @@ Item:
   
 # Translations for /Hat command
 Hat:
+  InvFull:
+    You: "%prefix% Your inventory is full. Clear some items to set items on head"
+    Other: "%prefix% %player%'s inventory is full. You cannot set item."
   Equipped:
     You: "%prefix% Item from your hand has been equipped to your head"
     Other:
