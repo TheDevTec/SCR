@@ -515,9 +515,9 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Info", "Memory",new Commands.Info.RAM());
 		CmdC("Info", "Chunks",new Commands.Info.Chunks());
 		CmdC("Info", "SCR",new Commands.Info.SCR());
-		CmdC("Info","Seen", new Commands.Info.Seen());
-		CmdC("Info","ChatFormat", new Commands.Info.ChatFormat());
-		CmdC("Info","List", new Commands.Info.ListCmd());
+		CmdC("Info","Seen", new Commands.Info.Seen());//treba opraviť
+		CmdC("Info","ChatFormat", new Commands.Info.ChatFormat());//treba zmeniť args[0] help správu
+		CmdC("Info","List", new Commands.Info.ListCmd());// /list == error
 		CmdC("Info","Staff", new Commands.Info.Staff());
 		CmdC("Info", "TPS",new Commands.Info.TPS());
 		CmdC("Info","WhoIs", new Commands.Info.WhoIs()); 
@@ -561,10 +561,10 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Time", "PNight",new Commands.Time.PNight());
 		
 		//Message
-		CmdC("Message","Mail", new Commands.Message.Mail());
+		CmdC("Message","Mail", new Commands.Message.Mail());//nemá commands.yml
 		CmdC("Message","Sudo", new Commands.Message.Sudo());
 		CmdC("Message","Broadcast", new Commands.Message.Broadcast());
-		CmdC("Message", "PrivateMessage", new Commands.Message.PrivateMessage());
+		CmdC("Message", "PrivateMessage", new Commands.Message.PrivateMessage());//treba opraviť perms
 		CmdC("Message", "ClearChat",new Commands.Message.ClearChat());
 		CmdC("Message","Helpop", new Commands.Message.Helpop());
 		CmdC("Message","Reply", new Commands.Message.ReplyPrivateMes());
@@ -600,16 +600,16 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Inventory", "EnderChest", new Commands.Inventory.EnderChest());
 		CmdC("Inventory", "Endersee", new Commands.Inventory.EnderSee());
 		CmdC("Inventory", "CloseInventory", new Commands.Inventory.CloseInventory());
-		CmdC("Inventory", "ClearInventory",new Commands.Inventory.ClearInv());
+		CmdC("Inventory", "ClearInventory",new Commands.Inventory.ClearInv());//treba pridať args[0] správu
 		CmdC("Inventory", "ClearConfirmToggle", new Commands.Inventory.ClearConfirmToggle());
 		CmdC("Inventory", "Inventory", new Commands.Inventory.Invsee());
 		
 		//Enchantment
 		CmdC("Enchantment", "Enchant", new Commands.Enchantment.EnchantTable());
-		CmdC("Enchantment", "EnchantRemove", new Commands.Enchantment.EnchantTableRemove());
+		CmdC("Enchantment", "EnchantRemove", new Commands.Enchantment.EnchantTableRemove());//treba opraviť remove enchantu
 		CmdC("Enchantment", "EnchantRemoveAll", new Commands.Enchantment.EnchantTableRemoveAll());
 		
-		//TpSystem
+		//TpSystem - nefunguje, idk why xD
 		CmdC("TpSystem", "Tp", new Commands.TpSystem.Tp());
 		CmdC("TpSystem", "TpHere", new Commands.TpSystem.Tphere());
 		CmdC("TpSystem", "TpCancel", new Commands.TpSystem.Tpcancel());
@@ -625,13 +625,13 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "ChatLock",new Commands.Other.ChatLock());
 		CmdC("Other", "Repair", new Commands.Other.Repair());
 		CmdC("Other", "Feed", new Commands.Other.Feed());
-		CmdC("Other", "Item", new Commands.Other.Item());
+		CmdC("Other", "Item", new Commands.Other.Item());//treba pridať code
 		CmdC("Other", "TempFly", new Commands.Other.TempFly());
 		CmdC("Other", "ScoreBoard", new Commands.Other.ScoreboardStats());
 		CmdC("Other", "Trash", new Commands.Other.Trash());
 		CmdC("Other", "Thor", new Commands.Other.Thor());
 		CmdC("Other", "Give",new Commands.Other.Give());
-		CmdC("Other", "Kits",new Commands.Other.KitCmd());
+		CmdC("Other", "Kits",new Commands.Other.KitCmd());//treba opraviť príkaz
 		CmdC("Other", "Craft", new Commands.Other.Craft());
 		CmdC("Other", "Skull",new Commands.Other.Skull());
 		CmdC("Other", "God",new Commands.Other.God());
@@ -640,15 +640,15 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "Vanish",new Commands.Other.Vanish());
 		CmdC("Other", "Butcher",new Commands.Other.Butcher());
 		CmdC("Other", "AFK",new Commands.Other.AFK());
-		CmdC("Other", "MultiWorlds",new Commands.Other.MultiWorlds());
-		CmdC("Other", "TabList",new Commands.Other.Tab());
+		CmdC("Other", "MultiWorlds",new Commands.Other.MultiWorlds());//treba pridať code
+		CmdC("Other", "TabList",new Commands.Other.Tab());//treba pridať code
 		CmdC("Other", "Hat",new Commands.Other.Hat());
-		CmdC("Other", "Exp", new Commands.Other.Exp());
+		CmdC("Other", "Exp", new Commands.Other.Exp());//treba opraviť give, set, take, (balance na sendera, nie target)
 		CmdC("Other", "Spawner", new Commands.Other.Spawner());
 		
 		//Nickname
-		CmdC("Nickname", "Nick", new Commands.Nickname.Nick());
-		CmdC("Nickname", "NickReset", new Commands.Nickname.NickReset());
+		CmdC("Nickname", "Nick", new Commands.Nickname.Nick());//treba opraviť príkaz
+		CmdC("Nickname", "NickReset", new Commands.Nickname.NickReset());//treba opraviť príkaz
 	}
 
 	private void EventC(Listener l) {
