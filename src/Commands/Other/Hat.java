@@ -25,14 +25,14 @@ public class Hat implements CommandExecutor {
 					return true;
 				}
 				Inventory inv = p.getInventory();
-				if (args.length == 0) {
-					boolean check = false;
-					for (ItemStack item : inv.getStorageContents()) {
-						if (item == null) {
-							check = true;
-							break;
-						}
+				boolean check = false;
+				for (ItemStack item : inv.getStorageContents()) {
+					if (item == null) {
+						check = true;
+						break;
 					}
+				}				
+				if (args.length == 0) {					
 					if (!check) {
 						Loader.sendMessages(p, "Hat.InvFull.You");
 						return true;
@@ -53,13 +53,6 @@ public class Hat implements CommandExecutor {
 					return true;
 				}
 				inv = t.getInventory();
-				boolean check = false;
-				for (ItemStack item : inv.getStorageContents()) {
-					if (item == null) {
-						check = true;
-						break;
-					}
-				}
 				if(!check) {
 					Loader.sendMessages(t, "Hat.Invfull.Other", Placeholder.c()
 							.add("%player%", t.getName())
