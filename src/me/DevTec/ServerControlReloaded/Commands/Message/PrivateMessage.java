@@ -61,8 +61,9 @@ public class PrivateMessage implements CommandExecutor {
 					}
 					Loader.notOnline(s, args[0]);
 					return true;
-				}
+				}				
 			}
+			return true;
 		}
 		Loader.noPerms(s, "PrivateMessage", "Message");
 		return true;

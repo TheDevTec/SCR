@@ -91,6 +91,7 @@ public class ReplyPrivateMes implements CommandExecutor {
 				Loader.sendMessages(s, "NoReply");
 				return true;
 			}
+			return true;
 		}
 		Loader.noPerms(s, "Reply", "Message");
 		return true;
