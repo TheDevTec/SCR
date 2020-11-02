@@ -40,7 +40,9 @@ public class Kit {
 	public static Kit load(String name) {
 		Kit kit = new Kit();
 		kit.name=name;
+		if(Loader.kit.exists("Kits." + name + ".cost"))
 		kit.cost=API.convertMoney(Loader.kit.getString("Kits." + name + ".cost"));
+		if(Loader.kit.exists("Kits." + name + ".delay"))
 		kit.delay=StringUtils.timeFromString(Loader.kit.getString("Kits." + name + ".delay"));
 		if(Loader.kit.exists("Kits." + name + ".items.add")) {
 			kit.a = new ArrayList<>();
