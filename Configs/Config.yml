@@ -22,7 +22,10 @@ Options:
     ReplaceWith:
     - "%prefix% Anyone from staff is online"
   ChatLock: false
-  FarmingSystem: true
+  FarmingSystem:
+    Use: true
+    ForbiddenWorlds:
+    - "spawn"
   SinglePlayerSleep: true
   RAM-Percentage: false
   AntiSpam:

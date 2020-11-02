@@ -50,7 +50,7 @@ public class setting {
 		list=f.getBoolean("Options.List-RemoveEmptyLine");
 		staff_hide=f.getBoolean("Options.Staff.HideAllLines");
 		staff_replace=f.getBoolean("Options.Staff.UseReplace");
-		farming = f.getBoolean("Options.FarmingSystem");
+		farming = f.getBoolean("Options.FarmingSystem.Use");
 		singeplayersleep = f.getBoolean("Options.SinglePlayerSleep");
 		timezone = f.getBoolean("Options.TimeZone.Use");
 		ram = f.getBoolean("Options.RAM-Percentage");
