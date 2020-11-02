@@ -112,6 +112,13 @@ Inventory:
   
 # Translations for /Item command
 Item:
+  NameHelp: "&e/info name <name of your item>" 
+  NameHelp: "&e/info name <name of your item>" 
+  NameHelp: "&e/info name <name of your item>" 
+  NameHelp: "&e/info name <name of your item>" 
+  NameHelp: "&e/info name <name of your item>" 
+  NameHelp: "&e/info name <name of your item>" 
+  NameHelp: "&e/info name <name of your item>" 
   Name: "%prefix% DisplayName of item has been set to &r%name%"
   Lore:
     Added: "%prefix% Added new lore line &r%line%"

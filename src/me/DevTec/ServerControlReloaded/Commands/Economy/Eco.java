@@ -10,7 +10,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -18,6 +17,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Eco implements CommandExecutor, TabCompleter {
 	@Override
@@ -200,23 +200,23 @@ public class Eco implements CommandExecutor, TabCompleter {
 		List<String> c = new ArrayList<>();
 		if (args.length == 1) {
 			if (Loader.has(sender, "Economy", "Economy", "Pay")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Pay"), new ArrayList<>()));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Pay")));
 
 			}
 			if (Loader.has(sender, "Economy", "Economy", "Take")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Take"), new ArrayList<>()));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Take")));
 
 			}
 			if (Loader.has(sender, "Economy", "Economy", "Reset")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Reset"), new ArrayList<>()));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Reset")));
 
 			}
 			if (Loader.has(sender, "Economy", "Economy", "Give")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Give"), new ArrayList<>()));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Give")));
 
 			}
 			if (Loader.has(sender, "Economy", "Economy", "Set")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Set"), new ArrayList<>()));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Set")));
 
 			}
 		}
@@ -225,7 +225,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 				if (args.length == 2)
 					return null;
 				if (args.length == 3)
-					c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("?"), new ArrayList<>()));
+					c.addAll(StringUtils.copyPartialMatches(args[2], Arrays.asList("?")));
 			}
 		}
 		if (args[0].equalsIgnoreCase("Take")) {
@@ -233,7 +233,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 				if (args.length == 2)
 					return null;
 				if (args.length == 3)
-					c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("?"), new ArrayList<>()));
+					c.addAll(StringUtils.copyPartialMatches(args[2], Arrays.asList("?")));
 			}
 		}
 		if (args[0].equalsIgnoreCase("Reset")) {
@@ -241,7 +241,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 				if (args.length == 2)
 					return null;
 				if (args.length == 3)
-					c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("?"), new ArrayList<>()));
+					c.addAll(StringUtils.copyPartialMatches(args[2], Arrays.asList("?")));
 			}
 		}
 		if (args[0].equalsIgnoreCase("Set")) {
@@ -249,7 +249,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 				if (args.length == 2)
 					return null;
 				if (args.length == 3)
-					c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("?"), new ArrayList<>()));
+					c.addAll(StringUtils.copyPartialMatches(args[2], Arrays.asList("?")));
 			}
 		}
 		if (args[0].equalsIgnoreCase("Give")) {
@@ -257,7 +257,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 				if (args.length == 2)
 					return null;
 				if (args.length == 3)
-					c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("?"), new ArrayList<>()));
+					c.addAll(StringUtils.copyPartialMatches(args[2], Arrays.asList("?")));
 			}
 		}
 		return c;
