@@ -23,6 +23,10 @@ public class SPlayer {
 	public SPlayer(Player p) {
 		s = p.getName();
 	}
+	
+	public SPlayer(String p) {
+		s = p;
+	}
 
 	@SuppressWarnings("deprecation")
 	public void setHP() {

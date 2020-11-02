@@ -1,5 +1,6 @@
 package Commands.Info;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,18 @@ public class Staff implements CommandExecutor {
 				if (Loader.vault != null)
 					if (Loader.vault.getPrimaryGroup(a) != null)
 						return Loader.vault.getPrimaryGroup(a);
+		} catch (Exception e) {
+			return "default";
+		}
+		return "default";
+	}
+	@SuppressWarnings("deprecation")
+	public static String getGroup(String a) {
+		try {
+			if (PluginManagerAPI.getPlugin("Vault") != null)
+				if (Loader.vault != null)
+					if (Loader.vault.getPrimaryGroup(Bukkit.getWorld("world"), a) != null)
+						return Loader.vault.getPrimaryGroup(Bukkit.getWorld("world"), a);
 		} catch (Exception e) {
 			return "default";
 		}

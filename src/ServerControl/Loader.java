@@ -49,7 +49,6 @@ import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -180,9 +179,9 @@ public class Loader extends JavaPlugin implements Listener {
 						if (Loader.config.getString("Chat-Groups." + Loader.vault.getPrimaryGroup(p)) != null)
 							return vault.getPrimaryGroup(p);
 					}
-				return "DefaultFormat";
+				return "default";
 			} catch (Exception e) {
-				return "DefaultFormat";
+				return "default";
 			}
 		case PREFIX:
 			if (PluginManagerAPI.getPlugin("Vault") != null && vault != null) {
@@ -207,11 +206,11 @@ public class Loader extends JavaPlugin implements Listener {
 			String g = TheAPI.colorize(PlaceholderAPI.setPlaceholders(p,
 					config.getString("Chat-Groups." + get(p, Item.GROUP) + ".Name")));
 			g = ChatFormat.r(p, g, null, false);
-			API.setDisplayName(p, Colors.colorize(g, false, p));
+			p.setDisplayName(Colors.colorize(g, false, p));
 		} else
-			API.setDisplayName(p, get(p, Item.PREFIX) + p.getName() + get(p, Item.SUFFIX));
+			p.setDisplayName(get(p, Item.PREFIX) + p.getName() + get(p, Item.SUFFIX));
 		if(TheAPI.getUser(p).exist("DisplayName"))
-		NMSAPI.getNMSPlayerAPI(p).setCustomName(TheAPI.colorize(PlaceholderAPI.setPlaceholders(p, TheAPI.getUser(p).getString("DisplayName"))));
+			p.setCustomName(TheAPI.colorize(PlaceholderAPI.setPlaceholders(p, TheAPI.getUser(p).getString("DisplayName"))));
 	}
 
 	public static String getGroup(Player p) {
@@ -228,7 +227,7 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static String isAfk(Player p) {
-		return API.getSPlayer(p).isAFK() ? tab.getString("AFK.IsAFK") : tab.getString("AFK.IsNotAFK");
+		return API.getSPlayer(p).isAFK() ? tab.getString("AFK.true") : tab.getString("AFK.false");
 	}
 
 	private String getColoredPing(Player p) {
@@ -373,9 +372,9 @@ public class Loader extends JavaPlugin implements Listener {
 		if(aad==1) {
 			if(metrics!=null) {
 				Bukkit.getServicesManager().unregister(metrics);
+				if(metrics.getTimer()!=null)
 				metrics.getTimer().cancel();
 			}
-			Tasks.reload();
 			getInstance.stop();
 		}
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
@@ -410,6 +409,8 @@ public class Loader extends JavaPlugin implements Listener {
 			TheAPI.msg(setting.prefix + "     &7Cooldown: &e" + StringUtils.setTimeToString(kit.getDelay()), TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + "     &7Cost: &e$" + API.setMoneyFormat(kit.getCost(), false), TheAPI.getConsole());
 		}
+		TabList.reload();
+		Tasks.reload();
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading of SCR took "+(System.currentTimeMillis()-loading)+"ms", TheAPI.getConsole());
 		aad=1;
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());

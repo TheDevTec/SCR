@@ -4,8 +4,9 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
-import me.DevTec.TheAPI.APIs.NameTagAPI;
+import Commands.Info.Staff;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.NameTagAPI;
 
 public class NameTagChanger {
 	static HashMap<Player, NameTagAPI> t = new HashMap<>();
@@ -20,7 +21,7 @@ public class NameTagChanger {
 				NameTagAPI n = t.get(p);
 				n.setPrefix(TabList.replace(prefix, p));
 				n.setSuffix(TabList.replace(suffix, p));
-				n.setNameTag(TabList.getGroup(p) + Tasks.ss.get(p.getName()));
+				n.setNameTag(Staff.getGroup(p) + Tasks.ss.get(p.getName()));
 			} else {
 				String pname = p.getName();
 				if (pname.length() > 16)

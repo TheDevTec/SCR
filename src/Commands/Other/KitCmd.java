@@ -2,12 +2,14 @@ package Commands.Other;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
 
 import ServerControl.Loader;
@@ -37,10 +39,14 @@ public class KitCmd implements CommandExecutor, TabCompleter {
 			if (!cooldown) {
 				if (!economy) {
 					TheAPI.giveItem(p, kit.getItems());
+					for(Entry<Integer, ItemStack> s : kit.getItemsWithSlots().entrySet())
+						p.getInventory().setItem(s.getKey(), s.getValue());
 					return;
 				} else {
 					if (EconomyAPI.has(p, kit.getCost())) {
 						TheAPI.giveItem(p, kit.getItems());
+						for(Entry<Integer, ItemStack> s : kit.getItemsWithSlots().entrySet())
+							p.getInventory().setItem(s.getKey(), s.getValue());
 						if(messages)
 						Loader.sendMessages(p, "Kits.Used", Placeholder.c().add("%kit%", kit.getName()));
 						EconomyAPI.withdrawPlayer(p, kit.getCost());
@@ -60,6 +66,8 @@ public class KitCmd implements CommandExecutor, TabCompleter {
 							return;
 						}
 						TheAPI.giveItem(p, kit.getItems());
+						for(Entry<Integer, ItemStack> s : kit.getItemsWithSlots().entrySet())
+							p.getInventory().setItem(s.getKey(), s.getValue());
 						if(messages)
 						Loader.sendMessages(p, "Kits.Used", Placeholder.c().add("%kit%", kit.getName()));
 						a.createCooldown("Kit." + kit.getName(), kit.getDelay());
@@ -77,6 +85,8 @@ public class KitCmd implements CommandExecutor, TabCompleter {
 						return;
 					}
 					TheAPI.giveItem(p, kit.getItems());
+					for(Entry<Integer, ItemStack> s : kit.getItemsWithSlots().entrySet())
+						p.getInventory().setItem(s.getKey(), s.getValue());
 					if(messages)
 					Loader.sendMessages(p, "Kits.Used", Placeholder.c().add("%kit%", kit.getName()));
 					a.createCooldown("Kit." + kit.getName(), kit.getDelay());

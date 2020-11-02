@@ -788,13 +788,15 @@ Other:
     Permission: "SCR.Command.Item"
     Help: "/Item - Change lore/color/enchantments of item in your main hand"
     Enabled: true
-  Kit:
-    Name: "kit"
-    Permission: "SCR.Command.Kit"
+  Kits:
+    Name: "kits"
+    Aliases:
+    - "kit"
+    Permission: "SCR.Command.Kits"
     SubPermission:
-      List: "SCR.Command.Kit.List"
-      Give: "SCR.Command.Kit.Give"
-    Help: "/Kit - Gives a selected kit to player"
+      List: "SCR.Command.Kits.List"
+      Give: "SCR.Command.Kits.Give"
+    Help: "/Kit <kit> - Gives a selected kit to player"
     Enabled: true
   MultiWorlds:
     Name: "multiworld"

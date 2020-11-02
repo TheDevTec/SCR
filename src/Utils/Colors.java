@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 
 import ServerControl.Loader;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 
 public class Colors {
@@ -25,18 +26,52 @@ public class Colors {
 		if (sign)
 			p = "Sign";
 		String b = s;
-
+		if(b.toLowerCase().contains("&u")) {
+			if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow"))) {
+			String recreate = "";
+			int mode = 0;
+			for(char c : b.toCharArray()) {
+				if(c=='&') {
+					if(mode==1) { //&&
+						recreate+="&"+c;
+						mode=0;
+					}else
+					mode=1;
+				}else {
+					if(mode==1) {
+						mode=0;
+						if(Character.toLowerCase(c)=='u') { // &u
+							mode=2;
+						}else { // ...
+							recreate+="&"+c;
+						}
+					}else {
+						if(mode==2) { //&uText..
+							if(c==' ')
+								recreate+=c;
+							else
+							recreate+=StringUtils.color.getColor()+c;
+						}else
+						recreate+=c;
+					}
+				}
+			}
+			b=recreate;
+			}
+		}
 		if (TheAPI.isNewerThan(15) && b.contains("#")) {
-			if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Hex"))) {
-				b=b.replace("&x", "§x");
-				Matcher match = pattern.matcher(b);
-			    while (match.find()) {
-			        String color = match.group();
-			        StringBuilder magic = new StringBuilder("§x");
-			        char[] c = color.substring(1).toCharArray();
-			        for(int i = 0; i < c.length; ++i)magic.append(("&"+c[i]).toLowerCase());
-			        b = b.replace(color, magic.toString() + "");
-			    }
+			if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.HEX"))) {
+			b = b.replace("&x", "§x");
+			Matcher match = pattern.matcher(b);
+            while (match.find()) {
+                String color = match.group();
+                StringBuilder magic = new StringBuilder("§x");
+                char[] c = color.substring(1).toCharArray();
+                for(int i = 0; i < c.length; ++i) {
+                    magic.append(("&"+c[i]).toLowerCase());
+                }
+                b = b.replace(color, magic.toString() + "");
+            }
 			}
 		}
 		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {

@@ -1,6 +1,7 @@
 package Commands.Server;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import ServerControl.Loader;
 import Utils.setting;
@@ -30,7 +31,11 @@ public class BigTask {
 					@Override
 					public void run() {
 						if (f <= 0) {
-							end();
+							new Tasker() {
+								public void run() {
+									end();
+								}
+							}.runTaskSync();
 							return;
 						} else if (f == h % 75 && h > 15 || f == h % 50 && h > 10 || f == h % 25 && h > 5 || f == 5
 								|| f == 4 || f == 3 || f == 2 || f == 1) {
@@ -66,9 +71,11 @@ public class BigTask {
 		if (r != -1) {
 			Scheduler.cancelTask(r);
 			r = -1;
-			TheAPI.broadcastMessage(
-					"&c" + (s == TaskType.STOP ? "Stopping" : (s == TaskType.RELOAD ? "Reloading" : "Restarting"))
-							+ " of server..");
+			String text = "&c" + (s == TaskType.STOP ? "Stopping" : (s == TaskType.RELOAD ? "Reloading" : "Restarting"))
+					+ " of server..";
+			TheAPI.broadcastMessage(text);
+			for(Player s : TheAPI.getOnlinePlayers())
+				s.kickPlayer(TheAPI.colorize(text));
 			switch (s) {
 			case RELOAD:
 				Bukkit.reload();

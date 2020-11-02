@@ -26,8 +26,8 @@ public class Tasks {
 
 	public static void load() {
 		a = Loader.getInstance;
-		ss = new HashMap<String, String>();
-		players = new ArrayList<String>();
+		ss.clear();
+		players.clear();
 		if (setting.am)
 			automessage();
 		if (setting.vip)
@@ -80,7 +80,7 @@ public class Tasks {
 	}
 
 	private static void scoreboard() {
-		int r = Loader.sb.getInt("RefleshTick");
+		int r = Loader.sb.getInt("Options.RefleshTick");
 		if (r <= 0)
 			r = 1;
 		tasks.add(new Tasker() {
@@ -152,7 +152,7 @@ public class Tasks {
 			if (!ss.containsKey(p.getName()))
 				regPlayer(p);
 		}
-		int r = Loader.tab.getInt("NameTag-RefleshTick");
+		int r = Loader.tab.getInt("Options.RefleshTick.NameTag");
 		if (r <= 0)
 			r = 1;
 		tasks.add(new Tasker() {
@@ -161,7 +161,7 @@ public class Tasks {
 				for (Player p : TheAPI.getOnlinePlayers())
 					TabList.setFooterHeader(p);
 			}
-		}.runRepeating(0, Loader.tab.getInt("RefleshTick")));
+		}.runRepeating(0, Loader.tab.getInt("Options.RefleshTick.Tablist")));
 		tasks.add(new Tasker() {
 			@Override
 			public void run() {

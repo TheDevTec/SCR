@@ -152,13 +152,12 @@ Options:
   StaffList:
   - "owner"
   - "admin"
-  - "operator"
   - "helper"
   - "builder"
-  - "developer"
   
   Colors:
     Sign:
+      Use: true
       Required-Permission: true
       Permission:
         Color: "SCR.Other.Sign.Color"
@@ -167,6 +166,7 @@ Options:
         Rainbow: "SCR.Other.Sign.Rainbow"
         HEX: "SCR.Other.Sign.HEX"
     Chat:
+      Use: true
       Required-Permission: true
       Permission:
         Color: "SCR.Other.Chat.Color"
@@ -182,7 +182,6 @@ Options:
     - "&7We are sorry &e%player%&7, the server is currently under maintenance mode"
     - "&7Website: &ewww.example.com"
     - "&7Discord: &ediscord.link"
-    - "&8=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
     
   Codes:
     Use: false
@@ -249,12 +248,24 @@ BanSystem:
     
 Chat-Groups-Enabled: true
 Chat-Groups:
-  DefaultFormat:
-    Name: "&7%vault-group% &f%player%"
-    Chat: "%player% &8> &f%message%"
-  #GroupName:  
-  #  Name: %group% %player%
-  #  Chat: %player% %message%
+  default:
+    Name: "&7default &f%player%"
+    Chat: "%playername% &8» &7%message%"
+  vip:
+    Name: "&aVIP &e%player%"
+    Chat: "%playername% &8» &a%message%"
+  builder:
+    Name: "&2default &e%player%"
+    Chat: "%playername% &8» &2%message%"
+  helper:
+    Name: "&5Helper &9%player%"
+    Chat: "%playername% &8» &d%message%"
+  admin:
+    Name: "&4Admin &6%player%"
+    Chat: "%playername% &8» &3%message%"
+  owner:
+    Name: "&4Owner &f%player%"
+    Chat: "%playername% &8» &3%message%"
   
 Homes:
   default: 3

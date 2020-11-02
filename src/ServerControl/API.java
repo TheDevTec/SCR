@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +35,13 @@ public class API {
 			cache.put(p.getName(), new SPlayer(p));
 		}
 		return cache.get(p.getName());
+	}
+
+	public static SPlayer getSPlayer(String p) {
+		if(!cache.containsKey(p)) {
+			cache.put(p, new SPlayer(p));
+		}
+		return cache.get(p);
 	}
 
 	public static List<SPlayer> getSPlayers() {
@@ -132,8 +141,7 @@ public class API {
 				a = StringUtils.setTimeToString(System.currentTimeMillis() / 1000 - s.getLong("JoinTime"));
 			break;
 		case Offline:
-			a = StringUtils.setTimeToString(
-					System.currentTimeMillis() / 1000 - Bukkit.getOfflinePlayer(player).getLastPlayed() / 1000);
+			a = StringUtils.setTimeToString(System.currentTimeMillis() / 1000 - Bukkit.getOfflinePlayer(player).getLastPlayed() / 1000);
 			break;
 		}
 		return a;
@@ -169,74 +177,80 @@ public class API {
 	public static void setCustomName(Player p, String name) {
 		NMSAPI.getNMSPlayerAPI(p).setDisplayName(name);
 	}
+	
+	private static DecimalFormat a(String c) {
+		DecimalFormat decimalFormat = (DecimalFormat)NumberFormat.getNumberInstance(Locale.ENGLISH);
+		decimalFormat.applyPattern("###,###.##"+c);
+		return decimalFormat;
+	}
 
 	public static String setMoneyFormat(BigDecimal money, boolean colorized) {
-	    String a = (new DecimalFormat("#,##0.00")).format(money).replaceAll("\\.00", "");
-	    String[] s = a.split(",");
+		String a = a("").format(money);
+	    String[] s = a.toLowerCase(Locale.ENGLISH).split(",");
 	    if (s.length >= 22) {
 	      if (a.startsWith("-"))
 	        a="-∞"; 
 	      a="∞";
 	    }else
 	    if (s.length >= 21 && s.length < 22)
-	      a= (new DecimalFormat("#,###0.00NOV")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000000000000000"))).replaceAll("\\.00", ""); 
+	      a= a("NOV").format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000000000000000"))); 
 	    else
 	    if (s.length >= 20 && s.length < 21)
-	    	a= (new DecimalFormat("#,###0.00OCT")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("OCT")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000000000000"))); 
 	    	else
 	    if (s.length >= 19 && s.length < 20)
-	    	a= (new DecimalFormat("#,###0.00SEP")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("SEP")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000000000"))); 
 		    else
 		if (s.length >= 18 && s.length < 19)
-	    	a= (new DecimalFormat("#,###0.00SED")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("SED")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000000"))); 
 			else
 		if (s.length >= 17 && s.length < 18)
-	    	a= (new DecimalFormat("#,###0.00QUI")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("QUI")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000"))); 
 			else
 		if (s.length >= 16 && s.length < 17)
-	    	a= (new DecimalFormat("#,###0.00QUA")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("QUA")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000"))); 
 			else
 		if (s.length >= 15 && s.length < 16)
-	    	a= (new DecimalFormat("#,###0.00tre")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("tre")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000"))); 
 			else
 		if (s.length >= 14 && s.length < 15)
-	    	a= (new DecimalFormat("#,###0.00duo")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("duo")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000"))); 
 			else
 		if (s.length >= 13 && s.length < 14)
-	    	a= (new DecimalFormat("#,###0.00und")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("und")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000"))); 
 			else
 		if (s.length >= 12 && s.length < 13)
-	    	a= (new DecimalFormat("#,###0.00dec")).format(money.divide(new BigDecimal("1000000000000000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("dec")).format(money.divide(new BigDecimal("1000000000000000000000000000000000"))); 
 			else
 		if (s.length >= 11 && s.length < 12)
-	    	a= (new DecimalFormat("#,###0.00non")).format(money.divide(new BigDecimal("1000000000000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("non")).format(money.divide(new BigDecimal("1000000000000000000000000000000"))); 
 			else
 		if (s.length >= 10 && s.length < 11)
-	    	a= (new DecimalFormat("#,###0.00oct")).format(money.divide(new BigDecimal("1000000000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("oct")).format(money.divide(new BigDecimal("1000000000000000000000000000"))); 
 			else
 		if (s.length >= 9 && s.length < 10)
-	    	a= (new DecimalFormat("#,###0.00sep")).format(money.divide(new BigDecimal("1000000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("sep")).format(money.divide(new BigDecimal("1000000000000000000000000"))); 
 			else
 		if (s.length >= 8 && s.length < 9)
-	    	a= (new DecimalFormat("#,###0.00sex")).format(money.divide(new BigDecimal("1000000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("sex")).format(money.divide(new BigDecimal("1000000000000000000000"))); 
 			else
 		if (s.length >= 7 && s.length < 8)
-	    	a= (new DecimalFormat("#,###0.00qui")).format(money.divide(new BigDecimal("1000000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("qui")).format(money.divide(new BigDecimal("1000000000000000000"))); 
 			else
 		if (s.length >= 6 && s.length < 7)
-	    	a= (new DecimalFormat("#,###0.00qua")).format(money.divide(new BigDecimal("1000000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("qua")).format(money.divide(new BigDecimal("1000000000000000"))); 
 			else
 		if (s.length >= 5 && s.length < 6)
-	    	a= (new DecimalFormat("#,###0.00t")).format(money.divide(new BigDecimal("1000000000000"))).replaceAll("\\.00", ""); 
+	    	a= (a("t")).format(money.divide(new BigDecimal("1000000000000"))); 
 			else
 		if (s.length >= 4 && s.length < 5) 
-	    	a= (new DecimalFormat("#,###0.00b")).format(money.divide(new BigDecimal(1000000000))).replaceAll("\\.00", ""); 
+	    	a= (a("b")).format(money.divide(new BigDecimal(1000000000))); 
 			else
 		if (s.length >= 3 && s.length < 4)
-	    	a= (new DecimalFormat("#,###0.00m")).format(money.divide(new BigDecimal(1000000))).replaceAll("\\.00", ""); 
+	    	a= (a("m")).format(money.divide(new BigDecimal(1000000))); 
 			else
-		if (s.length > 2 && s.length < 3)
-	    	a= (new DecimalFormat("#,###0.00k")).format(money.divide(new BigDecimal(1000))).replaceAll("\\.00", ""); 
+		if (s.length >= 2 && s.length < 3)
+	    	a= (a("k")).format(money.divide(new BigDecimal(1000))); 
 	    if(colorized) {
 	    	if(a.equals("0"))a="&e0";
 	    	else {

@@ -23,6 +23,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (EconomyAPI.getEconomy() == null) {
+			s.sendMessage("Null economy");
 			return true;
 		}
 		if (args.length == 0) {

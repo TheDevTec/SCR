@@ -77,9 +77,8 @@ public class ChatFormat implements Listener {
 
 				String format = PlaceholderAPI.setPlaceholders(p,
 						Loader.config.getString("Chat-Groups." + Loader.get(p,Item.GROUP) + ".Chat"));
-				if (format != null) {
-					e.setFormat(r(p, TheAPI.colorize(format), e.getMessage(), true).replace("%", "%%"));
-				}
+				if (format != null)
+					e.setFormat(r(p, TheAPI.colorize(format), e.getMessage(), true));
 			}
 		}
 

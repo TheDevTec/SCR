@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,12 +17,10 @@ import ServerControl.API;
 import ServerControl.API.SeenType;
 import ServerControl.Loader;
 import ServerControl.Loader.Placeholder;
+import ServerControl.SPlayer;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList;
-import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList.PunishmentType;
+import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 
@@ -38,10 +35,10 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 				entirePage.append(inputLine);
 			stream.close();
 			if (!(entirePage.toString().contains("\"country\":\"")))
-				return "&7Uknown.";
+				return "Uknown";
 			return entirePage.toString().split("\"country\":\"")[1].split("\",")[0];
 		} catch (Exception e) {
-			return "&7Uknown.";
+			return "Uknown";
 		}
 	}
 	
@@ -60,38 +57,26 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			}
 			String ip = PunishmentAPI.getIP(a[0]);
 			if (ip == null)
-				ip = "&7Uknown";
-			String what = "Offline";
+				ip = "Uknown";
+			String country = getCountry(ip);
+			boolean d = false;
 			String afk = "false";
-			String seen = API.getSeen(a[0], SeenType.Offline);
-			if (TheAPI.getPlayer(a[0]) != null && TheAPI.getPlayer(a[0]).getName().equals(a[0])) {
-				what = "Online";
+			String seen = null;
+			if (TheAPI.getPlayerOrNull(a[0]) != null && TheAPI.getPlayer(a[0]).getName().equals(a[0])) {
 				seen = API.getSeen(a[0], SeenType.Online);
-				if (API.isAFK(TheAPI.getPlayer(a[0])))
+				if (API.isAFK(TheAPI.getPlayerOrNull(a[0])))
 					afk = "true";
-			}
-			String fly = "false";
-			String god = "false";
-			User f = TheAPI.getUser(a[0]);
-			if (f.getBoolean("Fly"))
-				fly = "true";
-			if (f.getBoolean("God"))
-				god = "true";
-			String op = "false";
-			for (OfflinePlayer w : Bukkit.getOperators()) {
-				if (w.getName().equals(a[0]))
-					op = "true";
-			}
-			TheAPI.msg("&eName: &a" + a[0]+(TheAPI.getPlayerOrNull(a[0])!=null?"&7 ("+TheAPI.getPlayerOrNull(a[0]).getDisplayName()+"&r&7)":""), s);
-			TheAPI.msg("&e" + what + ": &a" + seen, s);
-			TheAPI.msg("&eFly: &a" + fly, s);
-			TheAPI.msg("&eGod: &a" + god, s);
-			TheAPI.msg("&eAFK: &a" + afk, s);
-			TheAPI.msg("&eOP: &a" + op, s);
-			TheAPI.msg("&eIP: &a" + ip.replaceFirst("/", ""), s);
-			TheAPI.msg("&eCountry: &a" + getCountry(ip), s);
-			TheAPI.msg("&eUUID: &a" + Bukkit.getOfflinePlayer(a[0]).getUniqueId(), s);
-			boolean send = false;
+				d=true;
+			}else seen = API.getSeen(a[0], SeenType.Offline);
+			SPlayer c = API.getSPlayer(a[0]);
+			Loader.sendMessages(s, "WhoIs."+(d?"Online":"Offline"), Placeholder.c().add("%ip%", ip).add("%country%", country)
+					.add("%afk%", afk).add("%seen%", seen).add("%fly%", c.hasFlyEnabled()+"").add("%god%", c.hasGodEnabled()+"").add("%tempfly%", c.hasTempFlyEnabled()+"")
+					.add("%op%", Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(a[0]))+"").add("%uuid%", Bukkit.getOfflinePlayer(a[0]).getUniqueId().toString())
+					.add("%vanish%", c.hasVanish()+"").add("%firstjoin%", TheAPI.getUser(a[0]).getString("FirstJoin")+"").add("%group%", Staff.getGroup(a[0]))
+					.add("%money%", EconomyAPI.format(EconomyAPI.getBalance(a[0])))
+					.add("%health%", c.getPlayer()!=null ? c.getPlayer().getHealthScale()+"":"Uknown").add("%food%", c.getPlayer()!=null ? c.getPlayer().getFoodLevel()+"":"Uknown")
+					.add("%xp%", c.getPlayer()!=null ? c.getPlayer().getTotalExperience()+"":"Uknown").add("%level%", c.getPlayer()!=null ? c.getPlayer().getLevel()+"":"Uknown"));
+			/*boolean send = false;
 			PlayerBanList d = PunishmentAPI.getBanList(a[0]);
 			if (d.isMuted()) {
 				if(!send) {
@@ -149,7 +134,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			if (d.isTempIPBanned()) {
 				long tbiptime = d.getExpire(PunishmentType.TEMPBANIP);
 				TheAPI.msg("  &6TempIPBanned: &a" + StringUtils.setTimeToString(tbiptime), s);
-			}
+			}*/
 			return true;
 		}
 		Loader.noPerms(s, "WhoIs", "Info");

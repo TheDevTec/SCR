@@ -16,15 +16,14 @@ public class setting {
 	public static SimpleDateFormat format_date_time, format_time, format_date;
 	public static boolean warn_reload, warn_stop, warn_restart, singeplayersleep, color_chat, color_sign, sound,
 			cmdblock, disable_item, vip, vip_kick, vip_add, vip_join, motd, motd_maintenance, lock_chat, lock_server,
-			afk_auto, afk_kick, code, sb, sb_world, am, am_random, timezone, save, tab_header, tab_footer, tab_nametag,
+			afk_auto, afk_kick, code, sb, am, am_random, timezone, save, tab_header, tab_footer, tab_nametag,
 			tab_sort, tab, eco, eco_other, eco_log, eco_multi, ad_book, ad_chat, ad_cmd, ad_sign, ad_anvil, ad_itemdrop,
 			ad_itempick, join_spawn, join_msg, join_motd, join_first,
 			join_first_give, join_first_percmd, leave, cool_cmd, cool_chat, cool_percmd, color_chat_perm,
 			color_sign_perm, tp_safe, tp_onreqloc, ram, spam_double, caps_chat, caps_cmd, deathspawnbol
-			,list, staff_hide, staff_replace;
+			,list, staff_hide, staff_replace, farming, farming_packet;
 	public static String prefix;
 	public static DeathTp deathspawn;
-	public static boolean farming;
 
 	/**
 	 * public static boolean offlineinvsee; ///invsee <offline player>, /esee
@@ -56,9 +55,9 @@ public class setting {
 		code = f.getBoolean("Options.Codes.Use");
 		sound = f.getBoolean("Options.Sounds.Use");
 		color_chat = f.getBoolean("Options.Colors.Chat.Use");
-		color_chat_perm = f.getBoolean("Options.Colors.Chat.RequiredPermission");
+		color_chat_perm = f.getBoolean("Options.Colors.Chat.Required-Permission");
 		color_sign = f.getBoolean("Options.Colors.Sign.Use");
-		color_sign_perm = f.getBoolean("Options.Colors.Sign.RequiredPermission");
+		color_sign_perm = f.getBoolean("Options.Colors.Sign.Required-Permission");
 		disable_item = f.getBoolean("Options.Disable-Items.Use");
 		deathspawnbol = f.getBoolean("Options.Use-RespawnTeleport");
 		if(deathspawnbol)
@@ -95,13 +94,12 @@ public class setting {
 		eco_log = f.getBoolean("Options.Economy.Log");
 		eco = f.getBoolean("Options.Economy.DisablePluginEconomy");
 		eco_other = f.getBoolean("Options.Economy.CanUseOtherEconomy");
-		tab = Loader.tab.getBoolean("Enabled");
-		tab_header = Loader.tab.getBoolean("Header-Enabled");
-		tab_footer = Loader.tab.getBoolean("Footer-Enabled");
-		tab_nametag = Loader.tab.getBoolean("ModifyNameTags");
-		tab_sort = Loader.tab.getBoolean("SortTabList");
-		sb = Loader.sb.getBoolean("Enabled");
-		sb_world = Loader.sb.getBoolean("PerWorld");
+		tab = Loader.tab.getBoolean("Options.Enabled");
+		tab_header = Loader.tab.getBoolean("Options.Modify.Header");
+		tab_footer = Loader.tab.getBoolean("Options.Modify.Footer");
+		tab_nametag = Loader.tab.getBoolean("Options.Modify.NameTags");
+		tab_sort = Loader.tab.getBoolean("Options.Sorting");
+		sb = Loader.sb.getBoolean("Options.Enabled");
 		save = Loader.mw.getBoolean("SavingTask.Enabled");
 		vip = f.getBoolean("Options.VIPSlots.Use");
 		vip_add = f.getBoolean("Options.VIPSlots.AddSlots");
