@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 import com.google.common.collect.Lists;
 
-import Commands.Info.Staff;
+import me.DevTec.ServerControlReloaded.Commands.Info.Staff;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Item;

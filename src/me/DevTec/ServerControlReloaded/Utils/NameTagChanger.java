@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
-import Commands.Info.Staff;
+import me.DevTec.ServerControlReloaded.Commands.Info.Staff;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.NameTagAPI;
 
