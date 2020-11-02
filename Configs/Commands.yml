@@ -327,6 +327,7 @@ Inventory:
     Aliases:
     - "endersee"
     - "esee"
+    - "ec"
     - "echest"
     Permission: "SCR.Command.EnderChest"
     Help: "/EnderChest <player> - Open player's enderchest"
@@ -783,18 +784,28 @@ Other:
     Enabled: true
   Item:
     Name: "item"
-    Aliases:
-    - "i"
     Permission: "SCR.Command.Item"
+    SubPermission:
+       SetName: "SCR.Item.Name"
+       SetLore: "SCR.Item.Lore"
+       Flag: "SCR.Item.Flag"
+       Unbreakable: "SCR.Item.Flag.Unbreakable"
+       HideEnchants: "SCR.Item.Flag.HideEnchants"
+       Nbt: "SCR.Item.Nbt"
+       Durability: "SCR.Item.Durability"
+       Type: "SCR.Item.Type"
+       Info: "SCR.Item.Info"
     Help: "/Item - Change lore/color/enchantments of item in your main hand"
     Enabled: true
-  Kit:
-    Name: "kit"
-    Permission: "SCR.Command.Kit"
+  Kits:
+    Name: "kits"
+    Aliases:
+    - "kit"
+    Permission: "SCR.Command.Kits"
     SubPermission:
-      List: "SCR.Command.Kit.List"
-      Give: "SCR.Command.Kit.Give"
-    Help: "/Kit - Gives a selected kit to player"
+      List: "SCR.Command.Kits.List"
+      Give: "SCR.Command.Kits.Give"
+    Help: "/Kit <kit> - Gives a selected kit to player"
     Enabled: true
   MultiWorlds:
     Name: "multiworld"

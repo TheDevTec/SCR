@@ -38,12 +38,11 @@ public class Hat implements CommandExecutor {
 						return true;
 					}
 					if (p.getInventory().getHelmet() != null)
-						p.getInventory().addItem(p.getInventory().getHelmet());
+						p.getInventory().addItem(p.getInventory().getHelmet()); 
 					p.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
 					p.getInventory().setItemInHand(new ItemStack(Material.AIR));
 					Loader.sendMessages(s, "Hat.Equipped.You", Placeholder.c().replace("%item%", p.getInventory().getHelmet().getType().name()));
 					return true;
-					
 				}
 				if (Loader.has(s, "Hat", "Other", "Other")) {
 					if (args.length == 1) {
@@ -52,13 +51,23 @@ public class Hat implements CommandExecutor {
 					Loader.notOnline(s,args[0]);
 					return true;
 				}
+				boolean check2=false;
 				inv = t.getInventory();
-				if(!check) {
-					Loader.sendMessages(t, "Hat.Invfull.Other", Placeholder.c()
+				for (ItemStack item : inv.getStorageContents()) {
+					if(item==null) {
+						check2=true;
+					}
+				}
+				if(!check2) {
+					Loader.sendMessages(p, "Hat.InvFull.Other", Placeholder.c()
 							.add("%player%", t.getName())
 							.add("%playername%", t.getDisplayName()));
-				}
-				if (t.getInventory().getHelmet() != null)
+					return true;
+				}				
+				if (t.getInventory().getHelmet() != null)					
+					Loader.sendMessages(t, "Hat.Invfull.Other", Placeholder.c()
+								.add("%player%", t.getName())
+								.add("%playername%", t.getDisplayName()));					
 					t.getInventory().addItem(t.getInventory().getHelmet());
 				t.getInventory().setHelmet(p.getEquipment().getItemInMainHand());
 				p.getInventory().setItemInHand(new ItemStack(Material.AIR));

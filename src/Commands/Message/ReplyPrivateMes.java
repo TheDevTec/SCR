@@ -17,6 +17,7 @@ public class ReplyPrivateMes implements CommandExecutor {
 		if (Loader.has(s, "PrivateMessage", "Message")) {
 			if (args.length == 0) {
 				Loader.Help(s, "Reply", "Message");
+				return true;
 			}
 			if (args.length >= 1) {
 				String name = "";
@@ -91,6 +92,7 @@ public class ReplyPrivateMes implements CommandExecutor {
 				Loader.sendMessages(s, "NoReply");
 				return true;
 			}
+			return true;
 		}
 		Loader.noPerms(s, "Reply", "Message");
 		return true;

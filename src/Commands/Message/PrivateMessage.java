@@ -17,6 +17,7 @@ public class PrivateMessage implements CommandExecutor {
 		if (Loader.has(s, "PrivateMessage", "Message")) {
 			if (args.length == 0 || args.length == 1) {
 				Loader.Help(s, "PrivateMessage", "Message");
+				return true;
 			}
 			if (args.length >= 2) {
 
@@ -63,6 +64,7 @@ public class PrivateMessage implements CommandExecutor {
 					return true;
 				}
 			}
+			return true;
 		}
 		Loader.noPerms(s, "PrivateMessage", "Message");
 		return true;

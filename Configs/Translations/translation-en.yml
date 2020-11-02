@@ -1,14 +1,8 @@
-# ░█████╗░██████╗░███████╗░█████╗░████████╗███████╗██████╗░  ██████╗░██╗░░░██╗  ██████╗░███████╗██╗░░░██╗████████╗███████╗░█████╗░
-# ██╔══██╗██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗  ██╔══██╗╚██╗░██╔╝  ██╔══██╗██╔════╝██║░░░██║╚══██╔══╝██╔════╝██╔══██╗
-# ██║░░╚═╝██████╔╝█████╗░░███████║░░░██║░░░█████╗░░██║░░██║  ██████╦╝░╚████╔╝░  ██║░░██║█████╗░░╚██╗░██╔╝░░░██║░░░█████╗░░██║░░╚═╝
-# ██║░░██╗██╔══██╗██╔══╝░░██╔══██║░░░██║░░░██╔══╝░░██║░░██║  ██╔══██╗░░╚██╔╝░░  ██║░░██║██╔══╝░░░╚████╔╝░░░░██║░░░██╔══╝░░██║░░██╗
-# ╚█████╔╝██║░░██║███████╗██║░░██║░░░██║░░░███████╗██████╔╝  ██████╦╝░░░██║░░░  ██████╔╝███████╗░░╚██╔╝░░░░░██║░░░███████╗╚█████╔╝
-# ░╚════╝░╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚══════╝╚═════╝░  ╚═════╝░░░░╚═╝░░░  ╚═════╝░╚══════╝░░░╚═╝░░░░░░╚═╝░░░╚══════╝░╚════╝░
-#
 # Links:
 #  Github: https://github.com/TheDevTec/ServerControlReloaded
 #  Discord: https://discord.io/spigotdevtec
 #  Spigot: https://www.spigotmc.org/resources/servercontrolreloaded.71147/
+
 
 # Text for %prefix% placeholder
 Prefix: "&6&lS&r&lerver &8&l»&7"
@@ -690,7 +684,7 @@ WhoIs:
   - "%prefix% UUID: &e%uuid%"
   - "%prefix% Health: &e%health%"
   - "%prefix% Food: &e%food%"
-  - "%prefix% Online: &e%seen-online%"
+  - "%prefix% Online for: &e%seen%"
   - "%prefix% IP: &e%ip%"
   - "%prefix% AFK: &e%afk%"
   - "%prefix% God: &e%god%"
@@ -699,12 +693,12 @@ WhoIs:
   - "%prefix% Other informations:"
   - "%prefix%   FirstJoin: &e%firstjoin%"
   - "%prefix%   Country: &e%country%"
-  - "%prefix%   Group: &e%vault-group%"
+  - "%prefix%   Group: &e%group%"
   - "%prefix%   Money: &e%money%"
   Offline:
   - "%prefix% Player: &e%player%"
   - "%prefix% UUID: &e%uuid%"
-  - "%prefix% Offline: &e%seen-offline%"
+  - "%prefix% Offline for: &e%seen%"
   - "%prefix% IP: &e%ip%"
   - "%prefix% AFK: &e%afk%"
   - "%prefix% God: &e%god%"
@@ -713,7 +707,7 @@ WhoIs:
   - "%prefix% Other informations:"
   - "%prefix%   FirstJoin: &e%firstjoin%"
   - "%prefix%   Country: &e%country%"
-  - "%prefix%   Group: &e%vault-group%"
+  - "%prefix%   Group: &e%group%"
   - "%prefix%   Money: &e%money%"
   
 Trash: "&7Trash"
