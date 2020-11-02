@@ -14,6 +14,7 @@ import org.bukkit.material.Crops;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.NetherWarts;
 
+import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.XMaterial;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
@@ -23,7 +24,7 @@ public class FarmingSystem implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick(PlayerInteractEvent e) {
-		if (e.isCancelled() || !setting.farming || e.getAction()!=Action.RIGHT_CLICK_BLOCK)return;
+		if (e.isCancelled() || !setting.farming || e.getAction()!=Action.RIGHT_CLICK_BLOCK || Loader.config.getStringList("Options.FarmingSystem.ForbiddenWorlds").contains(e.getClickedBlock().getWorld().getName()))return;
 		BlockState s = e.getClickedBlock().getState();
 		MaterialData md = s.getData();
 		if (e.getClickedBlock().getType()==Material.NETHER_WART) {

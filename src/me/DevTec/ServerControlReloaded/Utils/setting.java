@@ -1,12 +1,14 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.TimeZone;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.SoundAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class setting {
 	public static enum DeathTp {
@@ -27,24 +29,28 @@ public class setting {
 
 	/**
 	 * public static boolean offlineinvsee; ///invsee <offline player>, /esee
-	 * <offline player> (Req. SCR_PerWorldInventory) public static boolean clearmem;
-	 * //clear memory every X minutes public static boolean criticalclearmem;
-	 * //clear memory when memory usage is ~90% public static boolean
-	 * clearmemKillmobs; //kill mobs in chunks with 100+ mobs public static boolean
-	 * findchunks; //every X minutes, this feature will search for chunks with 100+
-	 * mobs and send to the console a warning about these chunks
+	 * <offline player> (Req. SCR_PerWorldInventory)
 	 **/
 	public static void load() {
 		Config f = Loader.config;
 		prefix = Loader.getTranslation("Prefix").toString();
 		TheAPI.msg(setting.prefix + " &7Loading settings..", TheAPI.getConsole());
+		Colors.color=new StringUtils.ColormaticFactory() {
+			List<String> colors = f.getStringList("Options.Colors.Rainbow");
+			int c = 0;
+			public String getColor() {
+				if(colors.isEmpty())return "";
+				if(c >= colors.size())c=0;
+				return colors.get(c++);
+			}
+		};
 		format_date_time = new SimpleDateFormat(f.getString("Format.DateWithTime"));
 		format_time = new SimpleDateFormat(f.getString("Format.Time"));
 		format_date = new SimpleDateFormat(f.getString("Format.Date"));
 		list=f.getBoolean("Options.List-RemoveEmptyLine");
 		staff_hide=f.getBoolean("Options.Staff.HideAllLines");
 		staff_replace=f.getBoolean("Options.Staff.UseReplace");
-		farming = f.getBoolean("Options.FarmingSystem");
+		farming = f.getBoolean("Options.FarmingSystem.Use");
 		singeplayersleep = f.getBoolean("Options.SinglePlayerSleep");
 		timezone = f.getBoolean("Options.TimeZone.Use");
 		ram = f.getBoolean("Options.RAM-Percentage");
