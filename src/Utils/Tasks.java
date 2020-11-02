@@ -24,6 +24,13 @@ public class Tasks {
 	static Loader a;
 	static int tests;
 
+	public static void unload() {
+		for (Integer t : tasks)
+			Scheduler.cancelTask(t);
+		tests = 0;
+		tasks.clear();
+	}
+
 	public static void load() {
 		a = Loader.getInstance;
 		ss.clear();
@@ -47,10 +54,7 @@ public class Tasks {
 	}
 
 	public static void reload() {
-		for (Integer t : tasks)
-			Scheduler.cancelTask(t);
-		tests = 0;
-		tasks.clear();
+		unload();
 		load();
 	}
 

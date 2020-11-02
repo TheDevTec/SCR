@@ -273,6 +273,7 @@ public class Loader extends JavaPlugin implements Listener {
 			p.setFlying(false);
 			p.setAllowFlight(false);
 		}
+		Tasks.unload();
 		TabList.removeTab();
 		ScoreboardStats.removeScoreboard();
 		for (String w : mw.getStringList("Worlds"))
