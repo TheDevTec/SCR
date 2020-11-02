@@ -1,4 +1,4 @@
 eclipse.preferences.version=1
-encoding//src/Events/SecurityListenerCooldowns.java=UTF-8
-encoding//src/ServerControl/API.java=UTF-8
-encoding//src/ServerControl/Loader.java=UTF-8
+encoding//src/me/DevTec/ServerControlReloaded/Events/SecurityListenerCooldowns.java=UTF-8
+encoding//src/me/DevTec/ServerControlReloaded/SCR/API.java=UTF-8
+encoding//src/me/DevTec/ServerControlReloaded/SCR/Loader.java=UTF-8

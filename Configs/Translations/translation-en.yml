@@ -713,6 +713,3 @@ WhoIs:
 Trash: "&7Trash"
   
 Config: "%prefix% Configurations and tasks reloaded"
-
-# DO NOT MODIFY
-version: 1.0
