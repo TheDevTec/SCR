@@ -9,7 +9,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.Utils.DataKeeper.Data;
 import me.DevTec.TheAPI.Utils.Reflections.Ref;
@@ -17,9 +16,7 @@ import me.DevTec.TheAPI.Utils.Reflections.Ref;
 public class Configs {
 	
 	public static void load() {
-		long a = System.currentTimeMillis();
 		copyDefauts();
-		TheAPI.broadcastMessage(System.currentTimeMillis()-a);
 		String lang = Loader.config.getString("Options.Language");
 		if(lang!=null) {
 			if(!new File("plugins/ServerControlReloaded/Translations/translation-"+lang+".yml").exists())
