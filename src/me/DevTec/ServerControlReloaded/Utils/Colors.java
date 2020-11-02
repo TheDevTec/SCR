@@ -12,7 +12,7 @@ import me.DevTec.TheAPI.Utils.StringUtils;
 
 
 public class Colors {
-	
+	public static StringUtils.ColormaticFactory color;
 	private final static Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
 	
 	public static String remove(String string) {
@@ -50,7 +50,7 @@ public class Colors {
 							if(c==' ')
 								recreate+=c;
 							else
-							recreate+=StringUtils.color.getColor()+c;
+							recreate+=color.getColor()+c;
 						}else
 						recreate+=c;
 					}
