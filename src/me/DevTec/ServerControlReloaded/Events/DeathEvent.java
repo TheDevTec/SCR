@@ -9,8 +9,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
-import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.API.TeleportLocation;
+import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.ServerControlReloaded.Utils.setting.DeathTp;
 import me.DevTec.TheAPI.TheAPI;

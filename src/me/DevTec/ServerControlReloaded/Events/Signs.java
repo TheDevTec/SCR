@@ -11,11 +11,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
-import me.DevTec.TheAPI.APIs.SignAPI;
-import me.DevTec.TheAPI.APIs.SignAPI.SignAction;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.Colors;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.APIs.SignAPI;
+import me.DevTec.TheAPI.APIs.SignAPI.SignAction;
 
 public class Signs implements Listener {
 	public Loader ps = Loader.getInstance;

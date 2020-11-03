@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
-import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.API.TeleportLocation;
+import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
