@@ -112,13 +112,13 @@ Inventory:
   
 # Translations for /Item command
 Item:
-  NameHelp: "&e/info name <name of your item>" 
-  NameHelp: "&e/info name <name of your item>" 
-  NameHelp: "&e/info name <name of your item>" 
-  NameHelp: "&e/info name <name of your item>" 
-  NameHelp: "&e/info name <name of your item>" 
-  NameHelp: "&e/info name <name of your item>" 
-  NameHelp: "&e/info name <name of your item>" 
+  NameHelp: "&e/info name <name> &f- &cName your item." 
+  LoreHelp: "&e/info lore <option> <option> &f- &cAdd/Remove/Set lore to your item." 
+  FlagHelp: "&e/info flag <flag> <true/false> &f- &cadd flags to your item." 
+  NbtHelp: "&e/info nbt &f- &cGet nbt tags of item." 
+  DurabilityHelp: "&e/info durability <int> &f- &cSet durability of item" 
+  TypeHelp: "&e/info type &f- &cSet wooden sword to netherite sword" 
+  InfoHelp: "&e/info info &f- &cInfo about item" 
   Name: "%prefix% DisplayName of item has been set to &r%name%"
   Lore:
     Added: "%prefix% Added new lore line &r%line%"
@@ -149,19 +149,19 @@ SCR:
 Economy:
   # Translation for /BalanceTop command
   NoEconomyAccount: "%prefix% There is no economy account"
-  NotEnought: "%prefix% You have enought money"
+  NotEnought: "%prefix% You have enough money"
   Reset:
-    Sender: "%prefix% Economy account of &e%player% &7reset"
+    Sender: "%prefix% Economy account of &e%player% &7has been reset"
     Receiver: "%prefix% Your economy account has been reset"
   Give:
-    Sender: "%prefix% Gaven &e$%amount% &7to economy account of &e%player%"
-    Receiver: "%prefix% Gaven &e$%amouont% &7to your account"
+    Sender: "%prefix% Gaven &e$%money% &7to economy account of &e%player%"
+    Receiver: "%prefix% Gaven &e$%money% &7to your account"
   Take:
-    Sender: "%prefix% Taken &e$%amount% &7from economy account of &e%player%"
-    Receiver: "%prefix% Taken &e$%amouont% &7from your account"
+    Sender: "%prefix% Taken &e$%money% &7from economy account of &e%player%"
+    Receiver: "%prefix% Taken &e$%money% &7from your account"
   Set:
-    Sender: "%prefix% Set economy balance of &e%player% &7to &e$%amount%"
-    Receiver: "%prefix% Your economy balance has been set to &e$%amount%"
+    Sender: "%prefix% Set economy balance of &e%player% &7to &e$%money%"
+    Receiver: "%prefix% Your economy balance has been set to &e$%money%"
   Balance:
     Your: "%prefix% Your have &e$%money%"
     Other: "%prefix% &e%player% &7have &e$%money%"

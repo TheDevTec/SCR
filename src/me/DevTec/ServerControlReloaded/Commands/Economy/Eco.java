@@ -28,11 +28,11 @@ public class Eco implements CommandExecutor, TabCompleter {
 		}
 		if (args.length == 0) {
 			if (s instanceof Player) {
-				if (Loader.has(s, "Economy", "Economy", "Balance")) {
-					Loader.sendMessages(s, "Economy.Balance.You");
+				if (Loader.has(s, "Economy", "Economy")) {
+					Loader.sendMessages(s, "Economy.Balance.Your");
 					return true;
 				}
-				Loader.noPerms(s, "Economy", "Economy", "Balance");
+				Loader.noPerms(s, "Economy", "Economy");
 				return true;
 			}
 			Loader.Help(s, "Economy", "Economy");
