@@ -71,7 +71,8 @@ public class Kit {
 				a.setUnbreakable(Loader.kit.getBoolean("Kits." + name + ".items.add." + id + ".unbreakable"));
 				if (Loader.kit.exists("Kits." + name + ".items.add." + id + ".color")) {
 					String c = Loader.kit.getString("Kits." + name + ".items.add." + id + ".color");
-					a.setColor(Color.fromRGB(Integer.valueOf(c.substring(1, 3), 16), Integer.valueOf(c.substring(3, 5), 16), Integer.valueOf(c.substring(5, 7), 16)));
+					if(c.startsWith("#"))c=c.substring(1);
+					a.setColor(Color.fromRGB(Integer.valueOf(c.substring(0, 2), 16), Integer.valueOf(c.substring(2, 4), 16), Integer.valueOf(c.substring(4, 6), 16)));
 				}
 				a.setDisplayName(Loader.kit.getString("Kits." + name + ".items.add." + id + ".name"));
 				for (String enchs : Loader.kit.getStringList("Kits." + name + ".items.add." + id + ".enchants")) {
