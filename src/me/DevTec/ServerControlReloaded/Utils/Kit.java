@@ -70,12 +70,15 @@ public class Kit {
 				}
 				a.setUnbreakable(Loader.kit.getBoolean("Kits." + name + ".items.add." + id + ".unbreakable"));
 				if (Loader.kit.exists("Kits." + name + ".items.add." + id + ".color")) {
-					java.awt.Color c = java.awt.Color.getColor(Loader.kit.getString("Kits." + name + ".items.add." + id + ".color")); 
-					a.setColor(Color.fromRGB(c.getRGB()));
+					String c = Loader.kit.getString("Kits." + name + ".items.add." + id + ".color");
+					java.awt.Color cs = new java.awt.Color(Integer.valueOf( c.substring( 1, 3 ), 16 ),
+			            Integer.valueOf( c.substring( 3, 5 ), 16 ),
+			            Integer.valueOf( c.substring( 5, 7 ), 16 ));
+					a.setColor(Color.fromRGB(cs.getRGB()));
 				}
 				a.setDisplayName(Loader.kit.getString("Kits." + name + ".items.add." + id + ".name"));
 				for (String enchs : Loader.kit.getStringList("Kits." + name + ".items.add." + id + ".enchants")) {
-					String nonum = enchs.replace(":", "").replaceAll("[0-9 ]+", "").toUpperCase();
+					String nonum = enchs.replace(":", "").replaceAll("[^A-Za-z_]+", "").toUpperCase();
 					if (EnchantmentAPI.byName(nonum)==null)
 						Bukkit.getLogger().warning("Error when preparing (kit:" + name + ", id:"+id+", section:add) of enchantment " + enchs + " (Converted to "+nonum+"), enchantment is invalid");
 					else
