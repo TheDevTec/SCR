@@ -40,22 +40,22 @@ public class Item implements CommandExecutor, TabCompleter{
 						TheAPI.msg(Loader.getTranslation("Item.NameHelp").toString(), s);
 					}
 					if(s.hasPermission("SCR.Item.Lore")) {
-						TheAPI.msg(Loader.getTranslation("Item.NameHelp").toString(), s);
+						TheAPI.msg(Loader.getTranslation("Item.LoreHelp").toString(), s);
 					}
 					if(s.hasPermission("SCR.Item.Flag")) {
-						TheAPI.msg(Loader.getTranslation("Item.NameHelp").toString(), s);
+						TheAPI.msg(Loader.getTranslation("Item.FlagHelp").toString(), s);
 					}
 					if(s.hasPermission("SCR.Item.Nbt")) {
-						TheAPI.msg(Loader.getTranslation("Item.NameHelp").toString(), s);
+						TheAPI.msg(Loader.getTranslation("Item.NbtHelp").toString(), s);
 					}
 					if(s.hasPermission("SCR.Item.Durability")) {
-						TheAPI.msg(Loader.getTranslation("Item.NameHelp").toString(), s);
+						TheAPI.msg(Loader.getTranslation("Item.DurabilityHelp").toString(), s);
 					}
 					if(s.hasPermission("SCR.Item.Type")) {
-						TheAPI.msg(Loader.getTranslation("Item.NameHelp").toString(), s);
+						TheAPI.msg(Loader.getTranslation("Item.TypeHelp").toString(), s);
 					}
 					if(s.hasPermission("SCR.Item.Info")) {
-						TheAPI.msg(Loader.getTranslation("Item.NameHelp").toString(), s);
+						TheAPI.msg(Loader.getTranslation("Item.InfoHelp").toString(), s);
 					}
 					return true; 
 				}
@@ -126,10 +126,10 @@ public class Item implements CommandExecutor, TabCompleter{
 					if (s instanceof Player && ((Player)s).getItemInHand().getItemMeta().hasLore())
 						for (int count = 0; count < ((Player)s).getItemInHand().getItemMeta().getLore().size(); ++count)
 							l.add(count+"");
-						c.addAll(StringUtils.copyPartialMatches(args[2], l)); //debil :D xDD vím jak tì nasrat :DD
+						c.addAll(StringUtils.copyPartialMatches(args[2], l)); 
 
 				}
-			}//zakomponuj všude toto
+			}
 		}
 		return c;
 	}
