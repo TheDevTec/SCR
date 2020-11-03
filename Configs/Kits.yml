@@ -11,7 +11,7 @@ Kits:
       # Add item to player's inventory
       add:
         0:
-          type: "STONE_SWORD" 
+          type: "STONE_SWORD"
           amount: 1
           name: "&7Stone Sword"
           lore:
@@ -19,7 +19,7 @@ Kits:
           enchants:
           - "UNBREAKING:1"
         1:
-          type: "STONE_PICKAXE" 
+          type: "STONE_PICKAXE"
           amount: 1
           name: "&7Stone Pickaxe"
           lore:
@@ -27,7 +27,7 @@ Kits:
           enchants:
           - "EFFICIENCY:1"
         2:
-          type: "BREAD" 
+          type: "BREAD"
           amount: 16
           name: "&7Tasty bread"
           lore:

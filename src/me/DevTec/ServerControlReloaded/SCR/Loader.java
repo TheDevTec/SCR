@@ -741,13 +741,13 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "ChatLock",new ChatLock());
 		CmdC("Other", "Repair", new Repair());
 		CmdC("Other", "Feed", new Feed());
-		CmdC("Other", "Item", new me.DevTec.ServerControlReloaded.Commands.Other.Item());//treba pridať code
+		CmdC("Other", "Item", new me.DevTec.ServerControlReloaded.Commands.Other.Item());
 		CmdC("Other", "TempFly", new TempFly());
 		CmdC("Other", "ScoreBoard", new me.DevTec.ServerControlReloaded.Commands.Other.ScoreboardStats());
 		CmdC("Other", "Trash", new Trash());
 		CmdC("Other", "Thor", new Thor());
 		CmdC("Other", "Give",new Give());
-		CmdC("Other", "Kits",new KitCmd());//treba opraviť príkaz
+		CmdC("Other", "Kits",new KitCmd());
 		CmdC("Other", "Craft", new Craft());
 		CmdC("Other", "Skull",new Skull());
 		CmdC("Other", "God",new God());
@@ -757,14 +757,14 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "Butcher",new Butcher());
 		CmdC("Other", "AFK",new AFK());
 		CmdC("Other", "MultiWorlds",new MultiWorlds());//treba pridať code
-		CmdC("Other", "TabList",new Tab());//treba pridať code
+		CmdC("Other", "TabList",new Tab());
 		CmdC("Other", "Hat",new Hat());
 		CmdC("Other", "Exp", new Exp());//treba opraviť give, set, take, (balance na sendera, nie target)
 		CmdC("Other", "Spawner", new Spawner());
 		
 		//Nickname
-		CmdC("Nickname", "Nick", new Nick());//treba opraviť príkaz
-		CmdC("Nickname", "NickReset", new NickReset());//treba opraviť príkaz
+		CmdC("Nickname", "Nickname", new Nick());
+		CmdC("Nickname", "NicknameReset", new NickReset());
 	}
 
 	private void EventC(Listener l) {
