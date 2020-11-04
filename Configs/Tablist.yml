@@ -2,6 +2,12 @@ Options:
   # Enable tablist
   Enabled: true
   
+  # Move player in spectator mode in tablist?
+  MoveSpectator: true
+  
+  # Move vanished player to spectators in tablist
+  VanishToSpectator: true
+  
   # Allow sorting of tablist by vault groups
   Sorting: true
   Sorting-Groups:

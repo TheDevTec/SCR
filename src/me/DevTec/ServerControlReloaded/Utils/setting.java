@@ -23,7 +23,7 @@ public class setting {
 			ad_itempick, join_spawn, join_msg, join_motd, join_first,
 			join_first_give, join_first_percmd, leave, cool_cmd, cool_chat, cool_percmd, color_chat_perm,
 			color_sign_perm, tp_safe, tp_onreqloc, ram, spam_double, caps_chat, caps_cmd, deathspawnbol
-			,list, staff_hide, staff_replace, farming, farming_packet;
+			,list, staff_hide, staff_replace, farming, farming_packet, tab_vanish, tab_move;
 	public static String prefix;
 	public static DeathTp deathspawn;
 
@@ -105,6 +105,8 @@ public class setting {
 		tab_footer = Loader.tab.getBoolean("Options.Modify.Footer");
 		tab_nametag = Loader.tab.getBoolean("Options.Modify.NameTags");
 		tab_sort = Loader.tab.getBoolean("Options.Sorting");
+		tab_vanish=Loader.tab.getBoolean("Options.VanishToSpectator");
+		tab_move=Loader.tab.getBoolean("Options.MoveSpectator");
 		sb = Loader.sb.getBoolean("Options.Enabled");
 		save = Loader.mw.getBoolean("SavingTask.Enabled");
 		vip = f.getBoolean("Options.VIPSlots.Use");

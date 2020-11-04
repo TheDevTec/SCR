@@ -163,6 +163,7 @@ import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -380,6 +381,7 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	private static Metrics metrics;
+	private static me.DevTec.TheAPI.Utils.PacketListenerAPI.Listener listener;
 
 	@Override
 	public void onDisable() {
@@ -468,6 +470,27 @@ public class Loader extends JavaPlugin implements Listener {
 	public static void reload() {
 		loading = System.currentTimeMillis();
 		if(aad==0) {
+			listener=new me.DevTec.TheAPI.Utils.PacketListenerAPI.Listener() {
+				private Object surv = Ref.getNulled(Ref.nms("EnumGamemode"), "SURVIVAL"), spec= Ref.getNulled(Ref.nms("EnumGamemode"), "SPECTATOR");
+				public boolean PacketPlayOut(Player a, Object b, Object c) {
+					if(c.getClass().getCanonicalName().equals("net.minecraft.server."+TheAPI.getServerVersion()+".PacketPlayOutPlayerInfo")) {
+						@SuppressWarnings("unchecked")
+						List<Object> l = (List<Object>)Ref.get(b, "b");
+						int cc = 0;
+						for(Object e : l) {
+							Ref.set(e, "c", TheAPI.isVanished(a) && setting.tab_vanish ? spec : (setting.tab_move ? Ref.get(e, "c") : surv));
+							l.set(cc++, e);
+						}
+						Ref.set(b, "b", l);
+					}
+					return false;
+				}
+				
+				@Override
+				public boolean PacketPlayIn(Player a, Object b, Object c) {
+					return false;
+				}
+			};
 		if (PluginManagerAPI.getPlugin("Vault") != null) {
 			setupEco();
 			setupVault();
@@ -485,6 +508,7 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		if(aad==1) {
+			listener.unregister();
 			if(metrics!=null) {
 				Bukkit.getServicesManager().unregister(metrics);
 				if(metrics.getTimer()!=null)
@@ -517,6 +541,8 @@ public class Loader extends JavaPlugin implements Listener {
 			//unsuported
 		}
 		getInstance.kits.clear();
+		if(setting.tab && (!setting.tab_move || setting.tab_vanish))
+		listener.register();
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading kits:", TheAPI.getConsole());
 		for (String s : Loader.kit.getKeys("Kits")) {
 			TheAPI.msg(setting.prefix + "   &e"+s+"&7:", TheAPI.getConsole());

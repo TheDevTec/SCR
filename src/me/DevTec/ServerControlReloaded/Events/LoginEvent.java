@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import java.lang.reflect.Array;
 import java.util.Date;
 
 import org.bukkit.entity.Player;
@@ -14,9 +15,27 @@ import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
+import me.DevTec.TheAPI.Events.PlayerVanishEvent;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class LoginEvent implements Listener {
+	
+	@EventHandler
+	public void onVanish(PlayerVanishEvent e) {
+		if(setting.tab && setting.tab_vanish)
+			moveInTab(e.getPlayer());
+	}
+	
+	private static Object up = Ref.getNulled(Ref.field(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), "UPDATE_GAME_MODE"));
+	private void moveInTab(Player player) {
+		Object array = Array.newInstance(Ref.nms("EntityType"), 1);
+		Array.set(array, 0, Ref.player(player));
+		Object info = Ref.newInstance(Ref.constructor(Ref.nms("PacketPlayOutPlayerInfo"), Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), Object[].class), up, array);
+		for(Player p : TheAPI.getOnlinePlayers())
+			Ref.sendPacket(p, info);
+	}
+
 	public Loader plugin = Loader.getInstance;
 
 	private void bc(Player p) {
