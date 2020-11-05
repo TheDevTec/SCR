@@ -65,7 +65,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 				if (Loader.has(s, "ClearInventory", "Inventory")) {
 					if (!d.getBoolean("ClearInvConfirm")) {
 						d.setAndSave("ClearInvCooldown", System.currentTimeMillis() / 1000);
-						Loader.sendMessages(s, "Inventory.ClearInv.Confirm");
+						Loader.sendMessages(s, "ClearInventory.Confirm.Request");
 						return true;
 					} else {
 						if (d.getString("ClearInvCooldown") != null)
@@ -150,12 +150,12 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 
 						if (take == 0 || EconomyAPI.getEconomy() == null) {
 							for (ItemStack item : undo.get(p)) {
-								TheAPI.giveItem(p, item);
+								if (item != null)
+									TheAPI.giveItem(p, item);
 							}
 							undo.remove(p);
 							Loader.sendMessages(s, "ClearInventory.Retrive", Placeholder.c()
 									.add("%money%", "0"));
-
 							return true;
 						} else if (take != 0 && EconomyAPI.getEconomy() != null) {
 
@@ -209,7 +209,6 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Clear"), new ArrayList<>()));
 
 		}
-		c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Help"), new ArrayList<>()));
 
 		if (s.hasPermission("ServerControl.ClearInventory.Undo")) {
 			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Undo"), new ArrayList<>()));
