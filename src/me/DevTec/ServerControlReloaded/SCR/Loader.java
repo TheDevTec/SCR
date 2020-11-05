@@ -163,6 +163,7 @@ import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -380,6 +381,7 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	private static Metrics metrics;
+	private static me.DevTec.TheAPI.Utils.PacketListenerAPI.Listener listener;
 
 	@Override
 	public void onDisable() {
@@ -468,6 +470,27 @@ public class Loader extends JavaPlugin implements Listener {
 	public static void reload() {
 		loading = System.currentTimeMillis();
 		if(aad==0) {
+			listener=new me.DevTec.TheAPI.Utils.PacketListenerAPI.Listener() {
+				private Object surv = Ref.getNulled(Ref.nms("EnumGamemode"), "SURVIVAL"), spec= Ref.getNulled(Ref.nms("EnumGamemode"), "SPECTATOR");
+				public boolean PacketPlayOut(Player a, Object b, Object c) {
+					if(c.getClass().getCanonicalName().equals("net.minecraft.server."+TheAPI.getServerVersion()+".PacketPlayOutPlayerInfo")) {
+						@SuppressWarnings("unchecked")
+						List<Object> l = (List<Object>)Ref.get(b, "b");
+						int cc = 0;
+						for(Object e : l) {
+							Ref.set(e, "c", TheAPI.isVanished(a) && setting.tab_vanish ? spec : (setting.tab_move ? Ref.get(e, "c") : surv));
+							l.set(cc++, e);
+						}
+						Ref.set(b, "b", l);
+					}
+					return false;
+				}
+				
+				@Override
+				public boolean PacketPlayIn(Player a, Object b, Object c) {
+					return false;
+				}
+			};
 		if (PluginManagerAPI.getPlugin("Vault") != null) {
 			setupEco();
 			setupVault();
@@ -485,6 +508,7 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		if(aad==1) {
+			listener.unregister();
 			if(metrics!=null) {
 				Bukkit.getServicesManager().unregister(metrics);
 				if(metrics.getTimer()!=null)
@@ -517,6 +541,8 @@ public class Loader extends JavaPlugin implements Listener {
 			//unsuported
 		}
 		getInstance.kits.clear();
+		if(setting.tab && (!setting.tab_move || setting.tab_vanish))
+		listener.register();
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading kits:", TheAPI.getConsole());
 		for (String s : Loader.kit.getKeys("Kits")) {
 			TheAPI.msg(setting.prefix + "   &e"+s+"&7:", TheAPI.getConsole());
@@ -741,13 +767,13 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "ChatLock",new ChatLock());
 		CmdC("Other", "Repair", new Repair());
 		CmdC("Other", "Feed", new Feed());
-		CmdC("Other", "Item", new me.DevTec.ServerControlReloaded.Commands.Other.Item());//treba pridať code
+		CmdC("Other", "Item", new me.DevTec.ServerControlReloaded.Commands.Other.Item());
 		CmdC("Other", "TempFly", new TempFly());
 		CmdC("Other", "ScoreBoard", new me.DevTec.ServerControlReloaded.Commands.Other.ScoreboardStats());
 		CmdC("Other", "Trash", new Trash());
 		CmdC("Other", "Thor", new Thor());
 		CmdC("Other", "Give",new Give());
-		CmdC("Other", "Kits",new KitCmd());//treba opraviť príkaz
+		CmdC("Other", "Kits",new KitCmd());
 		CmdC("Other", "Craft", new Craft());
 		CmdC("Other", "Skull",new Skull());
 		CmdC("Other", "God",new God());
@@ -757,14 +783,14 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "Butcher",new Butcher());
 		CmdC("Other", "AFK",new AFK());
 		CmdC("Other", "MultiWorlds",new MultiWorlds());//treba pridať code
-		CmdC("Other", "TabList",new Tab());//treba pridať code
+		CmdC("Other", "TabList",new Tab());
 		CmdC("Other", "Hat",new Hat());
 		CmdC("Other", "Exp", new Exp());//treba opraviť give, set, take, (balance na sendera, nie target)
 		CmdC("Other", "Spawner", new Spawner());
 		
 		//Nickname
-		CmdC("Nickname", "Nick", new Nick());//treba opraviť príkaz
-		CmdC("Nickname", "NickReset", new NickReset());//treba opraviť príkaz
+		CmdC("Nickname", "Nickname", new Nick());
+		CmdC("Nickname", "NicknameReset", new NickReset());
 	}
 
 	private void EventC(Listener l) {

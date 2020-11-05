@@ -14,8 +14,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
-import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.API.SeenType;
+import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.TheAPI.TheAPI;

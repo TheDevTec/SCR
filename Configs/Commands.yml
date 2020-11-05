@@ -499,15 +499,15 @@ Kill:
     Permission: "SCR.Command.Suicide"
     Help: "/Suicide - Suicide yourself"
     Enabled: true
-NickName:
-  Nick:
+Nickname:
+  Nickname:
     Name: "nickname"
     Aliases:
     - "nick"
     Permission: "SCR.Command.Nickname"
     Help: "/Nick <nickname> - Change your nickname"
     Enabled: true
-  NickReset:
+  NicknameReset:
     Name: "nicknamereset"
     Aliases:
     - "nickreset"

@@ -6,10 +6,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
 
 public class Thor implements CommandExecutor {
 

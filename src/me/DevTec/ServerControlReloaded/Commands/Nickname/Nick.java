@@ -24,7 +24,7 @@ public class Nick implements CommandExecutor {
 				if(TheAPI.getPlayerOrNull(s.getName())!=null)
 					TheAPI.getPlayerOrNull(s.getName()).setCustomName(TheAPI.colorize(msg));
 				Loader.sendMessages(s, "Nickname.Change", Placeholder.c()
-						.add("%nicname%", msg)
+						.add("%nickname%", msg)
 						.add("%nick%", msg));
 				return true;
 			}
@@ -33,5 +33,4 @@ public class Nick implements CommandExecutor {
 		}
 		return true;
 	}
-
 }
