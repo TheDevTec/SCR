@@ -27,7 +27,7 @@ public class Invsee implements CommandExecutor {
 								.add("%playername%", args[0]));
 						return true;
 					}
-					Loader.sendMessages(s, "Inventory.InvSee.Opening.You", Placeholder.c()
+					Loader.sendMessages(s, "Invsee.Open", Placeholder.c()
 							.add("%player%", p.getName())
 							.add("%playername%", p.getDisplayName()));
 					((Player)s).openInventory(p.getInventory());
@@ -51,7 +51,7 @@ public class Invsee implements CommandExecutor {
 							.add("%playername%", args[1]));
 					return true;
 				}
-				Loader.sendMessages(s, "Inventory.InvSee.Opening.Other.Sender", Placeholder.c()
+				Loader.sendMessages(s, "Invsee.Open", Placeholder.c()
 						.add("%target%", t.getName())
 						.add("%player%", p.getName()));
 				t.openInventory(p.getInventory());

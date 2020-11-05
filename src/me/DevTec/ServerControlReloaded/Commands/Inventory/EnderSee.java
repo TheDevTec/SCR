@@ -16,7 +16,7 @@ public class EnderSee implements CommandExecutor {
 		if (Loader.has(s, "EnderChest", "Inventory")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
-					Loader.sendMessages(s, "Inventory.EnderChest.Opening.You");
+					Loader.sendMessages(s, "EnderChest.Open.Your");
 					((Player)s).openInventory(((Player)s).getEnderChest());
 					return true;
 				}
@@ -24,12 +24,12 @@ public class EnderSee implements CommandExecutor {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p != null) {
 						if (p == s) {
-							Loader.sendMessages(s, "Inventory.EnderChest.Opening.You");
+							Loader.sendMessages(s, "EnderChest.Open.Your");
 							((Player)s).openInventory(((Player)s).getEnderChest());
 							return true;
 						} else {
 							if (Loader.has(s, "EnderChest", "Inventory")) {
-								Loader.sendMessages(s, "Inventory.EnderChest.Opening.Other.Sender", Placeholder.c()
+								Loader.sendMessages(s, "EnderChest.Open.Other", Placeholder.c()
 										.add("%player%", p.getName())
 										.add("%playername%", p.getDisplayName()));
 
