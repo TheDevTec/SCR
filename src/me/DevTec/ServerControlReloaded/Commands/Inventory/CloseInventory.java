@@ -31,7 +31,7 @@ public class CloseInventory implements CommandExecutor {
 							.add("%playername%", args[0]));
 					return true;
 				}
-					Loader.sendMessages(s, "Inventory.Closed", Placeholder.c()
+					Loader.sendMessages(s, "CloseInventory.Close", Placeholder.c()
 							.add("%player%", p.getName())
 							.add("%playername%", p.getDisplayName()));
 				p.closeInventory();

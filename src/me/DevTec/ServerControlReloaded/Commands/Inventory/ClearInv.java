@@ -34,7 +34,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 
 		if (s instanceof Player == false) {
 			if (args.length == 0) {
-				Loader.Help(s, "/ClearInv <player>", "Inventory");
+				Loader.Help(s, "ClearInventory", "Inventory");
 				return true;
 			}
 			if (args.length == 1) {
@@ -45,11 +45,11 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 							.add("%playername%", args[1]));
 					return true;
 				}
-				Loader.sendMessages(s, "Inventory.InvClear.Clear.Other.Sender", Placeholder.c()
+				Loader.sendMessages(s, "ClearInventory.Cleared.Your", Placeholder.c()
 						.add("%player%", target.getName())
 						.add("%playername%", target.getDisplayName()));
 				undo.put(target, target.getInventory().getContents());
-				Loader.sendMessages(target, "Inventory.InvClear.Clear.Other.Receiver", Placeholder.c()
+				Loader.sendMessages(target, "ClearInvetory.Cleared.Other", Placeholder.c()
 						.add("%player%", s.getName())
 						.add("%playername%", s.getName()));
 				target.getInventory().clear();
@@ -65,13 +65,13 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 				if (Loader.has(s, "ClearInventory", "Inventory")) {
 					if (!d.getBoolean("ClearInvConfirm")) {
 						d.setAndSave("ClearInvCooldown", System.currentTimeMillis() / 1000);
-						Loader.sendMessages(s, "Inventory.ClearInv.Confirm");
+						Loader.sendMessages(s, "ClearInventory.Confirm.Request");
 						return true;
 					} else {
 						if (d.getString("ClearInvCooldown") != null)
 							d.setAndSave("ClearInvCooldown", null);
 						undo.put(p, p.getInventory().getContents());
-						Loader.sendMessages(s, "Inventory.InvCleared");
+						Loader.sendMessages(s, "ClearInventory.Confirm.Request");
 						p.getInventory().clear();
 						return true;
 					}
@@ -82,7 +82,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 			if (args[0].equalsIgnoreCase("Other")) {
 				if (Loader.has(s, "ClearInventory", "Inventory", "Inventory")) {
 					if (args.length == 1) {
-						Loader.Help(s, "/Clear Other <player>", "Inventory");
+						Loader.Help(s, "ClearInventory", "Inventory");
 						return true;
 					}
 					Player target = Bukkit.getServer().getPlayer(args[1]);
@@ -93,11 +93,11 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					if (target != null) {
-						Loader.sendMessages(s, "Inventory.InvClear.Clear.Other.Sender", Placeholder.c()
+						Loader.sendMessages(s, "ClearInventory.Cleared.Your", Placeholder.c()
 								.add("%player%", target.getName())
 								.add("%playername%", target.getDisplayName()));
 						undo.put(target, target.getInventory().getContents());
-						Loader.sendMessages(target, "Inventory.InvClear.Clear.Other.Receiver", Placeholder.c()
+						Loader.sendMessages(target, "ClearInventory.Cleared.Other", Placeholder.c()
 								.add("%player%", s.getName())
 								.add("%playername%", s.getName()));
 						target.getInventory().clear();
@@ -115,12 +115,12 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 						reset = reset * -1;
 						if (reset < 60) {
 							undo.put(p, p.getInventory().getContents());
-							Loader.sendMessages(s, "Inventory.InvClear.Clear.You");
+							Loader.sendMessages(s, "ClearInventory.Cleared.Your");
 							d.setAndSave("ClearInvCooldown", null);
 							p.getInventory().clear();
 							return true;
 						}
-						Loader.sendMessages(s, "Inventory.ClearInv.NoConfirm");
+						Loader.sendMessages(s, "ClearInventory.NoConfirm");
 						return true;
 					}
 					Loader.noPerms(s, "ClearInventory", "Inventory", "Inventory");
@@ -131,13 +131,13 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 				if (Loader.has(s, "ClearInventory", "Inventory", "Inventory")) {
 					if (!d.getBoolean("ClearInvConfirm")) {
 						d.setAndSave("ClearInvCooldown", System.currentTimeMillis() / 1000);
-						Loader.sendMessages(s, "Inventory.ClearConfirm");
+						Loader.sendMessages(s, "ClearInventory.Confirm.Request");
 						return true;
 					} else {
 						if (d.getString("ClearInvCooldown") != null)
 							d.setAndSave("ClearInvCooldown", null);
 						undo.put(p, p.getInventory().getContents());
-						Loader.sendMessages(s, "Inventory.InvClear.Clear.You");
+						Loader.sendMessages(s, "ClearInventory.Cleared.Your");
 						p.getInventory().clear();
 						return true;
 					}
@@ -150,11 +150,12 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 
 						if (take == 0 || EconomyAPI.getEconomy() == null) {
 							for (ItemStack item : undo.get(p)) {
-								TheAPI.giveItem(p, item);
+								if (item != null)
+									TheAPI.giveItem(p, item);
 							}
 							undo.remove(p);
-							Loader.sendMessages(s, "Inventory.InvClear.Retrieve.ForFree");
-
+							Loader.sendMessages(s, "ClearInventory.Retrive", Placeholder.c()
+									.add("%money%", "0"));
 							return true;
 						} else if (take != 0 && EconomyAPI.getEconomy() != null) {
 
@@ -164,17 +165,17 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 								}
 								EconomyAPI.withdrawPlayer(p, take);
 								undo.remove(p);
-								Loader.sendMessages(s, "Inventory.InvClear.Retrieve.ForMoney", Placeholder.c()
+								Loader.sendMessages(s, "ClearInventory.Retrive", Placeholder.c()
 										.add("%money%", value(take)));
 								return true;
 							} else {
-								Loader.sendMessages(s, "Inventory.InvClear.Retrieve.NoMoney", Placeholder.c()
+								Loader.sendMessages(s, "ClearInventory.NoMoney", Placeholder.c()
 										.add("%money%", value(take)));
 								return true;
 							}
 						}
 					} else if (!undo.containsKey(p)) {
-						Loader.sendMessages(s, "Invenotory.InvClear.Retrieve.NoInventory");
+						Loader.sendMessages(s, "InventoryClear.NoRetrive");
 						return true;
 					}
 				}
@@ -208,7 +209,6 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Clear"), new ArrayList<>()));
 
 		}
-		c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Help"), new ArrayList<>()));
 
 		if (s.hasPermission("ServerControl.ClearInventory.Undo")) {
 			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Undo"), new ArrayList<>()));

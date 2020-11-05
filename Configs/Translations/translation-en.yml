@@ -82,33 +82,6 @@ Experiences:
   Given: "%prefix% Added &e%amount% &7%type% to &e%player%"
   Taken: "%prefix% Removed &e%amount% &7type% from &e%player%"
   Set: "%prefix% &e%player%&7's %type% have been set to &e%amount%"
-
-# Translations for /invsee, /endersee, /closeinv /enderchest
-Inventory:
-  InvSee:
-    Opening:
-      You: "%prefix% Opening &e%player%&7's inventory"
-      Other:
-        Sender: "%prefix% Opening &e%target%&7's for &e%player%"
-  EnderChest:
-    Opening:
-      You: "%prefix% Opening your ender chest"
-      Other:
-        Sender: "%prefix% Opening &e%player%&7's ender chest"
-  Closed: "%prefix% You have closed &e%player%&7's inventory"
-  InvClear:
-    Confirm: "%prefix% Please confirm your request to clear your inventory"
-    NoConfirm: "%prefix% You have no request to clear your inventory"
-    Retrieve:
-      ForFree: "%prefix% Your inventory has been retrieved for free"
-      ForMoney: "%prefix% Your inventory has been retrieved for &e%money%"
-      NoMoney: "%prefix% You don't have money. You need &e%money%&7$ to retrieve your inventory"
-      NoInventory: "%prefix% Couldn't find your inventory"
-    Clear:
-      You: "%prefix% You have cleared your inventory"
-      Other:
-        Sender: "%prefix% &e%player%&7's inventory has been cleared"
-        Receiver: "%prefix% Your inventory has been cleared by &e%player%"
   
 # Translations for /Item command
 Item:
@@ -293,7 +266,7 @@ ClearInventory:
   Cleared:
     Your: "%prefix% Your inventory has been cleared"
     Other: "%prefix% &e%player%&7's inventory has been cleared"
-  NoMoney: "%prefix% You don't have enough money"
+  NoMoney: "%prefix% You don't have enough money. You need &e%money%"
   MissingEco: "%prefix% Missing economy plugin, please install Vault & Economy plugin"
   NoRetrive: "%prefix% You don't have inventory to retrieve"
   Retrive: "%prefix% Your cleared inventory has been retrived for &e$%money%"
@@ -303,6 +276,19 @@ ClearInventory:
     Enabled: "%prefix% Requests to clear inventory are required"
     Disabled: "%prefix% Requests to clear inventory are no longer required"
 
+# Translations for /Closeinventory command
+CloseInventory:
+  Close: "%prefix% You have closed &e%player%&7's inventory"
+
+# Translations for /Enderchest command
+EnderChest:
+  Open:
+    Your: "%prefix% Opening your ender chest"
+    Other: "%prefix% Opening &e%player%&7's ender chest"
+
+# Translations for /Invsee command
+Invsee:
+  Open: "%prefix% Opening &e%target%&7's inventory"
 # Translations for /Home and /Homes commands
 Home:
   EmptyList: "%prefix% You have no home"
