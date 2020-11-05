@@ -153,6 +153,9 @@ public class Item implements CommandExecutor, TabCompleter{
 			            }
 					return true;
 				}
+				if(args[1].equalsIgnoreCase("flag")) {
+					
+				}
 			}
 			return true;
 		}
