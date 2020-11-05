@@ -30,7 +30,7 @@ public class Item implements CommandExecutor, TabCompleter{
 		f.add("list");
 		f.add("set");
 	}
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Item", "Other")||Loader.has(s, "Item", "Other", "SetName")||Loader.has(s, "Item", "Other", "SetLore")
@@ -48,7 +48,7 @@ public class Item implements CommandExecutor, TabCompleter{
 		        ItemMeta m = item.getItemMeta();
 		        if(item.getType().isAir()) {TheAPI.sendTitle(p, Loader.getTranslation("Item.NoItem").toString(), " ");return true;}
 				if(args[0].equalsIgnoreCase("name")) {
-					if(args.length<=2) {
+					if(args.length==1) {
 						TheAPI.msg(Loader.getTranslation("Item.NameHelp").toString(), s);
 						return true;
 					}
@@ -130,7 +130,8 @@ public class Item implements CommandExecutor, TabCompleter{
 			              lore.set(line, name);
 			              m.setLore(lore);			              
 			              item.setItemMeta(m);
-			              TheAPI.msg(Loader.getTranslation("Item.Lore.Set").toString().replace("%prefix%", pref), s);
+			              TheAPI.msg(Loader.getTranslation("Item.Lore.Set").toString().replace("%prefix%", pref)
+			            		  .replace("%lore%", name).replace("%line%", String.valueOf(line)), s);
 			              return true;
 						}catch(Exception e) {
 			            	  TheAPI.msg(Loader.getTranslation("Item.Lore.Error").toString().replace("%prefix%", pref)
@@ -191,7 +192,7 @@ public class Item implements CommandExecutor, TabCompleter{
 	}	
 
 	
-	@SuppressWarnings("deprecation")
+	
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		List<String> c = new ArrayList<>();
 		Player p = (Player)s;

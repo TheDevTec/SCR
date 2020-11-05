@@ -27,7 +27,7 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 		for(EnchantmentAPI a : EnchantmentAPI.values())enchs.add(a.name());
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Enchant", "Enchantment")) {

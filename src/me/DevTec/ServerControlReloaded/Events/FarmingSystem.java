@@ -19,7 +19,7 @@ import me.DevTec.ServerControlReloaded.Utils.XMaterial;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 
-@SuppressWarnings("deprecation")
+
 public class FarmingSystem implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)

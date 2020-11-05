@@ -14,7 +14,7 @@ import me.DevTec.TheAPI.TheAPI;
 
 public class Hat implements CommandExecutor {
 
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Hat", "Other")) {

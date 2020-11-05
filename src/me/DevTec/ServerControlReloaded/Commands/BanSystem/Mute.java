@@ -13,7 +13,7 @@ import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class Mute implements CommandExecutor {
 
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Mute", "BanSystem")) {

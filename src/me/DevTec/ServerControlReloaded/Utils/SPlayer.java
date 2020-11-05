@@ -28,7 +28,7 @@ public class SPlayer {
 		s = p;
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	public void setHP() {
 		getPlayer().setHealth(getPlayer().getMaxHealth());
 	}

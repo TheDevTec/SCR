@@ -42,7 +42,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] a) {
 		if (Loader.has(s, "WhoIs", "Info")) {

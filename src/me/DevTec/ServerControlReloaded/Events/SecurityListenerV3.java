@@ -19,7 +19,7 @@ import me.DevTec.TheAPI.TheAPI;
  * @author StraikerinaCZ
  *
  */
-@SuppressWarnings("deprecation")
+
 public class SecurityListenerV3 implements Listener {
 	public static enum Security {
 		Spam, Swear

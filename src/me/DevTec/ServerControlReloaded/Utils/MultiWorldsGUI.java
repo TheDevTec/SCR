@@ -694,7 +694,7 @@ public class MultiWorldsGUI {
 			n = n.replaceFirst(" ", "");
 			String name = n;
 			a.addItem(new ItemGUI(createItem("&6" + name, d ,Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds)))) {
-				@SuppressWarnings("deprecation")
+				
 				@Override
 				public void onClick(Player p, GUI g, ClickType c) {
 					switch(c) {

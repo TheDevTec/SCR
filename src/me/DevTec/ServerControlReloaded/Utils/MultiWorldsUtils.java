@@ -122,7 +122,7 @@ public class MultiWorldsUtils {
 			Loader.sendMessages(s, "MultiWorld.NotExists", Placeholder.c().add("%world%", w));
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	public static void DefaultSet(World as, String gen) {
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".GameMode", "SURVIVAL");
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Difficulty", as.getDifficulty().name());

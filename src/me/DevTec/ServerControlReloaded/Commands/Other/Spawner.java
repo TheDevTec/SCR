@@ -96,7 +96,7 @@ public class Spawner implements CommandExecutor, TabCompleter {
 					}
 					Block b = BlocksAPI.getLookingBlock(p, 10);
 					if (b.getType().name() == "SPAWNER") {
-						@SuppressWarnings("deprecation")
+						
 						EntityType type = EntityType.fromName(args[1]);
 						if (type != null) {
 							CreatureSpawner ss = (CreatureSpawner) b.getState();

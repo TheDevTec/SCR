@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 
 public class EnchantTableRemoveAll implements CommandExecutor {
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "EnchantRemoveAll", "Enchantment")) {

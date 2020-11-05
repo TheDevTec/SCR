@@ -19,7 +19,7 @@ public class DisableItems implements Listener {
 		Player p = e.getPlayer();
 		if (setting.disable_item) {
 			if (!p.hasPermission("ServerControl.DisableItemsAccess")) {
-				@SuppressWarnings("deprecation")
+				
 				Material mat = p.getItemInHand().getType();
 				if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 					for (String s : Loader.config

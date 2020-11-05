@@ -19,7 +19,7 @@ import me.DevTec.TheAPI.TheAPI;
 
 public class Repair implements CommandExecutor, TabCompleter {
 
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(args.length<2) {

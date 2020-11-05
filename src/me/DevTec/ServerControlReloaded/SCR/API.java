@@ -132,7 +132,7 @@ public class API {
 		Online, Offline;
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	public static String getSeen(String player, SeenType type) {
 		User s = TheAPI.getUser(player);
 		String a = "0s";

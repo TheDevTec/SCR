@@ -16,7 +16,7 @@ import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 
-@SuppressWarnings("deprecation")
+
 public class AFkPlayerEvents implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)

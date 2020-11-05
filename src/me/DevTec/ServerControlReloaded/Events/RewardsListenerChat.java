@@ -16,7 +16,7 @@ import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.TheAPI.SudoType;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
-@SuppressWarnings("deprecation")
+
 public class RewardsListenerChat implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void ChatListener(PlayerChatEvent e) {

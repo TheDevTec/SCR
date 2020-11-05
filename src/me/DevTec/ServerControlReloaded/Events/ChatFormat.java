@@ -18,7 +18,7 @@ import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
-@SuppressWarnings("deprecation")
+
 public class ChatFormat implements Listener {
 	static Loader plugin = Loader.getInstance;
 	String m;

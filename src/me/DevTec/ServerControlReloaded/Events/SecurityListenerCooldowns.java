@@ -14,7 +14,7 @@ import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.CooldownAPI.CooldownAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
-@SuppressWarnings("deprecation")
+
 public class SecurityListenerCooldowns implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)

@@ -12,7 +12,7 @@ import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class TempBanIP implements CommandExecutor {
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "TempBanIP", "BanSystem")) {

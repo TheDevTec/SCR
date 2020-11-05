@@ -13,7 +13,7 @@ import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class TempJail implements CommandExecutor {
 
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String arg2, String[] args) {
 		if (Loader.has(s, "TempJail", "BanSystem")) {

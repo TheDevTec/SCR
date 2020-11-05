@@ -24,7 +24,7 @@ public class Staff implements CommandExecutor {
 		}
 		return "default";
 	}
-	@SuppressWarnings("deprecation")
+	
 	public static String getGroup(String a) {
 		try {
 			if (PluginManagerAPI.getPlugin("Vault") != null)
