@@ -233,7 +233,7 @@ public class Loader extends JavaPlugin implements Listener {
 			return trans.getStringList(path);
 		}else
 			if(!trans.getString(path).trim().isEmpty())
-				return trans.getString(path);
+				return trans.getString(path).replace("%prefix%", trans.getString("Prefix"));
 		}
 		return null;
 	}
