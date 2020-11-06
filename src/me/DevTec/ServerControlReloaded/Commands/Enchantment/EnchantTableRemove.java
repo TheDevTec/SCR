@@ -39,7 +39,6 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 				enchs.add(sd);
 	}
 
-	@SuppressWarnings({ "deprecation", "unlikely-arg-type" })
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "EnchantRemove", "Enchantment")) {
@@ -48,24 +47,23 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 					Loader.Help(s, "EnchantRemove", "Enchantment");
 					return true;
 				}
-				if (args.length == 1) {
 					Player p = (Player) s;
 					Material a = p.getItemInHand().getType();
+					if(EnchantmentAPI.byName(args[0]) != null) {
 					if (a != Material.AIR) {
-							if (p.getItemInHand().getEnchantments().containsKey(EnchantmentAPI.byName(args[0]) != null)) {
+							if (p.getItemInHand().getEnchantments().containsKey(EnchantmentAPI.byName(args[0]).getEnchantment())) {
 								e(p.getItemInHand(), args[0], s);
 								return true;
 							}
 						Loader.sendMessages(s, "Missing.Enchant.NoEnchant");
 						return true;
 					}
-					
+					Loader.sendMessages(s, "Missing.HandEmpty");
+					return true;
+					}
 					Loader.sendMessages(s, "Missing.Enchant.NotExist", Placeholder.c()
 							.add("%enchant%", args[0]));
 					return true;
-				}
-				Loader.sendMessages(s, "Missing.HandEmpty");
-				return true;
 			}
 			return true;
 		}

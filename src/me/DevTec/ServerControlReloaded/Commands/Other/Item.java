@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +22,6 @@ import me.DevTec.TheAPI.Utils.StringUtils;
 public class Item implements CommandExecutor, TabCompleter{
 	private static List<String> flags = new ArrayList<>();
 	private static List<String> f = new ArrayList<>();
-	private String pref = Loader.getTranslation("Prefix").toString();
 	static {
 		for(ItemFlag a : ItemFlag.values())flags.add(a.name());
 		flags.add("UNBREAKABLE");
@@ -46,7 +46,7 @@ public class Item implements CommandExecutor, TabCompleter{
 				Player p = (Player)s;
 		        ItemStack item = p.getItemInHand();
 		        ItemMeta m = item.getItemMeta();
-		        if(item.getType().isAir()) {TheAPI.sendTitle(p, Loader.getTranslation("Item.NoItem").toString(), " ");return true;}
+		        if(item.getType()==Material.AIR) {TheAPI.sendTitle(p, Loader.getTranslation("Item.NoItem").toString(), " ");return true;}
 				if(args[0].equalsIgnoreCase("name")) {
 					if(args.length==1) {
 						TheAPI.msg(Loader.getTranslation("Item.NameHelp").toString(), s);
@@ -59,8 +59,7 @@ public class Item implements CommandExecutor, TabCompleter{
 					name=name.substring(0, name.length()-1);
 					m.setDisplayName(TheAPI.colorize(name));
 					item.setItemMeta(m);
-					TheAPI.msg(Loader.getTranslation("Item.Name").toString().replace("%prefix%", Loader.getTranslation("Prefix").toString())
-							.replace("%item%", item.getType().name()).replace("%name%", name), s);
+					TheAPI.msg(Loader.getTranslation("Item.Name").toString().replace("%item%", item.getType().name()).replace("%name%", name), s);
 					return true;
 				}
 				if(args[0].equalsIgnoreCase("lore")) {
@@ -84,14 +83,11 @@ public class Item implements CommandExecutor, TabCompleter{
 		              List<String> lore = new ArrayList<>();
 		              if (m.getLore() != null)
 		                for (String ss : m.getLore())
-		                  lore.add(TheAPI.colorize(ss));
-		              	  TheAPI.bcMsg(lore.toString());
-		              
+		                  lore.add(TheAPI.colorize(ss));		              
 		              lore.add(TheAPI.colorize(name));
-		              TheAPI.bcMsg(name);
 		              m.setLore(lore);
 		              item.setItemMeta(m);
-		              TheAPI.msg(Loader.getTranslation("Item.Lore.Added").toString().replace("%prefix%", pref).replace("%line%",name ), s);
+		              TheAPI.msg(Loader.getTranslation("Item.Lore.Added").toString().replace("%line%",name ), s);
 		              return true;
 					}
 					if(args[1].contains("remove")) {
@@ -104,10 +100,10 @@ public class Item implements CommandExecutor, TabCompleter{
 			                lore.remove(StringUtils.getInt(args[2]));
 			                m.setLore(lore);
 			                item.setItemMeta(m);
-			                TheAPI.msg(Loader.getTranslation("Item.Lore.Removed").toString().replace("%prefix%", pref).toString().replace("%line%", args[2].toString()), s);
+			                TheAPI.msg(Loader.getTranslation("Item.Lore.Removed").toString().toString().replace("%line%", args[2].toString()), s);
 			                return true;
 			              } catch (Exception e) {
-			            	  TheAPI.msg(Loader.getTranslation("Item.Lore.Error").toString().replace("%prefix%", pref).replace("%error%", e.getMessage().trim()), s);
+			            	  TheAPI.msg(Loader.getTranslation("Item.Lore.Error").toString().replace("%error%", e.getMessage().trim()), s);
 			            	  return true;
 			              } 
 					}
@@ -130,24 +126,24 @@ public class Item implements CommandExecutor, TabCompleter{
 			              lore.set(line, name);
 			              m.setLore(lore);			              
 			              item.setItemMeta(m);
-			              TheAPI.msg(Loader.getTranslation("Item.Lore.Set").toString().replace("%prefix%", pref)
+			              TheAPI.msg(Loader.getTranslation("Item.Lore.Set").toString()
 			            		  .replace("%lore%", name).replace("%line%", String.valueOf(line)), s);
 			              return true;
 						}catch(Exception e) {
-			            	  TheAPI.msg(Loader.getTranslation("Item.Lore.Error").toString().replace("%prefix%", pref)
+			            	  TheAPI.msg(Loader.getTranslation("Item.Lore.Error").toString()
 			            			  .replace("%error%", e.getMessage().trim()), s);
 			            	  return true;
 						}
 					}
 					if (args[1].equalsIgnoreCase("list")) {
 			              int tests = 0;
-			              TheAPI.msg(Loader.getTranslation("Item.Lore.ListItem").toString().replace("%prefix%", pref)
+			              TheAPI.msg(Loader.getTranslation("Item.Lore.ListItem").toString()
 			            		  .replace("%item%", item.getType().name().toString()),s);
 			              List<String> lore = m.getLore();
 			              if (lore != null)
 			                for (String ss : lore) {
 			                  TheAPI.msg(Loader.getTranslation("Item.Lore.ListLore").toString()
-			                		  .replace("%position%", Integer.toString(tests)).replace("%lore%", ss).replace("%prefix%", pref), s);
+			                		  .replace("%position%", Integer.toString(tests)).replace("%lore%", ss), s);
 			                  tests++;
 			                }  
 			              return true;
@@ -196,7 +192,7 @@ public class Item implements CommandExecutor, TabCompleter{
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		List<String> c = new ArrayList<>();
 		Player p = (Player)s;
-		if(p.getItemInHand().getType().isAir()) {
+		if(p.getItemInHand().getType()==Material.AIR) {
 			TheAPI.sendTitle(p, Loader.getTranslation("Item.NoItem").toString()," "); 			
 			c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("")));
 			return c;
