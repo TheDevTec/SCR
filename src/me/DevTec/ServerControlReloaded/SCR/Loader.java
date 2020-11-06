@@ -198,6 +198,15 @@ public class Loader extends JavaPlugin implements Listener {
 		}else
 			TheAPI.msg(o+"", s);
 	}
+	public static void advancedHelp(CommandSender s, String cmd, String section, String subCommand) {
+		Object o = cmds.get(section+"."+cmd+".AdvancedHelp."+subCommand);
+		if(o==null)return;
+		if(o instanceof List<?>) {
+			for(Object d : (List<?>)o)
+			TheAPI.msg(d+"", s);
+		}else
+			TheAPI.msg(o+"", s);
+	}
 	
 	public static String placeholder(CommandSender sender, String string, Placeholder placeholders) {
 		if(setting.prefix!=null)
@@ -631,8 +640,8 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Info", "Memory",new RAM());
 		CmdC("Info", "Chunks",new Chunks());
 		CmdC("Info", "SCR",new SCR());
-		CmdC("Info","Seen", new Seen());//treba opraviť
-		CmdC("Info","ChatFormat", new me.DevTec.ServerControlReloaded.Commands.Info.ChatFormat());//treba zmeniť args[0] help správu
+		CmdC("Info","Seen", new Seen());
+		CmdC("Info","ChatFormat", new me.DevTec.ServerControlReloaded.Commands.Info.ChatFormat());
 		CmdC("Info","List", new ListCmd());// /list == error
 		CmdC("Info","Staff", new Staff());
 		CmdC("Info", "TPS",new TPS());
@@ -677,10 +686,10 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Time", "PNight",new PNight());
 		
 		//Message
-		CmdC("Message","Mail", new Mail());//nemá commands.yml
+		CmdC("Message","Mail", new Mail());
 		CmdC("Message","Sudo", new Sudo());
 		CmdC("Message","Broadcast", new Broadcast());
-		CmdC("Message", "PrivateMessage", new PrivateMessage());//treba opraviť perms
+		CmdC("Message", "PrivateMessage", new PrivateMessage());
 		CmdC("Message", "ClearChat",new ClearChat());
 		CmdC("Message","Helpop", new Helpop());
 		CmdC("Message","Reply", new ReplyPrivateMes());
@@ -716,16 +725,16 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Inventory", "EnderChest", new EnderChest());
 		CmdC("Inventory", "Endersee", new EnderSee());
 		CmdC("Inventory", "CloseInventory", new CloseInventory());
-		CmdC("Inventory", "ClearInventory",new ClearInv());//treba pridať args[0] správu
+		CmdC("Inventory", "ClearInventory",new ClearInv());
 		CmdC("Inventory", "ClearConfirmToggle", new ClearConfirmToggle());
 		CmdC("Inventory", "Inventory", new Invsee());
 		
 		//Enchantment
 		CmdC("Enchantment", "Enchant", new EnchantTable());
-		CmdC("Enchantment", "EnchantRemove", new EnchantTableRemove());//treba opraviť remove enchantu
+		CmdC("Enchantment", "EnchantRemove", new EnchantTableRemove());
 		CmdC("Enchantment", "EnchantRemoveAll", new EnchantTableRemoveAll());
 		
-		//TpSystem - nefunguje, idk why xD
+		//TpSystem
 		CmdC("TpSystem", "Tp", new Tp());
 		CmdC("TpSystem", "TpHere", new Tphere());
 		CmdC("TpSystem", "TpCancel", new Tpcancel());
@@ -735,19 +744,19 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("TpSystem", "TpaAll", new Tpaall());
 		CmdC("TpSystem", "TpAll", new Tpall());
 		CmdC("TpSystem", "TpAccept", new Tpaccept());
-		CmdC("TpSystem", "TpaDeny", new Tpadeny());
+		CmdC("TpSystem", "TpDeny", new Tpadeny());
 		
 		//Other
 		CmdC("Other", "ChatLock",new ChatLock());
 		CmdC("Other", "Repair", new Repair());
 		CmdC("Other", "Feed", new Feed());
-		CmdC("Other", "Item", new me.DevTec.ServerControlReloaded.Commands.Other.Item());//treba pridať code
+		CmdC("Other", "Item", new me.DevTec.ServerControlReloaded.Commands.Other.Item());
 		CmdC("Other", "TempFly", new TempFly());
 		CmdC("Other", "ScoreBoard", new me.DevTec.ServerControlReloaded.Commands.Other.ScoreboardStats());
 		CmdC("Other", "Trash", new Trash());
 		CmdC("Other", "Thor", new Thor());
 		CmdC("Other", "Give",new Give());
-		CmdC("Other", "Kits",new KitCmd());//treba opraviť príkaz
+		CmdC("Other", "Kits",new KitCmd());
 		CmdC("Other", "Craft", new Craft());
 		CmdC("Other", "Skull",new Skull());
 		CmdC("Other", "God",new God());
@@ -756,15 +765,15 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "Vanish",new Vanish());
 		CmdC("Other", "Butcher",new Butcher());
 		CmdC("Other", "AFK",new AFK());
-		CmdC("Other", "MultiWorlds",new MultiWorlds());//treba pridať code
-		CmdC("Other", "TabList",new Tab());//treba pridať code
+		CmdC("Other", "MultiWorlds",new MultiWorlds());
+		CmdC("Other", "TabList",new Tab());
 		CmdC("Other", "Hat",new Hat());
-		CmdC("Other", "Exp", new Exp());//treba opraviť give, set, take, (balance na sendera, nie target)
+		CmdC("Other", "Experiences", new Exp());//treba opraviť give, set, take, (balance na sendera, nie target)
 		CmdC("Other", "Spawner", new Spawner());
 		
 		//Nickname
-		CmdC("Nickname", "Nick", new Nick());//treba opraviť príkaz
-		CmdC("Nickname", "NickReset", new NickReset());//treba opraviť príkaz
+		CmdC("Nickname", "Nick", new Nick());
+		CmdC("Nickname", "NickReset", new NickReset());
 	}
 
 	private void EventC(Listener l) {

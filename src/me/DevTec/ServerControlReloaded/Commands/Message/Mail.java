@@ -35,7 +35,8 @@ public class Mail implements CommandExecutor, TabCompleter {
 			}
 			if (args[0].equalsIgnoreCase("Read") && Loader.has(s, "Mail", "Message", "Read")) {
 				if (getMails(s.getName()).isEmpty()) {
-					TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Empty").toString());
+					TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Empty").toString()
+							.replace("%prefix%", Loader.getTranslation("prefix")+""));
 					return true;
 				}
 				for (String mail : getMails(s.getName()))
@@ -44,11 +45,13 @@ public class Mail implements CommandExecutor, TabCompleter {
 			}
 			if (args[0].equalsIgnoreCase("Clear") && Loader.has(s, "Mail", "Message", "Read")) {
 				if (getMails(s.getName()).isEmpty()) {
-					TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Empty").toString());
+					TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Empty").toString()
+							.replace("%prefix%", Loader.getTranslation("prefix")+""));
 					return true;
 				}
 				removeALL(s);
-				TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Clear").toString());
+				TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Clear").toString()
+						.replace("%prefix%", Loader.getTranslation("prefix")+""));
 				return true;
 			}
 
@@ -60,7 +63,9 @@ public class Mail implements CommandExecutor, TabCompleter {
 			}
 			String msg = StringUtils.buildString(2, args);
 			add(s, "&8" + s.getName() + ": &8" + msg, args[1]);
-			TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Sent").toString().replace("%player%", args[1]));
+			TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Sent").toString()
+					.replace("%player%", args[1])
+					.replace("%prefix%", Loader.getTranslation("prefix")+""));
 			Player p = TheAPI.getPlayerOrNull(args[1]);
 			if (p != null) {
 				Loader.sendMessages(p, "Mail.Received", Placeholder.c().add("%amount%", "" + getMails(p.getName()).size()));
@@ -87,7 +92,7 @@ public class Mail implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		List<String> c = new ArrayList<>();
-		if (s.hasPermission("ServerControl.Mail.Read")) { // pokud m» permise ...
+		if (s.hasPermission("ServerControl.Mail.Read")) {
 			if (args.length == 1) {
 				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Read", "Clear"), new ArrayList<>()));
 			}

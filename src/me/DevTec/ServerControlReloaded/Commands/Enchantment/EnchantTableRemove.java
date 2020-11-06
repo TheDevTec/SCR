@@ -39,7 +39,6 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 				enchs.add(sd);
 	}
 
-	@SuppressWarnings({ "deprecation", "unlikely-arg-type" })
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "EnchantRemove", "Enchantment")) {
@@ -51,20 +50,29 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 				if (args.length == 1) {
 					Player p = (Player) s;
 					Material a = p.getItemInHand().getType();
-					if (a != Material.AIR) {
-							if (p.getItemInHand().getEnchantments().containsKey(EnchantmentAPI.byName(args[0]) != null)) {
-								e(p.getItemInHand(), args[0], s);
-								return true;
-							}
-						Loader.sendMessages(s, "Missing.Enchant.NoEnchant");
+					String ench = args[0];
+					if(EnchantmentAPI.byName(ench)==null) {
+						Loader.sendMessages(s, "Missing.Enchant.NotExist", Placeholder.c().add("%enchant%", ench));
 						return true;
 					}
-					
-					Loader.sendMessages(s, "Missing.Enchant.NotExist", Placeholder.c()
-							.add("%enchant%", args[0]));
+					if (a != Material.AIR) {
+						if(p.getItemInHand().getEnchantments().isEmpty()==true) {
+							Loader.sendMessages(s, "Missing.Enchant.NoEnchant");
+							return true;
+						}
+						if (!p.getItemInHand().containsEnchantment(EnchantmentAPI.byName(args[0]).getEnchantment()) ) {
+								Loader.sendMessages(s, "Missing.Enchant.DontContains", Placeholder.c().add("%enchant%", ench));
+								return true;
+						} else {
+							ItemStack item = p.getItemInHand();
+								item.removeEnchantment(EnchantmentAPI.byName(ench).getEnchantment());
+								Loader.sendMessages(s, "Enchant.Remove.One", Placeholder.c().add("%enchant%", ench));
+							return true;
+						}
+					}
+					Loader.sendMessages(s, "Missing.HandEmpty");
 					return true;
 				}
-				Loader.sendMessages(s, "Missing.HandEmpty");
 				return true;
 			}
 			return true;
@@ -90,7 +98,7 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 		return false;
 	}
 
-	@Override
+	@Override //ale ten tabcompleter funguje ne? anoF
 	public List<String> onTabComplete(CommandSender s, Command a, String ea, String[] args) {
 		List<String> c = new ArrayList<>();
 		if (a.getName().equalsIgnoreCase("enchanttableremove") || a.getName().equalsIgnoreCase("Enchantremove")

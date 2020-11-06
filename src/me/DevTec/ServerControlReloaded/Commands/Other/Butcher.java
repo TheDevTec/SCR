@@ -22,7 +22,7 @@ public class Butcher implements CommandExecutor {
 			int killed = 0;
 			for (Entity e : a.getEntities()) {
 				if (e instanceof Player == false) {
-					if(e.getType()==type) {
+					if(type==null||e.getType()==type) {
 					++killed;
 					e.remove();
 				}
@@ -35,7 +35,7 @@ public class Butcher implements CommandExecutor {
 				radius = 100000;
 			for (Entity e : BlocksAPI.getNearbyEntities(w, radius)) {
 				if (e instanceof Player == false) {
-					if(e.getType()==type) {
+					if(type==null||e.getType()==type) {
 					++killed;
 					e.remove();
 					}
@@ -62,6 +62,12 @@ public class Butcher implements CommandExecutor {
 					Loader.sendMessages(s, "Butcher.Killed", Placeholder.c().add("%amount%", butcher(w, null, 0,null) + ""));
 					return true;
 				}
+				World w = Bukkit.getWorld(args[0]);
+				if (w != null) {
+					Loader.sendMessages(s, "Butcher.Killed", Placeholder.c().add("%amount%", butcher(w,
+							null, 0,null) + ""));
+					return true;
+				}
 				Loader.sendMessages(s, "Butcher.Killed", Placeholder.c().add("%amount%", butcher(((Player) s).getWorld(),
 						((Player) s).getLocation(), StringUtils.getInt(args[0]),null) + ""));
 				return true;
@@ -73,6 +79,12 @@ public class Butcher implements CommandExecutor {
 					return true;
 				}
 				Loader.sendMessages(s, "Butcher.Killed", Placeholder.c().add("%amount%", butcher(w, null, 0, EntityType.valueOf(args[1].toUpperCase())) + ""));
+				return true;
+			}
+			World w = Bukkit.getWorld(args[0]);
+			if (w != null) {
+				Loader.sendMessages(s, "Butcher.Killed", Placeholder.c().add("%amount%", butcher(w,
+						null, 0,EntityType.valueOf(args[1].toUpperCase())) + ""));
 				return true;
 			}
 			Loader.sendMessages(s, "Butcher.Killed", Placeholder.c().add("%amount%", butcher(((Player) s).getWorld(),
