@@ -58,7 +58,7 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 						Loader.sendMessages(s, "Missing.Enchant.NoEnchant");
 						return true;
 					}
-					Loader.sendMessages(s, "Missing.HandEmpty");
+					Loader.sendMessages(s, "Missing.HandEmpty");//t
 					return true;
 					}
 					Loader.sendMessages(s, "Missing.Enchant.NotExist", Placeholder.c()
