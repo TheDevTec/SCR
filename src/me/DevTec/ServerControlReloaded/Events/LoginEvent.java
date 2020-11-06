@@ -2,6 +2,7 @@ package me.DevTec.ServerControlReloaded.Events;
 
 import java.lang.reflect.Array;
 import java.util.Date;
+import java.util.List;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,13 +28,23 @@ public class LoginEvent implements Listener {
 			moveInTab(e.getPlayer());
 	}
 	
+	private static Object surv = Ref.getNulled(Ref.nms("EnumGamemode"), "SURVIVAL"), spec = Ref.getNulled(Ref.nms("EnumGamemode"), "SPECTATOR");
 	private static Object up = Ref.getNulled(Ref.field(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), "UPDATE_GAME_MODE"));
-	private void moveInTab(Player player) {
-		Object array = Array.newInstance(Ref.nms("EntityType"), 1);
+	public static void moveInTab(Player player) {
+		Object array = Array.newInstance(Ref.nms("EntityPlayer"), 1);
 		Array.set(array, 0, Ref.player(player));
-		Object info = Ref.newInstance(Ref.constructor(Ref.nms("PacketPlayOutPlayerInfo"), Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), Object[].class), up, array);
+		Object b = Ref.newInstance(Ref.constructor(Ref.nms("PacketPlayOutPlayerInfo"), Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), array.getClass()), up, array);
+		@SuppressWarnings("unchecked")
+		List<Object> bList = (List<Object>) Ref.get(b, "b");
+		int cc = 0;
+		for(Object o : bList) { //that's bad
+			Ref.set(o, "c", TheAPI.isVanished(player) && setting.tab_vanish ? (spec==null?surv:spec) : surv);
+			bList.set(cc++, o);
+		}
+		Ref.set(b, "b", bList);
 		for(Player p : TheAPI.getOnlinePlayers())
-			Ref.sendPacket(p, info);
+			if(p!=player)
+			Ref.sendPacket(p, b);
 	}
 
 	public Loader plugin = Loader.getInstance;

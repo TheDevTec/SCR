@@ -23,7 +23,7 @@ public class setting {
 			ad_itempick, join_spawn, join_msg, join_motd, join_first,
 			join_first_give, join_first_percmd, leave, cool_cmd, cool_chat, cool_percmd, color_chat_perm,
 			color_sign_perm, tp_safe, tp_onreqloc, ram, spam_double, caps_chat, caps_cmd, deathspawnbol
-			,list, staff_hide, staff_replace, farming, farming_packet, tab_vanish, tab_move;
+			,list, staff_hide, staff_replace, farming, farming_packet, tab_vanish, tab_move, vanish_action;
 	public static String prefix;
 	public static DeathTp deathspawn;
 
@@ -51,6 +51,7 @@ public class setting {
 		staff_hide=f.getBoolean("Options.Staff.HideAllLines");
 		staff_replace=f.getBoolean("Options.Staff.UseReplace");
 		farming = f.getBoolean("Options.FarmingSystem.Use");
+		vanish_action = f.getBoolean("Options.Vanish-ActionBar");
 		singeplayersleep = f.getBoolean("Options.SinglePlayerSleep");
 		timezone = f.getBoolean("Options.TimeZone.Use");
 		ram = f.getBoolean("Options.RAM-Percentage");
@@ -101,12 +102,21 @@ public class setting {
 		eco = f.getBoolean("Options.Economy.DisablePluginEconomy");
 		eco_other = f.getBoolean("Options.Economy.CanUseOtherEconomy");
 		tab = Loader.tab.getBoolean("Options.Enabled");
+		if(tab) {
 		tab_header = Loader.tab.getBoolean("Options.Modify.Header");
 		tab_footer = Loader.tab.getBoolean("Options.Modify.Footer");
 		tab_nametag = Loader.tab.getBoolean("Options.Modify.NameTags");
 		tab_sort = Loader.tab.getBoolean("Options.Sorting");
 		tab_vanish=Loader.tab.getBoolean("Options.VanishToSpectator");
 		tab_move=Loader.tab.getBoolean("Options.MoveSpectator");
+		}else {
+			tab_header = false;
+			tab_footer = false;
+			tab_nametag = false;
+			tab_sort = false;
+			tab_vanish = false;
+			tab_move = false;
+		}
 		sb = Loader.sb.getBoolean("Options.Enabled");
 		save = Loader.mw.getBoolean("SavingTask.Enabled");
 		vip = f.getBoolean("Options.VIPSlots.Use");

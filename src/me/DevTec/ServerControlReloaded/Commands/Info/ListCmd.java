@@ -62,17 +62,16 @@ public class ListCmd implements CommandExecutor {
 		return s+"";
 	}
 	
-	Pattern a = Pattern.compile("%joiner\\{(.*?)\\}%"), b = Pattern.compile("%joiner-count\\{(.*?)\\}%");
+	Pattern a = Pattern.compile("\\%joiner\\{(.*?)\\}%"), b = Pattern.compile("\\%joiner-count\\{(.*?)\\}%");
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "List", "Info")) {
-			Object o = Loader.getTranslation("List.Normal");
-			if(o==null)return true;
+			List<String> o = Loader.trans.getStringList("List.Normal");
+			if(o.isEmpty()==true)return true;
 			if(o instanceof List) {
-				boolean empty = true, contains = false;
-				for(String sd : (List<String>)o) {
+				for(String sd : o) {
+					boolean empty = true, contains = false;
 					Matcher f = a.matcher(sd);
 					while(f.find()) {
 						contains=true;

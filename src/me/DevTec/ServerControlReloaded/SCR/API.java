@@ -378,6 +378,8 @@ public class API {
 			if(safe!=null) {
 				s.setNoDamageTicks(40);
 				s.teleport(safe);
+			}else {
+				Loader.sendMessages(s, "TpSystem.NotSafe");
 			}
 		}else {
 			s.setNoDamageTicks(40);

@@ -187,7 +187,7 @@ Server:
     Enabled: true
     Override-Event: true
 
-Teleport:
+TpSystem:
   Tpa:
     Name: "tpa"
     Permission: "SCR.Command.Tpa"
@@ -198,12 +198,12 @@ Teleport:
     Permission: "SCR.Command.TpaHere"
     Help: "/TpaHere <player> - Send request to teleport player to your position"
     Enabled: true
-  TpaHereAll:
-    Name: "tpahereall"
+  TpaAll:
+    Name: "tpaall"
     Aliases:
-    - "tpaall"
-    Permission: "SCR.Command.TpaHereAll"
-    Help: "/TpaHereAll - Send request to all players to teleport to your position"
+    - "tpahereall"
+    Permission: "SCR.Command.TpaAll"
+    Help: "/TpaAll - Send request to all players to teleport to your position"
     Enabled: true
   Tp:
     Name: "tp"
@@ -220,12 +220,12 @@ Teleport:
     Permission: "SCR.Command.TpHere"
     Help: "/TpHere <player> - Teleport player to your position"
     Enabled: true
-  TpHereAll:
-    Name: "tphereall"
+  TpAll:
+    Name: "tpall"
     Aliases:
-    - "tpall"
-    Permission: "SCR.Command.TpHereAll"
-    Help: "/TpHereAll - Teleport all players to your position"
+    - "tphereall"
+    Permission: "SCR.Command.TpAll"
+    Help: "/TpAll - Teleport all players to your position"
     Enabled: true
   TpAccept:
     Name: "tpaccept"
@@ -730,15 +730,23 @@ Other:
     Permission: "SCR.Command.Craft"
     Help: "/Craft - Opens virtual crafting table"
     Enabled: true
-  Exp:
-    Name: "exp"
+  Experiences:
+    Name: "experiences"
     Permission: "SCR.Command.Exp"
+    Aliases:
+    - "xp"
+    - "exp"
     SubPermission:
       Set: "SCR.Command.Exp.Set"
       Add: "SCR.Command.Exp.Add"
       Remove: "SCR.Command.Exp.Remove"
       Balance: "SCR.Command.Exp.Balance"
     Help: "/Exp - Set/Remove experiences"
+    AdvancedHelp:
+      Set: "/Exp Set <player> <ammount> <level|exp>"
+      Balance: "/Exp Balance <player>"
+      Give: "/Exp Give <player> <amount> <level|exp>"
+      Take: "/Exp Take <player> <amount> <leavel|exp>"
     Enabled: true
   Feed:
     Name: "feed"

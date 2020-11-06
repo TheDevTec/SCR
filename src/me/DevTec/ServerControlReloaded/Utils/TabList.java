@@ -88,13 +88,14 @@ public class TabList {
 		;if(header.contains("%world%"))
 			header=header.replace("%world%", p.getWorld().getName())
 		;if(header.contains("%hp%"))
-			header=header.replace("%health%", ((Damageable)p).getHealth()+ "");
+			header=header.replace("%health%", String.format("%2.02f", ((Damageable)p).getHealth()).replace(",00", "").replace(",", "."));
 		if(header.contains("%health%"))
-			header=header.replace("%health%", ((Damageable)p).getHealth()+ "");
+			header=header.replace("%health%", String.format("%2.02f", ((Damageable)p).getHealth()).replace(",00", "").replace(",", "."));
 		if(header.contains("%food%"))
 			header=header.replace("%food%", p.getFoodLevel() + "")
 		;if(header.contains("%x%"))
-			header=header.replace("%x%", p.getLocation().getBlockX() + "").replace("%y%", p.getLocation().getBlockY() + "")
+			header=header.replace("%x%", p.getLocation().getBlockX() + "");
+		if(header.contains("%y%"))header=header.replace("%y%", p.getLocation().getBlockY() + "")
 		;if(header.contains("%z%"))
 			header=header.replace("%z%", p.getLocation().getBlockZ() + "");
 		if(header.contains("%vault_group%")) {

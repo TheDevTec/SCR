@@ -17,7 +17,7 @@ public class Tphere implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "TpHere", "TpSystem")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/Tphere <player>", "TpaSystem.Tphere");
+				Loader.Help(s, "TpHere", "TpSystem");
 				return true;
 			}
 			Player target = TheAPI.getPlayer(args[0]);
@@ -27,7 +27,7 @@ public class Tphere implements CommandExecutor {
 			}
 			if (Loader.has(s, "TpHere", "TpSystem", "Blocked") || !Loader.has(s, "TpHere", "TpSystem", "Blocked") && !RequestMap.isBlocking(target.getName(), s.getName())) {
 				Loader.sendMessages(s, "TpSystem.TpHere.Sender", Placeholder.c().replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()));
-				Loader.sendMessages(s, "TpSystem.TpHere.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", ((Player)s).getDisplayName()));
+				Loader.sendMessages(target, "TpSystem.TpHere.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", ((Player)s).getDisplayName()));
 				API.setBack(target);
 				if (setting.tp_safe)
 					API.safeTeleport(target,((Player)s).getLocation());

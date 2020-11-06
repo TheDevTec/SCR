@@ -27,6 +27,8 @@ Options:
     ForbiddenWorlds:
     - "spawn"
   SinglePlayerSleep: true
+  # ActionBar when you have enabled vanish
+  Vanish-ActionBar: true
   RAM-Percentage: false
   AntiSpam:
     SimiliarMessage: true

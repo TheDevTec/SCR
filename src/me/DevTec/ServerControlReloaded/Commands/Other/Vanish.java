@@ -5,14 +5,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.DevTec.ServerControlReloaded.Events.LoginEvent;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 
 public class Vanish implements CommandExecutor {
-	public static int i = -1;
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -22,21 +22,24 @@ public class Vanish implements CommandExecutor {
 					Player p = (Player) s;
 					if (!TheAPI.isVanished(p)) {
 						TheAPI.vanish(p, "ServerControl.Vanish", true);
+						LoginEvent.moveInTab(p);
 						Loader.sendMessages(s, "Vanish.Enabled.You");
-						
-						if (i == -1) {
-							i = new Tasker( ) {
-								@Override
-								public void run() {
-									TheAPI.sendActionBar(p, Loader.getTranslation("Vanish.Active").toString());
+						if(setting.vanish_action)
+						new Tasker() {
+							@Override
+							public void run() {
+								if(!TheAPI.isVanished(p)) {
+									cancel();
+									return;
 								}
-							}.runRepeatingSync(0, 20);
-						}
+								TheAPI.sendActionBar(p, Loader.getTranslation("Vanish.Active").toString());
+							}
+						}.runRepeating(0, 20);
 						return true;
 					}
 					TheAPI.vanish(p, "ServerControl.Vanish", false);
+					LoginEvent.moveInTab(p);
 					Loader.sendMessages(s, "Vanish.Disabled.You");
-					Scheduler.cancelTask(i);
 					return true;
 				}
 				Loader.Help(s, "Vanish", "Other");
@@ -47,22 +50,26 @@ public class Vanish implements CommandExecutor {
 			if (t != null) {
 				if (!TheAPI.isVanished(t)) {
 					TheAPI.vanish(t, "ServerControl.Vanish", true);
+					LoginEvent.moveInTab(t);
 					Loader.sendMessages(s, "Vanish.Enabled.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
 					Loader.sendMessages(s, "Vanish.Enabled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
-					if (i == -1) {
-						i = new Tasker( ) {
-							@Override
-							public void run() {
-								TheAPI.sendActionBar(t, Loader.getTranslation("Vanish.Active").toString());
+					if(setting.vanish_action)
+					new Tasker() {
+						@Override
+						public void run() {
+							if(!TheAPI.isVanished(t)) {
+								cancel();
+								return;
 							}
-						}.runRepeatingSync(0, 20);
-					}
+							TheAPI.sendActionBar(t, Loader.getTranslation("Vanish.Active").toString());
+						}
+					}.runRepeating(0, 20);
 					return true;
 				}
 				TheAPI.vanish(t, "ServerControl.Vanish", false);
+				LoginEvent.moveInTab(t);
 				Loader.sendMessages(s, "Vanish.Disabled.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
 				Loader.sendMessages(s, "Vanish.Disabled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
-				Scheduler.cancelTask(i);
 				return true;
 			}
 			Loader.notOnline(s, args[0]);
