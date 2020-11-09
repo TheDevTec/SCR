@@ -59,6 +59,16 @@ BanSystem:
     Permission: "SCR.Command.Jail"
     Help: "/Jail <player> <reason> - Jail player"
     Enabled: true
+  SetJail:
+    Name: "setjail"
+    Permission: "SCR.Command.SetJail"
+    Help: "/SetJail <jail> - Sets new jail on your position"
+    Enabled: true
+  DelJail:
+    Name: "deljail"
+    Permission: "SCR.Command.DalJail"
+    Help: "/DalJail <jail> - Delete jail"
+    Enabled: true
   TempJail:
     Name: "tempjail"
     Aliases:
@@ -97,6 +107,16 @@ BanSystem:
     Name: "warn"
     Permission: "SCR.Command.Warn"
     Help: "/Warn <player> <reason> - Warn player"
+    Enabled: true
+  Kick:
+    Name: "kick"
+    Permission: "SCR.Command.Kick"
+    Help: "/Kick <player> <reason> - Kick player from server"
+    Enabled: true
+  Immune:
+    Name: "immune"
+    Permission: "SCR.Command.Immune"
+    Help: "/Immune <player> - Turn on/off your/player imunity"
     Enabled: true
     
 Economy:
