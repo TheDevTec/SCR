@@ -74,19 +74,21 @@ public class BigTask {
 			String text = "&c" + (s == TaskType.STOP ? "Stopping" : (s == TaskType.RELOAD ? "Reloading" : "Restarting"))
 					+ " of server..";
 			TheAPI.broadcastMessage(text);
-			for(Player s : TheAPI.getOnlinePlayers())
-				s.kickPlayer(TheAPI.colorize(text));
 			switch (s) {
 			case RELOAD:
 				Bukkit.reload();
 				break;
 			case RESTART:
+				for(Player s : TheAPI.getOnlinePlayers())
+					s.kickPlayer(TheAPI.colorize(text));
 				if (Reflections.existsClass("net.md_5.bungee.api.ChatColor"))
 					Bukkit.spigot().restart();
 				else
 					Bukkit.shutdown();
 				break;
 			case STOP:
+				for(Player s : TheAPI.getOnlinePlayers())
+					s.kickPlayer(TheAPI.colorize(text));
 				Bukkit.shutdown();
 				break;
 			}
