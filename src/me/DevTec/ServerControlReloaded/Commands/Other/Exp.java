@@ -16,6 +16,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class Exp implements CommandExecutor, TabCompleter {
 	/*
@@ -102,7 +103,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 								.replace("%amount%",
 										"" + ((args.length >= 3 ? args[2].toLowerCase().contains("level") : false)
 												? p.getLevel()
-												: p.getExp()))
+												: Ref.get(Ref.player(p),"expTotal")))
 								.replace("%type%",
 										Loader.getTranslation("Experiences.Words."
 												+ (((args.length >= 3 ? args[2].toLowerCase().contains("level") : false)
