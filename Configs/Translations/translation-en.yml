@@ -289,9 +289,9 @@ EnderChest:
 
 # Translations for /Invsee command
 Invsee:
-  Open: "%prefix% Opening &e%target%&7's inventory"
-    pepa: "cs"
+  Open: 
     Other: "%prefix% Opening &e%target%&7's inventory to &a%sender%"
+    Open: "%prefix% Opening &e%target%&7's inventory"
   Help: "%prefix% /invsee <player>"
 # Translations for /Home and /Homes commands
 Home:

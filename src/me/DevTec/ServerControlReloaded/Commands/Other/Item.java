@@ -31,6 +31,7 @@ public class Item implements CommandExecutor, TabCompleter{
 		f.add("set");
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Item", "Other")||Loader.has(s, "Item", "Other", "SetName")||Loader.has(s, "Item", "Other", "SetLore")
@@ -189,6 +190,7 @@ public class Item implements CommandExecutor, TabCompleter{
 
 	
 	
+	@SuppressWarnings("deprecation")
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		List<String> c = new ArrayList<>();
 		Player p = (Player)s;
