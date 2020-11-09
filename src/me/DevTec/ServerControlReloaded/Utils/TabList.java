@@ -79,7 +79,7 @@ public class TabList {
 		if(header.contains("%online%")) {
 			List<Player> seen = Lists.newArrayList();
 			for(Player s : TheAPI.getPlayers())
-				if(TheAPI.canSee(p,s))
+				if(TheAPI.canSee(p,s.getName()) || s == p)
 					seen.add(s);
 			header=header.replace("%online%", seen.size() + "");
 		}

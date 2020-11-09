@@ -234,10 +234,10 @@ public class SPlayer {
 	}
 
 	public boolean hasVanish() {
-		return TheAPI.isVanished(s);
+		return TheAPI.hasVanish(s);
 	}
 
 	public void setVanish(boolean v) {
-		TheAPI.vanish(getPlayer(), "ServerControl.Vanish", v);
+		TheAPI.setVanish(s, "ServerControl.Vanish", v);
 	}
 }

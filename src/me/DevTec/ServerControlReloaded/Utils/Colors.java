@@ -50,7 +50,7 @@ public class Colors {
 							if(c==' ')
 								recreate+=c;
 							else
-							recreate+=color.getColor()+c;
+							recreate+=color.getNextColor()+c;
 						}else
 						recreate+=c;
 					}

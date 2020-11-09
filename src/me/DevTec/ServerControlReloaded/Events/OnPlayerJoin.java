@@ -54,7 +54,7 @@ public class OnPlayerJoin implements Listener {
 		Tasks.regPlayer(p);
 		User d = TheAPI.getUser(p);
 		if (setting.join_msg) {
-			if (TheAPI.isVanished(p))
+			if (TheAPI.hasVanish(p.getName()))
 				e.setJoinMessage("");
 			else
 				e.setJoinMessage(TheAPI.colorize(replaceAll(Loader.getTranslation("Join.Text").toString(), p)));
@@ -81,7 +81,7 @@ public class OnPlayerJoin implements Listener {
 			for (String ss : Loader.trans.getStringList("OnJoin.FirstJoin.Messages")) {
 				TheAPI.msg(replaceAll(ss, p), p);
 			}
-			if (!TheAPI.isVanished(p))
+			if (!TheAPI.hasVanish(p.getName()))
 				Loader.sendBroadcasts(p,"Join.FirstJoin.Text");
 			new Tasker() {
 				@Override
@@ -126,7 +126,7 @@ public class OnPlayerJoin implements Listener {
 	public void playerQuit(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
 		if (setting.leave) {
-			if (TheAPI.isVanished(p))
+			if (TheAPI.hasVanish(p.getName()))
 				e.setQuitMessage(null);
 			else
 				e.setQuitMessage(TheAPI.colorize(replaceAll(Loader.getTranslation("Quit").toString(), p)));

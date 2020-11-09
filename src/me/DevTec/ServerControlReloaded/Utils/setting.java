@@ -38,10 +38,14 @@ public class setting {
 		Colors.color=new StringUtils.ColormaticFactory() {
 			List<String> colors = f.getStringList("Options.Colors.Rainbow");
 			int c = 0;
-			public String getColor() {
+			public String getNextColor() {
 				if(colors.isEmpty())return "";
 				if(c >= colors.size())c=0;
 				return colors.get(c++);
+			}
+			@Override
+			public String colorize(String arg0) {
+				return null;
 			}
 		};
 		format_date_time = new SimpleDateFormat(f.getString("Format.DateWithTime"));
