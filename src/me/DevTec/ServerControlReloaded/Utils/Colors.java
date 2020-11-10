@@ -66,7 +66,7 @@ public class Colors {
 		    	b=d.toString();
 			}
 		}
-		if (TheAPI.isNewerThan(15) && b.contains("#")) {
+		if (TheAPI.isNewerThan(15) && (b.contains("#") || b.contains("&x"))) {
 			if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.HEX"))) {
 			b = b.replace("&x", "§x");
 			Matcher match = pattern.matcher(b);
@@ -90,13 +90,13 @@ public class Colors {
 			b = b.replace("&d", ChatColor.getByChar("d")+"");
 			b = b.replace("&e", ChatColor.getByChar("e")+"");
 			b = b.replace("&f", ChatColor.getByChar("f")+"");
-			b = b.replace("&r", ChatColor.getByChar("r")+"");
 		}
 		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Format"))) {
 			b = b.replace("&l", ChatColor.getByChar("l")+"");
 			b = b.replace("&o", ChatColor.getByChar("o")+"");
 			b = b.replace("&m", ChatColor.getByChar("m")+"");
 			b = b.replace("&n", ChatColor.getByChar("n")+"");
+			b = b.replace("&r", ChatColor.getByChar("r")+"");
 		}
 		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Magic"))) {
 			b = b.replace("&k", ChatColor.getByChar("k")+"");
