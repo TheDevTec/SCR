@@ -1,5 +1,7 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +14,6 @@ import me.DevTec.TheAPI.Utils.StringUtils;
 
 
 public class Colors {
-	public static StringUtils.ColormaticFactory color;
 	private final static Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
 	
 	public static String remove(String string) {
@@ -21,46 +22,52 @@ public class Colors {
 		return string;
 	}
 
-	public static String colorize(String s, boolean sign, CommandSender d) {
+	public static String colorize(String sr, boolean sign, CommandSender dr) {
 		String p = "Chat";
 		if (sign)
 			p = "Sign";
-		String b = s;
+		String b = sr;
 		if(b.toLowerCase().contains("&u")) {
-			if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow"))) {
-			String recreate = "";
-			int mode = 0;
-			for(char c : b.toCharArray()) {
-				if(c=='&') {
-					if(mode==1) { //&&
-						recreate+="&"+c;
-						mode=0;
-					}else
-					mode=1;
-				}else {
-					if(mode==1) {
-						mode=0;
-						if(Character.toLowerCase(c)=='u') { // &u
-							mode=2;
-						}else { // ...
-							recreate+="&"+c;
-						}
-					}else {
-						if(mode==2) { //&uText..
-							if(c==' ')
-								recreate+=c;
-							else
-							recreate+=color.getNextColor()+c;
-						}else
-						recreate+=c;
-					}
-				}
-			}
-			b=recreate;
+			if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow"))) {
+				List<String> s = new ArrayList<>();
+		    	StringBuffer d = new StringBuffer();
+		    	int found = 0;
+		    	for(char c : b.toCharArray()) {
+		    		if(c=='&') {
+		    			if(found==1)
+		    			d.append(c);
+		    			found=1;
+			    		continue;
+		    		}
+		    		if(found==1 && Pattern.compile("[A-Fa-fUu0-9]").matcher(c+"").find()) {
+			    		found=0;
+				    	s.add(d.toString());
+			    		d=d.delete(0, d.length());
+			    		d.append("&"+c);
+			    		continue;
+		    		}
+	    			if(found==1) {
+	    	    		found=0;
+			    		d.append("&"+c);
+			    		continue;
+	    			}
+		    		found=0;
+		    		d.append(c);
+		    	}
+		    	if(d.length()!=0)
+		    		s.add(d.toString());
+		    	d = d.delete(0, d.length());
+		    	for(String ff : s) {
+		    		if(ff.toLowerCase().startsWith("&u")) {
+		    			ff=StringUtils.color.colorize(ff.substring(2));
+		    		}
+		    		d.append(ff);
+		    	}
+		    	b=d.toString();
 			}
 		}
 		if (TheAPI.isNewerThan(15) && b.contains("#")) {
-			if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.HEX"))) {
+			if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.HEX"))) {
 			b = b.replace("&x", "§x");
 			Matcher match = pattern.matcher(b);
             while (match.find()) {
@@ -74,7 +81,7 @@ public class Colors {
             }
 			}
 		}
-		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
+		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
 			for (int i = 0; i < 10; ++i)
 				b = b.replace("&" + i, ChatColor.getByChar(i+"")+"");
 			b = b.replace("&a", ChatColor.getByChar("a")+"");
@@ -85,16 +92,15 @@ public class Colors {
 			b = b.replace("&f", ChatColor.getByChar("f")+"");
 			b = b.replace("&r", ChatColor.getByChar("r")+"");
 		}
-		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Format"))) {
+		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Format"))) {
 			b = b.replace("&l", ChatColor.getByChar("l")+"");
 			b = b.replace("&o", ChatColor.getByChar("o")+"");
 			b = b.replace("&m", ChatColor.getByChar("m")+"");
 			b = b.replace("&n", ChatColor.getByChar("n")+"");
 		}
-		if (d.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Magic"))) {
+		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Magic"))) {
 			b = b.replace("&k", ChatColor.getByChar("k")+"");
 		}
-		
 		return b;
 	}
 	

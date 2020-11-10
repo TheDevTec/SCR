@@ -181,12 +181,6 @@ Options:
         Magic: "SCR.Other.Chat.Magic"
         Rainbow: "SCR.Other.Chat.Rainbow"
         HEX: "SCR.Other.Chat.HEX"
-    Rainbow:
-    - "&a"
-    - "&e"
-    - "&c"
-    - "&4"
-    # - "#162978"
         
   Maintenance:
     Enabled: false
