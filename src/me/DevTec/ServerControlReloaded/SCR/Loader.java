@@ -207,6 +207,15 @@ public class Loader extends JavaPlugin implements Listener {
 		}else
 			TheAPI.msg(o+"", s);
 	}
+	public static void advancedHelp(CommandSender s, String cmd, String section,String underSection ,String subCommand) {
+		Object o = cmds.get(section+"."+cmd+".AdvancedHelp."+underSection+"."+subCommand);
+		if(o==null)return;
+		if(o instanceof List<?>) {
+			for(Object d : (List<?>)o)
+			TheAPI.msg(d+"", s);
+		}else
+			TheAPI.msg(o+"", s);
+	}
 	
 	public static String placeholder(CommandSender sender, String string, Placeholder placeholders) {
 		if(setting.prefix!=null)

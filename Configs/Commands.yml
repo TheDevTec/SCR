@@ -817,13 +817,23 @@ Other:
        SetName: "SCR.Item.Name"
        SetLore: "SCR.Item.Lore"
        Flag: "SCR.Item.Flag"
-       Unbreakable: "SCR.Item.Flag.Unbreakable"
-       HideEnchants: "SCR.Item.Flag.HideEnchants"
        Nbt: "SCR.Item.Nbt"
        Durability: "SCR.Item.Durability"
        Type: "SCR.Item.Type"
        Info: "SCR.Item.Info"
     Help: "/Item - Change lore/color/enchantments of item in your main hand"
+    AdvancedHelp:
+       Name: '&e/item name <name> &f- &cName your item.'
+       Lore:
+          Add: '&e/item lore add <lore> &f- &cAdd lore to your item.'
+          Remove: '&e/item lore remove <line> &f- &cRemove lore from your item by line.'
+          Set: '&e/item lore set <line> <lore> &f- &cSet lore to specified line of your item.'  
+          List: '&e/item lore list &f- &cSee lore lines'
+       Flag: '&e/item flag <flag> <true/false> &f- &cadd flags to your item.'
+       Nbt: '&e/item nbt &f- &cGet nbt tags of item.'
+       Type: '&e/item type &f- &cSet wooden sword to netherite sword.'
+       Durability: '&e/item durability <int> &f- &cSet durability of item.'
+       Info: '&e/item info &f- &cInfo about item.'
     Enabled: true
   Kits:
     Name: "kits"

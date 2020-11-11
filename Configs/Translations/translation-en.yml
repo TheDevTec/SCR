@@ -87,16 +87,6 @@ Experiences:
 # Translations for /Item command
 Item:
   Name: '%prefix% DisplayName of %item% has been set to &r%name%&7.'
-  NameHelp: '&e/item name <name> &f- &cName your item.'
-  LoreHelp1: '&e/item lore add <lore> &f- &cAdd lore to your item.'
-  LoreHelp2: '&e/item lore remove <line> &f- &cRemove lore from your item by line.'
-  LoreHelp3: '&e/item lore set <line> <lore> &f- &cSet lore to specified line of your item.'
-  LoreHelp4: '&e/item lore list &f- &cSee lore lines'
-  FlagHelp: '&e/item flag <flag> <true/false> &f- &cadd flags to your item.'
-  NbtHelp: '&e/item nbt &f- &cGet nbt tags of item.'
-  DurabilityHelp: '&e/item durability <int> &f- &cSet durability of item.'
-  TypeHelp: '&e/item type &f- &cSet wooden sword to netherite sword.'
-  InfoHelp: '&e/item info &f- &cInfo about item.'
   NoItem: '&cYou are not holding any item in hand.'
   Lore:
     Added: '%prefix% Added new lore line &r%line%'
