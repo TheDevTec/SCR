@@ -705,6 +705,14 @@ WhoIs:
   - "%prefix%   Group: &e%group%"
   - "%prefix%   Money: &e%money%"
   
+ChatFormat:
+  Group:
+    Exists: "%prefix% Group &e%group% &6already exist"
+    NotExist: "%prefix% Group &e%group% &7doesn't exist"
+    Create: "%prefix% Group &e%group% &7created"
+    Delete: "%prefix% Group &e%group% &7deleted"
+    Delete: "%prefix% Group &e%group% &7deleted"
+  
 Trash: "&7Trash"
   
 Config: "%prefix% Configurations and tasks reloaded"

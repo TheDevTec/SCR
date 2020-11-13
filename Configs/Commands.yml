@@ -659,7 +659,18 @@ Info:
       List: "SCR.Command.ChatFormat.List"
       Info: "SCR.Command.ChatFormat.Info"
       Set: "SCR.Command.ChatFormat.Set"
-    Help: "/ChatFormat - Set/Create/Delete/Info/List chatformats"
+    Help:
+    - "/ChatFormat Create <group>"
+    - "/ChatFormat Delete <group>"
+    - "/ChatFormat Set <group> <chat/name> <value>"
+    - "/ChatFormat Info <group> <chat/name>"
+    - "/ChatFormat List"
+    AdvancedHelp:
+      Create: "/ChatFormat Create <group>"
+      Delete: "/ChatFormat Delete <group>"
+      List: "/ChatFormat List"
+      Info: "/ChatFormat Info <group> <chat/name>"
+      Set: "/ChatFormat Set <group> <chat/name> <value>"
     Enabled: true
   Chunks:
     Name: "chunk"
