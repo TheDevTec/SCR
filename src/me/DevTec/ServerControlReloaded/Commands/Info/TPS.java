@@ -1,15 +1,18 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.TheAPI.TPSType;
 
-public class TPS implements CommandExecutor {
+public class TPS implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -28,4 +31,9 @@ public class TPS implements CommandExecutor {
 		return true;
 	}
 
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
+	}
 }

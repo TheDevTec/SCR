@@ -1,13 +1,16 @@
 package me.DevTec.ServerControlReloaded.Commands.Message;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.TheAPI.TheAPI;
 
-public class Broadcast implements CommandExecutor {
+public class Broadcast implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -25,4 +28,9 @@ public class Broadcast implements CommandExecutor {
 		return true;
 	}
 
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
+	}
 }

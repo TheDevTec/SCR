@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -17,7 +18,7 @@ import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
-public class ListCmd implements CommandExecutor {
+public class ListCmd implements CommandExecutor, TabCompleter {
 	
 	public String joiner(String value) {
 		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
@@ -98,6 +99,10 @@ public class ListCmd implements CommandExecutor {
 		}
 		Loader.noPerms(s, "List", "Info");
 		return true;
-
+	}
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
 	}
 }

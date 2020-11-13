@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -549,7 +550,7 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 	}
 
-	private void CmdC(String section, String command, CommandExecutor p) {
+	private void CmdC(String section, String command, Object cs) {
 		if(cmds.getBoolean(section+"."+command+".Enabled")) {
 			PluginCommand c = TheAPI.createCommand(cmds.getString(section+"."+command+".Name"), this);
 			List<String> aliases = new ArrayList<>();
@@ -559,7 +560,8 @@ public class Loader extends JavaPlugin implements Listener {
 			else aliases.add(cmds.getString(section+"."+command+".Aliases"));
 			}
 			c.setAliases(aliases);
-			c.setExecutor(p);
+			c.setExecutor((CommandExecutor)cs);
+			c.setTabCompleter((TabCompleter)cs);
 			c.setPermission(cmds.getString(section+"."+command+".Permission"));
 			TheAPI.registerCommand(c);
 		}

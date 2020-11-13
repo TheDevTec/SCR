@@ -1,13 +1,22 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 
-public class ChatLock implements CommandExecutor {
+public class ChatLock implements CommandExecutor, TabCompleter {
+
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
+	}
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {

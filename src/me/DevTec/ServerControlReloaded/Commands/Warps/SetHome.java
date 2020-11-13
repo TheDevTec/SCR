@@ -1,8 +1,11 @@
 package me.DevTec.ServerControlReloaded.Commands.Warps;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -11,7 +14,7 @@ import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.Position;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
-public class SetHome implements CommandExecutor {
+public class SetHome implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -62,5 +65,10 @@ public class SetHome implements CommandExecutor {
 			return true;
 		}
 		return true;
+	}
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
 	}
 }

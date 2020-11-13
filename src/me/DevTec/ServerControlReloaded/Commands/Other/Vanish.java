@@ -1,10 +1,12 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.Events.LoginEvent;
@@ -15,7 +17,13 @@ import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 
-public class Vanish implements CommandExecutor {
+public class Vanish implements CommandExecutor, TabCompleter {
+
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
+	}
 	private static HashMap<String, Integer> task = new HashMap<>();
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {

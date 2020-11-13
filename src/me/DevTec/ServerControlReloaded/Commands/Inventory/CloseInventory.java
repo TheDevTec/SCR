@@ -1,8 +1,11 @@
 package me.DevTec.ServerControlReloaded.Commands.Inventory;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -10,7 +13,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 
-public class CloseInventory implements CommandExecutor {
+public class CloseInventory implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -41,6 +44,11 @@ public class CloseInventory implements CommandExecutor {
 		}
 		Loader.noPerms(s, "CloseInventory", "Inventory");
 		return true;
+	}
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
 	}
 
 }

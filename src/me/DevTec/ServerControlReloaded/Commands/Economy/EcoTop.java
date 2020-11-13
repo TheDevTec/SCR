@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Economy;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
@@ -8,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
@@ -19,7 +21,7 @@ import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.SortedMap.RankingAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
-public class EcoTop implements CommandExecutor {
+public class EcoTop implements CommandExecutor, TabCompleter {
 	private HashMap<String, Pagination<Entry<String, Double>>> h = new HashMap<>();
 
 	@Override
@@ -66,5 +68,10 @@ public class EcoTop implements CommandExecutor {
 		if (TheAPI.getPlayerOrNull(s) != null)
 			return TheAPI.getPlayerOrNull(s).getDisplayName();
 		return s;
+	}
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
 	}
 }

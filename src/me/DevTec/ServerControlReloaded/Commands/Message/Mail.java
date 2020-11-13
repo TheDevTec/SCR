@@ -62,7 +62,10 @@ public class Mail implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			String msg = StringUtils.buildString(2, args);
-			add(s, "&8" + s.getName() + ": &8" + msg, args[1]);
+			add(Loader.config.getString("Format.Mail").replace("%player%", s.getName())
+					.replace("%playername%", s instanceof Player ? ((Player)s).getDisplayName() : s.getName())
+					.replace("%customname%", s instanceof Player ? ((Player)s).getCustomName() : s.getName())
+					.replace("%message%", msg), args[1]);
 			TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Sent").toString()
 					.replace("%player%", args[1])
 					.replace("%prefix%", Loader.getTranslation("prefix")+""));
@@ -75,10 +78,10 @@ public class Mail implements CommandExecutor, TabCompleter {
 		return true;
 	}
 
-	public static void add(CommandSender s, String message, String p) {
+	public static void add(String message, String p) {
 		List<String> a = getMails(p);
 		a.add(message);
-		TheAPI.getUser(s.getName()).setAndSave("Mails", a);
+		TheAPI.getUser(p).setAndSave("Mails", a);
 	}
 
 	public static List<String> getMails(String p) {

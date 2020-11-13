@@ -18,7 +18,6 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
-import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 
 public class Fly implements CommandExecutor, TabCompleter {
 	public static HashMap<SPlayer, Integer> task = new HashMap<SPlayer, Integer>();
@@ -154,17 +153,19 @@ public class Fly implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String a, String[] args) {
 		List<String> c = new ArrayList<>();
+		if(Loader.has(s, "Fly", "Other")) {
 		if(args.length==1) {
-			if(Loader.has(s, "Fly", "Other")) {
-				List<String> list = Arrays.asList("On","Off");
+				List<String> list = new ArrayList<>();
+				list.addAll(Arrays.asList("On","Off"));
 				if(Loader.has(s, "Fly", "Other", "Other"))
-				list.addAll(NMSAPI.getOnlinePlayersNames());
-				else list.add(s.getName());
+				for (Player player : TheAPI.getOnlinePlayers())
+					list.add(player.getName());
 				c.addAll(StringUtil.copyPartialMatches(args[0], list, new ArrayList<>()));
-		}}
+		}
 		if(args.length==2)
-			if(Loader.has(s, "Fly", "Other"))
-				c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("On","Off"), new ArrayList<>()));
+			if(Loader.has(s, "Fly", "Other", "Other"))
+			c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("On","Off"), new ArrayList<>()));
+		}
 		return c;
 	}
 }

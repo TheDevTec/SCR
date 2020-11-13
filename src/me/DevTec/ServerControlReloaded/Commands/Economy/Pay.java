@@ -1,8 +1,11 @@
 package me.DevTec.ServerControlReloaded.Commands.Economy;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
@@ -12,7 +15,7 @@ import me.DevTec.ServerControlReloaded.Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 
-public class Pay implements CommandExecutor {
+public class Pay implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -59,5 +62,11 @@ public class Pay implements CommandExecutor {
 		}
 		Loader.noPerms(s, "Pay", "Economy");
 		return true;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
 	}
 }

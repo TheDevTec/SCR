@@ -1,8 +1,11 @@
 package me.DevTec.ServerControlReloaded.Commands.Warps;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
@@ -11,7 +14,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
-public class Spawn implements CommandExecutor {
+public class Spawn implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -52,5 +55,10 @@ public class Spawn implements CommandExecutor {
 		}
 		Loader.noPerms(s, "Spawn", "Warps");
 		return true;
+	}
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
 	}
 }

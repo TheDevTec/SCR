@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
 import com.google.common.collect.Lists;
 
@@ -16,7 +17,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
-public class Seen implements CommandExecutor {
+public class Seen implements CommandExecutor, TabCompleter {
 	List<String> getS(String a) {
 		if(a==null)return Lists.newArrayList();
 		List<String> l = Lists.newArrayList();
@@ -65,4 +66,9 @@ public class Seen implements CommandExecutor {
 		return true;
 	}
 
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
+	}
 }

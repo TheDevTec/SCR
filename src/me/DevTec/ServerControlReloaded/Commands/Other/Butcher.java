@@ -1,11 +1,14 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -15,7 +18,13 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
-public class Butcher implements CommandExecutor {
+public class Butcher implements CommandExecutor, TabCompleter {
+
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
+	}
 
 	public static int butcher(World a, Location w, int radius, EntityType type) {
 		if (radius == 0) {

@@ -1,14 +1,17 @@
 package me.DevTec.ServerControlReloaded.Commands.BanSystem;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 
-public class DelJail implements CommandExecutor {
+public class DelJail implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -29,6 +32,11 @@ public class DelJail implements CommandExecutor {
 		}
 		Loader.noPerms(s, "DelJail", "BanSystem");
 		return true;
+	}
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
 	}
 
 }

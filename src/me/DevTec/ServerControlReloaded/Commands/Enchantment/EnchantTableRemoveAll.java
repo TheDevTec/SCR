@@ -1,17 +1,19 @@
 package me.DevTec.ServerControlReloaded.Commands.Enchantment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 
-public class EnchantTableRemoveAll implements CommandExecutor {
+public class EnchantTableRemoveAll implements CommandExecutor, TabCompleter {
 	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -46,4 +48,9 @@ public class EnchantTableRemoveAll implements CommandExecutor {
 		return true;
 	}
 
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
+	}
 }

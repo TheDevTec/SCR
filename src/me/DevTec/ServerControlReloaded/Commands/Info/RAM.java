@@ -1,15 +1,18 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.APIs.MemoryAPI;
 
-public class RAM implements CommandExecutor {
+public class RAM implements CommandExecutor, TabCompleter {
 	private boolean clearing;
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -41,5 +44,12 @@ public class RAM implements CommandExecutor {
 		}
 		Loader.noPerms(s, "Memory", "Info");
 		return true;
+	}
+
+
+	@Override
+	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+			String arg2, String[] arg3) {
+		return null;
 	}
 }

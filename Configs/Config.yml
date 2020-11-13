@@ -279,6 +279,7 @@ Homes:
   #GroupName: amount
   
 Format:
+  Mail: "&e%player% &7: &e%message%"
   Time: "HH:mm:ss"
   Date: "dd.MM.yyyy"
   DateWithTime: "dd.MM.yyyy HH:mm:ss"
