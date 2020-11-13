@@ -34,11 +34,10 @@ public class Item implements CommandExecutor, TabCompleter{
 	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "Item", "Other")||Loader.has(s, "Item", "Other", "SetName")||Loader.has(s, "Item", "Other", "SetLore")
-				||Loader.has(s, "Item", "Other", "Flag")||Loader.has(s, "Item", "Other", "Unbreakable")
-				||Loader.has(s, "Item", "Other", "HideEnchants")||Loader.has(s, "Item", "Other", "Nbt")
+		if (Loader.has(s, "Item", "Other")&&(Loader.has(s, "Item", "Other", "SetName")||Loader.has(s, "Item", "Other", "SetLore")
+				||Loader.has(s, "Item", "Other", "Flag")||Loader.has(s, "Item", "Other", "Nbt")
 				||Loader.has(s, "Item", "Other", "Durability")||Loader.has(s, "Item", "Other", "Type")
-				||Loader.has(s, "Item", "Other", "Info")) {
+				||Loader.has(s, "Item", "Other", "Info"))) {
 			if(s instanceof Player) {
 				if(args.length==0) {
 					checker(s);
@@ -149,7 +148,7 @@ public class Item implements CommandExecutor, TabCompleter{
 					return true;
 				}
 				if(args[1].equalsIgnoreCase("flag")) {
-					
+					if(args.length==1)Loader.advancedHelp(s, "Item", "Other", "Flag");
 				}
 			}
 			return true;
@@ -159,13 +158,13 @@ public class Item implements CommandExecutor, TabCompleter{
 	}
 	
 	private void checker(CommandSender s) {
-		if(s.hasPermission("SCR.Item.Name")) Loader.advancedHelp(s, "Item","Other" ,"Name");		
-		if(s.hasPermission("SCR.Item.Lore"))for (String c : f) Loader.advancedHelp(s,"Item", "Other", "Lore", c);
-		if(s.hasPermission("SCR.Item.Flag")) Loader.advancedHelp(s, "Item","Other" ,"Flag");		
-		if(s.hasPermission("SCR.Item.Nbt")) Loader.advancedHelp(s, "Item","Other" ,"Nbt");		
-		if(s.hasPermission("SCR.Item.Durability")) Loader.advancedHelp(s, "Item","Other" ,"Durability");		
-		if(s.hasPermission("SCR.Item.Type")) Loader.advancedHelp(s, "Item","Other" ,"Name");		
-		if(s.hasPermission("SCR.Item.Info")) Loader.advancedHelp(s, "Item","Other" ,"Info");return;
+		if(Loader.has(s, "Item", "Other", "SetName")) Loader.advancedHelp(s, "Item","Other" ,"Name");		
+		if(Loader.has(s, "Item", "Other", "SetLore"))for (String c : f) Loader.advancedHelp(s,"Item", "Other", "Lore", c);
+		if(Loader.has(s, "Item", "Other", "Flag")) Loader.advancedHelp(s, "Item","Other" ,"Flag");		
+		if(Loader.has(s, "Item", "Other", "Nbt")) Loader.advancedHelp(s, "Item","Other" ,"Nbt");		
+		if(Loader.has(s, "Item", "Other", "Durability")) Loader.advancedHelp(s, "Item","Other" ,"Durability");		
+		if(Loader.has(s, "Item", "Other", "Type")) Loader.advancedHelp(s, "Item","Other" ,"Name");		
+		if(Loader.has(s, "Item", "Other", "Info")) Loader.advancedHelp(s, "Item","Other" ,"Info");return;
 	}	
 	
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
