@@ -147,7 +147,7 @@ public class Item implements CommandExecutor, TabCompleter{
 			            }
 					return true;
 				}
-				if(args[1].equalsIgnoreCase("flag")) {
+				if(args[0].equalsIgnoreCase("flag")) {
 					if(args.length==1)Loader.advancedHelp(s, "Item", "Other", "Flag");
 				}
 			}

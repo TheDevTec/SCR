@@ -35,7 +35,7 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 				world = Eco.getEconomyGroupByWorld(((Player) s).getWorld().getName());
 			Pagination<Entry<String, Double>> m = h.containsKey(world) ? h.get(world) : null;
 			if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
-				TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300); // 5min update
+				TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300); 
 				HashMap<String, Double> money = new HashMap<>();
 				for (UUID sa : TheAPI.getUsers()) {
 					if(Bukkit.getOfflinePlayer(sa).getName()==null||Bukkit.getOfflinePlayer(sa).getName().equals("ServerControlReloaded"))continue;
@@ -49,7 +49,7 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 			int page =args.length!=0?StringUtils.getInt(args[0]):1;
 			--page;
 			if(m.totalPages()<=page)page=m.totalPages()-1;
-			TheAPI.msg("&7=====» &cBalanceTop &e"+(page+1)+"/"+(m.totalPages()+1)+" &7«=====", s);
+			TheAPI.msg("&7=====» &cBalanceTop &e"+(page+1)+"/"+(m.totalPages())+" &7«=====", s);
 			int i = 0;
 			for(Entry<String, Double> sf : m.getPage(page)){
 				String key = sf.getKey();
