@@ -19,8 +19,8 @@ public class NameTagChanger {
 				if (!t.containsKey(p))
 					t.put(p, TheAPI.getNameTagAPI(p, prefix, suffix));
 				NameTagAPI n = t.get(p);
-				n.setPrefix(TabList.replace(prefix, p));
-				n.setSuffix(TabList.replace(suffix, p));
+				n.setPrefix(TabList.replace(prefix, p, true));
+				n.setSuffix(TabList.replace(suffix, p, true));
 				n.setNameTag(Staff.getGroup(p) + Tasks.ss.get(p.getName()));
 			} else {
 				String pname = p.getName();

@@ -756,6 +756,13 @@ Other:
       Other: "SCR.Command.Afk.Other"
     Help: "/Afk - Set your status to afk"
     Enabled: true
+  Skin:
+    Name: "skin"
+    Permission: "SCR.Command.Skin"
+    SubPermission:
+      Other: "SCR.Command.Skin.Other"
+    Help: "/Skin <skin> - Set your skin"
+    Enabled: true
   Butcher:
     Name: "butcher"
     Permission: "SCR.Command.Butcher"

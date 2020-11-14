@@ -53,23 +53,24 @@ public class TabList {
 
 	public static String getPrefix(Player p, boolean nametag) {
 		if (Loader.tab.exists("Groups." + Staff.getGroup(p) + "."+(nametag?"NameTag":"TabList")+".Prefix"))
-			return replace(Loader.tab.getString("Groups." + Staff.getGroup(p) + "."+(nametag?"NameTag":"TabList")+".Prefix"), p);
+			return replace(Loader.tab.getString("Groups." + Staff.getGroup(p) + "."+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
 		return null;
 	}
 
 	public static String getNameFormat(Player p) {
 		if (Loader.tab.exists("Groups." + Staff.getGroup(p) + ".Format"))
-			return replace(Loader.tab.getString("Groups." + Staff.getGroup(p) + ".Format"), p);
+			return replace(Loader.tab.getString("Groups." + Staff.getGroup(p) + ".Format"), p, true);
 		return "%tab_prefix% "+p.getName()+" %tab_suffix%";
 	}
 
 	public static String getSuffix(Player p, boolean nametag) {
 		if (Loader.tab.exists("Groups." + Staff.getGroup(p) + "."+(nametag?"NameTag":"TabList")+".Suffix"))
-			return replace(Loader.tab.getString("Groups." + Staff.getGroup(p) + "."+(nametag?"NameTag":"TabList")+".Suffix"), p);
+			return replace(Loader.tab.getString("Groups." + Staff.getGroup(p) + "."+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
 		return null;
 	}
 
-	public static String replace(String header, Player p) {
+	public static String replace(String header, Player p, boolean color) {
+		if(color)
 		header=TheAPI.colorize(header);
 		if(p!=null) {
 		if(header.contains("%money%"))
@@ -168,9 +169,9 @@ public class TabList {
 		String p2 = getPrefix(p, false);
 		String s1 = getSuffix(p, true);
 		String s2 = getSuffix(p, false);
-		String name = getNameFormat(p).replace("%tab_prefix%", (p2!=null?replace(p2, p):"")).replace("%tab_suffix%", (s2!=null?replace(s2, p):""));
+		String name = getNameFormat(p).replace("%tab_prefix%", (p2!=null?replace(p2, p, true):"")).replace("%tab_suffix%", (s2!=null?replace(s2, p, true):""));
 		TabListAPI.setTabListName(p, name);
-		NameTagChanger.setNameTag(p, p1!=null?replace(p1, p):"", s1!=null?replace(s1, p):"");
+		NameTagChanger.setNameTag(p, p1!=null?replace(p1, p, true):"", s1!=null?replace(s1, p, true):"");
 	}
 	
 	static int test;
@@ -186,7 +187,7 @@ public class TabList {
 		if (setting.tab_header || setting.tab_footer) {
 			if (Loader.tab.getStringList(path) != null) {
 				String a = StringUtils.join(Loader.tab.getStringList(path), "\n");
-				return replace(a, p);
+				return replace(a, p, true);
 			}
 		}
 		return "";

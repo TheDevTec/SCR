@@ -86,6 +86,7 @@ import me.DevTec.ServerControlReloaded.Commands.Other.Heal;
 import me.DevTec.ServerControlReloaded.Commands.Other.Kits;
 import me.DevTec.ServerControlReloaded.Commands.Other.MultiWorlds;
 import me.DevTec.ServerControlReloaded.Commands.Other.Repair;
+import me.DevTec.ServerControlReloaded.Commands.Other.Skin;
 import me.DevTec.ServerControlReloaded.Commands.Other.Skull;
 import me.DevTec.ServerControlReloaded.Commands.Other.Spawner;
 import me.DevTec.ServerControlReloaded.Commands.Other.Tab;
@@ -226,7 +227,7 @@ public class Loader extends JavaPlugin implements Listener {
 			string=string.replaceAll(placeholder.getKey(), placeholder.getValue());
 		if(sender!=null) {
 		if(sender instanceof Player)
-			string=TabList.replace(string, (Player)sender);
+			string=TabList.replace(string, (Player)sender, true);
 		else
 			string=string.replace("%player%", sender.getName())
 					.replace("%playername%", sender.getName())
@@ -779,6 +780,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "MultiWorlds",new MultiWorlds());
 		CmdC("Other", "TabList",new Tab());
 		CmdC("Other", "Hat",new Hat());
+		CmdC("Other", "Skin",new Skin());
 		CmdC("Other", "Experiences", new Exp());//treba opraviť give, set, take, (balance na sendera, nie target)
 		CmdC("Other", "Spawner", new Spawner());
 		

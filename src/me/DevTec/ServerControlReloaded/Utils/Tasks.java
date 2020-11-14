@@ -201,12 +201,12 @@ public class Tasks {
 					return;
 				List<String> l = Loader.config.getStringList("Options.AutoMessage.Messages");
 				if (setting.am_random) {
-					TheAPI.broadcastMessage(TabList.replace(TheAPI.getRandomFromList(l).toString(), null));
+					TheAPI.broadcastMessage(TabList.replace(TheAPI.getRandomFromList(l).toString(), null, true));
 				} else {
 					if (l.size() <= tests) {
 						tests = 0;
 					}
-					TheAPI.broadcastMessage(TabList.replace(l.get(tests).toString(), null));
+					TheAPI.broadcastMessage(TabList.replace(l.get(tests).toString(), null, true));
 					tests = tests + 1;
 				}
 			}

@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
@@ -30,6 +31,8 @@ public class Heal implements CommandExecutor, TabCompleter {
 				p.setRemainingAir(p.getMaximumAir());
 				p.setFireTicks(-20);
 				p.setHealth(20.0);
+				for(PotionEffect e : p.getActivePotionEffects())
+					p.removePotionEffect(e.getType());
 				Loader.sendMessages(s, "Heal.You");
 				return true;
 			}
@@ -55,6 +58,8 @@ public class Heal implements CommandExecutor, TabCompleter {
 					p.setRemainingAir(p.getMaximumAir());
 					p.setFireTicks(-20);
 					p.setHealth(20.0);
+					for(PotionEffect e : p.getActivePotionEffects())
+						p.removePotionEffect(e.getType());
 				Loader.sendMessages(s, "Heal.You");
 				return true;
 				}
@@ -66,6 +71,8 @@ public class Heal implements CommandExecutor, TabCompleter {
 				p.setRemainingAir(p.getMaximumAir());
 				p.setFireTicks(-20);
 				p.setHealth(20.0);
+				for(PotionEffect e : p.getActivePotionEffects())
+					p.removePotionEffect(e.getType());
 				Loader.sendMessages(s, "Heal.Other.Sender", Placeholder.c().replace("%player%", p.getName())
 						.replace("%playername%", p.getDisplayName()));
 				Loader.sendMessages(p, "Heal.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
