@@ -102,7 +102,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 			}
 			if (args.length == 3) {
 				if (Loader.has(s, "Tp","TpSystem","Location")) {
-					Player p = TheAPI.getPlayer(args[0]);
+					Player p = (Player)s;
 					if (p == null) {
 						if (StringUtils.isInt(args[0]) && StringUtils.isInt(args[1])
 								&& StringUtils.isInt(args[2])) {
@@ -111,9 +111,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 							Loader.sendMessages(p, "TpSystem.Tp.Location.YouToLocation", Placeholder.c()
 									.replace("%x%", String.format("%2.02f", StringUtils.getDouble(args[0])).replaceFirst("\\.00", ""))
 									.replace("%y%", String.format("%2.02f", StringUtils.getDouble(args[1])).replaceFirst("\\.00", ""))
-									.replace("%z%", String.format("%2.02f", StringUtils.getDouble(args[2])).replaceFirst("\\.00", ""))
-									.replace("%yaw%", "0")
-									.replace("%pitch%", "0"));
+									.replace("%z%", String.format("%2.02f", StringUtils.getDouble(args[2])).replaceFirst("\\.00", "")));
 							API.setBack(p);
 							if (setting.tp_safe)
 								API.safeTeleport(p,new Location(p.getWorld(), StringUtils.getDouble(args[0]),
@@ -123,7 +121,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 									StringUtils.getDouble(args[1]),
 									StringUtils.getDouble(args[2]), 0, 0));
 							return true;
-							}}}
+							}}}else{Loader.Help(s, "Tp", "TpSystem");return true;}
 							Loader.Help(s, "Tp", "TpSystem");
 							return true;
 				}
@@ -131,7 +129,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args.length == 4) {
-				if (Loader.has(s, "Tp","TpSystem","Location")) {
+				if (Loader.has(s, "Tp","TpSystem","LocationOther")) {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p != null) {
 						if (StringUtils.isDouble(args[1]) && StringUtils.isDouble(args[2])
@@ -139,15 +137,11 @@ public class Tp implements CommandExecutor, TabCompleter {
 							Loader.sendMessages(s, "TpSystem.Tp.Location.PlayerToLocation", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 									.replace("%x%", String.format("%2.02f", StringUtils.getDouble(args[1])).replaceFirst("\\.00", ""))
 									.replace("%y%", String.format("%2.02f", StringUtils.getDouble(args[2])).replaceFirst("\\.00", ""))
-									.replace("%z%", String.format("%2.02f", StringUtils.getDouble(args[3])).replaceFirst("\\.00", ""))
-									.replace("%yaw%", "0")
-									.replace("%pitch%", "0"));
+									.replace("%z%", String.format("%2.02f", StringUtils.getDouble(args[3])).replaceFirst("\\.00", "")));
 							Loader.sendMessages(p, "TpSystem.Tp.Location.YouToLocation", Placeholder.c()
 									.replace("%x%", String.format("%2.02f", StringUtils.getDouble(args[1])).replaceFirst("\\.00", ""))
 									.replace("%y%", String.format("%2.02f", StringUtils.getDouble(args[2])).replaceFirst("\\.00", ""))
-									.replace("%z%", String.format("%2.02f", StringUtils.getDouble(args[3])).replaceFirst("\\.00", ""))
-									.replace("%yaw%", "0")
-									.replace("%pitch%", "0"));
+									.replace("%z%", String.format("%2.02f", StringUtils.getDouble(args[3])).replaceFirst("\\.00", "")));
 							API.setBack(p);
 							if (setting.tp_safe)
 								API.safeTeleport(p,new Location(p.getWorld(), StringUtils.getDouble(args[1]),
@@ -158,14 +152,20 @@ public class Tp implements CommandExecutor, TabCompleter {
 									StringUtils.getDouble(args[3]), 0, 0));
 							return true;
 						}
+					}else {
+						Loader.Help(s, "Tp", "TpSystem");
+						return true;
 					}
 					Loader.Help(s, "Tp", "TpSystem");
 					return true;
 				}
-				Loader.noPerms(s, "Tp", "TpSystem","Location");
+				Loader.noPerms(s, "Tp", "TpSystem","LocationOther");
 				return true;
 			}
-			if (args.length == 5) {
+			if(args.length==4&&StringUtils.isDouble(args[1])&&StringUtils.isDouble(args[2])&&StringUtils.isDouble(args[3])&&StringUtils.isFloat(args[4])) {
+				
+			}
+			/*if (args.length == 5) {
 				if (Loader.has(s, "Tp","TpSystem","Location")) {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p != null) {
@@ -235,7 +235,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 				Loader.noPerms(s, "Tp", "TpSystem","Location");
 				return true;
 			}
-			return true;
+			return true;*/
 		}
 		Loader.noPerms(s, "Tp", "TpSystem");
 		return true;
