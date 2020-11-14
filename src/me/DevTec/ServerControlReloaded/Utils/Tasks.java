@@ -30,8 +30,8 @@ public class Tasks {
 		@EventHandler
 		public void onTag(ServerListPingEvent e) {
 			if (setting.motd) {
-				e.setMotd(PlaceholderAPI.setPlaceholders(null,Loader.config.getString((!setting.lock_server || setting.lock_server && !setting.motd_maintenance)?"Options.ServerList.MOTD.Text.Normal":"Options.ServerList.MOTD.Text.Maintenance")
-						.replace("%next%", "\n").replace("%line%", "\n")));
+				e.setMotd(TheAPI.colorize(PlaceholderAPI.setPlaceholders(null,Loader.config.getString((!setting.lock_server || setting.lock_server && !setting.motd_maintenance)?"Options.ServerList.MOTD.Text.Normal":"Options.ServerList.MOTD.Text.Maintenance")
+						.replace("%next%", "\n").replace("%line%", "\n"))));
 			}
 		}
 	};
