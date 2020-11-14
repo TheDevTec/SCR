@@ -3,7 +3,6 @@ package me.DevTec.ServerControlReloaded.Events;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
@@ -21,17 +20,15 @@ import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class ChatFormat implements Listener {
 	static Loader plugin = Loader.getInstance;
-	String m;
 
 	public static String r(Player p, String s, String msg) {
 		s=s.replace("&u", "&<U>");
+		s = TabList.replace(s, p, false);
 		if (msg != null)
 			s=s.replace("%message%", r(msg.replace("&u", "&<UU>"), p));
 		s=s.replace("&<U>", "&u");
 		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.Rainbow")))
-			s=s.replace("&<UU>", "&u");
-		s=s.replace("§", "&");
-		s = TabList.replace(s, p);
+			s=TheAPI.colorize(s.replace("&<UU>", "&u"));
 		s=s.replace("&<UU>", "&u");
 		return s;
 	}
@@ -43,7 +40,7 @@ public class ChatFormat implements Listener {
 			return msg;
 	}
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler
 	public void set(PlayerChatEvent e) {
 		Player p = e.getPlayer();
 		Loader.setupChatFormat(p);
@@ -67,23 +64,19 @@ public class ChatFormat implements Listener {
 			}
 		}
 		String msg = r(e.getMessage(), p);
-		msg = msg.replace("%", "%%");
 		e.setMessage(msg);
-		if (setting.lock_chat) {
-			if (!p.hasPermission("ServerControl.ChatLock")) {
-				e.setCancelled(true);
-				Loader.sendMessages(p, "ChatLock.IsLocked");
-				Loader.sendBroadcasts(p, "ChatLock.Message", Placeholder.c().add("%player%", p.getName())
-						.add("%playername%", p.getDisplayName()).add("%message%", e.getMessage()), "ServerControl.ChatLock.Notify");
-			}
+		if (setting.lock_chat && !p.hasPermission("ServerControl.ChatLock")) {
+			e.setCancelled(true);
+			Loader.sendMessages(p, "ChatLock.IsLocked");
+			Loader.sendBroadcasts(p, "ChatLock.Message", Placeholder.c().add("%player%", p.getName())
+					.add("%playername%", p.getDisplayName()).add("%message%", e.getMessage()), "ServerControl.ChatLock.Notify");
+			return;
 		}
-		if (Loader.config.getBoolean("Chat-Groups-Enabled") == true) {
-			if (Loader.config.getString("Chat-Groups." + Loader.get(p,Item.GROUP) + ".Chat") != null) {
-				m = Loader.config.getString("Chat-Groups." +Loader.get(p,Item.GROUP) + ".Chat");
-				String format = PlaceholderAPI.setPlaceholders(p,
-						Loader.config.getString("Chat-Groups." + Loader.get(p,Item.GROUP) + ".Chat"));
-				if (format != null)
-				e.setFormat(r(p, format, msg));
+		if (Loader.config.getBoolean("Chat-Groups-Enabled")) {
+			String format = PlaceholderAPI.setPlaceholders(p, Loader.config.getString("Chat-Groups." + Loader.get(p,Item.GROUP) + ".Chat"));
+			if (format != null) {
+				format=(r(p, format, msg));
+				e.setFormat(format.replace("%", "%%"));
 			}
 		}
 

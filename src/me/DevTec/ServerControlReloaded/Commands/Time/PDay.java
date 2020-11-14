@@ -27,13 +27,13 @@ public class PDay implements CommandExecutor, TabCompleter {
 				Loader.noPerms(s, "PlayerDay", "Time");
 				return true;
 			}
-			Loader.Help(s, "/Day <world>", "Time");
+			Loader.Help(s, "PlayerDay", "Time");
 			return true;
 		}
 		if (args.length == 1) {
 			if (Loader.has(s, "PlayerDay", "Time", "Other")) {
 				if (TheAPI.getPlayer(args[0]) != null) {
-					TheAPI.getPlayer(args[0]).setPlayerTime(1000, true);
+					TheAPI.getPlayer(args[0]).setPlayerTime(0, true);
 					Loader.sendMessages(s, "Time.PDay", Placeholder.c().add("%world%", ((Player) s).getLocation().getWorld().getName())
 							.add("%player%", args[0]));
 					return true;

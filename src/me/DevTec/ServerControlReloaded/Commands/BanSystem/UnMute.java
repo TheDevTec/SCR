@@ -27,7 +27,7 @@ public class UnMute implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			PlayerBanList p = PunishmentAPI.getBanList(args[0]);
-			if (p.isBanned() || p.isTempBanned()) {
+			if (p.isMuted() || p.isTempMuted()) {
 				PunishmentAPI.unmute(args[0]);
 				Loader.sendMessages(s, "BanSystem.UnMute.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]));

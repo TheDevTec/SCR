@@ -12,6 +12,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class EnchantTableRemoveAll implements CommandExecutor, TabCompleter {
 	
@@ -23,18 +25,16 @@ public class EnchantTableRemoveAll implements CommandExecutor, TabCompleter {
 					Player p = (Player) s;
 					Material a = p.getItemInHand().getType();
 					if (a != Material.AIR) {
-						ArrayList<String> enchants = new ArrayList<String>();
-						if (p.getItemInHand().getEnchantments().isEmpty() == false) {
-
+						List<String> enchants = new ArrayList<>();
+						if (!p.getItemInHand().getEnchantments().isEmpty()) {
 							for (Enchantment ea : p.getItemInHand().getEnchantments().keySet()) {
 								enchants.add(ea.getName());
 								p.getItemInHand().removeEnchantment(ea);
 
 							}
-							Loader.sendMessages(s, "Enchant.Remove.All");
+							Loader.sendMessages(s, "Enchant.Remove.All", Placeholder.c().add("%enchats%", StringUtils.join(enchants, ", ")));
 							return true;
 						}
-
 						Loader.sendMessages(s, "Missing.Enchant.NoEnchant");
 						return true;
 					}

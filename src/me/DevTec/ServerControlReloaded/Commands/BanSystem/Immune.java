@@ -24,14 +24,13 @@ public class Immune implements CommandExecutor, TabCompleter {
 				Player p = (Player) s;
 				boolean im = TheAPI.getUser(p).getBoolean("Immune");
 				TheAPI.getUser(p).setAndSave("Immune", !im);
-				String aw = "Immune." + (im ? "Disable.Other." : "Enabled.Other.");
-				Loader.sendMessages(s, aw+"You");
+				Loader.sendMessages(s, "Immune." + (im ? "Disabled.You" : "Enabled.You"));
 				return true;
 			}
 			if (Loader.has(s, "Immune", "BanSystem", "Other")) {
 				boolean im = TheAPI.getUser(args[0]).getBoolean("Immune");
 				TheAPI.getUser(args[0]).setAndSave("Immune", !im);
-				String aw = "Immune." + (im ? "Disable.Other." : "Enabled.Other.");
+				String aw = "Immune." + (im ? "Disabled.Other." : "Enabled.Other.");
 				Loader.sendMessages(s, aw+"Sender");
 				if(TheAPI.getPlayerOrNull(args[0])!=null)
 				Loader.sendMessages(TheAPI.getPlayerOrNull(args[0]), aw+"Receiver");

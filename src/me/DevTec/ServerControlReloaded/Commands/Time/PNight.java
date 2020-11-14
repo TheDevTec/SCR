@@ -27,13 +27,13 @@ public class PNight implements CommandExecutor, TabCompleter {
 				Loader.noPerms(s, "PlayerNight", "Time");
 				return true;
 			}
-			Loader.Help(s, "/Night <world>", "Time");
+			Loader.Help(s, "PlayerNight", "Time");
 			return true;
 		}
 		if (args.length == 1) {
 			if (Loader.has(s, "PlayerNight", "Time", "Other")) {
 				if (TheAPI.getPlayer(args[0]) != null) {
-					TheAPI.getPlayer(args[0]).setPlayerTime(13000, true);
+					TheAPI.getPlayer(args[0]).setPlayerTime(12000, true);
 					Loader.sendMessages(s, "Time.PNight", Placeholder.c().add("%world%", ((Player) s).getLocation().getWorld().getName())
 							.add("%player%", args[0]));
 					return true;

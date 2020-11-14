@@ -36,7 +36,7 @@ public class ScoreboardStats {
 		a.setDisplayName(s);
 		int line = b.size();
 		for (String ss : b)
-			a.setLine(--line,PlaceholderAPI.setPlaceholders(p, TabList.replace(ss, p)));
+			a.setLine(--line,PlaceholderAPI.setPlaceholders(p, TabList.replace(ss, p, true)));
 	}
 	
 	public static void removeScoreboard() {

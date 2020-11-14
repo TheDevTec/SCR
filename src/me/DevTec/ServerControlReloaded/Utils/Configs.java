@@ -47,7 +47,7 @@ public class Configs {
 		    	Config c = new Config("ServerControlReloaded/"+entry.getName().replaceFirst("Configs/", ""));
 		    	boolean add = false;
 		    	for(String sr : data.getKeys(true)) {
-		    		if(!c.exists(sr) || c.exists(sr) && !c.isSection(sr)) {
+		    		if(!c.exists(sr) || c.get(sr)==null && data.get(sr)!=null) {
 		    			add=true;
 		    			c.set(sr, data.get(sr));
 		    			c.setComments(sr, data.getComments(sr));

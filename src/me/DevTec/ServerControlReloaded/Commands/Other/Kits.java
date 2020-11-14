@@ -21,7 +21,7 @@ import me.DevTec.TheAPI.CooldownAPI.CooldownAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
-public class KitCmd implements CommandExecutor, TabCompleter {
+public class Kits implements CommandExecutor, TabCompleter {
 	public List<String> kits(CommandSender p) {
 		List<String> list = new ArrayList<String>();
 		for (String name : getKits())
@@ -38,13 +38,17 @@ public class KitCmd implements CommandExecutor, TabCompleter {
 		if(kit==null)return;
 			if (!cooldown) {
 				if (!economy) {
+					if(kit.getItems()!=null)
 					TheAPI.giveItem(p, kit.getItems());
+					if(kit.getItemsWithSlots()!=null)
 					for(Entry<Integer, ItemStack> s : kit.getItemsWithSlots().entrySet())
 						p.getInventory().setItem(s.getKey(), s.getValue());
 					return;
 				} else {
 					if (EconomyAPI.has(p, kit.getCost())) {
+						if(kit.getItems()!=null)
 						TheAPI.giveItem(p, kit.getItems());
+						if(kit.getItemsWithSlots()!=null)
 						for(Entry<Integer, ItemStack> s : kit.getItemsWithSlots().entrySet())
 							p.getInventory().setItem(s.getKey(), s.getValue());
 						if(messages)
@@ -65,7 +69,9 @@ public class KitCmd implements CommandExecutor, TabCompleter {
 							Loader.sendMessages(p, "Kits.Cooldown", Placeholder.c().add("%kit%", kit.getName()).add("%time%", StringUtils.setTimeToString(a.getTimeToExpire("Kit." + kit.getName()))));
 							return;
 						}
+						if(kit.getItems()!=null)
 						TheAPI.giveItem(p, kit.getItems());
+						if(kit.getItemsWithSlots()!=null)
 						for(Entry<Integer, ItemStack> s : kit.getItemsWithSlots().entrySet())
 							p.getInventory().setItem(s.getKey(), s.getValue());
 						if(messages)
@@ -84,7 +90,9 @@ public class KitCmd implements CommandExecutor, TabCompleter {
 						Loader.sendMessages(p, "Kits.Cooldown", Placeholder.c().add("%kit%", kit.getName()).add("%time%", StringUtils.setTimeToString(a.getTimeToExpire("Kit." + kit.getName()))));
 						return;
 					}
+					if(kit.getItems()!=null)
 					TheAPI.giveItem(p, kit.getItems());
+					if(kit.getItemsWithSlots()!=null)
 					for(Entry<Integer, ItemStack> s : kit.getItemsWithSlots().entrySet())
 						p.getInventory().setItem(s.getKey(), s.getValue());
 					if(messages)
