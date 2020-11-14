@@ -735,7 +735,7 @@ Inventory:
     ClearConfirm: "%prefix% Please confirm your request to clear inventory"
     You: "%prefix% You have cleared your inventory"
     Other:
-      Sender: "%prefix% You have cleared &e%player%&7's invenotory"
+      Sender: "%prefix% You have cleared &e%player%&7's inventory"
       Receiver: "%prefix% Your inventory has been cleared by &e%player%"
     Undo: "%prefix% You have retrieved your inventory"
     CantUndo: "%prefix% Can't retrive your inventory"
