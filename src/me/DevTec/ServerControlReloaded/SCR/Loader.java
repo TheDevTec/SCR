@@ -57,6 +57,7 @@ import me.DevTec.ServerControlReloaded.Commands.Info.WhoIs;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.ClearConfirmToggle;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.ClearInv;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.CloseInventory;
+import me.DevTec.ServerControlReloaded.Commands.Inventory.Craft;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.EnderChest;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.EnderSee;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.Invsee;
@@ -75,7 +76,6 @@ import me.DevTec.ServerControlReloaded.Commands.Nickname.NickReset;
 import me.DevTec.ServerControlReloaded.Commands.Other.AFK;
 import me.DevTec.ServerControlReloaded.Commands.Other.Butcher;
 import me.DevTec.ServerControlReloaded.Commands.Other.ChatLock;
-import me.DevTec.ServerControlReloaded.Commands.Other.Craft;
 import me.DevTec.ServerControlReloaded.Commands.Other.Exp;
 import me.DevTec.ServerControlReloaded.Commands.Other.Feed;
 import me.DevTec.ServerControlReloaded.Commands.Other.Fly;
@@ -83,7 +83,7 @@ import me.DevTec.ServerControlReloaded.Commands.Other.Give;
 import me.DevTec.ServerControlReloaded.Commands.Other.God;
 import me.DevTec.ServerControlReloaded.Commands.Other.Hat;
 import me.DevTec.ServerControlReloaded.Commands.Other.Heal;
-import me.DevTec.ServerControlReloaded.Commands.Other.KitCmd;
+import me.DevTec.ServerControlReloaded.Commands.Other.Kits;
 import me.DevTec.ServerControlReloaded.Commands.Other.MultiWorlds;
 import me.DevTec.ServerControlReloaded.Commands.Other.Repair;
 import me.DevTec.ServerControlReloaded.Commands.Other.Skull;
@@ -687,8 +687,8 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Weather", "Sun",new Sun());
 		CmdC("Weather", "Thunder",new Thunder());
 		CmdC("Weather", "Rain",new Rain());
-		CmdC("Weather", "PSun",new PSun());
-		CmdC("Weather", "PRain",new PRain());
+		CmdC("Weather", "PlayerSun",new PSun());
+		CmdC("Weather", "PlayerRain",new PRain());
 		
 		//Time
 		CmdC("Time", "Day",new Day());
@@ -739,6 +739,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Inventory", "ClearInventory",new ClearInv());
 		CmdC("Inventory", "ClearConfirmToggle", new ClearConfirmToggle());
 		CmdC("Inventory", "Inventory", new Invsee());
+		CmdC("Inventory", "Workbench", new Craft());
 		
 		//Enchantment
 		CmdC("Enchantment", "Enchant", new EnchantTable());
@@ -767,8 +768,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "Trash", new Trash());
 		CmdC("Other", "Thor", new Thor());
 		CmdC("Other", "Give",new Give());
-		CmdC("Other", "Kits",new KitCmd());
-		CmdC("Other", "Craft", new Craft());
+		CmdC("Other", "Kits",new Kits());
 		CmdC("Other", "Skull",new Skull());
 		CmdC("Other", "God",new God());
 		CmdC("Other", "Heal", new Heal());
@@ -783,8 +783,8 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "Spawner", new Spawner());
 		
 		//Nickname
-		CmdC("Nickname", "Nick", new Nick());
-		CmdC("Nickname", "NickReset", new NickReset());
+		CmdC("Nickname", "Nickname", new Nick());
+		CmdC("Nickname", "NicknameReset", new NickReset());
 	}
 
 	private void EventC(Listener l) {

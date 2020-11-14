@@ -36,7 +36,7 @@ public class Night implements CommandExecutor, TabCompleter {
 		if (args.length == 1) {
 			if (Loader.has(s, "Night", "Time")) {
 				if (Bukkit.getWorld(args[0]) != null) {
-					Bukkit.getWorld(args[0]).setTime(13000);
+					Bukkit.getWorld(args[0]).setTime(12000);
 					Loader.sendMessages(s, "Time.Night", Placeholder.c().add("%world%", args[0]));
 					return true;
 				}

@@ -10,7 +10,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -52,13 +51,14 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 					if(EnchantmentAPI.byName(args[0]) != null) {
 					if (a != Material.AIR) {
 							if (p.getItemInHand().getEnchantments().containsKey(EnchantmentAPI.byName(args[0]).getEnchantment())) {
-								e(p.getItemInHand(), args[0], s);
+								p.getItemInHand().removeEnchantment(EnchantmentAPI.byName(args[0]).getEnchantment());
+								Loader.sendMessages(s, "Enchant.Remove.One", Placeholder.c().add("%enchant%", args[0]));
 								return true;
 							}
-						Loader.sendMessages(s, "Missing.Enchant.NoEnchant");
+						Loader.sendMessages(s, p.getItemInHand().getEnchantments().isEmpty()?"Missing.Enchant.NoEnchant":"Missing.Enchant.DontContains", Placeholder.c().add("%enchant%", args[0]));
 						return true;
 					}
-					Loader.sendMessages(s, "Missing.HandEmpty");//t
+					Loader.sendMessages(s, "Missing.HandEmpty");
 					return true;
 					}
 					Loader.sendMessages(s, "Missing.Enchant.NotExist", Placeholder.c()
@@ -70,18 +70,7 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 		Loader.noPerms(s, "EnchantRemove", "Enchantment");
 		return true;
 	}
-
-	public void e(ItemStack hand, String enechant, CommandSender s) {
-		try {
-			Loader.sendMessages(s, "Enchant.Remove.One", Placeholder.c().add("%enchant%", enechant));
-			return;
-		} catch (Exception error) {
-			Loader.sendMessages(s, "Missing.Enchant.NotExist", Placeholder.c()
-					.add("%enchant%", enechant));
-			return;
-		}
-	}
-
+	
 	public boolean contains(String s, String[] args) {
 		if (args[0].equalsIgnoreCase(s))
 			return true;

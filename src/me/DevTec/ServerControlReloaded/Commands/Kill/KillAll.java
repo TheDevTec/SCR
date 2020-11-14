@@ -21,9 +21,9 @@ public class KillAll implements CommandExecutor, TabCompleter {
 		if (Loader.has(s, "KillAll", "Kill")) {
 			List<String> pl = new ArrayList<String>();
 			for (Player p : TheAPI.getOnlinePlayers()) {
-				boolean i = p.isDead();
+				boolean i = p.isDead() || p.getHealth()==0;
 				p.setHealth(0);
-				if (p.isDead() && !i) {
+				if ((p.isDead() || p.getHealth()==0) && !i) {
 					pl.add(p.getName());
 				}
 			}

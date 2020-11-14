@@ -360,6 +360,16 @@ Inventory:
     Permission: "SCR.Command.Inventory"
     Help: "/Inventory <player> - Open player's inventory"
     Enabled: true
+  Workbench:
+    Name: "workbench"
+    Aliases:
+    - "wb"
+    - "craft"
+    - "crafting"
+    - "craftingtable"
+    Permission: "SCR.Command.Workbench"
+    Help: "/Workbench <player> - Opens player virtual crafting table"
+    Enabled: true
     
 GameMode:
   GameMode:
@@ -491,7 +501,7 @@ Message:
     Permission: "SCR.Command.PrivateMessage"
     Help: "/Privatemessage <player> <message> - Send private message to player"
     Enabled: true
-  ReplyPrivateMsg:
+  Reply:
     Name: "reply"
     Aliases:
     - "r"
@@ -503,6 +513,7 @@ Message:
     Permission: "SCR.Command.Sudo"
     Help: "/Sudo <player> <message/command> - Send message or command for player"
     Enabled: true
+    
 Kill:
   Kill:
     Name: "kill"
@@ -519,6 +530,7 @@ Kill:
     Permission: "SCR.Command.Suicide"
     Help: "/Suicide - Suicide yourself"
     Enabled: true
+    
 Nickname:
   Nickname:
     Name: "nickname"
@@ -534,6 +546,7 @@ Nickname:
     Permission: "SCR.Command.NicknameReset"
     Help: "/NicknameReset - Reset your nickname to original"
     Enabled: true
+    
 Speed:
   WalkSpeed:
     Name: "walkspeed"
@@ -553,6 +566,7 @@ Speed:
       Other: "SCR.Command.FlySpeed.Other"
     Help: "/FlySpeed <number> - Change speed of flight"
     Enabled: true
+    
 Time:
   Day:
     Name: "day"
@@ -564,7 +578,7 @@ Time:
     Permission: "SCR.Command.Night"
     Help: "/Night <world> - Change time to night in your world, or targeted"
     Enabled: true
-  PNight:
+  PlayerNight:
     Name: "playernight"
     Aliases:
     - "pnight"
@@ -573,7 +587,7 @@ Time:
       Other: "SCR.Command.PlayerNight.Other"
     Help: "/PlayerNight - Change your time to night"
     Enabled: true
-  PDay:
+  PlayerDay:
     Name: "playerday"
     Aliases:
     - "pday"
@@ -582,6 +596,7 @@ Time:
       Other: "SCR.Command.PlayerDay.Other"
     Help: "/PlayerDay - Change your time to day"
     Enabled: true
+    
 Warps:
   Back:
     Name: "back"
@@ -646,6 +661,7 @@ Warps:
       PerWarp: "SCR.Command.Warp.%warp%"
     Help: "/Warp <warp> - Teleports you to warp"
     Enabled: true
+    
 Info:
   ChatFormat:
     Name: "chatformat"
@@ -731,6 +747,7 @@ Info:
     Permission: "SCR.Command.WhoIs"
     Help: "/WhoIs <player> - Shows info about player"
     Enabled: true
+    
 Other:
   AFK:
     Name: "afk"
@@ -750,16 +767,6 @@ Other:
     - "cl"
     Permission: "SCR.Command.ChatLock"
     Help: "/ChatLock - Lock the server chat"
-    Enabled: true
-  Craft:
-    Name: "craft"
-    Aliases:
-    - "wb"
-    - "workbench"
-    - "crafting"
-    - "craftingtable"
-    Permission: "SCR.Command.Craft"
-    Help: "/Craft - Opens virtual crafting table"
     Enabled: true
   Experiences:
     Name: "experiences"
@@ -916,25 +923,9 @@ Other:
     Name: "vanish"
     Aliases:
     - "v"
+    - "invisible"
     Permission: "SCR.Command.Vanish"
     SubPermission:
       Other: "SCR.Command.Vanish.Other"
     Help: "/Vanish - Set vanish mode to on/off"
     Enabled: true
-    
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  

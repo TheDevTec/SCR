@@ -16,7 +16,7 @@ public class NickReset implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "Nickname", "Nickname")) {
+		if (Loader.has(s, "NicknameReset", "NicknameReset")) {
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					TheAPI.getUser(s.getName()).setAndSave("DisplayName", null);
@@ -27,7 +27,7 @@ public class NickReset implements CommandExecutor, TabCompleter {
 							.add("%playername%", ((Player) s).getDisplayName()));
 					return true;
 				}
-				Loader.Help(s, "Nickname", "Nickname");
+				Loader.Help(s, "NicknameReset", "NicknameReset");
 				return true;
 			}
 			String a = args[0];
@@ -43,7 +43,7 @@ public class NickReset implements CommandExecutor, TabCompleter {
 					.add("%playername%", a));
 			return true;
 		}
-		Loader.noPerms(s, "Nickname", "Nickname");
+		Loader.noPerms(s, "NicknameReset", "NicknameReset");
 		return true;
 	}
 	@Override

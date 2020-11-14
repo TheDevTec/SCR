@@ -20,9 +20,9 @@ public class Kill implements CommandExecutor, TabCompleter {
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
-					boolean i = p.isDead();
+					boolean i = p.isDead() || p.getHealth()==0;
 					p.setHealth(0);
-					if (p.isDead() && !i)
+					if ((p.isDead() || p.getHealth()==0) && !i)
 						Loader.sendMessages(s, "Kill.Killed", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName()));
 					return true;
 				} else {
@@ -35,10 +35,11 @@ public class Kill implements CommandExecutor, TabCompleter {
 				Loader.notOnline(s,args[0]);
 				return true;
 			}
-			boolean i = p.isDead();
+			boolean i = p.isDead() || p.getHealth()==0;
 			p.setHealth(0);
-			if (p.isDead() && !i)
+			if ((p.isDead() || p.getHealth()==0) && !i)
 				Loader.sendMessages(s, "Kill.Killed", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName()));
+			return true;
 		}
 		Loader.noPerms(s, "Kill", "Kill");
 		return true;

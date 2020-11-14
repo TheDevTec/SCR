@@ -188,6 +188,9 @@ BanSystem:
   Mute:
     Sender: "%prefix% You have muted &e%player% &7for &r%reason%"
     Admins: "%prefix% &e%operator% &7muted &e%player% &7for &r%reason%"
+  Kick:
+    Sender: "%prefix% You have kicked &e%player% &7for &r%reason%"
+    Admins: "%prefix% &e%operator% &7kicked &e%player% &7for &r%reason%"
   UnMute:
     Sender: "%prefix% You have unmuted &e%player%"
     Admins: "%prefix% &e%operator% &7unmuted &e%player%"
@@ -723,6 +726,39 @@ ChatFormat:
   - "%prefix% Group: &e%group%"
   - "%prefix% Name: &e%name%"
   - "%prefix% Chat: &e%chat%"
+  
+Inventory:
+  ClearConfirmToggle:
+    Enabled: "%prefix% Disabled require to confirm clear inventory"
+    Disabled: "%prefix% Enabled require to confirm clear inventory"
+  ClearInventory:
+    Clear:
+      You:
+      Other:
+        Sender:
+        Receiver:
+    Undo:
+  CloseInventory:
+    You: "%prefix% Closing your open inventory"
+    Other:
+      Sender: "%prefix% Closing open inventory of &e%player%"
+      Receiver: "%prefix% Closing your open inventory"
+  EnderChest:
+    You: "%prefix% Opening EnderChest"
+    Other:
+      Sender: "%prefix% Opening EnderChest for &e%player%"
+      Receiver: "%prefix% Opening EnderChest"
+  EnderSee:
+    Sender: "%prefix% Opening EnderChest of &e%player%"
+    Receiver: ""
+  Invsee:
+    Sender: "%prefix% Opening Inventory of &e%player%"
+    Receiver: ""
+  Workbench:
+    You: "%prefix% Opening Workbench"
+    Other:
+      Sender: "%prefix% Opening Workbench for &e%player%"
+      Receiver: "%prefix% Opening Workbench"
   
 Trash: "&7Trash"
   

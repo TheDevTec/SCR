@@ -17,11 +17,11 @@ public class ReplyPrivateMes implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "PrivateMessage", "Message")) {
+		if (Loader.has(s, "Reply", "Message")) {
 			if (args.length == 0) {
 				Loader.Help(s, "Reply", "Message");
+				return true;
 			}
-			if (args.length >= 1) {
 				String name = "";
 
 				if (s instanceof Player == false)
@@ -72,28 +72,25 @@ public class ReplyPrivateMes implements CommandExecutor, TabCompleter {
 							s.sendMessage(to);
 							Bukkit.getConsoleSender().sendMessage(from);
 							return true;
-						} else {
-							Player p = TheAPI.getPlayer(TheAPI.getUser(s.getName()).getString("Reply"));
-							if (p != null) {
-								from = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageFrom")
-										.replace("%from%", s.getName()).replace("%to%", p.getName()));
-								to = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageTo")
-										.replace("%from%", s.getName()).replace("%to%", p.getName()));
-								to = to.replace("%message%", msg);
-								from = from.replace("%message%", msg);
-								TheAPI.getUser(p).setAndSave("Reply", s.getName());
-								s.sendMessage(to);
-								p.sendMessage(from);
-								return true;
-							}
-							Loader.notOnline(s, TheAPI.getUser(s.getName()).getString("Reply"));
+						}
+						Player p = TheAPI.getPlayer(TheAPI.getUser(s.getName()).getString("Reply"));
+						if (p != null) {
+							from = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageFrom")
+									.replace("%from%", s.getName()).replace("%to%", p.getName()));
+							to = TheAPI.colorize(Loader.config.getString("Format.PrivateMessageTo")
+									.replace("%from%", s.getName()).replace("%to%", p.getName()));
+							to = to.replace("%message%", msg);
+							from = from.replace("%message%", msg);
+							TheAPI.getUser(p).setAndSave("Reply", s.getName());
+							s.sendMessage(to);
+							p.sendMessage(from);
 							return true;
 						}
+						Loader.notOnline(s, TheAPI.getUser(s.getName()).getString("Reply"));
+						return true;
 					}
-				}
-				Loader.sendMessages(s, "NoReply");
-				return true;
 			}
+			Loader.sendMessages(s, "NoReply");
 			return true;
 		}
 		Loader.noPerms(s, "Reply", "Message");

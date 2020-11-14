@@ -19,7 +19,7 @@ public class CloseInventory implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "CloseInventory", "Inventory")) {
 			if (args.length == 0) {
-				Loader.Help(s, "/closeinv <player> ", "Inventory");
+				Loader.Help(s, "CloseInventory", "Inventory");
 				return true;
 			}
 			if (args.length == 1) {

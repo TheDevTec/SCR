@@ -16,12 +16,12 @@ public class ClearConfirmToggle implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "ClearInventory", "Inventory")) {
+		if (Loader.has(s, "ClearConfirmToggle", "Inventory")) {
 			if (args.length == 0) {
 				if (s instanceof Player == false) {
 					return true;
 				} else {
-					if (Loader.has(s, "ClearInventory", "Inventory", "Other")) {
+					if (Loader.has(s, "ClearConfirmToggle", "Inventory", "Other")) {
 						User d = TheAPI.getUser(s.getName());
 						if (d.getBoolean("ClearInvConfirm") == true) {
 							d.setAndSave("ClearInvConfirm", false);
@@ -37,7 +37,7 @@ public class ClearConfirmToggle implements CommandExecutor, TabCompleter {
 				}
 			}
 		}
-		Loader.noPerms(s, "ClearInventory", "Inventory");
+		Loader.noPerms(s, "ClearConfirmToggle", "Inventory");
 		return true;
 	}
 	@Override

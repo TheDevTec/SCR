@@ -1,4 +1,4 @@
-package me.DevTec.ServerControlReloaded.Commands.Other;
+package me.DevTec.ServerControlReloaded.Commands.Inventory;
 
 import java.util.List;
 
