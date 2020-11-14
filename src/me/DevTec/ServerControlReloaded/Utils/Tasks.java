@@ -11,10 +11,13 @@ import org.bukkit.entity.Player;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.ConfigAPI.Config;
+import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.Listener.EventHandler;
+import me.DevTec.TheAPI.Utils.Listener.Listener;
+import me.DevTec.TheAPI.Utils.Listener.Events.ServerListPingEvent;
 
 public class Tasks {
 	
@@ -23,11 +26,21 @@ public class Tasks {
 	static HashMap<String, String> ss = new HashMap<String, String>();
 	static Loader a;
 	static int tests;
+	static Listener l = new Listener() {
+		@EventHandler
+		public void onTag(ServerListPingEvent e) {
+			if (setting.motd) {
+				e.setMotd(PlaceholderAPI.setPlaceholders(null,Loader.config.getString((!setting.lock_server || setting.lock_server && !setting.motd_maintenance)?"Options.ServerList.MOTD.Text.Normal":"Options.ServerList.MOTD.Text.Maintenance")
+						.replace("%next%", "\n").replace("%line%", "\n")));
+			}
+		}
+	};
 
 	public static void unload() {
 		for (Integer t : tasks)
 			Scheduler.cancelTask(t);
 		tests = 0;
+		l.unregister();
 		tasks.clear();
 	}
 
@@ -35,6 +48,7 @@ public class Tasks {
 		a = Loader.getInstance;
 		ss.clear();
 		players.clear();
+		if(setting.motd)l.register();
 		if (setting.am)
 			automessage();
 		if (setting.vip)
@@ -132,20 +146,11 @@ public class Tasks {
 	}
 
 	private static void other() {
-		Config f = Loader.config;
 		tasks.add(new Tasker() {
 			@Override
 			public void run() {
 				for (Player p : TheAPI.getOnlinePlayers())
 					Loader.setupChatFormat(p);
-				if (setting.motd) {
-					if (!setting.lock_server || setting.lock_server && !setting.motd_maintenance)
-						TheAPI.setMotd(f.getString("Options.ServerList.MOTD.Text.Normal").replace("%next%", "\n")
-								.replace("%line%", "\n"));
-					else
-						TheAPI.setMotd(f.getString("Options.ServerList.MOTD.Text.Maintenance")
-								.replace("%next%", "\n").replace("%line%", "\n"));
-				}
 			}
 		}.runRepeating(0, 100));
 	}

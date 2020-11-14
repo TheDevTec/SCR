@@ -40,8 +40,8 @@ public class Butcher implements CommandExecutor, TabCompleter {
 			return killed;
 		} else {
 			int killed = 0;
-			if (radius > 100000)
-				radius = 100000;
+			if (radius > 256)
+				radius = 256;
 			for (Entity e : BlocksAPI.getNearbyEntities(w, radius)) {
 				if (e instanceof Player == false) {
 					if(type==null||e.getType()==type) {
