@@ -23,10 +23,16 @@ public class ChatFormat implements Listener {
 	static Loader plugin = Loader.getInstance;
 	String m;
 
-	public static String r(Player p, String s, String msg, boolean a) {
-		s = TabList.replace(s, p);
+	public static String r(Player p, String s, String msg) {
+		s=s.replace("&u", "&<U>");
 		if (msg != null)
-			s = s.replace("%message%", msg);
+			s=s.replace("%message%", r(msg.replace("&u", "&<UU>"), p));
+		s=s.replace("&<U>", "&u");
+		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.Rainbow")))
+			s=s.replace("&<UU>", "&u");
+		s=s.replace("§", "&");
+		s = TabList.replace(s, p);
+		s=s.replace("&<UU>", "&u");
 		return s;
 	}
 
@@ -74,11 +80,10 @@ public class ChatFormat implements Listener {
 		if (Loader.config.getBoolean("Chat-Groups-Enabled") == true) {
 			if (Loader.config.getString("Chat-Groups." + Loader.get(p,Item.GROUP) + ".Chat") != null) {
 				m = Loader.config.getString("Chat-Groups." +Loader.get(p,Item.GROUP) + ".Chat");
-
 				String format = PlaceholderAPI.setPlaceholders(p,
 						Loader.config.getString("Chat-Groups." + Loader.get(p,Item.GROUP) + ".Chat"));
 				if (format != null)
-					e.setFormat(r(p, TheAPI.colorize(format), e.getMessage(), true));
+				e.setFormat(r(p, format, msg));
 			}
 		}
 

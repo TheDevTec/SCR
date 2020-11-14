@@ -712,6 +712,17 @@ ChatFormat:
     Create: "%prefix% Group &e%group% &7created"
     Delete: "%prefix% Group &e%group% &7deleted"
     Delete: "%prefix% Group &e%group% &7deleted"
+  Edit:
+    Name: "%prefix% Set &eName &7format to &r%value%&r &7on group &e%group%"
+    Chat: "%prefix% Set &eChat &7format to &r%value%&r &7on group &e%group%"
+  List:
+  - "%prefix% »=== &eGroups &7===«"
+  - "%prefix% Groups: &e%groups%"
+  Info:
+  - "%prefix% »=== &eInfo &7===«"
+  - "%prefix% Group: &e%group%"
+  - "%prefix% Name: &e%name%"
+  - "%prefix% Chat: &e%chat%"
   
 Trash: "&7Trash"
   

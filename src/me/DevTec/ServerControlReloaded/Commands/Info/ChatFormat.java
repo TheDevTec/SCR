@@ -12,8 +12,8 @@ import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
+import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class ChatFormat implements CommandExecutor, TabCompleter {
 	
@@ -42,7 +42,7 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				String g = args[1];
-				if (Loader.config.getString("Chat-Groups." + g) != null) {
+				if (Loader.config.exists("Chat-Groups." + g)) {
 					Loader.sendMessages(s, "ChatFormat.Group.Exists", Placeholder.c().add("%group%", g));
 					return true;
 				}
@@ -63,11 +63,12 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				String g = args[1];
-				if (Loader.config.getString("Chat-Groups." + g) == null) {
+				if (!Loader.config.exists("Chat-Groups." + g)) {
 					Loader.sendMessages(s, "ChatFormat.Group.NotExist", Placeholder.c().add("%group%", g));
 					return true;
 				}
 				Loader.config.remove("Chat-Groups." + g);
+				Loader.config.save();
 				Loader.sendMessages(s, "ChatFormat.Group.Delete", Placeholder.c().add("%group%", g));
 				return true;
 			}
@@ -88,25 +89,18 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 					Loader.advancedHelp(s, "ChatFormat", "Info", "Set");
 					return true;
 				}
-				if (Loader.config.getString("Chat-Groups." + g) == null) {
+				if (!Loader.config.exists("Chat-Groups." + g)) {
 					Loader.sendMessages(s, "ChatFormat.Group.NotExist", Placeholder.c().add("%group%", g));
 					return true;
 				}
-				String msg = "";
-				for (int i = 3; i < args.length; ++i) {
-					msg = msg + " " + args[i];
-				}
-
-				msg = msg.substring(1, msg.length());
-				String what = "chat";
-				if (e.equalsIgnoreCase("name"))
-					what = "name";
+				String msg = StringUtils.buildString(3, args);
 				String f = "Chat";
-				if (what.equals("name"))
+				if (e.equalsIgnoreCase("name"))
 					f = "Name";
 
 				Loader.config.set("Chat-Groups." + g + "." + f, msg);
-				msg("&6Set " + what + " format to &c'" + msg + "&c' &6on group &c" + g, s);
+				Loader.config.save();
+				Loader.sendMessages(s, "ChatFormat.Edit."+f, Placeholder.c().add("%group%", g).add("%value%", msg));
 				return true;
 
 			}
@@ -115,9 +109,7 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 		}
 		if (args[0].equalsIgnoreCase("list")) {
 			if (Loader.has(s, "ChatFormat.List", "Info")) {
-				msg("&9---< &bList of groups &9>----", s);
-				for (String d : Loader.config.getKeys("Chat-Groups"))
-					msg("&9- &b" + d, s);
+				Loader.sendMessages(s, "ChatFormat.List", Placeholder.c().add("%groups%", StringUtils.join(Loader.config.getKeys("Chat-Groups"), ", ")));
 				return true;
 			}
 			Loader.noPerms(s, "ChatFormat.List", "Info");
@@ -134,9 +126,10 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 					Loader.sendMessages(s, "ChatFormat.Group.NotExist", Placeholder.c().add("%group%", g));
 					return true;
 				}
-				msg("&9---< &bInformation about group &c" + g + " &9>----", s);
-				msg("&9Name: " + Loader.config.getString("Chat-Groups." + g + ".Name"), s);
-				msg("&9Chat: " + Loader.config.getString("Chat-Groups." + g + ".Chat"), s);
+				Loader.sendMessages(s, "ChatFormat.Info", Placeholder.c()
+						.add("%group%", g)
+						.add("%name%", ""+Loader.config.getString("Chat-Groups." + g + ".Name"))
+						.add("%chat%", ""+Loader.config.getString("Chat-Groups." + g + ".Chat")));
 				return true;
 			}
 			Loader.noPerms(s, "ChatFormat.Info", "Info");

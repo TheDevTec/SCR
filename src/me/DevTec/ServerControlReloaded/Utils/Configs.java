@@ -11,7 +11,6 @@ import java.util.jar.JarFile;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.Utils.DataKeeper.Data;
-import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class Configs {
 	
@@ -27,7 +26,7 @@ public class Configs {
 
 	private static void copyDefauts() {
 		try {
-			JarFile file = new JarFile(new File("plugins/"+new File(Ref.getClass("me.DevTec.ServerControlReloaded.SCR.Loader").getProtectionDomain()
+			JarFile file = new JarFile(new File("plugins/"+new File(Loader.class.getProtectionDomain()
 					  .getCodeSource().getLocation().getPath()).getName()));
 			boolean found = false;
 	    	Data data = new Data();
@@ -48,10 +47,10 @@ public class Configs {
 		    	Config c = new Config("ServerControlReloaded/"+entry.getName().replaceFirst("Configs/", ""));
 		    	boolean add = false;
 		    	for(String sr : data.getKeys(true)) {
-		    		if(!c.exists(sr)) {
+		    		if(!c.exists(sr) || c.exists(sr) && !c.isSection(sr)) {
 		    			add=true;
 		    			c.set(sr, data.get(sr));
-		    			c.setComments(sr, data.getLines(sr));
+		    			c.setComments(sr, data.getComments(sr));
 		    		}
 		    	}
 		    	if(add)

@@ -335,10 +335,11 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 	
 	public static void setupChatFormat(Player p) {
+		if(p==null)return;
 		if (config.exists("Chat-Groups." + get(p, Item.GROUP) + ".Name")) {
 			String g = TheAPI.colorize(PlaceholderAPI.setPlaceholders(p,
 					config.getString("Chat-Groups." + get(p, Item.GROUP) + ".Name")));
-			g = ChatFormat.r(p, g, null, false);
+			g = ChatFormat.r(p, g, null);
 			p.setDisplayName(Colors.colorize(g, false, p));
 		} else
 			p.setDisplayName(get(p, Item.PREFIX) + p.getName() + get(p, Item.SUFFIX));
@@ -383,7 +384,6 @@ public class Loader extends JavaPlugin implements Listener {
 	public void onLoad() {
 		getInstance = this;
 		Configs.load();
-		english = new Config("ServerControlReloaded/Translations/translation-en.yml");
 		setting.load();
 	}
 	private static long loading;
