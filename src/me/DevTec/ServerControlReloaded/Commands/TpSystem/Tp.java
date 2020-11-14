@@ -43,7 +43,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 						}
 					} else {
 						if (Loader.has(s, "Tp", "TpSystem", "Blocked") || !Loader.has(s, "Tp", "TpSystem", "Blocked") && !RequestMap.isBlocking(target.getName(), s.getName())) {
-							Loader.sendMessages(s, "TpSystem.Tp.YouToPlayer", Placeholder.c().replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()));
+							Loader.sendMessages(s, "TpSystem.Tp.Player.YouToPlayer", Placeholder.c().replace("%player%", target.getName()));
 							API.setBack(((Player) s));
 							if (setting.tp_safe)
 								API.safeTeleport((Player) s,target.getLocation());

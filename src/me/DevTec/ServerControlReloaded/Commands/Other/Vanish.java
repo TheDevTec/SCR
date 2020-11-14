@@ -36,7 +36,7 @@ public class Vanish implements CommandExecutor, TabCompleter {
 						LoginEvent.moveInTab(p);
 						Loader.sendMessages(s, "Vanish.Enabled.You");
 						if(setting.vanish_action)
-							task.put(s.getName(), new Tasker() {
+							task.put(p.getName(), new Tasker() {
 								@Override
 								public void run() {
 									if(!TheAPI.hasVanish(p.getName()) || !p.isOnline()) {
