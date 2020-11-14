@@ -45,11 +45,11 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 							.add("%playername%", args[1]));
 					return true;
 				}
-				Loader.sendMessages(s, "ClearInventory.Cleared.Your", Placeholder.c()
-						.add("%player%", target.getName())
-						.add("%playername%", target.getDisplayName()));
 				undo.put(target, target.getInventory().getContents());
-				Loader.sendMessages(target, "ClearInvetory.Cleared.Other", Placeholder.c()
+				Loader.sendMessages(s, "Inventory.ClearInventory.Other.Sender", Placeholder.c()
+						.add("%player%", target.getName())
+						.add("%playername%", target.getName()));
+				Loader.sendMessages(target, "Inventory.ClearInventory.Other.Receiver", Placeholder.c()
 						.add("%player%", s.getName())
 						.add("%playername%", s.getName()));
 				target.getInventory().clear();
@@ -65,13 +65,13 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 				if (Loader.has(s, "ClearInventory", "Inventory")) {
 					if (!d.getBoolean("ClearInvConfirm")) {
 						d.setAndSave("ClearInvCooldown", System.currentTimeMillis() / 1000);
-						Loader.sendMessages(s, "ClearInventory.Confirm.Request");
+						Loader.sendMessages(s, "Inventory.ClearInventory.ClearConfirm");
 						return true;
 					} else {
 						if (d.getString("ClearInvCooldown") != null)
 							d.setAndSave("ClearInvCooldown", null);
 						undo.put(p, p.getInventory().getContents());
-						Loader.sendMessages(s, "ClearInventory.Confirm.Request");
+						Loader.sendMessages(s, "Inventory.ClearInventory.ClearConfirm");
 						p.getInventory().clear();
 						return true;
 					}
@@ -93,11 +93,11 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					if (target != null) {
-						Loader.sendMessages(s, "ClearInventory.Cleared.Your", Placeholder.c()
-								.add("%player%", target.getName())
-								.add("%playername%", target.getDisplayName()));
 						undo.put(target, target.getInventory().getContents());
-						Loader.sendMessages(target, "ClearInventory.Cleared.Other", Placeholder.c()
+						Loader.sendMessages(s, "Inventory.ClearInventory.Other.Sender", Placeholder.c()
+								.add("%player%", s.getName())
+								.add("%playername%", s.getName()));
+						Loader.sendMessages(target, "Inventory.ClearInventory.Other.Receiver", Placeholder.c()
 								.add("%player%", s.getName())
 								.add("%playername%", s.getName()));
 						target.getInventory().clear();
@@ -115,12 +115,11 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 						reset = reset * -1;
 						if (reset < 60) {
 							undo.put(p, p.getInventory().getContents());
-							Loader.sendMessages(s, "ClearInventory.Cleared.Your");
+							Loader.sendMessages(s, "Inventory.ClearInventory.You");
 							d.setAndSave("ClearInvCooldown", null);
 							p.getInventory().clear();
 							return true;
 						}
-						Loader.sendMessages(s, "ClearInventory.NoConfirm");
 						return true;
 					}
 					Loader.noPerms(s, "ClearInventory", "Inventory", "Inventory");
@@ -131,13 +130,13 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 				if (Loader.has(s, "ClearInventory", "Inventory", "Inventory")) {
 					if (!d.getBoolean("ClearInvConfirm")) {
 						d.setAndSave("ClearInvCooldown", System.currentTimeMillis() / 1000);
-						Loader.sendMessages(s, "ClearInventory.Confirm.Request");
+						Loader.sendMessages(s, "Inventory.ClearInventory.ClearConfirm");
 						return true;
 					} else {
 						if (d.getString("ClearInvCooldown") != null)
 							d.setAndSave("ClearInvCooldown", null);
 						undo.put(p, p.getInventory().getContents());
-						Loader.sendMessages(s, "ClearInventory.Cleared.Your");
+						Loader.sendMessages(s, "Inventory.ClearInventory.You");
 						p.getInventory().clear();
 						return true;
 					}
@@ -154,7 +153,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 									TheAPI.giveItem(p, item);
 							}
 							undo.remove(p);
-							Loader.sendMessages(s, "ClearInventory.Retrive", Placeholder.c()
+							Loader.sendMessages(s, "Inventory.ClearInventory.Undo", Placeholder.c()
 									.add("%money%", "0"));
 							return true;
 						} else if (take != 0 && EconomyAPI.getEconomy() != null) {
@@ -165,17 +164,17 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 								}
 								EconomyAPI.withdrawPlayer(p, take);
 								undo.remove(p);
-								Loader.sendMessages(s, "ClearInventory.Retrive", Placeholder.c()
+								Loader.sendMessages(s, "Inventory.ClearInventory.Undo", Placeholder.c()
 										.add("%money%", value(take)));
 								return true;
 							} else {
-								Loader.sendMessages(s, "ClearInventory.NoMoney", Placeholder.c()
+								Loader.sendMessages(s, "Inventory.ClearInventory.NoMoney", Placeholder.c()
 										.add("%money%", value(take)));
 								return true;
 							}
 						}
 					} else if (!undo.containsKey(p)) {
-						Loader.sendMessages(s, "InventoryClear.NoRetrive");
+						Loader.sendMessages(s, "Inventory.ClearInventory.CantUndo");
 						return true;
 					}
 				}

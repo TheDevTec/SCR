@@ -19,7 +19,7 @@ public class EnderSee implements CommandExecutor, TabCompleter {
 		if (Loader.has(s, "EnderChest", "Inventory")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
-					Loader.sendMessages(s, "EnderChest.Open.Your");
+					Loader.sendMessages(s, "Inventory.EnderSee.Sender");
 					((Player)s).openInventory(((Player)s).getEnderChest());
 					return true;
 				}
@@ -27,15 +27,14 @@ public class EnderSee implements CommandExecutor, TabCompleter {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p != null) {
 						if (p == s) {
-							Loader.sendMessages(s, "EnderChest.Open.Your");
+							Loader.sendMessages(s, "Inventory.EnderSee.Sender");
 							((Player)s).openInventory(((Player)s).getEnderChest());
 							return true;
 						} else {
 							if (Loader.has(s, "EnderChest", "Inventory")) {
-								Loader.sendMessages(s, "EnderChest.Open.Other", Placeholder.c()
+								Loader.sendMessages(s, "Inventory.EnderSee.Sender", Placeholder.c()
 										.add("%player%", p.getName())
 										.add("%playername%", p.getDisplayName()));
-
 								((Player)s).openInventory(p.getEnderChest());
 								return true;
 							}

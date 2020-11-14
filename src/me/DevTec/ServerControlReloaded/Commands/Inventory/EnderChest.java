@@ -19,7 +19,7 @@ public class EnderChest implements CommandExecutor, TabCompleter {
 		if (Loader.has(s, "EnderChest", "Inventory")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
-					Loader.sendMessages(s, "EnderChest.Open.Your");
+					Loader.sendMessages(s, "Inventory.EnderChest.You");
 					((Player)s).openInventory(((Player)s).getEnderChest());
 					return true;
 				}
@@ -31,7 +31,7 @@ public class EnderChest implements CommandExecutor, TabCompleter {
 								.add("%playername%", args[0]));
 						return true;
 					}
-					Loader.sendMessages(s, "EnderChest.Open.Other", Placeholder.c()
+					Loader.sendMessages(s, "Inventory.EnderChest.You", Placeholder.c()
 							.add("%player%", p.getName())
 							.add("%playername%", p.getDisplayName()));
 					((Player)s).openInventory(p.getEnderChest());
@@ -53,7 +53,7 @@ public class EnderChest implements CommandExecutor, TabCompleter {
 								.add("%playername%", args[1]));
 						return true;
 					}
-					Loader.sendMessages(s, "EnderChest.Open.Other", Placeholder.c()
+					Loader.sendMessages(s, "Inventory.EnderChest.Other.Sender", Placeholder.c()
 							.add("%player%", p.getName())
 							.add("%playername%", p.getDisplayName()));
 					t.openInventory(p.getEnderChest());

@@ -732,12 +732,14 @@ Inventory:
     Enabled: "%prefix% Disabled require to confirm clear inventory"
     Disabled: "%prefix% Enabled require to confirm clear inventory"
   ClearInventory:
-    Clear:
-      You:
-      Other:
-        Sender:
-        Receiver:
-    Undo:
+    ClearConfirm: "%prefix% Please confirm your request to clear inventory"
+    You: "%prefix% You have cleared your inventory"
+    Other:
+      Sender: "%prefix% You have cleared &e%player%&7's invenotory"
+      Receiver: "%prefix% Your inventory has been cleared by &e%player%"
+    Undo: "%prefix% You have retrieved your inventory"
+    CantUndo: "%prefix% Can't retrive your inventory"
+    NoMoney: "%prefix% You don't have enought money, you need &e%money%"
   CloseInventory:
     You: "%prefix% Closing your open inventory"
     Other:
@@ -746,14 +748,16 @@ Inventory:
   EnderChest:
     You: "%prefix% Opening EnderChest"
     Other:
-      Sender: "%prefix% Opening EnderChest for &e%player%"
+      Sender: "%prefix% Opening EnderChest of &e%player%"
       Receiver: "%prefix% Opening EnderChest"
   EnderSee:
     Sender: "%prefix% Opening EnderChest of &e%player%"
     Receiver: ""
   Invsee:
-    Sender: "%prefix% Opening Inventory of &e%player%"
-    Receiver: ""
+    You: "%prefix% Opening Inventory of &e%player%"
+    Other:
+      Sender: "%prefix% Opening &e%player%&7's inventory for &e%target%"
+      Receiver: "%prefix% Opening Inventory of &e%player%"
   Workbench:
     You: "%prefix% Opening Workbench"
     Other:

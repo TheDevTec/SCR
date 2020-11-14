@@ -34,7 +34,10 @@ public class CloseInventory implements CommandExecutor, TabCompleter {
 							.add("%playername%", args[0]));
 					return true;
 				}
-					Loader.sendMessages(s, "CloseInventory.Close", Placeholder.c()
+					Loader.sendMessages(s, "Inventory.CloseInventory.Other.Sender", Placeholder.c()
+							.add("%player%", p.getName())
+							.add("%playername%", p.getDisplayName()));
+					Loader.sendMessages(p, "Inventory.CloseInventory.Other.Receiver", Placeholder.c()
 							.add("%player%", p.getName())
 							.add("%playername%", p.getDisplayName()));
 				p.closeInventory();

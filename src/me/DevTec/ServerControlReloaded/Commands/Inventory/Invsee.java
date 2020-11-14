@@ -18,7 +18,7 @@ public class Invsee implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Invsee", "Inventory")) {
 			if (args.length == 0) {
-				TheAPI.msg(Loader.getTranslation("Invsee.Help").toString(), s);
+				Loader.Help(s, "InvSee", "Inventory");
 				return true;
 			}
 			if (args.length == 1) {
@@ -30,11 +30,12 @@ public class Invsee implements CommandExecutor, TabCompleter {
 								.add("%playername%", args[0]));
 						return true;
 					}
-					TheAPI.msg(Loader.getTranslation("Invsee.Open").toString().replace("%target%", p.getName()), s);
+					Loader.sendMessages(s, "Inventory.Invsee.You", Placeholder.c()
+							.add("%player%", p.getName()));
 					((Player)s).openInventory(p.getInventory());
 					return true;
 				}
-				TheAPI.msg(Loader.getTranslation("Inv.Help").toString(), s);
+				Loader.Help(s, "InvSee", "Inventory");
 				return true;
 			}
 			if (args.length == 2) {
@@ -52,12 +53,16 @@ public class Invsee implements CommandExecutor, TabCompleter {
 							.add("%playername%", args[1]));
 					return true;
 				}
-				TheAPI.msg(Loader.getTranslation("Invsee.Open.Other").toString().replace("%player%", p.getName()).replace("%target%", t.getName()), s);
+				Loader.sendMessages(s, "Inventory.Invsee.Other.Sender", Placeholder.c()
+						.add("%player%", p.getName())
+						.add("%target%", t.getName()));
+				Loader.sendMessages(p, "Inventory.Invsee.Other.Receiver", Placeholder.c()
+						.add("%player%", p.getName()));
 				t.openInventory(p.getInventory());
 				return true;
 			}
 			if(args.length>=3) {
-				TheAPI.msg(Loader.getTranslation("Invsee.Help").toString(), s);
+				Loader.Help(s, "InvSee", "Inventory");
 				return true;
 			}
 		}
