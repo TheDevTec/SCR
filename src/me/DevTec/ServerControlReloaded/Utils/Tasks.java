@@ -3,6 +3,7 @@ package me.DevTec.ServerControlReloaded.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -14,6 +15,7 @@ import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Utils.HoverMessage;
 import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.Listener.EventHandler;
 import me.DevTec.TheAPI.Utils.Listener.Listener;
@@ -85,7 +87,8 @@ public class Tasks {
 							if (s != null) {
 								TheAPI.sendActionBar(s, "&cTempFly ended");
 								API.getSPlayer(s).disableFly();
-								TheAPI.getUser(s).setAndSave("TempFly", null);
+								TheAPI.getUser(s).remove("TempFly");
+								TheAPI.getUser(s).save();
 							}
 						}
 						if (timeout == 5 || timeout == 4 || timeout == 3 || timeout == 2 || timeout == 1
@@ -114,6 +117,7 @@ public class Tasks {
 	private static void savetask() {
 		if (Loader.mw.getInt("SavingTask.Delay") < 600) {
 			Loader.mw.set("SavingTask.Delay", 600);
+			Loader.mw.save();
 		}
 		tasks.add(new Tasker() {
 			int now = 0;
@@ -121,7 +125,7 @@ public class Tasks {
 			@Override
 			public void run() {
 				List<World> w = Bukkit.getWorlds();
-				if (w.size() - 1 == now)
+				if (w.size() <= now)
 					now = 0;
 				try {
 					if (!Loader.mw.getBoolean("WorldsSettings." + w.get(now).getName() + ".AutoSave"))
@@ -152,7 +156,7 @@ public class Tasks {
 				for (Player p : TheAPI.getOnlinePlayers())
 					Loader.setupChatFormat(p);
 			}
-		}.runRepeating(0, 100));
+		}.runRepeating(0, 20));
 	}
 
 	private static void tab() {
@@ -197,22 +201,47 @@ public class Tasks {
 			}
 		}.runRepeating(0, 200));
 	}
-
+	
 	private static void automessage() {
 		tasks.add(new Tasker() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public void run() {
 				if (TheAPI.getOnlinePlayers().size() < Loader.config.getInt("Options.AutoMessage.MinimalPlayers"))
 					return;
-				List<String> l = Loader.config.getStringList("Options.AutoMessage.Messages");
+				List<Object> l = Loader.config.getList("Options.AutoMessage.Messages");
 				if (setting.am_random) {
-					TheAPI.broadcastMessage(TabList.replace(TheAPI.getRandomFromList(l).toString(), null, true));
-				} else {
-					if (l.size() <= tests) {
-						tests = 0;
+					for(Player p : TheAPI.getOnlinePlayers()) {
+						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
+							Object ra = TheAPI.getRandomFromList(l);
+							String random = TabList.replace(ra.toString(), p, false);
+							if(ra instanceof Map == false) {
+								TheAPI.msg(random, p);
+							}else {
+								TheAPI.broadcastMessage(ra);
+								//new HoverMessage((Map<? extends String,?>)ra).send(p);
+								//NMSAPI.getNMSPlayerAPI(p).sendMessageJson(StringUtils.colorizeJson((Map<?,?>)ra));
+							}
+						}else {
+							TheAPI.msg(TabList.replace(TheAPI.getRandomFromList(l).toString(), p, true), p);
+						}
 					}
-					TheAPI.broadcastMessage(TabList.replace(l.get(tests).toString(), null, true));
-					tests = tests + 1;
+				} else {
+					if (l.size() <= tests)
+						tests = 0;
+					for(Player p : TheAPI.getOnlinePlayers()) {
+						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
+							Object ra = l.get(tests);
+							String random = TabList.replace(ra.toString(), p, false);
+							if(l.get(tests) instanceof Map == false) {
+								TheAPI.msg(random, p);
+							}else
+								new HoverMessage((Map<? extends String,?>)ra).send(p);
+						}else {
+							TheAPI.msg(TabList.replace(l.get(tests).toString(), p, true), p);
+						}
+					}
+					++tests;
 				}
 			}
 

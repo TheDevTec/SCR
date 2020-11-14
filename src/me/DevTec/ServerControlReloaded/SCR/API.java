@@ -26,7 +26,6 @@ import me.DevTec.TheAPI.BlocksAPI.BlockGetter;
 import me.DevTec.TheAPI.Utils.Position;
 import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
-import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
@@ -104,27 +103,60 @@ public class API {
 				p.teleport(a);
 
 	}
-
-	public static double convertMoney(String s) {
-		double a = StringUtils.getDouble(s);
-		double mille = a * 1000;
-		double million = mille * 1000;
-		double billion = million * 1000;
-		double trillion = billion * 1000;
-		double quadrillion = trillion * 1000;
-		if (s.endsWith("k"))
-			a = a * 1000;
-		if (s.endsWith("m"))
-			a = million;
-		if (s.endsWith("b"))
-			a = billion;
-		if (s.endsWith("t"))
-			a = trillion;
-		if (s.endsWith("q"))
-			a = quadrillion;
-		return a;
+	
+	private static Pattern moneyPattern = Pattern.compile("([+-]*[0-9]+.*[0-9]*[E]*[0-9]*)([kmbt]|qu[ia]|se[px]|non|oct|dec|und|duo|tre|sed|nov)", Pattern.CASE_INSENSITIVE);
+    public static double convertMoney(String s) {
+		double has = 0;
+		Matcher m = moneyPattern.matcher(s);
+		while(m.find())
+			has+=StringUtils.getDouble(m.group(1))*getMultiply(m.group(2));
+		return has;
 	}
-
+    
+    public static long getMultiply(String name) {
+    	switch(name) {
+    	case "k":
+    		return 1000;
+    	case "m":
+    		return 1000000;
+    	case "b":
+    		return 1000000000;
+    	case "t":
+    		return new BigDecimal("1000000000000").longValue();
+    	case "qua":
+    		return new BigDecimal("1000000000000000").longValue();
+    	case "qui":
+    		return new BigDecimal("1000000000000000000").longValue();
+    	case "sex":
+    		return new BigDecimal("1000000000000000000000").longValue();
+    	case "sep":
+    		return new BigDecimal("1000000000000000000000000").longValue();
+    	case "oct":
+    		return new BigDecimal("1000000000000000000000000000").longValue();
+    	case "non":
+    		return new BigDecimal("1000000000000000000000000000000").longValue();
+    	case "dec":
+    		return new BigDecimal("1000000000000000000000000000000000").longValue();
+    	case "und":
+    		return new BigDecimal("1000000000000000000000000000000000000").longValue();
+    	case "duo":
+    		return new BigDecimal("1000000000000000000000000000000000000000").longValue();
+    	case "tre":
+    		return new BigDecimal("1000000000000000000000000000000000000000000").longValue();
+    	case "QUA":
+    		return new BigDecimal("1000000000000000000000000000000000000000000000").longValue();
+    	case "QUI":
+    		return new BigDecimal("1000000000000000000000000000000000000000000000000").longValue();
+    	case "SED":
+    		return new BigDecimal("1000000000000000000000000000000000000000000000000000").longValue();
+    	case "OCT":
+    		return new BigDecimal("1000000000000000000000000000000000000000000000000000000000").longValue();
+    	case "NOV":
+    		return new BigDecimal("1000000000000000000000000000000000000000000000000000000000000").longValue();
+    	}
+    	return 1;
+    }
+    
 	/**
 	 * Hook addon to /Addons command
 	 */
@@ -132,7 +164,6 @@ public class API {
 		Online, Offline;
 	}
 
-	
 	public static String getSeen(String player, SeenType type) {
 		User s = TheAPI.getUser(player);
 		String a = "0s";
@@ -170,14 +201,6 @@ public class API {
 	public static Location getBack(String p) {
 		return StringUtils.getLocationFromString(TheAPI.getUser(p).getString("Back"));
 	}
-
-	public static void setDisplayName(Player p, String name) {
-		NMSAPI.getNMSPlayerAPI(p).setDisplayName(name);
-	}
-
-	public static void setCustomName(Player p, String name) {
-		NMSAPI.getNMSPlayerAPI(p).setDisplayName(name);
-	}
 	
 	private static DecimalFormat a(String c) {
 		DecimalFormat decimalFormat = (DecimalFormat)NumberFormat.getNumberInstance(Locale.ENGLISH);
@@ -190,7 +213,8 @@ public class API {
 	    String[] s = a.toLowerCase(Locale.ENGLISH).split(",");
 	    if (s.length >= 22) {
 	      if (a.startsWith("-"))
-	        a="-∞"; 
+	        a="-∞";
+	      else
 	      a="∞";
 	    }else
 	    if (s.length >= 21 && s.length < 22)

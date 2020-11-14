@@ -125,9 +125,9 @@ Options:
     MinimalPlayers: 1
     Interval: "5min"
     Random: true
-    # UseJson: false
-    Messages:
     # - "{"text":"&0[&e&lINFO&0] &7ServerControlReloaded created by &nDevTec"}"
+    UseJson: false
+    Messages:
     - "&0[&e&lINFO&0] &7ServerControlReloaded created by &nDevTec"
     - "&0[&e&lINFO&0] &720% Bugs free"
     - "&0[&e&lINFO&0] &7Online players &e%online%&7/&e%max_players%"
@@ -230,10 +230,10 @@ Options:
   Disable-Items:
     Use: false
     Worlds:
-      Creative: 
-      - "Bedrock"
-      - "TNT"
-      - "TNT_Minecart"
+    #   Creative: 
+    #   - "Bedrock"
+    #   - "TNT"
+    #   - "TNT_Minecart"
       world:
       -  "Bedrock"
       world_nether:
@@ -278,25 +278,15 @@ Chat-Groups:
   default:
     Name: "&7default &f%player%"
     Chat: "%playername% &8» &7%message%"
-  vip:
-    Name: "&aVIP &e%player%"
-    Chat: "%playername% &8» &a%message%"
-  builder:
-    Name: "&2default &e%player%"
-    Chat: "%playername% &8» &2%message%"
-  helper:
-    Name: "&5Helper &9%player%"
-    Chat: "%playername% &8» &d%message%"
-  admin:
-    Name: "&4Admin &6%player%"
-    Chat: "%playername% &8» &3%message%"
-  owner:
-    Name: "&4Owner &f%player%"
-    Chat: "%playername% &8» &3%message%"
+  # vip:
+  #   Name: "&aVIP &e%player%"
+  #   Chat: "%playername% &8» &a%message%"
   
 Homes:
-  default: 3
   #GroupName: amount
+  default: 3
+  # vip: 5
+  # owner: 10
   
 Format:
   Mail: "&e%player% &7: &e%message%"

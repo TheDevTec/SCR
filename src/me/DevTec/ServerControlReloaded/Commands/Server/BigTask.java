@@ -9,7 +9,7 @@ import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.Reflections.Reflections;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class BigTask {
 	public static int r = -1;
@@ -81,7 +81,7 @@ public class BigTask {
 			case RESTART:
 				for(Player s : TheAPI.getOnlinePlayers())
 					s.kickPlayer(TheAPI.colorize(text));
-				if (Reflections.existsClass("net.md_5.bungee.api.ChatColor"))
+				if (Ref.getClass("net.md_5.bungee.api.ChatColor")!=null)
 					Bukkit.spigot().restart();
 				else
 					Bukkit.shutdown();
