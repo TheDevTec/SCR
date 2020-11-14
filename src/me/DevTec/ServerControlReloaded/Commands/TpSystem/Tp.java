@@ -61,6 +61,10 @@ public class Tp implements CommandExecutor, TabCompleter {
 			if (args.length == 2) {
 				if (Loader.has(s, "Tp","TpSystem","Other")) {
 					Player p0 = TheAPI.getPlayer(args[0]);
+					if(p0==null) {
+						Loader.notOnline(s,args[0]);
+						return true;
+					}
 					Player p1 = TheAPI.getPlayer(args[1]);
 					if (p1 == null) {
 						if (s instanceof Player) {
@@ -84,7 +88,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 						String player1 = args[1];
 						if (p1 != null)
 							player1 = p1.getName();
-						String playername1 = args[1];
+						String playername1 = args[1];						
 						if (p1 != null)
 							playername1 = p1.getDisplayName();
 						Loader.sendMessages(s, "TpSystem.Tp.Player.PlayerToNextPlayer", Placeholder.c()
