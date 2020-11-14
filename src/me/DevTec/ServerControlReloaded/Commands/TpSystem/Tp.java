@@ -79,18 +79,10 @@ public class Tp implements CommandExecutor, TabCompleter {
 						Loader.Help(s, "Tp", "TpSystem");
 						return true;
 					} else {
-						String player = args[0];
-						if (p0 != null)
-							player = p0.getName();
-						String playername = args[0];
-						if (p0 != null)
-							playername = p0.getDisplayName();
-						String player1 = args[1];
-						if (p1 != null)
-							player1 = p1.getName();
-						String playername1 = args[1];						
-						if (p1 != null)
-							playername1 = p1.getDisplayName();
+						String player = p0.getName();
+						String playername = p0.getDisplayName();
+						String player1 = p1.getName();
+						String playername1 = p1.getDisplayName();
 						Loader.sendMessages(s, "TpSystem.Tp.Player.PlayerToNextPlayer", Placeholder.c()
 								.replace("%player%", player)
 								.replace("%playername%", playername)
