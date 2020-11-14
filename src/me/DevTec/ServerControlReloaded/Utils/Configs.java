@@ -50,7 +50,7 @@ public class Configs {
 		    		if(!c.exists(sr) || c.exists(sr) && !c.isSection(sr)) {
 		    			add=true;
 		    			c.set(sr, data.get(sr));
-		    			c.setComments(sr, c.getComments(sr));
+		    			c.setComments(sr, data.getComments(sr));
 		    		}
 		    	}
 		    	if(add)
