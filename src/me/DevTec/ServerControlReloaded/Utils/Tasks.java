@@ -3,7 +3,6 @@ package me.DevTec.ServerControlReloaded.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -15,11 +14,13 @@ import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.HoverMessage;
 import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.Listener.EventHandler;
 import me.DevTec.TheAPI.Utils.Listener.Listener;
 import me.DevTec.TheAPI.Utils.Listener.Events.ServerListPingEvent;
+import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
+import me.DevTec.TheAPI.Utils.NMS.NMSAPI.ChatType;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class Tasks {
 	
@@ -204,26 +205,19 @@ public class Tasks {
 	
 	private static void automessage() {
 		tasks.add(new Tasker() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void run() {
 				if (TheAPI.getOnlinePlayers().size() < Loader.config.getInt("Options.AutoMessage.MinimalPlayers"))
 					return;
-				List<Object> l = Loader.config.getList("Options.AutoMessage.Messages");
+				List<String> l = Loader.config.getStringList("Options.AutoMessage.Messages");
 				if (setting.am_random) {
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
-							Object ra = TheAPI.getRandomFromList(l);
-							String random = TabList.replace(ra.toString(), p, false);
-							if(ra instanceof Map == false) {
-								TheAPI.msg(random, p);
-							}else {
-								TheAPI.broadcastMessage(ra);
-								//new HoverMessage((Map<? extends String,?>)ra).send(p);
-								//NMSAPI.getNMSPlayerAPI(p).sendMessageJson(StringUtils.colorizeJson((Map<?,?>)ra));
-							}
+							String json = StringUtils.colorizeJson(TabList.replace(TheAPI.getRandomFromList(l), p, false));
+							Bukkit.broadcastMessage(json);
+							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(json)));
 						}else {
-							TheAPI.msg(TabList.replace(TheAPI.getRandomFromList(l).toString(), p, true), p);
+							TheAPI.msg(TabList.replace(TheAPI.getRandomFromList(l), p, true), p);
 						}
 					}
 				} else {
@@ -231,14 +225,9 @@ public class Tasks {
 						tests = 0;
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
-							Object ra = l.get(tests);
-							String random = TabList.replace(ra.toString(), p, false);
-							if(l.get(tests) instanceof Map == false) {
-								TheAPI.msg(random, p);
-							}else
-								new HoverMessage((Map<? extends String,?>)ra).send(p);
+							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(StringUtils.colorizeJson(TabList.replace(l.get(tests), p, false)))));
 						}else {
-							TheAPI.msg(TabList.replace(l.get(tests).toString(), p, true), p);
+							TheAPI.msg(TabList.replace(l.get(tests), p, true), p);
 						}
 					}
 					++tests;
