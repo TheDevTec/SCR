@@ -534,7 +534,11 @@ Kill:
   Suicide:
     Name: "suicide"
     Permission: "SCR.Command.Suicide"
+    SubPermission: 
+       Other: "SCR.Command.Suicide.Other"
     Help: "/Suicide - Suicide yourself"
+    AdvancedHelp:
+       Other: "/Suicide <player> - Suicide player"
     Enabled: true
     
 Nickname:
