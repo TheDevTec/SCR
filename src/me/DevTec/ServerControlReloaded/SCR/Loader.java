@@ -516,6 +516,7 @@ public class Loader extends JavaPlugin implements Listener {
 			}
 			getInstance.stop();
 		}
+		rules.clear();
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
 		Configs.load();
 		TheAPI.msg(setting.prefix + " &7Configs "+(aad == 0 ? "l" : "rel")+"oaded.", TheAPI.getConsole());
@@ -523,6 +524,9 @@ public class Loader extends JavaPlugin implements Listener {
 		Converter.convert();
 		MultiWorldsUtils.LoadWorlds();
 		getInstance.starts();
+		for(String s : config.getKeys("Rules"))
+			rules.add(new Rule(config.getString("Rules."+s+".Text"), config.getString("Rules."+s+".Type"), config.getString("Rules."+s+".Convert")
+					, config.getBoolean("Rules."+s+".Replacement.Use"), config.getString("Rules."+s+".Replacement.Text")));
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			SPlayer s = API.getSPlayer(p);
 			if (s.hasTempFlyEnabled())

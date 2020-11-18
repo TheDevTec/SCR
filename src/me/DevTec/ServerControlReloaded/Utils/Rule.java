@@ -72,6 +72,20 @@ public class Rule {
 				else return null;
 			}
 			break;
+		case "STARTS_WITH":
+			if(done.startsWith(a)) {
+				if(d)
+					text=text.replace(a, e);
+				else return null;
+			}
+			break;
+		case "ENDS_WITH":
+			if(done.endsWith(a)) {
+				if(d)
+					text=text.replace(a, e);
+				else return null;
+			}
+			break;
 		case "EQUALS":
 			if(done.equals(a)) {
 				if(d)
