@@ -525,7 +525,11 @@ public class Loader extends JavaPlugin implements Listener {
 		MultiWorldsUtils.LoadWorlds();
 		getInstance.starts();
 		for(String s : config.getKeys("Rules"))
+<<<<<<< HEAD
 			rules.add(new Rule(s, config.getString("Rules."+s+".Text"), config.getString("Rules."+s+".Type"), config.getString("Rules."+s+".Convert")
+=======
+			rules.add(new Rule(config.getString("Rules."+s+".Text"), config.getString("Rules."+s+".Type"), config.getString("Rules."+s+".Convert")
+>>>>>>> branch 'master' of https://github.com/TheDevTec/ServerControlReloaded
 					, config.getBoolean("Rules."+s+".Replacement.Use"), config.getString("Rules."+s+".Replacement.Text")));
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			SPlayer s = API.getSPlayer(p);
