@@ -185,7 +185,8 @@ public class Loader extends JavaPlugin implements Listener {
 			set.put(placeholder, replace);
 			return this;
 		}
-
+		// wq dq
+		
 		public static Placeholder c() {
 			return new Placeholder();
 		}

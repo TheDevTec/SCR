@@ -110,7 +110,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 						Loader.sendMessages(p, "TpSystem.Tp.Location.YouToLocation", Placeholder.c()
 								.replace("%x%", String.format("%2.02f", StringUtils.getDouble(args[0])).replaceFirst("\\.00", ""))
 								.replace("%y%", String.format("%2.02f", StringUtils.getDouble(args[1])).replaceFirst("\\.00", ""))
-								.replace("%z%", String.format("%2.02f", StringUtils.getDouble(args[2])).replaceFirst("\\.00", "")));
+								.replace("%z%", String.format("%2.02f", StringUtils.getDouble(args[2])).replaceFirst("\\.00", ""))
+								.replace("%yaw%", "").replace("%pitch%", ""));
 						API.setBack(p);
 						if (setting.tp_safe)
 							API.safeTeleport(p,new Location(p.getWorld(), StringUtils.getDouble(args[0]),
@@ -131,16 +132,16 @@ public class Tp implements CommandExecutor, TabCompleter {
 				if(Loader.has(s, "Tp", "TpSystem","Location")&&StringUtils.isDouble(args[0])&&StringUtils.isDouble(args[1])&&StringUtils.isDouble(args[2])&&StringUtils.isFloat(args[3])) {
 					Player p = (Player)s;
 					Loader.sendMessages(s, "TpSystem.Tp.Location.YouToLocation", Placeholder.c().add("%player%", s.getName())
-							.replace("%x%", String.format("%2.02f", StringUtils.getDouble(args[0])).replaceFirst("\\.00", "")
-							.replace("%y%", String.format("%2.02f", StringUtils.getDouble(args[1])).replaceFirst("\\.00", "")
-							.replace("%z%", String.format("%2.02f", StringUtils.getDouble(args[2])).replaceFirst("\\.00", "")
-							.replace("%yaw%", String.format("%2.02f", StringUtils.getFloat(args[3])).replace("%pitch%", ""))))));
+							.add("%x%", String.format("%2.02f", StringUtils.getDouble(args[0])).replaceFirst("\\.00", ""))
+							.add("%y%", String.format("%2.02f", StringUtils.getDouble(args[1])).replaceFirst("\\.00", ""))
+							.add("%z%", String.format("%2.02f", StringUtils.getDouble(args[2])).replaceFirst("\\.00", ""))
+							.add("%yaw%", String.format("%2.02f", StringUtils.getFloat(args[3])).replaceFirst("\\.00", ""))
+							.add("%pitch%", ""));
+					
 					API.setBack((Player) s);
-					Location loc = new Location (p.getWorld(), StringUtils.getDouble(args[0]), StringUtils.getDouble(args[1]), StringUtils.getDouble(args[2]));
-					loc.setYaw(StringUtils.getFloat(args[3]));
 					if(setting.tp_safe)						
-						API.safeTeleport((Player)s, loc); 
-					else p.teleport(loc); return true;
+						API.safeTeleport((Player)s, new Location (p.getWorld(), StringUtils.getDouble(args[0]), StringUtils.getDouble(args[1]), StringUtils.getDouble(args[2]), StringUtils.getFloat(args[3]), 0)); 
+					else p.teleport(new Location (p.getWorld(), StringUtils.getDouble(args[0]), StringUtils.getDouble(args[1]), StringUtils.getDouble(args[2]), StringUtils.getFloat(args[3]), 0)); return true;
 				}
 				if (Loader.has(s, "Tp","TpSystem","LocationOther")) {
 					Player p = TheAPI.getPlayer(args[0]);
@@ -175,6 +176,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 				Loader.noPerms(s, "Tp", "TpSystem","LocationOther");
 				return true;				
 			}
+			return true;
 			/*if (args.length == 5) {
 				if (Loader.has(s, "Tp","TpSystem","Location")) {
 					Player p = TheAPI.getPlayer(args[0]);

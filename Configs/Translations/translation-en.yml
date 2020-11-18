@@ -398,7 +398,7 @@ TpSystem:
       PlayerToYou: "%prefix% Teleporting &e%player% &7to you"
       PlayerToNextPlayer: "%prefix% Teleporting &e%player% &7to &e%next-player%"
     Location:
-      YouToLocation: "%prefix% Teleporting you to &e%x%&7, &e%y%&7, &e%z%, &e%yaw%, %pitch%"
+      YouToLocation: "%prefix% Teleporting you to &e%x%&7, &e%y%&7, &e%z%, &e%yaw%, &e%pitch%"
       PlayerToLocation: "%prefix% Teleporting &e%player% &7to &e%x%&7, &e%y%&7, &e%z%"
   TpaAll: "%prefix% Sent request to &e%amount% &7players to teleport to your position"
   TpAll: "%prefix% Teleport to your position &e%amount% &7players"
