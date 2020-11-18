@@ -167,6 +167,7 @@ import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.Collections.LinkedSet;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -524,13 +525,20 @@ public class Loader extends JavaPlugin implements Listener {
 		Converter.convert();
 		MultiWorldsUtils.LoadWorlds();
 		getInstance.starts();
-		for(String s : config.getKeys("Rules"))
-<<<<<<< HEAD
-			rules.add(new Rule(s, config.getString("Rules."+s+".Text"), config.getString("Rules."+s+".Type"), config.getString("Rules."+s+".Convert")
-=======
-			rules.add(new Rule(config.getString("Rules."+s+".Text"), config.getString("Rules."+s+".Type"), config.getString("Rules."+s+".Convert")
->>>>>>> branch 'master' of https://github.com/TheDevTec/ServerControlReloaded
-					, config.getBoolean("Rules."+s+".Replacement.Use"), config.getString("Rules."+s+".Replacement.Text")));
+		for(String s : config.getKeys("Rules")) {
+			int flags = 0;
+			for(String d : config.getStringList("Rules."+s+".RegexFlags")) {
+				if(flags==0) {
+					try {
+					flags=(int)Ref.getNulled(java.util.regex.Pattern.class,d);
+					}catch(Exception err) {}
+				}
+				try {
+				flags|=(int)Ref.getNulled(java.util.regex.Pattern.class,d);
+				}catch(Exception err) {}
+			}
+			rules.add(new Rule(s, config.getString("Rules."+s+".Text"), config.getString("Rules."+s+".Type"), config.getBoolean("Rules."+s+".Replacement.Use"), config.getString("Rules."+s+".Replacement.Text"),flags));
+		}
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			SPlayer s = API.getSPlayer(p);
 			if (s.hasTempFlyEnabled())

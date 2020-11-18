@@ -3,42 +3,31 @@ package me.DevTec.ServerControlReloaded.Utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import me.DevTec.TheAPI.TheAPI;
-
 public class Rule {
-	private final String a, b, c, e, f;
+	private final String a, b, e, f;
+	private final int patternFlags;
+	private final Pattern pattern;
 	private final boolean d;
-	private Pattern reg;
-	public Rule(String name, String value, String type, String convert, boolean replacement, String replaceValue) {
+	public Rule(String name, String value, String type, boolean replacement, String replaceValue, int patternFlags) {
 		a=value;
 		f=name;
 		b=type;
-		c=convert;
 		d=replacement;
 		e=replaceValue;
-		if(type.equalsIgnoreCase("REGEX"))
-			reg=Pattern.compile(value);
-		else
-			reg=null;
-	}
-	
-	public void update() {
-		if(b.equalsIgnoreCase("REGEX"))
-			reg=Pattern.compile(a);
-		else
-			reg=null;
+		this.patternFlags=patternFlags;
+		pattern=Pattern.compile(a, patternFlags);
 	}
 	
 	public String getValue() {
 		return a;
 	}
 	
-	public String getType() {
-		return b;
+	public int getPatternFlags() {
+		return patternFlags;
 	}
 	
-	public String getConvertType() {
-		return c;
+	public String getType() {
+		return b;
 	}
 	
 	public String getReplaceValue() {
@@ -54,47 +43,39 @@ public class Rule {
 	}
 	
 	public String apply(String text) {
-		String done = text;
-		switch(c.toUpperCase()) {
-		case "LOWERCASE":
-			done=done.toLowerCase();
-			break;
-		case "UPPERCASE":
-			done=done.toUpperCase();
-			break;
-		}
+		if(text==null)return text;
 		switch(b.toUpperCase()) {
 		case "REGEX":
-			Matcher m = reg.matcher(done);
+			Matcher m = pattern.matcher(text);
 			while(m.find()) {
-				if(d)
+				if(d) {
 					text=text.replace(m.group(), e);
-				else return null;
+				}else return null;
 			}
 			break;
 		case "CONTAINS":
-			if(done.contains(a)) {
+			if(text.contains(a)) {
 				if(d)
 					text=text.replace(a, e);
 				else return null;
 			}
 			break;
 		case "STARTS_WITH":
-			if(done.startsWith(a)) {
+			if(text.startsWith(a)) {
 				if(d)
 					text=text.replace(a, e);
 				else return null;
 			}
 			break;
 		case "ENDS_WITH":
-			if(done.endsWith(a)) {
+			if(text.endsWith(a)) {
 				if(d)
 					text=text.replace(a, e);
 				else return null;
 			}
 			break;
 		case "EQUALS":
-			if(done.equals(a)) {
+			if(text.equals(a)) {
 				if(d)
 					text=text.replace(a, e);
 				else return null;

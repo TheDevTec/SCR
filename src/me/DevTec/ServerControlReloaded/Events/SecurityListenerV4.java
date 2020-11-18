@@ -21,12 +21,18 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 
-
+/**
+ * 18.11. 2020
+ * 
+ * @author StraikerinaCZ
+ *
+ */
 public class SecurityListenerV4 implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerCommands(PlayerCommandPreprocessEvent event) {
 		String msg = event.getMessage().toLowerCase();
+		if (!event.getPlayer().hasPermission("SCR.Admin")) {
 		for (Rule rule : Loader.rules) {
 			if(!Loader.events.getStringList("onCommand.Rules").contains(rule.getName()))continue;
 			msg = rule.apply(msg);
@@ -36,7 +42,6 @@ public class SecurityListenerV4 implements Listener {
 			event.setCancelled(true);
 			return;
 		}
-		event.setMessage(msg);
 		if (!event.getPlayer().hasPermission("SCR.CommandsAccess") && setting.cmdblock) {
 			for (String cen : Loader.config.getStringList("Options.CommandsBlocker.List")) {
 				String mes = msg.toLowerCase();
@@ -46,10 +51,13 @@ public class SecurityListenerV4 implements Listener {
 				}
 			}
 		}
+		}
+		event.setMessage(msg);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void signCreate(SignChangeEvent e) {
+		if (!e.getPlayer().hasPermission("SCR.Admin")) {
 		int i = -1;
 		for (String msg : e.getLines()) {
 			for (Rule rule : Loader.rules) {
@@ -63,10 +71,12 @@ public class SecurityListenerV4 implements Listener {
 			}
 			e.setLine(++i, msg);
 		}
+		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void BookSave(PlayerEditBookEvent e) {
+		if (!e.getPlayer().hasPermission("SCR.Admin")) {
 		List<String> lines = new ArrayList<>();
 		for (String msg : e.getNewBookMeta().getPages()) {
 			for (Rule rule : Loader.rules) {
@@ -83,10 +93,12 @@ public class SecurityListenerV4 implements Listener {
 		BookMeta meta = e.getNewBookMeta();
 		meta.setPages(lines);
 		e.setNewBookMeta(meta);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onInventoryClickEvent(InventoryClickEvent event) {
+		if (!event.getWhoClicked().hasPermission("SCR.Admin")) {
 		if (event.getInventory().getType() == InventoryType.ANVIL)
 			if (event.getSlotType() == InventoryType.SlotType.RESULT) {
 				ItemStack item = event.getCurrentItem();
@@ -107,10 +119,12 @@ public class SecurityListenerV4 implements Listener {
 					event.setCurrentItem(item);
 				}
 		}
+		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PickupAntiADEvent(PlayerPickupItemEvent event) {
+		if (!event.getPlayer().hasPermission("SCR.Admin")) {
 		ItemStack item = event.getItem().getItemStack();
 		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
 			ItemMeta meta = item.getItemMeta();
@@ -127,11 +141,12 @@ public class SecurityListenerV4 implements Listener {
 			meta.setDisplayName(msg);
 			item.setItemMeta(meta);
 			event.getItem().setItemStack(item);
-		}
+		}}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void DropAntiADEvent(PlayerDropItemEvent event) {
+		if (!event.getPlayer().hasPermission("SCR.Admin")) {
 		ItemStack item = event.getItemDrop().getItemStack();
 		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
 			ItemMeta meta = item.getItemMeta();
@@ -148,6 +163,6 @@ public class SecurityListenerV4 implements Listener {
 			meta.setDisplayName(msg);
 			item.setItemMeta(meta);
 			event.getItemDrop().setItemStack(item);
-		}
+		}}
 	}
 }

@@ -118,10 +118,9 @@ public class ChatFormat implements Listener {
 			}
 		}
 		String msg = r(e.getMessage(), p);
+		if (!p.hasPermission("SCR.Admin")) {
 		for (Rule rule : Loader.rules) {
-			if(!Loader.events.getStringList("onChat.Rules").contains(rule.getName())) {
-				continue;
-			}
+			if(!Loader.events.getStringList("onChat.Rules").contains(rule.getName()))continue;
 			msg = rule.apply(msg);
 			if (msg == null) break;
 		}
@@ -129,8 +128,6 @@ public class ChatFormat implements Listener {
 			e.setCancelled(true);
 			return;
 		}
-		
-		if (!p.hasPermission("SCR.Admin")) {
 			String message = e.getMessage();
 			String d = ""; // anti doubled letters
 			int up = 0; // anti caps
@@ -183,7 +180,6 @@ public class ChatFormat implements Listener {
 			}
 			msg=message;
 		}
-		
 		e.setMessage(msg);
 		if (setting.lock_chat && !p.hasPermission("ServerControl.ChatLock")) {
 			e.setCancelled(true);
