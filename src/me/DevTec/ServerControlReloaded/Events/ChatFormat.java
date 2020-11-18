@@ -28,12 +28,20 @@ public class ChatFormat implements Listener {
 		s=s.replace("&u", "&<U>");
 		s = TabList.replace(s, p, false);
 		if (msg != null)
-			s=s.replace("%message%", r(msg.replace("&u", "&<UU>"), p));
+			s=s.replace("%message%", r(msg.replaceAll("&([0-9A-Fa-fK-Ok-oRrUuXx])", "&<$1$1>").replaceAll("#([0-9A-Fa-f]{6})", "#<$1>"), p));
 		s=s.replace("&<U>", "&u");
 		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.Rainbow")))
-			s=s.replace("&<UU>", "&u");
+			s=s.replaceAll("&<[Uu]{2}>", "&u");
+		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.Color")))
+			s=s.replaceAll("&<([0-9A-Fa-f]){2}>", "&$1");
+		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.Magic")))
+			s=s.replaceAll("&<[Kk]{2}>", "&k");
+		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.Format")))
+			s=s.replaceAll("&<([L-Ol-o]){2}>", "&$1");
+		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.HEX")))
+			s=s.replaceAll("#<([0-9A-Fa-f]{6})>", "#$1").replaceAll("&<([Xx]){2}>", "&x");
 		s=TheAPI.colorize(s);
-		s=s.replace("&<UU>", "&u");
+		s=s.replaceAll("&<([0-9A-Fa-fK-Ok-oRrUuXx]){2}>", "&$1").replaceAll("#<([0-9A-Fa-f]{6})>", "#$1");
 		return s;
 	}
 
@@ -128,7 +136,7 @@ public class ChatFormat implements Listener {
 			e.setCancelled(true);
 			return;
 		}
-			String message = e.getMessage();
+			String message = msg;
 			String d = ""; // anti doubled letters
 			int up = 0; // anti caps
 			if (setting.spam_double) {
@@ -152,7 +160,7 @@ public class ChatFormat implements Listener {
 			String build = d;
 			if (setting.caps_chat) {
 				if (up != 0
-						? up / ((double) d.length() / 100) >= 60 && !p.hasPermission("ServerControl.Caps")
+						? up / ((double) d.length() / 100) >= 60 && !p.hasPermission("SCR.Caps")
 								&& d.length() > 5
 						: false) {
 					build = "";

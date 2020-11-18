@@ -289,42 +289,36 @@ Homes:
   # owner: 10 
 
 # Types: REGEX, CONTAINS, EQUALS, STARTS_WITH, ENDS_WITH
-# Convert types: LOWERCASE, UPPERCASE, NONE
+# Regex flags: CASE_INSENSITIVE, COMMENTS, CANON_EQ, DOTALL, LITERAL, MULTILINE, UNICODE_CASE, UNICODE_CHARACTER_CLASS, UNIX_LINES
 Rules:
- 1:
-   # Example: "What an idiot" -> "What an good boy"
-   Type: "REGEX"
-   # idiot -> 1d1ot -> 1d10t
-   Text: "([i1]+[ ]*[d]+[ ]*[i1]+[ ]*[o0]+[ ]*[t]+)*?"
-   Replacement:
-     Use: true
-     # replace word "idiot" with "good boy"
-     Text: "good boy"
- 2:
-   # Example: "Hello, I'm from devtec discord!" -> "Hello, I'm from Spigot & Bukkit DevTec discord!"
-   Type: "EQUALS"
-   # devtec -> d3vt3c
-   Text: "([d]+[ ]*[^A-Za-z0-9]*[e3]+[ ]*[^A-Za-z0-9]*[v]+[ ]*[^A-Za-z0-9]*[t]+[ ]*[^A-Za-z0-9]*[e3]+[ ]*[^A-Za-z0-9]*[c]+)*?"
-   Replacement:
-     Use: true
-     # replace word "devtec" or "DeVtEc" with "Spigot & Bukkit DevTec"
-     Text: "Spigot & Bukkit DevTec"
-  
-# Types: REGEX, CONTAINS, EQUALS, STARTS_WITH, ENDS_WITH
-# Convert types: LOWERCASE, UPPERCASE, NONE
-Rules:
- 1:
+ antiSwear_idiot:
    # Example: "What an idiot" -> "What an good boy"
    Type: "REGEX"
    # idiot -> 1d1ot -> 1d10t
    Text: "[i1]+[ ]*[d]+[ ]*[i1]+[ ]*[o0]+[ ]*[t]+"
-   RegexFlags:
-   - "CASE_INSENSITIVE"
    Replacement:
      Use: true
-     # replace word "idiot" with "good boy"
-     Text: "good boy"
-  
+     # replace word "idiot" with "*****"
+     Text: "*****"
+ # antiSpam_d:
+ #   Type: "REGEX"
+ #   Text: "d{5}"
+ #   Replacement:
+ #     Use: true
+ #     Text: "d"
+ # antiAd_ip:
+ #   Type: "REGEX"
+ #   Text: "[0-9]+[. ][0-9]+[. ][0-9]+[. ][0-9]+(:[0-9]+)*"
+ #   Replacement:
+ #     Use: false
+ #     Text: "ANTIAD"
+ # antiAd_web:
+ #   Type: "REGEX"
+ #   Text: "([A-z]{2,20}\.)*[A-z]{2,100}\.[A-z]{2,20}[:]*[0-9]*"
+ #   Replacement:
+ #     Use: false
+ #     Text: "ANTIAD"
+
 Format:
   Mail: "&e%player% &7: &e%message%"
   Time: "HH:mm:ss"

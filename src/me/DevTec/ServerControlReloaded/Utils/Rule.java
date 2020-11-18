@@ -15,7 +15,7 @@ public class Rule {
 		d=replacement;
 		e=replaceValue;
 		this.patternFlags=patternFlags;
-		pattern=Pattern.compile(a, patternFlags);
+		pattern=patternFlags==0?Pattern.compile(a):Pattern.compile(a, patternFlags);
 	}
 	
 	public String getValue() {

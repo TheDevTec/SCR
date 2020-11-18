@@ -27,41 +27,34 @@ onQuit:
 # On player chat event
 onChat:
   Rules:
-  - "1"
-  - "2"
+  - "antiSwear_idiot"
 
 # On player send command event
 onCommand:
   Rules:
-  - "1"
-  - "2"
+  - "antiSwear_idiot"
 
 # On anvil rename item event
 onAnvil:
   Rules:
-  - "1"
-  - "2"
+  - "antiSwear_idiot"
 
 # On sign change event
 onSign:
   Rules:
-  - "1"
-  - "2"
+  - "antiSwear_idiot"
 
 # On book edit event
 onBook:
   Rules:
-  - "1"
-  - "2"
+  - "antiSwear_idiot"
 
 # On drop item event
 onDropItem:
   Rules:
-  - "1"
-  - "2"
+  - "antiSwear_idiot"
 
 # On pickup item event
 onPickupItem:
   Rules:
-  - "1"
-  - "2"
+  - "antiSwear_idiot"

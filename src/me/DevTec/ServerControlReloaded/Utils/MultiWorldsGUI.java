@@ -301,7 +301,7 @@ public class MultiWorldsGUI {
 					g.close(s);
 					TheAPI.sendTitle(s,"&2Write world name", "&2To the chat.");
 					TheAPI.sendActionBar(s, "&6Type &0'&ccancel&0' &6to cancel.");
-					TheAPI.getCooldownAPI("world-create").createCooldown(s.getName(), 30);
+					TheAPI.getCooldownAPI("world-create").createCooldown(s.getName(), 30*20);
 				}
 			});
 		a.setItem(24, new ItemGUI(createItem("&aGenerator type", TheAPI.getUser(p).exist("MultiWorlds-Generator")?XMaterial.GREEN_WOOL:XMaterial.RED_WOOL, Arrays.asList("&7World generator", TheAPI.getUser(p).exist("MultiWorlds-Generator")?"&7 - &a" + TheAPI.getUser(p).getString("MultiWorlds-Generator"):"&7 - &cnone"))) {

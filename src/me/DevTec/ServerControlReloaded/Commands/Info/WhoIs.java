@@ -62,7 +62,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			boolean d = false;
 			String afk = "false";
 			String seen = null;
-			if (TheAPI.getPlayerOrNull(a[0]) != null && TheAPI.getPlayer(a[0]).getName().equals(a[0])) {
+			if (TheAPI.getPlayerOrNull(a[0]) != null) {
 				seen = API.getSeen(a[0], SeenType.Online);
 				if (API.isAFK(TheAPI.getPlayerOrNull(a[0])))
 					afk = "true";

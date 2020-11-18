@@ -31,7 +31,7 @@ public class SecurityListenerV4 implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerCommands(PlayerCommandPreprocessEvent event) {
-		String msg = event.getMessage().toLowerCase();
+		String msg = event.getMessage();
 		if (!event.getPlayer().hasPermission("SCR.Admin")) {
 		for (Rule rule : Loader.rules) {
 			if(!Loader.events.getStringList("onCommand.Rules").contains(rule.getName()))continue;

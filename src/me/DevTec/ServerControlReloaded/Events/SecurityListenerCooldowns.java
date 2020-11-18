@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.CooldownAPI.CooldownAPI;
@@ -25,27 +24,17 @@ public class SecurityListenerCooldowns implements Listener {
 				&& Loader.config.getInt("Options.Cooldowns.Chat.Time") > 0) {
 			CooldownAPI s = TheAPI.getCooldownAPI(p.getName());
 			if (!s.expired("Cooldown.Msgs")) {
-				Loader.sendMessages(p, "Cooldowns.Messages", Placeholder.c().add("%time%", StringUtils.setTimeToString(s.getTimeToExpire("Cooldown.Msgs"))));
+				Loader.sendMessages(p, "Cooldowns.Messages", Placeholder.c().add("%time%", StringUtils.setTimeToString(s.getTimeToExpire("Cooldown.Msgs")/20)));
 				e.setCancelled(true);
 				return;
 			} else
-				s.createCooldown("Cooldown.Msgs", Loader.config.getInt("Cooldown.Chat"));
+				s.createCooldown("Cooldown.Msgs", Loader.config.getLong("Cooldown.Chat")*20);
 		}
 	}
 
 	@EventHandler
 	public void CooldownCommands(PlayerCommandPreprocessEvent e) {
 		Player p = e.getPlayer();
-		String msg = e.getMessage();
-		for (Rule rule : Loader.rules) {
-			msg = rule.apply(msg);
-			if (msg == null) break;
-		}
-		if (msg == null) {
-			e.setCancelled(true);
-			return;
-		}
-		e.setMessage(msg);
 		if (!p.hasPermission("ServerControl.CooldownBypass.Commands")) {
 			int time = Loader.config.getInt("Options.Cooldowns.Commands.Time");
 			boolean find = false;
@@ -57,10 +46,10 @@ public class SecurityListenerCooldowns implements Listener {
 							|| c[0].equalsIgnoreCase(e.getMessage().replaceFirst("/", ""))) {
 						find = true;
 						if (as.expired("Cooldown.Cmds." + c[0])) {
-							as.createCooldown("Cooldown.Cmds." + c[0], StringUtils.getInt(c[1]));
+							as.createCooldown("Cooldown.Cmds." + c[0], StringUtils.getLong(c[1])*20);
 						} else {
 							e.setCancelled(true);
-							Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmds." + c[0]))));
+							Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmds." + c[0])/20)));
 						}
 						break;
 					}
@@ -68,9 +57,9 @@ public class SecurityListenerCooldowns implements Listener {
 			if (!find && setting.cool_cmd && time > 0) {
 				if (!as.expired("Cooldown.Cmdss")) {
 					e.setCancelled(true);
-					Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmdss"))));
+					Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmdss")/20)));
 				} else
-					as.createCooldown("Cooldown.Cmdss", time);
+					as.createCooldown("Cooldown.Cmdss", time*20);
 			}
 		}
 	}
