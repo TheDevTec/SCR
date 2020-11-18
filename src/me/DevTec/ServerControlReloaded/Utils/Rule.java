@@ -3,12 +3,15 @@ package me.DevTec.ServerControlReloaded.Utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import me.DevTec.TheAPI.TheAPI;
+
 public class Rule {
-	private final String a, b, c, e;
+	private final String a, b, c, e, f;
 	private final boolean d;
 	private Pattern reg;
-	public Rule(String value, String type, String convert, boolean replacement, String replaceValue) {
+	public Rule(String name, String value, String type, String convert, boolean replacement, String replaceValue) {
 		a=value;
+		f=name;
 		b=type;
 		c=convert;
 		d=replacement;
@@ -42,13 +45,17 @@ public class Rule {
 		return e;
 	}
 	
+	public String getName() {
+		return f;
+	}
+	
 	public boolean isReplacing() {
 		return d;
 	}
 	
 	public String apply(String text) {
 		String done = text;
-		switch(c.toLowerCase()) {
+		switch(c.toUpperCase()) {
 		case "LOWERCASE":
 			done=done.toLowerCase();
 			break;
@@ -56,7 +63,7 @@ public class Rule {
 			done=done.toUpperCase();
 			break;
 		}
-		switch(b.toLowerCase()) {
+		switch(b.toUpperCase()) {
 		case "REGEX":
 			Matcher m = reg.matcher(done);
 			while(m.find()) {

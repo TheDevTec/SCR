@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 
@@ -82,6 +83,16 @@ public class SecurityListenerV3 implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCommand(PlayerCommandPreprocessEvent e) {
 		Player p = e.getPlayer();
+		String msg = e.getMessage();
+		for (Rule rule : Loader.rules) {
+			msg = rule.apply(msg);
+			if (msg == null) break;
+		}
+		if (msg == null) {
+			e.setCancelled(true);
+			return;
+		}
+		e.setMessage(msg);
 		if (!p.hasPermission("ServerControl.CommandsAccess") && setting.cmdblock) {
 			for (String cen : Loader.config.getStringList("Options.CommandsBlocker.List")) {
 				String mes = e.getMessage().toLowerCase();
@@ -127,6 +138,16 @@ public class SecurityListenerV3 implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChat(PlayerChatEvent e) {
 		Player p = e.getPlayer();
+		String msg = e.getMessage();
+		for (Rule rule : Loader.rules) {
+			msg = rule.apply(msg);
+			if (msg == null) break;
+		}
+		if (msg == null) {
+			e.setCancelled(true);
+			return;
+		}
+		e.setMessage(msg);
 		if (!p.hasPermission("ServerControl.Admin")) {
 			String message = e.getMessage();
 			String d = ""; // anti doubled letters

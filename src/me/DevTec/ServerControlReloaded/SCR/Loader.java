@@ -141,9 +141,8 @@ import me.DevTec.ServerControlReloaded.Events.FarmingSystem;
 import me.DevTec.ServerControlReloaded.Events.LoginEvent;
 import me.DevTec.ServerControlReloaded.Events.OnPlayerJoin;
 import me.DevTec.ServerControlReloaded.Events.RewardsListenerChat;
-import me.DevTec.ServerControlReloaded.Events.SecurityListenerAntiAD;
 import me.DevTec.ServerControlReloaded.Events.SecurityListenerCooldowns;
-import me.DevTec.ServerControlReloaded.Events.SecurityListenerV3;
+import me.DevTec.ServerControlReloaded.Events.SecurityListenerV4;
 import me.DevTec.ServerControlReloaded.Events.Signs;
 import me.DevTec.ServerControlReloaded.Events.WorldChange;
 import me.DevTec.ServerControlReloaded.Utils.Colors;
@@ -517,6 +516,7 @@ public class Loader extends JavaPlugin implements Listener {
 			}
 			getInstance.stop();
 		}
+		rules.clear();
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
 		Configs.load();
 		TheAPI.msg(setting.prefix + " &7Configs "+(aad == 0 ? "l" : "rel")+"oaded.", TheAPI.getConsole());
@@ -524,6 +524,9 @@ public class Loader extends JavaPlugin implements Listener {
 		Converter.convert();
 		MultiWorldsUtils.LoadWorlds();
 		getInstance.starts();
+		for(String s : config.getKeys("Rules"))
+			rules.add(new Rule(s, config.getString("Rules."+s+".Text"), config.getString("Rules."+s+".Type"), config.getString("Rules."+s+".Convert")
+					, config.getBoolean("Rules."+s+".Replacement.Use"), config.getString("Rules."+s+".Replacement.Text")));
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			SPlayer s = API.getSPlayer(p);
 			if (s.hasTempFlyEnabled())
@@ -799,13 +802,12 @@ public class Loader extends JavaPlugin implements Listener {
 
 	private void EventsRegister() {
 		EventC(new DisableItems());
-		EventC(new SecurityListenerAntiAD());
+		EventC(new SecurityListenerV4());
 		EventC(new OnPlayerJoin());
 		EventC(new SecurityListenerCooldowns());
 		EventC(new ChatFormat());
 		EventC(new RewardsListenerChat());
 		EventC(new LoginEvent());
-		EventC(new SecurityListenerV3());
 		EventC(new DeathEvent());
 		EventC(new AFkPlayerEvents());
 		EventC(new WorldChange());

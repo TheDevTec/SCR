@@ -33,7 +33,7 @@ public class RAM implements CommandExecutor, TabCompleter {
 			}
 			if (clearing == false) {
 				clearing = true;
-				Loader.sendMessages(s, "Memory.Clearing");
+				Loader.sendMessages(s, "Memory.Clear");
 				Loader.sendMessages(s, "Memory.Cleared", Placeholder.c()
 						.add("%amount%", MemoryAPI.clearMemory() + ""));
 				clearing = false;

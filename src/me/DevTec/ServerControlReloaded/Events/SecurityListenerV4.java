@@ -1,0 +1,153 @@
+package me.DevTec.ServerControlReloaded.Events;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerEditBookEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.Utils.Rule;
+import me.DevTec.ServerControlReloaded.Utils.setting;
+
+
+public class SecurityListenerV4 implements Listener {
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerCommands(PlayerCommandPreprocessEvent event) {
+		String msg = event.getMessage().toLowerCase();
+		for (Rule rule : Loader.rules) {
+			if(!Loader.events.getStringList("onCommand.Rules").contains(rule.getName()))continue;
+			msg = rule.apply(msg);
+			if (msg == null) break;
+		}
+		if (msg == null) {
+			event.setCancelled(true);
+			return;
+		}
+		event.setMessage(msg);
+		if (!event.getPlayer().hasPermission("SCR.CommandsAccess") && setting.cmdblock) {
+			for (String cen : Loader.config.getStringList("Options.CommandsBlocker.List")) {
+				String mes = msg.toLowerCase();
+				if (mes.startsWith("/" + cen.toLowerCase()) || mes.startsWith("/bukkit:" + cen.toLowerCase())
+						|| mes.startsWith("/minecraft:" + cen.toLowerCase())) {
+						event.setCancelled(true);
+				}
+			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void signCreate(SignChangeEvent e) {
+		int i = -1;
+		for (String msg : e.getLines()) {
+			for (Rule rule : Loader.rules) {
+				if(!Loader.events.getStringList("onSign.Rules").contains(rule.getName()))continue;
+				msg = rule.apply(msg);
+				if (msg == null) break;
+			}
+			if (msg == null) {
+				e.setLine(++i, "");
+				continue;
+			}
+			e.setLine(++i, msg);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void BookSave(PlayerEditBookEvent e) {
+		List<String> lines = new ArrayList<>();
+		for (String msg : e.getNewBookMeta().getPages()) {
+			for (Rule rule : Loader.rules) {
+				if(!Loader.events.getStringList("onBook.Rules").contains(rule.getName()))continue;
+				msg = rule.apply(msg);
+				if (msg == null) break;
+			}
+			if (msg == null) {
+				lines.add("");
+				continue;
+			}
+			lines.add(msg);
+		}
+		BookMeta meta = e.getNewBookMeta();
+		meta.setPages(lines);
+		e.setNewBookMeta(meta);
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onInventoryClickEvent(InventoryClickEvent event) {
+		if (event.getInventory().getType() == InventoryType.ANVIL)
+			if (event.getSlotType() == InventoryType.SlotType.RESULT) {
+				ItemStack item = event.getCurrentItem();
+				if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
+					ItemMeta meta = item.getItemMeta();
+					String msg = meta.getDisplayName();
+					for (Rule rule : Loader.rules) {
+						if(!Loader.events.getStringList("onAnvil.Rules").contains(rule.getName()))continue;
+						msg = rule.apply(msg);
+						if (msg == null) break;
+					}
+					if (msg == null) {
+						event.setCancelled(true);
+						return;
+					}
+					meta.setDisplayName(msg);
+					item.setItemMeta(meta);
+					event.setCurrentItem(item);
+				}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void PickupAntiADEvent(PlayerPickupItemEvent event) {
+		ItemStack item = event.getItem().getItemStack();
+		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
+			ItemMeta meta = item.getItemMeta();
+			String msg = meta.getDisplayName();
+			for (Rule rule : Loader.rules) {
+				if(!Loader.events.getStringList("onPickupItem.Rules").contains(rule.getName()))continue;
+				msg = rule.apply(msg);
+				if (msg == null) break;
+			}
+			if (msg == null) {
+				event.setCancelled(true);
+				return;
+			}
+			meta.setDisplayName(msg);
+			item.setItemMeta(meta);
+			event.getItem().setItemStack(item);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void DropAntiADEvent(PlayerDropItemEvent event) {
+		ItemStack item = event.getItemDrop().getItemStack();
+		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
+			ItemMeta meta = item.getItemMeta();
+			String msg = meta.getDisplayName();
+			for (Rule rule : Loader.rules) {
+				if(!Loader.events.getStringList("onDropItem.Rules").contains(rule.getName()))continue;
+				msg = rule.apply(msg);
+				if (msg == null) break;
+			}
+			if (msg == null) {
+				event.setCancelled(true);
+				return;
+			}
+			meta.setDisplayName(msg);
+			item.setItemMeta(meta);
+			event.getItemDrop().setItemStack(item);
+		}
+	}
+}

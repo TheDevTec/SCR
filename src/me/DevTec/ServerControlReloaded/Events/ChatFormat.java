@@ -1,5 +1,7 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import java.util.HashMap;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +13,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Item;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.Colors;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
+import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
@@ -28,7 +31,8 @@ public class ChatFormat implements Listener {
 			s=s.replace("%message%", r(msg.replace("&u", "&<UU>"), p));
 		s=s.replace("&<U>", "&u");
 		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.Rainbow")))
-			s=TheAPI.colorize(s.replace("&<UU>", "&u"));
+			s=s.replace("&<UU>", "&u");
+		s=TheAPI.colorize(s);
 		s=s.replace("&<UU>", "&u");
 		return s;
 	}
@@ -40,6 +44,56 @@ public class ChatFormat implements Listener {
 			return msg;
 	}
 
+	private boolean is(String s) {
+		for (Player p : TheAPI.getOnlinePlayers()) {
+			if (s.equalsIgnoreCase(p.getName()))
+				return true;
+
+		}
+		return false;
+	}
+
+	private int count(String string) {
+		int upperCaseCount = 0;
+		for (int i = 0; i < string.length(); i++)
+			if (Character.isAlphabetic(string.charAt(i)) && Character.isUpperCase(string.charAt(i)))
+				upperCaseCount++;
+		return upperCaseCount;
+	}
+
+	private String removeDoubled(String s) {
+		char prevchar = 0;
+		StringBuilder sb = new StringBuilder();
+		for (char c : s.toCharArray()) {
+			if (prevchar != c)
+				sb.append(c);
+			prevchar = c;
+		}
+		return sb.toString();
+	}
+
+	private int countDoubled(String s) {
+		return s.length() - removeDoubled(s).length();
+	}
+
+	static HashMap<Player, String> old = new HashMap<Player, String>();
+
+	private boolean isSim(Player p, String msg) {
+		if (Loader.config.getBoolean("SpamWords.SimiliarMessage")) {
+			if (old.containsKey(p)) {
+				String o = old.get(p);
+				old.remove(p);
+				old.put(p, msg);
+				if (o.length() >= 5 && msg.length() >= o.length()) {
+					String f = o.substring(1, o.length() - 1);
+					return o.equalsIgnoreCase(msg) || msg.startsWith(o) || f.startsWith(msg) || f.equalsIgnoreCase(msg);
+				}
+			} else
+				old.put(p, msg);
+		}
+		return false;
+	}
+	
 	@EventHandler
 	public void set(PlayerChatEvent e) {
 		Player p = e.getPlayer();
@@ -64,6 +118,72 @@ public class ChatFormat implements Listener {
 			}
 		}
 		String msg = r(e.getMessage(), p);
+		for (Rule rule : Loader.rules) {
+			if(!Loader.events.getStringList("onChat.Rules").contains(rule.getName())) {
+				continue;
+			}
+			msg = rule.apply(msg);
+			if (msg == null) break;
+		}
+		if (msg == null) {
+			e.setCancelled(true);
+			return;
+		}
+		
+		if (!p.hasPermission("SCR.Admin")) {
+			String message = e.getMessage();
+			String d = ""; // anti doubled letters
+			int up = 0; // anti caps
+			if (setting.spam_double) {
+				if (message.split(" ").length == 0) {
+					if (!is(message)) {
+						up = up + count(message);
+						d = d + " " + (countDoubled(message) >= 5 ? removeDoubled(message) : message);
+					} else
+						d = d + " " + message;
+				} else
+					for (String s : message.split(" ")) {
+						if (!is(s)) {
+							up = up + count(s);
+							d = d + " " + (countDoubled(s) >= 5 ? removeDoubled(s) : s);
+						} else
+							d = d + " " + s;
+					}
+				d = d.replaceFirst(" ", "");
+			} else
+				d = message;
+			String build = d;
+			if (setting.caps_chat) {
+				if (up != 0
+						? up / ((double) d.length() / 100) >= 60 && !p.hasPermission("ServerControl.Caps")
+								&& d.length() > 5
+						: false) {
+					build = "";
+					if (d.split(" ").length == 0) {
+						if (!is(d)) {
+							build = build + " " + d.toLowerCase();
+						} else
+							build = build + " " + d;
+					} else
+						for (String s : d.split(" ")) {
+							if (!is(s)) {
+								build = build + " " + s.toLowerCase();
+							} else
+								build = build + " " + s;
+						}
+					build = build.replaceFirst(" ", "");
+				}
+			}
+			message = build;
+			if (Loader.config.getBoolean("SpamWords.SimiliarMessage")) {
+				if (isSim(p, e.getMessage())) {
+					e.setCancelled(true);
+					return;
+				}
+			}
+			msg=message;
+		}
+		
 		e.setMessage(msg);
 		if (setting.lock_chat && !p.hasPermission("ServerControl.ChatLock")) {
 			e.setCancelled(true);

@@ -288,6 +288,30 @@ Homes:
   # vip: 5
   # owner: 10
   
+# Types: REGEX, CONTAINS, EQUALS, STARTS_WITH, ENDS_WITH
+# Convert types: LOWERCASE, UPPERCASE, NONE
+Rules:
+ 1:
+   # Example: "What an idiot" -> "What an good boy"
+   Type: "REGEX"
+   Convert: "LOWERCASE"
+   # idiot -> 1d1ot -> 1d10t
+   Text: "([i1]+[ ]*[^A-Za-z0-9]*[d]+[ ]*[^A-Za-z0-9]*[i1]+[ ]*[^A-Za-z0-9]*[o0]+[ ]*[^A-Za-z0-9]*[t]+)*?"
+   Replacement:
+     Use: true
+     # replace word "idiot" with "good boy"
+     Text: "good boy"
+ 2:
+   # Example: "Hello, I'm from devtec discord!" -> "Hello, I'm from Spigot & Bukkit DevTec discord!"
+   Type: "EQUALS"
+   Convert: "LOWERCASE"
+   # devtec -> d3vt3c
+   Text: "([d]+[ ]*[^A-Za-z0-9]*[e3]+[ ]*[^A-Za-z0-9]*[v]+[ ]*[^A-Za-z0-9]*[t]+[ ]*[^A-Za-z0-9]*[e3]+[ ]*[^A-Za-z0-9]*[c]+)*?"
+   Replacement:
+     Use: true
+     # replace word "devtec" or "DeVtEc" with "Spigot & Bukkit DevTec"
+     Text: "Spigot & Bukkit DevTec"
+  
 Format:
   Mail: "&e%player% &7: &e%message%"
   Time: "HH:mm:ss"

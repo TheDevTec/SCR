@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.CooldownAPI.CooldownAPI;
@@ -35,6 +36,16 @@ public class SecurityListenerCooldowns implements Listener {
 	@EventHandler
 	public void CooldownCommands(PlayerCommandPreprocessEvent e) {
 		Player p = e.getPlayer();
+		String msg = e.getMessage();
+		for (Rule rule : Loader.rules) {
+			msg = rule.apply(msg);
+			if (msg == null) break;
+		}
+		if (msg == null) {
+			e.setCancelled(true);
+			return;
+		}
+		e.setMessage(msg);
 		if (!p.hasPermission("ServerControl.CooldownBypass.Commands")) {
 			int time = Loader.config.getInt("Options.Cooldowns.Commands.Time");
 			boolean find = false;
