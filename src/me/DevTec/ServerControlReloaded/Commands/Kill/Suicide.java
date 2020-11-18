@@ -9,11 +9,13 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.TheAPI.TheAPI;
 
 public class Suicide implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+		if(args.length==0) {
 		if (Loader.has(s, "Suicide", "Kill")) {
 			if (s instanceof Player) {
 				Player p = (Player) s;
@@ -22,10 +24,31 @@ public class Suicide implements CommandExecutor, TabCompleter {
 					Loader.sendBroadcasts(s, "Kill.Suicide");
 				return true;
 			}
-			Loader.Help(s, "Kill", "Kill");
+			Loader.Help(s, "Suicide", "Kill");
 			return true;
 		}
 		Loader.noPerms(s, "Suicide", "Kill");
+		}
+		if(args.length==1) {
+			if(Loader.has(s, "Suicide", "Kill", "Other")) {
+				Player o = TheAPI.getPlayer(args[0]);
+				if(o==null) {
+					Loader.sendMessages(s, "Missing.Player.Offline");
+					return true;
+				}
+				o.setHealth(0);
+				if(o.isDead())
+					Loader.sendBroadcasts(s, "Kill.Suicide");					
+				return true;
+			}
+		}
+		if(args.length>1) {
+			if(Loader.has(s, "Suicide", "Kill", "Other"))
+				Loader.advancedHelp(s, "Suicide", "Kill", "Other");
+			if(Loader.has(s, "Suicide", "Kill")) 
+				Loader.Help(s, "Suicide","Kill");
+			return true;
+		}
 		return true;
 	}
 
