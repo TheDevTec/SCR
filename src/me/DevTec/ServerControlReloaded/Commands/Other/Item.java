@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
@@ -45,75 +46,65 @@ public class Item implements CommandExecutor, TabCompleter{
 				Player p = (Player)s;
 		        ItemStack item = p.getItemInHand();
 		        ItemMeta m = item.getItemMeta();
-		        if(item.getType()==Material.AIR) {TheAPI.sendTitle(p, Loader.getTranslation("Item.NoItem").toString(), " ");return true;}
+		        if(item.getType()==Material.AIR) {
+		        	TheAPI.sendTitle(p, Loader.getTranslation("Item.NoItem").toString(), "");
+		        	return true;
+		        }
 				if(args[0].equalsIgnoreCase("name")) {
 					if(args.length==1) {
 						Loader.advancedHelp(s, "Item", "Other", "Name");
 						return true;
 					}
-					String name = "";
-					for (int i=0;i<args.length;i++)						
-						name=String.valueOf(name)+args[i]+" ";
-					name=name.replaceFirst(String.valueOf(args[0])+" ", "");
-					name=name.substring(0, name.length()-1);
+					String name = StringUtils.buildString(1, args);
 					m.setDisplayName(TheAPI.colorize(name));
 					item.setItemMeta(m);
-					TheAPI.msg(Loader.getTranslation("Item.Name").toString().replace("%item%", item.getType().name()).replace("%name%", name), s);
+		            Loader.sendMessages(s, "Item.Name", Placeholder.c().replace("%item%", item.getType().name()).replace("%name%", name));
 					return true;
 				}
 				if(args[0].equalsIgnoreCase("lore")) {
 					if(args.length==1) {
-						for (String c : f) Loader.advancedHelp(s,"Item", "Other", "Lore", org.apache.commons.lang.StringUtils.capitalise(c));return true;
+						for (String c : f) Loader.advancedHelp(s,"Item", "Other", "Lore", c.toUpperCase());
+						return true;
 					}
-					if(args[1].contains("add")) {
+					if(args[1].equalsIgnoreCase("add")) {
 					  if(args.length==2) {
 						  Loader.advancedHelp(s, "Item", "Other","Lore" ,"Add");
 						  return true;
 					  }
-					  String name = "";
-		              for (int i = 0; i < args.length; i++)
-		                name = String.valueOf(name) + args[i] + " "; 
-		              name = name.replaceFirst(String.valueOf(args[0]) + " " + args[1] + " ", "");
-		              name = name.substring(0, name.length() - 1);
+					  String name = StringUtils.buildString(2, args);
 		              List<String> lore = new ArrayList<>();
-		              if (m.getLore() != null)
-		                for (String ss : m.getLore())
-		                  lore.add(TheAPI.colorize(ss));		              
+		              if (m.getLore() != null)lore = m.getLore();	              
 		              lore.add(TheAPI.colorize(name));
 		              m.setLore(lore);
 		              item.setItemMeta(m);
-		              TheAPI.msg(Loader.getTranslation("Item.Lore.Added").toString().replace("%line%",name ), s);
+		              Loader.sendMessages(s, "Item.Lore.Added", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", name));
 		              return true;
 					}
-					if(args[1].contains("remove")) {
+					if(args[1].equalsIgnoreCase("remove")) {
 						if(args.length==2) {
 							Loader.advancedHelp(s, "Item", "Other","Lore" ,"Remove");
 							return true;
 						}
 						try {
 			                List<String> lore = m.getLore();
-			                if(lore.isEmpty()) {TheAPI.bcMsg("uhhh");return true;}
+			                if(lore.isEmpty()) {return true;}
 			                lore.remove(StringUtils.getInt(args[2]));
 			                m.setLore(lore);
 			                item.setItemMeta(m);
-			                TheAPI.msg(Loader.getTranslation("Item.Lore.Removed").toString().toString().replace("%line%", args[2].toString()), s);
+			                Loader.sendMessages(s, "Item.Lore.Removed", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", args[2].toString()));
 			                return true;
-			              } catch (Exception e) {			            	 
-			            	  TheAPI.msg(Loader.getTranslation("Item.Lore.Error").toString().replace("%error%", e.getMessage().trim()), s);
+			              } catch (Exception e) {
+			            	  Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", e.getMessage().trim()));
 			            	  return true;
 			              } 
 					}
-					if(args[1].contains("set")) {
+					if(args[1].equalsIgnoreCase("set")) {
 						if(args.length==2||args.length==3) {
 							Loader.advancedHelp(s, "Item", "Other","Lore" ,"Set");
 							return true;
 						}
 						try {
-						String name = "";
-			              for (int i = 0; i < args.length; i++)
-			                name = String.valueOf(name) + args[i] + " "; 
-			              name = name.replaceFirst(String.valueOf(args[0]) + " " + args[1] + " "+args[2]+" ", "");
-			              name = name.substring(0, name.length() - 1);
+						String name = StringUtils.buildString(3, args);
 			              List<String> lore = new ArrayList<>();
 			              if (m.getLore() != null)
 			                for (String ss : m.getLore())
@@ -122,32 +113,62 @@ public class Item implements CommandExecutor, TabCompleter{
 			              lore.set(line, name);
 			              m.setLore(lore);			              
 			              item.setItemMeta(m);
-			              TheAPI.msg(Loader.getTranslation("Item.Lore.Set").toString()
-			            		  .replace("%lore%", name).replace("%line%", String.valueOf(line)), s);
+			              Loader.sendMessages(s, "Item.Lore.Set", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", line+"").replace("%lore%", name));
 			              return true;
 						}catch(Exception e) {
-			            	  TheAPI.msg(Loader.getTranslation("Item.Lore.Error").toString()
-			            			  .replace("%error%", e.getMessage().trim()), s);
-			            	  return true;
+							Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", e.getMessage().trim()));
+			            	return true;
 						}
 					}
 					if (args[1].equalsIgnoreCase("list")) {
 			              int tests = 0;
-			              TheAPI.msg(Loader.getTranslation("Item.Lore.ListItem").toString()
-			            		  .replace("%item%", item.getType().name().toString()),s);
+			              Loader.sendMessages(s, "Item.Lore.ListItem", Placeholder.c().replace("%item%", item.getType().name()).replace("%lines%", (m.getLore()!=null?m.getLore().size():0)+""));
 			              List<String> lore = m.getLore();
 			              if (lore != null)
 			                for (String ss : lore) {
-			                  TheAPI.msg(Loader.getTranslation("Item.Lore.ListLore").toString()
-			                		  .replace("%position%", Integer.toString(tests)).replace("%lore%", ss), s);
-			                  tests++;
-			                }  
+			                	Loader.sendMessages(s, "Item.Lore.ListLore", Placeholder.c().replace("%item%", item.getType().name()).replace("%lines%", (m.getLore()!=null?m.getLore().size():0)+"").replace("%position%", tests+"").replace("%lore%", ss));
+			                	tests++;
+			                }
 			              return true;
 			            }
 					return true;
 				}
 				if(args[0].equalsIgnoreCase("flag")) {
-					if(args.length==1)Loader.advancedHelp(s, "Item", "Other", "Flag");
+					if(args.length==1) {
+						Loader.advancedHelp(s, "Item", "Other", "Flag");
+						return true;
+					}
+					//list
+					//set <flag> <value>
+					//remove <flag>
+					//add <flag>
+					//get <flag>
+					return true;
+				}
+				if(args[0].equalsIgnoreCase("durability")) {
+					if(args.length==1) {
+						Loader.advancedHelp(s, "Item", "Other", "Durability");
+						return true;
+					}
+					//get
+					//set <int>
+					return true;
+				}
+				if(args[0].equalsIgnoreCase("nbt")) {
+					if(args.length==1) {
+						Loader.advancedHelp(s, "Item", "Other", "NBT");
+						return true;
+					}
+					//get
+					//set <value>
+				}
+				if(args[0].equalsIgnoreCase("type")) {
+					if(args.length==1) {
+						Loader.advancedHelp(s, "Item", "Other", "Type");
+						return true;
+					}
+					//get
+					//set <value>
 				}
 			}
 			return true;
