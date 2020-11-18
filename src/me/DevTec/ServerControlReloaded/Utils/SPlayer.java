@@ -16,9 +16,11 @@ import me.DevTec.TheAPI.Utils.DataKeeper.User;
 import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class SPlayer {
+	public boolean lock;
 	private final String s;
 	public int afk=0, kick=0;
 	public boolean bc, mp, manual;
+	public String reply, type;
 	
 	public SPlayer(Player p) {
 		s = p.getName();

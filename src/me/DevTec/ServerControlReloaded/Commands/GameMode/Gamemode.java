@@ -56,14 +56,14 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 			}
 			
 			if(gamemode == null) {
-				Loader.sendMessages(s, "Missing.Gamemode", Placeholder.c()
+				Loader.sendMessages(s, "Missing.GameMode", Placeholder.c()
 						.add("%gamemode%", args[0]));
 				return true;
 			}
 			if (s instanceof Player) {
 				if (Loader.has(s, "GameMode"+gamemode, "GameMode")) {
 						((Player) s).setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
-						Loader.sendMessages(s, "Gamemode.Your.Custom", Placeholder.c()
+						Loader.sendMessages(s, "GameMode.Your."+gamemode, Placeholder.c()
 								.add("%gamemode%", gamemode));
 						return true;
 				}
@@ -100,7 +100,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 			}
 			
 			if(gamemode == null) {
-				Loader.sendMessages(s, "Missing.Gamemode", Placeholder.c()
+				Loader.sendMessages(s, "Missing.GameMode", Placeholder.c()
 						.add("%gamemode%", args[0]));
 				return true;
 			}
@@ -109,10 +109,10 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 				Player p = TheAPI.getPlayer(args[1]);
 					if (p != null) {
 						p.setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
-						Loader.sendMessages(p, "GameMode.Other.Custom.Receiver", Placeholder.c()
+						Loader.sendMessages(p, "GameMode.Other."+gamemode+".Receiver", Placeholder.c()
 								.add("%gamemode%", gamemode));
 						
-						Loader.sendMessages(s, "GameMode.Other.Custom.Sender", Placeholder.c()
+						Loader.sendMessages(s, "GameMode.Other."+gamemode+".Sender", Placeholder.c()
 								.add("%player%", p.getName())
 								.add("%playername%", p.getDisplayName())
 								.add("%gamemode%", gamemode));

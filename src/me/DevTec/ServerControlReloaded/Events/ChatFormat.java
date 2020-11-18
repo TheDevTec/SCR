@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
+import me.DevTec.ServerControlReloaded.Commands.Message.PrivateMessageManager;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Item;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
@@ -111,11 +112,10 @@ public class ChatFormat implements Listener {
 			if (e.getMessage().toLowerCase().equals("cancel")) {
 				User d = TheAPI.getUser(p);
 				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
-				d.setAndSave("MultiWorlds-Create", null);
+				d.set("MultiWorlds-Create", null);
 				d.setAndSave("MultiWorlds-Generator", null);
 				TheAPI.sendTitle(p,"", "&6Cancelled");
-				return;
-			}
+			}else
 			if (TheAPI.getCooldownAPI(p.getName()).expired("world-create")) {
 				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
 				MultiWorldsGUI.openInvCreate(p);
@@ -124,6 +124,7 @@ public class ChatFormat implements Listener {
 				TheAPI.getUser(p).setAndSave("MultiWorlds-Create", Colors.remove(e.getMessage()));
 				MultiWorldsGUI.openInvCreate(p);
 			}
+			return;
 		}
 		String msg = r(e.getMessage(), p);
 		if (!p.hasPermission("SCR.Admin")) {
@@ -136,57 +137,71 @@ public class ChatFormat implements Listener {
 			e.setCancelled(true);
 			return;
 		}
-			String message = msg;
-			String d = ""; // anti doubled letters
-			int up = 0; // anti caps
-			if (setting.spam_double) {
-				if (message.split(" ").length == 0) {
-					if (!is(message)) {
-						up = up + count(message);
-						d = d + " " + (countDoubled(message) >= 5 ? removeDoubled(message) : message);
-					} else
-						d = d + " " + message;
+		String message = msg;
+		String d = ""; // anti doubled letters
+		int up = 0; // anti caps
+		if (setting.spam_double) {
+			if (message.split(" ").length == 0) {
+				if (!is(message)) {
+					up = up + count(message);
+					d = d + " " + (countDoubled(message) >= 5 ? removeDoubled(message) : message);
 				} else
-					for (String s : message.split(" ")) {
-						if (!is(s)) {
-							up = up + count(s);
-							d = d + " " + (countDoubled(s) >= 5 ? removeDoubled(s) : s);
-						} else
-							d = d + " " + s;
-					}
-				d = d.replaceFirst(" ", "");
+					d = d + " " + message;
 			} else
-				d = message;
-			String build = d;
-			if (setting.caps_chat) {
-				if (up != 0
-						? up / ((double) d.length() / 100) >= 60 && !p.hasPermission("SCR.Caps")
-								&& d.length() > 5
-						: false) {
-					build = "";
-					if (d.split(" ").length == 0) {
-						if (!is(d)) {
-							build = build + " " + d.toLowerCase();
-						} else
-							build = build + " " + d;
+				for (String s : message.split(" ")) {
+					if (!is(s)) {
+						up = up + count(s);
+						d = d + " " + (countDoubled(s) >= 5 ? removeDoubled(s) : s);
 					} else
-						for (String s : d.split(" ")) {
-							if (!is(s)) {
-								build = build + " " + s.toLowerCase();
-							} else
-								build = build + " " + s;
-						}
-					build = build.replaceFirst(" ", "");
+						d = d + " " + s;
 				}
+			d = d.replaceFirst(" ", "");
+		} else
+			d = message;
+		String build = d;
+		if (setting.caps_chat) {
+			if (up != 0
+					? up / ((double) d.length() / 100) >= 60 && !p.hasPermission("SCR.Caps") && d.length() > 5
+					: false) {
+				build = "";
+				if (d.split(" ").length == 0) {
+					if (!is(d)) {
+						build = build + " " + d.toLowerCase();
+					} else
+						build = build + " " + d;
+				} else
+					for (String s : d.split(" ")) {
+						if (!is(s)) {
+							build = build + " " + s.toLowerCase();
+						} else
+							build = build + " " + s;
+					}
+				build = build.replaceFirst(" ", "");
 			}
-			message = build;
-			if (Loader.config.getBoolean("SpamWords.SimiliarMessage")) {
-				if (isSim(p, e.getMessage())) {
-					e.setCancelled(true);
-					return;
-				}
+		}
+		message = build;
+		if (Loader.config.getBoolean("SpamWords.SimiliarMessage")) {
+			if (isSim(p, e.getMessage())) {
+				e.setCancelled(true);
+				return;
 			}
-			msg=message;
+		}
+		msg=message;
+		}
+		if(PrivateMessageManager.hasChatLock(p)) {
+			if(PrivateMessageManager.getLockType(p).equalsIgnoreCase("msg")) {
+				PrivateMessageManager.reply(p, msg);
+				String r = PrivateMessageManager.getReply(p);
+				PrivateMessageManager.setReply(r.equalsIgnoreCase("console")?TheAPI.getConsole():TheAPI.getPlayerOrNull(r), p.getName());
+			}else
+			if(PrivateMessageManager.getLockType(p).equalsIgnoreCase("helpop")) {
+				TheAPI.broadcast(Loader.config.getString("Format.HelpOp").replace("%sender%", p.getName())
+						.replace("%sendername%", TheAPI.getPlayerOrNull(p.getName())!=null?TheAPI.getPlayerOrNull(p.getName()).getDisplayName():p.getName()).replace("%message%", msg), Loader.cmds.exists("Message.Helpop.SubPermissions.Receive")?Loader.cmds.getString("Message.Helpop.SubPermissions.Receive"):"SCR.Command.Helpop.Receive");
+				if (!Loader.has(p, "Helpop", "Message", "Receive"))
+					TheAPI.msg(Loader.config.getString("Format.HelpOp").replace("%sender%", p.getName()).replace("%sendername%", TheAPI.getPlayerOrNull(p.getName())!=null?TheAPI.getPlayerOrNull(p.getName()).getDisplayName():p.getName()).replace("%message%", msg), p);
+			}
+			e.setCancelled(true);
+			return;
 		}
 		e.setMessage(msg);
 		if (setting.lock_chat && !p.hasPermission("ServerControl.ChatLock")) {

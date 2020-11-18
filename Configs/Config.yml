@@ -13,25 +13,8 @@
 Options:
   Language: "en"
   LockChat:
-    # You must send command /Helpop to lock chat for sending messages to helpop via chat
-    # Lock(Straiker<->Helpop) >Straiker: /Helpop
-    # Chat(Straiker->Helpop)  >Straiker send message to chat*: Hello staff
     Helpop: true
-    PrivateMessage:
-      # You must send command /Pm <player> to lock chat for chatting only with this player
-      # Lock(Straiker<->Houska02) >Straiker: /Pm Houska02
-      # Chat(Straiker->Houska02)  >Straiker send message to chat*: Hello houska
-      # Cmd(Houska02->Straiker)   >Houska02: /R Hello straiker, this is beta function!
-      # Cmd(Rajskoo->Straiker)    >Rajskoo: /Pm Straiker Hello Straiker, I found bug!
-      # Chat(Straiker->Houska02)  >Straiker send messsage to chat*: Houska, rajsko found bug!
-      Manual: true
-      # If is this enabled and you have locked chat via /pm <player> and someone send you message via /pm or /reply, Lock for chatting will be set to this player
-      # Lock(Straiker<->Houska02) >Straiker: /Pm Houska02
-      # Chat(Straiker->Houska02)  >Straiker send message to chat*: Hello houska
-      # Cmd(Houska02->Straiker)   >Houska02: /R Hello straiker, this is beta function!
-      # Cmd(Rajskoo->Straiker)    >Rajskoo: /Pm Straiker Hello Straiker, I found bug!
-      # Chat(Straiker->Rajskoo)  >Straiker send messsage to chat*: Hello rajskoo, describe bug!
-      Reply: false
+    PrivateMessage: true
   # Remove line from list broadcast, if joiner is empty
   List-RemoveEmptyLine: true
   Staff:
@@ -137,11 +120,11 @@ Options:
   ServerList:
     MOTD:
       Use: true
-      # If is enabled maintenance mode, show special motd?
+      # If is enabled maintenance mode, change motd to Maintenance motd
       Maintenance: false
       Text:
-        Normal: "&8&l====» &eMinecraft Server%line%&8&lOnline players: &e%online%/%max_online%"
-        Maintenance: "&8&l====» &eMinecraft Server%line%&eServer is under maintenance mode"
+        Normal: "&7&l====» &eMinecraft Server%line%&7&lOnline players: &e%server_online%/%server_max_online%"
+        Maintenance: "&7&l====» &eMinecraft Server%line%&eServer is under maintenance mode"
         
   VIPSlots:
     Use: true

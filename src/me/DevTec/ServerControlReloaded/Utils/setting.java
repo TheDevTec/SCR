@@ -21,7 +21,8 @@ public class setting {
 			ad_itempick, join_spawn, join_msg, join_motd, join_first,
 			join_first_give, join_first_percmd, leave, cool_cmd, cool_chat, cool_percmd, color_chat_perm,
 			color_sign_perm, tp_safe, tp_onreqloc, ram, spam_double, caps_chat, caps_cmd, deathspawnbol
-			,list, staff_hide, staff_replace, farming, farming_packet, tab_vanish, tab_move, vanish_action;
+			,list, staff_hide, staff_replace, farming, farming_packet, tab_vanish, tab_move, vanish_action,
+			pm, helpop;
 	public static String prefix;
 	public static DeathTp deathspawn;
 
@@ -39,6 +40,8 @@ public class setting {
 		list=f.getBoolean("Options.List-RemoveEmptyLine");
 		staff_hide=f.getBoolean("Options.Staff.HideAllLines");
 		staff_replace=f.getBoolean("Options.Staff.UseReplace");
+		helpop=f.getBoolean("Options.LockChat.Helpop");
+		pm=f.getBoolean("Options.LockChat.PrivateMessage");
 		farming = f.getBoolean("Options.FarmingSystem.Use");
 		vanish_action = f.getBoolean("Options.Vanish-ActionBar");
 		singeplayersleep = f.getBoolean("Options.SinglePlayerSleep");

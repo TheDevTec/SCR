@@ -53,7 +53,7 @@ Missing:
   HandEmpty: "%prefix% Your hand is empty"
   TargetHandEmpty: "%prefix% &e%player%&7's hand is empty" 
   Entity: "%prefix% Entity &e%entity% &7doesn't exist"
-  Gamemode: "%prefix% Gamemode &e%gamemode% &7doesn't exist"
+  GameMode: "%prefix% Gamemode &e%gamemode% &7doesn't exist"
   Enchant:
     NotExist: "%prefix% Enchant &e%enchant% &7doesn't exist"
     NoEnchant: "%prefix% You have no enchant on item"
@@ -280,6 +280,12 @@ EnderChest:
     Your: "%prefix% Opening your ender chest"
     Other: "%prefix% Opening &e%player%&7's ender chest"
 
+# Translations for /Helpop
+Helpop:
+  ChatLock:
+    true: "%prefix% Chat is locked, type text to chat to send message to helpop"
+    false: "%prefix% Chat is unlocked"
+
 # Translations for /Invsee command
 Invsee:
   Open: 
@@ -317,7 +323,6 @@ GameMode:
       Creative: "%prefix% Your gamemode has been set to &eCreative"
       Adventure: "%prefix% Your gamemode has been set to &eAdventure"
       Spectator: "%prefix% Your gamemode has been set to &eSpectator"
-      Custom: "%prefix% Your gamemode has been set to &e%gamemode%"
     Other:
       Survival:
         Sender: "%prefix% Gamemode of &e%player% &7has been set to &eSurvival"
@@ -331,9 +336,6 @@ GameMode:
       Spectator:
         Sender: "%prefix% Gamemode of &e%player% &7has been set to &eSpectator"
         Receiver: "%prefix% Your gamemode has been set to &eSpectator"
-      Custom:
-        Sender: "%prefix% Gamemode of &e%player% &7has been set to &e%gamemode%"
-        Receiver: "%prefix% Your gamemode has been set to &e%gamemode%"
 
 # Translations for TPS command
 TPS:
@@ -620,6 +622,13 @@ ChatLock:
   Unlock: "%prefix% Chat is &eunlocked"
   IsLocked: "%prefix% Sorry, the chat is locked, please try again later."
   Message: "%prefix% &dChatLock &e%player% &7wrote &e%message%"
+ 
+# Translations for /Pm <player>
+PrivateMessage:
+  NoReply: "%prefix% You have no one to reply"
+  ChatLock:
+    true: "%prefix% Chat is locked, type text to chat to reply to player"
+    false: "%prefix% Chat is unlocked"
   
 # Translations for /ClearChat command
 ClearChat:

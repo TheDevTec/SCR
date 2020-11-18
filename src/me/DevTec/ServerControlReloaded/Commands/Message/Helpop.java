@@ -6,8 +6,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 
 public class Helpop implements CommandExecutor, TabCompleter {
@@ -16,15 +18,18 @@ public class Helpop implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Helpop", "Message")) {
 			if (args.length == 0) {
+				if(s instanceof Player && setting.helpop) {
+					PrivateMessageManager.setChatLock((Player)s, !PrivateMessageManager.hasChatLock((Player)s));
+					Loader.sendMessages(s, "Helpop.ChatLock."+PrivateMessageManager.hasChatLock((Player)s));
+					PrivateMessageManager.setLockType((Player)s, "helpop");
+				}else
 				Loader.Help(s, "Helpop", "Message");
 				return true;
 			}
 			TheAPI.broadcast(Loader.config.getString("Format.HelpOp").replace("%sender%", s.getName())
 					.replace("%sendername%", TheAPI.getPlayerOrNull(s.getName())!=null?TheAPI.getPlayerOrNull(s.getName()).getDisplayName():s.getName()).replace("%message%", TheAPI.buildString(args)), Loader.cmds.exists("Message.Helpop.SubPermissions.Receive")?Loader.cmds.getString("Message.Helpop.SubPermissions.Receive"):"SCR.Command.Helpop.Receive");
-			if (!Loader.has(s, "Helpop", "Message", "Receive")) {
+			if (!Loader.has(s, "Helpop", "Message", "Receive"))
 				TheAPI.msg(Loader.config.getString("Format.HelpOp").replace("%sender%", s.getName()).replace("%sendername%", TheAPI.getPlayerOrNull(s.getName())!=null?TheAPI.getPlayerOrNull(s.getName()).getDisplayName():s.getName()).replace("%message%", TheAPI.buildString(args)), s);
-				return true;
-			}
 			return true;
 		}
 		Loader.noPerms(s, "Helpop", "Message");
