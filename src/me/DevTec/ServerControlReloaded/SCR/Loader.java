@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -151,6 +152,7 @@ import me.DevTec.ServerControlReloaded.Utils.Converter;
 import me.DevTec.ServerControlReloaded.Utils.Kit;
 import me.DevTec.ServerControlReloaded.Utils.Metrics;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
+import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.ScoreboardStats;
 import me.DevTec.ServerControlReloaded.Utils.TabList;
@@ -165,12 +167,14 @@ import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.LinkedSet;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
 	public static Config config, sb, tab, mw, kit, trans, events, cmds;
+	public static Set<Rule> rules = new LinkedSet<>();
 	
 	public static Economy econ;
 	public static Loader getInstance;
@@ -783,7 +787,6 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "Skin",new Skin());
 		CmdC("Other", "Experiences", new Exp());//treba opraviť give, set, take, (balance na sendera, nie target)
 		CmdC("Other", "Spawner", new Spawner());
-		
 		//Nickname
 		CmdC("Nickname", "Nickname", new Nick());
 		CmdC("Nickname", "NicknameReset", new NickReset());
