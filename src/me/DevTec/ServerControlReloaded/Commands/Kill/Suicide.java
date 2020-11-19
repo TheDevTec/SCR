@@ -9,6 +9,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 
 public class Suicide implements CommandExecutor, TabCompleter {
@@ -21,7 +22,9 @@ public class Suicide implements CommandExecutor, TabCompleter {
 				Player p = (Player) s;
 				p.setHealth(0);
 				if (p.isDead())
-					Loader.sendBroadcasts(s, "Kill.Suicide");
+					Loader.sendBroadcasts(s, "Kill.Suicide", Placeholder.c()
+							.add("%player%", p.getName())
+							.add("%playername%", p.getDisplayName()));
 				return true;
 			}
 			Loader.Help(s, "Suicide", "Kill");
@@ -38,7 +41,9 @@ public class Suicide implements CommandExecutor, TabCompleter {
 				}
 				o.setHealth(0);
 				if(o.isDead())
-					Loader.sendBroadcasts(s, "Kill.Suicide");					
+					Loader.sendBroadcasts(s, "Kill.Suicide", Placeholder.c()
+							.add("%player", o.getName())
+							.add("%playername%", o.getDisplayName()));
 				return true;
 			}
 		}
