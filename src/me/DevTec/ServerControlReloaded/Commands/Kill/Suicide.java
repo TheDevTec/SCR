@@ -36,7 +36,9 @@ public class Suicide implements CommandExecutor, TabCompleter {
 			if(Loader.has(s, "Suicide", "Kill", "Other")) {
 				Player o = TheAPI.getPlayer(args[0]);
 				if(o==null) {
-					Loader.sendMessages(s, "Missing.Player.Offline");
+					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+							.add("%player%", args[0])
+							.add("%playername%", args[0]));
 					return true;
 				}
 				o.setHealth(0);
@@ -46,6 +48,7 @@ public class Suicide implements CommandExecutor, TabCompleter {
 							.add("%playername%", o.getDisplayName()));
 				return true;
 			}
+			Loader.has(s, "Suicide", "Kill", "Other");
 		}
 		if(args.length>1) {
 			if(Loader.has(s, "Suicide", "Kill", "Other"))
