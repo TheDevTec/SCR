@@ -48,7 +48,7 @@ public class Suicide implements CommandExecutor, TabCompleter {
 							.add("%playername%", o.getDisplayName()));
 				return true;
 			}
-			Loader.has(s, "Suicide", "Kill", "Other");
+			Loader.noPerms(s, "Suicide", "Kill", "Other");
 		}
 		if(args.length>1) {
 			if(Loader.has(s, "Suicide", "Kill", "Other"))
