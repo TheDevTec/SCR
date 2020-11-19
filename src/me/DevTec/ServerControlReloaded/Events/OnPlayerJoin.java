@@ -57,7 +57,7 @@ public class OnPlayerJoin implements Listener {
 			if (TheAPI.hasVanish(p.getName()))
 				e.setJoinMessage("");
 			else
-				e.setJoinMessage(TheAPI.colorize(replaceAll(Loader.getTranslation("Join.Text").toString(), p)));
+				e.setJoinMessage(TheAPI.colorize(replaceAll(Loader.events.getString("Join.Text").toString(), p)));
 		}
 		Config f = Loader.config;
 		if (!Mail.getMails(p.getName()).isEmpty())
@@ -129,7 +129,7 @@ public class OnPlayerJoin implements Listener {
 			if (TheAPI.hasVanish(p.getName()))
 				e.setQuitMessage(null);
 			else
-				e.setQuitMessage(TheAPI.colorize(replaceAll(Loader.getTranslation("Quit").toString(), p)));
+				e.setQuitMessage(TheAPI.colorize(replaceAll(Loader.events.getString("Quit").toString(), p)));
 		}
 		User d = TheAPI.getUser(p);
 		d.set("LastLeave", setting.format_date_time.format(new Date()));
