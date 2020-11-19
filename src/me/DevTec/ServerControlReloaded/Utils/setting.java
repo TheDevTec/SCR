@@ -18,8 +18,7 @@ public class setting {
 			cmdblock, disable_item, vip, vip_kick, vip_add, vip_join, motd, motd_maintenance, lock_chat, lock_server,
 			afk_auto, afk_kick, code, sb, am, am_random, timezone, save, tab_header, tab_footer, tab_nametag,
 			tab_sort, tab, eco, eco_other, eco_log, eco_multi, ad_book, ad_chat, ad_cmd, ad_sign, ad_anvil, ad_itemdrop,
-			ad_itempick, join_spawn, join_msg, join_motd, join_first,
-			join_first_give, join_first_percmd, leave, cool_cmd, cool_chat, cool_percmd, color_chat_perm,
+			ad_itempick, cool_cmd, cool_chat, cool_percmd, color_chat_perm,
 			color_sign_perm, tp_safe, tp_onreqloc, ram, spam_double, caps_chat, caps_cmd, deathspawnbol
 			,list, staff_hide, staff_replace, farming, farming_packet, tab_vanish, tab_move, vanish_action,
 			pm, helpop;
@@ -67,15 +66,6 @@ public class setting {
 		}
 		tp_safe = f.getBoolean("Options.Teleport.SafeLocation");
 		tp_onreqloc = f.getBoolean("Options.Teleport.CommandSendLocation");
-		join_spawn = f.getBoolean("Options.Join.TeleportToSpawn");
-		join_msg = f.getBoolean("Options.Join.CustomJoinMessage");
-		join_motd = f.getBoolean("Options.Join.MOTD");
-		join_first = f.getBoolean("Options.Join.FirstJoin.Use");
-		if(join_first) {
-		join_first_give = f.getBoolean("Options.Join.FirstJoin.GiveKit");
-		join_first_percmd = f.getBoolean("Options.Join.PerformCommands.Use");
-		}
-		leave = f.getBoolean("Options.Leave.CustomLeaveMessage");
 		cool_cmd = f.getBoolean("Options.Cooldowns.Commands.Use");
 		cool_percmd = f.getBoolean("Options.Cooldowns.Commands.PerCommand.Use");
 		cool_chat = f.getBoolean("Options.Cooldowns.Chat.Use");

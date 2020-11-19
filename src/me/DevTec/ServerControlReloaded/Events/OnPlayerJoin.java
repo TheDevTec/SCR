@@ -1,6 +1,7 @@
 
 package me.DevTec.ServerControlReloaded.Events;
 
+import java.util.Collection;
 import java.util.Date;
 
 import org.bukkit.entity.Player;
@@ -11,7 +12,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import me.DevTec.ServerControlReloaded.Commands.Message.Mail;
-import me.DevTec.ServerControlReloaded.Commands.Other.Kits;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.API.TeleportLocation;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -20,117 +20,165 @@ import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.TheAPI.SudoType;
 import me.DevTec.TheAPI.APIs.SoundAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
-import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
-import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 public class OnPlayerJoin implements Listener {
 
 	public static String replaceAll(String s, Player p) {
 		String name = p.getDisplayName();
-		return PlaceholderAPI.setPlaceholders(p, s.replace("%players_max%", TheAPI.getMaxPlayers() + "")
-				.replace("%online%", TheAPI.getOnlinePlayers().size() - 1 + "").replace("%player%", name)
+		return PlaceholderAPI.setPlaceholders(p, s.replace("%player%", p.getName())
 				.replace("%playername%", name)
 				.replace("%customname%", p.getCustomName() != null ? p.getCustomName() : name)
 				.replace("%prefix%", setting.prefix).replace("%time%", setting.format_time.format(new Date()))
 				.replace("%date%", setting.format_date.format(new Date()))
-				.replace("%date-time%", setting.format_date_time.format(new Date()))
-				.replace("%version%", "V" + Loader.getInstance.getDescription().getVersion())
-				.replace("%server_time%", setting.format_time.format(new Date()))
-				.replace("%server_name%", API.getServerName())
-				.replace("%server_ip%", p.getServer().getIp() + ":" + p.getServer().getPort()));
+				.replace("%date-time%", setting.format_date_time.format(new Date())));
 	}
-
+	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
 		Loader.setupChatFormat(p);
 		Tasks.regPlayer(p);
 		User d = TheAPI.getUser(p);
-		if (setting.join_msg) {
-			if (TheAPI.hasVanish(p.getName()))
-				e.setJoinMessage("");
-			else
-				e.setJoinMessage(TheAPI.colorize(replaceAll(Loader.events.getString("Join.Text"), p)));
-		}
+		e.setJoinMessage(null);
 		Config f = Loader.config;
 		if (!Mail.getMails(p.getName()).isEmpty())
 			Loader.sendMessages(p,"Mail.Notification", Placeholder.c().add("%amount%", "" + d.getStringList("Mails").size()));
 		if (setting.sound)
 			SoundAPI.playSound(p, f.getString("Options.Sounds.Sound"));
-		if (PunishmentAPI.getBanList(p.getName()).isJailed()
-				|| PunishmentAPI.getBanList(p.getName()).isTempJailed()) {
-			if (setting.tp_safe)
-				API.safeTeleport(p,StringUtils.getLocationFromString(f.getString("Jails." + d.getString("Jail.Location"))));
-			else
-				p.teleport(StringUtils.getLocationFromString(f.getString("Jails." + d.getString("Jail.Location"))));
-		} else if (f.getBoolean("OnJoin.SpawnTeleport"))
-			API.teleportPlayer(p, TeleportLocation.SPAWN);
-
 		d.set("JoinTime", System.currentTimeMillis() / 1000);
 		if (!d.exist("FirstJoin"))
 			d.set("FirstJoin", setting.format_date_time.format(new Date()));
-
-		if (!p.hasPlayedBefore() && setting.join_first) {
-			for (String ss : Loader.trans.getStringList("OnJoin.FirstJoin.Messages")) {
-				TheAPI.msg(replaceAll(ss, p), p);
-			}
+		if (!p.hasPlayedBefore()) {
 			if (!TheAPI.hasVanish(p.getName()))
-				Loader.sendBroadcasts(p,"Join.FirstJoin.Text");
-			new Tasker() {
-				@Override
-				public void run() {
-					if (setting.join_first_percmd)
-						for (String cmds : f.getStringList("Options.Join.FirstJoin.PerformCommands.List"))
-							TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(replaceAll(cmds, p)));
-					if (setting.join_first_give && f.getString("Options.Join.FirstJoin.Kit") != null)
-						Kits.giveKit(p, Loader.getKit(f.getString("Options.Join.FirstJoin.Kit")), false, false, false);
-				}
-			}.runLater(f.getInt("Options.Join.FirstJoin.Wait") > 0 ? 20 * f.getInt("Options.Join.FirstJoin.Wait") : 1);
+				for(Player dd : TheAPI.getOnlinePlayers()) {
+					Object o = Loader.events.get("onJoin.FirstJoin.Text");
+					if(o!=null) {
+					if(o instanceof Collection) {
+					for(String fa : Loader.events.getStringList("onJoin.FirstJoin.Text")) {
+						TheAPI.msg(replaceAll(fa,dd), dd);
+					}}else
+						TheAPI.msg(replaceAll(""+o, dd), dd);
+				}}
+			Object o = Loader.events.get("onJoin.FirstJoin.Messages");
+			if(o!=null) {
+			if(o instanceof Collection) {
+				for(String fa : Loader.events.getStringList("onJoin.FirstJoin.Messages")) {
+					TheAPI.msg(replaceAll(fa,p), p);
+				}}else
+			TheAPI.msg(replaceAll(""+o, p), p);
+			}
+			o = Loader.events.get("onJoin.FirstJoin.Commands");
+			if(o!=null) {
+			if(o instanceof Collection) {
+				for(String fa : Loader.events.getStringList("onJoin.FirstJoin.Commands")) {
+					TheAPI.sudoConsole(TheAPI.colorize(replaceAll(fa,p)));
+				}}else
+			TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
+			}
+			o = Loader.events.get("onJoin.FirstJoin.Broadcast");
+			if(o!=null) {
+			if(o instanceof Collection) {
+				for(String fa : Loader.events.getStringList("onJoin.FirstJoin.Broadcast")) {
+					TheAPI.bcMsg(replaceAll(fa,p));
+				}}else
+			TheAPI.bcMsg(replaceAll(""+o, p));
+			}
 			API.teleportPlayer(p, TeleportLocation.SPAWN);
 		} else {
-			if (setting.join_motd) {
-				for (String ss : Loader.trans.getStringList("OnJoin.Messages")) {
-					TheAPI.msg(replaceAll(ss, p), p);
-				}
+			if (!TheAPI.hasVanish(p.getName()))
+				for(Player dd : TheAPI.getOnlinePlayers()) {
+					Object o = Loader.events.get("onJoin.Text");
+					if(o!=null) {
+					if(o instanceof Collection) {
+					for(String fa : Loader.events.getStringList("onJoin.Text")) {
+						TheAPI.msg(replaceAll(fa,dd), dd);
+					}}else
+						TheAPI.msg(replaceAll(""+o, dd), dd);
+				}}
+			Object o = Loader.events.get("onJoin.Messages");
+			if(o!=null) {
+			if(o instanceof Collection) {
+				for(String fa : Loader.events.getStringList("onJoin.Messages")) {
+					TheAPI.msg(replaceAll(fa,p), p);
+				}}else
+			TheAPI.msg(replaceAll(""+o, p), p);
+			}
+			o = Loader.events.get("onJoin.Commands");
+			if(o!=null) {
+			if(o instanceof Collection) {
+				for(String fa : Loader.events.getStringList("onJoin.Commands")) {
+					TheAPI.sudoConsole(TheAPI.colorize(replaceAll(fa,p)));
+				}}else
+			TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
+			}
+			
+			o = Loader.events.get("onJoin.Broadcast");
+			if(o!=null) {
+			if(o instanceof Collection) {
+				for(String fa : Loader.events.getStringList("onJoin.Broadcast")) {
+					TheAPI.bcMsg(replaceAll(fa,p));
+				}}else
+			TheAPI.bcMsg(replaceAll(""+o, p));
 			}
 		}
 		if (!EconomyAPI.hasAccount(p))
 			EconomyAPI.createAccount(p);
 		SPlayer s = API.getSPlayer(p);
-		if (s.hasPermission("ServerControl.FlySpeedOnJoin"))
 			s.setFlySpeed();
-		if (s.hasPermission("ServerControl.WalkSpeedOnJoin"))
 			s.setWalkSpeed();
 		if (s.hasTempFlyEnabled())
 			s.enableTempFly();
 		else {
-			if (s.hasFlyEnabled() && s.hasPermission("servercontrol.flyonjoin") && s.hasPermission("servercontrol.fly"))
+			if (s.hasFlyEnabled() && Loader.has(p, "Fly", "Other"))
 				s.enableFly();
 		}
-		if (s.hasGodEnabled() && s.hasPermission("servercontrol.godonjoin") && s.hasPermission("servercontrol.god"))
+		if (s.hasGodEnabled() && Loader.has(p, "God", "Other"))
 			s.enableGod();
-		
-		int j = d.getInt("Joins");
-		j=j+1;
-		d.setAndSave("Joins", j);
+		d.setAndSave("Joins", d.getInt("Joins")+1);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerQuit(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
-		if (setting.leave) {
-			if (TheAPI.hasVanish(p.getName()))
-				e.setQuitMessage(null);
-			else
-				e.setQuitMessage(TheAPI.colorize(replaceAll(Loader.events.getString("Quit"), p)));
+		e.setQuitMessage(null);
+		if (!TheAPI.hasVanish(p.getName()))
+			for(Player dd : TheAPI.getOnlinePlayers()) {
+				Object o = Loader.events.get("onQuit.Text");
+				if(o!=null) {
+				if(o instanceof Collection) {
+				for(String fa : Loader.events.getStringList("onQuit.Text")) {
+					TheAPI.msg(replaceAll(fa,dd), dd);
+				}}else
+					TheAPI.msg(replaceAll(""+o, dd), dd);
+			}}
+		Object o = Loader.events.get("onQuit.Messages");
+		if(o!=null) {
+		if(o instanceof Collection) {
+			for(String fa : Loader.events.getStringList("onQuit.Messages")) {
+				TheAPI.msg(replaceAll(fa,p), p);
+			}}else
+		TheAPI.msg(replaceAll(""+o, p), p);
 		}
+		o = Loader.events.get("onQuit.Commands");
+		if(o!=null) {
+		if(o instanceof Collection) {
+			for(String fa : Loader.events.getStringList("onQuit.Commands")) {
+				TheAPI.sudoConsole(TheAPI.colorize(replaceAll(fa,p)));
+			}}else
+		TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
+		}
+		o = Loader.events.get("onQuit.Broadcast");
+		if(o!=null) {
+		if(o instanceof Collection) {
+			for(String fa : Loader.events.getStringList("onQuit.Broadcast")) {
+				TheAPI.bcMsg(replaceAll(fa,p));
+			}}else
+		TheAPI.bcMsg(replaceAll(""+o, p));}
 		User d = TheAPI.getUser(p);
 		d.set("LastLeave", setting.format_date_time.format(new Date()));
 		d.set("DisconnectWorld", p.getWorld().getName());

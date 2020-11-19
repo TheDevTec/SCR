@@ -11,37 +11,41 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.Position;
-import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
 
 /**
  * 
  * @author waskerSK
  * 
- * 9.10. 2020
+ * 19.11. 2020
  * Updated by StraikerinaCZ (DevTec)
  */
 public class RequestMap {
 	//Types: 0 = TPA, 1 = TPAHERE
 	public static void add(Player sender, String target, int type) {
-		if(has(sender.getName(), target)) {
+		if(has(target, sender.getName())) {
 			Loader.sendMessages(sender, "TpSystem.HaveRequest", Placeholder.c().replace("%player%", target).replace("%playername%", target)
-					.replace("%type%", TheAPI.getUser(sender.getUniqueId()).getInt("teleport." + target + ".b")==0?"TPA":"TPAHERE"));
+					.replace("%type%", TheAPI.getUser(sender.getUniqueId()).getInt("teleport." + target + ".b")==0?"Tpa":"Tpahere"));
 			return;
 		}
 		if(isBlocking(target, sender.getName())) {
 			Loader.sendMessages(sender, "TpSystem.Block.IsBlocked.Request", Placeholder.c().replace("%player%", target).replace("%playername%", target));
 			return;
 		}
-		User s = TheAPI.getUser(sender.getUniqueId());
-		s.set("teleport." + target + ".a", type);
-		s.setAndSave("teleport." + target + ".b", System.currentTimeMillis()/1000);
+		User s = TheAPI.getUser(sender);
+		List<String> c = s.getStringList("tpcancel");
+		c.add(target);
+		s.setAndSave("tpcancel", c);
+		Loader.sendMessages(sender, "TpSystem."+(type==0?"Tpa":"Tpahere")+".Send.Sender", Placeholder.c().replace("%player%", target).replace("%playername%", target));
+		if(TheAPI.getPlayerOrNull(target)!=null)
+		Loader.sendMessages(TheAPI.getPlayerOrNull(target), "TpSystem."+(type==0?"Tpa":"Tpahere")+".Send.Receiver", Placeholder.c().replace("%player%", sender.getName()).replace("%playername%", sender.getDisplayName()));
+		User d = TheAPI.getUser(target);
+		d.set("teleport." + sender.getName() + ".a", type);
+		d.set("teleport." + sender.getName() + ".b", System.currentTimeMillis()/1000);
 		if(type==1) //Tpahere
 		if (setting.tp_onreqloc)
-			s.setAndSave("teleport." + target + ".c", new Position(sender.getLocation()).toString()); //teleport target to request position
-
-		User d = TheAPI.getUser(target);
-		d.setAndSave("tpcancel."+sender.getName(), type);
+			d.set("teleport." + sender.getName() + ".c", new Position(sender.getLocation()).toString()); //teleport target to request position
+		d.save();
 	}
 	
 	public static boolean isBlocking(String sender, String target) {
@@ -49,40 +53,44 @@ public class RequestMap {
 	}
 	
 	public static void cancel(Player sender) {
-		List<String> aw = new ArrayList<>(TheAPI.getUser(sender.getUniqueId()).getKeys("tpcancel"));
+		List<String> aw = TheAPI.getUser(sender).getStringList("tpcancel");
 		if(aw.isEmpty()) {
 			Loader.sendMessages(sender, "TpSystem.NoRequest");
+			return;
 		}else {
 			String first = aw.get(0);
-			int type = TheAPI.getUser(first).getInt("teleport."+sender.getName()+".a");
+			int type = TheAPI.getUser(sender.getName()).getInt("teleport."+first+".a");
 			remove(sender.getName(), first);
 			Player a = TheAPI.getPlayerOrNull(first);
-			Loader.sendMessages(sender, "TpSystem.Cancel."+(type==0?"Tpa":"Tpahere")+".Sender", Placeholder.c()
+			Loader.sendMessages(sender, "TpSystem."+(type==0?"Tpa":"Tpahere")+".Cancel.Sender", Placeholder.c()
 					.replace("%player%", a==null?first:a.getName()).replace("%playername%", a==null?first:a.getDisplayName()));
 			if(a!=null)
-			Loader.sendMessages(a, "TpSystem.Cancel."+(type==0?"Tpa":"Tpahere")+".Receiver", Placeholder.c()
+			Loader.sendMessages(a, "TpSystem."+(type==0?"Tpa":"Tpahere")+".Cancel.Receiver", Placeholder.c()
 					.replace("%player%", sender.getName()).replace("%playername%", sender.getDisplayName()));
 		}
 	}
 
 	public static void remove(String sender, String target) {
-		TheAPI.getUser(sender).getData().remove("teleport." + target);
-		TheAPI.getUser(sender).save();
-		TheAPI.getUser(target).getData().remove("tpcancel." + sender);
+		TheAPI.getUser(target).remove("teleport." + sender);
 		TheAPI.getUser(target).save();
+		User s = TheAPI.getUser(sender);
+		List<String> c = s.getStringList("tpcancel");
+		c.remove(target);
+		s.setAndSave("tpcancel", c);
 	}
 
 	public static Player getFirst(String sender) {
 		List<String> acceptable = new ArrayList<>();
-		for(String s : TheAPI.getUser(sender).getKeys("teleport"))
-			if (has(sender, s))
+		for(String s : TheAPI.getUser(sender).getKeys("teleport")) {
+			if (has(sender, s)) {
 				acceptable.add(s);
+			}
+		}
 		return acceptable.isEmpty()?null:TheAPI.getPlayerOrNull(acceptable.get(0));
 	}
 
 	public static boolean has(String sender, String target) {
-		if(!TheAPI.getUser(sender).exists("teleport."+target))return false;
-		if (TheAPI.getPlayerOrNull(target) != null && TheAPI.getUser(sender).getLong("teleport." + sender + ".b") - System.currentTimeMillis()/1000 + StringUtils.getTimeFromString(Loader.config.getString("Options.Teleport.RequestTime")) > 0)
+		if (TheAPI.getPlayerOrNull(target) != null && (TheAPI.getUser(sender).getLong("teleport." + target + ".b") - System.currentTimeMillis()/1000 + Loader.config.getLong("Options.Teleport.RequestTime")) > 0)
 			return true;
 		else {
 			remove(sender, target);
@@ -111,7 +119,7 @@ public class RequestMap {
 				.add("%player%", target.getName()).add("%playername%", target.getDisplayName()));
 		Loader.sendMessages(target, "TpSystem.Tpa.Accept.Receiver", Placeholder.c()
 				.add("%player%", sender.getName()).add("%playername%", sender.getDisplayName()));
-		remove(sender.getName(), target.getName());
+		remove(target.getName(), sender.getName());
 		return true;
 		}
 		//Tpahere
@@ -130,7 +138,7 @@ public class RequestMap {
 				.add("%player%", target.getName()).add("%playername%", target.getDisplayName()));
 		Loader.sendMessages(target, "TpSystem.Tpahere.Accept.Receiver", Placeholder.c()
 				.add("%player%", sender.getName()).add("%playername%", sender.getDisplayName()));
-		remove(sender.getName(), target.getName());
+		remove(target.getName(), sender.getName());
 		return true;
 	}
 	
@@ -141,7 +149,7 @@ public class RequestMap {
 			return false;
 		}
 		int type = TheAPI.getUser(sender).getInt("teleport."+target.getName()+".a");
-		remove(sender.getName(), target.getName());
+		remove(target.getName(), sender.getName());
 		Loader.sendMessages(sender, "TpSystem."+(type==0?"Tpa":"Tpahere")+".Reject.Sender", Placeholder.c()
 				.add("%player%", target.getName()).add("%playername%", target.getDisplayName()));
 		Loader.sendMessages(target, "TpSystem."+(type==0?"Tpa":"Tpahere")+".Reject.Receiver", Placeholder.c()

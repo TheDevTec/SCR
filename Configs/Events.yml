@@ -8,7 +8,7 @@ onJoin:
     - "%prefix% Server time: &e%time%"
     - "%prefix% »==========«"
     Commands:
-    - "kit %player% default"
+    - "kit %player% firstJoin"
     Broadcast:
     - "%prefix% Welcome &e%player% &7on our server!"
     - "%prefix% Player &e%player% &7joined the game"

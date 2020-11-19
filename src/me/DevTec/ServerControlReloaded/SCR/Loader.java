@@ -588,8 +588,8 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 	}
 	
-	private static int task;
-	private static long time, rkick;
+	private int task;
+	private long time, rkick;
 
 	public void starts() {
 		time = StringUtils.timeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
@@ -611,7 +611,11 @@ public class Loader extends JavaPlugin implements Listener {
 							if (s.kick >= rkick) {
 								if (!s.hasPermission("servercontrol.afk.bypass"))
 									if(s.getPlayer()!=null && s.getPlayer().isOnline())
-									s.getPlayer().kickPlayer(TheAPI.colorize(Loader.config.getString("Options.AFK.KickMessage")));
+										new Tasker() {
+											public void run() {
+												s.getPlayer().kickPlayer(TheAPI.colorize(Loader.config.getString("Options.AFK.KickMessage")));
+											}
+										}.runTaskSync();
 								cancel();
 								return;
 							} else

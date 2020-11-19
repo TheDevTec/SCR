@@ -76,12 +76,12 @@ Footer:
 Groups:
   default:
     NameTag:
-      Prefix: "&7default &f"
-      Suffix: ""
+  #    Prefix: "&7default &f"
+  #    Suffix: ""
     TabList:
-      Prefix: "&7default &f"
-      Suffix: "%afk%"
-      Format: "%tab_prefix%%customname%%tab_suffix%"
+  #    Prefix: "&7default &f"
+  #    Suffix: "%afk%"
+  #   Format: "%tab_prefix%%customname%%tab_suffix%"
   # vip:
   #   NameTag:
   #     Prefix: "&eVIP &a"
