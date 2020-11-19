@@ -899,7 +899,14 @@ Other:
     Aliases:
     - "sb"
     Permission: "SCR.Command.ScoreBoard"
-    Help: "/ScoreBoard - Changes info in scoreboard"
+    Help:
+    - "/ScoreBoard Reload - Reload scorebord & config"
+    - "/ScoreBoard Toggle <player> - Toggle scorebord of player"
+    SubPermission:
+      Toggle: "SCR.Command.ScoreBoard.Toggle"
+      Reload: "SCR.Command.ScoreBoard.Reload"
+    AdvancedHelp:
+      ToggleOther: "/ScoreBoard Toggle <player> - Toggle scorebord of player"
     Enabled: true
   Skull:
     Name: "skull"
@@ -917,14 +924,17 @@ Other:
     - "tab"
     - "tabl"
     Permission: "SCR.Command.Tablist"
-    Help: "/TabList - Changes info in tablist"
+    Help:
+    - "/TabList Add/Remove <group>"
+    - "/TabList Set <group> <nametag/tablist> <prefix/suffix/format> <value>"
+    - "/TabList Get <group> <nametag/tablist> <prefix/suffix/format>"
     Enabled: true
   TempFly:
     Name: "tempfly"
     Permission: "SCR.Command.TempFly"
     SubPermission:
       Other: "SCR.Command.TempFly.Other"
-    Help: "/TempFly <player> <time> - Allow player to flight on selected time"
+    Help: "/TempFly <player> <time> - Allow player to flight on time"
     Enabled: true
   Thor:
     Name: "thor"

@@ -274,15 +274,16 @@ Homes:
 # Types: REGEX, CONTAINS, EQUALS, STARTS_WITH, ENDS_WITH
 # Regex flags: CASE_INSENSITIVE, COMMENTS, CANON_EQ, DOTALL, LITERAL, MULTILINE, UNICODE_CASE, UNICODE_CHARACTER_CLASS, UNIX_LINES
 Rules:
- antiSwear_idiot:
-   # Example: "What an idiot" -> "What an good boy"
-   Type: "REGEX"
-   # idiot -> 1d1ot -> 1d10t
-   Text: "[i1]+[ ]*[d]+[ ]*[i1]+[ ]*[o0]+[ ]*[t]+"
-   Replacement:
-     Use: true
-     # replace word "idiot" with "*****"
-     Text: "*****"
+  # ADD_DEFAULT
+  antiSwear_idiot:
+    # Example: "What an idiot" -> "What an good boy"
+    Type: "REGEX"
+    # idiot -> 1d1ot -> 1d10t
+    Text: "[i1]+[ ]*[d]+[ ]*[i1]+[ ]*[o0]+[ ]*[t]+"
+    Replacement:
+      Use: true
+      # replace word "idiot" with "*****"
+      Text: "*****"
  # antiSpam_d:
  #   Type: "REGEX"
  #   Text: "d{5}"

@@ -772,6 +772,24 @@ Inventory:
     Other:
       Sender: "%prefix% Opening Workbench for &e%player%"
       Receiver: "%prefix% Opening Workbench"
+      
+ScoreBoard:
+  Toggle:
+    Show:
+      You: "%prefix% Your scoreboard is no longer hidden"
+      Other:
+        Sender: "%prefix% Your scoreboard is no longer hidden"
+        Receiver: "%prefix% You enabled scoreboard of &e%player%"
+    Hide:
+      You: "%prefix% Your scoreboard is hidden"
+      Other:
+        Sender: "%prefix% Your scoreboard was hidden"
+        Receiver: "%prefix% You disabled scoreboard of &e%player%"
+    Cancelled:
+      You: "%prefix% You can't toggle scoreboard"
+      Other:
+        Sender: ""
+        Receiver: "%prefix% You can't toggle scoreboard of &e%player%"
   
 Trash: "&7Trash"
   

@@ -1,9 +1,9 @@
-# Per player scoreboard
-PerPlayer:
-  StraikerinaCZ:
-    # Player can't toggle this scoreboard
+# Per world scoreboard
+PerWorld:
+  InputWorldNameHere:
+    # Scoreboard in this world can't be toggled
     Toggleable: false
-    Name: "&8» &7&lCustom Scoreboard &8«"
+    Name: "&8» &7&lRPG &8«"
     Lines:
     - "&7&lStats:"
     - " &8» &7Balance: &e$%money%"
@@ -11,12 +11,12 @@ PerPlayer:
     - " &8» &7Food: &e%food%"
     - " &8» &7Exp: &e%xp%"
     
-# Per world scoreboard
-PerWorld:
-  RPGWorld:
-    # Scoreboard in this world can't be toggled
+# Per player scoreboard
+PerPlayer:
+  InputPlayerNameHere:
+    # Player can't toggle this scoreboard
     Toggleable: false
-    Name: "&8» &7&lRPG &8«"
+    Name: "&8» &7&lScoreboard &8«"
     Lines:
     - "&7&lStats:"
     - " &8» &7Balance: &e$%money%"

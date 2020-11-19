@@ -25,36 +25,43 @@ onQuit:
   Text: "%prefix% Player &e%player% &7left the game"
 
 # On player chat event
+# ADD_DEFAULT
 onChat:
   Rules:
   - "antiSwear_idiot"
 
 # On player send command event
+# ADD_DEFAULT
 onCommand:
   Rules:
   - "antiSwear_idiot"
 
 # On anvil rename item event
+# ADD_DEFAULT
 onAnvil:
   Rules:
   - "antiSwear_idiot"
 
 # On sign change event
+# ADD_DEFAULT
 onSign:
   Rules:
   - "antiSwear_idiot"
 
 # On book edit event
+# ADD_DEFAULT
 onBook:
   Rules:
   - "antiSwear_idiot"
 
 # On drop item event
+# ADD_DEFAULT
 onDropItem:
   Rules:
   - "antiSwear_idiot"
 
 # On pickup item event
+# ADD_DEFAULT
 onPickupItem:
   Rules:
   - "antiSwear_idiot"

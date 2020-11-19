@@ -41,11 +41,11 @@ Options:
 # AFK Placeholder values
 AFK:
  true: " &4&l*AFK*"
- false: "&r"
+ false: ""
 
 # Per world tablist
 PerWorld:
-  RPGWorld:
+  InputWorldNameHere:
     Header:
     - "&8=====» &7&lRPG Map &8«====="
     - "&7Ping: &e%ping%    &7Online: &e%online%"
@@ -55,9 +55,9 @@ PerWorld:
 
 # Per player tablist
 PerPlayer:
-  StraikerinaCZ:
+  InputPlayerNameHere:
     Header:
-    - "&8=====» &7&lThis is your tablist, %player% &8«====="
+    - "&8=====» &7&lWelcome on server, %player% &8«====="
     - "&7Ping: &e%ping%    &7Online: &e%online%"
     Footer:
     - "&7Health: &e%health%    &7Food: &e%food%"
@@ -82,44 +82,11 @@ Groups:
       Prefix: "&7default &f"
       Suffix: "%afk%"
       Format: "%tab_prefix%%customname%%tab_suffix%"
-  vip:
-    NameTag:
-      Prefix: "&eVIP &a"
-      Suffix: ""
-    TabList:
-      Prefix: "&eVIP &a"
-      Suffix: "%afk%"
-      Format: "%tab_prefix%%customname%%tab_suffix%"
-  builder:
-    NameTag:
-      Prefix: "&2Builder &e"
-      Suffix: ""
-    TabList:
-      Prefix: "&2Builder &e"
-      Suffix: "%afk%"
-      Format: "%tab_prefix%%customname%%tab_suffix%"
-  helper:
-    NameTag:
-      Prefix: "&5Helper &9"
-      Suffix: ""
-    TabList:
-      Prefix: "&5Helper &9"
-      Suffix: "%afk%"
-      Format: "%tab_prefix%%customname%%tab_suffix%"
-  admin:
-    NameTag:
-      Prefix: "&4Admin &6"
-      Suffix: ""
-    TabList:
-      Prefix: "&4Admin &6"
-      Suffix: "%afk%"
-      Format: "%tab_prefix%%customname%%tab_suffix%"
-  owner:
-    NameTag:
-      Prefix: "&4Owner &f"
-      Suffix: ""
-    TabList:
-      Prefix: "&4Owner &f"
-      Suffix: "%afk%"
-      Format: "%tab_prefix%%customname%%tab_suffix%"
-      
+  # vip:
+  #   NameTag:
+  #     Prefix: "&eVIP &a"
+  #     Suffix: ""
+  #   TabList:
+  #     Prefix: "&eVIP &a"
+  #     Suffix: "%afk%"
+  #     Format: "%tab_prefix%%customname%%tab_suffix%"
