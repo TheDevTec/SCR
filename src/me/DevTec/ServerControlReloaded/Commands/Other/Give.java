@@ -491,9 +491,9 @@ public class Give implements CommandExecutor, TabCompleter {
 					if(ps==s) {
 						Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", getItem(g)).add("%amount%", "1"));
 					}else {
-					Loader.sendMessages(s, "Give.Item.Other.Sender", Placeholder.c().add("%item%", getItem(g)).add("%amount%", "1")
+					Loader.sendMessages(s, "Give.Item.Other", Placeholder.c().add("%item%", getItem(g)).add("%amount%", "1")
 							.add("%player%", ps.getName()).replace("%playername%", ps.getDisplayName()));
-					Loader.sendMessages(ps, "Give.Item.Other.Receiver", Placeholder.c().add("%item%", getItem(g)).add("%amount%", "1")
+					Loader.sendMessages(ps, "Give.Item.Other", Placeholder.c().add("%item%", getItem(g)).add("%amount%", "1")
 							.add("%player%", s.getName()).replace("%playername%", s.getName()));
 					}
 					return true;
@@ -522,9 +522,9 @@ public class Give implements CommandExecutor, TabCompleter {
 						if(ps==s) {
 							Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", getItem(g)).add("%amount%", StringUtils.getInt(args[2])+""));
 						}else {
-						Loader.sendMessages(s, "Give.Item.Other.Sender", Placeholder.c().add("%item%", getItem(g)).add("%amount%", StringUtils.getInt(args[2])+"")
+						Loader.sendMessages(s, "Give.Item.Other", Placeholder.c().add("%item%", getItem(g)).add("%amount%", StringUtils.getInt(args[2])+"")
 								.add("%player%", ps.getName()).replace("%playername%", ps.getDisplayName()));
-						Loader.sendMessages(ps, "Give.Item.Other.Receiver", Placeholder.c().add("%item%", getItem(g)).add("%amount%", StringUtils.getInt(args[2])+"")
+						Loader.sendMessages(ps, "Give.Item.Other", Placeholder.c().add("%item%", getItem(g)).add("%amount%", StringUtils.getInt(args[2])+"")
 								.add("%player%", s.getName()).replace("%playername%", s.getName()));
 						}
 						return true;
