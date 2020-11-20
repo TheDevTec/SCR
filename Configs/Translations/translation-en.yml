@@ -791,6 +791,24 @@ ScoreBoard:
         Sender: ""
         Receiver: "%prefix% You can't toggle scoreboard of &e%player%"
   
+Skin:
+  Set:
+    You:
+    - "%prefix% Your skin set to &e%skin%"
+    - "%prefix% Rejoin to reflesh skin"
+    Other:
+      Sender:
+      - "%prefix% Your skin set to &e%skin%"
+      - "%prefix% Rejoin to reflesh skin"
+      Receiver:
+      - "%prefix% &e%player%&7's skin set to &e%skin%"
+      - "%prefix% Rejoin to reflesh skin"
+  Reset:
+    You: "%prefix% Your skin reset"
+    Other:
+      Sender: "%prefix% &e%player%&7's skin reset"
+      Receiver: "%prefix% Your skin reset"
+      
 Trash: "&7Trash"
   
 Config: "%prefix% Configurations and tasks reloaded"

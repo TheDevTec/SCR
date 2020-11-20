@@ -1,6 +1,7 @@
 
 package me.DevTec.ServerControlReloaded.Events;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Date;
 
@@ -17,14 +18,18 @@ import me.DevTec.ServerControlReloaded.SCR.API.TeleportLocation;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
+import me.DevTec.ServerControlReloaded.Utils.ScoreboardStats;
+import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.setting;
+import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.SkinData;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.SoundAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class OnPlayerJoin implements Listener {
 
@@ -41,6 +46,56 @@ public class OnPlayerJoin implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
+		if(Loader.config.getBoolean("Options.Skins.onJoin")) {
+			if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
+				String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
+				Loader.loadSkin(skin.replace("%player%", p.getName()));
+				SkinData dd = Loader.skins.getOrDefault(skin.replace("%player%", p.getName()), null);
+				if(dd==null) {
+					Loader.loadSkin(skin.replace("%player%", p.getName()));
+					dd = Loader.skins.getOrDefault(skin.replace("%player%", p.getName()), null);
+				}
+				if(dd==null || dd.texture.signature==null) {
+					 //sendMessages(s, "Skin.Error", Placeholder.c().add("%value%", url));
+					return;
+				}
+				try {
+		        	Object ca = Ref.invoke(Ref.invoke(Ref.player(p), "getProfile"), "getProperties");
+		        	Ref.invoke(ca,"clear");
+		        	if(cdd==null)
+		        	for(Method w : Ref.getMethods(ca.getClass())) {
+		        		cdd=w;
+		        		if(w.getName().equals("put"))break;
+		        	}
+		        	Ref.invoke(ca, cdd, "textures", Ref.createProperty("textures", dd.texture.value, dd.texture.signature));
+				 } catch (Exception err) {
+			    }
+			}else {
+				String skin = TheAPI.getUser(p).getString("skin");
+				if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default");
+				Loader.loadSkin(skin.replace("%player%", p.getName()));
+				SkinData dd = Loader.skins.getOrDefault(skin.replace("%player%", p.getName()), null);
+				if(dd==null) {
+					Loader.loadSkin(skin.replace("%player%", p.getName()));
+					dd = Loader.skins.getOrDefault(skin.replace("%player%", p.getName()), null);
+				}
+				if(dd==null || dd.texture.signature==null) {
+					 //sendMessages(s, "Skin.Error", Placeholder.c().add("%value%", url));
+					return;
+				}
+				try {
+		        	Object ca = Ref.invoke(Ref.invoke(Ref.player(p), "getProfile"), "getProperties");
+		        	Ref.invoke(ca,"clear");
+		        	if(cdd==null)
+		        	for(Method w : Ref.getMethods(ca.getClass())) {
+		        		cdd=w;
+		        		if(w.getName().equals("put"))break;
+		        	}
+		        	Ref.invoke(ca, cdd, "textures", Ref.createProperty("textures", dd.texture.value, dd.texture.signature));
+				 } catch (Exception err) {
+			    }
+			}
+		}
 		Loader.setupChatFormat(p);
 		Tasks.regPlayer(p);
 		User d = TheAPI.getUser(p);
@@ -54,16 +109,16 @@ public class OnPlayerJoin implements Listener {
 		if (!d.exist("FirstJoin"))
 			d.set("FirstJoin", setting.format_date_time.format(new Date()));
 		if (!p.hasPlayedBefore()) {
-			if (!TheAPI.hasVanish(p.getName()))
-				for(Player dd : TheAPI.getOnlinePlayers()) {
+			if (!TheAPI.hasVanish(p.getName())) {
 					Object o = Loader.events.get("onJoin.FirstJoin.Text");
 					if(o!=null) {
 					if(o instanceof Collection) {
 					for(String fa : Loader.events.getStringList("onJoin.FirstJoin.Text")) {
-						TheAPI.msg(replaceAll(fa,dd), dd);
+						TheAPI.bcMsg(replaceAll(fa,p));
 					}}else
-						TheAPI.msg(replaceAll(""+o, dd), dd);
-				}}
+						TheAPI.bcMsg(replaceAll(""+o, p));
+				}
+			}
 			Object o = Loader.events.get("onJoin.FirstJoin.Messages");
 			if(o!=null) {
 			if(o instanceof Collection) {
@@ -90,15 +145,14 @@ public class OnPlayerJoin implements Listener {
 			}
 			API.teleportPlayer(p, TeleportLocation.SPAWN);
 		} else {
-			if (!TheAPI.hasVanish(p.getName()))
-				for(Player dd : TheAPI.getOnlinePlayers()) {
+			if (!TheAPI.hasVanish(p.getName())) {
 					Object o = Loader.events.get("onJoin.Text");
 					if(o!=null) {
 					if(o instanceof Collection) {
 					for(String fa : Loader.events.getStringList("onJoin.Text")) {
-						TheAPI.msg(replaceAll(fa,dd), dd);
+						TheAPI.bcMsg(replaceAll(fa,p));
 					}}else
-						TheAPI.msg(replaceAll(""+o, dd), dd);
+						TheAPI.bcMsg(replaceAll(""+o, p));
 				}}
 			Object o = Loader.events.get("onJoin.Messages");
 			if(o!=null) {
@@ -128,6 +182,9 @@ public class OnPlayerJoin implements Listener {
 		}
 		if (!EconomyAPI.hasAccount(p))
 			EconomyAPI.createAccount(p);
+		ScoreboardStats.createScoreboard(p);
+		TabList.setFooterHeader(p);
+		TabList.setName(p);
 		SPlayer s = API.getSPlayer(p);
 			s.setFlySpeed();
 			s.setWalkSpeed();
@@ -142,19 +199,21 @@ public class OnPlayerJoin implements Listener {
 		d.setAndSave("Joins", d.getInt("Joins")+1);
 	}
 
+	Method cdd = null;
+	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerQuit(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
 		e.setQuitMessage(null);
-		if (!TheAPI.hasVanish(p.getName()))
-			for(Player dd : TheAPI.getOnlinePlayers()) {
+		ScoreboardStats.removeScoreboard(p);
+		if (!TheAPI.hasVanish(p.getName())) {
 				Object o = Loader.events.get("onQuit.Text");
 				if(o!=null) {
 				if(o instanceof Collection) {
 				for(String fa : Loader.events.getStringList("onQuit.Text")) {
-					TheAPI.msg(replaceAll(fa,dd), dd);
+					TheAPI.bcMsg(replaceAll(fa,p));
 				}}else
-					TheAPI.msg(replaceAll(""+o, dd), dd);
+					TheAPI.bcMsg(replaceAll(""+o, p));
 			}}
 		Object o = Loader.events.get("onQuit.Messages");
 		if(o!=null) {

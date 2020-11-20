@@ -12,6 +12,16 @@
 
 Options:
   Language: "en"
+  Skins:
+    # Load default skin on join
+    onJoin: true
+    Custom:
+      # Default skin of player
+      default: "%player%"
+      setOwnToAll:
+        set: false
+        # Skin name or url
+        value: "StraikerinaCZ"
   LockChat:
     Helpop: true
     PrivateMessage: true

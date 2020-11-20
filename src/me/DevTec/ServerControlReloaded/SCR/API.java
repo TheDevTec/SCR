@@ -397,6 +397,10 @@ public class API {
 	
 	//Can be teleport cancelled if plugin not find any safe location!
 	public static void safeTeleport(Player s, Location location) {
+		if(location==null) {
+			Loader.sendMessages(s, "TpSystem.NotSafe");
+			return;
+		}
 		if(!isSafe(location)) {
 			Location safe = findSafeLocation(location);
 			if(safe!=null) {
@@ -412,6 +416,7 @@ public class API {
 	}
 	
 	public static boolean isSafe(Location loc) {
+		if(loc==null)return false;
 		Material under = loc.clone().add(0,-1,0).getBlock().getType();
 		Material current = loc.getBlock().getType();
 		Material above = loc.clone().add(0,1,0).getBlock().getType();

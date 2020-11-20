@@ -1,8 +1,12 @@
 package me.DevTec.ServerControlReloaded.SCR;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -12,9 +16,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.Ban;
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.BanIP;
@@ -130,7 +137,6 @@ import me.DevTec.ServerControlReloaded.Commands.Weather.PSun;
 import me.DevTec.ServerControlReloaded.Commands.Weather.Rain;
 import me.DevTec.ServerControlReloaded.Commands.Weather.Sun;
 import me.DevTec.ServerControlReloaded.Commands.Weather.Thunder;
-import me.DevTec.ServerControlReloaded.Events.AFKPlus;
 import me.DevTec.ServerControlReloaded.Events.AFkPlayerEvents;
 import me.DevTec.ServerControlReloaded.Events.ChatFormat;
 import me.DevTec.ServerControlReloaded.Events.CreatePortal;
@@ -158,6 +164,10 @@ import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.VaultHook;
 import me.DevTec.ServerControlReloaded.Utils.setting;
+import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.MineskinClient;
+import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.SkinCallback;
+import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.SkinData;
+import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.Texture;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
@@ -167,6 +177,8 @@ import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.Collections.LinkedSet;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.NonSortedMap;
+import me.DevTec.TheAPI.Utils.Listener.Listener;
 import me.DevTec.TheAPI.Utils.Reflections.Ref;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -185,7 +197,6 @@ public class Loader extends JavaPlugin implements Listener {
 			set.put(placeholder, replace);
 			return this;
 		}
-		// wq dq
 		
 		public static Placeholder c() {
 			return new Placeholder();
@@ -396,18 +407,140 @@ public class Loader extends JavaPlugin implements Listener {
 
 	@Override
 	public void onEnable() {
+		updater = new UpdateChecker();
+		switch(updater.checkForUpdates()) {
+		case -1:
+			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + " &eUpdate checker: &7Unable to connect to spigot, check internet connection.", TheAPI.getConsole());
+			updater=null; //close updater
+			break;
+		case 1:
+			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + " &eUpdate checker: &7Found new version of SCR.", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + "        https://www.spigotmc.org/resources/71147/", TheAPI.getConsole());
+			break;
+		case 2:
+			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + " &eUpdate checker: &7You are using the BETA version of SCR, report bugs to our Discord.", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
+			break;
+		}
+		if(updater!=null)
+		new Tasker() {
+			public void run() {
+				switch(updater.checkForUpdates()) {
+					case -1:
+						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+						TheAPI.msg(setting.prefix + " &eUpdate checker: &7Unable to connect to spigot, check internet connection.", TheAPI.getConsole());
+						updater=null; //close updater
+						cancel(); //destroy task
+						break;
+					case 1:
+						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+						TheAPI.msg(setting.prefix + " &eUpdate checker: &7Found new version of SCR.", TheAPI.getConsole());
+						TheAPI.msg(setting.prefix + "        https://www.spigotmc.org/resources/71147/", TheAPI.getConsole());
+						break;
+					case 2:
+						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+						TheAPI.msg(setting.prefix + " &eUpdate checker: &7You are using the BETA version of SCR, report bugs to our Discord.", TheAPI.getConsole());
+						TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
+						break;
+				}
+			}
+		}.runRepeating(144000, 144000);
 		reload();
-		TheAPI.msg(setting.prefix + " &eINFO: &7Newest versions of &eTheAPI &7can be found on Spigot:", TheAPI.getConsole());
-		TheAPI.msg(setting.prefix + "        https://www.spigotmc.org/resources/theapi.72679/", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + " &eINFO: &7Newest versions of &eTheAPI &7can be found on Spigot or Discord:", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + "        https://www.spigotmc.org/resources/72679/", TheAPI.getConsole());
+		TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		EventsRegister();
 		CommmandsRegister();
 	}
+	
+	public static Map<String, SkinData> skins = new NonSortedMap<>();
+	private static MineskinClient sclient = new MineskinClient();
+	
+	public static void loadSkin(String url) {
+		if(skins.containsKey(url))return;
+		if(url.startsWith("http://")||url.startsWith("https://")) {
+			sclient.generateUrl(url, new SkinCallback() {
+				public void done(me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.Skin skin) {
+					skins.put(url, skin.data);
+				}
+			});
+			return;
+		}
+		SkinData data = new SkinData();
+		data.uuid=Bukkit.getOfflinePlayer(url).getUniqueId();
+		Texture text = new Texture();
+		text.url=url;
+		try {
+        	JsonObject textureProperty = new JsonParser().parse(new InputStreamReader(new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + new JsonParser().parse(new InputStreamReader(new URL("https://api.mojang.com/users/profiles/minecraft/" + url)
+        			.openStream())).getAsJsonObject().get("id").getAsString() + "?unsigned=false").openStream())).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
+        	String texture = textureProperty.get("value").getAsString();
+        	String signature = textureProperty.get("signature").getAsString();
+    		text.signature=signature;
+    		text.value=texture;
+    	} catch (Exception err) {}
+		data.texture=text;
+		skins.put(url, data);
+	}
+	
+	public int isNewer(String a, String b) {
+    	int is = 0, d = 0;
+    	String[] s = a.split("\\.");
+    	for(String f : b.split("\\.")) {
+    		int id = StringUtils.getInt(f),
+    			bi = StringUtils.getInt(s[d++]);
+    		if(id > bi) {
+    			is=1;
+    			break;
+    		}
+    		if(id < bi) {
+    			is=2;
+    			break;
+    		}
+    	}
+    	return is;
+	}
 
+	public class UpdateChecker {
+	    private URL checkURL;
+	    
+	    public UpdateChecker reconnect() {
+	    	try {
+				checkURL=new URL("https://api.spigotmc.org/legacy/update.php?resource=71147");
+			} catch (Exception e) {}
+	        return this;
+	    }
+
+	    //0 == SAME VERSION
+	    //1 == NEW VERSION
+	    //2 == BETA VERSION
+	    public int checkForUpdates() {
+	    	if(checkURL==null)
+	    		reconnect();
+	    	String[] readerr = null;
+	    	try {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(checkURL.openConnection().getInputStream()));
+				Set<String> s = new LinkedSet<>();
+				String read;
+				while((read=reader.readLine()) != null)
+					s.add(read);
+				readerr=s.toArray(new String[s.size()]);
+			} catch (Exception e) {
+			}
+	    	if(readerr==null)return -1;
+	        return Loader.getInstance.isNewer(getDescription().getVersion(), readerr[0]);
+	    }
+	}
+	
+	private static UpdateChecker updater;
 	private static Metrics metrics;
 
 	@Override
 	public void onDisable() {
+		org.bukkit.event.HandlerList.unregisterAll((Plugin)this);
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			p.setFlying(false);
 			p.setAllowFlight(false);
@@ -812,7 +945,9 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Nickname", "NicknameReset", new NickReset());
 	}
 
-	private void EventC(Listener l) {
+	
+	
+	private void EventC(org.bukkit.event.Listener l) {
 		Bukkit.getPluginManager().registerEvents(l, this);
 	}
 
@@ -831,8 +966,6 @@ public class Loader extends JavaPlugin implements Listener {
 		EventC(new EntitySpawn());
 		EventC(new Signs());
 		EventC(new FarmingSystem());
-		if (PluginManagerAPI.getPlugin("AFKPlus")!=null)
-			EventC(new AFKPlus());
 	}
 	
 	public static void notOnline(CommandSender s, String player) {
