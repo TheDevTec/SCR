@@ -49,7 +49,10 @@ public class Rule {
 			Matcher m = pattern.matcher(text);
 			while(m.find()) {
 				if(d) {
-					text=text.replace(m.group(), e);
+					String ee = e;
+					for(int i = 1; i < m.groupCount(); ++i)
+						ee=ee.replace("$"+i, m.group(i));
+					text=text.replace(m.group(), ee);
 				}else return null;
 			}
 			break;
