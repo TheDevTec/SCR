@@ -185,7 +185,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
-	public static Config config, sb, tab, mw, kit, trans, events, cmds;
+	public static Config config, sb, tab, mw, kit, trans, events, cmds, tags;
 	public static Set<Rule> rules = new LinkedSet<>();
 	
 	public static Economy econ;
@@ -620,7 +620,8 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		return (perms != null);
 	}
-	
+	public static String tagG = "!", gradientTag="!";
+	public static Map<String, String> colorMap = new NonSortedMap<>();
 	private static int aad = 0;
 	public static void reload() {
 		loading = System.currentTimeMillis();
@@ -656,6 +657,10 @@ public class Loader extends JavaPlugin implements Listener {
 		setting.load();
 		Converter.convert();
 		MultiWorldsUtils.LoadWorlds();
+		tagG=Loader.tags.getString("Prefix");
+		gradientTag=Loader.tags.getString("GradientPrefix");
+		for (String tag : tags.getKeys("Tags"))
+			colorMap.put(tag.toLowerCase(), "#" + tags.getString("Tags."+tag));
 		getInstance.starts();
 		for(String s : config.getKeys("Rules")) {
 			int flags = 0;

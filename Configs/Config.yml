@@ -180,6 +180,7 @@ Options:
       Use: true
       Required-Permission: true
       Permission:
+        Gradient: "SCR.Other.Sign.Gradient" 
         Color: "SCR.Other.Sign.Color"
         Format: "SCR.Other.Sign.Format"
         Magic: "SCR.Other.Sign.Magic"
@@ -189,6 +190,7 @@ Options:
       Use: true
       Required-Permission: true
       Permission:
+        Gradient: "SCR.Other.Chat.Gradient"
         Color: "SCR.Other.Chat.Color"
         Format: "SCR.Other.Chat.Format"
         Magic: "SCR.Other.Chat.Magic"

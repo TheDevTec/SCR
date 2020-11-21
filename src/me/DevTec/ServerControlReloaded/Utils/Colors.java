@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 
 public class Colors {
@@ -101,7 +103,41 @@ public class Colors {
 		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Magic"))) {
 			b = b.replace("&k", ChatColor.getByChar("k")+"");
 		}
+		if(TheAPI.isNewerThan(15))
+			if(dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Gradient"))) {
+				b = gradient(b);
+			}
 		return b;
 	}
+	
+	private static String gradient(String legacyMsg) {
+        for (String code : Loader.colorMap.keySet()) {
+            String rawCode = Loader.tagG + code;
+            if (!legacyMsg.toLowerCase().contains(rawCode)) continue;
+            legacyMsg = legacyMsg.replace(Loader.gradientTag + rawCode, Loader.gradientTag + Loader.colorMap.get(code));
+        }
+        List<String> hexes = new ArrayList<>();
+        Matcher matcher = Pattern.compile(Loader.gradientTag+"#[A-Fa-f0-9]{6}").matcher(legacyMsg);
+        while (matcher.find()) {
+            hexes.add(matcher.group().replace(Loader.gradientTag, ""));
+        }
+        int hexIndex = 0;
+        List<String> texts = Arrays.asList(legacyMsg.split(Loader.gradientTag+"#[A-Fa-f0-9]{6}"));
+        StringBuilder finalMsg = new StringBuilder();
+        for (String text : texts) {
+            if (texts.get(0).equalsIgnoreCase(text)) {
+                finalMsg.append(text);
+                continue;
+            }
+            if (text.length() == 0) continue;
+            if (hexIndex + 1 >= hexes.size()) {
+                finalMsg.append(text);
+                continue;
+            }
+            finalMsg.append((String)Ref.invokeNulled(StringUtils.class ,"gradient", text, hexes.get(hexIndex), hexes.get(hexIndex+1)));
+            hexIndex++;
+        }
+        return finalMsg.toString();
+    }
 	
 }
