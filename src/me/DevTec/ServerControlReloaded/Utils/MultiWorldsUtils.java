@@ -287,7 +287,7 @@ public class MultiWorldsUtils {
 		List<String> wws = Loader.mw.getStringList("Deleted-Worlds");
 		List<String> worlds = Loader.mw.getStringList("Worlds");
 		if (Bukkit.getWorld(s) != null) {
-			Loader.sendMessages(sender, "MultiWorld.Loaded", Placeholder.c().add("%world%", s));
+			Loader.sendMessages(sender, "MultiWorld.Loaded", Placeholder.c().add("%world%", s).replace("%generator%", biome));
 			return;
 		}else {
 			if (biome.equalsIgnoreCase("NETHER")) {
@@ -311,7 +311,7 @@ public class MultiWorldsUtils {
 			Loader.mw.set("Worlds", worlds);
 			Loader.mw.save();
 			DefaultSet(Bukkit.getWorld(s), biome);
-			Loader.sendMessages(sender, "MultiWorld.Create", Placeholder.c().add("%world%", s));
+			Loader.sendMessages(sender, "MultiWorld.Create", Placeholder.c().add("%world%", s).replace("%generator%", biome));
 		}
 	}
 }

@@ -23,7 +23,10 @@ public class ScoreboardStats {
 		if (!setup.containsKey(p.getName()))
 			setup.put(p.getName(), TheAPI.getScoreboardAPI(p, ScoreboardType.PACKETS));
 		ScoreboardAPI a = setup.get(p.getName());
-		if(toggled.contains(p.getName()) && isToggleable(p))a.destroy();
+		if(toggled.contains(p.getName()) && isToggleable(p)) {
+			a.destroy();
+			return;
+		}
 		Config f = Loader.sb;
 		String s = f.getString("PerWorld." + p.getWorld().getName() + ".Name");
 		if(s==null)

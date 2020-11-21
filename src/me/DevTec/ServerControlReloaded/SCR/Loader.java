@@ -326,7 +326,7 @@ public class Loader extends JavaPlugin implements Listener {
 			try {
 				if (PluginManagerAPI.getPlugin("Vault") != null)
 					if (vault != null) {
-						if (Loader.config.getString("Chat-Groups." + Loader.vault.getPrimaryGroup(p)) != null)
+						if (Loader.config.exists("Chat-Groups." + Loader.vault.getPrimaryGroup(p)))
 							return vault.getPrimaryGroup(p);
 					}
 				return "default";
@@ -354,8 +354,7 @@ public class Loader extends JavaPlugin implements Listener {
 	public static void setupChatFormat(Player p) {
 		if(p==null)return;
 		if (config.exists("Chat-Groups." + get(p, Item.GROUP) + ".Name")) {
-			String g = TheAPI.colorize(PlaceholderAPI.setPlaceholders(p,
-					config.getString("Chat-Groups." + get(p, Item.GROUP) + ".Name")));
+			String g = PlaceholderAPI.setPlaceholders(p,config.getString("Chat-Groups." + get(p, Item.GROUP) + ".Name"));
 			g = ChatFormat.r(p, g, null);
 			p.setDisplayName(Colors.colorize(g, false, p));
 		} else

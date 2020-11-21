@@ -110,6 +110,7 @@ public class API {
 		Matcher m = moneyPattern.matcher(s);
 		while(m.find())
 			has+=StringUtils.getDouble(m.group(1))*getMultiply(m.group(2));
+		if(has==0)has=StringUtils.getDouble(s);
 		return has;
 	}
     

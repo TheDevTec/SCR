@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 
 public class ScoreboardStats implements CommandExecutor, TabCompleter {
@@ -28,9 +29,11 @@ public class ScoreboardStats implements CommandExecutor, TabCompleter {
 				if(me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.isToggleable((Player)s)) {
 				if(me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.toggled.contains(s.getName())) {
 					me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.toggled.remove(s.getName());
+					me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.createScoreboard((Player)s);
 					Loader.sendMessages(s, "ScoreBoard.Toggle.Show.You");
 				}else {
 					me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.toggled.add(s.getName());
+					me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.createScoreboard((Player)s);
 					Loader.sendMessages(s, "ScoreBoard.Toggle.Hide.You");
 				}
 				return true;
@@ -42,18 +45,18 @@ public class ScoreboardStats implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("reload")) {
-			if (Loader.has(s, "ScoreBoard", "Other", "Reload")) {
-			TheAPI.msg(setting.prefix+" Reloading Scoreboard..", s);
-			me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.removeScoreboard();
-			Loader.sb.reload();
-			if (setting.sb)
+				if (Loader.has(s, "ScoreBoard", "Other", "Reload")) {
+				TheAPI.msg(setting.prefix+" Reloading Scoreboard..", s);
+				me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.removeScoreboard();
+				Loader.sb.reload();
+				if (setting.sb)
 				for (Player p : TheAPI.getOnlinePlayers())
 					me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.createScoreboard(p);
-			TheAPI.msg(setting.prefix+" Scoreboard reloaded", s);
-			return true;
-			}
-			Loader.noPerms(s, "ScoreBoard", "Other", "Reload");
-			return true;
+				TheAPI.msg(setting.prefix+" Scoreboard reloaded", s);
+				return true;
+				}
+				Loader.noPerms(s, "ScoreBoard", "Other", "Reload");
+				return true;
 			}
 			if(args[0].equalsIgnoreCase("toggle")) {
 				if(args.length==1) {
@@ -61,9 +64,11 @@ public class ScoreboardStats implements CommandExecutor, TabCompleter {
 						if(me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.isToggleable((Player)s)) {
 						if(me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.toggled.contains(s.getName())) {
 							me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.toggled.remove(s.getName());
+							me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.createScoreboard((Player)s);
 							Loader.sendMessages(s, "ScoreBoard.Toggle.Show.You");
 						}else {
 							me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.toggled.add(s.getName());
+							me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.createScoreboard((Player)s);
 							Loader.sendMessages(s, "ScoreBoard.Toggle.Hide.You");
 						}
 						return true;
@@ -83,9 +88,11 @@ public class ScoreboardStats implements CommandExecutor, TabCompleter {
 					if(me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.isToggleable((Player)s)) {
 					if(me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.toggled.contains(s.getName())) {
 						me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.toggled.remove(s.getName());
+						me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.createScoreboard((Player)s);
 						Loader.sendMessages(s, "ScoreBoard.Toggle.Show.You");
 					}else {
 						me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.toggled.add(s.getName());
+						me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.createScoreboard((Player)s);
 						Loader.sendMessages(s, "ScoreBoard.Toggle.Hide.You");
 					}
 					return true;
@@ -97,10 +104,12 @@ public class ScoreboardStats implements CommandExecutor, TabCompleter {
 					if(me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.isToggleable(d)) {
 					if(me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.toggled.contains(d.getName())) {
 						me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.toggled.remove(d.getName());
+						me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.createScoreboard(d);
 						Loader.sendMessages(s, "ScoreBoard.Toggle.Show.Other.Sender", Placeholder.c().add("%player%", d.getName()).replace("%playername%", d.getDisplayName()).replace("%customname%", d.getCustomName()));
 						Loader.sendMessages(d, "ScoreBoard.Toggle.Show.Other.Receiver", Placeholder.c().add("%player%", s.getName()).replace("%playername%", s.getName()).replace("%customname%", s.getName()));
 					}else {
 						me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.toggled.add(d.getName());
+						me.DevTec.ServerControlReloaded.Utils.ScoreboardStats.createScoreboard(d);
 						Loader.sendMessages(s, "ScoreBoard.Toggle.Hide.Other.Sender", Placeholder.c().add("%player%", d.getName()).replace("%playername%", d.getDisplayName()).replace("%customname%", d.getCustomName()));
 						Loader.sendMessages(d, "ScoreBoard.Toggle.Hide.Other.Receiver", Placeholder.c().add("%player%", s.getName()).replace("%playername%", s.getName()).replace("%customname%", s.getName()));
 					}

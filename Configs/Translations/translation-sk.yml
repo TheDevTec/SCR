@@ -19,7 +19,9 @@ Give:
       Receiver: "%prefix% Dostal si hlavu hráča &e%head%"
   Item: 
     You: "%prefix% Dostal si &e%amount%x %item%"
-    Other: "%prefix% Dal si &e%amount%x %item% &7hráčovi &e%player%"
+    Other:
+      Sender: "%prefix% Dal si &e%amount%x %item% &7hráčovi &e%player%"
+      Receiver: "%prefix% Dostal si &e%amount%x %item%"
     
 # Translations for /Seen command
 Seen:

@@ -19,7 +19,9 @@ Give:
       Receiver: "%prefix% You have been got the skull of &e%head%"
   Item: 
     You: "%prefix% Added &e%amount%x %item%"
-    Other: "%prefix% Added &e%amount%x %item% &7to &e%player%"
+    Other:
+      Sender: "%prefix% Added &e%amount%x %item% &7to &e%player%"
+      Receiver: "%prefix% You got &e%amount%x %item%"
     
 # Translations for /Seen command
 Seen:

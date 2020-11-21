@@ -135,7 +135,7 @@ public class Tasks {
 				}
 				++now;
 			}
-		}.runRepeating(0, 20 * Loader.mw.getInt("SavingTask.Delay")));
+		}.runRepeatingSync(0, 20 * Loader.mw.getInt("SavingTask.Delay")));
 	}
 
 	public static void regPlayer(Player p) {

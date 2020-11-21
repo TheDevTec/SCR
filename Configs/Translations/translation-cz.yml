@@ -1,12 +1,8 @@
-# Links:
+# Linky:
 #  Github: https://github.com/TheDevTec/ServerControlReloaded
 #  Discord: https://discord.io/spigotdevtec
 #  Spigot: https://www.spigotmc.org/resources/servercontrolreloaded.71147/
 
-
-########################################
-#Czech translation made by DevTec group#
-########################################
 
 # Text for %prefix% placeholder
 Prefix: "&6&lS&r&lerver &8&l»&7"
@@ -23,7 +19,9 @@ Give:
       Receiver: "%prefix% Obdržel jsi hlavu &e%head%"
   Item: 
     You: "%prefix% Dostal jsi &e%amount%x %item%"
-    Other: "%prefix% dal jsi &e%amount%x %item% &7hráči &e%player%"
+    Other:
+      Sender: "%prefix% Dal jsi &e%amount%x %item% &7hráči &e%player%"
+      Receiver: "%prefix% Dostal jsi &e%amount%x %item%"
     
 # Translations for /Seen command
 Seen:
@@ -615,10 +613,10 @@ PrivateMessage:
 # Translations for /ClearChat command
 ClearChat:
   Cleared:
-    Console: "%prefix% Chat vymazala &eKonzole"
-    Player: "%prefix% Chat vymazal/a &e%player%"
-  Specific: "%prefix% Chat hráče &e%player% &7byl vymazán"
-  SpecificChatHaveBypass: "%prefix% &e%player% &7má obcházecí právo!"
+    Console: "%prefix% Chat byl smazán &eKonzolí"
+    Player: "%prefix% Chat byl svymazan hráčem &e%player%"
+  Specific: "%prefix% Chat hráče &e%player% &7byl smazán"
+  SpecificChatHaveBypass: "%prefix% &e%player% &7má právo na bypass clear chatu"
   NoClearOwnChat: "%prefix% Nemůžete smazat vlastní chat"
   
 # Translations for /Back command
@@ -629,7 +627,7 @@ Back:
     You: "%prefix% Teleportuji na předešlé místo"
     Other:
       Sender: "%prefix% Teleportuji &e%player% &7na předchozí místo"
-      Receiver: "%prefix% Teleportuji na předešlé místé"
+      Receiver: "%prefix% Teleportuji na předešlé místo"
       
 Immune:
   Enabled:
@@ -642,7 +640,7 @@ Immune:
     Other:
       Sender: "%prefix% Imunita &e%player%&7 byla &evypnuta"
       Receiver: "%prefix% Imunita &evypnuta"
-  NoPunish: "%prefix% &e%player% &7má imunitu."
+  NoPunish: "%prefix% &e%player% &7má imunitu"
   
 TabList:
   Prefix:
@@ -676,8 +674,8 @@ WhoIs:
   - "%prefix% Online po dobu: &e%seen%"
   - "%prefix% IP: &e%ip%"
   - "%prefix% AFK: &e%afk%"
-  - "%prefix% God: &e%god%"
-  - "%prefix% Fly: &e%fly%"
+  - "%prefix% Nesmrtelnost: &e%god%"
+  - "%prefix% Létání: &e%fly%"
   - "%prefix% OP: &e%op%"
   - "%prefix% Ostatní informace:"
   - "%prefix%   První připojení: &e%firstjoin%"
@@ -690,8 +688,8 @@ WhoIs:
   - "%prefix% Offline po dobu: &e%seen%"
   - "%prefix% IP: &e%ip%"
   - "%prefix% AFK: &e%afk%"
-  - "%prefix% God: &e%god%"
-  - "%prefix% Fly: &e%fly%"
+  - "%prefix% Nesmrtelnost: &e%god%"
+  - "%prefix% Létání: &e%fly%"
   - "%prefix% OP: &e%op%"
   - "%prefix% Ostatní informace:"
   - "%prefix%   První připojení: &e%firstjoin%"
@@ -723,35 +721,35 @@ Inventory:
     Disabled: "%prefix% Zapnuto potvrzení pro smazání inventáře"
   ClearInventory:
     ClearConfirm: "%prefix% Prosím potvrďte vaše vymazání inventáře"
-    You: "%prefix% Inventář vymazán"
+    You: "%prefix% Váš inventář byl vyčištěn"
     Other:
-      Sender: "%prefix% Vymazali jste inventář &e%player%&7"
-      Receiver: "%prefix% Inventář vymazal/a &e%player%"
+      Sender: "%prefix% Vyčistili jste inventář hráče &e%player%&7"
+      Receiver: "%prefix% Tvůj inventář vyčištil &e%player%"
     Undo: "%prefix% Inventář obnoven"
     CantUndo: "%prefix% Inventář nelze obnovit"
     NoMoney: "%prefix% Nedostatek peněz, potřebujete &e%money%"
   CloseInventory:
     You: "%prefix% Zavírám otevřený inventář"
     Other:
-      Sender: "%prefix% Zavírám otevřený inventář &e%player%"
-      Receiver: "%prefix% Zavírám otevřený inventář"
+      Sender: "%prefix% Zavírám otevřený inventář hráče &e%player%"
+      Receiver: "%prefix% Váš otevřený inventář"
   EnderChest:
     You: "%prefix% Otevírám ender truhlu"
     Other:
-      Sender: "%prefix% Otevírám ender truhlu &e%player%"
+      Sender: "%prefix% Otevírám ender truhlu hráče &e%player%"
       Receiver: "%prefix% Otevírám ender truhlu"
   EnderSee:
-    Sender: "%prefix% Otevírám ender truhlu &e%player%"
+    Sender: "%prefix% Otevírám ender truhlu hráče &e%player%"
     Receiver: ""
   Invsee:
-    You: "%prefix% Otevírám inventář &e%player%"
+    You: "%prefix% Otevírám inventář hráče &e%player%"
     Other:
-      Sender: "%prefix% Otevírám invnetář &e%player%&7 hráči &e%target%"
-      Receiver: "%prefix% Otevírám inventář &e%player%"
+      Sender: "%prefix% Otevírám invnetář hráče &e%player%&7 hráči &e%target%"
+      Receiver: "%prefix% Otevírám inventář hráče &e%player%"
   Workbench:
     You: "%prefix% Otevírám pracovní stůl"
     Other:
-      Sender: "%prefix% Otevírám pracovní stůl pro &e%player%"
+      Sender: "%prefix% Otevírám pracovní stůl pro hráče &e%player%"
       Receiver: "%prefix% Otevírám pracovní stůl"
       
 ScoreBoard:

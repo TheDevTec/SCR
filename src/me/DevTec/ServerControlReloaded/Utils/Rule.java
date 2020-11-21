@@ -47,12 +47,9 @@ public class Rule {
 		switch(b.toUpperCase()) {
 		case "REGEX":
 			Matcher m = pattern.matcher(text);
-			while(m.find()) {
+			if(m.find()) {
 				if(d) {
-					String ee = e;
-					for(int i = 1; i < m.groupCount(); ++i)
-						ee=ee.replace("$"+i, m.group(i));
-					text=text.replace(m.group(), ee);
+					text = pattern.matcher(text).replaceAll(e);
 				}else return null;
 			}
 			break;

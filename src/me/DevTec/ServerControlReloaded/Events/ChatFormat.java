@@ -107,13 +107,14 @@ public class ChatFormat implements Listener {
 	public void set(PlayerChatEvent e) {
 		Player p = e.getPlayer();
 		Loader.setupChatFormat(p);
-		if (TheAPI.getCooldownAPI(p.getName()).getStart("world-create") != -1) {
+		if (TheAPI.getCooldownAPI(p.getName()).getTimeToExpire("world-create") != -1) {
 			e.setCancelled(true);
 			if (e.getMessage().toLowerCase().equals("cancel")) {
 				User d = TheAPI.getUser(p);
 				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
-				d.set("MultiWorlds-Create", null);
-				d.setAndSave("MultiWorlds-Generator", null);
+				d.remove("MultiWorlds-Create");
+				d.remove("MultiWorlds-Generator");
+				d.save();
 				TheAPI.sendTitle(p,"", "&6Cancelled");
 			}else
 			if (TheAPI.getCooldownAPI(p.getName()).expired("world-create")) {

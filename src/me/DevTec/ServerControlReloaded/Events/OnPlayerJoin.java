@@ -46,6 +46,7 @@ public class OnPlayerJoin implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
+		e.setJoinMessage("");
 		if(Loader.config.getBoolean("Options.Skins.onJoin")) {
 			if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
 				String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
@@ -99,7 +100,6 @@ public class OnPlayerJoin implements Listener {
 		Loader.setupChatFormat(p);
 		Tasks.regPlayer(p);
 		User d = TheAPI.getUser(p);
-		e.setJoinMessage(null);
 		Config f = Loader.config;
 		if (!Mail.getMails(p.getName()).isEmpty())
 			Loader.sendMessages(p,"Mail.Notification", Placeholder.c().add("%amount%", "" + d.getStringList("Mails").size()));
