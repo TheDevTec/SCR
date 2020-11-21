@@ -707,7 +707,6 @@ ChatFormat:
     NotExist: "%prefix% Group &e%group% &7doesn't exist"
     Create: "%prefix% Group &e%group% &7created"
     Delete: "%prefix% Group &e%group% &7deleted"
-    Delete: "%prefix% Group &e%group% &7deleted"
   Edit:
     Name: "%prefix% Set &eName &7format to &r%value%&r &7on group &e%group%"
     Chat: "%prefix% Set &eChat &7format to &r%value%&r &7on group &e%group%"
@@ -772,8 +771,8 @@ ScoreBoard:
     Cancelled:
       You: "%prefix% You can't toggle scoreboard"
       Other:
-        Sender: ""
-        Receiver: "%prefix% You can't toggle scoreboard of &e%player%"
+        Sender: "%prefix% You can't toggle scoreboard of &e%player%"
+        Receiver: ""
   
 Skin:
   Set:

@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 
 public class ScoreboardStats implements CommandExecutor, TabCompleter {
@@ -108,7 +107,6 @@ public class ScoreboardStats implements CommandExecutor, TabCompleter {
 					return true;
 					}
 					Loader.sendMessages(s, "ScoreBoard.Toggle.Cancelled.Other.Sender", Placeholder.c().add("%player%", d.getName()).replace("%playername%", d.getDisplayName()).replace("%customname%", d.getCustomName()));
-					Loader.sendMessages(d, "ScoreBoard.Toggle.Cancelled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).replace("%playername%", s.getName()).replace("%customname%", s.getName()));
 					return true;
 				}
 				Loader.advancedHelp(s, "ScoreBoard", "Other", "ToggleOther");

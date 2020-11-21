@@ -44,7 +44,7 @@ public class Suicide implements CommandExecutor, TabCompleter {
 				o.setHealth(0);
 				if(o.isDead())
 					Loader.sendBroadcasts(s, "Kill.Suicide", Placeholder.c()
-							.add("%player", o.getName())
+							.add("%player%", o.getName())
 							.add("%playername%", o.getDisplayName()));
 				return true;
 			}
