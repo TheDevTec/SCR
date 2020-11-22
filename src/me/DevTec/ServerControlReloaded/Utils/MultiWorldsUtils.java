@@ -10,7 +10,6 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
-import org.bukkit.block.Biome;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -191,14 +190,13 @@ public class MultiWorldsUtils {
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Spawn.X_Pos_Head", 90);
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Spawn.Z_Pos_Head", 0);
 		Loader.mw.save();
-		if (Loader.mw.getString("WorldsSettings." + as.getName()) != null) {
 			for (String s : Loader.mw.getKeys("WorldsSettings." + as.getName()+".Gamerule")) {
 				if (s.equalsIgnoreCase("MAX_COMMAND_CHAIN_LENGTH") || s.equalsIgnoreCase("RANDOM_TICK_SPEED")
-						|| s.equalsIgnoreCase("MAX_ENTITY_CRAMMING") || s.equalsIgnoreCase("RANDOM_TICK_SPEED")) {
+						|| s.equalsIgnoreCase("MAX_ENTITY_CRAMMING") || s.equalsIgnoreCase("SPAWN_RADIUS")) {
 					as.setGameRuleValue(s, "" + Loader.mw.getInt("WorldsSettings." + as.getName() + ".Gamerule." + s));
 				} else
 					as.setGameRuleValue(s,
-							"" + Loader.mw.getDouble("WorldsSettings." + as.getName() + ".Gamerule." + s));
+							"" + Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".Gamerule." + s));
 			}
 			String dif = null;
 			dif = Loader.mw.getString("WorldsSettings." + as.getName() + ".Difficulty").toUpperCase();
@@ -209,17 +207,14 @@ public class MultiWorldsUtils {
 			int animal = 0;
 			int an = 0;
 			int mo = 0;
-
 			if (Loader.mw.getBoolean("ModifyMobsSpawnRates")) {
 				monster = Loader.mw.getInt("WorldsSettings." + as.getName() + ".MonstersSpawnLimit");
 				animal = Loader.mw.getInt("WorldsSettings." + as.getName() + ".AnimalsSpawnLimit");
 				an = Loader.mw.getInt("WorldsSettings." + as.getName() + ".TicksPerAnimalSpawn");
 				mo = Loader.mw.getInt("WorldsSettings." + as.getName() + ".TicksPerMonsterSpawn");
 			}
-			String biome = Loader.mw.getString("WorldsSettings." + as.getName() + ".Generator");
 			if (dif.equalsIgnoreCase("EASY") || dif.equalsIgnoreCase("NORMAL") || dif.equalsIgnoreCase("HARD") || dif.equalsIgnoreCase("PEACEFUL")) {
 				as.setDifficulty(Difficulty.valueOf(dif.toUpperCase()));
-
 			}else {
 				Loader.getInstance.getLogger()
 				.warning("Setting Difficulty of world '" + as.getName() + "' is unknown !");
@@ -229,8 +224,6 @@ public class MultiWorldsUtils {
 			as.setKeepSpawnInMemory(keepspawn);
 			as.setAutoSave(autosave);
 			as.setPVP(pvp);
-			if (biome.equalsIgnoreCase("FLAT"))
-				as.setBiome(0, 15, Biome.PLAINS);
 			if (Loader.mw.getBoolean("ModifyMobsSpawnRates")) {
 				as.setMonsterSpawnLimit(monster); // max spawning of monsters (zombies..) is defaulty 300
 				as.setAnimalSpawnLimit(animal); // max spawning of animals (cows..) is defaulty 150
@@ -239,15 +232,13 @@ public class MultiWorldsUtils {
 				as.setTicksPerAnimalSpawns(an);
 				as.setTicksPerMonsterSpawns(mo);
 			}
-		}
 	}
 
 	public static void LoadWorlds() {
-		for (World wa : Bukkit.getWorlds())
-			if(!Loader.mw.exists("WorldsSettings." + wa.getName()))
-			DefaultSet(wa, Loader.mw.getString("WorldsSettings." + wa.getName() + ".Generator"));
 		for (String w : Loader.mw.getStringList("Worlds"))
 			LoadWorld(w, null);
+		for (World wa : Bukkit.getWorlds())
+			DefaultSet(wa, Loader.mw.getString("WorldsSettings." + wa.getName() + ".Generator"));
 	}
 
 	public static void LoadWorld(String s, CommandSender sender) {
@@ -271,6 +262,7 @@ public class MultiWorldsUtils {
 		if (biome.equalsIgnoreCase("THE_VOID")) {
 			WorldsAPI.create(s, Environment.NORMAL, null, true, 0);
 		}
+		if(!worlds.contains(s))
 		worlds.add(s);
 		ww.remove(s);
 		Loader.mw.set("Worlds", worlds);

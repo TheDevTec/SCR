@@ -178,7 +178,9 @@ import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.Collections.LinkedSet;
 import me.DevTec.TheAPI.Utils.DataKeeper.Maps.NonSortedMap;
+import me.DevTec.TheAPI.Utils.Listener.EventHandler;
 import me.DevTec.TheAPI.Utils.Listener.Listener;
+import me.DevTec.TheAPI.Utils.Listener.Events.PlayerVanishEvent;
 import me.DevTec.TheAPI.Utils.Reflections.Ref;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -968,6 +970,13 @@ public class Loader extends JavaPlugin implements Listener {
 		EventC(new EntitySpawn());
 		EventC(new Signs());
 		EventC(new FarmingSystem());
+		TheAPI.register(new Listener() {
+			@EventHandler
+			public void onVanish(PlayerVanishEvent e) {
+				if(setting.tab && setting.tab_vanish)
+					LoginEvent.moveInTab(e.getPlayer());
+			}
+		});
 	}
 	
 	public static void notOnline(CommandSender s, String player) {
