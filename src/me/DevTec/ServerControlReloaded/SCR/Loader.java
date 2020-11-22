@@ -185,7 +185,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
-	public static Config config, sb, tab, mw, kit, trans, events, cmds, tags;
+	public static Config config, sb, tab, mw, kit, trans, events, cmds;
 	public static Set<Rule> rules = new LinkedSet<>();
 	
 	public static Economy econ;
@@ -400,8 +400,10 @@ public class Loader extends JavaPlugin implements Listener {
 	public void onLoad() {
 		getInstance = this;
 		Configs.load();
+		english=new Config("ServerControlReloaded/Translations/translation-en.yml");
 		setting.load();
 	}
+	
 	private static long loading;
 
 	@Override
@@ -453,7 +455,7 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		EventsRegister();
-		CommmandsRegister();
+		CommandsRegister();
 	}
 	
 	public static Map<String, SkinData> skins = new NonSortedMap<>();
@@ -657,10 +659,6 @@ public class Loader extends JavaPlugin implements Listener {
 		setting.load();
 		Converter.convert();
 		MultiWorldsUtils.LoadWorlds();
-		tagG=Loader.tags.getString("Prefix");
-		gradientTag=Loader.tags.getString("GradientPrefix");
-		for (String tag : tags.getKeys("Tags"))
-			colorMap.put(tag.toLowerCase(), "#" + tags.getString("Tags."+tag));
 		getInstance.starts();
 		for(String s : config.getKeys("Rules")) {
 			int flags = 0;
@@ -798,7 +796,7 @@ public class Loader extends JavaPlugin implements Listener {
 		Scheduler.cancelTask(task);
 	}
 
-	private void CommmandsRegister() {
+	private void CommandsRegister() {
 		//Server
 		CmdC("Server", "Stop" , new Stop());
 		CmdC("Server", "Reload", new Reload());

@@ -77,9 +77,6 @@ public class Configs {
 		    	case "Commands.yml":
 		    		Loader.cmds=c;
 		    		break;
-		    	case "Tags.yml":
-		    		Loader.tags=c;
-		    		break;
 		    	}
 			}
 			data.clear();
