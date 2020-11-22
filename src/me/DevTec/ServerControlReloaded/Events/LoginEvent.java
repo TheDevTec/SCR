@@ -21,13 +21,6 @@ import me.DevTec.TheAPI.Utils.Listener.Events.PlayerVanishEvent;
 import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class LoginEvent implements Listener {
-	
-	@EventHandler
-	public void onVanish(PlayerVanishEvent e) {
-		if(setting.tab && setting.tab_vanish)
-			moveInTab(e.getPlayer());
-	}
-	
 	private static Object surv = Ref.getNulled(Ref.nms("EnumGamemode"), "SURVIVAL"), spec = Ref.getNulled(Ref.nms("EnumGamemode"), "SPECTATOR");
 	private static Object up = Ref.getNulled(Ref.field(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), "UPDATE_GAME_MODE"));
 	public static void moveInTab(Player player) {

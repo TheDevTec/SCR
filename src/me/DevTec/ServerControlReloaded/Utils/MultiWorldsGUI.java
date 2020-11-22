@@ -624,8 +624,26 @@ public class MultiWorldsGUI {
 			case "COMMAND_BLOCK_OUTPUT":
 				x = XMaterial.COMMAND_BLOCK;
 				break;
+			case "DO_TRADER_SPAWNING":
+				x = XMaterial.LEAD;
+				break;
+			case "NATURAL_REGENERATION":
+				x = XMaterial.RED_DYE;
+				break;
+			case "FORGIVE_DEAD_PLAYERS":
+				x = XMaterial.GOLD_NUGGET;
+				break;
 			case "DISABLE_ELYTRA_MOVEMENT_CHECK":
 				x = XMaterial.ELYTRA;
+				break;
+			case "DO_IMMEDIATE_RESPAWN":
+				x = XMaterial.RED_BED;
+				break;
+			case "DO_INSOMNIA":
+				x = XMaterial.RED_BED;
+				break;
+			case "DO_PATROL_SPAWNING":
+				x = XMaterial.ENDER_EYE;
 				break;
 			case "DISABLE_RAIDS":
 				x = XMaterial.IRON_AXE;
@@ -646,7 +664,7 @@ public class MultiWorldsGUI {
 				x = XMaterial.PORKCHOP;
 				break;
 			case "DO_TILE_DROPS":
-				x = XMaterial.OAK_SIGN;
+				x = XMaterial.CHEST;
 				break;
 			case "DO_WEATHER_CYCLE":
 				x = XMaterial.WATER_BUCKET;
@@ -700,27 +718,37 @@ public class MultiWorldsGUI {
 				
 				@Override
 				public void onClick(Player p, GUI g, ClickType c) {
-					switch(c) {
-					case LEFT:
-					case SHIFT_LEFT:
-						Loader.mw.set("WorldsSettings." + w.getName() + ".Gamerule." + ds,
-								Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) + 1);
-						w.setGameRuleValue(ds,
-								"" + (Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) + 1));
+					if(ds.equalsIgnoreCase("MAX_COMMAND_CHAIN_LENGTH")||ds.equalsIgnoreCase("MAX_ENTITY_CRAMMING")||ds.equalsIgnoreCase("RANDOM_TICK_SPEED")||ds.equalsIgnoreCase("SPAWN_RADIUS")) {
+						switch(c) {
+						case LEFT:
+						case SHIFT_LEFT:
+							Loader.mw.set("WorldsSettings." + w.getName() + ".Gamerule." + ds,
+									Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) + 1);
+							Loader.mw.save();
+							w.setGameRuleValue(ds,
+									"" + (Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) + 1));
+							this.setItem(createItem("&6"+name, d, Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
+							g.setItem(slot, this);
+							break;
+						case RIGHT:
+						case SHIFT_RIGHT:
+							Loader.mw.set("WorldsSettings." + w.getName() + ".Gamerule." + ds,
+									Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) - 1);
+							Loader.mw.save();
+							w.setGameRuleValue(ds,
+									"" + (Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) - 1));
+							this.setItem(createItem("&6"+name, d, Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
+							g.setItem(slot, this);
+							break;
+						default:
+							break;
+						}
+					}else {
+						Loader.mw.set("WorldsSettings." + w.getName() + ".Gamerule." + ds, !Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".Gamerule." + ds));
+						Loader.mw.save();
+						w.setGameRuleValue(ds, "" + (!Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".Gamerule." + ds)));
 						this.setItem(createItem("&6"+name, d, Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
 						g.setItem(slot, this);
-						break;
-					case RIGHT:
-					case SHIFT_RIGHT:
-						Loader.mw.set("WorldsSettings." + w.getName() + ".Gamerule." + ds,
-								Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) - 1);
-						w.setGameRuleValue(ds,
-								"" + (Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) - 1));
-						this.setItem(createItem("&6"+name, d, Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
-						g.setItem(slot, this);
-						break;
-					default:
-						break;
 					}
 				}});
 	}}
