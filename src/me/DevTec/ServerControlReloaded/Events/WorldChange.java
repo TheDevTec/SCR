@@ -8,7 +8,6 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
-import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.ScoreboardStats;
 import me.DevTec.ServerControlReloaded.Utils.setting;
@@ -25,15 +24,14 @@ public class WorldChange implements Listener {
 	public void OnPlayerWorldChangeEvent(PlayerChangedWorldEvent e) {
 		SPlayer a = API.getSPlayer(e.getPlayer());
 		a.createEconomyAccount();
-		if (a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
+		if (a.hasFlyEnabled())
 			a.enableFly();
 		else if (a.hasTempFlyEnabled())
 			a.enableTempFly();
-		if (a.hasPermission("servercontrol.god") && a.hasGodEnabled())
+		if (a.hasGodEnabled())
 			a.enableGod();
 		a.setGamamode();
-		if (Loader.sb.getBoolean("Scoreboard-PerWorld"))
-			ScoreboardStats.createScoreboard(e.getPlayer());
+		ScoreboardStats.createScoreboard(e.getPlayer());
 
 	}
 
@@ -43,9 +41,9 @@ public class WorldChange implements Listener {
 		if (a.hasTempFlyEnabled())
 			a.enableTempFly();
 		else
-		if (a.hasPermission("servercontrol.fly") && a.hasFlyEnabled())
+		if (a.hasFlyEnabled())
 			a.enableFly();
-		if (a.hasPermission("servercontrol.god") && a.hasGodEnabled())
+		if (a.hasGodEnabled())
 			a.enableGod();
 	}
 }
