@@ -68,11 +68,11 @@ public class Colors {
 		    	b=d.toString();
 			}
 		}
-		if (TheAPI.isNewerThan(15) && (b.contains("#") || b.contains("&x"))) {
-			if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.HEX"))) {
-			b = b.replace("&x", "§x");
+		if (TheAPI.isNewerThan(15) && (b.contains("#") || b.contains("&x") || b.startsWith("!!"))) {
+			if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.HEX"))) 
+				b = b.replace("&x", "§x");
 			if(dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Gradient")))
-				b = (String) Ref.invokeNulled(m, b);
+				b = Ref.invokeNulled(m, b)+"";
 			Matcher match = pattern.matcher(b);
             while (match.find()) {
                 String color = match.group();
@@ -82,8 +82,7 @@ public class Colors {
                     magic.append(("&"+c[i]).toLowerCase());
                 }
                 b = b.replace(color, magic.toString() + "");
-            }
-			}
+            }			
 		}
 		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
 			for (int i = 0; i < 10; ++i)
