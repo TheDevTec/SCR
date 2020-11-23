@@ -190,7 +190,9 @@ public class SPlayer {
 
 	public void enableGod() {
 		TheAPI.getUser(s).setAndSave("God", true);
-		heal();
+		setHP();
+		setFood();
+		setFire();
 	}
 
 	public boolean hasPermission(String perm) {
