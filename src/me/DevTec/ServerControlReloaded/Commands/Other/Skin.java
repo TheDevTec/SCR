@@ -47,23 +47,23 @@ public class Skin implements CommandExecutor, TabCompleter {
 			TheAPI.getUser((Player)s).setAndSave("skin", args[0]);
 			Loader.loadSkin(args[0]);
 			Loader.sendMessages(s, "Skin.Set.You");
-		}
-		Player a = TheAPI.getPlayer(args[0]);
-		if(a==null) {
-			Loader.notOnline(s, args[0]);
 			return true;
 		}
-		if(args[1].equalsIgnoreCase("reset")) {
+		Player a = TheAPI.getPlayer(args[1]);
+		if(a==null) {
+			Loader.notOnline(s, args[1]);
+			return true;
+		}
+		if(args[0].equalsIgnoreCase("reset")) {
 			TheAPI.getUser(a).setAndSave("skin", null);
 			Loader.sendMessages(s, "Skin.Reset.Other.Sender", Placeholder.c().add("%player%", a.getName()).add("%playername%", a.getDisplayName()));
 			Loader.sendMessages(a, "Skin.Reset.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
 			return true;
 		}
-		TheAPI.getUser(a).setAndSave("skin", args[1]);
-		Loader.loadSkin(args[1]);
-		Loader.sendMessages(s, "Skin.Set.Other.Sender", Placeholder.c().add("%skin%", args[1]).add("%player%", a.getName()).add("%playername%", a.getDisplayName()));
-		Loader.sendMessages(a, "Skin.Set.Other.Receiver", Placeholder.c().add("%skin%", args[1]).add("%player%", s.getName()).add("%playername%", s.getName()));
+		TheAPI.getUser(a).setAndSave("skin", args[0]);
+		Loader.loadSkin(args[0]);
+		Loader.sendMessages(s, "Skin.Set.Other.Sender", Placeholder.c().add("%skin%", args[0]).add("%player%", a.getName()).add("%playername%", a.getDisplayName()));
+		Loader.sendMessages(a, "Skin.Set.Other.Receiver", Placeholder.c().add("%skin%", args[0]).add("%player%", s.getName()).add("%playername%", s.getName()));
 		return true;
 	}
-
 }

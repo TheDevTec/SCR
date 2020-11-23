@@ -35,6 +35,8 @@ public class NameTagChanger {
 			}
 		} else {
 			if (setting.tab_nametag) {
+				if (!t.containsKey(p))
+					t.put(p, TheAPI.getNameTagAPI(p, prefix, suffix));
 				NameTagAPI n = t.get(p);
 				n.setPrefix(prefix);
 				n.setSuffix(suffix);
