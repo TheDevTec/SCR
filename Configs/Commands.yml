@@ -956,3 +956,10 @@ Other:
       Other: "SCR.Command.Vanish.Other"
     Help: "/Vanish - Set vanish mode to on/off"
     Enabled: true
+  Accounts:
+    Name: "accounts"
+    Aliases:
+    - "accs"
+    Permission: "SCR.Command.Accounts"
+    Help: "/Accounts - Get accounts on ip-addres of player"
+    Enabled: true

@@ -23,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import me.DevTec.ServerControlReloaded.Commands.BanSystem.Accounts;
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.Ban;
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.BanIP;
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.DelJail;
@@ -873,7 +874,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("GameMode", "GameModeCreative",new GamemodeC());
 		CmdC("GameMode", "GameModeAdventure",new GamemodeA());
 		if(TheAPI.isNewerThan(7))
-		CmdC("GameMode", "GameModeSpectator",new GamemodeSP());
+			CmdC("GameMode", "GameModeSpectator",new GamemodeSP());
 			
 		//BanSystem	
 		CmdC("BanSystem", "Kick", new Kick());
@@ -893,6 +894,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("BanSystem", "Mute", new Mute());
 		CmdC("BanSystem", "UnMute", new UnMute());
 		CmdC("BanSystem", "Warn", new Warn());
+		CmdC("BanSystem", "Accounts", new Accounts());
 		
 		//Inventory
 		CmdC("Inventory", "EnderChest", new EnderChest());

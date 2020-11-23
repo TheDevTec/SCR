@@ -688,6 +688,10 @@ WhoIs:
   - "%prefix%   Country: &e%country%"
   - "%prefix%   Group: &e%group%"
   - "%prefix%   Money: &e%money%"
+  - "%prefix% Banned: %banned%"
+  - "%prefix% IP-Banned: %ip-banned%"
+  - "%prefix% IP-Banned: %ip-banned%"
+
   Offline:
   - "%prefix% Player: &e%player%"
   - "%prefix% UUID: &e%uuid%"
@@ -702,7 +706,8 @@ WhoIs:
   - "%prefix%   Country: &e%country%"
   - "%prefix%   Group: &e%group%"
   - "%prefix%   Money: &e%money%"
-  
+  - "%prefix% Banned: %banned%"
+  - "%prefix% IP-Banned: %ip-banned%"
 ChatFormat:
   Group:
     Exists: "%prefix% Group &e%group% &6already exist"
@@ -793,6 +798,11 @@ Skin:
     Other:
       Sender: "%prefix% &e%player%&7's skin reset"
       Receiver: "%prefix% Your skin reset"
+
+Accounts:
+  Users: "%prefix% Accounts on IP addres of player &e%player%" 
+  List: "%prefix% %accounts%"
+  NoAccounts: "%prefix% No accounts were founded"       
       
 Trash: "&7Trash"
   

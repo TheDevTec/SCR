@@ -35,10 +35,10 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 				entirePage.append(inputLine);
 			stream.close();
 			if (!(entirePage.toString().contains("\"country\":\"")))
-				return "Uknown";
+				return "Unknown";
 			return entirePage.toString().split("\"country\":\"")[1].split("\",")[0];
 		} catch (Exception e) {
-			return "Uknown";
+			return "Unknown";
 		}
 	}
 	
@@ -57,7 +57,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			}
 			String ip = PunishmentAPI.getIP(a[0]);
 			if (ip == null)
-				ip = "Uknown";
+				ip = "Unknown";
 			String country = getCountry(ip);
 			boolean d = false;
 			String afk = "false";
@@ -74,8 +74,10 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 					.add("%op%", Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(a[0]))+"").add("%uuid%", Bukkit.getOfflinePlayer(a[0]).getUniqueId().toString())
 					.add("%vanish%", c.hasVanish()+"").add("%firstjoin%", TheAPI.getUser(a[0]).getString("FirstJoin")+"").add("%group%", Staff.getGroup(a[0]))
 					.add("%money%", EconomyAPI.format(EconomyAPI.getBalance(a[0])))
-					.add("%health%", c.getPlayer()!=null ? c.getPlayer().getHealthScale()+"":"Uknown").add("%food%", c.getPlayer()!=null ? c.getPlayer().getFoodLevel()+"":"Uknown")
-					.add("%xp%", c.getPlayer()!=null ? c.getPlayer().getTotalExperience()+"":"Uknown").add("%level%", c.getPlayer()!=null ? c.getPlayer().getLevel()+"":"Uknown"));
+					.add("%health%", c.getPlayer()!=null ? c.getPlayer().getHealthScale()+"":"Unknown").add("%food%", c.getPlayer()!=null ? c.getPlayer().getFoodLevel()+"":"Unknown")
+					.add("%xp%", c.getPlayer()!=null ? c.getPlayer().getTotalExperience()+"":"Unknown").add("%level%", c.getPlayer()!=null ? c.getPlayer().getLevel()+"":"Unknown")
+					.add("%banned%", PunishmentAPI.getBanList(c.getName()).isBanned()+"")
+					.add("%ip-banned%", PunishmentAPI.getBanList(c.getName()).isIPBanned()+""));
 			/*boolean send = false;
 			PlayerBanList d = PunishmentAPI.getBanList(a[0]);
 			if (d.isMuted()) {
