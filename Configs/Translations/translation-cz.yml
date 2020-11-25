@@ -794,11 +794,10 @@ Skin:
       Receiver: "%prefix% Váš skin byl vyresetován"
       
 Accounts:
-  Users: "%prefix% Účty na IP adrese hráče &e%player%" 
+  Users: "%prefix% Účty na IP adrese hráče &e%player%"
   List: "%prefix% %accounts%"
   NoAccounts: "%prefix% Žádné účty nebyly nalezeny"
-
-
+  
 Trash: "&7Koš"
   
 Config: "%prefix% Konfigurace a tasky znovunačteny"

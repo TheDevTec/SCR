@@ -10,7 +10,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
 
 
@@ -22,12 +22,14 @@ public class Accounts implements CommandExecutor, TabCompleter{
 				Loader.Help(cs, "Accounts", "BanSystem");
 				return true; 
 			}
-			Player a = Bukkit.getPlayer(args[2]);
+			/*Loader.sendMessages(cs, "Accounts.List", Placeholder.c().add("%accounts%", b));
+				TheAPI.bcMsg(b);
+				TheAPI.bcMsg(PunishmentAPI.getPlayersOnIP(a.getName()));*/
+			Player a = Bukkit.getPlayer(args[0]);
+			if(a==null) {Loader.sendMessages(cs, "Missing.Player.Offline");return true;}			
 			Loader.sendMessages(cs, "Accounts.Users");
-			for (String b : PunishmentAPI.getPlayersOnIP(a.getPlayer().getAddress().toString())) {				
-				Loader.sendMessages(cs, "Accounts.List", Placeholder.c().add("%accounts%", b));
-				return true;
-			}
+			//TheAPI.bcMsg(TheAPI.getUser(a).getString("ip").replace("_", "."));
+			TheAPI.bcMsg(PunishmentAPI.getPlayersOnIP(TheAPI.getUser(a).getString("ip")));
 			return true;
 		}
 		return true;
