@@ -47,8 +47,7 @@ BanSystem:
     - "ubip"
     Permission: "SCR.Command.UnBanIP"
     Help: "/UnBanIP <player/IP> - Unban ip address"
-    Enabled: true
-    
+    Enabled: true 
   # Jails
   Jail:
     Name: "jail"
@@ -118,7 +117,11 @@ BanSystem:
     Permission: "SCR.Command.Immune"
     Help: "/Immune <player> - Turn on/off your/player imunity"
     Enabled: true
-    
+  Accounts:
+    Name: "accounts"
+    Permission: "SCR.Command.Accounts"
+    Help: "/Accounts - Get accounts on ip-addres of player"
+    Enabled: true       
 Economy:
   Balance:
     Name: "balance"
@@ -956,3 +959,4 @@ Other:
       Other: "SCR.Command.Vanish.Other"
     Help: "/Vanish - Set vanish mode to on/off"
     Enabled: true
+  

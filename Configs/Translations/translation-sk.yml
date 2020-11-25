@@ -672,6 +672,9 @@ WhoIs:
   - "%prefix%   Zem: &e%country%"
   - "%prefix%   Skupina: &e%group%"
   - "%prefix%   Peniaze: &e%money%"
+  - "%prefix% Banned: %banned%"
+  - "%prefix% IP-Banned: %ip-banned%"
+  
   Offline:
   - "%prefix% Hráč: &e%player%"
   - "%prefix% UUID: &e%uuid%"
@@ -686,6 +689,8 @@ WhoIs:
   - "%prefix%   Zem: &e%country%"
   - "%prefix%   Skupina: &e%group%"
   - "%prefix%   Peniaze: &e%money%"
+  - "%prefix% Banned: %banned%"
+  - "%prefix% IP-Banned: %ip-banned%"
   
 ChatFormat:
   Group:
@@ -777,7 +782,12 @@ Skin:
     Other:
       Sender: "%prefix% Skin hráča &e%player%&7 bol resetovaný"
       Receiver: "%prefix% Skin bol resetovaný"
-      
+
+Accounts:
+  Users: "%prefix% Účty na IP adrese hráča &e%player%" 
+  List: "%prefix% %accounts%"
+  NoAccounts: "%prefix% Žiadne účty boli nájdené"       
+
 Trash: "&7Kôs"
   
 Config: "%prefix% Konfigurácia a úlohy boli znovu načítané1!"

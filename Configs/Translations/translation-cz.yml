@@ -8,7 +8,7 @@
 Prefix: "&6&lS&r&lerver &8&l»&7"
 
 # Translation for no perms message
-NoPerms: "%prefix% Nemáte dostatek práva na toto (&e%permission%&7)"
+NoPerms: "%prefix% Nemáte dostatek práv na toto (&e%permission%&7)"
 
 # Translations for /Give and /Skull commands
 Give:
@@ -681,6 +681,8 @@ WhoIs:
   - "%prefix%   Země: &e%country%"
   - "%prefix%   Skupina: &e%group%"
   - "%prefix%   Peníze: &e%money%"
+  - "%prefix% Banned: %banned%"
+  - "%prefix% IP-Banned: %ip-banned%"  
   Offline:
   - "%prefix% Hráč: &e%player%"
   - "%prefix% UUID: &e%uuid%"
@@ -695,6 +697,10 @@ WhoIs:
   - "%prefix%   Země: &e%country%"
   - "%prefix%   Skupina: &e%group%"
   - "%prefix%   Peníze: &e%money%"
+  - "%prefix% Banned: %banned%"
+  - "%prefix% IP-Banned: %ip-banned%"
+
+
   
 ChatFormat:
   Group:
@@ -787,6 +793,12 @@ Skin:
       Sender: "%prefix% Skin hráče &e%player%&7 byl vyresetován"
       Receiver: "%prefix% Váš skin byl vyresetován"
       
+Accounts:
+  Users: "%prefix% Účty na IP adrese hráče &e%player%" 
+  List: "%prefix% %accounts%"
+  NoAccounts: "%prefix% Žádné účty nebyly nalezeny"
+
+
 Trash: "&7Koš"
   
 Config: "%prefix% Konfigurace a tasky znovunačteny"
