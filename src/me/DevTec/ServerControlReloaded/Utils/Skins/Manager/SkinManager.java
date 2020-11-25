@@ -84,9 +84,9 @@ public class SkinManager {
 	
 	private static Object remove=Ref.getNulled(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),"REMOVE_PLAYER"), add=Ref.getNulled(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),"ADD_PLAYER");
 	private static Method put, oldRemove, oldAdd;
-	private static Constructor<?> infoC, headC= Ref.getConstructors(Ref.nms("PacketPlayOutEntityHeadRotation"))[1],
-	respawnC=Ref.getConstructors(Ref.nms("PacketPlayOutRespawn"))[1], posC=Ref.getConstructors(Ref.nms("PacketPlayOutPosition"))[1],
-	handC=Ref.getConstructors(Ref.nms("PacketPlayOutHeldItemSlot"))[1];
+	private static Constructor<?> infoC, headC= Ref.getConstructors(Ref.nms("PacketPlayOutEntityHeadRotation"))[0],
+	respawnC=Ref.getConstructors(Ref.nms("PacketPlayOutRespawn"))[0], posC=Ref.getConstructors(Ref.nms("PacketPlayOutPosition"))[0],
+	handC=Ref.getConstructors(Ref.nms("PacketPlayOutHeldItemSlot"))[0];
 	static {
 		if(TheAPI.isNewerThan(7)) {
 			infoC = Ref.getConstructors(Ref.nms("PacketPlayOutPlayerInfo"))[2];
@@ -112,7 +112,7 @@ public class SkinManager {
 			destroy=Ref.invokeNulled(oldRemove, s);
 			add=Ref.invokeNulled(oldAdd, s);
 		}else {
-			Iterable<Object> iterable = Arrays.asList(s);
+			Iterable<?> iterable = Arrays.asList(s);
 			destroy=Ref.newInstance(infoC, SkinManager.remove, iterable);
 			add = Ref.newInstance(infoC, SkinManager.add, iterable);
 		}
@@ -140,11 +140,10 @@ public class SkinManager {
 				Object pos = null;
 				if(TheAPI.isOlderThan(8)) { //1.7
 					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), false);
-				}else
-					if(TheAPI.isOlder1_9()) { //1.8
-						pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), new HashSet<>());
-					}else //1.9+
-						pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), new HashSet<>(), 0);
+				}else if(TheAPI.isOlderThan(9)) { //1.8
+					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), new HashSet<>());
+				}else //1.9+
+					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), new HashSet<>(), 0);
 				Ref.sendPacket(player, pos);
 				Ref.sendPacket(player, Ref.newInstance(handC, p.getInventory().getHeldItemSlot()));
 				Ref.sendPacket(player, NMSAPI.getPacketPlayOutEntityMetadata(s));
