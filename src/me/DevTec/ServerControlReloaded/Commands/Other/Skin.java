@@ -2,7 +2,6 @@ package me.DevTec.ServerControlReloaded.Commands.Other;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,9 +11,9 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinCallable;
+import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinCallback;
+import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinData;
 import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinManager;
-import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.SkinData;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
@@ -46,24 +45,24 @@ public class Skin implements CommandExecutor, TabCompleter {
 			if(s instanceof Player) {
 			if(args[0].equalsIgnoreCase("reset")) {
 				TheAPI.getUser((Player)s).setAndSave("skin", null);
-				SkinManager.generateSkin(s.getName(), new SkinCallable() {
+				SkinManager.generateSkin(s.getName(), new SkinCallback() {
 					@Override
-					public void run(UUID uuid, SkinData data) {
+					public void run(SkinData data) {
 						SkinManager.setSkin(s.getName(), data);
 						SkinManager.loadSkin((Player)s, data);
 					}
-				});
+				}, false);
 				Loader.sendMessages(s, "Skin.Reset.You");
 				return true;
 			}
 			TheAPI.getUser((Player)s).setAndSave("skin", args[0]);
-			SkinManager.generateSkin(args[0], new SkinCallable() {
+			SkinManager.generateSkin(args[0], new SkinCallback() {
 				@Override
-				public void run(UUID uuid, SkinData data) {
+				public void run(SkinData data) {
 					SkinManager.setSkin(s.getName(), data);
 					SkinManager.loadSkin((Player)s, data);
 				}
-			});
+			}, false);
 			Loader.sendMessages(s, "Skin.Set.You");
 			return true;
 			}
@@ -77,25 +76,25 @@ public class Skin implements CommandExecutor, TabCompleter {
 		}
 		if(args[0].equalsIgnoreCase("reset")) {
 			TheAPI.getUser(a).setAndSave("skin", null);
-			SkinManager.generateSkin(a.getName(), new SkinCallable() {
+			SkinManager.generateSkin(a.getName(), new SkinCallback() {
 				@Override
-				public void run(UUID uuid, SkinData data) {
+				public void run(SkinData data) {
 					SkinManager.setSkin(a.getName(), data);
 					SkinManager.loadSkin(a, data);
 				}
-			});
+			}, false);
 			Loader.sendMessages(s, "Skin.Reset.Other.Sender", Placeholder.c().add("%player%", a.getName()).add("%playername%", a.getDisplayName()));
 			Loader.sendMessages(a, "Skin.Reset.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
 			return true;
 		}
 		TheAPI.getUser(a).setAndSave("skin", args[0]);
-		SkinManager.generateSkin(args[0], new SkinCallable() {
+		SkinManager.generateSkin(args[0], new SkinCallback() {
 			@Override
-			public void run(UUID uuid, SkinData data) {
+			public void run(SkinData data) {
 				SkinManager.setSkin(a.getName(), data);
 				SkinManager.loadSkin(a, data);
 			}
-		});
+		}, false);
 		Loader.sendMessages(s, "Skin.Set.Other.Sender", Placeholder.c().add("%skin%", args[0]).add("%player%", a.getName()).add("%playername%", a.getDisplayName()));
 		Loader.sendMessages(a, "Skin.Set.Other.Receiver", Placeholder.c().add("%skin%", args[0]).add("%player%", s.getName()).add("%playername%", s.getName()));
 		return true;

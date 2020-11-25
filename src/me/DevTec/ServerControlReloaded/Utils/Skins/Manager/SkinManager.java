@@ -1,85 +1,86 @@
 package me.DevTec.ServerControlReloaded.Utils.Skins.Manager;
 
-import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
+import java.util.zip.GZIPInputStream;
 
 import org.bukkit.Location;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.MineskinClient;
-import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.Skin;
-import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.SkinCallback;
-import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.SkinData;
-import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.Texture;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.DataKeeper.Maps.NonSortedMap;
+import me.DevTec.TheAPI.Utils.Decompression.Decompression;
+import me.DevTec.TheAPI.Utils.Json.Reader;
 import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class SkinManager {
-	private static Map<String, SkinData> skins = new NonSortedMap<>();
-	private static Map<UUID, SkinData> generator = new NonSortedMap<>();
-	private static MineskinClient client = new MineskinClient();
-	private static Object parser = TheAPI.isOlderThan(8)?new net.minecraft.util.com.google.gson.JsonParser():new JsonParser();
-	
-	public static synchronized UUID generateSkin(String urlOrName, SkinCallable onFinish) {
-		UUID random = UUID.randomUUID();
+	private static final String URL_FORMAT = "https://api.mineskin.org/generate/url?url=%s&%s",
+			USER_FORMAT="https://api.ashcon.app/mojang/v2/user/%s";
+	private static Map<String, SkinData> playerSkins = new NonSortedMap<>();
+	private static Map<String, SkinData> generator = new NonSortedMap<>();
+	@SuppressWarnings("unchecked")
+	public static synchronized void generateSkin(String urlOrName, SkinCallback onFinish, boolean override) {
 		new Tasker() {
 			public void run() {
-				if(urlOrName.toLowerCase().startsWith("https://")||urlOrName.toLowerCase().startsWith("http://")) {
-					client.generateUrl(urlOrName, new SkinCallback() {
-						public void done(Skin skin) {
-							generator.put(random, skin.data);
-							if(onFinish!=null)
-							onFinish.run(random, skin.data);
-						}
-					});
+				if(generator.containsKey(urlOrName) && !override) {
+					if(onFinish!=null)
+						onFinish.run(generator.get(urlOrName));
+					return;
 				}
-				SkinData data = new SkinData();
-				data.uuid=random;
-				Texture tex = new Texture();
-				tex.url=urlOrName;
+				if(urlOrName.toLowerCase().startsWith("https://")||urlOrName.toLowerCase().startsWith("http://")) {
+					try {
+						HttpURLConnection conn = (HttpURLConnection)new URL(String.format(URL_FORMAT, urlOrName, "name=none&model=steve&visibility=1")).openConnection();
+						conn.setRequestProperty("User-Agent", "ServerControlReloaded-JavaClient");
+						conn.setRequestProperty("Accept-Encoding", "gzip");
+						conn.setRequestMethod("POST");
+						conn.connect();
+						Map<String, Object> text = (Map<String, Object>) Reader.read(Decompression.getText(new GZIPInputStream(conn.getInputStream())).toString());
+						SkinData data = new SkinData();
+						if(!text.containsKey("error")) {
+							data.signature=(String) ((Map<String, Object>)((Map<String, Object>)text.get("data")).get("texture")).get("signature");
+							data.value=(String) ((Map<String, Object>)((Map<String, Object>)text.get("data")).get("texture")).get("value");
+							data.url=(String) ((Map<String, Object>)((Map<String, Object>)text.get("data")).get("texture")).get("url");
+							data.uuid=UUID.randomUUID();
+							data.slim=text.get("model").equals("alex");
+						}
+						generator.put(urlOrName, data);
+						if(onFinish!=null)
+						onFinish.run(data);
+					}catch(Exception err) {}
+				}
 				try {
-					String texture = null, signature = null;
-					if(TheAPI.isOlderThan(8)) {
-						net.minecraft.util.com.google.gson.JsonObject textureProperty = ((net.minecraft.util.com.google.gson.JsonParser)parser).parse(new InputStreamReader(new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + ((net.minecraft.util.com.google.gson.JsonParser)parser).parse(new InputStreamReader(new URL("https://api.mojang.com/users/profiles/minecraft/" + urlOrName)
-			        			.openStream())).getAsJsonObject().get("id").getAsString() + "?unsigned=false").openStream())).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
-			        	texture = textureProperty.get("value").getAsString();
-			        	signature = textureProperty.get("signature").getAsString();
-					}else {
-			        	JsonObject textureProperty = ((JsonParser)parser).parse(new InputStreamReader(new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + ((JsonParser)parser).parse(new InputStreamReader(new URL("https://api.mojang.com/users/profiles/minecraft/" + urlOrName)
-			        			.openStream())).getAsJsonObject().get("id").getAsString() + "?unsigned=false").openStream())).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
-			        	texture = textureProperty.get("value").getAsString();
-			        	signature = textureProperty.get("signature").getAsString();
+					HttpURLConnection conn = (HttpURLConnection)new URL(String.format(USER_FORMAT, urlOrName)).openConnection();
+					conn.setRequestProperty("User-Agent", "ServerControlReloaded-JavaClient");
+					conn.setRequestMethod("GET");
+					conn.connect();
+					Map<String, Object> text = (Map<String, Object>) Reader.read(Decompression.getText(conn.getInputStream()).toString());
+					SkinData data = new SkinData();
+					if(!text.containsKey("error")) {
+						data.signature=(String) ((Map<String, Object>)((Map<String, Object>)text.get("textures")).get("raw")).get("signature");
+						data.value=(String) ((Map<String, Object>)((Map<String, Object>)text.get("textures")).get("raw")).get("value");
+						data.url=(String) ((Map<String, Object>)((Map<String, Object>)text.get("textures")).get("skin")).get("url");
+						data.slim=(boolean)((Map<String, Object>)text.get("textures")).get("slim");
+						data.uuid=UUID.nameUUIDFromBytes(("OfflinePlayer:"+urlOrName).getBytes(StandardCharsets.UTF_8));
 					}
-		    		tex.signature=signature;
-		    		tex.value=texture;
-		    	} catch (Exception err) {}
-				data.texture=tex;
-				generator.put(random, data);
-				if(onFinish!=null)
-				onFinish.run(random, data);
+					generator.put(urlOrName, data);
+					if(onFinish!=null)
+					onFinish.run(data);
+				}catch(Exception err) {}
 		}}.runTask();
-		return random; //queue ID
-	}
-	
-	public static synchronized SkinData getGeneratedSkin(UUID id) {
-		return generator.getOrDefault(id, null);
 	}
 	
 	public static synchronized void setSkin(String player, SkinData data) {
-		skins.put(player, data);
+		playerSkins.put(player, data);
 	}
 	
 	private static Object remove=Ref.getNulled(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),"REMOVE_PLAYER"), add=Ref.getNulled(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),"ADD_PLAYER");
@@ -97,7 +98,7 @@ public class SkinManager {
 	}
 	
 	public static synchronized void loadSkin(Player player, SkinData data) {
-		if(player==null || data==null || data.texture==null || data.texture.signature==null || data.texture.value==null)return;
+		if(player==null || data==null || !data.isFinite())return;
 		Object s = Ref.player(player);
 		Object prop = Ref.invoke(Ref.invoke(s, "getProfile"),"getProperties");
 		Ref.invoke(prop, "clear");
@@ -105,7 +106,7 @@ public class SkinManager {
 			for(Method m : prop.getClass().getMethods())
 				if(m.getName().equals("put"))
 					put=m;
-		Ref.invoke(prop, put, "textures", Ref.createProperty("textures", data.texture.value, data.texture.signature));
+		Ref.invoke(prop, put, "textures", Ref.createProperty("textures", data.value, data.signature));
 		Object destroy = NMSAPI.getPacketPlayOutEntityDestroy(player.getEntityId());
 		Object remove = null, add = null;
 		if(TheAPI.isOlderThan(8)) {
@@ -126,6 +127,9 @@ public class SkinManager {
 				Location a = p.getLocation();
 				Object re = null;
 				if(TheAPI.isNewerThan(15)) { //1.16
+					if(TheAPI.getServerVersion().split("_")[2].equals("R1")) {
+						re=Ref.newInstance(respawnC, Ref.invoke(w, "getTypeKey"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(Ref.method(Ref.nms("BiomeManager"), "a", long.class), a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);	
+					}else
 					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(Ref.method(Ref.nms("BiomeManager"), "a", long.class), a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);
 				}else if(TheAPI.isNewerThan(14)) { //1.15
 					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), a.getWorld().getSeed(), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
@@ -159,6 +163,6 @@ public class SkinManager {
 	}
 	
 	public static synchronized SkinData getSkin(String player) {
-		return skins.getOrDefault(player, null);
+		return playerSkins.getOrDefault(player, null);
 	}
 }

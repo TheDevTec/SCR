@@ -4,7 +4,6 @@ package me.DevTec.ServerControlReloaded.Events;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Date;
-import java.util.UUID;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,9 +22,9 @@ import me.DevTec.ServerControlReloaded.Utils.ScoreboardStats;
 import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinCallable;
+import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinCallback;
+import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinData;
 import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinManager;
-import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.SkinData;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.SoundAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
@@ -55,25 +54,25 @@ public class OnPlayerJoin implements Listener {
 				if(Loader.config.getBoolean("Options.Skins.onJoin")) {
 					if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
 						String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
-						SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallable() {
+						SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
 							@Override
-							public void run(UUID uuid, SkinData data) {
+							public void run(SkinData data) {
 								if(!p.isOnline())return;
 								SkinManager.setSkin(p.getName(), data);
 								SkinManager.loadSkin(p, data);
 							}
-						});
+						}, false);
 					}else {
 						String skin = TheAPI.getUser(p).getString("skin");
 						if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
-						SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallable() {
+						SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
 							@Override
-							public void run(UUID uuid, SkinData data) {
+							public void run(SkinData data) {
 								if(!p.isOnline())return;
 								SkinManager.setSkin(p.getName(), data);
 								SkinManager.loadSkin(p, data);
 							}
-						});
+						}, false);
 					}
 				}
 				Loader.setupChatFormat(p);
