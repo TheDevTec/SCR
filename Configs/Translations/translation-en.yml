@@ -800,10 +800,9 @@ Skin:
       Receiver: "%prefix% Your skin reset"
 
 Accounts:
-  Users: "%prefix% Accounts on IP addres of player &e%player%" 
+  Users: "%prefix% Accounts on IP addres of player &e%player%"
   List: "%prefix% %accounts%"
-  NoAccounts: "%prefix% No accounts were founded"       
-      
+  NoAccounts: "%prefix% No accounts were founded"
 Trash: "&7Trash"
-  
+
 Config: "%prefix% Configurations and tasks reloaded"
