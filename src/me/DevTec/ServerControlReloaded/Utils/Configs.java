@@ -1,9 +1,6 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -11,6 +8,7 @@ import java.util.jar.JarFile;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.Utils.DataKeeper.Data;
+import me.DevTec.TheAPI.Utils.Decompression.Decompression;
 
 public class Configs {
 	
@@ -38,22 +36,16 @@ public class Configs {
 		    		else continue;
 		    	if(entry.getName().endsWith("/"))continue;
 		    	found=true;
-		    	BufferedReader is = new BufferedReader(new InputStreamReader(file.getInputStream(entry), StandardCharsets.UTF_8));
-		    	StringBuffer s = new StringBuffer();
-		    	String readBytes;
-		    	while ((readBytes = is.readLine()) != null)
-		    		s.append(readBytes+System.lineSeparator());
-		    	data.reload(s.toString());
+		    	data.reload(Decompression.getText(file.getInputStream(entry)));
 		    	Config c = new Config("ServerControlReloaded/"+entry.getName().replaceFirst("Configs/", ""));
-		    	boolean add = false;
+		    	c.setHeader(data.getHeader());
+		    	c.setFooter(data.getFooter());
 		    	for(String sr : data.getKeys(true)) {
-		    		if(!c.exists(sr) || c.get(sr)==null && data.get(sr)!=null) {
-		    			add=true;
+		    		if(c.get(sr)==null) {
 		    			c.set(sr, data.get(sr));
 		    			c.setComments(sr, data.getComments(sr));
 		    		}
 		    	}
-		    	if(add)
 		    	c.save();
 		    	switch(c.getData().getFile().getName()) {
 		    	case "Kits.yml":

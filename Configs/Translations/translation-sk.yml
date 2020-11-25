@@ -1,8 +1,7 @@
 # Linky:
 #  Github: https://github.com/TheDevTec/ServerControlReloaded
 #  Discord: https://discord.io/spigotdevtec
-#  Spigot: https://www.spigotmc.org/resources/servercontrolreloaded.71147/
-
+#  Spigot: https://www.spigotmc.org/resources/71147/
 
 # Text for %prefix% placeholder
 Prefix: "&6&lS&r&lerver &8&l»&7"
@@ -764,7 +763,7 @@ ScoreBoard:
       Other:
         Sender: "%prefix% Nemôžeš vypnúť scoreboard hráčovi &e%player%"
         Receiver: ""
-  
+        
 Skin:
   Set:
     You:
@@ -782,12 +781,12 @@ Skin:
     Other:
       Sender: "%prefix% Skin hráča &e%player%&7 bol resetovaný"
       Receiver: "%prefix% Skin bol resetovaný"
-
+      
 Accounts:
-  Users: "%prefix% Účty na IP adrese hráča &e%player%" 
+  Users: "%prefix% Účty na IP adrese hráča &e%player%"
   List: "%prefix% %accounts%"
-  NoAccounts: "%prefix% Žiadne účty boli nájdené"       
-
-Trash: "&7Kôs"
+  NoAccounts: "%prefix% Žiadne účty boli nájdené"
   
+Trash: "&7Kôs"
+
 Config: "%prefix% Konfigurácia a úlohy boli znovu načítané1!"

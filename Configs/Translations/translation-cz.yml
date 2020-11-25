@@ -1,8 +1,7 @@
 # Linky:
 #  Github: https://github.com/TheDevTec/ServerControlReloaded
 #  Discord: https://discord.io/spigotdevtec
-#  Spigot: https://www.spigotmc.org/resources/servercontrolreloaded.71147/
-
+#  Spigot: https://www.spigotmc.org/resources/71147/
 
 # Text for %prefix% placeholder
 Prefix: "&6&lS&r&lerver &8&l»&7"
@@ -58,12 +57,12 @@ Missing:
     NotExist: "%prefix% Enchant &e%enchant% &7neexistuje"
     NoEnchant: "%prefix% Nemáte žádný enchant na předmětu"
     DontContains: "%prefix% Předmět v ruce neobsahuje enchant &e%enchant%"
-  
+
 # Translations for /Butcher command
 Butcher:
   Killed: "%prefix% Zabito &e%amount% &7entit"
   KilledSpecified: "%prefix% Zabito &e%amount% &7entit typu &e%type%"
-  
+
 # Translations for /Memory command
 Memory:
   Info:
@@ -73,7 +72,7 @@ Memory:
   Clear: "%prefix% Čištění paměti, prosím počkejte.."
   AlreadyClearing: "%prefix% Paměť se již čistí, vydržte prosím.."
   Cleared: "%prefix% Paměť vyčištěna (&e%amount% &7MB)"
-  
+
 # Translations for /Exp command
 Experiences:
   Words:
@@ -109,7 +108,7 @@ Hat:
     Other:
       Sender: "%prefix% Nastadil jsi předmět &e%item%&7 na hlavu hráče &e%player%&"
       Receiver: "%prefix% &e%player%&7 nasadil na vaší hlavu předmět &e%item%"
-      
+   
 SCR:
   Info:
   - "%prefix% Version of ServerControlReloaded: &eV%version%"
