@@ -1,17 +1,5 @@
 package org.jsoup.helper;
 
-import org.jsoup.UncheckedIOException;
-import org.jsoup.internal.ConstrainableInputStream;
-import org.jsoup.internal.Normalizer;
-import org.jsoup.internal.StringUtil;
-import org.jsoup.nodes.Comment;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.XmlDeclaration;
-import org.jsoup.parser.Parser;
-import org.jsoup.select.Elements;
-
 import java.io.BufferedReader;
 import java.io.CharArrayReader;
 import java.io.File;
@@ -30,6 +18,17 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
+
+import org.jsoup.internal.ConstrainableInputStream;
+import org.jsoup.internal.Normalizer;
+import org.jsoup.internal.StringUtil;
+import org.jsoup.nodes.Comment;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.XmlDeclaration;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 /**
  * Internal static utilities for handling data.
@@ -133,8 +132,7 @@ public final class DataUtil {
                     doc = parser.parseInput(new CharArrayReader(defaultDecoded.array()), baseUri);
                 else
                     doc = parser.parseInput(defaultDecoded.toString(), baseUri);
-            } catch (UncheckedIOException e) {
-                throw e.ioException();
+            } catch (Exception e) {
             }
 
             // look for <meta http-equiv="Content-Type" content="text/html;charset=gb2312"> or HTML5 <meta charset="gb2312">
@@ -186,9 +184,7 @@ public final class DataUtil {
             }
             try {
                 doc = parser.parseInput(reader, baseUri);
-            } catch (UncheckedIOException e) {
-                // io exception when parsing (not seen before because reading the stream as we go)
-                throw e.ioException();
+            } catch (Exception e) {
             }
             Charset charset = Charset.forName(charsetName);
             doc.outputSettings().charset(charset);

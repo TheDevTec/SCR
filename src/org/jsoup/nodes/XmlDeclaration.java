@@ -1,10 +1,9 @@
 package org.jsoup.nodes;
 
-import org.jsoup.SerializationException;
-import org.jsoup.internal.StringUtil;
-import org.jsoup.helper.Validate;
-
 import java.io.IOException;
+
+import org.jsoup.helper.Validate;
+import org.jsoup.internal.StringUtil;
 
 /**
  * An XML Declaration.
@@ -45,7 +44,6 @@ public class XmlDeclaration extends LeafNode {
         try {
             getWholeDeclaration(sb, new Document.OutputSettings());
         } catch (IOException e) {
-            throw new SerializationException(e);
         }
         return StringUtil.releaseBuilder(sb).trim();
     }

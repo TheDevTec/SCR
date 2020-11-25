@@ -20,9 +20,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.Ban;
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.BanIP;
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.DelJail;
@@ -164,10 +161,6 @@ import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.VaultHook;
 import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.MineskinClient;
-import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.SkinCallback;
-import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.SkinData;
-import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.Texture;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.ConfigAPI.Config;
@@ -458,35 +451,6 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		EventsRegister();
 		CommandsRegister();
-	}
-	
-	public static Map<String, SkinData> skins = new NonSortedMap<>();
-	private static MineskinClient sclient = new MineskinClient();
-	
-	public static void loadSkin(String url) {
-		if(skins.containsKey(url))return;
-		if(url.startsWith("http://")||url.startsWith("https://")) {
-			sclient.generateUrl(url, new SkinCallback() {
-				public void done(me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.Skin skin) {
-					skins.put(url, skin.data);
-				}
-			});
-			return;
-		}
-		SkinData data = new SkinData();
-		data.uuid=Bukkit.getOfflinePlayer(url).getUniqueId();
-		Texture text = new Texture();
-		text.url=url;
-		try {
-        	JsonObject textureProperty = new JsonParser().parse(new InputStreamReader(new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + new JsonParser().parse(new InputStreamReader(new URL("https://api.mojang.com/users/profiles/minecraft/" + url)
-        			.openStream())).getAsJsonObject().get("id").getAsString() + "?unsigned=false").openStream())).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
-        	String texture = textureProperty.get("value").getAsString();
-        	String signature = textureProperty.get("signature").getAsString();
-    		text.signature=signature;
-    		text.value=texture;
-    	} catch (Exception err) {}
-		data.texture=text;
-		skins.put(url, data);
 	}
 	
 	public int isNewer(String a, String b) {

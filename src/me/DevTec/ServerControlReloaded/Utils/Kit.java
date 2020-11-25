@@ -57,7 +57,7 @@ public class Kit {
 					continue;
 				}
 				ItemCreatorAPI a = new ItemCreatorAPI(m);
-				int numb = Loader.kit.getInt("Kits." + name + ".items." + id + ".amount");
+				int numb = Loader.kit.getInt("Kits." + name + ".items.add." + id + ".amount");
 				if(numb<1)numb=1;
 				a.setAmount(numb);
 				a.setLore(Loader.kit.getStringList("Kits." + name + ".items.add." + id + ".lore"));
@@ -68,7 +68,9 @@ public class Kit {
 						Bukkit.getLogger().warning("Error when preparing (kit:" + name + ", id:"+id+", section:add) of itemflag " + flag + ", itemflag is invalid");
 					}
 				}
+				try {
 				a.setUnbreakable(Loader.kit.getBoolean("Kits." + name + ".items.add." + id + ".unbreakable"));
+				}catch(Exception | NoSuchMethodError err) {}
 				if (Loader.kit.exists("Kits." + name + ".items.add." + id + ".color")) {
 					String c = Loader.kit.getString("Kits." + name + ".items.add." + id + ".color");
 					if(c.startsWith("#"))c=c.substring(1);
@@ -80,8 +82,8 @@ public class Kit {
 					if (EnchantmentAPI.byName(nonum)==null)
 						Bukkit.getLogger().warning("Error when preparing (kit:" + name + ", id:"+id+", section:add) of enchantment " + enchs + " (Converted to "+nonum+"), enchantment is invalid");
 					else
-						a.addEnchantment(nonum, StringUtils.getInt(enchs)<=0?1:StringUtils.getInt(enchs));
-					}
+						a.addEnchantment(nonum, StringUtils.getInt(enchs.replaceAll("[^+0-9]+", ""))<=0?1:StringUtils.getInt(enchs.replaceAll("[^+0-9]+", "")));
+				}
 				kit.a.add(a.create());
 			}
 		}
@@ -109,7 +111,9 @@ public class Kit {
 						Bukkit.getLogger().warning("Error when preparing (kit:" + name + ", id:"+id+", section:set) of itemflag " + flag + ", itemflag is invalid");
 					}
 				}
+				try {
 				a.setUnbreakable(Loader.kit.getBoolean("Kits." + name + ".items.set." + id + ".unbreakable"));
+				}catch(Exception | NoSuchMethodError err) {}
 				if (Loader.kit.exists("Kits." + name + ".items.set." + id + ".color")) {
 					String c = Loader.kit.getString("Kits." + name + ".items.set." + id + ".color");
 					if(c.startsWith("#"))c=c.substring(1);
@@ -121,8 +125,8 @@ public class Kit {
 					if (EnchantmentAPI.byName(nonum)==null)
 						Bukkit.getLogger().warning("Error when preparing (kit:" + name + ", id:"+id+", section:set) of enchantment " + enchs + " (Converted to "+nonum+"), enchantment is invalid");
 					else
-						a.addEnchantment(nonum, StringUtils.getInt(enchs)<=0?1:StringUtils.getInt(enchs));
-					}
+						a.addEnchantment(nonum, StringUtils.getInt(enchs.replaceAll("[^+0-9]+", ""))<=0?1:StringUtils.getInt(enchs.replaceAll("[^+0-9]+", "")));
+				}
 				kit.s.put(StringUtils.getInt(id), a.create());
 			}
 		}

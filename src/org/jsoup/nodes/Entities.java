@@ -1,18 +1,17 @@
 package org.jsoup.nodes;
 
-import org.jsoup.SerializationException;
-import org.jsoup.internal.StringUtil;
-import org.jsoup.helper.Validate;
-import org.jsoup.parser.CharacterReader;
-import org.jsoup.parser.Parser;
+import static org.jsoup.nodes.Entities.EscapeMode.base;
+import static org.jsoup.nodes.Entities.EscapeMode.extended;
 
 import java.io.IOException;
 import java.nio.charset.CharsetEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static org.jsoup.nodes.Entities.EscapeMode.base;
-import static org.jsoup.nodes.Entities.EscapeMode.extended;
+import org.jsoup.helper.Validate;
+import org.jsoup.internal.StringUtil;
+import org.jsoup.parser.CharacterReader;
+import org.jsoup.parser.Parser;
 
 /**
  * HTML entities, and escape routines. Source: <a href="http://www.w3.org/TR/html5/named-character-references.html#named-character-references">W3C
@@ -142,7 +141,6 @@ public class Entities {
         try {
             escape(accum, string, out, false, false, false);
         } catch (IOException e) {
-            throw new SerializationException(e); // doesn't happen
         }
         return StringUtil.releaseBuilder(accum);
     }

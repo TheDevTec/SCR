@@ -1,7 +1,5 @@
 package org.jsoup.nodes;
 
-import org.jsoup.UncheckedIOException;
-
 import java.io.IOException;
 
 /**
@@ -38,7 +36,6 @@ public class CDataNode extends TextNode {
         try {
             accum.append("]]>");
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
     }
 

@@ -1,13 +1,12 @@
 package org.jsoup.parser;
 
-import org.jsoup.UncheckedIOException;
-import org.jsoup.helper.Validate;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Locale;
+
+import org.jsoup.helper.Validate;
 
 /**
  CharacterReader consumes tokens off a string. Used internally by jsoup. API subject to changes.
@@ -96,7 +95,6 @@ public final class CharacterReader {
                 bufSplitPoint = bufLength > readAheadLimit ? readAheadLimit : bufLength;
             }
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
     }
 
@@ -138,9 +136,6 @@ public final class CharacterReader {
     }
 
     void unconsume() {
-        if (bufPos < 1)
-            throw new UncheckedIOException(new IOException("No buffer left to unconsume"));
-
         bufPos--;
     }
 
@@ -165,9 +160,6 @@ public final class CharacterReader {
     }
 
     void rewindToMark() {
-        if (bufMark == -1)
-            throw new UncheckedIOException(new IOException("Mark invalid"));
-
         bufPos = bufMark;
         unmark();
     }

@@ -9,7 +9,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import org.jsoup.Connection;
-import org.jsoup.Jsoup;
+import org.jsoup.helper.HttpConnection;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -67,8 +67,7 @@ public class MineskinClient {
 		checkNotNull(callback);
 		requestExecutor.execute(() -> {
 			try {
-				Connection connection = Jsoup
-						.connect(String.format(ID_FORMAT, id))
+				Connection connection = HttpConnection.connect(String.format(ID_FORMAT, id))
 						.userAgent(userAgent)
 						.method(Connection.Method.GET)
 						.ignoreContentType(true)
@@ -120,8 +119,7 @@ public class MineskinClient {
 
 				callback.uploading();
 
-				Connection connection = Jsoup
-						.connect(String.format(URL_FORMAT, url, options.toUrlParam()))
+				Connection connection = HttpConnection.connect(String.format(URL_FORMAT, url, options.toUrlParam()))
 						.userAgent(userAgent)
 						.method(Connection.Method.POST)
 						.ignoreContentType(true)
@@ -172,8 +170,7 @@ public class MineskinClient {
 
 				callback.uploading();
 
-				Connection connection = Jsoup
-						.connect(String.format(UPLOAD_FORMAT, options.toUrlParam()))
+				Connection connection = HttpConnection.connect(String.format(UPLOAD_FORMAT, options.toUrlParam()))
 						.userAgent(userAgent)
 						.method(Connection.Method.POST)
 						.data("file", file.getName(), new FileInputStream(file))
@@ -225,8 +222,7 @@ public class MineskinClient {
 
 				callback.uploading();
 
-				Connection connection = Jsoup
-						.connect(String.format(USER_FORMAT, uuid.toString(), options.toUrlParam()))
+				Connection connection = HttpConnection.connect(String.format(USER_FORMAT, uuid.toString(), options.toUrlParam()))
 						.userAgent(userAgent)
 						.method(Connection.Method.GET)
 						.ignoreContentType(true)

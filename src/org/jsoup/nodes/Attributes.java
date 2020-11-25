@@ -1,9 +1,6 @@
 package org.jsoup.nodes;
 
-import org.jsoup.SerializationException;
-import org.jsoup.helper.Validate;
-import org.jsoup.internal.StringUtil;
-import org.jsoup.parser.ParseSettings;
+import static org.jsoup.internal.Normalizer.lowerCase;
 
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -16,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.jsoup.internal.Normalizer.lowerCase;
+import org.jsoup.helper.Validate;
+import org.jsoup.internal.StringUtil;
+import org.jsoup.parser.ParseSettings;
 
 /**
  * The attributes of an Element.
@@ -342,7 +341,6 @@ public class Attributes implements Iterable<Attribute>, Cloneable {
         try {
             html(sb, (new Document("")).outputSettings()); // output settings a bit funky, but this html() seldom used
         } catch (IOException e) { // ought never happen
-            throw new SerializationException(e);
         }
         return StringUtil.releaseBuilder(sb);
     }

@@ -1,12 +1,5 @@
 package org.jsoup.nodes;
 
-import org.jsoup.SerializationException;
-import org.jsoup.helper.Validate;
-import org.jsoup.internal.StringUtil;
-import org.jsoup.select.NodeFilter;
-import org.jsoup.select.NodeTraversor;
-import org.jsoup.select.NodeVisitor;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +7,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.jsoup.helper.Validate;
+import org.jsoup.internal.StringUtil;
+import org.jsoup.select.NodeFilter;
+import org.jsoup.select.NodeTraversor;
+import org.jsoup.select.NodeVisitor;
 
 /**
  The base, abstract Node model. Elements, Documents, Comments etc are all Node instances.
@@ -737,7 +736,6 @@ public abstract class Node implements Cloneable {
             try {
 				node.outerHtmlHead(accum, depth, out);
 			} catch (IOException exception) {
-				throw new SerializationException(exception);
 			}
         }
 
@@ -746,7 +744,6 @@ public abstract class Node implements Cloneable {
 				try {
 					node.outerHtmlTail(accum, depth, out);
 				} catch (IOException exception) {
-					throw new SerializationException(exception);
 				}
             }
         }

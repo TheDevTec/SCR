@@ -4,6 +4,7 @@ package me.DevTec.ServerControlReloaded.Events;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +23,8 @@ import me.DevTec.ServerControlReloaded.Utils.ScoreboardStats;
 import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.setting;
+import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinCallable;
+import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinManager;
 import me.DevTec.ServerControlReloaded.Utils.Skins.mineskin.data.SkinData;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.SoundAPI;
@@ -30,7 +33,6 @@ import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
-import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class OnPlayerJoin implements Listener {
 
@@ -53,49 +55,25 @@ public class OnPlayerJoin implements Listener {
 				if(Loader.config.getBoolean("Options.Skins.onJoin")) {
 					if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
 						String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
-						Loader.loadSkin(skin.replace("%player%", p.getName()));
-						SkinData dd = Loader.skins.getOrDefault(skin.replace("%player%", p.getName()), null);
-						if(dd==null) {
-							Loader.loadSkin(skin.replace("%player%", p.getName()));
-							dd = Loader.skins.getOrDefault(skin.replace("%player%", p.getName()), null);
-						}
-						if(dd==null || dd.texture.signature==null) {
-							return;
-						}
-						try {
-				        	Object ca = Ref.invoke(Ref.invoke(Ref.player(p), "getProfile"), "getProperties");
-				        	Ref.invoke(ca,"clear");
-				        	if(cdd==null)
-				        	for(Method w : Ref.getMethods(ca.getClass())) {
-				        		cdd=w;
-				        		if(w.getName().equals("put"))break;
-				        	}
-				        	Ref.invoke(ca, cdd, "textures", Ref.createProperty("textures", dd.texture.value, dd.texture.signature));
-						 } catch (Exception err) {
-					    }
+						SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallable() {
+							@Override
+							public void run(UUID uuid, SkinData data) {
+								if(!p.isOnline())return;
+								SkinManager.setSkin(p.getName(), data);
+								SkinManager.loadSkin(p, data);
+							}
+						});
 					}else {
 						String skin = TheAPI.getUser(p).getString("skin");
-						if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default");
-						Loader.loadSkin(skin.replace("%player%", p.getName()));
-						SkinData dd = Loader.skins.getOrDefault(skin.replace("%player%", p.getName()), null);
-						if(dd==null) {
-							Loader.loadSkin(skin.replace("%player%", p.getName()));
-							dd = Loader.skins.getOrDefault(skin.replace("%player%", p.getName()), null);
-						}
-						if(dd==null || dd.texture.signature==null) {
-							return;
-						}
-						try {
-				        	Object ca = Ref.invoke(Ref.invoke(Ref.player(p), "getProfile"), "getProperties");
-				        	Ref.invoke(ca,"clear");
-				        	if(cdd==null)
-				        	for(Method w : Ref.getMethods(ca.getClass())) {
-				        		cdd=w;
-				        		if(w.getName().equals("put"))break;
-				        	}
-				        	Ref.invoke(ca, cdd, "textures", Ref.createProperty("textures", dd.texture.value, dd.texture.signature));
-						 } catch (Exception err) {
-					    }
+						if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
+						SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallable() {
+							@Override
+							public void run(UUID uuid, SkinData data) {
+								if(!p.isOnline())return;
+								SkinManager.setSkin(p.getName(), data);
+								SkinManager.loadSkin(p, data);
+							}
+						});
 					}
 				}
 				Loader.setupChatFormat(p);

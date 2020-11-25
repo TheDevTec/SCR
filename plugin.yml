@@ -1,7 +1,7 @@
 name: ServerControlReloaded
 main: me.DevTec.ServerControlReloaded.SCR.Loader
 version: 7.8
-website: https://www.spigotmc.org/resources/server-control-reloaded.71147/
+website: https://www.spigotmc.org/resources/71147/
 description: Fully customizable plugin with many features!
 author: DevTec
 depend: [TheAPI]

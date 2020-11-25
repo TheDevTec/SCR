@@ -1,12 +1,11 @@
 package org.jsoup.nodes;
 
-import org.jsoup.SerializationException;
-import org.jsoup.internal.StringUtil;
-import org.jsoup.helper.Validate;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
+
+import org.jsoup.helper.Validate;
+import org.jsoup.internal.StringUtil;
 
 /**
  A single key + value attribute. (Only used for presentation.)
@@ -114,7 +113,6 @@ public class Attribute implements Map.Entry<String, String>, Cloneable  {
         try {
         	html(sb, (new Document("")).outputSettings());
         } catch(IOException exception) {
-        	throw new SerializationException(exception);
         }
         return StringUtil.releaseBuilder(sb);
     }

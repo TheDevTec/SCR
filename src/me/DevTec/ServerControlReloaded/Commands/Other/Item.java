@@ -24,7 +24,9 @@ public class Item implements CommandExecutor, TabCompleter{
 	private static List<String> flags = new ArrayList<>();
 	private static List<String> f = new ArrayList<>();
 	static {
+		try {
 		for(ItemFlag a : ItemFlag.values())flags.add(a.name());
+		}catch(Exception | NoSuchFieldError | NoSuchMethodError e) {}
 		flags.add("UNBREAKABLE");
 		f.add("add");
 		f.add("remove");
