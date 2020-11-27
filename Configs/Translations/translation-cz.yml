@@ -41,7 +41,7 @@ List:
 Kill:
   Killed: "%prefix% Zabit &e%player%"
   KilledMore: "%prefix% Zabito &e%amount% &7hráčů"
-  Suicide: "%prefix% &e%player% &7spáchal sebevraždu. Sbohem krutý světe!"  
+  Suicide: "%prefix% &e%player% &7spáchal sebevraždu. Sbohem krutý světe!"
 # Translations for 'missing' things
 Missing:
   World: "%prefix% Svět &e%world% &7neexistuje"
@@ -50,7 +50,7 @@ Missing:
     NotExist: "%prefix% Uživatel &e%player% &7neexistuje"
   Item: "%prefix% Předmět &e%item% &7neexistuje"
   HandEmpty: "%prefix% Nemáte žádný předmět ve vaší ruce"
-  TargetHandEmpty: "%prefix% Hráč &e%player%&7 nemá žádný předmět v ruce" 
+  TargetHandEmpty: "%prefix% Hráč &e%player%&7 nemá žádný předmět v ruce"
   Entity: "%prefix% Entita &e%entity% &7neexistuje"
   GameMode: "%prefix% Gamemode &e%gamemode% &7neexistuje"
   Enchant:
@@ -537,7 +537,7 @@ Maintenance:
  
 # Translations for /Vanish command
 Vanish:
-  Active: "&eMáte zapnutý vanish" 
+  Active: "&eMáte zapnutý vanish"
   Enabled:
     You: "%prefix% Vanish &azapnut"
     Other:
@@ -681,7 +681,7 @@ WhoIs:
   - "%prefix%   Skupina: &e%group%"
   - "%prefix%   Peníze: &e%money%"
   - "%prefix% Banned: %banned%"
-  - "%prefix% IP-Banned: %ip-banned%"  
+  - "%prefix% IP-Banned: %ip-banned%"
   Offline:
   - "%prefix% Hráč: &e%player%"
   - "%prefix% UUID: &e%uuid%"

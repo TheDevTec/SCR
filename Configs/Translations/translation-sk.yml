@@ -16,12 +16,12 @@ Give:
     Other:
       Sender: "%prefix% Dal si hlavu hráča &e%head%&7 hráčovi &e%player%"
       Receiver: "%prefix% Dostal si hlavu hráča &e%head%"
-  Item: 
+  Item:
     You: "%prefix% Dostal si &e%amount%x %item%"
     Other:
       Sender: "%prefix% Dal si &e%amount%x %item% &7hráčovi &e%player%"
       Receiver: "%prefix% Dostal si &e%amount%x %item%"
-    
+
 # Translations for /Seen command
 Seen:
   Online: "%prefix% &e%player%&7 je &aonline &7už &a%online%"
@@ -36,13 +36,13 @@ List:
   - "%prefix% »=== &e%math{%joiner-count{default}%+%joiner-count{supervip, vip}%}% &8/ &e%server_maxonline% &7===«"
   - "%prefix% VIPs: &e%joiner{supervip, vip}%"
   - "%prefix% Default: &e%joiner{default}%"
-  
+
 # Translations for /Kill and /Suicide commands
 Kill:
   Killed: "%prefix% Zabitých &e%player%"
   KilledMore: "%prefix% Zabitých &e%amount% &7hráčov"
   Suicide: "%prefix% &e%player% &7Spráchal samovraždu. Zbohom krutý svet!"
-  
+
 # Translations for 'missing' things
 Missing:
   World: "%prefix% Svet &e%world% &7neexistuje"
@@ -51,19 +51,19 @@ Missing:
     NotExist: "%prefix% Hráč &e%player% &77neexistuje"
   Item: "%prefix% Item &e%item% &77neexistuje"
   HandEmpty: "%prefix% Tvoja ruka je prázdna"
-  TargetHandEmpty: "%prefix% &e%player%&7 má prázdnu ruku" 
+  TargetHandEmpty: "%prefix% &e%player%&7 má prázdnu ruku"
   Entity: "%prefix% Entita &e%entity% &77neexistuje"
   GameMode: "%prefix% Gamemode &e%gamemode% &77neexistuje"
   Enchant:
     NotExist: "%prefix% Enchant &e%enchant% &77neexistuje"
     NoEnchant: "%prefix% Nemáš žiaden enchant na predmete"
     DontContains: "%prefix% Tvoj predmet neobsahuje enchant &e%enchant%"
-  
+
 # Translations for /Butcher command
 Butcher:
   Killed: "%prefix% Zabitých &e%amount% &7entít"
   KilledSpecified: "%prefix% Zabitých &e%amount% &7entít typu &e%type%"
-  
+
 # Translations for /Memory command
 Memory:
   Info:
@@ -73,7 +73,7 @@ Memory:
   Clear: "%prefix% Čistenie pamäte, počkajte prosím.."
   AlreadyClearing: "%prefix% Pamäť sa už čistí, počkajte prosím.."
   Cleared: "%prefix% Pamäť vyčistená (&e%amount% &7MB)"
-  
+
 # Translations for /Exp command
 Experiences:
   Words:
@@ -83,7 +83,7 @@ Experiences:
   Given: "%prefix% Pridaných &e%amount% &7%type% hráčovi &e%player%"
   Taken: "%prefix% Odobraných &e%amount% &7%type% hráčovi &e%player%"
   Set: "%prefix% &e%player%&7 má %type% nastavené na &e%amount%"
-  
+
 # Translations for /Item command
 Item:
   Name: '%prefix% Názov predmetu %item% bol nastavený &r%name%&7'
@@ -93,12 +93,12 @@ Item:
     Removed: '%prefix% Odobraný lore z pozície &r%line%'
     Error: '%prefix% Vyskytol sa problém: %error%'
     ListItem: '%prefix% List lorov na iteme &e%item%&6:'
-    ListLore: '%prefix% %position%. pozícia: &5%lore%'    
+    ListLore: '%prefix% %position%. pozícia: &5%lore%'
     Set: '%prefix% Nastavený &r%lore% na pozíciu &r%line%.'
   Flag:
     Add: "%prefix% Vlajka &e%flag &7bola nastavená na predmetu"
     Remove: "%prefix% Vlajka &e%flag% &7bola odstránená z predmetu v tvojej ruke"
-  
+
 # Translations for /Hat command
 Hat:
   InvFull:
@@ -109,14 +109,14 @@ Hat:
     Other:
       Sender: "%prefix% Nastavil si predmet &e%item% &7na hlavu hráčovi &e%player%"
       Receiver: "%prefix% Na hlavu ti bol nastavený predmet &e%item%"
-      
+
 SCR:
   Info:
   - "%prefix% Version of ServerControlReloaded: &eV%version%"
   - "%prefix% Version of Server: &e%server%"
   - "%prefix% Discord link: &ehttps://discord.io/spigotdevtec"
   - "%prefix% Language: &eSK"
-  
+
 # Translations for economy commands
 Economy:
   # Translation for /BalanceTop command
