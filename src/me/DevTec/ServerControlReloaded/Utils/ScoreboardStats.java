@@ -13,10 +13,10 @@ import me.DevTec.TheAPI.ConfigAPI.Config;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.ScoreboardAPI.ScoreboardAPI;
 import me.DevTec.TheAPI.ScoreboardAPI.ScoreboardType;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.LinkedSet;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedSet;
 
 public class ScoreboardStats {
-	public static Set<String> toggled = new LinkedSet<>();
+	public static Set<String> toggled = new UnsortedSet<>();
 	static HashMap<String, ScoreboardAPI> setup = new HashMap<>(); //prevent of recreating unused scoreboards
 
 	public static void createScoreboard(Player p) {

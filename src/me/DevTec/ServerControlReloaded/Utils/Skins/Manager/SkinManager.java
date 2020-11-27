@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.NonSortedMap;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 import me.DevTec.TheAPI.Utils.Decompression.Decompression;
 import me.DevTec.TheAPI.Utils.Json.Reader;
 import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
@@ -26,10 +26,11 @@ import me.DevTec.TheAPI.Utils.Reflections.Ref;
 public class SkinManager {
 	private static final String URL_FORMAT = "https://api.mineskin.org/generate/url?url=%s&%s",
 			USER_FORMAT="https://api.ashcon.app/mojang/v2/user/%s";
-	private static Map<String, SkinData> playerSkins = new NonSortedMap<>();
-	private static Map<String, SkinData> generator = new NonSortedMap<>();
+	private static UnsortedMap<String, SkinData> playerSkins = new UnsortedMap<>();
+	private static UnsortedMap<String, SkinData> generator = new UnsortedMap<>();
 	@SuppressWarnings("unchecked")
 	public static synchronized void generateSkin(String urlOrName, SkinCallback onFinish, boolean override) {
+		if(urlOrName==null)return;
 		new Tasker() {
 			public void run() {
 				if(generator.containsKey(urlOrName) && !override) {
@@ -152,8 +153,6 @@ public class SkinManager {
 				Ref.sendPacket(player, Ref.newInstance(handC, p.getInventory().getHeldItemSlot()));
 				Ref.sendPacket(player, NMSAPI.getPacketPlayOutEntityMetadata(s));
 				player.updateInventory();
-				Ref.invoke(s, "triggerHealthUpdate");
-				Ref.invoke(s, "updateAbilities");
 			}else {
 				Ref.sendPacket(p, destroy);
 				Ref.sendPacket(p, spawn);

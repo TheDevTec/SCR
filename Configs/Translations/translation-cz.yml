@@ -21,7 +21,7 @@ Give:
     Other:
       Sender: "%prefix% Dal jsi &e%amount%x %item% &7hráči &e%player%"
       Receiver: "%prefix% Dostal jsi &e%amount%x %item%"
-    
+
 # Translations for /Seen command
 Seen:
   Online: "%prefix% &e%player%&7 je &aonline &7již &a%online%"

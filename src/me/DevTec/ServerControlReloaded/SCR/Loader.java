@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -14,7 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.plugin.Plugin;
@@ -177,8 +175,7 @@ import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.LinkedSet;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.NonSortedMap;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedSet;
 import me.DevTec.TheAPI.Utils.Listener.EventHandler;
 import me.DevTec.TheAPI.Utils.Listener.Listener;
 import me.DevTec.TheAPI.Utils.Listener.Events.PlayerVanishEvent;
@@ -189,7 +186,7 @@ import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
 	public static Config config, sb, tab, mw, kit, trans, events, cmds;
-	public static Set<Rule> rules = new LinkedSet<>();
+	public static Set<Rule> rules = new UnsortedSet<>();
 	
 	public static Economy econ;
 	public static Loader getInstance;
@@ -256,7 +253,7 @@ public class Loader extends JavaPlugin implements Listener {
 		return PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender : null, string);
 	}
 	
-	private static Config english;
+	public static Config english;
 	
 	public static Object getTranslation(String path) {
 		if(!trans.exists(path)) {
@@ -399,12 +396,11 @@ public class Loader extends JavaPlugin implements Listener {
 			return getColoredPing(who);
 		return String.valueOf(TheAPI.getPlayerPing(who));
 	}
+	
 	@Override
 	public void onLoad() {
 		getInstance = this;
 		Configs.load();
-		english=new Config("ServerControlReloaded/Translations/translation-en.yml");
-		setting.load();
 	}
 	
 	private static long loading;
@@ -458,7 +454,6 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		EventsRegister();
-		CommandsRegister();
 	}
 	
 	public int isNewer(String a, String b) {
@@ -498,7 +493,7 @@ public class Loader extends JavaPlugin implements Listener {
 	    	String[] readerr = null;
 	    	try {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(checkURL.openConnection().getInputStream()));
-				Set<String> s = new LinkedSet<>();
+				Set<String> s = new UnsortedSet<>();
 				String read;
 				while((read=reader.readLine()) != null)
 					s.add(read);
@@ -596,8 +591,6 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		return (perms != null);
 	}
-	public static String tagG = "!", gradientTag="!";
-	public static Map<String, String> colorMap = new NonSortedMap<>();
 	private static int aad = 0;
 	public static void reload() {
 		loading = System.currentTimeMillis();
@@ -625,12 +618,11 @@ public class Loader extends JavaPlugin implements Listener {
 				metrics.getTimer().cancel();
 			}
 			getInstance.stop();
+			TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
+			Configs.load();
+			TheAPI.msg(setting.prefix + " &7Configs "+(aad == 0 ? "l" : "rel")+"oaded.", TheAPI.getConsole());
 		}
 		rules.clear();
-		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
-		Configs.load();
-		TheAPI.msg(setting.prefix + " &7Configs "+(aad == 0 ? "l" : "rel")+"oaded.", TheAPI.getConsole());
-		setting.load();
 		Converter.convert();
 		MultiWorldsUtils.LoadWorlds();
 		getInstance.starts();
@@ -686,14 +678,20 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		TabList.reload();
 		Tasks.reload();
+		for(PluginCommand reg : registered) {
+			TheAPI.unregisterCommand(reg);
+		}
+		CommandsRegister();
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading of SCR took "+(System.currentTimeMillis()-loading)+"ms", TheAPI.getConsole());
 		aad=1;
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 	}
 
-	private void CmdC(String section, String command, Object cs) {
+	private static Set<PluginCommand> registered = new UnsortedSet<>();
+	
+	private static void CmdC(String section, String command, CommandExecutor cs) {
 		if(cmds.getBoolean(section+"."+command+".Enabled")) {
-			PluginCommand c = TheAPI.createCommand(cmds.getString(section+"."+command+".Name"), this);
+			PluginCommand c = TheAPI.createCommand(cmds.getString(section+"."+command+".Name"), getInstance);
 			List<String> aliases = new ArrayList<>();
 			if(cmds.exists(section+"."+command+".Aliases")) {
 			if(cmds.get(section+"."+command+".Aliases") instanceof List)
@@ -701,10 +699,10 @@ public class Loader extends JavaPlugin implements Listener {
 			else aliases.add(cmds.getString(section+"."+command+".Aliases"));
 			}
 			c.setAliases(aliases);
-			c.setExecutor((CommandExecutor)cs);
-			c.setTabCompleter((TabCompleter)cs);
+			c.setExecutor(cs);
 			c.setPermission(cmds.getString(section+"."+command+".Permission"));
 			TheAPI.registerCommand(c);
+			registered.add(c);
 		}
 	}
 	
@@ -781,7 +779,7 @@ public class Loader extends JavaPlugin implements Listener {
 		Scheduler.cancelTask(task);
 	}
 
-	private void CommandsRegister() {
+	private static void CommandsRegister() {
 		//Server
 		CmdC("Server", "Stop" , new Stop());
 		CmdC("Server", "Reload", new Reload());

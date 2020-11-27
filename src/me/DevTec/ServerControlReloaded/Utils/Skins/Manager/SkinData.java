@@ -2,7 +2,7 @@ package me.DevTec.ServerControlReloaded.Utils.Skins.Manager;
 
 import java.util.UUID;
 
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.NonSortedMap;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 import me.DevTec.TheAPI.Utils.Json.Writer;
 
 public class SkinData {
@@ -17,7 +17,7 @@ public class SkinData {
 	}
 	
 	public String toString() {
-		NonSortedMap<String, String> data = new NonSortedMap<>();
+		UnsortedMap<String, String> data = new UnsortedMap<>();
 		data.put("uuid", uuid.toString());
 		data.put("texture.value", value);
 		data.put("texture.signature", signature);

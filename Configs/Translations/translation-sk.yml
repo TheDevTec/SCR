@@ -502,7 +502,7 @@ Warp:
     WithPerms: "%prefix% Warp &e%warp% &7vytvorený (Potrebné práva &e%permission%&7)"
     Normal: "%prefix% Warp &e%warp% &7vytvorený"
   Deleted: "%prefix% Warp &e%warp% &7vymazaný"
-  Teleport: 
+  Teleport:
     You: "%prefix% Teleportujem na warp &e%warp%"
     Other:
       Sender: "%prefix% Teleportujem hráča &e%player% &7na warp &e%warp%"
