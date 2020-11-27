@@ -51,7 +51,7 @@ Missing:
     NotExist: "%prefix% User &e%player% &7doesn't exist"
   Item: "%prefix% Item &e%item% &7doesn't exist"
   HandEmpty: "%prefix% Your hand is empty"
-  TargetHandEmpty: "%prefix% &e%player%&7's hand is empty" 
+  TargetHandEmpty: "%prefix% &e%player%&7's hand is empty"
   Entity: "%prefix% Entity &e%entity% &7doesn't exist"
   GameMode: "%prefix% Gamemode &e%gamemode% &7doesn't exist"
   Enchant:

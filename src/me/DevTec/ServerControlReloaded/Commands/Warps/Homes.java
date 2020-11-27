@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Warps;
 
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,7 +24,7 @@ public class Homes implements CommandExecutor, TabCompleter {
 				Player p = (Player) s;
 				if (Loader.has(s, "Homes", "Warps")) {
 					User d = TheAPI.getUser(p);
-					List<String> ne = d.getKeys("Homes");
+					Set<String> ne = d.getKeys("Homes");
 					if (!ne.isEmpty()) {
 						Loader.sendMessages(s, "Home.List", Placeholder.c()
 								.add("%homes%", StringUtils.join(ne, ", ")));
@@ -39,7 +40,7 @@ public class Homes implements CommandExecutor, TabCompleter {
 		}
 		if (Loader.has(s, "Homes", "Warps", "Other")) {
 			User d = TheAPI.getUser(args[0]);
-			List<String> ne = d.getKeys("Homes");
+			Set<String> ne = d.getKeys("Homes");
 			if (!ne.isEmpty()) {
 				Loader.sendMessages(s, "Home.Other.List", Placeholder.c()
 						.add("%homes%", StringUtils.join(ne, ", "))

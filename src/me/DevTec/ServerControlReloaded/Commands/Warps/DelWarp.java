@@ -2,6 +2,7 @@ package me.DevTec.ServerControlReloaded.Commands.Warps;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -41,7 +42,7 @@ public class DelWarp implements CommandExecutor, TabCompleter {
 		List<String> c = new ArrayList<>();
 		if (cmd.getName().equalsIgnoreCase("DelWarp") && args.length == 1) {
 			if (s.hasPermission("ServerControl.DelWarp")) {
-				List<String> homes = Loader.config.getKeys("Warps");
+				Set<String> homes = Loader.config.getKeys("Warps");
 				if (!homes.isEmpty() && homes != null)
 					c.addAll(StringUtil.copyPartialMatches(args[0], homes, new ArrayList<>()));
 			}
