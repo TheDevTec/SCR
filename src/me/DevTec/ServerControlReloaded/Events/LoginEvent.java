@@ -68,7 +68,7 @@ public class LoginEvent implements Listener {
 		}
 		if (setting.vip && TheAPI.getMaxPlayers() == TheAPI.getOnlinePlayers().size() - 1) {
 			Config f = Loader.config;
-			boolean has = p.hasPermission("ServerControl.JoinFullServer");
+			boolean has = p.hasPermission("SCR.Other.JoinFullServer");
 			int max = TheAPI.getMaxPlayers() + (setting.vip_add ? f.getInt("Options.VIPSlots.SlotsToAdd") : 0);
 			Player randomPlayer = Tasks.players.isEmpty() ? null : TheAPI.getRandomPlayer();
 			if (has) {

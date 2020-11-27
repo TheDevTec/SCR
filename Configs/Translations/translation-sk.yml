@@ -486,14 +486,14 @@ Fly:
 # Translations for god commands
 God:
   Enabled:
-    You: "%prefix% Nesmrteľnosť aktivovaná"
+    You: "%prefix% Nesmrtelnosť aktivovaná"
     Other:
-      Sender: "%prefix% Nemsrteľnosť pre hráča &e%player%&7 bola aktivovaná"
-      Receiver: "%prefix% Nesmrteľnosť aktivovaná"
+      Sender: "%prefix% Nemsrtelnosť pre hráča &e%player%&7 bola aktivovaná"
+      Receiver: "%prefix% Nesmrtelnosť aktivovaná"
   Disabled:
-    You: "%prefix% Nesmrteľnosť deaktivovaná"
+    You: "%prefix% Nesmrtelnosť deaktivovaná"
     Other:
-      Sender: "%prefix% Nesmrteľnosť pre hráča &e%player%&7 bola deaktivovaná"
+      Sender: "%prefix% Nesmrtelnosť pre hráča &e%player%&7 bola deaktivovaná"
       Receiver: "%prefix% Nesmrteľnosť deaktivovaná"
 
 # Translations for warps commands
