@@ -34,6 +34,8 @@ public class Configs {
 			Config c=new Config("ServerControlReloaded/"+s);
     		Data data=new Data();
     		data.reload(Decompression.getText(Loader.getInstance.getResource("Configs/"+s)));
+    		c.setHeader(data.getHeader());
+    		c.setFooter(data.getFooter());
 	    	for(String sr : data.getKeys(true)) {
 	    		if(!c.isSection(sr)) {
 	    			c.setComments(sr, data.getComments(sr));
