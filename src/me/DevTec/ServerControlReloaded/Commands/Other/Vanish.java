@@ -53,7 +53,7 @@ public class Vanish implements CommandExecutor, TabCompleter {
 						task.remove(s.getName());
 						TheAPI.sendActionBar(p, "");
 					}
-					TheAPI.setVanish(p.getName(), "ServerControl.Vanish", false);
+					TheAPI.setVanish(p.getName(), Loader.cmds.getString("Other.Vanish.Permission"), false);
 					LoginEvent.moveInTab(p);
 					Loader.sendMessages(s, "Vanish.Disabled.You");
 					return true;
