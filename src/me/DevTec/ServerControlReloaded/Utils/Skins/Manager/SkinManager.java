@@ -17,8 +17,8 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Utils.StreamUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
-import me.DevTec.TheAPI.Utils.Decompression.Decompression;
 import me.DevTec.TheAPI.Utils.Json.Reader;
 import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 import me.DevTec.TheAPI.Utils.Reflections.Ref;
@@ -45,7 +45,7 @@ public class SkinManager {
 						conn.setRequestProperty("Accept-Encoding", "gzip");
 						conn.setRequestMethod("POST");
 						conn.connect();
-						Map<String, Object> text = (Map<String, Object>) Reader.read(Decompression.getText(new GZIPInputStream(conn.getInputStream())).toString());
+						Map<String, Object> text = (Map<String, Object>) Reader.read(StreamUtils.fromStream(new GZIPInputStream(conn.getInputStream())));
 						SkinData data = new SkinData();
 						if(!text.containsKey("error")) {
 							data.signature=(String) ((Map<String, Object>)((Map<String, Object>)text.get("data")).get("texture")).get("signature");
@@ -64,7 +64,7 @@ public class SkinManager {
 					conn.setRequestProperty("User-Agent", "ServerControlReloaded-JavaClient");
 					conn.setRequestMethod("GET");
 					conn.connect();
-					Map<String, Object> text = (Map<String, Object>) Reader.read(Decompression.getText(conn.getInputStream()).toString());
+					Map<String, Object> text = (Map<String, Object>) Reader.read(StreamUtils.fromStream(conn.getInputStream()));
 					SkinData data = new SkinData();
 					if(!text.containsKey("error")) {
 						data.signature=(String) ((Map<String, Object>)((Map<String, Object>)text.get("textures")).get("raw")).get("signature");

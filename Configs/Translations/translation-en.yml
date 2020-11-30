@@ -21,12 +21,10 @@ Give:
     Other:
       Sender: "%prefix% Added &e%amount%x %item% &7to &e%player%"
       Receiver: "%prefix% You got &e%amount%x %item%"
-
 # Translations for /Seen command
 Seen:
   Online: "%prefix% &e%player%&7 is &aonline &7for &a%online%"
   Offline: "%prefix% &e%player%&7 is &coffline &7for &c%offline%"
-
 # Translations for /List and /Staff commands
 List:
   Staff:
@@ -80,15 +78,15 @@ Experiences:
   Set: "%prefix% &e%player%&7's %type% have been set to &e%amount%"
 # Translations for /Item command
 Item:
-  Name: '%prefix% DisplayName of %item% has been set to &r%name%&7.'
-  NoItem: '&cYou are not holding any item in hand.'
+  Name: "%prefix% DisplayName of %item% has been set to &r%name%&7."
+  NoItem: "&cYou are not holding any item in hand."
   Lore:
-    Added: '%prefix% Added new lore line &r%line%'
-    Removed: '%prefix% Removed lore line &r%line%'
-    Error: '%prefix% There was an error. Error: %error%'
-    ListItem: '%prefix% &6List of lore lines on item &e%item%&6:'
-    ListLore: '%prefix% &6%position%. line: &5%lore%'    
-    Set: '%prefix% Set &r%lore%&7 to line &e%line%.'
+    Added: "%prefix% Added new lore line &r%line%"
+    Removed: "%prefix% Removed lore line &r%line%"
+    Error: "%prefix% There was an error. Error: %error%"
+    ListItem: "%prefix% &6List of lore lines on item &e%item%&6:"
+    ListLore: "%prefix% &6%position%. line: &5%lore%"    
+    Set: "%prefix% Set &r%lore%&7 to line &e%line%."
   Flag:
     Add: "%prefix% Flag &e%flag &7has been added to item in your hand"
     Remove: "%prefix% Flag &e%flag% &7has been removed from item in your hand"

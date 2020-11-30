@@ -29,9 +29,10 @@ public class setting {
 	 * public static boolean offlineinvsee; ///invsee <offline player>, /esee
 	 * <offline player> (Req. SCR_PerWorldInventory)
 	 **/
-	public static void load() {
+	public static void load(boolean message) {
 		Config f = Loader.config;
 		prefix = Loader.getTranslation("Prefix")+"";
+		if(message)
 		TheAPI.msg(setting.prefix + " &7Loading settings..", TheAPI.getConsole());
 		format_date_time = new SimpleDateFormat(f.getString("Format.DateWithTime"));
 		format_time = new SimpleDateFormat(f.getString("Format.Time"));
@@ -113,18 +114,21 @@ public class setting {
 		lock_server = f.getBoolean("Options.Maintenance.Enabled");
 		am = f.getBoolean("Options.AutoMessage.Use");
 		am_random = f.getBoolean("Options.AutoMessage.Random");
+		if(message)
 		if (sound && !SoundAPI.existSound(Loader.config.getString("Options.Sounds.Sound")))
 			TheAPI.msg(prefix + " &4ERROR: &7Sound &e"+Loader.config.getString("Options.Sounds.Sound")+" &7doesn't exist", TheAPI.getConsole());
 		try {
 			if (timezone)
 				TimeZone.setDefault(TimeZone.getTimeZone(f.getString("Options.TimeZone.Zone")));
 		} catch (Exception e) {
+			if(message) {
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4ERROR: &7Invalid time zone: &c" + f.getString("Options.TimeZone.Zone"), TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4ERROR: &7List of available time zones:", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4ERROR:  &ehttps://greenwichmeantime.com/time-zone/", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
-		}
+		}}
+		if(message)
 		TheAPI.msg(setting.prefix + " &7Settings loaded", TheAPI.getConsole());
 	}
 }

@@ -78,15 +78,15 @@ Experiences:
   Set: "%prefix% &e%player%&7 má %type% nastavené na &e%amount%"
 # Translations for /Item command
 Item:
-  Name: '%prefix% Názov predmetu %item% bol nastavený &r%name%&7'
-  NoItem: '%prefix% Nedržíš v ruke žiaden predmet'
+  Name: "%prefix% Názov predmetu %item% bol nastavený &r%name%&7"
+  NoItem: "%prefix% Nedržíš v ruke žiaden predmet"
   Lore:
-    Added: '%prefix% Pridaný nový lore na pozícii &r%line%'
-    Removed: '%prefix% Odobraný lore z pozície &r%line%'
-    Error: '%prefix% Vyskytol sa problém: %error%'
-    ListItem: '%prefix% List lorov na iteme &e%item%&6:'
-    ListLore: '%prefix% %position%. pozícia: &5%lore%'
-    Set: '%prefix% Nastavený &r%lore% na pozíciu &r%line%.'
+    Added: "%prefix% Pridaný nový lore na pozícii &r%line%"
+    Removed: "%prefix% Odobraný lore z pozície &r%line%"
+    Error: "%prefix% Vyskytol sa problém: %error%"
+    ListItem: "%prefix% List lorov na iteme &e%item%&6:"
+    ListLore: "%prefix% %position%. pozícia: &5%lore%"
+    Set: "%prefix% Nastavený &r%lore% na pozíciu &r%line%."
   Flag:
     Add: "%prefix% Vlajka &e%flag &7bola nastavená na predmetu"
     Remove: "%prefix% Vlajka &e%flag% &7bola odstránená z predmetu v tvojej ruke"

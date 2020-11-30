@@ -400,7 +400,7 @@ public class Loader extends JavaPlugin implements Listener {
 	@Override
 	public void onLoad() {
 		getInstance = this;
-		Configs.load();
+		Configs.load(false);
 	}
 	
 	private static long loading;
@@ -432,6 +432,7 @@ public class Loader extends JavaPlugin implements Listener {
 					case -1:
 						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + " &eUpdate checker: &7Unable to connect to spigot, check internet connection.", TheAPI.getConsole());
+						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 						updater=null; //close updater
 						cancel(); //destroy task
 						break;
@@ -439,11 +440,13 @@ public class Loader extends JavaPlugin implements Listener {
 						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + " &eUpdate checker: &7Found new version of SCR.", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + "        https://www.spigotmc.org/resources/71147/", TheAPI.getConsole());
+						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 						break;
 					case 2:
 						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + " &eUpdate checker: &7You are using the BETA version of SCR, report bugs to our Discord.", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
+						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 						break;
 				}
 			}
@@ -619,7 +622,7 @@ public class Loader extends JavaPlugin implements Listener {
 			}
 			getInstance.stop();
 			TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
-			Configs.load();
+			Configs.load(true);
 			TheAPI.msg(setting.prefix + " &7Configs "+(aad == 0 ? "l" : "rel")+"oaded.", TheAPI.getConsole());
 		}
 		rules.clear();
