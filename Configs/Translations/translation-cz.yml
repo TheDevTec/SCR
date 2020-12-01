@@ -1,4 +1,4 @@
-# Linky:
+# Odkazy:
 #  Github: https://github.com/TheDevTec/ServerControlReloaded
 #  Discord: https://discord.io/spigotdevtec
 #  Spigot: https://www.spigotmc.org/resources/71147/
@@ -21,10 +21,12 @@ Give:
     Other:
       Sender: "%prefix% Dal jsi &e%amount%x %item% &7hráči &e%player%"
       Receiver: "%prefix% Dostal jsi &e%amount%x %item%"
+      
 # Translations for /Seen command
 Seen:
   Online: "%prefix% &e%player%&7 je &aonline &7již &a%online%"
   Offline: "%prefix% &e%player%&7 je &coffline &7již &c%offline%"
+  
 # Translations for /List and /Staff commands
 List:
   Staff:
@@ -34,11 +36,13 @@ List:
   - "%prefix% »=== &e%math{%joiner-count{default}%+%joiner-count{supervip, vip}%}% &8/ &e%server_maxonline% &7===«"
   - "%prefix% VIP: &e%joiner{supervip, vip}%"
   - "%prefix% Hráči: &e%joiner{default}%"
+  
 # Translations for /Kill and /Suicide commands
 Kill:
   Killed: "%prefix% Zabit &e%player%"
   KilledMore: "%prefix% Zabito &e%amount% &7hráčů"
   Suicide: "%prefix% &e%player% &7spáchal sebevraždu. Sbohem krutý světe!"
+  
 # Translations for "missing" things
 Missing:
   World: "%prefix% Svět &e%world% &7neexistuje"
@@ -54,10 +58,12 @@ Missing:
     NotExist: "%prefix% Enchant &e%enchant% &7neexistuje"
     NoEnchant: "%prefix% Nemáte žádný enchant na předmětu"
     DontContains: "%prefix% Předmět v ruce neobsahuje enchant &e%enchant%"
+    
 # Translations for /Butcher command
 Butcher:
   Killed: "%prefix% Zabito &e%amount% &7entit"
   KilledSpecified: "%prefix% Zabito &e%amount% &7entit typu &e%type%"
+  
 # Translations for /Memory command
 Memory:
   Info:
@@ -67,6 +73,7 @@ Memory:
   Clear: "%prefix% Čištění paměti, prosím počkejte"
   AlreadyClearing: "%prefix% Paměť se již čistí, vydržte prosím"
   Cleared: "%prefix% Paměť vyčištěna (&e%amount% &7MB)"
+  
 # Translations for /Exp command
 Experiences:
   Words:
@@ -76,6 +83,7 @@ Experiences:
   Given: "%prefix% Přidáno &e%amount% &7%type% hráči &e%player%"
   Taken: "%prefix% Odebráno &e%amount% &7%type% hráči &e%player%"
   Set: "%prefix% Nastaven počet %type% hráči &e%player% &7na &e%amount%"
+  
 # Translations for /Item command
 Item:
   Name: "%prefix% Název předmětu %item% byl nastaven na &r%name%&7."
@@ -90,6 +98,7 @@ Item:
   Flag:
     Add: "%prefix% Přidána vlajka &e%flag &7na předmět ve vaší ruce"
     Remove: "%prefix% Odebrána vlajka &e%flag &7z předmětu ve vaší ruce"
+    
 # Translations for /Hat command
 Hat:
   InvFull:
@@ -100,12 +109,14 @@ Hat:
     Other:
       Sender: "%prefix% Nastadil jsi předmět &e%item%&7 na hlavu hráče &e%player%&"
       Receiver: "%prefix% &e%player%&7 nasadil na vaší hlavu předmět &e%item%"
+      
 SCR:
   Info:
   - "%prefix% Version of ServerControlReloaded: &eV%version%"
   - "%prefix% Version of Server: &e%server%"
   - "%prefix% Discord link: &ehttps://discord.io/spigotdevtec"
   - "%prefix% Language: &eCZ"
+  
 # Translations for economy commands
 Economy:
   # Translation for /BalanceTop command
@@ -143,11 +154,13 @@ Economy:
       Removed: "%prefix% Svět &e%world% &7odebrán z ekonomické skupiny &e%economy-group%"
     Money: "%prefix% Hráč &e%player% &7nyní má &e$%money% &7peněz v ekonomické skupině &e%economy-group%"
     Transfer: "%prefix% Přenesena ekonomika hráče &e%player% &7z ekonomické skupiny &e%from% &7do ekonomické skupiny &e%to%"
+    
 # Translations for /Nickname and /NicknameReset commands
 Nickname:
   Change: "%prefix% Váš herní nick byl nastaven na &r%nickname%"
   Reset: "%prefix% Váš herní nick byl zresetován na &r%player%"
   Get: "%prefix% Herní nick hráče &e%player%&7byl zresetován na &r%nickname%"
+  
 # Translations for /AFK command and AutoAFK messages
 AFK:
   Start: "%playername%&7 je AFK"
@@ -158,8 +171,10 @@ AFK:
     Other:
       Start: "%prefix% Nastavil jsi hráči &e%player% &7AFK"
       End: "%prefix% Odnastavil jste hráči &e%player% &7AFK"
+      
 # Translations for /Reply command
 NoReply: "%prefix% Nemáte komu odpovědět"
+
 BanSystem:
   # Mutes
   TempMuteIP:
@@ -273,11 +288,13 @@ Home:
     Teleporting: "%prefix% Teleportuji na dům &e%home% &7hráče &e%player%"
     List: "%prefix% Domy hráče &e%player%&7: &e%homes%"
     EmptyList: "%prefix% Hráč &e%player% &7nemá žádný nastavený dům"
+    
 # Translations for /Chunk command
 Chunks:
   Load: "%prefix% &e%world%&7: &e%chunks% &7chunků"
   Unload: "%prefix% Odnačteno &e%chunks% &7chunků"
   TotalLoad: "%prefix% Dohromady načteno &e%chunks% &7chunků"
+  
 # Translations for gamemode commands
 GameMode:
     Your:
@@ -298,18 +315,21 @@ GameMode:
       Spectator:
         Sender: "%prefix% Gamemode hráče &e%player% &7byl změněn na &eSpectator"
         Receiver: "%prefix% Váš gamemode byl změněn na &eSpectator"
+        
 # Translations for TPS command
 TPS:
 - "%prefix% Aktuální TPS: &e%tps%"
 - "%prefix% TPS z 1min: &e%tps-from-1%"
 - "%prefix% TPS z 5min: &e%tps-from-5%"
 - "%prefix% TPS z 15min: &e%tps-from-15%"
+
 # Translations for /Enchant and /EnchantRemove commands
 Enchant:
   Add: "%prefix% Předmět ve vaší ruce byl očarován enchantem &e%enchant% %level%"
   Remove:
     One: "%prefix% Odstraněn enchant &e%enchant% &7z předmětu ve vaší ruce"
     All: "%prefix% Odstraněny všechny enchanty z předmětu ve vaší ruce"
+    
 # Translations for tp commands
 TpSystem:
   NoRequest: "%prefix% Nemáte žádnou žádost"
@@ -373,10 +393,12 @@ TpSystem:
     Global:
       On: "%prefix% Nyní blockujete teleportaci od všech"
       Off: "%prefix% Již neblokujete teleportaci od všech"
+      
 # Translations for /Sudo command
 Sudo:
   Message: ""
-  Command: "%prefix% Odeslal jsi příkaz &e%command%&7 za &e%player%"
+  Command: "%prefix% Vykonal si příkaz &e%command%&7 za &e%player%"
+  
 # Translations for /Repair command
 Repair:
   Hand:
@@ -389,12 +411,14 @@ Repair:
     Other:
       Sender: "%prefix% Opravil jsi všechny předměty ve inventáři hráče &e%player%"
       Receiver: "%prefix% Všechny předměty ve vašem inventáři byly opraveny"
+      
 # Translations for time commands
 Time:
   Day: "%prefix% Nastavil jsi &eden &7ve světě &e%world%"
   Night: "%prefix% Nastavil jsi &enoc &7ve světě &e%world%"
   PDay: "%prefix% Nastavil jsi &eden &7pro hráče &e%player%"
   PNight: "%prefix% Nastavil jsi &enoc &7pro hráče &e%player%"
+  
 # Translations for weather commands
 Weather:
   Sun: "%prefix% Nastavil jsi &eslunečné &7počasí ve světě &e%world%"
@@ -402,6 +426,7 @@ Weather:
   PSun: "%prefix% Nastavil jsi &eslunečné &7počasí pro hráče &e%player%"
   PRain: "%prefix% Nastavil jsi &edeštivé &7počasí pro hráče &e%player%"
   Thunder: "%prefix% Nastavil jsi &edeštivé &7počasí s &ebouří &7ve světě &e%world%"
+  
 # Translations for MultiWorld command
 MultiWorld:
   Import: "%prefix% Svět &e%world% &7importován (Generace: &e%generator%&7)"
@@ -421,12 +446,14 @@ MultiWorld:
   Spawn:
     Set: "%prefix% Nastavil spawn světa na &e%x%&7, &e%y%&7, &e%z%"
     Get: "%prefix% Spawn ve světě &e%world% &7je nastaven na &e%x%&7, &e%y%&7, &e%z%"
+    
 # Translations for /Mail command
 Mail:
   Received: "%prefix% Máte &e%amount% &7mailů"
   Empty: "%prefix% Nemáte žádný mail"
   Clear: "%prefix% Maily vyčištěny"
   Sent: "%prefix% Poslal jste mail hráči &e%player%"
+  
 # Translations for WalkSpeed, FlySpeed and Speed commands
 Speed:
   Walk:
@@ -439,6 +466,7 @@ Speed:
     Other:
       Sender: "%prefix% Nastavena rychlost rychlost létání hráče &e%player% &7na &e%speed%"
       Receiver: "%prefix% Vaše rychlost létání byla nastavena na &e%speed%"
+      
 # Translations for fly commands
 Fly:
   Temp:
@@ -462,6 +490,7 @@ Fly:
     Other:
       Sender: "%prefix% Létání bylo vypnuto &e%player%&7"
       Receiver: "%prefix% Létání bylo vypnuto"
+      
 # Translations for god commands
 God:
   Enabled:
@@ -490,6 +519,7 @@ Warp:
   WrongLocation: "%prefix% Warp &e%warp% &7má špatnou pozici"
   Exists: "%prefix% Warp &e%warp% &7již existuje"
   NotExist: "%prefix% Warp &e%warp% &7neexistuje"
+  
 # Translations for /Spawn command
 Spawn:
   Teleport:
@@ -498,10 +528,12 @@ Spawn:
       Sender: "%prefix% Teleportuji &e%player% &7na spawn"
       Receiver: "%prefix% Teleportuji na spawn"
   Set: "%prefix% Serverový spawn nastaven na pozici &e%x%&7, &e%y%&7, &e%z%"
+  
 # Translations for /Maintenance command
 Maintenance:
   Enabled: "%prefix% Údržba &ezapnuta"
   Disabled: "%prefix% Údržba &evypnuta"
+  
 # Translations for /Vanish command
 Vanish:
   Active: "&eMáte zapnutý vanish"
@@ -515,15 +547,18 @@ Vanish:
     Other:
       Sender: "%prefix% Vanish pro &e%player% &7byl &cvypnut"
       Receiver: "%prefix% Vanish byl &evypnut"
+      
 # Translations for /Thor command
 Thor:
   Player: "%prefix% &e%player% &7zasažen bleskem"
   Block: "%prefix% Blesk byl vyvolán"
+  
 # Translations for cooldowns
 Cooldowns:
   Messages: "%prefix% Zadržte, Počkejte &e%time% &7před odesláním další zprávy"
   Commands: "%prefix% Zadržte, Počkejte &e%time% &7před odesláním příkazu"
   Kits: "%prefix% Musíte počkat &e%time% &7před použítím kitu"
+  
 # Translations for kits commands
 Kits:
   List: "%prefix% Seznam kitů: &e%kits%"
@@ -534,6 +569,7 @@ Kits:
   Give:
     Sender: "%prefix% Dali jste &e%kit% &7kit hráči &e%player%"
     Receiver: "%prefix% Dostali jste kit &e%kit%"
+    
 # Translations for /Spawner command
 Spawner:
   Set:
@@ -542,30 +578,35 @@ Spawner:
     Range: "%prefix% Spawnovací vzdálenost spawneru nastavena na &e%range%"
     SpawnTime: "%prefix% Spawnovací doba spawneru nastavena na &e%time%"
   BlockNotSpawner: "%prefix% Blok, na který se dívate musí být &espawner"
+  
 # Translations for /Heal command
 Heal:
   You: "%prefix% Byli jste vyléčeni"
   Other:
     Sender: "%prefix% &e%player% &7byl/a vyléčen/a"
     Receiver: "%prefix% Byli jste vyléčeni"
+    
 # Translations for /Feed command
 Feed:
   You: "%prefix% Byli jste nakrmeni"
   Other:
     Sender: "%prefix% &e%player% &7byl/a nakrmen/a"
     Receiver: "%prefix% Byli jste nakrmeni"
+    
 # Translations for /ChatLock command
 ChatLock:
   Lock: "%prefix% Chat je  &euzamčen"
   Unlock: "%prefix% Chat je &eodemčen"
   IsLocked: "%prefix% Omlouváme se, ale chat je momentálně uzamčen, zkuste akci opakovat později."
   Message: "%prefix% &dChatLock &e%player% &7napsal &e%message%"
+  
 # Translations for /Pm <player>
 PrivateMessage:
   NoReply: "%prefix% Nemáte komu odepsat"
   ChatLock:
     true: "%prefix% Chat je uzamčen, napište zprávu do chatu pro odepsání hráči"
     false: "%prefix% Chat je odemčen"
+    
 # Translations for /ClearChat command
 ClearChat:
   Cleared:
@@ -574,6 +615,7 @@ ClearChat:
   Specific: "%prefix% Chat hráče &e%player% &7byl smazán"
   SpecificChatHaveBypass: "%prefix% &e%player% &7má právo na bypass clear chatu"
   NoClearOwnChat: "%prefix% Nemůžete smazat vlastní chat"
+  
 # Translations for /Back command
 Back:
   WrongLocation: "%prefix% Předešlé místo je špatná"
@@ -583,6 +625,7 @@ Back:
     Other:
       Sender: "%prefix% Teleportuji &e%player% &7na předchozí místo"
       Receiver: "%prefix% Teleportuji na předešlé místo"
+      
 Immune:
   Enabled:
     You: "%prefix% Imunita &ezapnuta"
@@ -595,6 +638,7 @@ Immune:
       Sender: "%prefix% Imunita &e%player%&7 byla &evypnuta"
       Receiver: "%prefix% Imunita &evypnuta"
   NoPunish: "%prefix% &e%player% &7má imunitu"
+  
 TabList:
   Prefix:
     Get:
@@ -617,6 +661,7 @@ TabList:
     NotExist: "%prefix% Skupina &e%group% &7neexistuje"
     Create: "%prefix% Skupina &e%group% &7vytvořena"
     Delete: "%prefix% Skupina &e%group% &7odstraněna"
+    
 WhoIs:
   Online:
   - "%prefix% Hráč: &e%player%"
@@ -652,6 +697,7 @@ WhoIs:
   - "%prefix%   Peníze: &e%money%"
   - "%prefix% Banned: %banned%"
   - "%prefix% IP-Banned: %ip-banned%"
+  
 ChatFormat:
   Group:
     Exists: "%prefix% Skupina &e%group% &6už existuje"
@@ -669,6 +715,7 @@ ChatFormat:
   - "%prefix% Skupina: &e%group%"
   - "%prefix% Jméno: &e%name%"
   - "%prefix% Chat: &e%chat%"
+  
 Inventory:
   ClearConfirmToggle:
     Enabled: "%prefix% Vypnuto potvrzení pro smazání inventáře"
@@ -705,6 +752,7 @@ Inventory:
     Other:
       Sender: "%prefix% Otevírám pracovní stůl pro hráče &e%player%"
       Receiver: "%prefix% Otevírám pracovní stůl"
+      
 ScoreBoard:
   Toggle:
     Show:
@@ -722,6 +770,7 @@ ScoreBoard:
       Other:
         Sender: ""
         Receiver: "%prefix% Nemůžete skrýt scoreboard tabulku &e%player%"
+        
 Skin:
   Set:
     You:
@@ -739,9 +788,12 @@ Skin:
     Other:
       Sender: "%prefix% Skin hráče &e%player%&7 byl vyresetován"
       Receiver: "%prefix% Váš skin byl vyresetován"
+      
 Accounts:
   Users: "%prefix% Účty na IP adrese hráče &e%player%"
   List: "%prefix% %accounts%"
   NoAccounts: "%prefix% Žádné účty nebyly nalezeny"
+  
 Trash: "&7Koš"
+
 Config: "%prefix% Konfigurace a tasky znovunačteny"

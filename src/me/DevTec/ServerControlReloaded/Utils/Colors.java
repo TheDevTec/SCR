@@ -16,7 +16,7 @@ import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 
 public class Colors {
-	private final static Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
+	private final static Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}"), colorP=Pattern.compile("[A-Fa-fUu0-9X]");
 	
 	public static String remove(String string) {
 		if (string != null)
@@ -41,7 +41,7 @@ public class Colors {
 		    			found=1;
 			    		continue;
 		    		}
-		    		if(found==1 && Pattern.compile("[A-Fa-fUu0-9]").matcher(c+"").find()) {
+		    		if(found==1 && colorP.matcher(c+"").find()) {
 			    		found=0;
 				    	s.add(d.toString());
 			    		d=d.delete(0, d.length());

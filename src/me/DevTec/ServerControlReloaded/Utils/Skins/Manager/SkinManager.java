@@ -88,7 +88,7 @@ public class SkinManager {
 	private static Method put, oldRemove, oldAdd;
 	private static Constructor<?> infoC, headC= Ref.getConstructors(Ref.nms("PacketPlayOutEntityHeadRotation"))[0],
 	respawnC=Ref.getConstructors(Ref.nms("PacketPlayOutRespawn"))[0], posC=Ref.getConstructors(Ref.nms("PacketPlayOutPosition"))[0],
-	handC=Ref.getConstructors(Ref.nms("PacketPlayOutHeldItemSlot"))[0];
+			handC=Ref.getConstructors(Ref.nms("PacketPlayOutHeldItemSlot"))[0], status=Ref.getConstructors(Ref.nms("PacketPlayOutEntityStatus"))[1];
 	static {
 		if(TheAPI.isNewerThan(7)) {
 			infoC = Ref.getConstructors(Ref.nms("PacketPlayOutPlayerInfo"))[2];
@@ -111,11 +111,11 @@ public class SkinManager {
 		Object destroy = NMSAPI.getPacketPlayOutEntityDestroy(player.getEntityId());
 		Object remove = null, add = null;
 		if(TheAPI.isOlderThan(8)) {
-			destroy=Ref.invokeNulled(oldRemove, s);
+			remove=Ref.invokeNulled(oldRemove, s);
 			add=Ref.invokeNulled(oldAdd, s);
 		}else {
 			Iterable<?> iterable = Arrays.asList(s);
-			destroy=Ref.newInstance(infoC, SkinManager.remove, iterable);
+			remove=Ref.newInstance(infoC, SkinManager.remove, iterable);
 			add = Ref.newInstance(infoC, SkinManager.add, iterable);
 		}
 		Object spawn = NMSAPI.getPacketPlayOutNamedEntitySpawn(s);
@@ -141,7 +141,7 @@ public class SkinManager {
 				}else { //1.12 - 1.7
 					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
 				}
-				Ref.sendPacket(player, re);
+				Ref.sendPacket(p, re);
 				Object pos = null;
 				if(TheAPI.isOlderThan(8)) { //1.7
 					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), false);
@@ -149,10 +149,11 @@ public class SkinManager {
 					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), new HashSet<>());
 				}else //1.9+
 					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), new HashSet<>(), 0);
-				Ref.sendPacket(player, pos);
-				Ref.sendPacket(player, Ref.newInstance(handC, p.getInventory().getHeldItemSlot()));
-				Ref.sendPacket(player, NMSAPI.getPacketPlayOutEntityMetadata(s));
-				player.updateInventory();
+				Ref.sendPacket(p, pos);
+				Ref.sendPacket(p, Ref.newInstance(handC, p.getInventory().getHeldItemSlot()));
+				Ref.sendPacket(p, NMSAPI.getPacketPlayOutEntityMetadata(s));
+				Ref.sendPacket(p, Ref.newInstance(status, s, (byte)0));
+				p.updateInventory();
 			}else {
 				Ref.sendPacket(p, destroy);
 				Ref.sendPacket(p, spawn);
