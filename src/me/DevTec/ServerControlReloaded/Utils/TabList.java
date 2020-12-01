@@ -165,10 +165,7 @@ public class TabList {
 	}
 	
 	public static void setName(Player p) {
-		String p1 = getPrefix(p, true);
-		String p2 = getPrefix(p, false);
-		String s1 = getSuffix(p, true);
-		String s2 = getSuffix(p, false);
+		String p1 = getPrefix(p, true), p2 = getPrefix(p, false), s1 = getSuffix(p, true), s2 = getSuffix(p, false);
 		String name = getNameFormat(p).replace("%tab_prefix%", (p2!=null?replace(p2, p, true):"")).replace("%tab_suffix%", (s2!=null?replace(s2, p, true):""));
 		p.setPlayerListName(name);
 		NameTagChanger.setNameTag(p, p1!=null?replace(p1, p, true):"", s1!=null?replace(s1, p, true):"");

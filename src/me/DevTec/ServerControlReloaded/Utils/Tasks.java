@@ -1,8 +1,8 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -15,6 +15,7 @@ import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 import me.DevTec.TheAPI.Utils.Listener.EventHandler;
 import me.DevTec.TheAPI.Utils.Listener.Listener;
 import me.DevTec.TheAPI.Utils.Listener.Events.ServerListPingEvent;
@@ -26,7 +27,7 @@ public class Tasks {
 	
 	public static List<String> players = new ArrayList<String>();
 	static List<Integer> tasks = new ArrayList<Integer>();
-	static HashMap<String, String> ss = new HashMap<String, String>();
+	static Map<String, String> sss = new UnsortedMap<String, String>();
 	static Loader a;
 	static int tests;
 	static Listener l = new Listener() {
@@ -49,7 +50,7 @@ public class Tasks {
 
 	public static void load() {
 		a = Loader.getInstance;
-		ss.clear();
+		sss.clear();
 		players.clear();
 		if(setting.motd)l.register();
 		if (setting.am)
@@ -139,14 +140,14 @@ public class Tasks {
 	}
 
 	public static void regPlayer(Player p) {
-		if (!ss.containsKey(p.getName())) {
+		if (!sss.containsKey(p.getName())) {
 			String uuid = p.getUniqueId().toString();
 			uuid = uuid.substring(0, 5);
 			String pname = p.getName();
 			if (pname.length() > 5) {
 				pname = pname.substring(0, 5);
 			}
-			ss.put(p.getName(), uuid + pname);
+			sss.put(p.getName(), uuid + pname);
 		}
 	}
 
@@ -161,26 +162,23 @@ public class Tasks {
 	}
 
 	private static void tab() {
-		if(setting.tab_sort)
-		for (Player p : TheAPI.getOnlinePlayers()) {
-			if (!ss.containsKey(p.getName()))
-				regPlayer(p);
-		}
 		int r = Loader.tab.getInt("Options.RefleshTick.NameTag");
 		if (r <= 0)
 			r = 1;
 		tasks.add(new Tasker() {
 			@Override
 			public void run() {
-				for (Player p : TheAPI.getOnlinePlayers())
+				for (Player p : TheAPI.getOnlinePlayers()) {
 					TabList.setFooterHeader(p);
+				}
 			}
 		}.runRepeating(0, Loader.tab.getInt("Options.RefleshTick.Tablist")));
 		tasks.add(new Tasker() {
 			@Override
 			public void run() {
-				for (Player p : TheAPI.getOnlinePlayers())
+				for (Player p : TheAPI.getOnlinePlayers()) {
 					TabList.setName(p);
+				}
 			}
 		}.runRepeating(0, r));
 	}

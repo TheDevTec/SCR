@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
-import me.DevTec.ServerControlReloaded.Commands.Info.Staff;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.NameTagAPI;
 
@@ -12,8 +11,7 @@ public class NameTagChanger {
 	static HashMap<Player, NameTagAPI> t = new HashMap<>();
 
 	public static void setNameTag(Player p, String prefix, String suffix) {
-		if(!Tasks.ss.containsKey(p.getName()))
-			Tasks.regPlayer(p);
+		Tasks.regPlayer(p);
 		if (setting.tab_sort) {
 			if (setting.tab_nametag) {
 				if (!t.containsKey(p))
@@ -21,7 +19,7 @@ public class NameTagChanger {
 				NameTagAPI n = t.get(p);
 				n.setPrefix(TabList.replace(prefix, p, true));
 				n.setSuffix(TabList.replace(suffix, p, true));
-				n.setNameTag(Staff.getGroup(p) + Tasks.ss.get(p.getName()));
+				n.setNameTag(Tasks.sss.get(p.getName()));
 			} else {
 				String pname = p.getName();
 				if (pname.length() > 16)
@@ -40,7 +38,7 @@ public class NameTagChanger {
 				NameTagAPI n = t.get(p);
 				n.setPrefix(prefix);
 				n.setSuffix(suffix);
-				n.setNameTag(Tasks.ss.get(p.getName()));
+				n.setNameTag(Tasks.sss.get(p.getName()));
 			}
 		}
 	}
