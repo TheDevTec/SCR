@@ -401,6 +401,18 @@ public class Loader extends JavaPlugin implements Listener {
 	public void onLoad() {
 		getInstance = this;
 		Configs.load(false);
+		if (PluginManagerAPI.getPlugin("Vault") != null) {
+			setupEco();
+			if (vault == null) {
+				TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+				TheAPI.msg(setting.prefix + " &eINFO: &7Missing Permissions plugin for Groups (TabList and ChatFormat).", TheAPI.getConsole());
+				TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+			}
+		} else {
+			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + " &eINFO: &7Missing Vault plugin for Economy.", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+		}
 	}
 	
 	private static long loading;
@@ -597,22 +609,6 @@ public class Loader extends JavaPlugin implements Listener {
 	private static int aad = 0;
 	public static void reload() {
 		loading = System.currentTimeMillis();
-		if(aad==0) {
-		if (PluginManagerAPI.getPlugin("Vault") != null) {
-			setupEco();
-			setupVault();
-			setupPermisions();
-			if (vault == null) {
-				TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
-				TheAPI.msg(setting.prefix + " &eINFO: &7Missing Permissions plugin for Groups (TabList and ChatFormat).", TheAPI.getConsole());
-				TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
-			}
-		} else {
-			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + " &eINFO: &7Missing Vault plugin for Economy.", TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
-		}
-		}
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		if(aad==1) {
 			if(metrics!=null) {
@@ -624,6 +620,20 @@ public class Loader extends JavaPlugin implements Listener {
 			TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
 			Configs.load(true);
 			TheAPI.msg(setting.prefix + " &7Configs "+(aad == 0 ? "l" : "rel")+"oaded.", TheAPI.getConsole());
+		}else {
+			if (PluginManagerAPI.getPlugin("Vault") != null) {
+				setupVault();
+				setupPermisions();
+				if (vault == null) {
+					TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+					TheAPI.msg(setting.prefix + " &eINFO: &7Missing Permissions plugin for Groups (TabList and ChatFormat).", TheAPI.getConsole());
+					TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+				}
+			} else {
+				TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+				TheAPI.msg(setting.prefix + " &eINFO: &7Missing Vault plugin for Economy.", TheAPI.getConsole());
+				TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+			}
 		}
 		rules.clear();
 		Converter.convert();
@@ -997,6 +1007,6 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static boolean hasKits(CommandSender p, String name) {
-		return kit.exists("Kits."+name+".Permission")?p.hasPermission(kit.getString("Kit."+name+".Permission")):true;
+		return kit.exists("Kits."+name+".permission")?p.hasPermission(kit.getString("Kits."+name+".permission")):true;
 	}
 }

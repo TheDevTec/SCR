@@ -64,7 +64,7 @@ public class Skin implements CommandExecutor, TabCompleter {
 					SkinManager.loadSkin((Player)s, data);
 				}
 			}, false);
-			Loader.sendMessages(s, "Skin.Set.You");
+			Loader.sendMessages(s, "Skin.Set.You", Placeholder.c().add("%skin%", args[0]));
 			return true;
 			}
 			Loader.Help(s, "Skin", "Other");
@@ -84,8 +84,8 @@ public class Skin implements CommandExecutor, TabCompleter {
 					SkinManager.loadSkin(a, data);
 				}
 			}, false);
-			Loader.sendMessages(s, "Skin.Reset.Other.Sender", Placeholder.c().add("%player%", a.getName()).add("%playername%", a.getDisplayName()));
-			Loader.sendMessages(a, "Skin.Reset.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
+			Loader.sendMessages(s, "Skin.Reset.Other.Sender", Placeholder.c().add("%player%", a.getName()).add("%playername%", a.getDisplayName()).add("%skin%", args[0]));
+			Loader.sendMessages(a, "Skin.Reset.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()).add("%skin%", args[0]));
 			return true;
 		}
 		TheAPI.getUser(a).setAndSave("skin", args[0]);
@@ -96,8 +96,8 @@ public class Skin implements CommandExecutor, TabCompleter {
 				SkinManager.loadSkin(a, data);
 			}
 		}, false);
-		Loader.sendMessages(s, "Skin.Set.Other.Sender", Placeholder.c().add("%skin%", args[0]).add("%player%", a.getName()).add("%playername%", a.getDisplayName()));
-		Loader.sendMessages(a, "Skin.Set.Other.Receiver", Placeholder.c().add("%skin%", args[0]).add("%player%", s.getName()).add("%playername%", s.getName()));
+		Loader.sendMessages(s, "Skin.Set.Other.Sender", Placeholder.c().add("%skin%", args[0]).add("%player%", a.getName()).add("%playername%", a.getDisplayName()).add("%skin%", args[0]));
+		Loader.sendMessages(a, "Skin.Set.Other.Receiver", Placeholder.c().add("%skin%", args[0]).add("%player%", s.getName()).add("%playername%", s.getName()).add("%skin%", args[0]));
 		return true;
 	}
 }

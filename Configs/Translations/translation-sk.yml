@@ -764,13 +764,10 @@ ScoreBoard:
         
 Skin:
   Set:
-    You:
-    - "%prefix% Skin nastavený na &e%skin%"
+    You: "%prefix% Skin nastavený na &e%skin%"
     Other:
-      Sender:
-      - "%prefix% Skin nastavený na &e%skin%"
-      Receiver:
-      - "%prefix% Skin bol nastavený na &e%skin%"
+      Sender: "%prefix% Skin bol nastavený na &e%skin%"
+      Receiver: "%prefix% Skin nastavený na &e%skin%"
   Reset:
     You: "%prefix% Skin bol resetovaný"
     Other:

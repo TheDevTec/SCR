@@ -773,13 +773,10 @@ ScoreBoard:
         
 Skin:
   Set:
-    You:
-    - "%prefix% Váš skin nastaven na &e%skin%"
+    You: "%prefix% Váš skin nastaven na &e%skin%"
     Other:
-      Sender:
-      - "%prefix% Váš skin nastaven na &e%skin%"
-      Receiver:
-      - "%prefix% Skin hráče &e%player%&7 nastaven na &e%skin%"
+      Sender: "%prefix% Skin hráče &e%player%&7 nastaven na &e%skin%"
+      Receiver: "%prefix% Váš skin nastaven na &e%skin%"
   Reset:
     You: "%prefix% Váš skin vyresetován"
     Other:
