@@ -3,6 +3,7 @@ package me.DevTec.ServerControlReloaded.Utils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -15,7 +16,7 @@ import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedSet;
 import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 import me.DevTec.TheAPI.Utils.Listener.EventHandler;
 import me.DevTec.TheAPI.Utils.Listener.Listener;
@@ -26,9 +27,9 @@ import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class Tasks {
 	
-	public static List<String> players = new UnsortedList<String>();
-	static List<Integer> tasks = new UnsortedList<Integer>();
-	static Map<String, String> sss = new UnsortedMap<String, String>();
+	public static Set<String> players = new UnsortedSet<>();
+	static Set<Integer> tasks = new UnsortedSet<>();
+	static Map<String, String> sss = new UnsortedMap<>();
 	static Loader a;
 	static int tests;
 	static Listener l = new Listener() {
@@ -213,7 +214,6 @@ public class Tasks {
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
 							String json = StringUtils.colorizeJson(TabList.replace(TheAPI.getRandomFromList(l), p, false));
-							Bukkit.broadcastMessage(json);
 							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(json)));
 						}else {
 							TheAPI.msg(TabList.replace(TheAPI.getRandomFromList(l), p, true), p);

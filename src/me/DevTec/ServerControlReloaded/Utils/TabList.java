@@ -182,7 +182,7 @@ public class TabList {
 
 	private static String get(String path, Player p) {
 		if (setting.tab_header || setting.tab_footer) {
-			if (Loader.tab.getStringList(path) != null) {
+			if (!Loader.tab.getStringList(path).isEmpty()) {
 				String a = StringUtils.join(Loader.tab.getStringList(path), "\n");
 				return replace(a, p, true);
 			}
@@ -193,9 +193,9 @@ public class TabList {
 	private static String getPath(Player p, String what) {
 		if (what.equalsIgnoreCase("footer") && setting.tab_footer
 				|| what.equalsIgnoreCase("header") && setting.tab_header) {
-			if (Loader.tab.getString("PerPlayer." + p.getName() + "." + what) != null)
+			if (Loader.tab.exists("PerPlayer." + p.getName() + "." + what))
 				return get("PerPlayer." + p.getName() + "." + what, p);
-			else if (Loader.tab.getString("PerWorld." + p.getWorld().getName() + "." + what) != null)
+			else if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + "." + what))
 				return get("PerWorld." + p.getWorld().getName() + "." + what, p);
 			else {
 				return get(what, p);
