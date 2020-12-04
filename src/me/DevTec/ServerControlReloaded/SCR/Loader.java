@@ -1003,7 +1003,7 @@ public class Loader extends JavaPlugin implements Listener {
 
 	public UnsortedMap<String, Kit> kits = new UnsortedMap<>();
 	public static Kit getKit(String kitName) {
-		return getInstance.kits.getOrDefault(kitName.toLowerCase(), null);
+		return getInstance.kits.getOrDefault(kitName, null);
 	}
 
 	public static boolean hasKits(CommandSender p, String name) {

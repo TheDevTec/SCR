@@ -104,6 +104,15 @@ public class Kits implements CommandExecutor, TabCompleter {
 			}
 	}
 
+	public String kit(String[] args) {
+		if (Loader.kit.exists("Kits"))
+			for (String s : Loader.kit.getKeys("Kits")) {
+				if (s.toLowerCase().equalsIgnoreCase(args[0])) {
+					return s;
+				}
+			}
+		return null;
+	}
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (args.length == 0) {
@@ -116,7 +125,7 @@ public class Kits implements CommandExecutor, TabCompleter {
 		}
 		if (args.length == 1) {
 			if (getKits().contains(args[0].toLowerCase())) {
-				if (Loader.hasKits(s, args[0].toLowerCase())) {
+				if (Loader.hasKits(s, kit(args))) {
 					if (s instanceof Player) {
 						giveKit((Player)s, Loader.getKit(args[0].toLowerCase()), true, true, true);
 						return true;
@@ -132,7 +141,7 @@ public class Kits implements CommandExecutor, TabCompleter {
 		}
 		if (args.length == 2) {
 			if (getKits().contains(args[0].toLowerCase())) {
-				if (Loader.hasKits(s, args[0].toLowerCase())) {
+				if (Loader.hasKits(s, kit(args))) {
 					if (args[0].equals("*")) {
 						Repeat.a(s, "kit " + args[0].toLowerCase() + " *");
 						return true;
