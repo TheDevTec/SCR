@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Enchantment;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.bukkit.Material;
@@ -19,6 +19,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.EnchantmentAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class EnchantTable implements CommandExecutor, TabCompleter {
 	List<String> enchs = Lists.newArrayList();
@@ -88,12 +89,12 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command a, String ea, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if (s.hasPermission("ServerControl.Enchant")) {
 
 			if (s instanceof Player) {
 				if (args.length == 1) {
-					c.addAll(StringUtil.copyPartialMatches(args[0], enchs, new ArrayList<>()));
+					c.addAll(StringUtil.copyPartialMatches(args[0], enchs, new UnsortedList<>()));
 				}
 				if (args.length == 2) {
 					if (EnchantmentAPI.byName(args[0]) != null)

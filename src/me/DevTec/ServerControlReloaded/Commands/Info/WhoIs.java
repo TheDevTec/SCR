@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -21,6 +20,7 @@ import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 
@@ -147,7 +147,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (args.length == 1)
 			return null;
-		return new ArrayList<>();
+		return new UnsortedList<>();
 	}
 
 }

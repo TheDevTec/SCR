@@ -1,8 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Inventory;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -19,6 +18,8 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 
 public class ClearInv implements CommandExecutor, TabCompleter {
 
@@ -27,7 +28,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 		return String.valueOf(i);
 	}
 
-	public HashMap<CommandSender, ItemStack[]> undo = new HashMap<CommandSender, ItemStack[]>();
+	public UnsortedMap<CommandSender, ItemStack[]> undo = new UnsortedMap<CommandSender, ItemStack[]>();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -199,22 +200,22 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if (s.hasPermission("ServerControl.ClearInventory")) {
 
 			if (!TheAPI.getUser(s.getName()).getBoolean("ClearInvConfirm")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Confirm"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Confirm"), new UnsortedList<>()));
 			}
-			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Clear"), new ArrayList<>()));
+			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Clear"), new UnsortedList<>()));
 
 		}
 
 		if (s.hasPermission("ServerControl.ClearInventory.Undo")) {
-			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Undo"), new ArrayList<>()));
+			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Undo"), new UnsortedList<>()));
 		}
 		if (s.hasPermission("ServerControl.ClearInventory.Other")) {
 			if (args.length == 1)
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Other"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Other"), new UnsortedList<>()));
 			if (args.length == 2 && args[0].equalsIgnoreCase("other"))
 				return null;
 		}

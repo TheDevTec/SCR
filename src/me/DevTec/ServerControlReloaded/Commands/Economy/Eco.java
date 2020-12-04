@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Economy;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +18,7 @@ import me.DevTec.ServerControlReloaded.Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class Eco implements CommandExecutor, TabCompleter {
 	@Override
@@ -197,7 +198,7 @@ public class Eco implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if (args.length == 1) {
 			if (Loader.has(sender, "Economy", "Economy", "Pay")) {
 				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Pay")));

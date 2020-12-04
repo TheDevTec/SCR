@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -16,14 +16,15 @@ import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinData;
 import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinManager;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class Skin implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if(args.length==1) {
-			List<String> w = new ArrayList<>();
+			List<String> w = new UnsortedList<>();
 			w.add("Reset");
 			for(Player d : TheAPI.getOnlinePlayers())
 				w.add(d.getName());

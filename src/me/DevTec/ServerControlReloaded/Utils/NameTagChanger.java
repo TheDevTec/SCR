@@ -1,24 +1,23 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.util.HashMap;
-
 import org.bukkit.entity.Player;
 
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.NameTagAPI;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 
 public class NameTagChanger {
-	static HashMap<Player, NameTagAPI> t = new HashMap<>();
+	static UnsortedMap<Player, NameTagAPI> t = new UnsortedMap<>();
 
 	public static void setNameTag(Player p, String prefix, String suffix) {
 		Tasks.regPlayer(p);
 		if (setting.tab_sort) {
 			if (setting.tab_nametag) {
 				if (!t.containsKey(p))
-					t.put(p, TheAPI.getNameTagAPI(p, prefix, suffix));
+					t.put(p, TheAPI.getNameTagAPI(p, AnimationManager.replace(p,prefix), AnimationManager.replace(p,suffix)));
 				NameTagAPI n = t.get(p);
-				n.setPrefix(TabList.replace(prefix, p, true));
-				n.setSuffix(TabList.replace(suffix, p, true));
+				n.setPrefix(AnimationManager.replace(p,prefix));
+				n.setSuffix(AnimationManager.replace(p,suffix));
 				n.setNameTag(Tasks.sss.get(p.getName()));
 			} else {
 				String pname = p.getName();
@@ -34,10 +33,10 @@ public class NameTagChanger {
 		} else {
 			if (setting.tab_nametag) {
 				if (!t.containsKey(p))
-					t.put(p, TheAPI.getNameTagAPI(p, prefix, suffix));
+					t.put(p, TheAPI.getNameTagAPI(p, AnimationManager.replace(p,prefix), AnimationManager.replace(p,suffix)));
 				NameTagAPI n = t.get(p);
-				n.setPrefix(prefix);
-				n.setSuffix(suffix);
+				n.setPrefix(AnimationManager.replace(p,prefix));
+				n.setSuffix(AnimationManager.replace(p,suffix));
 				n.setNameTag(Tasks.sss.get(p.getName()));
 			}
 		}

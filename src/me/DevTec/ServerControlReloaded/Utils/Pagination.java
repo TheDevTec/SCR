@@ -1,17 +1,18 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("serial")
-public class Pagination<T> extends ArrayList<T> {
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
+
+public class Pagination<T> extends UnsortedList<T> {
 
 	private int pageSize;
 
 	public Pagination(int pageSize) {
-		this(pageSize, new ArrayList<T>());
+		this(pageSize, new UnsortedList<T>());
 	}
 
 	@SafeVarargs

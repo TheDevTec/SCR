@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.TpSystem;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.bukkit.entity.Player;
@@ -12,6 +12,7 @@ import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.Position;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 /**
  * 
@@ -80,7 +81,7 @@ public class RequestMap {
 	}
 
 	public static Player getFirst(String sender) {
-		List<String> acceptable = new ArrayList<>();
+		List<String> acceptable = new UnsortedList<>();
 		for(String s : TheAPI.getUser(sender).getKeys("teleport")) {
 			if (has(sender, s)) {
 				acceptable.add(s);

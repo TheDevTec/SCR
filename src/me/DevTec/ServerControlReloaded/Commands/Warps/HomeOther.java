@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Warps;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -17,6 +17,7 @@ import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.Position;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class HomeOther implements CommandExecutor, TabCompleter {
 
@@ -90,7 +91,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if (s instanceof Player) {
 			if (args.length == 1) {
 				return null;
@@ -98,7 +99,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 			if (args.length == 2) {
 				if(TheAPI.getUser(args[0]).getKeys("Homes")!=null)
 				c.addAll(StringUtil.copyPartialMatches(args[1], TheAPI.getUser(args[0]).getKeys("Homes"),
-						new ArrayList<>()));
+						new UnsortedList<>()));
 				return c;
 			}
 			if (args.length == 3) {

@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,6 +26,7 @@ import me.DevTec.TheAPI.CooldownAPI.CooldownAPI;
 import me.DevTec.TheAPI.GUIAPI.GUI;
 import me.DevTec.TheAPI.GUIAPI.ItemGUI;
 import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
 import me.DevTec.TheAPI.WorldsAPI.WorldsAPI;
 
@@ -205,7 +206,7 @@ public class MultiWorldsGUI {
 		GUI a = new GUI("&bWorlds list",54,p);
 		prepareInv(a);
 		for (World w : Bukkit.getWorlds()) {
-			List<String> lore = new ArrayList<String>();
+			List<String> lore = new UnsortedList<String>();
 			String m = "GRASS_BLOCK";
 			String start = "&2";
 			if (w.getEnvironment() == Environment.NORMAL) {

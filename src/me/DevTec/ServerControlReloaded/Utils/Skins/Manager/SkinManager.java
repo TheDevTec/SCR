@@ -4,13 +4,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
@@ -44,6 +45,8 @@ public class SkinManager {
 						conn.setRequestProperty("User-Agent", "ServerControlReloaded-JavaClient");
 						conn.setRequestProperty("Accept-Encoding", "gzip");
 						conn.setRequestMethod("POST");
+						conn.setConnectTimeout(20000);
+						conn.setReadTimeout(20000);
 						conn.connect();
 						Map<String, Object> text = (Map<String, Object>) Reader.read(StreamUtils.fromStream(new GZIPInputStream(conn.getInputStream())));
 						SkinData data = new SkinData();
@@ -63,6 +66,8 @@ public class SkinManager {
 					HttpURLConnection conn = (HttpURLConnection)new URL(String.format(USER_FORMAT, urlOrName)).openConnection();
 					conn.setRequestProperty("User-Agent", "ServerControlReloaded-JavaClient");
 					conn.setRequestMethod("GET");
+					conn.setConnectTimeout(20000);
+					conn.setReadTimeout(20000);
 					conn.connect();
 					Map<String, Object> text = (Map<String, Object>) Reader.read(StreamUtils.fromStream(conn.getInputStream()));
 					SkinData data = new SkinData();
@@ -71,7 +76,7 @@ public class SkinManager {
 						data.value=(String) ((Map<String, Object>)((Map<String, Object>)text.get("textures")).get("raw")).get("value");
 						data.url=(String) ((Map<String, Object>)((Map<String, Object>)text.get("textures")).get("skin")).get("url");
 						data.slim=(boolean)((Map<String, Object>)text.get("textures")).get("slim");
-						data.uuid=UUID.nameUUIDFromBytes(("OfflinePlayer:"+urlOrName).getBytes(StandardCharsets.UTF_8));
+						data.uuid=Bukkit.getOfflinePlayer(urlOrName).getUniqueId();
 					}
 					generator.put(urlOrName, data);
 					if(onFinish!=null)
@@ -84,18 +89,42 @@ public class SkinManager {
 		playerSkins.put(player, data);
 	}
 	
-	private static Object remove=Ref.getNulled(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),"REMOVE_PLAYER"), add=Ref.getNulled(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),"ADD_PLAYER");
+	private static Object remove, add;
 	private static Method put, oldRemove, oldAdd;
-	private static Constructor<?> infoC, headC= Ref.getConstructors(Ref.nms("PacketPlayOutEntityHeadRotation"))[0],
-	respawnC=Ref.getConstructors(Ref.nms("PacketPlayOutRespawn"))[0], posC=Ref.getConstructors(Ref.nms("PacketPlayOutPosition"))[0],
-			handC=Ref.getConstructors(Ref.nms("PacketPlayOutHeldItemSlot"))[0], status=Ref.getConstructors(Ref.nms("PacketPlayOutEntityStatus"))[1];
+	private static Constructor<?> infoC, headC,handC,respawnC, posC;
 	static {
+		headC = Ref.constructor(Ref.nms("PacketPlayOutEntityHeadRotation"), Ref.nms("Entity"), byte.class);
+		handC = Ref.constructor(Ref.nms("PacketPlayOutHeldItemSlot"), int.class);
 		if(TheAPI.isNewerThan(7)) {
-			infoC = Ref.getConstructors(Ref.nms("PacketPlayOutPlayerInfo"))[2];
-		}else {
+			remove=Ref.getNulled(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),"REMOVE_PLAYER");
+			add=Ref.getNulled(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),"ADD_PLAYER");
+			infoC = Ref.constructor(Ref.nms("PacketPlayOutPlayerInfo"), Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), Iterable.class);
+			}else {
 			oldRemove=Ref.method(Ref.nms("PacketPlayOutPlayerInfo"), "removePlayer", Ref.nms("EntityPlayer"));
 			oldAdd=Ref.method(Ref.nms("PacketPlayOutPlayerInfo"), "addPlayer", Ref.nms("EntityPlayer"));
 		}
+		//POSITION PACKET
+		if(TheAPI.isOlderThan(8)) { //1.7
+			posC=Ref.constructor(Ref.nms("PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, boolean.class);
+		}else if(TheAPI.isOlderThan(9)) { //1.8
+			posC=Ref.constructor(Ref.nms("PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class);
+		}else //1.9+
+			posC=Ref.constructor(Ref.nms("PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class, int.class);
+		//RESPAWN PACKET
+		if(TheAPI.isNewerThan(16)) { //1.17+
+			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("ResourceKey"), long.class, Ref.nms("EnumGamemode"), Ref.nms("EnumGamemode"), boolean.class, boolean.class, boolean.class);
+		}else
+		if(TheAPI.isNewerThan(15)) { //1.16
+			if(TheAPI.getServerVersion().split("_")[2].equals("R1"))
+			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("ResourceKey"), Ref.nms("ResourceKey"), long.class, Ref.nms("EnumGamemode"), Ref.nms("EnumGamemode"), boolean.class, boolean.class, boolean.class);
+			else
+				respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("ResourceKey"), long.class, Ref.nms("EnumGamemode"), Ref.nms("EnumGamemode"), boolean.class, boolean.class, boolean.class);
+		}else if(TheAPI.isNewerThan(14)) { //1.15
+			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), long.class, Ref.nms("WorldType"), Ref.nms("EnumGamemode"));
+		}else if(TheAPI.isNewerThan(13)) { //1.14
+			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("WorldType"), Ref.nms("EnumGamemode"));
+		}else //1.7-1.13
+			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),int.class, Ref.nms("EnumDifficulty"), Ref.nms("WorldType"), Ref.nms("EnumGamemode"));
 	}
 	
 	public static synchronized void loadSkin(Player player, SkinData data) {
@@ -114,7 +143,7 @@ public class SkinManager {
 			remove=Ref.invokeNulled(oldRemove, s);
 			add=Ref.invokeNulled(oldAdd, s);
 		}else {
-			Iterable<?> iterable = Arrays.asList(s);
+			Iterable<Object> iterable = Arrays.asList(s);
 			remove=Ref.newInstance(infoC, SkinManager.remove, iterable);
 			add = Ref.newInstance(infoC, SkinManager.add, iterable);
 		}
@@ -127,11 +156,14 @@ public class SkinManager {
 				Object w = Ref.invoke(s, "getWorld");
 				Location a = p.getLocation();
 				Object re = null;
-				if(TheAPI.isNewerThan(15)) { //1.16
-					if(TheAPI.getServerVersion().split("_")[2].equals("R1")) {
-						re=Ref.newInstance(respawnC, Ref.invoke(w, "getTypeKey"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(Ref.method(Ref.nms("BiomeManager"), "a", long.class), a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);	
-					}else
+				if(TheAPI.isNewerThan(16)) { //1.17+
 					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(Ref.method(Ref.nms("BiomeManager"), "a", long.class), a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);
+				}else
+				if(TheAPI.isNewerThan(15)) { //1.16
+					if(TheAPI.getServerVersion().split("_")[2].equals("R1"))
+						re=Ref.newInstance(respawnC, Ref.invoke(w, "getTypeKey"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(Ref.method(Ref.nms("BiomeManager"), "a", long.class), a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);	
+					else
+						re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(Ref.method(Ref.nms("BiomeManager"), "a", long.class), a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);
 				}else if(TheAPI.isNewerThan(14)) { //1.15
 					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), a.getWorld().getSeed(), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
 				}else if(TheAPI.isNewerThan(13)) { //1.14
@@ -152,8 +184,9 @@ public class SkinManager {
 				Ref.sendPacket(p, pos);
 				Ref.sendPacket(p, Ref.newInstance(handC, p.getInventory().getHeldItemSlot()));
 				Ref.sendPacket(p, NMSAPI.getPacketPlayOutEntityMetadata(s));
-				Ref.sendPacket(p, Ref.newInstance(status, s, (byte)0));
 				p.updateInventory();
+				Ref.invoke(s, "triggerHealthUpdate");
+				Ref.invoke(s, "updateAbilities");
 			}else {
 				Ref.sendPacket(p, destroy);
 				Ref.sendPacket(p, spawn);

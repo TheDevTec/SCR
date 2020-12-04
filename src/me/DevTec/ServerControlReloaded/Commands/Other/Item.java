@@ -1,7 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,10 +19,11 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class Item implements CommandExecutor, TabCompleter{
-	private static List<String> flags = new ArrayList<>();
-	private static List<String> f = new ArrayList<>();
+	private static List<String> flags = new UnsortedList<>();
+	private static List<String> f = new UnsortedList<>();
 	static {
 		try {
 		for(ItemFlag a : ItemFlag.values())flags.add(a.name());
@@ -74,7 +75,7 @@ public class Item implements CommandExecutor, TabCompleter{
 						  return true;
 					  }
 					  String name = StringUtils.buildString(2, args);
-		              List<String> lore = new ArrayList<>();
+		              List<String> lore = new UnsortedList<>();
 		              if (m.getLore() != null)lore = m.getLore();	              
 		              lore.add(TheAPI.colorize(name));
 		              m.setLore(lore);
@@ -107,7 +108,7 @@ public class Item implements CommandExecutor, TabCompleter{
 						}
 						try {
 						String name = StringUtils.buildString(3, args);
-			              List<String> lore = new ArrayList<>();
+			              List<String> lore = new UnsortedList<>();
 			              if (m.getLore() != null)
 			                for (String ss : m.getLore())
 			                  lore.add(TheAPI.colorize(ss));
@@ -190,7 +191,7 @@ public class Item implements CommandExecutor, TabCompleter{
 	}	
 	
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		Player p = (Player)s;
 		if(p.getItemInHand().getType()==Material.AIR) {
 			TheAPI.sendTitle(p, Loader.getTranslation("Item.NoItem").toString()," "); 			
@@ -217,7 +218,7 @@ public class Item implements CommandExecutor, TabCompleter{
 			if(args[1].contains("add"))if(s.hasPermission("SCR.Item.Lore"))c.addAll(StringUtils.copyPartialMatches(args[2], Arrays.asList("?")));
 			if(args[1].contains("remove")) {				
 				if(s.hasPermission("SCR.Item.Lore")) {					
-					List<String> l = new ArrayList<>();																																																																																																						
+					List<String> l = new UnsortedList<>();																																																																																																						
 					if (s instanceof Player && ((Player)s).getItemInHand().getItemMeta().hasLore())
 						for (int count = 0; count < ((Player)s).getItemInHand().getItemMeta().getLore().size(); ++count)
 							l.add(count+"");
@@ -227,7 +228,7 @@ public class Item implements CommandExecutor, TabCompleter{
 			}
 			if(args[1].contains("set")) {
 				if(s.hasPermission("SCR.Item.Lore")) {
-					List<String> l = new ArrayList<>();
+					List<String> l = new UnsortedList<>();
 					if (s instanceof Player && ((Player)s).getItemInHand().getItemMeta().hasLore())
 						for (int count = 0; count < ((Player)s).getItemInHand().getItemMeta().getLore().size(); ++count)
 							l.add(count+"");

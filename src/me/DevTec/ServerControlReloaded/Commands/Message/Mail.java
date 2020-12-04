@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Message;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,6 +15,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class Mail implements CommandExecutor, TabCompleter {
 
@@ -94,15 +95,15 @@ public class Mail implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if (s.hasPermission("ServerControl.Mail.Read")) {
 			if (args.length == 1) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Read", "Clear"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Read", "Clear"), new UnsortedList<>()));
 			}
 		}
 		if (s.hasPermission("ServerControl.Mail.Send")) {
 			if (args.length == 1) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Send"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Send"), new UnsortedList<>()));
 			}
 			if (args[0].equalsIgnoreCase("Send") && args.length == 2)
 				return null;

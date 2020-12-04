@@ -1,6 +1,5 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -16,6 +15,7 @@ import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 
 public class Vanish implements CommandExecutor, TabCompleter {
 
@@ -24,7 +24,7 @@ public class Vanish implements CommandExecutor, TabCompleter {
 			String arg2, String[] arg3) {
 		return null;
 	}
-	private static HashMap<String, Integer> task = new HashMap<>();
+	private static UnsortedMap<String, Integer> task = new UnsortedMap<>();
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "Vanish", "Other")) {

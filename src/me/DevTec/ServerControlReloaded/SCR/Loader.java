@@ -3,8 +3,6 @@ package me.DevTec.ServerControlReloaded.SCR;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -175,7 +173,9 @@ import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedSet;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 import me.DevTec.TheAPI.Utils.Listener.EventHandler;
 import me.DevTec.TheAPI.Utils.Listener.Listener;
 import me.DevTec.TheAPI.Utils.Listener.Events.PlayerVanishEvent;
@@ -185,14 +185,14 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
-	public static Config config, sb, tab, mw, kit, trans, events, cmds;
+	public static Config config, sb, tab, mw, kit, trans, events, cmds, anim;
 	public static Set<Rule> rules = new UnsortedSet<>();
 	
 	public static Economy econ;
 	public static Loader getInstance;
 	
 	public static class Placeholder {
-		private final HashMap<String, String> set = new HashMap<>();
+		private final UnsortedMap<String, String> set = new UnsortedMap<>();
 		public Placeholder add(String placeholder, String replace) {
 			set.put(placeholder, replace);
 			return this;
@@ -695,7 +695,7 @@ public class Loader extends JavaPlugin implements Listener {
 	private static void CmdC(String section, String command, CommandExecutor cs) {
 		if(cmds.getBoolean(section+"."+command+".Enabled")) {
 			PluginCommand c = TheAPI.createCommand(cmds.getString(section+"."+command+".Name"), getInstance);
-			List<String> aliases = new ArrayList<>();
+			List<String> aliases = new UnsortedList<>();
 			if(cmds.exists(section+"."+command+".Aliases")) {
 			if(cmds.get(section+"."+command+".Aliases") instanceof List)
 				aliases=cmds.getStringList(section+"."+command+".Aliases");
@@ -991,12 +991,12 @@ public class Loader extends JavaPlugin implements Listener {
 		return cmds.exists(section+"."+cmd+".SubPermission."+subPerm)?s.hasPermission(cmds.getString(section+"."+cmd+".SubPermission."+subPerm)):true;
 	}
 
-	public HashMap<String, Kit> kits = new HashMap<>();
+	public UnsortedMap<String, Kit> kits = new UnsortedMap<>();
 	public static Kit getKit(String kitName) {
 		return getInstance.kits.getOrDefault(kitName.toLowerCase(), null);
 	}
 
 	public static boolean hasKits(CommandSender p, String name) {
-		return kit.exists("Kit."+name+".Permission")?p.hasPermission(kit.getString("Kit."+name+".Permission")):true;
+		return kit.exists("Kits."+name+".Permission")?p.hasPermission(kit.getString("Kit."+name+".Permission")):true;
 	}
 }

@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +14,7 @@ import org.bukkit.util.StringUtil;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class SCR implements CommandExecutor, TabCompleter {
 
@@ -47,10 +48,10 @@ public class SCR implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if (args.length == 1) {
 			if (Loader.has(s, "SCR", "Info")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Version", "Info", "Reload"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Version", "Info", "Reload"), new UnsortedList<>()));
 			}
 		}
 		return c;

@@ -48,9 +48,13 @@ public class OnPlayerJoin implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerJoin(PlayerJoinEvent e) {
 		e.setJoinMessage("");
+		Player p = e.getPlayer();
 		new Tasker() {
 			public void run() {
-				Player p = e.getPlayer();
+				new Tasker() {
+					
+					@Override
+					public void run() {
 				if(Loader.config.getBoolean("Options.Skins.onJoin")) {
 					if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
 						String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
@@ -74,7 +78,7 @@ public class OnPlayerJoin implements Listener {
 							}
 						}, false);
 					}
-				}
+				}}}.runLater(10);
 				Loader.setupChatFormat(p);
 				Tasks.regPlayer(p);
 				User d = TheAPI.getUser(p);
@@ -88,35 +92,38 @@ public class OnPlayerJoin implements Listener {
 					d.set("FirstJoin", setting.format_date_time.format(new Date()));
 				if (!p.hasPlayedBefore()) {
 					if (!TheAPI.hasVanish(p.getName())) {
-							Object o = Loader.events.get("onJoin.FirstJoin.Text");
+							Object o = Loader.events.get("onJoin.First.Text");
 							if(o!=null) {
 							if(o instanceof Collection) {
-							for(String fa : Loader.events.getStringList("onJoin.FirstJoin.Text")) {
+							for(String fa : Loader.events.getStringList("onJoin.First.Text")) {
 								TheAPI.bcMsg(replaceAll(fa,p));
 							}}else
 								TheAPI.bcMsg(replaceAll(""+o, p));
 						}
 					}
-					Object o = Loader.events.get("onJoin.FirstJoin.Messages");
+					Object o = Loader.events.get("onJoin.First.Messages");
 					if(o!=null) {
 					if(o instanceof Collection) {
-						for(String fa : Loader.events.getStringList("onJoin.FirstJoin.Messages")) {
+						for(String fa : Loader.events.getStringList("onJoin.First.Messages")) {
 							TheAPI.msg(replaceAll(fa,p), p);
 						}}else
 					TheAPI.msg(replaceAll(""+o, p), p);
 					}
-					o = Loader.events.get("onJoin.FirstJoin.Commands");
+					new Tasker() {
+						public void run() {
+					Object o = Loader.events.get("onJoin.First.Commands");
 					if(o!=null) {
 					if(o instanceof Collection) {
-						for(String fa : Loader.events.getStringList("onJoin.FirstJoin.Commands")) {
+						for(String fa : Loader.events.getStringList("onJoin.First.Commands")) {
 							TheAPI.sudoConsole(TheAPI.colorize(replaceAll(fa,p)));
 						}}else
 					TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
-					}
-					o = Loader.events.get("onJoin.FirstJoin.Broadcast");
+					}}
+					}.runTaskSync();
+					o = Loader.events.get("onJoin.First.Broadcast");
 					if(o!=null) {
 					if(o instanceof Collection) {
-						for(String fa : Loader.events.getStringList("onJoin.FirstJoin.Broadcast")) {
+						for(String fa : Loader.events.getStringList("onJoin.First.Broadcast")) {
 							TheAPI.bcMsg(replaceAll(fa,p));
 						}}else
 					TheAPI.bcMsg(replaceAll(""+o, p));
@@ -140,15 +147,18 @@ public class OnPlayerJoin implements Listener {
 						}}else
 					TheAPI.msg(replaceAll(""+o, p), p);
 					}
-					o = Loader.events.get("onJoin.Commands");
+
+					new Tasker() {
+						public void run() {
+					Object o = Loader.events.get("onJoin.Commands");
 					if(o!=null) {
 					if(o instanceof Collection) {
 						for(String fa : Loader.events.getStringList("onJoin.Commands")) {
 							TheAPI.sudoConsole(TheAPI.colorize(replaceAll(fa,p)));
 						}}else
 					TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
-					}
-					
+					}}
+					}.runTaskSync();
 					o = Loader.events.get("onJoin.Broadcast");
 					if(o!=null) {
 					if(o instanceof Collection) {

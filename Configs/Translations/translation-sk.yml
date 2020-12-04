@@ -766,14 +766,11 @@ Skin:
   Set:
     You:
     - "%prefix% Skin nastavený na &e%skin%"
-    - "%prefix% Znovu sa pripojte pre obnovenie skinu"
     Other:
       Sender:
-          - "%prefix% Skin nastavený na &e%skin%"
-          - "%prefix% Znovu sa pripojte pre obnovenie skinu"
+      - "%prefix% Skin nastavený na &e%skin%"
       Receiver:
       - "%prefix% Skin bol nastavený na &e%skin%"
-      - "%prefix% Znovu sa pripojte pre obnovenie skinu"
   Reset:
     You: "%prefix% Skin bol resetovaný"
     Other:

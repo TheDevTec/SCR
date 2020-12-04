@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -30,6 +29,7 @@ import org.json.simple.JSONObject;
 
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 import me.DevTec.TheAPI.Utils.TheAPIUtils.LoaderClass;
 
 public class Metrics {
@@ -75,7 +75,7 @@ public class Metrics {
 	private static String serverUUID;
 
 	// A list with all custom charts
-	private final List<CustomChart> charts = new ArrayList<>();
+	private final List<CustomChart> charts = new UnsortedList<>();
 
 	public Metrics() {
 		// Load the data

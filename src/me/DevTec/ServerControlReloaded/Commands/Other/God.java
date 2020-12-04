@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +16,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class God implements CommandExecutor, TabCompleter {
 
@@ -131,19 +132,19 @@ public class God implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String a, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if(Loader.has(s, "God", "Other")) {
 			if(args.length==1) {
-					List<String> list = new ArrayList<>();
+					List<String> list = new UnsortedList<>();
 					list.addAll(Arrays.asList("On","Off"));
 					if(Loader.has(s, "God", "Other", "Other"))
 					for (Player player : TheAPI.getOnlinePlayers())
 						list.add(player.getName());
-					c.addAll(StringUtil.copyPartialMatches(args[0], list, new ArrayList<>()));
+					c.addAll(StringUtil.copyPartialMatches(args[0], list, new UnsortedList<>()));
 			}
 			if(args.length==2)
 				if(Loader.has(s, "God", "Other", "Other"))
-				c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("On","Off"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("On","Off"), new UnsortedList<>()));
 		}
 		return c;
 	}

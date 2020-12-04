@@ -1,8 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,14 +16,16 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 
 public class ListCmd implements CommandExecutor, TabCompleter {
 	
 	public String joiner(String value) {
-		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
+		UnsortedMap<String, List<String>> p = new UnsortedMap<String, List<String>>();
 		for (Player a : TheAPI.getOnlinePlayers()) {
 			String as = Staff.getGroup(a);
-			List<String> s = p.getOrDefault(as, new ArrayList<>());
+			List<String> s = p.getOrDefault(as, new UnsortedList<>());
 			s.add(a.getName());
 			p.put(as, s);
 		}
@@ -45,10 +46,10 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 	}
 	
 	public String joinercount(String value) {
-		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
+		UnsortedMap<String, List<String>> p = new UnsortedMap<String, List<String>>();
 		for (Player a : TheAPI.getOnlinePlayers()) {
 			String as = Staff.getGroup(a);
-			List<String> s = p.getOrDefault(as, new ArrayList<>());
+			List<String> s = p.getOrDefault(as, new UnsortedList<>());
 			s.add(a.getName());
 			p.put(as, s);
 		}

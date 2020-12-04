@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +16,7 @@ import org.bukkit.util.StringUtil;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class Repair implements CommandExecutor, TabCompleter {
 
@@ -95,11 +96,11 @@ public class Repair implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender arg0, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<String>();
+		List<String> c = new UnsortedList<String>();
 		List<String> s = Arrays.asList("Hand", "All");
 		if (args.length == 1)
 			if (Loader.has(arg0, "Repair", "Other"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], s, new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], s, new UnsortedList<>()));
 		if(args.length==2)return null;
 		return c;
 	}

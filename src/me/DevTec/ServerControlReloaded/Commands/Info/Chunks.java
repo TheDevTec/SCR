@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class Chunks implements CommandExecutor, TabCompleter {
 
@@ -44,10 +45,10 @@ public class Chunks implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if (cmd.getName().equalsIgnoreCase("chunks") && args.length == 1) {
 			if (Loader.has(s, "Chunks", "Info")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Unload, new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], Unload, new UnsortedList<>()));
 			}
 		}
 		return c;

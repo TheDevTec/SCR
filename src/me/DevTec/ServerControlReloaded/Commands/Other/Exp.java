@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +16,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.Repeat;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class Exp implements CommandExecutor, TabCompleter {
@@ -227,14 +228,14 @@ public class Exp implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender arg0, Command arg1,
 			String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		
 		if (args.length == 1) {
-			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Set", "Give", "Take", "Balance"), new ArrayList<>()));
+			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Set", "Give", "Take", "Balance"), new UnsortedList<>()));
 		}
 		
 		if (args.length == 3) { //0 1 2 3 4
-			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Set", "Give", "Take", "Balance"), new ArrayList<>()));
+			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Set", "Give", "Take", "Balance"), new UnsortedList<>()));
 		}
 		return c;
 	}

@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Enchantment;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,9 +16,10 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.EnchantmentAPI;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class EnchantTableRemove implements CommandExecutor, TabCompleter {
-	List<String> enchs = new ArrayList<String>();
+	List<String> enchs = new UnsortedList<String>();
 
 	public EnchantTableRemove() {
 		for (String sd : Arrays.asList("ARROW_DAMAGE", "POWER", "ARROW_FIRE", "FIRE", "ARROW_INFINITE", "INFINITY",
@@ -79,13 +80,13 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command a, String ea, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if (a.getName().equalsIgnoreCase("enchanttableremove") || a.getName().equalsIgnoreCase("Enchantremove")
 				|| a.getName().equalsIgnoreCase("Enchantmentremove" + "")) {
 			if (s.hasPermission("ServerControl.Enchant")) {
 				if (s instanceof Player) {
 					if (args.length == 1) {
-						c.addAll(StringUtil.copyPartialMatches(args[0], enchs, new ArrayList<>()));
+						c.addAll(StringUtil.copyPartialMatches(args[0], enchs, new UnsortedList<>()));
 
 					}
 				}

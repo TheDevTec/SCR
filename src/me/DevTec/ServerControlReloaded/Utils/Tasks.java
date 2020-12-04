@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +15,7 @@ import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 import me.DevTec.TheAPI.Utils.Listener.EventHandler;
 import me.DevTec.TheAPI.Utils.Listener.Listener;
@@ -25,8 +26,8 @@ import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class Tasks {
 	
-	public static List<String> players = new ArrayList<String>();
-	static List<Integer> tasks = new ArrayList<Integer>();
+	public static List<String> players = new UnsortedList<String>();
+	static List<Integer> tasks = new UnsortedList<Integer>();
 	static Map<String, String> sss = new UnsortedMap<String, String>();
 	static Loader a;
 	static int tests;

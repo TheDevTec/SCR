@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Enchantment;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.bukkit.Material;
@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class EnchantTableRemoveAll implements CommandExecutor, TabCompleter {
 	
@@ -25,7 +26,7 @@ public class EnchantTableRemoveAll implements CommandExecutor, TabCompleter {
 					Player p = (Player) s;
 					Material a = p.getItemInHand().getType();
 					if (a != Material.AIR) {
-						List<String> enchants = new ArrayList<>();
+						List<String> enchants = new UnsortedList<>();
 						if (!p.getItemInHand().getEnchantments().isEmpty()) {
 							for (Enchantment ea : p.getItemInHand().getEnchantments().keySet()) {
 								enchants.add(ea.getName());

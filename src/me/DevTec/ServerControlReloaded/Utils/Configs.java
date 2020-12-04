@@ -22,10 +22,11 @@ public class Configs {
 		}else lang="en";
 		Loader.trans = translations.get("Translations/translation-"+lang+".yml");
 		setting.load(settingMessage);
+		AnimationManager.reload();
 	}
 	
 	static Map<String, Config> translations = new UnsortedMap<>();
-	static List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Tablist.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
+	static List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Tablist.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
 	
 	private static void copyDefauts() {
 		for(String s : datas) {
@@ -80,6 +81,9 @@ public class Configs {
 	    		break;
 	    	case "Commands.yml":
 	    		Loader.cmds=c;
+	    		break;
+	    	case "Animations.yml":
+	    		Loader.anim=c;
 	    		break;
 	    	case "translation-en.yml":
 	    		Loader.english=c;

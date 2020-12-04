@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Kill;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -13,13 +13,14 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class KillAll implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "KillAll", "Kill")) {
-			List<String> pl = new ArrayList<String>();
+			List<String> pl = new UnsortedList<String>();
 			for (Player p : TheAPI.getOnlinePlayers()) {
 				boolean i = p.isDead() || p.getHealth()==0;
 				p.setHealth(0);

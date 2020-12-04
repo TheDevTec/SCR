@@ -775,14 +775,11 @@ Skin:
   Set:
     You:
     - "%prefix% Váš skin nastaven na &e%skin%"
-    - "%prefix% Připojte se znovu pro zobrazení skinu"
     Other:
       Sender:
       - "%prefix% Váš skin nastaven na &e%skin%"
-      - "%prefix% Připojte se znovu pro zobrazení skupinu"
       Receiver:
       - "%prefix% Skin hráče &e%player%&7 nastaven na &e%skin%"
-      - "%prefix% Připojte se znovu pro zobrazení skinu"
   Reset:
     You: "%prefix% Váš skin vyresetován"
     Other:

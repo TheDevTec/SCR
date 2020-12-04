@@ -5,8 +5,6 @@ import java.io.FileReader;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -26,6 +24,8 @@ import me.DevTec.TheAPI.BlocksAPI.BlockGetter;
 import me.DevTec.TheAPI.Utils.Position;
 import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
@@ -45,7 +45,7 @@ public class API {
 	}
 
 	public static List<SPlayer> getSPlayers() {
-		List<SPlayer> s = new ArrayList<>();
+		List<SPlayer> s = new UnsortedList<>();
 		for(Player p : TheAPI.getOnlinePlayers())s.add(getSPlayer(p));
 		return s;
 	}
@@ -67,7 +67,7 @@ public class API {
 		case HOME: {
 			String home = null;
 			User d = TheAPI.getUser(p);
-			List<String> homes = new ArrayList<String>();
+			List<String> homes = new UnsortedList<String>();
 			for (String s : d.getKeys("Homes"))
 				homes.add(s);
 			if (homes.isEmpty() == false) {
@@ -290,7 +290,7 @@ public class API {
 		return setMoneyFormat(new BigDecimal(money), colorized);
 	}
 
-	private static HashMap<String, SPlayer> cache = new HashMap<>();
+	private static UnsortedMap<String, SPlayer> cache = new UnsortedMap<>();
 	
 	public static boolean isAFK(Player p) {
 		return getSPlayer(p).isAFK();
@@ -317,7 +317,7 @@ public class API {
 	}
 
 	public static List<String> getAdvertisementMatches(String where) {
-		List<String> matches = new ArrayList<String>();
+		List<String> matches = new UnsortedList<String>();
 		if (getAdvertisement(where)) {
 			Matcher m = Pattern.compile("(?:\\d{1,3}[.,\\-:;\\/()=?}+ ]{1,4}){3}\\d{1,3}").matcher(where.toLowerCase());
 			while (m.find()) {

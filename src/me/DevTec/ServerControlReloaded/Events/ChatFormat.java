@@ -1,7 +1,5 @@
 package me.DevTec.ServerControlReloaded.Events;
 
-import java.util.HashMap;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +18,7 @@ import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 
 
 public class ChatFormat implements Listener {
@@ -85,7 +84,7 @@ public class ChatFormat implements Listener {
 		return s.length() - removeDoubled(s).length();
 	}
 
-	static HashMap<Player, String> old = new HashMap<Player, String>();
+	static UnsortedMap<Player, String> old = new UnsortedMap<Player, String>();
 
 	private boolean isSim(Player p, String msg) {
 		if (Loader.config.getBoolean("SpamWords.SimiliarMessage")) {

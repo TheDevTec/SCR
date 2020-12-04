@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Warps;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +15,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class DelHome implements CommandExecutor, TabCompleter {
 
@@ -48,13 +49,13 @@ public class DelHome implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if (s instanceof Player) {
 			if (args.length == 1) {
 				if (Loader.has(s, "DelHome", "Warps")) {
 					Set<String> homes = TheAPI.getUser(s.getName()).getKeys("Homes");
 					if (!homes.isEmpty() && homes != null)
-						c.addAll(StringUtil.copyPartialMatches(args[0], homes, new ArrayList<>()));
+						c.addAll(StringUtil.copyPartialMatches(args[0], homes, new UnsortedList<>()));
 				}
 			}
 		}

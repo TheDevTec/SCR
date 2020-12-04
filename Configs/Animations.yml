@@ -1,0 +1,29 @@
+# Placeholder: %animation-<NAME_OF_ANIMATION>%
+# 20 ticks = 1s
+
+welcome:
+  # Speed in ticks
+  speed: 5
+  # Lines of animation
+  lines:
+  - "&aW"
+  - "&aWe"
+  - "&aWel"
+  - "&aWelc"
+  - "&aWelco"
+  - "&aWelcom"
+  - "&aWelcome"
+  - "&aWelcom"
+  - "&aWelco"
+  - "&aWelc"
+  - "&aWel"
+  - "&aWe"
+  
+# %animation-tips%
+tips:
+  # Math!
+  speed: 20*60*5
+  lines:
+  - "&7Server is running on version &e%server_version%"
+  - "&7Developing of plugins isn't easy"
+  - "&7Join to our discord! &ediscord.io/devtec"

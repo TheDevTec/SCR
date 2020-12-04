@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
-import java.util.ArrayList; 
+
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -20,10 +20,11 @@ import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.CooldownAPI.CooldownAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class Kits implements CommandExecutor, TabCompleter {
 	public List<String> kits(CommandSender p) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new UnsortedList<String>();
 		for (String name : getKits())
 			if (Loader.hasKits(p, name))
 				list.add(name);
@@ -31,7 +32,7 @@ public class Kits implements CommandExecutor, TabCompleter {
 	}
 
 	public static List<String> getKits() {
-		return new ArrayList<String>(Loader.getInstance.kits.keySet());
+		return new UnsortedList<String>(Loader.getInstance.kits.keySet());
 	}
 
 	public static void giveKit(Player p, Kit kit, boolean cooldown, boolean economy, boolean messages) {
@@ -168,10 +169,10 @@ public class Kits implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		if (args.length == 1)
-			return StringUtil.copyPartialMatches(args[0], kits(s), new ArrayList<>());
+			return StringUtil.copyPartialMatches(args[0], kits(s), new UnsortedList<>());
 		if (args.length == 2)
 			return null;
-		return new ArrayList<>();
+		return new UnsortedList<>();
 	}
 
 }

@@ -22,11 +22,22 @@
  */
 package me.DevTec.ServerControlReloaded.Utils;
 
-import com.google.common.base.Enums;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.WordUtils;
@@ -34,12 +45,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
+import com.google.common.base.Enums;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 
 /**
  * <b>XMaterial</b> - Data Values/Pre-flattening<br>
@@ -1248,7 +1260,7 @@ public enum XMaterial {
      *
      * @since 5.1.0
      */
-    private static final Map<String, XMaterial> NAMES = new HashMap<>();
+    private static final Map<String, XMaterial> NAMES = new UnsortedMap<>();
 
     /**
      * Guava (Google Core Libraries for Java)'s cache for performance and timed caches.

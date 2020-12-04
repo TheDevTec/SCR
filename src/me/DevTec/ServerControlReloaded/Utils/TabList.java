@@ -1,9 +1,7 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Statistic;
@@ -22,10 +20,12 @@ import me.DevTec.TheAPI.APIs.TabListAPI;
 import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 
 public class TabList {
 	// GROUP, PRIORITE
-	private static HashMap<String, String> sorting = new HashMap<>();
+	private static UnsortedMap<String, String> sorting = new UnsortedMap<>();
 
 	public static void reload() {
 		sorting.clear();
@@ -38,7 +38,7 @@ public class TabList {
 	
 	//limit 1000 groups
 	private static List<String> generate(int size) {
-		List<String> a = new ArrayList<>(size);
+		List<String> a = new UnsortedList<>(size);
 		for(int i = 0; i < size; ++i) {
 			String s = "";
 			int limit = 4-(i+"").length();
@@ -167,7 +167,7 @@ public class TabList {
 	public static void setName(Player p) {
 		String p1 = getPrefix(p, true), p2 = getPrefix(p, false), s1 = getSuffix(p, true), s2 = getSuffix(p, false);
 		String name = getNameFormat(p).replace("%tab_prefix%", (p2!=null?replace(p2, p, true):"")).replace("%tab_suffix%", (s2!=null?replace(s2, p, true):""));
-		p.setPlayerListName(name);
+		p.setPlayerListName(AnimationManager.replace(p,name));
 		NameTagChanger.setNameTag(p, p1!=null?replace(p1, p, true):"", s1!=null?replace(s1, p, true):"");
 	}
 	
@@ -205,6 +205,6 @@ public class TabList {
 	}
 
 	public static void setFooterHeader(Player p) {
-		TabListAPI.setHeaderFooter(p, getPath(p, "Header"), getPath(p, "Footer"));
+		TabListAPI.setHeaderFooter(p, AnimationManager.replace(p,getPath(p, "Header")), AnimationManager.replace(p,getPath(p, "Footer")));
 	}
 }

@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Time;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -14,6 +14,7 @@ import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class Day implements CommandExecutor, TabCompleter {
 
@@ -50,7 +51,7 @@ public class Day implements CommandExecutor, TabCompleter {
 	}
 
 	public List<String> worlds() {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new UnsortedList<String>();
 		for (World p2 : Bukkit.getWorlds()) {
 			list.add(p2.getName());
 		}
@@ -59,10 +60,10 @@ public class Day implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if (cmd.getName().equalsIgnoreCase("day") && args.length == 1) {
 			if (Loader.has(s, "Day", "Time")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], worlds(), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], worlds(), new UnsortedList<>()));
 			}
 		}
 		return c;

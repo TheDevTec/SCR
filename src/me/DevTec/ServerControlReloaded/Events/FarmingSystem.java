@@ -27,7 +27,7 @@ public class FarmingSystem implements Listener {
 		if (e.isCancelled() || !setting.farming || e.getAction()!=Action.RIGHT_CLICK_BLOCK || Loader.config.getStringList("Options.FarmingSystem.ForbiddenWorlds").contains(e.getClickedBlock().getWorld().getName()))return;
 		BlockState s = e.getClickedBlock().getState();
 		MaterialData md = s.getData();
-		if (e.getClickedBlock().getType()==Material.NETHER_WART) {
+		if (e.getClickedBlock().getType()==XMaterial.NETHER_WART.parseMaterial()) {
 			NetherWarts data = (NetherWarts)md;
 			if(data.getState()==NetherWartsState.RIPE) {
 			data.setState(NetherWartsState.SEEDED);

@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Server;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +13,7 @@ import org.bukkit.util.StringUtil;
 import me.DevTec.ServerControlReloaded.Commands.Server.BigTask.TaskType;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class Stop implements CommandExecutor, TabCompleter {
 
@@ -41,10 +42,10 @@ public class Stop implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if (s.hasPermission("ServerControl.Stop") && args.length == 1)
 			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("15s", "30s", "now", "cancel"),
-					new ArrayList<>()));
+					new UnsortedList<>()));
 		return c;
 	}
 

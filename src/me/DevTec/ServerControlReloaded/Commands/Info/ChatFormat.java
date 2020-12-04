@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +14,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.APIs.PluginManagerAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class ChatFormat implements CommandExecutor, TabCompleter {
 	
@@ -143,34 +144,34 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
+		List<String> c = new UnsortedList<>();
 		if (args.length == 1) {
 			if (s.hasPermission("ServerControl.ChatFormat.List"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("List"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("List"), new UnsortedList<>()));
 			if (s.hasPermission("ServerControl.ChatFormat.Info"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Info"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Info"), new UnsortedList<>()));
 			if (s.hasPermission("ServerControl.ChatFormat.Create"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Create"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Create"), new UnsortedList<>()));
 			if (s.hasPermission("ServerControl.ChatFormat.Delete"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Delete"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Delete"), new UnsortedList<>()));
 			if (s.hasPermission("ServerControl.ChatFormat.Set"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Set"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Set"), new UnsortedList<>()));
 		}
 		if (args.length == 2) {
 			if (args[0].equalsIgnoreCase("info") && s.hasPermission("ServerControl.ChatFormat.Info")
 					|| args[0].equalsIgnoreCase("delete") && s.hasPermission("ServerControl.ChatFormat.Delete")
 					|| args[0].equalsIgnoreCase("set") && s.hasPermission("ServerControl.ChatFormat.Set"))
 				c.addAll(StringUtil.copyPartialMatches(args[1],
-						Loader.config.getKeys("Chat-Groups"), new ArrayList<>()));
+						Loader.config.getKeys("Chat-Groups"), new UnsortedList<>()));
 
 			if (args[0].equalsIgnoreCase("create") && s.hasPermission("ServerControl.ChatFormat.Create")) {
 				if (Loader.config.getString("Chat-Groups") != null)
 					for (String a : Loader.config.getKeys("Chat-Groups"))
 						if (args[1].equals(a))
 							c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("AlreadyExists"),
-									new ArrayList<>()));
+									new UnsortedList<>()));
 						else {
-							List<String> list = new ArrayList<String>();
+							List<String> list = new UnsortedList<String>();
 							if (Loader.vault != null && PluginManagerAPI.getPlugin("Vault") != null) {
 								for (String d : Loader.vault.getGroups()) {
 									list.add(d);
@@ -178,19 +179,19 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 							} else
 								list = Arrays.asList("?");
 							list.removeAll(Loader.config.getKeys("Chat-Groups"));
-							c.addAll(StringUtil.copyPartialMatches(args[1], list, new ArrayList<>()));
+							c.addAll(StringUtil.copyPartialMatches(args[1], list, new UnsortedList<>()));
 						}
-				c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new UnsortedList<>()));
 			}
 		}
 		if (args.length == 3) {
 			if (args[0].equalsIgnoreCase("set") && s.hasPermission("ServerControl.ChatFormat.Set"))
-				c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("Chat", "Name"), new ArrayList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("Chat", "Name"), new UnsortedList<>()));
 		}
 		if (args.length == 4) {
 			if (args[0].equalsIgnoreCase("set") && s.hasPermission("ServerControl.ChatFormat.Set"))
 				if (args[2].equalsIgnoreCase("Chat") || args[2].equalsIgnoreCase("Name"))
-					c.addAll(StringUtil.copyPartialMatches(args[3], Arrays.asList("?"), new ArrayList<>()));
+					c.addAll(StringUtil.copyPartialMatches(args[3], Arrays.asList("?"), new UnsortedList<>()));
 		}
 		return c;
 	}
