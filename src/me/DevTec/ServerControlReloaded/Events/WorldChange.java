@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerGameModeChangeEvent;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
-import me.DevTec.ServerControlReloaded.Utils.ScoreboardStats;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 
 public class WorldChange implements Listener {
@@ -31,7 +30,6 @@ public class WorldChange implements Listener {
 		if (a.hasGodEnabled())
 			a.enableGod();
 		a.setGamamode();
-		ScoreboardStats.createScoreboard(e.getPlayer());
 
 	}
 

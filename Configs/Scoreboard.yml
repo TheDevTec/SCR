@@ -34,6 +34,10 @@ Options:
   # Time to update scoreboard
   # 20 ticks = 1s
   RefleshTick: 20
+  
+  # List of forbidden worlds
+  ForbiddenWorlds:
+  - "DisabledWorld"
 
 # Displayname of scoreboard
 Name: "&8» &7&lInfo &8«"

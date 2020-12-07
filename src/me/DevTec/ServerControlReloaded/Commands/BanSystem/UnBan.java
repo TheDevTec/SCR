@@ -34,7 +34,7 @@ public class UnBan implements CommandExecutor, TabCompleter {
 						.replace("%playername%", args[0]).replace("%player%", args[0]));
 				return true;
 			}
-			Loader.sendMessages(s, "BanSystem.Not.IPBanned", Placeholder.c().replace("%ip%", args[0]));
+			Loader.sendMessages(s, "BanSystem.Not.Banned", Placeholder.c().replace("%playername%", args[0]).replace("%player%", args[0]));
 			return true;
 		}
 		Loader.noPerms(s, "UnBan", "BanSystem");

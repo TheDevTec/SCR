@@ -65,10 +65,7 @@ public class Tasks {
 
 		if (setting.save)
 			savetask();
-
-		if (setting.sb)
-			scoreboard();
-
+		
 		other();
 		tempfly();
 	}
@@ -102,20 +99,6 @@ public class Tasks {
 						}
 					}}
 		}.runRepeating(0, 20));
-	}
-
-	private static void scoreboard() {
-		int r = Loader.sb.getInt("Options.RefleshTick");
-		if (r <= 0)
-			r = 1;
-		tasks.add(new Tasker() {
-			@Override
-			public void run() {
-				for (Player p : TheAPI.getOnlinePlayers())
-					ScoreboardStats.createScoreboard(p);
-
-			}
-		}.runRepeating(0, r));
 	}
 
 	private static void savetask() {

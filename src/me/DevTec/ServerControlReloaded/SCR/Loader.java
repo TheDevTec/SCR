@@ -78,6 +78,8 @@ import me.DevTec.ServerControlReloaded.Commands.Message.Sudo;
 import me.DevTec.ServerControlReloaded.Commands.Nickname.Nick;
 import me.DevTec.ServerControlReloaded.Commands.Nickname.NickReset;
 import me.DevTec.ServerControlReloaded.Commands.Other.AFK;
+import me.DevTec.ServerControlReloaded.Commands.Other.ActionBar;
+import me.DevTec.ServerControlReloaded.Commands.Other.BossBar;
 import me.DevTec.ServerControlReloaded.Commands.Other.Butcher;
 import me.DevTec.ServerControlReloaded.Commands.Other.ChatLock;
 import me.DevTec.ServerControlReloaded.Commands.Other.Exp;
@@ -90,6 +92,7 @@ import me.DevTec.ServerControlReloaded.Commands.Other.Heal;
 import me.DevTec.ServerControlReloaded.Commands.Other.Kits;
 import me.DevTec.ServerControlReloaded.Commands.Other.MultiWorlds;
 import me.DevTec.ServerControlReloaded.Commands.Other.Repair;
+import me.DevTec.ServerControlReloaded.Commands.Other.Scoreboard;
 import me.DevTec.ServerControlReloaded.Commands.Other.Skin;
 import me.DevTec.ServerControlReloaded.Commands.Other.Skull;
 import me.DevTec.ServerControlReloaded.Commands.Other.Spawner;
@@ -150,13 +153,13 @@ import me.DevTec.ServerControlReloaded.Events.WorldChange;
 import me.DevTec.ServerControlReloaded.Utils.Colors;
 import me.DevTec.ServerControlReloaded.Utils.Configs;
 import me.DevTec.ServerControlReloaded.Utils.Converter;
+import me.DevTec.ServerControlReloaded.Utils.DisplayManager;
 import me.DevTec.ServerControlReloaded.Utils.Kit;
 import me.DevTec.ServerControlReloaded.Utils.Metrics;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
 import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
-import me.DevTec.ServerControlReloaded.Utils.ScoreboardStats;
 import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.VaultHook;
@@ -185,11 +188,20 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
-	public static Config config, sb, tab, mw, kit, trans, events, cmds, anim;
+	public static Config config, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb;
 	public static Set<Rule> rules = new UnsortedSet<>();
-	
+	private int task;
+	private long time, rkick;
+	private static Set<PluginCommand> registered = new UnsortedSet<>();
 	public static Economy econ;
 	public static Loader getInstance;
+	public static Config english;
+	private static UpdateChecker updater;
+	private static Metrics metrics;
+	public static Chat vault = null;
+	public static Permission perms = null;
+	private static int aad = 0;
+	public UnsortedMap<String, Kit> kits = new UnsortedMap<>();
 	
 	public static class Placeholder {
 		private final UnsortedMap<String, String> set = new UnsortedMap<>();
@@ -252,8 +264,6 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		return PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender : null, string);
 	}
-	
-	public static Config english;
 	
 	public static Object getTranslation(String path) {
 		if(!trans.exists(path)) {
@@ -403,11 +413,6 @@ public class Loader extends JavaPlugin implements Listener {
 		Configs.load(false);
 		if (PluginManagerAPI.getPlugin("Vault") != null) {
 			setupEco();
-			if (vault == null) {
-				TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
-				TheAPI.msg(setting.prefix + " &eINFO: &7Missing Permissions plugin for Groups (TabList and ChatFormat).", TheAPI.getConsole());
-				TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
-			}
 		} else {
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &eINFO: &7Missing Vault plugin for Economy.", TheAPI.getConsole());
@@ -520,9 +525,6 @@ public class Loader extends JavaPlugin implements Listener {
 	    }
 	}
 	
-	private static UpdateChecker updater;
-	private static Metrics metrics;
-
 	@Override
 	public void onDisable() {
 		org.bukkit.event.HandlerList.unregisterAll((Plugin)this);
@@ -532,7 +534,7 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		Tasks.unload();
 		TabList.removeTab();
-		ScoreboardStats.removeScoreboard();
+		DisplayManager.unload();
 		for (String w : mw.getStringList("Worlds"))
 			if (Bukkit.getWorld(w) != null) {
 				Bukkit.getLogger().info("Saving world '" + w + "'");
@@ -540,8 +542,6 @@ public class Loader extends JavaPlugin implements Listener {
 				Bukkit.getLogger().info("World '" + w + "' saved");
 			}
 	}
-
-	public static Chat vault = null;
 
 	private static boolean setupVault() {
 		RegisteredServiceProvider<Chat> economyProvider = Bukkit.getServicesManager()
@@ -596,8 +596,6 @@ public class Loader extends JavaPlugin implements Listener {
 		return (econ != null);
 	}
 
-	public static Permission perms = null;
-
 	private static boolean setupPermisions() {
 		RegisteredServiceProvider<Permission> economyProvider = Bukkit.getServicesManager()
 				.getRegistration(net.milkbowl.vault.permission.Permission.class);
@@ -606,7 +604,7 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		return (perms != null);
 	}
-	private static int aad = 0;
+	
 	public static void reload() {
 		loading = System.currentTimeMillis();
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
@@ -635,6 +633,8 @@ public class Loader extends JavaPlugin implements Listener {
 				TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			}
 		}
+		DisplayManager.unload();
+		DisplayManager.load();
 		rules.clear();
 		Converter.convert();
 		MultiWorldsUtils.LoadWorlds();
@@ -699,8 +699,6 @@ public class Loader extends JavaPlugin implements Listener {
 		aad=1;
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 	}
-
-	private static Set<PluginCommand> registered = new UnsortedSet<>();
 	
 	private static void CmdC(String section, String command, CommandExecutor cs) {
 		if(cmds.getBoolean(section+"."+command+".Enabled")) {
@@ -718,9 +716,6 @@ public class Loader extends JavaPlugin implements Listener {
 			registered.add(c);
 		}
 	}
-	
-	private int task;
-	private long time, rkick;
 
 	public void starts() {
 		time = StringUtils.timeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
@@ -921,7 +916,9 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "Feed", new Feed());
 		CmdC("Other", "Item", new me.DevTec.ServerControlReloaded.Commands.Other.Item());
 		CmdC("Other", "TempFly", new TempFly());
-		CmdC("Other", "ScoreBoard", new me.DevTec.ServerControlReloaded.Commands.Other.ScoreboardStats());
+		CmdC("Other", "ScoreBoard", new Scoreboard());
+		CmdC("Other", "ActionBar", new ActionBar());
+		CmdC("Other", "BossBar", new BossBar());
 		CmdC("Other", "Trash", new Trash());
 		CmdC("Other", "Thor", new Thor());
 		CmdC("Other", "Give",new Give());
@@ -1001,7 +998,6 @@ public class Loader extends JavaPlugin implements Listener {
 		return cmds.exists(section+"."+cmd+".SubPermission."+subPerm)?s.hasPermission(cmds.getString(section+"."+cmd+".SubPermission."+subPerm)):true;
 	}
 
-	public UnsortedMap<String, Kit> kits = new UnsortedMap<>();
 	public static Kit getKit(String kitName) {
 		return getInstance.kits.getOrDefault(kitName, null);
 	}

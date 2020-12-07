@@ -5,5 +5,5 @@ website: https://www.spigotmc.org/resources/71147/
 description: Fully customizable plugin with many features!
 author: DevTec
 depend: [TheAPI]
-softdepend: [Essentials]
+softdepend: [Essentials,Residence,WorldGuard,WorldEdit]
 api-version: 1.13

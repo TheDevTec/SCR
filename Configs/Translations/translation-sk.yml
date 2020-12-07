@@ -744,24 +744,30 @@ Inventory:
       Sender: "%prefix% Otváram pracovný stôl hráčovi &e%player%"
       Receiver: "%prefix% Otváram pracovný stôl"
       
-ScoreBoard:
-  Toggle:
-    Show:
-      You: "%prefix% Tvoj scoreboard už není vypnutý"
-      Other:
-        Sender: "%prefix% Tvoj scoreboard už není vypnutý"
-        Receiver: "%prefix% Zapol si scoreboard hráčovi &e%player%"
-    Hide:
-      You: "%prefix% Tvoj scoreboard je vypnutý"
-      Other:
-        Sender: "%prefix% Tvoj scoreboard je vypnutý"
-        Receiver: "%prefix% Vypol si scoreboard hráčovi &e%player%"
-    Cancelled:
-      You: "%prefix% Nemôžeš si vypnúť scoreboard"
-      Other:
-        Sender: "%prefix% Nemôžeš vypnúť scoreboard hráčovi &e%player%"
-        Receiver: ""
-        
+
+DisplayManager:
+  Scoreboard:
+    Show: "%prefix% Tvůj scoreboard byla zobrazena"
+    Hide: "%prefix% Tvůj scoreboard byla schována"
+  ActionBar:
+    Show: "%prefix% Tvůj actionbar byl zobrazen"
+    Hide: "%prefix% Tvůj actionbar byl schován"
+  BossBar:
+    Show: "%prefix% Tvůj bossbar byl zobrazen"
+    Hide: "%prefix% Tvůj bossbar byl schován"
+   
+Scoreboard:
+  Show: "%prefix% Scoreboard &e%player% &7byla zobrazena"
+  Hide: "%prefix% Scoreboard &e%player% &7byla schována"
+   
+ActionBar:
+  Show: "%prefix% ActionBar &e%player% &7byl zobrazen"
+  Hide: "%prefix% ActionBar &e%player% &7byl schován"
+   
+BossBar:
+  Show: "%prefix% BossBar &e%player% &7byl zobrazen"
+  Hide: "%prefix% BossBar &e%player% &7byl schován"
+  
 Skin:
   Set:
     You: "%prefix% Skin nastavený na &e%skin%"

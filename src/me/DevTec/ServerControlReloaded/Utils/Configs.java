@@ -26,7 +26,7 @@ public class Configs {
 	}
 	
 	static Map<String, Config> translations = new UnsortedMap<>();
-	static List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Tablist.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
+	static List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
 	
 	private static void copyDefauts() {
 		for(String s : datas) {
@@ -75,6 +75,12 @@ public class Configs {
 	    		break;
 	    	case "MultiWorlds.yml":
 	    		Loader.mw=c;
+	    		break;
+	    	case "BossBar.yml":
+	    		Loader.bb=c;
+	    		break;
+	    	case "ActionBar.yml":
+	    		Loader.ac=c;
 	    		break;
 	    	case "Events.yml":
 	    		Loader.events=c;

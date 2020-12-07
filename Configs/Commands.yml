@@ -900,13 +900,38 @@ Other:
     - "sb"
     Permission: "SCR.Command.ScoreBoard"
     Help:
-    - "/ScoreBoard Reload - Reload scorebord & config"
-    - "/ScoreBoard Toggle <player> - Toggle scorebord of player"
+    - "/Scoreboard Toggle <player> - Toggle scorebord of player"
     SubPermission:
       Toggle: "SCR.Command.ScoreBoard.Toggle"
-      Reload: "SCR.Command.ScoreBoard.Reload"
     AdvancedHelp:
       ToggleOther: "/ScoreBoard Toggle <player> - Toggle scorebord of player"
+    Enabled: true
+  ActionBar:
+    Name: "actionbar"
+    Aliases:
+    - "ab"
+    - "hotbar"
+    - "hb"
+    Permission: "SCR.Command.ActionBar"
+    Help:
+    - "/ActionBar Toggle <player> - Toggle actionbar of player"
+    SubPermission:
+      Toggle: "SCR.Command.ActionBar.Toggle"
+    AdvancedHelp:
+      ToggleOther: "/ActionBar Toggle <player> - Toggle actionbar of player"
+    Enabled: true
+  BossBar:
+    Name: "bossbar"
+    Aliases:
+    - "bb"
+    - "bar"
+    Permission: "SCR.Command.BossBar"
+    Help:
+    - "/BossBar Toggle <player> - Toggle bossbar of player"
+    SubPermission:
+      Toggle: "SCR.Command.BossBar.Toggle"
+    AdvancedHelp:
+      ToggleOther: "/BossBar Toggle <player> - Toggle bossbar of player"
     Enabled: true
   Skull:
     Name: "skull"

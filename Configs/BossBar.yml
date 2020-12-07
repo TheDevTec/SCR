@@ -1,0 +1,28 @@
+Enabled: false
+
+# List of forbidden worlds
+ForbiddenWorlds:
+- "DisabledWorld"
+
+PerPlayer:
+  InputPlayerNameHere:
+    Toggleable: true
+    Stage: '100.0'
+    Text: "&e&l%animation-welcome% &6%playername%"
+    
+PerWorld:
+  InputWorldNameHere:
+    Toggleable: true
+    Stage: '100.0'
+    Text: "&e&l%animation-welcome% &6%playername%"
+
+Toggleable: true
+
+# Reflesh speed in ticks
+RefleshTick: 20
+
+# BossBar stage (Can be used %math{}% !}
+Stage: '100.0'
+
+# BossBar text
+Text: "&e&l%animation-welcome% &6%playername%"

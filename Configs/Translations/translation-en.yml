@@ -761,24 +761,29 @@ Inventory:
       Sender: "%prefix% Opening Workbench for &e%player%"
       Receiver: "%prefix% Opening Workbench"
       
-ScoreBoard:
-  Toggle:
-    Show:
-      You: "%prefix% Your scoreboard is no longer hidden"
-      Other:
-        Sender: "%prefix% Your scoreboard is no longer hidden"
-        Receiver: "%prefix% You enabled scoreboard of &e%player%"
-    Hide:
-      You: "%prefix% Your scoreboard is hidden"
-      Other:
-        Sender: "%prefix% Your scoreboard was hidden"
-        Receiver: "%prefix% You disabled scoreboard of &e%player%"
-    Cancelled:
-      You: "%prefix% You can't toggle scoreboard"
-      Other:
-        Sender: "%prefix% You can't toggle scoreboard of &e%player%"
-        Receiver: ""
-        
+DisplayManager:
+  Scoreboard:
+    Show: "%prefix% Your scoreboard has been displayed"
+    Hide: "%prefix% Your scoreboard has been hidden"
+  ActionBar:
+    Show: "%prefix% Your actionbar has been displayed"
+    Hide: "%prefix% Your actionbar has been hidden"
+  BossBar:
+    Show: "%prefix% Your bossbar has been displayed"
+    Hide: "%prefix% Your bossbar has been hidden"
+   
+Scoreboard:
+  Show: "%prefix% Scoreboard of &e%player% &7has been displayed"
+  Hide: "%prefix% Scoreboard of &e%player% &7has been hidden"
+   
+ActionBar:
+  Show: "%prefix% ActionBar of &e%player% &7has been displayed"
+  Hide: "%prefix% ActionBar of &e%player% &7has been hidden"
+   
+BossBar:
+  Show: "%prefix% BossBar of &e%player% &7has been displayed"
+  Hide: "%prefix% BossBar of &e%player% &7has been hidden"
+
 Skin:
   Set:
     You: "%prefix% Your skin set to &e%skin%"

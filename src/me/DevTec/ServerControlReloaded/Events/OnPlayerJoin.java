@@ -17,8 +17,8 @@ import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.API.TeleportLocation;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.DevTec.ServerControlReloaded.Utils.DisplayManager;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
-import me.DevTec.ServerControlReloaded.Utils.ScoreboardStats;
 import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.setting;
@@ -170,7 +170,7 @@ public class OnPlayerJoin implements Listener {
 				}
 				if (!EconomyAPI.hasAccount(p))
 					EconomyAPI.createAccount(p);
-				ScoreboardStats.createScoreboard(p);
+				DisplayManager.initializePlayer(p);
 				TabList.setFooterHeader(p);
 				TabList.setName(p);
 				SPlayer s = API.getSPlayer(p);
@@ -196,7 +196,7 @@ public class OnPlayerJoin implements Listener {
 		new Tasker() {
 			public void run() {
 				Player p = e.getPlayer();
-				ScoreboardStats.removeScoreboard(p);
+				DisplayManager.removeCache(p);
 				if (!TheAPI.hasVanish(p.getName())) {
 						Object o = Loader.events.get("onQuit.Text");
 						if(o!=null) {
