@@ -9,8 +9,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Spigot.jar"/>
-	<classpathentry kind="lib" path="C:/EclipseUtils/TheAPI.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/WG.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/WE.jar"/>
+	<classpathentry kind="lib" path="C:/EclipseUtils/TheAPI.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.APIs.NameTagAPI;
@@ -43,8 +44,8 @@ public class NameTagChanger {
 	}
 
 	public static void remove(Player p) {
-		if(p==null)return;
-		new NameTagAPI(p, "", "").resetNameTag();
+		if(p==null || p.getScoreboard()==null)return;
+		for(Team t : p.getScoreboard().getTeams())t.unregister();
 		t.remove(p);
 	}
 }

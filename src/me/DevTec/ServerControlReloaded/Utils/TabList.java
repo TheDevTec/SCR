@@ -22,6 +22,8 @@ import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
+import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class TabList {
 	// GROUP, PRIORITE
@@ -176,7 +178,7 @@ public class TabList {
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			NameTagChanger.remove(p);
 			TabListAPI.setTabListName(p,p.getName());
-			TabListAPI.setHeaderFooter(p, "", "");
+			Ref.sendPacket(p, NMSAPI.getPacketPlayOutPlayerListHeaderFooter(Ref.IChatBaseComponent(""), Ref.IChatBaseComponent("")));
 		}
 	}
 
@@ -205,6 +207,8 @@ public class TabList {
 	}
 
 	public static void setFooterHeader(Player p) {
-		TabListAPI.setHeaderFooter(p, AnimationManager.replace(p,getPath(p, "Header")), AnimationManager.replace(p,getPath(p, "Footer")));
+		Ref.sendPacket(p, NMSAPI.getPacketPlayOutPlayerListHeaderFooter(
+			NMSAPI.getIChatBaseComponentFromCraftBukkit(AnimationManager.replace(p,getPath(p, "Header"))), 
+			NMSAPI.getIChatBaseComponentFromCraftBukkit(AnimationManager.replace(p,getPath(p, "Footer")))));
 	}
 }

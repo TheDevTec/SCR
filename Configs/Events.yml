@@ -11,8 +11,7 @@ onJoin:
     - "kit %player% firstJoin"
     Broadcast:
     - "%prefix% Welcome &e%player% &7on our server!"
-    - "%prefix% Player &e%player% &7joined the game"
-    Text: "none"
+    Text: "%prefix% Player &e%player% &7joined the game"
   # Join to the server (Not first time)
   Messages:
     - "%prefix% »==========«"

@@ -532,8 +532,8 @@ public class Loader extends JavaPlugin implements Listener {
 			p.setFlying(false);
 			p.setAllowFlight(false);
 		}
-		Tasks.unload();
 		TabList.removeTab();
+		Tasks.unload();
 		DisplayManager.unload();
 		for (String w : mw.getStringList("Worlds"))
 			if (Bukkit.getWorld(w) != null) {
@@ -609,16 +609,16 @@ public class Loader extends JavaPlugin implements Listener {
 		loading = System.currentTimeMillis();
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		if(aad==1) {
+			DisplayManager.unload();
+			DisplayManager.load();
 			if(metrics!=null) {
 				Bukkit.getServicesManager().unregister(metrics);
 				if(metrics.getTimer()!=null)
 				metrics.getTimer().cancel();
 			}
 			getInstance.stop();
-			TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading configs..", TheAPI.getConsole());
-			Configs.load(true);
-			TheAPI.msg(setting.prefix + " &7Configs "+(aad == 0 ? "l" : "rel")+"oaded.", TheAPI.getConsole());
 		}else {
+			DisplayManager.load();
 			if (PluginManagerAPI.getPlugin("Vault") != null) {
 				setupVault();
 				setupPermisions();
@@ -633,8 +633,6 @@ public class Loader extends JavaPlugin implements Listener {
 				TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			}
 		}
-		DisplayManager.unload();
-		DisplayManager.load();
 		rules.clear();
 		Converter.convert();
 		MultiWorldsUtils.LoadWorlds();
@@ -694,6 +692,7 @@ public class Loader extends JavaPlugin implements Listener {
 		for(PluginCommand reg : registered) {
 			TheAPI.unregisterCommand(reg);
 		}
+		registered.clear();
 		CommandsRegister();
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading of SCR took "+(System.currentTimeMillis()-loading)+"ms", TheAPI.getConsole());
 		aad=1;

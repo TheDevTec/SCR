@@ -29,6 +29,7 @@ public class AnimationManager {
 	}
 	
 	public static String replace(Player player, String where) {
+		if(where==null)return null;
 		for(Entry<String, Animation> e : a.entrySet()) {
 			where=where.replace("%animation-"+e.getKey()+"%", e.getValue().get());
 		}

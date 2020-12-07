@@ -7,12 +7,15 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.TheAPI.TheAPI;
+import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.ScoreboardAPI.ScoreboardAPI;
 import me.DevTec.TheAPI.ScoreboardAPI.SimpleScore;
 import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedSet;
 import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class DisplayManager {
 	public static enum DisplayType {
@@ -28,32 +31,34 @@ public class DisplayManager {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void removeCache(Player p) {
 		for(DisplayType t : DisplayType.values()) {
 			ignore.get(t).remove(p.getName());
 			hide.get(t).remove(p.getName());
 		}
+		TheAPI.sendActionBar(p, "");
+		if(TheAPI.getBossBar(p)!=null)
+		TheAPI.removeBossBar(p);
+		((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(p.getName()).destroy();
+		((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(p.getName());
 	}
 	
 	public static void show(Player p, DisplayType type) {
-		TheAPI.getUser(p).setAndSave("SCR."+type.name(), true);
+		TheAPI.getUser(p).setAndSave("SCR."+type.name(), false);
+		ignore.get(type).remove(p.getName());
+		hide.get(type).remove(p.getName());
 		switch(type) {
 			case ACTIONBAR:{
 				Loader.sendMessages(p, "DisplayManager.ActionBar.Show");
-				ignore.get(type).remove(p.getName());
-				hide.get(type).remove(p.getName());
 			}
 			break;
 			case BOSSBAR:{
 				Loader.sendMessages(p, "DisplayManager.BossBar.Show");
-				ignore.get(type).remove(p.getName());
-				hide.get(type).remove(p.getName());
 			}
 			break;
 			case SCOREBOARD:{
 				Loader.sendMessages(p, "DisplayManager.Scoreboard.Show");
-				ignore.get(type).remove(p.getName());
-				hide.get(type).remove(p.getName());
 			}
 			break;
 		}
@@ -90,7 +95,7 @@ public class DisplayManager {
 			case BOSSBAR:
 				return Loader.bb.exists("PerPlayer."+s.getName())?Loader.bb.getBoolean("PerPlayer."+s.getName()+".Toggleable"):(Loader.bb.exists("PerWorld."+s.getWorld().getName())?Loader.bb.getBoolean("PerWorld."+s.getWorld().getName()+".Toggleable"):Loader.bb.getBoolean("Toggleable"));
 			case SCOREBOARD:
-				return Loader.sb.exists("PerPlayer."+s.getName())?Loader.sb.getBoolean("PerPlayer."+s.getName()+".Toggleable"):(Loader.sb.exists("PerWorld."+s.getWorld().getName())?Loader.sb.getBoolean("PerWorld."+s.getWorld().getName()+".Toggleable"):Loader.sb.getBoolean("Toggleable"));
+				return Loader.sb.exists("PerPlayer."+s.getName())?Loader.sb.getBoolean("PerPlayer."+s.getName()+".Toggleable"):(Loader.sb.exists("PerWorld."+s.getWorld().getName())?Loader.sb.getBoolean("PerWorld."+s.getWorld().getName()+".Toggleable"):Loader.sb.getBoolean("Options.Toggleable"));
 		}
 		return true;
 	}
@@ -109,6 +114,8 @@ public class DisplayManager {
 	}
 	
 	public static void load() {
+		for(Player s : TheAPI.getOnlinePlayers())
+			initializePlayer(s);
 		if(Loader.ac.getBoolean("Enabled"))
 		tasks.add(new Tasker() {
 			public void run() {
@@ -197,7 +204,7 @@ public class DisplayManager {
 										stage="PerWorld."+s.getWorld().getName()+".Stage";
 									}
 								}
-								TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(Loader.bb.getString(stage)).doubleValue()/100);
+								TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
 								continue;
 							}
 							hide.get(DisplayType.BOSSBAR).add(s.getName());
@@ -217,7 +224,7 @@ public class DisplayManager {
 										stage="PerWorld."+s.getWorld().getName()+".Stage";
 									}
 								}
-								TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(Loader.bb.getString(stage)).doubleValue()/100);
+								TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
 								continue;
 							}
 							//already gone
@@ -236,7 +243,7 @@ public class DisplayManager {
 								stage="PerWorld."+s.getWorld().getName()+".Stage";
 							}
 						}
-						TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(Loader.bb.getString(stage)).doubleValue()/100);
+						TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
 						continue;
 					}
 				}
@@ -245,12 +252,16 @@ public class DisplayManager {
 		if (setting.sb)
 		tasks.add(new Tasker() {
 			SimpleScore score = new SimpleScore();
+			@SuppressWarnings("unchecked")
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
 					if(Loader.sb.getStringList("Options.ForbiddenWorlds").contains(s.getWorld().getName())) {
 						if(!hide.get(DisplayType.SCOREBOARD).contains(s.getName())) {
 							hide.get(DisplayType.SCOREBOARD).add(s.getName());
-							score.send(s);
+							if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
+								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(s.getName()).destroy();
+								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()); //remove
+							}
 							continue;
 						}
 						continue;
@@ -275,7 +286,10 @@ public class DisplayManager {
 								continue;
 							}
 							hide.get(DisplayType.SCOREBOARD).add(s.getName());
-							score.send(s); //send empty scoreboard
+							if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
+								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(s.getName()).destroy();
+								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()); //remove
+							}
 							continue;
 						}else {
 							if(!isToggleable(s, DisplayType.SCOREBOARD)) {
@@ -320,16 +334,21 @@ public class DisplayManager {
 				}
 			}
 		}.runRepeating(0, StringUtils.calculate(Loader.sb.getString("Options.RefleshTick")).longValue()));
+		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void unload() {
 		for(int i : tasks)
 			Scheduler.cancelTask(i);
-		SimpleScore score = new SimpleScore();
 		for(Player s : TheAPI.getOnlinePlayers()) {
 			TheAPI.sendActionBar(s, "");
+			if(TheAPI.getBossBar(s)!=null)
 			TheAPI.removeBossBar(s);
-			score.send(s);
+			if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
+				((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(s.getName()).destroy();
+				((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()); //remove
+			}
 		}
 		tasks.clear();
 		for(DisplayType t : DisplayType.values()) {

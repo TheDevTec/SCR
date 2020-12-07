@@ -49,12 +49,9 @@ public class OnPlayerJoin implements Listener {
 	public void playerJoin(PlayerJoinEvent e) {
 		e.setJoinMessage("");
 		Player p = e.getPlayer();
+		DisplayManager.initializePlayer(p);
 		new Tasker() {
 			public void run() {
-				new Tasker() {
-					
-					@Override
-					public void run() {
 				if(Loader.config.getBoolean("Options.Skins.onJoin")) {
 					if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
 						String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
@@ -78,7 +75,7 @@ public class OnPlayerJoin implements Listener {
 							}
 						}, false);
 					}
-				}}}.runLater(10);
+				}
 				Loader.setupChatFormat(p);
 				Tasks.regPlayer(p);
 				User d = TheAPI.getUser(p);
@@ -111,6 +108,7 @@ public class OnPlayerJoin implements Listener {
 					}
 					new Tasker() {
 						public void run() {
+							API.teleportPlayer(p, TeleportLocation.SPAWN);
 					Object o = Loader.events.get("onJoin.First.Commands");
 					if(o!=null) {
 					if(o instanceof Collection) {
@@ -128,7 +126,6 @@ public class OnPlayerJoin implements Listener {
 						}}else
 					TheAPI.bcMsg(replaceAll(""+o, p));
 					}
-					API.teleportPlayer(p, TeleportLocation.SPAWN);
 				} else {
 					if (!TheAPI.hasVanish(p.getName())) {
 							Object o = Loader.events.get("onJoin.Text");
@@ -170,7 +167,6 @@ public class OnPlayerJoin implements Listener {
 				}
 				if (!EconomyAPI.hasAccount(p))
 					EconomyAPI.createAccount(p);
-				DisplayManager.initializePlayer(p);
 				TabList.setFooterHeader(p);
 				TabList.setName(p);
 				SPlayer s = API.getSPlayer(p);
@@ -193,10 +189,10 @@ public class OnPlayerJoin implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerQuit(PlayerQuitEvent e) {
 		e.setQuitMessage(null);
+		Player p = e.getPlayer();
+		DisplayManager.removeCache(p);
 		new Tasker() {
 			public void run() {
-				Player p = e.getPlayer();
-				DisplayManager.removeCache(p);
 				if (!TheAPI.hasVanish(p.getName())) {
 						Object o = Loader.events.get("onQuit.Text");
 						if(o!=null) {
