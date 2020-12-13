@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -469,6 +470,22 @@ public class Loader extends JavaPlugin implements Listener {
 			}
 		}.runRepeating(144000, 144000);
 		reload();
+		new Tasker() {
+			public void run() {
+				for(Player p : TheAPI.getOnlinePlayers()) {
+					SPlayer d = API.getSPlayer(p);
+					Location from = d.l;
+					if(from==null)from=p.getLocation();
+					Location to = p.getLocation();
+					if (Math.abs(from.getBlockX() - to.getBlockX()) > 0 || Math.abs(from.getBlockZ() - to.getBlockZ()) > 0 || Math.abs(from.getBlockY() - to.getBlockY()) > 0) {
+						if (d.isAFK() && !d.hasVanish())
+							sendBroadcasts(p, "AFK.End");
+						save(d);
+					}
+					d.l=to;
+				}
+			}
+		}.runRepeating(0, 10);
 		TheAPI.msg(setting.prefix + " &eINFO: &7Newest versions of &eTheAPI &7can be found on Spigot or Discord:", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "        https://www.spigotmc.org/resources/72679/", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());

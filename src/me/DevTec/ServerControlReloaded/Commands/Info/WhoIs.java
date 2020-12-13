@@ -69,7 +69,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 				d=true;
 			}else seen = API.getSeen(a[0], SeenType.Offline);
 			SPlayer c = API.getSPlayer(a[0]);
-			Loader.sendMessages(s, "WhoIs."+(d?"Online":"Offline"), Placeholder.c().add("%ip%", ip).add("%country%", country)
+			Loader.sendMessages(s, "WhoIs."+(d?"Online":"Offline"), Placeholder.c().add("%player%", c.getName()).add("%playername%", c.getDisplayName()).add("%customname%", c.getCustomName()).add("%ip%", ip).add("%country%", country)
 					.add("%afk%", afk).add("%seen%", seen).add("%fly%", c.hasFlyEnabled()+"").add("%god%", c.hasGodEnabled()+"").add("%tempfly%", c.hasTempFlyEnabled()+"")
 					.add("%op%", Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(a[0]))+"").add("%uuid%", Bukkit.getOfflinePlayer(a[0]).getUniqueId().toString())
 					.add("%vanish%", c.hasVanish()+"").add("%firstjoin%", TheAPI.getUser(a[0]).getString("FirstJoin")+"").add("%group%", Staff.getGroup(a[0]))
@@ -77,66 +77,11 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 					.add("%health%", c.getPlayer()!=null ? c.getPlayer().getHealthScale()+"":"Unknown").add("%food%", c.getPlayer()!=null ? c.getPlayer().getFoodLevel()+"":"Unknown")
 					.add("%xp%", c.getPlayer()!=null ? c.getPlayer().getTotalExperience()+"":"Unknown").add("%level%", c.getPlayer()!=null ? c.getPlayer().getLevel()+"":"Unknown")
 					.add("%banned%", PunishmentAPI.getBanList(c.getName()).isBanned()+"")
+					.add("%arrested%", PunishmentAPI.getBanList(c.getName()).isJailed()+"")
+					.add("%ip-arrested%", PunishmentAPI.getBanList(c.getName()).isIPJailed()+"")
+					.add("%ip-muted%", PunishmentAPI.getBanList(c.getName()).isIPMuted()+"")
+					.add("%muted%", PunishmentAPI.getBanList(c.getName()).isMuted()+"")
 					.add("%ip-banned%", PunishmentAPI.getBanList(c.getName()).isIPBanned()+""));
-			/*boolean send = false;
-			PlayerBanList d = PunishmentAPI.getBanList(a[0]);
-			if (d.isMuted()) {
-				if(!send) {
-					send=true;
-					TheAPI.msg("&ePunishment:", s);
-				}
-				TheAPI.msg("  &6Muted", s);
-			}
-			if (d.isTempMuted()) {
-				if(!send) {
-					send=true;
-					TheAPI.msg("&ePunishment:", s);
-				}
-				long tmtime = d.getExpire(PunishmentType.TEMPMUTE);
-				TheAPI.msg("  &6TempMuted: &a" + StringUtils.setTimeToString(tmtime), s);
-			}
-			if (d.isJailed()) {
-				if(!send) {
-					send=true;
-					TheAPI.msg("&ePunishment:", s);
-				}
-				TheAPI.msg("  &6Jailed", s);
-			}
-			if (d.isTempJailed()) {
-				if(!send) {
-					send=true;
-					TheAPI.msg("&ePunishment:", s);
-				}
-				long tjtime = d.getExpire(PunishmentType.TEMPJAIL);
-				TheAPI.msg("  &6Temp-arrested: &a" + StringUtils.setTimeToString(tjtime), s);
-			}
-			if (d.isBanned()) {
-				if(!send) {
-					send=true;
-					TheAPI.msg("&ePunishment:", s);
-				}
-				TheAPI.msg("  &6Banned", s);
-			}
-			if (d.isTempBanned()) {
-				if(!send) {
-					send=true;
-					TheAPI.msg("&ePunishment:", s);
-				}
-				long tbtime = d.getExpire(PunishmentType.TEMPBAN);
-				TheAPI.msg("  &6TempBanned: &a" + StringUtils.setTimeToString(tbtime), s);
-			}
-
-			if (d.isIPBanned()) {
-				if(!send) {
-					send=true;
-					TheAPI.msg("&ePunishment:", s);
-				}
-				TheAPI.msg("  &6IPBanned", s);
-			}
-			if (d.isTempIPBanned()) {
-				long tbiptime = d.getExpire(PunishmentType.TEMPBANIP);
-				TheAPI.msg("  &6TempIPBanned: &a" + StringUtils.setTimeToString(tbiptime), s);
-			}*/
 			return true;
 		}
 		Loader.noPerms(s, "WhoIs", "Info");

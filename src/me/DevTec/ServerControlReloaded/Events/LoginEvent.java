@@ -62,7 +62,7 @@ public class LoginEvent implements Listener {
 	public void JoinEvent(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
 		Loader.setupChatFormat(p);
-		if (setting.lock_server && !p.hasPermission("ServerControl.Maintenance")) {
+		if (setting.lock_server && !Loader.has(p, "Other", "Maintenance", "Bypass")) {
 			e.disallow(Result.KICK_OTHER, TheAPI.colorize(kickString.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())));
 			return;
 		}

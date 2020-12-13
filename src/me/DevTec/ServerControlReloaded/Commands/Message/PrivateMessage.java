@@ -24,6 +24,7 @@ public class PrivateMessage implements CommandExecutor, TabCompleter {
 			}
 			if (args.length == 1) {
 				if(setting.pm && s instanceof Player) {
+					if (Loader.has(s, "PrivateMessage", "Message", "Lock")) {
 					CommandSender d = TheAPI.getPlayer(args[0]);
 					if(d==null) {
 						if(args[0].equalsIgnoreCase("console"))d=TheAPI.getConsole();
@@ -36,6 +37,9 @@ public class PrivateMessage implements CommandExecutor, TabCompleter {
 					PrivateMessageManager.setChatLock((Player)s, !PrivateMessageManager.hasChatLock((Player)s));
 					PrivateMessageManager.setLockType((Player)s, "msg");
 					Loader.sendMessages(s, "PrivateMessage.ChatLock."+PrivateMessageManager.hasChatLock((Player)s));
+					return true;
+					}
+					Loader.noPerms(s, "PrivateMessage", "Message", "Lock");
 					return true;
 				}
 				Loader.Help(s, "PrivateMessage", "Message");

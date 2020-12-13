@@ -247,6 +247,7 @@ public class MultiWorldsUtils {
 		List<String> worlds = Loader.mw.getStringList("Worlds");
 		List<String> ww = Loader.mw.getStringList("Unloaded-Worlds");
 		String biome = Loader.mw.getString("WorldsSettings." + s + ".Generator");
+		if(biome==null)biome="NORMAL";
 		if (biome.equalsIgnoreCase("NETHER")) {
 			WorldsAPI.create(s, Environment.NETHER, WorldType.NORMAL, true, 0);
 		}

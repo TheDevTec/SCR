@@ -1,13 +1,10 @@
 package me.DevTec.ServerControlReloaded.SCR;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,6 +26,7 @@ import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
+	private static UnsortedMap<String, SPlayer> cache = new UnsortedMap<>();
 
 	public static SPlayer getSPlayer(Player p) {
 		if(!cache.containsKey(p.getName())) {
@@ -289,51 +287,9 @@ public class API {
 	public static String setMoneyFormat(double money, boolean colorized) {
 		return setMoneyFormat(new BigDecimal(money), colorized);
 	}
-
-	private static UnsortedMap<String, SPlayer> cache = new UnsortedMap<>();
 	
 	public static boolean isAFK(Player p) {
 		return getSPlayer(p).isAFK();
-	}
-
-	private static boolean checkForDomain(String str) {
-		str = str.replaceAll("[0-9]+", "").replace(" ", ".");
-		for (String w : Loader.config.getStringList("AntiAD.WhiteList")) {
-			str = str.replace(w, "");
-		}
-		Matcher m = Pattern
-				.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{3,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?")
-				.matcher(str.toLowerCase());
-		return m.find();
-	}
-
-	private static boolean checkForIp(String str) {
-		str = str.replaceAll("[A-Za-z]+", "").replace(" ", ".");
-		for (String w : Loader.config.getStringList("AntiAD.WhiteList")) {
-			str = str.replace(w, "");
-		}
-		Matcher m = Pattern.compile("(?:\\d{1,3}[.,\\-:;\\/()=?}+ ]{1,4}){3}\\d{1,3}").matcher(str.toLowerCase());
-		return m.find();
-	}
-
-	public static List<String> getAdvertisementMatches(String where) {
-		List<String> matches = new UnsortedList<String>();
-		if (getAdvertisement(where)) {
-			Matcher m = Pattern.compile("(?:\\d{1,3}[.,\\-:;\\/()=?}+ ]{1,4}){3}\\d{1,3}").matcher(where.toLowerCase());
-			while (m.find()) {
-				matches.add(m.group());
-			}
-			m = Pattern.compile("[-a-zA-Z0-9@:%_\\+~#?&//=]{3,256}\\.[a-z]{2,4}\\b(\\/[-a-zA-Z0-9@:%_\\+~#?&//=]*)?")
-					.matcher(where.toLowerCase());
-			while (m.find()) {
-				matches.add(m.group());
-			}
-		}
-		return matches;
-	}
-
-	public static boolean getAdvertisement(String string) {
-		return checkForIp(string) || checkForDomain(string);
 	}
 
 	public static boolean getBlockedCommand(String string) {
@@ -343,57 +299,6 @@ public class API {
 				return true;
 			}
 		return false;
-	}
-
-	public static String getServerIP() {
-		String ip = null;
-		try {
-			BufferedReader is = new BufferedReader(new FileReader("server.properties"));
-			Properties props = new Properties();
-			props.load(is);
-			is.close();
-			ip = props.getProperty("server-ip");
-		} catch (Exception ed) {
-		}
-
-		if (ip != null) {
-			return ip;
-		}
-		return "UKNOWN";
-	}
-
-	public static String getServerPort() {
-		String port = null;
-		try {
-			BufferedReader is = new BufferedReader(new FileReader("server.properties"));
-			Properties props = new Properties();
-			props.load(is);
-			is.close();
-			port = props.getProperty("server-port");
-		} catch (Exception ed) {
-		}
-
-		if (port != null) {
-			return port;
-		}
-		return "UKNOWN";
-	}
-
-	public static String getServerName() {
-		String server_name = null;
-		try {
-			BufferedReader is = new BufferedReader(new FileReader("server.properties"));
-			Properties props = new Properties();
-			props.load(is);
-			is.close();
-			server_name = props.getProperty("server-name");
-		} catch (Exception ed) {
-		}
-
-		if (server_name != null) {
-			return server_name;
-		}
-		return "UKNOWN";
 	}
 	
 	//Can be teleport cancelled if plugin not find any safe location!

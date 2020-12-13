@@ -11,6 +11,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.TheAPI.TheAPI;
 import me.DevTec.TheAPI.Utils.Position;
+import me.DevTec.TheAPI.Utils.StringUtils;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
 import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
@@ -91,7 +92,7 @@ public class RequestMap {
 	}
 
 	public static boolean has(String sender, String target) {
-		if (TheAPI.getPlayerOrNull(target) != null && (TheAPI.getUser(sender).getLong("teleport." + target + ".b") - System.currentTimeMillis()/1000 + Loader.config.getLong("Options.Teleport.RequestTime")) > 0)
+		if (TheAPI.getPlayerOrNull(target) != null && (TheAPI.getUser(sender).getLong("teleport." + target + ".b") - System.currentTimeMillis()/1000 + StringUtils.timeFromString(Loader.config.getString("Options.Teleport.RequestTime"))) > 0)
 			return true;
 		else {
 			remove(sender, target);

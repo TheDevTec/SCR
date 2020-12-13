@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -20,6 +21,7 @@ public class SPlayer {
 	public int afk=0, kick=0;
 	public boolean bc, mp, manual;
 	public String reply, type;
+	public Location l;
 	
 	public SPlayer(Player p) {
 		s = p.getName();
@@ -133,10 +135,11 @@ public class SPlayer {
 	}
 
 	public Player getPlayer() {
-		return TheAPI.getPlayer(s);
+		return TheAPI.getPlayerOrNull(s);
 	}
 
 	public void toggleGod(CommandSender toggler) {
+		if(getPlayer()==null)return;
 		if (hasGodEnabled()) {
 			Loader.sendMessages(getPlayer(), "God.Disabled.Other.Receiver");
 			if (toggler != null)
@@ -151,6 +154,7 @@ public class SPlayer {
 	}
 
 	public void toggleFly(CommandSender toggler) {
+		if(getPlayer()==null)return;
 		if (hasFlyEnabled()) {
 			Loader.sendMessages(getPlayer(), "Fly.Disabled.Other.Receiver");
 			if (toggler != null)
@@ -165,6 +169,7 @@ public class SPlayer {
 	}
 
 	public void setWalkSpeed() {
+		if(getPlayer()==null)return;
 		User d = TheAPI.getUser(this.s);
 		if (getPlayer().hasPermission("ServerControl.WalkSpeed") && d.exist("WalkSpeed")) {
 			if (d.getDouble("WalkSpeed") == 0.0)
@@ -177,6 +182,7 @@ public class SPlayer {
 	}
 
 	public void setFlySpeed() {
+		if(getPlayer()==null)return;
 		User d = TheAPI.getUser(this.s);
 		if (getPlayer().hasPermission("ServerControl.FlySpeed") && d.exist("FlySpeed")) {
 			if (d.getDouble("FlySpeed") == 0.0)

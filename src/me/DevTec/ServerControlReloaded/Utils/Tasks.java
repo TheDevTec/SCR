@@ -54,7 +54,7 @@ public class Tasks {
 		a = Loader.getInstance;
 		sss.clear();
 		players.clear();
-		if(setting.motd)l.register();
+		l.register();
 		if (setting.am)
 			automessage();
 		if (setting.vip)
@@ -196,10 +196,10 @@ public class Tasks {
 				if (setting.am_random) {
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
-							String json = StringUtils.colorizeJson(TabList.replace(TheAPI.getRandomFromList(l), p, false));
-							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(json)));
+							String json = StringUtils.colorizeJson(AnimationManager.replaceWithoutColors(p,TheAPI.getRandomFromList(l)));
+							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentFromCraftBukkit(json)));
 						}else {
-							TheAPI.msg(TabList.replace(TheAPI.getRandomFromList(l), p, true), p);
+							TheAPI.msg(AnimationManager.replace(p,TheAPI.getRandomFromList(l)), p);
 						}
 					}
 				} else {
@@ -207,9 +207,9 @@ public class Tasks {
 						tests = 0;
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
-							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(StringUtils.colorizeJson(TabList.replace(l.get(tests), p, false)))));
+							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentFromCraftBukkit(StringUtils.colorizeJson(AnimationManager.replaceWithoutColors(p,l.get(tests))))));
 						}else {
-							TheAPI.msg(TabList.replace(l.get(tests), p, true), p);
+							TheAPI.msg(AnimationManager.replace(p,l.get(tests)), p);
 						}
 					}
 					++tests;

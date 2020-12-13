@@ -1,5 +1,7 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,8 +15,6 @@ import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.ScoreboardAPI.ScoreboardAPI;
 import me.DevTec.TheAPI.ScoreboardAPI.SimpleScore;
 import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedSet;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class DisplayManager {
@@ -40,6 +40,7 @@ public class DisplayManager {
 		TheAPI.sendActionBar(p, "");
 		if(TheAPI.getBossBar(p)!=null)
 		TheAPI.removeBossBar(p);
+		if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(p.getName()))
 		((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(p.getName()).destroy();
 		((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(p.getName());
 	}
@@ -64,21 +65,77 @@ public class DisplayManager {
 		}
 	}
 	
-	public static void hide(Player p, DisplayType type) {
-		TheAPI.getUser(p).setAndSave("SCR."+type.name(), true);
-		if(!ignore.get(type).contains(p.getName()))
-			ignore.get(type).add(p.getName());
+	private static SimpleScore score = new SimpleScore();
+	
+	@SuppressWarnings("unchecked")
+	public static void hide(Player s, DisplayType type) {
+		TheAPI.getUser(s).setAndSave("SCR."+type.name(), true);
+		if(!ignore.get(type).contains(s.getName()))
+			ignore.get(type).add(s.getName());
 		switch(type) {
 			case ACTIONBAR:{
-				Loader.sendMessages(p, "DisplayManager.ActionBar.Hide");
+				Loader.sendMessages(s, "DisplayManager.ActionBar.Hide");
+				if(!isToggleable(s, DisplayType.ACTIONBAR)) {
+					String text = "Text";
+					if(Loader.ac.exists("PerPlayer."+s.getName())) {
+						text="PerPlayer."+s.getName()+".Text";
+					}else {
+						if(Loader.ac.exists("PerWorld."+s.getWorld().getName())) {
+							text="PerWorld."+s.getWorld().getName()+".Text";
+						}
+					}
+					TheAPI.sendActionBar(s, AnimationManager.replace(s, Loader.ac.getString(text)));
+					return;
+				}
+				hide.get(DisplayType.ACTIONBAR).add(s.getName());
+				TheAPI.sendActionBar(s, ""); //remove
 			}
 			break;
 			case BOSSBAR:{
-				Loader.sendMessages(p, "DisplayManager.BossBar.Hide");
+				Loader.sendMessages(s, "DisplayManager.BossBar.Hide");
+				if(!isToggleable(s, DisplayType.BOSSBAR)) {
+					String text = "Text";
+					String stage = "Stage";
+					if(Loader.bb.exists("PerPlayer."+s.getName())) {
+						text="PerPlayer."+s.getName()+".Text";
+						stage="PerPlayer."+s.getName()+".Stage";
+					}else {
+						if(Loader.bb.exists("PerWorld."+s.getWorld().getName())) {
+							text="PerWorld."+s.getWorld().getName()+".Text";
+							stage="PerWorld."+s.getWorld().getName()+".Stage";
+						}
+					}
+					TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+					return;
+				}
+				hide.get(DisplayType.BOSSBAR).add(s.getName());
+				TheAPI.removeBossBar(s); //remove
 			}
 			break;
 			case SCOREBOARD:{
-				Loader.sendMessages(p, "DisplayManager.Scoreboard.Hide");
+				Loader.sendMessages(s, "DisplayManager.Scoreboard.Hide");
+				if(!isToggleable(s, DisplayType.SCOREBOARD)) {
+					String name = "Name";
+					String lines = "Lines";
+					if(Loader.sb.exists("PerPlayer."+s.getName())) {
+						name="PerPlayer."+s.getName()+".Name";
+						lines="PerPlayer."+s.getName()+".Lines";
+					}else if(Loader.sb.exists("PerWorld."+s.getWorld().getName())) {
+						name="PerWorld."+s.getWorld().getName()+".Name";
+						lines="PerWorld."+s.getWorld().getName()+".Lines";
+					}
+					score.setTitle(AnimationManager.replace(s, Loader.sb.getString(name)));
+					for(String line : Loader.sb.getStringList(lines)) {
+						score.addLine(AnimationManager.replace(s, line));
+					}
+					score.send(s);
+					return;
+				}
+				hide.get(DisplayType.SCOREBOARD).add(s.getName());
+				if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
+					((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(s.getName()).destroy();
+					((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()); //remove
+				}
 			}
 			break;
 		}
@@ -104,12 +161,12 @@ public class DisplayManager {
 		return TheAPI.getUser(s).getBoolean("SCR."+type.name());
 	}
 	
-	private static Set<Integer> tasks = new UnsortedSet<>();
-	private static Map<DisplayType, Set<String>> ignore = new UnsortedMap<>(), hide = new UnsortedMap<>();
+	private static Set<Integer> tasks = new HashSet<>();
+	private static Map<DisplayType, Set<String>> ignore = new HashMap<>(), hide = new HashMap<>();
 	static {
 		for(DisplayType t : DisplayType.values()) {
-			ignore.put(t, new UnsortedSet<>());
-			hide.put(t, new UnsortedSet<>());
+			ignore.put(t, new HashSet<>());
+			hide.put(t, new HashSet<>());
 		}
 	}
 	
@@ -120,6 +177,7 @@ public class DisplayManager {
 		tasks.add(new Tasker() {
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
+					try {
 					if(Loader.ac.getStringList("ForbiddenWorlds").contains(s.getWorld().getName())) {
 						if(!hide.get(DisplayType.ACTIONBAR).contains(s.getName())) {
 							hide.get(DisplayType.ACTIONBAR).add(s.getName());
@@ -175,6 +233,7 @@ public class DisplayManager {
 						TheAPI.sendActionBar(s, AnimationManager.replace(s, Loader.ac.getString(text)));
 						continue;
 					}
+					}catch(Exception er) {}
 				}
 			}
 		}.runRepeating(0, StringUtils.calculate(Loader.ac.getString("RefleshTick")).longValue()));
@@ -182,6 +241,7 @@ public class DisplayManager {
 		tasks.add(new Tasker() {
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
+					try {
 					if(Loader.bb.getStringList("ForbiddenWorlds").contains(s.getWorld().getName())) {
 						if(!hide.get(DisplayType.BOSSBAR).contains(s.getName())) {
 							hide.get(DisplayType.BOSSBAR).add(s.getName());
@@ -246,15 +306,16 @@ public class DisplayManager {
 						TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
 						continue;
 					}
+					}catch(Exception er) {}
 				}
 			}
 		}.runRepeating(0, StringUtils.calculate(Loader.bb.getString("RefleshTick")).longValue()));
 		if (setting.sb)
 		tasks.add(new Tasker() {
-			SimpleScore score = new SimpleScore();
 			@SuppressWarnings("unchecked")
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
+					try {
 					if(Loader.sb.getStringList("Options.ForbiddenWorlds").contains(s.getWorld().getName())) {
 						if(!hide.get(DisplayType.SCOREBOARD).contains(s.getName())) {
 							hide.get(DisplayType.SCOREBOARD).add(s.getName());
@@ -331,6 +392,7 @@ public class DisplayManager {
 						score.send(s);
 						continue;
 					}
+					}catch(Exception er) {}
 				}
 			}
 		}.runRepeating(0, StringUtils.calculate(Loader.sb.getString("Options.RefleshTick")).longValue()));

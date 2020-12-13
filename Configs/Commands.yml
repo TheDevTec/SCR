@@ -497,6 +497,8 @@ Message:
     - "staffchat"
     - "sc"
     Permission: "SCR.Command.Helpop"
+    SubPermission:
+      Lock: "SCR.Command.Helpop.Lock"
     Help: "/Helpop <message> - Send message to online admins"
     Enabled: true
   PrivateMessage:
@@ -506,6 +508,8 @@ Message:
     - "msg"
     Permission: "SCR.Command.PrivateMessage"
     Help: "/Privatemessage <player> <message> - Send private message to player"
+    SubPermission:
+      Lock: "SCR.Command.PrivateMessage.Lock"
     Enabled: true
   Reply:
     Name: "reply"
@@ -717,6 +721,8 @@ Info:
   Maintenance:
     Name: "maintenance"
     Permission: "SCR.Command.Maintenance"
+    SubPermission:
+      Bypass: "SCR.Maintenance.Bypass"
     Help: "/Maintenance <on/off> - Turn on/off maintenance mode"
     Enabled: true
   Memory:

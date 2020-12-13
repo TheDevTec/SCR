@@ -19,9 +19,14 @@ public class Helpop implements CommandExecutor, TabCompleter {
 		if (Loader.has(s, "Helpop", "Message")) {
 			if (args.length == 0) {
 				if(s instanceof Player && setting.helpop) {
+					if (Loader.has(s, "Helpop", "Message", "Lock")) {
 					PrivateMessageManager.setChatLock((Player)s, !PrivateMessageManager.hasChatLock((Player)s));
 					Loader.sendMessages(s, "Helpop.ChatLock."+PrivateMessageManager.hasChatLock((Player)s));
 					PrivateMessageManager.setLockType((Player)s, "helpop");
+					return true;
+					}
+					Loader.noPerms(s, "Helpop", "Message", "Lock");
+					return true;
 				}else
 				Loader.Help(s, "Helpop", "Message");
 				return true;

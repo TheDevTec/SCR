@@ -35,4 +35,12 @@ public class AnimationManager {
 		}
 		return PlaceholderAPI.setPlaceholders(player, TabList.replace(where, player, true));
 	}
+
+	public static String replaceWithoutColors(Player player, String string) {
+		if(string==null)return null;
+		for(Entry<String, Animation> e : a.entrySet()) {
+			string=string.replace("%animation-"+e.getKey()+"%", e.getValue().get());
+		}
+		return PlaceholderAPI.setPlaceholders(player, TabList.replace(string, player, false));
+	}
 }
