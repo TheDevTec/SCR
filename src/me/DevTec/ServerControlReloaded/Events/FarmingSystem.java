@@ -26,8 +26,8 @@ public class FarmingSystem implements Listener {
 	public void onClick(PlayerInteractEvent e) {
 		if (e.isCancelled() || !setting.farming || e.getAction()!=Action.RIGHT_CLICK_BLOCK || Loader.config.getStringList("Options.FarmingSystem.ForbiddenWorlds").contains(e.getClickedBlock().getWorld().getName()) || !FarmingSystemAccess.hasAccess(e.getPlayer(), e.getClickedBlock().getLocation()))return;
 		BlockState s = e.getClickedBlock().getState();
-		MaterialData md = s.getData();
 		if (e.getClickedBlock().getType()==XMaterial.NETHER_WART.parseMaterial()) {
+			MaterialData md = s.getData();
 			NetherWarts data = (NetherWarts)md;
 			if(data.getState()==NetherWartsState.RIPE) {
 			data.setState(NetherWartsState.SEEDED);
@@ -38,7 +38,9 @@ public class FarmingSystem implements Listener {
 			if (random != 0)
 			TheAPI.giveItem(e.getPlayer(), new ItemStack(XMaterial.NETHER_WART.parseMaterial(), random));
 			}
+			return;
 		}
+		MaterialData md = s.getData();
 		if (md instanceof Crops)
 			if (((Crops) md).getState() == CropState.RIPE) {
 				if (e.getClickedBlock().getType().name().equals("WHEAT")
@@ -51,6 +53,7 @@ public class FarmingSystem implements Listener {
 					if (random != 0)
 					TheAPI.giveItem(e.getPlayer(), new ItemStack(XMaterial.WHEAT_SEEDS.parseMaterial(), random));
 					TheAPI.giveItem(e.getPlayer(), new ItemStack(Material.WHEAT, 1));
+					return;
 				}
 				try {
 					if (e.getClickedBlock().getType().name().equals("BEETROOTS")) {
@@ -62,6 +65,7 @@ public class FarmingSystem implements Listener {
 						if (random != 0)
 						TheAPI.giveItem(e.getPlayer(), new ItemStack(Material.BEETROOT_SEEDS, random));
 						TheAPI.giveItem(e.getPlayer(), new ItemStack(Material.BEETROOT, 1));
+						return;
 					}
 				} catch (Exception | NoSuchFieldError ss) {
 				}
@@ -74,6 +78,7 @@ public class FarmingSystem implements Listener {
 						int random = TheAPI.generateRandomInt(4);
 						if (random != 0)
 						TheAPI.giveItem(e.getPlayer(), new ItemStack(XMaterial.POTATO.parseMaterial(), random));
+						return;
 					}
 				} catch (Exception | NoSuchFieldError es) {
 				}
@@ -86,6 +91,7 @@ public class FarmingSystem implements Listener {
 						int random = TheAPI.generateRandomInt(4);
 						if (random != 0)
 						TheAPI.giveItem(e.getPlayer(), new ItemStack(XMaterial.CARROT.parseMaterial(), random));
+						return;
 					}
 				} catch (Exception | NoSuchFieldError es) {
 				}

@@ -768,6 +768,8 @@ Other:
   AFK:
     Name: "afk"
     Permission: "SCR.Command.Afk"
+    Aliases:
+    - "away"
     SubPermission:
       Other: "SCR.Command.Afk.Other"
     Help: "/Afk - Set your status to afk"

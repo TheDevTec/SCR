@@ -1,5 +1,8 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import java.util.Collection;
+import java.util.Set;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,35 +19,64 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList;
 import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
+import me.DevTec.TheAPI.Scheduler.Tasker;
+import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedSet;
 
 
 public class AFkPlayerEvents implements Listener {
+	static Set<Player> p = new UnsortedSet<>();
+	static {
+		new Tasker() {
+			public void run() {
+				for(Player s : AFkPlayerEvents.p) {
+				SPlayer p = API.getSPlayer(s);
+				if (p.isAFK() && !p.hasVanish())
+					Loader.sendBroadcasts(s, "AFK.End");
+				Loader.getInstance.save(p);
+				}
+				p.clear();
+			}
+		}.runRepeating(0, 2);
+	}
+	
+	private void c(Player p) {
+		if(!AFkPlayerEvents.p.contains(p))
+			AFkPlayerEvents.p.add(p);
+	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerMessage(PlayerChatEvent e) { //Chatting in chat
-		SPlayer p = API.getSPlayer(e.getPlayer());
-		if (p.isAFK() && !p.hasVanish())
-			Loader.sendBroadcasts(e.getPlayer(), "AFK.End");
-		Loader.getInstance.save(p);
+		c(e.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerMessage(PlayerCommandPreprocessEvent e) { //Sending commands
-		if (!e.getMessage().toLowerCase().startsWith("/afk") && !e.getMessage().toLowerCase().startsWith("/away")) {
-			SPlayer p = API.getSPlayer(e.getPlayer());
-			if (p.isAFK() && !p.hasVanish())
-				Loader.sendBroadcasts(e.getPlayer(), "AFK.End");
-			Loader.getInstance.save(p);
+		if(Loader.cmds.getBoolean("Other.AFK.Enabled")) {
+			if (!e.getMessage().toLowerCase().startsWith("/"+Loader.cmds.getString("Other.AFK.Name").toLowerCase())) {
+				boolean c = false;
+				Object o = Loader.cmds.get("Other.AFK.Aliases");
+				if(o!=null) {
+					if(o instanceof Collection) {
+						for(String s : Loader.cmds.getStringList("Other.AFK.Aliases")) {
+						c=e.getMessage().toLowerCase().startsWith("/"+s.toLowerCase());
+						if(c)break;
+						}
+					}
+					c=e.getMessage().toLowerCase().startsWith("/"+Loader.cmds.getString("Other.AFK.Aliases").toLowerCase());
+				}
+				if(!c)
+				c(e.getPlayer());
+			}
+		}else {
+			c(e.getPlayer());
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlaceBlock(BlockPlaceEvent e) { //Placing blocks
-		SPlayer p = API.getSPlayer(e.getPlayer());
-		if (p.isAFK() && !p.hasVanish())
-			Loader.sendBroadcasts(e.getPlayer(), "AFK.End");
-		Loader.getInstance.save(p);
+		c(e.getPlayer());
 		PlayerBanList d= PunishmentAPI.getBanList(e.getPlayer().getName());
+		if(d==null)return;
 		if (d.isJailed()
 				|| d.isTempJailed()
 				|| d.isTempIPJailed()
@@ -54,19 +86,14 @@ public class AFkPlayerEvents implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCaughtFish(PlayerFishEvent e) { //Fishing
-		SPlayer p = API.getSPlayer(e.getPlayer());
-		if (p.isAFK() && !p.hasVanish())
-			Loader.sendBroadcasts(e.getPlayer(), "AFK.End");
-		Loader.getInstance.save(API.getSPlayer(e.getPlayer()));
+		c(e.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onBreakBlock(BlockBreakEvent e) { //Breaking blocks
-		SPlayer p = API.getSPlayer(e.getPlayer());
-		if (p.isAFK() && !p.hasVanish())
-			Loader.sendBroadcasts(e.getPlayer(), "AFK.End");
-		Loader.getInstance.save(p);
+		c(e.getPlayer());
 		PlayerBanList d= PunishmentAPI.getBanList(e.getPlayer().getName());
+		if(d==null)return;
 		if (d.isJailed()
 				|| d.isTempJailed()
 				|| d.isTempIPJailed()
@@ -76,11 +103,9 @@ public class AFkPlayerEvents implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onInventoryClick(InventoryClickEvent e) { //Like invetory games
-		SPlayer p = API.getSPlayer((Player) e.getWhoClicked());
-		if (p.isAFK() && !p.hasVanish())
-			Loader.sendBroadcasts((Player)e.getWhoClicked(), "AFK.End");
-		Loader.getInstance.save(p);
+		c((Player)e.getWhoClicked());
 		PlayerBanList d= PunishmentAPI.getBanList(e.getWhoClicked().getName());
+		if(d==null)return;
 		if (d.isJailed()
 				|| d.isTempJailed()
 				|| d.isTempIPJailed()

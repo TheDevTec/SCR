@@ -21,13 +21,12 @@ import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class Warp implements CommandExecutor, TabCompleter {
 
-	public String warp(String[] args) {
-		if (Loader.config.exists("Warps"))
-			for (String s : Loader.config.getKeys("Warps")) {
-				if (s.toLowerCase().equalsIgnoreCase(args[0])) {
-					return s;
-				}
+	public String warp(String ss) {
+		for (String s : Loader.config.getKeys("Warps")) {
+			if (s.equalsIgnoreCase(ss)) {
+				return s;
 			}
+		}
 		return null;
 	}
 
@@ -42,28 +41,28 @@ public class Warp implements CommandExecutor, TabCompleter {
 				}
 				if (args.length == 1) {
 					if (s instanceof Player) {
-						if (warp(args) != null) {
-							Location loc = StringUtils.getLocationFromString(Loader.config.getString("Warps." + warp(args)));
+						if (warp(args[0]) != null) {
+							Location loc = StringUtils.getLocationFromString(Loader.config.getString("Warps." + warp(args[0])));
 							if (loc == null) {
 								Loader.sendMessages(s, "Warp.WrongLocation", Placeholder.c()
-										.add("%warp%", warp(args)));
+										.add("%warp%", warp(args[0])));
 								return true;
 							}
-							boolean needperm = Loader.config.getBoolean("Warps." + warp(args) + ".NeedPermission");
+							boolean needperm = Loader.config.getBoolean("Warps." + warp(args[0]) + ".NeedPermission");
 							if (needperm == true) {
-								if (s.hasPermission(Loader.cmds.getString("Warps.Warp.SubPermission.PerWarp").replace("%warp%", warp(args)))) {
+								if (s.hasPermission(Loader.cmds.getString("Warps.Warp.SubPermission.PerWarp").replace("%warp%", warp(args[0])))) {
 									API.setBack((Player) s);
 									if (setting.tp_safe)
 										API.safeTeleport((Player)s, loc);
 									else
 										((Player) s).teleport(loc);
 									Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
-											.add("%warp%", warp(args)));
+											.add("%warp%", warp(args[0])));
 									return true;
 								}
 								Loader.sendMessages(s, "NoPerms", Placeholder.c()
 										.add("%permission%", Loader.cmds.getString("Warps.Warp.SubPermission.PerWarp")
-										.replace("%warp%", warp(args))));
+										.replace("%warp%", warp(args[0]))));
 								return true;
 							}
 							API.setBack((Player) s);
@@ -72,7 +71,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 							else
 								((Player) s).teleport(loc);
 							Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
-									.add("%warp%", warp(args)));
+									.add("%warp%", warp(args[0])));
 							return true;
 						}
 						Loader.sendMessages(s, "Warp.NotExist", Placeholder.c()
@@ -87,11 +86,11 @@ public class Warp implements CommandExecutor, TabCompleter {
 						Loader.notOnline(s, args[1]);
 						return true;
 					} else {
-						if (warp(args) != null) {
-							Location loc = StringUtils.getLocationFromString(Loader.config.getString("Warps." + warp(args)));
+						if (warp(args[0]) != null) {
+							Location loc = StringUtils.getLocationFromString(Loader.config.getString("Warps." + warp(args[0])));
 							if (loc == null) {
 								Loader.sendMessages(s, "Warp.WrongLocation", Placeholder.c()
-										.add("%warp%", warp(args)));
+										.add("%warp%", warp(args[0])));
 								return true;
 							}
 							API.setBack(p);
@@ -100,9 +99,9 @@ public class Warp implements CommandExecutor, TabCompleter {
 							else
 								p.teleport(loc);
 							Loader.sendMessages(p, "Warp.Teleport.You", Placeholder.c()
-									.add("%warp%", warp(args)));
+									.add("%warp%", warp(args[0])));
 							Loader.sendMessages(s, "Warp.Teleport.Other.Sender", Placeholder.c()
-									.add("%warp%", warp(args))
+									.add("%warp%", warp(args[0]))
 									.add("%player%", p.getName())
 									.add("%playername%", p.getDisplayName()));
 							return true;
@@ -131,7 +130,6 @@ public class Warp implements CommandExecutor, TabCompleter {
 
 	public List<String> warpss(CommandSender s) {
 		List<String> w = new UnsortedList<>();
-		if (Loader.config.exists("Warps")) 
 			for (String st : Loader.config.getKeys("Warps")) {
 				boolean needperm = Loader.config.getBoolean("Warps." + st + ".NeedPermission");
 				String needperm2 = Loader.config.getString("Warps." + st + ".NeedPermission");

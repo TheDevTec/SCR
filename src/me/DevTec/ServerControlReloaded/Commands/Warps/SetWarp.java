@@ -14,6 +14,14 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.Utils.StringUtils;
 
 public class SetWarp implements CommandExecutor, TabCompleter {
+	public String warp(String ss) {
+		for (String s : Loader.config.getKeys("Warps")) {
+			if (s.equalsIgnoreCase(ss)) {
+				return s;
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -27,7 +35,7 @@ public class SetWarp implements CommandExecutor, TabCompleter {
 			}
 			if (args.length == 1) {
 				if (s instanceof Player) {
-					if (!Loader.config.exists("Warps." + args[0])) {
+					if (warp(args[0])==null) {
 						Player p = (Player) s;
 						Location local = p.getLocation();
 						Loader.config.set("Warps." + args[0], StringUtils.getLocationAsString(local));
@@ -36,15 +44,14 @@ public class SetWarp implements CommandExecutor, TabCompleter {
 								.add("%warp%", args[0]));
 						return true;
 					}
-					Loader.sendMessages(s, "Warp.Exists", Placeholder.c()//xDDDD
-							.add("%warp%", args[0]));
+					Loader.sendMessages(s, "Warp.Exists", Placeholder.c().add("%warp%", warp(args[0])));
 					return true;
 				}
 				return true;
 			}
 			if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("yes")) {
 				if (s instanceof Player) {
-					if (!Loader.config.exists("Warps." + args[0])) {
+					if (warp(args[0])==null) {
 						Player p = (Player) s;
 						Location local = p.getLocation();
 						Loader.config.set("Warps." + args[0] + ".NeedPermission", true);
@@ -56,7 +63,7 @@ public class SetWarp implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					Loader.sendMessages(s, "Warp.Exist", Placeholder.c()
-						.add("%warp%", args[0]));
+						.add("%warp%", warp(args[0])));
 					return true;
 				}
 				return true;

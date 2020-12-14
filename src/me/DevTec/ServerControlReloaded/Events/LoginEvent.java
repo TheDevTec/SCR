@@ -58,7 +58,7 @@ public class LoginEvent implements Listener {
 
 	private static String kickString= StringUtils.join(Loader.config.getStringList("Options.Maintenance.KickMessages"), "\n");
 	
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void JoinEvent(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
 		Loader.setupChatFormat(p);

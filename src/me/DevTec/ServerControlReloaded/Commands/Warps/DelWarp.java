@@ -15,7 +15,15 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
 
 public class DelWarp implements CommandExecutor, TabCompleter {
-
+	public String warp(String ss) {
+		for (String s : Loader.config.getKeys("Warps")) {
+			if (s.equalsIgnoreCase(ss)) {
+				return s;
+			}
+		}
+		return null;
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "DelWarp", "Warps")) {
@@ -23,11 +31,12 @@ public class DelWarp implements CommandExecutor, TabCompleter {
 				Loader.Help(s, "DelWarp", "Warps");
 				return true;
 			}
-			if (Loader.config.exists("Warps." + args[0])) {
-				Loader.config.remove("Warps." + args[0]);
+			if (warp(args[0])!=null) {
+				String name = warp(args[0]);
+				Loader.config.remove("Warps." + name);
 				Loader.config.save();
 				Loader.sendMessages(s, "Warp.Deleted", Placeholder.c()
-						.add("%warp%", args[0]));
+						.add("%warp%", name));
 				return true;
 			}
 			Loader.sendMessages(s, "Warp.NotExist", Placeholder.c()

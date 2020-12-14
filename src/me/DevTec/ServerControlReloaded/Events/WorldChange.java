@@ -12,6 +12,7 @@ import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 
 public class WorldChange implements Listener {
+	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSleep(PlayerBedEnterEvent e) {
 		if (setting.singeplayersleep) {
@@ -19,13 +20,13 @@ public class WorldChange implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void OnPlayerWorldChangeEvent(PlayerChangedWorldEvent e) {
 		SPlayer a = API.getSPlayer(e.getPlayer());
 		a.createEconomyAccount();
 		if (a.hasFlyEnabled())
 			a.enableFly();
-		else if (a.hasTempFlyEnabled())
+		if (a.hasTempFlyEnabled())
 			a.enableTempFly();
 		if (a.hasGodEnabled())
 			a.enableGod();
@@ -33,14 +34,13 @@ public class WorldChange implements Listener {
 
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChangeGamamode(PlayerGameModeChangeEvent e) {
 		SPlayer a = API.getSPlayer(e.getPlayer());
-		if (a.hasTempFlyEnabled())
-			a.enableTempFly();
-		else
 		if (a.hasFlyEnabled())
 			a.enableFly();
+		if (a.hasTempFlyEnabled())
+			a.enableTempFly();
 		if (a.hasGodEnabled())
 			a.enableGod();
 	}

@@ -20,7 +20,7 @@ public class SecurityListenerCooldowns implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void CooldownChat(PlayerChatEvent e) {
 		Player p = e.getPlayer();
-		if (setting.cool_chat && !p.hasPermission("ServerControl.CooldownBypass.Chat")
+		if (setting.cool_chat && !p.hasPermission("SCR.Other.Cooldown.Chat")
 				&& Loader.config.getInt("Options.Cooldowns.Chat.Time") > 0) {
 			CooldownAPI s = TheAPI.getCooldownAPI(p.getName());
 			if (!s.expired("Cooldown.Msgs")) {
@@ -35,7 +35,7 @@ public class SecurityListenerCooldowns implements Listener {
 	@EventHandler
 	public void CooldownCommands(PlayerCommandPreprocessEvent e) {
 		Player p = e.getPlayer();
-		if (!p.hasPermission("ServerControl.CooldownBypass.Commands")) {
+		if (!p.hasPermission("SCR.Other.Cooldown.Commands")) {
 			int time = Loader.config.getInt("Options.Cooldowns.Commands.Time");
 			boolean find = false;
 			CooldownAPI as = TheAPI.getCooldownAPI(p.getName());

@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import me.DevTec.ServerControlReloaded.Commands.Message.Mail;
@@ -45,6 +46,35 @@ public class OnPlayerJoin implements Listener {
 				.replace("%date-time%", setting.format_date_time.format(new Date())));
 	}
 	
+	@EventHandler
+	public void onLogin(PlayerLoginEvent e) {
+		Player p = e.getPlayer();
+		if(Loader.config.getBoolean("Options.Skins.onJoin")) {
+			if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
+				String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
+				SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
+					@Override
+					public void run(SkinData data) {
+						if(!p.isOnline())return;
+						SkinManager.setSkin(p.getName(), data);
+						SkinManager.loadSkin(p, data);
+					}
+				}, false);
+			}else {
+				String skin = TheAPI.getUser(p).getString("skin");
+				if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
+				SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
+					@Override
+					public void run(SkinData data) {
+						if(!p.isOnline())return;
+						SkinManager.setSkin(p.getName(), data);
+						SkinManager.loadSkin(p, data);
+					}
+				}, false);
+			}
+		}
+	}
+	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerJoin(PlayerJoinEvent e) {
 		e.setJoinMessage("");
@@ -52,30 +82,6 @@ public class OnPlayerJoin implements Listener {
 		DisplayManager.initializePlayer(p);
 		new Tasker() {
 			public void run() {
-				if(Loader.config.getBoolean("Options.Skins.onJoin")) {
-					if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
-						String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
-						SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
-							@Override
-							public void run(SkinData data) {
-								if(!p.isOnline())return;
-								SkinManager.setSkin(p.getName(), data);
-								SkinManager.loadSkin(p, data);
-							}
-						}, false);
-					}else {
-						String skin = TheAPI.getUser(p).getString("skin");
-						if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
-						SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
-							@Override
-							public void run(SkinData data) {
-								if(!p.isOnline())return;
-								SkinManager.setSkin(p.getName(), data);
-								SkinManager.loadSkin(p, data);
-							}
-						}, false);
-					}
-				}
 				Loader.setupChatFormat(p);
 				Tasks.regPlayer(p);
 				User d = TheAPI.getUser(p);

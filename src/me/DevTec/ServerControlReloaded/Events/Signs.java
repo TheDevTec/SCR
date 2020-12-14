@@ -21,12 +21,11 @@ public class Signs implements Listener {
 	public Loader ps = Loader.getInstance;
 
 	public String warp(String ss) {
-		if (Loader.config.getString("Warps") != null)
-			for (String s : Loader.config.getKeys("Warps")) {
-				if (s.toLowerCase().equalsIgnoreCase(ss)) {
-					return s;
-				}
+		for (String s : Loader.config.getKeys("Warps")) {
+			if (s.equalsIgnoreCase(ss)) {
+				return s;
 			}
+		}
 		return null;
 	}
 

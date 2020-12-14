@@ -18,15 +18,14 @@ public class EntitySpawn implements Listener {
 		if (e.getSpawnReason() == SpawnReason.NATURAL || e.getSpawnReason() == SpawnReason.SPAWNER
 				|| e.getSpawnReason().name().contains("BUILD") || e.getSpawnReason() == SpawnReason.SILVERFISH_BLOCK
 				|| e.getSpawnReason() == SpawnReason.BREEDING)
-			if (e instanceof Player == false
-					&& Loader.mw.getBoolean("WorldsSettings." + e.getEntity().getWorld().getName() + ".NoMobs"))
+			if (e instanceof Player == false && Loader.mw.getBoolean("WorldsSettings." + e.getEntity().getWorld().getName() + ".NoMobs"))
 				e.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onDamage(EntityDamageEvent e) {
-		String w = e.getEntity().getWorld().getName();
 		if (e.getEntity() instanceof Player) {
+			String w = e.getEntity().getWorld().getName();
 			if (e.getCause() == DamageCause.FALL && !Loader.mw.getBoolean("WorldsSettings." + w + ".DoFallDamage"))
 				e.setCancelled(true);
 			if (e.getCause() == DamageCause.FIRE || e.getCause() == DamageCause.FIRE_TICK)
