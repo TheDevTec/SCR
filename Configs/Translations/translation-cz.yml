@@ -536,6 +536,7 @@ Maintenance:
   
 # Translations for /Vanish command
 Vanish:
+  Join: "%prefix% &aVanish máte stále zapnutý!"
   Active: "&eMáte zapnutý vanish"
   Enabled:
     You: "%prefix% Vanish &azapnut"

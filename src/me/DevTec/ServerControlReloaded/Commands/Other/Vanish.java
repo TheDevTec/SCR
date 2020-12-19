@@ -17,7 +17,7 @@ import me.DevTec.TheAPI.Scheduler.Scheduler;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
 
-public class Vanish implements CommandExecutor, TabCompleter {
+public class Vanish implements CommandExecutor, TabCompleter{
 
 	@Override
 	public List<String> onTabComplete(CommandSender arg0, Command arg1,

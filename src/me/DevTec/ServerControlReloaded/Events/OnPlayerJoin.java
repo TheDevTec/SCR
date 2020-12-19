@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import me.DevTec.ServerControlReloaded.Commands.Message.Mail;
+import me.DevTec.ServerControlReloaded.Commands.Other.Vanish;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.API.TeleportLocation;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -33,6 +34,8 @@ import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
 import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
 import me.DevTec.TheAPI.Scheduler.Tasker;
 import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
+import me.DevTec.TheAPI.Utils.Reflections.Ref;
 
 public class OnPlayerJoin implements Listener {
 
@@ -80,12 +83,29 @@ public class OnPlayerJoin implements Listener {
 		e.setJoinMessage("");
 		Player p = e.getPlayer();
 		DisplayManager.initializePlayer(p);
+		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.get(new Vanish(), "task");
 		new Tasker() {
 			public void run() {
 				Loader.setupChatFormat(p);
 				Tasks.regPlayer(p);
 				User d = TheAPI.getUser(p);
 				Config f = Loader.config;
+				if(TheAPI.hasVanish(e.getPlayer().getName())) {
+					if(setting.vanish_action) {
+						tasks.put(e.getPlayer().getName(), new Tasker() {
+							@Override
+							public void run() {
+								if(!TheAPI.hasVanish(e.getPlayer().getName()) || !e.getPlayer().isOnline()) {
+									cancel();
+									return;
+								}
+								TheAPI.sendActionBar(e.getPlayer(), Loader.getTranslation("Vanish.Active").toString());
+							}
+						}.runRepeating(0, 20));
+					}
+					Loader.sendMessages(p, "Vanish.Join");
+					return;
+				}
 				if (!Mail.getMails(p.getName()).isEmpty())
 					Loader.sendMessages(p,"Mail.Notification", Placeholder.c().add("%amount%", "" + d.getStringList("Mails").size()));
 				if (setting.sound)
@@ -197,8 +217,13 @@ public class OnPlayerJoin implements Listener {
 		e.setQuitMessage(null);
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
+		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.get(new Vanish(), "task");
 		new Tasker() {
 			public void run() {
+				if(tasks.containsKey(e.getPlayer().getName())){
+					tasks.remove(e.getPlayer().getName());
+					return;
+				}
 				if (!TheAPI.hasVanish(p.getName())) {
 						Object o = Loader.events.get("onQuit.Text");
 						if(o!=null) {

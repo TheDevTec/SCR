@@ -528,6 +528,7 @@ Maintenance:
   
 # Translations for /Vanish command
 Vanish:
+  Join: "%prefix% Vanish stále zapnutý"
   Active: "&eSi nevideľný"
   Enabled:
     You: "%prefix% Neviditeľnosť &eaktivovaná"
