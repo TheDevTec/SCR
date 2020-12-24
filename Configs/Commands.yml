@@ -749,6 +749,8 @@ Info:
   Staff:
     Name: "staff"
     Permission: "SCR.Command.Staff"
+    SubPermission:
+      Vanished: "SCR.Command.Staff.Vanished"
     Help: "/Staff - Show online staffs"
     Enabled: true
   TPS:

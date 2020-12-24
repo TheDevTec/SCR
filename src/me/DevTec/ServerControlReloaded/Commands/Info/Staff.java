@@ -42,25 +42,59 @@ public class Staff implements CommandExecutor, TabCompleter {
 	
 	public static String joiner() {
 		String s = "";
-		for (Player a : TheAPI.getOnlinePlayers())
-			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a)))
-				if(!TheAPI.hasVanish(a.getName()))
-				s+=(s.equals("")?"":", ")+a.getName();
+		for (Player a : TheAPI.getOnlinePlayers()) 
+			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a))) { 
+				if(TheAPI.hasVanish(a.getName())) {
+					return s+=(s.equals("")?"":", ")+a.getName();}
+			s+=(s.equals("")?"":", ")+a.getName();}
 		return s;
 	}
 	
+	
 	public static String joinercount() {
 		int s = 0;
-		for (Player a : TheAPI.getOnlinePlayers())
-			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a)))
-				if(!TheAPI.hasVanish(a.getName()))
+		for (Player a : TheAPI.getOnlinePlayers()) 
+			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a))) 
+				if(TheAPI.hasVanish(a.getName()))									
+					return s+"";
 				++s;
 		return s+"";
 	}
+	public static String jner() {
+		String s = "";
+		for (Player a : TheAPI.getOnlinePlayers()) 
+			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a)))				
+				s+=(s.equals("")?"":", ")+a.getName();
+		return s;
+	}
+	public static String jcount() {
+		int s = 0;
+		for (Player a : TheAPI.getOnlinePlayers()) 
+			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a)))
+				++s;
+		return s+"";
+	}
+	
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Staff", "Info")) {
+			if(Loader.has(s, "Staff", "Info", "Vanished")) {
+				boolean e=jcount().equals("0");
+				if (e && setting.staff_hide) {
+					if(setting.staff_replace) {
+						for(String a : Loader.config.getStringList("Options.Staff.ReplaceWith")){
+							TheAPI.msg(Loader.placeholder(s, a, null), s);
+						}
+						return true;
+					}
+					return true;
+				}else if(!e || !setting.staff_hide)
+				Loader.sendMessages(s, "List.Staff", Placeholder.c()
+						.add("%staff_online%", jcount())
+						.add("%staff%", jner()));
+				return true;
+				}
 			boolean isEmpty = joinercount().equals("0");
 			if(isEmpty && setting.staff_hide) {
 				if(setting.staff_replace) {

@@ -543,8 +543,8 @@ Maintenance:
   
 # Translations for /Vanish command
 Vanish:
-  Join: "%prefix% Vanish is still enabled"
-  Active: "&eYou are invisible"
+  Join: "%prefix% &a&lYou are still &c&lvanished"
+  Active: "&cVanished"
   Enabled:
     You: "%prefix% Vanish has been &eenabled"
     Other:
