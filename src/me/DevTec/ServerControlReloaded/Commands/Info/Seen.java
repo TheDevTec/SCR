@@ -47,7 +47,7 @@ public class Seen implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(s, "Seen.Offline", Placeholder.c()
 						.add("%player%", args[0])
 						.add("%playername%", args[0])
-						.add("%online%", API.getSeen(args[0], SeenType.Offline)));
+						.add("%offline%", API.getSeen(args[0], SeenType.Offline)));
 				return true;
 			}
 			List<String> sim = getS(args[0]);

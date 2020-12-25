@@ -69,7 +69,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 				d=true;
 			}else seen = API.getSeen(a[0], SeenType.Offline);
 			SPlayer c = API.getSPlayer(a[0]);
-			Loader.sendMessages(s, "WhoIs."+(d?"Online":"Offline"), Placeholder.c().add("%player%", c.getName()).add("%playername%", c.getDisplayName()).add("%customname%", c.getCustomName()).add("%ip%", ip).add("%country%", country)
+			Loader.sendMessages(s, "WhoIs."+(d?"Online":"Offline"), Placeholder.c().add("%player%", c.getName()).add("%playername%", c.getName()).add("%customname%", c.getCustomName()).add("%ip%", ip).add("%country%", country)
 					.add("%afk%", afk).add("%seen%", seen).add("%fly%", c.hasFlyEnabled()+"").add("%god%", c.hasGodEnabled()+"").add("%tempfly%", c.hasTempFlyEnabled()+"")
 					.add("%op%", Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(a[0]))+"").add("%uuid%", Bukkit.getOfflinePlayer(a[0]).getUniqueId().toString())
 					.add("%vanish%", c.hasVanish()+"").add("%firstjoin%", TheAPI.getUser(a[0]).getString("FirstJoin")+"").add("%group%", Staff.getGroup(a[0]))
