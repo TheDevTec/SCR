@@ -20,15 +20,15 @@ import com.google.common.collect.Lists;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.APIs.ItemCreatorAPI;
-import me.DevTec.TheAPI.CooldownAPI.CooldownAPI;
-import me.DevTec.TheAPI.GUIAPI.GUI;
-import me.DevTec.TheAPI.GUIAPI.ItemGUI;
-import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
-import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
-import me.DevTec.TheAPI.WorldsAPI.WorldsAPI;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.ItemCreatorAPI;
+import me.devtec.theapi.cooldownapi.CooldownAPI;
+import me.devtec.theapi.guiapi.GUI;
+import me.devtec.theapi.guiapi.ItemGUI;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
+import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.worldsapi.WorldsAPI;
 
 public class MultiWorldsGUI {
 

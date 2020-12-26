@@ -14,10 +14,10 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.ConfigAPI.Config;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.Reflections.Ref;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.configapi.Config;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class LoginEvent implements Listener {
 	private static Object surv = Ref.getNulled(Ref.nms("EnumGamemode"), "SURVIVAL"), spec = Ref.getNulled(Ref.nms("EnumGamemode"), "SPECTATOR");

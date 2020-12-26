@@ -17,9 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 
 public class Item implements CommandExecutor, TabCompleter{
 	private static List<String> flags = new UnsortedList<>();

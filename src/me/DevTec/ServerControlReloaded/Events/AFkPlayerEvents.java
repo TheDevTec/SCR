@@ -17,10 +17,10 @@ import org.bukkit.event.player.PlayerFishEvent;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
-import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList;
-import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
-import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedSet;
+import me.devtec.theapi.punishmentapi.PlayerBanList;
+import me.devtec.theapi.punishmentapi.PunishmentAPI;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.datakeeper.collections.UnsortedSet;
 
 
 public class AFkPlayerEvents implements Listener {

@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.ConfigAPI.Config;
-import me.DevTec.TheAPI.Utils.StreamUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
-import me.DevTec.TheAPI.Utils.DataKeeper.loader.YamlLoader;
+import me.devtec.theapi.configapi.Config;
+import me.devtec.theapi.utils.StreamUtils;
+import me.devtec.theapi.utils.datakeeper.loader.YamlLoader;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class Configs {
 	public static void load(boolean settingMessage) {

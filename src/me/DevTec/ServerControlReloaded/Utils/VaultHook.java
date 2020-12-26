@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.APIs.PluginManagerAPI;
+import me.devtec.theapi.apis.PluginManagerAPI;
 import net.milkbowl.vault.economy.Economy;
 
 public class VaultHook {

@@ -8,8 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class ReplyPrivateMes implements CommandExecutor, TabCompleter {
 

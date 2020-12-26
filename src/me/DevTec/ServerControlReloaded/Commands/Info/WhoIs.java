@@ -17,10 +17,10 @@ import me.DevTec.ServerControlReloaded.SCR.API.SeenType;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
-import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.economyapi.EconomyAPI;
+import me.devtec.theapi.punishmentapi.PunishmentAPI;
+import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 

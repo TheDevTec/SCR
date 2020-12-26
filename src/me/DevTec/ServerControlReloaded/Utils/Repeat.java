@@ -3,8 +3,8 @@ package me.DevTec.ServerControlReloaded.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.TheAPI.SudoType;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.TheAPI.SudoType;
 
 public class Repeat {
 	public static void a(CommandSender s, String c) {

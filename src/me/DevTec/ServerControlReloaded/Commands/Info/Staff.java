@@ -12,8 +12,8 @@ import org.bukkit.entity.Player;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.APIs.PluginManagerAPI;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.PluginManagerAPI;
 
 public class Staff implements CommandExecutor, TabCompleter {
 	public static String getGroup(Player a) {

@@ -1,6 +1,6 @@
 package me.DevTec.ServerControlReloaded.SCR;
 
-import java.math.BigDecimal;
+import java.math.BigDecimal; 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
@@ -16,13 +16,13 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.BlocksAPI.BlockGetter;
-import me.DevTec.TheAPI.Utils.Position;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.blocksapi.BlockIterator;
+import me.devtec.theapi.utils.Position;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.User;
+import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
@@ -331,7 +331,7 @@ public class API {
 	
 	public static Location findSafeLocation(Location start) {
 		Location f = null;
-			BlockGetter g = new BlockGetter(new Position(start.clone().add(20,20,20)), new Position(start.clone().add(-20,-20,-20)));
+			BlockIterator g = new BlockIterator(new Position(start.clone().add(20,20,20)), new Position(start.clone().add(-20,-20,-20)));
 		while(g.has()) {
 			Position a1 = g.get();
 			a1.setX(a1.getX()+0.5);

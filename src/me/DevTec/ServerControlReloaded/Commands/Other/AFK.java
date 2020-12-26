@@ -12,7 +12,7 @@ import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.Repeat;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
-import me.DevTec.TheAPI.TheAPI;
+import me.devtec.theapi.TheAPI;
 
 public class AFK implements CommandExecutor, TabCompleter {
 

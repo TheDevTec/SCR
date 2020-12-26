@@ -15,8 +15,8 @@ import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 
 public class God implements CommandExecutor, TabCompleter {
 

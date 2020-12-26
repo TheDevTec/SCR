@@ -27,10 +27,10 @@ import org.bukkit.plugin.ServicePriority;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
-import me.DevTec.TheAPI.Utils.TheAPIUtils.LoaderClass;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
+import me.devtec.theapi.utils.thapiutils.LoaderClass;
 
 public class Metrics {
 

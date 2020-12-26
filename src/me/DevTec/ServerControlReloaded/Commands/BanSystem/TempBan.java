@@ -10,9 +10,9 @@ import org.bukkit.command.TabCompleter;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.punishmentapi.PunishmentAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class TempBan implements CommandExecutor, TabCompleter {
 	@Override

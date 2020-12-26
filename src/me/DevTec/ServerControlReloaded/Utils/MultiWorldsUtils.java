@@ -15,8 +15,8 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.WorldsAPI.WorldsAPI;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.worldsapi.WorldsAPI;
 
 public class MultiWorldsUtils {
 	public static void UnloadWorld(String w, CommandSender sender) {

@@ -7,7 +7,7 @@ import org.bukkit.OfflinePlayer;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.TheAPI;
+import me.devtec.theapi.TheAPI;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 

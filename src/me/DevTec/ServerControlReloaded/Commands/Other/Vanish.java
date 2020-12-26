@@ -12,10 +12,10 @@ import me.DevTec.ServerControlReloaded.Events.LoginEvent;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Scheduler.Scheduler;
-import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.scheduler.Scheduler;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class Vanish implements CommandExecutor, TabCompleter{
 

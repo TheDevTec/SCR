@@ -15,10 +15,10 @@ import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.Repeat;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.economyapi.EconomyAPI;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 
 public class Eco implements CommandExecutor, TabCompleter {
 	@Override

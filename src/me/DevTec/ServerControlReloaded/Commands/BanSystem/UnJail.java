@@ -11,9 +11,9 @@ import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.API.TeleportLocation;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.PunishmentAPI.PlayerBanList;
-import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.punishmentapi.PlayerBanList;
+import me.devtec.theapi.punishmentapi.PunishmentAPI;
 
 public class UnJail implements CommandExecutor, TabCompleter {
 	@Override

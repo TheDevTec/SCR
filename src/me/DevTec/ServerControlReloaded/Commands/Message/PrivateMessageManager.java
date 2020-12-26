@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.TheAPI;
+import me.devtec.theapi.TheAPI;
 
 public class PrivateMessageManager {
 	private static String s;

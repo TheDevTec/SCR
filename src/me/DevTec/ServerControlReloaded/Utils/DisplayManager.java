@@ -8,14 +8,14 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
-import me.DevTec.TheAPI.Scheduler.Scheduler;
-import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.ScoreboardAPI.ScoreboardAPI;
-import me.DevTec.TheAPI.ScoreboardAPI.SimpleScore;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.Reflections.Ref;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.scheduler.Scheduler;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.scoreboardapi.ScoreboardAPI;
+import me.devtec.theapi.scoreboardapi.SimpleScore;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class DisplayManager {
 	public static enum DisplayType {

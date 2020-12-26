@@ -15,8 +15,8 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
+import me.devtec.theapi.blocksapi.BlocksAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class Butcher implements CommandExecutor, TabCompleter {
 

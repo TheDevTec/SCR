@@ -15,11 +15,11 @@ import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.Eco;
 import me.DevTec.ServerControlReloaded.Utils.Pagination;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
-import me.DevTec.TheAPI.SortedMap.RankingAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.economyapi.EconomyAPI;
+import me.devtec.theapi.sortedmap.RankingAPI;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class EcoTop implements CommandExecutor, TabCompleter {
 	private UnsortedMap<String, Pagination<Entry<String, Double>>> h = new UnsortedMap<>();

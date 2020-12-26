@@ -11,19 +11,19 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
-import me.DevTec.TheAPI.Scheduler.Scheduler;
-import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedSet;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
-import me.DevTec.TheAPI.Utils.Listener.EventHandler;
-import me.DevTec.TheAPI.Utils.Listener.Listener;
-import me.DevTec.TheAPI.Utils.Listener.Events.ServerListPingEvent;
-import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
-import me.DevTec.TheAPI.Utils.NMS.NMSAPI.ChatType;
-import me.DevTec.TheAPI.Utils.Reflections.Ref;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.scheduler.Scheduler;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.collections.UnsortedSet;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
+import me.devtec.theapi.utils.listener.EventHandler;
+import me.devtec.theapi.utils.listener.Listener;
+import me.devtec.theapi.utils.listener.events.ServerListPingEvent;
+import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.nms.NMSAPI.ChatType;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class Tasks {
 	

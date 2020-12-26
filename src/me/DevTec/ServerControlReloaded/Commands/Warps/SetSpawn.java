@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.TheAPI.Utils.Position;
+import me.devtec.theapi.utils.Position;
 
 public class SetSpawn implements CommandExecutor, TabCompleter {
 

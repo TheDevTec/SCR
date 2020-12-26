@@ -9,7 +9,7 @@ import org.bukkit.command.TabCompleter;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
+import me.devtec.theapi.punishmentapi.PunishmentAPI;
 
 public class DelJail implements CommandExecutor, TabCompleter {
 

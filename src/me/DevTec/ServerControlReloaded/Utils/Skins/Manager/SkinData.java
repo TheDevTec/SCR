@@ -2,8 +2,8 @@ package me.DevTec.ServerControlReloaded.Utils.Skins.Manager;
 
 import java.util.UUID;
 
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
-import me.DevTec.TheAPI.Utils.Json.Writer;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
+import me.devtec.theapi.utils.json.Writer;
 
 public class SkinData {
 	public UUID uuid; //Nullable
