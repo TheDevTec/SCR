@@ -83,6 +83,7 @@ public class OnPlayerJoin implements Listener {
 		e.setJoinMessage("");
 		Player p = e.getPlayer();
 		DisplayManager.initializePlayer(p);
+		@SuppressWarnings("unchecked")
 		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.get(new Vanish(), "task");
 		new Tasker() {
 			public void run() {
@@ -217,6 +218,7 @@ public class OnPlayerJoin implements Listener {
 		e.setQuitMessage(null);
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
+		@SuppressWarnings("unchecked")
 		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.get(new Vanish(), "task");
 		new Tasker() {
 			public void run() {
