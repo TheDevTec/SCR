@@ -11,11 +11,11 @@ import org.bukkit.inventory.ItemStack;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.APIs.EnchantmentAPI;
-import me.DevTec.TheAPI.APIs.ItemCreatorAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
+import me.devtec.theapi.apis.EnchantmentAPI;
+import me.devtec.theapi.apis.ItemCreatorAPI;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class Kit {
 	private List<ItemStack> a;

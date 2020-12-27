@@ -10,7 +10,7 @@ import org.bukkit.command.TabCompleter;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.DevTec.TheAPI.APIs.MemoryAPI;
+import me.devtec.theapi.apis.MemoryAPI;
 
 public class RAM implements CommandExecutor, TabCompleter {
 	private boolean clearing;

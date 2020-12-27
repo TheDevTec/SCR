@@ -9,7 +9,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.GUIAPI.GUI;
+import me.devtec.theapi.guiapi.GUI;
 
 public class Trash implements CommandExecutor, TabCompleter {
 

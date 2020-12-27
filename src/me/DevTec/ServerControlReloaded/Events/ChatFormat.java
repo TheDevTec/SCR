@@ -15,10 +15,10 @@ import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
 import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.utils.datakeeper.User;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 
 public class ChatFormat implements Listener {

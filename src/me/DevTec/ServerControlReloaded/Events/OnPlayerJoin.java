@@ -27,15 +27,15 @@ import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinCallback;
 import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinData;
 import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinManager;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.APIs.SoundAPI;
-import me.DevTec.TheAPI.ConfigAPI.Config;
-import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
-import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
-import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
-import me.DevTec.TheAPI.Utils.Reflections.Ref;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.SoundAPI;
+import me.devtec.theapi.configapi.Config;
+import me.devtec.theapi.economyapi.EconomyAPI;
+import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.datakeeper.User;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class OnPlayerJoin implements Listener {
 
@@ -83,6 +83,7 @@ public class OnPlayerJoin implements Listener {
 		e.setJoinMessage("");
 		Player p = e.getPlayer();
 		DisplayManager.initializePlayer(p);
+		@SuppressWarnings("unchecked")
 		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.get(new Vanish(), "task");
 		new Tasker() {
 			public void run() {
@@ -217,6 +218,7 @@ public class OnPlayerJoin implements Listener {
 		e.setQuitMessage(null);
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
+		@SuppressWarnings("unchecked")
 		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.get(new Vanish(), "task");
 		new Tasker() {
 			public void run() {

@@ -16,13 +16,13 @@ import org.bukkit.Location;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.StreamUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
-import me.DevTec.TheAPI.Utils.Json.Reader;
-import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
-import me.DevTec.TheAPI.Utils.Reflections.Ref;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.StreamUtils;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
+import me.devtec.theapi.utils.json.Reader;
+import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class SkinManager {
 	private static final String URL_FORMAT = "https://api.mineskin.org/generate/url?url=%s&%s",

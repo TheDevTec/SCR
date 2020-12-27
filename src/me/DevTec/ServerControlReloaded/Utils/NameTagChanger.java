@@ -3,9 +3,9 @@ package me.DevTec.ServerControlReloaded.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.APIs.NameTagAPI;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.NameTagAPI;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class NameTagChanger {
 	static UnsortedMap<Player, NameTagAPI> t = new UnsortedMap<>();

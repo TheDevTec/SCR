@@ -12,8 +12,8 @@ import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.Repeat;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.economyapi.EconomyAPI;
 
 public class Pay implements CommandExecutor, TabCompleter {
 

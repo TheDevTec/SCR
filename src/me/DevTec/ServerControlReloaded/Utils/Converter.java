@@ -3,10 +3,10 @@ package me.DevTec.ServerControlReloaded.Utils;
 import java.io.File;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.ConfigAPI.Config;
-import me.DevTec.TheAPI.Utils.Position;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.configapi.Config;
+import me.devtec.theapi.utils.Position;
+import me.devtec.theapi.utils.datakeeper.User;
 
 public class Converter {
 	public static void convert() {

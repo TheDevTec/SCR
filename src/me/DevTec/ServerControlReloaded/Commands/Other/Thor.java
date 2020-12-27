@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.BlocksAPI.BlocksAPI;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.blocksapi.BlocksAPI;
 
 public class Thor implements CommandExecutor, TabCompleter {
 

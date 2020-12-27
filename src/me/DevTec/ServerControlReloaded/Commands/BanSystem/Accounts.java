@@ -10,8 +10,8 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.PunishmentAPI.PunishmentAPI;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.punishmentapi.PunishmentAPI;
 
 
 public class Accounts implements CommandExecutor, TabCompleter{

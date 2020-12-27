@@ -14,8 +14,8 @@ import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.API.SeenType;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class Seen implements CommandExecutor, TabCompleter {
 	List<String> getS(String a) {
@@ -47,7 +47,7 @@ public class Seen implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(s, "Seen.Offline", Placeholder.c()
 						.add("%player%", args[0])
 						.add("%playername%", args[0])
-						.add("%online%", API.getSeen(args[0], SeenType.Offline)));
+						.add("%offline%", API.getSeen(args[0], SeenType.Offline)));
 				return true;
 			}
 			List<String> sim = getS(args[0]);

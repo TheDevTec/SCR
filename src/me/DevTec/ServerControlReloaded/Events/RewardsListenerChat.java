@@ -12,10 +12,10 @@ import org.bukkit.event.player.PlayerChatEvent;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.TheAPI.SudoType;
-import me.DevTec.TheAPI.Utils.DataKeeper.User;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.TheAPI.SudoType;
+import me.devtec.theapi.utils.datakeeper.User;
+import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 
 
 public class RewardsListenerChat implements Listener {

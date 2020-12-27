@@ -14,16 +14,16 @@ import me.DevTec.ServerControlReloaded.Commands.Info.Staff;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Item;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.APIs.MemoryAPI;
-import me.DevTec.TheAPI.APIs.TabListAPI;
-import me.DevTec.TheAPI.EconomyAPI.EconomyAPI;
-import me.DevTec.TheAPI.PlaceholderAPI.PlaceholderAPI;
-import me.DevTec.TheAPI.Utils.StringUtils;
-import me.DevTec.TheAPI.Utils.DataKeeper.Collections.UnsortedList;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
-import me.DevTec.TheAPI.Utils.NMS.NMSAPI;
-import me.DevTec.TheAPI.Utils.Reflections.Ref;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.MemoryAPI;
+import me.devtec.theapi.apis.TabListAPI;
+import me.devtec.theapi.economyapi.EconomyAPI;
+import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
+import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class TabList {
 	// GROUP, PRIORITE

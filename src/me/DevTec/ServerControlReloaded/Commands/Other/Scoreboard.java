@@ -12,7 +12,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.DisplayManager;
 import me.DevTec.ServerControlReloaded.Utils.DisplayManager.DisplayType;
-import me.DevTec.TheAPI.TheAPI;
+import me.devtec.theapi.TheAPI;
 
 public class Scoreboard implements CommandExecutor, TabCompleter {
 

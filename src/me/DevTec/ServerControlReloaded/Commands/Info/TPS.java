@@ -9,8 +9,8 @@ import org.bukkit.command.TabCompleter;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.TheAPI.TPSType;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.TheAPI.TPSType;
 
 public class TPS implements CommandExecutor, TabCompleter {
 

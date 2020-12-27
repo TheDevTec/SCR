@@ -12,10 +12,10 @@ import org.bukkit.event.block.SignChangeEvent;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.Colors;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.APIs.SignAPI;
-import me.DevTec.TheAPI.APIs.SignAPI.SignAction;
-import me.DevTec.TheAPI.Utils.DataKeeper.Maps.UnsortedMap;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.SignAPI;
+import me.devtec.theapi.apis.SignAPI.SignAction;
+import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class Signs implements Listener {
 	public Loader ps = Loader.getInstance;

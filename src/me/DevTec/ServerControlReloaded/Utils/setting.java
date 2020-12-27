@@ -4,9 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.APIs.SoundAPI;
-import me.DevTec.TheAPI.ConfigAPI.Config;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.SoundAPI;
+import me.devtec.theapi.configapi.Config;
 
 public class setting {
 	public static enum DeathTp {
