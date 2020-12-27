@@ -22,6 +22,11 @@ Options:
         set: false
         # Skin name or url
         value: "StraikerinaCZ"
+        
+  PacketLimiter:
+    Use: true
+    Limit: 2
+    
   LockChat:
     Helpop: true
     PrivateMessage: true
