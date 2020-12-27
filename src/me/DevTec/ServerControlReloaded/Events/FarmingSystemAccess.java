@@ -11,7 +11,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 
-import me.DevTec.TheAPI.APIs.PluginManagerAPI;
+import me.devtec.theapi.apis.PluginManagerAPI;
 
 public class FarmingSystemAccess {
 	public static boolean hasAccess(Player player, Location loc) {
