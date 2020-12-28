@@ -84,7 +84,7 @@ public class OnPlayerJoin implements Listener {
 		Player p = e.getPlayer();
 		DisplayManager.initializePlayer(p);
 		@SuppressWarnings("unchecked")
-		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.get(new Vanish(), "task");
+		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.getNulled(Vanish.class, "task");
 		new Tasker() {
 			public void run() {
 				Loader.setupChatFormat(p);
@@ -219,7 +219,7 @@ public class OnPlayerJoin implements Listener {
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
 		@SuppressWarnings("unchecked")
-		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.get(new Vanish(), "task");
+		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.getNulled(Vanish.class, "task");
 		new Tasker() {
 			public void run() {
 				if(tasks.containsKey(e.getPlayer().getName())){
