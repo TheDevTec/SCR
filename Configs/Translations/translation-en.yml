@@ -802,6 +802,9 @@ Accounts:
   List: "%prefix% %accounts%"
   NoAccounts: "%prefix% No accounts were founded"
   
+Uuid:
+  Message: "%prefix% Uuid of player &e%player% &7is &a%uuid%"
+
 Trash: "&7Trash"
 
 Config: "%prefix% Configurations and tasks reloaded"

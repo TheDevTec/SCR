@@ -101,6 +101,7 @@ import me.DevTec.ServerControlReloaded.Commands.Other.Tab;
 import me.DevTec.ServerControlReloaded.Commands.Other.TempFly;
 import me.DevTec.ServerControlReloaded.Commands.Other.Thor;
 import me.DevTec.ServerControlReloaded.Commands.Other.Trash;
+import me.DevTec.ServerControlReloaded.Commands.Other.Uuid;
 import me.DevTec.ServerControlReloaded.Commands.Other.Vanish;
 import me.DevTec.ServerControlReloaded.Commands.Server.Reload;
 import me.DevTec.ServerControlReloaded.Commands.Server.Restart;
@@ -892,7 +893,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("BanSystem", "DelJail",new DelJail());
 		CmdC("BanSystem", "TempJail", new TempJail());
 		CmdC("BanSystem", "BanIP", new BanIP());
-		CmdC("BanSystem", "UnBan-IP", new UnBanIP());
+		CmdC("BanSystem", "UnBanIP", new UnBanIP());
 		CmdC("BanSystem", "UnBan", new UnBan());
 		CmdC("BanSystem", "TempMute", new TempMute());
 		CmdC("BanSystem", "Mute", new Mute());
@@ -952,6 +953,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "Skin",new Skin());
 		CmdC("Other", "Experiences", new Exp());//treba opraviť give, set, take, (balance na sendera, nie target)
 		CmdC("Other", "Spawner", new Spawner());
+		CmdC("Other", "Uuid", new Uuid());
 		//Nickname
 		CmdC("Nickname", "Nickname", new Nick());
 		CmdC("Nickname", "NicknameReset", new NickReset());

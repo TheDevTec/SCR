@@ -28,6 +28,8 @@ Options:
   # Enable scoreboard
   Enabled: true
   
+  Permission: "SCR.See.Scoreboard"
+  
   # Option to toggle scoreboard by command
   Toggleable: true
   

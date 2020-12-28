@@ -786,6 +786,9 @@ Accounts:
   List: "%prefix% %accounts%"
   NoAccounts: "%prefix% Žiadne účty boli nájdené"
   
+Uuid:
+  Message: "%prefix% Uuid hráča &e%player% &7je &a%uuid%"  
+  
 Trash: "&7Kôs"
 
 Config: "%prefix% Konfigurácia a úlohy boli znovu načítané1!"

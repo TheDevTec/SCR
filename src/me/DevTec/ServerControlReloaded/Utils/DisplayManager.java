@@ -178,6 +178,13 @@ public class DisplayManager {
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
 					try {
+					if(!s.hasPermission(Loader.ac.getString("Permission"))) {
+						if(!hide.get(DisplayType.ACTIONBAR).contains(s.getName())) {
+							hide.get(DisplayType.ACTIONBAR).add(s.getName());
+							TheAPI.sendActionBar(s, "");
+						}
+						continue;
+					}
 					if(Loader.ac.getStringList("ForbiddenWorlds").contains(s.getWorld().getName())) {
 						if(!hide.get(DisplayType.ACTIONBAR).contains(s.getName())) {
 							hide.get(DisplayType.ACTIONBAR).add(s.getName());
@@ -242,6 +249,13 @@ public class DisplayManager {
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
 					try {
+					if(!s.hasPermission(Loader.bb.getString("Permission"))) {
+						if(!hide.get(DisplayType.BOSSBAR).contains(s.getName())) {
+							hide.get(DisplayType.BOSSBAR).add(s.getName());
+							TheAPI.removeBossBar(s);
+						}
+						continue;
+					}	
 					if(Loader.bb.getStringList("ForbiddenWorlds").contains(s.getWorld().getName())) {
 						if(!hide.get(DisplayType.BOSSBAR).contains(s.getName())) {
 							hide.get(DisplayType.BOSSBAR).add(s.getName());
@@ -316,6 +330,16 @@ public class DisplayManager {
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
 					try {
+					if(!s.hasPermission(Loader.sb.getString("Options.Permission"))) {
+						if(!hide.get(DisplayType.SCOREBOARD).contains(s.getName())) {
+							hide.get(DisplayType.SCOREBOARD).add(s.getName());
+							if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
+								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(s.getName()).destroy();
+								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()); //remove
+							}
+						}
+						continue;
+					}
 					if(Loader.sb.getStringList("Options.ForbiddenWorlds").contains(s.getWorld().getName())) {
 						if(!hide.get(DisplayType.SCOREBOARD).contains(s.getName())) {
 							hide.get(DisplayType.SCOREBOARD).add(s.getName());

@@ -793,6 +793,9 @@ Accounts:
   Users: "%prefix% Účty na IP adrese hráče &e%player%"
   List: "%prefix% %accounts%"
   NoAccounts: "%prefix% Žádné účty nebyly nalezeny"
+
+Uuid:
+  Message: "%prefix% Uuid hráče &e%player% &7je &a%uuid%"  
   
 Trash: "&7Koš"
 

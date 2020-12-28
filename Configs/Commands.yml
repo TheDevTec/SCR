@@ -47,7 +47,7 @@ BanSystem:
     - "ubip"
     Permission: "SCR.Command.UnBanIP"
     Help: "/UnBanIP <player/IP> - Unban ip address"
-    Enabled: true 
+    Enabled: true
   # Jails
   Jail:
     Name: "jail"
@@ -990,5 +990,10 @@ Other:
     SubPermission:
       Other: "SCR.Command.Vanish.Other"
     Help: "/Vanish - Set vanish mode to on/off"
+    Enabled: true
+  Uuid:
+    Name: "uuid"
+    Permission: "SCR.Command.Other"
+    Help: "/uuid - Get player's uuid"  
     Enabled: true
   

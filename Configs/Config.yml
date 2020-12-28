@@ -262,6 +262,10 @@ BanSystem:
   BanIP:
     Text: "&7You are ip-banned for &e%reason%\n&7www.example.com"
     Reason: "None"
+  TempBanIP:
+    Text: "&7You are temp-ip-banned for &e%reason%&7 on &e%time%\n&7www.example.com"
+    Reason: "None"
+    Time: "1h"
   TempJail:
     Text: "&7You are temp-arrested for &e%reason%&7 on &e%time%"
     Time: "1h"

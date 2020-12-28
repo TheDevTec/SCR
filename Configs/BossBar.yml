@@ -1,5 +1,7 @@
 Enabled: false
 
+Permission: "SCR.See.BossBar"
+
 # List of forbidden worlds
 ForbiddenWorlds:
 - "DisabledWorld"
