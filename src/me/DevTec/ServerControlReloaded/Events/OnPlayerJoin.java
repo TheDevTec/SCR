@@ -263,6 +263,7 @@ public class OnPlayerJoin implements Listener {
 				d.set("DisconnectWorld", p.getWorld().getName());
 				p.setFlying(false);
 				p.setAllowFlight(false);
+				p.setScoreboard(null);
 			}
 		}.runTask();
 	}
