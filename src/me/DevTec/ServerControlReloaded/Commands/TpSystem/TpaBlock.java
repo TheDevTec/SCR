@@ -26,7 +26,7 @@ public class TpaBlock implements CommandExecutor, TabCompleter {
 				if (args.length == 0) {
 					boolean state = TheAPI.getUser((Player)s).getBoolean("TpBlock-Global");
 					Loader.sendMessages(s, "TpSystem.Block.Global."+(state?"Off":"On"));
-					TheAPI.getUser(s.getName()).setAndSave("TpBlock-Global", !state);
+					TheAPI.getUser((Player)s).setAndSave("TpBlock-Global", !state);
 					return true;
 				}
 				if (args.length == 1) {
@@ -34,7 +34,7 @@ public class TpaBlock implements CommandExecutor, TabCompleter {
 						if (s.getName().equals(args[0])) {
 							boolean state = TheAPI.getUser((Player)s).getBoolean("TpBlock." + args[0]);
 							Loader.sendMessages(s, "TpSystem.Block."+(state?"Remove":"Add"));
-							TheAPI.getUser(s.getName()).setAndSave("TpBlock." + args[0], !state);
+							TheAPI.getUser((Player)s).setAndSave("TpBlock." + args[0], !state);
 							return true;
 						}
 						Loader.sendMessages(s, "TpSystem.Block.BlockSelf");

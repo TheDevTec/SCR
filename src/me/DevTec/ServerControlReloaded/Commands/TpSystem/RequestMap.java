@@ -51,7 +51,7 @@ public class RequestMap {
 	}
 	
 	public static boolean isBlocking(String sender, String target) {
-		return TheAPI.getUser(sender).getBoolean("TpBlock." + target) || TheAPI.getUser(sender).getBoolean("TpBlock-Global");
+		return TheAPI.getUser(target).getBoolean("TpBlock." + sender) || TheAPI.getUser(target).getBoolean("TpBlock-Global");
 	}
 	
 	public static void cancel(Player sender) {

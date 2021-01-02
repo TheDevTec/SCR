@@ -31,9 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -46,12 +44,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.common.base.Enums;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 
 import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
+import me.devtec.theapi.utils.reflections.Ref;
 
 /**
  * <b>XMaterial</b> - Data Values/Pre-flattening<br>
@@ -1268,28 +1263,14 @@ public enum XMaterial {
      *
      * @since 1.0.0
      */
-    private static final Cache<String, XMaterial> NAME_CACHE = CacheBuilder.newBuilder()
-            .expireAfterAccess(1, TimeUnit.HOURS)
-            .build();
+    private static final Map<String, XMaterial> NAME_CACHE = new UnsortedMap<>();
 
     /**
      * This is used for {@link #isOneOf(Collection)}
      *
      * @since 3.4.0
      */
-    private static final LoadingCache<String, Pattern> CACHED_REGEX = CacheBuilder.newBuilder()
-            .expireAfterAccess(3, TimeUnit.HOURS)
-            .build(new CacheLoader<String, Pattern>() {
-                @Override
-                public Pattern load(@Nonnull String str) {
-                    try {
-                        return Pattern.compile(str);
-                    } catch (PatternSyntaxException ex) {
-                        ex.printStackTrace();
-                        return null;
-                    }
-                }
-            });
+    private static final Map<String, Pattern> CACHED_REGEX = new UnsortedMap<>();
     /**
      * The maximum data value in the pre-flattening update which belongs to {@link #VILLAGER_SPAWN_EGG}<br>
      * https://minecraftitemids.com/types/spawn-egg
@@ -1482,7 +1463,7 @@ public enum XMaterial {
     @Nullable
     private static XMaterial requestOldXMaterial(@Nonnull String name, byte data) {
         String holder = name + data;
-        XMaterial cache = NAME_CACHE.getIfPresent(holder);
+        XMaterial cache = NAME_CACHE.get(holder);
         if (cache != null) return cache;
 
         for (XMaterial material : VALUES) {
@@ -1806,7 +1787,15 @@ public enum XMaterial {
             }
             if (checker.startsWith("REGEX:")) {
                 comp = comp.substring(6);
-                Pattern pattern = CACHED_REGEX.getUnchecked(comp);
+                Pattern pattern = CACHED_REGEX.get(comp);
+                if(pattern == null) {
+                	try {
+                		pattern = Pattern.compile(comp);
+                		CACHED_REGEX.put(comp, pattern);
+                	}catch(Exception er) {
+                		
+                	}
+                }
                 if (pattern != null && pattern.matcher(name).matches()) return true;
                 continue;
             }
@@ -1886,7 +1875,8 @@ public enum XMaterial {
         if (this.data != 0 || this.version >= 13) return -1;
         Material material = this.parseMaterial();
         if (material == null) return -1;
-        if (Data.ISFLAT && !material.isLegacy()) return -1;
+        Object o = Ref.invoke(material, "isLegacy");
+        if (Data.ISFLAT && o!=null && !(boolean)o) return -1;
         return material.getId();
     }
 

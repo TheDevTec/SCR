@@ -120,6 +120,7 @@ public class OnPlayerJoin implements Listener {
 							if(o!=null) {
 							if(o instanceof Collection) {
 							for(String fa : Loader.events.getStringList("onJoin.First.Text")) {
+								if(fa!=null)
 								TheAPI.bcMsg(replaceAll(fa,p));
 							}}else
 								TheAPI.bcMsg(replaceAll(""+o, p));
@@ -129,6 +130,7 @@ public class OnPlayerJoin implements Listener {
 					if(o!=null) {
 					if(o instanceof Collection) {
 						for(String fa : Loader.events.getStringList("onJoin.First.Messages")) {
+							if(fa!=null)
 							TheAPI.msg(replaceAll(fa,p), p);
 						}}else
 					TheAPI.msg(replaceAll(""+o, p), p);
@@ -140,6 +142,7 @@ public class OnPlayerJoin implements Listener {
 					if(o!=null) {
 					if(o instanceof Collection) {
 						for(String fa : Loader.events.getStringList("onJoin.First.Commands")) {
+							if(fa!=null)
 							TheAPI.sudoConsole(TheAPI.colorize(replaceAll(fa,p)));
 						}}else
 					TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
@@ -149,9 +152,16 @@ public class OnPlayerJoin implements Listener {
 					if(o!=null) {
 					if(o instanceof Collection) {
 						for(String fa : Loader.events.getStringList("onJoin.First.Broadcast")) {
-							TheAPI.bcMsg(replaceAll(fa,p));
-						}}else
-					TheAPI.bcMsg(replaceAll(""+o, p));
+							if(fa!=null) {
+								String replace = replaceAll(fa,p);
+								if(replace!=null)
+							TheAPI.bcMsg(replace);
+							}
+						}}else {
+							String replace = replaceAll(""+o, p);
+							if(replace!=null)
+								TheAPI.bcMsg(replace);
+						}
 					}
 				} else {
 					if (!TheAPI.hasVanish(p.getName())) {
@@ -159,6 +169,7 @@ public class OnPlayerJoin implements Listener {
 							if(o!=null) {
 							if(o instanceof Collection) {
 							for(String fa : Loader.events.getStringList("onJoin.Text")) {
+								if(fa!=null)
 								TheAPI.bcMsg(replaceAll(fa,p));
 							}}else
 								TheAPI.bcMsg(replaceAll(""+o, p));
@@ -218,6 +229,7 @@ public class OnPlayerJoin implements Listener {
 		e.setQuitMessage(null);
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
+		p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
 		@SuppressWarnings("unchecked")
 		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.getNulled(Vanish.class, "task");
 		new Tasker() {

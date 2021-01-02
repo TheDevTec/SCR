@@ -3,6 +3,7 @@ package me.DevTec.ServerControlReloaded.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
@@ -33,7 +34,7 @@ public class SPlayer {
 
 	
 	public void setHP() {
-		getPlayer().setHealth(getPlayer().getMaxHealth());
+		getPlayer().setHealth(((Damageable)getPlayer()).getMaxHealth());
 	}
 
 	public void heal() {
@@ -119,19 +120,19 @@ public class SPlayer {
 	}
 
 	public String getDisplayName() {
-		return getPlayer().getDisplayName();
+		return getPlayer()!=null?getPlayer().getDisplayName():s;
 	}
 
 	public String getCustomName() {
-		return getPlayer().getDisplayName();
+		return getPlayer()!=null?getPlayer().getDisplayName():s;
 	}
 
 	public int getFoodLevel() {
-		return getPlayer().getFoodLevel();
+		return getPlayer()!=null?getPlayer().getFoodLevel():-1;
 	}
 
 	public double getHealth() {
-		return getPlayer().getHealth();
+		return getPlayer()!=null?((Damageable)getPlayer()).getHealth() : -1;
 	}
 
 	public Player getPlayer() {
