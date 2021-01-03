@@ -35,7 +35,7 @@ public class UnMute implements CommandExecutor, TabCompleter {
 						.replace("%playername%", args[0]).replace("%player%", args[0]));
 				return true;
 			}
-			Loader.sendMessages(s, "BanSystem.Not.Muted", Placeholder.c().replace("%ip%", args[0]));
+			Loader.sendMessages(s, "BanSystem.Not.Muted", Placeholder.c().replace("%ip%", args[0]).replace("%player%", args[0]));
 			return true;
 		}
 		Loader.noPerms(s, "UnMute", "BanSystem");
