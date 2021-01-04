@@ -1256,21 +1256,6 @@ public enum XMaterial {
      * @since 5.1.0
      */
     private static final Map<String, XMaterial> NAMES = new UnsortedMap<>();
-
-    /**
-     * Guava (Google Core Libraries for Java)'s cache for performance and timed caches.
-     * For strings that match a certain XMaterial. Mostly cached for configs.
-     *
-     * @since 1.0.0
-     */
-    private static final Map<String, XMaterial> NAME_CACHE = new UnsortedMap<>();
-
-    /**
-     * This is used for {@link #isOneOf(Collection)}
-     *
-     * @since 3.4.0
-     */
-    private static final Map<String, Pattern> CACHED_REGEX = new UnsortedMap<>();
     /**
      * The maximum data value in the pre-flattening update which belongs to {@link #VILLAGER_SPAWN_EGG}<br>
      * https://minecraftitemids.com/types/spawn-egg
@@ -1462,14 +1447,9 @@ public enum XMaterial {
      */
     @Nullable
     private static XMaterial requestOldXMaterial(@Nonnull String name, byte data) {
-        String holder = name + data;
-        XMaterial cache = NAME_CACHE.get(holder);
-        if (cache != null) return cache;
-
         for (XMaterial material : VALUES) {
             // Not using material.name().equals(name) check is intended.
             if ((data == UNKNOWN_DATA_VALUE || data == material.data) && material.anyMatchLegacy(name)) {
-                NAME_CACHE.put(holder, material);
                 return material;
             }
         }
@@ -1787,16 +1767,8 @@ public enum XMaterial {
             }
             if (checker.startsWith("REGEX:")) {
                 comp = comp.substring(6);
-                Pattern pattern = CACHED_REGEX.get(comp);
-                if(pattern == null) {
-                	try {
-                		pattern = Pattern.compile(comp);
-                		CACHED_REGEX.put(comp, pattern);
-                	}catch(Exception er) {
-                		
-                	}
-                }
-                if (pattern != null && pattern.matcher(name).matches()) return true;
+                Pattern pattern = Pattern.compile(comp);
+                if (pattern.matcher(name).matches()) return true;
                 continue;
             }
 
