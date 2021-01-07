@@ -73,8 +73,9 @@ public class RequestMap {
 	}
 
 	public static void remove(String sender, String target) {
-		TheAPI.getUser(target).remove("teleport." + sender);
-		TheAPI.getUser(target).save();
+		User d = TheAPI.getUser(target);
+		d.remove("teleport." + sender);
+		d.save();
 		User s = TheAPI.getUser(sender);
 		List<String> c = s.getStringList("tpcancel");
 		c.remove(target);

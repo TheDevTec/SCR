@@ -43,7 +43,7 @@ public class Configs {
 	    			c.set(sr, data.get().get(sr).getValue());
 	    			change = true;
 	    		}
-	    		if(c.getComments(sr).isEmpty() && !data.get().get(sr).getComments().isEmpty()) {
+	    		if(c.getComments(sr)!=null && c.getComments(sr).isEmpty() && (data.get().get(sr).getComments()==null||!data.get().get(sr).getComments().isEmpty())) {
 	    			c.setComments(sr, data.get().get(sr).getComments());
 	    			change = true;
 	    		}
