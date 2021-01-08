@@ -993,7 +993,7 @@ Other:
     Enabled: true
   Uuid:
     Name: "uuid"
-    Permission: "SCR.Command.Other"
+    Permission: "SCR.Command.Uuid"
     Help: "/uuid - Get player's uuid"  
     Enabled: true
   
