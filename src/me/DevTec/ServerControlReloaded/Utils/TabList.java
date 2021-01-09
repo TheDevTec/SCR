@@ -40,7 +40,7 @@ public class TabList {
 	
 	//limit 1000 groups
 	private static List<String> generate(int size) {
-		List<String> a = new UnsortedList<>(size);
+		List<String> a = new UnsortedList<>();
 		for(int i = 0; i < size; ++i) {
 			String s = "";
 			int limit = 4-(i+"").length();
