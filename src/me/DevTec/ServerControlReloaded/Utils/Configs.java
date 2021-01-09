@@ -28,6 +28,7 @@ public class Configs {
 	static Map<String, Config> translations = new UnsortedMap<>();
 	static List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
 	
+	@SuppressWarnings("unchecked")
 	private static void copyDefauts() {
 		for(String s : datas) {
 			Config c = new Config("ServerControlReloaded/"+s);
@@ -39,12 +40,12 @@ public class Configs {
     		}catch(Exception e) {}
 	    	boolean change = false;
 	    	for(String sr : data.getKeys()) {
-	    		if(c.get(sr)==null && data.get().get(sr).getValue()!=null) {
-	    			c.set(sr, data.get().get(sr).getValue());
+	    		if(c.get(sr)==null && data.get().get(sr)[0]!=null) {
+	    			c.set(sr, data.get().get(sr)[0]);
 	    			change = true;
 	    		}
-	    		if(c.getComments(sr)!=null && c.getComments(sr).isEmpty() && (data.get().get(sr).getComments()==null||!data.get().get(sr).getComments().isEmpty())) {
-	    			c.setComments(sr, data.get().get(sr).getComments());
+	    		if(c.getComments(sr)!=null && c.getComments(sr).isEmpty() && (data.get().get(sr)[1]==null||!((List<String>) data.get().get(sr)[1]).isEmpty())) {
+	    			c.setComments(sr, (List<String>) data.get().get(sr)[1]);
 	    			change = true;
 	    		}
 	    	}
