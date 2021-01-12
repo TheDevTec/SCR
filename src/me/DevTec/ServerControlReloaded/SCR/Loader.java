@@ -157,7 +157,6 @@ import me.DevTec.ServerControlReloaded.Utils.Configs;
 import me.DevTec.ServerControlReloaded.Utils.Converter;
 import me.DevTec.ServerControlReloaded.Utils.DisplayManager;
 import me.DevTec.ServerControlReloaded.Utils.Kit;
-import me.DevTec.ServerControlReloaded.Utils.Metrics;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
 import me.DevTec.ServerControlReloaded.Utils.Rule;
@@ -199,11 +198,9 @@ public class Loader extends JavaPlugin implements Listener {
 	public static Loader getInstance;
 	public static Config english;
 	private static UpdateChecker updater;
-	private static Metrics metrics;
 	public static Chat vault = null;
 	public static Permission perms = null;
 	private static int aad = 0;
-	public UnsortedMap<String, Kit> kits = new UnsortedMap<>();
 	
 	public static class Placeholder {
 		private final UnsortedMap<String, String> set = new UnsortedMap<>();
@@ -629,11 +626,6 @@ public class Loader extends JavaPlugin implements Listener {
 		if(aad==1) {
 			DisplayManager.unload();
 			DisplayManager.load();
-			if(metrics!=null) {
-				Bukkit.getServicesManager().unregister(metrics);
-				if(metrics.getTimer()!=null)
-				metrics.getTimer().cancel();
-			}
 			getInstance.stop();
 		}else {
 			DisplayManager.load();
@@ -692,12 +684,6 @@ public class Loader extends JavaPlugin implements Listener {
 				EconomyAPI.createAccount(p);
 		}
 		MultiWorldsUtils.EnableWorldCheck();
-		try {
-			metrics=new Metrics();
-		} catch (Exception er) {
-			//unsuported
-		}
-		getInstance.kits.clear();
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading kits:", TheAPI.getConsole());
 		for (String s : Loader.kit.getKeys("Kits")) {
 			TheAPI.msg(setting.prefix + "   &e"+s+"&7:", TheAPI.getConsole());
@@ -1017,7 +1003,7 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static Kit getKit(String kitName) {
-		return getInstance.kits.getOrDefault(kitName, null);
+		return Kit.load(kitName);
 	}
 
 	public static boolean hasKits(CommandSender p, String name) {

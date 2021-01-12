@@ -3,6 +3,7 @@ package me.DevTec.ServerControlReloaded.Commands.Other;
 
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,8 +32,8 @@ public class Kits implements CommandExecutor, TabCompleter {
 		return list;
 	}
 
-	public static List<String> getKits() {
-		return new UnsortedList<String>(Loader.getInstance.kits.keySet());
+	public static Set<String> getKits() {
+		return Loader.kit.getKeys("Kits");
 	}
 
 	public static void giveKit(Player p, Kit kit, boolean cooldown, boolean economy, boolean messages) {
