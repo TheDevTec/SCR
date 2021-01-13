@@ -4,13 +4,11 @@ import java.io.File;
 import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.datakeeper.loader.YamlLoader;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class Configs {
 	public static void load(boolean settingMessage) {
@@ -20,12 +18,11 @@ public class Configs {
 			if(!new File("plugins/ServerControlReloaded/Translations/translation-"+lang+".yml").exists())
 			lang="en";
 		}else lang="en";
-		Loader.trans = translations.get("Translations/translation-"+lang+".yml");
+		Loader.trans = new Config("Translations/translation-"+lang+".yml");
 		setting.load(settingMessage);
 		AnimationManager.reload();
 	}
 	
-	static Map<String, Config> translations = new UnsortedMap<>();
 	static List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
 	
 	@SuppressWarnings("unchecked")
@@ -59,8 +56,6 @@ public class Configs {
 	    	}catch(Exception unsuported) {}
 	    	if(change)
 	    	c.save();
-	    	if(s.startsWith("Translations/translation-"))
-	    	translations.put(s, c);
 	    	switch(c.getData().getFile().getName()) {
 	    	case "Kits.yml":
 	    		Loader.kit=c;

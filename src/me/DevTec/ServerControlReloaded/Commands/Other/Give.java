@@ -433,7 +433,7 @@ public class Give implements CommandExecutor, TabCompleter {
 							try {
 								if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
 										&& !g.startsWith("POTION_OF_"))
-									TheAPI.giveItem(p, XMaterial.matchXMaterial(g).get().parseMaterial(), 1);
+									TheAPI.giveItem(p, XMaterial.matchXMaterial(g).parseMaterial(), 1);
 								else
 									TheAPI.giveItem(p, getPotion(g));
 								Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", getItem(g)).add("%amount%", "1"));
@@ -462,7 +462,7 @@ public class Give implements CommandExecutor, TabCompleter {
 						try {
 							if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
 									&& !g.startsWith("POTION_OF_"))
-								TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).get().parseMaterial(), StringUtils.getInt(args[1]));
+								TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).parseMaterial(), StringUtils.getInt(args[1]));
 							else {
 								ItemStack a = getPotion(g);
 								a.setAmount(StringUtils.getInt(args[1]));
@@ -486,7 +486,7 @@ public class Give implements CommandExecutor, TabCompleter {
 				if (getItem(g) != null) {
 					if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
 							&& !g.startsWith("POTION_OF_"))
-						TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).get().parseMaterial(), 1);
+						TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).parseMaterial(), 1);
 					else
 						TheAPI.giveItem(ps, getPotion(g));
 					if(ps==s) {
@@ -513,7 +513,7 @@ public class Give implements CommandExecutor, TabCompleter {
 					if (getItem(args[1]) != null) {
 						if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
 								&& !g.startsWith("POTION_OF_"))
-							TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).get().parseMaterial(),
+							TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).parseMaterial(),
 									StringUtils.getInt(args[2]));
 						else {
 							ItemStack a = getPotion(g);

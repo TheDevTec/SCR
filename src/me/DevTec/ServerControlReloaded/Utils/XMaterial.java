@@ -43,9 +43,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.google.common.base.Enums;
-
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 import me.devtec.theapi.utils.reflections.Ref;
 
 /**
@@ -1249,13 +1246,6 @@ public enum XMaterial {
      * @since 2.0.0
      */
     public static final XMaterial[] VALUES = values();
-
-    /**
-     * We don't want to use {@link Enums#getIfPresent(Class, String)} to avoid a few checks.
-     *
-     * @since 5.1.0
-     */
-    private static final Map<String, XMaterial> NAMES = new UnsortedMap<>();
     /**
      * The maximum data value in the pre-flattening update which belongs to {@link #VILLAGER_SPAWN_EGG}<br>
      * https://minecraftitemids.com/types/spawn-egg
@@ -1288,10 +1278,6 @@ public enum XMaterial {
      * @since 3.0.0
      */
     private static final Set<String> DUPLICATED;
-
-    static {
-        for (XMaterial material : VALUES) NAMES.put(material.name(), material);
-    }
 
     static {
         if (Data.ISFLAT) {
@@ -1416,18 +1402,6 @@ public enum XMaterial {
     }
 
     /**
-     * Gets the {@link XMaterial} with this name without throwing an exception.
-     *
-     * @param name the name of the material.
-     * @return an optional that can be empty.
-     * @since 5.1.0
-     */
-    @Nonnull
-    private static Optional<XMaterial> getIfPresent(@Nonnull String name) {
-        return Optional.ofNullable(NAMES.get(name));
-    }
-
-    /**
      * The current version of the server.
      *
      * @return the current server version minor number.
@@ -1464,10 +1438,10 @@ public enum XMaterial {
      * @since 2.0.0
      */
     @Nonnull
-    public static Optional<XMaterial> matchXMaterial(@Nonnull String name) {
+    public static XMaterial matchXMaterial(@Nonnull String name) {
         Validate.notEmpty(name, "Cannot match a material with null or empty material name");
-        Optional<XMaterial> oldMatch = matchXMaterialWithData(name);
-        return oldMatch.isPresent() ? oldMatch : matchDefinedXMaterial(format(name), UNKNOWN_DATA_VALUE);
+        XMaterial oldMatch = matchXMaterialWithData(name);
+        return oldMatch!=null ? oldMatch : matchDefinedXMaterial(format(name), UNKNOWN_DATA_VALUE);
     }
 
     /**
@@ -1487,7 +1461,7 @@ public enum XMaterial {
      * @since 3.0.0
      */
     @Nonnull
-    private static Optional<XMaterial> matchXMaterialWithData(@Nonnull String name) {
+    private static XMaterial matchXMaterialWithData(@Nonnull String name) {
         int index = name.indexOf(':');
         if (index != -1) {
             String mat = format(name.substring(0, index));
@@ -1500,7 +1474,7 @@ public enum XMaterial {
             }
         }
 
-        return Optional.empty();
+        return null;
     }
 
     /**
@@ -1514,8 +1488,7 @@ public enum XMaterial {
     @Nonnull
     public static XMaterial matchXMaterial(@Nonnull Material material) {
         Objects.requireNonNull(material, "Cannot match null material");
-        return matchDefinedXMaterial(material.name(), UNKNOWN_DATA_VALUE)
-                .orElseThrow(() -> new IllegalArgumentException("Unsupported material with no data value: " + material.name()));
+        return matchDefinedXMaterial(material.name(), UNKNOWN_DATA_VALUE);
     }
 
     /**
@@ -1533,8 +1506,7 @@ public enum XMaterial {
         String material = item.getType().name();
         byte data = (byte) (Data.ISFLAT || item.getType().getMaxDurability() > 0 ? 0 : item.getDurability());
 
-        return matchDefinedXMaterial(material, data)
-                .orElseThrow(() -> new IllegalArgumentException("Unsupported material: " + material + " (" + data + ')'));
+        return matchDefinedXMaterial(material, data);
     }
 
     /**
@@ -1550,14 +1522,14 @@ public enum XMaterial {
      * @since 3.0.0
      */
     @Nonnull
-    private static Optional<XMaterial> matchDefinedXMaterial(@Nonnull String name, byte data) {
+    private static XMaterial matchDefinedXMaterial(@Nonnull String name, byte data) {
         // if (!Boolean.valueOf(Boolean.getBoolean(Boolean.TRUE.toString())).equals(Boolean.FALSE.booleanValue())) return null;
         Boolean duplicated = null;
 
         // Do basic number and boolean checks before accessing more complex enum stuff.
         if (data <= 0 && (Data.ISFLAT || !(duplicated = isDuplicated(name)))) {
-            Optional<XMaterial> xMaterial = getIfPresent(name);
-            if (xMaterial.isPresent()) return xMaterial;
+        	XMaterial xMaterial = XMaterial.valueOf(name);
+            if (xMaterial!=null) return xMaterial;
         }
 
         // XMaterial Paradox (Duplication Check)
@@ -1567,16 +1539,16 @@ public enum XMaterial {
         XMaterial oldXMaterial = requestOldXMaterial(name, data);
         if (oldXMaterial == null) {
             // Special case. Refer to FILLED_MAP for more info.
-            return data > 0 && name.endsWith("MAP") ? Optional.of(FILLED_MAP) : Optional.empty();
+            return data > 0 && name.endsWith("MAP") ? FILLED_MAP : null;
         }
 
         if (!Data.ISFLAT && oldXMaterial.isPlural() && (duplicated == null ? isDuplicated(name) : duplicated)) {
             // A solution for XMaterial Paradox.
             // Manually parses the duplicated materials to find the exact material based on the server version.
             // If ends with "S" -> Plural Form Material
-            return getIfPresent(name);
+            return XMaterial.valueOf(name);
         }
-        return Optional.of(oldXMaterial);
+        return oldXMaterial;
     }
 
     /**
@@ -1773,8 +1745,8 @@ public enum XMaterial {
             }
 
             // Direct Object Equals
-            Optional<XMaterial> xMat = matchXMaterial(comp);
-            if (xMat.isPresent() && xMat.get() == this) return true;
+            XMaterial xMat = matchXMaterial(comp);
+            if (xMat!=null && xMat == this) return true;
         }
         return false;
     }
