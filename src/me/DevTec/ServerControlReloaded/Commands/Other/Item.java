@@ -20,6 +20,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class Item implements CommandExecutor, TabCompleter{
 	private static List<String> flags = new UnsortedList<>();
@@ -129,7 +130,7 @@ public class Item implements CommandExecutor, TabCompleter{
 			              List<String> lore = m.getLore();
 			              if (lore != null)
 			                for (String ss : lore) {
-			                	Loader.sendMessages(s, "Item.Lore.ListLore", Placeholder.c().replace("%item%", item.getType().name()).replace("%lines%", (m.getLore()!=null?m.getLore().size():0)+"").replace("%position%", tests+"").replace("%lore%", ss));
+			                	Loader.sendMessages(s, "Item.Lore.ListLore", Placeholder.c().replace("%item%", item.getType().name()).replace("%lore%", ss).replace("%position%", tests+""));
 			                	tests++;
 			                }
 			              return true;
@@ -137,9 +138,21 @@ public class Item implements CommandExecutor, TabCompleter{
 					return true;
 				}
 				if(args[0].equalsIgnoreCase("flag")) {
-					if(args.length==1) {
-						Loader.advancedHelp(s, "Item", "Other", "Flag");
+					if(TheAPI.isNewerThan(7)) {
+					if(args.length==0||args.length==1) {
+						Loader.advancedHelp(s, "Item", "Other", "Flag","Help");
 						return true;
+					}
+					if(args[1].equalsIgnoreCase("list")) {
+						ItemStack it = new ItemStack(((Player) s).getItemInHand());						
+						for (ItemFlag itf : it.getItemMeta().getItemFlags()) {
+							Loader.sendMessages(s, "Item.Flag.List", Placeholder.c().replace("%item%", it.getType().name()).replace("%lines%", (it!=null?it.getItemMeta().getItemFlags().size()+"":0+"")).replace("%flags%", itf+""));
+						}
+					}
+					if(args[1].equalsIgnoreCase("set")) {
+						if(args.length==0||args.length==1) {
+							Loader.advancedHelp(s, "Item", "Other", "Flag","Set");
+						}
 					}
 					//list
 					//set <flag> <value>
@@ -147,22 +160,57 @@ public class Item implements CommandExecutor, TabCompleter{
 					//add <flag>
 					//get <flag>
 					return true;
+					}
 				}
 				if(args[0].equalsIgnoreCase("durability")) {
-					if(args.length==1) {
+					if(args.length==0) {
 						Loader.advancedHelp(s, "Item", "Other", "Durability");
+						return true;
+					}
+					if(args[1].equalsIgnoreCase("get")) {
+						if(args.length>1) {
+							Loader.advancedHelp(s, "Item", "Other", "Durability");
+							return true;
+						}
+						
 						return true;
 					}
 					//get
 					//set <int>
 					return true;
 				}
+				
 				if(args[0].equalsIgnoreCase("nbt")) {
-					if(args.length==1) {
-						Loader.advancedHelp(s, "Item", "Other", "NBT");
+					if(args.length==0||args.length==1) {
+						Loader.advancedHelp(s, "Item", "Other", "Nbt", "Get");
+						Loader.advancedHelp(s, "Item", "Other", "Nbt", "Set");
 						return true;
 					}
-					//get
+					if(args[1].equalsIgnoreCase("get")) {
+						Object stack = Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "asNMSCopy", ItemStack.class),((Player) s).getItemInHand());
+						TheAPI.bcMsg(Ref.invoke(stack, "getOrCreateTag"));
+						/*Loader.sendMessages(s,"Item.Nbt.Get1",Placeholder.c().add("%item%", ((Player) s).getItemInHand().getItemMeta().getDisplayName())); 
+						Loader.sendMessages(s,"Item.Nbt.Get2",Placeholder.c().add("%nbt%", );*/
+						if(args.length<0) {
+						Loader.advancedHelp(s, "Item", "Other", "Nbt", "Get");
+						return true;
+						}
+					}
+					if(args[1].equalsIgnoreCase("set")) {
+						if(args.length==0||args.length==1) {
+							Loader.advancedHelp(s, "Item", "Other", "Nbt", "Set");
+							return true;
+						}
+						Object itemstack = Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "asNMSCopy", ItemStack.class), ((Player)s).getItemInHand());
+						TheAPI.bcMsg(itemstack);
+						Ref.invoke(Ref.invoke(itemstack, "getOrCreateTag", Ref.method(Ref.nms("NBTTagCompound"), "setString", String.class, String.class)), args[2], args[3]);
+						TheAPI.bcMsg(p.getItemInHand().getItemMeta().getCustomTagContainer());
+						(p).getItemInHand().setItemMeta((ItemMeta) Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "getItemMeta", Ref.nms("ItemStack")), itemstack));
+						TheAPI.bcMsg(p.getItemInHand().getItemMeta().getCustomTagContainer());
+						TheAPI.bcMsg(args[0]+args[1]+args[2]);
+						return true;
+					}
+					
 					//set <value>
 				}
 				if(args[0].equalsIgnoreCase("type")) {

@@ -98,6 +98,12 @@ Item:
   Flag:
     Add: "%prefix% Flag &e%flag &7has been added to item in your hand"
     Remove: "%prefix% Flag &e%flag% &7has been removed from item in your hand"
+    ListItem: "%prefix% Flags on &e%item%"
+    ListLore: "%prefix% &6%flag%"
+  Nbt:  
+    Get1: "%prefix% &6List of nbt tags on item &e%item%&6:"
+    Get2: "%prefix% » %nbt%"
+    
     
 # Translations for /Hat command
 Hat:

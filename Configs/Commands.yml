@@ -874,8 +874,12 @@ Other:
           Remove: '&e/item lore remove <line> &f- &cRemove lore from your item by line.'
           Set: '&e/item lore set <line> <lore> &f- &cSet lore to specified line of your item.'  
           List: '&e/item lore list &f- &cSee lore lines'
-       Flag: '&e/item flag <flag> <true/false> &f- &cadd flags to your item.'
-       Nbt: '&e/item nbt &f- &cGet nbt tags of item.'
+       Flag:       
+          Get: '&e/item flag get &f- &cGet Flags on item'    
+          Set: '&e/item flag set &f- &cSet Flag on item'    
+       Nbt: 
+          Get: '&e/item nbt get &f- &cGet nbt tags of item.'
+          Set: '&e/item nbt set &f- &cSet nbt tag on item.'
        Type: '&e/item type &f- &cSet wooden sword to netherite sword.'
        Durability: '&e/item durability <int> &f- &cSet durability of item.'
        Info: '&e/item info &f- &cInfo about item.'
