@@ -33,7 +33,8 @@ List:
   - "%prefix% »=== &e%staff_online% &7===«"
   - "%prefix% Členové AT: &e%staff%"
   Normal:
-  - "%prefix% »=== &e%math{%joiner-count{default}%+%joiner-count{supervip, vip}%}% &8/ &e%server_maxonline% &7===«"
+  - "%prefix% »=== &e%joiner-count{{STAFF}, default, supervip, vip}% &8/ &e%server_maxonline% &7===«"
+  - "%prefix% Členové AT: &e%joiner{{STAFF}}%"
   - "%prefix% VIP: &e%joiner{supervip, vip}%"
   - "%prefix% Hráči: &e%joiner{default}%"
   
@@ -49,11 +50,12 @@ Missing:
   Player:
     Offline: "%prefix% Hráč &e%player% &7je offline"
     NotExist: "%prefix% Uživatel &e%player% &7neexistuje"
-  Item: "%prefix% Předmět &e%item% &7neexistuje"
   HandEmpty: "%prefix% Nemáte žádný předmět ve vaší ruce"
   TargetHandEmpty: "%prefix% Hráč &e%player%&7 nemá žádný předmět v ruce"
   Entity: "%prefix% Entita &e%entity% &7neexistuje"
   GameMode: "%prefix% Gamemode &e%gamemode% &7neexistuje"
+  Material: "%prefix% Materiál &e%material% &7neexistuje"
+  Flag: "%prefix% Flag &e%flag% &7neexistuje"
   Enchant:
     NotExist: "%prefix% Enchant &e%enchant% &7neexistuje"
     NoEnchant: "%prefix% Nemáte žádný enchant na předmětu"
@@ -86,19 +88,29 @@ Experiences:
   
 # Translations for /Item command
 Item:
-  Name: "%prefix% Název předmětu %item% byl nastaven na &r%name%&7."
-  NoItem: "&cNedržíte žádný předmět v ruce."
+  Name: "%prefix% Název předmětu ve vaší ruce byl změněn na &r%name%"
+  NoItem: "&cNedržíte žádný předmět v ruce"
   Lore:
-    Added: "%prefix% Přidán řádek lore obsahující &r%line%"
-    Removed: "%prefix% Odstraněn řádek lore &r%line%"
+    Added: "%prefix% Přidán nový řádek lore do předmětu ve vaší ruce &r%line%"
+    Removed: "%prefix% Odebrán řádek lore &e%lore%&7 z předmětu ve vaší ruce"
     Error: "%prefix% Nastavila chyba. Chyba: %error%"
-    ListItem: "%prefix% &6Seznam řádků lore na předmětu &e%item%&6:"
-    ListLore: "%prefix% &6%position%. řádek: &5%lore%"  
-    Set: "%prefix% Nastaven řádek &e%line% &7na &r%lore%."
+    ListItem: "%prefix% &6Seznam lore řádků na předmětu ve vaší ruce:"
+    ListLore: "%prefix% &6%position%. řádek: &5%lore%"
+    Set: "%prefix% Obsah lore řádku &e%line%&7 ve vaší ruce byl změněn na &r%lore%"
   Flag:
-    Add: "%prefix% Přidána vlajka &e%flag &7na předmět ve vaší ruce"
-    Remove: "%prefix% Odebrána vlajka &e%flag &7z předmětu ve vaší ruce"
-    
+    Added: "%prefix% Na předmětu ve vaší ruce byl přidán item flag &e%flag%"
+    Removed: "%prefix% Z předmětu v předmětu ve vaší ruce byl odstraněn item flag &e%flag%"
+    List: "%prefix% Seznam item flagů v předmětu ve vaší ruce: &e%flags%"
+  Nbt:
+    Get: "%prefix% Nbt tagy na předmětu ve vaší ruce jsou &e%nbt%"
+    Set: "%prefix% Nbt tagy na předmětu ve vaší ruce byli změněny na &e%nbt%"
+  Type:
+    Get: "%prefix% Typ předmětu ve vaší ruce je &e%nbt%"
+    Set: "%prefix% Typ předmětu ve vaší ruce byl změněn na &e%nbt%"
+  Durability:
+    Get: "%prefix% Durability předmětu ve vaší ruce je &e%nbt%"
+    Set: "%prefix% Durability předmětu ve vaší ruce byla změněna na &e%nbt%"
+
 # Translations for /Hat command
 Hat:
   InvFull:
@@ -470,6 +482,8 @@ Speed:
 # Translations for fly commands
 Fly:
   Temp:
+    EndIn: "%prefix% Temp-Fly vyprší za &e%time%"
+    End: "%prefix% Temp-Fly vypršel"
     Enabled:
       You: "%prefix% Dočasné létání zapnuto na &e%time%"
       Other:
@@ -611,11 +625,11 @@ PrivateMessage:
 # Translations for /ClearChat command
 ClearChat:
   Cleared:
-    Console: "%prefix% Chat byl smazán &eKonzolí"
-    Player: "%prefix% Chat byl svymazan hráčem &e%player%"
-  Specific: "%prefix% Chat hráče &e%player% &7byl smazán"
+    Console: "%prefix% Chat byl vymazán &eKonzolí"
+    Player: "%prefix% Chat byl vymazán hráčem &e%player%"
+  Specific: "%prefix% Chat hráče &e%player% &7byl vymazán"
   SpecificChatHaveBypass: "%prefix% &e%player% &7má právo na bypass clear chatu"
-  NoClearOwnChat: "%prefix% Nemůžete smazat vlastní chat"
+  NoClearOwnChat: "%prefix% Nemůžete vymazat vlastní chat"
   
 # Translations for /Back command
 Back:

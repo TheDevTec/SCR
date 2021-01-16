@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Economy;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -19,10 +20,9 @@ import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.sortedmap.RankingAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class EcoTop implements CommandExecutor, TabCompleter {
-	private UnsortedMap<String, Pagination<Entry<String, Double>>> h = new UnsortedMap<>();
+	private HashMap<String, Pagination<Entry<String, Double>>> h = new HashMap<>();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -36,7 +36,7 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 			Pagination<Entry<String, Double>> m = h.containsKey(world) ? h.get(world) : null;
 			if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
 				TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300*20); 
-				UnsortedMap<String, Double> money = new UnsortedMap<>();
+				HashMap<String, Double> money = new HashMap<>();
 				for (UUID sa : TheAPI.getUsers()) {
 					if(Bukkit.getOfflinePlayer(sa).getName()==null||Bukkit.getOfflinePlayer(sa).getName().equals("ServerControlReloaded"))continue;
 					money.put(Bukkit.getOfflinePlayer(sa).getName(),EconomyAPI.getBalance(Bukkit.getOfflinePlayer(sa).getName(), world));

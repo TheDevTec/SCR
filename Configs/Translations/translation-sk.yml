@@ -31,11 +31,12 @@ Seen:
 List:
   Staff:
   - "%prefix% »=== &e%staff_online% &7===«"
-  - "%prefix% Staff: &e%staff%"
+  - "%prefix% Členi AT: &e%staff%"
   Normal:
-  - "%prefix% »=== &e%math{%joiner-count{default}%+%joiner-count{supervip, vip}%}% &8/ &e%server_maxonline% &7===«"
-  - "%prefix% VIPs: &e%joiner{supervip, vip}%"
-  - "%prefix% Default: &e%joiner{default}%"
+  - "%prefix% »=== &e%joiner-count{{STAFF}, default, supervip, vip}% &8/ &e%server_maxonline% &7===«"
+  - "%prefix% Členi AT: &e%joiner{{STAFF}}%"
+  - "%prefix% VIP: &e%joiner{supervip, vip}%"
+  - "%prefix% Hráči: &e%joiner{default}%"
   
 # Translations for /Kill and /Suicide commands
 Kill:
@@ -48,15 +49,16 @@ Missing:
   World: "%prefix% Svet &e%world% &7neexistuje"
   Player:
     Offline: "%prefix% Hráč &e%player% &7je offline"
-    NotExist: "%prefix% Hráč &e%player% &77neexistuje"
-  Item: "%prefix% Item &e%item% &77neexistuje"
+    NotExist: "%prefix% Hráč &e%player% &7neexistuje"
   HandEmpty: "%prefix% Tvoja ruka je prázdna"
   TargetHandEmpty: "%prefix% &e%player%&7 má prázdnu ruku"
-  Entity: "%prefix% Entita &e%entity% &77neexistuje"
-  GameMode: "%prefix% Gamemode &e%gamemode% &77neexistuje"
+  Entity: "%prefix% Entita &e%entity% &7neexistuje"
+  GameMode: "%prefix% Gamemode &e%gamemode% &7neexistuje"
+  Material: "%prefix% Materiál &e%material% &7neexistuje"
+  Flag: "%prefix% Flag &e%flag% &7neexistuje"
   Enchant:
-    NotExist: "%prefix% Enchant &e%enchant% &77neexistuje"
-    NoEnchant: "%prefix% Nemáš žiaden enchant na predmete"
+    NotExist: "%prefix% Enchant &e%enchant% &7neexistuje"
+    NoEnchant: "%prefix% Nemáš žiadny enchant na predmete"
     DontContains: "%prefix% Tvoj predmet neobsahuje enchant &e%enchant%"
     
 # Translations for /Butcher command
@@ -86,18 +88,28 @@ Experiences:
   
 # Translations for /Item command
 Item:
-  Name: "%prefix% Názov predmetu %item% bol nastavený &r%name%&7"
-  NoItem: "%prefix% Nedržíš v ruke žiaden predmet"
+  Name: "%prefix% Názov predmetu vo vašej ruke bol zmenený na &r%name%"
+  NoItem: "&cNedržíte žiadny predmet v ruke"
   Lore:
-    Added: "%prefix% Pridaný nový lore na pozícii &r%line%"
-    Removed: "%prefix% Odobraný lore z pozície &r%line%"
-    Error: "%prefix% Vyskytol sa problém: %error%"
-    ListItem: "%prefix% List lorov na iteme &e%item%&6:"
-    ListLore: "%prefix% %position%. pozícia: &5%lore%"
-    Set: "%prefix% Nastavený &r%lore% na pozíciu &r%line%."
+    Added: "%prefix% Pridaný nový riadok lore do predmetu vo vašej ruke &r%line%"
+    Removed: "%prefix% Odobraný riadok lore &e%lore%&7 z predmetu vo vašej ruke"
+    Error: "%prefix% Nastala chyba. Chyba: %error%"
+    ListItem: "%prefix% &6Zoznam lore riadkov na predmete vo vašej ruke:"
+    ListLore: "%prefix% &6%position%. riadok: &5%lore%"
+    Set: "%prefix% Obsah lore riadku &e%line%&7 vo vašej ruke, bol zmenený na &r%lore%"
   Flag:
-    Add: "%prefix% Vlajka &e%flag &7bola nastavená na predmetu"
-    Remove: "%prefix% Vlajka &e%flag% &7bola odstránená z predmetu v tvojej ruke"
+    Added: "%prefix% Na predmet vo vašej ruke bol pridaný item flag &e%flag%"
+    Removed: "%prefix% Z predmetu vo vašej ruke bol odstránený item flag &e%flag%"
+    List: "%prefix% Zoznam item flagov v predmete vo vašej ruke: &e%flags%"
+  Nbt:
+    Get: "%prefix% NBT tagy na predmete vo vašej ruke sú: &e%nbt%"
+    Set: "%prefix% NBT tagy na predmete vo vašej ruke boli zmenené na &e%nbt%"
+  Type:
+    Get: "%prefix% Typ predmetu vo vašej ruke je &e%nbt%"
+    Set: "%prefix% Typ predmetu vo vašej ruke bol zmenený na &e%nbt%"
+  Durability:
+    Get: "%prefix% Durability predmetu vo vašej ruke je &e%nbt%"
+    Set: "%prefix% Durability predmetu vo vašej ruke bola zmenená na &e%nbt%"
     
 # Translations for /Hat command
 Hat:
@@ -461,6 +473,8 @@ Speed:
 # Translations for fly commands
 Fly:
   Temp:
+    EndIn: "%prefix% Temp-Fly vyprší za &e%time%"
+    End: "%prefix% Temp-Fly vypršal"
     Enabled:
       You: "%prefix% Dočasné lietanie aktivované na &e%time%"
       Other:

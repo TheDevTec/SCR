@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -21,11 +22,10 @@ import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.cooldownapi.CooldownAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 
 public class Kits implements CommandExecutor, TabCompleter {
 	public List<String> kits(CommandSender p) {
-		List<String> list = new UnsortedList<String>();
+		List<String> list = new ArrayList<String>();
 		for (String name : getKits())
 			if (Loader.hasKits(p, name))
 				list.add(name);
@@ -179,10 +179,10 @@ public class Kits implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		if (args.length == 1)
-			return StringUtil.copyPartialMatches(args[0], kits(s), new UnsortedList<>());
+			return StringUtil.copyPartialMatches(args[0], kits(s), new ArrayList<>());
 		if (args.length == 2)
 			return null;
-		return new UnsortedList<>();
+		return new ArrayList<>();
 	}
 
 }

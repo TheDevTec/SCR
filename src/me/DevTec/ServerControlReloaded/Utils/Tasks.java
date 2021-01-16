@@ -1,9 +1,10 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -11,13 +12,12 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedSet;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 import me.devtec.theapi.utils.listener.EventHandler;
 import me.devtec.theapi.utils.listener.Listener;
 import me.devtec.theapi.utils.listener.events.ServerListPingEvent;
@@ -27,9 +27,9 @@ import me.devtec.theapi.utils.reflections.Ref;
 
 public class Tasks {
 	
-	public static Set<String> players = new UnsortedSet<>();
-	static Set<Integer> tasks = new UnsortedSet<>();
-	static Map<String, String> sss = new UnsortedMap<>();
+	public static ArrayList<String> players = new ArrayList<>();
+	static ArrayList<Integer> tasks = new ArrayList<>();
+	static Map<String, String> sss = new HashMap<>();
 	static Loader a;
 	static int tests;
 	static Listener l = new Listener() {
@@ -86,17 +86,16 @@ public class Tasks {
 						long timeout = start / 1000 - System.currentTimeMillis() / 1000 + end;
 						if (timeout <= 0) {
 							if (s != null) {
-								TheAPI.sendActionBar(s, "&cTempFly ended");
+								Loader.sendMessages(s, "Fly.Temp.End");
 								API.getSPlayer(s).disableFly();
 								TheAPI.getUser(s).remove("TempFly");
 								TheAPI.getUser(s).save();
 							}
+							return;
 						}
-						if (timeout == 5 || timeout == 4 || timeout == 3 || timeout == 2 || timeout == 1
-								|| timeout == 15 || timeout == 10 || timeout == 30) {
-							if (s != null)
-								TheAPI.sendActionBar(s,"&6TempFly ends in &c" + StringUtils.setTimeToString(timeout));
-						}
+						if (s != null)
+						if (timeout <= 5 || timeout == 10 || timeout == 15 || timeout == 30 || timeout == 45 || timeout == 60)
+								Loader.sendMessages(s, "Fly.Temp.EndIn", Placeholder.c().add("%time%", StringUtils.setTimeToString(timeout)));
 					}}
 		}.runRepeating(0, 20));
 	}
@@ -176,9 +175,9 @@ public class Tasks {
 			public void run() {
 				for (Player online : TheAPI.getOnlinePlayers()) {
 					if (!players.contains(online.getName())) {
-						if (!online.hasPermission("ServerControl.JoinFullServer"))
+						if (!online.hasPermission("SCR.Other.JoinFullServer"))
 							players.add(online.getName());
-					} else if (online.hasPermission("ServerControl.JoinFullServer")) {
+					} else if (online.hasPermission("SCR.Other.JoinFullServer")) {
 						players.remove(online.getName());
 					}
 				}

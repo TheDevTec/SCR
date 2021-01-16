@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +20,6 @@ import org.bukkit.entity.Player;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 import me.devtec.theapi.utils.json.Reader;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
@@ -27,8 +27,8 @@ import me.devtec.theapi.utils.reflections.Ref;
 public class SkinManager {
 	private static final String URL_FORMAT = "https://api.mineskin.org/generate/url?url=%s&%s",
 			USER_FORMAT="https://api.ashcon.app/mojang/v2/user/%s";
-	private static UnsortedMap<String, SkinData> playerSkins = new UnsortedMap<>();
-	private static UnsortedMap<String, SkinData> generator = new UnsortedMap<>();
+	private static HashMap<String, SkinData> playerSkins = new HashMap<>();
+	private static HashMap<String, SkinData> generator = new HashMap<>();
 	@SuppressWarnings("unchecked")
 	public static synchronized void generateSkin(String urlOrName, SkinCallback onFinish, boolean override) {
 		if(urlOrName==null)return;

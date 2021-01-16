@@ -1,7 +1,9 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -23,11 +25,9 @@ import me.DevTec.ServerControlReloaded.Utils.XMaterial;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class Give implements CommandExecutor, TabCompleter {
-	List<String> list = new UnsortedList<String>();
+	List<String> list = new ArrayList<String>();
 
 	public Give() {
 		for (Material ss : Material.values()) {
@@ -112,7 +112,7 @@ public class Give implements CommandExecutor, TabCompleter {
 		int args3 = 0; // level
 		int args4 = 0; // time
 		boolean multi = false;
-		UnsortedMap<PotionEffectType, String> a = new UnsortedMap<>();
+		HashMap<PotionEffectType, String> a = new HashMap<>();
 		if (s.toUpperCase().startsWith("POTION_OF_")) {
 			args1 = XMaterial.POTION.parseMaterial();
 			args2 = s.toUpperCase().replaceFirst("POTION_OF_", "").replaceAll("[0-9]", "");
@@ -549,19 +549,19 @@ public class Give implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new UnsortedList<>();
+		List<String> c = new ArrayList<>();
 		if (Loader.has(s, "Give", "Other")) {
-			List<String> pls = new UnsortedList<String>();
+			List<String> pls = new ArrayList<String>();
 			for (Player p : TheAPI.getOnlinePlayers())
 				pls.add(p.getName());
 			if (args.length == 1)
-				c.addAll(StringUtil.copyPartialMatches(args[0], pls, new UnsortedList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], pls, new ArrayList<>()));
 			if (args.length == 2) {
-				c.addAll(StringUtil.copyPartialMatches(args[1], list, new UnsortedList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[1], list, new ArrayList<>()));
 			}
 			if (args.length == 3) {
 				c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("1", "3", "5", "10", "15"),
-						new UnsortedList<>()));
+						new ArrayList<>()));
 			}
 		}
 		return c;

@@ -40,24 +40,24 @@ public class Staff implements CommandExecutor, TabCompleter {
 		return "default";
 	}
 	
-	public static String joiner() {
+	public static String joiner(CommandSender sender) {
 		String s = "";
 		for (Player a : TheAPI.getOnlinePlayers()) 
 			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a))) { 
-				if(TheAPI.hasVanish(a.getName())) {
-					return s+=(s.equals("")?"":", ")+a.getName();}
-			s+=(s.equals("")?"":", ")+a.getName();}
+				if(sender instanceof Player == false ? false : TheAPI.canSee((Player)sender,a.getName()))continue;
+				s+=(s.equals("")?"":", ")+a.getName();
+			}
 		return s;
 	}
 	
 	
-	public static String joinercount() {
+	public static String joinercount(CommandSender sender) {
 		int s = 0;
 		for (Player a : TheAPI.getOnlinePlayers()) 
-			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a))) 
-				if(TheAPI.hasVanish(a.getName()))									
-					return s+"";
+			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a))) {
+				if(sender instanceof Player == false ? false : TheAPI.canSee((Player)sender,a.getName()))continue;
 				++s;
+			}
 		return s+"";
 	}
 	public static String jner() {
@@ -95,7 +95,7 @@ public class Staff implements CommandExecutor, TabCompleter {
 						.add("%staff%", jner()));
 				return true;
 				}
-			boolean isEmpty = joinercount().equals("0");
+			boolean isEmpty = joinercount(s).equals("0");
 			if(isEmpty && setting.staff_hide) {
 				if(setting.staff_replace) {
 					for(String a : Loader.config.getStringList("Options.Staff.ReplaceWith")){
@@ -106,8 +106,8 @@ public class Staff implements CommandExecutor, TabCompleter {
 				return true;
 			}else if(!isEmpty || !setting.staff_hide)
 			Loader.sendMessages(s, "List.Staff", Placeholder.c()
-					.add("%staff_online%", joinercount())
-					.add("%staff%", joiner()));
+					.add("%staff_online%", joinercount(s))
+					.add("%staff%", joiner(s)));
 			return true;
 		}
 		Loader.noPerms(s, "Staff", "Info");

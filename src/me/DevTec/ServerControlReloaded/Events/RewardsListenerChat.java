@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Events;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Player;
@@ -15,7 +16,6 @@ import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.TheAPI.SudoType;
 import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 
 
 public class RewardsListenerChat implements Listener {
@@ -25,7 +25,7 @@ public class RewardsListenerChat implements Listener {
 			Player p = e.getPlayer();
 			List<String> only = Loader.config.getStringList("Options.Codes.List");
 			User d = TheAPI.getUser(p);
-			List<String> codes = d.exist("Taken-Codes")?d.getStringList("Taken-Codes"):new UnsortedList<>();
+			List<String> codes = d.exist("Taken-Codes")?d.getStringList("Taken-Codes"):new ArrayList<>();
 			if (!codes.isEmpty())
 				for (String s : codes)
 					only.remove(s);

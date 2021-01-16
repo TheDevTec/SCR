@@ -1,7 +1,9 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -17,11 +19,9 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Scheduler;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class Fly implements CommandExecutor, TabCompleter {
-	public static UnsortedMap<SPlayer, Integer> task = new UnsortedMap<SPlayer, Integer>();
+	public static HashMap<SPlayer, Integer> task = new HashMap<SPlayer, Integer>();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -153,19 +153,19 @@ public class Fly implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String a, String[] args) {
-		List<String> c = new UnsortedList<>();
+		List<String> c = new ArrayList<>();
 		if(Loader.has(s, "Fly", "Other")) {
 		if(args.length==1) {
-				List<String> list = new UnsortedList<>();
+				List<String> list = new ArrayList<>();
 				list.addAll(Arrays.asList("On","Off"));
 				if(Loader.has(s, "Fly", "Other", "Other"))
 				for (Player player : TheAPI.getOnlinePlayers())
 					list.add(player.getName());
-				c.addAll(StringUtil.copyPartialMatches(args[0], list, new UnsortedList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], list, new ArrayList<>()));
 		}
 		if(args.length==2)
 			if(Loader.has(s, "Fly", "Other", "Other"))
-			c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("On","Off"), new UnsortedList<>()));
+			c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("On","Off"), new ArrayList<>()));
 		}
 		return c;
 	}

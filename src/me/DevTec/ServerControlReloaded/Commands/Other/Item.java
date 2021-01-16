@@ -2,6 +2,7 @@ package me.DevTec.ServerControlReloaded.Commands.Other;
 
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,17 +20,15 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class Item implements CommandExecutor, TabCompleter{
-	private static List<String> flags = new UnsortedList<>();
-	private static List<String> f = new UnsortedList<>();
+	private static List<String> flags = new ArrayList<>();
+	private static List<String> f = new ArrayList<>();
 	static {
 		try {
 		for(ItemFlag a : ItemFlag.values())flags.add(a.name());
 		}catch(Exception | NoSuchFieldError | NoSuchMethodError e) {}
-		flags.add("UNBREAKABLE");
 		f.add("add");
 		f.add("remove");
 		f.add("list");
@@ -38,34 +37,38 @@ public class Item implements CommandExecutor, TabCompleter{
 	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "Item", "Other")&&(Loader.has(s, "Item", "Other", "SetName")||Loader.has(s, "Item", "Other", "SetLore")
+		if (Loader.has(s, "Item", "Other")&&(Loader.has(s, "Item", "Other", "Name")||Loader.has(s, "Item", "Other", "Lore")
 				||Loader.has(s, "Item", "Other", "Flag")||Loader.has(s, "Item", "Other", "Nbt")
-				||Loader.has(s, "Item", "Other", "Durability")||Loader.has(s, "Item", "Other", "Type")
-				||Loader.has(s, "Item", "Other", "Info"))) {
+				||Loader.has(s, "Item", "Other", "Durability")||Loader.has(s, "Item", "Other", "Type"))) {
 			if(s instanceof Player) {
 				if(args.length==0) {
-					checker(s);
+					if(Loader.has(s, "Item", "Other", "Name")) Loader.advancedHelp(s, "Item","Other" ,"Name");		
+					if(Loader.has(s, "Item", "Other", "Lore"))for (String c : f) Loader.advancedHelp(s,"Item", "Other", "Lore", c);
+					if(Loader.has(s, "Item", "Other", "Flag")) Loader.advancedHelp(s, "Item","Other" ,"Flag");		
+					if(Loader.has(s, "Item", "Other", "Nbt")) Loader.advancedHelp(s, "Item","Other" ,"Nbt");		
+					if(Loader.has(s, "Item", "Other", "Durability")) Loader.advancedHelp(s, "Item","Other" ,"Durability");		
+					if(Loader.has(s, "Item", "Other", "Type")) Loader.advancedHelp(s, "Item","Other" ,"Type");
 					return true; 
 				}
 				Player p = (Player)s;
 		        ItemStack item = p.getItemInHand();
-		        ItemMeta m = item.getItemMeta();
-		        if(item.getType()==Material.AIR) {
-		        	TheAPI.sendTitle(p, Loader.getTranslation("Item.NoItem").toString(), "");
+		        if(item==null||item.getType()==Material.AIR) {
+		        	Loader.sendMessages(s, "Item.NoItem");
 		        	return true;
 		        }
-				if(args[0].equalsIgnoreCase("name")) {
+		        ItemMeta m = item.getItemMeta();
+				if(args[0].equalsIgnoreCase("name") && Loader.has(s, "Item", "Other", "Name")) {
 					if(args.length==1) {
 						Loader.advancedHelp(s, "Item", "Other", "Name");
 						return true;
 					}
-					String name = StringUtils.buildString(1, args);
-					m.setDisplayName(TheAPI.colorize(name));
+					String name = TheAPI.colorize(StringUtils.buildString(1, args));
+					m.setDisplayName(name);
 					item.setItemMeta(m);
 		            Loader.sendMessages(s, "Item.Name", Placeholder.c().replace("%item%", item.getType().name()).replace("%name%", name));
 					return true;
 				}
-				if(args[0].equalsIgnoreCase("lore")) {
+				if(args[0].equalsIgnoreCase("lore") && Loader.has(s, "Item", "Other", "Lore")) {
 					if(args.length==1) {
 						for (String c : f) Loader.advancedHelp(s,"Item", "Other", "Lore", c.toUpperCase());
 						return true;
@@ -76,12 +79,13 @@ public class Item implements CommandExecutor, TabCompleter{
 						  return true;
 					  }
 					  String name = StringUtils.buildString(2, args);
-		              List<String> lore = new UnsortedList<>();
-		              if (m.getLore() != null)lore = m.getLore();	              
-		              lore.add(TheAPI.colorize(name));
+		              List<String> lore = m.getLore();
+		              if (lore == null)lore = new ArrayList<>();	           
+		              String text = TheAPI.colorize(name);
+		              lore.add(text);
 		              m.setLore(lore);
 		              item.setItemMeta(m);
-		              Loader.sendMessages(s, "Item.Lore.Added", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", name));
+		              Loader.sendMessages(s, "Item.Lore.Added", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", text));
 		              return true;
 					}
 					if(args[1].equalsIgnoreCase("remove")) {
@@ -91,7 +95,10 @@ public class Item implements CommandExecutor, TabCompleter{
 						}
 						try {
 			                List<String> lore = m.getLore();
-			                if(lore.isEmpty()) {return true;}
+			                if(lore==null||lore.isEmpty()) {
+			                	Loader.sendMessages(s, "Item.Lore.Removed", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", args[2].toString()));
+				                return true;
+			                }
 			                lore.remove(StringUtils.getInt(args[2]));
 			                m.setLore(lore);
 			                item.setItemMeta(m);
@@ -108,12 +115,13 @@ public class Item implements CommandExecutor, TabCompleter{
 							return true;
 						}
 						try {
-						String name = StringUtils.buildString(3, args);
-			              List<String> lore = new UnsortedList<>();
-			              if (m.getLore() != null)
-			                for (String ss : m.getLore())
-			                  lore.add(TheAPI.colorize(ss));
-			              int line = Integer.parseInt(args[2])==0?0:Integer.parseInt(args[2]);
+						String name = TheAPI.colorize(StringUtils.buildString(3, args));
+			              List<String> lore = m.getLore();
+			              if(lore==null || lore.isEmpty()) {
+								Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", "Lore is empty"));
+				            	return true;
+			              }
+			              int line = StringUtils.getInt(args[2]);
 			              lore.set(line, name);
 			              m.setLore(lore);			              
 			              item.setItemMeta(m);
@@ -126,101 +134,155 @@ public class Item implements CommandExecutor, TabCompleter{
 					}
 					if (args[1].equalsIgnoreCase("list")) {
 			              int tests = 0;
-			              Loader.sendMessages(s, "Item.Lore.ListItem", Placeholder.c().replace("%item%", item.getType().name()).replace("%lines%", (m.getLore()!=null?m.getLore().size():0)+""));
 			              List<String> lore = m.getLore();
-			              if (lore != null)
-			                for (String ss : lore) {
+			              if(lore==null || lore.isEmpty()) {
+								Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", "Lore is empty"));
+				            	return true;
+			              }
+			              Loader.sendMessages(s, "Item.Lore.ListItem", Placeholder.c().replace("%item%", item.getType().name()).replace("%lines%", lore.size()+""));
+			              for (String ss : lore) {
 			                	Loader.sendMessages(s, "Item.Lore.ListLore", Placeholder.c().replace("%item%", item.getType().name()).replace("%lore%", ss).replace("%position%", tests+""));
-			                	tests++;
+			                	++tests;
 			                }
 			              return true;
 			            }
 					return true;
 				}
-				if(args[0].equalsIgnoreCase("flag")) {
-					if(TheAPI.isNewerThan(7)) {
-					if(args.length==0||args.length==1) {
-						Loader.advancedHelp(s, "Item", "Other", "Flag","Help");
+				
+				if(args[0].equalsIgnoreCase("flag") && Loader.has(s, "Item", "Other", "Flag")) {
+					if(!TheAPI.isNewerThan(7))return true;
+					if(args.length==1) {
+						Loader.advancedHelp(s, "Item", "Other", "Flag", "Add");
+						Loader.advancedHelp(s, "Item", "Other", "Flag", "Remove");
+						Loader.advancedHelp(s, "Item", "Other", "Flag", "List");
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("list")) {
-						ItemStack it = new ItemStack(((Player) s).getItemInHand());						
-						for (ItemFlag itf : it.getItemMeta().getItemFlags()) {
-							Loader.sendMessages(s, "Item.Flag.List", Placeholder.c().replace("%item%", it.getType().name()).replace("%lines%", (it!=null?it.getItemMeta().getItemFlags().size()+"":0+"")).replace("%flags%", itf+""));
-						}
-					}
-					if(args[1].equalsIgnoreCase("set")) {
-						if(args.length==0||args.length==1) {
-							Loader.advancedHelp(s, "Item", "Other", "Flag","Set");
-						}
-					}
-					//list
-					//set <flag> <value>
-					//remove <flag>
-					//add <flag>
-					//get <flag>
-					return true;
-					}
-				}
-				if(args[0].equalsIgnoreCase("durability")) {
-					if(args.length==0) {
-						Loader.advancedHelp(s, "Item", "Other", "Durability");
+						ItemStack it = new ItemStack(((Player) s).getItemInHand());		
+						String flags = "";
+						for (ItemFlag itf : it.getItemMeta().getItemFlags())
+							flags+=", "+itf.name();
+						flags=flags.substring(2);
+						Loader.sendMessages(s, "Item.Flag.List", Placeholder.c().replace("%item%", it.getType().name()).replace("%flags%", flags));
 						return true;
 					}
-					if(args[1].equalsIgnoreCase("get")) {
-						if(args.length>1) {
-							Loader.advancedHelp(s, "Item", "Other", "Durability");
+					if(args[1].equalsIgnoreCase("add")) {
+						if(args.length==2) {
+							Loader.advancedHelp(s, "Item", "Other", "Flag", "Add");
 							return true;
 						}
-						
+						try {
+							ItemFlag type = ItemFlag.valueOf(args[2]);
+							ItemMeta ma = p.getItemInHand().getItemMeta();
+							m.addItemFlags(type);
+							p.getItemInHand().setItemMeta(ma);
+							Loader.sendMessages(s,"Item.Flag.Added",Placeholder.c().add("%flag%", type.name()));
+						}catch(Exception | NoSuchFieldError e) {
+							Loader.sendMessages(s,"Missing.Flag",Placeholder.c().add("%flag%", args[2]));
+						}
 						return true;
 					}
-					//get
-					//set <int>
+					if(args[1].equalsIgnoreCase("remove")) {
+						if(args.length==2) {
+							Loader.advancedHelp(s, "Item", "Other", "Flag", "Remove");
+							return true;
+						}
+						try {
+							ItemFlag type = ItemFlag.valueOf(args[2]);
+							ItemMeta ma = p.getItemInHand().getItemMeta();
+							m.removeItemFlags(type);
+							p.getItemInHand().setItemMeta(ma);
+							Loader.sendMessages(s,"Item.Flag.Removed",Placeholder.c().add("%flag%", type.name()));
+						}catch(Exception | NoSuchFieldError e) {
+							Loader.sendMessages(s,"Missing.Flag",Placeholder.c().add("%flag%", args[2]));
+						}
+						return true;
+					}
+					Loader.advancedHelp(s, "Item", "Other", "Flag", "Add");
+					Loader.advancedHelp(s, "Item", "Other", "Flag", "Remove");
+					Loader.advancedHelp(s, "Item", "Other", "Flag", "List");
 					return true;
 				}
 				
-				if(args[0].equalsIgnoreCase("nbt")) {
-					if(args.length==0||args.length==1) {
+				if(args[0].equalsIgnoreCase("durability") && Loader.has(s, "Item", "Other", "Durability")) {
+					if(args.length==1) {
+						Loader.advancedHelp(s, "Item", "Other", "Durability", "Get");
+						Loader.advancedHelp(s, "Item", "Other", "Durability", "Set");
+						return true;
+					}
+					if(args[1].equalsIgnoreCase("get")) {
+						Loader.sendMessages(s,"Item.Durability.Get",Placeholder.c().add("%durability%", ((Player) s).getItemInHand().getDurability()+""));
+						return true;
+					}
+					if(args[1].equalsIgnoreCase("set")) {
+						if(args.length==2) {
+							Loader.advancedHelp(s, "Item", "Other", "Durability", "Set");
+							return true;
+						}
+						short i = StringUtils.getShort(args[2]);
+						p.getItemInHand().setDurability(i);
+						Loader.sendMessages(s,"Item.Durability.Set",Placeholder.c().add("%durability%", i+""));
+						return true;
+					}
+				}
+				
+				if(args[0].equalsIgnoreCase("nbt") && Loader.has(s, "Item", "Other", "Nbt")) {
+					if(args.length==1) {
 						Loader.advancedHelp(s, "Item", "Other", "Nbt", "Get");
 						Loader.advancedHelp(s, "Item", "Other", "Nbt", "Set");
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("get")) {
 						Object stack = Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "asNMSCopy", ItemStack.class),((Player) s).getItemInHand());
-						TheAPI.bcMsg(Ref.invoke(stack, "getOrCreateTag"));
-						/*Loader.sendMessages(s,"Item.Nbt.Get1",Placeholder.c().add("%item%", ((Player) s).getItemInHand().getItemMeta().getDisplayName())); 
-						Loader.sendMessages(s,"Item.Nbt.Get2",Placeholder.c().add("%nbt%", );*/
-						if(args.length<0) {
-						Loader.advancedHelp(s, "Item", "Other", "Nbt", "Get");
+						Loader.sendMessages(s,"Item.Nbt.Get",Placeholder.c().add("%nbt%", Ref.invoke(stack, "getOrCreateTag").toString()));
 						return true;
-						}
 					}
 					if(args[1].equalsIgnoreCase("set")) {
-						if(args.length==0||args.length==1) {
+						if(args.length==2) {
 							Loader.advancedHelp(s, "Item", "Other", "Nbt", "Set");
 							return true;
 						}
 						Object itemstack = Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "asNMSCopy", ItemStack.class), ((Player)s).getItemInHand());
-						TheAPI.bcMsg(itemstack);
-						Ref.invoke(Ref.invoke(itemstack, "getOrCreateTag", Ref.method(Ref.nms("NBTTagCompound"), "setString", String.class, String.class)), args[2], args[3]);
-						TheAPI.bcMsg(p.getItemInHand().getItemMeta().getCustomTagContainer());
-						(p).getItemInHand().setItemMeta((ItemMeta) Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "getItemMeta", Ref.nms("ItemStack")), itemstack));
-						TheAPI.bcMsg(p.getItemInHand().getItemMeta().getCustomTagContainer());
-						TheAPI.bcMsg(args[0]+args[1]+args[2]);
+						Object nbt = Ref.invokeNulled(Ref.method(Ref.nms("MojangsonParser"), "parse", String.class), StringUtils.buildString(2, args));
+						Ref.invoke(itemstack, Ref.method(Ref.nms("NBTTagCompound"), "setTag", Ref.nms("NBTTagCompound")), nbt);
+						p.getItemInHand().setItemMeta((ItemMeta) Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "getItemMeta", Ref.nms("ItemStack")), itemstack));
+						Loader.sendMessages(s,"Item.Nbt.Set",Placeholder.c().add("%nbt%", nbt.toString()));
 						return true;
 					}
-					
-					//set <value>
 				}
-				if(args[0].equalsIgnoreCase("type")) {
+				
+				if(args[0].equalsIgnoreCase("type") && Loader.has(s, "Item", "Other", "Type")) {
 					if(args.length==1) {
-						Loader.advancedHelp(s, "Item", "Other", "Type");
+						Loader.advancedHelp(s, "Item", "Other", "Type", "Get");
+						Loader.advancedHelp(s, "Item", "Other", "Type", "Set");
 						return true;
 					}
-					//get
-					//set <value>
+					if(args[1].equalsIgnoreCase("get")) {
+						Loader.sendMessages(s,"Item.Type.Get",Placeholder.c().add("%type%", ((Player) s).getItemInHand().getType().name()));
+						return true;
+					}
+					if(args[1].equalsIgnoreCase("set")) {
+						if(args.length==2) {
+							Loader.advancedHelp(s, "Item", "Other", "Nbt", "Set");
+							return true;
+						}
+						try {
+							Material type = Material.valueOf(args[2]);
+							p.getItemInHand().setType(type);
+							Loader.sendMessages(s,"Item.Type.Set",Placeholder.c().add("%type%", type.name()));
+						}catch(Exception e) {
+							Loader.sendMessages(s,"Missing.Material",Placeholder.c().add("%material%", args[2]));
+						}
+						return true;
+					}
 				}
+				if(Loader.has(s, "Item", "Other", "Name")) Loader.advancedHelp(s, "Item","Other" ,"Name");		
+				if(Loader.has(s, "Item", "Other", "Lore"))for (String c : f) Loader.advancedHelp(s,"Item", "Other", "Lore", c);
+				if(Loader.has(s, "Item", "Other", "Flag")) Loader.advancedHelp(s, "Item","Other" ,"Flag");		
+				if(Loader.has(s, "Item", "Other", "Nbt")) Loader.advancedHelp(s, "Item","Other" ,"Nbt");		
+				if(Loader.has(s, "Item", "Other", "Durability")) Loader.advancedHelp(s, "Item","Other" ,"Durability");		
+				if(Loader.has(s, "Item", "Other", "Type")) Loader.advancedHelp(s, "Item","Other" ,"Type");
+				return true;
 			}
 			return true;
 		}
@@ -228,61 +290,75 @@ public class Item implements CommandExecutor, TabCompleter{
 		return true;
 	}
 	
-	private void checker(CommandSender s) {
-		if(Loader.has(s, "Item", "Other", "SetName")) Loader.advancedHelp(s, "Item","Other" ,"Name");		
-		if(Loader.has(s, "Item", "Other", "SetLore"))for (String c : f) Loader.advancedHelp(s,"Item", "Other", "Lore", c);
-		if(Loader.has(s, "Item", "Other", "Flag")) Loader.advancedHelp(s, "Item","Other" ,"Flag");		
-		if(Loader.has(s, "Item", "Other", "Nbt")) Loader.advancedHelp(s, "Item","Other" ,"Nbt");		
-		if(Loader.has(s, "Item", "Other", "Durability")) Loader.advancedHelp(s, "Item","Other" ,"Durability");		
-		if(Loader.has(s, "Item", "Other", "Type")) Loader.advancedHelp(s, "Item","Other" ,"Name");		
-		if(Loader.has(s, "Item", "Other", "Info")) Loader.advancedHelp(s, "Item","Other" ,"Info");return;
-	}	
-	
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new UnsortedList<>();
-		Player p = (Player)s;
-		if(p.getItemInHand().getType()==Material.AIR) {
-			TheAPI.sendTitle(p, Loader.getTranslation("Item.NoItem").toString()," "); 			
-			c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("")));
+		List<String> c = new ArrayList<>();
+		if (args.length==1) {			
+			if(Loader.has(s, "Item", "Other", "Name")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Name")));			
+			if(Loader.has(s, "Item", "Other", "Lore")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Lore")));			
+			if(Loader.has(s, "Item", "Other", "Flag") && TheAPI.isNewerThan(7)) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Flag")));			
+			if(Loader.has(s, "Item", "Other", "Nbt")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Nbt")));			
+			if(Loader.has(s, "Item", "Other", "Durability"))c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Durability")));			
+			if(Loader.has(s, "Item", "Other", "Type")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Type")));			
 			return c;
 		}
-		if (args.length==1) {			
-			if(s.hasPermission("SCR.Item.Name")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("name")));			
-			if(s.hasPermission("SCR.Item.Lore")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("lore")));			
-			if(s.hasPermission("SCR.Item.Flag")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("flag")));			
-			if(s.hasPermission("SCR.Item.Nbt")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("nbt")));			
-			if(s.hasPermission("SCR.Item.Durability")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("durability")));			
-			if(s.hasPermission("SCR.Item.Type")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("type")));			
-			if(s.hasPermission("SCR.Item.Info")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("info")));			
+		if(args[0].equalsIgnoreCase("name") && Loader.has(s, "Item", "Other", "Name"))
+			return Arrays.asList("?");
+		if(args[0].equalsIgnoreCase("lore") && Loader.has(s, "Item", "Other", "Lore")) {
+			if(args.length==2) {
+				c.addAll(StringUtils.copyPartialMatches(args[1], Arrays.asList("Add","Remove","Set","List")));
+				return c;
+			}
+			if(args[1].equalsIgnoreCase("Add"))
+				return Arrays.asList("?");
+			if(args.length==3) {
+				if(args[1].equalsIgnoreCase("Remove") || args[1].equalsIgnoreCase("Set")) {
+					List<String> lines = new ArrayList<>();
+					Player p = (Player)s;
+			        ItemStack item = p.getItemInHand();
+			        if(item==null||item.getType()==Material.AIR)
+			        	return lines;
+			        if(item.hasItemMeta() && item.getItemMeta().getLore()!=null)
+					for(int i = 0; i < item.getItemMeta().getLore().size(); ++i)
+						lines.add(i+"");
+					c.addAll(StringUtils.copyPartialMatches(args[2], lines));
+					return c;
+				}
+			}
+			if(args[1].equalsIgnoreCase("Set"))
+				return Arrays.asList("?");
+			return c;
 		}
-		if(args.length==2) {
-			if(s.hasPermission("SCR.Item.Name")&&args[0].contains("name"))c.addAll(StringUtils.copyPartialMatches(args[1], Arrays.asList("?")));
-			if(s.hasPermission("SCR.Item.Lore")&&args[0].contains("lore"))c.addAll(StringUtils.copyPartialMatches(args[1], f));
-			if(s.hasPermission("SCR.Item.Flag")&&args[0].contains("flag"))c.addAll(StringUtils.copyPartialMatches(args[1], flags));
-			if(s.hasPermission("SCR.Item.Durability")&&args[0].contains("durability"))c.addAll(StringUtils.copyPartialMatches(args[1], Arrays.asList("?")));
-			if(s.hasPermission("SCR.Item.Type")&&args[0].contains("type"))c.addAll(StringUtils.copyPartialMatches(args[1], Arrays.asList("?")));
-		}		
-		if(args.length==3) {			
-			if(args[1].contains("add"))if(s.hasPermission("SCR.Item.Lore"))c.addAll(StringUtils.copyPartialMatches(args[2], Arrays.asList("?")));
-			if(args[1].contains("remove")) {				
-				if(s.hasPermission("SCR.Item.Lore")) {					
-					List<String> l = new UnsortedList<>();																																																																																																						
-					if (s instanceof Player && ((Player)s).getItemInHand().getItemMeta().hasLore())
-						for (int count = 0; count < ((Player)s).getItemInHand().getItemMeta().getLore().size(); ++count)
-							l.add(count+"");
-						c.addAll(StringUtils.copyPartialMatches(args[2], l)); 
-
+		if(args[0].equalsIgnoreCase("flag") && TheAPI.isNewerThan(7) && Loader.has(s, "Item", "Other", "Flag")) {
+			if(args.length==2) {
+				c.addAll(StringUtils.copyPartialMatches(args[1], Arrays.asList("Add","Remove","List")));
+				return c;
+			}
+			if(args[1].equalsIgnoreCase("Add")){
+				c.addAll(StringUtils.copyPartialMatches(args[2], flags));
+				return c;
+			}
+			if(args.length==3) {
+				if(args[1].equalsIgnoreCase("Remove")) {
+					List<String> lines = new ArrayList<>();
+					Player p = (Player)s;
+			        ItemStack item = p.getItemInHand();
+			        if(item==null||item.getType()==Material.AIR)
+			        	return lines;
+			        if(item.hasItemMeta())
+					for(ItemFlag f : item.getItemMeta().getItemFlags())
+						lines.add(f.name()+"");
+					c.addAll(StringUtils.copyPartialMatches(args[2], lines));
+					return c;
 				}
 			}
-			if(args[1].contains("set")) {
-				if(s.hasPermission("SCR.Item.Lore")) {
-					List<String> l = new UnsortedList<>();
-					if (s instanceof Player && ((Player)s).getItemInHand().getItemMeta().hasLore())
-						for (int count = 0; count < ((Player)s).getItemInHand().getItemMeta().getLore().size(); ++count)
-							l.add(count+"");
-						c.addAll(StringUtils.copyPartialMatches(args[2], l)); 
-				}
+			return c;
+		}
+		if(args[0].equalsIgnoreCase("nbt") && Loader.has(s, "Item", "Other", "Nbt") || args[0].equalsIgnoreCase("durability") && Loader.has(s, "Item", "Other", "Durability")||args[0].equalsIgnoreCase("type") && Loader.has(s, "Item", "Other", "Type")) {
+			if(args.length==2) {
+				c.addAll(StringUtils.copyPartialMatches(args[1], Arrays.asList("Set","Get")));
+				return c;
 			}
+			return c;
 		}
 		return c;
 	}

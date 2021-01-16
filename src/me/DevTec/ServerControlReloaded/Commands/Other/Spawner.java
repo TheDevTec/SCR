@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,12 +20,11 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.blocksapi.BlocksAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 
 public class Spawner implements CommandExecutor, TabCompleter {
 
 	public static List<String> list() {
-		UnsortedList<String> w = new UnsortedList<String>();
+		ArrayList<String> w = new ArrayList<String>();
 		String[] d = { "FISHING_HOOK", "DROPPED_ITEM", "LEASH_HITCH", "LIGHTNING", "PLAYER", "MINECART_MOB_SPAWNER",
 				"UKNOWN", "FIREWORK", "PRIMED_TNT", "AREA_EFFECT_CLOUD", "ENDER_SIGNAL", "UNKNOWN" };
 		for (EntityType t : EntityType.values())
@@ -122,26 +122,26 @@ public class Spawner implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new UnsortedList<>();
+		List<String> c = new ArrayList<>();
 		if (Loader.has(s, "Spawner", "Other")) {
 			if (args.length == 1) {
-				List<String> list = new UnsortedList<String>();
+				List<String> list = new ArrayList<String>();
 				if (TheAPI.isNewVersion()) {
 					list = Arrays.asList("setMob", "setRangePlayer", "setTime", "setAmount");
 				} else
 					list = Arrays.asList("setMob", "setTime");
-				c.addAll(StringUtil.copyPartialMatches(args[0], list, new UnsortedList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], list, new ArrayList<>()));
 			}
 			if (args.length == 2) {
 				if (args[0].equalsIgnoreCase("setMob"))
-					c.addAll(StringUtil.copyPartialMatches(args[1], list(), new UnsortedList<>()));
+					c.addAll(StringUtil.copyPartialMatches(args[1], list(), new ArrayList<>()));
 
 				if (TheAPI.isNewVersion()) {
 					if (args[0].equalsIgnoreCase("setRangePlayer") || args[0].equalsIgnoreCase("setAmount"))
-						c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new UnsortedList<>()));
+						c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));
 				}
 				if (args[0].equalsIgnoreCase("setTime"))
-					c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new UnsortedList<>()));
+					c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));
 			}
 		}
 		return c;

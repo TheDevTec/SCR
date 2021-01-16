@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Events;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.event.EventHandler;
@@ -20,7 +21,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 
 /**
  * 18.11. 2020
@@ -78,7 +78,7 @@ public class SecurityListenerV4 implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void BookSave(PlayerEditBookEvent e) {
 		if (!e.getPlayer().hasPermission("SCR.Admin")) {
-		List<String> lines = new UnsortedList<>();
+		List<String> lines = new ArrayList<>();
 		for (String msg : e.getNewBookMeta().getPages()) {
 			for (Rule rule : Loader.rules) {
 				if(!Loader.events.getStringList("onBook.Rules").contains(rule.getName()))continue;

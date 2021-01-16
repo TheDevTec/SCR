@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -9,10 +10,9 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.Animation;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class AnimationManager {
-	static Map<String, Animation> a = new UnsortedMap<>();
+	static Map<String, Animation> a = new HashMap<>();
 	
 	public static void reload() {
 		a.clear();

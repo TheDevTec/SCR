@@ -1,7 +1,9 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Statistic;
@@ -20,14 +22,12 @@ import me.devtec.theapi.apis.TabListAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class TabList {
 	// GROUP, PRIORITE
-	private static UnsortedMap<String, String> sorting = new UnsortedMap<>();
+	private static HashMap<String, String> sorting = new HashMap<>();
 
 	public static void reload() {
 		sorting.clear();
@@ -40,7 +40,7 @@ public class TabList {
 	
 	//limit 1000 groups
 	private static List<String> generate(int size) {
-		List<String> a = new UnsortedList<>();
+		List<String> a = new ArrayList<>();
 		for(int i = 0; i < size; ++i) {
 			String s = "";
 			int limit = 4-(i+"").length();

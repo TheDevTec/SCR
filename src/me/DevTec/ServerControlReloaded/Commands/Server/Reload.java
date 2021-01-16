@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Server;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,7 +14,6 @@ import org.bukkit.util.StringUtil;
 import me.DevTec.ServerControlReloaded.Commands.Server.BigTask.TaskType;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 
 public class Reload implements CommandExecutor, TabCompleter {
 
@@ -42,10 +42,10 @@ public class Reload implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new UnsortedList<>();
+		List<String> c = new ArrayList<>();
 		if (s.hasPermission("ServerControl.Reload") && args.length == 1)
 			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("15s", "30s", "now", "cancel"),
-					new UnsortedList<>()));
+					new ArrayList<>()));
 		return c;
 	}
 }

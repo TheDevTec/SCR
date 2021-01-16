@@ -1,8 +1,10 @@
 package me.DevTec.ServerControlReloaded.SCR;
 
-import java.math.BigDecimal; 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -21,12 +23,10 @@ import me.devtec.theapi.blocksapi.BlockIterator;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
-	private static UnsortedMap<String, SPlayer> cache = new UnsortedMap<>();
+	private static HashMap<String, SPlayer> cache = new HashMap<>();
 
 	public static SPlayer getSPlayer(Player p) {
 		if(!cache.containsKey(p.getName())) {
@@ -43,7 +43,7 @@ public class API {
 	}
 
 	public static List<SPlayer> getSPlayers() {
-		List<SPlayer> s = new UnsortedList<>();
+		List<SPlayer> s = new ArrayList<>();
 		for(Player p : TheAPI.getOnlinePlayers())s.add(getSPlayer(p));
 		return s;
 	}
@@ -65,7 +65,7 @@ public class API {
 		case HOME: {
 			String home = null;
 			User d = TheAPI.getUser(p);
-			List<String> homes = new UnsortedList<String>();
+			List<String> homes = new ArrayList<String>();
 			for (String s : d.getKeys("Homes"))
 				homes.add(s);
 			if (homes.isEmpty() == false) {

@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 import me.devtec.theapi.utils.reflections.Ref;
 
 
@@ -31,7 +31,7 @@ public class Colors {
 		String b = sr;
 		if(b.toLowerCase().contains("&u")) {
 			if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow"))) {
-				List<String> s = new UnsortedList<>();
+				List<String> s = new ArrayList<>();
 		    	StringBuffer d = new StringBuffer();
 		    	int found = 0;
 		    	for(char c : b.toCharArray()) {

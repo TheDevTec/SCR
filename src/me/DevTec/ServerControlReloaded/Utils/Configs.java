@@ -11,6 +11,7 @@ import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.datakeeper.loader.YamlLoader;
 
 public class Configs {
+	@SuppressWarnings("unchecked")
 	public static void load(boolean settingMessage) {
 		copyDefauts();
 		String lang = Loader.config.getString("Options.Language");
@@ -18,7 +19,37 @@ public class Configs {
 			if(!new File("plugins/ServerControlReloaded/Translations/translation-"+lang+".yml").exists())
 			lang="en";
 		}else lang="en";
-		Loader.trans = new Config("Translations/translation-"+lang+".yml");
+		if(lang.equals("en")) {
+			Loader.trans=Loader.english;
+		}else {
+			Config c = new Config("ServerControlReloaded/Translations/translation-"+lang+".yml");
+    		YamlLoader data = new YamlLoader();
+    		try {
+    		data.load(StreamUtils.fromStream(new File("plugins/ServerControlReloaded/Translations/translation-"+lang+".yml")));
+    		}catch(Exception e) {}
+	    	boolean change = false;
+	    	for(String sr : data.getKeys()) {
+	    		if(c.get(sr)==null && data.get().get(sr)[0]!=null) {
+	    			c.set(sr, data.get().get(sr)[0]);
+	    			change = true;
+	    		}
+	    		if(c.getComments(sr)!=null && c.getComments(sr).isEmpty() && (data.get().get(sr)[1]==null||!((List<String>) data.get().get(sr)[1]).isEmpty())) {
+	    			c.setComments(sr, (List<String>) data.get().get(sr)[1]);
+	    			change = true;
+	    		}
+	    	}
+	    	try {
+    		if(data.getHeader()!=null)
+    			if(!c.getHeader().equals(data.getHeader()))
+    				c.setHeader(data.getHeader());
+    		if(data.getFooter()!=null)
+    			if(!c.getFooter().equals(data.getFooter()))
+    				c.setFooter(data.getFooter());
+	    	}catch(Exception unsuported) {}
+	    	if(change)
+	    	c.save();
+	    	Loader.trans=c;
+		}
 		setting.load(settingMessage);
 		AnimationManager.reload();
 	}

@@ -1,14 +1,15 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
+import java.util.HashMap;
+
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.NameTagAPI;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class NameTagChanger {
-	static UnsortedMap<Player, NameTagAPI> t = new UnsortedMap<>();
+	static HashMap<Player, NameTagAPI> t = new HashMap<>();
 
 	public static void setNameTag(Player p, String prefix, String suffix) {
 		Tasks.regPlayer(p);

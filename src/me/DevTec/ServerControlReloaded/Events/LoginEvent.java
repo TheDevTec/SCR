@@ -29,7 +29,7 @@ public class LoginEvent implements Listener {
 		@SuppressWarnings("unchecked")
 		List<Object> bList = (List<Object>) Ref.get(b, "b");
 		int cc = 0;
-		for(Object o : bList) { //that's bad
+		for(Object o : bList) { 
 			Ref.set(o, "c", TheAPI.hasVanish(player.getName()) && setting.tab_vanish ? (spec==null?surv:spec) : surv);
 			bList.set(cc++, o);
 		}

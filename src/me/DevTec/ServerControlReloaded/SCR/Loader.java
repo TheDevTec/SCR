@@ -3,9 +3,10 @@ package me.DevTec.ServerControlReloaded.SCR;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -177,9 +178,6 @@ import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedSet;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 import me.devtec.theapi.utils.listener.EventHandler;
 import me.devtec.theapi.utils.listener.Listener;
 import me.devtec.theapi.utils.listener.events.PlayerVanishEvent;
@@ -190,10 +188,10 @@ import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
 	public static Config config, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb;
-	public static Set<Rule> rules = new UnsortedSet<>();
+	public static List<Rule> rules = new ArrayList<>();
 	private int task;
 	private long time, rkick;
-	private static Set<PluginCommand> registered = new UnsortedSet<>();
+	private static List<PluginCommand> registered = new ArrayList<>();
 	public static Economy econ;
 	public static Loader getInstance;
 	public static Config english;
@@ -203,7 +201,7 @@ public class Loader extends JavaPlugin implements Listener {
 	private static int aad = 0;
 	
 	public static class Placeholder {
-		private final UnsortedMap<String, String> set = new UnsortedMap<>();
+		private final HashMap<String, String> set = new HashMap<>();
 		public Placeholder add(String placeholder, String replace) {
 			set.put(placeholder, replace);
 			return this;
@@ -528,7 +526,7 @@ public class Loader extends JavaPlugin implements Listener {
 	    	String[] readerr = null;
 	    	try {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(checkURL.openConnection().getInputStream()));
-				Set<String> s = new UnsortedSet<>();
+				ArrayList<String> s = new ArrayList<>();
 				String read;
 				while((read=reader.readLine()) != null)
 					s.add(read);
@@ -706,7 +704,7 @@ public class Loader extends JavaPlugin implements Listener {
 	private static void CmdC(String section, String command, CommandExecutor cs) {
 		if(cmds.getBoolean(section+"."+command+".Enabled")) {
 			PluginCommand c = TheAPI.createCommand(cmds.getString(section+"."+command+".Name"), getInstance);
-			List<String> aliases = new UnsortedList<>();
+			List<String> aliases = new ArrayList<>();
 			if(cmds.exists(section+"."+command+".Aliases")) {
 			if(cmds.get(section+"."+command+".Aliases") instanceof List)
 				aliases=cmds.getStringList(section+"."+command+".Aliases");

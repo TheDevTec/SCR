@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Weather;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -14,7 +15,6 @@ import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 
 public class Rain implements CommandExecutor, TabCompleter {
 
@@ -51,7 +51,7 @@ public class Rain implements CommandExecutor, TabCompleter {
 	}
 
 	public List<String> worlds() {
-		List<String> list = new UnsortedList<String>();
+		List<String> list = new ArrayList<>();
 		for (World p2 : Bukkit.getWorlds()) {
 			list.add(p2.getName());
 		}
@@ -60,10 +60,10 @@ public class Rain implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new UnsortedList<>();
+		List<String> c = new ArrayList<>();
 		if (cmd.getName().equalsIgnoreCase("Rain") && args.length == 1) {
 			if (s.hasPermission("ServerControl.Weather")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], worlds(), new UnsortedList<>()));
+				c.addAll(StringUtil.copyPartialMatches(args[0], worlds(), new ArrayList<>()));
 			}
 		}
 		return c;

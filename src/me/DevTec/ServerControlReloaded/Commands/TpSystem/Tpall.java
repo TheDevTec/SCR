@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.TpSystem;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -14,7 +15,6 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
 
 public class Tpall implements CommandExecutor, TabCompleter {
 
@@ -28,7 +28,7 @@ public class Tpall implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "TpAll", "TpSystem")) {
 			if (s instanceof Player) {
-				UnsortedList<String> list = new UnsortedList<String>();
+				ArrayList<String> list = new ArrayList<>();
 				for (Player p : TheAPI.getOnlinePlayers()) {
 					if (p == s)
 						continue;

@@ -1,6 +1,8 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -14,19 +16,17 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.apis.EnchantmentAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class Kit {
 	private List<ItemStack> a;
-	private UnsortedMap<Integer, ItemStack> s;
+	private HashMap<Integer, ItemStack> s;
 	private double cost;
 	private long delay;
 	public List<ItemStack> getItems() {
 		return a;
 	}
 	
-	public UnsortedMap<Integer, ItemStack> getItemsWithSlots() {
+	public HashMap<Integer, ItemStack> getItemsWithSlots() {
 		return s;
 	}
 	
@@ -46,7 +46,7 @@ public class Kit {
 		if(Loader.kit.exists("Kits." + name + ".delay"))
 		kit.delay=StringUtils.timeFromString(Loader.kit.getString("Kits." + name + ".delay"));
 		if(Loader.kit.exists("Kits." + name + ".items.add")) {
-			kit.a = new UnsortedList<>();
+			kit.a = new ArrayList<>();
 			for (String id : Loader.kit.getKeys("Kits." + name + ".items.add")) {
 				Material m = null;
 				String mat = Loader.kit.getString("Kits." + name + ".items.add." + id + ".type");
@@ -89,7 +89,7 @@ public class Kit {
 			}
 		}
 		if(Loader.kit.exists("Kits." + name + ".items.set")) {
-			kit.s = new UnsortedMap<>();
+			kit.s = new HashMap<>();
 			for (String id : Loader.kit.getKeys("Kits." + name + ".items.set")) {
 				Material m = null;
 				String mat = Loader.kit.getString("Kits." + name + ".items.set." + id + ".type");

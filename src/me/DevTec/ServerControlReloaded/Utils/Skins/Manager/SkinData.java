@@ -1,8 +1,8 @@
 package me.DevTec.ServerControlReloaded.Utils.Skins.Manager;
 
+import java.util.HashMap;
 import java.util.UUID;
 
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 import me.devtec.theapi.utils.json.Writer;
 
 public class SkinData {
@@ -17,7 +17,7 @@ public class SkinData {
 	}
 	
 	public String toString() {
-		UnsortedMap<String, String> data = new UnsortedMap<>();
+		HashMap<String, String> data = new HashMap<>();
 		data.put("uuid", uuid.toString());
 		data.put("texture.value", value);
 		data.put("texture.signature", signature);

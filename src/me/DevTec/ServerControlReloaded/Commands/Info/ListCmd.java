@@ -1,7 +1,9 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,24 +18,23 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedList;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class ListCmd implements CommandExecutor, TabCompleter {
 	
-	public String joiner(String value) {
-		UnsortedMap<String, List<String>> p = new UnsortedMap<String, List<String>>();
+	public String joiner(CommandSender d , String value) {
+		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
 		for (Player a : TheAPI.getOnlinePlayers()) {
+			if(d instanceof Player == false ? false : TheAPI.canSee((Player)d,a.getName()))continue;
 			String as = Staff.getGroup(a);
-			List<String> s = p.getOrDefault(as, new UnsortedList<>());
+			List<String> s = p.getOrDefault(as, new ArrayList<>());
 			s.add(a.getName());
 			p.put(as, s);
 		}
 		String s = "";
 		for(String group : value.split("[ ]*,[ ]*")) {
 			if(group.equalsIgnoreCase("{staff}")) {
-				if(!Staff.joiner().equals(""))
-				s+=(s.equals("")?"":", ")+Staff.joiner();
+				if(!Staff.joiner(d).equals(""))
+				s+=(s.equals("")?"":", ")+Staff.joiner(d);
 				continue;
 			}
 			//ex. default, vip, supervip
@@ -45,18 +46,19 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 		return s;
 	}
 	
-	public String joinercount(String value) {
-		UnsortedMap<String, List<String>> p = new UnsortedMap<String, List<String>>();
+	public String joinercount(CommandSender d , String value) {
+		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
 		for (Player a : TheAPI.getOnlinePlayers()) {
+			if(d instanceof Player == false ? false : TheAPI.canSee((Player)d,a.getName()))continue;
 			String as = Staff.getGroup(a);
-			List<String> s = p.getOrDefault(as, new UnsortedList<>());
+			List<String> s = p.getOrDefault(as, new ArrayList<>());
 			s.add(a.getName());
 			p.put(as, s);
 		}
 		int s = 0;
 		for(String group : value.split("[ ]*,[ ]*")) {
 			if(group.equalsIgnoreCase("{staff}")) {
-				s+=StringUtils.getInt(Staff.joinercount());
+				s+=StringUtils.getInt(Staff.joinercount(d));
 				continue;
 			}
 			s+=p.getOrDefault(group, Arrays.asList()).size();
@@ -77,12 +79,12 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 					Matcher f = a.matcher(sd);
 					while(f.find()) {
 						contains=true;
-						if(!joiner(f.group(1)).equals(""))empty=false;
-						sd=sd.replace(f.group(), joiner(f.group(1)));
+						if(!joiner(s,f.group(1)).equals(""))empty=false;
+						sd=sd.replace(f.group(), joiner(s,f.group(1)));
 					}
 					f = b.matcher(sd);
 					while(f.find())
-						sd=sd.replace(f.group(), joinercount(f.group(1)));
+						sd=sd.replace(f.group(), joinercount(s,f.group(1)));
 					if(!contains || !empty || !setting.list)
 					TheAPI.msg(Loader.placeholder(s, sd, null), s);
 				}
@@ -91,10 +93,10 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 			String sd = o.toString();
 			Matcher f = a.matcher(sd);
 			while(f.find())
-				sd=sd.replace(f.group(), joiner(f.group(1)));
+				sd=sd.replace(f.group(), joiner(s,f.group(1)));
 			f = b.matcher(sd);
 			while(f.find())
-				sd=sd.replace(f.group(), joinercount(f.group(1)));
+				sd=sd.replace(f.group(), joinercount(s,f.group(1)));
 			TheAPI.msg(Loader.placeholder(s, sd, null), s);
 			return true;
 		}

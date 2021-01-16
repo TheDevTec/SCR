@@ -33,7 +33,8 @@ List:
   - "%prefix% »=== &e%staff_online% &7===«"
   - "%prefix% Staff: &e%staff%"
   Normal:
-  - "%prefix% »=== &e%math{%joiner-count{default}%+%joiner-count{supervip, vip}%}% &8/ &e%server_maxonline% &7===«"
+  - "%prefix% »=== &e%joiner-count{{STAFF}, default, supervip, vip}% &8/ &e%server_maxonline% &7===«"
+  - "%prefix% Staff: &e%joiner{{STAFF}}%"
   - "%prefix% VIPs: &e%joiner{supervip, vip}%"
   - "%prefix% Default: &e%joiner{default}%"
   
@@ -49,11 +50,12 @@ Missing:
   Player:
     Offline: "%prefix% Player &e%player% &7is offline"
     NotExist: "%prefix% User &e%player% &7doesn't exist"
-  Item: "%prefix% Item &e%item% &7doesn't exist"
   HandEmpty: "%prefix% Your hand is empty"
   TargetHandEmpty: "%prefix% &e%player%&7's hand is empty"
   Entity: "%prefix% Entity &e%entity% &7doesn't exist"
   GameMode: "%prefix% Gamemode &e%gamemode% &7doesn't exist"
+  Material: "%prefix% Material &e%material% &7doesn't exist"
+  Flag: "%prefix% ItemFlag &e%flag% &7doesn't exist"
   Enchant:
     NotExist: "%prefix% Enchant &e%enchant% &7doesn't exist"
     NoEnchant: "%prefix% You have no enchant on item"
@@ -86,24 +88,28 @@ Experiences:
   
 # Translations for /Item command
 Item:
-  Name: "%prefix% DisplayName of %item% has been set to &r%name%&7."
+  Name: "%prefix% The display name of the item in your hand has been changed to &r%name%"
   NoItem: "&cYou are not holding any item in hand."
   Lore:
-    Added: "%prefix% Added new lore line &r%line%"
-    Removed: "%prefix% Removed lore line &r%line%"
+    Added: "%prefix% Added new lore line to the item in your hand &r%line%"
+    Removed: "%prefix% Removed lore line from the item in your hand &r%line%"
     Error: "%prefix% There was an error. Error: %error%"
-    ListItem: "%prefix% &6List of lore lines on item &e%item%&6:"
-    ListLore: "%prefix% &6%position%. line: &5%lore%"    
-    Set: "%prefix% Set &r%lore%&7 to line &e%line%."
+    ListItem: "%prefix% &6List of lore lines on the item in your hand:"
+    ListLore: "%prefix% &6%position%. line: &5%lore%"
+    Set: "%prefix% The lore line &e%line%&7 in your hand has been changed to &r%lore%"
   Flag:
-    Add: "%prefix% Flag &e%flag &7has been added to item in your hand"
-    Remove: "%prefix% Flag &e%flag% &7has been removed from item in your hand"
-    ListItem: "%prefix% Flags on &e%item%"
-    ListLore: "%prefix% &6%flag%"
-  Nbt:  
-    Get1: "%prefix% &6List of nbt tags on item &e%item%&6:"
-    Get2: "%prefix% » %nbt%"
-    
+    Added: "%prefix% The &e%flag%&7 item flag has been added to the item in your hand"
+    Removed: "%prefix% The &e%flag% &7item flag has been removed from the item in your hand"
+    List: "%prefix% The item flags on the item in your hand: &e%flags%"
+  Nbt:
+    Get: "%prefix% The nbt tags of the object in your hand are &e%nbt%"
+    Set: "%prefix% The nbt tags of item in your hand has been changed to &e%nbt%"
+  Type:
+    Get: "%prefix% The type of object in your hand is &e%item%"
+    Set: "%prefix% The type of item in your hand has been changed to &e%item%"
+  Durability:
+    Get: "%prefix% The durability of the object in your hand is &e%durability%"
+    Set: "%prefix% The durability of item in your hand has been changed to &e%durability%"
     
 # Translations for /Hat command
 Hat:
@@ -482,6 +488,8 @@ Speed:
 # Translations for fly commands
 Fly:
   Temp:
+    EndIn: "%prefix% The Temp-Fly expire in &e%time%"
+    End: "%prefix% The Temp-fly has expired"
     Enabled:
       You: "%prefix% Temp-Fly has been enabled for &e%time%"
       Other:

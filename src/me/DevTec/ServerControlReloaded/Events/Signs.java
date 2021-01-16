@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Events;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.block.Sign;
@@ -15,7 +16,6 @@ import me.DevTec.ServerControlReloaded.Utils.Colors;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.SignAPI;
 import me.devtec.theapi.apis.SignAPI.SignAction;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 
 public class Signs implements Listener {
 	public Loader ps = Loader.getInstance;
@@ -39,7 +39,7 @@ public class Signs implements Listener {
 		}
 		String l = e.getLine(0);
 		String f = e.getLine(1);
-		UnsortedMap<SignAction, List<String>> a = new UnsortedMap<SignAction, List<String>>();
+		HashMap<SignAction, List<String>> a = new HashMap<SignAction, List<String>>();
 		if (l.equalsIgnoreCase("[warp]") && p.hasPermission("ServerControl.SignCreate.Warp")) {
 			if (warp(f) != null) {
 				e.setLine(0, TheAPI.colorize("&0[&9Warp&0]"));

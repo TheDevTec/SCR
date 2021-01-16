@@ -34,8 +34,6 @@ import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
-import me.devtec.theapi.utils.reflections.Ref;
 
 public class OnPlayerJoin implements Listener {
 
@@ -83,17 +81,16 @@ public class OnPlayerJoin implements Listener {
 		e.setJoinMessage("");
 		Player p = e.getPlayer();
 		DisplayManager.initializePlayer(p);
-		@SuppressWarnings("unchecked")
-		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.getNulled(Vanish.class, "task");
 		new Tasker() {
 			public void run() {
+				LoginEvent.moveInTab(p);
 				Loader.setupChatFormat(p);
 				Tasks.regPlayer(p);
 				User d = TheAPI.getUser(p);
 				Config f = Loader.config;
 				if(TheAPI.hasVanish(e.getPlayer().getName())) {
 					if(setting.vanish_action) {
-						tasks.put(e.getPlayer().getName(), new Tasker() {
+						Vanish.task.put(e.getPlayer().getName(), new Tasker() {
 							@Override
 							public void run() {
 								if(!TheAPI.hasVanish(e.getPlayer().getName()) || !e.getPlayer().isOnline()) {
@@ -230,14 +227,9 @@ public class OnPlayerJoin implements Listener {
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
 		p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
-		@SuppressWarnings("unchecked")
-		UnsortedMap<String, Integer> tasks = (UnsortedMap<String, Integer>) Ref.getNulled(Vanish.class, "task");
 		new Tasker() {
 			public void run() {
-				if(tasks.containsKey(e.getPlayer().getName())){
-					tasks.remove(e.getPlayer().getName());
-					return;
-				}
+				Vanish.task.remove(e.getPlayer().getName());
 				if (!TheAPI.hasVanish(p.getName())) {
 						Object o = Loader.events.get("onQuit.Text");
 						if(o!=null) {
@@ -273,6 +265,7 @@ public class OnPlayerJoin implements Listener {
 				User d = TheAPI.getUser(p);
 				d.set("LastLeave", setting.format_date_time.format(new Date()));
 				d.set("DisconnectWorld", p.getWorld().getName());
+				d.save();
 				p.setFlying(false);
 				p.setAllowFlight(false);
 			}

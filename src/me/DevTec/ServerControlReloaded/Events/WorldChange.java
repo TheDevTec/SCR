@@ -1,7 +1,9 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -19,14 +21,12 @@ import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedSet;
-import me.devtec.theapi.utils.datakeeper.maps.UnsortedMap;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class WorldChange implements Listener {
 	
-	Map<String, Integer> sleepTask = new UnsortedMap<>();
-	Set<Player> sleeping = new UnsortedSet<>();
+	Map<String, Integer> sleepTask = new HashMap<>();
+	List<Player> sleeping = new ArrayList<>();
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSleep(PlayerBedEnterEvent e) {

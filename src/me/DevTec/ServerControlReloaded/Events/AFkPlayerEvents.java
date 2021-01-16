@@ -1,7 +1,8 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,21 +21,22 @@ import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.devtec.theapi.punishmentapi.PlayerBanList;
 import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.scheduler.Tasker;
-import me.devtec.theapi.utils.datakeeper.collections.UnsortedSet;
 
 
 public class AFkPlayerEvents implements Listener {
-	static Set<Player> p = new UnsortedSet<>();
+	static List<Player> p = new ArrayList<>();
 	static {
 		new Tasker() {
 			public void run() {
-				for(Player s : AFkPlayerEvents.p) {
-				SPlayer p = API.getSPlayer(s);
-				if (p.isAFK() && !p.hasVanish())
-					Loader.sendBroadcasts(s, "AFK.End");
-				Loader.getInstance.save(p);
-				}
-				p.clear();
+				try {
+					for(Player s : AFkPlayerEvents.p) {
+					SPlayer p = API.getSPlayer(s);
+					if (p.isAFK() && !p.hasVanish())
+						Loader.sendBroadcasts(s, "AFK.End");
+					Loader.getInstance.save(p);
+					}
+					p.clear();
+				}catch(Exception e) {}
 			}
 		}.runRepeating(0, 2);
 	}
