@@ -27,11 +27,11 @@ public class DeathEvent implements Listener {
 		}
 		Player p = e.getEntity();
 		API.setBack(p);
-		if (p.hasPermission("ServerControl.KeepInv")) {
+		if (p.hasPermission("SCR.Other.KeepInv")) {
 			e.setKeepInventory(true);
 			e.getDrops().clear();
 		}
-		if (p.hasPermission("ServerControl.KeepExp")) {
+		if (p.hasPermission("SCR.Other.KeepExp")) {
 			e.setKeepLevel(true);
 			e.setDroppedExp(0);
 		}

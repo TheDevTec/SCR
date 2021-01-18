@@ -41,6 +41,7 @@ public class SecurityListenerCooldowns implements Listener {
 			CooldownAPI as = TheAPI.getCooldownAPI(p.getName());
 			if (setting.cool_percmd)
 				for (String s : Loader.config.getStringList("Options.Cooldowns.Commands.PerCommand.List")) {
+					if (!p.hasPermission("SCR.Other.Cooldown.PerCommand."+s)) {
 					String[] c = s.split(":");
 					if (e.getMessage().replaceFirst("/", "").toLowerCase().startsWith(c[0].toLowerCase())
 							|| c[0].equalsIgnoreCase(e.getMessage().replaceFirst("/", ""))) {
@@ -52,6 +53,7 @@ public class SecurityListenerCooldowns implements Listener {
 							Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmds." + c[0])/20)));
 						}
 						break;
+					}
 					}
 				}
 			if (!find && setting.cool_cmd && time > 0) {

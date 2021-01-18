@@ -18,10 +18,10 @@ public class DisableItems implements Listener {
 	public void onPlayerEvent(PlayerInteractEvent e) {
 		Player p = e.getPlayer();
 		if (setting.disable_item) {
-			if (!p.hasPermission("SCR.Other.DisableItemsAccess")) {
+			if (!p.hasPermission("SCR.Other.DisallowedItemsBypass")) {
 					if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 					Material mat = p.getItemInHand().getType();
-					for (String s : Loader.config.getStringList("Options.Disable-Items.Worlds." + p.getWorld().getName())) {
+					for (String s : Loader.config.getStringList("Options.Disallowed-Items.Worlds." + p.getWorld().getName())) {
 						Material match = Material.matchMaterial(s.toUpperCase());
 						if (match != null && match==mat)
 							e.setCancelled(true);
@@ -35,7 +35,7 @@ public class DisableItems implements Listener {
 	public void onDispenserEvent(BlockDispenseEvent e) {
 		if (setting.disable_item) {
 			Material mat = e.getItem().getType();
-			for (String s : Loader.config.getStringList("Options.Disable-Items.Worlds." + e.getBlock().getWorld().getName())) {
+			for (String s : Loader.config.getStringList("Options.Disallowed-Items.Worlds." + e.getBlock().getWorld().getName())) {
 				Material match = Material.matchMaterial(s.toUpperCase());
 				if (match != null && match==mat)
 					e.setCancelled(true);

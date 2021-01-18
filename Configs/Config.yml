@@ -227,7 +227,7 @@ Options:
     Commands:
     - "eco give %player% 25"
     
-  Disable-Items:
+  Disallowed-Items:
     Use: false
     Worlds:
     #   Creative: 

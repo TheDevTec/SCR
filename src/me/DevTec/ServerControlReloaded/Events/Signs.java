@@ -40,7 +40,7 @@ public class Signs implements Listener {
 		String l = e.getLine(0);
 		String f = e.getLine(1);
 		HashMap<SignAction, List<String>> a = new HashMap<SignAction, List<String>>();
-		if (l.equalsIgnoreCase("[warp]") && p.hasPermission("ServerControl.SignCreate.Warp")) {
+		if (l.equalsIgnoreCase("[warp]") && p.hasPermission("SCR.Other.SignCreate.Warp")) {
 			if (warp(f) != null) {
 				e.setLine(0, TheAPI.colorize("&0[&9Warp&0]"));
 				e.setLine(1, TheAPI.colorize("&a" + warp(f)));
@@ -49,27 +49,27 @@ public class Signs implements Listener {
 				SignAPI.setActions((Sign) e.getBlock().getState(), a);
 			}
 		}
-		if (l.equalsIgnoreCase("[workbench]") && p.hasPermission("ServerControl.SignCreate.Workbench")) {
+		if (l.equalsIgnoreCase("[workbench]") && p.hasPermission("SCR.Other.SignCreate.Workbench")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Workbench&0]"));
 			e.getBlock().getState().update();
 
 			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Workbench"));
 			SignAPI.setActions((Sign) e.getBlock().getState(), a);
 		}
-		if (l.equalsIgnoreCase("[Enderchest]") && p.hasPermission("ServerControl.SignCreate.EnderChest")) {
+		if (l.equalsIgnoreCase("[Enderchest]") && p.hasPermission("SCR.Other.SignCreate.EnderChest")) {
 			e.setLine(0, TheAPI.colorize("&0[&9EnderChest&0]"));
 			e.getBlock().getState().update();
 
 			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Enderchest"));
 			SignAPI.setActions((Sign) e.getBlock().getState(), a);
 		}
-		if (l.equalsIgnoreCase("[Suicide]") && p.hasPermission("ServerControl.SignCreate.Suicide")) {
+		if (l.equalsIgnoreCase("[Suicide]") && p.hasPermission("SCR.Other.SignCreate.Suicide")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Suicide&0]"));
 			e.getBlock().getState().update();
 			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Suicide"));
 			SignAPI.setActions((Sign) e.getBlock().getState(), a);
 		}
-		if (l.equalsIgnoreCase("[repair]") && p.hasPermission("ServerControl.SignCreate.Repair")) {
+		if (l.equalsIgnoreCase("[repair]") && p.hasPermission("SCR.Other.SignCreate.Repair")) {
 			if (f == null) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.getBlock().getState().update();
@@ -91,19 +91,19 @@ public class Signs implements Listener {
 				SignAPI.setActions((Sign) e.getBlock().getState(), a);
 			}
 		}
-		if (l.equalsIgnoreCase("[Feed]") && p.hasPermission("ServerControl.SignCreate.Feed")) {
+		if (l.equalsIgnoreCase("[Feed]") && p.hasPermission("SCR.Other.SignCreate.Feed")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Feed&0]"));
 			e.getBlock().getState().update();
 			a.put(SignAction.CONSOLE_COMMANDS, Arrays.asList("Feed %player%"));
 			SignAPI.setActions((Sign) e.getBlock().getState(), a);
 		}
-		if (l.equalsIgnoreCase("[Trash]") && p.hasPermission("ServerControl.SignCreate.Trash")) {
+		if (l.equalsIgnoreCase("[Trash]") && p.hasPermission("SCR.Other.SignCreate.Trash")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Trash&0]"));
 			e.getBlock().getState().update();
 			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Trash"));
 			SignAPI.setActions((Sign) e.getBlock().getState(), a);
 		}
-		if (l.equalsIgnoreCase("[Heal]") && p.hasPermission("ServerControl.SignCreate.Heal")) {
+		if (l.equalsIgnoreCase("[Heal]") && p.hasPermission("SCR.Other.SignCreate.Heal")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Heal&0]"));
 			e.getBlock().getState().update();
 			a.put(SignAction.CONSOLE_COMMANDS, Arrays.asList("Heal %player%"));

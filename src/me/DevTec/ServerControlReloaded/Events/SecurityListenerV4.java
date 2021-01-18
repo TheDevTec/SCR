@@ -33,7 +33,7 @@ public class SecurityListenerV4 implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerCommands(PlayerCommandPreprocessEvent event) {
 		String msg = event.getMessage();
-		if (!event.getPlayer().hasPermission("SCR.Admin")) {
+		if (!event.getPlayer().hasPermission("SCR.Other.RulesBypass")) {
 		for (Rule rule : Loader.rules) {
 			if(!Loader.events.getStringList("onCommand.Rules").contains(rule.getName()))continue;
 			msg = rule.apply(msg);
@@ -43,7 +43,8 @@ public class SecurityListenerV4 implements Listener {
 			event.setCancelled(true);
 			return;
 		}
-		if (!event.getPlayer().hasPermission("SCR.CommandsAccess") && setting.cmdblock) {
+		}
+		if (!event.getPlayer().hasPermission("SCR.Other.CommandsBlockerBypass") && setting.cmdblock) {
 			for (String cen : Loader.config.getStringList("Options.CommandsBlocker.List")) {
 				String mes = msg.toLowerCase();
 				if (mes.startsWith("/" + cen.toLowerCase()) || mes.startsWith("/bukkit:" + cen.toLowerCase())
@@ -52,13 +53,12 @@ public class SecurityListenerV4 implements Listener {
 				}
 			}
 		}
-		}
 		event.setMessage(msg);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void signCreate(SignChangeEvent e) {
-		if (!e.getPlayer().hasPermission("SCR.Admin")) {
+		if (!e.getPlayer().hasPermission("SCR.Other.RulesBypass")) {
 		int i = -1;
 		for (String msg : e.getLines()) {
 			for (Rule rule : Loader.rules) {
@@ -77,7 +77,7 @@ public class SecurityListenerV4 implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void BookSave(PlayerEditBookEvent e) {
-		if (!e.getPlayer().hasPermission("SCR.Admin")) {
+		if (!e.getPlayer().hasPermission("SCR.Other.RulesBypass")) {
 		List<String> lines = new ArrayList<>();
 		for (String msg : e.getNewBookMeta().getPages()) {
 			for (Rule rule : Loader.rules) {
@@ -99,7 +99,7 @@ public class SecurityListenerV4 implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onInventoryClickEvent(InventoryClickEvent event) {
-		if (!event.getWhoClicked().hasPermission("SCR.Admin")) {
+		if (!event.getWhoClicked().hasPermission("SCR.Other.RulesBypass")) {
 		if (event.getInventory().getType() == InventoryType.ANVIL)
 			if (event.getSlotType() == InventoryType.SlotType.RESULT) {
 				ItemStack item = event.getCurrentItem();
@@ -125,7 +125,7 @@ public class SecurityListenerV4 implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PickupAntiADEvent(PlayerPickupItemEvent event) {
-		if (!event.getPlayer().hasPermission("SCR.Admin")) {
+		if (!event.getPlayer().hasPermission("SCR.Other.RulesBypass")) {
 		ItemStack item = event.getItem().getItemStack();
 		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
 			ItemMeta meta = item.getItemMeta();
@@ -147,7 +147,7 @@ public class SecurityListenerV4 implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void DropAntiADEvent(PlayerDropItemEvent event) {
-		if (!event.getPlayer().hasPermission("SCR.Admin")) {
+		if (!event.getPlayer().hasPermission("SCR.Other.RulesBypass")) {
 		ItemStack item = event.getItemDrop().getItemStack();
 		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
 			ItemMeta meta = item.getItemMeta();
