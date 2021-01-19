@@ -93,15 +93,11 @@ public class WorldChange implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChangeGamamode(PlayerGameModeChangeEvent e) {
 		SPlayer a = API.getSPlayer(e.getPlayer());
-		new Tasker() {
-			public void run() {
-				if (a.hasFlyEnabled())
-					a.enableFly();
-				if (a.hasTempFlyEnabled())
-					a.enableTempFly();
-				if (a.hasGodEnabled())
-					a.enableGod();
-			}
-		}.runTaskSync();
+		if (a.hasFlyEnabled())
+			a.enableFly();
+		if (a.hasTempFlyEnabled())
+			a.enableTempFly();
+		if (a.hasGodEnabled())
+			a.enableGod();
 	}
 }

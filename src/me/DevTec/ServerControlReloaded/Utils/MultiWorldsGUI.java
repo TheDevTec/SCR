@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
@@ -33,11 +34,11 @@ import me.devtec.theapi.worldsapi.WorldsAPI;
 public class MultiWorldsGUI {
 
 	public static ItemStack createItem(String name, XMaterial material, List<String> lore) {
-		return ItemCreatorAPI.create(material.parseMaterial(),1,name,lore,(int)material.getData());
+		return ItemCreatorAPI.create(material.getMaterial(),1,name,lore,material.getData());
 	}
 
 	public static ItemStack createItem(String name, XMaterial material) {
-		return ItemCreatorAPI.create(material.parseMaterial(),1,name,(int)material.getData());
+		return ItemCreatorAPI.create(material.getMaterial(),1,name,material.getData());
 	}
 
 	public static ItemStack createItem(String name, List<String> lore) {
@@ -619,7 +620,6 @@ public class MultiWorldsGUI {
 		for (String ds : Loader.mw.getKeys("WorldsSettings." + w.getName() + ".Gamerule")) {
 			++i;
 			int slot = i;
-			String n = "";
 			XMaterial x = null;
 			switch (ds) {
 			case "COMMAND_BLOCK_OUTPUT":
@@ -708,13 +708,7 @@ public class MultiWorldsGUI {
 				break;
 			}
 			XMaterial d = x;
-			for (String f : ds.split("_")) {
-				String aa = f.substring(0, 1).toUpperCase();
-				String b = f.substring(1, f.length()).toLowerCase();
-				n = n + " " + aa + b;
-			}
-			n = n.replaceFirst(" ", "");
-			String name = n;
+			String name = WordUtils.capitalize(d.name().replace("_", " "));
 			a.setItem(slot, new ItemGUI(createItem("&6" + name, d ,Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds)))) {
 				
 				@Override

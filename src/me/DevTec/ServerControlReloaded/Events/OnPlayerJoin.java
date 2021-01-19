@@ -202,9 +202,17 @@ public class OnPlayerJoin implements Listener {
 				}
 				if (!EconomyAPI.hasAccount(p))
 					EconomyAPI.createAccount(p);
+				if(setting.tab) {
+					if(setting.tab_footer || setting.tab_header)
 				TabList.setFooterHeader(p);
+				if(setting.tab_nametag)
 				TabList.setName(p);
-				SPlayer s = API.getSPlayer(p);
+				}
+				SPlayer s = API.getSPlayer(p); 
+				new Tasker() {
+					
+					@Override
+					public void run() {
 					s.setFlySpeed();
 					s.setWalkSpeed();
 				if (s.hasTempFlyEnabled())
@@ -215,6 +223,8 @@ public class OnPlayerJoin implements Listener {
 				}
 				if (s.hasGodEnabled() && Loader.has(p, "God", "Other"))
 					s.enableGod();
+					}
+				}.runTaskSync();
 				d.setAndSave("Joins", d.getInt("Joins")+1);
 			}}.runTask();
 	}
@@ -266,9 +276,9 @@ public class OnPlayerJoin implements Listener {
 				d.set("LastLeave", setting.format_date_time.format(new Date()));
 				d.set("DisconnectWorld", p.getWorld().getName());
 				d.save();
-				p.setFlying(false);
-				p.setAllowFlight(false);
 			}
 		}.runTask();
+		p.setFlying(false);
+		p.setAllowFlight(false);
 	}
 }

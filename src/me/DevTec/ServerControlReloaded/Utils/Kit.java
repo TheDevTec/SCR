@@ -51,7 +51,7 @@ public class Kit {
 				Material m = null;
 				String mat = Loader.kit.getString("Kits." + name + ".items.add." + id + ".type");
 				try{
-					m=XMaterial.matchXMaterial(mat.toUpperCase()).parseMaterial();
+					m=XMaterial.matchXMaterial(mat.toUpperCase()).getMaterial();
 				}catch(Exception e) {}
 				if (m == null) {
 					Bukkit.getLogger().warning("Error when preparing (kit:" + name + ", id:"+id+" of material, section:add) " + mat + ", material is invalid");
@@ -94,7 +94,7 @@ public class Kit {
 				Material m = null;
 				String mat = Loader.kit.getString("Kits." + name + ".items.set." + id + ".type");
 				try{
-					m=XMaterial.matchXMaterial(mat.toUpperCase()).parseMaterial();
+					m=XMaterial.matchXMaterial(mat.toUpperCase()).getMaterial();
 				}catch(Exception e) {}
 				if (m == null) {
 					Bukkit.getLogger().warning("Error when preparing (kit:" + name + ", id:"+id+", section:set) of material " + mat + ", material is invalid");

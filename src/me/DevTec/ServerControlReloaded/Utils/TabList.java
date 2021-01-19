@@ -207,8 +207,6 @@ public class TabList {
 	}
 
 	public static void setFooterHeader(Player p) {
-		Ref.sendPacket(p, NMSAPI.getPacketPlayOutPlayerListHeaderFooter(
-			NMSAPI.getIChatBaseComponentFromCraftBukkit(AnimationManager.replace(p,getPath(p, "Header"))), 
-			NMSAPI.getIChatBaseComponentFromCraftBukkit(AnimationManager.replace(p,getPath(p, "Footer")))));
+		TabListAPI.setHeaderFooter(p, AnimationManager.replace(p,getPath(p, "Header")), AnimationManager.replace(p,getPath(p, "Footer")));
 	}
 }

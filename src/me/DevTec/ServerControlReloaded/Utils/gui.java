@@ -72,6 +72,6 @@ public class gui {
 	}
 	
 	public static ItemStack item(String name, XMaterial typ) {
-		return ItemCreatorAPI.create(typ.parseMaterial(), 1, name);
+		return ItemCreatorAPI.create(typ.getMaterial(), 1, name);
 	}
 }
