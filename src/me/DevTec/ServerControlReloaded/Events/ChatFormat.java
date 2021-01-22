@@ -1,6 +1,9 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Pattern;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,6 +22,7 @@ import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 
 
@@ -26,23 +30,53 @@ public class ChatFormat implements Listener {
 	static Loader plugin = Loader.getInstance;
 
 	public static String r(Player p, String s, String msg) {
-		s=s.replace("&u", "&<U>");
-		s = TabList.replace(s, p, false);
+		if(s.toLowerCase().contains("&u")) {
+				List<String> sd = new ArrayList<>();
+				StringBuffer d = new StringBuffer();
+				int found = 0;
+				for (char c : msg.toCharArray()) {
+					if (c == '&') {
+						if (found == 1)
+							d.append(c);
+						found = 1;
+						continue;
+					}
+					if (found == 1 && Pattern.compile("[XxA-Fa-fUu0-9]").matcher(c + "").find()) {
+						found = 0;
+						sd.add(d.toString());
+						d = d.delete(0, d.length());
+						d.append("&" + c);
+						continue;
+					}
+					if (found == 1) {
+						found = 0;
+						d.append("&" + c);
+						continue;
+					}
+					found = 0;
+					d.append(c);
+				}
+				if (d.length() != 0)
+					sd.add(d.toString());
+				d = d.delete(0, d.length());
+				for (String ff : sd) {
+					if (ff.toLowerCase().startsWith("&u")) {
+						if(ff.contains("%message%") && msg!=null) {
+							ff = StringUtils.color.colorize(ff.substring(2));
+							ff=TabList.replace(ff, p, true);
+							ff=ff.replace("%message%", r(msg, p));
+							d.append(ff);
+							continue;
+						}
+						ff = StringUtils.color.colorize(ff.substring(2));
+					}
+					d.append(TabList.replace(ff, p, true));
+				}
+				return d.toString();
+		}
+		s = TabList.replace(s, p, true);
 		if (msg != null)
-			s=s.replace("%message%", r(msg.replaceAll("&([0-9A-Fa-fK-Ok-oRrUuXx])", "&<$1$1>").replaceAll("#([0-9A-Fa-f]{6})", "#<$1>"), p));
-		s=s.replace("&<U>", "&u");
-		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.Rainbow")))
-			s=s.replaceAll("&<[Uu]{2}>", "&u");
-		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.Color")))
-			s=s.replaceAll("&<([0-9A-Fa-f]){2}>", "&$1");
-		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.Magic")))
-			s=s.replaceAll("&<[Kk]{2}>", "&k");
-		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.Format")))
-			s=s.replaceAll("&<([L-Ol-o]){2}>", "&$1");
-		if(p.hasPermission(Loader.config.getString("Options.Colors.Chat.Permission.HEX")))
-			s=s.replaceAll("#<([0-9A-Fa-f]{6})>", "#$1").replaceAll("&<([Xx]){2}>", "&x");
-		s=TheAPI.colorize(s);
-		s=s.replaceAll("&<([0-9A-Fa-fK-Ok-oRrUuXx]){2}>", "&$1").replaceAll("#<([0-9A-Fa-f]{6})>", "#$1");
+			s=s.replace("%message%", r(msg, p));
 		return s;
 	}
 

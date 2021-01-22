@@ -116,21 +116,23 @@ public class OnPlayerJoin implements Listener {
 							Object o = Loader.events.get("onJoin.First.Text");
 							if(o!=null) {
 							if(o instanceof Collection) {
-							for(String fa : Loader.events.getStringList("onJoin.First.Text")) {
+							for(Object fa : (Collection<?>)o) {
 								if(fa!=null)
-								TheAPI.bcMsg(replaceAll(fa,p));
+								TheAPI.bcMsg(replaceAll(fa+"",p));
 							}}else
-								TheAPI.bcMsg(replaceAll(""+o, p));
+								if(!(""+o).isEmpty())
+									TheAPI.bcMsg(replaceAll(""+o, p));
 						}
 					}
 					Object o = Loader.events.get("onJoin.First.Messages");
 					if(o!=null) {
-					if(o instanceof Collection) {
-						for(String fa : Loader.events.getStringList("onJoin.First.Messages")) {
+						if(o instanceof Collection) {
+						for(Object fa : (Collection<?>)o) {
 							if(fa!=null)
-							TheAPI.msg(replaceAll(fa,p), p);
+							TheAPI.msg(replaceAll(fa+"",p),p);
 						}}else
-					TheAPI.msg(replaceAll(""+o, p), p);
+							if(!(""+o).isEmpty())
+								TheAPI.msg(replaceAll(""+o, p),p);
 					}
 					new Tasker() {
 						public void run() {
@@ -147,57 +149,59 @@ public class OnPlayerJoin implements Listener {
 					}.runTaskSync();
 					o = Loader.events.get("onJoin.First.Broadcast");
 					if(o!=null) {
-					if(o instanceof Collection) {
-						for(String fa : Loader.events.getStringList("onJoin.First.Broadcast")) {
-							if(fa!=null) {
-								String replace = replaceAll(fa,p);
-								if(replace!=null)
-							TheAPI.bcMsg(replace);
-							}
-						}}else {
-							String replace = replaceAll(""+o, p);
-							if(replace!=null)
-								TheAPI.bcMsg(replace);
-						}
+						if(o instanceof Collection) {
+						for(Object fa : (Collection<?>)o) {
+							if(fa!=null)
+							TheAPI.bcMsg(replaceAll(fa+"",p));
+						}}else
+							if(!(""+o).isEmpty())
+								TheAPI.bcMsg(replaceAll(""+o, p));
 					}
 				} else {
 					if (!TheAPI.hasVanish(p.getName())) {
-							Object o = Loader.events.get("onJoin.Text");
-							if(o!=null) {
+						Object o = Loader.events.get("onJoin.Text");
+						if(o!=null) {
 							if(o instanceof Collection) {
-							for(String fa : Loader.events.getStringList("onJoin.Text")) {
+							for(Object fa : (Collection<?>)o) {
 								if(fa!=null)
-								TheAPI.bcMsg(replaceAll(fa,p));
+								TheAPI.bcMsg(replaceAll(fa+"",p));
 							}}else
-								TheAPI.bcMsg(replaceAll(""+o, p));
+								if(!(""+o).isEmpty())
+									TheAPI.bcMsg(replaceAll(""+o, p));
 						}}
 					Object o = Loader.events.get("onJoin.Messages");
 					if(o!=null) {
-					if(o instanceof Collection) {
-						for(String fa : Loader.events.getStringList("onJoin.Messages")) {
-							TheAPI.msg(replaceAll(fa,p), p);
+						if(o instanceof Collection) {
+						for(Object fa : (Collection<?>)o) {
+							if(fa!=null)
+							TheAPI.msg(replaceAll(fa+"",p),p);
 						}}else
-					TheAPI.msg(replaceAll(""+o, p), p);
+							if(!(""+o).isEmpty())
+								TheAPI.msg(replaceAll(""+o, p),p);
 					}
 
 					new Tasker() {
 						public void run() {
 					Object o = Loader.events.get("onJoin.Commands");
 					if(o!=null) {
-					if(o instanceof Collection) {
-						for(String fa : Loader.events.getStringList("onJoin.Commands")) {
-							TheAPI.sudoConsole(TheAPI.colorize(replaceAll(fa,p)));
+						if(o instanceof Collection) {
+						for(Object fa : (Collection<?>)o) {
+							if(fa!=null)
+								TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
 						}}else
-					TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
+							if(!(""+o).isEmpty())
+								TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
 					}}
 					}.runTaskSync();
 					o = Loader.events.get("onJoin.Broadcast");
 					if(o!=null) {
-					if(o instanceof Collection) {
-						for(String fa : Loader.events.getStringList("onJoin.Broadcast")) {
-							TheAPI.bcMsg(replaceAll(fa,p));
+						if(o instanceof Collection) {
+						for(Object fa : (Collection<?>)o) {
+							if(fa!=null)
+							TheAPI.bcMsg(replaceAll(fa+"",p));
 						}}else
-					TheAPI.bcMsg(replaceAll(""+o, p));
+							if(!(""+o).isEmpty())
+								TheAPI.bcMsg(replaceAll(""+o, p));
 					}
 				}
 				if (!EconomyAPI.hasAccount(p))
@@ -243,35 +247,44 @@ public class OnPlayerJoin implements Listener {
 				if (!TheAPI.hasVanish(p.getName())) {
 						Object o = Loader.events.get("onQuit.Text");
 						if(o!=null) {
-						if(o instanceof Collection) {
-						for(String fa : Loader.events.getStringList("onQuit.Text")) {
-							TheAPI.bcMsg(replaceAll(fa,p));
-						}}else
-							TheAPI.bcMsg(replaceAll(""+o, p));
+							if(o instanceof Collection) {
+								for(Object fa : (Collection<?>)o) {
+									if(fa!=null)
+									TheAPI.bcMsg(replaceAll(fa+"",p));
+								}}else
+									if(!(""+o).isEmpty())
+										TheAPI.bcMsg(replaceAll(""+o, p));
 					}}
 				Object o = Loader.events.get("onQuit.Messages");
 				if(o!=null) {
-				if(o instanceof Collection) {
-					for(String fa : Loader.events.getStringList("onQuit.Messages")) {
-						TheAPI.msg(replaceAll(fa,p), p);
+					if(o instanceof Collection) {
+					for(Object fa : (Collection<?>)o) {
+						if(fa!=null)
+						TheAPI.msg(replaceAll(fa+"",p),p);
 					}}else
-				TheAPI.msg(replaceAll(""+o, p), p);
+						if(!(""+o).isEmpty())
+							TheAPI.msg(replaceAll(""+o, p),p);
 				}
 				o = Loader.events.get("onQuit.Commands");
 				if(o!=null) {
-				if(o instanceof Collection) {
-					for(String fa : Loader.events.getStringList("onQuit.Commands")) {
-						TheAPI.sudoConsole(TheAPI.colorize(replaceAll(fa,p)));
+					if(o instanceof Collection) {
+					for(Object fa : (Collection<?>)o) {
+						if(fa!=null)
+							TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
 					}}else
-				TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
+						if(!(""+o).isEmpty())
+							TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
 				}
 				o = Loader.events.get("onQuit.Broadcast");
 				if(o!=null) {
-				if(o instanceof Collection) {
-					for(String fa : Loader.events.getStringList("onQuit.Broadcast")) {
-						TheAPI.bcMsg(replaceAll(fa,p));
-					}}else
-				TheAPI.bcMsg(replaceAll(""+o, p));}
+					if(o instanceof Collection) {
+						for(Object fa : (Collection<?>)o) {
+							if(fa!=null)
+							TheAPI.bcMsg(replaceAll(fa+"",p));
+						}}else
+							if(!(""+o).isEmpty())
+								TheAPI.bcMsg(replaceAll(""+o, p));
+				}
 				User d = TheAPI.getUser(p);
 				d.set("LastLeave", setting.format_date_time.format(new Date()));
 				d.set("DisconnectWorld", p.getWorld().getName());

@@ -22,8 +22,6 @@ import me.devtec.theapi.apis.TabListAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.nms.NMSAPI;
-import me.devtec.theapi.utils.reflections.Ref;
 
 public class TabList {
 	// GROUP, PRIORITE
@@ -54,26 +52,36 @@ public class TabList {
 	}
 
 	public static String getPrefix(Player p, boolean nametag) {
+		if (Loader.tab.exists("PerPlayer." + p.getName() + "."+(nametag?"NameTag":"TabList")+".Prefix"))
+			return replace(Loader.tab.getString("PerPlayer." + p.getName() + "."+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
+		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + "."+(nametag?"NameTag":"TabList")+".Prefix"))
+			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + "."+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
 		if (Loader.tab.exists("Groups." + Staff.getGroup(p) + "."+(nametag?"NameTag":"TabList")+".Prefix"))
 			return replace(Loader.tab.getString("Groups." + Staff.getGroup(p) + "."+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
 		return null;
 	}
 
 	public static String getNameFormat(Player p) {
+		if (Loader.tab.exists("PerPlayer." + p.getName() + ".Format"))
+			return replace(Loader.tab.getString("PerPlayer." + p.getName() + ".Format"), p, true);
+		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + ".Format"))
+			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + ".Format"), p, true);
 		if (Loader.tab.exists("Groups." + Staff.getGroup(p) + ".Format"))
 			return replace(Loader.tab.getString("Groups." + Staff.getGroup(p) + ".Format"), p, true);
 		return "%tab_prefix% "+p.getName()+" %tab_suffix%";
 	}
 
 	public static String getSuffix(Player p, boolean nametag) {
+		if (Loader.tab.exists("PerPlayer." + p.getName() + "."+(nametag?"NameTag":"TabList")+".Suffix"))
+			return replace(Loader.tab.getString("PerPlayer." + p.getName() + "."+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
+		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + "."+(nametag?"NameTag":"TabList")+".Suffix"))
+			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + "."+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
 		if (Loader.tab.exists("Groups." + Staff.getGroup(p) + "."+(nametag?"NameTag":"TabList")+".Suffix"))
 			return replace(Loader.tab.getString("Groups." + Staff.getGroup(p) + "."+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
 		return null;
 	}
 
 	public static String replace(String header, Player p, boolean color) {
-		if(color)
-		header=TheAPI.colorize(header);
 		if(p!=null) {
 		if(header.contains("%money%"))
 				header=header.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), false));
@@ -163,14 +171,17 @@ public class TabList {
 		;if(header.contains("%ram_max%"))
 			header=header.replace("%ram_max%", MemoryAPI.getMaxMemory() + "").replace("%ram_max_percentage%", "100%")
 		;
-		return PlaceholderAPI.setPlaceholders(p, header);
+		header= PlaceholderAPI.setPlaceholders(p, header);
+		if(color)
+		header=TheAPI.colorize(header);
+		return header;
 	}
 	
 	public static void setName(Player p) {
 		String p1 = getPrefix(p, true), p2 = getPrefix(p, false), s1 = getSuffix(p, true), s2 = getSuffix(p, false);
 		String name = getNameFormat(p).replace("%tab_prefix%", (p2!=null?replace(p2, p, true):"")).replace("%tab_suffix%", (s2!=null?replace(s2, p, true):""));
 		p.setPlayerListName(AnimationManager.replace(p,name));
-		NameTagChanger.setNameTag(p, p1!=null?replace(p1, p, true):"", s1!=null?replace(s1, p, true):"");
+		NameTagChanger.setNameTag(p, p1!=null?AnimationManager.replaceWithoutColors(p,replace(p1, p, false)):"", s1!=null?AnimationManager.replaceWithoutColors(p,replace(s1, p, false)):"");
 	}
 	
 	static int test;
@@ -178,17 +189,14 @@ public class TabList {
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			NameTagChanger.remove(p);
 			TabListAPI.setTabListName(p,p.getName());
-			Ref.sendPacket(p, NMSAPI.getPacketPlayOutPlayerListHeaderFooter(Ref.IChatBaseComponent(""), Ref.IChatBaseComponent("")));
+			TabListAPI.setHeaderFooter(p, "", "");
 		}
 	}
 
 	private static String get(String path, Player p) {
-		if (setting.tab_header || setting.tab_footer) {
-			if (!Loader.tab.getStringList(path).isEmpty()) {
-				String a = StringUtils.join(Loader.tab.getStringList(path), "\n");
-				return replace(a, p, true);
-			}
-		}
+		if (setting.tab_header || setting.tab_footer)
+			if (!Loader.tab.getStringList(path).isEmpty())
+				return StringUtils.join(Loader.tab.getStringList(path), "\n");
 		return "";
 	}
 
@@ -207,6 +215,6 @@ public class TabList {
 	}
 
 	public static void setFooterHeader(Player p) {
-		TabListAPI.setHeaderFooter(p, AnimationManager.replace(p,getPath(p, "Header")), AnimationManager.replace(p,getPath(p, "Footer")));
+		TabListAPI.setHeaderFooter(p, AnimationManager.replaceWithoutColors(p,getPath(p, "Header")), AnimationManager.replaceWithoutColors(p,getPath(p, "Footer")));
 	}
 }

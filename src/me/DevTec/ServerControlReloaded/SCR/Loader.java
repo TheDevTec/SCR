@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -219,28 +220,31 @@ public class Loader extends JavaPlugin implements Listener {
 	public static void Help(CommandSender s, String cmd, String section) {
 		Object o = cmds.get(section+"."+cmd+".Help");
 		if(o==null)return;
-		if(o instanceof List<?>) {
-			for(Object d : (List<?>)o)
+		if(o instanceof Collection) {
+			for(Object d : (Collection<?>)o)
 			TheAPI.msg(d+"", s);
 		}else
+			if(!(o+"").isEmpty())
 			TheAPI.msg(o+"", s);
 	}
 	public static void advancedHelp(CommandSender s, String cmd, String section, String subCommand) {
 		Object o = cmds.get(section+"."+cmd+".AdvancedHelp."+subCommand);
 		if(o==null)return;
-		if(o instanceof List<?>) {
-			for(Object d : (List<?>)o)
+		if(o instanceof Collection) {
+			for(Object d : (Collection<?>)o)
 			TheAPI.msg(d+"", s);
 		}else
+			if(!(o+"").isEmpty())
 			TheAPI.msg(o+"", s);
 	}
 	public static void advancedHelp(CommandSender s, String cmd, String section,String underSection ,String subCommand) {
 		Object o = cmds.get(section+"."+cmd+".AdvancedHelp."+underSection+"."+subCommand);
 		if(o==null)return;
-		if(o instanceof List<?>) {
-			for(Object d : (List<?>)o)
+		if(o instanceof Collection) {
+			for(Object d : (Collection<?>)o)
 			TheAPI.msg(d+"", s);
 		}else
+			if(!(o+"").isEmpty())
 			TheAPI.msg(o+"", s);
 	}
 	
@@ -263,16 +267,16 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 	
 	public static Object getTranslation(String path) {
-		if(!trans.exists(path)) {
+		if(trans==null || !trans.exists(path)) {
 			if(english.exists(path)) {
-				if(english.get(path) instanceof List) {
+				if(english.get(path) instanceof Collection) {
 					return english.getStringList(path);
 				}else
 					if(!english.getString(path).trim().isEmpty())
 						return english.getString(path);
 			}
 		}else {
-		if(trans.get(path) instanceof List) {
+		if(trans.get(path) instanceof Collection) {
 			return trans.getStringList(path);
 		}else
 			if(!trans.getString(path).trim().isEmpty())
@@ -289,15 +293,15 @@ public class Loader extends JavaPlugin implements Listener {
 		sendBroadcasts(whoIsSelected, path, null);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static void sendMessages(CommandSender to, String path, Placeholder placeholders) {
 		Object o = getTranslation(path);
 		if(o==null)return;
-		if(o instanceof List) {
-			for(String s : (List<String>)o)
-				TheAPI.msg(placeholder(to, s, placeholders), to);
+		if(o instanceof Collection) {
+			for(Object d : (Collection<?>)o)
+				TheAPI.msg(placeholder(to, d+"", placeholders), to);
 		}else
-		TheAPI.msg(placeholder(to, o.toString(), placeholders), to);
+			if(!(o+"").isEmpty())
+		TheAPI.msg(placeholder(to, o+"", placeholders), to);
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -20,7 +20,7 @@ public class Configs {
 			lang="en";
 		}else lang="en";
 		if(lang.equals("en")) {
-			Loader.trans=Loader.english;
+			Loader.trans=null;
 		}else {
 			Config c = new Config("ServerControlReloaded/Translations/translation-"+lang+".yml");
     		YamlLoader data = new YamlLoader();
@@ -46,6 +46,7 @@ public class Configs {
     			if(!c.getFooter().equals(data.getFooter()))
     				c.setFooter(data.getFooter());
 	    	}catch(Exception unsuported) {}
+	    	data.reset();
 	    	if(change)
 	    	c.save();
 	    	Loader.trans=c;
@@ -85,6 +86,7 @@ public class Configs {
     			if(!c.getFooter().equals(data.getFooter()))
     				c.setFooter(data.getFooter());
 	    	}catch(Exception unsuported) {}
+	    	data.reset();
 	    	if(change)
 	    	c.save();
 	    	switch(c.getData().getFile().getName()) {

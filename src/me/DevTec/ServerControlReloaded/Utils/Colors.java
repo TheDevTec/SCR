@@ -1,6 +1,5 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -12,67 +11,64 @@ import org.bukkit.command.CommandSender;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.reflections.Ref;
 
 
 public class Colors {
-	private final static Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}"), colorP=Pattern.compile("[A-Fa-fUu0-9X]");
+	private final static Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
 	
 	public static String remove(String string) {
 		if (string != null)
 			string = ChatColor.stripColor(string);
 		return string;
 	}
+	
+	private static boolean neww = TheAPI.isNewerThan(15);
 
-	public static String colorize(String sr, boolean sign, CommandSender dr) {
-		String p = "Chat";
-		if (sign)
-			p = "Sign";
-		String b = sr;
-		if(b.toLowerCase().contains("&u")) {
-			if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow"))) {
-				List<String> s = new ArrayList<>();
-		    	StringBuffer d = new StringBuffer();
-		    	int found = 0;
-		    	for(char c : b.toCharArray()) {
-		    		if(c=='&') {
-		    			if(found==1)
-		    			d.append(c);
-		    			found=1;
-			    		continue;
-		    		}
-		    		if(found==1 && colorP.matcher(c+"").find()) {
-			    		found=0;
-				    	s.add(d.toString());
-			    		d=d.delete(0, d.length());
-			    		d.append("&"+c);
-			    		continue;
-		    		}
-	    			if(found==1) {
-	    	    		found=0;
-			    		d.append("&"+c);
-			    		continue;
-	    			}
-		    		found=0;
-		    		d.append(c);
-		    	}
-		    	if(d.length()!=0)
-		    		s.add(d.toString());
-		    	d = d.delete(0, d.length());
-		    	for(String ff : s) {
-		    		if(ff.toLowerCase().startsWith("&u")) {
-		    			ff=StringUtils.color.colorize(ff.substring(2));
-		    		}
-		    		d.append(ff);
-		    	}
-		    	b=d.toString();
+	public static String colorize(String b, boolean sign, CommandSender dr) {
+		String p = sign?"Sign":"Chat";
+		if (b.toLowerCase().contains("&u") && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow"))) {
+			List<String> s = new ArrayList<>();
+			StringBuffer d = new StringBuffer();
+			int found = 0;
+			for (char c : b.toCharArray()) {
+				if (c == '&') {
+					if (found == 1)
+						d.append(c);
+					found = 1;
+					continue;
+				}
+				if (found == 1 && Pattern.compile("[XxA-Fa-fUu0-9]").matcher(c + "").find()) {
+					found = 0;
+					s.add(d.toString());
+					d = d.delete(0, d.length());
+					d.append("&" + c);
+					continue;
+				}
+				if (found == 1) {
+					found = 0;
+					d.append("&" + c);
+					continue;
+				}
+				found = 0;
+				d.append(c);
 			}
+			if (d.length() != 0)
+				s.add(d.toString());
+			d = d.delete(0, d.length());
+			for (String ff : s) {
+				if (ff.toLowerCase().startsWith("&u"))
+	    			ff=StringUtils.color.colorize(ff.substring(2));
+				d.append(ff);
+			}
+			s.clear();
+			b = d.toString();
 		}
-		if (TheAPI.isNewerThan(15) && (b.contains("#") || b.contains("&x") || b.startsWith("!!"))) {
-			if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.HEX"))) 
+		if(neww) {
+		if(dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Gradient")))
+			b = StringUtils.gradient(b);
+		if (b.contains("#") || b.contains("&x")) {
+			if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.HEX"))) {
 				b = b.replace("&x", "§x");
-			if(dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Gradient")))
-				b = Ref.invokeNulled(m, b)+"";
 			Matcher match = pattern.matcher(b);
             while (match.find()) {
                 String color = match.group();
@@ -82,8 +78,9 @@ public class Colors {
                     magic.append(("&"+c[i]).toLowerCase());
                 }
                 b = b.replace(color, magic.toString() + "");
-            }			
-		}
+            }
+			}
+		}}
 		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
 			for (int i = 0; i < 10; ++i)
 				b = b.replace("&" + i, ChatColor.getByChar(i+"")+"");
@@ -106,6 +103,4 @@ public class Colors {
 		}
 		return b;
 	}
-	
-	private static Method m = Ref.method(StringUtils.class, "gradient", String.class);
 }
