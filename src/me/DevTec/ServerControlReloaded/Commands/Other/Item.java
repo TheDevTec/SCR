@@ -48,6 +48,7 @@ public class Item implements CommandExecutor, TabCompleter{
 					if(Loader.has(s, "Item", "Other", "Nbt")) Loader.advancedHelp(s, "Item","Other" ,"Nbt");		
 					if(Loader.has(s, "Item", "Other", "Durability")) Loader.advancedHelp(s, "Item","Other" ,"Durability");		
 					if(Loader.has(s, "Item", "Other", "Type")) Loader.advancedHelp(s, "Item","Other" ,"Type");
+					if(Loader.has(s, "Item", "Other", "Amount")) Loader.advancedHelp(s, "Item","Other" ,"Amount");
 					return true; 
 				}
 				Player p = (Player)s;
@@ -276,12 +277,34 @@ public class Item implements CommandExecutor, TabCompleter{
 						return true;
 					}
 				}
+				
+				if(args[0].equalsIgnoreCase("amount") && Loader.has(s, "Item", "Other", "Amount")) {
+					if(args.length==1) {
+						Loader.advancedHelp(s, "Item", "Other", "Amount", "Get");
+						Loader.advancedHelp(s, "Item", "Other", "Amount", "Set");
+						return true;
+					}
+					if(args[1].equalsIgnoreCase("get")) {
+						Loader.sendMessages(s,"Item.Amount.Get",Placeholder.c().add("%amount%", ((Player) s).getItemInHand().getAmount()+""));
+						return true;
+					}
+					if(args[1].equalsIgnoreCase("set")) {
+						if(args.length==2) {
+							Loader.advancedHelp(s, "Item", "Other", "Amount", "Set");
+							return true;
+						}
+						p.getItemInHand().setAmount(StringUtils.getInt(args[2]));
+						Loader.sendMessages(s,"Item.Amount.Set",Placeholder.c().add("%amount%", ""+StringUtils.getInt(args[2])));
+						return true;
+					}
+				}
 				if(Loader.has(s, "Item", "Other", "Name")) Loader.advancedHelp(s, "Item","Other" ,"Name");		
 				if(Loader.has(s, "Item", "Other", "Lore"))for (String c : f) Loader.advancedHelp(s,"Item", "Other", "Lore", c);
 				if(Loader.has(s, "Item", "Other", "Flag")) Loader.advancedHelp(s, "Item","Other" ,"Flag");		
 				if(Loader.has(s, "Item", "Other", "Nbt")) Loader.advancedHelp(s, "Item","Other" ,"Nbt");		
 				if(Loader.has(s, "Item", "Other", "Durability")) Loader.advancedHelp(s, "Item","Other" ,"Durability");		
 				if(Loader.has(s, "Item", "Other", "Type")) Loader.advancedHelp(s, "Item","Other" ,"Type");
+				if(Loader.has(s, "Item", "Other", "Amount")) Loader.advancedHelp(s, "Item","Other" ,"Amount");
 				return true;
 			}
 			return true;
@@ -293,12 +316,13 @@ public class Item implements CommandExecutor, TabCompleter{
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		List<String> c = new ArrayList<>();
 		if (args.length==1) {			
-			if(Loader.has(s, "Item", "Other", "Name")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Name")));			
-			if(Loader.has(s, "Item", "Other", "Lore")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Lore")));			
-			if(Loader.has(s, "Item", "Other", "Flag") && TheAPI.isNewerThan(7)) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Flag")));			
-			if(Loader.has(s, "Item", "Other", "Nbt")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Nbt")));			
-			if(Loader.has(s, "Item", "Other", "Durability"))c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Durability")));			
-			if(Loader.has(s, "Item", "Other", "Type")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Type")));			
+			if(Loader.has(s, "Item", "Other", "Name")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Name")));
+			if(Loader.has(s, "Item", "Other", "Lore")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Lore")));
+			if(Loader.has(s, "Item", "Other", "Flag") && TheAPI.isNewerThan(7)) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Flag")));	
+			if(Loader.has(s, "Item", "Other", "Nbt")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Nbt")));
+			if(Loader.has(s, "Item", "Other", "Durability"))c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Durability")));	
+			if(Loader.has(s, "Item", "Other", "Type")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Type")));
+			if(Loader.has(s, "Item", "Other", "Amount")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Amount")));
 			return c;
 		}
 		if(args[0].equalsIgnoreCase("name") && Loader.has(s, "Item", "Other", "Name"))
@@ -353,7 +377,7 @@ public class Item implements CommandExecutor, TabCompleter{
 			}
 			return c;
 		}
-		if(args[0].equalsIgnoreCase("nbt") && Loader.has(s, "Item", "Other", "Nbt") || args[0].equalsIgnoreCase("durability") && Loader.has(s, "Item", "Other", "Durability")||args[0].equalsIgnoreCase("type") && Loader.has(s, "Item", "Other", "Type")) {
+		if(args[0].equalsIgnoreCase("nbt") && Loader.has(s, "Item", "Other", "Nbt") ||args[0].equalsIgnoreCase("amount") && Loader.has(s, "Item", "Other", "Amount") || args[0].equalsIgnoreCase("durability") && Loader.has(s, "Item", "Other", "Durability")||args[0].equalsIgnoreCase("type") && Loader.has(s, "Item", "Other", "Type")) {
 			if(args.length==2) {
 				c.addAll(StringUtils.copyPartialMatches(args[1], Arrays.asList("Set","Get")));
 				return c;

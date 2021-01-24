@@ -102,13 +102,16 @@ Item:
     Removed: "%prefix% The &e%flag% &7item flag has been removed from the item in your hand"
     List: "%prefix% The item flags on the item in your hand: &e%flags%"
   Nbt:
-    Get: "%prefix% The nbt tags of the object in your hand are &e%nbt%"
+    Get: "%prefix% The nbt tags of item in your hand are &e%nbt%"
     Set: "%prefix% The nbt tags of item in your hand has been changed to &e%nbt%"
   Type:
-    Get: "%prefix% The type of object in your hand is &e%item%"
-    Set: "%prefix% The type of item in your hand has been changed to &e%item%"
+    Get: "%prefix% The type of item in your hand is &e%type%"
+    Set: "%prefix% The type of item in your hand has been changed to &e%type%"
+  Amount:
+    Get: "%prefix% The amount of item in your hand is &e%amount%"
+    Set: "%prefix% The amount of item in your hand has been changed to &e%amount%"
   Durability:
-    Get: "%prefix% The durability of the object in your hand is &e%durability%"
+    Get: "%prefix% The durability of item in your hand is &e%durability%"
     Set: "%prefix% The durability of item in your hand has been changed to &e%durability%"
     
 # Translations for /Hat command

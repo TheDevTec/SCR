@@ -865,6 +865,7 @@ Other:
        Nbt: "SCR.Item.Nbt"
        Durability: "SCR.Item.Durability"
        Type: "SCR.Item.Type"
+       Amount: "SCR.Item.Amount"
     AdvancedHelp:
        Name: "/Item Name <value> - Change name of the item in your hand"
        Lore:
@@ -885,6 +886,9 @@ Other:
        Durability:
          Set: "/Item Type Set <value> - Change durability of the item in your hand"
          Get: "/Item Type Get - Get durability of the item in your hand"
+       Amount:
+         Set: "/Item Amount Set <value> - Change amount of the item in your hand"
+         Get: "/Item Amount Get - Get amount of the item in your hand"
     Enabled: true
   Kits:
     Name: "kits"

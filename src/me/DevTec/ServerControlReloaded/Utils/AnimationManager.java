@@ -17,7 +17,8 @@ public class AnimationManager {
 	public static void reload() {
 		a.clear();
 		for(String anim : Loader.anim.getKeys()) {
-			Animation s = new Animation(Loader.anim.getStringList(anim+".lines"), StringUtils.calculate(Loader.anim.getString(anim+".speed")).longValue());
+			Animation s = new Animation(Loader.anim.getStringList(anim+".lines")
+					, StringUtils.calculate(Loader.anim.getString(anim+".speed")).longValue());
 			a.put(anim, s);
 		}
 	}

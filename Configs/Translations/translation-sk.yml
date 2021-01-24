@@ -107,6 +107,9 @@ Item:
   Type:
     Get: "%prefix% Typ predmetu vo vašej ruke je &e%nbt%"
     Set: "%prefix% Typ predmetu vo vašej ruke bol zmenený na &e%nbt%"
+  Type:
+    Get: "%prefix% Množstvo predmetov vo vašej ruke je &e%type%"
+    Set: "%prefix% Množstvo predmetov vo vašej ruke bolo zmenené na &e%type%"
   Durability:
     Get: "%prefix% Durability predmetu vo vašej ruke je &e%nbt%"
     Set: "%prefix% Durability predmetu vo vašej ruke bola zmenená na &e%nbt%"
