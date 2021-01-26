@@ -681,6 +681,7 @@ TabList:
     Delete: "%prefix% Skupina &e%group% &7odstraněna"
     
 WhoIs:
+  Loading: "%prefix% Načítání dat uživatele &e%player%&7.."
   Online:
   - "%prefix% Hráč: &e%player%"
   - "%prefix% UUID: &e%uuid%"

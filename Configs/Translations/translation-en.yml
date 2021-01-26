@@ -688,6 +688,7 @@ TabList:
     Delete: "%prefix% Group &e%group% &7deleted"
     
 WhoIs:
+  Loading: "%prefix% Loading data of &e%player%&7.."
   Online:
   - "%prefix% Player: &e%player%"
   - "%prefix% UUID: &e%uuid%"
