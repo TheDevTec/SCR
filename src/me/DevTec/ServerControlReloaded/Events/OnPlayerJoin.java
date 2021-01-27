@@ -102,7 +102,6 @@ public class OnPlayerJoin implements Listener {
 						}.runRepeating(0, 20));
 					}
 					Loader.sendMessages(p, "Vanish.Join");
-					return;
 				}
 				if (!Mail.getMails(p.getName()).isEmpty())
 					Loader.sendMessages(p,"Mail.Notification", Placeholder.c().add("%amount%", "" + d.getStringList("Mails").size()));

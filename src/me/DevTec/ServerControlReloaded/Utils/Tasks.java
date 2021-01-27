@@ -60,8 +60,10 @@ public class Tasks {
 		if (setting.vip)
 			vipslot();
 
-		if (setting.tab)
+		if (setting.tab) {
+			for(Player p : TheAPI.getOnlinePlayers())regPlayer(p);
 			tab();
+		}
 
 		if (setting.save)
 			savetask();

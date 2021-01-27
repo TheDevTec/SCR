@@ -27,6 +27,8 @@ Options:
     Use: true
     Limit: 2
     
+  Metrics: true
+    
   LockChat:
     Helpop: true
     PrivateMessage: true
@@ -295,7 +297,6 @@ Homes:
 # Types: REGEX, CONTAINS, EQUALS, STARTS_WITH, ENDS_WITH
 # Regex flags: CASE_INSENSITIVE, COMMENTS, CANON_EQ, DOTALL, LITERAL, MULTILINE, UNICODE_CASE, UNICODE_CHARACTER_CLASS, UNIX_LINES
 Rules:
-  # ADD_DEFAULT
   antiSwear_idiot:
     # Example: "What an idiot" -> "What an good boy"
     Type: "REGEX"

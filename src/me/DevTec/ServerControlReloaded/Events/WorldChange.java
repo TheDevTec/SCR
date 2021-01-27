@@ -24,54 +24,56 @@ import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class WorldChange implements Listener {
-	
+
 	Map<String, Integer> sleepTask = new HashMap<>();
-	List<Player> sleeping = new ArrayList<>();
+	Map<String, List<Player>> perWorldSleep = new HashMap<>();
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSleep(PlayerBedEnterEvent e) {
 		if (setting.singeplayersleep && e.getBedEnterResult()==BedEnterResult.OK) {
 			World w = e.getBed().getWorld();
+			List<Player> s = perWorldSleep.getOrDefault(w.getName(), new ArrayList<>());
+			s.add(e.getPlayer());
+			perWorldSleep.put(w.getName(), s);
 			if(!sleepTask.containsKey(w.getName())) {
 				sleepTask.put(w.getName(), new Tasker() {
-					
 					long start = w.getTime();
-					boolean doNight = !w.isThundering() || start < 2000 && start > 300;
+					boolean doNight = false;
+					
 					public void run() {
-						for(Player s : sleeping) {
+						for(Player s : perWorldSleep.get(w.getName())) {
 							int old = (int) Ref.get(Ref.player(s), "sleepTicks");
-							if(old >= 98) {
+							if(old >= 98)
 								Ref.set(Ref.player(s), "sleepTicks", 98);
-							}
 						}
-						if(start+50 > 24000) {
+						
+						if(w.getTime() >= 24000) {
 							start=0;
 							doNight=true;
 						}
-						if(start > 1000) {
-							if(doNight) {
-								cancel();
-								return;
-							}
+						if(doNight && w.getTime() >= 500) {
+							if(w.isThundering())w.setThundering(false);
+							cancel();
 						}
 						
 						w.setTime(start);
-						start=start+50;
+						start+=50;
 					}
 				}.runRepeatingSync(0, 1));
 			}
-			sleeping.add(e.getPlayer());
 		}
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSleep(PlayerBedLeaveEvent e) {
-		if (setting.singeplayersleep) {
-			sleeping.remove(e.getPlayer());
-			if(sleeping.isEmpty())
+		if (setting.singeplayersleep) { //remove cache and stop task
+			perWorldSleep.get(e.getBed().getWorld().getName()).remove(e.getPlayer());
+			if(perWorldSleep.get(e.getBed().getWorld().getName()).isEmpty()) {
+				perWorldSleep.remove(e.getBed().getWorld().getName());
 			if(sleepTask.containsKey(e.getBed().getWorld().getName())) {
 				Scheduler.cancelTask(sleepTask.get(e.getBed().getWorld().getName()));
 				sleepTask.remove(e.getBed().getWorld().getName());
+			}
 			}
 		}
 	}

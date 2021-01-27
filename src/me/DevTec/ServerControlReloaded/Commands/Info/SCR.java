@@ -24,7 +24,7 @@ public class SCR implements CommandExecutor, TabCompleter {
 			if (args.length == 0) {
 				Loader.Help(s, "ServerControl", "Info");
 				return true;
-				}
+			}
 			
 			if (args[0].equalsIgnoreCase("Reload")) {
 					Loader.reload();
@@ -33,7 +33,6 @@ public class SCR implements CommandExecutor, TabCompleter {
 			}
 			
 			if (args[0].equalsIgnoreCase("Version") || args[0].equalsIgnoreCase("info")) {
-					
 				Loader.sendMessages(s, "SCR.Info", Placeholder.c()
 						.add("%version%", PluginManagerAPI.getVersion("ServerControlReloaded"))
 						.add("%server%", Bukkit.getServer().getBukkitVersion()));

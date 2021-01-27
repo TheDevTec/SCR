@@ -18,6 +18,7 @@ import me.DevTec.ServerControlReloaded.Utils.Eco;
 import me.DevTec.ServerControlReloaded.Utils.Pagination;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
+import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.sortedmap.RankingAPI;
 import me.devtec.theapi.utils.StringUtils;
 
@@ -30,34 +31,38 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if (Loader.has(s, "BalanceTop", "Economy")) {
-			String world = Eco.getEconomyGroupByWorld(Bukkit.getWorlds().get(0).getName());
-			if (s instanceof Player)
-				world = Eco.getEconomyGroupByWorld(((Player) s).getWorld().getName());
-			Pagination<Entry<String, Double>> m = h.containsKey(world) ? h.get(world) : null;
-			if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
-				TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300*20); 
-				HashMap<String, Double> money = new HashMap<>();
-				for (UUID sa : TheAPI.getUsers()) {
-					if(Bukkit.getOfflinePlayer(sa).getName()==null||Bukkit.getOfflinePlayer(sa).getName().equals("ServerControlReloaded"))continue;
-					money.put(Bukkit.getOfflinePlayer(sa).getName(),EconomyAPI.getBalance(Bukkit.getOfflinePlayer(sa).getName(), world));
+			
+			new Tasker() {
+				public void run() {
+				String world = Eco.getEconomyGroupByWorld(Bukkit.getWorlds().get(0).getName());
+				if (s instanceof Player)
+					world = Eco.getEconomyGroupByWorld(((Player) s).getWorld().getName());
+				Pagination<Entry<String, Double>> m = h.containsKey(world) ? h.get(world) : null;
+				if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
+					TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300*20); 
+					HashMap<String, Double> money = new HashMap<>();
+					for (UUID sa : TheAPI.getUsers()) {
+						if(Bukkit.getOfflinePlayer(sa).getName()==null||Bukkit.getOfflinePlayer(sa).getName().equals("ServerControlReloaded"))continue;
+						money.put(Bukkit.getOfflinePlayer(sa).getName(),EconomyAPI.getBalance(Bukkit.getOfflinePlayer(sa).getName(), world));
+					}
+					if (m != null)
+						h.remove(world); 
+					m = new Pagination<>(10,new RankingAPI<>(money).entrySet());
+					h.put(world, m);
 				}
-				if (m != null)
-					h.remove(world); 
-				m = new Pagination<>(10,new RankingAPI<>(money).entrySet());
-				h.put(world, m);
-			}
-			int page =args.length!=0?StringUtils.getInt(args[0]):1;
-			--page;
-			if(m.totalPages()<=page)page=m.totalPages()-1;
-			TheAPI.msg("&7=====» &cBalanceTop &e"+(page+1)+"/"+(m.totalPages())+" &7«=====", s);
-			int i = 0;
-			for(Entry<String, Double> sf : m.getPage(page)){
-				String key = sf.getKey();
-				++i;
-				TheAPI.msg(Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", (i+(10*(page+1))-10) + "")
-						.replace("%player%", key).replace("%playername%", player(key))
-						.replace("%money%", API.setMoneyFormat(sf.getValue(),true)), s);
-			}
+				int page =args.length!=0?StringUtils.getInt(args[0]):1;
+				--page;
+				if(m.totalPages()<=page)page=m.totalPages()-1;
+				TheAPI.msg("&7=====» &cBalanceTop &e"+(page+1)+"/"+(m.totalPages())+" &7«=====", s);
+				int i = 0;
+				for(Entry<String, Double> sf : m.getPage(page)){
+					String key = sf.getKey();
+					++i;
+					TheAPI.msg(Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", (i+(10*(page+1))-10) + "")
+							.replace("%player%", key).replace("%playername%", player(key))
+							.replace("%money%", API.setMoneyFormat(sf.getValue(),true)), s);
+				}
+			}}.runTask();
 			return true;
 		}
 		Loader.noPerms(s, "BalanceTop", "Economy");

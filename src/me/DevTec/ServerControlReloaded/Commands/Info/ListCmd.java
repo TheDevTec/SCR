@@ -3,6 +3,7 @@ package me.DevTec.ServerControlReloaded.Commands.Info;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -71,26 +72,26 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "List", "Info")) {
-			List<String> o = Loader.trans.getStringList("List.Normal");
-			if(o.isEmpty()==true)return true;
-			if(o instanceof List) {
-				for(String sd : o) {
+			Object o = Loader.getTranslation("List.Normal");
+			if(o==null || o instanceof Collection && ((Collection<?>)o).isEmpty() || (o+"").equals(""))return true;
+			if(o instanceof Collection) {
+				for(Object sd : (Collection<?>)o) {
 					boolean empty = true, contains = false;
-					Matcher f = a.matcher(sd);
+					Matcher f = a.matcher(sd+"");
 					while(f.find()) {
 						contains=true;
 						if(!joiner(s,f.group(1)).equals(""))empty=false;
-						sd=sd.replace(f.group(), joiner(s,f.group(1)));
+						sd=(sd+"").replace(f.group(), joiner(s,f.group(1)));
 					}
-					f = b.matcher(sd);
+					f = b.matcher(sd+"");
 					while(f.find())
-						sd=sd.replace(f.group(), joinercount(s,f.group(1)));
+						sd=(sd+"").replace(f.group(), joinercount(s,f.group(1)));
 					if(!contains || !empty || !setting.list)
-					TheAPI.msg(Loader.placeholder(s, sd, null), s);
+					TheAPI.msg(Loader.placeholder(s, sd+"", null), s);
 				}
 				return true;
 			}
-			String sd = o.toString();
+			String sd = o+"";
 			Matcher f = a.matcher(sd);
 			while(f.find())
 				sd=sd.replace(f.group(), joiner(s,f.group(1)));

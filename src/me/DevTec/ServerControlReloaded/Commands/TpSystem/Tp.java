@@ -29,6 +29,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 		if (Loader.has(s, "Tp","TpSystem")) {
 			if (args.length == 0) {
 				Loader.Help(s, "Tp", "TpSystem");
+				return true;
 			}
 			if (args.length == 1) {
 				if (s instanceof Player) {

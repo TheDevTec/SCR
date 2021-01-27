@@ -629,6 +629,8 @@ public class Loader extends JavaPlugin implements Listener {
 			DisplayManager.unload();
 			DisplayManager.load();
 			getInstance.stop();
+			getInstance.starts();
+			Configs.load(true);
 		}else {
 			DisplayManager.load();
 			if (PluginManagerAPI.getPlugin("Vault") != null) {

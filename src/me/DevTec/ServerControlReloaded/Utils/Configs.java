@@ -8,6 +8,7 @@ import java.util.List;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.utils.StreamUtils;
+import me.devtec.theapi.utils.datakeeper.Data;
 import me.devtec.theapi.utils.datakeeper.loader.YamlLoader;
 
 public class Configs {
@@ -57,39 +58,59 @@ public class Configs {
 	
 	static List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
 	
-	@SuppressWarnings("unchecked")
 	private static void copyDefauts() {
+		Data data = new Data();
 		for(String s : datas) {
-			Config c = new Config("ServerControlReloaded/"+s);
-    		YamlLoader data = new YamlLoader();
+			data.reset();
+			Config c = null;
+	    	switch(s) {
+	    	case "Kits.yml":
+	    		c=Loader.kit;
+	    		break;
+	    	case "Config.yml":
+	    		c=Loader.config;
+	    		break;
+	    	case "Tablist.yml":
+	    		c=Loader.tab;
+	    		break;
+	    	case "Scoreboard.yml":
+	    		c=Loader.sb;
+	    		break;
+	    	case "MultiWorlds.yml":
+	    		c=Loader.mw;
+	    		break;
+	    	case "BossBar.yml":
+	    		c=Loader.bb;
+	    		break;
+	    	case "ActionBar.yml":
+	    		c=Loader.ac;
+	    		break;
+	    	case "Events.yml":
+	    		c=Loader.events;
+	    		break;
+	    	case "Commands.yml":
+	    		c=Loader.cmds;
+	    		break;
+	    	case "Animations.yml":
+	    		c=Loader.anim;
+	    		break;
+	    	case "Translations/translation-en.yml":
+	    		c=Loader.english;
+	    		break;
+	    	}
+	    	
+	    	if(c!=null) {
+	    		c.reload();
+	    	}else c=new Config("ServerControlReloaded/"+s);
     		try {
     		URLConnection u = Loader.getInstance.getClass().getClassLoader().getResource("Configs/"+s).openConnection();
     		u.setUseCaches(false);
-    		data.load(StreamUtils.fromStream(u.getInputStream()));
+    		data.reload(StreamUtils.fromStream(u.getInputStream()));
     		}catch(Exception e) {}
-	    	boolean change = false;
-	    	for(String sr : data.getKeys()) {
-	    		if(c.get(sr)==null && data.get().get(sr)[0]!=null) {
-	    			c.set(sr, data.get().get(sr)[0]);
-	    			change = true;
-	    		}
-	    		if(c.getComments(sr)!=null && c.getComments(sr).isEmpty() && (data.get().get(sr)[1]==null||!((List<String>) data.get().get(sr)[1]).isEmpty())) {
-	    			c.setComments(sr, (List<String>) data.get().get(sr)[1]);
-	    			change = true;
-	    		}
-	    	}
-	    	try {
-    		if(data.getHeader()!=null)
-    			if(!c.getHeader().equals(data.getHeader()))
-    				c.setHeader(data.getHeader());
-    		if(data.getFooter()!=null)
-    			if(!c.getFooter().equals(data.getFooter()))
-    				c.setFooter(data.getFooter());
-	    	}catch(Exception unsuported) {}
-	    	data.reset();
+	    	boolean change = c.getData().merge(data, true, true);
 	    	if(change)
 	    	c.save();
-	    	switch(c.getData().getFile().getName()) {
+	    	switch(s) {
 	    	case "Kits.yml":
 	    		Loader.kit=c;
 	    		break;
@@ -120,7 +141,7 @@ public class Configs {
 	    	case "Animations.yml":
 	    		Loader.anim=c;
 	    		break;
-	    	case "translation-en.yml":
+	    	case "Translations/translation-en.yml":
 	    		Loader.english=c;
 	    		break;
 	    	}
