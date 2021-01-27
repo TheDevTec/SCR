@@ -159,6 +159,7 @@ import me.DevTec.ServerControlReloaded.Utils.Configs;
 import me.DevTec.ServerControlReloaded.Utils.Converter;
 import me.DevTec.ServerControlReloaded.Utils.DisplayManager;
 import me.DevTec.ServerControlReloaded.Utils.Kit;
+import me.DevTec.ServerControlReloaded.Utils.Metrics;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
 import me.DevTec.ServerControlReloaded.Utils.Rule;
@@ -633,6 +634,8 @@ public class Loader extends JavaPlugin implements Listener {
 			Configs.load(true);
 		}else {
 			DisplayManager.load();
+			if(config.getBoolean("Options.Metrics") && TheAPI.isNewerThan(7))
+			new Metrics();
 			if (PluginManagerAPI.getPlugin("Vault") != null) {
 				setupVault();
 				setupPermisions();
