@@ -29,18 +29,22 @@ public class GamemodeA implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args.length == 1) {
-				Player p = TheAPI.getPlayer(args[0]);
-				if (p != null) {
-					p.setGameMode(GameMode.ADVENTURE);
-					Loader.sendMessages(p, "GameMode.Other.Adventure.Receiver");
-					
-					Loader.sendMessages(s, "GameMode.Other.Adventure.Sender", Placeholder.c()
-							.add("%player%", p.getName())
-							.add("%playername%", p.getDisplayName()));
+				if(Loader.has(s,"GameModeAdventure","GameMode","Other")){
+					Player p = TheAPI.getPlayer(args[0]);
+					if (p != null) {
+						p.setGameMode(GameMode.ADVENTURE);
+						Loader.sendMessages(p, "GameMode.Other.Adventure.Receiver");
+
+						Loader.sendMessages(s, "GameMode.Other.Adventure.Sender", Placeholder.c()
+								.add("%player%", p.getName())
+								.add("%playername%", p.getDisplayName()));
+						return true;
+					}
+					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+							.add("%player%", args[0]));
 					return true;
 				}
-				Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
-						.add("%player%", args[0]));
+				Loader.noPerms(s, "GameModeAdventure", "GameMode","Other");
 				return true;
 			}
 		}

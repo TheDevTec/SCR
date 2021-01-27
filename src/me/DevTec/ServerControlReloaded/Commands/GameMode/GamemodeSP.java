@@ -33,18 +33,22 @@ public class GamemodeSP implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args.length == 1) {
-				Player p = TheAPI.getPlayer(args[0]);
-				if (p != null) {
-					p.setGameMode(GameMode.SPECTATOR);
-					Loader.sendMessages(p, "GameMode.Other.Spectator.Receiver");
-					
-					Loader.sendMessages(s, "GameMode.Other.Spectator.Sender", Placeholder.c()
-							.add("%player%", p.getName())
-							.add("%playername%", p.getDisplayName()));	
+				if(Loader.has(s,"GameModeSpectator","GameMode","Other")){
+					Player p = TheAPI.getPlayer(args[0]);
+					if (p != null) {
+						p.setGameMode(GameMode.SPECTATOR);
+						Loader.sendMessages(p, "GameMode.Other.Spectator.Receiver");
+
+						Loader.sendMessages(s, "GameMode.Other.Spectator.Sender", Placeholder.c()
+								.add("%player%", p.getName())
+								.add("%playername%", p.getDisplayName()));
+						return true;
+					}
+					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+							.add("%player%", args[0]));
 					return true;
 				}
-				Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
-						.add("%player%", args[0]));
+				Loader.noPerms(s, "GameModeSpectator", "GameMode","Other");
 				return true;
 			}
 		}

@@ -29,18 +29,22 @@ public class GamemodeC implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args.length == 1) {
-				Player p = TheAPI.getPlayer(args[0]);
-				if (p != null) {
-					p.setGameMode(GameMode.CREATIVE);
-					Loader.sendMessages(p, "GameMode.Other.Creative.Receiver");
-					
-					Loader.sendMessages(s, "GameMode.Other.Creative.Sender", Placeholder.c()
-							.add("%player%", p.getName())
-							.add("%playername%", p.getDisplayName()));
+				if(Loader.has(s,"GameModeCreative","GameMode","Other")){
+					Player p = TheAPI.getPlayer(args[0]);
+					if (p != null) {
+						p.setGameMode(GameMode.CREATIVE);
+						Loader.sendMessages(p, "GameMode.Other.Creative.Receiver");
+
+						Loader.sendMessages(s, "GameMode.Other.Creative.Sender", Placeholder.c()
+								.add("%player%", p.getName())
+								.add("%playername%", p.getDisplayName()));
+						return true;
+					}
+					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+							.add("%player%", args[0]));
 					return true;
 				}
-				Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
-						.add("%player%", args[0]));
+				Loader.noPerms(s, "GameModeCreative", "GameMode","Other");
 				return true;
 			}
 		}

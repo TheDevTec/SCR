@@ -1,0 +1,9 @@
+name: ServerControlReloaded
+main: me.DevTec.ServerControlReloaded.SCR.Loader
+version: 7.9.5
+website: https://www.spigotmc.org/resources/71147/
+description: Fully customizable plugin with many features!
+author: DevTec
+depend: [TheAPI]
+softdepend: [Essentials,Residence,WorldGuard,WorldEdit]
+api-version: 1.13

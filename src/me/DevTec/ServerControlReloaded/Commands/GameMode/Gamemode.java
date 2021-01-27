@@ -105,7 +105,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			
-			if (Loader.has(s, "GameMode" + gamemode, "GameMode")) {
+			if (Loader.has(s, "GameMode" + gamemode, "GameMode","Other")) {
 				Player p = TheAPI.getPlayer(args[1]);
 					if (p != null) {
 						p.setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
@@ -122,7 +122,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 							.add("%player%", args[0]));
 					return true;
 			}
-			Loader.noPerms(s, "GameMode" + gamemode, "GameMode");
+			Loader.noPerms(s, "GameMode" + gamemode, "GameMode","Other");
 			return true;
 		}
 

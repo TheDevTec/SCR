@@ -29,18 +29,22 @@ public class GamemodeS implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args.length == 1) {
-				Player p = TheAPI.getPlayer(args[0]);
-				if (p != null) {
-					p.setGameMode(GameMode.SURVIVAL);
-					Loader.sendMessages(p, "GameMode.Other.Survival.Receiver");
-					
-					Loader.sendMessages(s, "GameMode.Other.Survival.Sender", Placeholder.c()
-							.add("%player%", p.getName())
-							.add("%playername%", p.getDisplayName()));
+				if(Loader.has(s,"GameModeSurvival","GameMode","Other")){
+					Player p = TheAPI.getPlayer(args[0]);
+					if (p != null) {
+						p.setGameMode(GameMode.SURVIVAL);
+						Loader.sendMessages(p, "GameMode.Other.Survival.Receiver");
+
+						Loader.sendMessages(s, "GameMode.Other.Survival.Sender", Placeholder.c()
+								.add("%player%", p.getName())
+								.add("%playername%", p.getDisplayName()));
+						return true;
+					}
+					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+							.add("%player%", args[0]));
 					return true;
 				}
-				Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
-						.add("%player%", args[0]));
+				Loader.noPerms(s, "GameModeSurvival", "GameMode","Other");
 				return true;
 			}
 		}
