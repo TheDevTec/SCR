@@ -19,11 +19,20 @@ import me.devtec.theapi.utils.StringUtils;
 
 public class Kit {
 	private List<ItemStack> a;
+	private List<String> b, c;
 	private HashMap<Integer, ItemStack> s;
 	private double cost;
 	private long delay;
 	public List<ItemStack> getItems() {
 		return a;
+	}
+
+	public List<String> getCommands() {
+		return b;
+	}
+
+	public List<String> getMessages() {
+		return c;
 	}
 	
 	public HashMap<Integer, ItemStack> getItemsWithSlots() {
@@ -40,11 +49,13 @@ public class Kit {
 	
 	public static Kit load(String name) {
 		Kit kit = new Kit();
-		kit.name=name;
+			kit.name=name;
 		if(Loader.kit.exists("Kits." + name + ".cost"))
-		kit.cost=API.convertMoney(Loader.kit.getString("Kits." + name + ".cost"));
+			kit.cost=API.convertMoney(Loader.kit.getString("Kits." + name + ".cost"));
 		if(Loader.kit.exists("Kits." + name + ".delay"))
-		kit.delay=StringUtils.timeFromString(Loader.kit.getString("Kits." + name + ".delay"));
+			kit.delay=StringUtils.timeFromString(Loader.kit.getString("Kits." + name + ".delay"));
+		kit.b=Loader.kit.getStringList("Kits." + name + ".commands");
+		kit.c=Loader.kit.getStringList("Kits." + name + ".messages");
 		if(Loader.kit.exists("Kits." + name + ".items.add")) {
 			kit.a = new ArrayList<>();
 			for (String id : Loader.kit.getKeys("Kits." + name + ".items.add")) {

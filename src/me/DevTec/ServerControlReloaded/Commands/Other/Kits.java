@@ -21,6 +21,7 @@ import me.DevTec.ServerControlReloaded.Utils.Repeat;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.cooldownapi.CooldownAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
+import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public class Kits implements CommandExecutor, TabCompleter {
@@ -45,6 +46,10 @@ public class Kits implements CommandExecutor, TabCompleter {
 					if(kit.getItemsWithSlots()!=null)
 					for(Entry<Integer, ItemStack> s : kit.getItemsWithSlots().entrySet())
 						p.getInventory().setItem(s.getKey(), s.getValue());
+					for(String s : kit.getCommands())
+						TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()));
+					for(String s : kit.getMessages())
+						TheAPI.msg(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()),p);
 					return;
 				} else {
 					if (EconomyAPI.has(p, kit.getCost())) {
@@ -56,6 +61,10 @@ public class Kits implements CommandExecutor, TabCompleter {
 						if(messages)
 						Loader.sendMessages(p, "Kits.Used", Placeholder.c().add("%kit%", kit.getName()));
 						EconomyAPI.withdrawPlayer(p, kit.getCost());
+						for(String s : kit.getCommands())
+							TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()));
+						for(String s : kit.getMessages())
+							TheAPI.msg(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()),p);
 						return;
 					}
 					if(messages)
@@ -80,6 +89,10 @@ public class Kits implements CommandExecutor, TabCompleter {
 						Loader.sendMessages(p, "Kits.Used", Placeholder.c().add("%kit%", kit.getName()));
 						a.createCooldown("Kit." + kit.getName(), kit.getDelay());
 						EconomyAPI.withdrawPlayer(p, kit.getCost());
+						for(String s : kit.getCommands())
+							TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()));
+						for(String s : kit.getMessages())
+							TheAPI.msg(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()),p);
 						return;
 					}
 					if(messages)
@@ -100,6 +113,10 @@ public class Kits implements CommandExecutor, TabCompleter {
 					if(messages)
 					Loader.sendMessages(p, "Kits.Used", Placeholder.c().add("%kit%", kit.getName()));
 					a.createCooldown("Kit." + kit.getName(), kit.getDelay());
+					for(String s : kit.getCommands())
+						TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()));
+					for(String s : kit.getMessages())
+						TheAPI.msg(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()),p);
 					return;
 				}
 			}

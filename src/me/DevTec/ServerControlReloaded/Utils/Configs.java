@@ -34,7 +34,8 @@ public class Configs {
 	    			c.set(sr, data.get().get(sr)[0]);
 	    			change = true;
 	    		}
-	    		if(c.getComments(sr)!=null && c.getComments(sr).isEmpty() && (data.get().get(sr)[1]==null||!((List<String>) data.get().get(sr)[1]).isEmpty())) {
+	    		if((c.getComments(sr)==null || c.getComments(sr).isEmpty()) && (data.get().get(sr)[1]!=null && !((List<String>) data.get().get(sr)[1]).isEmpty())) {
+	    			if(c.getHeader()!=null && c.getHeader().containsAll((List<String>) data.get().get(sr)[1]))continue;
 	    			c.setComments(sr, (List<String>) data.get().get(sr)[1]);
 	    			change = true;
 	    		}
