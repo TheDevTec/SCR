@@ -52,7 +52,8 @@ public class WorldChange implements Listener {
 							doNight=true;
 						}
 						if(doNight && w.getTime() >= 500) {
-							if(w.isThundering())w.setThundering(false);
+							w.setThundering(false);
+							w.setStorm(false);
 							cancel();
 						}
 						
