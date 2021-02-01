@@ -800,8 +800,7 @@ Skin:
       Receiver: "%prefix% Skin bol resetovaný"
       
 Accounts:
-  Users: "%prefix% Účty na IP adrese hráča &e%player%"
-  List: "%prefix% %accounts%"
+  Users: "%prefix% Účty na IP adrese hráča &e%player%&7: &e%players%"
   NoAccounts: "%prefix% Žiadne účty boli nájdené"
   
 Uuid:

@@ -808,8 +808,7 @@ Skin:
       Receiver: "%prefix% Váš skin byl vyresetován"
       
 Accounts:
-  Users: "%prefix% Účty na IP adrese hráče &e%player%"
-  List: "%prefix% %accounts%"
+  Users: "%prefix% Účty na IP adrese hráče &e%player%&7: &e%players%"
   NoAccounts: "%prefix% Žádné účty nebyly nalezeny"
 
 Uuid:

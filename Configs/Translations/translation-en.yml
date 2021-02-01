@@ -816,8 +816,7 @@ Skin:
       Receiver: "%prefix% Your skin reset"
       
 Accounts:
-  Users: "%prefix% Accounts on IP addres of player &e%player%"
-  List: "%prefix% %accounts%"
+  Users: "%prefix% Accounts on IP addres of player &e%player%&7: &e%players%"
   NoAccounts: "%prefix% No accounts were founded"
   
 Uuid:
