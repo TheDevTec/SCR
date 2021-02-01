@@ -44,7 +44,7 @@ public class Staff implements CommandExecutor, TabCompleter {
 		String s = "";
 		for (Player a : TheAPI.getOnlinePlayers()) 
 			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a))) { 
-				if(sender instanceof Player == false ? false : TheAPI.canSee((Player)sender,a.getName()))continue;
+				if(sender instanceof Player == false ? false : !TheAPI.canSee((Player)sender,a.getName()))continue;
 				s+=(s.equals("")?"":", ")+a.getName();
 			}
 		return s;
@@ -55,7 +55,7 @@ public class Staff implements CommandExecutor, TabCompleter {
 		int s = 0;
 		for (Player a : TheAPI.getOnlinePlayers()) 
 			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a))) {
-				if(sender instanceof Player == false ? false : TheAPI.canSee((Player)sender,a.getName()))continue;
+				if(sender instanceof Player == false ? false : !TheAPI.canSee((Player)sender,a.getName()))continue;
 				++s;
 			}
 		return s+"";

@@ -358,7 +358,7 @@ Inventory:
     Permission: "SCR.Command.EnderChest"
     Help: "/EnderChest <player> - Open player's enderchest"
     Enabled: true
-  Inventory:
+  Invsee:
     Name: "inventory"
     Aliases:
     - "invsee"

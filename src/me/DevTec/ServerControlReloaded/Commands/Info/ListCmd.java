@@ -25,7 +25,7 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 	public String joiner(CommandSender d , String value) {
 		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
 		for (Player a : TheAPI.getOnlinePlayers()) {
-			if(d instanceof Player == false ? false : TheAPI.canSee((Player)d,a.getName()))continue;
+			if(d instanceof Player == false ? false : !TheAPI.canSee((Player)d,a.getName()))continue;
 			String as = Staff.getGroup(a);
 			List<String> s = p.getOrDefault(as, new ArrayList<>());
 			s.add(a.getName());
@@ -50,7 +50,7 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 	public String joinercount(CommandSender d , String value) {
 		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
 		for (Player a : TheAPI.getOnlinePlayers()) {
-			if(d instanceof Player == false ? false : TheAPI.canSee((Player)d,a.getName()))continue;
+			if(d instanceof Player == false ? false : !TheAPI.canSee((Player)d,a.getName()))continue;
 			String as = Staff.getGroup(a);
 			List<String> s = p.getOrDefault(as, new ArrayList<>());
 			s.add(a.getName());
