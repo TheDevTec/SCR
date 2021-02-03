@@ -27,6 +27,11 @@ Seen:
   Online: "%prefix% &e%player%&7 is &aonline &7for &a%online%"
   Offline: "%prefix% &e%player%&7 is &coffline &7for &c%offline%"
   
+# Translations for /SocialSpy command
+SocialSpy:
+  On: "%prefix% You have turned &eon &7your &esocial spy &7mode"
+  Off: "%prefix% You have turned &eoff &7your &esocial spy &7mode"
+  
 # Translations for /List and /Staff commands
 List:
   Staff:

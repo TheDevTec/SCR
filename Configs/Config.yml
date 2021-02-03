@@ -326,6 +326,7 @@ Rules:
  #     Text: "ANTIAD"
 
 Format:
+  SocialSpy: "&a[&2SP | &6%player% &8>> &e%target%&a] &d%message%"
   Mail: "&e%player% &7: &e%message%"
   Time: "HH:mm:ss"
   Date: "dd.MM.yyyy"

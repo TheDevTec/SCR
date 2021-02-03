@@ -312,6 +312,8 @@ public class TabList {
 				return get("PerPlayer." + p.getName() + "." + what, p);
 			else if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + "." + what))
 				return get("PerWorld." + p.getWorld().getName() + "." + what, p);
+			else if (Loader.tab.exists("PerGroup." + Staff.getGroup(p) + "." + what))
+				return get("PerGroup." + Staff.getGroup(p) + "." + what, p);
 			else {
 				return get(what, p);
 			}

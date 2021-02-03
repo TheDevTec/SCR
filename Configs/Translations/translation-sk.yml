@@ -27,6 +27,11 @@ Seen:
   Online: "%prefix% &e%player%&7 je &aonline &7už &a%online%"
   Offline: "%prefix% &e%player%&7 je &coffline &7už &c%offline%"
   
+# Translations for /SocialSpy command
+SocialSpy:
+  On: "%prefix% &eZapli &7ste svoj &esocial spy &7režim"
+  Off: "%prefix% &eZrušili &7ste svoj &esocial spy &7režim"
+  
 # Translations for /List and /Staff commands
 List:
   Staff:

@@ -77,6 +77,7 @@ import me.DevTec.ServerControlReloaded.Commands.Message.Helpop;
 import me.DevTec.ServerControlReloaded.Commands.Message.Mail;
 import me.DevTec.ServerControlReloaded.Commands.Message.PrivateMessage;
 import me.DevTec.ServerControlReloaded.Commands.Message.ReplyPrivateMes;
+import me.DevTec.ServerControlReloaded.Commands.Message.SocialSpy;
 import me.DevTec.ServerControlReloaded.Commands.Message.Sudo;
 import me.DevTec.ServerControlReloaded.Commands.Nickname.Nick;
 import me.DevTec.ServerControlReloaded.Commands.Nickname.NickReset;
@@ -99,12 +100,12 @@ import me.DevTec.ServerControlReloaded.Commands.Other.Scoreboard;
 import me.DevTec.ServerControlReloaded.Commands.Other.Skin;
 import me.DevTec.ServerControlReloaded.Commands.Other.Skull;
 import me.DevTec.ServerControlReloaded.Commands.Other.Spawner;
-import me.DevTec.ServerControlReloaded.Commands.Other.Tab;
 import me.DevTec.ServerControlReloaded.Commands.Other.TempFly;
 import me.DevTec.ServerControlReloaded.Commands.Other.Thor;
 import me.DevTec.ServerControlReloaded.Commands.Other.Trash;
 import me.DevTec.ServerControlReloaded.Commands.Other.Uuid;
 import me.DevTec.ServerControlReloaded.Commands.Other.Vanish;
+import me.DevTec.ServerControlReloaded.Commands.Other.tablist.Tab;
 import me.DevTec.ServerControlReloaded.Commands.Server.Reload;
 import me.DevTec.ServerControlReloaded.Commands.Server.Restart;
 import me.DevTec.ServerControlReloaded.Commands.Server.Stop;
@@ -858,6 +859,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Time", "PNight",new PNight());
 		
 		//Message
+		CmdC("Message","SocialSpy", new SocialSpy());
 		CmdC("Message","Mail", new Mail());
 		CmdC("Message","Sudo", new Sudo());
 		CmdC("Message","Broadcast", new Broadcast());

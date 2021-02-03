@@ -470,6 +470,13 @@ Message:
     Permission: "SCR.Command.Broadcast"
     Help: "/Broadcast <message> - Send message to online players"
     Enabled: true
+  SocialSpy:
+    Name: "socialspy"
+    Aliases:
+    - "sp"
+    Permission: "SCR.Command.SocialSpy"
+    Help: "/SocialSpy - Turn on/off your social spy mode"
+    Enabled: true
   Mail:
     Name: "mail"
     Aliases:
