@@ -13,10 +13,10 @@ public class PrivateMessageManager {
 		if(who instanceof Player) {
 			if(to instanceof Player) {
 				TheAPI.msg(Loader.config.getString("Format.SocialSpy")
-				.replace("%player%", who.getName()).replace("%playername%", ((Player)who).getDisplayName())
-				.replace("%customname%", ((Player)who).getCustomName())
-				.replace("%target%", to.getName()).replace("%targetname%", ((Player)to).getDisplayName())
-				.replace("%targetcustomname%", ((Player)to).getCustomName()).replace("%message%", message), TheAPI.getConsole());
+				.replace("%player%", who.getName()).replace("%playername%", ((Player)who).getDisplayName()+"")
+				.replace("%customname%", ((Player)who).getCustomName()+"")
+				.replace("%target%", to.getName()).replace("%targetname%", ((Player)to).getDisplayName()+"")
+				.replace("%targetcustomname%", ((Player)to).getCustomName()+"").replace("%message%", message), TheAPI.getConsole());
 				for(Player ps : TheAPI.getOnlinePlayers())
 					if(ps!=who && TheAPI.getUser(ps).getBoolean("socialspy"))
 						TheAPI.msg(Loader.config.getString("Format.SocialSpy")
@@ -26,15 +26,15 @@ public class PrivateMessageManager {
 						.replace("%targetcustomname%", ((Player)to).getCustomName()).replace("%message%", message), ps);
 			}else {
 				TheAPI.msg(Loader.config.getString("Format.SocialSpy")
-				.replace("%player%", who.getName()).replace("%playername%", ((Player)who).getDisplayName())
-				.replace("%customname%", ((Player)who).getCustomName())
+				.replace("%player%", who.getName()).replace("%playername%", ((Player)who).getDisplayName()+"")
+				.replace("%customname%", ((Player)who).getCustomName()+"")
 				.replace("%target%", to.getName()).replace("%targetname%", to.getName())
 				.replace("%targetcustomname%", to.getName()).replace("%message%", message), TheAPI.getConsole());
 				for(Player ps : TheAPI.getOnlinePlayers())
 					if(ps!=who && TheAPI.getUser(ps).getBoolean("socialspy"))
 						TheAPI.msg(Loader.config.getString("Format.SocialSpy")
-						.replace("%player%", who.getName()).replace("%playername%", ((Player)who).getDisplayName())
-						.replace("%customname%", ((Player)who).getCustomName())
+						.replace("%player%", who.getName()).replace("%playername%", ((Player)who).getDisplayName()+"")
+						.replace("%customname%", ((Player)who).getCustomName()+"")
 						.replace("%target%", to.getName()).replace("%targetname%", to.getName())
 						.replace("%targetcustomname%", to.getName()).replace("%message%", message), ps);
 			}
@@ -43,16 +43,17 @@ public class PrivateMessageManager {
 				TheAPI.msg(Loader.config.getString("Format.SocialSpy")
 				.replace("%player%", who.getName()).replace("%playername%", who.getName())
 				.replace("%customname%", who.getName())
-				.replace("%target%", to.getName()).replace("%targetname%", ((Player)to).getDisplayName())
-				.replace("%targetcustomname%", ((Player)to).getCustomName()).replace("%message%", message), TheAPI.getConsole());
+				.replace("%target%", to.getName()).replace("%targetname%", ((Player)to).getDisplayName()+"")
+				.replace("%targetcustomname%", ((Player)to).getCustomName()+"").replace("%message%", message), TheAPI.getConsole());
 				for(Player ps : TheAPI.getOnlinePlayers())
 					if(ps!=who && TheAPI.getUser(ps).getBoolean("socialspy"))
 						TheAPI.msg(Loader.config.getString("Format.SocialSpy")
 						.replace("%player%", to.getName()).replace("%playername%", who.getName())
 						.replace("%customname%", who.getName())
-						.replace("%target%", to.getName()).replace("%targetname%", ((Player)to).getDisplayName())
-						.replace("%targetcustomname%", ((Player)to).getCustomName()).replace("%message%", message), ps);
+						.replace("%target%", to.getName()).replace("%targetname%", ((Player)to).getDisplayName()+"")
+						.replace("%targetcustomname%", ((Player)to).getCustomName()+"").replace("%message%", message), ps);
 			}else {
+				if(who != to)
 				TheAPI.msg(Loader.config.getString("Format.SocialSpy")
 				.replace("%player%", who.getName()).replace("%playername%", who.getName())
 				.replace("%customname%", who.getName())
