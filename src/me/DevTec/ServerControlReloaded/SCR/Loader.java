@@ -772,6 +772,14 @@ public class Loader extends JavaPlugin implements Listener {
 			if (!s.hasVanish())
 				Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
 	}
+	public void setAFK(SPlayer s, String reason) {
+		save(s);
+		s.mp = true;
+		s.manual = true;
+			if (!s.hasVanish())
+				Loader.sendBroadcasts(s.getPlayer(), "AFK.Start_WithReason", Placeholder.c().add("%reason%", reason));
+				//Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
+	}
 
 	public long getTime(SPlayer s) {
 		return time - s.afk;

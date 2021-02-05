@@ -110,6 +110,13 @@ public class SPlayer {
 			Loader.getInstance.setAFK(this);
 		}
 	}
+	public void setAFK(boolean afk, String reason) {
+		if (!afk) {
+			Loader.getInstance.save(this);
+		} else {
+			Loader.getInstance.setAFK(this, reason);
+		}
+	}
 
 	public void setFire() {
 		getPlayer().setFireTicks(-20);

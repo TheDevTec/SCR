@@ -782,6 +782,7 @@ Other:
     - "away"
     SubPermission:
       Other: "SCR.Command.Afk.Other"
+      Reason: "SCR.Command.Afk.Reason"
     Help: "/Afk - Set your status to afk"
     Enabled: true
   Skin:
