@@ -48,6 +48,7 @@ public class AFK implements CommandExecutor, TabCompleter {
 				Repeat.a(s, "AFK *");
 				return true;
 			}
+			
 			Player player = TheAPI.getPlayer(args[0]);
 			if(player==null) {
 				Loader.notOnline(s, args[0]);

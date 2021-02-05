@@ -24,6 +24,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 		return null;
 	}
 
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Tp","TpSystem")) {
@@ -43,7 +44,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 							return true;
 						}
 					} else {
-						if (Loader.has(s, "Tp", "TpSystem", "Blocked") || !Loader.has(s, "Tp", "TpSystem", "Blocked") && !RequestMap.isBlocking(target.getName(), s.getName())) {
+						if (Loader.has(s, "Tp", "TpSystem", "Blocked") || !Loader.has(s, "Tp", "TpSystem", "Blocked") && !RequestMap.isBlocking(s.getName(), target.getName())) {
 							Loader.sendMessages(s, "TpSystem.Tp.Player.YouToPlayer", Placeholder.c().replace("%player%", target.getName()));
 							API.setBack(((Player) s));
 							if (setting.tp_safe)

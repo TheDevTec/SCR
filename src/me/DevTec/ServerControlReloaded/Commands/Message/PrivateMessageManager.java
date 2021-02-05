@@ -84,18 +84,19 @@ public class PrivateMessageManager {
 		}
 		Player to = TheAPI.getPlayerOrNull(tot);
 		if(to!=null || tot.equalsIgnoreCase("console")) {
+			if(!tot.equalsIgnoreCase("console"))
 			TheAPI.msg(Loader.config.getString("Format.SocialSpy")
-					.replace("%player%", who.getName()).replace("%playername%", who instanceof Player?((Player)who).getDisplayName():who.getName())
-					.replace("%customname%", who instanceof Player?((Player)who).getCustomName():who.getName())
-					.replace("%target%", to!=null?to.getName():tot.toUpperCase()).replace("%targetname%", to!=null?to.getDisplayName():tot.toUpperCase())
-					.replace("%targetcustomname%", to!=null?to.getCustomName():tot.toUpperCase()).replace("%message%", message), TheAPI.getConsole());
+					.replace("%player%", who.getName()).replace("%playername%", who instanceof Player?((Player)who).getDisplayName()+"":who.getName())
+					.replace("%customname%", who instanceof Player?((Player)who).getCustomName()+"":who.getName())
+					.replace("%target%", to!=null?to.getName():tot.toUpperCase()).replace("%targetname%", to!=null?to.getDisplayName()+"":tot.toUpperCase())
+					.replace("%targetcustomname%", to!=null?to.getCustomName()+"":tot.toUpperCase()).replace("%message%", message), TheAPI.getConsole());
 			for(Player ps : TheAPI.getOnlinePlayers())
 				if(ps!=who && TheAPI.getUser(ps).getBoolean("socialspy"))
 					TheAPI.msg(Loader.config.getString("Format.SocialSpy")
-					.replace("%player%", who.getName()).replace("%playername%", who instanceof Player?((Player)who).getDisplayName():who.getName())
-					.replace("%customname%", who instanceof Player?((Player)who).getCustomName():who.getName())
-					.replace("%target%", to!=null?to.getName():tot.toUpperCase()).replace("%targetname%", to!=null?to.getDisplayName():tot.toUpperCase())
-					.replace("%targetcustomname%", to!=null?to.getCustomName():tot.toUpperCase()).replace("%message%", message), ps);
+					.replace("%player%", who.getName()).replace("%playername%", who instanceof Player?((Player)who).getDisplayName()+"":who.getName())
+					.replace("%customname%", who instanceof Player?((Player)who).getCustomName()+"":who.getName())
+					.replace("%target%", to!=null?to.getName():tot.toUpperCase()).replace("%targetname%", to!=null?to.getDisplayName()+"":tot.toUpperCase())
+					.replace("%targetcustomname%", to!=null?to.getCustomName()+"":tot.toUpperCase()).replace("%message%", message), ps);
 			sendMessage(who, tot.equalsIgnoreCase("console")?TheAPI.getConsole():to, message);
 		}else
 			Loader.notOnline(who, tot);
