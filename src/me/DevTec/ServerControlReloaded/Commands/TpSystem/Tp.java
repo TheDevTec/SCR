@@ -24,6 +24,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 		return null;
 	}
 
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Tp","TpSystem")) {
