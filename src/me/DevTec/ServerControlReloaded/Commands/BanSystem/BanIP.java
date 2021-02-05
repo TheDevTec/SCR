@@ -48,7 +48,7 @@ public class BanIP implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(s, "BanSystem.BanIP.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%ip%", args[0]).replace("%reason%", msg+" &f[Silent]"));
 				Loader.sendBroadcasts(s, "BanSystem.BanIP.Admins", Placeholder.c().replace("%operator%", s.getName())
-						.replace("%ip%", args[0]).replace("%reason%", msg+" &f[Silent]"),"servercontrol.silent");
+						.replace("%ip%", args[0]).replace("%reason%", msg+" &f[Silent]"),"scr.silent");
 				return true;
 			}
 			PunishmentAPI.banIP(args[0], Loader.config.getString("BanSystem.BanIP.Text").replace("%reason%",msg));

@@ -746,7 +746,7 @@ public class Loader extends JavaPlugin implements Listener {
 						}
 						if (setting.afk_kick && is) {
 							if (s.kick >= rkick) {
-								if (!s.hasPermission("servercontrol.afk.bypass"))
+								if (!s.hasPermission("scr.afk.bypass"))
 									if(s.getPlayer()!=null && s.getPlayer().isOnline())
 										new Tasker() {
 											public void run() {

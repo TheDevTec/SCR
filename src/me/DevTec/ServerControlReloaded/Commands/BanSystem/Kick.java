@@ -54,7 +54,7 @@ public class Kick implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(s, "BanSystem.Kick.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"));
 				Loader.sendBroadcasts(s, "BanSystem.Kick.Admins", Placeholder.c().replace("%operator%", s.getName())
-						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"), "servercontrol.silent");
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"), "scr.silent");
 				return true;
 			}
 			PunishmentAPI.kick(args[0], Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",msg));

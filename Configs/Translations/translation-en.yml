@@ -61,6 +61,7 @@ Missing:
   GameMode: "%prefix% Gamemode &e%gamemode% &7doesn't exist"
   Material: "%prefix% Material &e%material% &7doesn't exist"
   Flag: "%prefix% ItemFlag &e%flag% &7doesn't exist"
+  Generator: "%prefix% Generator &e%generator% &7doesn't exist"
   Enchant:
     NotExist: "%prefix% Enchant &e%enchant% &7doesn't exist"
     NoEnchant: "%prefix% You have no enchant on item"
@@ -456,6 +457,7 @@ Weather:
 # Translations for MultiWorld command
 MultiWorld:
   Import: "%prefix% World &e%world% &7imported (Generator: &e%generator%&7)"
+  Creating: "%prefix% Creating world &e%world% &7(Generator: &e%generator%&7)"
   Create: "%prefix% World &e%world% &7created (Generator: &e%generator%&7)"
   Delete: "%prefix% World &e%world% &7deleted"
   Unload: "%prefix% World &e%world% &7unloaded"
@@ -464,6 +466,7 @@ MultiWorld:
   Exists: "%prefix% World &e%world% &7already exists"
   NotLoaded: "%prefix% World &e%world% &7isn't loaded"
   List: "%prefix% List of worlds: &e%worlds%"
+  CannotLoad: "%prefix% Cannot load world &e%world%"
   Teleport:
     You: "%prefix% Teleporting to world &e%world%"
     Other:

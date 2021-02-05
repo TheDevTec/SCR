@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 public class GamemodeC implements CommandExecutor, TabCompleter {
 

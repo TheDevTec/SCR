@@ -48,7 +48,7 @@ public class Ban implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(s, "BanSystem.Ban.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"));
 				Loader.sendBroadcasts(s, "BanSystem.Ban.Admins", Placeholder.c().replace("%operator%", s.getName())
-						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"), "servercontrol.silent");
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"), "scr.silent");
 				return true;
 			}
 			PunishmentAPI.ban(args[0], Loader.config.getString("BanSystem.Ban.Text").replace("%reason%",msg));

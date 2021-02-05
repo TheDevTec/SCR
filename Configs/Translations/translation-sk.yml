@@ -61,6 +61,8 @@ Missing:
   GameMode: "%prefix% Gamemode &e%gamemode% &7neexistuje"
   Material: "%prefix% Materiál &e%material% &7neexistuje"
   Flag: "%prefix% Flag &e%flag% &7neexistuje"
+  Generator: "%prefix% Generátor &e%generator% &7neexistuje"
+  CannotLoad: "%prefix% Nelze načíst svet &e%world%"
   Enchant:
     NotExist: "%prefix% Enchant &e%enchant% &7neexistuje"
     NoEnchant: "%prefix% Nemáš žiadny enchant na predmete"

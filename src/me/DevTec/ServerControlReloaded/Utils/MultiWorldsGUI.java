@@ -207,7 +207,7 @@ public class MultiWorldsGUI {
 		GUI a = new GUI("&bWorlds list",54,p);
 		prepareInv(a);
 		for (World w : Bukkit.getWorlds()) {
-			List<String> lore = new ArrayList<String>();
+			List<String> lore = new ArrayList<>();
 			String m = "GRASS_BLOCK";
 			String start = "&2";
 			if (w.getEnvironment() == Environment.NORMAL) {
@@ -341,12 +341,7 @@ public class MultiWorldsGUI {
 							String name = TheAPI.getUser(p).getString("MultiWorlds-Create");
 							Loader.mw.set("WorldsSettings." + name + ".Generator", TheAPI.getUser(p).getString("MultiWorlds-Generator"));
 							Loader.mw.save();
-							NMSAPI.postToMainThread(new Runnable() {
-								@Override
-								public void run() {
-									MultiWorldsUtils.CreateWorld(name, p);
-								}
-							});
+							NMSAPI.postToMainThread(() -> MultiWorldsUtils.CreateWorld(name, p));
 							TheAPI.getUser(p).remove("MultiWorlds-Generator");
 							TheAPI.getUser(p).remove("MultiWorlds-Create");
 							TheAPI.getUser(p).save();
@@ -369,9 +364,11 @@ public class MultiWorldsGUI {
 						openInvDelete(s);
 						List<String> ww = Loader.mw.getStringList("Unloaded-Worlds");
 						List<String> worlds = Loader.mw.getStringList("Worlds");
+						Loader.mw.remove("WorldsSettings."+w.getName());
 						worlds.remove(w.getName());
 						ww.remove(w.getName());
 						Loader.mw.set("Worlds", worlds);
+						Loader.mw.save();
 						if (WorldsAPI.delete(w, true))
 							Loader.sendMessages(s, "MultiWorld.Delete", Placeholder.c().add("%world%", w.getName()));
 					}
@@ -758,12 +755,9 @@ public class MultiWorldsGUI {
 	public static void prepareInv(GUI a) {
 		for (int i = 0; i < 10; ++i)
 			a.setItem(i, empty);
-		a.setItem(17, empty);
-		a.setItem(18, empty);
-		a.setItem(26, empty);
-		a.setItem(27, empty);
-		a.setItem(35, empty);
-		a.setItem(36, empty);
+		for(int b : new int[]{17,18,26,27,35,36}){
+			a.setItem(b,empty);
+		}
 		for (int i = 44; i < 54; ++i)
 			a.setItem(i, empty);
 	}

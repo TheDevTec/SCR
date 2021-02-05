@@ -55,7 +55,7 @@ public class Mute implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(s, "BanSystem.Mute.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"));
 				Loader.sendBroadcasts(s, "BanSystem.Mute.Admins", Placeholder.c().replace("%operator%", s.getName())
-						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"), "servercontrol.silent");
+						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"), "scr.silent");
 				return true;
 			}
 			PunishmentAPI.mute(args[0], Loader.config.getString("BanSystem.Mute.Text").replace("%reason%",msg));

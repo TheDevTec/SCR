@@ -7,6 +7,8 @@ import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.TheAPI;
 
+import java.util.Objects;
+
 public class PrivateMessageManager {
 	private static String s;
 	public static void sendMessage(CommandSender who, CommandSender to, String message) {
@@ -21,9 +23,9 @@ public class PrivateMessageManager {
 					if(ps!=who && TheAPI.getUser(ps).getBoolean("socialspy"))
 						TheAPI.msg(Loader.config.getString("Format.SocialSpy")
 						.replace("%player%", who.getName()).replace("%playername%", ((Player)who).getDisplayName())
-						.replace("%customname%", ((Player)who).getCustomName())
+						.replace("%customname%", Objects.requireNonNull(((Player) who).getDisplayName()))
 						.replace("%target%", to.getName()).replace("%targetname%", ((Player)to).getDisplayName())
-						.replace("%targetcustomname%", ((Player)to).getCustomName()).replace("%message%", message), ps);
+						.replace("%message%", message), ps);
 			}else {
 				TheAPI.msg(Loader.config.getString("Format.SocialSpy")
 				.replace("%player%", who.getName()).replace("%playername%", ((Player)who).getDisplayName()+"")

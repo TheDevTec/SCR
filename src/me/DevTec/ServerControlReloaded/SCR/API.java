@@ -48,7 +48,7 @@ public class API {
 		return s;
 	}
 
-	public static enum TeleportLocation {
+	public enum TeleportLocation {
 		HOME, BED, SPAWN
 	}
 

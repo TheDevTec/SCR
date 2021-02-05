@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 
 import me.DevTec.ServerControlReloaded.Commands.Message.PrivateMessageManager;
@@ -195,9 +196,7 @@ public class ChatFormat implements Listener {
 			d = message;
 		String build = d;
 		if (setting.caps_chat) {
-			if (up != 0
-					? up / ((double) d.length() / 100) >= 60 && !p.hasPermission("SCR.Caps") && d.length() > 5
-					: false) {
+			if (up != 0 && up / ((double) d.length() / 100) >= 60 && !p.hasPermission("SCR.Caps") && d.length() > 5) {
 				build = "";
 				if (d.split(" ").length == 0) {
 					if (!is(d)) {
