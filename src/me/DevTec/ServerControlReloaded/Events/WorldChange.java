@@ -50,10 +50,11 @@ public class WorldChange implements Listener {
 						if(w.getTime() >= 24000) {
 							start=0;
 							doNight=true;
+							w.setStorm(false);
+							w.setThundering(false);
+							((Player) s).getLocation().getWorld().setWeatherDuration(3600);
 						}
 						if(doNight && w.getTime() >= 500) {
-							w.setThundering(false);
-							w.setStorm(false);
 							cancel();
 						}
 						
