@@ -235,6 +235,7 @@ TpSystem:
       Location: "SCR.Command.Tp.Location"
       LocationOther: "SCR.Command.Tp.Location"
       Other: "SCR.Command.Tp.Other"
+      Blocked: "SCR.Command.TpToggle.Bypass"
     Help:
     - "/Tp <player> [player] - Teleport player to player"
     - "/Tp [player] <x> <y> <z> [yaw] [pitch] - Teleport you/player to position"
