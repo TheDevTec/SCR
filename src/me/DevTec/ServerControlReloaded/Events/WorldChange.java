@@ -1,5 +1,7 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,11 +29,15 @@ public class WorldChange implements Listener {
 
 	Map<String, Integer> sleepTask = new HashMap<>();
 	Map<String, List<Player>> perWorldSleep = new HashMap<>();
+	Constructor<?> c = Ref.constructor(Ref.nms("PacketPlayOutUpdateTime"), long.class, long.class, boolean.class);
+	Method setTime = Ref.method(Ref.nms("WorldServer"), "setDayTime", long.class);
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSleep(PlayerBedEnterEvent e) {
-		if (setting.singeplayersleep && e.getBedEnterResult()==BedEnterResult.OK) {
+		if (setting.singeplayersleep && canEvent(e)) {
 			World w = e.getBed().getWorld();
+			Object f = Ref.world(w);
+			boolean time = Boolean.parseBoolean(w.getGameRuleValue("DO_DAYLIGHT_CYCLE"));
 			List<Player> s = perWorldSleep.getOrDefault(w.getName(), new ArrayList<>());
 			s.add(e.getPlayer());
 			perWorldSleep.put(w.getName(), s);
@@ -47,31 +53,47 @@ public class WorldChange implements Listener {
 								Ref.set(Ref.player(s), "sleepTicks", 98);
 						}
 						
-						if(w.getTime() >= 24000) {
+						if(start >= 24000) {
 							start=0;
 							doNight=true;
-							w.setStorm(false);
-							w.setThundering(false);
-							((Player) s).getLocation().getWorld().setWeatherDuration(3600);
+							Object data = Ref.get(Ref.world(w),"worldData");
+							Ref.set(data, "raining", false);
+							Ref.set(data, "thundering", false);
+							w.setWeatherDuration(0);
 						}
-						if(doNight && w.getTime() >= 500) {
+						if(doNight && start >= 500) {
+							Object data = Ref.get(Ref.world(w),"worldData");
+							Ref.set(data, "raining", false);
+							Ref.set(data, "thundering", false);
+							w.setWeatherDuration(0);
 							cancel();
 						}
-						
-						w.setTime(start);
+						Ref.invoke(f,setTime, (long)Ref.invoke(f,"getDayTime")+ (start - (long)Ref.invoke(f,"getDayTime")));
+						for (Player p : w.getPlayers())
+							Ref.sendPacket(p, Ref.newInstance(c, w.getTime(), p.getPlayerTime(), time));
 						start+=50;
 					}
-				}.runRepeatingSync(0, 1));
+				}.runRepeating(0, 1));
 			}
+		}
+	}
+	
+	private boolean canEvent(PlayerBedEnterEvent e) {
+		try {
+			return e.getBedEnterResult()==BedEnterResult.OK;
+		}catch(Exception | NoSuchFieldError | NoSuchMethodError er) {
+			return true;
 		}
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSleep(PlayerBedLeaveEvent e) {
 		if (setting.singeplayersleep) { //remove cache and stop task
+			if(perWorldSleep.containsKey(e.getBed().getWorld().getName())) {
 			perWorldSleep.get(e.getBed().getWorld().getName()).remove(e.getPlayer());
 			if(perWorldSleep.get(e.getBed().getWorld().getName()).isEmpty()) {
 				perWorldSleep.remove(e.getBed().getWorld().getName());
+			}
 			if(sleepTask.containsKey(e.getBed().getWorld().getName())) {
 				Scheduler.cancelTask(sleepTask.get(e.getBed().getWorld().getName()));
 				sleepTask.remove(e.getBed().getWorld().getName());
