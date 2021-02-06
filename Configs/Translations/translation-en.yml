@@ -193,7 +193,7 @@ AFK:
     Other:
       Start: "%prefix% You set &e%player% &7AFK"
       End: "%prefix% You set &e%player% &7no longer AFK"
-      
+    
 # Translations for /Reply command
 NoReply: "%prefix% You have no one to respond to"
 

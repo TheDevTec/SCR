@@ -176,7 +176,7 @@ Economy:
       Removed: "%prefix% Svět &e%world% &7odebrán z ekonomické skupiny &e%economy-group%"
     Money: "%prefix% Hráč &e%player% &7nyní má &e$%money% &7peněz v ekonomické skupině &e%economy-group%"
     Transfer: "%prefix% Přenesena ekonomika hráče &e%player% &7z ekonomické skupiny &e%from% &7do ekonomické skupiny &e%to%"
-    
+   
 # Translations for /Nickname and /NicknameReset commands
 Nickname:
   Change: "%prefix% Váš herní nick byl nastaven na &r%nickname%"
