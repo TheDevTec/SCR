@@ -16,7 +16,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -546,10 +545,12 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onDisable() {
-		org.bukkit.event.HandlerList.unregisterAll((Plugin)this);
+		org.bukkit.event.HandlerList.unregisterAll(this);
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			p.setFlying(false);
 			p.setAllowFlight(false);
+			p.setDisplayName(null);
+			p.setCustomName(null);
 		}
 		TabList.removeTab();
 		Tasks.unload();
@@ -558,7 +559,6 @@ public class Loader extends JavaPlugin implements Listener {
 			if (Bukkit.getWorld(w) != null) {
 				Bukkit.getLogger().info("Saving world '" + w + "'");
 				Bukkit.getWorld(w).save();
-				Bukkit.getLogger().info("World '" + w + "' saved");
 			}
 	}
 

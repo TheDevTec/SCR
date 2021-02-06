@@ -47,6 +47,7 @@ public class NameTagChanger {
 	public static void remove(Player p) {
 		if(p==null || p.getScoreboard()==null)return;
 		for(Team t : p.getScoreboard().getTeams())t.unregister();
-		t.remove(p);
+		NameTagAPI a = t.remove(p);
+		if(a!=null)a.resetNameTag();
 	}
 }

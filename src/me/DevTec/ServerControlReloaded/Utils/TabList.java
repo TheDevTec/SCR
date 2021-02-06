@@ -22,6 +22,8 @@ import me.devtec.theapi.apis.TabListAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class TabList {
 	// GROUP, PRIORITE
@@ -293,8 +295,8 @@ public class TabList {
 	public static void removeTab() {
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			NameTagChanger.remove(p);
-			TabListAPI.setTabListName(p,p.getName());
-			TabListAPI.setHeaderFooter(p, "", "");
+			p.setPlayerListName(p.getName());
+			Ref.sendPacket(p,NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentText(""),NMSAPI.getIChatBaseComponentText("")));
 		}
 	}
 
@@ -322,6 +324,16 @@ public class TabList {
 	}
 
 	public static void setFooterHeader(Player p) {
-		TabListAPI.setHeaderFooter(p, AnimationManager.replaceWithoutColors(p,getPath(p, "Header")), AnimationManager.replaceWithoutColors(p,getPath(p, "Footer")));
+		String header = AnimationManager.replaceWithoutColors(p,getPath(p, "Header")), footer = AnimationManager.replaceWithoutColors(p,getPath(p, "Footer"));
+		if(header.isEmpty())
+		Ref.sendPacket(p,NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentText(""),NMSAPI.getIChatBaseComponentFromCraftBukkit(footer)));
+		else
+		if(footer.isEmpty())
+		Ref.sendPacket(p,NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentFromCraftBukkit(footer),NMSAPI.getIChatBaseComponentText("")));
+		else
+		if(header.isEmpty() && footer.isEmpty())
+			Ref.sendPacket(p,NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentText(""),NMSAPI.getIChatBaseComponentText("")));
+		else
+		TabListAPI.setHeaderFooter(p, header, footer);
 	}
 }
