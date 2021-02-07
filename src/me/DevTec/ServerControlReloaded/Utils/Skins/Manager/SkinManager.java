@@ -91,6 +91,7 @@ public class SkinManager {
 	
 	private static Object remove, add;
 	private static Method put, oldRemove, oldAdd;
+	private static Class<?> cc = Ref.nms("WorldSettings$EnumGamemode")==null?Ref.nms("EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
 	private static Constructor<?> infoC, headC,handC,respawnC, posC;
 	static {
 		headC = Ref.constructor(Ref.nms("PacketPlayOutEntityHeadRotation"), Ref.nms("Entity"), byte.class);
@@ -99,7 +100,7 @@ public class SkinManager {
 			remove=Ref.getNulled(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),"REMOVE_PLAYER");
 			add=Ref.getNulled(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),"ADD_PLAYER");
 			infoC = Ref.constructor(Ref.nms("PacketPlayOutPlayerInfo"), Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), Iterable.class);
-			}else {
+		}else {
 			oldRemove=Ref.method(Ref.nms("PacketPlayOutPlayerInfo"), "removePlayer", Ref.nms("EntityPlayer"));
 			oldAdd=Ref.method(Ref.nms("PacketPlayOutPlayerInfo"), "addPlayer", Ref.nms("EntityPlayer"));
 		}
@@ -124,7 +125,7 @@ public class SkinManager {
 		}else if(TheAPI.isNewerThan(13)) { //1.14
 			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("WorldType"), Ref.nms("EnumGamemode"));
 		}else //1.7-1.13
-			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),int.class, Ref.nms("EnumDifficulty"), Ref.nms("WorldType"), Ref.nms("EnumGamemode"));
+			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),int.class, Ref.nms("EnumDifficulty"), Ref.nms("WorldType"), cc);
 	}
 	
 	public static synchronized void loadSkin(Player player, SkinData data) {
@@ -168,11 +169,8 @@ public class SkinManager {
 					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), a.getWorld().getSeed(), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
 				}else if(TheAPI.isNewerThan(13)) { //1.14
 					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
-				}else if(TheAPI.isNewerThan(12)) { //1.13
-					re=Ref.newInstance(respawnC, Ref.invoke(Ref.invoke(w, "getEnvironment"),"getId"), Ref.invoke(w, "getDifficulty"), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
-				}else { //1.12 - 1.7
-					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
-				}
+				}else //1.7 - 1.13
+					re=Ref.newInstance(respawnC, player.getWorld().getEnvironment().getId(), Ref.invoke(w, "getDifficulty"), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
 				Ref.sendPacket(p, re);
 				Object pos = null;
 				if(TheAPI.isOlderThan(8)) { //1.7

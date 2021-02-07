@@ -296,7 +296,7 @@ public class TabList {
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			NameTagChanger.remove(p);
 			p.setPlayerListName(p.getName());
-			Ref.sendPacket(p,NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentText(""),NMSAPI.getIChatBaseComponentText("")));
+			Ref.sendPacket(p,NMSAPI.getPacketPlayOutPlayerListHeaderFooter("",""));
 		}
 	}
 
