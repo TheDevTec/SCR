@@ -24,6 +24,12 @@ public class BigTask {
 		s = t;
 		if ((t == TaskType.STOP ? setting.warn_stop
 				: (t == TaskType.RELOAD ? setting.warn_reload : setting.warn_restart))) {
+			if(h > 15)
+			for (String s : Loader.config.getStringList("Options.WarningSystem."
+					+ (t == TaskType.STOP ? "Stop" : (t == TaskType.RELOAD ? "Reload" : "Restart"))
+					+ ".Messages"))
+				TheAPI.broadcastMessage(
+						s.replace("%time%", "" + StringUtils.setTimeToString(h)));
 			if (r == -1) {
 				r = new Tasker() {
 					long f = h;
@@ -37,8 +43,7 @@ public class BigTask {
 								}
 							}.runTaskSync();
 							return;
-						} else if (f == h % 75 && h > 15 || f == h % 50 && h > 10 || f == h % 25 && h > 5 || f == 5
-								|| f == 4 || f == 3 || f == 2 || f == 1) {
+						} else if (f == h % 75 && h > 15 || f == h % 50 && h > 10 || f == h % 25 && h > 5 || f <= 5) {
 							for (String s : Loader.config.getStringList("Options.WarningSystem."
 									+ (t == TaskType.STOP ? "Stop" : (t == TaskType.RELOAD ? "Reload" : "Restart"))
 									+ ".Messages"))

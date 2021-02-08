@@ -323,16 +323,18 @@ public class TabList {
 		return "";
 	}
 
+	private static Object empty = NMSAPI.getIChatBaseComponentText("");
+	
 	public static void setFooterHeader(Player p) {
 		String header = AnimationManager.replaceWithoutColors(p,getPath(p, "Header")), footer = AnimationManager.replaceWithoutColors(p,getPath(p, "Footer"));
-		if(header.isEmpty())
-		Ref.sendPacket(p,NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentText(""),NMSAPI.getIChatBaseComponentFromCraftBukkit(footer)));
+		if(header==null||header.isEmpty())
+		Ref.sendPacket(p,NMSAPI.getPacketPlayOutPlayerListHeaderFooter(empty,NMSAPI.getIChatBaseComponentFromCraftBukkit(footer)));
 		else
-		if(footer.isEmpty())
-		Ref.sendPacket(p,NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentFromCraftBukkit(footer),NMSAPI.getIChatBaseComponentText("")));
+		if(footer==null||footer.isEmpty())
+		Ref.sendPacket(p,NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentFromCraftBukkit(footer),empty));
 		else
-		if(header.isEmpty() && footer.isEmpty())
-			Ref.sendPacket(p,NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentText(""),NMSAPI.getIChatBaseComponentText("")));
+		if((header==null||header.isEmpty()) && (footer==null||footer.isEmpty()))
+			Ref.sendPacket(p,NMSAPI.getPacketPlayOutPlayerListHeaderFooter(empty,empty));
 		else
 		TabListAPI.setHeaderFooter(p, header, footer);
 	}
