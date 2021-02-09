@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
@@ -57,7 +58,7 @@ public class Configs {
 		AnimationManager.reload();
 	}
 	
-	static List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
+	static List<String> datas = Arrays.asList("Config.yml","Rules.txt","Colors.txt","Scoreboard.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
 	
 	private static void copyDefauts() {
 		Data data = new Data();
@@ -98,8 +99,42 @@ public class Configs {
 	    	case "Translations/translation-en.yml":
 	    		c=Loader.english;
 	    		break;
+	    	case "Colors.txt":
+    			try {
+		    		File f = new File("plugins/ServerControlReloaded/Colors.txt");
+		    		if(!f.exists()) {
+		    			f.getParentFile().mkdirs();
+						f.createNewFile();
+						URLConnection u = Loader.getInstance.getClass().getClassLoader().getResource("Configs/"+s).openConnection();
+			    		FileWriter writer = new FileWriter(f);
+			    		String read = StreamUtils.fromStream(u.getInputStream());
+			    		writer.write(read);
+			    		Loader.colorsText=read.split(System.lineSeparator());
+			    		writer.close();
+		    		}else
+			    		Loader.colorsText=StreamUtils.fromStream(f).split(System.lineSeparator());
+		    	} catch (Exception e) {
+				}
+    			break;
+	    	case "Rules.txt":
+    			try {
+		    		File f = new File("plugins/ServerControlReloaded/Rules.txt");
+		    		if(!f.exists()) {
+		    			f.getParentFile().mkdirs();
+						f.createNewFile();
+						URLConnection u = Loader.getInstance.getClass().getClassLoader().getResource("Configs/"+s).openConnection();
+			    		FileWriter writer = new FileWriter(f);
+			    		String read = StreamUtils.fromStream(u.getInputStream());
+			    		writer.write(read);
+			    		Loader.rulesText=read.split(System.lineSeparator());
+			    		writer.close();
+		    		}else
+			    		Loader.rulesText=StreamUtils.fromStream(f).split(System.lineSeparator());
+		    	} catch (Exception e) {
+				}
+    			break;
 	    	}
-	    	
+	    	if(s.endsWith(".txt"))continue;
 	    	if(c!=null) {
 	    		c.reload();
 	    	}else c=new Config("ServerControlReloaded/"+s);

@@ -85,6 +85,7 @@ import me.DevTec.ServerControlReloaded.Commands.Other.ActionBar;
 import me.DevTec.ServerControlReloaded.Commands.Other.BossBar;
 import me.DevTec.ServerControlReloaded.Commands.Other.Butcher;
 import me.DevTec.ServerControlReloaded.Commands.Other.ChatLock;
+import me.DevTec.ServerControlReloaded.Commands.Other.ColorsCmd;
 import me.DevTec.ServerControlReloaded.Commands.Other.Exp;
 import me.DevTec.ServerControlReloaded.Commands.Other.Feed;
 import me.DevTec.ServerControlReloaded.Commands.Other.Fly;
@@ -95,6 +96,7 @@ import me.DevTec.ServerControlReloaded.Commands.Other.Heal;
 import me.DevTec.ServerControlReloaded.Commands.Other.Kits;
 import me.DevTec.ServerControlReloaded.Commands.Other.MultiWorlds;
 import me.DevTec.ServerControlReloaded.Commands.Other.Repair;
+import me.DevTec.ServerControlReloaded.Commands.Other.RulesCmd;
 import me.DevTec.ServerControlReloaded.Commands.Other.Scoreboard;
 import me.DevTec.ServerControlReloaded.Commands.Other.Skin;
 import me.DevTec.ServerControlReloaded.Commands.Other.Skull;
@@ -194,6 +196,7 @@ public class Loader extends JavaPlugin implements Listener {
 	private int task;
 	private long time, rkick;
 	private static List<PluginCommand> registered = new ArrayList<>();
+	public static String[] colorsText, rulesText;
 	public static Economy econ;
 	public static Loader getInstance;
 	public static Config english;
@@ -956,12 +959,13 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "Experiences", new Exp());//treba opraviť give, set, take, (balance na sendera, nie target)
 		CmdC("Other", "Spawner", new Spawner());
 		CmdC("Other", "Uuid", new Uuid());
+		//Utility
+		CmdC("Other", "Colors", new ColorsCmd());
+		CmdC("Other", "Rules", new RulesCmd());
 		//Nickname
 		CmdC("Nickname", "Nickname", new Nick());
 		CmdC("Nickname", "NicknameReset", new NickReset());
 	}
-
-	
 	
 	private void EventC(org.bukkit.event.Listener l) {
 		Bukkit.getPluginManager().registerEvents(l, this);
@@ -1000,7 +1004,13 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static boolean has(CommandSender s, String cmd, String section) {
-		return cmds.exists(section+"."+cmd+".Permission")?s.hasPermission(cmds.getString(section+"."+cmd+".Permission")):true;
+		if(!cmds.exists(section+"."+cmd+".Permission")) {
+			Bukkit.getLogger().severe("[BUG] Missing configuration path!");
+			Bukkit.getLogger().severe("[BUG] Report this to the DevTec discord:");
+			Bukkit.getLogger().severe("[BUG] Missing path: "+section+"."+cmd);
+			return false;
+		}
+		return s.hasPermission(cmds.getString(section+"."+cmd+".Permission"));
 	}
 
 	public static void noPerms(CommandSender s, String cmd, String section) {
