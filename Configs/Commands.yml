@@ -785,6 +785,23 @@ Other:
       Reason: "SCR.Command.Afk.Reason"
     Help: "/Afk - Set your status to afk"
     Enabled: true
+  Colors:
+    Name: "colors"
+    Permission: "SCR.Command.Colors"
+    Aliases:
+    - "listcolors"
+    - "listcolor"
+    - "colorslist"
+    - "colorlist"
+    Enabled: true
+  Rules:
+    Name: "rules"
+    Permission: "SCR.Command.Rules"
+    Aliases:
+    - "rule"
+    - "serverrules"
+    - "serverrule"
+    Enabled: true
   Skin:
     Name: "skin"
     Permission: "SCR.Command.Skin"

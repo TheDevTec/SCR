@@ -825,7 +825,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Info", "SCR",new SCR());
 		CmdC("Info","Seen", new Seen());
 		CmdC("Info","ChatFormat", new me.DevTec.ServerControlReloaded.Commands.Info.ChatFormat());
-		CmdC("Info","List", new ListCmd());// /list == error
+		CmdC("Info","List", new ListCmd());
 		CmdC("Info","Staff", new Staff());
 		CmdC("Info", "TPS",new TPS());
 		CmdC("Info","WhoIs", new WhoIs()); 
