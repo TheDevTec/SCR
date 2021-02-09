@@ -10,8 +10,6 @@ import org.bukkit.Statistic;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.Lists;
-
 import me.DevTec.ServerControlReloaded.Commands.Info.Staff;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -195,11 +193,11 @@ public class TabList {
 		if(header.contains("%colored_money%"))
 			header=header.replace("%colored_money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true));
 		if(header.contains("%online%")) {
-			List<Player> seen = Lists.newArrayList();
+			int seen = 0;
 			for(Player s : TheAPI.getPlayers())
-				if(TheAPI.canSee(p,s.getName()) || s == p)
-					seen.add(s);
-			header=header.replace("%online%", seen.size() + "");
+				if(API.canSee(p,s.getName()) || s == p)
+					++seen;
+			header=header.replace("%online%", seen + "");
 		}
 		if(header.contains("%ping%"))
 			header=header.replace("%ping%", Loader.getInstance.pingPlayer(p));

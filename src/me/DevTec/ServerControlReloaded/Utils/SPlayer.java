@@ -247,12 +247,4 @@ public class SPlayer {
 	public boolean hasTempFlyEnabled() {
 		return TheAPI.getUser(s).getBoolean("TempFly.Use");
 	}
-
-	public boolean hasVanish() {
-		return TheAPI.hasVanish(s);
-	}
-
-	public void setVanish(boolean v) {
-		TheAPI.setVanish(s, "ServerControl.Vanish", v);
-	}
 }

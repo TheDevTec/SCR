@@ -31,7 +31,7 @@ public class AFkPlayerEvents implements Listener {
 				try {
 					for(Player s : AFkPlayerEvents.p) {
 					SPlayer p = API.getSPlayer(s);
-					if (p.isAFK() && !p.hasVanish())
+					if (p.isAFK() && !API.hasVanish(s))
 						Loader.sendBroadcasts(s, "AFK.End");
 					Loader.getInstance.save(p);
 					}

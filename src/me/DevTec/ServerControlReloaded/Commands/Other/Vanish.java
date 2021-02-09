@@ -10,6 +10,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.Events.LoginEvent;
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
@@ -32,15 +33,15 @@ public class Vanish implements CommandExecutor, TabCompleter{
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
-					if (!TheAPI.hasVanish(p.getName())) {
-						TheAPI.setVanish(p.getName(), "ServerControl.Vanish", true);
+					if (!API.hasVanish(p.getName())) {
+						API.setVanish(p.getName(), "ServerControl.Vanish", true);
 						LoginEvent.moveInTab(p);
 						Loader.sendMessages(s, "Vanish.Enabled.You");
 						if(setting.vanish_action)
 							task.put(p.getName(), new Tasker() {
 								@Override
 								public void run() {
-									if(!TheAPI.hasVanish(p.getName()) || !p.isOnline()) {
+									if(!API.hasVanish(p.getName()) || !p.isOnline()) {
 										cancel();
 										return;
 									}
@@ -54,7 +55,7 @@ public class Vanish implements CommandExecutor, TabCompleter{
 						task.remove(s.getName());
 						TheAPI.sendActionBar(p, "");
 					}
-					TheAPI.setVanish(p.getName(), Loader.cmds.getString("Other.Vanish.Permission"), false);
+					API.setVanish(p.getName(), Loader.cmds.getString("Other.Vanish.Permission"), false);
 					LoginEvent.moveInTab(p);
 					Loader.sendMessages(s, "Vanish.Disabled.You");
 					return true;
@@ -65,8 +66,8 @@ public class Vanish implements CommandExecutor, TabCompleter{
 			if (Loader.has(s, "Vanish", "Other", "Other")) {
 			Player t = TheAPI.getPlayer(args[0]);
 			if (t != null) {
-				if (!TheAPI.hasVanish(t.getName())) {
-					TheAPI.setVanish(t.getName(), "ServerControl.Vanish", true);
+				if (!API.hasVanish(t.getName())) {
+					API.setVanish(t.getName(), "ServerControl.Vanish", true);
 					LoginEvent.moveInTab(t);
 					Loader.sendMessages(s, "Vanish.Enabled.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
 					Loader.sendMessages(s, "Vanish.Enabled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
@@ -74,7 +75,7 @@ public class Vanish implements CommandExecutor, TabCompleter{
 						task.put(t.getName(),new Tasker() {
 							@Override
 							public void run() {
-								if(!TheAPI.hasVanish(t.getName()) || !t.isOnline()) {
+								if(!API.hasVanish(t.getName()) || !t.isOnline()) {
 									cancel();
 									return;
 								}
@@ -88,7 +89,7 @@ public class Vanish implements CommandExecutor, TabCompleter{
 					task.remove(t.getName());
 					TheAPI.sendActionBar(t, "");
 				}
-				TheAPI.setVanish(t.getName(), "ServerControl.Vanish", false);
+				API.setVanish(t.getName(), "ServerControl.Vanish", false);
 				LoginEvent.moveInTab(t);
 				Loader.sendMessages(s, "Vanish.Disabled.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
 				Loader.sendMessages(s, "Vanish.Disabled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));

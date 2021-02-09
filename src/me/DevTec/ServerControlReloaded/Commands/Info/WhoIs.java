@@ -70,7 +70,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 							.add("%city%", (String)country.getOrDefault("city", "Uknown"))
 							.add("%afk%", afk).add("%seen%", seen).add("%fly%", c.hasFlyEnabled()+"").add("%god%", c.hasGodEnabled()+"").add("%tempfly%", c.hasTempFlyEnabled()+"")
 							.add("%op%", Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(a[0]))+"").add("%uuid%", Bukkit.getOfflinePlayer(a[0]).getUniqueId().toString())
-							.add("%vanish%", c.hasVanish()+"").add("%firstjoin%", TheAPI.getUser(a[0]).getString("FirstJoin")+"").add("%group%", Staff.getGroup(a[0]))
+							.add("%vanish%", API.hasVanish(c.getName())+"").add("%firstjoin%", TheAPI.getUser(a[0]).getString("FirstJoin")+"").add("%group%", Staff.getGroup(a[0]))
 							.add("%money%", EconomyAPI.format(EconomyAPI.getBalance(a[0])))
 							.add("%health%", c.getPlayer()!=null ? c.getPlayer().getHealthScale()+"":"Unknown").add("%food%", c.getPlayer()!=null ? c.getPlayer().getFoodLevel()+"":"Unknown")
 							.add("%xp%", c.getPlayer()!=null ? c.getPlayer().getTotalExperience()+"":"Unknown").add("%level%", c.getPlayer()!=null ? c.getPlayer().getLevel()+"":"Unknown")

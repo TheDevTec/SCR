@@ -88,12 +88,12 @@ public class OnPlayerJoin implements Listener {
 				Tasks.regPlayer(p);
 				User d = TheAPI.getUser(p);
 				Config f = Loader.config;
-				if(TheAPI.hasVanish(e.getPlayer().getName())) {
+				if(API.hasVanish(e.getPlayer().getName())) {
 					if(setting.vanish_action) {
 						Vanish.task.put(e.getPlayer().getName(), new Tasker() {
 							@Override
 							public void run() {
-								if(!TheAPI.hasVanish(e.getPlayer().getName()) || !e.getPlayer().isOnline()) {
+								if(!API.hasVanish(e.getPlayer().getName()) || !e.getPlayer().isOnline()) {
 									cancel();
 									return;
 								}
@@ -111,7 +111,7 @@ public class OnPlayerJoin implements Listener {
 				if (!d.exist("FirstJoin"))
 					d.set("FirstJoin", setting.format_date_time.format(new Date()));
 				if (!p.hasPlayedBefore()) {
-					if (!TheAPI.hasVanish(p.getName())) {
+					if (!API.hasVanish(p.getName())) {
 							Object o = Loader.events.get("onJoin.First.Text");
 							if(o!=null) {
 							if(o instanceof Collection) {
@@ -157,7 +157,7 @@ public class OnPlayerJoin implements Listener {
 								TheAPI.bcMsg(replaceAll(""+o, p));
 					}
 				} else {
-					if (!TheAPI.hasVanish(p.getName())) {
+					if (!API.hasVanish(p.getName())) {
 						Object o = Loader.events.get("onJoin.Text");
 						if(o!=null) {
 							if(o instanceof Collection) {
@@ -240,10 +240,15 @@ public class OnPlayerJoin implements Listener {
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
 		p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
+        for (Player s : TheAPI.getOnlinePlayers())
+            if(p!=s)
+            if (!API.canSee(p, s.getName()))
+                p.hidePlayer(s);
+        API.setVanish(p.getName(), TheAPI.getUser(p).getString("vanish"), API.hasVanish(p.getName()));
 		new Tasker() {
 			public void run() {
 				Vanish.task.remove(e.getPlayer().getName());
-				if (!TheAPI.hasVanish(p.getName())) {
+				if (!API.hasVanish(p.getName())) {
 						Object o = Loader.events.get("onQuit.Text");
 						if(o!=null) {
 							if(o instanceof Collection) {

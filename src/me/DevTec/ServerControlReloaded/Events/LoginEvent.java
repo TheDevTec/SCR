@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.setting;
@@ -30,7 +31,7 @@ public class LoginEvent implements Listener {
 		List<Object> bList = (List<Object>) Ref.get(b, "b");
 		int cc = 0;
 		for(Object o : bList) { 
-			Ref.set(o, "c", TheAPI.hasVanish(player.getName()) && setting.tab_vanish ? (spec==null?surv:spec) : surv);
+			Ref.set(o, "c", API.hasVanish(player.getName()) && setting.tab_vanish ? (spec==null?surv:spec) : surv);
 			bList.set(cc++, o);
 		}
 		Ref.set(b, "b", bList);

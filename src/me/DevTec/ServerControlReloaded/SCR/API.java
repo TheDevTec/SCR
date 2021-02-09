@@ -15,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.MetadataValue;
 
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.setting;
@@ -41,6 +42,61 @@ public class API {
 		}
 		return cache.get(p);
 	}
+	
+    public static void setVanish(String playerName, String permission, boolean value) {
+        User i = TheAPI.getUser(playerName);
+        i.set("vanish", value);
+        i.setAndSave("vanish.perm", permission);
+        Player s = TheAPI.getPlayerOrNull(playerName);
+        if (s != null)
+            applyVanish(i,s, permission, value);
+    }
+ 
+    private static void applyVanish(User i, Player s, String perm, boolean var) {
+            if (var) {
+                i.set("vanish", var);
+                i.set("vanish.perm", perm);
+                for (Player d : TheAPI.getOnlinePlayers())
+                    if (s != d && !canSee(d, s.getName()) && d.canSee(s))
+                        d.hidePlayer(s);
+                return;
+            }
+            i.remove("vanish");
+            for (Player d : TheAPI.getOnlinePlayers())
+                if (s != d && canSee(d, s.getName()) && !d.canSee(s))
+                    d.showPlayer(s);
+    }
+ 
+    private static boolean hasSuperVanish(Player player) {
+        if (player.hasMetadata("vanished"))
+            for (MetadataValue meta : player.getMetadata("vanished"))
+                return meta.asBoolean();
+        return false;
+    }
+ 
+    public static boolean hasVanish(String playerName) {
+        Player s = TheAPI.getPlayerOrNull(playerName);
+        return s != null ? (hasSuperVanish(s) || TheAPI.getUser(s).getBoolean("vanish"))
+                : TheAPI.getUser(playerName).getBoolean("vanish");
+    }
+ 
+    public static boolean hasVanish(Player player) {
+        if(player==null)return false;
+        if(player.isOnline())return hasSuperVanish(player) || TheAPI.getUser(player).getBoolean("vanish");
+        return TheAPI.getUser(player).getBoolean("vanish");
+    }
+ 
+    public static String getVanishPermission(String playerName) {
+        return TheAPI.getUser(playerName).getString("vanish.perm");
+    }
+ 
+    public static boolean canSee(Player player, String target) {
+        return hasVanish(target) ? (getVanishPermission(target)==null?false:player.hasPermission(getVanishPermission(target))) : true;
+    }
+ 
+    public static boolean canSee(String player, String target) {
+        return hasVanish(target);
+    }
 
 	public static List<SPlayer> getSPlayers() {
 		List<SPlayer> s = new ArrayList<>();

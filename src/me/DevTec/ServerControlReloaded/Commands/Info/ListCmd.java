@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
@@ -25,7 +26,7 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 	public String joiner(CommandSender d , String value) {
 		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
 		for (Player a : TheAPI.getOnlinePlayers()) {
-			if(d instanceof Player == false ? false : !TheAPI.canSee((Player)d,a.getName()))continue;
+			if(d instanceof Player == false ? false : !API.canSee((Player)d,a.getName()))continue;
 			String as = Staff.getGroup(a);
 			List<String> s = p.getOrDefault(as, new ArrayList<>());
 			s.add(a.getName());
@@ -50,7 +51,7 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 	public String joinercount(CommandSender d , String value) {
 		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
 		for (Player a : TheAPI.getOnlinePlayers()) {
-			if(d instanceof Player == false ? false : !TheAPI.canSee((Player)d,a.getName()))continue;
+			if(d instanceof Player == false ? false : !API.canSee((Player)d,a.getName()))continue;
 			String as = Staff.getGroup(a);
 			List<String> s = p.getOrDefault(as, new ArrayList<>());
 			s.add(a.getName());

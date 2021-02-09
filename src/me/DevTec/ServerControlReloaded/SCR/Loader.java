@@ -482,7 +482,7 @@ public class Loader extends JavaPlugin implements Listener {
 					if(from==null)from=p.getLocation();
 					Location to = p.getLocation();
 					if (Math.abs(from.getBlockX() - to.getBlockX()) > 0 || Math.abs(from.getBlockZ() - to.getBlockZ()) > 0 || Math.abs(from.getBlockY() - to.getBlockY()) > 0) {
-						if (d.isAFK() && !d.hasVanish())
+						if (d.isAFK() && !API.hasVanish(p))
 							sendBroadcasts(p, "AFK.End");
 						save(d);
 					}
@@ -743,7 +743,7 @@ public class Loader extends JavaPlugin implements Listener {
 						if (!s.bc && !s.mp) {
 							s.bc = true;
 							s.mp = true;
-							if (!s.hasVanish())
+							if (!API.hasVanish(s.getPlayer()))
 								Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
 						}
 						if (setting.afk_kick && is) {
@@ -772,14 +772,14 @@ public class Loader extends JavaPlugin implements Listener {
 		save(s);
 		s.mp = true;
 		s.manual = true;
-			if (!s.hasVanish())
+			if (!API.hasVanish(s.getPlayer()))
 				Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
 	}
 	public void setAFK(SPlayer s, String reason) {
 		save(s);
 		s.mp = true;
 		s.manual = true;
-			if (!s.hasVanish())
+			if (!API.hasVanish(s.getPlayer()))
 				Loader.sendBroadcasts(s.getPlayer(), "AFK.Start_WithReason", Placeholder.c().add("%reason%", reason));
 				//Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
 	}
