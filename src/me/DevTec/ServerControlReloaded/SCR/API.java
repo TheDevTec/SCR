@@ -75,8 +75,12 @@ public class API {
     }
  
     public static boolean hasVanish(String playerName) {
+         return hasVanish(playerName, true);
+    }
+ 
+    public static boolean hasVanish(String playerName, boolean checkSuperVanish) {
         Player s = TheAPI.getPlayerOrNull(playerName);
-        return s != null ? (hasSuperVanish(s) || TheAPI.getUser(s).getBoolean("vanish"))
+        return s != null ? (checkSuperVanish?hasSuperVanish(s):false || TheAPI.getUser(s).getBoolean("vanish"))
                 : TheAPI.getUser(playerName).getBoolean("vanish");
     }
  
