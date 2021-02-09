@@ -956,7 +956,7 @@ public class Loader extends JavaPlugin implements Listener {
 		CmdC("Other", "TabList",new Tab());
 		CmdC("Other", "Hat",new Hat());
 		CmdC("Other", "Skin",new Skin());
-		CmdC("Other", "Experiences", new Exp());//treba opraviť give, set, take, (balance na sendera, nie target)
+		CmdC("Other", "Experiences", new Exp());
 		CmdC("Other", "Spawner", new Spawner());
 		CmdC("Other", "Uuid", new Uuid());
 		//Utility
