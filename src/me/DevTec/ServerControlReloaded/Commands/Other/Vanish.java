@@ -33,8 +33,9 @@ public class Vanish implements CommandExecutor, TabCompleter{
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
-					if (!API.hasVanish(p.getName())) {
-						API.setVanish(p.getName(), "ServerControl.Vanish", true);
+					if (!API.hasVanish(p)) {
+						API.setVanish(p, Loader.getPerm("Vanish","Other"), true);
+						if(setting.tab && setting.tab_vanish)
 						LoginEvent.moveInTab(p);
 						Loader.sendMessages(s, "Vanish.Enabled.You");
 						if(setting.vanish_action)
@@ -55,7 +56,8 @@ public class Vanish implements CommandExecutor, TabCompleter{
 						task.remove(s.getName());
 						TheAPI.sendActionBar(p, "");
 					}
-					API.setVanish(p.getName(), Loader.cmds.getString("Other.Vanish.Permission"), false);
+					API.setVanish(p, Loader.getPerm("Vanish","Other"), false);
+					if(setting.tab && setting.tab_vanish)
 					LoginEvent.moveInTab(p);
 					Loader.sendMessages(s, "Vanish.Disabled.You");
 					return true;
@@ -66,8 +68,9 @@ public class Vanish implements CommandExecutor, TabCompleter{
 			if (Loader.has(s, "Vanish", "Other", "Other")) {
 			Player t = TheAPI.getPlayer(args[0]);
 			if (t != null) {
-				if (!API.hasVanish(t.getName())) {
-					API.setVanish(t.getName(), "ServerControl.Vanish", true);
+				if (!API.hasVanish(t)) {
+					API.setVanish(t, Loader.getPerm("Vanish","Other"), true);
+					if(setting.tab && setting.tab_vanish)
 					LoginEvent.moveInTab(t);
 					Loader.sendMessages(s, "Vanish.Enabled.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
 					Loader.sendMessages(s, "Vanish.Enabled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
@@ -89,7 +92,8 @@ public class Vanish implements CommandExecutor, TabCompleter{
 					task.remove(t.getName());
 					TheAPI.sendActionBar(t, "");
 				}
-				API.setVanish(t.getName(), "ServerControl.Vanish", false);
+				API.setVanish(t, Loader.getPerm("Vanish","Other"), false);
+				if(setting.tab && setting.tab_vanish)
 				LoginEvent.moveInTab(t);
 				Loader.sendMessages(s, "Vanish.Disabled.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
 				Loader.sendMessages(s, "Vanish.Disabled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));

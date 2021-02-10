@@ -254,7 +254,7 @@ TpSystem:
     Permission: "SCR.Command.TpAll"
     Help: "/TpAll - Teleport all players to your position"
     Enabled: true
-  TpAccept:
+  TpaAccept:
     Name: "tpaccept"
     Aliases:
     - "tpyes"
@@ -262,20 +262,20 @@ TpSystem:
     Permission: "SCR.Command.TpAccept"
     Help: "/TpAccept - Accept teleport request"
     Enabled: true
-  TpDeny:
-    Name: "tpdeny"
+  TpaDeny:
+    Name: "tpadeny"
     Aliases:
     - "tpno"
-    - "tpadeny"
+    - "tpdeny"
     - "tpano"
-    Permission: "SCR.Command.TpDeny"
+    Permission: "SCR.Command.TpaDeny"
     Help: "/TpDeny - Deny teleport request"
     Enabled: true
-  TpCancel:
-    Name: "tpcancel"
+  TpaCancel:
+    Name: "tpacancel"
     Aliases:
-    - "tpacancel"
-    Permission: "SCR.Command.TpCancel"
+    - "tpcancel"
+    Permission: "SCR.Command.TpaCancel"
     Help: "/TpCancel - Cancel your teleport request"
     Enabled: true
   TpToggle:
@@ -357,7 +357,10 @@ Inventory:
     - "ec"
     - "echest"
     Permission: "SCR.Command.EnderChest"
-    Help: "/EnderChest <player> - Open player's enderchest"
+    SubPermission:
+      Other: "SCR.Command.EnderChest.SeeOther"
+      OpenOther: "SCR.Command.EnderChest.SeeOpenOther"
+    Help: "/EnderChest <player> [target] - Open player's enderchest"
     Enabled: true
   Invsee:
     Name: "inventory"

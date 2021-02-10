@@ -23,7 +23,7 @@ public class EnderChest implements CommandExecutor, TabCompleter {
 					((Player)s).openInventory(((Player)s).getEnderChest());
 					return true;
 				}
-				if (args.length == 1) {
+				if (args.length == 1 && Loader.has(s, "EnderChest", "Inventory", "Other")) {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p == null) {
 						Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
@@ -38,7 +38,7 @@ public class EnderChest implements CommandExecutor, TabCompleter {
 					return true;
 
 				}
-				if (args.length == 2) {
+				if (args.length == 2 && Loader.has(s, "EnderChest", "Inventory", "OpenOther")) {
 					Player p = TheAPI.getPlayer(args[0]);
 					Player t = TheAPI.getPlayer(args[1]);
 					if (p == null) {

@@ -44,24 +44,38 @@ public class API {
 	}
 	
     public static void setVanish(String playerName, String permission, boolean value) {
-        User i = TheAPI.getUser(playerName);
-        i.set("vanish", value);
-        i.setAndSave("vanish.perm", permission);
         Player s = TheAPI.getPlayerOrNull(playerName);
         if (s != null)
-            applyVanish(i,s, permission, value);
+            applyVanish(TheAPI.getUser(s),s, permission, value);
+        else {
+            User i = TheAPI.getUser(playerName);
+            if(value) {
+            	i.set("vanish", value);
+            	i.setAndSave("vanish.perm", permission);
+            }else {
+            	i.remove("vanish");
+            }
+            i.save();
+        }
+    }
+	
+    public static void setVanish(Player playerName, String permission, boolean value) {
+        if (playerName != null)
+            applyVanish(TheAPI.getUser(playerName), playerName, permission, value);
     }
  
     private static void applyVanish(User i, Player s, String perm, boolean var) {
             if (var) {
                 i.set("vanish", var);
                 i.set("vanish.perm", perm);
+                i.save();
                 for (Player d : TheAPI.getOnlinePlayers())
                     if (s != d && !canSee(d, s.getName()) && d.canSee(s))
                         d.hidePlayer(s);
                 return;
             }
             i.remove("vanish");
+            i.save();
             for (Player d : TheAPI.getOnlinePlayers())
                 if (s != d && canSee(d, s.getName()) && !d.canSee(s))
                     d.showPlayer(s);
@@ -95,7 +109,7 @@ public class API {
     }
  
     public static boolean canSee(Player player, String target) {
-        return hasVanish(target) ? (getVanishPermission(target)==null?false:player.hasPermission(getVanishPermission(target))) : true;
+        return hasVanish(target) ? player.hasPermission(getVanishPermission(target)) : true;
     }
  
     public static boolean canSee(String player, String target) {

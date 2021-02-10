@@ -23,7 +23,7 @@ public class EnderSee implements CommandExecutor, TabCompleter {
 					((Player)s).openInventory(((Player)s).getEnderChest());
 					return true;
 				}
-				if (args.length == 1) {
+				if (args.length == 1 && Loader.has(s, "EnderChest", "Inventory", "Other")) {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p != null) {
 						if (p == s) {

@@ -20,13 +20,13 @@ public class Tpadeny implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "TpDeny", "TpSystem")) {
+		if (Loader.has(s, "TpaDeny", "TpSystem")) {
 			if (s instanceof Player) {
 				RequestMap.deny((Player)s);
 				return true;
 			}
 		}
-		Loader.noPerms(s, "TpDeny", "TpSystem");
+		Loader.noPerms(s, "TpaDeny", "TpSystem");
 		return true;
 	}
 }

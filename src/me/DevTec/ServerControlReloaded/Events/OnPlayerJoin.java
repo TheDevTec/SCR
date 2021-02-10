@@ -80,6 +80,11 @@ public class OnPlayerJoin implements Listener {
 	public void playerJoin(PlayerJoinEvent e) {
 		e.setJoinMessage("");
 		Player p = e.getPlayer();
+        for (Player s : TheAPI.getOnlinePlayers())
+            if(p!=s)
+            if (!API.canSee(p, s.getName()))
+                p.hidePlayer(s);
+        API.setVanish(p.getName(), Loader.getPerm("Vanish","Other"), API.hasVanish(p.getName(), false));
 		DisplayManager.initializePlayer(p);
 		new Tasker() {
 			public void run() {
@@ -240,11 +245,6 @@ public class OnPlayerJoin implements Listener {
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
 		p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
-        for (Player s : TheAPI.getOnlinePlayers())
-            if(p!=s)
-            if (!API.canSee(p, s.getName()))
-                p.hidePlayer(s);
-        API.setVanish(p.getName(), TheAPI.getUser(p).getString("vanish"), API.hasVanish(p.getName(), false));
 		new Tasker() {
 			public void run() {
 				Vanish.task.remove(e.getPlayer().getName());

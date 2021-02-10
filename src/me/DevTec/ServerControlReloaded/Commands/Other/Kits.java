@@ -87,7 +87,7 @@ public class Kits implements CommandExecutor, TabCompleter {
 							p.getInventory().setItem(s.getKey(), s.getValue());
 						if(messages)
 						Loader.sendMessages(p, "Kits.Used", Placeholder.c().add("%kit%", kit.getName()));
-						a.createCooldown("Kit." + kit.getName(), kit.getDelay());
+						a.createCooldown("Kit." + kit.getName(), kit.getDelay()*20);
 						EconomyAPI.withdrawPlayer(p, kit.getCost());
 						for(String s : kit.getCommands())
 							TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()));
@@ -112,7 +112,7 @@ public class Kits implements CommandExecutor, TabCompleter {
 						p.getInventory().setItem(s.getKey(), s.getValue());
 					if(messages)
 					Loader.sendMessages(p, "Kits.Used", Placeholder.c().add("%kit%", kit.getName()));
-					a.createCooldown("Kit." + kit.getName(), kit.getDelay());
+					a.createCooldown("Kit." + kit.getName(), kit.getDelay()*20);
 					for(String s : kit.getCommands())
 						TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()));
 					for(String s : kit.getMessages())

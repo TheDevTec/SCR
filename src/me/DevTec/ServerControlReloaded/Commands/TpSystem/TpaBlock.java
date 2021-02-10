@@ -21,7 +21,7 @@ public class TpaBlock implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "TpBlock", "TpSystem")) {
+		if (Loader.has(s, "TpaBlock", "TpSystem")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
 					boolean state = TheAPI.getUser((Player)s).getBoolean("TpBlock-Global");
@@ -47,7 +47,7 @@ public class TpaBlock implements CommandExecutor, TabCompleter {
 			}
 			return true;
 		}
-		Loader.noPerms(s, "TpBlock", "TpSystem");
+		Loader.noPerms(s, "TpaBlock", "TpSystem");
 		return true;
 	}
 }

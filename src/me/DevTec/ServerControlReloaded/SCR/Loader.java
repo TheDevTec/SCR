@@ -182,9 +182,7 @@ import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.listener.EventHandler;
 import me.devtec.theapi.utils.listener.Listener;
-import me.devtec.theapi.utils.listener.events.PlayerVanishEvent;
 import me.devtec.theapi.utils.reflections.Ref;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -772,8 +770,8 @@ public class Loader extends JavaPlugin implements Listener {
 		save(s);
 		s.mp = true;
 		s.manual = true;
-			if (!API.hasVanish(s.getPlayer()))
-				Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
+		if (!API.hasVanish(s.getPlayer()))
+			Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
 	}
 	public void setAFK(SPlayer s, String reason) {
 		save(s);
@@ -922,15 +920,15 @@ public class Loader extends JavaPlugin implements Listener {
 		
 		//TpSystem
 		CmdC("TpSystem", "Tp", new Tp());
-		CmdC("TpSystem", "TpHere", new Tphere());
-		CmdC("TpSystem", "TpCancel", new Tpcancel());
+		CmdC("TpSystem", "TpaCancel", new Tpcancel());
 		CmdC("TpSystem", "Tpa", new Tpa());
 		CmdC("TpSystem", "TpaHere", new Tpahere());
+		CmdC("TpSystem", "TpHere", new Tphere());
 		CmdC("TpSystem", "TpToggle", new TpaBlock());
 		CmdC("TpSystem", "TpaAll", new Tpaall());
 		CmdC("TpSystem", "TpAll", new Tpall());
-		CmdC("TpSystem", "TpAccept", new Tpaccept());
-		CmdC("TpSystem", "TpDeny", new Tpadeny());
+		CmdC("TpSystem", "TpaAccept", new Tpaccept());
+		CmdC("TpSystem", "TpaDeny", new Tpadeny());
 		
 		//Other
 		CmdC("Other", "ChatLock",new ChatLock());
@@ -986,13 +984,6 @@ public class Loader extends JavaPlugin implements Listener {
 		EventC(new EntitySpawn());
 		EventC(new Signs());
 		EventC(new FarmingSystem());
-		TheAPI.register(new Listener() {
-			@EventHandler
-			public void onVanish(PlayerVanishEvent e) {
-				if(setting.tab && setting.tab_vanish)
-					LoginEvent.moveInTab(e.getPlayer());
-			}
-		});
 	}
 	
 	public static void notOnline(CommandSender s, String player) {
@@ -1034,5 +1025,8 @@ public class Loader extends JavaPlugin implements Listener {
 
 	public static boolean hasKits(CommandSender p, String name) {
 		return kit.exists("Kits."+name+".permission")?p.hasPermission(kit.getString("Kits."+name+".permission")):true;
+	}
+	public static String getPerm(String cmd, String section) {
+		return cmds.getString(section+"."+cmd+".Permission");
 	}
 }

@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Message;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,7 +21,7 @@ public class PrivateMessageManager {
 				.replace("%target%", to.getName()).replace("%targetname%", ((Player)to).getDisplayName()+"")
 				.replace("%targetcustomname%", ((Player)to).getCustomName()+"").replace("%message%", message), TheAPI.getConsole());
 				for(Player ps : TheAPI.getOnlinePlayers())
-					if(ps!=who && TheAPI.getUser(ps).getBoolean("socialspy"))
+					if(ps!=who && ps!=to && TheAPI.getUser(ps).getBoolean("socialspy"))
 						TheAPI.msg(Loader.config.getString("Format.SocialSpy")
 						.replace("%player%", who.getName()).replace("%playername%", ((Player)who).getDisplayName())
 						.replace("%customname%", Objects.requireNonNull(((Player) who).getDisplayName()))
@@ -33,7 +34,7 @@ public class PrivateMessageManager {
 				.replace("%target%", to.getName()).replace("%targetname%", to.getName())
 				.replace("%targetcustomname%", to.getName()).replace("%message%", message), TheAPI.getConsole());
 				for(Player ps : TheAPI.getOnlinePlayers())
-					if(ps!=who && TheAPI.getUser(ps).getBoolean("socialspy"))
+					if(ps!=who && ps!=to && TheAPI.getUser(ps).getBoolean("socialspy"))
 						TheAPI.msg(Loader.config.getString("Format.SocialSpy")
 						.replace("%player%", who.getName()).replace("%playername%", ((Player)who).getDisplayName()+"")
 						.replace("%customname%", ((Player)who).getCustomName()+"")
@@ -48,21 +49,21 @@ public class PrivateMessageManager {
 				.replace("%target%", to.getName()).replace("%targetname%", ((Player)to).getDisplayName()+"")
 				.replace("%targetcustomname%", ((Player)to).getCustomName()+"").replace("%message%", message), TheAPI.getConsole());
 				for(Player ps : TheAPI.getOnlinePlayers())
-					if(ps!=who && TheAPI.getUser(ps).getBoolean("socialspy"))
+					if(ps!=who && ps!=to && TheAPI.getUser(ps).getBoolean("socialspy"))
 						TheAPI.msg(Loader.config.getString("Format.SocialSpy")
 						.replace("%player%", to.getName()).replace("%playername%", who.getName())
 						.replace("%customname%", who.getName())
 						.replace("%target%", to.getName()).replace("%targetname%", ((Player)to).getDisplayName()+"")
 						.replace("%targetcustomname%", ((Player)to).getCustomName()+"").replace("%message%", message), ps);
 			}else {
-				if(who != to)
+				if(who != to && to!=TheAPI.getConsole() && who!=TheAPI.getConsole())
 				TheAPI.msg(Loader.config.getString("Format.SocialSpy")
 				.replace("%player%", who.getName()).replace("%playername%", who.getName())
 				.replace("%customname%", who.getName())
 				.replace("%target%", to.getName()).replace("%targetname%", to.getName())
 				.replace("%targetcustomname%", to.getName()).replace("%message%", message), TheAPI.getConsole());
 				for(Player ps : TheAPI.getOnlinePlayers())
-					if(ps!=who && TheAPI.getUser(ps).getBoolean("socialspy"))
+					if(ps!=who && ps!=to && TheAPI.getUser(ps).getBoolean("socialspy"))
 						TheAPI.msg(Loader.config.getString("Format.SocialSpy")
 						.replace("%player%", who.getName()).replace("%playername%", who.getName())
 						.replace("%customname%", who.getName())
@@ -83,22 +84,9 @@ public class PrivateMessageManager {
 			return;
 		}
 		Player to = TheAPI.getPlayerOrNull(tot);
-		if(to!=null || tot.equalsIgnoreCase("console")) {
-			if(!tot.equalsIgnoreCase("console"))
-			TheAPI.msg(Loader.config.getString("Format.SocialSpy")
-					.replace("%player%", who.getName()).replace("%playername%", who instanceof Player?((Player)who).getDisplayName()+"":who.getName())
-					.replace("%customname%", who instanceof Player?((Player)who).getCustomName()+"":who.getName())
-					.replace("%target%", to!=null?to.getName():tot.toUpperCase()).replace("%targetname%", to!=null?to.getDisplayName()+"":tot.toUpperCase())
-					.replace("%targetcustomname%", to!=null?to.getCustomName()+"":tot.toUpperCase()).replace("%message%", message), TheAPI.getConsole());
-			for(Player ps : TheAPI.getOnlinePlayers())
-				if(ps!=who && TheAPI.getUser(ps).getBoolean("socialspy"))
-					TheAPI.msg(Loader.config.getString("Format.SocialSpy")
-					.replace("%player%", who.getName()).replace("%playername%", who instanceof Player?((Player)who).getDisplayName()+"":who.getName())
-					.replace("%customname%", who instanceof Player?((Player)who).getCustomName()+"":who.getName())
-					.replace("%target%", to!=null?to.getName():tot.toUpperCase()).replace("%targetname%", to!=null?to.getDisplayName()+"":tot.toUpperCase())
-					.replace("%targetcustomname%", to!=null?to.getCustomName()+"":tot.toUpperCase()).replace("%message%", message), ps);
-			sendMessage(who, tot.equalsIgnoreCase("console")?TheAPI.getConsole():to, message);
-		}else
+		if(to!=null || tot.equalsIgnoreCase("console"))
+			sendMessage(who, to==null?Bukkit.getConsoleSender():to, message);
+		else
 			Loader.notOnline(who, tot);
 	}
 	

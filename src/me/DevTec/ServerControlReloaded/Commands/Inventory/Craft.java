@@ -22,7 +22,7 @@ public class Craft implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "Workbench", "Other")) {
+		if (Loader.has(s, "Workbench", "Inventory")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
 					Loader.sendMessages(s, "Inventory.Workbench.You");
@@ -43,7 +43,7 @@ public class Craft implements CommandExecutor, TabCompleter {
 			}
 			return true;
 		}
-		Loader.noPerms(s, "Workbemch", "Other");
+		Loader.noPerms(s, "Workbemch", "Inventory");
 		return true;
 	}
 
