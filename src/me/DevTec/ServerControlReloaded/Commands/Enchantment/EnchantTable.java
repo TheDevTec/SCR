@@ -1,7 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Enchantment;
 
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -11,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.StringUtil;
 
 import com.google.common.collect.Lists;
 
@@ -27,7 +26,6 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 	public EnchantTable() {
 		for(EnchantmentAPI a : EnchantmentAPI.values())enchs.add(a.name());
 	}
-
 	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -86,22 +84,16 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 			return true;
 		return false;
 	}
-
+	
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command a, String ea, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (s.hasPermission("ServerControl.Enchant")) {
-
-			if (s instanceof Player) {
-				if (args.length == 1) {
-					c.addAll(StringUtil.copyPartialMatches(args[0], enchs, new ArrayList<>()));
-				}
-				if (args.length == 2) {
-					if (EnchantmentAPI.byName(args[0]) != null)
-						c.add(EnchantmentAPI.byName(args[0]).getEnchantment().getMaxLevel() + "");
-				}
-			}
+		if (Loader.has(s, "Enchant", "Enchantment") && s instanceof Player) {
+			if (args.length == 1)
+				return StringUtils.copyPartialMatches(args[0], enchs);
+			if (args.length == 2)
+				if (EnchantmentAPI.byName(args[0]) != null)
+					return Arrays.asList(EnchantmentAPI.byName(args[0]).getEnchantment().getMaxLevel() + "");
 		}
-		return c;
+		return Arrays.asList();
 	}
 }

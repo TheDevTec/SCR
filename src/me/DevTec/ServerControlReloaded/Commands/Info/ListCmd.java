@@ -105,9 +105,10 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 		Loader.noPerms(s, "List", "Info");
 		return true;
 	}
+
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] arg3) {
-		return null;
+		return Arrays.asList();
 	}
 }

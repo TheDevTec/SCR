@@ -1,7 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Warps;
 
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -9,7 +9,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.API.TeleportLocation;
@@ -18,13 +17,13 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.Position;
+import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 
 public class Home implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-
 		if (s instanceof Player) {
 			Player p = (Player) s;
 			User d = TheAPI.getUser(p);
@@ -67,7 +66,7 @@ public class Home implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				if (args.length == 1) {
-					if (d.exist("Homes." + args[0])) {
+					if (d.exists("Homes." + args[0]) && d.getString("Homes." + args[0])!=null) {
 						Position loc2 = Position.fromString(d.getString("Homes." + args[0]));
 						if (loc2 != null) {
 							API.setBack(p);
@@ -93,18 +92,8 @@ public class Home implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (s instanceof Player) {
-			if (args.length == 1) {
-				if (s.hasPermission("ServerControl.Home")) {
-					try {
-						c.addAll(StringUtil.copyPartialMatches(args[0], TheAPI.getUser(s.getName()).getKeys("Homes"), new ArrayList<>()));
-					} catch (Exception e) {
-
-					}
-				}
-			}
-		}
-		return c;
+		if (Loader.has(s, "Home", "Warps") && args.length == 1)
+			return StringUtils.copyPartialMatches(args[0], TheAPI.getUser(s.getName()).getKeys("Homes"));
+		return Arrays.asList();
 	}
 }

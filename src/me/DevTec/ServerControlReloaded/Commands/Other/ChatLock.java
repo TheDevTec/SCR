@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -13,9 +14,9 @@ import me.DevTec.ServerControlReloaded.Utils.setting;
 public class ChatLock implements CommandExecutor, TabCompleter {
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
-			String arg2, String[] arg3) {
-		return null;
+	public List<String> onTabComplete(CommandSender s, Command arg1,
+			String arg2, String[] args) {
+		return Arrays.asList();
 	}
 
 	@Override

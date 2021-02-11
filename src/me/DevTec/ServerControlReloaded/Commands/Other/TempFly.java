@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -18,9 +19,20 @@ import me.devtec.theapi.utils.StringUtils;
 public class TempFly implements CommandExecutor, TabCompleter {
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
-			String arg2, String[] arg3) {
-		return null;
+	public List<String> onTabComplete(CommandSender s, Command arg1,
+			String arg2, String[] args) {
+		if(Loader.has(s,"TempFly","Other")) {
+			if(args.length==1)
+				return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
+			if(args.length==2)
+				try {
+					if(args[1].substring(args[1].length()-1, args[1].length()).matches("[0-9]"))
+						return Arrays.asList(args[1]+"s",args[1]+"m",args[1]+"h",args[1]+"d",args[1]+"w",args[1]+"mo");
+				}catch(Exception e) {
+					return Arrays.asList("15m","2h","2h30m","6h","12h","7d");
+				}
+		}
+		return Arrays.asList();
 	}
 
 	@Override

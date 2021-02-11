@@ -12,7 +12,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -246,38 +245,34 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
 		if (Loader.has(s, "MultiEconomy", "Economy")) {
 			if (args.length == 1) {
-				c.addAll(StringUtil.copyPartialMatches(args[0],
-						Arrays.asList("Money", "Transfer", "Create", "Delete", "Add", "Remove", "Worlds", "Groups"),
-						new ArrayList<>()));
+				return StringUtils.copyPartialMatches(args[0],
+						Arrays.asList("Money", "Transfer", "Create", "Delete", "Add", "Remove", "Worlds", "Groups"));
 			}
 			if (args.length == 2) {
 				if (args[0].equalsIgnoreCase("Create")) {
-					c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));
+					return StringUtils.copyPartialMatches(args[1], Arrays.asList("?"));
 				}
 				if (args[0].equalsIgnoreCase("Delete") || args[0].equalsIgnoreCase("Add")
 						|| args[0].equalsIgnoreCase("Remove") || args[0].equalsIgnoreCase("Worlds")) {
-					c.addAll(StringUtil.copyPartialMatches(args[1],
-							Loader.config.getKeys("Options.Economy.MultiEconomy.Types"),
-							new ArrayList<>()));
+					return StringUtils.copyPartialMatches(args[1],
+							Loader.config.getKeys("Options.Economy.MultiEconomy.Types"));
 				}
 				if (args[0].equalsIgnoreCase("Transfer") || args[0].equalsIgnoreCase("Money"))
-					return null;
+					return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
 			}
 			if (args.length == 3) {
 				if (args[0].equalsIgnoreCase("Add") || args[0].equalsIgnoreCase("Remove")) {
 					for (String world : Loader.config.getKeys("Options.Economy.MultiEconomy.Types"))
 						if (args[1].equalsIgnoreCase(world))
-							c.addAll(StringUtil.copyPartialMatches(args[2], worlds(), new ArrayList<>()));
+							return StringUtils.copyPartialMatches(args[2], worlds());
 				}
 				if (args[0].equalsIgnoreCase("Money") || args[0].equalsIgnoreCase("Transfer")) {
 					Player p = TheAPI.getPlayer(args[1]);
 					if (p != null)
-						c.addAll(StringUtil.copyPartialMatches(args[2], Loader.config
-								.getKeys("Options.Economy.MultiEconomy.Types"),
-								new ArrayList<>()));
+						return StringUtils.copyPartialMatches(args[2], Loader.config
+								.getKeys("Options.Economy.MultiEconomy.Types"));
 				}
 			}
 			if (args.length == 4) {
@@ -286,13 +281,12 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 					if (p != null)
 						if (Loader.config.getKeys("Options.Economy.MultiEconomy.Types")
 								.contains(args[2]))
-							c.addAll(StringUtil.copyPartialMatches(args[3], Loader.config
-									.getKeys("Options.Economy.MultiEconomy.Types"),
-									new ArrayList<>()));
+							return StringUtils.copyPartialMatches(args[3], Loader.config
+									.getKeys("Options.Economy.MultiEconomy.Types"));
 				}
 			}
 		}
-		return c;
+		return Arrays.asList();
 	}
 
 	private List<String> worlds() {

@@ -13,7 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
@@ -122,28 +121,27 @@ public class Spawner implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
 		if (Loader.has(s, "Spawner", "Other")) {
 			if (args.length == 1) {
-				List<String> list = new ArrayList<String>();
+				List<String> list;
 				if (TheAPI.isNewVersion()) {
 					list = Arrays.asList("setMob", "setRangePlayer", "setTime", "setAmount");
 				} else
 					list = Arrays.asList("setMob", "setTime");
-				c.addAll(StringUtil.copyPartialMatches(args[0], list, new ArrayList<>()));
+				return StringUtils.copyPartialMatches(args[0], list);
 			}
 			if (args.length == 2) {
 				if (args[0].equalsIgnoreCase("setMob"))
-					c.addAll(StringUtil.copyPartialMatches(args[1], list(), new ArrayList<>()));
+					return StringUtils.copyPartialMatches(args[1], list());
 
 				if (TheAPI.isNewVersion()) {
 					if (args[0].equalsIgnoreCase("setRangePlayer") || args[0].equalsIgnoreCase("setAmount"))
-						c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));
+						return StringUtils.copyPartialMatches(args[1], Arrays.asList("?"));
 				}
 				if (args[0].equalsIgnoreCase("setTime"))
-					c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));
+					return StringUtils.copyPartialMatches(args[1], Arrays.asList("?"));
 			}
 		}
-		return c;
+		return Arrays.asList();
 	}
 }

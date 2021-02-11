@@ -21,10 +21,11 @@ import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public class Eco implements CommandExecutor, TabCompleter {
+
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (EconomyAPI.getEconomy() == null) {
-			s.sendMessage("Null economy");
+			s.sendMessage("Missing Vault or Economy plugin.");
 			return true;
 		}
 		if (args.length == 0) {
@@ -197,71 +198,52 @@ public class Eco implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
+	public List<String> onTabComplete(CommandSender s, Command command, String alias, String[] args) {
 		if (args.length == 1) {
-			if (Loader.has(sender, "Economy", "Economy", "Pay")) {
+			List<String> c = new ArrayList<>();
+			if (Loader.has(s, "Economy", "Economy", "Pay"))
 				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Pay")));
-
-			}
-			if (Loader.has(sender, "Economy", "Economy", "Take")) {
+			if (Loader.has(s, "Economy", "Economy", "Take"))
 				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Take")));
-
-			}
-			if (Loader.has(sender, "Economy", "Economy", "Reset")) {
+			if (Loader.has(s, "Economy", "Economy", "Reset"))
 				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Reset")));
-
-			}
-			if (Loader.has(sender, "Economy", "Economy", "Give")) {
+			if (Loader.has(s, "Economy", "Economy", "Give"))
 				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Give")));
-
-			}
-			if (Loader.has(sender, "Economy", "Economy", "Set")) {
+			if (Loader.has(s, "Economy", "Economy", "Set"))
 				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Set")));
-
-			}
+			return c;
 		}
-		if (args[0].equalsIgnoreCase("Pay")) {
-			if (Loader.has(sender, "Economy", "Economy", "Pay")) {
-				if (args.length == 2)
-					return null;
-				if (args.length == 3)
-					c.addAll(StringUtils.copyPartialMatches(args[2], Arrays.asList("?")));
-			}
+		if (args[0].equalsIgnoreCase("Pay") && Loader.has(s, "Economy", "Economy", "Pay")) {
+			if (args.length == 2)
+				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
+			if (args.length == 3)
+				return StringUtils.copyPartialMatches(args[2], Arrays.asList("?"));
 		}
-		if (args[0].equalsIgnoreCase("Take")) {
-			if (Loader.has(sender, "Economy", "Economy", "Take")) {
-				if (args.length == 2)
-					return null;
-				if (args.length == 3)
-					c.addAll(StringUtils.copyPartialMatches(args[2], Arrays.asList("?")));
-			}
+		if (args[0].equalsIgnoreCase("Take") && Loader.has(s, "Economy", "Economy", "Take")) {
+			if (args.length == 2)
+				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
+			if (args.length == 3)
+				return StringUtils.copyPartialMatches(args[2], Arrays.asList("?"));
 		}
-		if (args[0].equalsIgnoreCase("Reset")) {
-			if (Loader.has(sender, "Economy", "Economy", "Reset")) {
-				if (args.length == 2)
-					return null;
-				if (args.length == 3)
-					c.addAll(StringUtils.copyPartialMatches(args[2], Arrays.asList("?")));
-			}
+		if (args[0].equalsIgnoreCase("Reset") && Loader.has(s, "Economy", "Economy", "Reset")) {
+			if (args.length == 2)
+				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
+			if (args.length == 3)
+				return StringUtils.copyPartialMatches(args[2], Arrays.asList("?"));
 		}
-		if (args[0].equalsIgnoreCase("Set")) {
-			if (Loader.has(sender, "Economy", "Economy", "Set")) {
-				if (args.length == 2)
-					return null;
-				if (args.length == 3)
-					c.addAll(StringUtils.copyPartialMatches(args[2], Arrays.asList("?")));
-			}
+		if (args[0].equalsIgnoreCase("Set") && Loader.has(s, "Economy", "Economy", "Set")) {
+			if (args.length == 2)
+				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
+			if (args.length == 3)
+				return StringUtils.copyPartialMatches(args[2], Arrays.asList("?"));
 		}
-		if (args[0].equalsIgnoreCase("Give")) {
-			if (Loader.has(sender, "Economy", "Economy", "Give")) {
-				if (args.length == 2)
-					return null;
-				if (args.length == 3)
-					c.addAll(StringUtils.copyPartialMatches(args[2], Arrays.asList("?")));
-			}
+		if (args[0].equalsIgnoreCase("Give") && Loader.has(s, "Economy", "Economy", "Give")) {
+			if (args.length == 2)
+				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
+			if (args.length == 3)
+				return StringUtils.copyPartialMatches(args[2], Arrays.asList("?"));
 		}
-		return c;
+		return Arrays.asList();
 	}
 
 }

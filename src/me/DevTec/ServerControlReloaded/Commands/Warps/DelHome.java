@@ -1,20 +1,19 @@
 package me.DevTec.ServerControlReloaded.Commands.Warps;
 
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 
 public class DelHome implements CommandExecutor, TabCompleter {
@@ -49,16 +48,8 @@ public class DelHome implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (s instanceof Player) {
-			if (args.length == 1) {
-				if (Loader.has(s, "DelHome", "Warps")) {
-					Set<String> homes = TheAPI.getUser(s.getName()).getKeys("Homes");
-					if (!homes.isEmpty() && homes != null)
-						c.addAll(StringUtil.copyPartialMatches(args[0], homes, new ArrayList<>()));
-				}
-			}
-		}
-		return c;
+		if (s instanceof Player && args.length == 1 && Loader.has(s, "DelHome", "Warps"))
+			return StringUtils.copyPartialMatches(args[0], TheAPI.getUser(s.getName()).getKeys("Homes"));
+		return Arrays.asList();
 	}
 }

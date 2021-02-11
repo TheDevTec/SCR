@@ -1,7 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,11 +10,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
+import me.devtec.theapi.utils.StringUtils;
 
 public class Chunks implements CommandExecutor, TabCompleter {
 
@@ -45,12 +44,8 @@ public class Chunks implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (cmd.getName().equalsIgnoreCase("chunks") && args.length == 1) {
-			if (Loader.has(s, "Chunks", "Info")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Unload, new ArrayList<>()));
-			}
-		}
-		return c;
+		if (args.length==1 && Loader.has(s, "Chunks", "Info"))
+			return StringUtils.copyPartialMatches(args[0], Unload);
+		return Arrays.asList();
 	}
 }

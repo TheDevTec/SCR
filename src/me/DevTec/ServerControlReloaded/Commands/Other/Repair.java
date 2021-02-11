@@ -1,7 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,15 +11,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.StringUtil;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class Repair implements CommandExecutor, TabCompleter {
 
-	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(args.length<2) {
@@ -94,15 +93,16 @@ public class Repair implements CommandExecutor, TabCompleter {
 		return true;
 	}
 
+	List<String> sd = Arrays.asList("Hand", "All");
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<String>();
-		List<String> s = Arrays.asList("Hand", "All");
+	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
+		if(Loader.has(s,"Repair","Other")) {
 		if (args.length == 1)
-			if (Loader.has(arg0, "Repair", "Other"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], s, new ArrayList<>()));
-		if(args.length==2)return null;
-		return c;
+			return StringUtils.copyPartialMatches(args[0], sd);
+		if(args.length==2)
+			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
+		}
+		return Arrays.asList();
 	}
 
 }

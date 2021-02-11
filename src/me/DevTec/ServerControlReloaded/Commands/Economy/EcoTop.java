@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Economy;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -59,7 +60,7 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 					String key = sf.getKey();
 					++i;
 					TheAPI.msg(Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", (i+(10*(page+1))-10) + "")
-							.replace("%player%", key).replace("%playername%", player(key))
+							.replace("%player%", key).replace("%playername%", player(s,key))
 							.replace("%money%", API.setMoneyFormat(sf.getValue(),true)), s);
 				}
 			}}.runTask();
@@ -69,14 +70,14 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 		return true;
 	}
 
-	public String player(String s) {
+	public String player(CommandSender d, String s) {
 		if (TheAPI.getPlayerOrNull(s) != null)
-			return TheAPI.getPlayerOrNull(s).getDisplayName();
+			return API.getPlayers(d).contains(TheAPI.getPlayerOrNull(s)) ? TheAPI.getPlayerOrNull(s).getDisplayName() : s;
 		return s;
 	}
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] arg3) {
-		return null;
+		return Arrays.asList();
 	}
 }

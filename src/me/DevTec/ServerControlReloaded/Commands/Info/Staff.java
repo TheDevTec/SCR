@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -76,7 +77,6 @@ public class Staff implements CommandExecutor, TabCompleter {
 		return s+"";
 	}
 	
-
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Staff", "Info")) {
@@ -116,8 +116,8 @@ public class Staff implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] arg3) {
-		return null;
+		return Arrays.asList();
 	}
 }

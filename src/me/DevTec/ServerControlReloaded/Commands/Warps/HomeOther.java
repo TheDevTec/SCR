@@ -1,7 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Warps;
 
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -9,7 +9,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -17,6 +16,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.Position;
+import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 
 public class HomeOther implements CommandExecutor, TabCompleter {
@@ -53,7 +53,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 							.add("%playername%", p.getDisplayName()));
 					return true;
 				}
-				if (args.length == 3) {
+				if (args.length == 3 && Loader.has(s, "HomeOther", "Warps", "Other")) {
 					Player pl = TheAPI.getPlayer(args[2]);
 					if (pl == null) {
 						Loader.notOnline(s, args[2]);
@@ -81,6 +81,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 							.add("%playername%", p.getDisplayName()));
 					return true;
 				}
+				Loader.noPerms(s, "HomeOther", "Warps","Other");
 				return true;
 			}
 			Loader.noPerms(s, "HomeOther", "Warps");
@@ -91,22 +92,14 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (s instanceof Player) {
-			if (args.length == 1) {
-				return null;
-			}
-			if (args.length == 2) {
-				if(TheAPI.getUser(args[0]).getKeys("Homes")!=null)
-				c.addAll(StringUtil.copyPartialMatches(args[1], TheAPI.getUser(args[0]).getKeys("Homes"),
-						new ArrayList<>()));
-				return c;
-			}
-			if (args.length == 3) {
-				return null;
-			}
+		if (Loader.has(s, "HomeOther", "Warps")) {
+			if(args.length == 1)
+				return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
+			if(args.length==2)
+				return StringUtils.copyPartialMatches(args[1], TheAPI.getUser(args[0]).getKeys("Homes"));
+			if(args.length == 3 && Loader.has(s, "HomeOther", "Warps", "Other"))
+				return StringUtils.copyPartialMatches(args[2], API.getPlayerNames(s));
 		}
-		return c;
+		return Arrays.asList();
 	}
-
 }

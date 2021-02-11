@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
@@ -314,8 +315,9 @@ public class Item implements CommandExecutor, TabCompleter{
 	}
 	
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (args.length==1) {			
+		if(Loader.has(s, "Item", "Other")) {
+		if (args.length==1) {	
+			List<String> c = new ArrayList<>();
 			if(Loader.has(s, "Item", "Other", "Name")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Name")));
 			if(Loader.has(s, "Item", "Other", "Lore")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Lore")));
 			if(Loader.has(s, "Item", "Other", "Flag") && TheAPI.isNewerThan(7)) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Flag")));	
@@ -326,14 +328,13 @@ public class Item implements CommandExecutor, TabCompleter{
 			return c;
 		}
 		if(args[0].equalsIgnoreCase("name") && Loader.has(s, "Item", "Other", "Name"))
-			return Arrays.asList("?");
+			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
 		if(args[0].equalsIgnoreCase("lore") && Loader.has(s, "Item", "Other", "Lore")) {
 			if(args.length==2) {
-				c.addAll(StringUtils.copyPartialMatches(args[1], Arrays.asList("Add","Remove","Set","List")));
-				return c;
+				return StringUtils.copyPartialMatches(args[1], Arrays.asList("Add","Remove","Set","List"));
 			}
 			if(args[1].equalsIgnoreCase("Add"))
-				return Arrays.asList("?");
+				return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
 			if(args.length==3) {
 				if(args[1].equalsIgnoreCase("Remove") || args[1].equalsIgnoreCase("Set")) {
 					List<String> lines = new ArrayList<>();
@@ -344,22 +345,19 @@ public class Item implements CommandExecutor, TabCompleter{
 			        if(item.hasItemMeta() && item.getItemMeta().getLore()!=null)
 					for(int i = 0; i < item.getItemMeta().getLore().size(); ++i)
 						lines.add(i+"");
-					c.addAll(StringUtils.copyPartialMatches(args[2], lines));
-					return c;
+					return StringUtils.copyPartialMatches(args[2], lines);
 				}
 			}
 			if(args[1].equalsIgnoreCase("Set"))
-				return Arrays.asList("?");
-			return c;
+				return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
+			return Arrays.asList();
 		}
 		if(args[0].equalsIgnoreCase("flag") && TheAPI.isNewerThan(7) && Loader.has(s, "Item", "Other", "Flag")) {
 			if(args.length==2) {
-				c.addAll(StringUtils.copyPartialMatches(args[1], Arrays.asList("Add","Remove","List")));
-				return c;
+				return StringUtils.copyPartialMatches(args[1], Arrays.asList("Add","Remove","List"));
 			}
 			if(args[1].equalsIgnoreCase("Add")){
-				c.addAll(StringUtils.copyPartialMatches(args[2], flags));
-				return c;
+				return StringUtils.copyPartialMatches(args[2], flags);
 			}
 			if(args.length==3) {
 				if(args[1].equalsIgnoreCase("Remove")) {
@@ -371,19 +369,17 @@ public class Item implements CommandExecutor, TabCompleter{
 			        if(item.hasItemMeta())
 					for(ItemFlag f : item.getItemMeta().getItemFlags())
 						lines.add(f.name()+"");
-					c.addAll(StringUtils.copyPartialMatches(args[2], lines));
-					return c;
+					return StringUtils.copyPartialMatches(args[2], lines);
 				}
 			}
-			return c;
+			return Arrays.asList();
 		}
 		if(args[0].equalsIgnoreCase("nbt") && Loader.has(s, "Item", "Other", "Nbt") ||args[0].equalsIgnoreCase("amount") && Loader.has(s, "Item", "Other", "Amount") || args[0].equalsIgnoreCase("durability") && Loader.has(s, "Item", "Other", "Durability")||args[0].equalsIgnoreCase("type") && Loader.has(s, "Item", "Other", "Type")) {
 			if(args.length==2) {
-				c.addAll(StringUtils.copyPartialMatches(args[1], Arrays.asList("Set","Get")));
-				return c;
+				return StringUtils.copyPartialMatches(args[1], Arrays.asList("Set","Get"));
 			}
-			return c;
 		}
-		return c;
+		}
+		return Arrays.asList();
 	}
 }

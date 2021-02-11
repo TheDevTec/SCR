@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -14,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
@@ -41,6 +43,24 @@ public class API {
 			cache.put(p, new SPlayer(p));
 		}
 		return cache.get(p);
+	}
+	
+	public static List<Player> getPlayers(CommandSender s){
+		List<Player> p = TheAPI.getOnlinePlayers();
+		if(s instanceof Player) {
+		Iterator<Player> d = p.iterator();
+		while(d.hasNext()) {
+			if(!d.next().canSee((Player)s))d.remove();
+		}
+		}
+		return p;
+	}
+	
+	public static List<String> getPlayerNames(CommandSender s){
+		List<Player> p = getPlayers(s);
+		List<String> names = new ArrayList<>(p.size());
+		p.forEach(a -> names.add(a.getName()));
+		return names;
 	}
 	
     public static void setVanish(String playerName, String permission, boolean value) {

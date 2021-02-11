@@ -1,7 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,8 +9,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.Repeat;
@@ -20,13 +19,7 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class Exp implements CommandExecutor, TabCompleter {
-	/*
-	 * public ExpMethod() { aliases.put("give", Arrays.asList("give", "add"));
-	 * aliases.put("take", Arrays.asList("take", "del", "delete", "remove"));
-	 * aliases.put("balance", Arrays.asList("bal", "balance")); aliases.put("set",
-	 * Arrays.asList("set")); }
-	 */
-
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (args.length == 0) {
@@ -57,7 +50,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 									.replace("%amount%", "" + add)
 									.replace("%type%", Loader.getTranslation("Experiences.Words.Exp").toString()));
 					return true;
-				} // else ==4
+				}
 				if (p == null) {
 					if (args[1].equals("*")) {
 						Repeat.a(s, "xp set * " + StringUtils.getFloat(args[2]) + " " + args[3]);
@@ -88,7 +81,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 			Loader.noPerms(s, "Experiences", "Other", "Set");
 			return true;
 		}
-		if (args[0].equalsIgnoreCase("Balance")) { //TODO - předělat xp zprávu na to aby to poukazovalo na počet xp z XP baru (0-1) a ne celkově 
+		if (args[0].equalsIgnoreCase("Balance")) {
 			if (Loader.has(s, "Experiences", "Other", "Balance")) {
 				if (args.length == 1) {
 					Loader.advancedHelp(s, "Experiences", "Other", "Balance");
@@ -226,18 +219,17 @@ public class Exp implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
-		
-		if (args.length == 1) {
-			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Set", "Give", "Take", "Balance"), new ArrayList<>()));
+		if(Loader.has(s, "Experiences", "Other")) {
+			if (args.length == 1)
+				return StringUtils.copyPartialMatches(args[0], Arrays.asList("Set", "Give", "Take", "Balance"));
+			if(args.length==2)
+				return API.getPlayerNames(s);
+			if (args.length == 3 && (args[2].equalsIgnoreCase("set")||args[2].equalsIgnoreCase("take")||args[2].equalsIgnoreCase("give")))
+				return StringUtils.copyPartialMatches(args[2], Arrays.asList("Level", "Exp"));
 		}
-		
-		if (args.length == 3) { //0 1 2 3 4
-			c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Set", "Give", "Take", "Balance"), new ArrayList<>()));
-		}
-		return c;
+		return Arrays.asList();
 	}
 	
 }

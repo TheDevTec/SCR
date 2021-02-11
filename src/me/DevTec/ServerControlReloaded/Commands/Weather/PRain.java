@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Weather;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.WeatherType;
@@ -9,9 +10,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class PRain implements CommandExecutor, TabCompleter {
 
@@ -31,7 +34,7 @@ public class PRain implements CommandExecutor, TabCompleter {
 			Loader.Help(s, "PRain", "Weather");
 			return true;
 		}
-		if (Loader.has(s, "PRain", "Weather")) {
+		if (Loader.has(s, "PRain", "Weather","Other")) {
 			if (TheAPI.getPlayer(args[0]) != null) {
 				TheAPI.getPlayer(args[0]).setPlayerWeather(WeatherType.DOWNFALL);
 				Loader.sendMessages(s, "Weather.PRain", Placeholder.c()
@@ -42,13 +45,16 @@ public class PRain implements CommandExecutor, TabCompleter {
 			Loader.notOnline(s, args[0]);
 			return true;
 		}
-		Loader.noPerms(s, "PRain", "Weather");
+		Loader.noPerms(s, "PRain", "Weather","Other");
 		return true;
 	}
+	
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
-			String arg2, String[] arg3) {
-		return null;
+	public List<String> onTabComplete(CommandSender s, Command arg1,
+			String arg2, String[] args) {
+		if (args.length == 1)
+			if (Loader.has(s, "PlayerRain", "Weather", "Other"))
+				return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
+		return Arrays.asList();
 	}
-
 }

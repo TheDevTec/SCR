@@ -1,5 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -21,9 +23,30 @@ import me.devtec.theapi.utils.StringUtils;
 public class Butcher implements CommandExecutor, TabCompleter {
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
-			String arg2, String[] arg3) {
-		return null;
+	public List<String> onTabComplete(CommandSender s, Command arg1,
+			String arg2, String[] args) {
+		if(Loader.has(s, "Butcher", "Other")) {
+			if(args.length==1) {
+				if (s instanceof Player) {
+					List<String> names = new ArrayList<>();
+					names.add("<radius>");
+					for(World w : Bukkit.getWorlds())
+						names.add(w.getName());
+					return StringUtils.copyPartialMatches(args[0], names);
+				}
+				List<String> names = new ArrayList<>();
+				for(World w : Bukkit.getWorlds())
+					names.add(w.getName());
+				return StringUtils.copyPartialMatches(args[0], names);
+			}
+			if(args.length==2) {
+				List<String> names = new ArrayList<>();
+				for(EntityType w : EntityType.values())
+					names.add(w.name());
+				return StringUtils.copyPartialMatches(args[1], names);
+			}
+		}
+		return Arrays.asList();
 	}
 
 	public static int butcher(World a, Location w, int radius, EntityType type) {

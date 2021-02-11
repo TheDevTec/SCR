@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Inventory;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -8,16 +9,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class Craft implements CommandExecutor, TabCompleter {
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
-			String arg2, String[] arg3) {
-		return null;
+	public List<String> onTabComplete(CommandSender s, Command arg1,
+			String arg2, String[] args) {
+		if(args.length==1 && Loader.has(s, "Workbench", "Inventory"))
+			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
+		return Arrays.asList();
 	}
 
 	@Override

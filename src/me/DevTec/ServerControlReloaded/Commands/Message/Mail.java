@@ -10,8 +10,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
@@ -95,21 +95,19 @@ public class Mail implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (s.hasPermission("ServerControl.Mail.Read")) {
-			if (args.length == 1) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Read", "Clear"), new ArrayList<>()));
+		if(Loader.has(s, "Mail", "Message")) {
+			if(args.length==1) {
+				List<String> c = new ArrayList<>();
+				if(Loader.has(s, "Mail", "Message", "Read"))
+					c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Read", "Clear")));
+				if(Loader.has(s, "Mail", "Message", "Send"))
+					c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Send")));
+				return c;
 			}
+			if(args[0].equalsIgnoreCase("Send") && Loader.has(s, "Mail", "Message", "Send"))
+				if(args.length>1)
+					return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
 		}
-		if (s.hasPermission("ServerControl.Mail.Send")) {
-			if (args.length == 1) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Send"), new ArrayList<>()));
-			}
-			if (args[0].equalsIgnoreCase("Send") && args.length == 2)
-				return null;
-			if (args.length >= 3)
-				return Arrays.asList("?");
-		}
-		return c;
+		return Arrays.asList();
 	}
 }

@@ -1,7 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +21,7 @@ import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
+import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.json.Reader;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
@@ -34,7 +35,6 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			return null;
 		}
 	}
-	
 	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] a) {
@@ -88,10 +88,11 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (args.length == 1)
-			return null;
-		return new ArrayList<>();
+	public List<String> onTabComplete(CommandSender s, Command arg1,
+			String arg2, String[] args) {
+		if(args.length==1 && Loader.has(s, "WhoIs", "Info"))
+			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
+		return Arrays.asList();
 	}
 
 }

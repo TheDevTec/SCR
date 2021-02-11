@@ -2,6 +2,7 @@ package me.DevTec.ServerControlReloaded.Commands.Warps;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -10,7 +11,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -48,8 +48,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 										.add("%warp%", warp(args[0])));
 								return true;
 							}
-							boolean needperm = Loader.config.getBoolean("Warps." + warp(args[0]) + ".NeedPermission");
-							if (needperm == true) {
+							if (Loader.config.getBoolean("Warps." + warp(args[0]) + ".NeedPermission")) {
 								if (s.hasPermission(Loader.cmds.getString("Warps.Warp.SubPermission.PerWarp").replace("%warp%", warp(args[0])))) {
 									API.setBack((Player) s);
 									if (setting.tp_safe)
@@ -80,39 +79,51 @@ public class Warp implements CommandExecutor, TabCompleter {
 					}
 					return true;
 				}
-				if (args.length == 2) {
+				if (args.length == 2 && Loader.has(s, "Warp", "Warps","Other")) {
 					Player p = TheAPI.getPlayer(args[1]);
 					if (p == null) {
 						Loader.notOnline(s, args[1]);
 						return true;
-					} else {
-						if (warp(args[0]) != null) {
-							Location loc = StringUtils.getLocationFromString(Loader.config.getString("Warps." + warp(args[0])));
-							if (loc == null) {
-								Loader.sendMessages(s, "Warp.WrongLocation", Placeholder.c()
+					}
+					if (warp(args[0]) != null) {
+						Location loc = StringUtils.getLocationFromString(Loader.config.getString("Warps." + warp(args[0])));
+						if (loc == null) {
+							Loader.sendMessages(s, "Warp.WrongLocation", Placeholder.c()
+									.add("%warp%", warp(args[0])));
+							return true;
+						}
+						if (Loader.config.getBoolean("Warps." + warp(args[0]) + ".NeedPermission")) {
+							if (s.hasPermission(Loader.getPerm("Warp", "Warps", "PerWarp").replace("%warp%", warp(args[0])))) {
+								API.setBack((Player) s);
+								if (setting.tp_safe)
+									API.safeTeleport((Player)s, loc);
+								else
+									((Player) s).teleport(loc);
+								Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
 										.add("%warp%", warp(args[0])));
 								return true;
 							}
-							API.setBack(p);
-							if (setting.tp_safe)
-								API.safeTeleport(p, loc);
-							else
-								p.teleport(loc);
-							Loader.sendMessages(p, "Warp.Teleport.You", Placeholder.c()
-									.add("%warp%", warp(args[0])));
-							Loader.sendMessages(s, "Warp.Teleport.Other.Sender", Placeholder.c()
-									.add("%warp%", warp(args[0]))
-									.add("%player%", p.getName())
-									.add("%playername%", p.getDisplayName()));
+							Loader.sendMessages(s, "NoPerms", Placeholder.c()
+									.add("%permission%", Loader.getPerm("Warp", "Warps", "PerWarp").replace("%warp%", warp(args[0]))));
 							return true;
 						}
-						Loader.sendMessages(s, "Warp.NotExist", Placeholder.c()
-								.add("%warp%", args[0]));
+						API.setBack(p);
+						if (setting.tp_safe)
+							API.safeTeleport(p, loc);
+						else
+							p.teleport(loc);
+						Loader.sendMessages(p, "Warp.Teleport.You", Placeholder.c()
+								.add("%warp%", warp(args[0])));
+						Loader.sendMessages(s, "Warp.Teleport.Other.Sender", Placeholder.c()
+								.add("%warp%", warp(args[0]))
+								.add("%player%", p.getName())
+								.add("%playername%", p.getDisplayName()));
 						return true;
 					}
+					Loader.sendMessages(s, "Warp.NotExist", Placeholder.c()
+							.add("%warp%", args[0]));
+					return true;
 				}
-				Loader.sendMessages(s, "Warp.Empty");
-				return true;
 			}
 			Loader.sendMessages(s, "Warp.Empty");
 			return true;
@@ -120,7 +131,6 @@ public class Warp implements CommandExecutor, TabCompleter {
 		Loader.noPerms(s, "Warp", "Warps");
 		return true;
 	}
-	// opraveno ... teď zprovozni /setwarp :)
 
 	public String player(CommandSender s) {
 		if (TheAPI.getPlayer(s.getName()) != null)
@@ -130,27 +140,23 @@ public class Warp implements CommandExecutor, TabCompleter {
 
 	public List<String> warpss(CommandSender s) {
 		List<String> w = new ArrayList<>();
-			for (String st : Loader.config.getKeys("Warps")) {
-				boolean needperm = Loader.config.getBoolean("Warps." + st + ".NeedPermission");
-				String needperm2 = Loader.config.getString("Warps." + st + ".NeedPermission");
-				if (s.hasPermission("ServerControl.Warp." + st) && needperm == true) {
-					w.add(st);
-				}
-				if (needperm == false || needperm2 == null) {
-					w.add(st);
-				}
-			}
+		for (String st : Loader.config.getKeys("Warps")) {
+			boolean needperm = Loader.config.getBoolean("Warps." + st + ".NeedPermission");
+			if (!needperm || needperm && s.hasPermission(Loader.getPerm("Warp", "Warps", "PerWarp").replace("%warp%", st)))
+				w.add(st);
+		}
 		return w;
 	}
-
+	
 	@Override
-	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (args.length == 1) {
-			if (Loader.has(s, "Warp", "Warps")) { 
-				c.addAll(StringUtil.copyPartialMatches(args[0], warpss(s), new ArrayList<>()));
-			}
+	public List<String> onTabComplete(CommandSender s, Command arg1,
+			String arg2, String[] args) {
+		if(Loader.has(s, "Warp", "Warps")) {
+			if (args.length == 1)
+				return StringUtils.copyPartialMatches(args[0], warpss(s));
+			if (args.length == 2 && Loader.has(s, "Warp", "Warps","Other"))
+				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
 		}
-		return c;
+		return Arrays.asList();
 	}
 }

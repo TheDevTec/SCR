@@ -65,7 +65,6 @@ import me.DevTec.ServerControlReloaded.Commands.Inventory.ClearInv;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.CloseInventory;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.Craft;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.EnderChest;
-import me.DevTec.ServerControlReloaded.Commands.Inventory.EnderSee;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.Invsee;
 import me.DevTec.ServerControlReloaded.Commands.Kill.Kill;
 import me.DevTec.ServerControlReloaded.Commands.Kill.KillAll;
@@ -906,7 +905,6 @@ public class Loader extends JavaPlugin implements Listener {
 		
 		//Inventory
 		CmdC("Inventory", "EnderChest", new EnderChest());
-		CmdC("Inventory", "Endersee", new EnderSee());
 		CmdC("Inventory", "CloseInventory", new CloseInventory());
 		CmdC("Inventory", "ClearInventory",new ClearInv());
 		CmdC("Inventory", "ClearConfirmToggle", new ClearConfirmToggle());
@@ -1028,5 +1026,8 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 	public static String getPerm(String cmd, String section) {
 		return cmds.getString(section+"."+cmd+".Permission");
+	}
+	public static String getPerm(String cmd, String section, String sub) {
+		return cmds.getString(section+"."+cmd+".SubPermission."+sub);
 	}
 }

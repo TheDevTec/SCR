@@ -1,5 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -8,18 +10,25 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.DisplayManager;
 import me.DevTec.ServerControlReloaded.Utils.DisplayManager.DisplayType;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class BossBar implements CommandExecutor, TabCompleter {
-
+	
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
-			String arg2, String[] arg3) {
-		return null;
+	public List<String> onTabComplete(CommandSender s, Command arg1,
+			String arg2, String[] args) {
+		if(Loader.has(s, "BossBar", "Other") && args.length==1) {
+			List<String> d = Loader.has(s, "BossBar", "Other", "ToggleOther")?API.getPlayerNames(s):new ArrayList<>();
+			d.add("toggle");
+			return StringUtils.copyPartialMatches(args[0], d);
+		}
+		return Arrays.asList();
 	}
 
 	@Override

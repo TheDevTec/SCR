@@ -11,12 +11,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.EnchantmentAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 	List<String> enchs = new ArrayList<String>();
@@ -80,18 +80,8 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command a, String ea, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (a.getName().equalsIgnoreCase("enchanttableremove") || a.getName().equalsIgnoreCase("Enchantremove")
-				|| a.getName().equalsIgnoreCase("Enchantmentremove" + "")) {
-			if (s.hasPermission("ServerControl.Enchant")) {
-				if (s instanceof Player) {
-					if (args.length == 1) {
-						c.addAll(StringUtil.copyPartialMatches(args[0], enchs, new ArrayList<>()));
-
-					}
-				}
-			}
-		}
-		return c;
+		if (Loader.has(s, "EnchantRemove", "Enchantment") && s instanceof Player && args.length==1)
+			return StringUtils.copyPartialMatches(args[0], enchs);
+		return Arrays.asList();
 	}
 }

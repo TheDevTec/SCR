@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,8 +68,10 @@ public class Seen implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
-			String arg2, String[] arg3) {
-		return null;
+	public List<String> onTabComplete(CommandSender s, Command arg1,
+			String arg2, String[] args) {
+		if(args.length==1 && Loader.has(s, "Seen", "Info"))
+			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
+		return Arrays.asList();
 	}
 }

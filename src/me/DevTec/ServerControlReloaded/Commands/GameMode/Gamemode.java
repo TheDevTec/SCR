@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.GameMode;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.GameMode;
@@ -7,17 +8,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
-
+import org.bukkit.entity.Player;import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class Gamemode implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-
 		if (args.length == 0) {
 			if (Loader.has(s, "GameMode", "GameMode")) {
 				Loader.Help(s, "GameMode", "GameMode");
@@ -130,8 +130,14 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
-			String arg2, String[] arg3) {
-		return null;
+	public List<String> onTabComplete(CommandSender s, Command arg1,
+			String arg2, String[] args) {
+		if (Loader.has(s, "GameMode", "GameMode")) {
+			if(args.length==1)
+				return StringUtils.copyPartialMatches(args[0], Arrays.asList("Survival","Creative","Spectator","Adventure"));
+			if(args.length==2 && Loader.has(s, "GameMode" + args[0], "GameMode","Other"))
+				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
+		}
+		return Arrays.asList();
 	}
 }

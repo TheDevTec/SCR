@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.BanSystem;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -8,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
@@ -15,10 +17,21 @@ import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public class TempBanIP implements CommandExecutor, TabCompleter {
+	
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
-			String arg2, String[] arg3) {
-		return null;
+	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
+		if(Loader.has(s, "TempBanIP", "BanSystem")) {
+			if(args.length==2) {
+				try {
+					if(args[1].substring(args[1].length()-1, args[1].length()).matches("[0-9]"))
+						return Arrays.asList(args[1]+"s",args[1]+"m",args[1]+"h",args[1]+"d",args[1]+"w",args[1]+"mo");
+				}catch(Exception e) {
+					return Arrays.asList("15m","2h","2h30m","6h","12h","7d");
+				}
+			}
+			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
+		}
+		return Arrays.asList();
 	}
 	
 	@Override

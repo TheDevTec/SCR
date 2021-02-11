@@ -9,7 +9,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
@@ -144,32 +143,32 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
-		List<String> c = new ArrayList<>();
 		if (args.length == 1) {
+			List<String> c = new ArrayList<>();
 			if (s.hasPermission("ServerControl.ChatFormat.List"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("List"), new ArrayList<>()));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("List")));
 			if (s.hasPermission("ServerControl.ChatFormat.Info"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Info"), new ArrayList<>()));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Info")));
 			if (s.hasPermission("ServerControl.ChatFormat.Create"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Create"), new ArrayList<>()));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Create")));
 			if (s.hasPermission("ServerControl.ChatFormat.Delete"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Delete"), new ArrayList<>()));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Delete")));
 			if (s.hasPermission("ServerControl.ChatFormat.Set"))
-				c.addAll(StringUtil.copyPartialMatches(args[0], Arrays.asList("Set"), new ArrayList<>()));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Set")));
+			return c;
 		}
 		if (args.length == 2) {
 			if (args[0].equalsIgnoreCase("info") && s.hasPermission("ServerControl.ChatFormat.Info")
 					|| args[0].equalsIgnoreCase("delete") && s.hasPermission("ServerControl.ChatFormat.Delete")
 					|| args[0].equalsIgnoreCase("set") && s.hasPermission("ServerControl.ChatFormat.Set"))
-				c.addAll(StringUtil.copyPartialMatches(args[1],
-						Loader.config.getKeys("Chat-Groups"), new ArrayList<>()));
+				return StringUtils.copyPartialMatches(args[1],
+						Loader.config.getKeys("Chat-Groups"));
 
 			if (args[0].equalsIgnoreCase("create") && s.hasPermission("ServerControl.ChatFormat.Create")) {
 				if (Loader.config.getString("Chat-Groups") != null)
 					for (String a : Loader.config.getKeys("Chat-Groups"))
 						if (args[1].equals(a))
-							c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("AlreadyExists"),
-									new ArrayList<>()));
+							return StringUtils.copyPartialMatches(args[1], Arrays.asList("AlreadyExists"));
 						else {
 							List<String> list = new ArrayList<String>();
 							if (Loader.vault != null && PluginManagerAPI.getPlugin("Vault") != null) {
@@ -179,21 +178,21 @@ public class ChatFormat implements CommandExecutor, TabCompleter {
 							} else
 								list = Arrays.asList("?");
 							list.removeAll(Loader.config.getKeys("Chat-Groups"));
-							c.addAll(StringUtil.copyPartialMatches(args[1], list, new ArrayList<>()));
+							return StringUtils.copyPartialMatches(args[1], list);
 						}
-				c.addAll(StringUtil.copyPartialMatches(args[1], Arrays.asList("?"), new ArrayList<>()));
+				return StringUtils.copyPartialMatches(args[1], Arrays.asList("?"));
 			}
 		}
 		if (args.length == 3) {
 			if (args[0].equalsIgnoreCase("set") && s.hasPermission("ServerControl.ChatFormat.Set"))
-				c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("Chat", "Name"), new ArrayList<>()));
+				return StringUtils.copyPartialMatches(args[2], Arrays.asList("Chat", "Name"));
 		}
 		if (args.length == 4) {
 			if (args[0].equalsIgnoreCase("set") && s.hasPermission("ServerControl.ChatFormat.Set"))
 				if (args[2].equalsIgnoreCase("Chat") || args[2].equalsIgnoreCase("Name"))
-					c.addAll(StringUtil.copyPartialMatches(args[3], Arrays.asList("?"), new ArrayList<>()));
+					return StringUtils.copyPartialMatches(args[3], Arrays.asList("?"));
 		}
-		return c;
+		return Arrays.asList();
 	}
 
 }

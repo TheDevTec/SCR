@@ -1,6 +1,7 @@
 
 package me.DevTec.ServerControlReloaded.Commands.BanSystem;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -9,6 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
@@ -71,8 +73,9 @@ public class Jail implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
-			String arg2, String[] arg3) {
-		return null;
+	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
+		if(Loader.has(s, "Jail", "BanSystem"))
+			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
+		return Arrays.asList();
 	}
 }

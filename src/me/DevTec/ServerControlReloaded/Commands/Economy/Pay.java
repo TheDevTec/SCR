@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Economy;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -14,6 +15,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.Repeat;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class Pay implements CommandExecutor, TabCompleter {
 
@@ -22,7 +24,6 @@ public class Pay implements CommandExecutor, TabCompleter {
 		if (EconomyAPI.getEconomy() == null) {
 			return true;
 		}
-
 		if (Loader.has(s, "Pay", "Economy")) {
 			if (s instanceof Player) {
 				Player p = (Player) s;
@@ -65,8 +66,14 @@ public class Pay implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
-			String arg2, String[] arg3) {
-		return null;
+	public List<String> onTabComplete(CommandSender s, Command arg1,
+			String arg2, String[] args) {
+		if(Loader.has(s, "Pay", "Economy")) {
+			if(args.length==1)
+				return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
+			if(args.length==2)
+				return StringUtils.copyPartialMatches(args[1], Arrays.asList("250","500","1k","2.5k","5k"));
+		}
+		return Arrays.asList();
 	}
 }

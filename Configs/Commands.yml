@@ -336,7 +336,11 @@ Inventory:
       Inventory: "SCR.Command.ClearInventory.Inventory"
       Undo: "SCR.Command.ClearInventory.Undo"
       Other: "SCR.Command.ClearInventory.Other"
-    Help: "/ClearInventory <player> - Clear player's inventory"
+    Help:
+    - "/ClearInventory Clear - Clear your inventory"
+    - "/ClearInventory Confirm - Confirm to clear your inventory"
+    - "/ClearInventory Other <player> - Clear player's inventory"
+    - "/ClearInventory Undo - Purchases your cleared inventory back"
     Enabled: true
   ClearInventoryToggle:
     Name: "clearinventorytoggle"
@@ -649,6 +653,8 @@ Warps:
     Name: "homeother"
     Permission: "SCR.Command.HomeOther"
     Help: "/HomeOther <player> <home> - Teleports you to targeted player home"
+    SubPermission:
+      Other: "SCR.Command.HomeOther.Other"
     Enabled: true
   Homes:
     Name: "homes"
@@ -684,6 +690,7 @@ Warps:
     Permission: "SCR.Command.Warp"
     SubPermission:
       PerWarp: "SCR.Command.Warp.%warp%"
+      Other: "SCR.Command.Warp.Other"
     Help: "/Warp <warp> - Teleports you to warp"
     Enabled: true
     

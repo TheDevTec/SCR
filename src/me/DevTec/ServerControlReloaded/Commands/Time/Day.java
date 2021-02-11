@@ -2,6 +2,7 @@ package me.DevTec.ServerControlReloaded.Commands.Time;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -11,16 +12,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.devtec.theapi.utils.StringUtils;
 
 public class Day implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-
 		if (args.length == 0) {
 			if (s instanceof Player) {
 				if (Loader.has(s, "Day", "Time")) {
@@ -60,12 +60,8 @@ public class Day implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		List<String> c = new ArrayList<>();
-		if (cmd.getName().equalsIgnoreCase("day") && args.length == 1) {
-			if (Loader.has(s, "Day", "Time")) {
-				c.addAll(StringUtil.copyPartialMatches(args[0], worlds(), new ArrayList<>()));
-			}
-		}
-		return c;
+		if (Loader.has(s, "Day", "Time") && args.length == 1)
+			return StringUtils.copyPartialMatches(args[0], worlds());
+		return Arrays.asList();
 	}
 }

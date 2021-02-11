@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -46,10 +47,9 @@ public class RAM implements CommandExecutor, TabCompleter {
 		return true;
 	}
 
-
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] arg3) {
-		return null;
+		return Arrays.asList();
 	}
 }

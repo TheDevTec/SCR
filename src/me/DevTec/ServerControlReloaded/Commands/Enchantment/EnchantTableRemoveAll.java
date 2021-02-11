@@ -2,6 +2,7 @@ package me.DevTec.ServerControlReloaded.Commands.Enchantment;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -48,10 +49,9 @@ public class EnchantTableRemoveAll implements CommandExecutor, TabCompleter {
 		Loader.noPerms(s, "EnchantRemoveAll", "Enchantment");
 		return true;
 	}
-
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
+	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] arg3) {
-		return null;
+		return Arrays.asList();
 	}
 }

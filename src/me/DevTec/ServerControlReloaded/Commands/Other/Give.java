@@ -16,8 +16,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.StringUtil;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.Repeat;
@@ -551,17 +551,13 @@ public class Give implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		List<String> c = new ArrayList<>();
 		if (Loader.has(s, "Give", "Other")) {
-			List<String> pls = new ArrayList<String>();
-			for (Player p : TheAPI.getOnlinePlayers())
-				pls.add(p.getName());
 			if (args.length == 1)
-				c.addAll(StringUtil.copyPartialMatches(args[0], pls, new ArrayList<>()));
+				return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
 			if (args.length == 2) {
-				c.addAll(StringUtil.copyPartialMatches(args[1], list, new ArrayList<>()));
+				return StringUtils.copyPartialMatches(args[1], list);
 			}
 			if (args.length == 3) {
-				c.addAll(StringUtil.copyPartialMatches(args[2], Arrays.asList("1", "3", "5", "10", "15"),
-						new ArrayList<>()));
+				return StringUtils.copyPartialMatches(args[2], Arrays.asList("1", "3", "5", "12", "16", "32","64"));
 			}
 		}
 		return c;

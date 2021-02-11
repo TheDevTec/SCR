@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.TpSystem;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -13,13 +14,16 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class Tphere implements CommandExecutor, TabCompleter {
 
 	@Override
-	public List<String> onTabComplete(CommandSender arg0, Command arg1,
-			String arg2, String[] arg3) {
-		return null;
+	public List<String> onTabComplete(CommandSender s, Command arg1,
+			String arg2, String[] args) {
+		if (Loader.has(s, "TpHere", "TpSystem") && args.length == 1)
+			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
+		return Arrays.asList();
 	}
 
 	@Override
