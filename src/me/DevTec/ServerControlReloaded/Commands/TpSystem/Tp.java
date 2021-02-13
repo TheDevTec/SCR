@@ -192,13 +192,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 				if (s instanceof Player) {
 					Player target = TheAPI.getPlayer(args[0]);
 					if (target == null || !API.getPlayers(s).contains(target)) {
-						if (StringUtils.isInt(args[0])) {
-							Loader.Help(s, "Tp", "TpSystem");
-							return true;
-						} else {
-							Loader.notOnline(s,args[0]);
-							return true;
-						}
+						Loader.Help(s, "Tp", "TpSystem");
+						return true;
 					} else {
 						if (Loader.has(s, "Tp", "TpSystem", "Blocked") || !Loader.has(s, "Tp", "TpSystem", "Blocked") && !RequestMap.isBlocking(s.getName(), target.getName())) {
 							Loader.sendMessages(s, "TpSystem.Tp.Player.YouToPlayer", Placeholder.c().replace("%player%", target.getName()));
@@ -225,13 +220,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 					Player p1 = TheAPI.getPlayer(args[1]);
 					if (p1 == null || !API.getPlayers(s).contains(p1)) {
 						if (s instanceof Player) {
-							if (StringUtils.isInt(args[1])) {
-								Loader.Help(s, "Tp", "TpSystem");
-								return true;
-							} else {
-								Loader.notOnline(s,args[1]);
-								return true;
-							}
+							Loader.Help(s, "Tp", "TpSystem");
+							return true;
 						}
 						Loader.Help(s, "Tp", "TpSystem");
 						return true;
@@ -259,8 +249,6 @@ public class Tp implements CommandExecutor, TabCompleter {
 			if (args.length == 3) {
 				if (Loader.has(s, "Tp","TpSystem","Location") && s instanceof Player) {
 					Player p = (Player)s;
-					if (StringUtils.isInt(args[0]) && StringUtils.isInt(args[1])
-							&& StringUtils.isInt(args[2])) {
 						if (s instanceof Player) {
 							p=(Player)s;
 							double x=StringUtils.calculate(args[0].replace("~", p.getLocation().getX()+"")).doubleValue()
@@ -276,7 +264,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 							API.safeTeleport(p,new Location(p.getWorld(), x, y, z, 0, 0));
 						else p.teleport(new Location(p.getWorld(), x, y, z, 0, 0));
 						return true;
-						}}else{Loader.Help(s, "Tp", "TpSystem");return true;}
+						}
 						Loader.Help(s, "Tp", "TpSystem");
 						return true;
 				}

@@ -84,7 +84,7 @@ public class OnPlayerJoin implements Listener {
             if(p!=s)
             if (!API.canSee(p, s.getName()))
                 p.hidePlayer(s);
-        API.setVanish(p.getName(), Loader.getPerm("Vanish","Other"), API.hasVanish(p.getName(), false));
+        API.setVanish(p.getName(), Loader.getPerm("Vanish","Other"), API.hasVanish(p.getName()));
 		DisplayManager.initializePlayer(p);
 		new Tasker() {
 			public void run() {

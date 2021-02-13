@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -17,7 +16,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.MetadataValue;
 
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.setting;
@@ -32,27 +30,22 @@ public class API {
 	private static HashMap<String, SPlayer> cache = new HashMap<>();
 
 	public static SPlayer getSPlayer(Player p) {
-		if(!cache.containsKey(p.getName())) {
+		if(!cache.containsKey(p.getName()))
 			cache.put(p.getName(), new SPlayer(p));
-		}
 		return cache.get(p.getName());
 	}
 
 	public static SPlayer getSPlayer(String p) {
-		if(!cache.containsKey(p)) {
+		if(!cache.containsKey(p))
 			cache.put(p, new SPlayer(p));
-		}
 		return cache.get(p);
 	}
 	
 	public static List<Player> getPlayers(CommandSender s){
 		List<Player> p = TheAPI.getOnlinePlayers();
-		if(s instanceof Player) {
-		Iterator<Player> d = p.iterator();
-		while(d.hasNext()) {
-			if(!d.next().canSee((Player)s))d.remove();
-		}
-		}
+		if(s instanceof Player)
+			for(Player pd : TheAPI.getOnlinePlayers())
+	           	if(pd!=s && !canSee((Player)s,pd.getName()) && !((Player)s).canSee(pd))p.remove(pd);
 		return p;
 	}
 	
@@ -89,38 +82,28 @@ public class API {
                 i.set("vanish", var);
                 i.set("vanish.perm", perm);
                 i.save();
-                for (Player d : TheAPI.getOnlinePlayers())
-                    if (s != d && !canSee(d, s.getName()) && d.canSee(s))
+                List<Player> l = TheAPI.getOnlinePlayers();
+                l.remove(s);
+                for(Player d : l)
+                    if(!d.hasPermission(perm))
                         d.hidePlayer(s);
                 return;
             }
             i.remove("vanish");
             i.save();
-            for (Player d : TheAPI.getOnlinePlayers())
-                if (s != d && canSee(d, s.getName()) && !d.canSee(s))
-                    d.showPlayer(s);
-    }
- 
-    private static boolean hasSuperVanish(Player player) {
-        if (player.hasMetadata("vanished"))
-            for (MetadataValue meta : player.getMetadata("vanished"))
-                return meta.asBoolean();
-        return false;
+            List<Player> l = TheAPI.getOnlinePlayers();
+            l.remove(s);
+            for (Player d : l)
+            	d.showPlayer(s);
     }
  
     public static boolean hasVanish(String playerName) {
-         return hasVanish(playerName, true);
-    }
- 
-    public static boolean hasVanish(String playerName, boolean checkSuperVanish) {
-        Player s = TheAPI.getPlayerOrNull(playerName);
-        return s != null ? (checkSuperVanish?hasSuperVanish(s):false || TheAPI.getUser(s).getBoolean("vanish"))
-                : TheAPI.getUser(playerName).getBoolean("vanish");
+        if(playerName==null)return false;
+        return TheAPI.getUser(playerName).getBoolean("vanish");
     }
  
     public static boolean hasVanish(Player player) {
         if(player==null)return false;
-        if(player.isOnline())return hasSuperVanish(player) || TheAPI.getUser(player).getBoolean("vanish");
         return TheAPI.getUser(player).getBoolean("vanish");
     }
  
@@ -130,10 +113,6 @@ public class API {
  
     public static boolean canSee(Player player, String target) {
         return hasVanish(target) ? player.hasPermission(getVanishPermission(target)) : true;
-    }
- 
-    public static boolean canSee(String player, String target) {
-        return hasVanish(target);
     }
 
 	public static List<SPlayer> getSPlayers() {

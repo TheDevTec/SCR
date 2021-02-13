@@ -296,7 +296,12 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	public static void sendMessages(CommandSender to, String path, Placeholder placeholders) {
 		Object o = getTranslation(path);
-		if(o==null)return;
+		if(o==null) {
+			Bukkit.getLogger().severe("[BUG] Missing configuration path [Translations]!");
+			Bukkit.getLogger().severe("[BUG] Report this to the DevTec discord:");
+			Bukkit.getLogger().severe("[BUG] Missing path: "+path);
+			return;
+		}
 		if(o instanceof Collection) {
 			for(Object d : (Collection<?>)o)
 				TheAPI.msg(placeholder(to, d+"", placeholders), to);
@@ -994,12 +999,12 @@ public class Loader extends JavaPlugin implements Listener {
 
 	public static boolean has(CommandSender s, String cmd, String section) {
 		if(!cmds.exists(section+"."+cmd+".Permission")) {
-			Bukkit.getLogger().severe("[BUG] Missing configuration path!");
+			Bukkit.getLogger().severe("[BUG] Missing configuration path [Commands.yml]!");
 			Bukkit.getLogger().severe("[BUG] Report this to the DevTec discord:");
 			Bukkit.getLogger().severe("[BUG] Missing path: "+section+"."+cmd);
 			return false;
 		}
-		return s.hasPermission(cmds.getString(section+"."+cmd+".Permission"));
+		return cmds.getString(section+"."+cmd+".Permission").equals("")?true:s.hasPermission(cmds.getString(section+"."+cmd+".Permission"));
 	}
 
 	public static void noPerms(CommandSender s, String cmd, String section) {
@@ -1011,10 +1016,10 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static boolean has(CommandSender s, String cmd, String section, String subPerm) {
-		return cmds.exists(section+"."+cmd+".SubPermission."+subPerm)?s.hasPermission(cmds.getString(section+"."+cmd+".SubPermission."+subPerm)):true;
+		return cmds.exists(section+"."+cmd+".SubPermission."+subPerm)?cmds.getString(section+"."+cmd+".SubPermission."+subPerm).equals("")?true:s.hasPermission(cmds.getString(section+"."+cmd+".SubPermission."+subPerm)):true;
 	}
 	public static boolean has(Player s, String cmd, String section, String subPerm) {
-		return cmds.exists(section+"."+cmd+".SubPermission."+subPerm)?s.hasPermission(cmds.getString(section+"."+cmd+".SubPermission."+subPerm)):true;
+		return cmds.exists(section+"."+cmd+".SubPermission."+subPerm)?cmds.getString(section+"."+cmd+".SubPermission."+subPerm).equals("")?true:s.hasPermission(cmds.getString(section+"."+cmd+".SubPermission."+subPerm)):true;
 	}
 
 	public static Kit getKit(String kitName) {
