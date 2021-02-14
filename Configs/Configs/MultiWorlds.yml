@@ -1,7 +1,0 @@
-# Modify mob spawn rates
-ModifyMobsSpawnRates: false
-
-SavingTask:
-  Enabled: true
-  # Delay of world saving queue
-  Delay: "1h"
