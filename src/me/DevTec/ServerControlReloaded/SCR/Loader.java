@@ -12,135 +12,14 @@ import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.Accounts;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.Ban;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.BanIP;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.DelJail;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.Immune;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.Jail;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.Kick;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.Mute;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.SetJail;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.TempBan;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.TempBanIP;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.TempJail;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.TempMute;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.UnBan;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.UnBanIP;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.UnJail;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.UnMute;
-import me.DevTec.ServerControlReloaded.Commands.BanSystem.Warn;
-import me.DevTec.ServerControlReloaded.Commands.Economy.Balance;
-import me.DevTec.ServerControlReloaded.Commands.Economy.Eco;
-import me.DevTec.ServerControlReloaded.Commands.Economy.EcoTop;
-import me.DevTec.ServerControlReloaded.Commands.Economy.MultiEconomy;
-import me.DevTec.ServerControlReloaded.Commands.Economy.Pay;
-import me.DevTec.ServerControlReloaded.Commands.Enchantment.EnchantTable;
-import me.DevTec.ServerControlReloaded.Commands.Enchantment.EnchantTableRemove;
-import me.DevTec.ServerControlReloaded.Commands.Enchantment.EnchantTableRemoveAll;
-import me.DevTec.ServerControlReloaded.Commands.GameMode.Gamemode;
-import me.DevTec.ServerControlReloaded.Commands.GameMode.GamemodeA;
-import me.DevTec.ServerControlReloaded.Commands.GameMode.GamemodeC;
-import me.DevTec.ServerControlReloaded.Commands.GameMode.GamemodeS;
-import me.DevTec.ServerControlReloaded.Commands.GameMode.GamemodeSP;
-import me.DevTec.ServerControlReloaded.Commands.Info.Chunks;
-import me.DevTec.ServerControlReloaded.Commands.Info.ListCmd;
-import me.DevTec.ServerControlReloaded.Commands.Info.Maintenance;
-import me.DevTec.ServerControlReloaded.Commands.Info.RAM;
-import me.DevTec.ServerControlReloaded.Commands.Info.SCR;
-import me.DevTec.ServerControlReloaded.Commands.Info.Seen;
-import me.DevTec.ServerControlReloaded.Commands.Info.Staff;
-import me.DevTec.ServerControlReloaded.Commands.Info.TPS;
-import me.DevTec.ServerControlReloaded.Commands.Info.WhoIs;
-import me.DevTec.ServerControlReloaded.Commands.Inventory.ClearConfirmToggle;
-import me.DevTec.ServerControlReloaded.Commands.Inventory.ClearInv;
-import me.DevTec.ServerControlReloaded.Commands.Inventory.CloseInventory;
-import me.DevTec.ServerControlReloaded.Commands.Inventory.Craft;
-import me.DevTec.ServerControlReloaded.Commands.Inventory.EnderChest;
-import me.DevTec.ServerControlReloaded.Commands.Inventory.Invsee;
-import me.DevTec.ServerControlReloaded.Commands.Kill.Kill;
-import me.DevTec.ServerControlReloaded.Commands.Kill.KillAll;
-import me.DevTec.ServerControlReloaded.Commands.Kill.Suicide;
-import me.DevTec.ServerControlReloaded.Commands.Message.Broadcast;
-import me.DevTec.ServerControlReloaded.Commands.Message.ClearChat;
-import me.DevTec.ServerControlReloaded.Commands.Message.Helpop;
-import me.DevTec.ServerControlReloaded.Commands.Message.Mail;
-import me.DevTec.ServerControlReloaded.Commands.Message.PrivateMessage;
-import me.DevTec.ServerControlReloaded.Commands.Message.ReplyPrivateMes;
-import me.DevTec.ServerControlReloaded.Commands.Message.SocialSpy;
-import me.DevTec.ServerControlReloaded.Commands.Message.Sudo;
-import me.DevTec.ServerControlReloaded.Commands.Nickname.Nick;
-import me.DevTec.ServerControlReloaded.Commands.Nickname.NickReset;
-import me.DevTec.ServerControlReloaded.Commands.Other.AFK;
-import me.DevTec.ServerControlReloaded.Commands.Other.ActionBar;
-import me.DevTec.ServerControlReloaded.Commands.Other.BossBar;
-import me.DevTec.ServerControlReloaded.Commands.Other.Butcher;
-import me.DevTec.ServerControlReloaded.Commands.Other.ChatLock;
-import me.DevTec.ServerControlReloaded.Commands.Other.ColorsCmd;
-import me.DevTec.ServerControlReloaded.Commands.Other.Exp;
-import me.DevTec.ServerControlReloaded.Commands.Other.Feed;
-import me.DevTec.ServerControlReloaded.Commands.Other.Fly;
-import me.DevTec.ServerControlReloaded.Commands.Other.Give;
-import me.DevTec.ServerControlReloaded.Commands.Other.God;
-import me.DevTec.ServerControlReloaded.Commands.Other.Hat;
-import me.DevTec.ServerControlReloaded.Commands.Other.Heal;
-import me.DevTec.ServerControlReloaded.Commands.Other.Kits;
-import me.DevTec.ServerControlReloaded.Commands.Other.MultiWorlds;
-import me.DevTec.ServerControlReloaded.Commands.Other.Repair;
-import me.DevTec.ServerControlReloaded.Commands.Other.RulesCmd;
-import me.DevTec.ServerControlReloaded.Commands.Other.Scoreboard;
-import me.DevTec.ServerControlReloaded.Commands.Other.Skin;
-import me.DevTec.ServerControlReloaded.Commands.Other.Skull;
-import me.DevTec.ServerControlReloaded.Commands.Other.Spawner;
-import me.DevTec.ServerControlReloaded.Commands.Other.TempFly;
-import me.DevTec.ServerControlReloaded.Commands.Other.Thor;
+import me.DevTec.ServerControlReloaded.Commands.CommandsManager;
 import me.DevTec.ServerControlReloaded.Commands.Other.Trash;
-import me.DevTec.ServerControlReloaded.Commands.Other.Uuid;
-import me.DevTec.ServerControlReloaded.Commands.Other.Vanish;
-import me.DevTec.ServerControlReloaded.Commands.Other.tablist.Tab;
-import me.DevTec.ServerControlReloaded.Commands.Server.Reload;
-import me.DevTec.ServerControlReloaded.Commands.Server.Restart;
-import me.DevTec.ServerControlReloaded.Commands.Server.Stop;
-import me.DevTec.ServerControlReloaded.Commands.Speed.FlySpeed;
-import me.DevTec.ServerControlReloaded.Commands.Speed.WalkSpeed;
-import me.DevTec.ServerControlReloaded.Commands.Time.Day;
-import me.DevTec.ServerControlReloaded.Commands.Time.Night;
-import me.DevTec.ServerControlReloaded.Commands.Time.PDay;
-import me.DevTec.ServerControlReloaded.Commands.Time.PNight;
-import me.DevTec.ServerControlReloaded.Commands.TpSystem.Tp;
-import me.DevTec.ServerControlReloaded.Commands.TpSystem.Tpa;
-import me.DevTec.ServerControlReloaded.Commands.TpSystem.TpaBlock;
-import me.DevTec.ServerControlReloaded.Commands.TpSystem.Tpaall;
-import me.DevTec.ServerControlReloaded.Commands.TpSystem.Tpaccept;
-import me.DevTec.ServerControlReloaded.Commands.TpSystem.Tpadeny;
-import me.DevTec.ServerControlReloaded.Commands.TpSystem.Tpahere;
-import me.DevTec.ServerControlReloaded.Commands.TpSystem.Tpall;
-import me.DevTec.ServerControlReloaded.Commands.TpSystem.Tpcancel;
-import me.DevTec.ServerControlReloaded.Commands.TpSystem.Tphere;
-import me.DevTec.ServerControlReloaded.Commands.Warps.Back;
-import me.DevTec.ServerControlReloaded.Commands.Warps.DelHome;
-import me.DevTec.ServerControlReloaded.Commands.Warps.DelWarp;
-import me.DevTec.ServerControlReloaded.Commands.Warps.Home;
-import me.DevTec.ServerControlReloaded.Commands.Warps.HomeOther;
-import me.DevTec.ServerControlReloaded.Commands.Warps.Homes;
-import me.DevTec.ServerControlReloaded.Commands.Warps.SetHome;
-import me.DevTec.ServerControlReloaded.Commands.Warps.SetSpawn;
-import me.DevTec.ServerControlReloaded.Commands.Warps.SetWarp;
-import me.DevTec.ServerControlReloaded.Commands.Warps.Spawn;
-import me.DevTec.ServerControlReloaded.Commands.Warps.Warp;
-import me.DevTec.ServerControlReloaded.Commands.Weather.PRain;
-import me.DevTec.ServerControlReloaded.Commands.Weather.PSun;
-import me.DevTec.ServerControlReloaded.Commands.Weather.Rain;
-import me.DevTec.ServerControlReloaded.Commands.Weather.Sun;
-import me.DevTec.ServerControlReloaded.Commands.Weather.Thunder;
 import me.DevTec.ServerControlReloaded.Events.AFkPlayerEvents;
 import me.DevTec.ServerControlReloaded.Events.ChatFormat;
 import me.DevTec.ServerControlReloaded.Events.CreatePortal;
@@ -192,7 +71,6 @@ public class Loader extends JavaPlugin implements Listener {
 	public static List<Rule> rules = new ArrayList<>();
 	private int task;
 	private long time, rkick;
-	private static List<PluginCommand> registered = new ArrayList<>();
 	public static String[] colorsText, rulesText;
 	public static Economy econ;
 	public static Loader getInstance;
@@ -539,6 +417,7 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onDisable() {
+		CommandsManager.unload();
 		org.bukkit.event.HandlerList.unregisterAll(this);
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			p.setFlying(false);
@@ -694,31 +573,10 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		TabList.reload();
 		Tasks.reload();
-		for(PluginCommand reg : registered) {
-			TheAPI.unregisterCommand(reg);
-		}
-		registered.clear();
-		CommandsRegister();
+		CommandsManager.load();
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading of SCR took "+(System.currentTimeMillis()-loading)+"ms", TheAPI.getConsole());
 		aad=1;
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
-	}
-	
-	private static void CmdC(String section, String command, CommandExecutor cs) {
-		if(cmds.getBoolean(section+"."+command+".Enabled")) {
-			PluginCommand c = TheAPI.createCommand(cmds.getString(section+"."+command+".Name"), getInstance);
-			List<String> aliases = new ArrayList<>();
-			if(cmds.exists(section+"."+command+".Aliases")) {
-			if(cmds.get(section+"."+command+".Aliases") instanceof List)
-				aliases=cmds.getStringList(section+"."+command+".Aliases");
-			else aliases.add(cmds.getString(section+"."+command+".Aliases"));
-			}
-			c.setAliases(aliases);
-			c.setExecutor(cs);
-			c.setPermission(cmds.getString(section+"."+command+".Permission"));
-			TheAPI.registerCommand(c);
-			registered.add(c);
-		}
 	}
 
 	public Map<String, Location> moving = new HashMap<>();
@@ -803,164 +661,6 @@ public class Loader extends JavaPlugin implements Listener {
 
 	private void stop() {
 		Scheduler.cancelTask(task);
-	}
-
-	private static void CommandsRegister() {
-		//Server
-		CmdC("Server", "Stop" , new Stop());
-		CmdC("Server", "Reload", new Reload());
-		CmdC("Server", "Restart", new Restart());
-		
-		//Kill
-		CmdC("Kill", "Kill",new Kill());
-		CmdC("Kill", "KillAll",new KillAll());
-		CmdC("Kill", "Suicide",new Suicide());
-		
-		//Info
-		CmdC("Info", "Memory",new RAM());
-		CmdC("Info", "Chunks",new Chunks());
-		CmdC("Info", "SCR",new SCR());
-		CmdC("Info","Seen", new Seen());
-		CmdC("Info","ChatFormat", new me.DevTec.ServerControlReloaded.Commands.Info.ChatFormat());
-		CmdC("Info","List", new ListCmd());
-		CmdC("Info","Staff", new Staff());
-		CmdC("Info", "TPS",new TPS());
-		CmdC("Info","WhoIs", new WhoIs()); 
-		CmdC("Info", "Maintenance",new Maintenance());
-		
-		//Speed
-		CmdC("Speed", "FlySpeed",new FlySpeed());
-		CmdC("Speed", "WalkSpeed",new WalkSpeed());
-		
-		//Warps
-		CmdC("Warps", "SetSpawn",new SetSpawn());
-		CmdC("Warps", "Spawn",new Spawn());
-		CmdC("Warps", "SetWarp",new SetWarp());
-		CmdC("Warps", "DelWarp",new DelWarp());
-		CmdC("Warps", "Warp",new Warp());
-		CmdC("Warps", "Home",new Home());
-		CmdC("Warps", "HomeOther", new HomeOther());
-		CmdC("Warps", "SetHome",new SetHome());
-		CmdC("Warps", "DelHome",new DelHome());
-		CmdC("Warps", "Homes",new Homes());
-		CmdC("Warps", "Back",new Back());
-		
-		//Economy
-		CmdC("Economy", "BalanceTop",new EcoTop());
-		CmdC("Economy", "Balance",new Balance());
-		CmdC("Economy", "Economy",new Eco());
-		CmdC("Economy", "Pay",new Pay());
-		CmdC("Economy", "MultiEconomy", new MultiEconomy());
-		
-		//Weather
-		CmdC("Weather", "Sun",new Sun());
-		CmdC("Weather", "Thunder",new Thunder());
-		CmdC("Weather", "Rain",new Rain());
-		CmdC("Weather", "PlayerSun",new PSun());
-		CmdC("Weather", "PlayerRain",new PRain());
-		
-		//Time
-		CmdC("Time", "Day",new Day());
-		CmdC("Time", "Night",new Night());
-		CmdC("Time", "PDay",new PDay());
-		CmdC("Time", "PNight",new PNight());
-		
-		//Message
-		CmdC("Message","SocialSpy", new SocialSpy());
-		CmdC("Message","Mail", new Mail());
-		CmdC("Message","Sudo", new Sudo());
-		CmdC("Message","Broadcast", new Broadcast());
-		CmdC("Message", "PrivateMessage", new PrivateMessage());
-		CmdC("Message", "ClearChat",new ClearChat());
-		CmdC("Message","Helpop", new Helpop());
-		CmdC("Message","Reply", new ReplyPrivateMes());
-		
-		//Gamemode
-		CmdC("GameMode", "GameMode",new Gamemode());
-		CmdC("GameMode", "GameModeSurvival",new GamemodeS());
-		CmdC("GameMode", "GameModeCreative",new GamemodeC());
-		CmdC("GameMode", "GameModeAdventure",new GamemodeA());
-		if(TheAPI.isNewerThan(7))
-			CmdC("GameMode", "GameModeSpectator",new GamemodeSP());
-			
-		//BanSystem	
-		CmdC("BanSystem", "Kick", new Kick());
-		CmdC("BanSystem", "Ban", new Ban());
-		CmdC("BanSystem", "Immune", new Immune());
-		CmdC("BanSystem", "TempBan", new TempBan());
-		CmdC("BanSystem", "Jail",new Jail());
-		CmdC("BanSystem", "TempBanIP",new TempBanIP());
-		CmdC("BanSystem", "UnJail",new UnJail());
-		CmdC("BanSystem", "SetJail",new SetJail());
-		CmdC("BanSystem", "DelJail",new DelJail());
-		CmdC("BanSystem", "TempJail", new TempJail());
-		CmdC("BanSystem", "BanIP", new BanIP());
-		CmdC("BanSystem", "UnBanIP", new UnBanIP());
-		CmdC("BanSystem", "UnBan", new UnBan());
-		CmdC("BanSystem", "TempMute", new TempMute());
-		CmdC("BanSystem", "Mute", new Mute());
-		CmdC("BanSystem", "UnMute", new UnMute());
-		CmdC("BanSystem", "Warn", new Warn());
-		CmdC("BanSystem", "Accounts", new Accounts());
-		
-		//Inventory
-		CmdC("Inventory", "EnderChest", new EnderChest());
-		CmdC("Inventory", "CloseInventory", new CloseInventory());
-		CmdC("Inventory", "ClearInventory",new ClearInv());
-		CmdC("Inventory", "ClearConfirmToggle", new ClearConfirmToggle());
-		CmdC("Inventory", "Inventory", new Invsee());
-		CmdC("Inventory", "Workbench", new Craft());
-		
-		//Enchantment
-		CmdC("Enchantment", "Enchant", new EnchantTable());
-		CmdC("Enchantment", "EnchantRemove", new EnchantTableRemove());
-		CmdC("Enchantment", "EnchantRemoveAll", new EnchantTableRemoveAll());
-		
-		//TpSystem
-		CmdC("TpSystem", "Tp", new Tp());
-		CmdC("TpSystem", "TpaCancel", new Tpcancel());
-		CmdC("TpSystem", "Tpa", new Tpa());
-		CmdC("TpSystem", "TpaHere", new Tpahere());
-		CmdC("TpSystem", "TpHere", new Tphere());
-		CmdC("TpSystem", "TpToggle", new TpaBlock());
-		CmdC("TpSystem", "TpaAll", new Tpaall());
-		CmdC("TpSystem", "TpAll", new Tpall());
-		CmdC("TpSystem", "TpaAccept", new Tpaccept());
-		CmdC("TpSystem", "TpaDeny", new Tpadeny());
-		
-		//Other
-		CmdC("Other", "ChatLock",new ChatLock());
-		CmdC("Other", "Repair", new Repair());
-		CmdC("Other", "Feed", new Feed());
-		CmdC("Other", "Item", new me.DevTec.ServerControlReloaded.Commands.Other.Item());
-		CmdC("Other", "TempFly", new TempFly());
-		CmdC("Other", "ScoreBoard", new Scoreboard());
-		CmdC("Other", "ActionBar", new ActionBar());
-		CmdC("Other", "BossBar", new BossBar());
-		CmdC("Other", "Trash", new Trash());
-		CmdC("Other", "Thor", new Thor());
-		CmdC("Other", "Give",new Give());
-		CmdC("Other", "Kits",new Kits());
-		CmdC("Other", "Skull",new Skull());
-		CmdC("Other", "God",new God());
-		CmdC("Other", "Heal", new Heal());
-		CmdC("Other", "Fly",new Fly());
-		CmdC("Other", "Vanish",new Vanish());
-		CmdC("Other", "Butcher",new Butcher());
-		CmdC("Other", "AFK",new AFK());
-		CmdC("Other", "MultiWorlds",new MultiWorlds());
-		CmdC("Other", "TabList",new Tab());
-		CmdC("Other", "Hat",new Hat());
-		CmdC("Other", "Skin",new Skin());
-		CmdC("Other", "Experiences", new Exp());
-		CmdC("Other", "Spawner", new Spawner());
-		CmdC("Other", "Uuid", new Uuid());
-		//Utility
-		CmdC("Other", "Colors", new ColorsCmd());
-		CmdC("Other", "Rules", new RulesCmd());
-		//Nickname
-		CmdC("Nickname", "Nickname", new Nick());
-		CmdC("Nickname", "NicknameReset", new NickReset());
 	}
 	
 	private void EventC(org.bukkit.event.Listener l) {
