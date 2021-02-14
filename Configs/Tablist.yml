@@ -38,11 +38,6 @@ Options:
     # 20 ticks = 1s
     NameTag: 20
 
-# AFK Placeholder values
-AFK:
- true: " &4&l*AFK*"
- false: ""
-
 # Per world tablist
 PerWorld:
   InputWorldNameHere:

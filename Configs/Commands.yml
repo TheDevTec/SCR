@@ -236,8 +236,8 @@ TpSystem:
       LocationOther: "SCR.Command.Tp.Location"
       Other: "SCR.Command.Tp.Other"
     Help:
-    - "/Tp <player> [player] - Teleport player to player"
-    - "/Tp [player] <x> <y> <z> [yaw] [pitch] - Teleport you/player to position"
+    - "/Tp <player> [player] - Teleport you/player to the target player"
+    - "/Tp [player] <x> <y> <z> [yaw] [pitch] - Teleport you/player to the position in the world"
     Enabled: true
   TpHere:
     Name: "tphere"
@@ -253,29 +253,29 @@ TpSystem:
     Permission: "SCR.Command.TpAll"
     Help: "/TpAll - Teleport all players to your position"
     Enabled: true
-  TpAccept:
+  TpaAccept:
     Name: "tpaccept"
     Aliases:
     - "tpyes"
     - "tpallow"
-    Permission: "SCR.Command.TpAccept"
-    Help: "/TpAccept - Accept teleport request"
+    Permission: "SCR.Command.TpaAccept"
+    Help: "/TpaAccept - Accept teleport request"
     Enabled: true
-  TpDeny:
-    Name: "tpdeny"
+  TpaDeny:
+    Name: "tpadeny"
     Aliases:
     - "tpno"
-    - "tpadeny"
+    - "tpdeny"
     - "tpano"
-    Permission: "SCR.Command.TpDeny"
-    Help: "/TpDeny - Deny teleport request"
+    Permission: "SCR.Command.TpaDeny"
+    Help: "/TpaDeny - Deny teleport request"
     Enabled: true
-  TpCancel:
-    Name: "tpcancel"
+  TpaCancel:
+    Name: "tpacancel"
     Aliases:
-    - "tpacancel"
-    Permission: "SCR.Command.TpCancel"
-    Help: "/TpCancel - Cancel your teleport request"
+    - "tpcancel"
+    Permission: "SCR.Command.TpaCancel"
+    Help: "/TpaCancel - Cancel your teleport request"
     Enabled: true
   TpToggle:
     Name: "tptoggle"
@@ -781,6 +781,7 @@ Other:
     - "away"
     SubPermission:
       Other: "SCR.Command.Afk.Other"
+      Bypass: "SCR.Command.Afk.Bypass"
     Help: "/Afk - Set your status to afk"
     Enabled: true
   Skin:
