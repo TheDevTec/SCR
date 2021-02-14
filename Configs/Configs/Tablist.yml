@@ -1,0 +1,87 @@
+Options:
+  # Enable tablist
+  Enabled: true
+  
+  # Move player in spectator mode in tablist?
+  MoveSpectator: true
+  
+  # Move vanished player to spectators in tablist
+  VanishToSpectator: true
+  
+  # Allow sorting of tablist by vault groups
+  Sorting: true
+  Sorting-Groups:
+  - "owner"
+  - "admin"
+  - "helper"
+  - "builder"
+  - "vip"
+  - "default"
+  
+  Modify:
+    # Modify header in tablist
+    Header: true
+    # Modify footer in tablist
+    Footer: true
+    # Modify text above player
+    NameTags: true
+    
+    # Modify name of player in tablist
+    TabListName: true
+  
+  RefleshTick:
+    # Time to update text above player
+    # 20 ticks = 1s
+    Tablist: 20
+    
+    # Time to update tablist header, footer & playername
+    # 20 ticks = 1s
+    NameTag: 20
+
+# Per world tablist
+PerWorld:
+  InputWorldNameHere:
+    Header:
+    - "&8=====» &7&lRPG Map &8«====="
+    - "&7Ping: &e%ping%    &7Online: &e%online%"
+    Footer:
+    - "&7Health: &e%health%    &7Food: &e%food%"
+    - "&7Balance: &e$%money%"
+
+# Per player tablist
+PerPlayer:
+  InputPlayerNameHere:
+    Header:
+    - "&8=====» &7&lWelcome on server, %player% &8«====="
+    - "&7Ping: &e%ping%    &7Online: &e%online%"
+    Footer:
+    - "&7Health: &e%health%    &7Food: &e%food%"
+    - "&7Balance: &e$%money%   &7TPS: &e%tps%"
+
+# Text above players
+Header:
+- "&8=====» &7&lSever Name &8«====="
+- "&7Ping: &e%ping%    &7Online: &e%online%"
+
+# Text under players
+Footer:
+- "&7Health: &e%health%    &7Food: &e%food%"
+- "&7Balance: &e$%money%"
+
+Groups:
+  default:
+  #  NameTag:
+  #    Prefix: "&7default &f"
+  #    Suffix: ""
+  #  TabList:
+  #    Prefix: "&7default &f"
+  #    Suffix: "%afk%"
+  #  Format: "%tab_prefix%%customname%%tab_suffix%"
+  # vip:
+  #   NameTag:
+  #     Prefix: "&eVIP &a"
+  #     Suffix: ""
+  #   TabList:
+  #     Prefix: "&eVIP &a"
+  #     Suffix: "%afk%"
+  #     Format: "%tab_prefix%%customname%%tab_suffix%"

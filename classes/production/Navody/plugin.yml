@@ -1,0 +1,6 @@
+name: Navody
+main: me.petulikan2.Loader
+version: 1.0
+author: petulikan1
+depend: [TheAPI]
+api-version: 1.13
