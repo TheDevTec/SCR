@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Date;
 
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -85,10 +86,11 @@ public class OnPlayerJoin implements Listener {
             if (!API.canSee(p, s.getName()))
                 p.hidePlayer(s);
         API.setVanish(p.getName(), Loader.getPerm("Vanish","Other"), API.hasVanish(p.getName()));
+        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
+		LoginEvent.moveInTab(p, API.hasVanish(p)?0:1);
 		DisplayManager.initializePlayer(p);
 		new Tasker() {
 			public void run() {
-				LoginEvent.moveInTab(p);
 				Loader.setupChatFormat(p);
 				Tasks.regPlayer(p);
 				User d = TheAPI.getUser(p);

@@ -40,7 +40,7 @@ public class Vanish implements CommandExecutor, TabCompleter{
 					if (!API.hasVanish(p)) {
 						API.setVanish(p, Loader.getPerm("Vanish","Other"), true);
 						if(setting.tab && setting.tab_vanish)
-						LoginEvent.moveInTab(p);
+					    	LoginEvent.moveInTab(p, 0);
 						Loader.sendMessages(s, "Vanish.Enabled.You");
 						if(setting.vanish_action)
 							task.put(p.getName(), new Tasker() {
@@ -62,7 +62,7 @@ public class Vanish implements CommandExecutor, TabCompleter{
 					}
 					API.setVanish(p, Loader.getPerm("Vanish","Other"), false);
 					if(setting.tab && setting.tab_vanish)
-					LoginEvent.moveInTab(p);
+				    	LoginEvent.moveInTab(p, 0);
 					Loader.sendMessages(s, "Vanish.Disabled.You");
 					return true;
 				}
@@ -75,7 +75,7 @@ public class Vanish implements CommandExecutor, TabCompleter{
 				if (!API.hasVanish(t)) {
 					API.setVanish(t, Loader.getPerm("Vanish","Other"), true);
 					if(setting.tab && setting.tab_vanish)
-					LoginEvent.moveInTab(t);
+				    	LoginEvent.moveInTab(t, 0);
 					Loader.sendMessages(s, "Vanish.Enabled.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
 					Loader.sendMessages(s, "Vanish.Enabled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
 					if(setting.vanish_action)
@@ -98,7 +98,7 @@ public class Vanish implements CommandExecutor, TabCompleter{
 				}
 				API.setVanish(t, Loader.getPerm("Vanish","Other"), false);
 				if(setting.tab && setting.tab_vanish)
-				LoginEvent.moveInTab(t);
+			    	LoginEvent.moveInTab(t, 0);
 				Loader.sendMessages(s, "Vanish.Disabled.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
 				Loader.sendMessages(s, "Vanish.Disabled.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
 				return true;

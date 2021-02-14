@@ -86,12 +86,14 @@ public class setting {
 		eco_other = f.getBoolean("Options.Economy.CanUseOtherEconomy");
 		tab = Loader.tab.getBoolean("Options.Enabled");
 		if(tab) {
-		tab_header = Loader.tab.getBoolean("Options.Modify.Header");
-		tab_footer = Loader.tab.getBoolean("Options.Modify.Footer");
-		tab_nametag = Loader.tab.getBoolean("Options.Modify.NameTags");
-		tab_sort = Loader.tab.getBoolean("Options.Sorting");
-		tab_vanish=Loader.tab.getBoolean("Options.VanishToSpectator");
-		tab_move=Loader.tab.getBoolean("Options.MoveSpectator");
+			tab_header = Loader.tab.getBoolean("Options.Modify.Header");
+			tab_footer = Loader.tab.getBoolean("Options.Modify.Footer");
+			tab_nametag = Loader.tab.getBoolean("Options.Modify.NameTags");
+			tab_sort = Loader.tab.getBoolean("Options.Sorting");
+			if(TheAPI.isNewerThan(7)) {
+				tab_vanish=Loader.tab.getBoolean("Options.VanishToSpectator");
+				tab_move=Loader.tab.getBoolean("Options.MoveSpectator");
+			}
 		}else {
 			tab_header = false;
 			tab_footer = false;

@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.List;
 
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,26 +22,37 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class LoginEvent implements Listener {
-	private static Object surv = Ref.getNulled(Ref.nms("EnumGamemode"), "SURVIVAL"), spec = Ref.getNulled(Ref.nms("EnumGamemode"), "SPECTATOR");
+	private static Class<?> cc = Ref.nms("EnumGamemode")!=null?Ref.nms("EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
+	private static Object surv = Ref.getNulled(cc, "SURVIVAL"), spec = Ref.getNulled(cc, "SPECTATOR");
 	private static Object up = Ref.getNulled(Ref.field(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), "UPDATE_GAME_MODE"));
-	public static void moveInTab(Player player) {
+	
+	public static void moveInTab(Player player, int game) {
 		Object array = Array.newInstance(Ref.nms("EntityPlayer"), 1);
 		Array.set(array, 0, Ref.player(player));
 		Object b = Ref.newInstance(Ref.constructor(Ref.nms("PacketPlayOutPlayerInfo"), Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), array.getClass()), up, array);
 		@SuppressWarnings("unchecked")
 		List<Object> bList = (List<Object>) Ref.get(b, "b");
-		int cc = 0;
-		for(Object o : bList) { 
-			Ref.set(o, "c", API.hasVanish(player.getName()) && setting.tab_vanish ? (spec==null?surv:spec) : surv);
-			bList.set(cc++, o);
+		for(Object o : bList) { //edit values
+			int gmResult = spec!=null?(player.getGameMode()==GameMode.SPECTATOR?1:0):0; //survival or spectator (1.8+)
+			if(game==0) { //vanish
+				if(API.hasVanish(player.getName()) && setting.tab_vanish) {
+					gmResult=1;
+				}else
+					if(setting.tab_move && player.getGameMode()==GameMode.SPECTATOR)gmResult=1;
+			}else { //spectator
+				if(API.hasVanish(player.getName()) && setting.tab_vanish) {
+					gmResult=1;
+				}else
+					if(setting.tab_move && player.getGameMode()==GameMode.SPECTATOR)gmResult=1;
+					else gmResult=0;
+			}
+			Ref.set(o, "c", gmResult==0?surv:spec); //edit
 		}
 		Ref.set(b, "b", bList);
 		for(Player p : TheAPI.getOnlinePlayers())
 			if(p!=player)
 			Ref.sendPacket(p, b);
 	}
-
-	public Loader plugin = Loader.getInstance;
 
 	private void bc(Player p) {
 		if (setting.vip_join) {
@@ -56,15 +68,13 @@ public class LoginEvent implements Listener {
 							.replace("%date-time%", setting.format_date_time.format(new Date())));
 		}
 	}
-
-	private static String kickString= StringUtils.join(Loader.config.getStringList("Options.Maintenance.KickMessages"), "\n");
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void JoinEvent(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
 		Loader.setupChatFormat(p);
 		if (setting.lock_server && !Loader.has(p, "Other", "Maintenance", "Bypass")) {
-			e.disallow(Result.KICK_OTHER, TheAPI.colorize(kickString.replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())));
+			e.disallow(Result.KICK_OTHER, TheAPI.colorize(StringUtils.join(Loader.config.getStringList("Options.Maintenance.KickMessages"), "\n").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())));
 			return;
 		}
 		if (setting.vip && TheAPI.getMaxPlayers() == TheAPI.getOnlinePlayers().size() - 1) {

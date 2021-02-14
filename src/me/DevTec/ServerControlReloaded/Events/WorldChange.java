@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,6 +22,7 @@ import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.setting;
+import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.reflections.Ref;
@@ -118,6 +120,8 @@ public class WorldChange implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChangeGamamode(PlayerGameModeChangeEvent e) {
+		if(TheAPI.isNewerThan(7) && e.getNewGameMode()==GameMode.SPECTATOR)
+			LoginEvent.moveInTab(e.getPlayer(), 1);
 		SPlayer a = API.getSPlayer(e.getPlayer());
 		if (a.hasFlyEnabled())
 			a.enableFly();
