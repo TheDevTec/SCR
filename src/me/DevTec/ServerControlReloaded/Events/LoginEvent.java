@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 
-import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.setting;
@@ -25,33 +24,36 @@ public class LoginEvent implements Listener {
 	private static Class<?> cc = Ref.nms("EnumGamemode")!=null?Ref.nms("EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
 	private static Object surv = Ref.getNulled(cc, "SURVIVAL"), spec = Ref.getNulled(cc, "SPECTATOR");
 	private static Object up = Ref.getNulled(Ref.field(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), "UPDATE_GAME_MODE"));
-	
-	public static void moveInTab(Player player, int game) {
+
+	public static void moveInTab(Player player, int game, boolean vanish) {
 		Object array = Array.newInstance(Ref.nms("EntityPlayer"), 1);
 		Array.set(array, 0, Ref.player(player));
 		Object b = Ref.newInstance(Ref.constructor(Ref.nms("PacketPlayOutPlayerInfo"), Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), array.getClass()), up, array);
 		@SuppressWarnings("unchecked")
 		List<Object> bList = (List<Object>) Ref.get(b, "b");
+		int c = 0;
 		for(Object o : bList) { //edit values
 			int gmResult = spec!=null?(player.getGameMode()==GameMode.SPECTATOR?1:0):0; //survival or spectator (1.8+)
 			if(game==0) { //vanish
-				if(API.hasVanish(player.getName()) && setting.tab_vanish) {
+				if(setting.tab_vanish && vanish) {
 					gmResult=1;
 				}else
 					if(setting.tab_move && player.getGameMode()==GameMode.SPECTATOR)gmResult=1;
 			}else { //spectator
-				if(API.hasVanish(player.getName()) && setting.tab_vanish) {
+				if(setting.tab_vanish && vanish) {
 					gmResult=1;
 				}else
 					if(setting.tab_move && player.getGameMode()==GameMode.SPECTATOR)gmResult=1;
 					else gmResult=0;
 			}
 			Ref.set(o, "c", gmResult==0?surv:spec); //edit
+			bList.set(c++, o);
 		}
 		Ref.set(b, "b", bList);
 		for(Player p : TheAPI.getOnlinePlayers())
-			if(p!=player)
+			if(p!=player) {
 			Ref.sendPacket(p, b);
+			}
 	}
 
 	private void bc(Player p) {

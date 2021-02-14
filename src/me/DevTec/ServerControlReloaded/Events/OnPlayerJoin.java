@@ -87,7 +87,7 @@ public class OnPlayerJoin implements Listener {
                 p.hidePlayer(s);
         API.setVanish(p.getName(), Loader.getPerm("Vanish","Other"), API.hasVanish(p.getName()));
         if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
-		LoginEvent.moveInTab(p, API.hasVanish(p)?0:1);
+		LoginEvent.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
 		DisplayManager.initializePlayer(p);
 		new Tasker() {
 			public void run() {

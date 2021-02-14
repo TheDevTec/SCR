@@ -120,8 +120,13 @@ public class WorldChange implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChangeGamamode(PlayerGameModeChangeEvent e) {
-		if(TheAPI.isNewerThan(7) && e.getNewGameMode()==GameMode.SPECTATOR)
-			LoginEvent.moveInTab(e.getPlayer(), 1);
+		if(TheAPI.isNewerThan(7) && e.getNewGameMode()==GameMode.SPECTATOR) {
+			new Tasker() {
+				public void run() {
+					LoginEvent.moveInTab(e.getPlayer(), 1, API.hasVanish(e.getPlayer()));
+				}
+			}.runLater(1);
+		}
 		SPlayer a = API.getSPlayer(e.getPlayer());
 		if (a.hasFlyEnabled())
 			a.enableFly();
