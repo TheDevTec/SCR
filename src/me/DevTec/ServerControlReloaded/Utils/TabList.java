@@ -185,18 +185,19 @@ public class TabList {
 			return replace(Loader.tab.getString("Groups." + g + ".Format"), p, true);
 		return "%tab_prefix% "+p.getName()+" %tab_suffix%";
 	}
-
+	
 	public static String replace(String header, Player p, boolean color) {
 		if(p!=null) {
 		if(header.contains("%money%"))
 				header=header.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), false));
 		if(header.contains("%colored_money%"))
 			header=header.replace("%colored_money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true));
+		if(header.contains("%formatted_money%"))
+			header=header.replace("%formatted_money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true));
 		if(header.contains("%online%")) {
 			int seen = 0;
 			for(Player s : TheAPI.getPlayers())
-				if(API.canSee(p,s.getName()) || s == p)
-					++seen;
+				if(API.canSee(p,s.getName()))++seen;
 			header=header.replace("%online%", seen + "");
 		}
 		if(header.contains("%ping%"))
@@ -227,10 +228,12 @@ public class TabList {
 		;if(header.contains("%group%"))
 			header=header.replace("%group%", Staff.getGroup(p));
 		if(header.contains("%kills%"))
-			header=header.replace("%kills%", "" + p.getStatistic(Statistic.PLAYER_KILLS))
-		;if(header.contains("%deaths%"))
-			header=header.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS))
-		;if(header.contains("%player%"))
+			header=header.replace("%kills%", "" + p.getStatistic(Statistic.PLAYER_KILLS));
+		if(header.contains("%deaths%"))
+			header=header.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS));
+		if(header.contains("%deaths%"))
+			header=header.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS));
+		if(header.contains("%player%"))
 			header=header.replace("%player%", p.getName())
 		;if(header.contains("%xp%"))
 			header=header.replace("%xp%", p.getTotalExperience()+"");
@@ -254,6 +257,12 @@ public class TabList {
 		}
 		if(header.contains("%afk%"))
 			header=header.replace("%afk%", Loader.isAfk(p));
+		if(header.contains("%vanish%"))
+			header=header.replace("%vanish%", Loader.getElse("Vanish", API.hasVanish(p)));
+		if(header.contains("%fly%"))
+			header=header.replace("%fly%", Loader.getElse("Fly", API.getSPlayer(p).hasFlyEnabled()||API.getSPlayer(p).hasTempFlyEnabled()));
+		if(header.contains("%god%"))
+			header=header.replace("%god%", Loader.getElse("God", API.getSPlayer(p).hasGodEnabled()));
 		}else
 			if(header.contains("%online%"))
 				header=header.replace("%online%", TheAPI.getPlayers().size()+"");

@@ -99,10 +99,6 @@ public class SPlayer {
 		return (Loader.getInstance.isAfk(this) || Loader.getInstance.isManualAfk(this));
 	}
 
-	public void msg(String msg) {
-		TheAPI.msg(msg, getPlayer());
-	}
-
 	public void setAFK(boolean afk) {
 		if (!afk) {
 			Loader.getInstance.save(this);
