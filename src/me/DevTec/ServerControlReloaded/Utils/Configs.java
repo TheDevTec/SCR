@@ -1,22 +1,20 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.devtec.theapi.configapi.Config;
+import me.devtec.theapi.utils.StreamUtils;
+import me.devtec.theapi.utils.datakeeper.Data;
+import me.devtec.theapi.utils.datakeeper.loader.YamlLoader;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
 
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.configapi.Config;
-import me.devtec.theapi.utils.StreamUtils;
-import me.devtec.theapi.utils.datakeeper.Data;
-import me.devtec.theapi.utils.datakeeper.loader.YamlLoader;
-
 public class Configs {
 	@SuppressWarnings("unchecked")
 	public static void load(boolean settingMessage) {
-		TheAPI.bcMsg("config load");
 		copyDefauts();
 		String lang = Loader.config.getString("Options.Language");
 		if(lang!=null) {
@@ -63,7 +61,6 @@ public class Configs {
 	static List<String> datas = Arrays.asList("Config.yml","Rules.txt","Colors.txt","Scoreboard.yml","Placeholders.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
 	
 	private static void copyDefauts() {
-		TheAPI.bcMsg("copydefauts");
 		Data data = new Data();
 		for(String s : datas) {
 			data.reset();
