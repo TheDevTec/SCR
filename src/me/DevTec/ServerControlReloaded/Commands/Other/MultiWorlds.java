@@ -63,7 +63,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("create")){
-			if(args.length != 2){
+			if(args.length != 3){
 				Loader.advancedHelp(s,"MultiWorlds","Other","Create");
 				return true;
 			}
@@ -163,7 +163,18 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 				return Arrays.asList(a.getName());
 			}
 		}
+		if(args.length==3){
+			if(args[0].equalsIgnoreCase("create")){
+				List<String> generators = new ArrayList<>();
+				generators.addAll(Arrays.asList("flat","void","end","nether","the_end","the_void","default"));
+				for(String a:generators){
+					c.addAll(StringUtils.copyPartialMatches(args[0],Arrays.asList(a)));
+				}
+				return c;
+			}
+		}
 		c.addAll(StringUtils.copyPartialMatches(args[1],Arrays.asList("")));
 		return c;
+
 	}
 }

@@ -115,7 +115,7 @@ public class MultiWorldsGUI {
 				Arrays.asList("&7Click to &acreate &7new world"))) {
 			@Override
 			public void onClick(Player s, GUI g, ClickType c) {
-				if (Loader.has(s, "MultiWorld","Create"))
+				if (Loader.has(s, "Create","MultiWorld"))
 					openInvCreate(s);
 			}
 		};
@@ -123,7 +123,7 @@ public class MultiWorldsGUI {
 				Arrays.asList("&7Click to &cdelete &7existing world"))) {
 			@Override
 			public void onClick(Player s, GUI g, ClickType c) {
-				if (Loader.has(s, "MultiWorld","Delete"))
+				if (Loader.has(s, "Delete","MultiWorld"))
 					openInvDelete(s);
 			}
 		};
@@ -131,7 +131,7 @@ public class MultiWorldsGUI {
 				Arrays.asList("&7Click to &bload &7unloaded world"))) {
 			@Override
 			public void onClick(Player s, GUI g, ClickType c) {
-				if (Loader.has(s, "MultiWorld","Load"))
+				if (Loader.has(s, "Load","MultiWorld"))
 					openInvLoad(s);
 			}
 		};
@@ -139,7 +139,7 @@ public class MultiWorldsGUI {
 				Arrays.asList("&7Click to &eunload &7loaded world"))) {
 			@Override
 			public void onClick(Player s, GUI g, ClickType c) {
-				if (Loader.has(s, "MultiWorld","UnLoad"))
+				if (Loader.has(s, "UnLoad","MultiWorld"))
 					openInvUnload(s);
 			}
 		};
@@ -147,7 +147,7 @@ public class MultiWorldsGUI {
 			  Arrays.asList("&7Click to &5teleport &7to another world"))) {
 			@Override
 			public void onClick(Player s, GUI g, ClickType c) {
-				if (Loader.has(s, "MultiWorld","Teleport"))
+				if (Loader.has(s, "Teleport","MultiWorld"))
 					openInvTeleport(s);
 			}
 		};
@@ -155,7 +155,7 @@ public class MultiWorldsGUI {
 				Arrays.asList("&7Click to open &elist &7of worlds"))) {
 			@Override
 			public void onClick(Player s, GUI g, ClickType c) {
-				if (Loader.has(s, "MultiWorld","List"))
+				if (Loader.has(s, "List","MultiWorld"))
 					openInvList(s);
 			}
 		};
@@ -163,7 +163,7 @@ public class MultiWorldsGUI {
 				Arrays.asList("&7Click to open &2world settings"))) {
 			@Override
 			public void onClick(Player s, GUI g, ClickType c) {
-				if (Loader.has(s, "MultiWorld","Set"))
+				if (Loader.has(s, "Set","MultiWorld"))
 					openInvSet(s);
 			}
 		};
@@ -171,7 +171,7 @@ public class MultiWorldsGUI {
 				Arrays.asList("&7Click to &eset spawn &7of world at your location"))) {
 			@Override
 			public void onClick(Player s, GUI g, ClickType c) {
-				if (Loader.has(s, "MultiWorld","SetSpawn")) {
+				if (Loader.has(s, "Other","MultiWorld","SetSpawn")) {
 					String world = s.getWorld().getName();
 					Loader.mw.set("WorldsSettings." + world + ".Spawn.X", s.getLocation().getX());
 					Loader.mw.set("WorldsSettings." + world + ".Spawn.Y", s.getLocation().getY());
