@@ -195,7 +195,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 						Loader.Help(s, "Tp", "TpSystem");
 						return true;
 					} else {
-						if (Loader.has(s, "Tp", "TpSystem", "Blocked") || !Loader.has(s, "Tp", "TpSystem", "Blocked") && !RequestMap.isBlocking(s.getName(), target.getName())) {
+						if (Loader.has(s, "TpToggle", "TpSystem", "Bypass") || !Loader.has(s, "TpToggle", "TpSystem", "Bypass") && !RequestMap.isBlocking(s.getName(), target.getName())) {
 							Loader.sendMessages(s, "TpSystem.Tp.Player.YouToPlayer", Placeholder.c().replace("%player%", target.getName()));
 							API.setBack(((Player) s));
 							if (setting.tp_safe)

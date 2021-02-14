@@ -30,7 +30,7 @@ public class RequestMap {
 					.replace("%type%", TheAPI.getUser(sender.getUniqueId()).getInt("teleport." + target + ".b")==0?"Tpa":"Tpahere"));
 			return;
 		}
-		if( isBlocking(sender.getName(), target) ) {
+		if(isBlocking(sender.getName(), target) && !Loader.has(sender, "TpToggle", "TpSystem", "Bypass")) {
 			Loader.sendMessages(sender, "TpSystem.Block.IsBlocked.Request", Placeholder.c().replace("%player%", target).replace("%playername%", target));
 			return;
 		}
