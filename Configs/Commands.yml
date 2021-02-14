@@ -284,6 +284,8 @@ TpSystem:
     - "tpatoggle"
     - "tpablock"
     Permission: "SCR.Command.TpToggle"
+    SubPermission:
+      Bypass: "SCR.Command.TpToggle.Bypass"
     Help: "/TpToggle <player> - Block teleport requests from player"
     Enabled: true
     
