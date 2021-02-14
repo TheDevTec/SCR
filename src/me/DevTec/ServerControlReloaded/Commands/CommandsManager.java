@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.Accounts;
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.Ban;
@@ -319,11 +320,13 @@ public class CommandsManager {
 		//Nickname
 		load("Nickname", "Nickname", new Nick());
 		load("Nickname", "NicknameReset", new NickReset());
+		for(Player p : TheAPI.getOnlinePlayers())p.updateCommands();
 	}
 	
 	public static void unload() {
 		for(PluginCommand s : commands.values())
 			TheAPI.unregisterCommand(s);
 		commands.clear();
+		for(Player p : TheAPI.getOnlinePlayers())p.updateCommands();
 	}
 }
