@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -20,7 +21,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.Accounts;
-//github.com/TheDevTec/ServerControlReloaded
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.Ban;
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.BanIP;
 import me.DevTec.ServerControlReloaded.Commands.BanSystem.DelJail;
@@ -398,7 +398,7 @@ public class Loader extends JavaPlugin implements Listener {
 		return "";
 	}
 
-	public static String isAfk(Player p) {
+	public static String getAFK(Player p) {
 		return Loader.getElse("AFK", API.getSPlayer(p).isAFK());
 	}
 
@@ -481,22 +481,6 @@ public class Loader extends JavaPlugin implements Listener {
 			}
 		}.runRepeating(144000, 144000);
 		reload();
-		new Tasker() {
-			public void run() {
-				for(Player p : TheAPI.getOnlinePlayers()) {
-					SPlayer d = API.getSPlayer(p);
-					Location from = d.l;
-					if(from==null)from=p.getLocation();
-					Location to = p.getLocation();
-					if (Math.abs(from.getBlockX() - to.getBlockX()) > 0 || Math.abs(from.getBlockZ() - to.getBlockZ()) > 0 || Math.abs(from.getBlockY() - to.getBlockY()) > 0) {
-						if (d.isAFK() && !API.hasVanish(p))
-							sendBroadcasts(p, "AFK.End");
-						save(d);
-					}
-					d.l=to;
-				}
-			}
-		}.runRepeating(0, 10);
 		TheAPI.msg(setting.prefix + " &eINFO: &7Newest versions of &eTheAPI &7can be found on Spigot or Discord:", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "        https://www.spigotmc.org/resources/72679/", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
@@ -737,66 +721,72 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 	}
 
+	public Map<String, Location> moving = new HashMap<>();
 	public void starts() {
 		time = StringUtils.timeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
 		rkick = StringUtils.timeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
 		task=new Tasker() {
-			@Override
 			public void run() {
-				for(SPlayer s : API.getSPlayers()) {
-				boolean is = getTime(s) <= 0;
-				if (setting.afk_auto) {
-					if (is) {
-						if (!s.bc && !s.mp) {
-							s.bc = true;
-							s.mp = true;
-							if (!API.hasVanish(s.getPlayer()))
-								Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
-						}
-						if (setting.afk_kick && is) {
-							if (s.kick >= rkick) {
-								if (!s.hasPermission("scr.afk.bypass"))
-									if(s.getPlayer()!=null && s.getPlayer().isOnline())
-										new Tasker() {
-											public void run() {
-												s.getPlayer().kickPlayer(TheAPI.colorize(Loader.config.getString("Options.AFK.KickMessage")));
-											}
-										}.runTaskSync();
-								cancel();
-								return;
-							} else
-								++s.kick;
-						}
+				for(Player p : TheAPI.getOnlinePlayers()) {
+					Location before = moving.put(p.getName(), p.getLocation());
+					if(before!=null)
+					if(Math.abs(before.getBlockX()-p.getLocation().getBlockX()) > 0 ||
+							Math.abs(before.getBlockY()-p.getLocation().getBlockY()) > 0 ||
+							Math.abs(before.getBlockZ()-p.getLocation().getBlockZ()) > 0) {
+						save(p);
 					}
-					++s.afk;
-				}
+					SPlayer s = API.getSPlayer(p);
+					if (setting.afk_auto) {;
+						if (getTime(s) <= 0) {
+							if (!s.bc && !s.mp) {
+								s.bc = true;
+								s.mp = true;
+								if (!API.hasVanish(p))
+									Loader.sendBroadcasts(p, "AFK.Start");
+							}
+							if (setting.afk_kick) {
+								if (s.kick >= rkick) {
+									if (!p.hasPermission(getPerm("AFK", "Other", "Bypass"))) {
+										Ref.invoke(Ref.playerCon(p), "disconnect", TheAPI.colorize(Loader.config.getString("Options.AFK.KickMessage")));
+									}
+								} else
+									++s.kick;
+							}
+						}else
+							++s.afk;
+					}
 				}
 			}
 		}.runRepeating(0, 20);
 	}
 
 	public void setAFK(SPlayer s) {
-		save(s);
+		save(s.getPlayer());
 		s.mp = true;
 		s.manual = true;
-		if (!API.hasVanish(s.getPlayer()))
-			Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
+		for(Player canSee : API.getPlayers(s.getPlayer()))
+			Loader.sendMessages(canSee, "AFK.Start");
 	}
 	public void setAFK(SPlayer s, String reason) {
-		save(s);
+		save(s.getPlayer());
 		s.mp = true;
 		s.manual = true;
-			if (!API.hasVanish(s.getPlayer()))
-				Loader.sendBroadcasts(s.getPlayer(), "AFK.Start_WithReason", Placeholder.c().add("%reason%", reason));
-				//Loader.sendBroadcasts(s.getPlayer(), "AFK.Start");
+		for(Player canSee : API.getPlayers(s.getPlayer()))
+			Loader.sendMessages(canSee, "AFK.Start_WithReason", Placeholder.c().add("%reason%", reason));
 	}
-
-	public long getTime(SPlayer s) {
+	
+	public long getTime(SPlayer s) {;
 		return time - s.afk;
 	}
 
-	public void save(SPlayer s) {
-		s.afk = 0;
+	public void save(Player d) {
+		SPlayer s = API.getSPlayer(d);
+		moving.put(d.getName(), d.getLocation());
+		if(isAFK(s) || isManualAfk(s)) {
+			for(Player canSee : API.getPlayers(d))
+				Loader.sendMessages(canSee, "AFK.End");
+		}
+		s.afk=0;
 		s.kick = 0;
 		s.manual = false;
 		s.mp = false;
@@ -807,7 +797,7 @@ public class Loader extends JavaPlugin implements Listener {
 		return s.manual;
 	}
 
-	public boolean isAfk(SPlayer s) {
+	public boolean isAFK(SPlayer s) {
 		return getTime(s) <= 0;
 	}
 

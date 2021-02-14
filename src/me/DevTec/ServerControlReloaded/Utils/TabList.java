@@ -256,7 +256,7 @@ public class TabList {
 			header=header.replace("%customname%", customname);
 		}
 		if(header.contains("%afk%"))
-			header=header.replace("%afk%", Loader.isAfk(p));
+			header=header.replace("%afk%", Loader.getAFK(p));
 		if(header.contains("%vanish%"))
 			header=header.replace("%vanish%", Loader.getElse("Vanish", API.hasVanish(p)));
 		if(header.contains("%fly%"))

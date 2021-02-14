@@ -793,6 +793,7 @@ Other:
     SubPermission:
       Other: "SCR.Command.Afk.Other"
       Reason: "SCR.Command.Afk.Reason"
+      Bypass: "SCR.Command.Afk.Bypass"
     Help: "/Afk - Set your status to afk"
     Enabled: true
   Colors:

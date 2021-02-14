@@ -1,5 +1,7 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
+import java.lang.reflect.Method;
+
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -19,7 +21,7 @@ import me.devtec.theapi.utils.reflections.Ref;
 public class SPlayer {
 	public boolean lock;
 	private final String s;
-	public int afk=0, kick=0;
+	public int kick, afk;
 	public boolean bc, mp, manual;
 	public String reply, type;
 	public Location l;
@@ -89,26 +91,31 @@ public class SPlayer {
 		TheAPI.getUser(s).setAndSave("Fly", false);
 	}
 
+	private static final Class<?> ess = Ref.getClass("com.earth2me.essentials.Essentials");
+	private static final Method getUser = Ref.method(ess, "getUser", Player.class);
+	
 	public boolean isAFK() {
 		try {
-			Object user = Ref.invoke(Ref.cast(Ref.getClass("com.earth2me.essentials.Essentials"), PluginManagerAPI.getPlugin("Essentials")), Ref.method(Ref.getClass("com.earth2me.essentials.Essentials"), "getUser", Player.class), s);
+			if(ess!=null) {
+			Object user = Ref.invoke(Ref.cast(ess, PluginManagerAPI.getPlugin("Essentials")), getUser, s);
 			if (PluginManagerAPI.isEnabledPlugin("Essentials") && user!=null&& (boolean)Ref.invoke(user, "isAfk"))
 				return true;
+			}
 		} catch (Exception er) {
 		}
-		return (Loader.getInstance.isAfk(this) || Loader.getInstance.isManualAfk(this));
+		return (Loader.getInstance.isAFK(this) || Loader.getInstance.isManualAfk(this));
 	}
 
 	public void setAFK(boolean afk) {
 		if (!afk) {
-			Loader.getInstance.save(this);
+			Loader.getInstance.save(getPlayer());
 		} else {
 			Loader.getInstance.setAFK(this);
 		}
 	}
 	public void setAFK(boolean afk, String reason) {
 		if (!afk) {
-			Loader.getInstance.save(this);
+			Loader.getInstance.save(getPlayer());
 		} else {
 			Loader.getInstance.setAFK(this, reason);
 		}
