@@ -458,7 +458,6 @@ Weather:
 # Translations for MultiWorld command
 MultiWorld:
   Import: "%prefix% World &e%world% &7imported (Generator: &e%generator%&7)"
-  Creating: "%prefix% Creating world &e%world% &7(Generator: &e%generator%&7)"
   Create: "%prefix% World &e%world% &7created (Generator: &e%generator%&7)"
   Delete: "%prefix% World &e%world% &7deleted"
   Unload: "%prefix% World &e%world% &7unloaded"

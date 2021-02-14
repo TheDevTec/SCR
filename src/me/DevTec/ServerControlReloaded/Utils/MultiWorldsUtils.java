@@ -289,7 +289,7 @@ public class MultiWorldsUtils {
 			if (biome.equalsIgnoreCase("THE_END")) {
 				WorldsAPI.create(s, Environment.THE_END, WorldType.NORMAL, true, 0);
 			}
-			if (biome.equalsIgnoreCase("NORMAL") || biome.equalsIgnoreCase("none")) {
+			if (biome.equalsIgnoreCase("NORMAL") || biome.equalsIgnoreCase("none")||biome.equalsIgnoreCase("default")) {
 				WorldsAPI.create(s, Environment.NORMAL, WorldType.NORMAL, true, 0);
 			}
 			if (biome.equalsIgnoreCase("FLAT")) {

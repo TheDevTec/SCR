@@ -452,6 +452,7 @@ MultiWorld:
   Exists: "%prefix% Svet &e%world% &7už existuje"
   NotLoaded: "%prefix% Svet &e%world% &7není načítaný"
   List: "%prefix% List svetov: &e%worlds%"
+  CannotLoad: "%prefix% Svet &e%world% &7nejde načíst"
   Teleport:
     You: "%prefix% Teleportujem do sveta &e%world%"
     Other:

@@ -945,7 +945,6 @@ Other:
     Enabled: true
     AdvancedHelp:
       Create: "/mw create [world] [generator]"
-      Remove: "/mw remove [world]"
       Delete: "/mw delete [world]"
       Load: "/mw load [world]"
       Unload: "/mw unload [world]"

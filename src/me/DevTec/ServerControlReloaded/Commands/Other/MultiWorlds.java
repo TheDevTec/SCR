@@ -1,8 +1,10 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import me.devtec.theapi.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -12,24 +14,15 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
 import me.devtec.theapi.scheduler.Tasker;
-import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.worldsapi.WorldsAPI;
 
 public class MultiWorlds implements CommandExecutor, TabCompleter {
 
-	@Override
-	public List<String> onTabComplete(CommandSender s, Command arg1,
-			String arg2, String[] args) {
-		if(Loader.has(s,"MultiWorlds","Other"))
-			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
-		return Arrays.asList();
-	}
 
 	/*
 	/mw create [world]
@@ -38,7 +31,6 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 	/mw unload [world]
 	/mw edit [world] [flag] [boolean]
 	Zda je gen normal, flat, void, end, nether nebo the_end, the_void, default tak to projde
-
 	 */
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -71,7 +63,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("create")){
-			if(args.length==1||args.length==2){
+			if(args.length != 2){
 				Loader.advancedHelp(s,"MultiWorlds","Other","Create");
 				return true;
 			}
@@ -87,7 +79,6 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 						args[2]);
 				new Tasker(){
 					public void run() {
-						Loader.sendMessages(s,"MultiWorld.Creating", Loader.Placeholder.c().add("%generator%",args[2]).add("%world%",args[1]));
 						Loader.mw.set("WorldsSettings." + args[1] + ".Generator",args[2]);
 						Loader.mw.save();
 						NMSAPI.postToMainThread(() -> MultiWorldsUtils.CreateWorld(args[1], s));
@@ -98,12 +89,9 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			Loader.sendMessages(s,"Missing.Generator", Loader.Placeholder.c().add("%generator%",args[2]));
 			return true;
 		}
-		if(args[0].equalsIgnoreCase("delete")||args[0].equalsIgnoreCase("remove")){
-			if(args.length==1&&args[0].equalsIgnoreCase("delete")){
+		if(args[0].equalsIgnoreCase("delete")){
+			if(args.length!=2){
 				Loader.advancedHelp(s,"MultiWorlds","Other","Delete");
-				return true;
-			}else if(args.length==1&&args[0].equalsIgnoreCase("remove")){
-				Loader.advancedHelp(s,"MultiWorlds","Other","Remove");
 				return true;
 			}
 			for (World w : Bukkit.getWorlds()){
@@ -127,7 +115,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("load")){
-			if(args.length==1){
+			if(args.length!=2){
 				Loader.advancedHelp(s,"MultiWorlds","Other","Load");
 				return true;
 			}
@@ -143,6 +131,19 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			Loader.sendMessages(s,"MultiWorld.CannotLoad", Loader.Placeholder.c().add("%world%",args[1]));
 			return true;
 		}
+		if(args[0].equalsIgnoreCase("unload")){
+			if(args.length!=2){
+				Loader.advancedHelp(s,"MultiWorlds","Other","Load");
+				return true;
+			}
+			for(World w : Bukkit.getWorlds()){
+				if(w.getName().equalsIgnoreCase(args[1])){
+					MultiWorldsUtils.UnloadWorld(args[1],s);
+					return true;
+				}
+			}
+			return true;
+		}
 		Loader.advancedHelp(s,"MultiWorlds","Other","Create");
 		Loader.advancedHelp(s,"MultiWorlds","Other","Load");
 		Loader.advancedHelp(s,"MultiWorlds","Other","Unload");
@@ -150,5 +151,19 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 		Loader.advancedHelp(s,"MultiWorlds","Other","Edit");
 		return true;
 	}
-
+	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args){
+		List<String> c = new ArrayList<>();
+		if (args.length == 1) {
+			c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("unload","load","delete","create","edit")));
+			return c;
+		}
+		if(args.length==2) {
+			if(args[0].equalsIgnoreCase("create")) {return Arrays.asList("?");}
+			for(World a : Bukkit.getWorlds()) {
+				return Arrays.asList(a.getName());
+			}
+		}
+		c.addAll(StringUtils.copyPartialMatches(args[1],Arrays.asList("")));
+		return c;
+	}
 }
