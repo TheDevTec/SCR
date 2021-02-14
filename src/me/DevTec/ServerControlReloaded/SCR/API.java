@@ -45,7 +45,7 @@ public class API {
 		List<Player> p = TheAPI.getOnlinePlayers();
 		if(s instanceof Player)
 			for(Player pd : TheAPI.getOnlinePlayers())
-	           	if(pd!=s && !canSee((Player)s,pd.getName()) && !((Player)s).canSee(pd))p.remove(pd);
+	           	if(pd!=s && !canSee((Player)s,pd) && !((Player)s).canSee(pd))p.remove(pd);
 		return p;
 	}
 	
@@ -113,6 +113,10 @@ public class API {
  
     public static boolean canSee(Player player, String target) {
         return hasVanish(target) ? player.hasPermission(getVanishPermission(target)) : true;
+    }
+ 
+    public static boolean canSee(Player player, Player target) {
+        return (hasVanish(target) ? player.hasPermission(getVanishPermission(target.getName())) : true) && player.canSee(target);
     }
 
 	public static List<SPlayer> getSPlayers() {

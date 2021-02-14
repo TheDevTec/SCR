@@ -188,7 +188,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
-	public static Config config, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb;
+	public static Config config, plac, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb;
 	public static List<Rule> rules = new ArrayList<>();
 	private int task;
 	private long time, rkick;
@@ -286,6 +286,10 @@ public class Loader extends JavaPlugin implements Listener {
 		return null;
 	}
 	
+	public static boolean existsTranslation(String path) {
+		return trans==null || !trans.exists(path)?english.exists(path):trans.exists(path);
+	}
+	
 	public static void sendMessages(CommandSender to, String path) {
 		sendMessages(to, path, null);
 	}
@@ -296,12 +300,13 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	public static void sendMessages(CommandSender to, String path, Placeholder placeholders) {
 		Object o = getTranslation(path);
-		if(o==null) {
+		if(!existsTranslation(path)) {
 			Bukkit.getLogger().severe("[BUG] Missing configuration path [Translations]!");
 			Bukkit.getLogger().severe("[BUG] Report this to the DevTec discord:");
 			Bukkit.getLogger().severe("[BUG] Missing path: "+path);
 			return;
 		}
+		if(o==null)return;
 		if(o instanceof Collection) {
 			for(Object d : (Collection<?>)o)
 				TheAPI.msg(placeholder(to, d+"", placeholders), to);
@@ -394,7 +399,7 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static String isAfk(Player p) {
-		return API.getSPlayer(p).isAFK() ? tab.getString("AFK.true") : tab.getString("AFK.false");
+		return Loader.getElse("AFK", API.getSPlayer(p).isAFK());
 	}
 
 	private String getColoredPing(Player p) {
@@ -1034,5 +1039,9 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 	public static String getPerm(String cmd, String section, String sub) {
 		return cmds.getString(section+"."+cmd+".SubPermission."+sub);
+	}
+	public static String getElse(String string, boolean value) {
+		String sd = plac.getString(string+"."+(value?"yes":"no"));
+		return sd==null?value+"":sd;
 	}
 }

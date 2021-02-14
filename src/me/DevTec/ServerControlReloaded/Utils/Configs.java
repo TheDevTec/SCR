@@ -58,7 +58,7 @@ public class Configs {
 		AnimationManager.reload();
 	}
 	
-	static List<String> datas = Arrays.asList("Config.yml","Rules.txt","Colors.txt","Scoreboard.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
+	static List<String> datas = Arrays.asList("Config.yml","Rules.txt","Colors.txt","Scoreboard.yml","Placeholders.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
 	
 	private static void copyDefauts() {
 		Data data = new Data();
@@ -71,6 +71,9 @@ public class Configs {
 	    		break;
 	    	case "Config.yml":
 	    		c=Loader.config;
+	    		break;
+	    	case "Placeholders.yml":
+	    		c=Loader.plac;
 	    		break;
 	    	case "Tablist.yml":
 	    		c=Loader.tab;
@@ -149,6 +152,9 @@ public class Configs {
 	    	switch(s) {
 	    	case "Kits.yml":
 	    		Loader.kit=c;
+	    		break;
+	    	case "Placeholders.yml":
+	    		Loader.plac=c;
 	    		break;
 	    	case "Config.yml":
 	    		Loader.config=c;
