@@ -172,6 +172,10 @@ public class Loader extends JavaPlugin implements Listener {
 		sendMessages(to, path, null);
 	}
 	
+	public static void sendMessages(CommandSender to, CommandSender replace, String path) {
+		sendMessages(to, replace, path, null);
+	}
+	
 	public static void sendBroadcasts(CommandSender whoIsSelected, String path) {
 		sendBroadcasts(whoIsSelected, path, null);
 	}
@@ -191,6 +195,23 @@ public class Loader extends JavaPlugin implements Listener {
 		}else
 			if(!(o+"").isEmpty())
 		TheAPI.msg(placeholder(to, o+"", placeholders), to);
+	}
+	
+	public static void sendMessages(CommandSender to, CommandSender replace, String path, Placeholder placeholders) {
+		Object o = getTranslation(path);
+		if(!existsTranslation(path)) {
+			Bukkit.getLogger().severe("[BUG] Missing configuration path [Translations]!");
+			Bukkit.getLogger().severe("[BUG] Report this to the DevTec discord:");
+			Bukkit.getLogger().severe("[BUG] Missing path: "+path);
+			return;
+		}
+		if(o==null)return;
+		if(o instanceof Collection) {
+			for(Object d : (Collection<?>)o)
+				TheAPI.msg(placeholder(replace, d+"", placeholders), to);
+		}else
+			if(!(o+"").isEmpty())
+		TheAPI.msg(placeholder(replace, o+"", placeholders), to);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -427,6 +448,7 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		TabList.removeTab();
 		Tasks.unload();
+		stop();
 		DisplayManager.unload();
 		for (String w : mw.getStringList("Worlds"))
 			if (Bukkit.getWorld(w) != null) {
@@ -596,11 +618,10 @@ public class Loader extends JavaPlugin implements Listener {
 					SPlayer s = API.getSPlayer(p);
 					if (setting.afk_auto) {;
 						if (getTime(s) <= 0) {
-							if (!s.bc && !s.mp) {
+							if (!s.bc) {
 								s.bc = true;
-								s.mp = true;
-								if (!API.hasVanish(p))
-									Loader.sendBroadcasts(p, "AFK.Start");
+								for(Player canSee : API.getPlayers(p))
+									Loader.sendMessages(canSee, p, "AFK.Start");
 							}
 							if (setting.afk_kick) {
 								if (s.kick >= rkick) {
@@ -619,18 +640,22 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public void setAFK(SPlayer s) {
-		save(s.getPlayer());
-		s.mp = true;
+		Player player = s.getPlayer();
+		moving.put(s.getName(), player.getLocation());
+		s.afk=0;
+		s.kick = 0;
+		s.bc = true;
 		s.manual = true;
 		for(Player canSee : API.getPlayers(s.getPlayer()))
-			Loader.sendMessages(canSee, "AFK.Start");
+			Loader.sendMessages(canSee, player, "AFK.Start");
 	}
 	public void setAFK(SPlayer s, String reason) {
-		save(s.getPlayer());
-		s.mp = true;
+		Player player = s.getPlayer();
+		save(player);
+		s.bc = true;
 		s.manual = true;
-		for(Player canSee : API.getPlayers(s.getPlayer()))
-			Loader.sendMessages(canSee, "AFK.Start_WithReason", Placeholder.c().add("%reason%", reason));
+		for(Player canSee : API.getPlayers(player))
+			Loader.sendMessages(canSee, player, "AFK.Start_WithReason", Placeholder.c().add("%reason%", reason));
 	}
 	
 	public long getTime(SPlayer s) {;
@@ -638,16 +663,15 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public void save(Player d) {
-		SPlayer s = API.getSPlayer(d);
 		moving.put(d.getName(), d.getLocation());
+		SPlayer s = API.getSPlayer(d);
 		if(isAFK(s) || isManualAfk(s)) {
 			for(Player canSee : API.getPlayers(d))
-				Loader.sendMessages(canSee, "AFK.End");
+				Loader.sendMessages(canSee, d, "AFK.End");
 		}
 		s.afk=0;
 		s.kick = 0;
 		s.manual = false;
-		s.mp = false;
 		s.bc = false;
 	}
 

@@ -118,14 +118,18 @@ public class WorldChange implements Listener {
 
 	}
 
+	Map<String, Integer> task = new HashMap<>();
+	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChangeGamamode(PlayerGameModeChangeEvent e) {
 		if(TheAPI.isNewerThan(7) && e.getNewGameMode()==GameMode.SPECTATOR) {
-			new Tasker() {
+			if(!task.containsKey(e.getPlayer().getName()))
+			task.put(e.getPlayer().getName(), new Tasker() {
 				public void run() {
 					LoginEvent.moveInTab(e.getPlayer(), 1, API.hasVanish(e.getPlayer()));
+					task.remove(e.getPlayer().getName());
 				}
-			}.runLater(1);
+			}.runLater(1));
 		}
 		SPlayer a = API.getSPlayer(e.getPlayer());
 		if (a.hasFlyEnabled())

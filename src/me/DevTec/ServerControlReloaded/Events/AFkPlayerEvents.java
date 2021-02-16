@@ -1,5 +1,7 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import java.util.Collection;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,6 +11,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import me.DevTec.ServerControlReloaded.Commands.CommandsManager;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.punishmentapi.PlayerBanList;
 import me.devtec.theapi.punishmentapi.PunishmentAPI;
@@ -25,6 +28,16 @@ public class AFkPlayerEvents implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onBreakBlock(PlayerCommandPreprocessEvent e) {
+		if(CommandsManager.isLoaded("Other", "AFK")) {
+			String c = e.getMessage().substring(1);
+			if(c.toLowerCase().startsWith(Loader.cmds.getString("Other.AFK.Name").toLowerCase()))return;
+			Object d = Loader.cmds.get("Other.AFK.Aliases");
+			if(d instanceof Collection) {
+			for(Object cmd : (Collection<?>)d)
+				if(c.toLowerCase().startsWith((cmd+"").toLowerCase()))return;
+			}else
+			if(c.toLowerCase().startsWith((d+"").toLowerCase()))return;
+		}
 		Loader.getInstance.save(e.getPlayer());
 	}
 

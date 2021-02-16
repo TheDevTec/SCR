@@ -329,4 +329,8 @@ public class CommandsManager {
 		commands.clear();
 		for(Player p : TheAPI.getOnlinePlayers())p.updateCommands();
 	}
+
+	public static boolean isLoaded(String section, String command) {
+		return commands.containsKey(section+":"+command);
+	}
 }

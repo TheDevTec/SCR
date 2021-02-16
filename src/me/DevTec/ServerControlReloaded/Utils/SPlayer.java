@@ -22,7 +22,7 @@ public class SPlayer {
 	public boolean lock;
 	private final String s;
 	public int kick, afk;
-	public boolean bc, mp, manual;
+	public boolean bc, manual;
 	public String reply, type;
 	public Location l;
 	

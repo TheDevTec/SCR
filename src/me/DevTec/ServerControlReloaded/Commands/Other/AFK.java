@@ -34,8 +34,6 @@ public class AFK implements CommandExecutor, TabCompleter {
 					SPlayer p = API.getSPlayer((Player) s);
 					if (p.isAFK()) {
 						p.setAFK(false);
-						if (!API.hasVanish((Player)s))
-							Loader.sendBroadcasts(p.getPlayer(), "AFK.End");
 					} else {
 						p.setAFK(true);
 					}
@@ -60,8 +58,6 @@ public class AFK implements CommandExecutor, TabCompleter {
 						Loader.sendMessages(s, "AFK.Command.Other.End");
 						Loader.sendMessages(p.getPlayer(), "AFK.Command.End");
 						p.setAFK(false);
-						if (!API.hasVanish(player))
-							Loader.sendBroadcasts(p.getPlayer(), "AFK.End");
 					} else {
 						Loader.sendMessages(s, "AFK.Command.Other.Start");
 						Loader.sendMessages(p.getPlayer(), "AFK.Command.Start");
@@ -76,8 +72,6 @@ public class AFK implements CommandExecutor, TabCompleter {
 						SPlayer p = API.getSPlayer((Player) s);
 						if (p.isAFK()) {
 							p.setAFK(false);
-							if (!API.hasVanish((Player)s))
-								Loader.sendBroadcasts(p.getPlayer(), "AFK.End");
 						} else {
 							p.setAFK(true, StringUtils.buildString(args));
 						}
