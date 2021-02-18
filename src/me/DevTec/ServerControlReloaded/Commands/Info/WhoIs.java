@@ -2,6 +2,7 @@ package me.DevTec.ServerControlReloaded.Commands.Info;
 
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,13 +27,15 @@ import me.devtec.theapi.utils.json.Reader;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 
+	private static HashMap<String, Object> empty = new HashMap<>();
+	
 	@SuppressWarnings("unchecked")
 	public static Map<String, Object> getCountry(String a) {
 		try {
 			URL url = new URL("http://ip-api.com/json/" + a.replace("_", "."));
 			return (Map<String,Object>)Reader.read(StreamUtils.fromStream(url.openStream()));
 		} catch (Exception e) {
-			return null;
+			return empty;
 		}
 	}
 	
