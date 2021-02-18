@@ -27,34 +27,33 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		String gamemode = null;
+		if (args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0"))
+			gamemode = "Survival";
+		else
+
+		if (args[0].equalsIgnoreCase("c") || args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1"))
+			gamemode = "Creative";
+		else
+
+		if (args[0].equalsIgnoreCase("a") || args[0].equalsIgnoreCase("adventure") || args[0].equalsIgnoreCase("2"))
+			gamemode = "Adventure";
+		else
+
+		if (args[0].equalsIgnoreCase("sp") || args[0].equalsIgnoreCase("spectator")
+				|| args[0].equalsIgnoreCase("3"))
+			gamemode = "Spectator";
+		else {
+			gamemode = null;
+
+		}
+		
+		if(TheAPI.isOlderThan(8)) {
+			if(gamemode.equals("Spectator")) {
+			TheAPI.msg("&cUnsupported GameMode type", s);
+			return true;
+			}
+		}
 		if (args.length == 1) {
-			if (args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0"))
-				gamemode = "Survival";
-			else
-
-			if (args[0].equalsIgnoreCase("c") || args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1"))
-				gamemode = "Creative";
-			else
-
-			if (args[0].equalsIgnoreCase("a") || args[0].equalsIgnoreCase("adventure") || args[0].equalsIgnoreCase("2"))
-				gamemode = "Adventure";
-			else
-
-			if (args[0].equalsIgnoreCase("sp") || args[0].equalsIgnoreCase("spectator")
-					|| args[0].equalsIgnoreCase("3"))
-				gamemode = "Spectator";
-			else {
-				gamemode = null;
-
-			}
-			
-			if(TheAPI.isOlderThan(8)) {
-				if(gamemode.equals("Spectator")) {
-				TheAPI.msg("&cUnsupported GameMode type", s);
-				return true;
-				}
-			}
-			
 			if(gamemode == null) {
 				Loader.sendMessages(s, "Missing.GameMode", Placeholder.c()
 						.add("%gamemode%", args[0]));
@@ -73,60 +72,25 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 			Loader.Help(s, "GameMode", "GameMode");
 			return true;
 		}
-		if (args.length == 2) {
-			if (args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0"))
-				gamemode = "Survival";
-			else
-
-			if (args[0].equalsIgnoreCase("c") || args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1"))
-				gamemode = "Creative";
-			else
-
-			if (args[0].equalsIgnoreCase("a") || args[0].equalsIgnoreCase("adventure") || args[0].equalsIgnoreCase("2"))
-				gamemode = "Adventure";
-			else
-
-			if (args[0].equalsIgnoreCase("sp") || args[0].equalsIgnoreCase("spectator")
-					|| args[0].equalsIgnoreCase("3"))
-				gamemode = "Spectator";
-			else {
-				gamemode = null;
-			}
-			if(TheAPI.isOlderThan(8)) {
-				if(gamemode.equals("Spectator")) {
-				TheAPI.msg("&cUnsupported GameMode type", s);
-				return true;
-				}
-			}
-			
-			if(gamemode == null) {
-				Loader.sendMessages(s, "Missing.GameMode", Placeholder.c()
-						.add("%gamemode%", args[0]));
-				return true;
-			}
-			
-			if (Loader.has(s, "GameMode" + gamemode, "GameMode","Other")) {
-				Player p = TheAPI.getPlayer(args[1]);
-					if (p != null) {
-						p.setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
-						Loader.sendMessages(p, "GameMode.Other."+gamemode+".Receiver", Placeholder.c()
-								.add("%gamemode%", gamemode));
-						
-						Loader.sendMessages(s, "GameMode.Other."+gamemode+".Sender", Placeholder.c()
-								.add("%player%", p.getName())
-								.add("%playername%", p.getDisplayName())
-								.add("%gamemode%", gamemode));
-						return true;
-					}
-					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
-							.add("%player%", args[0]));
+		if (Loader.has(s, "GameMode" + gamemode, "GameMode","Other")) {
+			Player p = TheAPI.getPlayer(args[1]);
+				if (p != null) {
+					p.setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
+					Loader.sendMessages(p, "GameMode.Other."+gamemode+".Receiver", Placeholder.c()
+							.add("%gamemode%", gamemode));
+					
+					Loader.sendMessages(s, "GameMode.Other."+gamemode+".Sender", Placeholder.c()
+							.add("%player%", p.getName())
+							.add("%playername%", p.getDisplayName())
+							.add("%gamemode%", gamemode));
 					return true;
-			}
-			Loader.noPerms(s, "GameMode" + gamemode, "GameMode","Other");
-			return true;
+				}
+				Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
+						.add("%player%", args[1]));
+				return true;
 		}
-
-		return false;
+		Loader.noPerms(s, "GameMode" + gamemode, "GameMode","Other");
+		return true;
 	}
 
 	@Override
