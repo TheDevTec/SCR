@@ -658,7 +658,7 @@ public class Loader extends JavaPlugin implements Listener {
 			Loader.sendMessages(canSee, player, "AFK.Start_WithReason", Placeholder.c().add("%reason%", reason));
 	}
 	
-	public long getTime(SPlayer s) {;
+	public long getTime(SPlayer s) {
 		return time - s.afk;
 	}
 
