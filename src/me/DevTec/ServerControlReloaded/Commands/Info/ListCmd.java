@@ -1,10 +1,8 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,53 +17,31 @@ import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.StringUtils;
 
 public class ListCmd implements CommandExecutor, TabCompleter {
 	
-	public String joiner(CommandSender d , String value) {
-		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
+	public int joinercount(CommandSender d , String value) {
+		int s = 0;
+		List<String> groups = Arrays.asList(value.split("[ ]*,[ ]*"));
 		for (Player a : TheAPI.getOnlinePlayers()) {
 			if(d instanceof Player == false ? false : !API.canSee((Player)d,a.getName()))continue;
 			String as = Staff.getGroup(a);
-			List<String> s = p.getOrDefault(as, new ArrayList<>());
-			s.add(a.getName());
-			p.put(as, s);
-		}
-		String s = "";
-		for(String group : value.split("[ ]*,[ ]*")) {
-			if(group.equalsIgnoreCase("{staff}")) {
-				if(!Staff.joiner(d).equals(""))
-				s+=(s.equals("")?"":", ")+Staff.joiner(d);
-				continue;
-			}
-			//ex. default, vip, supervip
-			String ss = StringUtils.join(p.getOrDefault(group, Arrays.asList()), ", ");
-			if(!ss.equals("")) //empty
-				//empty String -> ""
-			s+=(s.equals("")?"":", ")+ss;
+			if(groups.contains("{staff}") && Loader.config.getStringList("Options.StaffList").contains(as)||groups.contains(as))
+				++s;
 		}
 		return s;
 	}
 	
-	public String joinercount(CommandSender d , String value) {
-		HashMap<String, List<String>> p = new HashMap<String, List<String>>();
+	public String joiner(CommandSender d , String value) {
+		String s = "";
+		List<String> groups = Arrays.asList(value.split("[ ]*,[ ]*"));
 		for (Player a : TheAPI.getOnlinePlayers()) {
 			if(d instanceof Player == false ? false : !API.canSee((Player)d,a.getName()))continue;
 			String as = Staff.getGroup(a);
-			List<String> s = p.getOrDefault(as, new ArrayList<>());
-			s.add(a.getName());
-			p.put(as, s);
+			if(groups.contains("{staff}") && Loader.config.getStringList("Options.StaffList").contains(as)||groups.contains(as))
+				s+=", "+a.getName();
 		}
-		int s = 0;
-		for(String group : value.split("[ ]*,[ ]*")) {
-			if(group.equalsIgnoreCase("{staff}")) {
-				s+=StringUtils.getInt(Staff.joinercount(d));
-				continue;
-			}
-			s+=p.getOrDefault(group, Arrays.asList()).size();
-		}
-		return s+"";
+		return s.equals("")?s:s.substring(2);
 	}
 	
 	Pattern a = Pattern.compile("\\%joiner\\{(.*?)\\}%"), b = Pattern.compile("\\%joiner-count\\{(.*?)\\}%");
@@ -86,7 +62,7 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 					}
 					f = b.matcher(sd+"");
 					while(f.find())
-						sd=(sd+"").replace(f.group(), joinercount(s,f.group(1)));
+						sd=(sd+"").replace(f.group(), joinercount(s,f.group(1))+"");
 					if(!contains || !empty || !setting.list)
 					TheAPI.msg(Loader.placeholder(s, sd+"", null), s);
 				}
@@ -98,7 +74,7 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 				sd=sd.replace(f.group(), joiner(s,f.group(1)));
 			f = b.matcher(sd);
 			while(f.find())
-				sd=sd.replace(f.group(), joinercount(s,f.group(1)));
+				sd=sd.replace(f.group(), joinercount(s,f.group(1))+"");
 			TheAPI.msg(Loader.placeholder(s, sd, null), s);
 			return true;
 		}

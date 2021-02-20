@@ -42,46 +42,35 @@ public class Staff implements CommandExecutor, TabCompleter {
 		return "default";
 	}
 	
-	public static String joiner(CommandSender sender) {
-		String s = "";
-		for (Player a : TheAPI.getOnlinePlayers()) 
-			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a))) { 
-				if(sender instanceof Player == false ? false : !API.canSee((Player)sender,a.getName()))continue;
-				s+=(s.equals("")?"":", ")+a.getName();
-			}
+	public int joinercount(CommandSender d) {
+		int s = 0;
+		List<String> groups = Loader.config.getStringList("Options.StaffList");
+		for (Player a : TheAPI.getOnlinePlayers()) {
+			if(d instanceof Player == false ? false : !API.canSee((Player)d,a.getName()))continue;
+			String as = Staff.getGroup(a);
+			if(groups.contains(as))
+				++s;
+		}
 		return s;
 	}
 	
-	
-	public static String joinercount(CommandSender sender) {
-		int s = 0;
-		for (Player a : TheAPI.getOnlinePlayers()) 
-			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a))) {
-				if(sender instanceof Player == false ? false : !API.canSee((Player)sender,a.getName()))continue;
-				++s;
-			}
-		return s+"";
-	}
-	public static String jner() {
+	public String joiner(CommandSender d) {
 		String s = "";
-		for (Player a : TheAPI.getOnlinePlayers()) 
-			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a)))				
-				s+=(s.equals("")?"":", ")+a.getName();
-		return s;
-	}
-	public static String jcount() {
-		int s = 0;
-		for (Player a : TheAPI.getOnlinePlayers()) 
-			if(Loader.config.getStringList("Options.StaffList").contains(getGroup(a)))
-				++s;
-		return s+"";
+		List<String> groups = Loader.config.getStringList("Options.StaffList");
+		for (Player a : TheAPI.getOnlinePlayers()) {
+			if(d instanceof Player == false ? false : !API.canSee((Player)d,a.getName()))continue;
+			String as = Staff.getGroup(a);
+			if(groups.contains(as))
+				s+=", "+a.getName();
+		}
+		return s.equals("")?s:s.substring(2);
 	}
 	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Staff", "Info")) {
 			if(Loader.has(s, "Staff", "Info", "Vanished")) {
-				boolean e=jcount().equals("0");
+				boolean e=joinercount(s)==0;
 				if (e && setting.staff_hide) {
 					if(setting.staff_replace) {
 						for(String a : Loader.config.getStringList("Options.Staff.ReplaceWith")){
@@ -92,11 +81,11 @@ public class Staff implements CommandExecutor, TabCompleter {
 					return true;
 				}else if(!e || !setting.staff_hide)
 				Loader.sendMessages(s, "List.Staff", Placeholder.c()
-						.add("%staff_online%", jcount())
-						.add("%staff%", jner()));
+						.add("%staff_online%", joinercount(s)+"")
+						.add("%staff%", joiner(s)));
 				return true;
-				}
-			boolean isEmpty = joinercount(s).equals("0");
+			}
+			boolean isEmpty = joinercount(s)==0;
 			if(isEmpty && setting.staff_hide) {
 				if(setting.staff_replace) {
 					for(String a : Loader.config.getStringList("Options.Staff.ReplaceWith")){
@@ -107,7 +96,7 @@ public class Staff implements CommandExecutor, TabCompleter {
 				return true;
 			}else if(!isEmpty || !setting.staff_hide)
 			Loader.sendMessages(s, "List.Staff", Placeholder.c()
-					.add("%staff_online%", joinercount(s))
+					.add("%staff_online%", joinercount(s)+"")
 					.add("%staff%", joiner(s)));
 			return true;
 		}
