@@ -5,8 +5,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,14 +22,16 @@ import org.bukkit.entity.Player;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.blocksapi.BlockIterator;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
+import net.luckperms.api.LuckPermsProvider;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
-	private static HashMap<String, SPlayer> cache = new HashMap<>();
+	private static Map<String, SPlayer> cache = new HashMap<>();
 
 	public static SPlayer getSPlayer(Player p) {
 		if(!cache.containsKey(p.getName()))
@@ -43,9 +47,13 @@ public class API {
 	
 	public static List<Player> getPlayers(CommandSender s){
 		List<Player> p = TheAPI.getOnlinePlayers();
-		if(s instanceof Player)
-			for(Player pd : TheAPI.getOnlinePlayers())
-	           	if(pd!=s && !canSee((Player)s,pd) && !((Player)s).canSee(pd))p.remove(pd);
+		if(s instanceof Player) {
+			Iterator<Player> it = p.iterator();
+			while(it.hasNext()) {
+				Player pd = it.next();
+	           	if(pd!=s && !((Player)s).canSee(pd))it.remove();
+			}
+		}
 		return p;
 	}
 	
@@ -54,6 +62,26 @@ public class API {
 		List<String> names = new ArrayList<>(p.size());
 		p.forEach(a -> names.add(a.getName()));
 		return names;
+	}
+	
+	public static String getGroup(String player) {
+		if(PluginManagerAPI.isEnabledPlugin("LuckPerms"))
+			return LuckPermsProvider.get().getUserManager().getUser(player).getPrimaryGroup();
+		if(Loader.perms!=null)
+			return Loader.perms.getPrimaryGroup("world", player);
+		if(Loader.vault!=null)
+			return Loader.vault.getPrimaryGroup("world", player);
+		return "default";
+	}
+	
+	public static String getGroup(Player player) {
+		if(PluginManagerAPI.isEnabledPlugin("LuckPerms"))
+			return LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId()).getPrimaryGroup();
+		if(Loader.perms!=null)
+			return Loader.perms.getPrimaryGroup(player);
+		if(Loader.vault!=null)
+			return Loader.vault.getPrimaryGroup(player);
+		return "default";
 	}
 	
     public static void setVanish(String playerName, String permission, boolean value) {
@@ -85,7 +113,7 @@ public class API {
                 List<Player> l = TheAPI.getOnlinePlayers();
                 l.remove(s);
                 for(Player d : l)
-                    if(!d.hasPermission(perm))
+                    if(!d.hasPermission(perm) && d.canSee(s))
                         d.hidePlayer(s);
                 return;
             }
@@ -94,7 +122,8 @@ public class API {
             List<Player> l = TheAPI.getOnlinePlayers();
             l.remove(s);
             for (Player d : l)
-            	d.showPlayer(s);
+            	if(!d.canSee(s))
+            		d.showPlayer(s);
     }
  
     public static boolean hasVanish(String playerName) {
@@ -112,11 +141,8 @@ public class API {
     }
  
     public static boolean canSee(Player player, String target) {
+    	if(TheAPI.getPlayerOrNull(target)!=null)return player.canSee(TheAPI.getPlayerOrNull(target));
         return hasVanish(target) ? player.hasPermission(getVanishPermission(target)) : true;
-    }
- 
-    public static boolean canSee(Player player, Player target) {
-        return (hasVanish(target) ? player.hasPermission(getVanishPermission(target.getName())) : true) && player.canSee(target);
     }
 
 	public static List<SPlayer> getSPlayers() {

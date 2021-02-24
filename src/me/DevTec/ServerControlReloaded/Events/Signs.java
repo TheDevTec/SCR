@@ -3,6 +3,7 @@ package me.DevTec.ServerControlReloaded.Events;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -39,7 +40,7 @@ public class Signs implements Listener {
 		}
 		String l = e.getLine(0);
 		String f = e.getLine(1);
-		HashMap<SignAction, List<String>> a = new HashMap<SignAction, List<String>>();
+		Map<SignAction, List<String>> a = new HashMap<>();
 		if (l.equalsIgnoreCase("[warp]") && p.hasPermission("SCR.Other.SignCreate.Warp")) {
 			if (warp(f) != null) {
 				e.setLine(0, TheAPI.colorize("&0[&9Warp&0]"));

@@ -3,13 +3,14 @@ package me.DevTec.ServerControlReloaded.Events;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.DevTec.ServerControlReloaded.Commands.Message.PrivateMessageManager;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -28,6 +29,7 @@ import me.devtec.theapi.utils.datakeeper.User;
 
 public class ChatFormat implements Listener {
 	static Loader plugin = Loader.getInstance;
+	static Pattern colorPattern = Pattern.compile("[XxA-Fa-fUu0-9]");
 
 	public static String r(Player p, String s, String msg) {
 		if(s.toLowerCase().contains("&u")) {
@@ -41,7 +43,7 @@ public class ChatFormat implements Listener {
 						found = 1;
 						continue;
 					}
-					if (found == 1 && Pattern.compile("[XxA-Fa-fUu0-9]").matcher(c + "").find()) {
+					if (found == 1 && colorPattern.matcher(c + "").find()) {
 						found = 0;
 						sd.add(d.toString());
 						d = d.delete(0, d.length());
@@ -98,47 +100,46 @@ public class ChatFormat implements Listener {
 
 	private int count(String string) {
 		int upperCaseCount = 0;
-		for (int i = 0; i < string.length(); i++)
-			if (Character.isAlphabetic(string.charAt(i)) && Character.isUpperCase(string.charAt(i)))
-				upperCaseCount++;
+		for (char c : string.toCharArray())
+			if (Character.isAlphabetic(c) && Character.isUpperCase(c))
+				++upperCaseCount;
 		return upperCaseCount;
 	}
 
 	private String removeDoubled(String s) {
 		char prevchar = 0;
+		int count = 0;
 		StringBuilder sb = new StringBuilder();
 		for (char c : s.toCharArray()) {
-			if (prevchar != c)
+			if (prevchar != c) {
 				sb.append(c);
-			prevchar = c;
+				count = 0;
+			}else {
+				prevchar = c;
+				if(++count>=count(c))continue;
+				sb.append(c);
+			}
 		}
 		return sb.toString();
 	}
-
-	private int countDoubled(String s) {
-		return s.length() - removeDoubled(s).length();
+	
+	private int count(char c) {
+		return Character.isDigit(c)?6:Character.isAlphabetic(c)?2:4;
 	}
 
-	static HashMap<Player, String> old = new HashMap<Player, String>();
+	static Map<Player, String> old = new HashMap<>();
 
 	private boolean isSim(Player p, String msg) {
 		if (Loader.config.getBoolean("SpamWords.SimiliarMessage")) {
-			if (old.containsKey(p)) {
-				String o = old.get(p);
-				old.remove(p);
-				old.put(p, msg);
-				if (o.length() >= 5 && msg.length() >= o.length()) {
-					String f = o.substring(1, o.length() - 1);
-					return o.equalsIgnoreCase(msg) || msg.startsWith(o) || f.startsWith(msg) || f.equalsIgnoreCase(msg);
-				}
-			} else
-				old.put(p, msg);
+			String o = old.put(p, msg);
+			if (o!=null && o.length() >= 5 && msg.length() >= o.length())
+				return msg.contains(o.substring(1, o.length() - 1));
 		}
 		return false;
 	}
 	
 	@EventHandler
-	public void set(PlayerChatEvent e) {
+	public void set(AsyncPlayerChatEvent e) {
 		Player p = e.getPlayer();
 		Loader.setupChatFormat(p);
 		if (TheAPI.getCooldownAPI(p.getName()).getTimeToExpire("world-create") != -1) {
@@ -162,7 +163,8 @@ public class ChatFormat implements Listener {
 			return;
 		}
 		String msg = r(e.getMessage(), p);
-		if (!p.hasPermission("SCR.Admin")) {
+		if (!p.hasPermission("SCR.Other.Admin")) {
+			if (!p.hasPermission("SCR.Other.RulesBypass")) {
 		for (Rule rule : Loader.rules) {
 			if(!Loader.events.getStringList("onChat.Rules").contains(rule.getName()))continue;
 			msg = rule.apply(msg);
@@ -171,7 +173,7 @@ public class ChatFormat implements Listener {
 		if (msg == null) {
 			e.setCancelled(true);
 			return;
-		}
+		}}
 		String message = msg;
 		String d = ""; // anti doubled letters
 		int up = 0; // anti caps
@@ -179,14 +181,16 @@ public class ChatFormat implements Listener {
 			if (message.split(" ").length == 0) {
 				if (!is(message)) {
 					up = up + count(message);
-					d = d + " " + (countDoubled(message) >= 5 ? removeDoubled(message) : message);
+					String removed = removeDoubled(message);
+					d +=" " + (message.length() - removed.length() >= 5 ? removed : message);
 				} else
-					d = d + " " + message;
+					d +=" " + message;
 			} else
 				for (String s : message.split(" ")) {
 					if (!is(s)) {
 						up = up + count(s);
-						d = d + " " + (countDoubled(s) >= 5 ? removeDoubled(s) : s);
+						String removed = removeDoubled(message);
+						d = d + " " + (message.length() - removed.length() >= 5 ? removed : s);
 					} else
 						d = d + " " + s;
 				}
@@ -194,8 +198,8 @@ public class ChatFormat implements Listener {
 		} else
 			d = message;
 		String build = d;
-		if (setting.caps_chat) {
-			if (up != 0 && up / ((double) d.length() / 100) >= 60 && !p.hasPermission("SCR.Caps") && d.length() > 5) {
+		if (setting.caps_chat && !p.hasPermission("SCR.Other.Caps")) {
+			if (up != 0 && up / ((double) d.length() / 100) >= 60 && d.length() > 5) {
 				build = "";
 				if (d.split(" ").length == 0) {
 					if (!is(d)) {
@@ -229,7 +233,7 @@ public class ChatFormat implements Listener {
 			}else
 			if(PrivateMessageManager.getLockType(p).equalsIgnoreCase("helpop")) {
 				TheAPI.broadcast(Loader.config.getString("Format.HelpOp").replace("%sender%", p.getName())
-						.replace("%sendername%", TheAPI.getPlayerOrNull(p.getName())!=null?TheAPI.getPlayerOrNull(p.getName()).getDisplayName():p.getName()).replace("%message%", msg), Loader.cmds.exists("Message.Helpop.SubPermissions.Receive")?Loader.cmds.getString("Message.Helpop.SubPermissions.Receive"):"SCR.Command.Helpop.Receive");
+						.replace("%sendername%", TheAPI.getPlayerOrNull(p.getName())!=null?TheAPI.getPlayerOrNull(p.getName()).getDisplayName():p.getName()).replace("%message%", msg), Loader.cmds.getString("Message.Helpop.SubPermission.Receive"));
 				if (!Loader.has(p, "Helpop", "Message", "Receive"))
 					TheAPI.msg(Loader.config.getString("Format.HelpOp").replace("%sender%", p.getName()).replace("%sendername%", TheAPI.getPlayerOrNull(p.getName())!=null?TheAPI.getPlayerOrNull(p.getName()).getDisplayName():p.getName()).replace("%message%", msg), p);
 			}
@@ -237,15 +241,15 @@ public class ChatFormat implements Listener {
 			return;
 		}
 		e.setMessage(msg);
-		if (setting.lock_chat && !p.hasPermission("ServerControl.ChatLock")) {
+		if (setting.lock_chat && !Loader.has(p, "ChatLock", "Other")) {
 			e.setCancelled(true);
 			Loader.sendMessages(p, "ChatLock.IsLocked");
 			Loader.sendBroadcasts(p, "ChatLock.Message", Placeholder.c().add("%player%", p.getName())
-					.add("%playername%", p.getDisplayName()).add("%message%", e.getMessage()), "ServerControl.ChatLock.Notify");
+					.add("%playername%", p.getDisplayName()).add("%message%", e.getMessage()), Loader.getPerm("ChatLock", "Other"));
 			return;
 		}
 		if (Loader.config.getBoolean("Chat-Groups-Enabled")) {
-			String format = PlaceholderAPI.setPlaceholders(p, Loader.config.getString("Chat-Groups." + Loader.get(p,Item.GROUP) + ".Chat"));
+			String format = PlaceholderAPI.setPlaceholders(p, Loader.config.getString("Chat-Groups." + Loader.getChatFormat(p,Item.GROUP) + ".Chat"));
 			if (format != null) {
 				format=(r(p, format, msg));
 				e.setFormat(format.replace("%", "%%"));

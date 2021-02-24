@@ -232,10 +232,10 @@ Options:
   Disallowed-Items:
     Use: false
     Worlds:
-    #   Creative: 
-    #   - "Bedrock"
-    #   - "TNT"
-    #   - "TNT_Minecart"
+   #   Creative: 
+   #   - "Bedrock"
+   #   - "TNT"
+   #   - "TNT_Minecart"
       world:
       -  "Bedrock"
       world_nether:
@@ -284,15 +284,15 @@ Chat-Groups:
   default:
     Name: "&7default &f%player%"
     Chat: "%playername% &8» &7%message%"
-  # vip:
-  #   Name: "&aVIP &e%player%"
-  #   Chat: "%playername% &8» &a%message%"
-  
+ # vip:
+ #   Name: "&aVIP &e%player%"
+ #   Chat: "%playername% &8» &a%message%"
+ 
 Homes:
   #GroupName: amount
   default: 3
-  # vip: 5
-  # owner: 10 
+ # vip: 5
+ # owner: 10 
 
 # Types: REGEX, CONTAINS, EQUALS, STARTS_WITH, ENDS_WITH
 # Regex flags: CASE_INSENSITIVE, COMMENTS, CANON_EQ, DOTALL, LITERAL, MULTILINE, UNICODE_CASE, UNICODE_CHARACTER_CLASS, UNIX_LINES

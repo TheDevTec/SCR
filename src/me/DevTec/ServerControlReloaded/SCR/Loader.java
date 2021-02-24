@@ -62,6 +62,7 @@ import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.listener.Listener;
 import me.devtec.theapi.utils.reflections.Ref;
+import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -241,31 +242,31 @@ public class Loader extends JavaPlugin implements Listener {
 		SUFFIX,
 		GROUP
 	}
-	public static String get(Player p, Item type) {
+	public static String getChatFormat(Player p, Item type) {
 		switch(type) {
 		case GROUP:
-			try {
-				if (PluginManagerAPI.getPlugin("Vault") != null)
-					if (vault != null) {
-						if (Loader.config.exists("Chat-Groups." + Loader.vault.getPrimaryGroup(p)))
-							return vault.getPrimaryGroup(p);
-					}
-				return "default";
-			} catch (Exception e) {
-				return "default";
-			}
+			String group = API.getGroup(p);
+			if (Loader.config.exists("Chat-Groups." + group))
+				return group;
+			return "default";
 		case PREFIX:
-			if (PluginManagerAPI.getPlugin("Vault") != null && vault != null) {
-				if (getGroup(p) != null && vault.getGroupPrefix(p.getWorld().getName(), getGroup(p)) != null)
-					return vault.getGroupPrefix(p.getWorld().getName(), getGroup(p));
-				return "";
+			if(PluginManagerAPI.isEnabledPlugin("LuckPerms"))
+				return LuckPermsProvider.get().getUserManager().getUser(p.getUniqueId()).getCachedData().getMetaData().getPrefix();
+			if (vault != null) {
+				String prefix = vault.getPlayerPrefix(p);
+				if(prefix==null)
+					prefix=vault.getGroupPrefix(p.getWorld(), API.getGroup(p));
+				return prefix==null?"":prefix;
 			}
 			return "";
 		case SUFFIX:
-			if (PluginManagerAPI.getPlugin("Vault") != null && vault != null) {
-				if (getGroup(p) != null && vault.getGroupSuffix(p.getWorld().getName(), getGroup(p)) != null)
-					return vault.getGroupSuffix(p.getWorld().getName(), getGroup(p));
-				return "";
+			if(PluginManagerAPI.isEnabledPlugin("LuckPerms"))
+				return LuckPermsProvider.get().getUserManager().getUser(p.getUniqueId()).getCachedData().getMetaData().getSuffix();
+			if (vault != null) {
+				String prefix = vault.getPlayerSuffix(p);
+				if(prefix==null)
+					prefix=vault.getGroupSuffix(p.getWorld(), API.getGroup(p));
+				return prefix==null?"":prefix;
 			}
 			return "";
 		}
@@ -274,27 +275,15 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	public static void setupChatFormat(Player p) {
 		if(p==null)return;
-		if (config.exists("Chat-Groups." + get(p, Item.GROUP) + ".Name")) {
-			String g = PlaceholderAPI.setPlaceholders(p,config.getString("Chat-Groups." + get(p, Item.GROUP) + ".Name"));
+		String group = getChatFormat(p, Item.GROUP);
+		if (config.exists("Chat-Groups." + group + ".Name")) {
+			String g = PlaceholderAPI.setPlaceholders(p,config.getString("Chat-Groups." + group + ".Name"));
 			g = ChatFormat.r(p, g, null);
 			p.setDisplayName(Colors.colorize(g, false, p));
 		} else
-			p.setDisplayName(get(p, Item.PREFIX) + p.getName() + get(p, Item.SUFFIX));
+			p.setDisplayName(getChatFormat(p, Item.PREFIX) + p.getName() + getChatFormat(p, Item.SUFFIX));
 		if(TheAPI.getUser(p).exist("DisplayName"))
 			p.setCustomName(TheAPI.colorize(PlaceholderAPI.setPlaceholders(p, TheAPI.getUser(p).getString("DisplayName"))));
-	}
-
-	public static String getGroup(Player p) {
-		try {
-			if (PluginManagerAPI.getPlugin("Vault") != null) {
-				if (Loader.vault != null && Loader.vault.getPrimaryGroup(p) != null)
-					return Loader.vault.getPrimaryGroup(p);
-				return "";
-			}
-		} catch (Exception e) {
-			return "";
-		}
-		return "";
 	}
 
 	public static String getAFK(Player p) {

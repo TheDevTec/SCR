@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,28 +43,34 @@ public class Staff implements CommandExecutor, TabCompleter {
 		return "default";
 	}
 	
-	public int joinercount(CommandSender d) {
+	public static int joinercount(CommandSender d) {
 		int s = 0;
-		List<String> groups = Loader.config.getStringList("Options.StaffList");
+		List<String> stafff = Loader.config.getStringList("Options.StaffList");
+		List<String> staff = new ArrayList<>(stafff.size());
+		for(String f : stafff)
+			staff.add(f.toLowerCase());
 		for (Player a : TheAPI.getOnlinePlayers()) {
 			if(d instanceof Player == false ? false : !API.canSee((Player)d,a.getName()))continue;
 			String as = Staff.getGroup(a);
-			if(groups.contains(as))
+			if(staff.contains(as.toLowerCase()))
 				++s;
 		}
 		return s;
 	}
 	
-	public String joiner(CommandSender d) {
-		String s = "";
-		List<String> groups = Loader.config.getStringList("Options.StaffList");
+	public static String joiner(CommandSender d) {
+		StringBuilder b = new StringBuilder();
+		List<String> stafff = Loader.config.getStringList("Options.StaffList");
+		List<String> staff = new ArrayList<>(stafff.size());
+		for(String f : stafff)
+			staff.add(f.toLowerCase());
 		for (Player a : TheAPI.getOnlinePlayers()) {
 			if(d instanceof Player == false ? false : !API.canSee((Player)d,a.getName()))continue;
 			String as = Staff.getGroup(a);
-			if(groups.contains(as))
-				s+=", "+a.getName();
+			if(staff.contains(as.toLowerCase()))
+				b.append(", "+a.getName());
 		}
-		return s.equals("")?s:s.substring(2);
+		return b.length()>2?b.toString().substring(2):b.toString();
 	}
 	
 	@Override

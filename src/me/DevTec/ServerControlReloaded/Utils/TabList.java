@@ -216,15 +216,15 @@ public class TabList {
 		;if(header.contains("%z%"))
 			header=header.replace("%z%", p.getLocation().getBlockZ() + "");
 		if(header.contains("%vault_group%")) {
-			String group = Loader.get(p, Item.GROUP);
+			String group = API.getGroup(p);
 		if (Loader.vault != null)
 			group = Loader.vault.getPrimaryGroup(p);
 			header=header.replace("%vault_group%", group);
 		}
 		if(header.contains("%vault_prefix%"))
-			header=header.replace("%vault_prefix%", Loader.get(p, Item.PREFIX))
+			header=header.replace("%vault_prefix%", Loader.getChatFormat(p, Item.PREFIX))
 		;if(header.contains("%vault_suffix%"))
-			header=header.replace("%vault_suffix%", Loader.get(p, Item.SUFFIX))
+			header=header.replace("%vault_suffix%", Loader.getChatFormat(p, Item.SUFFIX))
 		;if(header.contains("%group%"))
 			header=header.replace("%group%", Staff.getGroup(p));
 		if(header.contains("%kills%"))
