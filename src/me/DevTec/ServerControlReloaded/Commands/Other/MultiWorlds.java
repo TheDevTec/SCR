@@ -122,7 +122,6 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			if(Loader.mw.exists("Unloaded-Worlds")){
 				for(String w : Loader.mw.getStringList("Unloaded-Worlds")){
 					if(w.equalsIgnoreCase(args[1])){
-						Loader.sendMessages(s,"MultiWorld.Load", Loader.Placeholder.c().add("%world%",args[1]));
 						MultiWorldsUtils.LoadWorld(w, s);
 						return true;
 					}
@@ -152,29 +151,28 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 		return true;
 	}
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args){
-		List<String> c = new ArrayList<>();
 		if (args.length == 1) {
-			c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("unload","load","delete","create","edit")));
-			return c;
+			return StringUtils.copyPartialMatches(args[0], Arrays.asList("unload","load","delete","create","edit"));
 		}
 		if(args.length==2) {
 			if(args[0].equalsIgnoreCase("create")) {return Arrays.asList("?");}
-			for(World a : Bukkit.getWorlds()) {
-				return Arrays.asList(a.getName());
+			if(args[0].equalsIgnoreCase("load")){
+				List<String> worlds = new ArrayList<>();
+				for(String a : Loader.mw.getStringList("Unloaded-Worlds")){
+					return StringUtils.copyPartialMatches(args[0],Arrays.asList(a));
+				}
+			}
+			if(args[0].equalsIgnoreCase("unload")){
+
 			}
 		}
 		if(args.length==3){
 			if(args[0].equalsIgnoreCase("create")){
 				List<String> generators = new ArrayList<>();
 				generators.addAll(Arrays.asList("flat","void","end","nether","the_end","the_void","default"));
-				for(String a:generators){
-					c.addAll(StringUtils.copyPartialMatches(args[0],Arrays.asList(a)));
-				}
-				return c;
+				return StringUtils.copyPartialMatches(args[0],generators);
 			}
 		}
-		c.addAll(StringUtils.copyPartialMatches(args[1],Arrays.asList("")));
-		return c;
-
+		return StringUtils.copyPartialMatches(args[1],Arrays.asList(""));
 	}
 }

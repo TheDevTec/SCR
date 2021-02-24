@@ -160,7 +160,11 @@ public class Item implements CommandExecutor, TabCompleter{
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("list")) {
-						ItemStack it = new ItemStack(((Player) s).getItemInHand());		
+						ItemStack it = new ItemStack(((Player) s).getItemInHand());
+						if(it==null){
+							Loader.sendMessages(s,"Missing.HandEmpty");
+							return true;
+						}
 						String flags = "";
 						for (ItemFlag itf : it.getItemMeta().getItemFlags())
 							flags+=", "+itf.name();
