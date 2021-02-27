@@ -26,47 +26,47 @@ public class SetHome implements CommandExecutor, TabCompleter {
 			if (Loader.has(s, "SetHome", "Warps")) {
 				if (Loader.vault == null) {
 					if (args.length == 0) {
-						TheAPI.getUser(s.getName()).setAndSave("Homes.home",
+						TheAPI.getUser(p).setAndSave("Homes.home",
 								new Position(p.getLocation()).toString());
 						Loader.sendMessages(s, "Home.Create", Placeholder.c()
 								.add("%home%", "home"));
 						return true;
 					}
-						User d = TheAPI.getUser(s.getName());
-						d.setAndSave("Homes." + args[0], new Position(p.getLocation()).toString());
-						Loader.sendMessages(s, "Home.Create", Placeholder.c()
-								.add("%home%", "home"));
-						return true;
+					User d = TheAPI.getUser(p);
+					d.setAndSave("Homes." + args[0], new Position(p.getLocation()).toString());
+					Loader.sendMessages(s, "Home.Create", Placeholder.c()
+							.add("%home%", "home"));
+					return true;
 				} else {
 					if (args.length == 0) {
-						TheAPI.getUser(s.getName()).setAndSave("Homes.home",
+						TheAPI.getUser(p).setAndSave("Homes.home",
 								new Position(p.getLocation()).toString());
 						Loader.sendMessages(s, "Home.Create", Placeholder.c()
 								.add("%home%", "home"));
 						return true;
 					}
-						User d = TheAPI.getUser(s.getName());
-						if (Loader.config.exists("Homes." + Loader.vault.getPrimaryGroup(p))) {
-							if (d.getKeys("Homes").size() >= Loader.config.getInt("Homes." + Loader.vault.getPrimaryGroup(p))) {
-								Loader.sendMessages(s, "Home.Limit");
-								return true;
-							}
-							d.setAndSave("Homes." + args[0],
-									new Position(p.getLocation()).toString());
-							Loader.sendMessages(s, "Home.Create", Placeholder.c()
-									.add("%home%", args[0]));
-							return true;
-						}
-						d.setAndSave("Homes." + args[0], new Position(p.getLocation()).toString());
-						Loader.sendMessages(s, "Home.Create", Placeholder.c()
-								.add("%home%", args[0]));
+					User d = TheAPI.getUser(p);
+					if (d.getKeys("Homes").size() >= getLimit(p)) {
+						Loader.sendMessages(s, "Home.Limit");
 						return true;
+					}
+					d.setAndSave("Homes." + args[0],
+							new Position(p.getLocation()).toString());
+					Loader.sendMessages(s, "Home.Create", Placeholder.c()
+							.add("%home%", args[0]));
+					return true;
 				}
 			}
 			Loader.noPerms(s, "SetHome", "Warps");
 			return true;
 		}
 		return true;
+	}
+	
+	public int getLimit(Player player) {
+		String group = API.getGroup(player);
+		if (!Loader.config.exists("Homes." + group))group="default";
+		return Loader.config.getInt("Homes." + group);
 	}
 
 	@Override
