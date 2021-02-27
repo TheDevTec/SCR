@@ -157,10 +157,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 		if(args.length==2) {
 			if(args[0].equalsIgnoreCase("create")) {return Arrays.asList("?");}
 			if(args[0].equalsIgnoreCase("load")){
-				List<String> worlds = new ArrayList<>();
-				for(String a : Loader.mw.getStringList("Unloaded-Worlds")){
-					return StringUtils.copyPartialMatches(args[0],Arrays.asList(a));
-				}
+				return StringUtils.copyPartialMatches(args[0], Loader.mw.getStringList("Unloaded-Worlds"));
 			}
 			if(args[0].equalsIgnoreCase("unload")){
 

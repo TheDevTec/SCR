@@ -160,14 +160,15 @@ public class Item implements CommandExecutor, TabCompleter{
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("list")) {
-						ItemStack it = new ItemStack(((Player) s).getItemInHand());
-						if(it==null){
+						ItemStack it = ((Player) s).getItemInHand();
+						if(it==null||it.getType()==Material.AIR){
 							Loader.sendMessages(s,"Missing.HandEmpty");
 							return true;
 						}
 						String flags = "";
 						for (ItemFlag itf : it.getItemMeta().getItemFlags())
 							flags+=", "+itf.name();
+						if(!flags.equals(""))
 						flags=flags.substring(2);
 						Loader.sendMessages(s, "Item.Flag.List", Placeholder.c().replace("%item%", it.getType().name()).replace("%flags%", flags));
 						return true;
