@@ -113,7 +113,7 @@ public class API {
                 List<Player> l = TheAPI.getOnlinePlayers();
                 l.remove(s);
                 for(Player d : l)
-                    if(!d.hasPermission(perm) && d.canSee(s))
+                    if(!d.hasPermission(perm))
                         d.hidePlayer(s);
                 return;
             }
@@ -122,8 +122,7 @@ public class API {
             List<Player> l = TheAPI.getOnlinePlayers();
             l.remove(s);
             for (Player d : l)
-            	if(!d.canSee(s))
-            		d.showPlayer(s);
+            	d.showPlayer(s);
     }
  
     public static boolean hasVanish(String playerName) {
