@@ -98,13 +98,18 @@ public class Item implements CommandExecutor, TabCompleter{
 						try {
 			                List<String> lore = m.getLore();
 			                if(lore==null||lore.isEmpty()) {
-			                	Loader.sendMessages(s, "Item.Lore.Removed", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", args[2].toString()));
-				                return true;
+			                	Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", "Lore is empty"));
+				            	  return true;
 			                }
-			                lore.remove(StringUtils.getInt(args[2]));
+			                int r = StringUtils.getInt(args[2]);
+			                if(lore.size()<r||r<0) {
+			                	Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", "Out of bound: "+r+"/"+lore.size()));
+				            	  return true;
+			                }
+			                lore.remove(r);
 			                m.setLore(lore);
 			                item.setItemMeta(m);
-			                Loader.sendMessages(s, "Item.Lore.Removed", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", args[2].toString()));
+			                Loader.sendMessages(s, "Item.Lore.Removed", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", r+""));
 			                return true;
 			              } catch (Exception e) {
 			            	  Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", e.getMessage().trim()));
@@ -119,15 +124,19 @@ public class Item implements CommandExecutor, TabCompleter{
 						try {
 						String name = TheAPI.colorize(StringUtils.buildString(3, args));
 			              List<String> lore = m.getLore();
-			              if(lore==null || lore.isEmpty()) {
-								Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", "Lore is empty"));
-				            	return true;
+			              if(lore==null||lore.isEmpty()) {
+			            	  Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", "Lore is empty"));
+			            	  return true;
 			              }
-			              int line = StringUtils.getInt(args[2]);
-			              lore.set(line, name);
+			              int r = StringUtils.getInt(args[2]);
+			              if(lore.size()<r||r<0) {
+			            	  Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", "Out of bound: "+r+"/"+lore.size()));
+				              return true;
+			              }
+			              lore.set(r, name);
 			              m.setLore(lore);			              
 			              item.setItemMeta(m);
-			              Loader.sendMessages(s, "Item.Lore.Set", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", line+"").replace("%lore%", name));
+			              Loader.sendMessages(s, "Item.Lore.Set", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", r+"").replace("%lore%", name));
 			              return true;
 						}catch(Exception e) {
 							Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", e.getMessage().trim()));
@@ -142,10 +151,8 @@ public class Item implements CommandExecutor, TabCompleter{
 				            	return true;
 			              }
 			              Loader.sendMessages(s, "Item.Lore.ListItem", Placeholder.c().replace("%item%", item.getType().name()).replace("%lines%", lore.size()+""));
-			              for (String ss : lore) {
-			                	Loader.sendMessages(s, "Item.Lore.ListLore", Placeholder.c().replace("%item%", item.getType().name()).replace("%lore%", ss).replace("%position%", tests+""));
-			                	++tests;
-			                }
+			              for (String ss : lore)
+			                	Loader.sendMessages(s, "Item.Lore.ListLore", Placeholder.c().replace("%item%", item.getType().name()).replace("%lore%", ss).replace("%position%", (tests++)+""));
 			              return true;
 			            }
 					return true;
@@ -160,17 +167,12 @@ public class Item implements CommandExecutor, TabCompleter{
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("list")) {
-						ItemStack it = ((Player) s).getItemInHand();
-						if(it==null||it.getType()==Material.AIR){
-							Loader.sendMessages(s,"Missing.HandEmpty");
-							return true;
-						}
 						String flags = "";
-						for (ItemFlag itf : it.getItemMeta().getItemFlags())
+						for (ItemFlag itf : m.getItemFlags())
 							flags+=", "+itf.name();
 						if(!flags.equals(""))
 						flags=flags.substring(2);
-						Loader.sendMessages(s, "Item.Flag.List", Placeholder.c().replace("%item%", it.getType().name()).replace("%flags%", flags));
+						Loader.sendMessages(s, "Item.Flag.List", Placeholder.c().replace("%item%", item.getType().name()).replace("%flags%", flags));
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("add")) {
@@ -180,9 +182,8 @@ public class Item implements CommandExecutor, TabCompleter{
 						}
 						try {
 							ItemFlag type = ItemFlag.valueOf(args[2]);
-							ItemMeta ma = p.getItemInHand().getItemMeta();
 							m.addItemFlags(type);
-							p.getItemInHand().setItemMeta(ma);
+							item.setItemMeta(m);
 							Loader.sendMessages(s,"Item.Flag.Added",Placeholder.c().add("%flag%", type.name()));
 						}catch(Exception | NoSuchFieldError e) {
 							Loader.sendMessages(s,"Missing.Flag",Placeholder.c().add("%flag%", args[2]));
@@ -196,9 +197,8 @@ public class Item implements CommandExecutor, TabCompleter{
 						}
 						try {
 							ItemFlag type = ItemFlag.valueOf(args[2]);
-							ItemMeta ma = p.getItemInHand().getItemMeta();
 							m.removeItemFlags(type);
-							p.getItemInHand().setItemMeta(ma);
+							item.setItemMeta(m);
 							Loader.sendMessages(s,"Item.Flag.Removed",Placeholder.c().add("%flag%", type.name()));
 						}catch(Exception | NoSuchFieldError e) {
 							Loader.sendMessages(s,"Missing.Flag",Placeholder.c().add("%flag%", args[2]));
@@ -218,7 +218,7 @@ public class Item implements CommandExecutor, TabCompleter{
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("get")) {
-						Loader.sendMessages(s,"Item.Durability.Get",Placeholder.c().add("%durability%", ((Player) s).getItemInHand().getDurability()+""));
+						Loader.sendMessages(s,"Item.Durability.Get",Placeholder.c().add("%durability%", item.getDurability()+""));
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("set")) {
@@ -227,7 +227,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							return true;
 						}
 						short i = StringUtils.getShort(args[2]);
-						p.getItemInHand().setDurability(i);
+						item.setDurability(i);
 						Loader.sendMessages(s,"Item.Durability.Set",Placeholder.c().add("%durability%", i+""));
 						return true;
 					}
@@ -240,7 +240,7 @@ public class Item implements CommandExecutor, TabCompleter{
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("get")) {
-						Object stack = Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "asNMSCopy", ItemStack.class),((Player) s).getItemInHand());
+						Object stack = Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "asNMSCopy", ItemStack.class),item);
 						Loader.sendMessages(s,"Item.Nbt.Get",Placeholder.c().add("%nbt%", Ref.invoke(stack, "getOrCreateTag").toString()));
 						return true;
 					}
@@ -249,10 +249,10 @@ public class Item implements CommandExecutor, TabCompleter{
 							Loader.advancedHelp(s, "Item", "Other", "Nbt", "Set");
 							return true;
 						}
-						Object itemstack = Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "asNMSCopy", ItemStack.class), ((Player)s).getItemInHand());
+						Object itemstack = Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "asNMSCopy", ItemStack.class), item);
 						Object nbt = Ref.invokeNulled(Ref.method(Ref.nms("MojangsonParser"), "parse", String.class), StringUtils.buildString(2, args));
 						Ref.invoke(itemstack, Ref.method(Ref.nms("NBTTagCompound"), "setTag", Ref.nms("NBTTagCompound")), nbt);
-						p.getItemInHand().setItemMeta((ItemMeta) Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "getItemMeta", Ref.nms("ItemStack")), itemstack));
+						item.setItemMeta((ItemMeta) Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "getItemMeta", Ref.nms("ItemStack")), itemstack));
 						Loader.sendMessages(s,"Item.Nbt.Set",Placeholder.c().add("%nbt%", nbt.toString()));
 						return true;
 					}
@@ -265,7 +265,7 @@ public class Item implements CommandExecutor, TabCompleter{
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("get")) {
-						Loader.sendMessages(s,"Item.Type.Get",Placeholder.c().add("%type%", ((Player) s).getItemInHand().getType().name()));
+						Loader.sendMessages(s,"Item.Type.Get",Placeholder.c().add("%type%", item.getType().name()));
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("set")) {
@@ -275,7 +275,7 @@ public class Item implements CommandExecutor, TabCompleter{
 						}
 						try {
 							Material type = Material.valueOf(args[2]);
-							p.getItemInHand().setType(type);
+							item.setType(type);
 							Loader.sendMessages(s,"Item.Type.Set",Placeholder.c().add("%type%", type.name()));
 						}catch(Exception e) {
 							Loader.sendMessages(s,"Missing.Material",Placeholder.c().add("%material%", args[2]));
@@ -291,7 +291,7 @@ public class Item implements CommandExecutor, TabCompleter{
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("get")) {
-						Loader.sendMessages(s,"Item.Amount.Get",Placeholder.c().add("%amount%", ((Player) s).getItemInHand().getAmount()+""));
+						Loader.sendMessages(s,"Item.Amount.Get",Placeholder.c().add("%amount%", item.getAmount()+""));
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("set")) {
@@ -299,7 +299,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							Loader.advancedHelp(s, "Item", "Other", "Amount", "Set");
 							return true;
 						}
-						p.getItemInHand().setAmount(StringUtils.getInt(args[2]));
+						item.setAmount(StringUtils.getInt(args[2]));
 						Loader.sendMessages(s,"Item.Amount.Set",Placeholder.c().add("%amount%", ""+StringUtils.getInt(args[2])));
 						return true;
 					}
