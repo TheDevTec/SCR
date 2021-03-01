@@ -30,7 +30,7 @@ Options:
   Metrics: true
   
   Chat:
-    # Types: GLOBAL, PER_WORLD, DISTANCE, PER_WORLD_DISTANCE
+    # Types: GLOBAL, PER_WORLD, DISTANCE
     Type: "GLOBAL"
     # 50 blocks - only for chat type "distance"
     Distance: 50

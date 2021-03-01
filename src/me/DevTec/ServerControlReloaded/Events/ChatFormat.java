@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,6 +31,7 @@ import me.devtec.theapi.utils.HoverMessage;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.json.Reader;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class ChatFormat implements Listener {
 	static Loader plugin = Loader.getInstance;
@@ -188,7 +190,6 @@ public class ChatFormat implements Listener {
 				return json;
 			} //else continue in code below
 		}
-		s=s.replace("%", "%%");
 		if(s.toLowerCase().contains("&u")) {
 				List<String> sd = new ArrayList<>();
 				StringBuffer d = new StringBuffer();
@@ -236,7 +237,7 @@ public class ChatFormat implements Listener {
 		if (msg != null)
 			s=s.replace("%message%", r(msg.replace("%", "%%"), p));
 		s = TabList.replace(s, p, true);
-		return s;
+		return s.replace("%", "%%");
 	}
 
 	public static String r(String msg, CommandSender p) {
@@ -397,18 +398,20 @@ public class ChatFormat implements Listener {
 			e.setCancelled(true);
 			return;
 		}
-		e.setMessage(msg);
 		if (setting.lock_chat && !Loader.has(p, "ChatLock", "Other")) {
 			e.setCancelled(true);
 			Loader.sendMessages(p, "ChatLock.IsLocked");
 			Loader.sendBroadcasts(p, "ChatLock.Message", Placeholder.c().add("%player%", p.getName())
 					.add("%playername%", p.getDisplayName()).add("%message%", msg), Loader.getPerm("ChatLock", "Other"));
+			e.setMessage(msg);
 			return;
 		}
+		Object format = ChatFormatter.chat(p, "%6$9");
 		Iterator<Player> a = e.getRecipients().iterator();
 		while(a.hasNext())
 			if(PrivateMessageManager.getIgnoreList(a.next().getName()).contains(p.getName()))a.remove();
 		if(Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
+			String colorOfFormat = format!=null && format instanceof String?ChatColor.getLastColors(format.toString().split("\\%6\\$9")[0]):"";
 			Sound sound = null;
 			String[] title = new String[] {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
 			String actionbar = Loader.config.getString("Options.ChatNotification.ActionBar").replace("%target%", p.getName()).replace("%targetname%", ChatFormatter.displayName(p)).replace("%targetcustomname%", ChatFormatter.customName(p));
@@ -419,21 +422,32 @@ public class ChatFormat implements Listener {
 			for(Player s : e.getRecipients()) {
 				if(p.canSee(s) || p==s) {
 					if(msg.contains(s.getName())) {
+						if(msg.equals(s.getName())) {
+							msg=color+s.getName();
+							if(sound!=null)
+								s.playSound(s.getLocation(), sound, 0, 0);
+								if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
+									TheAPI.sendTitle(s, title[0].trim().isEmpty()?"":TabList.replace(title[0], s, true), title[1].trim().isEmpty()?"":TabList.replace(title[1], s, true));
+								if(!actionbar.trim().isEmpty())TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
+							break;
+						}
 						String[] sp = msg.split(s.getName());
-						String build = "";
+						String build = colorOfFormat;
 						for(int i = 0; i < sp.length; ++i) {
-							build+=sp[i]+color+s.getName()+(sp.length<i+1?sp[++i]:"");
+							String last = build+=sp[i];
+							build+=color+s.getName()+ChatColor.getLastColors(last)+(sp.length>i?sp[++i]:"");
 						}
 						msg=build;
 						if(sound!=null)
 						s.playSound(s.getLocation(), sound, 0, 0);
 						if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
-							TheAPI.sendTitle(s, TabList.replace(title[0], s, true), TabList.replace(title[1], s, true));
+							TheAPI.sendTitle(s, title[0].trim().isEmpty()?"":TabList.replace(title[0], s, true), title[1].trim().isEmpty()?"":TabList.replace(title[1], s, true));
 						if(!actionbar.trim().isEmpty())TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
 					}
 				}
 			}
 		}
+		e.setMessage(msg);
 		if(Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("per_world")
 				||Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("perworld")||
 				Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("world")) {
@@ -458,10 +472,10 @@ public class ChatFormat implements Listener {
 			}
 		}
 		if (Loader.config.getBoolean("Chat-Groups-Options.Enabled")) {
-			Object format = ChatFormatter.chat(p, msg);
+			format = ChatFormatter.chat(p, msg);
 			if (format != null) {
 				if(format instanceof String)
-					e.setFormat((String)format);
+					Ref.set(e, "format", (String)format);
 				else
 				if (Loader.config.getBoolean("Chat-Groups-Options.Json")) {
 					@SuppressWarnings("unchecked")

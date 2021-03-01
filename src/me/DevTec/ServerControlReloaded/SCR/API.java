@@ -77,7 +77,7 @@ public class API {
 	public static String getGroup(Player player) {
 		if(PluginManagerAPI.isEnabledPlugin("LuckPerms"))
 			return LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId()).getPrimaryGroup();
-		if(Loader.perms!=null)
+		if(Loader.perms!=null && Loader.perms.hasGroupSupport())
 			return Loader.perms.getPrimaryGroup(player);
 		if(Loader.vault!=null)
 			return Loader.vault.getPrimaryGroup(player);
