@@ -1,5 +1,8 @@
 package me.DevTec.ServerControlReloaded.Commands.Message;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -7,8 +10,6 @@ import org.bukkit.entity.Player;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.TheAPI;
-
-import java.util.Objects;
 
 public class PrivateMessageManager {
 	private static String s;
@@ -88,6 +89,20 @@ public class PrivateMessageManager {
 			sendMessage(who, to==null?Bukkit.getConsoleSender():to, message);
 		else
 			Loader.notOnline(who, tot);
+	}
+	
+	public static void ignore(CommandSender who, String target) {
+		List<String> ig = getIgnoreList(who.getName());
+		if(!ig.contains(target)) {
+			Loader.sendMessages(who, "PmIgnore.Ignoring");
+			ig.add(target);
+		}else {
+			Loader.sendMessages(who, "PmIgnore.NoLonger");
+		}
+	}
+	
+	public static List<String> getIgnoreList(String target) {
+		return TheAPI.getUser(target).getStringList("ignore");
 	}
 	
 	public static void setReply(CommandSender who, String to) {

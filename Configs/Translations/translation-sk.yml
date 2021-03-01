@@ -43,6 +43,10 @@ List:
   - "%prefix% VIP: &e%joiner{supervip, vip}%"
   - "%prefix% Hráči: &e%joiner{default}%"
   
+PmIgnore:
+  NoLonger: "%prefix% Už neignoruje správy od &e%player%"
+  Ignoring: "%prefix% Teraz ignorujete správy v chate & pm od &e%player%"
+  
 # Translations for /Kill and /Suicide commands
 Kill:
   Killed: "%prefix% Zabitých &e%player%"

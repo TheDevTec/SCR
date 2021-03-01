@@ -64,6 +64,7 @@ import me.DevTec.ServerControlReloaded.Commands.Message.ClearChat;
 import me.DevTec.ServerControlReloaded.Commands.Message.Helpop;
 import me.DevTec.ServerControlReloaded.Commands.Message.Mail;
 import me.DevTec.ServerControlReloaded.Commands.Message.PrivateMessage;
+import me.DevTec.ServerControlReloaded.Commands.Message.PrivateMessageIgnore;
 import me.DevTec.ServerControlReloaded.Commands.Message.ReplyPrivateMes;
 import me.DevTec.ServerControlReloaded.Commands.Message.SocialSpy;
 import me.DevTec.ServerControlReloaded.Commands.Message.Sudo;
@@ -233,6 +234,7 @@ public class CommandsManager {
 		load("Message", "ClearChat",new ClearChat());
 		load("Message","Helpop", new Helpop());
 		load("Message","Reply", new ReplyPrivateMes());
+		load("Message","Ignore", new PrivateMessageIgnore());
 		
 		//Gamemode
 		load("GameMode", "GameMode",new Gamemode());

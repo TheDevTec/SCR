@@ -34,7 +34,6 @@ import me.DevTec.ServerControlReloaded.Events.SecurityListenerCooldowns;
 import me.DevTec.ServerControlReloaded.Events.SecurityListenerV4;
 import me.DevTec.ServerControlReloaded.Events.Signs;
 import me.DevTec.ServerControlReloaded.Events.WorldChange;
-import me.DevTec.ServerControlReloaded.Utils.Colors;
 import me.DevTec.ServerControlReloaded.Utils.Configs;
 import me.DevTec.ServerControlReloaded.Utils.Converter;
 import me.DevTec.ServerControlReloaded.Utils.DisplayManager;
@@ -273,19 +272,6 @@ public class Loader extends JavaPlugin implements Listener {
 		return null;
 	}
 	
-	public static void setupChatFormat(Player p) {
-		if(p==null)return;
-		String group = getChatFormat(p, Item.GROUP);
-		if (config.exists("Chat-Groups." + group + ".Name")) {
-			String g = PlaceholderAPI.setPlaceholders(p,config.getString("Chat-Groups." + group + ".Name"));
-			g = ChatFormat.r(p, g, null);
-			p.setDisplayName(Colors.colorize(g, false, p));
-		} else
-			p.setDisplayName(getChatFormat(p, Item.PREFIX) + p.getName() + getChatFormat(p, Item.SUFFIX));
-		if(TheAPI.getUser(p).exist("DisplayName"))
-			p.setCustomName(TheAPI.colorize(PlaceholderAPI.setPlaceholders(p, TheAPI.getUser(p).getString("DisplayName"))));
-	}
-
 	public static String getAFK(Player p) {
 		return Loader.getElse("AFK", API.getSPlayer(p).isAFK());
 	}
@@ -569,7 +555,6 @@ public class Loader extends JavaPlugin implements Listener {
 				s.enableTempFly();
 			else if (has(p, "Fly", "Other") && s.hasFlyEnabled())
 				s.enableFly();
-			setupChatFormat(p);
 			if (EconomyAPI.getEconomy() != null)
 				if(!EconomyAPI.hasAccount(p))
 				EconomyAPI.createAccount(p);

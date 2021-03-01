@@ -28,6 +28,20 @@ Options:
     Limit: 2
     
   Metrics: true
+  
+  Chat:
+    # Types: GLOBAL, PER_WORLD, DISTANCE, PER_WORLD_DISTANCE
+    Type: "GLOBAL"
+    # 50 blocks - only for chat type "distance"
+    Distance: 50
+  
+  ChatNotification:
+    Enabled: true
+    Color: "&c"
+    Sound: "ENTITY_PLAYER_LEVELUP"
+    Title: "&eSomeone tagged you in a chat"
+    SubTitle: ""
+    ActionBar: "&eSomeone tagged you in a chat"
     
   LockChat:
     Helpop: true
@@ -279,7 +293,10 @@ BanSystem:
     Text: "&7You are warned for &e%reason%"
     Reason: "None"
     
-Chat-Groups-Enabled: true
+Chat-Groups-Options:
+  Enabled: true
+  # Do you want use json instanceof normal text?
+  Json: false
 Chat-Groups:
   default:
     Name: "&7default &f%player%"

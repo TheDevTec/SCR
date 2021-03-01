@@ -489,6 +489,14 @@ Message:
     - "/Mail Read - Read all mails"
     - "/Mail Clear - Clear mails"
     Enabled: true
+  Ignore:
+    Name: "ignore"
+    Aliases:
+    - "pmignore"
+    Permission: "SCR.Command.Ignore"
+    Help:
+    - "/Ignore <player> - Start/Stop ignoring player in chat & pm"
+    Enabled: true
   ClearChat:
     Name: "clearchat"
     Aliases:

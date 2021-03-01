@@ -1,37 +1,194 @@
 package me.DevTec.ServerControlReloaded.Events;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.DevTec.ServerControlReloaded.Commands.Message.PrivateMessageManager;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.SCR.Loader.Item;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.DevTec.ServerControlReloaded.Utils.ChatFormatter;
 import me.DevTec.ServerControlReloaded.Utils.Colors;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
 import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.utils.HoverMessage;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
-
+import me.devtec.theapi.utils.json.Reader;
 
 public class ChatFormat implements Listener {
 	static Loader plugin = Loader.getInstance;
 	static Pattern colorPattern = Pattern.compile("[XxA-Fa-fUu0-9]");
 
-	public static String r(Player p, String s, String msg) {
+	public static Object[] colorizeArray(Object[] json, Player p, String msg) {
+		ArrayList<Object> colorized = new ArrayList<Object>();
+		Object[] arrobject = json;
+		int n = arrobject.length;
+		int n2 = 0;
+		while (n2 < n) {
+			Object e = arrobject[n2];
+			if (e instanceof Collection) {
+				colorized.add(colorizeList((Collection<?>) e,p,msg));
+			}
+			if (e instanceof Map) {
+				colorized.add(colorizeMap((Map<?, ?>) e,p,msg));
+			}
+			if (e instanceof Object[]) {
+				colorized.add(colorizeArray((Object[]) e,p,msg));
+			}
+			if (e instanceof String) {
+				colorized.add(r(p,(String)e,msg, true));
+			} else {
+				colorized.add(e);
+			}
+			++n2;
+		}
+		return colorized.toArray();
+	}
+
+	public static Collection<?> colorizeList(Collection<?> json, Player p, String msg) {
+		ArrayList<Object> colorized = new ArrayList<>();
+		for (Object e : json) {
+			if (e instanceof Collection) {
+				colorized.add(colorizeList((Collection<?>) e,p,msg));
+			}
+			if (e instanceof Map) {
+				colorized.add(colorizeMap((Map<?, ?>) e,p,msg));
+			}
+			if (e instanceof Object[]) {
+				colorized.add(colorizeArray((Object[]) e,p,msg));
+			}
+			if (e instanceof String) {
+				colorized.add(r(p,(String)e,msg, true));
+				continue;
+			}
+			colorized.add(e);
+		}
+		return colorized;
+	}
+
+	public static Map<?, ?> colorizeMap(Map<?, ?> json, Player p, String msg) {
+		HashMap<Object, Object> colorized = new HashMap<>();
+		for (Map.Entry<?, ?> e : json.entrySet()) {
+			if (e.getKey() instanceof Collection) {
+				if (e.getValue() instanceof Collection) {
+					colorized.put(colorizeList((Collection<?>) e.getKey(), p, msg),
+							colorizeList((Collection<?>) e.getValue(), p, msg));
+				}
+				if (e.getValue() instanceof Map) {
+					colorized.put(colorizeList((Collection<?>) e.getKey(), p, msg),
+							colorizeMap((Map<?, ?>) e.getValue(), p, msg));
+				}
+				if (e.getValue() instanceof Object[]) {
+					colorized.put(colorizeList((Collection<?>) e.getKey(), p, msg),
+							colorizeArray((Object[]) e.getValue(), p, msg));
+				}
+				if (e.getValue() instanceof String) {
+					colorized.put(colorizeList((Collection<?>) e.getKey(), p, msg),
+							r(p,(String) e.getValue(),msg, true));
+				} else {
+					colorized.put(colorizeList((Collection<?>) e.getKey(), p, msg), e.getValue());
+				}
+			}
+			if (e.getKey() instanceof Map) {
+				if (e.getValue() instanceof Collection) {
+					colorized.put(colorizeMap((Map<?, ?>) e.getKey(), p, msg),
+							colorizeList((Collection<?>) e.getValue(), p, msg));
+				}
+				if (e.getValue() instanceof Map) {
+					colorized.put(colorizeMap((Map<?, ?>) e.getKey(), p, msg), colorizeMap((Map<?, ?>) e.getValue(), p, msg));
+				}
+				if (e.getValue() instanceof Object[]) {
+					colorized.put(colorizeMap((Map<?, ?>) e.getKey(), p, msg),
+							colorizeArray((Object[]) e.getValue(), p, msg));
+				}
+				if (e.getValue() instanceof String) {
+					colorized.put(colorizeMap((Map<?, ?>) e.getKey(), p, msg), r(p,(String) e.getValue(),msg, true));
+				} else {
+					colorized.put(colorizeMap((Map<?, ?>) e.getKey(), p, msg), e.getValue());
+				}
+			}
+			if (e.getKey() instanceof Object[]) {
+				if (e.getValue() instanceof Collection) {
+					colorized.put(colorizeArray((Object[]) e.getKey(), p, msg),
+							colorizeList((Collection<?>) e.getValue(), p, msg));
+				}
+				if (e.getValue() instanceof Map) {
+					colorized.put(colorizeArray((Object[]) e.getKey(), p, msg),
+							colorizeMap((Map<?, ?>) e.getValue(), p, msg));
+				}
+				if (e.getValue() instanceof Object[]) {
+					colorized.put(colorizeArray((Object[]) e.getKey(), p, msg),
+							colorizeArray((Object[]) e.getValue(), p, msg));
+				}
+				if (e.getValue() instanceof String) {
+					colorized.put(colorizeArray((Object[]) e.getKey(), p, msg),
+							r(p,(String) e.getValue(),msg, true));
+				} else {
+					colorized.put(colorizeArray((Object[]) e.getKey(), p, msg), e.getValue());
+				}
+			}
+			if (e.getKey() instanceof String) {
+				if (e.getValue() instanceof Collection) {
+					colorized.put((String)r(p,(String) e.getKey(),msg, true),
+							colorizeList((Collection<?>) e.getValue(), p, msg));
+				}
+				if (e.getValue() instanceof Map) {
+					colorized.put((String)r(p,(String) e.getKey(),msg, true), colorizeMap((Map<?, ?>) e.getValue(), p, msg));
+				}
+				if (e.getValue() instanceof Object[]) {
+					colorized.put((String)r(p,(String) e.getKey(),msg, true),
+							colorizeArray((Object[]) e.getValue(), p, msg));
+				}
+				if (e.getValue() instanceof String && !e.getKey().equals("color")) {
+					colorized.put((String)r(p,(String) e.getKey(),msg, true), r(p,(String) e.getValue(),msg, true));
+					continue;
+				}
+				colorized.put((String)r(p,(String) e.getKey(),msg, true), e.getValue());
+				continue;
+			}
+			if (e.getValue() instanceof Collection) {
+				colorized.put(e.getKey(), colorizeList((Collection<?>) e.getValue(), p, msg));
+			}
+			if (e.getValue() instanceof Map) {
+				colorized.put(e.getKey(), colorizeMap((Map<?, ?>) e.getValue(), p, msg));
+			}
+			if (e.getValue() instanceof Object[]) {
+				colorized.put(e.getKey(), colorizeArray((Object[]) e.getValue(), p, msg));
+			}
+			if (e.getValue() instanceof String) {
+				colorized.put(e.getKey(), r(p,(String) e.getValue(),msg, true));
+				continue;
+			}
+			colorized.put(e.getKey(), e.getValue());
+		}
+		return colorized;
+	}
+
+	public static Object r(Player p, String s, String msg, boolean usejson) {
+		if (Loader.config.getBoolean("Chat-Groups-Options.Json") && usejson) {
+			Map<?,?> json = (Map<?,?>) Reader.read(s.replace("%", "%%"));
+			if(json!=null&&!json.isEmpty()) {
+				json=colorizeMap(json,p,msg.replace("%", "%%"));
+				return json;
+			} //else continue in code below
+		}
+		s=s.replace("%", "%%");
 		if(s.toLowerCase().contains("&u")) {
 				List<String> sd = new ArrayList<>();
 				StringBuffer d = new StringBuffer();
@@ -76,9 +233,9 @@ public class ChatFormat implements Listener {
 				}
 				return d.toString();
 		}
-		s = TabList.replace(s, p, true);
 		if (msg != null)
-			s=s.replace("%message%", r(msg, p));
+			s=s.replace("%message%", r(msg.replace("%", "%%"), p));
+		s = TabList.replace(s, p, true);
 		return s;
 	}
 
@@ -138,10 +295,11 @@ public class ChatFormat implements Listener {
 		return false;
 	}
 	
-	@EventHandler
-	public void set(AsyncPlayerChatEvent e) {
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void chatFormat(AsyncPlayerChatEvent e) {
+		if(e.isCancelled())return;
 		Player p = e.getPlayer();
-		Loader.setupChatFormat(p);
+		ChatFormatter.setupName(p);
 		if (TheAPI.getCooldownAPI(p.getName()).getTimeToExpire("world-create") != -1) {
 			e.setCancelled(true);
 			if (e.getMessage().toLowerCase().equals("cancel")) {
@@ -217,12 +375,11 @@ public class ChatFormat implements Listener {
 			}
 		}
 		message = build;
-		if (Loader.config.getBoolean("SpamWords.SimiliarMessage")) {
-			if (isSim(p, e.getMessage())) {
+		if (Loader.config.getBoolean("SpamWords.SimiliarMessage") && !p.hasPermission("SCR.Other.SimiliarMessage"))
+			if (isSim(p, message)) {
 				e.setCancelled(true);
 				return;
 			}
-		}
 		msg=message;
 		}
 		if(PrivateMessageManager.hasChatLock(p)) {
@@ -245,16 +402,74 @@ public class ChatFormat implements Listener {
 			e.setCancelled(true);
 			Loader.sendMessages(p, "ChatLock.IsLocked");
 			Loader.sendBroadcasts(p, "ChatLock.Message", Placeholder.c().add("%player%", p.getName())
-					.add("%playername%", p.getDisplayName()).add("%message%", e.getMessage()), Loader.getPerm("ChatLock", "Other"));
+					.add("%playername%", p.getDisplayName()).add("%message%", msg), Loader.getPerm("ChatLock", "Other"));
 			return;
 		}
-		if (Loader.config.getBoolean("Chat-Groups-Enabled")) {
-			String format = PlaceholderAPI.setPlaceholders(p, Loader.config.getString("Chat-Groups." + Loader.getChatFormat(p,Item.GROUP) + ".Chat"));
-			if (format != null) {
-				format=(r(p, format, msg));
-				e.setFormat(format.replace("%", "%%"));
+		Iterator<Player> a = e.getRecipients().iterator();
+		while(a.hasNext())
+			if(PrivateMessageManager.getIgnoreList(a.next().getName()).contains(p.getName()))a.remove();
+		if(Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
+			Sound sound = null;
+			String[] title = new String[] {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
+			String actionbar = Loader.config.getString("Options.ChatNotification.ActionBar").replace("%target%", p.getName()).replace("%targetname%", ChatFormatter.displayName(p)).replace("%targetcustomname%", ChatFormatter.customName(p));
+			String color = Loader.config.getString("Options.ChatNotification.Color");
+			try {
+			sound = Sound.valueOf(Loader.config.getString("Options.ChatNotification.Sound"));
+			}catch(Exception | NoSuchFieldError err) {}
+			for(Player s : e.getRecipients()) {
+				if(p.canSee(s) || p==s) {
+					if(msg.contains(s.getName())) {
+						String[] sp = msg.split(s.getName());
+						String build = "";
+						for(int i = 0; i < sp.length; ++i) {
+							build+=sp[i]+color+s.getName()+(sp.length<i+1?sp[++i]:"");
+						}
+						msg=build;
+						if(sound!=null)
+						s.playSound(s.getLocation(), sound, 0, 0);
+						if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
+							TheAPI.sendTitle(s, TabList.replace(title[0], s, true), TabList.replace(title[1], s, true));
+						if(!actionbar.trim().isEmpty())TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
+					}
+				}
 			}
 		}
-
+		if(Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("per_world")
+				||Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("perworld")||
+				Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("world")) {
+			Iterator<Player> as = e.getRecipients().iterator();
+			while(as.hasNext()) {
+				Player s = as.next();
+				if(p!=s && !s.hasPermission("SCR.Other.ChatTypeBypass")) {
+					if(!p.getWorld().equals(s.getWorld()))as.remove();
+				}
+			}
+		}
+		if(Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("per_distance")
+				||Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("distance")) {
+			Iterator<Player> as = e.getRecipients().iterator();
+			double distance = Loader.config.getDouble("Options.Chat.Distance");
+			while(as.hasNext()) {
+				Player s = as.next();
+				if(p!=s && !s.hasPermission("SCR.Other.ChatTypeBypass")) {
+					if(!p.getWorld().equals(s.getWorld()))as.remove();
+					else if(p.getLocation().distance(s.getLocation())>distance)as.remove();
+				}
+			}
+		}
+		if (Loader.config.getBoolean("Chat-Groups-Options.Enabled")) {
+			Object format = ChatFormatter.chat(p, msg);
+			if (format != null) {
+				if(format instanceof String)
+					e.setFormat((String)format);
+				else
+				if (Loader.config.getBoolean("Chat-Groups-Options.Json")) {
+					@SuppressWarnings("unchecked")
+					HoverMessage text = new HoverMessage((Map<String, Object>)format);
+					text.send(e.getRecipients());
+					e.getRecipients().clear(); //for our custom chat
+				}
+			}
+		}
 	}
 }

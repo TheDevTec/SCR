@@ -43,6 +43,10 @@ List:
   - "%prefix% VIPs: &e%joiner{supervip, vip}%"
   - "%prefix% Default: &e%joiner{default}%"
   
+PmIgnore:
+  NoLonger: "%prefix% You are no longer ignoring messages from &e%player%"
+  Ignoring: "%prefix% You are now ignoring messages in chat & pm from &e%player%"
+  
 # Translations for /Kill and /Suicide commands
 Kill:
   Killed: "%prefix% Killed &e%player%"

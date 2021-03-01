@@ -142,7 +142,7 @@ public class Tasks {
 			@Override
 			public void run() {
 				for (Player p : TheAPI.getOnlinePlayers())
-					Loader.setupChatFormat(p);
+					ChatFormatter.setupName(p);
 			}
 		}.runRepeating(0, 20));
 	}

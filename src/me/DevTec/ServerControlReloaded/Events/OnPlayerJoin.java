@@ -91,7 +91,6 @@ public class OnPlayerJoin implements Listener {
 		DisplayManager.initializePlayer(p);
 		new Tasker() {
 			public void run() {
-				Loader.setupChatFormat(p);
 				Tasks.regPlayer(p);
 				User d = TheAPI.getUser(p);
 				Config f = Loader.config;
