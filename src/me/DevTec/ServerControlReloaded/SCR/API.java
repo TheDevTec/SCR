@@ -140,7 +140,7 @@ public class API {
     }
  
     public static boolean canSee(Player player, String target) {
-    	if(TheAPI.getPlayerOrNull(target)!=null)return player.canSee(TheAPI.getPlayerOrNull(target));
+    	if(TheAPI.getPlayerOrNull(target)!=null && (hasVanish(target) ? player.hasPermission(getVanishPermission(target)) : true))return player.canSee(TheAPI.getPlayerOrNull(target));
         return hasVanish(target) ? player.hasPermission(getVanishPermission(target)) : true;
     }
 

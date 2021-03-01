@@ -32,7 +32,7 @@ public class ChatFormatter {
 	}
 	
 	public static Object chat(Player p, String message) {
-		String format = PlaceholderAPI.setPlaceholders(p, Loader.config.getString("Chat-Groups." + Loader.getChatFormat(p,Item.GROUP) + ".Chat"));
+		Object format = Loader.config.get("Chat-Groups." + Loader.getChatFormat(p,Item.GROUP) + ".Chat");
 		if (format != null) {
 			return ChatFormat.r(p, format, message, true);
 		}

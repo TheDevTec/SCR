@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
@@ -19,6 +20,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.DevTec.ServerControlReloaded.Commands.Message.PrivateMessageManager;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.SCR.Loader.Item;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.ChatFormatter;
 import me.DevTec.ServerControlReloaded.Utils.Colors;
@@ -27,53 +29,27 @@ import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.HoverMessage;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.json.Reader;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class ChatFormat implements Listener {
 	static Loader plugin = Loader.getInstance;
 	static Pattern colorPattern = Pattern.compile("[XxA-Fa-fUu0-9]");
 
-	public static Object[] colorizeArray(Object[] json, Player p, String msg) {
-		ArrayList<Object> colorized = new ArrayList<Object>();
-		Object[] arrobject = json;
-		int n = arrobject.length;
-		int n2 = 0;
-		while (n2 < n) {
-			Object e = arrobject[n2];
-			if (e instanceof Collection) {
-				colorized.add(colorizeList((Collection<?>) e,p,msg));
-			}
-			if (e instanceof Map) {
-				colorized.add(colorizeMap((Map<?, ?>) e,p,msg));
-			}
-			if (e instanceof Object[]) {
-				colorized.add(colorizeArray((Object[]) e,p,msg));
-			}
-			if (e instanceof String) {
-				colorized.add(r(p,(String)e,msg, true));
-			} else {
-				colorized.add(e);
-			}
-			++n2;
-		}
-		return colorized.toArray();
-	}
-
+	@SuppressWarnings("unchecked")
 	public static Collection<?> colorizeList(Collection<?> json, Player p, String msg) {
 		ArrayList<Object> colorized = new ArrayList<>();
 		for (Object e : json) {
 			if (e instanceof Collection) {
 				colorized.add(colorizeList((Collection<?>) e,p,msg));
+				continue;
 			}
 			if (e instanceof Map) {
-				colorized.add(colorizeMap((Map<?, ?>) e,p,msg));
-			}
-			if (e instanceof Object[]) {
-				colorized.add(colorizeArray((Object[]) e,p,msg));
+				colorized.add(colorizeMap((Map<String, Object>) e,p,msg));
+				continue;
 			}
 			if (e instanceof String) {
 				colorized.add(r(p,(String)e,msg, true));
@@ -84,113 +60,43 @@ public class ChatFormat implements Listener {
 		return colorized;
 	}
 
-	public static Map<?, ?> colorizeMap(Map<?, ?> json, Player p, String msg) {
-		HashMap<Object, Object> colorized = new HashMap<>();
-		for (Map.Entry<?, ?> e : json.entrySet()) {
-			if (e.getKey() instanceof Collection) {
-				if (e.getValue() instanceof Collection) {
-					colorized.put(colorizeList((Collection<?>) e.getKey(), p, msg),
-							colorizeList((Collection<?>) e.getValue(), p, msg));
-				}
-				if (e.getValue() instanceof Map) {
-					colorized.put(colorizeList((Collection<?>) e.getKey(), p, msg),
-							colorizeMap((Map<?, ?>) e.getValue(), p, msg));
-				}
-				if (e.getValue() instanceof Object[]) {
-					colorized.put(colorizeList((Collection<?>) e.getKey(), p, msg),
-							colorizeArray((Object[]) e.getValue(), p, msg));
-				}
-				if (e.getValue() instanceof String) {
-					colorized.put(colorizeList((Collection<?>) e.getKey(), p, msg),
-							r(p,(String) e.getValue(),msg, true));
-				} else {
-					colorized.put(colorizeList((Collection<?>) e.getKey(), p, msg), e.getValue());
-				}
-			}
-			if (e.getKey() instanceof Map) {
-				if (e.getValue() instanceof Collection) {
-					colorized.put(colorizeMap((Map<?, ?>) e.getKey(), p, msg),
-							colorizeList((Collection<?>) e.getValue(), p, msg));
-				}
-				if (e.getValue() instanceof Map) {
-					colorized.put(colorizeMap((Map<?, ?>) e.getKey(), p, msg), colorizeMap((Map<?, ?>) e.getValue(), p, msg));
-				}
-				if (e.getValue() instanceof Object[]) {
-					colorized.put(colorizeMap((Map<?, ?>) e.getKey(), p, msg),
-							colorizeArray((Object[]) e.getValue(), p, msg));
-				}
-				if (e.getValue() instanceof String) {
-					colorized.put(colorizeMap((Map<?, ?>) e.getKey(), p, msg), r(p,(String) e.getValue(),msg, true));
-				} else {
-					colorized.put(colorizeMap((Map<?, ?>) e.getKey(), p, msg), e.getValue());
-				}
-			}
-			if (e.getKey() instanceof Object[]) {
-				if (e.getValue() instanceof Collection) {
-					colorized.put(colorizeArray((Object[]) e.getKey(), p, msg),
-							colorizeList((Collection<?>) e.getValue(), p, msg));
-				}
-				if (e.getValue() instanceof Map) {
-					colorized.put(colorizeArray((Object[]) e.getKey(), p, msg),
-							colorizeMap((Map<?, ?>) e.getValue(), p, msg));
-				}
-				if (e.getValue() instanceof Object[]) {
-					colorized.put(colorizeArray((Object[]) e.getKey(), p, msg),
-							colorizeArray((Object[]) e.getValue(), p, msg));
-				}
-				if (e.getValue() instanceof String) {
-					colorized.put(colorizeArray((Object[]) e.getKey(), p, msg),
-							r(p,(String) e.getValue(),msg, true));
-				} else {
-					colorized.put(colorizeArray((Object[]) e.getKey(), p, msg), e.getValue());
-				}
-			}
-			if (e.getKey() instanceof String) {
-				if (e.getValue() instanceof Collection) {
-					colorized.put((String)r(p,(String) e.getKey(),msg, true),
-							colorizeList((Collection<?>) e.getValue(), p, msg));
-				}
-				if (e.getValue() instanceof Map) {
-					colorized.put((String)r(p,(String) e.getKey(),msg, true), colorizeMap((Map<?, ?>) e.getValue(), p, msg));
-				}
-				if (e.getValue() instanceof Object[]) {
-					colorized.put((String)r(p,(String) e.getKey(),msg, true),
-							colorizeArray((Object[]) e.getValue(), p, msg));
-				}
-				if (e.getValue() instanceof String && !e.getKey().equals("color")) {
-					colorized.put((String)r(p,(String) e.getKey(),msg, true), r(p,(String) e.getValue(),msg, true));
-					continue;
-				}
-				colorized.put((String)r(p,(String) e.getKey(),msg, true), e.getValue());
-				continue;
-			}
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> colorizeMap(Map<String, Object> jj, Player p, String msg) {
+		HashMap<String, Object> json = new HashMap<>(jj.size());
+		for (Entry<String, Object> e : jj.entrySet()) {
 			if (e.getValue() instanceof Collection) {
-				colorized.put(e.getKey(), colorizeList((Collection<?>) e.getValue(), p, msg));
+				json.put(e.getKey(), colorizeList((Collection<?>) e.getValue(), p, msg));
+				continue;
 			}
 			if (e.getValue() instanceof Map) {
-				colorized.put(e.getKey(), colorizeMap((Map<?, ?>) e.getValue(), p, msg));
-			}
-			if (e.getValue() instanceof Object[]) {
-				colorized.put(e.getKey(), colorizeArray((Object[]) e.getValue(), p, msg));
-			}
-			if (e.getValue() instanceof String) {
-				colorized.put(e.getKey(), r(p,(String) e.getValue(),msg, true));
+				json.put(e.getKey(), colorizeMap((Map<String, Object>) e.getValue(), p, msg));
 				continue;
 			}
-			colorized.put(e.getKey(), e.getValue());
+			if (e.getValue() instanceof String && !e.getKey().equals("color")) {
+				json.put(e.getKey(), r(p,(String) e.getValue(),msg, true));
+				continue;
+			}
+			json.put(e.getKey(), e.getValue());
 		}
-		return colorized;
+		return json;
 	}
 
-	public static Object r(Player p, String s, String msg, boolean usejson) {
+	@SuppressWarnings("unchecked")
+	public static Object r(Player p, Object s, String msg, boolean usejson) {
+		if(s.toString().trim().isEmpty())return s;
 		if (Loader.config.getBoolean("Chat-Groups-Options.Json") && usejson) {
-			Map<?,?> json = (Map<?,?>) Reader.read(s.replace("%", "%%"));
-			if(json!=null&&!json.isEmpty()) {
-				json=colorizeMap(json,p,msg.replace("%", "%%"));
-				return json;
-			} //else continue in code below
+			try {
+				if(s instanceof Map && s!=null) {
+					return colorizeMap((Map<String, Object>) s,p,msg);
+				} //else continue in code below
+				if(s instanceof Collection && s!=null) {
+					return colorizeList((Collection<Object>) s,p,msg);
+				} //else continue in code below
+			}catch(Exception err) {}
 		}
-		if(s.toLowerCase().contains("&u")) {
+		s=s+"";
+		s=PlaceholderAPI.setPlaceholders(p, (String) s);
+		if(s.toString().toLowerCase().contains("&u")) {
 				List<String> sd = new ArrayList<>();
 				StringBuffer d = new StringBuffer();
 				int found = 0;
@@ -235,9 +141,9 @@ public class ChatFormat implements Listener {
 				return d.toString();
 		}
 		if (msg != null)
-			s=s.replace("%message%", r(msg.replace("%", "%%"), p));
-		s = TabList.replace(s, p, true);
-		return s.replace("%", "%%");
+			s=s.toString().replace("%message%", r(msg, p));
+		s = TabList.replace(s.toString(), p, true);
+		return s.toString();
 	}
 
 	public static String r(String msg, CommandSender p) {
@@ -295,7 +201,8 @@ public class ChatFormat implements Listener {
 		}
 		return false;
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void chatFormat(AsyncPlayerChatEvent e) {
 		if(e.isCancelled())return;
@@ -406,12 +313,12 @@ public class ChatFormat implements Listener {
 			e.setMessage(msg);
 			return;
 		}
-		Object format = ChatFormatter.chat(p, "%6$9");
 		Iterator<Player> a = e.getRecipients().iterator();
 		while(a.hasNext())
 			if(PrivateMessageManager.getIgnoreList(a.next().getName()).contains(p.getName()))a.remove();
 		if(Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
-			String colorOfFormat = format!=null && format instanceof String?ChatColor.getLastColors(format.toString().split("\\%6\\$9")[0]):"";
+			Object format = Loader.config.get("Chat-Groups." + Loader.getChatFormat(p,Item.GROUP) + ".Chat");
+			String colorOfFormat = format!=null ? getColorOf(format) :"";
 			Sound sound = null;
 			String[] title = new String[] {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
 			String actionbar = Loader.config.getString("Options.ChatNotification.ActionBar").replace("%target%", p.getName()).replace("%targetname%", ChatFormatter.displayName(p)).replace("%targetcustomname%", ChatFormatter.customName(p));
@@ -433,10 +340,22 @@ public class ChatFormat implements Listener {
 						}
 						String[] sp = msg.split(s.getName());
 						String build = colorOfFormat;
+						int added = sp.length-1;
+						boolean first = true;
 						for(int i = 0; i < sp.length; ++i) {
-							String last = build+=sp[i];
-							build+=color+s.getName()+ChatColor.getLastColors(last)+(sp.length>i?sp[++i]:"");
+							String last = build+=(first?sp[i]:"");
+							if(added-->0)
+							build+=color+s.getName()+ChatColor.getLastColors(last);
+							try{
+								if(first) {
+									first=false;
+								build+=sp[++i];
+								}else
+									build+=sp[i];
+							}catch(Exception err) {}
 						}
+						if(msg.endsWith(s.getName()))
+							build+=color+s.getName();
 						msg=build;
 						if(sound!=null)
 						s.playSound(s.getLocation(), sound, 0, 0);
@@ -447,6 +366,7 @@ public class ChatFormat implements Listener {
 				}
 			}
 		}
+		msg=StringUtils.colorize(msg);
 		e.setMessage(msg);
 		if(Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("per_world")
 				||Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("perworld")||
@@ -472,18 +392,26 @@ public class ChatFormat implements Listener {
 			}
 		}
 		if (Loader.config.getBoolean("Chat-Groups-Options.Enabled")) {
-			format = ChatFormatter.chat(p, msg);
+			Object format = ChatFormatter.chat(p, msg);
 			if (format != null) {
 				if(format instanceof String)
-					Ref.set(e, "format", (String)format);
+					Ref.set(e, "format", ((String)format).replace("%", "%%"));
 				else
 				if (Loader.config.getBoolean("Chat-Groups-Options.Json")) {
-					@SuppressWarnings("unchecked")
-					HoverMessage text = new HoverMessage((Map<String, Object>)format);
+					HoverMessage text = null;
+					if(format instanceof Map)
+						text = new HoverMessage((Map<String, Object>)format);
+					else
+						text = new HoverMessage((Collection<Object>)format);
 					text.send(e.getRecipients());
 					e.getRecipients().clear(); //for our custom chat
+					Ref.set(e, "format", ((String)text.toLegacyText()).replace("%", "%%")); //for console log!
 				}
 			}
 		}
+	}
+
+	private String getColorOf(Object format) {
+		return ChatColor.getLastColors(StringUtils.colorize(format.toString()).split("\\%message\\%")[0]);
 	}
 }
