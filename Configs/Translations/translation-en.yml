@@ -791,6 +791,11 @@ Inventory:
     Other:
       Sender: "%prefix% Opening Workbench for &e%player%"
       Receiver: "%prefix% Opening Workbench"
+  Anvil:
+    You: "%prefix% Opening Anvil"
+    Other:
+      Sender: "%prefix% Opening Anvil for &e%player%"
+      Receiver: "%prefix% Opening Anvil"
       
 DisplayManager:
   Scoreboard:

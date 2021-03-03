@@ -378,6 +378,11 @@ Inventory:
     Permission: "SCR.Command.Workbench"
     Help: "/Workbench <player> - Opens player virtual crafting table"
     Enabled: true
+  Anvil:
+    Name: "anvil"
+    Permission: "SCR.Command.Anvil"
+    Help: "/Anvil <player> - Opens player virtual anvil"
+    Enabled: true
     
 GameMode:
   GameMode:

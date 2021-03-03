@@ -50,6 +50,7 @@ import me.DevTec.ServerControlReloaded.Commands.Info.Seen;
 import me.DevTec.ServerControlReloaded.Commands.Info.Staff;
 import me.DevTec.ServerControlReloaded.Commands.Info.TPS;
 import me.DevTec.ServerControlReloaded.Commands.Info.WhoIs;
+import me.DevTec.ServerControlReloaded.Commands.Inventory.Anvil;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.ClearConfirmToggle;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.ClearInv;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.CloseInventory;
@@ -271,6 +272,7 @@ public class CommandsManager {
 		load("Inventory", "ClearConfirmToggle", new ClearConfirmToggle());
 		load("Inventory", "Inventory", new Invsee());
 		load("Inventory", "Workbench", new Craft());
+		load("Inventory", "Anvil", new Anvil());
 		
 		//Enchantment
 		load("Enchantment", "Enchant", new EnchantTable());

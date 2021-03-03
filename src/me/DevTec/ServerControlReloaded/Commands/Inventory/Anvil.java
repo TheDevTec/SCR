@@ -13,25 +13,26 @@ import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.guiapi.AnvilGUI;
 import me.devtec.theapi.utils.StringUtils;
 
-public class Craft implements CommandExecutor, TabCompleter {
+public class Anvil implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] args) {
-		if(args.length==1 && Loader.has(s, "Workbench", "Inventory"))
+		if(args.length==1 && Loader.has(s, "Anvil", "Inventory"))
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
 		return Arrays.asList();
 	}
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "Workbench", "Inventory")) {
+		if (Loader.has(s, "Anvil", "Inventory")) {
 			if (s instanceof Player) {
 				if (args.length == 0) {
-					Loader.sendMessages(s, "Inventory.Workbench.You");
-					((Player) s).openWorkbench(((Player) s).getLocation(), true);
+					Loader.sendMessages(s, "Inventory.Anvil.You");
+					new AnvilGUI("&7Anvil", (Player)s).setInsertable(true);
 					return true;
 				}
 				if (args.length == 1) {
@@ -40,16 +41,15 @@ public class Craft implements CommandExecutor, TabCompleter {
 						Loader.notOnline(s, args[0]);
 						return true;
 					}
-					Loader.sendMessages(s, "Inventory.Workbench.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
-					Loader.sendMessages(t, "Inventory.Workbench.Other.Target", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
-					t.openWorkbench(t.getLocation(), true);
+					Loader.sendMessages(s, "Inventory.Anvil.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
+					Loader.sendMessages(t, "Inventory.Anvil.Other.Target", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
+					new AnvilGUI("&7Anvil", t).setInsertable(true);
 					return true;
 				}
 			}
 			return true;
 		}
-		Loader.noPerms(s, "Workbench", "Inventory");
+		Loader.noPerms(s, "Anvil", "Inventory");
 		return true;
 	}
-
 }

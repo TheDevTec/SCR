@@ -782,6 +782,11 @@ Inventory:
     Other:
       Sender: "%prefix% Otevírám pracovní stůl pro hráče &e%player%"
       Receiver: "%prefix% Otevírám pracovní stůl"
+  Anvil:
+    You: "%prefix% Otevírám kovadlinu"
+    Other:
+      Sender: "%prefix% Otevírám kovadlinu pro &e%player%"
+      Receiver: "%prefix% Otevírám kovadlinu"
       
 DisplayManager:
   Scoreboard:

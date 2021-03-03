@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -343,13 +342,13 @@ public class ChatFormat implements Listener {
 						int added = sp.length-1;
 						boolean first = true;
 						for(int i = 0; i < sp.length; ++i) {
-							String last = build+=(first?sp[i]:"");
+							String last = first?build+=sp[i]:build;
 							if(added-->0)
-							build+=color+s.getName()+ChatColor.getLastColors(last);
+							build+=color+s.getName()+StringUtils.getLastColors(last);
 							try{
 								if(first) {
 									first=false;
-								build+=sp[++i];
+									build+=sp[++i];
 								}else
 									build+=sp[i];
 							}catch(Exception err) {}
@@ -410,8 +409,9 @@ public class ChatFormat implements Listener {
 			}
 		}
 	}
+	
 
 	private String getColorOf(Object format) {
-		return ChatColor.getLastColors(StringUtils.colorize(format.toString()).split("\\%message\\%")[0]);
+		return StringUtils.getLastColors(StringUtils.colorize(format.toString()).split("\\%message\\%")[0]);
 	}
 }

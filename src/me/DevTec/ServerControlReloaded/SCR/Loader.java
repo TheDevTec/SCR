@@ -53,6 +53,7 @@ import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.guiapi.GUI;
+import me.devtec.theapi.guiapi.HolderGUI;
 import me.devtec.theapi.guiapi.ItemGUI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Scheduler;
@@ -524,7 +525,7 @@ public class Loader extends JavaPlugin implements Listener {
 		Converter.convert();
 		MultiWorldsUtils.LoadWorlds();
 		ItemGUI clear=new ItemGUI(ItemCreatorAPI.create(XMaterial.LAVA_BUCKET.getMaterial(), 1, "&6Clear")) {
-				public void onClick(Player s, GUI g, me.devtec.theapi.guiapi.GUI.ClickType c) {
+				public void onClick(Player s, HolderGUI g, me.devtec.theapi.guiapi.GUI.ClickType c) {
 					for (int i = 0; i < 45; ++i)
 					g.remove(i);
 				}
