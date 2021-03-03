@@ -14,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -525,7 +524,7 @@ public class Loader extends JavaPlugin implements Listener {
 		Converter.convert();
 		MultiWorldsUtils.LoadWorlds();
 		ItemGUI clear=new ItemGUI(ItemCreatorAPI.create(XMaterial.LAVA_BUCKET.getMaterial(), 1, "&6Clear")) {
-				public void onClick(Player s, GUI g, ClickType c) {
+				public void onClick(Player s, GUI g, me.devtec.theapi.guiapi.GUI.ClickType c) {
 					for (int i = 0; i < 45; ++i)
 					g.remove(i);
 				}

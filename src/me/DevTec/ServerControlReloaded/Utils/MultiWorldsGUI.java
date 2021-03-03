@@ -14,7 +14,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.Lists;
@@ -26,6 +25,7 @@ import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.cooldownapi.CooldownAPI;
 import me.devtec.theapi.guiapi.GUI;
+import me.devtec.theapi.guiapi.GUI.ClickType;
 import me.devtec.theapi.guiapi.ItemGUI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.nms.NMSAPI;
@@ -441,9 +441,10 @@ public class MultiWorldsGUI {
 			@Override
 			public void onClick(Player s, GUI g, ClickType c) {
 				String dif = w.getDifficulty().name();
-					switch(c) {
-				case LEFT:
-				case SHIFT_LEFT:
+				switch(c) {
+				case LEFT_PICKUP:
+				case SHIFT_LEFT_DROP:
+				case SHIFT_LEFT_PICKUP:
 					if (dif.contains("EASY"))
 						dif="NORMAL";
 					else if (dif.contains("NORMAL"))
@@ -456,8 +457,9 @@ public class MultiWorldsGUI {
 					this.setItem(createItem("&6Difficulty", XMaterial.FEATHER, Arrays.asList(dif)));
 					g.setItem(0, this);
 					break;
-				case RIGHT:
-				case SHIFT_RIGHT:
+				case RIGHT_PICKUP:
+				case SHIFT_RIGHT_DROP:
+				case SHIFT_RIGHT_PICKUP:
 					if (dif.contains("EASY"))
 						dif="PEACEFUL";
 					else if (dif.contains("NORMAL"))
@@ -480,8 +482,9 @@ public class MultiWorldsGUI {
 			public void onClick(Player s, GUI gui, ClickType c) {
 				String g = Loader.mw.exists("WorldsSettings." + w.getName() + ".GameMode")?Loader.mw.getString("WorldsSettings." + w.getName() + ".GameMode"):"SURVIVAL";
 				switch(c) {
-				case LEFT:
-				case SHIFT_LEFT:
+				case LEFT_PICKUP:
+				case SHIFT_LEFT_DROP:
+				case SHIFT_LEFT_PICKUP:
 					if (g.contains("SURVIVAL"))
 						g="CREATIVE";
 					else if (g.contains("CREATIVE"))
@@ -496,8 +499,9 @@ public class MultiWorldsGUI {
 					this.setItem(createItem("&6GameMode", XMaterial.BRICKS, Arrays.asList(g)));
 					gui.setItem(1, this);
 					break;
-				case RIGHT:
-				case SHIFT_RIGHT:
+				case RIGHT_PICKUP:
+				case SHIFT_RIGHT_DROP:
+				case SHIFT_RIGHT_PICKUP:
 					if (g.contains("SURVIVAL"))
 						g="SPECTATOR";
 					else if (g.contains("CREATIVE"))
@@ -712,8 +716,9 @@ public class MultiWorldsGUI {
 				public void onClick(Player p, GUI g, ClickType c) {
 					if(ds.equalsIgnoreCase("MAX_COMMAND_CHAIN_LENGTH")||ds.equalsIgnoreCase("MAX_ENTITY_CRAMMING")||ds.equalsIgnoreCase("RANDOM_TICK_SPEED")||ds.equalsIgnoreCase("SPAWN_RADIUS")) {
 						switch(c) {
-						case LEFT:
-						case SHIFT_LEFT:
+						case LEFT_PICKUP:
+						case SHIFT_LEFT_DROP:
+						case SHIFT_LEFT_PICKUP:
 							Loader.mw.set("WorldsSettings." + w.getName() + ".Gamerule." + ds,
 									Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) + 1);
 							Loader.mw.save();
@@ -722,8 +727,9 @@ public class MultiWorldsGUI {
 							this.setItem(createItem("&6"+name, d, Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
 							g.setItem(slot, this);
 							break;
-						case RIGHT:
-						case SHIFT_RIGHT:
+						case RIGHT_PICKUP:
+						case SHIFT_RIGHT_DROP:
+						case SHIFT_RIGHT_PICKUP:
 							Loader.mw.set("WorldsSettings." + w.getName() + ".Gamerule." + ds,
 									Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) - 1);
 							Loader.mw.save();
