@@ -306,6 +306,7 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 	}
 	
+	private Metrics metrics;
 	private static long loading;
 
 	@Override
@@ -328,6 +329,8 @@ public class Loader extends JavaPlugin implements Listener {
 			TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
 			break;
 		}
+		if(TheAPI.isNewerThan(7))
+			metrics=new Metrics();
 		if(updater!=null)
 		new Tasker() {
 			public void run() {
@@ -424,6 +427,8 @@ public class Loader extends JavaPlugin implements Listener {
 		TabList.removeTab();
 		Tasks.unload();
 		stop();
+		if(metrics!=null)
+			Scheduler.cancelTask(metrics.getTask());
 		DisplayManager.unload();
 		for (String w : mw.getStringList("Worlds"))
 			if (Bukkit.getWorld(w) != null) {
@@ -498,15 +503,13 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		if(aad==1) {
 			DisplayManager.unload();
-			DisplayManager.load();
 			getInstance.stop();
-			getInstance.starts();
 			Configs.load(true);
+			DisplayManager.load();
+			getInstance.starts();
 		}else {
 			DisplayManager.load();
 			getInstance.starts();
-			if(config.getBoolean("Options.Metrics") && TheAPI.isNewerThan(7))
-			new Metrics();
 			if (PluginManagerAPI.getPlugin("Vault") != null) {
 				setupVault();
 				setupPermisions();

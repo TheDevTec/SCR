@@ -26,8 +26,6 @@ Options:
   PacketLimiter:
     Use: true
     Limit: 2
-    
-  Metrics: true
   
   Chat:
     # Types: GLOBAL, PER_WORLD, DISTANCE
