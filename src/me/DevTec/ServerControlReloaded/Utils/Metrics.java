@@ -113,7 +113,7 @@ public class Metrics {
 				}
 				submitData();
 			}
-		}.runRepeating(20*60*5, 20*60*5);
+		}.runRepeating(20*60, 20*60*5);
 	}
 
 	@SuppressWarnings("unchecked")
