@@ -231,12 +231,12 @@ public class SPlayer {
 	}
 
 	public void setGamamode() {
-		if (!getPlayer().hasPermission("ServerControl.GamemodeChangePrevent")) {
-			if (Loader.mw.getString("WorldsSettings." + getPlayer().getWorld().getName() + ".GameMode") != null && GameMode
-					.valueOf(Loader.mw.getString("WorldsSettings." + getPlayer().getWorld().getName() + ".GameMode")) != null)
-				getPlayer().setGameMode(GameMode
-						.valueOf(Loader.mw.getString("WorldsSettings." + getPlayer().getWorld().getName() + ".GameMode")));
-		}
+		if (!getPlayer().hasPermission("SCR.Other.GamemodeChangePrevent")) {
+			if (Loader.mw.exists("WorldsSettings." + getPlayer().getWorld().getName() + ".GameMode"))
+				try {
+				getPlayer().setGameMode(GameMode.valueOf(Loader.mw.getString("WorldsSettings." + getPlayer().getWorld().getName() + ".GameMode").toUpperCase()));
+				}catch(Exception | NoSuchFieldError err) {}
+			}
 	}
 
 	public boolean hasFlyEnabled() {

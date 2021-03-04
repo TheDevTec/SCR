@@ -830,6 +830,8 @@ Accounts:
 Uuid:
   Message: "%prefix% Uuid hráče &e%player% &7je &a%uuid%"  
   
-Trash: "&7Koš"
+Trash:
+  Name: "&7Koš"
+  Clear: "&eVysypat koš"
 
 Config: "%prefix% Konfigurace a tasky znovunačteny"

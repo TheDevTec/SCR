@@ -313,8 +313,11 @@ public class ChatFormat implements Listener {
 			return;
 		}
 		Iterator<Player> a = e.getRecipients().iterator();
-		while(a.hasNext())
-			if(PrivateMessageManager.getIgnoreList(a.next().getName()).contains(p.getName()))a.remove();
+		while(a.hasNext()) {
+			Player d = a.next();
+			if(d.equals(p))continue;
+			if(PrivateMessageManager.getIgnoreList(d.getName()).contains(p.getName()))a.remove();
+		}
 		if(Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
 			Object format = Loader.config.get("Chat-Groups." + Loader.getChatFormat(p,Item.GROUP) + ".Chat");
 			String colorOfFormat = format!=null ? getColorOf(format) :"";
@@ -326,7 +329,7 @@ public class ChatFormat implements Listener {
 			sound = Sound.valueOf(Loader.config.getString("Options.ChatNotification.Sound"));
 			}catch(Exception | NoSuchFieldError err) {}
 			for(Player s : e.getRecipients()) {
-				if(p.canSee(s) || p==s) {
+				if(p.canSee(s) && p!=s) {
 					if(msg.contains(s.getName())) {
 						if(msg.equals(s.getName())) {
 							msg=color+s.getName();

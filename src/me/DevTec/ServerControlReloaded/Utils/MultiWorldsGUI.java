@@ -290,7 +290,7 @@ public class MultiWorldsGUI {
 								)))) {
 					@Override
 					public void onClick(Player s, HolderGUI g, ClickType c) {
-						MultiWorldsUtils.LoadWorld(w, s);
+						MultiWorldsUtils.loadWorld(w, s);
 						openInvLoad(s);
 					}
 				});
@@ -342,7 +342,7 @@ public class MultiWorldsGUI {
 							String name = TheAPI.getUser(p).getString("MultiWorlds-Create");
 							Loader.mw.set("WorldsSettings." + name + ".Generator", TheAPI.getUser(p).getString("MultiWorlds-Generator"));
 							Loader.mw.save();
-							NMSAPI.postToMainThread(() -> MultiWorldsUtils.CreateWorld(name, p));
+							NMSAPI.postToMainThread(() -> MultiWorldsUtils.createWorld(name, p));
 							TheAPI.getUser(p).remove("MultiWorlds-Generator");
 							TheAPI.getUser(p).remove("MultiWorlds-Create");
 							TheAPI.getUser(p).save();
@@ -387,7 +387,7 @@ public class MultiWorldsGUI {
 				@Override
 				public void onClick(Player s, HolderGUI g, ClickType c) {
 					openInvUnload(s);
-					MultiWorldsUtils.UnloadWorld(w.getName(), s);
+					MultiWorldsUtils.unloadWorld(w.getName(), s);
 				}
 			});
 		}

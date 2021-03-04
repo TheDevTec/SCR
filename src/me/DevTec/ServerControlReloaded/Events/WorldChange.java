@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.bukkit.GameMode;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
+import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,14 +20,19 @@ import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 
 import me.DevTec.ServerControlReloaded.SCR.API;
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.worldsapi.voidGenerator;
+import me.devtec.theapi.worldsapi.voidGenerator_1_8;
 
 public class WorldChange implements Listener {
 
@@ -33,6 +40,27 @@ public class WorldChange implements Listener {
 	Map<String, List<Player>> perWorldSleep = new HashMap<>();
 	Constructor<?> c = Ref.constructor(Ref.nms("PacketPlayOutUpdateTime"), long.class, long.class, boolean.class);
 	Method setTime = Ref.method(Ref.nms("WorldServer"), "setDayTime", long.class);
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onLoadWorld(WorldLoadEvent e) {
+		String gen = Loader.mw.getString("WorldsSettings." + e.getWorld().getName() + ".Generator");
+		if(gen==null) { //lookup for gen
+			if(e.getWorld().getGenerator() instanceof voidGenerator || e.getWorld().getGenerator() instanceof voidGenerator_1_8) {
+				gen="THE_VOID";
+			}else
+				if(e.getWorld().getEnvironment()==Environment.THE_END)
+					gen="THE_END";
+			else
+				if(e.getWorld().getEnvironment()==Environment.NETHER)
+					gen="NETHER";
+			else
+				if(e.getWorld().getEnvironment()==Environment.NORMAL && e.getWorld().getWorldType()==WorldType.FLAT)
+					gen="FLAT";
+				else gen="DEFAULT";
+			
+		}
+		MultiWorldsUtils.defaultSet(e.getWorld(), gen);
+	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSleep(PlayerBedEnterEvent e) {

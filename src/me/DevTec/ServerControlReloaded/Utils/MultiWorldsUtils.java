@@ -6,20 +6,20 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Difficulty;
-import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.worldsapi.WorldsAPI;
 
 public class MultiWorldsUtils {
-	public static void UnloadWorld(String w, CommandSender sender) {
+	public static void unloadWorld(String w, CommandSender sender) {
 		if (Bukkit.getWorld(w) == null)
 			return;
 		if (WorldsAPI.unloadWorld(w, true)) {
@@ -48,42 +48,23 @@ public class MultiWorldsUtils {
 		Loader.sendMessages(s, "Chunks.Unload", Placeholder.c().add("%chunks%", chunk+""));
 	}
 
-	public static void EnableWorldCheck() {
-		for (Player on : TheAPI.getOnlinePlayers()) {
-			if (Bukkit.getWorld(on.getWorld().getName()) != null) {
-				String[] f = { "SURVIVAL", "CREATIVE", "ADVENTURE", "SPECTATOR" };
-				for (String waww : f) {
-					if(Loader.mw.exists("WorldsSettings." + on.getWorld().getName() + ".GameMode"))
-					if (Loader.mw.getString("WorldsSettings." + on.getWorld().getName() + ".GameMode")
-							.equalsIgnoreCase(waww)) {
-						on.setGameMode(GameMode.valueOf(
-								Loader.mw.getString("WorldsSettings." + on.getWorld().getName() + ".GameMode")));
-					}
-				}
-			}else
-				on.kickPlayer("Unable to find world");
-		}
-	}
-
-	public static boolean checkWorld(String world) {
-		if (Bukkit.getWorld(world) != null) {
-			return true;
-		}
-		return false;
+	public static void gamemodeWorldCheck() {
+		for (Player on : TheAPI.getOnlinePlayers())
+			API.getSPlayer(on).setGamamode();
 	}
 
 	public static enum Generator {
 		NORMAL, FLAT, NETHER, THE_END, THE_VOID;
 	}
 
-	private static boolean exist(String w) {
+	private static boolean exists(String w) {
 		return new File(Bukkit.getWorldContainer().getPath() + "/" + w + "/session.lock").exists();
 	}
 
 	public static void importWorld(String w, CommandSender s, Generator type) {
 		if (Bukkit.getWorld(w) != null)
 			return;
-		if (exist(w)) {
+		if (exists(w)) {
 			if (Bukkit.getWorld(w) != null) {
 				Loader.sendMessages(s, "MultiWorld.Loaded", Placeholder.c().add("%world%", w));
 			} else if (Loader.mw.getStringList("Unloaded-Worlds").contains(w)
@@ -114,7 +95,7 @@ public class MultiWorldsUtils {
 				Loader.mw.set("Deleted-Worlds", wws);
 				Loader.mw.set("Worlds", worlds);
 				Loader.mw.save();
-				DefaultSet(Bukkit.getWorld(w), type.toString());
+				defaultSet(Bukkit.getWorld(w), type.toString());
 				Loader.sendMessages(s, "MultiWorld.Import", Placeholder.c().add("%world%", w));
 			}
 		} else
@@ -122,7 +103,7 @@ public class MultiWorldsUtils {
 	}
 
 	
-	public static void DefaultSet(World as, String gen) {
+	public static void defaultSet(World as, String gen) {
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".GameMode", "SURVIVAL");
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Difficulty", as.getDifficulty().name());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".KeepSpawnInMemory", as.getKeepSpawnInMemory());
@@ -134,50 +115,8 @@ public class MultiWorldsUtils {
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".DoFireDamage", true);
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".DoDrownDamage", true);
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".DoFallDamage", true);
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.COMMAND_BLOCK_OUTPUT",
-				as.getGameRuleValue("COMMAND_BLOCK_OUTPUT")); // 22 rules
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.DISABLE_ELYTRA_MOVEMENT_CHECK",
-				as.getGameRuleValue("DISABLE_ELYTRA_MOVEMENT_CHECK"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.DISABLE_RAIDS",
-				as.getGameRuleValue("DISABLE_RAIDS"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.DO_DAYLIGHT_CYCLE",
-				as.getGameRuleValue("DO_DAYLIGHT_CYCLE"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.DO_ENTITY_DROPS",
-				as.getGameRuleValue("DO_ENTITY_DROPS"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.DO_FIRE_TICK",
-				as.getGameRuleValue("DO_FIRE_TICK"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.DO_LIMITED_CRAFTING",
-				as.getGameRuleValue("DO_LIMITED_CRAFTING"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.DO_MOB_LOOT",
-				as.getGameRuleValue("DO_MOB_LOOT"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.DO_TILE_DROPS",
-				as.getGameRuleValue("DO_TILE_DROPS"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.DO_WEATHER_CYCLE",
-				as.getGameRuleValue("DO_WEATHER_CYCLE"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.KEEP_INVENTORY",
-				as.getGameRuleValue("KEEP_INVENTORY"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.LOG_ADMIN_COMMANDS",
-				as.getGameRuleValue("LOG_ADMIN_COMMANDS"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.MAX_COMMAND_CHAIN_LENGTH",
-				as.getGameRuleValue("MAX_COMMAND_CHAIN_LENGTH"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.MAX_ENTITY_CRAMMING",
-				as.getGameRuleValue("MAX_ENTITY_CRAMMING"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.MOB_GRIEFING",
-				as.getGameRuleValue("MOB_GRIEFING"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.RANDOM_TICK_SPEED",
-				as.getGameRuleValue("RANDOM_TICK_SPEED"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.REDUCED_DEBUG_INFO",
-				as.getGameRuleValue("REDUCED_DEBUG_INFO"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.SEND_COMMAND_FEEDBACK",
-				as.getGameRuleValue("SEND_COMMAND_FEEDBACK"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.SHOW_DEATH_MESSAGES",
-				as.getGameRuleValue("SHOW_DEATH_MESSAGES"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.SPAWN_RADIUS",
-				as.getGameRuleValue("SPAWN_RADIUS"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.SPECTATORS_GENERATE_CHUNKS",
-				as.getGameRuleValue("SPECTATORS_GENERATE_CHUNKS"));
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule.ANNOUNCE_ADVANCEMENTS",
-				as.getGameRuleValue("ANNOUNCE_ADVANCEMENTS"));
+		for(String g : as.getGameRules())
+		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule."+g, as.getGameRuleValue(g));
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Spawn.World", as.getName());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Generator", gen != null ? gen : "none");
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".MonstersSpawnLimit", as.getMonsterSpawnLimit());
@@ -234,14 +173,14 @@ public class MultiWorldsUtils {
 			}
 	}
 
-	public static void LoadWorlds() {
+	public static void loadWorlds() {
 		for (String w : Loader.mw.getStringList("Worlds"))
-			LoadWorld(w, null);
+			loadWorld(w, null);
 		for (World wa : Bukkit.getWorlds())
-			DefaultSet(wa, Loader.mw.getString("WorldsSettings." + wa.getName() + ".Generator"));
+			defaultSet(wa, Loader.mw.getString("WorldsSettings." + wa.getName() + ".Generator"));
 	}
 
-	public static void LoadWorld(String s, CommandSender sender) {
+	public static void loadWorld(String s, CommandSender sender) {
 		if (Bukkit.getWorld(s) != null)
 			return;
 		List<String> worlds = Loader.mw.getStringList("Worlds");
@@ -254,7 +193,7 @@ public class MultiWorldsUtils {
 		if (biome.equalsIgnoreCase("THE_END")) {
 			WorldsAPI.create(s, Environment.THE_END, WorldType.NORMAL, true, 0);
 		}
-		if (biome.equalsIgnoreCase("NORMAL") || biome.equalsIgnoreCase("none")) {
+		if (biome.equalsIgnoreCase("NORMAL") || biome.equalsIgnoreCase("NONE") || biome.equalsIgnoreCase("DEFAULT")) {
 			WorldsAPI.create(s, Environment.NORMAL, WorldType.NORMAL, true, 0);
 		}
 		if (biome.equalsIgnoreCase("FLAT")) {
@@ -269,12 +208,12 @@ public class MultiWorldsUtils {
 		Loader.mw.set("Worlds", worlds);
 		Loader.mw.set("Unloaded-Worlds", ww);
 		Loader.mw.save();
-		DefaultSet(Bukkit.getWorld(s), biome);
+		defaultSet(Bukkit.getWorld(s), biome);
 		if(sender!=null)
 		Loader.sendMessages(sender, "MultiWorld.Load", Placeholder.c().add("%world%", s));
 	}
 
-	public static void CreateWorld(String s, CommandSender sender) {
+	public static void createWorld(String s, CommandSender sender) {
 		String biome = Loader.mw.getString("WorldsSettings." + s + ".Generator");
 		if(biome==null)biome="NORMAL";
 		List<String> wws = Loader.mw.getStringList("Deleted-Worlds");
@@ -303,7 +242,7 @@ public class MultiWorldsUtils {
 			Loader.mw.set("Deleted-Worlds", wws);
 			Loader.mw.set("Worlds", worlds);
 			Loader.mw.save();
-			DefaultSet(Bukkit.getWorld(s), biome);
+			defaultSet(Bukkit.getWorld(s), biome);
 			Loader.sendMessages(sender, "MultiWorld.Create", Placeholder.c().add("%world%", s).replace("%generator%", biome));
 		}
 	}

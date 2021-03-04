@@ -39,11 +39,12 @@ public class Tasks {
 				e.setMotd(TheAPI.colorize(PlaceholderAPI.setPlaceholders(null,Loader.config.getString((!setting.lock_server || setting.lock_server && !setting.motd_maintenance)?"Options.ServerList.MOTD.Text.Normal":"Options.ServerList.MOTD.Text.Maintenance")
 						.replace("%next%", "\n").replace("%line%", "\n"))));
 			}
+			e.setMaxPlayers(TheAPI.getMaxPlayers());
 		}
 	};
 
 	public static void unload() {
-		for (Integer t : tasks)
+		for (int t : tasks)
 			Scheduler.cancelTask(t);
 		tests = 0;
 		l.unregister();
@@ -98,7 +99,8 @@ public class Tasks {
 						if (s != null)
 						if (timeout <= 5 || timeout == 10 || timeout == 15 || timeout == 30 || timeout == 45 || timeout == 60)
 								Loader.sendMessages(s, "Fly.Temp.EndIn", Placeholder.c().add("%time%", StringUtils.setTimeToString(timeout)));
-					}}
+					}
+				}
 		}.runRepeating(0, 20));
 	}
 
@@ -172,6 +174,7 @@ public class Tasks {
 	private static void vipslot() {
 		if (setting.vip_add)
 			TheAPI.setMaxPlayers(Bukkit.getMaxPlayers() + Loader.config.getInt("Options.VIPSlots.SlotsToAdd"));
+		if (setting.vip_kick)
 		tasks.add(new Tasker() {
 			@Override
 			public void run() {

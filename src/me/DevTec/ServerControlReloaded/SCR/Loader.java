@@ -523,14 +523,14 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		rules.clear();
 		Converter.convert();
-		MultiWorldsUtils.LoadWorlds();
-		ItemGUI clear=new ItemGUI(ItemCreatorAPI.create(XMaterial.LAVA_BUCKET.getMaterial(), 1, "&6Clear")) {
+		MultiWorldsUtils.loadWorlds();
+		ItemGUI clear=new ItemGUI(ItemCreatorAPI.create(XMaterial.LAVA_BUCKET.getMaterial(), 1, Loader.getTranslation("Trash.Clear").toString())) {
 				public void onClick(Player s, HolderGUI g, me.devtec.theapi.guiapi.GUI.ClickType c) {
 					for (int i = 0; i < 45; ++i)
 					g.remove(i);
 				}
 			};
-			GUI sa = new GUI(""+Loader.getTranslation("Trash"), 54);
+			GUI sa = new GUI(""+Loader.getTranslation("Trash.Name"), 54);
 			sa.setInsertable(true);
 			MultiWorldsGUI.smallInv(sa);
 			sa.setItem(49, clear);
@@ -553,13 +553,12 @@ public class Loader extends JavaPlugin implements Listener {
 			SPlayer s = API.getSPlayer(p);
 			if (s.hasTempFlyEnabled())
 				s.enableTempFly();
-			else if (has(p, "Fly", "Other") && s.hasFlyEnabled())
+			else if (s.hasFlyEnabled())
 				s.enableFly();
-			if (EconomyAPI.getEconomy() != null)
-				if(!EconomyAPI.hasAccount(p))
+			if (EconomyAPI.getEconomy() != null && !EconomyAPI.hasAccount(p))
 				EconomyAPI.createAccount(p);
 		}
-		MultiWorldsUtils.EnableWorldCheck();
+		MultiWorldsUtils.gamemodeWorldCheck();
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading kits:", TheAPI.getConsole());
 		for (String s : Loader.kit.getKeys("Kits")) {
 			TheAPI.msg(setting.prefix + "   &e"+s+"&7:", TheAPI.getConsole());

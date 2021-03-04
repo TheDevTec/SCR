@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import me.devtec.theapi.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
@@ -18,6 +16,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
 import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.worldsapi.WorldsAPI;
 
@@ -30,7 +29,6 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 	/mw load [world]
 	/mw unload [world]
 	/mw edit [world] [flag] [boolean]
-	Zda je gen normal, flat, void, end, nether nebo the_end, the_void, default tak to projde
 	 */
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -51,15 +49,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 				}
 				return true;
 			}
-			if(s instanceof ConsoleCommandSender){
-				Loader.Help(s,"MultiWorlds","Other");
-				Loader.advancedHelp(s,"MultiWorlds","Other","Create");
-				Loader.advancedHelp(s,"MultiWorlds","Other","Load");
-				Loader.advancedHelp(s,"MultiWorlds","Other","Unload");
-				Loader.advancedHelp(s,"MultiWorlds","Other","Remove");
-				Loader.advancedHelp(s,"MultiWorlds","Other","Edit");
-				return true;
-			}
+			Loader.Help(s,"MultiWorlds","Other");
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("create")){
@@ -81,7 +71,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 					public void run() {
 						Loader.mw.set("WorldsSettings." + args[1] + ".Generator",args[2]);
 						Loader.mw.save();
-						NMSAPI.postToMainThread(() -> MultiWorldsUtils.CreateWorld(args[1], s));
+						NMSAPI.postToMainThread(() -> MultiWorldsUtils.createWorld(args[1], s));
 					}
 				}.runLater(10);
 				return true;
@@ -122,7 +112,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			if(Loader.mw.exists("Unloaded-Worlds")){
 				for(String w : Loader.mw.getStringList("Unloaded-Worlds")){
 					if(w.equalsIgnoreCase(args[1])){
-						MultiWorldsUtils.LoadWorld(w, s);
+						MultiWorldsUtils.loadWorld(w, s);
 						return true;
 					}
 				}
@@ -137,7 +127,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			}
 			for(World w : Bukkit.getWorlds()){
 				if(w.getName().equalsIgnoreCase(args[1])){
-					MultiWorldsUtils.UnloadWorld(args[1],s);
+					MultiWorldsUtils.unloadWorld(args[1],s);
 					return true;
 				}
 			}

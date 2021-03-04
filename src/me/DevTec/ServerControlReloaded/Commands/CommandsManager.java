@@ -136,11 +136,10 @@ import me.DevTec.ServerControlReloaded.Commands.Weather.Sun;
 import me.DevTec.ServerControlReloaded.Commands.Weather.Thunder;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.TheAPI;
-
 public class CommandsManager {
 	private static Map<String, PluginCommand> commands = new HashMap<>();
 	
-	public static void load(String section, String command, CommandExecutor cs) {
+	public static boolean load(String section, String command, CommandExecutor cs) {
 		if(Loader.cmds.getBoolean(section+"."+command+".Enabled")) {
 			PluginCommand c = TheAPI.createCommand(Loader.cmds.getString(section+"."+command+".Name"), Loader.getInstance);
 			List<String> aliases = new ArrayList<>();
@@ -154,11 +153,12 @@ public class CommandsManager {
 			c.setPermission(Loader.cmds.getString(section+"."+command+".Permission"));
 			TheAPI.registerCommand(c);
 			commands.put(section+":"+command, c);
+			return true;
 		}else {
-			if(commands.containsKey(section+":"+command)) {
+			if(commands.containsKey(section+":"+command))
 				unload(section,command);
-			}
 		}
+		return false;
 	}
 	
 	public static void unload(String section, String command) {
@@ -270,7 +270,7 @@ public class CommandsManager {
 		load("Inventory", "CloseInventory", new CloseInventory());
 		load("Inventory", "ClearInventory",new ClearInv());
 		load("Inventory", "ClearConfirmToggle", new ClearConfirmToggle());
-		load("Inventory", "Inventory", new Invsee());
+		load("Inventory", "Invsee", new Invsee());
 		load("Inventory", "Workbench", new Craft());
 		load("Inventory", "Anvil", new Anvil());
 		
@@ -324,14 +324,18 @@ public class CommandsManager {
 		//Nickname
 		load("Nickname", "Nickname", new Nick());
 		load("Nickname", "NicknameReset", new NickReset());
-		for(Player p : TheAPI.getOnlinePlayers())p.updateCommands();
-	}
+		if(TheAPI.isNewerThan(12))
+		for(Player p : TheAPI.getOnlinePlayers())
+			p.updateCommands();
+		}
 	
 	public static void unload() {
 		for(PluginCommand s : commands.values())
 			TheAPI.unregisterCommand(s);
 		commands.clear();
-		for(Player p : TheAPI.getOnlinePlayers())p.updateCommands();
+		if(TheAPI.isNewerThan(12))
+		for(Player p : TheAPI.getOnlinePlayers())
+			p.updateCommands();
 	}
 
 	public static boolean isLoaded(String section, String command) {
