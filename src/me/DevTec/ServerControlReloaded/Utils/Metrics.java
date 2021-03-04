@@ -120,6 +120,7 @@ public class Metrics {
 	public JSONObject getPluginData() {
 		JSONObject data = new JSONObject();
 		data.put("pluginName", "ServerControlReloaded"); // Append the name of the plugin
+	    data.put("id", 10560); // Append the id of the plugin
 		data.put("pluginVersion", LoaderClass.plugin.getDescription().getVersion()); // Append the version of the plugin
 		JSONArray customCharts = new JSONArray();
 		for (CustomChart customChart : charts) {
