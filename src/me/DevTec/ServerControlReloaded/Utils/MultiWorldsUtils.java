@@ -129,14 +129,10 @@ public class MultiWorldsUtils {
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Spawn.X_Pos_Head", 90);
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Spawn.Z_Pos_Head", 0);
 		Loader.mw.save();
-			for (String s : Loader.mw.getKeys("WorldsSettings." + as.getName()+".Gamerule")) {
-				if (s.equalsIgnoreCase("MAX_COMMAND_CHAIN_LENGTH") || s.equalsIgnoreCase("RANDOM_TICK_SPEED")
-						|| s.equalsIgnoreCase("MAX_ENTITY_CRAMMING") || s.equalsIgnoreCase("SPAWN_RADIUS")) {
-					as.setGameRuleValue(s, "" + Loader.mw.getInt("WorldsSettings." + as.getName() + ".Gamerule." + s));
-				} else
-					as.setGameRuleValue(s,
-							"" + Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".Gamerule." + s));
-			}
+		for(String g : as.getGameRules())
+			if(Loader.mw.exists("WorldsSettings." + as.getName()+".Gamerule."+g))
+					as.setGameRuleValue(g, Loader.mw.getString("WorldsSettings." + as.getName() + ".Gamerule." + g));
+		
 			String dif = null;
 			dif = Loader.mw.getString("WorldsSettings." + as.getName() + ".Difficulty").toUpperCase();
 			boolean keepspawn = Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".KeepSpawnInMemory");

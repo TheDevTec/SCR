@@ -183,8 +183,9 @@ public class MultiWorldsGUI {
 							s.getLocation().getPitch());
 					try {
 						s.getWorld().setSpawnLocation(s.getLocation());
-						}catch(NoSuchMethodError err) {
-						}
+					}catch(NoSuchMethodError err) {
+						s.getWorld().setSpawnLocation(s.getLocation().getBlockX(), s.getLocation().getBlockY(), s.getLocation().getBlockZ());
+					}
 					Loader.sendMessages(s, "MultiWorld.Spawn.Set", Placeholder.c().add("%world%", world));
 				}
 			}

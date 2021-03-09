@@ -285,7 +285,9 @@ public class TabList {
 		;if(header.contains("%ram_max%"))
 			header=header.replace("%ram_max%", MemoryAPI.getMaxMemory() + "").replace("%ram_max_percentage%", "100%")
 		;
+		String orig = header;
 		header= PlaceholderAPI.setPlaceholders(p, header);
+		if(header==null)header=orig;
 		if(color)
 		header=TheAPI.colorize(header);
 		return header;

@@ -26,7 +26,7 @@ public class Colors {
 
 	public static String colorize(String b, boolean sign, CommandSender dr) {
 		String p = sign?"Sign":"Chat";
-		if (b.toLowerCase().contains("&u") && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow"))) {
+		if ((Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow")!=null && !Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow").equals("")) && b.toLowerCase().contains("&u") && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow"))) {
 			List<String> s = new ArrayList<>();
 			StringBuffer d = new StringBuffer();
 			int found = 0;
@@ -64,24 +64,25 @@ public class Colors {
 			b = d.toString();
 		}
 		if(neww) {
-		if(dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Gradient")))
-			b = StringUtils.gradient(b);
-		if (b.contains("#") || b.contains("&x")) {
-			if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.HEX"))) {
-				b = b.replace("&x", "§x");
-			Matcher match = pattern.matcher(b);
-            while (match.find()) {
-                String color = match.group();
-                StringBuilder magic = new StringBuilder("§x");
-                char[] c = color.substring(1).toCharArray();
-                for(int i = 0; i < c.length; ++i) {
-                    magic.append(("&"+c[i]).toLowerCase());
-                }
-                b = b.replace(color, magic.toString() + "");
-            }
+			if((Loader.config.getString("Options.Colors." + p + ".Permission.Gradient")!=null && !Loader.config.getString("Options.Colors." + p + ".Permission.Gradient").equals("")) && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Gradient")))
+				b = StringUtils.gradient(b);
+			if (b.contains("#") || b.contains("&x")) {
+				if ((Loader.config.getString("Options.Colors." + p + ".Permission.HEX")!=null && !Loader.config.getString("Options.Colors." + p + ".Permission.HEX").equals("")) && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.HEX"))) {
+					b = b.replace("&x", "§x");
+					Matcher match = pattern.matcher(b);
+		            while (match.find()) {
+		                String color = match.group();
+		                StringBuilder magic = new StringBuilder("§x");
+		                char[] c = color.substring(1).toCharArray();
+		                for(int i = 0; i < c.length; ++i) {
+		                    magic.append(("§"+c[i]).toLowerCase());
+		                }
+		                b = b.replace(color, magic.toString() + "");
+		            }
+				}
 			}
-		}}
-		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
+		}
+		if ((Loader.config.getString("Options.Colors." + p + ".Permission.Color")!=null && !Loader.config.getString("Options.Colors." + p + ".Permission.Color").equals("")) && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
 			for (int i = 0; i < 10; ++i)
 				b = b.replace("&" + i, ChatColor.getByChar(i+"")+"");
 			b = b.replace("&a", ChatColor.getByChar("a")+"");

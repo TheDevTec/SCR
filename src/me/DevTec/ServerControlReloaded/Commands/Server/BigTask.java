@@ -24,7 +24,7 @@ public class BigTask {
 		s = t;
 		if ((t == TaskType.STOP ? setting.warn_stop
 				: (t == TaskType.RELOAD ? setting.warn_reload : setting.warn_restart))) {
-			if(h > 15)
+			if(h > 15 && h!=30 && h!=45 && h!=60)
 			for (String s : Loader.config.getStringList("Options.WarningSystem."
 					+ (t == TaskType.STOP ? "Stop" : (t == TaskType.RELOAD ? "Reload" : "Restart"))
 					+ ".Messages"))
@@ -43,7 +43,7 @@ public class BigTask {
 								}
 							}.runTaskSync();
 							return;
-						} else if (f == h % 75 && h > 15 || f == h % 50 && h > 10 || f == h % 25 && h > 5 || f <= 5) {
+						} else if (f == 60 || f == 45 || f == 30 || f == 15 || f <= 5) {
 							for (String s : Loader.config.getStringList("Options.WarningSystem."
 									+ (t == TaskType.STOP ? "Stop" : (t == TaskType.RELOAD ? "Reload" : "Restart"))
 									+ ".Messages"))
@@ -87,7 +87,11 @@ public class BigTask {
 				for(Player s : TheAPI.getOnlinePlayers())
 					s.kickPlayer(TheAPI.colorize(text));
 				if (Ref.getClass("net.md_5.bungee.api.ChatColor")!=null)
+					try {
 					Bukkit.spigot().restart();
+					}catch(Exception | NoSuchMethodError e) {
+						Bukkit.shutdown();
+					}
 				else
 					Bukkit.shutdown();
 				break;

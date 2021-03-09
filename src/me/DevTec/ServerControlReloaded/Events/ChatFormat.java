@@ -5,10 +5,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,7 +21,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.DevTec.ServerControlReloaded.Commands.Message.PrivateMessageManager;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.SCR.Loader.Item;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.ChatFormatter;
 import me.DevTec.ServerControlReloaded.Utils.Colors;
@@ -28,10 +29,11 @@ import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.placeholderapi.PlaceholderAPI;
-import me.devtec.theapi.utils.HoverMessage;
+import me.devtec.theapi.utils.ChatMessage;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
+import me.devtec.theapi.utils.json.Writer;
+import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class ChatFormat implements Listener {
@@ -40,7 +42,7 @@ public class ChatFormat implements Listener {
 
 	@SuppressWarnings("unchecked")
 	public static Collection<?> colorizeList(Collection<?> json, Player p, String msg) {
-		ArrayList<Object> colorized = new ArrayList<>();
+		ArrayList<Object> colorized = new ArrayList<>(json.size());
 		for (Object e : json) {
 			if (e instanceof Collection) {
 				colorized.add(colorizeList((Collection<?>) e,p,msg));
@@ -83,7 +85,7 @@ public class ChatFormat implements Listener {
 	@SuppressWarnings("unchecked")
 	public static Object r(Player p, Object s, String msg, boolean usejson) {
 		if(s.toString().trim().isEmpty())return s;
-		if (Loader.config.getBoolean("Chat-Groups-Options.Json") && usejson) {
+		if (usejson && Loader.config.getBoolean("Chat-Groups-Options.Json")) {
 			try {
 				if(s instanceof Map && s!=null) {
 					return colorizeMap((Map<String, Object>) s,p,msg);
@@ -94,57 +96,91 @@ public class ChatFormat implements Listener {
 			}catch(Exception err) {}
 		}
 		s=s+"";
-		s=PlaceholderAPI.setPlaceholders(p, (String) s);
+		if(usejson)s=s.toString().replace("&u", "<#&>u").replace("&U", "<#&>u");
+		String orig = (String)s;
 		if(s.toString().toLowerCase().contains("&u")) {
-				List<String> sd = new ArrayList<>();
-				StringBuffer d = new StringBuffer();
-				int found = 0;
-				for (char c : msg.toCharArray()) {
-					if (c == '&') {
-						if (found == 1)
-							d.append(c);
-						found = 1;
-						continue;
-					}
-					if (found == 1 && colorPattern.matcher(c + "").find()) {
-						found = 0;
-						sd.add(d.toString());
-						d = d.delete(0, d.length());
-						d.append("&" + c);
-						continue;
-					}
-					if (found == 1) {
-						found = 0;
-						d.append("&" + c);
-						continue;
-					}
-					found = 0;
-					d.append(c);
-				}
-				if (d.length() != 0)
-					sd.add(d.toString());
-				d = d.delete(0, d.length());
-				for (String ff : sd) {
-					if (ff.toLowerCase().startsWith("&u")) {
-						if(ff.contains("%message%") && msg!=null) {
-							ff = StringUtils.color.colorize(ff.substring(2));
-							ff=TabList.replace(ff, p, true);
-							ff=ff.replace("%message%", r(msg, p));
-							d.append(ff);
-							continue;
-						}
-						ff = StringUtils.color.colorize(ff.substring(2));
-					}
-					d.append(TabList.replace(ff, p, true));
-				}
-				return d.toString();
+			s=TabList.replace((String) s, p, false);
+			if(s==null)s=orig;
+			return rainbow((String)s, msg, p);
 		}
-		if (msg != null)
-			s=s.toString().replace("%message%", r(msg, p));
-		s = TabList.replace(s.toString(), p, true);
-		return s.toString();
+		s=TabList.replace(s.toString(), p, true);
+		if(s==null)s=orig;
+		if (msg != null && s.toString().contains("%message%"))
+			s=s.toString().replace("%message%", r(msg,p));
+		return s;
 	}
 
+	private static String rainbow(String s, String msg, Player p) {
+		List<String> sd = new ArrayList<>();
+		StringBuffer d = new StringBuffer();
+		s=s.replace("%message%", r(msg, p));
+		int found = 0, part = 0, parts = 0;
+		String noHex = "";
+		for (char c : s.toString().toCharArray()) {
+			if(part!=0) {
+				if(colorPattern.matcher(c + "").find()) {
+					noHex+=c;
+					if(++parts==6) {
+						part=0;
+						noHex="";
+						parts=0;
+						found=0;
+					}
+					continue;
+				}else {
+					d.append(noHex);
+					part=0;
+					noHex="";
+					parts=0;
+					found=0;
+				}
+			}
+			if (c == '&'||c == '§') {
+				if (found == 1)
+					d.append(c);
+				found = 1;
+				continue;
+			}
+			if (found == 1 && colorPattern.matcher(c + "").find()) {
+				found = 0;
+				part=0;
+				parts=0;
+				sd.add(d.toString());
+				d = d.delete(0, d.length());
+				noHex="&x";
+				d.append("§" + c);
+				continue;
+			}
+			if (found == 1 && (c=='x'||c=='X')) {
+				part = 1;
+				noHex="&x";
+				continue;
+			}
+			if (found == 1) {
+				found = 0;
+				d.append("&" + c);
+				continue;
+			}
+			found = 0;
+			d.append(c);
+		}
+		if (d.length() != 0)
+			sd.add(d.toString());
+		d = d.delete(0, d.length());
+		for (String ff : sd) {
+			if (ff.toLowerCase().startsWith("§u")) {
+				if(ff.contains("%message%") && msg!=null) {
+					ff = StringUtils.colorize(StringUtils.color.colorize(ff.substring(2)));
+					d.append(ff);
+					continue;
+				}
+				ff = StringUtils.colorize(StringUtils.color.colorize(ff.substring(2)));
+			}
+			d.append(ff);
+		}
+		return d.toString();
+	}
+	
 	public static String r(String msg, CommandSender p) {
 		if (setting.color_chat)
 			return Colors.colorize(msg, false, p);
@@ -227,7 +263,7 @@ public class ChatFormat implements Listener {
 			}
 			return;
 		}
-		String msg = r(e.getMessage(), p);
+		String msg = e.getMessage();
 		if (!p.hasPermission("SCR.Other.Admin")) {
 			if (!p.hasPermission("SCR.Other.RulesBypass")) {
 		for (Rule rule : Loader.rules) {
@@ -309,7 +345,7 @@ public class ChatFormat implements Listener {
 			Loader.sendMessages(p, "ChatLock.IsLocked");
 			Loader.sendBroadcasts(p, "ChatLock.Message", Placeholder.c().add("%player%", p.getName())
 					.add("%playername%", p.getDisplayName()).add("%message%", msg), Loader.getPerm("ChatLock", "Other"));
-			e.setMessage(msg);
+			e.setMessage(r(msg, p));
 			return;
 		}
 		Iterator<Player> a = e.getRecipients().iterator();
@@ -318,58 +354,6 @@ public class ChatFormat implements Listener {
 			if(d.equals(p))continue;
 			if(PrivateMessageManager.getIgnoreList(d.getName()).contains(p.getName()))a.remove();
 		}
-		if(Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
-			Object format = Loader.config.get("Chat-Groups." + Loader.getChatFormat(p,Item.GROUP) + ".Chat");
-			String colorOfFormat = format!=null ? getColorOf(format) :"";
-			Sound sound = null;
-			String[] title = new String[] {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
-			String actionbar = Loader.config.getString("Options.ChatNotification.ActionBar").replace("%target%", p.getName()).replace("%targetname%", ChatFormatter.displayName(p)).replace("%targetcustomname%", ChatFormatter.customName(p));
-			String color = Loader.config.getString("Options.ChatNotification.Color");
-			try {
-			sound = Sound.valueOf(Loader.config.getString("Options.ChatNotification.Sound"));
-			}catch(Exception | NoSuchFieldError err) {}
-			for(Player s : e.getRecipients()) {
-				if(p.canSee(s) && p!=s) {
-					if(msg.contains(s.getName())) {
-						if(msg.equals(s.getName())) {
-							msg=color+s.getName();
-							if(sound!=null)
-								s.playSound(s.getLocation(), sound, 0, 0);
-								if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
-									TheAPI.sendTitle(s, title[0].trim().isEmpty()?"":TabList.replace(title[0], s, true), title[1].trim().isEmpty()?"":TabList.replace(title[1], s, true));
-								if(!actionbar.trim().isEmpty())TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
-							break;
-						}
-						String[] sp = msg.split(s.getName());
-						String build = colorOfFormat;
-						int added = sp.length-1;
-						boolean first = true;
-						for(int i = 0; i < sp.length; ++i) {
-							String last = first?build+=sp[i]:build;
-							if(added-->0)
-							build+=color+s.getName()+StringUtils.getLastColors(last);
-							try{
-								if(first) {
-									first=false;
-									build+=sp[++i];
-								}else
-									build+=sp[i];
-							}catch(Exception err) {}
-						}
-						if(msg.endsWith(s.getName()))
-							build+=color+s.getName();
-						msg=build;
-						if(sound!=null)
-						s.playSound(s.getLocation(), sound, 0, 0);
-						if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
-							TheAPI.sendTitle(s, title[0].trim().isEmpty()?"":TabList.replace(title[0], s, true), title[1].trim().isEmpty()?"":TabList.replace(title[1], s, true));
-						if(!actionbar.trim().isEmpty())TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
-					}
-				}
-			}
-		}
-		msg=StringUtils.colorize(msg);
-		e.setMessage(msg);
 		if(Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("per_world")
 				||Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("perworld")||
 				Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("world")) {
@@ -393,28 +377,214 @@ public class ChatFormat implements Listener {
 				}
 			}
 		}
+		Object format = ChatFormatter.chat(p, ".");
+		String colorOfFormat = format!=null ? getColorOf(p,format) :"";
+		if(Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
+			Sound sound = null;
+			String[] title = new String[] {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
+			String actionbar = Loader.config.getString("Options.ChatNotification.ActionBar").replace("%target%", p.getName()).replace("%targetname%", ChatFormatter.displayName(p)).replace("%targetcustomname%", ChatFormatter.customName(p));
+			String color = Loader.config.getString("Options.ChatNotification.Color");
+			try {
+			sound = Sound.valueOf(Loader.config.getString("Options.ChatNotification.Sound").toUpperCase());
+			}catch(Exception | NoSuchFieldError err) {}
+			for(Player s : e.getRecipients()) {
+				if(p.canSee(s) && p!=s) {
+					if(msg.contains(s.getName())) {
+						if(msg.equals(s.getName())) {
+							msg=color+s.getName();
+							if(sound!=null)
+								s.playSound(s.getLocation(), sound, 0, 0);
+								if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
+									TheAPI.sendTitle(s, title[0].trim().isEmpty()?"":TabList.replace(title[0], s, true), title[1].trim().isEmpty()?"":TabList.replace(title[1], s, true));
+								if(!actionbar.trim().isEmpty())TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
+							break;
+						}
+						String[] sp = msg.split(s.getName());
+						String build = colorOfFormat;
+						int added = sp.length-1;
+						boolean first = true;
+						for(int i = 0; i < sp.length; ++i) {
+							String last = first?build+=sp[i]+colorOfFormat:build;
+							if(added-->0)
+							build+=StringUtils.colorize(color+s.getName())+StringUtils.getLastColors(last);
+							try{
+								if(first) {
+									first=false;
+									build+=sp[++i];
+								}else
+									build+=sp[i];
+							}catch(Exception err) {}
+						}
+						if(msg.endsWith(s.getName()))
+							build+=StringUtils.colorize(color+s.getName());
+						msg=build;
+						if(sound!=null)
+						s.playSound(s.getLocation(), sound, 1,1);
+						if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
+							TheAPI.sendTitle(s, title[0].trim().isEmpty()?"":TabList.replace(title[0], s, true), title[1].trim().isEmpty()?"":TabList.replace(title[1], s, true));
+						if(!actionbar.trim().isEmpty())TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
+					}
+				}
+			}
+		}
+		e.setMessage(r(msg,p));
 		if (Loader.config.getBoolean("Chat-Groups-Options.Enabled")) {
-			Object format = ChatFormatter.chat(p, msg);
+			format = ChatFormatter.chat(p, (format instanceof String?r(msg,p):colorOfFormat+"%message%"));
 			if (format != null) {
 				if(format instanceof String)
 					Ref.set(e, "format", ((String)format).replace("%", "%%"));
 				else
-				if (Loader.config.getBoolean("Chat-Groups-Options.Json")) {
-					HoverMessage text = null;
-					if(format instanceof Map)
-						text = new HoverMessage((Map<String, Object>)format);
-					else
-						text = new HoverMessage((Collection<Object>)format);
-					text.send(e.getRecipients());
+				if (Loader.config.getBoolean("Chat-Groups-Options.Json") && (format instanceof Map || format instanceof Collection)) {
+					
+					List<Map<String,Object>> list = ChatMessage.fixListMap((List<Map<String,Object>>)format);
+					ListIterator<Map<String, Object>> aww = list.listIterator();
+					while(aww.hasNext()) {
+						Map<String, Object> aw = aww.next();
+						if(aw.containsKey("text")) {
+							if(aw.get("text").toString().contains("%message%")) {
+								aww.remove();
+								if(aw.get("text").toString().contains("<#&>u")) {
+									aw.put("text", rainbow(aw.get("text").toString().replace("<#&>u","&u"), msg, p));
+								}
+								for(Map<String, Object> sd : new ChatMessage(aw.get("text").toString().replace("%message%", r(msg,p).replaceAll("#([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])", "#<#/>$1$2$3$4$5$6"))).get())
+									aww.add(fix(aw,sd));
+							}
+						}
+					}
+					Ref.set(e, "format", convertToLegacy(list).replace("%", "%%"));
+					if(!e.isCancelled())
+					Ref.sendPacket(e.getRecipients(), NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write(list))));
 					e.getRecipients().clear(); //for our custom chat
-					Ref.set(e, "format", ((String)text.toLegacyText()).replace("%", "%%")); //for console log!
 				}
 			}
 		}
 	}
-	
 
-	private String getColorOf(Object format) {
-		return StringUtils.getLastColors(StringUtils.colorize(format.toString()).split("\\%message\\%")[0]);
+	private String convertToLegacy(List<Map<String, Object>> list) {
+		StringBuilder b = new StringBuilder();
+		for(Map<String, Object> text : list)
+			b.append(StringUtils.colorize(getColor(""+text.getOrDefault("color","")))+text.get("text"));
+		return b.toString();
+	}
+	String getColor(String color) {
+		if(color.trim().isEmpty())return "";
+		if(color.startsWith("#"))return color;
+		try {
+		return ChatColor.valueOf(color.toUpperCase())+"";
+		}catch(Exception | NoSuchFieldError err) {
+			return "";
+		}
+	}
+
+	private Map<String, Object> fix(Map<String, Object> sdx, Map<String, Object> sd) {
+		for(Entry<String, Object> g : sdx.entrySet())
+			if(!g.getKey().equals("text") && !sd.containsKey(g.getKey()))
+				sd.put(g.getKey(), g.getValue());
+		for(Entry<String, Object> f : sd.entrySet()) {
+			if(f.getValue() instanceof String) {
+				f.setValue(f.getValue().toString().replaceAll("#\\<#\\/\\>([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])", "#$1$2$3$4$5$6"));
+			}
+		}
+		return sd;
+	}
+
+	/**
+	 * @see see Get last colors from String (HEX SUPPORT!)
+	 * @return String
+	 */
+	public static String getLastColors(String last) {
+		String color = "";
+		String format = "";
+		
+		char was = 0;
+		int count = 0;
+		String hex = "";
+		boolean hexPart = false;
+		for(char c : last.toCharArray()) {
+			if(c=='§') {
+				was=c;
+				continue;
+			}
+			if((was=='§')&&(Character.isDigit(c)||c=='a'||c=='b'||c=='c'||c=='d'||c=='e'||c=='f')) {
+				if(hexPart) {
+					hex+=c;
+					if(count++==5) {
+						was=c;
+						color="#"+hex;
+						hex="";
+						hexPart=false;
+						format="";
+						count=0;
+					}
+					continue;
+				}else {
+					format="";
+					color="&"+c;
+					hex="";
+					count=0;
+				}
+			}
+			if((was=='§')&&(c=='r'||c=='n'||c=='m'||c=='l'||c=='o'||c=='k'||c=='x')) {
+				if(c=='r') {
+					format=was+"r";
+					count=0;
+				}else
+				if(was=='#') {
+					color="";
+					hex="";
+					count=0;
+					format="§"+c;
+				}else {
+					if(c=='x') {
+						hexPart=true;
+						count=0;
+						hex="";
+						continue;
+					}else
+						if(!format.contains(("§"+c).toLowerCase()))
+					format+=("§"+c).toLowerCase();
+					count=0;
+				}
+			}
+			was=c;
+		}
+		return color+format;
+	}
+
+	@SuppressWarnings("unchecked")
+	private String getColorOf(Player p, Object format) {
+		String text = null;
+		if(format instanceof Map) {
+			if(((Map<String, Object>) format).containsKey("color") && ((Map<String, Object>) format).containsKey("text")) {
+				text=((Map<String, Object>) format).get("color").toString();
+			}else {
+				if((((Map<String, Object>)format).get("text")+"").contains("%message%")) {
+					text=r((((Map<String, Object>) format).get("text")+"").split("\\%message\\%")[0],p);
+				}
+			}
+		}else
+		if(format instanceof Collection) {
+			for(Object o : ((Collection<?>)format)) {
+				if(o instanceof Map) {
+					if(((Map<String, Object>) o).containsKey("color") && ((Map<String, Object>) o).containsKey("text")) {
+						if((((Map<String, Object>) o).get("text")+"").contains("%message%")) {
+						return text=((Map<String, Object>) o).get("color").toString();
+						}
+						text=((Map<String, Object>) o).get("color").toString();
+					}else {
+						if((((Map<String, Object>) o).get("text")+"").contains("%message%")) {
+							text=r((((Map<String, Object>) o).get("text")+"").split("\\%message\\%")[0],p);
+						}
+					}
+				}else {
+					if((""+o).contains("%message%")) {
+						text=r((""+o).split("\\%message\\%")[0],p);
+					}
+				}
+			}
+		}else
+			text=r((""+format).split("\\%message\\%")[0],p);
+		if(text==null)text="";
+		return StringUtils.getLastColors(text);
 	}
 }

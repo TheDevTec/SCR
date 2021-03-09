@@ -4,11 +4,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,7 +39,6 @@ import me.DevTec.ServerControlReloaded.Utils.Configs;
 import me.DevTec.ServerControlReloaded.Utils.Converter;
 import me.DevTec.ServerControlReloaded.Utils.DisplayManager;
 import me.DevTec.ServerControlReloaded.Utils.Kit;
-import me.DevTec.ServerControlReloaded.Utils.Metrics;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
 import me.DevTec.ServerControlReloaded.Utils.Rule;
@@ -47,6 +48,7 @@ import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.VaultHook;
 import me.DevTec.ServerControlReloaded.Utils.XMaterial;
 import me.DevTec.ServerControlReloaded.Utils.setting;
+import me.DevTec.ServerControlReloaded.Utils.metrics.Metrics;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.apis.PluginManagerAPI;
@@ -59,6 +61,8 @@ import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.Data;
+import me.devtec.theapi.utils.datakeeper.DataType;
 import me.devtec.theapi.utils.listener.Listener;
 import me.devtec.theapi.utils.reflections.Ref;
 import net.luckperms.api.LuckPermsProvider;
@@ -295,6 +299,20 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onLoad() {
+        boolean save = false;
+        Data c = new Data("plugins/bStats/config.yml");
+        if(c.setIfAbsent("enabled", true))save=true;
+        if(c.setIfAbsent("serverUuid", UUID.randomUUID().toString()))save=true;
+        if(c.setIfAbsent("logFailedRequests", false))save=true;
+        if(c.setIfAbsent("logSentData", false))save=true;
+        if(c.setIfAbsent("logResponseStatusText", false))save=true;
+        c.setHeader(Arrays.asList(
+                "# bStats collects some data for plugin authors like how many servers are using their plugins.",
+                        "# To honor their work, you should not disable it.",
+                        "# This has nearly no effect on the server performance!",
+                        "# Check out https://bStats.org/ to learn more :)"));
+        if(save)
+        c.save(DataType.YAML);
 		getInstance = this;
 		Configs.load(false);
 		if (PluginManagerAPI.getPlugin("Vault") != null) {
@@ -306,7 +324,6 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 	}
 	
-	private Metrics metrics;
 	private static long loading;
 
 	@Override
@@ -329,8 +346,7 @@ public class Loader extends JavaPlugin implements Listener {
 			TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
 			break;
 		}
-		if(TheAPI.isNewerThan(7))
-			metrics=new Metrics();
+		new Metrics(this, 10560);
 		if(updater!=null)
 		new Tasker() {
 			public void run() {
@@ -427,8 +443,6 @@ public class Loader extends JavaPlugin implements Listener {
 		TabList.removeTab();
 		Tasks.unload();
 		stop();
-		if(metrics!=null)
-			Scheduler.cancelTask(metrics.getTask());
 		DisplayManager.unload();
 		for (String w : mw.getStringList("Worlds"))
 			if (Bukkit.getWorld(w) != null) {
@@ -527,7 +541,7 @@ public class Loader extends JavaPlugin implements Listener {
 		rules.clear();
 		Converter.convert();
 		MultiWorldsUtils.loadWorlds();
-		ItemGUI clear=new ItemGUI(ItemCreatorAPI.create(XMaterial.LAVA_BUCKET.getMaterial(), 1, Loader.getTranslation("Trash.Clear").toString())) {
+		ItemGUI clear=new ItemGUI(ItemCreatorAPI.create(XMaterial.LAVA_BUCKET.getMaterial(), 1, Loader.getTranslation("Trash.Clear")+"")) {
 				public void onClick(Player s, HolderGUI g, me.devtec.theapi.guiapi.GUI.ClickType c) {
 					for (int i = 0; i < 45; ++i)
 					g.remove(i);

@@ -1,5 +1,8 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.Events.ChatFormat;
@@ -34,7 +37,7 @@ public class ChatFormatter {
 	public static Object chat(Player p, String message) {
 		Object format = Loader.config.get("Chat-Groups." + Loader.getChatFormat(p,Item.GROUP) + ".Chat");
 		if (format != null) {
-			return ChatFormat.r(p, format, message, true);
+			return ChatFormat.r(p, format, message, format instanceof Map || format instanceof List);
 		}
 		return null;
 	}

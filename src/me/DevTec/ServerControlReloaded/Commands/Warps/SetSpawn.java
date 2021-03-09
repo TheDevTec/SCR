@@ -22,8 +22,9 @@ public class SetSpawn implements CommandExecutor, TabCompleter {
 				Player p = (Player) s;
 				Position local = new Position(p.getLocation());
 				try {
-				p.getWorld().setSpawnLocation(local.toLocation());
+					local.getWorld().setSpawnLocation(local.toLocation());
 				}catch(NoSuchMethodError err) {
+					local.getWorld().setSpawnLocation(local.getBlockX(), local.getBlockY(), local.getBlockZ());
 				}
 				Loader.config.set("Spawn", local.toString());
 				Loader.config.save();

@@ -12,6 +12,7 @@
 
 Options:
   Language: "en"
+  
   Skins:
     # Load default skin on join
     onJoin: true
@@ -44,8 +45,10 @@ Options:
   LockChat:
     Helpop: true
     PrivateMessage: true
+    
   # Remove line from list broadcast, if joiner is empty
   List-RemoveEmptyLine: true
+  
   Staff:
     # if staff is empty
     HideAllLines: true
@@ -53,18 +56,25 @@ Options:
     UseReplace: true
     ReplaceWith:
     - "%prefix% Anyone from staff is online"
+    
   ChatLock: false
+  
   FarmingSystem:
     Use: true
     ForbiddenWorlds:
     - "spawn"
+    
   SinglePlayerSleep: true
+  
   # ActionBar when you have enabled vanish
   Vanish-ActionBar: true
+  
   RAM-Percentage: false
+  
   AntiSpam:
     SimiliarMessage: true
     DoubleLetters: true
+    
   AntiCaps:
     Chat: true
     Commands: false
