@@ -333,7 +333,6 @@ public class TabList {
 	}
 	
 	public static void setFooterHeader(Player p) {
-		String header = AnimationManager.replaceWithoutColors(p,getPath(p, "Header")), footer = AnimationManager.replaceWithoutColors(p,getPath(p, "Footer"));
-		TabListAPI.setHeaderFooter(p, header, footer);
+		TabListAPI.setHeaderFooter(p, AnimationManager.replaceWithoutColors(p,getPath(p, "Header")), AnimationManager.replaceWithoutColors(p,getPath(p, "Footer")));
 	}
 }
