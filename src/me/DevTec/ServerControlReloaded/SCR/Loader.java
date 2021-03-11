@@ -65,6 +65,7 @@ import me.devtec.theapi.utils.datakeeper.Data;
 import me.devtec.theapi.utils.datakeeper.DataType;
 import me.devtec.theapi.utils.listener.Listener;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.utils.thapiutils.LoaderClass;
 import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -297,8 +298,19 @@ public class Loader extends JavaPlugin implements Listener {
 		return String.valueOf(TheAPI.getPlayerPing(who));
 	}
 	
+	boolean disable = false;
+	
 	@Override
 	public void onLoad() {
+		if(VersionChecker.getVersion(LoaderClass.plugin.getDescription().getVersion(), "4.9.3")==VersionChecker.Version.NEW) {
+			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + " &4SECURITY: &cYou are running on outdated version of plugin TheAPI", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + " &4SECURITY: &cPlease update plugin TheAPI to latest version.", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + "        &6https://www.spigotmc.org/resources/72679/", TheAPI.getConsole());
+			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
+			disable=true;
+			return;
+		}
         boolean save = false;
         Data c = new Data("plugins/bStats/config.yml");
         if(c.setIfAbsent("enabled", true))save=true;
@@ -328,22 +340,28 @@ public class Loader extends JavaPlugin implements Listener {
 
 	@Override
 	public void onEnable() {
+		if(disable) {
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
 		updater = new UpdateChecker();
 		switch(updater.checkForUpdates()) {
-		case -1:
+		case UKNOWN:
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &eUpdate checker: &7Unable to connect to spigot, check internet connection.", TheAPI.getConsole());
 			updater=null; //close updater
 			break;
-		case 1:
+		case NEW:
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &eUpdate checker: &7Found new version of SCR.", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + "        https://www.spigotmc.org/resources/71147/", TheAPI.getConsole());
 			break;
-		case 2:
+		case OLD:
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &eUpdate checker: &7You are using the BETA version of SCR, report bugs to our Discord.", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
+			break;
+		default:
 			break;
 		}
 		new Metrics(this, 10560);
@@ -351,25 +369,27 @@ public class Loader extends JavaPlugin implements Listener {
 		new Tasker() {
 			public void run() {
 				switch(updater.checkForUpdates()) {
-					case -1:
+					case UKNOWN:
 						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + " &eUpdate checker: &7Unable to connect to spigot, check internet connection.", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 						updater=null; //close updater
 						cancel(); //destroy task
 						break;
-					case 1:
+					case NEW:
 						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + " &eUpdate checker: &7Found new version of SCR.", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + "        https://www.spigotmc.org/resources/71147/", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 						break;
-					case 2:
+					case OLD:
 						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + " &eUpdate checker: &7You are using the BETA version of SCR, report bugs to our Discord.", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
 						TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 						break;
+				default:
+					break;
 				}
 			}
 		}.runRepeating(144000, 144000);
@@ -381,22 +401,27 @@ public class Loader extends JavaPlugin implements Listener {
 		EventsRegister();
 	}
 	
-	public int isNewer(String a, String b) {
-    	int is = 0, d = 0;
-    	String[] s = a.split("\\.");
-    	for(String f : b.split("\\.")) {
-    		int id = StringUtils.getInt(f),
-    			bi = StringUtils.getInt(s[d++]);
-    		if(id > bi) {
-    			is=1;
-    			break;
-    		}
-    		if(id < bi) {
-    			is=2;
-    			break;
-    		}
-    	}
-    	return is;
+	public static class VersionChecker {
+		public static enum Version {
+			OLD, NEW, SAME, UKNOWN;
+		}
+		
+		public static Version getVersion(String currentVersion, String version) {
+			if(currentVersion==null || version==null || currentVersion.replaceAll("[^0-9.]+", "").trim().isEmpty()||version.replaceAll("[^0-9.]+", "").trim().isEmpty())return Version.UKNOWN;
+			Version is = Version.UKNOWN;
+			int d = 0;
+	    	String[] s = currentVersion.replaceAll("[^0-9.]+", "").split("\\.");
+	    	for(String f : version.replaceAll("[^0-9.]+", "").split("\\.")) {
+	    		int id = StringUtils.getInt(f), bi = StringUtils.getInt(s[d++]);
+	    		if(id == bi) {
+	    			is=Version.SAME;
+	    			continue;
+	    		}
+	    		is=id > bi?Version.NEW:Version.OLD;
+	    		break;
+	    	}
+	    	return is;
+		}
 	}
 
 	public class UpdateChecker {
@@ -412,7 +437,7 @@ public class Loader extends JavaPlugin implements Listener {
 	    //0 == SAME VERSION
 	    //1 == NEW VERSION
 	    //2 == BETA VERSION
-	    public int checkForUpdates() {
+	    public VersionChecker.Version checkForUpdates() {
 	    	if(checkURL==null)
 	    		reconnect();
 	    	String[] readerr = null;
@@ -425,8 +450,8 @@ public class Loader extends JavaPlugin implements Listener {
 				readerr=s.toArray(new String[s.size()]);
 			} catch (Exception e) {
 			}
-	    	if(readerr==null)return -1;
-	        return Loader.getInstance.isNewer(getDescription().getVersion(), readerr[0]);
+	    	if(readerr==null)return VersionChecker.Version.UKNOWN;
+	        return VersionChecker.getVersion(getDescription().getVersion(), readerr[0]);
 	    }
 	}
 	

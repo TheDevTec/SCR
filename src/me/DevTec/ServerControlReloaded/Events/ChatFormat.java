@@ -106,7 +106,7 @@ public class ChatFormat implements Listener {
 		s=TabList.replace(s.toString(), p, true);
 		if(s==null)s=orig;
 		if (msg != null && s.toString().contains("%message%"))
-			s=s.toString().replace("%message%", r(msg,p));
+			s=s.toString().replace("%message%", msg);
 		return s;
 	}
 
@@ -378,7 +378,7 @@ public class ChatFormat implements Listener {
 			}
 		}
 		Object format = ChatFormatter.chat(p, ".");
-		String colorOfFormat = format!=null ? getColorOf(p,format) :"";
+		String colorOfFormat = StringUtils.colorize(format!=null ? getColorOf(p,format) :"");
 		if(Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
 			Sound sound = null;
 			String[] title = new String[] {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
@@ -391,7 +391,7 @@ public class ChatFormat implements Listener {
 				if(p.canSee(s) && p!=s) {
 					if(msg.contains(s.getName())) {
 						if(msg.equals(s.getName())) {
-							msg=color+s.getName();
+							msg=StringUtils.colorize(color+s.getName());
 							if(sound!=null)
 								s.playSound(s.getLocation(), sound, 0, 0);
 								if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
@@ -406,7 +406,7 @@ public class ChatFormat implements Listener {
 						for(int i = 0; i < sp.length; ++i) {
 							String last = first?build+=sp[i]+colorOfFormat:build;
 							if(added-->0)
-							build+=StringUtils.colorize(color+s.getName())+StringUtils.getLastColors(last);
+							build+=StringUtils.colorize(color+s.getName())+StringUtils.colorize(StringUtils.getLastColors(last));
 							try{
 								if(first) {
 									first=false;
@@ -429,7 +429,7 @@ public class ChatFormat implements Listener {
 		}
 		e.setMessage(r(msg,p));
 		if (Loader.config.getBoolean("Chat-Groups-Options.Enabled")) {
-			format = ChatFormatter.chat(p, (format instanceof String?r(msg,p):colorOfFormat+"%message%"));
+			format = ChatFormatter.chat(p, (format instanceof String?StringUtils.colorize(colorOfFormat)+r(msg,p):colorOfFormat+"%message%"));
 			if (format != null) {
 				if(format instanceof String)
 					Ref.set(e, "format", ((String)format).replace("%", "%%"));
