@@ -445,6 +445,10 @@ public class ChatFormat implements Listener {
 						for(Object w : ((Collection<Object>)format)) {
 							if(w instanceof Map) {
 								o.add((Map<String, Object>) w);
+							}else {
+								Map<String, Object> g = new HashMap<>();
+								g.put("text", w+"");
+								o.add(g);
 							}
 						}
 						format=o;
