@@ -435,7 +435,20 @@ public class ChatFormat implements Listener {
 					Ref.set(e, "format", ((String)format).replace("%", "%%"));
 				else
 				if (Loader.config.getBoolean("Chat-Groups-Options.Json") && (format instanceof Map || format instanceof Collection)) {
-					
+					if(format instanceof Map) {
+						List<Map<String,Object>> o = new ArrayList<>();
+						o.add((Map<String, Object>) format);
+						format=o;
+					}
+					if(format instanceof List == false) {
+						List<Map<String,Object>> o = new ArrayList<>();
+						for(Object w : ((Collection<Object>)format)) {
+							if(w instanceof Map) {
+								o.add((Map<String, Object>) w);
+							}
+						}
+						format=o;
+					}
 					List<Map<String,Object>> list = ChatMessage.fixListMap((List<Map<String,Object>>)format);
 					ListIterator<Map<String, Object>> aww = list.listIterator();
 					while(aww.hasNext()) {
