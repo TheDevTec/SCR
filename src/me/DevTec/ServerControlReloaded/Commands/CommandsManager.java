@@ -44,6 +44,7 @@ import me.DevTec.ServerControlReloaded.Commands.Info.ChatFormat;
 import me.DevTec.ServerControlReloaded.Commands.Info.Chunks;
 import me.DevTec.ServerControlReloaded.Commands.Info.ListCmd;
 import me.DevTec.ServerControlReloaded.Commands.Info.Maintenance;
+import me.DevTec.ServerControlReloaded.Commands.Info.Ping;
 import me.DevTec.ServerControlReloaded.Commands.Info.RAM;
 import me.DevTec.ServerControlReloaded.Commands.Info.SCR;
 import me.DevTec.ServerControlReloaded.Commands.Info.Seen;
@@ -188,6 +189,7 @@ public class CommandsManager {
 		load("Info", "TPS",new TPS());
 		load("Info","WhoIs", new WhoIs()); 
 		load("Info", "Maintenance",new Maintenance());
+		load("Info", "Ping",new Ping());
 		
 		//Speed
 		load("Speed", "FlySpeed",new FlySpeed());

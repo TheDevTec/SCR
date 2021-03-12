@@ -32,6 +32,11 @@ SocialSpy:
   On: "%prefix% &eZapli &7ste svoj &esocial spy &7režim"
   Off: "%prefix% &eZrušili &7ste svoj &esocial spy &7režim"
   
+# Translatios for /Ping command
+Ping:
+  You: "%prefix% Tvoj ping je &e%ping%"
+  Other: "%prefix% &e%player%&7 ping je &e%ping%"
+  
 # Translations for /List and /Staff commands
 List:
   Staff:

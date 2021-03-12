@@ -32,6 +32,11 @@ SocialSpy:
   On: "%prefix% You have turned &eon &7your &esocial spy &7mode"
   Off: "%prefix% You have turned &eoff &7your &esocial spy &7mode"
   
+# Translatios for /Ping command
+Ping:
+  You: "%prefix% You ping is &e%ping%"
+  Other: "%prefix% &e%player%&7's ping is &e%ping%"
+  
 # Translations for /List and /Staff commands
 List:
   Staff:

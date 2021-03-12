@@ -740,6 +740,13 @@ Info:
     Permission: "SCR.Command.List"
     Help: "/List - List online players"
     Enabled: true
+  Ping:
+    Name: "ping"
+    Permission: "SCR.Command.Ping"
+    Help: "/Ping <player> - Get player's ping"
+    SubPermission:
+      Other: "SCR.Command.Ping.Other"
+    Enabled: true
   Maintenance:
     Name: "maintenance"
     Permission: "SCR.Command.Maintenance"
