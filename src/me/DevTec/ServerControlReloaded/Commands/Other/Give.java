@@ -28,12 +28,29 @@ import me.devtec.theapi.utils.StringUtils;
 
 public class Give implements CommandExecutor, TabCompleter {
 	List<String> list = new ArrayList<String>();
-
-	public Give() {
-		for (Material ss : Material.values()) {
-			if (new ItemCreatorAPI(ss).isItem(false))
-				list.add(ss.name());
+	
+	public boolean isAir(Material a) {
+		if (!(a.name().equals("AIR") || a.name().equals("VOID_AIR")
+				|| a.name().equals("STRUCTURE_VOID"))) {
+			return false;
 		}
+		return true;
+	}
+
+	public boolean isItem(Material a, boolean canBeLegacy) {
+		String s = a.name();
+		if ((s.contains("WALL_") || isAir(a) || s.contains("_STEM") || s.contains("POTTED_")
+				|| !canBeLegacy && s.contains("LEGACY_") || s.equals("END_PORTAL") || s.equals("END_GATEWAY")
+				|| s.equals("NETHER_PORTAL")) && !(a.isBlock() && a.isOccluding())) {
+			return false;
+		}
+		return true;
+	}
+	
+	public Give() {
+		for (XMaterial ss : XMaterial.values())
+			if (new ItemCreatorAPI(ss.getMaterial()).isItem(false))
+				list.add(ss.name());
 		for (String add : Arrays.asList("POTION_OF_", "SPLASH_POTION_OF_", "LINGERING_POTION_OF_")) {
 			list.add(add + "MINING_FATIQUE");
 			list.add(add + "GLOWING");
@@ -407,7 +424,7 @@ public class Give implements CommandExecutor, TabCompleter {
 	}
 
 	public String getItem(String s) {
-		if (list.contains(s.toUpperCase()))
+		if (list.contains(s.toUpperCase()) || XMaterial.matchXMaterial(s)!=null)
 			return s.toUpperCase();
 		return null;
 	}
@@ -436,14 +453,14 @@ public class Give implements CommandExecutor, TabCompleter {
 									TheAPI.giveItem(p, XMaterial.matchXMaterial(g).getMaterial(), 1);
 								else
 									TheAPI.giveItem(p, getPotion(g));
-								Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", getItem(g)).add("%amount%", "1"));
+								Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", g).add("%amount%", "1"));
 								return true;
 							} catch (Exception e) {
 								Loader.sendMessages(s, "Missing.Item", Placeholder.c().add("%item%", g));
 								return true;
 							}
 					}
-					Loader.sendMessages(s, "Missing.Item", Placeholder.c().add("%item%", args[0]));
+					Loader.sendMessages(s, "Missing.Material", Placeholder.c().add("%material%", args[0]));
 					return true;
 				}
 				Loader.Help(s, "Give", "Other");
@@ -468,7 +485,7 @@ public class Give implements CommandExecutor, TabCompleter {
 								a.setAmount(StringUtils.getInt(args[1]));
 								TheAPI.giveItem(ps, a);
 							}
-							Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", getItem(g)).add("%amount%", StringUtils.getInt(args[1])+""));
+							Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", g).add("%amount%", StringUtils.getInt(args[1])+""));
 							return true;
 
 						} catch (Exception e) {
@@ -479,7 +496,7 @@ public class Give implements CommandExecutor, TabCompleter {
 					if (s instanceof Player == false)
 						Loader.notOnline(s, args[1]);
 					else
-						Loader.sendMessages(s, "Missing.Item", Placeholder.c().add("%item%", g));
+						Loader.sendMessages(s, "Missing.Material", Placeholder.c().add("%material%", g));
 					return true;
 				}
 				String g = args[1].toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
@@ -490,16 +507,16 @@ public class Give implements CommandExecutor, TabCompleter {
 					else
 						TheAPI.giveItem(ps, getPotion(g));
 					if(ps==s) {
-						Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", getItem(g)).add("%amount%", "1"));
+						Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", g).add("%amount%", "1"));
 					}else {
-					Loader.sendMessages(s, "Give.Item.Other.Sender", Placeholder.c().add("%item%", getItem(g)).add("%amount%", "1")
+					Loader.sendMessages(s, "Give.Item.Other.Sender", Placeholder.c().add("%item%", g).add("%amount%", "1")
 							.add("%player%", ps.getName()).replace("%playername%", ps.getDisplayName()));
-					Loader.sendMessages(ps, "Give.Item.Other.Receiver", Placeholder.c().add("%item%", getItem(g)).add("%amount%", "1")
+					Loader.sendMessages(ps, "Give.Item.Other.Receiver", Placeholder.c().add("%item%", g).add("%amount%", "1")
 							.add("%player%", s.getName()).replace("%playername%", s.getName()));
 					}
 					return true;
 				}
-				Loader.sendMessages(s, "Missing.Item", Placeholder.c().add("%item%", g));
+				Loader.sendMessages(s, "Missing.Material", Placeholder.c().add("%material%", g));
 				return true;
 			}
 			if (args.length == 3) {
@@ -521,16 +538,16 @@ public class Give implements CommandExecutor, TabCompleter {
 							TheAPI.giveItem(ps, a);
 						}
 						if(ps==s) {
-							Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", getItem(g)).add("%amount%", StringUtils.getInt(args[2])+""));
+							Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", g).add("%amount%", StringUtils.getInt(args[2])+""));
 						}else {
-						Loader.sendMessages(s, "Give.Item.Other.Sender", Placeholder.c().add("%item%", getItem(g)).add("%amount%", StringUtils.getInt(args[2])+"")
+						Loader.sendMessages(s, "Give.Item.Other.Sender", Placeholder.c().add("%item%", g).add("%amount%", StringUtils.getInt(args[2])+"")
 								.add("%player%", ps.getName()).replace("%playername%", ps.getDisplayName()));
-						Loader.sendMessages(ps, "Give.Item.Other.Receiver", Placeholder.c().add("%item%", getItem(g)).add("%amount%", StringUtils.getInt(args[2])+"")
+						Loader.sendMessages(ps, "Give.Item.Other.Receiver", Placeholder.c().add("%item%", g).add("%amount%", StringUtils.getInt(args[2])+"")
 								.add("%player%", s.getName()).replace("%playername%", s.getName()));
 						}
 						return true;
 					}
-					Loader.sendMessages(s, "Missing.Item", Placeholder.c().add("%item%", g));
+					Loader.sendMessages(s, "Missing.Material", Placeholder.c().add("%material%", g));
 					return true;
 				}
 				if (args[0].equals("*")) {

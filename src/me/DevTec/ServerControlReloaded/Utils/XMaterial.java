@@ -26,6 +26,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public enum XMaterial {
     ACACIA_BOAT("BOAT_ACACIA"),
@@ -1130,11 +1131,16 @@ public enum XMaterial {
         this.version = version;
         this.legacy = legacy;
 
-        Material mat = Material.getMaterial(name());
+        Material mat = null;
+    	try {
+    		mat=Material.getMaterial(name());
+    	}catch(Exception er) {}
         if (mat == null)
             for (String s : legacy) {
+            	try {
                 mat = Material.getMaterial(s);
                 if (mat != null) break;
+            	}catch(Exception er) {}
             }
         if(mat==null)mat=Material.STONE;
         this.material = mat;
@@ -1169,16 +1175,20 @@ public enum XMaterial {
 
     public static XMaterial matchXMaterial(String name) {
         if (name==null) return null;
-        if(name.contains(":"))return matchXMaterial(name.split(":")[0], Byte.valueOf(name.split(":")[1]));
+        if(name.contains(":"))return matchXMaterial(name.split(":")[0], StringUtils.getByte(name.split(":")[1]));
+        XMaterial item = XMaterial.valueOf(name.toUpperCase());
+        if(item!=null)return item;
         for (XMaterial materials : values())
-            if (materials.name().equalsIgnoreCase(name) || materials.isDuplicate(name)) return materials;
+            if (materials.isDuplicate(name))return materials;
         return null;
     }
 
     public static XMaterial matchXMaterial(String name, byte data) {
         if (name==null || data < 0) return null;
+        XMaterial item = XMaterial.valueOf(name.toUpperCase());
+        if(item!=null && item.getData()==data)return item;
         for (XMaterial materials : values())
-            if ((materials.name().equalsIgnoreCase(name) || materials.isDuplicate(name)) && materials.getData()==data) return materials;
+            if ((materials.isDuplicate(name)) && materials.getData()==data) return materials;
         return null;
     }
 
