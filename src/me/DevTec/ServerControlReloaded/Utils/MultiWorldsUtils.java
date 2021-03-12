@@ -2,6 +2,7 @@ package me.DevTec.ServerControlReloaded.Utils;
 
 import java.io.File;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -105,6 +106,7 @@ public class MultiWorldsUtils {
 	
 	public static void defaultSet(World as, String gen) {
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".GameMode", "SURVIVAL");
+		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Seed", as.getSeed());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Difficulty", as.getDifficulty().name());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".KeepSpawnInMemory", as.getKeepSpawnInMemory());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".AutoSave", as.isAutoSave());
@@ -183,20 +185,22 @@ public class MultiWorldsUtils {
 		List<String> ww = Loader.mw.getStringList("Unloaded-Worlds");
 		String biome = Loader.mw.getString("WorldsSettings." + s + ".Generator");
 		if(biome==null)biome="NORMAL";
+		long seed = Loader.mw.getLong("WorldsSettings." + s + ".Seed");
+		if(!Loader.mw.exists("WorldsSettings." + s + ".Seed"))seed=new Random().nextLong();
 		if (biome.equalsIgnoreCase("NETHER")) {
-			WorldsAPI.create(s, Environment.NETHER, WorldType.NORMAL, true, 0);
+			WorldsAPI.create(s, Environment.NETHER, WorldType.NORMAL, true, seed);
 		}
-		if (biome.equalsIgnoreCase("THE_END")) {
-			WorldsAPI.create(s, Environment.THE_END, WorldType.NORMAL, true, 0);
+		if (biome.equalsIgnoreCase("THE_END")||biome.equalsIgnoreCase("end")) {
+			WorldsAPI.create(s, Environment.THE_END, WorldType.NORMAL, true, seed);
 		}
-		if (biome.equalsIgnoreCase("NORMAL") || biome.equalsIgnoreCase("NONE") || biome.equalsIgnoreCase("DEFAULT")) {
-			WorldsAPI.create(s, Environment.NORMAL, WorldType.NORMAL, true, 0);
+		if (biome.equalsIgnoreCase("NORMAL") || biome.equalsIgnoreCase("none")||biome.equalsIgnoreCase("default")) {
+			WorldsAPI.create(s, Environment.NORMAL, WorldType.NORMAL, true, seed);
 		}
 		if (biome.equalsIgnoreCase("FLAT")) {
-			WorldsAPI.create(s, Environment.NORMAL, WorldType.FLAT, true, 0);
+			WorldsAPI.create(s, Environment.NORMAL, WorldType.FLAT, true, seed);
 		}
-		if (biome.equalsIgnoreCase("THE_VOID")) {
-			WorldsAPI.create(s, Environment.NORMAL, null, true, 0);
+		if (biome.equalsIgnoreCase("THE_VOID")||biome.equalsIgnoreCase("void")) {
+			WorldsAPI.create(s, Environment.NORMAL, null, true, seed);
 		}
 		if(!worlds.contains(s))
 		worlds.add(s);
@@ -218,20 +222,22 @@ public class MultiWorldsUtils {
 			Loader.sendMessages(sender, "MultiWorld.Loaded", Placeholder.c().add("%world%", s).replace("%generator%", biome));
 			return;
 		}else {
+			long seed = Loader.mw.getLong("WorldsSettings." + s + ".Seed");
+			if(!Loader.mw.exists("WorldsSettings." + s + ".Seed"))seed=new Random().nextLong();
 			if (biome.equalsIgnoreCase("NETHER")) {
-				WorldsAPI.create(s, Environment.NETHER, WorldType.NORMAL, true, 0);
+				WorldsAPI.create(s, Environment.NETHER, WorldType.NORMAL, true, seed);
 			}
-			if (biome.equalsIgnoreCase("THE_END")) {
-				WorldsAPI.create(s, Environment.THE_END, WorldType.NORMAL, true, 0);
+			if (biome.equalsIgnoreCase("THE_END")||biome.equalsIgnoreCase("end")) {
+				WorldsAPI.create(s, Environment.THE_END, WorldType.NORMAL, true, seed);
 			}
 			if (biome.equalsIgnoreCase("NORMAL") || biome.equalsIgnoreCase("none")||biome.equalsIgnoreCase("default")) {
-				WorldsAPI.create(s, Environment.NORMAL, WorldType.NORMAL, true, 0);
+				WorldsAPI.create(s, Environment.NORMAL, WorldType.NORMAL, true, seed);
 			}
 			if (biome.equalsIgnoreCase("FLAT")) {
-				WorldsAPI.create(s, Environment.NORMAL, WorldType.FLAT, true, 0);
+				WorldsAPI.create(s, Environment.NORMAL, WorldType.FLAT, true, seed);
 			}
-			if (biome.equalsIgnoreCase("THE_VOID")) {
-				WorldsAPI.create(s, Environment.NORMAL, null, true, 0);
+			if (biome.equalsIgnoreCase("THE_VOID")||biome.equalsIgnoreCase("void")) {
+				WorldsAPI.create(s, Environment.NORMAL, null, true, seed);
 			}
 			wws.remove(s);
 			worlds.add(s);

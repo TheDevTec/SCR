@@ -928,15 +928,19 @@ Other:
     Aliases:
     - "mw"
     Permission: "SCR.Command.MultiWorlds"
-    Help: "/MultiWorld - Create/Delete/Edit selected world"
+    Help:
+    - "/mw create [world] [generator]"
+    - "/mw delete [world]"
+    - "/mw load [world]"
+    - "/mw unload [world]"
+    - "/mw edit [world] [flag] [value]"
     Enabled: true
     AdvancedHelp:
       Create: "/mw create [world] [generator]"
-      Remove: "/mw remove [world]"
       Delete: "/mw delete [world]"
       Load: "/mw load [world]"
       Unload: "/mw unload [world]"
-      Edit: "/mw edit [world] [boolean] [value]"
+      Edit: "/mw edit [world] [flag] [value]"
   Repair:
     Name: "repair"
     Permission: "SCR.Command.Repair"

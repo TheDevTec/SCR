@@ -343,6 +343,7 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
+		EventsRegister();
 		updater = new UpdateChecker();
 		switch(updater.checkForUpdates()) {
 		case UKNOWN:
@@ -397,7 +398,6 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.msg(setting.prefix + "        https://www.spigotmc.org/resources/72679/", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
-		EventsRegister();
 	}
 	
 	public static class VersionChecker {

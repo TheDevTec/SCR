@@ -15,19 +15,13 @@ import org.bukkit.entity.Player;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
-import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.worldsapi.WorldsAPI;
 
 public class MultiWorlds implements CommandExecutor, TabCompleter {
 
 
 	/*
-	/mw create [world]
-	/mw delete [world]
-	/mw load [world]
-	/mw unload [world]
 	/mw edit [world] [flag] [boolean]
 	 */
 	@Override
@@ -39,12 +33,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 		if (args.length == 0) {
 			if (s instanceof Player) {
 				if(Loader.has(s,"MultiWorlds","Other")){
-					new Tasker(){
-						@Override
-						public void run() {
-							MultiWorldsGUI.openInv((Player) s);
-						}
-					}.runTaskSync();
+					MultiWorldsGUI.openInv((Player) s);
 					return true;
 				}
 				return true;
@@ -53,7 +42,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("create")){
-			if(args.length != 3){
+			if(args.length < 3){
 				Loader.advancedHelp(s,"MultiWorlds","Other","Create");
 				return true;
 			}
@@ -65,22 +54,16 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 					||args[2].equalsIgnoreCase("the_end")
 					||args[2].equalsIgnoreCase("the_void")
 					||args[2].equalsIgnoreCase("default")){
-				Loader.mw.set("WorldsSettings." + args[1] + ".Generator",
-						args[2]);
-				new Tasker(){
-					public void run() {
-						Loader.mw.set("WorldsSettings." + args[1] + ".Generator",args[2]);
-						Loader.mw.save();
-						NMSAPI.postToMainThread(() -> MultiWorldsUtils.createWorld(args[1], s));
-					}
-				}.runLater(10);
+				Loader.mw.set("WorldsSettings." + args[1] + ".Generator",args[2].toUpperCase());
+				Loader.mw.save();
+				MultiWorldsUtils.createWorld(args[1], s);
 				return true;
 			}
 			Loader.sendMessages(s,"Missing.Generator", Loader.Placeholder.c().add("%generator%",args[2]));
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("delete")){
-			if(args.length!=2){
+			if(args.length < 2){
 				Loader.advancedHelp(s,"MultiWorlds","Other","Delete");
 				return true;
 			}
@@ -92,8 +75,6 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 					ww.remove(w.getName());
 					Loader.mw.set("Worlds", worlds);
 					Loader.mw.set("Unloaded-Worlds",ww);
-					Loader.mw.remove("WorldsSettings."+w.getName()+".Gamerule");
-					Loader.mw.remove("WorldsSettings."+w.getName()+".Spawn");
 					Loader.mw.remove("WorldsSettings."+w.getName());
 					Loader.mw.save();
 					if (WorldsAPI.delete(w, true))
@@ -105,7 +86,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("load")){
-			if(args.length!=2){
+			if(args.length < 3){
 				Loader.advancedHelp(s,"MultiWorlds","Other","Load");
 				return true;
 			}
@@ -121,7 +102,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("unload")){
-			if(args.length!=2){
+			if(args.length < 3){
 				Loader.advancedHelp(s,"MultiWorlds","Other","Load");
 				return true;
 			}
@@ -157,9 +138,9 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			if(args[0].equalsIgnoreCase("create")){
 				List<String> generators = new ArrayList<>();
 				generators.addAll(Arrays.asList("flat","void","end","nether","the_end","the_void","default"));
-				return StringUtils.copyPartialMatches(args[0],generators);
+				return StringUtils.copyPartialMatches(args[2],generators);
 			}
 		}
-		return StringUtils.copyPartialMatches(args[1],Arrays.asList(""));
+		return Arrays.asList();
 	}
 }
