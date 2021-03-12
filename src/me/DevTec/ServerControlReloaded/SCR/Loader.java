@@ -65,7 +65,6 @@ import me.devtec.theapi.utils.datakeeper.Data;
 import me.devtec.theapi.utils.datakeeper.DataType;
 import me.devtec.theapi.utils.listener.Listener;
 import me.devtec.theapi.utils.reflections.Ref;
-import me.devtec.theapi.utils.thapiutils.LoaderClass;
 import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -302,7 +301,7 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onLoad() {
-		if(VersionChecker.getVersion(LoaderClass.plugin.getDescription().getVersion(), "4.9.3")==VersionChecker.Version.NEW) {
+		if(VersionChecker.getVersion(PluginManagerAPI.getVersion("TheAPI"), "4.9.3")==VersionChecker.Version.NEW) {
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4SECURITY: &cYou are running on outdated version of plugin TheAPI", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4SECURITY: &cPlease update plugin TheAPI to latest version.", TheAPI.getConsole());
