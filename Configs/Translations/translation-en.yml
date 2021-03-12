@@ -34,7 +34,7 @@ SocialSpy:
   
 # Translatios for /Ping command
 Ping:
-  You: "%prefix% You ping is &e%ping%"
+  You: "%prefix% Your ping is &e%ping%"
   Other: "%prefix% &e%player%&7's ping is &e%ping%"
   
 # Translations for /List and /Staff commands
