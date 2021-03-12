@@ -1,5 +1,7 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import java.util.Map.Entry;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -7,6 +9,8 @@ import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
@@ -17,7 +21,7 @@ public class FarmingSystemAccess {
 	public static boolean hasAccess(Player player, Location loc) {
 		boolean has = has(player, loc);
 		if(has)return true;
-		has=hasW(player, loc);
+		has=hasW(player,loc);
 		return has;
 	}
 	
@@ -38,19 +42,21 @@ public class FarmingSystemAccess {
     	return region;
     }
 	
-	private static boolean hasW(Player p, Location l) {
-		return getRegion(p, l) != null;
+	private static boolean hasW(Player player, Location l) {
+		ApplicableRegionSet r = getRegion(l);
+		if(r==null)return true;
+		return r.testState(WorldGuardPlugin.inst().wrapPlayer(player), com.sk89q.worldguard.protection.flags.Flags.BLOCK_BREAK);
 	}
     
-    public static ProtectedRegion getRegion(Player p, Location l) {
-    	ProtectedRegion region = null;
+    public static ApplicableRegionSet getRegion(Location l) {
+    	ApplicableRegionSet region = null;
     	if(PluginManagerAPI.isEnabledPlugin("WorldGuard")) {
             RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
             if(BukkitAdapter.adapt(l.getWorld())!=null) {
             RegionManager reg = container.get(BukkitAdapter.adapt(l.getWorld()));
             if(reg != null)
-            for(String r:reg.getRegions().keySet())
-            if (reg.getRegion(r).contains(l.getBlockX(), l.getBlockY(), l.getBlockZ()))region=reg.getRegion(r);
+            for(Entry<String, ProtectedRegion> r:reg.getRegions().entrySet())
+            if (r.getValue().contains(l.getBlockX(), l.getBlockY(), l.getBlockZ()))region=reg.getApplicableRegions(r.getValue());
             }
     	}
     	return region;
