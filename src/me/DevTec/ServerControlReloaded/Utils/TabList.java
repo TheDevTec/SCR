@@ -205,9 +205,9 @@ public class TabList {
 		;if(header.contains("%world%"))
 			header=header.replace("%world%", p.getWorld().getName())
 		;if(header.contains("%hp%"))
-			header=header.replace("%health%", String.format("%2.02f", ((Damageable)p).getHealth()).replace(",00", "").replace(",", "."));
+			header=header.replace("%health%", StringUtils.fixedFormatDouble(((Damageable)p).getHealth()).replace(",00", "").replace(",", "."));
 		if(header.contains("%health%"))
-			header=header.replace("%health%", String.format("%2.02f", ((Damageable)p).getHealth()).replace(",00", "").replace(",", "."));
+			header=header.replace("%health%", StringUtils.fixedFormatDouble(((Damageable)p).getHealth()).replace(",00", "").replace(",", "."));
 		if(header.contains("%food%"))
 			header=header.replace("%food%", p.getFoodLevel() + "")
 		;if(header.contains("%x%"))

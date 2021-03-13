@@ -31,9 +31,9 @@ public class Tp implements CommandExecutor, TabCompleter {
 			if(Loader.has(s, "Tp","TpSystem","Location")) {
 			if(s instanceof ConsoleCommandSender == false) {
 				Location d = s instanceof BlockCommandSender ? ((BlockCommandSender)s).getBlock().getLocation() : ((Player)s).getLocation();
-				c.add(String.format("%2.02f", d.getX())+" "+String.format("%2.02f", d.getY())+" "+String.format("%2.02f", d.getZ()));
-				c.add(String.format("%2.02f", d.getX())+" "+String.format("%2.02f", d.getY()));
-				c.add(String.format("%2.02f", d.getX()));
+				c.add(StringUtils.fixedFormatDouble(d.getX())+" "+StringUtils.fixedFormatDouble(d.getY())+" "+StringUtils.fixedFormatDouble(d.getZ()));
+				c.add(StringUtils.fixedFormatDouble(d.getX())+" "+StringUtils.fixedFormatDouble(d.getY()));
+				c.add(StringUtils.fixedFormatDouble(d.getX()));
 				c.add("~ ~ ~");
 				c.add("~ ~");
 				c.add("~");
@@ -53,9 +53,9 @@ public class Tp implements CommandExecutor, TabCompleter {
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null && API.getPlayers(s).contains(p)) {
 					if(Loader.has(s, "Tp","TpSystem","Location")||Loader.has(s, "Tp","TpSystem","LocationOther")) {
-					c.add(String.format("%2.02f", d.getX())+" "+String.format("%2.02f", d.getY())+" "+String.format("%2.02f", d.getZ()));
-					c.add(String.format("%2.02f", d.getX())+" "+String.format("%2.02f", d.getY()));
-					c.add(String.format("%2.02f", d.getX()));
+					c.add(StringUtils.fixedFormatDouble(d.getX())+" "+StringUtils.fixedFormatDouble(d.getY())+" "+StringUtils.fixedFormatDouble(d.getZ()));
+					c.add(StringUtils.fixedFormatDouble(d.getX())+" "+StringUtils.fixedFormatDouble(d.getY()));
+					c.add(StringUtils.fixedFormatDouble(d.getX()));
 					c.add("~ ~ ~");
 					c.add("~ ~");
 					c.add("~");
@@ -64,8 +64,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 					c.addAll(API.getPlayerNames(s));
 				}else {
 					if(Loader.has(s, "Tp","TpSystem","Location")||Loader.has(s, "Tp","TpSystem","LocationOther")) {
-					c.add(String.format("%2.02f", d.getY())+" "+String.format("%2.02f", d.getZ()));
-					c.add(String.format("%2.02f", d.getY()));
+					c.add(StringUtils.fixedFormatDouble(d.getY())+" "+StringUtils.fixedFormatDouble(d.getZ()));
+					c.add(StringUtils.fixedFormatDouble(d.getY()));
 					c.add("~ ~");
 					c.add("~");
 					}
@@ -90,12 +90,12 @@ public class Tp implements CommandExecutor, TabCompleter {
 				Location d = s instanceof BlockCommandSender ? ((BlockCommandSender)s).getBlock().getLocation() : ((Player)s).getLocation();
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null && API.getPlayers(s).contains(p)) {
-					c.add(String.format("%2.02f", d.getY())+" "+String.format("%2.02f", d.getZ()));
-					c.add(String.format("%2.02f", d.getY()));
+					c.add(StringUtils.fixedFormatDouble(d.getY())+" "+StringUtils.fixedFormatDouble(d.getZ()));
+					c.add(StringUtils.fixedFormatDouble(d.getY()));
 					c.add("~ ~");
 					c.add("~");
 				}else {
-					c.add(String.format("%2.02f", d.getZ()));
+					c.add(StringUtils.fixedFormatDouble(d.getZ()));
 					c.add("~");
 				}
 			}else {
@@ -115,11 +115,11 @@ public class Tp implements CommandExecutor, TabCompleter {
 				Location d = s instanceof BlockCommandSender ? ((BlockCommandSender)s).getBlock().getLocation() : ((Player)s).getLocation();
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null && API.getPlayers(s).contains(p)) {
-					c.add(String.format("%2.02f", d.getZ()));
+					c.add(StringUtils.fixedFormatDouble(d.getZ()));
 					c.add("~");
 				}else {
-					c.add(String.format("%2.02f", d.getYaw())+" "+String.format("%2.02f", d.getPitch()));
-					c.add(String.format("%2.02f", d.getYaw()));
+					c.add(StringUtils.fixedFormatDouble(d.getYaw())+" "+StringUtils.fixedFormatDouble(d.getPitch()));
+					c.add(StringUtils.fixedFormatDouble(d.getYaw()));
 					c.add("~ ~");
 					c.add("~");
 				}
@@ -140,12 +140,12 @@ public class Tp implements CommandExecutor, TabCompleter {
 				Location d = s instanceof BlockCommandSender ? ((BlockCommandSender)s).getBlock().getLocation() : ((Player)s).getLocation();
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null && API.getPlayers(s).contains(p)) {
-					c.add(String.format("%2.02f", d.getYaw())+" "+String.format("%2.02f", d.getPitch()));
-					c.add(String.format("%2.02f", d.getYaw()));
+					c.add(StringUtils.fixedFormatDouble(d.getYaw())+" "+StringUtils.fixedFormatDouble(d.getPitch()));
+					c.add(StringUtils.fixedFormatDouble(d.getYaw()));
 					c.add("~ ~");
 					c.add("~");
 				}else {
-					c.add(String.format("%2.02f", d.getPitch()));
+					c.add(StringUtils.fixedFormatDouble(d.getPitch()));
 					c.add("~");
 				}
 			}else {
@@ -165,7 +165,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 				Location d = s instanceof BlockCommandSender ? ((BlockCommandSender)s).getBlock().getLocation() : ((Player)s).getLocation();
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null && API.getPlayers(s).contains(p)) {
-					c.add(String.format("%2.02f", d.getPitch()));
+					c.add(StringUtils.fixedFormatDouble(d.getPitch()));
 					c.add("~");
 				}
 			}else {
@@ -255,9 +255,9 @@ public class Tp implements CommandExecutor, TabCompleter {
 							, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getX()+"")).doubleValue(), 
 							z=StringUtils.calculate(args[2].replace("~", p.getLocation().getX()+"")).doubleValue();
 						Loader.sendMessages(p, "TpSystem.Tp.Location.YouToLocation", Placeholder.c()
-								.replace("%x%", String.format("%2.02f", x).replaceFirst("\\.00", ""))
-								.replace("%y%", String.format("%2.02f", y).replaceFirst("\\.00", ""))
-								.replace("%z%", String.format("%2.02f", z).replaceFirst("\\.00", ""))
+								.replace("%x%", StringUtils.fixedFormatDouble(x))
+								.replace("%y%", StringUtils.fixedFormatDouble(y))
+								.replace("%z%", StringUtils.fixedFormatDouble(z))
 								.replace("%yaw%", "0").replace("%pitch%", "0"));
 						API.setBack(p);
 						if (setting.tp_safe)
@@ -279,10 +279,10 @@ public class Tp implements CommandExecutor, TabCompleter {
 					z=StringUtils.calculate(args[2].replace("~", p.getLocation().getX()+"")).doubleValue();
 					float yaw = StringUtils.calculate(args[3].replace("~", p.getLocation().getYaw()+"")).floatValue();
 					Loader.sendMessages(s, "TpSystem.Tp.Location.YouToLocation", Placeholder.c().add("%player%", s.getName())
-							.replace("%x%", String.format("%2.02f", x).replaceFirst("\\.00", ""))
-							.replace("%y%", String.format("%2.02f", y).replaceFirst("\\.00", ""))
-							.replace("%z%", String.format("%2.02f", z).replaceFirst("\\.00", ""))
-							.replace("%yaw%", String.format("%2.02f", yaw).replaceFirst("\\.00", ""))
+							.replace("%x%", StringUtils.fixedFormatDouble(x))
+							.replace("%y%", StringUtils.fixedFormatDouble(y))
+							.replace("%z%", StringUtils.fixedFormatDouble(z))
+							.replace("%yaw%", StringUtils.fixedFormatDouble(yaw))
 							.replace("%pitch%", "0"));
 					
 					API.setBack((Player) s);
@@ -297,15 +297,15 @@ public class Tp implements CommandExecutor, TabCompleter {
 								, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getX()+"")).doubleValue(), 
 								z=StringUtils.calculate(args[2].replace("~", p.getLocation().getX()+"")).doubleValue();
 							Loader.sendMessages(s, "TpSystem.Tp.Location.PlayerToLocation", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName())
-									.replace("%x%", String.format("%2.02f", x).replaceFirst("\\.00", ""))
-									.replace("%y%", String.format("%2.02f", y).replaceFirst("\\.00", ""))
-									.replace("%z%", String.format("%2.02f", z).replaceFirst("\\.00", ""))
+									.replace("%x%", StringUtils.fixedFormatDouble(x))
+									.replace("%y%", StringUtils.fixedFormatDouble(y))
+									.replace("%z%", StringUtils.fixedFormatDouble(z))
 									.add("%yaw%", "0")
 									.add("%pitch%", "0"));
 							Loader.sendMessages(p, "TpSystem.Tp.Location.YouToLocation", Placeholder.c()
-									.replace("%x%", String.format("%2.02f", x).replaceFirst("\\.00", ""))
-									.replace("%y%", String.format("%2.02f", y).replaceFirst("\\.00", ""))
-									.replace("%z%", String.format("%2.02f", z).replaceFirst("\\.00", ""))
+									.replace("%x%", StringUtils.fixedFormatDouble(x))
+									.replace("%y%", StringUtils.fixedFormatDouble(y))
+									.replace("%z%", StringUtils.fixedFormatDouble(z))
 									.add("%yaw%", "0")
 									.add("%pitch%", "0"));
 							API.setBack(p);
@@ -329,11 +329,11 @@ public class Tp implements CommandExecutor, TabCompleter {
 					float yaw = StringUtils.calculate(args[3].replace("~", p.getLocation().getYaw()+"")).floatValue(),
 							pitch = StringUtils.calculate(args[4].replace("~", p.getLocation().getPitch()+"")).floatValue();
 					Loader.sendMessages(s, "TpSystem.Tp.Location.YouToLocation", Placeholder.c().add("%player%", s.getName())
-							.replace("%x%", String.format("%2.02f", x).replaceFirst("\\.00", ""))
-							.replace("%y%", String.format("%2.02f", y).replaceFirst("\\.00", ""))
-							.replace("%z%", String.format("%2.02f", z).replaceFirst("\\.00", ""))
-							.replace("%yaw%", String.format("%2.02f", yaw).replaceFirst("\\.00", ""))
-							.replace("%pitch%", String.format("%2.02f", pitch).replaceFirst("\\.00", "")));
+							.replace("%x%", StringUtils.fixedFormatDouble(x))
+							.replace("%y%", StringUtils.fixedFormatDouble(y))
+							.replace("%z%", StringUtils.fixedFormatDouble(z))
+							.replace("%yaw%", StringUtils.fixedFormatDouble(yaw))
+							.replace("%pitch%", StringUtils.fixedFormatDouble(pitch)));
 					
 					API.setBack((Player) s);
 					if(setting.tp_safe)						
@@ -348,16 +348,16 @@ public class Tp implements CommandExecutor, TabCompleter {
 							z=StringUtils.calculate(args[2].replace("~", p.getLocation().getX()+"")).doubleValue();
 							float yaw = StringUtils.calculate(args[3].replace("~", p.getLocation().getYaw()+"")).floatValue();
 							Loader.sendMessages(s, "TpSystem.Tp.Location.PlayerToLocation", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName())
-									.replace("%x%", String.format("%2.02f", x).replaceFirst("\\.00", ""))
-									.replace("%y%", String.format("%2.02f", y).replaceFirst("\\.00", ""))
-									.replace("%z%", String.format("%2.02f", z).replaceFirst("\\.00", ""))
-									.replace("%yaw%", String.format("%2.02f", yaw).replaceFirst("\\.00", ""))
+									.replace("%x%", StringUtils.fixedFormatDouble(x))
+									.replace("%y%", StringUtils.fixedFormatDouble(y))
+									.replace("%z%", StringUtils.fixedFormatDouble(z))
+									.replace("%yaw%", StringUtils.fixedFormatDouble(yaw))
 									.replace("%pitch%", "0"));
 							Loader.sendMessages(p, "TpSystem.Tp.Location.YouToLocation", Placeholder.c()
-									.replace("%x%", String.format("%2.02f", x).replaceFirst("\\.00", ""))
-									.replace("%y%", String.format("%2.02f", y).replaceFirst("\\.00", ""))
-									.replace("%z%", String.format("%2.02f", z).replaceFirst("\\.00", ""))
-									.replace("%yaw%", String.format("%2.02f", yaw).replaceFirst("\\.00", ""))
+									.replace("%x%", StringUtils.fixedFormatDouble(x))
+									.replace("%y%", StringUtils.fixedFormatDouble(y))
+									.replace("%z%", StringUtils.fixedFormatDouble(z))
+									.replace("%yaw%", StringUtils.fixedFormatDouble(yaw))
 									.replace("%pitch%", "0"));
 							API.setBack(p);
 							if (setting.tp_safe)
@@ -381,17 +381,17 @@ public class Tp implements CommandExecutor, TabCompleter {
 					float yaw = StringUtils.calculate(args[3].replace("~", p.getLocation().getYaw()+"")).floatValue(),
 							pitch = StringUtils.calculate(args[4].replace("~", p.getLocation().getPitch()+"")).floatValue();
 					Loader.sendMessages(s, "TpSystem.Tp.Location.PlayerToLocation", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName())
-							.replace("%x%", String.format("%2.02f", x).replaceFirst("\\.00", ""))
-							.replace("%y%", String.format("%2.02f", y).replaceFirst("\\.00", ""))
-							.replace("%z%", String.format("%2.02f", z).replaceFirst("\\.00", ""))
-							.replace("%yaw%", String.format("%2.02f", yaw).replaceFirst("\\.00", ""))
-							.replace("%pitch%", String.format("%2.02f", pitch).replaceFirst("\\.00", "")));
+							.replace("%x%", StringUtils.fixedFormatDouble(x))
+							.replace("%y%", StringUtils.fixedFormatDouble(y))
+							.replace("%z%", StringUtils.fixedFormatDouble(z))
+							.replace("%yaw%", StringUtils.fixedFormatDouble(yaw))
+							.replace("%pitch%", StringUtils.fixedFormatDouble(pitch)));
 					Loader.sendMessages(p, "TpSystem.Tp.Location.YouToLocation", Placeholder.c()
-							.replace("%x%", String.format("%2.02f", x).replaceFirst("\\.00", ""))
-							.replace("%y%", String.format("%2.02f", y).replaceFirst("\\.00", ""))
-							.replace("%z%", String.format("%2.02f", z).replaceFirst("\\.00", ""))
-							.replace("%yaw%", String.format("%2.02f", yaw).replaceFirst("\\.00", ""))
-							.replace("%pitch%", String.format("%2.02f", pitch).replaceFirst("\\.00", "")));
+							.replace("%x%", StringUtils.fixedFormatDouble(x))
+							.replace("%y%", StringUtils.fixedFormatDouble(y))
+							.replace("%z%", StringUtils.fixedFormatDouble(z))
+							.replace("%yaw%", StringUtils.fixedFormatDouble(yaw))
+							.replace("%pitch%", StringUtils.fixedFormatDouble(pitch)));
 					API.setBack(p);
 					if (setting.tp_safe)
 						API.safeTeleport(p,new Location(p.getWorld(), x, y, z, yaw, pitch));

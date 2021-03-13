@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.utils.Position;
+import me.devtec.theapi.utils.StringUtils;
 
 public class SetSpawn implements CommandExecutor, TabCompleter {
 
@@ -29,9 +30,9 @@ public class SetSpawn implements CommandExecutor, TabCompleter {
 				Loader.config.set("Spawn", local.toString());
 				Loader.config.save();
 				Loader.sendMessages(s, "Spawn.Set", Placeholder.c()
-						.add("%x%", String.format("%2.02f", local.getX()).replaceFirst("\\.00", ""))
-						.add("%y%", String.format("%2.02f", local.getY()).replaceFirst("\\.00", ""))
-						.add("%z%", String.format("%2.02f", local.getZ()).replaceFirst("\\.00", ""))
+						.add("%x%", StringUtils.fixedFormatDouble(local.getX()))
+						.add("%y%", StringUtils.fixedFormatDouble(local.getY()))
+						.add("%z%", StringUtils.fixedFormatDouble(local.getZ()))
 						.add("%world%", local.getWorldName()));
 				return true;
 			}
