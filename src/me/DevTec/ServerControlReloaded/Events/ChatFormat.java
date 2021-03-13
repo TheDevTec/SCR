@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
@@ -390,36 +391,9 @@ public class ChatFormat implements Listener {
 			for(Player s : e.getRecipients()) {
 				if(p.canSee(s) && p!=s) {
 					if(msg.contains(s.getName())) {
-						if(msg.equals(s.getName())) {
-							msg=StringUtils.colorize(color+s.getName());
-							if(sound!=null)
-								s.playSound(s.getLocation(), sound, 0, 0);
-								if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
-									TheAPI.sendTitle(s, title[0].trim().isEmpty()?"":TabList.replace(title[0], s, true), title[1].trim().isEmpty()?"":TabList.replace(title[1], s, true));
-								if(!actionbar.trim().isEmpty())TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
-							break;
-						}
-						String[] sp = msg.split(s.getName());
-						String build = colorOfFormat;
-						int added = sp.length-1;
-						boolean first = true;
-						for(int i = 0; i < sp.length; ++i) {
-							String last = first?build+=sp[i]+colorOfFormat:build;
-							if(added-->0)
-							build+=StringUtils.colorize(color+s.getName())+StringUtils.colorize(StringUtils.getLastColors(last));
-							try{
-								if(first) {
-									first=false;
-									build+=sp[++i];
-								}else
-									build+=sp[i];
-							}catch(Exception err) {}
-						}
-						if(msg.endsWith(s.getName()))
-							build+=StringUtils.colorize(color+s.getName());
-						msg=build;
+						msg=replacePlayer(color, colorOfFormat, msg, s.getName(), p);
 						if(sound!=null)
-						s.playSound(s.getLocation(), sound, 1,1);
+							s.playSound(s.getLocation(), sound, 0, 0);
 						if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
 							TheAPI.sendTitle(s, title[0].trim().isEmpty()?"":TabList.replace(title[0], s, true), title[1].trim().isEmpty()?"":TabList.replace(title[1], s, true));
 						if(!actionbar.trim().isEmpty())TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
@@ -476,6 +450,30 @@ public class ChatFormat implements Listener {
 			}
 		}
 	}
+	
+	String replacePlayer(String color, String format, String msg, String player, Player p) {
+		String c = "§g"+StringUtils.colorize(color+player);
+		Pattern g = Pattern.compile(player, Pattern.CASE_INSENSITIVE);
+		Matcher m = g.matcher(msg);
+		while(m.find())msg=m.replaceAll(c);
+		StringBuffer buf = new StringBuffer(msg.length());
+		String last = format;
+		int count = 1;
+		String[] split = Pattern.compile(c).split(msg);
+		for(String aa : split) {
+			last=StringUtils.getLastColors(StringUtils.colorize(last)+r(aa,p));
+			if(count++<split.length)
+				buf.append(aa+c.substring(2)+StringUtils.colorize(last));
+			else
+				buf.append(aa);
+		}
+		if(msg.equals(c))
+			buf.append(c.substring(2));
+		else
+		if(msg.endsWith(c))
+			buf.append(c.substring(2));
+		return buf.toString();
+	}
 
 	private String convertToLegacy(List<Map<String, Object>> list) {
 		StringBuilder b = new StringBuilder();
@@ -483,6 +481,7 @@ public class ChatFormat implements Listener {
 			b.append(StringUtils.colorize(getColor(""+text.getOrDefault("color","")))+text.get("text"));
 		return b.toString();
 	}
+	
 	String getColor(String color) {
 		if(color.trim().isEmpty())return "";
 		if(color.startsWith("#"))return color;
@@ -503,69 +502,6 @@ public class ChatFormat implements Listener {
 			}
 		}
 		return sd;
-	}
-
-	/**
-	 * @see see Get last colors from String (HEX SUPPORT!)
-	 * @return String
-	 */
-	public static String getLastColors(String last) {
-		String color = "";
-		String format = "";
-		
-		char was = 0;
-		int count = 0;
-		String hex = "";
-		boolean hexPart = false;
-		for(char c : last.toCharArray()) {
-			if(c=='§') {
-				was=c;
-				continue;
-			}
-			if((was=='§')&&(Character.isDigit(c)||c=='a'||c=='b'||c=='c'||c=='d'||c=='e'||c=='f')) {
-				if(hexPart) {
-					hex+=c;
-					if(count++==5) {
-						was=c;
-						color="#"+hex;
-						hex="";
-						hexPart=false;
-						format="";
-						count=0;
-					}
-					continue;
-				}else {
-					format="";
-					color="&"+c;
-					hex="";
-					count=0;
-				}
-			}
-			if((was=='§')&&(c=='r'||c=='n'||c=='m'||c=='l'||c=='o'||c=='k'||c=='x')) {
-				if(c=='r') {
-					format=was+"r";
-					count=0;
-				}else
-				if(was=='#') {
-					color="";
-					hex="";
-					count=0;
-					format="§"+c;
-				}else {
-					if(c=='x') {
-						hexPart=true;
-						count=0;
-						hex="";
-						continue;
-					}else
-						if(!format.contains(("§"+c).toLowerCase()))
-					format+=("§"+c).toLowerCase();
-					count=0;
-				}
-			}
-			was=c;
-		}
-		return color+format;
 	}
 
 	@SuppressWarnings("unchecked")
