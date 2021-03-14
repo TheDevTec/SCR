@@ -806,6 +806,10 @@ Other:
       Bypass: "SCR.Command.Afk.Bypass"
     Help: "/Afk - Set your status to afk"
     Enabled: true
+  Top:
+    Name: "top"
+    Permission: "SCR.Command.Top"
+    Enabled: true
   Skin:
     Name: "skin"
     Permission: "SCR.Command.Skin"

@@ -96,6 +96,7 @@ import me.DevTec.ServerControlReloaded.Commands.Other.Skull;
 import me.DevTec.ServerControlReloaded.Commands.Other.Spawner;
 import me.DevTec.ServerControlReloaded.Commands.Other.TempFly;
 import me.DevTec.ServerControlReloaded.Commands.Other.Thor;
+import me.DevTec.ServerControlReloaded.Commands.Other.Top;
 import me.DevTec.ServerControlReloaded.Commands.Other.Trash;
 import me.DevTec.ServerControlReloaded.Commands.Other.Uuid;
 import me.DevTec.ServerControlReloaded.Commands.Other.Vanish;
@@ -294,6 +295,7 @@ public class CommandsManager {
 		load("TpSystem", "TpaDeny", new Tpadeny());
 		
 		//Other
+		load("Other", "Top",new Top());
 		load("Other", "ChatLock",new ChatLock());
 		load("Other", "Repair", new Repair());
 		load("Other", "Feed", new Feed());
