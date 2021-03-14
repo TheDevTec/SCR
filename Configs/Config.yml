@@ -11,6 +11,7 @@
 #  Spigot: https://www.spigotmc.org/resources/71147/
 
 Options:
+  # cz, sk, en
   Language: "en"
   
   Skins:
@@ -301,18 +302,57 @@ BanSystem:
     Text: "&7You are warned for &e%reason%"
     Reason: "None"
     
-Chat-Groups-Options:
-  Enabled: true
-  # Do you want use json instanceof normal text?
-  Json: false
-Chat-Groups:
-  default:
-    Name: "&7default &f%player%"
-    Chat: "%playername% &8» &7%message%"
- # vip:
- #   Name: "&aVIP &e%player%"
- #   Chat: "%playername% &8» &a%message%"
- 
+ChatFormat:
+  global:
+    options:
+      enabled: true
+      json: false
+    chat: "&f<%playername%&f&r> %message%"
+    name: "%player%"
+  group:
+    default:
+      options:
+        enabled: true
+        json: false
+      chat: "%playername% &8> &f%message%"
+      name: "&7default &f%player%"
+ # user:
+ #  <nickname>:
+ #    options:
+ #      enabled: true
+ #      json: false
+ #    chat: "%playername% &8> &e%message%"
+ #    name: "&cCustom&4Prefix &b%player%"
+ #  group:
+ #    <group>:
+ #      options:
+ #        enabled: true
+ #        json: false
+ #      chat: "%playername% &8> &5%message%"
+ #      name: "&dHelper &9%player%"
+ # world:
+ #  <world>:
+ #    options:
+ #      enabled: true
+ #      json: false
+ #    global:
+ #      chat: "%playername% &8> &d%message%"
+ #      name: "&0[&b%world%&0] &3%player%"
+ #    user:
+ #      <nickname>:
+ #        options:
+ #          enabled: true
+ #          json: false
+ #        chat: "%playername% &8> &e%message%"
+ #        name: "&cCustom&4Prefix &b%player%"
+ #    group:
+ #      <group>:
+ #        options:
+ #          enabled: true
+ #          json: false
+ #        chat: "%playername% &8> &3%message%"
+ #        name: "&cAdmin &6%player%"
+
 Homes:
   #GroupName: amount
   default: 3

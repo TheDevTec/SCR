@@ -6,6 +6,7 @@ import java.util.Map;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.Events.ChatFormat;
+import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Item;
 import me.devtec.theapi.TheAPI;
@@ -13,12 +14,9 @@ import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 
 public class ChatFormatter {
 	public static String displayName(Player p) {
-		String group = Loader.getChatFormat(p, Item.GROUP);
-		if (Loader.config.exists("Chat-Groups." + group + ".Name")) {
-			String g = PlaceholderAPI.setPlaceholders(p,Loader.config.getString("Chat-Groups." + group + ".Name"));
-			g = (String) ChatFormat.r(p, g, null, false);
-			return Colors.colorize(g, false, p);
-		}
+		Object format = getChatFormat(p, 0);
+		if (format!=null)
+			return Colors.colorize(ChatFormat.r(p, PlaceholderAPI.setPlaceholders(p, format.toString()), null, false).toString(), false, p);
 		return Loader.getChatFormat(p, Item.PREFIX) + p.getName() + Loader.getChatFormat(p, Item.SUFFIX);
 	}
 	
@@ -35,10 +33,85 @@ public class ChatFormatter {
 	}
 	
 	public static Object chat(Player p, String message) {
-		Object format = Loader.config.get("Chat-Groups." + Loader.getChatFormat(p,Item.GROUP) + ".Chat");
-		if (format != null) {
-			return ChatFormat.r(p, format, message, format instanceof Map || format instanceof List);
+		Object[] format = getChatFormat(p, 1);
+		return format!=null?ChatFormat.r(p, format[0], message, (format[0] instanceof Map || format[0] instanceof List) && getStatus(p, (int)format[1], "json")):null;
+	}
+	public static Object[] getChatFormat(Player player, int type) {
+		String t = type==0?".name":".chat";
+		String g = API.getGroup(player);
+		
+		//1. PerWorld -> PerUser
+		if(!getStatus(player, 1, "enabled"))return null;
+		if(Loader.config.exists("ChatFormat.world."+player.getWorld().getName()+".user."+player.getName()+t)) {
+			return new Object[] {Loader.config.get("ChatFormat.world."+player.getWorld().getName()+".user."+player.getName()+t),1};
 		}
-		return null;
+		//2. PerWorld -> PerGroup
+		if(!getStatus(player, 2, "enabled"))return null;
+		if(Loader.config.exists("ChatFormat.world."+player.getWorld().getName()+".group."+g+t)) {
+			return new Object[] {Loader.config.get("ChatFormat.world."+player.getWorld().getName()+".group."+g+t),2};
+		}
+		//3. PerWorld
+		if(!getStatus(player, 3, "enabled"))return null;
+		if(Loader.config.exists("ChatFormat.world."+player.getWorld().getName()+".global"+t)) {
+			return new Object[] {Loader.config.get("ChatFormat.world."+player.getWorld().getName()+".global"+t),3};
+		}
+		//4. PerUser
+		if(!getStatus(player, 4, "enabled"))return null;
+		if(Loader.config.exists("ChatFormat.user."+player.getName()+t)) {
+			return new Object[] {Loader.config.get("ChatFormat.user."+player.getName()+t),4};
+		}
+		//5. PerGroup
+		if(!getStatus(player, 5, "enabled"))return null;
+		if(Loader.config.exists("ChatFormat.group."+g+t)) {
+			return new Object[] {Loader.config.get("ChatFormat.group."+g+t),5};
+		}
+		//6. Global
+		return getStatus(player, 6, "enabled") ? new Object[] {Loader.config.get("ChatFormat.global"+t),6} : null;
+	}
+	
+	public static boolean getStatus(Player player, int subType, String name) {
+		String t = ".options."+name;
+		switch(subType) {
+		case 1:
+			if(Loader.config.exists("ChatFormat.world."+player.getWorld().getName()+".user."+player.getName()+t)) {
+				return Loader.config.getBoolean("ChatFormat.world."+player.getWorld().getName()+".user."+player.getName()+t);
+			}
+			if(Loader.config.exists("ChatFormat.world."+player.getWorld().getName()+".global"+t)) {
+				return Loader.config.getBoolean("ChatFormat.world."+player.getWorld().getName()+".global"+t);
+			}
+			if(Loader.config.exists("ChatFormat.user."+player.getName()+t)) {
+				return Loader.config.getBoolean("ChatFormat.user."+player.getName()+t);
+			}
+			break;
+		case 3:
+			if(Loader.config.exists("ChatFormat.world."+player.getWorld().getName()+".global"+t)) {
+				return Loader.config.getBoolean("ChatFormat.world."+player.getWorld().getName()+".global"+t);
+			}
+			break;
+		case 4:
+			if(Loader.config.exists("ChatFormat.user."+player.getName()+t)) {
+				return Loader.config.getBoolean("ChatFormat.user."+player.getName()+t);
+			}
+			break;
+		case 2:
+			String g = API.getGroup(player);
+			if(Loader.config.exists("ChatFormat.world."+player.getWorld().getName()+".group."+g+t)) {
+				return Loader.config.getBoolean("ChatFormat.world."+player.getWorld().getName()+".group."+g+t);
+			}
+			if(Loader.config.exists("ChatFormat.group."+g+t)) {
+				return Loader.config.getBoolean("ChatFormat.group."+g+t);
+			}
+			if(Loader.config.exists("ChatFormat.user."+player.getName()+t)) {
+				return Loader.config.getBoolean("ChatFormat.user."+player.getName()+t);
+			}
+			break;
+		case 5:
+			g = API.getGroup(player);
+			if(Loader.config.exists("ChatFormat.group."+g+t)) {
+				return Loader.config.getBoolean("ChatFormat.group."+g+t);
+			}
+			break;
+		}
+		return Loader.config.getBoolean("ChatFormat.global"+t);
 	}
 }

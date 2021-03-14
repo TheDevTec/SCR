@@ -1,10 +1,10 @@
 Commands:
   help:
-    name: "help"
+    name: "helpGui"
     gui: "helpGui"
     aliases:
-      - "helpmenu"
-    permission: ""
+    - "helpmenu"
+    permission: "SCR.GUI.Help"
 GUI:
   helpGui:
     title: "&cHelp Menu"
@@ -16,9 +16,9 @@ GUI:
       45:
         name: "&cClose"
         lore:
-          - "&1Hello!"
-          - "&7Have a nice day"
+        - "&1Hello!"
+        - "&7Have a nice day"
         type: "barrier"
         action:
-          - "left close"
-          - "left msg &cYou have closed GUI"
+        - "left close"
+        - "left msg &cYou have closed GUI"

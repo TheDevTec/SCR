@@ -86,7 +86,7 @@ public class ChatFormat implements Listener {
 	@SuppressWarnings("unchecked")
 	public static Object r(Player p, Object s, String msg, boolean usejson) {
 		if(s.toString().trim().isEmpty())return s;
-		if (usejson && Loader.config.getBoolean("Chat-Groups-Options.Json")) {
+		if (usejson) {
 			try {
 				if(s instanceof Map && s!=null) {
 					return colorizeMap((Map<String, Object>) s,p,msg);

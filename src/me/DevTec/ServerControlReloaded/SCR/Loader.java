@@ -243,16 +243,10 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	public static enum Item {
 		PREFIX,
-		SUFFIX,
-		GROUP
+		SUFFIX
 	}
 	public static String getChatFormat(Player p, Item type) {
 		switch(type) {
-		case GROUP:
-			String group = API.getGroup(p);
-			if (Loader.config.exists("Chat-Groups." + group))
-				return group;
-			return "default";
 		case PREFIX:
 			if(PluginManagerAPI.isEnabledPlugin("LuckPerms"))
 				return LuckPermsProvider.get().getUserManager().getUser(p.getUniqueId()).getCachedData().getMetaData().getPrefix();
