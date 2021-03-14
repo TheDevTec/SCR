@@ -51,10 +51,9 @@ public class LoginEvent implements Listener {
 			bList.set(c++, o);
 		}
 		Ref.set(b, "b", bList);
-		for(Player p : TheAPI.getOnlinePlayers())
-			if(p!=player) {
-			Ref.sendPacket(p, b);
-			}
+		List<Player> f = TheAPI.getOnlinePlayers();
+		f.remove(player);
+		Ref.sendPacket(f, b);
 	}
 
 	private void bc(Player p) {

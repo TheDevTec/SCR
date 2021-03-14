@@ -33,6 +33,8 @@ import me.devtec.theapi.apis.SoundAPI;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.punishmentapi.PlayerBanList;
+import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.datakeeper.User;
 
@@ -86,11 +88,11 @@ public class OnPlayerJoin implements Listener {
             if (!API.canSee(p, s.getName()))
                 p.hidePlayer(s);
         API.setVanish(p.getName(), Loader.getPerm("Vanish","Other"), API.hasVanish(p.getName()));
-        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
-		LoginEvent.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
-		DisplayManager.initializePlayer(p);
 		new Tasker() {
 			public void run() {
+		        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
+		    		LoginEvent.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
+		    	DisplayManager.initializePlayer(p);
 				Tasks.regPlayer(p);
 				User d = TheAPI.getUser(p);
 				Config f = Loader.config;
@@ -139,18 +141,21 @@ public class OnPlayerJoin implements Listener {
 							if(!(""+o).isEmpty())
 								TheAPI.msg(replaceAll(""+o, p),p);
 					}
+					PlayerBanList fac = PunishmentAPI.getBanList(p.getName());
 					new Tasker() {
 						public void run() {
+							if(!fac.isJailed() && !fac.isIPJailed() && !fac.isTempJailed() && !fac.isTempIPJailed())
 							API.teleportPlayer(p, TeleportLocation.SPAWN);
-					Object o = Loader.events.get("onJoin.First.Commands");
-					if(o!=null) {
-					if(o instanceof Collection) {
-						for(String fa : Loader.events.getStringList("onJoin.First.Commands")) {
-							if(fa!=null)
-							TheAPI.sudoConsole(TheAPI.colorize(replaceAll(fa,p)));
-						}}else
-					TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
-					}}
+							Object o = Loader.events.get("onJoin.First.Commands");
+							if(o!=null) {
+							if(o instanceof Collection) {
+								for(String fa : Loader.events.getStringList("onJoin.First.Commands")) {
+									if(fa!=null)
+									TheAPI.sudoConsole(TheAPI.colorize(replaceAll(fa,p)));
+								}}else
+							TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
+							}
+						}
 					}.runTaskSync();
 					o = Loader.events.get("onJoin.First.Broadcast");
 					if(o!=null) {
@@ -219,8 +224,6 @@ public class OnPlayerJoin implements Listener {
 				}
 				SPlayer s = API.getSPlayer(p); 
 				new Tasker() {
-					
-					@Override
 					public void run() {
 					s.setFlySpeed();
 					s.setWalkSpeed();

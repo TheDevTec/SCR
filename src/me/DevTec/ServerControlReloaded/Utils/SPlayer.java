@@ -36,10 +36,12 @@ public class SPlayer {
 
 	
 	public void setHP() {
+		if(getPlayer()==null)return;
 		getPlayer().setHealth(((Damageable)getPlayer()).getMaxHealth());
 	}
 
 	public void heal() {
+		if(getPlayer()==null)return;
 		setHP();
 		setFood();
 		setAir();
@@ -49,24 +51,29 @@ public class SPlayer {
 	}
 
 	public void setFood() {
+		if(getPlayer()==null)return;
 		getPlayer().setFoodLevel(20);
 	}
 
 	public void setAir() {
+		if(getPlayer()==null)return;
 		getPlayer().setRemainingAir(getPlayer().getMaximumAir());
 	}
 
 	public void enableTempFly(long stop) {
 		User s = TheAPI.getUser(this.s);
-		Loader.sendMessages(getPlayer(), "Fly.Temp.Enabled.You", Placeholder.c().add("%time%", StringUtils.setTimeToString(stop)));
 		s.set("TempFly.Start", System.currentTimeMillis());
 		s.set("TempFly.Time", stop);
-		if (!hasTempFlyEnabled())
+		if (!hasTempFlyEnabled()) {
 			s.setAndSave("TempFly.Use", true);
 			enableTempFly();
+		}else s.save();
+		if(getPlayer()==null)return;
+		Loader.sendMessages(getPlayer(), "Fly.Temp.Enabled.You", Placeholder.c().add("%time%", StringUtils.setTimeToString(stop)));
 	}
 
 	public void enableTempFly() {
+		if(getPlayer()==null)return;
 		if (hasTempFlyEnabled()) {
 			getPlayer().setAllowFlight(true);
 			getPlayer().setFlying(true);
@@ -77,18 +84,20 @@ public class SPlayer {
 		if (hasTempFlyEnabled()) {
 			TheAPI.getUser(s).setAndSave("TempFly.Use", false);
 		}
+		TheAPI.getUser(s).setAndSave("Fly", true);
+		if(getPlayer()==null)return;
 		getPlayer().setAllowFlight(true);
 		getPlayer().setFlying(true);
-		TheAPI.getUser(s).setAndSave("Fly", true);
 	}
 
 	public void disableFly() {
 		if (hasTempFlyEnabled()) {
 			TheAPI.getUser(s).setAndSave("TempFly.Use", false);
 		}
+		TheAPI.getUser(s).setAndSave("Fly", false);
+		if(getPlayer()==null)return;
 		getPlayer().setFlying(false);
 		getPlayer().setAllowFlight(false);
-		TheAPI.getUser(s).setAndSave("Fly", false);
 	}
 
 	private static final Class<?> ess = Ref.getClass("com.earth2me.essentials.Essentials");
@@ -107,6 +116,7 @@ public class SPlayer {
 	}
 
 	public void setAFK(boolean afk) {
+		if(getPlayer()==null)return;
 		if (!afk) {
 			Loader.getInstance.save(getPlayer());
 		} else {
@@ -114,6 +124,7 @@ public class SPlayer {
 		}
 	}
 	public void setAFK(boolean afk, String reason) {
+		if(getPlayer()==null)return;
 		if (!afk) {
 			Loader.getInstance.save(getPlayer());
 		} else {
@@ -122,6 +133,7 @@ public class SPlayer {
 	}
 
 	public void setFire() {
+		if(getPlayer()==null)return;
 		getPlayer().setFireTicks(-20);
 	}
 
@@ -142,7 +154,7 @@ public class SPlayer {
 	}
 
 	public double getHealth() {
-		return getPlayer()!=null?((Damageable)getPlayer()).getHealth() : -1;
+		return getPlayer()!=null?((Damageable)getPlayer()).getHealth():-1;
 	}
 
 	public Player getPlayer() {
@@ -181,27 +193,29 @@ public class SPlayer {
 
 	public void setWalkSpeed() {
 		if(getPlayer()==null)return;
-		User d = TheAPI.getUser(this.s);
-		if (getPlayer().hasPermission("ServerControl.WalkSpeed") && d.exist("WalkSpeed")) {
-			if (d.getDouble("WalkSpeed") == 0.0)
-				getPlayer().setWalkSpeed(2);
+		User d = TheAPI.getUser(s);
+		if (d.exist("WalkSpeed")) {
+			Player f = getPlayer();
+			if (d.getDouble("WalkSpeed") < 0.0)
+				f.setFlySpeed(0);
 			else if (d.getDouble("WalkSpeed") > 10.0)
-				getPlayer().setWalkSpeed(10);
-			else if (d.getDouble("WalkSpeed") < 10.0)
-				getPlayer().setWalkSpeed((float) d.getDouble("WalkSpeed"));
+				f.setFlySpeed(10);
+			else
+				f.setFlySpeed(d.getFloat("WalkSpeed"));
 		}
 	}
 
 	public void setFlySpeed() {
 		if(getPlayer()==null)return;
-		User d = TheAPI.getUser(this.s);
-		if (getPlayer().hasPermission("ServerControl.FlySpeed") && d.exist("FlySpeed")) {
-			if (d.getDouble("FlySpeed") == 0.0)
-				getPlayer().setWalkSpeed(2);
+		User d = TheAPI.getUser(s);
+		if (d.exist("FlySpeed")) {
+			Player f = getPlayer();
+			if (d.getDouble("FlySpeed") < 0.0)
+				f.setFlySpeed(0);
 			else if (d.getDouble("FlySpeed") > 10.0)
-				getPlayer().setWalkSpeed(10);
-			else if (d.getDouble("FlySpeed") < 10.0)
-				getPlayer().setWalkSpeed((float) d.getDouble("FlySpeed"));
+				f.setFlySpeed(10);
+			else
+				f.setFlySpeed(d.getFloat("FlySpeed"));
 		}
 	}
 
@@ -231,6 +245,7 @@ public class SPlayer {
 	}
 
 	public void setGamamode() {
+		if(getPlayer()==null)return;
 		if (!getPlayer().hasPermission("SCR.Other.GamemodeChangePrevent")) {
 			if (Loader.mw.exists("WorldsSettings." + getPlayer().getWorld().getName() + ".GameMode"))
 				try {
