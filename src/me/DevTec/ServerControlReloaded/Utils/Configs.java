@@ -58,7 +58,7 @@ public class Configs {
 		AnimationManager.reload();
 	}
 	
-	static List<String> datas = Arrays.asList("Config.yml","Rules.txt","Colors.txt","Scoreboard.yml","Placeholders.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml");
+	static List<String> datas = Arrays.asList("Config.yml","Rules.txt","Colors.txt","Scoreboard.yml","Placeholders.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml","GUICreator.yml");
 	
 	private static void copyDefauts() {
 		Data data = new Data();
@@ -89,6 +89,9 @@ public class Configs {
 	    		break;
 	    	case "ActionBar.yml":
 	    		c=Loader.ac;
+	    		break;
+	    	case "GUICreator.yml":
+	    		c=Loader.guicreator;
 	    		break;
 	    	case "Events.yml":
 	    		c=Loader.events;
@@ -183,6 +186,9 @@ public class Configs {
 	    	case "Animations.yml":
 	    		Loader.anim=c;
 	    		break;
+			case "GUICreator.yml":
+				Loader.guicreator=c;
+				break;
 	    	case "Translations/translation-en.yml":
 	    		Loader.english=c;
 	    		break;

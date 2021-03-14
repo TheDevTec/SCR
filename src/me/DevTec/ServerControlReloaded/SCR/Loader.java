@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import me.DevTec.ServerControlReloaded.Commands.Other.GUICreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -71,7 +72,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
-	public static Config config, plac, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb;
+	public static Config config, plac, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb,guicreator;
 	public static List<Rule> rules = new ArrayList<>();
 	private int task;
 	private long time, rkick;
@@ -342,6 +343,9 @@ public class Loader extends JavaPlugin implements Listener {
 		if(disable) {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
+		}
+		for(String a : guicreator.getKeys("Commands")){
+			TheAPI.createAndRegisterCommand(a,guicreator.getString("Commands."+a+".permission"),new GUICreator(guicreator.getString("Commands."+a+".gui")),guicreator.getStringList("Commands."+a+".aliases"));
 		}
 		EventsRegister();
 		updater = new UpdateChecker();
