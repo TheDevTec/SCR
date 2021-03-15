@@ -2,8 +2,6 @@ package me.DevTec.ServerControlReloaded.Commands.Other;
 
 import java.util.List;
 
-import me.DevTec.ServerControlReloaded.Utils.Eco;
-import me.devtec.theapi.economyapi.EconomyAPI;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,6 +13,7 @@ import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.TheAPI.SudoType;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.configapi.Config;
+import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.guiapi.GUI;
 import me.devtec.theapi.guiapi.HolderGUI;
 import me.devtec.theapi.guiapi.ItemGUI;
