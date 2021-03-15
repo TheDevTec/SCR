@@ -42,14 +42,14 @@ public class GUICreator implements CommandExecutor {
                     itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b + ".items."+j+".lore"))) {
                         @Override
                         public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            vecinator(player, a,j,clickType);
+                            vecinator(gui,player, a,j,clickType);
                         }
                     };
                 }else{
                     itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"))) {
                         @Override
                         public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            vecinator(player, a,j,clickType);
+                            vecinator(gui,player, a,j,clickType);
                         }
                     };
                 }
@@ -58,14 +58,14 @@ public class GUICreator implements CommandExecutor {
                     itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b + ".items."+j+".lore"))) {
                         @Override
                         public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            vecinator(player, u,j,clickType);
+                            vecinator(gui,player, u,j,clickType);
                         }
                     };
                 }else{
                     itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"))) {
                         @Override
                         public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            vecinator(player, u,j,clickType);
+                            vecinator(gui,player, u,j,clickType);
                         }
                     };
                 }
@@ -76,56 +76,56 @@ public class GUICreator implements CommandExecutor {
         gui.open(s);
     }
 
-    public void vecinator(Player p, String b, String s, GUI.ClickType clickType){
+    public void vecinator(GUI g ,Player p, String b, String s, GUI.ClickType clickType){
         if(c.get("GUI."+b+".items."+s+".action") instanceof List){
             for(String a : c.getStringList("GUI."+b+".items."+s+".action")){
                 if (a.startsWith("sleft")) {
                     if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
-                        methodenzi(p, a.substring(6));
+                        methodenzi(g,p, a.substring(6));
                     }
                 } else if (a.startsWith("sright")) {
                     if (clickType == GUI.ClickType.SHIFT_RIGHT_PICKUP) {
-                        methodenzi(p, a.substring(7));
+                        methodenzi(g,p, a.substring(7));
                     }
                 }else if(a.startsWith("left")){
                     if(clickType== GUI.ClickType.LEFT_PICKUP){
-                        methodenzi(p,a.substring(5));
+                        methodenzi(g,p,a.substring(5));
                     }
                 }else if(a.startsWith("right")){
                     if(clickType==GUI.ClickType.RIGHT_PICKUP){
-                        methodenzi(p,a.substring(6));
+                        methodenzi(g,p,a.substring(6));
                     }
                 } else if(a.startsWith("any")){
-                    methodenzi(p,a.substring(4));
+                    methodenzi(g,p,a.substring(4));
                 }
             }
         } else {
             String a = c.getString("GUI."+b+".items."+s+".action");
             if (a.startsWith("sleft")) {
                 if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
-                    methodenzi(p, a.substring(6));
+                    methodenzi(g,p, a.substring(6));
                 }
             } else if (a.startsWith("sright")) {
                 if (clickType == GUI.ClickType.SHIFT_RIGHT_PICKUP) {
-                    methodenzi(p, a.substring(7));
+                    methodenzi(g,p, a.substring(7));
                 }
             }else if(a.startsWith("left")){
                 if(clickType==GUI.ClickType.LEFT_PICKUP){
-                    methodenzi(p,a.substring(5));
+                    methodenzi(g,p,a.substring(5));
                 }
             }else if(a.startsWith("right")){
                 if(clickType==GUI.ClickType.RIGHT_PICKUP){
-                    methodenzi(p,a.substring(6));
+                    methodenzi(g,p,a.substring(6));
                 }
             } else if(a.startsWith("any")){
-                methodenzi(p,a.substring(4));
+                methodenzi(g,p,a.substring(4));
             }
         }
     }
 
-    public void methodenzi(Player p,String a){
+    public void methodenzi(GUI g ,Player p,String a){
         if(a.startsWith("close")){
-            p.closeInventory();
+            g.close(p);
         } else if (a.startsWith("msg")){
             TheAPI.msg(a.replace("%player%",p.getName()).substring(4),p);
         } else if(a.startsWith("cmd")){
