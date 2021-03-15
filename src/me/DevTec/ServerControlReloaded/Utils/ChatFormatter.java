@@ -14,9 +14,9 @@ import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 
 public class ChatFormatter {
 	public static String displayName(Player p) {
-		Object format = getChatFormat(p, 0);
+		Object[] format = getChatFormat(p, 0);
 		if (format!=null)
-			return Colors.colorize(ChatFormat.r(p, PlaceholderAPI.setPlaceholders(p, format.toString()), null, false).toString(), false, p);
+			return Colors.colorize(ChatFormat.r(p, PlaceholderAPI.setPlaceholders(p, format[0].toString()), null, false).toString(), false, p);
 		return Loader.getChatFormat(p, Item.PREFIX) + p.getName() + Loader.getChatFormat(p, Item.SUFFIX);
 	}
 	
