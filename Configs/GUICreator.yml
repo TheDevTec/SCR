@@ -21,4 +21,4 @@
 #         type: "barrier"
 #         action:
 #         - "left close"
- #        - "left msg &cYou have closed GUI"
+#         - "left msg &cYou have closed GUI"
