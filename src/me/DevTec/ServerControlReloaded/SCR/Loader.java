@@ -339,8 +339,10 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
-		for(String a : guicreator.getKeys("Commands")){
-			TheAPI.createAndRegisterCommand(a,guicreator.getString("Commands."+a+".permission"),new GUICreator(guicreator.getString("Commands."+a+".gui")),guicreator.getStringList("Commands."+a+".aliases"));
+		if(guicreator.exists("Commands")){
+			for(String a : guicreator.getKeys("Commands")){
+				TheAPI.createAndRegisterCommand(a,guicreator.getString("Commands."+a+".permission"),new GUICreator(guicreator.getString("Commands."+a+".gui")),guicreator.getStringList("Commands."+a+".aliases"));
+			}
 		}
 		EventsRegister();
 		updater = new UpdateChecker();
