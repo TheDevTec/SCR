@@ -43,14 +43,22 @@ public class GUICreator implements CommandExecutor {
                     itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b + ".items."+j+".lore"))) {
                         @Override
                         public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            vecinator(gui,player, a,j,clickType);
+                            try{
+                                vecinator(gui,player, a,j,clickType);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     };
                 }else{
                     itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"))) {
                         @Override
                         public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            vecinator(gui,player, a,j,clickType);
+                            try{
+                                vecinator(gui,player, a,j,clickType);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     };
                 }
@@ -59,14 +67,23 @@ public class GUICreator implements CommandExecutor {
                     itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b + ".items."+j+".lore"))) {
                         @Override
                         public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            vecinator(gui,player, u,j,clickType);
+                            try{
+                                vecinator(gui,player, u,j,clickType);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     };
                 }else{
                     itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"))) {
                         @Override
                         public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            vecinator(gui,player, u,j,clickType);
+                            try{
+                                vecinator(gui,player, u,j,clickType);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
                         }
                     };
                 }
@@ -79,7 +96,6 @@ public class GUICreator implements CommandExecutor {
 
     public void vecinator(GUI g ,Player p, String b, String s, GUI.ClickType clickType){
         if(EconomyAPI.has(p,c.getDouble("GUI."+b+".items."+s+".cost"))) {
-            TheAPI.bcMsg("mám");
             if(c.getBoolean("GUI."+b+".items."+s+".takeMoney")){
                 EconomyAPI.withdrawPlayer(p,c.getDouble("GUI."+b+".items."+s+".cost"));
             }
@@ -129,7 +145,6 @@ public class GUICreator implements CommandExecutor {
             }
         }else{
             if (c.get("GUI." + b + ".items." + s + ".noMoney") instanceof List) {
-                TheAPI.bcMsg("nemám");
                 for (String a : c.getStringList("GUI." + b + ".items." + s + ".noMoney")) {
                     if (a.startsWith("sleft")) {
                         if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
@@ -152,7 +167,6 @@ public class GUICreator implements CommandExecutor {
                     }
                 }
             } else {
-                TheAPI.bcMsg("nemám");
                 String a = c.getString("GUI." + b + ".items." + s + ".noMoney");
                 if (a.startsWith("sleft")) {
                     if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
