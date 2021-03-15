@@ -113,20 +113,22 @@ public class SkinManager {
 			posC=Ref.constructor(Ref.nms("PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class, int.class);
 		//RESPAWN PACKET
 		if(TheAPI.isNewerThan(16)) { //1.17+
-			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("ResourceKey"), long.class, Ref.nms("EnumGamemode"), Ref.nms("EnumGamemode"), boolean.class, boolean.class, boolean.class);
+			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("ResourceKey"), long.class, cc, cc, boolean.class, boolean.class, boolean.class);
 		}else
 		if(TheAPI.isNewerThan(15)) { //1.16
 			if(TheAPI.getServerVersion().split("_")[2].equals("R1"))
-			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("ResourceKey"), Ref.nms("ResourceKey"), long.class, Ref.nms("EnumGamemode"), Ref.nms("EnumGamemode"), boolean.class, boolean.class, boolean.class);
+			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("ResourceKey"), Ref.nms("ResourceKey"), long.class, cc, cc, boolean.class, boolean.class, boolean.class);
 			else
-				respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("ResourceKey"), long.class, Ref.nms("EnumGamemode"), Ref.nms("EnumGamemode"), boolean.class, boolean.class, boolean.class);
+				respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("ResourceKey"), long.class, cc, cc, boolean.class, boolean.class, boolean.class);
 		}else if(TheAPI.isNewerThan(14)) { //1.15
-			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), long.class, Ref.nms("WorldType"), Ref.nms("EnumGamemode"));
+			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), long.class, Ref.nms("WorldType"), cc);
 		}else if(TheAPI.isNewerThan(13)) { //1.14
-			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("WorldType"), Ref.nms("EnumGamemode"));
+			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("WorldType"), cc);
 		}else //1.7-1.13
 			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),int.class, Ref.nms("EnumDifficulty"), Ref.nms("WorldType"), cc);
 	}
+	
+	private static Set<?> set = new HashSet<>();
 	
 	public static synchronized void loadSkin(Player player, SkinData data) {
 		if(player==null || data==null || !data.isFinite())return;
@@ -176,9 +178,9 @@ public class SkinManager {
 				if(TheAPI.isOlderThan(8)) { //1.7
 					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), false);
 				}else if(TheAPI.isOlderThan(9)) { //1.8
-					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), new HashSet<>());
+					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), set);
 				}else //1.9+
-					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), new HashSet<>(), 0);
+					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), set, 0);
 				Ref.sendPacket(p, pos);
 				Ref.sendPacket(p, Ref.newInstance(handC, p.getInventory().getHeldItemSlot()));
 				Ref.sendPacket(p, NMSAPI.getPacketPlayOutEntityMetadata(s));

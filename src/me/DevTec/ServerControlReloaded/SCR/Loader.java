@@ -12,15 +12,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import me.DevTec.ServerControlReloaded.Commands.Other.GUICreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.DevTec.ServerControlReloaded.Commands.CommandsManager;
+import me.DevTec.ServerControlReloaded.Commands.Other.GUICreator;
 import me.DevTec.ServerControlReloaded.Commands.Other.Trash;
 import me.DevTec.ServerControlReloaded.Events.AFkPlayerEvents;
 import me.DevTec.ServerControlReloaded.Events.ChatFormat;
@@ -39,6 +40,7 @@ import me.DevTec.ServerControlReloaded.Events.WorldChange;
 import me.DevTec.ServerControlReloaded.Utils.Configs;
 import me.DevTec.ServerControlReloaded.Utils.Converter;
 import me.DevTec.ServerControlReloaded.Utils.DisplayManager;
+import me.DevTec.ServerControlReloaded.Utils.Eco;
 import me.DevTec.ServerControlReloaded.Utils.Kit;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
 import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
@@ -46,7 +48,6 @@ import me.DevTec.ServerControlReloaded.Utils.Rule;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
-import me.DevTec.ServerControlReloaded.Utils.VaultHook;
 import me.DevTec.ServerControlReloaded.Utils.XMaterial;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.DevTec.ServerControlReloaded.Utils.metrics.Metrics;
@@ -454,6 +455,7 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onDisable() {
+		unhook();
 		CommandsManager.unload();
 		org.bukkit.event.HandlerList.unregisterAll(this);
 		for (Player p : TheAPI.getOnlinePlayers()) {
@@ -483,14 +485,25 @@ public class Loader extends JavaPlugin implements Listener {
 		return (vault != null);
 	}
 
-	private static boolean setupCustomEco() {
-		new VaultHook().hook();
-		RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServicesManager()
-				.getRegistration(net.milkbowl.vault.economy.Economy.class);
-		if (economyProvider != null) {
-			econ = economyProvider.getProvider();
 
+	public static void hook() {
+		if (PluginManagerAPI.getPlugin("Vault") != null) {
+			econ = new Eco();
+			Bukkit.getServicesManager().register(Economy.class, econ, Loader.getInstance, ServicePriority.Normal);
+			Loader.EconomyLog("Vault hooked into plugin Economy");
 		}
+	}
+
+	public static void unhook() {
+		if (PluginManagerAPI.getPlugin("Vault") != null)
+			if (econ != null) {
+				Bukkit.getServicesManager().unregister(Economy.class, econ);
+				Loader.EconomyLog("Vault unhooked from plugin Economy");
+			}
+	}
+	
+	private static boolean setupCustomEco() {
+		hook();
 		return econ != null;
 	}
 

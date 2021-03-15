@@ -1175,6 +1175,7 @@ public enum XMaterial {
 
     public static XMaterial matchXMaterial(String name) {
         if (name==null) return null;
+        if(name.matches("[0-9]+"))return matchXMaterial(StringUtils.getInt(name), (byte)0);
         if(name.contains(":"))return matchXMaterial(name.split(":")[0], StringUtils.getByte(name.split(":")[1]));
         XMaterial item = XMaterial.valueOf(name.toUpperCase());
         if(item!=null)return item;
@@ -1185,6 +1186,7 @@ public enum XMaterial {
 
     public static XMaterial matchXMaterial(String name, byte data) {
         if (name==null || data < 0) return null;
+        if(name.matches("[0-9]+"))return matchXMaterial(StringUtils.getInt(name), data);
         XMaterial item = XMaterial.valueOf(name.toUpperCase());
         if(item!=null && item.getData()==data)return item;
         for (XMaterial materials : values())
