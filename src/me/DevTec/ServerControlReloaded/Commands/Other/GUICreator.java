@@ -2,6 +2,8 @@ package me.DevTec.ServerControlReloaded.Commands.Other;
 
 import java.util.List;
 
+import me.DevTec.ServerControlReloaded.Utils.Eco;
+import me.devtec.theapi.economyapi.EconomyAPI;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -77,48 +79,101 @@ public class GUICreator implements CommandExecutor {
     }
 
     public void vecinator(GUI g ,Player p, String b, String s, GUI.ClickType clickType){
-        if(c.get("GUI."+b+".items."+s+".action") instanceof List){
-            for(String a : c.getStringList("GUI."+b+".items."+s+".action")){
+        if(EconomyAPI.has(p,c.getDouble("GUI."+b+".items."+s+".cost"))) {
+            TheAPI.bcMsg("mám");
+            if(c.getBoolean("GUI."+b+".items."+s+".takeMoney")){
+                EconomyAPI.withdrawPlayer(p,c.getDouble("GUI."+b+".items."+s+".cost"));
+            }
+            if (c.get("GUI." + b + ".items." + s + ".action") instanceof List) {
+                for (String a : c.getStringList("GUI." + b + ".items." + s + ".action")) {
+                    if (a.startsWith("sleft")) {
+                        if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
+                            methodenzi(g, p, a.substring(6));
+                        }
+                    } else if (a.startsWith("sright")) {
+                        if (clickType == GUI.ClickType.SHIFT_RIGHT_PICKUP) {
+                            methodenzi(g, p, a.substring(7));
+                        }
+                    } else if (a.startsWith("left")) {
+                        if (clickType == GUI.ClickType.LEFT_PICKUP) {
+                            methodenzi(g, p, a.substring(5));
+                        }
+                    } else if (a.startsWith("right")) {
+                        if (clickType == GUI.ClickType.RIGHT_PICKUP) {
+                            methodenzi(g, p, a.substring(6));
+                        }
+                    } else if (a.startsWith("any")) {
+                        methodenzi(g, p, a.substring(4));
+                    }
+                }
+            } else {
+                String a = c.getString("GUI." + b + ".items." + s + ".action");
                 if (a.startsWith("sleft")) {
                     if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
-                        methodenzi(g,p, a.substring(6));
+                        methodenzi(g, p, a.substring(6));
                     }
                 } else if (a.startsWith("sright")) {
                     if (clickType == GUI.ClickType.SHIFT_RIGHT_PICKUP) {
-                        methodenzi(g,p, a.substring(7));
+                        methodenzi(g, p, a.substring(7));
                     }
-                }else if(a.startsWith("left")){
-                    if(clickType== GUI.ClickType.LEFT_PICKUP){
-                        methodenzi(g,p,a.substring(5));
+                } else if (a.startsWith("left")) {
+                    if (clickType == GUI.ClickType.LEFT_PICKUP) {
+                        methodenzi(g, p, a.substring(5));
                     }
-                }else if(a.startsWith("right")){
-                    if(clickType==GUI.ClickType.RIGHT_PICKUP){
-                        methodenzi(g,p,a.substring(6));
+                } else if (a.startsWith("right")) {
+                    if (clickType == GUI.ClickType.RIGHT_PICKUP) {
+                        methodenzi(g, p, a.substring(6));
                     }
-                } else if(a.startsWith("any")){
-                    methodenzi(g,p,a.substring(4));
+                } else if (a.startsWith("any")) {
+                    methodenzi(g, p, a.substring(4));
                 }
             }
-        } else {
-            String a = c.getString("GUI."+b+".items."+s+".action");
-            if (a.startsWith("sleft")) {
-                if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
-                    methodenzi(g,p, a.substring(6));
+        }else{
+            if (c.get("GUI." + b + ".items." + s + ".noMoney") instanceof List) {
+                TheAPI.bcMsg("nemám");
+                for (String a : c.getStringList("GUI." + b + ".items." + s + ".noMoney")) {
+                    if (a.startsWith("sleft")) {
+                        if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
+                            methodenzi(g, p, a.substring(6));
+                        }
+                    } else if (a.startsWith("sright")) {
+                        if (clickType == GUI.ClickType.SHIFT_RIGHT_PICKUP) {
+                            methodenzi(g, p, a.substring(7));
+                        }
+                    } else if (a.startsWith("left")) {
+                        if (clickType == GUI.ClickType.LEFT_PICKUP) {
+                            methodenzi(g, p, a.substring(5));
+                        }
+                    } else if (a.startsWith("right")) {
+                        if (clickType == GUI.ClickType.RIGHT_PICKUP) {
+                            methodenzi(g, p, a.substring(6));
+                        }
+                    } else if (a.startsWith("any")) {
+                        methodenzi(g, p, a.substring(4));
+                    }
                 }
-            } else if (a.startsWith("sright")) {
-                if (clickType == GUI.ClickType.SHIFT_RIGHT_PICKUP) {
-                    methodenzi(g,p, a.substring(7));
+            } else {
+                TheAPI.bcMsg("nemám");
+                String a = c.getString("GUI." + b + ".items." + s + ".noMoney");
+                if (a.startsWith("sleft")) {
+                    if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
+                        methodenzi(g, p, a.substring(6));
+                    }
+                } else if (a.startsWith("sright")) {
+                    if (clickType == GUI.ClickType.SHIFT_RIGHT_PICKUP) {
+                        methodenzi(g, p, a.substring(7));
+                    }
+                } else if (a.startsWith("left")) {
+                    if (clickType == GUI.ClickType.LEFT_PICKUP) {
+                        methodenzi(g, p, a.substring(5));
+                    }
+                } else if (a.startsWith("right")) {
+                    if (clickType == GUI.ClickType.RIGHT_PICKUP) {
+                        methodenzi(g, p, a.substring(6));
+                    }
+                } else if (a.startsWith("any")) {
+                    methodenzi(g, p, a.substring(4));
                 }
-            }else if(a.startsWith("left")){
-                if(clickType==GUI.ClickType.LEFT_PICKUP){
-                    methodenzi(g,p,a.substring(5));
-                }
-            }else if(a.startsWith("right")){
-                if(clickType==GUI.ClickType.RIGHT_PICKUP){
-                    methodenzi(g,p,a.substring(6));
-                }
-            } else if(a.startsWith("any")){
-                methodenzi(g,p,a.substring(4));
             }
         }
     }
