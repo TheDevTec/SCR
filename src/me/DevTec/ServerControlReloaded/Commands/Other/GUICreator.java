@@ -1,11 +1,22 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
+import java.awt.*;
+import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 
+import me.DevTec.ServerControlReloaded.Commands.Message.Sudo;
+import me.devtec.theapi.utils.HoverMessage;
+import net.milkbowl.vault.chat.Chat;
+import net.minecraft.server.v1_16_R3.IChatBaseComponent;
+import net.minecraft.server.v1_16_R3.PacketPlayOutChat;
+import net.minecraft.server.v1_16_R3.PlayerConnection;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -39,51 +50,68 @@ public class GUICreator implements CommandExecutor {
         ItemGUI itemGUI;
         for(String j : c.getKeys("GUI."+b+".items")){
             if(u==null){
+                if(c.exists("GUI."+b+".items."+j+".headURL")){
+                    if(c.exists("GUI."+b+".items."+j+".lore")){
+                        itemGUI=new ItemGUI(ItemCreatorAPI.createHeadByValues(1,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b+".items."+j+".lore"),c.getString("GUI."+b+".items."+j+".headURL"))) {
+                            @Override
+                            public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType click) {
+                                vecinator(gui,player,a,j,click);
+                            }
+                        };
+                    }else{
+                        itemGUI=new ItemGUI(ItemCreatorAPI.createHeadByValues(1,c.getString("GUI."+b+".items."+j+".name"),c.getString("GUI."+b+".items."+j+".headURL"))) {
+                            @Override
+                            public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType click) {
+                                vecinator(gui,player,a,j,click);
+                            }
+                        };
+                    }
+                }
                 if(c.exists("GUI."+b + ".items."+j+".lore")){
                     itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b + ".items."+j+".lore"))) {
                         @Override
                         public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            try{
-                                vecinator(gui,player, a,j,clickType);
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
+                            vecinator(gui,player, a,j,clickType);
                         }
                     };
                 }else{
                     itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"))) {
                         @Override
                         public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            try{
                                 vecinator(gui,player, a,j,clickType);
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
                         }
                     };
                 }
             } else {
+                if(c.exists("GUI."+b+".items."+j+".headURL")){
+                    if(c.exists("GUI."+b+".items."+j+".lore")){
+                        itemGUI=new ItemGUI(ItemCreatorAPI.createHeadByValues(1,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b+".items."+j+".lore"),c.getString("GUI."+b+".items."+j+".headURL"))) {
+                            @Override
+                            public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType click) {
+                                vecinator(gui,player,u,j,click);
+                            }
+                        };
+                    }else{
+                        itemGUI=new ItemGUI(ItemCreatorAPI.createHeadByValues(1,c.getString("GUI."+b+".items."+j+".name"),c.getString("GUI."+b+".items."+j+".headURL"))) {
+                            @Override
+                            public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType click) {
+                                vecinator(gui,player,u,j,click);
+                            }
+                        };
+                    }
+                }
                 if(c.exists("GUI."+b + ".items."+j+".lore")){
                     itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b + ".items."+j+".lore"))) {
                         @Override
                         public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            try{
                                 vecinator(gui,player, u,j,clickType);
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
                         }
                     };
                 }else{
                     itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"))) {
                         @Override
                         public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            try{
                                 vecinator(gui,player, u,j,clickType);
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
-
                         }
                     };
                 }
@@ -99,7 +127,7 @@ public class GUICreator implements CommandExecutor {
             if(c.getBoolean("GUI."+b+".items."+s+".takeMoney")){
                 EconomyAPI.withdrawPlayer(p,c.getDouble("GUI."+b+".items."+s+".cost"));
             }
-            if (c.get("GUI." + b + ".items." + s + ".action") instanceof List) {
+            if (c.get("GUI." + b + ".items." + s + ".action") instanceof Collection&&c.exists("GUI."+b+".items."+s+".action")) {
                 for (String a : c.getStringList("GUI." + b + ".items." + s + ".action")) {
                     if (a.startsWith("sleft")) {
                         if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
@@ -123,6 +151,7 @@ public class GUICreator implements CommandExecutor {
                 }
             } else {
                 String a = c.getString("GUI." + b + ".items." + s + ".action");
+                if(a==null)return;
                 if (a.startsWith("sleft")) {
                     if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
                         methodenzi(g, p, a.substring(6));
@@ -144,7 +173,7 @@ public class GUICreator implements CommandExecutor {
                 }
             }
         }else{
-            if (c.get("GUI." + b + ".items." + s + ".noMoney") instanceof List) {
+            if (c.get("GUI." + b + ".items." + s + ".noMoney") instanceof Collection&&c.exists("GUI."+b+".items."+s+".noMoney")) {
                 for (String a : c.getStringList("GUI." + b + ".items." + s + ".noMoney")) {
                     if (a.startsWith("sleft")) {
                         if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
@@ -168,6 +197,7 @@ public class GUICreator implements CommandExecutor {
                 }
             } else {
                 String a = c.getString("GUI." + b + ".items." + s + ".noMoney");
+                if(a==null)return;
                 if (a.startsWith("sleft")) {
                     if (clickType == GUI.ClickType.SHIFT_LEFT_PICKUP) {
                         methodenzi(g, p, a.substring(6));
