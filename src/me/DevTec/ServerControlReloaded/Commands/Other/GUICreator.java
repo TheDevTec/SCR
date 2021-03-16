@@ -1,22 +1,11 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
-import java.awt.*;
-import java.net.URI;
 import java.util.Collection;
-import java.util.List;
 
-import me.DevTec.ServerControlReloaded.Commands.Message.Sudo;
-import me.devtec.theapi.utils.HoverMessage;
-import net.milkbowl.vault.chat.Chat;
-import net.minecraft.server.v1_16_R3.IChatBaseComponent;
-import net.minecraft.server.v1_16_R3.PacketPlayOutChat;
-import net.minecraft.server.v1_16_R3.PlayerConnection;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
