@@ -12,7 +12,6 @@ import org.bukkit.command.TabCompleter;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 
 public class Tab implements CommandExecutor, TabCompleter {
-	//TODO hotovo:
 	//tablist prefix <player/group> [name] <tablist/nametag> get
 	//tablist prefix <player/group> [name] <tablist/nametag> set [value]
 
@@ -32,7 +31,6 @@ public class Tab implements CommandExecutor, TabCompleter {
 	//tablist footer <group/player/global> [name] set [line] [value]
 	//tablist footer <group/player/global> [name] list
 	
-	//TODO toto dole:
 	//tablist prefixWorld [world] <tablist/nametag> get
 	//tablist prefixWorld [world] <tablist/nametag> set [value]
 

@@ -1,13 +1,5 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
-import java.util.Collection;
-
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.TheAPI.SudoType;
@@ -18,6 +10,14 @@ import me.devtec.theapi.guiapi.GUI;
 import me.devtec.theapi.guiapi.HolderGUI;
 import me.devtec.theapi.guiapi.ItemGUI;
 import me.devtec.theapi.utils.StringUtils;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.Collection;
+import java.util.List;
 
 public class GUICreator implements CommandExecutor {
     private Config c = Loader.guicreator;
@@ -31,79 +31,32 @@ public class GUICreator implements CommandExecutor {
         if(!(s instanceof Player)){
             return true;
         }
-        udelator(a,(Player)s,null);
+        udelator(a,(Player)s);
         return true;
     }
-    public void udelator(String b,Player s,String u){
+    public void udelator(String b,Player s){
         GUI gui = new GUI(c.getString("GUI."+b+".title"),c.getInt("GUI."+b+".size"));
-        ItemGUI itemGUI;
+        ItemGUI itemGUI = null;
         for(String j : c.getKeys("GUI."+b+".items")){
-            if(u==null){
-                if(c.exists("GUI."+b+".items."+j+".headURL")){
-                    if(c.exists("GUI."+b+".items."+j+".lore")){
-                        itemGUI=new ItemGUI(ItemCreatorAPI.createHeadByValues(1,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b+".items."+j+".lore"),c.getString("GUI."+b+".items."+j+".headURL"))) {
-                            @Override
-                            public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType click) {
-                                vecinator(gui,player,a,j,click);
-                            }
-                        };
-                    }else{
-                        itemGUI=new ItemGUI(ItemCreatorAPI.createHeadByValues(1,c.getString("GUI."+b+".items."+j+".name"),c.getString("GUI."+b+".items."+j+".headURL"))) {
-                            @Override
-                            public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType click) {
-                                vecinator(gui,player,a,j,click);
-                            }
-                        };
-                    }
-                }
-                if(c.exists("GUI."+b + ".items."+j+".lore")){
-                    itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b + ".items."+j+".lore"))) {
-                        @Override
-                        public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                            vecinator(gui,player, a,j,clickType);
-                        }
-                    };
+            if(c.exists("GUI."+b+".items."+j+".headURL")){
+                if(c.exists("GUI."+b+".items."+j+".lore")){
+                    itemGUI=MethodaHead(gui,itemGUI,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b+".items."+j+".lore"),c.getString("GUI."+b+".items."+j+".headURL"),j,b);
                 }else{
-                    itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"))) {
-                        @Override
-                        public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                                vecinator(gui,player, a,j,clickType);
-                        }
-                    };
+                    itemGUI=MethodaHead(gui,itemGUI,c.getString("GUI."+b+".items."+j+".name"),c.getString("GUI."+b+".items."+j+".headURL"),j,b);
+                }
+            } else if(c.exists("GUI."+b+".items."+j+".type")){
+                if(c.exists("GUI."+b+".items."+j+".lore")){
+                    itemGUI=MethodaItem(gui,itemGUI,c.getString("GUI."+b+".items."+j+".name"),c.getString("GUI."+b+".items."+j+".type").toUpperCase(),j,c.getStringList("GUI."+b+".items."+j+".lore"),b);
+                }else{
+                    itemGUI=MethodaItem(gui,itemGUI,c.getString("GUI."+b+".items."+j+".name"),c.getString("GUI."+b+".items."+j+".type").toUpperCase(),j,b);
                 }
             } else {
-                if(c.exists("GUI."+b+".items."+j+".headURL")){
-                    if(c.exists("GUI."+b+".items."+j+".lore")){
-                        itemGUI=new ItemGUI(ItemCreatorAPI.createHeadByValues(1,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b+".items."+j+".lore"),c.getString("GUI."+b+".items."+j+".headURL"))) {
-                            @Override
-                            public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType click) {
-                                vecinator(gui,player,u,j,click);
-                            }
-                        };
-                    }else{
-                        itemGUI=new ItemGUI(ItemCreatorAPI.createHeadByValues(1,c.getString("GUI."+b+".items."+j+".name"),c.getString("GUI."+b+".items."+j+".headURL"))) {
-                            @Override
-                            public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType click) {
-                                vecinator(gui,player,u,j,click);
-                            }
-                        };
-                    }
-                }
-                if(c.exists("GUI."+b + ".items."+j+".lore")){
-                    itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"),c.getStringList("GUI."+b + ".items."+j+".lore"))) {
-                        @Override
-                        public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                                vecinator(gui,player, u,j,clickType);
-                        }
-                    };
+                if(c.get("GUI."+b+".items."+j+".lore")==null){
+                    TheAPI.msg(Loader.getTranslation("Missing.MaterialM")+"",s);
                 }else{
-                    itemGUI=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(c.getString("GUI."+b+".items."+j+".type").toUpperCase()),1,c.getString("GUI."+b+".items."+j+".name"))) {
-                        @Override
-                        public void onClick(Player player, HolderGUI holderGUI, GUI.ClickType clickType) {
-                                vecinator(gui,player, u,j,clickType);
-                        }
-                    };
+                    TheAPI.msg(Loader.getTranslation("Missing.HeadURL")+"",s);
                 }
+                return;
             }
             for(String slot : j.split(",[ ]*"))
                 gui.setItem(StringUtils.getInt(slot), itemGUI);
@@ -222,7 +175,45 @@ public class GUICreator implements CommandExecutor {
                 TheAPI.sudoConsole(a.substring(12).replace("%player%",p.getName()));
             }
         } else if(a.startsWith("open")){
-            udelator(a.substring(5),p,a.substring(5));
+            udelator(a.substring(5),p);
         }
     }
+
+    private ItemGUI MethodaHead(GUI gui,ItemGUI g,String name,List<String> list,String headURL,String item,String other){
+        g=new ItemGUI(ItemCreatorAPI.createHeadByValues(1,name,list,headURL)) {
+            @Override
+            public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
+                vecinator(gui,player,other,item,click);
+            }
+        };
+        return g;
+    }
+    private ItemGUI MethodaHead(GUI gui, ItemGUI g, String name, String headURL,String item,String other){
+        g=new ItemGUI(ItemCreatorAPI.createHeadByValues(1,name,headURL)) {
+            @Override
+            public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
+                vecinator(gui,player,other,item,click);
+            }
+        };
+        return g;
+    }
+    private ItemGUI MethodaItem(GUI gui, ItemGUI g, String name, String material, String item, List<String> lore, String other){
+        g=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(material),1,name,lore)) {
+            @Override
+            public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
+                vecinator(gui,player,other,item,click);
+            }
+        };
+        return g;
+    }
+    private ItemGUI MethodaItem(GUI gui, ItemGUI g, String name, String material,String item,String other){
+        g=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(material),1,name)) {
+            @Override
+            public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
+                vecinator(gui,player,other,item,click);
+            }
+        };
+        return g;
+    }
+
 }

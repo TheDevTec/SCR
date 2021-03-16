@@ -71,6 +71,8 @@ Missing:
   Material: "%prefix% Material &e%material% &7doesn't exist"
   Flag: "%prefix% ItemFlag &e%flag% &7doesn't exist"
   Generator: "%prefix% Generator &e%generator% &7doesn't exist"
+  MaterialM: "%prefix% &cMissing Material (type: {BLOCK}) in GUICreator.yml!"
+  HeadURL: "%prefix% &cMissing HeadURL (headURL: {URL}) in GUICreator.yml!"
   Enchant:
     NotExist: "%prefix% Enchant &e%enchant% &7doesn't exist"
     NoEnchant: "%prefix% You have no enchant on item"

@@ -158,7 +158,7 @@ public class Loader extends JavaPlugin implements Listener {
 					return english.getStringList(path);
 				}else
 					if(!english.getString(path).trim().isEmpty())
-						return english.getString(path);
+						return english.getString(path).replace("%prefix%",english.getString("Prefix"));
 			}
 		}else {
 		if(trans.get(path) instanceof Collection) {
@@ -338,11 +338,6 @@ public class Loader extends JavaPlugin implements Listener {
 		if(disable) {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
-		}
-		if(guicreator.exists("Commands")){
-			for(String a : guicreator.getKeys("Commands")){
-				TheAPI.createAndRegisterCommand(a,guicreator.getString("Commands."+a+".permission"),new GUICreator(guicreator.getString("Commands."+a+".gui")),guicreator.getStringList("Commands."+a+".aliases"));
-			}
 		}
 		EventsRegister();
 		updater = new UpdateChecker();

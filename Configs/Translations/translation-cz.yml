@@ -72,6 +72,8 @@ Missing:
   Flag: "%prefix% Flag &e%flag% &7neexistuje"
   Generator: "%prefix% Generátor &e%generator% &7neexistuje"
   CannotLoad: "%prefix% Nelze načíst svět &e%world%"
+  MaterialM: "%prefix% &cChybí Material (type: {BLOCK}) v GUICreator.yml!"
+  HeadURL: "%prefix% &cChybí HeadURL (headURL: {URL}) v GUICreator.yml!"
   Enchant:
     NotExist: "%prefix% Enchant &e%enchant% &7neexistuje"
     NoEnchant: "%prefix% Nemáte žádný enchant na předmětu"

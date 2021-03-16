@@ -1,6 +1,5 @@
 # Commands:
 #   help:
-#     name: "helpGui"
 #     gui: "helpGui"
 #     aliases:
 #     - "helpmenu"
@@ -14,10 +13,10 @@
 #     takeMoney: false
 #     noMoney:
 #     - "left msg &cYou don't have enough money"
-#       0,1,2,3,4,5,6,7,8:
+#       0,1,2,3,4,5,6,7,8,53,52,51,50,48,47,46,45:
 #         name: "&7"
 #         type: "black_stained_glass_pane"
-#       45:
+#       49:
 #         name: "&cClose"
 #         lore:
 #         - "&1Hello!"
