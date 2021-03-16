@@ -401,52 +401,51 @@ public class ChatFormat implements Listener {
 				}
 			}
 		}
-		e.setMessage(r(msg,p));
-		if (Loader.config.getBoolean("Chat-Groups-Options.Enabled")) {
-			format = ChatFormatter.chat(p, (format instanceof String?StringUtils.colorize(colorOfFormat)+r(msg,p):colorOfFormat+"%message%"));
-			if (format != null) {
-				if(format instanceof String)
-					Ref.set(e, "format", ((String)format).replace("%", "%%"));
-				else
-				if (Loader.config.getBoolean("Chat-Groups-Options.Json") && (format instanceof Map || format instanceof Collection)) {
-					if(format instanceof Map) {
-						List<Map<String,Object>> o = new ArrayList<>();
-						o.add((Map<String, Object>) format);
-						format=o;
-					}
-					if(format instanceof List == false) {
-						List<Map<String,Object>> o = new ArrayList<>();
-						for(Object w : ((Collection<Object>)format)) {
-							if(w instanceof Map) {
-								o.add((Map<String, Object>) w);
-							}else {
-								Map<String, Object> g = new HashMap<>();
-								g.put("text", w+"");
-								o.add(g);
-							}
-						}
-						format=o;
-					}
-					List<Map<String,Object>> list = ChatMessage.fixListMap((List<Map<String,Object>>)format);
-					ListIterator<Map<String, Object>> aww = list.listIterator();
-					while(aww.hasNext()) {
-						Map<String, Object> aw = aww.next();
-						if(aw.containsKey("text")) {
-							if(aw.get("text").toString().contains("%message%")) {
-								aww.remove();
-								if(aw.get("text").toString().contains("<#&>u")) {
-									aw.put("text", rainbow(aw.get("text").toString().replace("<#&>u","&u"), msg, p));
-								}
-								for(Map<String, Object> sd : new ChatMessage(aw.get("text").toString().replace("%message%", r(msg,p).replaceAll("#([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])", "#<#/>$1$2$3$4$5$6"))).get())
-									aww.add(fix(aw,sd));
-							}
-						}
-					}
-					Ref.set(e, "format", convertToLegacy(list).replace("%", "%%"));
-					if(!e.isCancelled())
-					Ref.sendPacket(e.getRecipients(), NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write(list))));
-					e.getRecipients().clear(); //for our custom chat
+		String ff = r(msg,p);
+		e.setMessage(ff);
+		format = ChatFormatter.chat(p, (format instanceof String?StringUtils.colorize(colorOfFormat)+ff:colorOfFormat+"%message%"));
+		if (format != null) {
+			if(format instanceof String)
+				e.setFormat(((String)format).replace("%", "%%"));
+			else
+			if (format instanceof Map || format instanceof Collection) {
+				if(format instanceof Map) {
+					List<Map<String,Object>> o = new ArrayList<>();
+					o.add((Map<String, Object>) format);
+					format=o;
 				}
+				if(format instanceof List == false) {
+					List<Map<String,Object>> o = new ArrayList<>();
+					for(Object w : ((Collection<Object>)format)) {
+						if(w instanceof Map) {
+							o.add((Map<String, Object>) w);
+						}else {
+							Map<String, Object> g = new HashMap<>();
+							g.put("text", w+"");
+							o.add(g);
+						}
+					}
+					format=o;
+				}
+				List<Map<String,Object>> list = ChatMessage.fixListMap((List<Map<String,Object>>)format);
+				ListIterator<Map<String, Object>> aww = list.listIterator();
+				while(aww.hasNext()) {
+					Map<String, Object> aw = aww.next();
+					if(aw.containsKey("text")) {
+						if(aw.get("text").toString().contains("%message%")) {
+							aww.remove();
+							if(aw.get("text").toString().contains("<#&>u")) {
+								aw.put("text", rainbow(aw.get("text").toString().replace("<#&>u","&u"), msg, p));
+							}
+							for(Map<String, Object> sd : new ChatMessage(aw.get("text").toString().replace("%message%", ff.replaceAll("#([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])", "#<#/>$1$2$3$4$5$6"))).get())
+								aww.add(fix(aw,sd));
+						}
+					}
+				}
+				e.setFormat(convertToLegacy(list).replace("%", "%%"));
+				if(!e.isCancelled())
+				Ref.sendPacket(e.getRecipients(), NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write(list))));
+				e.getRecipients().clear(); //for our custom chat
 			}
 		}
 	}

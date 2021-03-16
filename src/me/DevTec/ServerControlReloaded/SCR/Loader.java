@@ -21,7 +21,6 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.DevTec.ServerControlReloaded.Commands.CommandsManager;
-import me.DevTec.ServerControlReloaded.Commands.Other.GUICreator;
 import me.DevTec.ServerControlReloaded.Commands.Other.Trash;
 import me.DevTec.ServerControlReloaded.Events.AFkPlayerEvents;
 import me.DevTec.ServerControlReloaded.Events.ChatFormat;

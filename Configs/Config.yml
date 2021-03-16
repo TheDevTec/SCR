@@ -309,13 +309,13 @@ ChatFormat:
       json: false
     chat: "&f<%playername%&f&r> %message%"
     name: "%player%"
-  group:
-    default:
-      options:
-        enabled: true
-        json: false
-      chat: "%playername% &8> &f%message%"
-      name: "&7default &f%player%"
+ # group:
+ #   default:
+ #     options:
+ #       enabled: true
+ #       json: false
+ #     chat: "%playername% &8> &f%message%"
+ #     name: "&7default &f%player%"
  # user:
  #  <nickname>:
  #    options:
