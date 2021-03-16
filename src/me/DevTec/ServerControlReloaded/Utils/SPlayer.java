@@ -91,10 +91,10 @@ public class SPlayer {
 	}
 
 	public void disableFly() {
-		if (hasTempFlyEnabled()) {
-			TheAPI.getUser(s).setAndSave("TempFly.Use", false);
-		}
-		TheAPI.getUser(s).setAndSave("Fly", false);
+		User d = TheAPI.getUser(s);
+		d.remove("TempFly");
+		d.remove("Fly");
+		d.save();
 		if(getPlayer()==null)return;
 		getPlayer().setFlying(false);
 		getPlayer().setAllowFlight(false);
@@ -236,7 +236,9 @@ public class SPlayer {
 	}
 
 	public void disableGod() {
-		TheAPI.getUser(s).setAndSave("God", false);
+		User d = TheAPI.getUser(s);
+		d.remove("God");
+		d.save();
 	}
 
 	public void createEconomyAccount() {
