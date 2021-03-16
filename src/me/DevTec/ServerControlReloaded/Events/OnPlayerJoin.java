@@ -222,19 +222,21 @@ public class OnPlayerJoin implements Listener {
 				if(setting.tab_nametag)
 				TabList.setName(p);
 				}
+				boolean fly = d.getBoolean("FlyOnQuit");
+				d.remove("FlyOnQuit");
 				SPlayer s = API.getSPlayer(p); 
 				new Tasker() {
 					public void run() {
-					s.setFlySpeed();
-					s.setWalkSpeed();
-				if (s.hasTempFlyEnabled())
-					s.enableTempFly();
-				else {
-					if (s.hasFlyEnabled() && Loader.has(p, "Fly", "Other"))
-						s.enableFly();
-				}
-				if (s.hasGodEnabled() && Loader.has(p, "God", "Other"))
-					s.enableGod();
+						s.setFlySpeed();
+						s.setWalkSpeed();
+						if (s.hasTempFlyEnabled())
+							s.enableTempFly();
+						else if ((s.hasFlyEnabled()||fly) && Loader.has(p, "Fly", "Other"))
+							s.enableFly();
+						else
+							s.disableFly();
+						if (s.hasGodEnabled())
+							s.enableGod();
 					}
 				}.runTaskSync();
 				d.setAndSave("Joins", d.getInt("Joins")+1);
@@ -248,6 +250,7 @@ public class OnPlayerJoin implements Listener {
 		e.setQuitMessage(null);
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
+		User d = TheAPI.getUser(p);
 		p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
 		new Tasker() {
 			public void run() {
@@ -293,12 +296,16 @@ public class OnPlayerJoin implements Listener {
 							if(!(""+o).isEmpty())
 								TheAPI.bcMsg(replaceAll(""+o, p));
 				}
-				User d = TheAPI.getUser(p);
 				d.set("LastLeave", setting.format_date_time.format(new Date()));
-				d.set("DisconnectWorld", p.getWorld().getName());
-				d.save();
+				d.setAndSave("DisconnectWorld", p.getWorld().getName());
 			}
 		}.runTask();
+		if(p.isFlying())
+		d.setAndSave("FlyOnQuit", true);
+		else {
+			d.remove("FlyOnQuit");
+			d.save();
+		}
 		p.setFlying(false);
 		p.setAllowFlight(false);
 	}
