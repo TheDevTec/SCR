@@ -30,25 +30,31 @@ public class Configs {
     		data.load(StreamUtils.fromStream(new File("plugins/ServerControlReloaded/Translations/translation-"+lang+".yml")));
     		}catch(Exception e) {}
 	    	boolean change = false;
+	    	try {
+    		if(data.getHeader()!=null && !data.getHeader().isEmpty())
+    			if(c.getHeader()==null||!data.getHeader().containsAll(c.getHeader())) {
+    				c.setHeader(data.getHeader());
+					change=true;
+				}
+    		if(data.getFooter()!=null && !data.getFooter().isEmpty())
+    			if(c.getFooter()==null||!data.getFooter().containsAll(c.getFooter())) {
+    				c.setFooter(data.getFooter());
+    				change=true;
+    			}
+	    	}catch(Exception unsuported) {}
 	    	for(String sr : data.getKeys()) {
 	    		if(c.get(sr)==null && data.get().get(sr)[0]!=null) {
 	    			c.set(sr, data.get().get(sr)[0]);
 	    			change = true;
 	    		}
-	    		if((c.getComments(sr)==null || c.getComments(sr).isEmpty()) && (data.get().get(sr)[1]!=null && !((List<String>) data.get().get(sr)[1]).isEmpty())) {
-	    			if(c.getHeader()!=null && c.getHeader().containsAll((List<String>) data.get().get(sr)[1]))continue;
+	    		if(data.get().get(sr)[1]!=null)
+	    		if((c.getComments(sr)==null || c.getComments(sr).isEmpty()) && !((List<String>) data.get().get(sr)[1]).isEmpty()) {
+	    			if(c.getHeader()!=null && ((List<String>) data.get().get(sr)[1]).containsAll(c.getHeader())
+	    					|| c.getFooter()!=null && ((List<String>) data.get().get(sr)[1]).containsAll(c.getFooter()))continue;
 	    			c.setComments(sr, (List<String>) data.get().get(sr)[1]);
 	    			change = true;
 	    		}
 	    	}
-	    	try {
-    		if(data.getHeader()!=null)
-    			if(!c.getHeader().equals(data.getHeader()))
-    				c.setHeader(data.getHeader());
-    		if(data.getFooter()!=null)
-    			if(!c.getFooter().equals(data.getFooter()))
-    				c.setFooter(data.getFooter());
-	    	}catch(Exception unsuported) {}
 	    	data.reset();
 	    	if(change)
 	    	c.save();
@@ -148,7 +154,7 @@ public class Configs {
     		URLConnection u = Loader.getInstance.getClass().getClassLoader().getResource("Configs/"+s).openConnection();
     		u.setUseCaches(false);
     		data.reload(StreamUtils.fromStream(u.getInputStream()));
-    		}catch(Exception e) {e.printStackTrace();}
+    		}catch(Exception e) {}
 	    	boolean change = c.getData().merge(data, true, true);
 	    	if(change)
 	    	c.save();
