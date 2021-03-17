@@ -52,7 +52,7 @@ public class GUICreator implements CommandExecutor {
                 }
             } else {
                 if(c.get("GUI."+b+".items."+j+".lore")==null){
-                    TheAPI.msg(Loader.getTranslation("Missing.MaterialM")+"",s);
+                    TheAPI.msg(Loader.getTranslation("Missing.Material")+"",s);
                 }else{
                     TheAPI.msg(Loader.getTranslation("Missing.HeadURL")+"",s);
                 }
