@@ -1,4 +1,4 @@
-package me.DevTec.ServerControlReloaded.Commands.Other;
+package me.DevTec.ServerControlReloaded.Utils;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.TheAPI;
