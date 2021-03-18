@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -96,87 +95,34 @@ public class ChatFormat implements Listener {
 				} //else continue in code below
 			}catch(Exception err) {}
 		}
-		s=s+"";
-		if(usejson)s=s.toString().replace("&u", "<#&>u").replace("&U", "<#&>u");
+		s=s.toString().replace("&u", "§[u]").replace("&U", "§[u]");
 		String orig = (String)s;
-		if(s.toString().toLowerCase().contains("&u")) {
-			s=TabList.replace((String) s, p, false);
-			if(s==null)s=orig;
-			return rainbow((String)s, msg, p);
-		}
 		s=TabList.replace(s.toString(), p, true);
 		if(s==null)s=orig;
 		if (msg != null && s.toString().contains("%message%"))
 			s=s.toString().replace("%message%", msg);
+		if(s.toString().contains("§[u]"))
+			s=rainbow(s.toString().replace("§[u]", "§u"));
 		return s;
 	}
-
-	private static String rainbow(String s, String msg, Player p) {
-		List<String> sd = new ArrayList<>();
-		StringBuffer d = new StringBuffer();
-		s=s.replace("%message%", r(msg, p));
-		int found = 0, part = 0, parts = 0;
-		String noHex = "";
-		for (char c : s.toString().toCharArray()) {
-			if(part!=0) {
-				if(colorPattern.matcher(c + "").find()) {
-					noHex+=c;
-					if(++parts==6) {
-						part=0;
-						noHex="";
-						parts=0;
-						found=0;
-					}
-					continue;
-				}else {
-					d.append(noHex);
-					part=0;
-					noHex="";
-					parts=0;
-					found=0;
-				}
+	private static Pattern fixedSplit = Pattern.compile("(#[A-Fa-f0-9]{6}|§[Xx](§[A-Fa-f0-9]){6}|§[A-Fa-f0-9UuXx])");
+	
+	private static String rainbow(String b) {
+		StringBuilder d = new StringBuilder(b.length());
+		String[] split = fixedSplit.split(b);
+		//atempt to add colors to split
+		Matcher m = fixedSplit.matcher(b);
+		int id = 1;
+		while(m.find()) {
+			try {
+			split[id]=m.group(1)+split[id++];
+			}catch(Exception err) {
 			}
-			if (c == '&'||c == '§') {
-				if (found == 1)
-					d.append(c);
-				found = 1;
-				continue;
-			}
-			if (found == 1 && colorPattern.matcher(c + "").find()) {
-				found = 0;
-				part=0;
-				parts=0;
-				sd.add(d.toString());
-				d = d.delete(0, d.length());
-				noHex="&x";
-				d.append("§" + c);
-				continue;
-			}
-			if (found == 1 && (c=='x'||c=='X')) {
-				part = 1;
-				noHex="&x";
-				continue;
-			}
-			if (found == 1) {
-				found = 0;
-				d.append("&" + c);
-				continue;
-			}
-			found = 0;
-			d.append(c);
 		}
-		if (d.length() != 0)
-			sd.add(d.toString());
-		d = d.delete(0, d.length());
-		for (String ff : sd) {
-			if (ff.toLowerCase().startsWith("§u")) {
-				if(ff.contains("%message%") && msg!=null) {
-					ff = StringUtils.colorize(StringUtils.color.colorize(ff.substring(2)));
-					d.append(ff);
-					continue;
-				}
-				ff = StringUtils.colorize(StringUtils.color.colorize(ff.substring(2)));
-			}
+		//colors
+		for (String ff : split) {
+			if (ff.toLowerCase().contains("§u"))
+				ff = StringUtils.color.colorize(ff.replace("§u",""));
 			d.append(ff);
 		}
 		return d.toString();
@@ -378,8 +324,8 @@ public class ChatFormat implements Listener {
 				}
 			}
 		}
-		Object format = ChatFormatter.chat(p, ".");
-		String colorOfFormat = StringUtils.colorize(format!=null ? getColorOf(p,format) :"");
+		Object format = ChatFormatter.getChatFormat(p, 1);
+		String colorOfFormat = format!=null ? getColorOf(format) :"";
 		if(Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
 			Sound sound = null;
 			String[] title = new String[] {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
@@ -403,7 +349,7 @@ public class ChatFormat implements Listener {
 		}
 		String ff = r(msg,p);
 		e.setMessage(ff);
-		format = ChatFormatter.chat(p, (format instanceof String?StringUtils.colorize(colorOfFormat)+ff:colorOfFormat+"%message%"));
+		format = ChatFormatter.chat(p, ff);
 		if (format != null) {
 			if(format instanceof String)
 				e.setFormat(((String)format).replace("%", "%%"));
@@ -428,20 +374,6 @@ public class ChatFormat implements Listener {
 					format=o;
 				}
 				List<Map<String,Object>> list = ChatMessage.fixListMap((List<Map<String,Object>>)format);
-				ListIterator<Map<String, Object>> aww = list.listIterator();
-				while(aww.hasNext()) {
-					Map<String, Object> aw = aww.next();
-					if(aw.containsKey("text")) {
-						if(aw.get("text").toString().contains("%message%")) {
-							aww.remove();
-							if(aw.get("text").toString().contains("<#&>u")) {
-								aw.put("text", rainbow(aw.get("text").toString().replace("<#&>u","&u"), msg, p));
-							}
-							for(Map<String, Object> sd : new ChatMessage(aw.get("text").toString().replace("%message%", ff.replaceAll("#([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])", "#<#/>$1$2$3$4$5$6"))).get())
-								aww.add(fix(aw,sd));
-						}
-					}
-				}
 				e.setFormat(convertToLegacy(list).replace("%", "%%"));
 				if(!e.isCancelled())
 				Ref.sendPacket(e.getRecipients(), NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write(list))));
@@ -460,9 +392,9 @@ public class ChatFormat implements Listener {
 		int count = 1;
 		String[] split = Pattern.compile(c).split(msg);
 		for(String aa : split) {
-			last=StringUtils.getLastColors(StringUtils.colorize(last)+r(aa,p));
+			last=StringUtils.getLastColors(last+r(aa,p));
 			if(count++<split.length)
-				buf.append(aa+c.substring(2)+StringUtils.colorize(last));
+				buf.append(aa+c.substring(2)+last);
 			else
 				buf.append(aa);
 		}
@@ -491,27 +423,15 @@ public class ChatFormat implements Listener {
 		}
 	}
 
-	private Map<String, Object> fix(Map<String, Object> sdx, Map<String, Object> sd) {
-		for(Entry<String, Object> g : sdx.entrySet())
-			if(!g.getKey().equals("text") && !sd.containsKey(g.getKey()))
-				sd.put(g.getKey(), g.getValue());
-		for(Entry<String, Object> f : sd.entrySet()) {
-			if(f.getValue() instanceof String) {
-				f.setValue(f.getValue().toString().replaceAll("#\\<#\\/\\>([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])", "#$1$2$3$4$5$6"));
-			}
-		}
-		return sd;
-	}
-
 	@SuppressWarnings("unchecked")
-	private String getColorOf(Player p, Object format) {
+	private String getColorOf(Object format) {
 		String text = null;
 		if(format instanceof Map) {
 			if(((Map<String, Object>) format).containsKey("color") && ((Map<String, Object>) format).containsKey("text")) {
 				text=((Map<String, Object>) format).get("color").toString();
 			}else {
 				if((((Map<String, Object>)format).get("text")+"").contains("%message%")) {
-					text=r((((Map<String, Object>) format).get("text")+"").split("\\%message\\%")[0],p);
+					text=(((Map<String, Object>) format).get("text")+"").split("\\%message\\%")[0];
 				}
 			}
 		}else
@@ -525,18 +445,36 @@ public class ChatFormat implements Listener {
 						text=((Map<String, Object>) o).get("color").toString();
 					}else {
 						if((((Map<String, Object>) o).get("text")+"").contains("%message%")) {
-							text=r((((Map<String, Object>) o).get("text")+"").split("\\%message\\%")[0],p);
+							text=(((Map<String, Object>) o).get("text")+"").split("\\%message\\%")[0];
 						}
 					}
 				}else {
 					if((""+o).contains("%message%")) {
-						text=r((""+o).split("\\%message\\%")[0],p);
+						text=(""+o).split("\\%message\\%")[0];
 					}
 				}
 			}
 		}else
-			text=r((""+format).split("\\%message\\%")[0],p);
+			text=(""+format).split("\\%message\\%")[0];
 		if(text==null)text="";
-		return StringUtils.getLastColors(text);
+		return getLastColors(text);
+	}
+	private static Pattern getLast = Pattern.compile("(#[A-Fa-f0-9]{6}|[&§][Xx]([&§][A-Fa-f0-9]){6}|[&§][A-Fa-f0-9K-Ok-oUuXx])");
+
+	/**
+	 * @see see Get last colors from String (HEX SUPPORT!)
+	 * @return String
+	 */
+	public static String getLastColors(String s) {
+		Matcher m = getLast.matcher(s);
+		String colors = "";
+		while(m.find()) {
+			String last = m.group(1);
+			if(last.matches("[&§][A-Fa-f0-9]|#[A-Fa-f0-9]{6}|[&§][Xx]([§&][A-Fa-f0-9]){6}|[&§][Uu]"))
+				colors=last;
+			else
+				colors+=last;
+		}
+		return colors;
 	}
 }

@@ -1,7 +1,5 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,52 +21,36 @@ public class Colors {
 	}
 	
 	private static boolean neww = TheAPI.isNewerThan(15);
-
+	private static Pattern fixedSplit = Pattern.compile("(#[A-Fa-f0-9]{6}|[&§][Xx]([&§][A-Fa-f0-9]){6}|[&§][A-Fa-f0-9UuXx])");
+	
 	public static String colorize(String b, boolean sign, CommandSender dr) {
 		String p = sign?"Sign":"Chat";
 		if ((Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow")!=null && !Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow").equals("")) && b.toLowerCase().contains("&u") && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Rainbow"))) {
-			List<String> s = new ArrayList<>();
-			StringBuffer d = new StringBuffer();
-			int found = 0;
-			for (char c : b.toCharArray()) {
-				if (c == '&') {
-					if (found == 1)
-						d.append(c);
-					found = 1;
-					continue;
+			StringBuilder d = new StringBuilder(b.length());
+			String[] split = fixedSplit.split(b);
+			//atempt to add colors to split
+			Matcher m = fixedSplit.matcher(b);
+			int id = 1;
+			while(m.find()) {
+				try {
+				split[id]=m.group(1)+split[id++];
+				}catch(Exception err) {
 				}
-				if (found == 1 && Pattern.compile("[XxA-Fa-fUu0-9]").matcher(c + "").find()) {
-					found = 0;
-					s.add(d.toString());
-					d = d.delete(0, d.length());
-					d.append("&" + c);
-					continue;
-				}
-				if (found == 1) {
-					found = 0;
-					d.append("&" + c);
-					continue;
-				}
-				found = 0;
-				d.append(c);
 			}
-			if (d.length() != 0)
-				s.add(d.toString());
-			d = d.delete(0, d.length());
-			for (String ff : s) {
-				if (ff.toLowerCase().startsWith("&u"))
-	    			ff=StringUtils.color.colorize(ff.substring(2));
+			//colors
+			for (String ff : split) {
+				if (ff.toLowerCase().contains("§u")||ff.toLowerCase().contains("&u"))
+					ff = StringUtils.colorize(StringUtils.color.colorize(ff.replaceAll("[§&][Uu]","")));
 				d.append(ff);
 			}
-			s.clear();
-			b = d.toString();
+			b=d.toString();
 		}
 		if(neww) {
 			if((Loader.config.getString("Options.Colors." + p + ".Permission.Gradient")!=null && !Loader.config.getString("Options.Colors." + p + ".Permission.Gradient").equals("")) && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Gradient")))
 				b = StringUtils.gradient(b);
 			if (b.contains("#") || b.contains("&x")) {
 				if ((Loader.config.getString("Options.Colors." + p + ".Permission.HEX")!=null && !Loader.config.getString("Options.Colors." + p + ".Permission.HEX").equals("")) && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.HEX"))) {
-					b = b.replace("&x", "§x");
+					b = b.replace("&x", "§x").replace("&X", "§x");
 					Matcher match = pattern.matcher(b);
 		            while (match.find()) {
 		                String color = match.group();

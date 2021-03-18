@@ -68,7 +68,6 @@ import me.devtec.theapi.utils.listener.Listener;
 import me.devtec.theapi.utils.reflections.Ref;
 import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.chat.Chat;
-import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
@@ -77,7 +76,7 @@ public class Loader extends JavaPlugin implements Listener {
 	private int task;
 	private long time, rkick;
 	public static String[] colorsText, rulesText;
-	public static Economy econ;
+	public static Object econ;
 	public static Loader getInstance;
 	public static Config english;
 	private static UpdateChecker updater;
@@ -321,7 +320,7 @@ public class Loader extends JavaPlugin implements Listener {
         c.save(DataType.YAML);
 		getInstance = this;
 		Configs.load(false);
-		if (PluginManagerAPI.getPlugin("Vault") != null) {
+		if (PluginManagerAPI.getPlugin("Vault")!=null) {
 			setupEco();
 		} else {
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
@@ -482,56 +481,50 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 
-	public static void hook() {
-		if (PluginManagerAPI.getPlugin("Vault") != null) {
-			econ = new Eco();
-			Bukkit.getServicesManager().register(Economy.class, econ, Loader.getInstance, ServicePriority.Normal);
-			Loader.EconomyLog("Vault hooked into plugin Economy");
-		}
+	public static boolean setupCustomEco() {
+		econ = new Eco();
+		Bukkit.getServicesManager().register(net.milkbowl.vault.economy.Economy.class, (net.milkbowl.vault.economy.Economy)econ, Loader.getInstance, ServicePriority.Normal);
+		Loader.EconomyLog("Vault hooked into plugin Economy");
+		return true;
 	}
 
 	public static void unhook() {
-		if (PluginManagerAPI.getPlugin("Vault") != null)
-			if (econ != null) {
-				Bukkit.getServicesManager().unregister(Economy.class, econ);
-				Loader.EconomyLog("Vault unhooked from plugin Economy");
-			}
-	}
-	
-	private static boolean setupCustomEco() {
-		hook();
-		return econ != null;
+		if (econ != null) {
+			Bukkit.getServicesManager().unregister(net.milkbowl.vault.economy.Economy.class, econ);
+			Loader.EconomyLog("Vault unhooked from plugin Economy");
+		}
 	}
 
 	public static void EconomyLog(String s) {
 		if (config.getBoolean("Options.Economy.Log"))
-			Bukkit.getLogger().info("[EconomyLog] " + s);
+			getInstance.getLogger().info("[EconomyLog] " + s);
 	}
 
 	private static boolean setupEco() {
 		try {
-			RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServicesManager()
+			RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider = Bukkit.getServicesManager()
 					.getRegistration(net.milkbowl.vault.economy.Economy.class);
 			if (economyProvider != null) {
 				if (config.getBoolean("Options.Economy.CanUseOtherEconomy")) {
 					EconomyLog("Found economy '" + economyProvider.getProvider().getName()
-							+ "', using setting and loading plugin economy.");
-					setupCustomEco();
+							+ "', using setting and skipping plugin economy.");
+					return true;
 				} else {
 					EconomyLog("Found economy '" + economyProvider.getProvider().getName()
 							+ "', skipping plugin economy.");
-					econ = economyProvider.getProvider();
+					return true;
 				}
 			}
 			if (econ == null) {
-				EconomyLog("Plugin not found any economy, loading plugin economy.");
-				if (!config.getBoolean("Options.Economy.DisablePluginEconomy"))
-					setupCustomEco();
+				if (!config.getBoolean("Options.Economy.DisablePluginEconomy")) {
+					EconomyLog("Plugin not found any economy, loading plugin economy.");
+					return setupCustomEco();
+				}
 			}
 		} catch (Exception e) {
 			EconomyLog("Error when hooking economy.");
 		}
-		return (econ != null);
+		return false;
 	}
 
 	private static boolean setupPermisions() {
