@@ -324,8 +324,7 @@ public class ChatFormat implements Listener {
 				}
 			}
 		}
-		Object format = ChatFormatter.getChatFormat(p, 1);
-		String colorOfFormat = format!=null ? getColorOf(format) :"";
+		String colorOfFormat = getColorOf(ChatFormatter.getChatFormat(p, 1)[0]);
 		if(Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
 			Sound sound = null;
 			String[] title = new String[] {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
@@ -339,7 +338,7 @@ public class ChatFormat implements Listener {
 					if(msg.contains(s.getName())) {
 						msg=replacePlayer(color, colorOfFormat, msg, s.getName(), p);
 						if(sound!=null)
-							s.playSound(s.getLocation(), sound, 0, 0);
+							s.playSound(s.getLocation(), sound, 1,1);
 						if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
 							TheAPI.sendTitle(s, title[0].trim().isEmpty()?"":TabList.replace(title[0], s, true), title[1].trim().isEmpty()?"":TabList.replace(title[1], s, true));
 						if(!actionbar.trim().isEmpty())TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
@@ -349,7 +348,7 @@ public class ChatFormat implements Listener {
 		}
 		String ff = r(msg,p);
 		e.setMessage(ff);
-		format = ChatFormatter.chat(p, ff);
+		Object format = ChatFormatter.chat(p, ff);
 		if (format != null) {
 			if(format instanceof String)
 				e.setFormat(((String)format).replace("%", "%%"));
@@ -392,9 +391,9 @@ public class ChatFormat implements Listener {
 		int count = 1;
 		String[] split = Pattern.compile(c).split(msg);
 		for(String aa : split) {
-			last=StringUtils.getLastColors(last+r(aa,p));
+			last=getLastColors(last+aa);
 			if(count++<split.length)
-				buf.append(aa+c.substring(2)+last);
+				buf.append(aa+c.substring(2)+((last.toLowerCase().contains("&u")||last.toLowerCase().contains("§u"))?last:StringUtils.colorize(last)));
 			else
 				buf.append(aa);
 		}
