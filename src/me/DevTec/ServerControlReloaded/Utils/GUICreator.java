@@ -51,7 +51,7 @@ public class GUICreator implements CommandExecutor {
                     itemGUI=MethodaItem(gui,itemGUI,c.getString("GUI."+b+".items."+j+".name"),c.getString("GUI."+b+".items."+j+".type").toUpperCase(),j,b);
                 }
             } else {
-                if(c.get("GUI."+b+".items."+j+".lore")==null){
+                if(c.get("GUI."+b+".items."+j+".headURL")==null){
                     TheAPI.msg(Loader.getTranslation("Missing.Material")+"",s);
                 }else{
                     TheAPI.msg(Loader.getTranslation("Missing.HeadURL")+"",s);
@@ -183,7 +183,7 @@ public class GUICreator implements CommandExecutor {
         g=new ItemGUI(ItemCreatorAPI.createHeadByValues(1,name,list,headURL)) {
             @Override
             public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
-                vecinator(gui,player,other,item,click);
+                try {vecinator(gui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
             }
         };
         return g;
@@ -192,7 +192,7 @@ public class GUICreator implements CommandExecutor {
         g=new ItemGUI(ItemCreatorAPI.createHeadByValues(1,name,headURL)) {
             @Override
             public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
-                vecinator(gui,player,other,item,click);
+                try {vecinator(gui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
             }
         };
         return g;
@@ -201,7 +201,7 @@ public class GUICreator implements CommandExecutor {
         g=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(material),1,name,lore)) {
             @Override
             public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
-                vecinator(gui,player,other,item,click);
+                try {vecinator(gui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
             }
         };
         return g;
@@ -210,7 +210,7 @@ public class GUICreator implements CommandExecutor {
         g=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(material),1,name)) {
             @Override
             public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
-                vecinator(gui,player,other,item,click);
+                try {vecinator(gui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
             }
         };
         return g;
