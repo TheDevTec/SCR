@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -296,42 +297,44 @@ public class ChatFormat implements Listener {
 			return;
 		}
 		Iterator<Player> a = e.getRecipients().iterator();
+		String ty = Loader.config.getString("Options.Chat.Type");
+		double distance = Loader.config.getDouble("Options.Chat.Distance");
 		while(a.hasNext()) {
-			Player d = a.next();
-			if(d.equals(p))continue;
-			if(PrivateMessageManager.getIgnoreList(d.getName()).contains(p.getName()))a.remove();
-		}
-		if(Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("per_world")
-				||Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("perworld")||
+			Player s = a.next();
+			if(s.equals(p))continue;
+			if(PrivateMessageManager.getIgnoreList(s.getName()).contains(p.getName())) {
+				a.remove();
+				continue;
+			}
+			if(s.hasPermission("SCR.Other.ChatTypeBypass"))continue;
+			if(ty.equalsIgnoreCase("per_world")
+					||Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("perworld")||
 				Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("world")) {
-			Iterator<Player> as = e.getRecipients().iterator();
-			while(as.hasNext()) {
-				Player s = as.next();
-				if(p!=s && !s.hasPermission("SCR.Other.ChatTypeBypass")) {
-					if(!p.getWorld().equals(s.getWorld()))as.remove();
+					if(!p.getWorld().equals(s.getWorld())) {
+						a.remove();
+						continue;
 				}
 			}
-		}
-		if(Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("per_distance")
-				||Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("distance")) {
-			Iterator<Player> as = e.getRecipients().iterator();
-			double distance = Loader.config.getDouble("Options.Chat.Distance");
-			while(as.hasNext()) {
-				Player s = as.next();
-				if(p!=s && !s.hasPermission("SCR.Other.ChatTypeBypass")) {
-					if(!p.getWorld().equals(s.getWorld()))as.remove();
-					else if(p.getLocation().distance(s.getLocation())>distance)as.remove();
+			if(ty.equalsIgnoreCase("per_distance")
+					||Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("distance")) {
+					if(!p.getWorld().equals(s.getWorld())) {
+						a.remove();
+						continue;
+				}
+					else if(p.getLocation().distance(s.getLocation())>distance) {
+						a.remove();
+						continue;
 				}
 			}
 		}
 		String colorOfFormat = getColorOf(ChatFormatter.getChatFormat(p, 1)[0]);
 		if(Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
 			Sound sound = null;
-			String[] title = new String[] {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
+			String[] title = {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
 			String actionbar = Loader.config.getString("Options.ChatNotification.ActionBar").replace("%target%", p.getName()).replace("%targetname%", ChatFormatter.displayName(p)).replace("%targetcustomname%", ChatFormatter.customName(p));
 			String color = Loader.config.getString("Options.ChatNotification.Color");
 			try {
-			sound = Sound.valueOf(Loader.config.getString("Options.ChatNotification.Sound").toUpperCase());
+				sound = Sound.valueOf(Loader.config.getString("Options.ChatNotification.Sound").toUpperCase());
 			}catch(Exception | NoSuchFieldError err) {}
 			for(Player s : e.getRecipients()) {
 				if(p.canSee(s) && p!=s) {
@@ -382,26 +385,25 @@ public class ChatFormat implements Listener {
 	}
 	
 	String replacePlayer(String color, String format, String msg, String player, Player p) {
-		String c = "§g"+StringUtils.colorize(color+player);
+		String c = StringUtils.colorize(color+player);
 		Pattern g = Pattern.compile(player, Pattern.CASE_INSENSITIVE);
-		Matcher m = g.matcher(msg);
-		while(m.find())msg=m.replaceAll(c);
 		StringBuffer buf = new StringBuffer(msg.length());
 		String last = format;
 		int count = 1;
-		String[] split = Pattern.compile(c).split(msg);
+		String[] split = g.split(msg);
 		for(String aa : split) {
 			last=getLastColors(last+aa);
+			Bukkit.broadcastMessage(last+"CCCC");
 			if(count++<split.length)
-				buf.append(aa+c.substring(2)+((last.toLowerCase().contains("&u")||last.toLowerCase().contains("§u"))?last:StringUtils.colorize(last)));
+				buf.append(aa+c+((last.toLowerCase().contains("&u")||last.toLowerCase().contains("§u"))?last:StringUtils.colorize(last)));
 			else
 				buf.append(aa);
 		}
-		if(msg.equals(c))
-			buf.append(c.substring(2));
+		if(msg.equalsIgnoreCase(player))
+			buf.append(c);
 		else
-		if(msg.endsWith(c))
-			buf.append(c.substring(2));
+		if(msg.toLowerCase().endsWith(player.toLowerCase()))
+			buf.append(c);
 		return buf.toString();
 	}
 
@@ -439,7 +441,7 @@ public class ChatFormat implements Listener {
 				if(o instanceof Map) {
 					if(((Map<String, Object>) o).containsKey("color") && ((Map<String, Object>) o).containsKey("text")) {
 						if((((Map<String, Object>) o).get("text")+"").contains("%message%")) {
-						return text=((Map<String, Object>) o).get("color").toString();
+							return text=((Map<String, Object>) o).get("color").toString();
 						}
 						text=((Map<String, Object>) o).get("color").toString();
 					}else {
@@ -455,7 +457,7 @@ public class ChatFormat implements Listener {
 			}
 		}else
 			text=(""+format).split("\\%message\\%")[0];
-		if(text==null)text="";
+		if(text==null)return "";
 		return getLastColors(text);
 	}
 	private static Pattern getLast = Pattern.compile("(#[A-Fa-f0-9]{6}|[&§][Xx]([&§][A-Fa-f0-9]){6}|[&§][A-Fa-f0-9K-Ok-oUuXx])");
