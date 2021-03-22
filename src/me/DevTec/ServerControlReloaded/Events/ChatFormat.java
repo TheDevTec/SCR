@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -42,19 +41,19 @@ public class ChatFormat implements Listener {
 	static Pattern colorPattern = Pattern.compile("[XxA-Fa-fUu0-9]");
 
 	@SuppressWarnings("unchecked")
-	public static Collection<?> colorizeList(Collection<?> json, Player p, String msg) {
+	public static Collection<?> colorizeList(Collection<?> json, Player p, String msg,boolean colors) {
 		ArrayList<Object> colorized = new ArrayList<>(json.size());
 		for (Object e : json) {
 			if (e instanceof Collection) {
-				colorized.add(colorizeList((Collection<?>) e,p,msg));
+				colorized.add(colorizeList((Collection<?>) e,p,msg,colors));
 				continue;
 			}
 			if (e instanceof Map) {
-				colorized.add(colorizeMap((Map<String, Object>) e,p,msg));
+				colorized.add(colorizeMap((Map<String, Object>) e,p,msg,colors));
 				continue;
 			}
 			if (e instanceof String) {
-				colorized.add(r(p,(String)e,msg, true));
+				colorized.add(r(p,(String)e,msg, true,colors));
 				continue;
 			}
 			colorized.add(e);
@@ -63,19 +62,19 @@ public class ChatFormat implements Listener {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> colorizeMap(Map<String, Object> jj, Player p, String msg) {
+	public static Map<String, Object> colorizeMap(Map<String, Object> jj, Player p, String msg,boolean colors) {
 		HashMap<String, Object> json = new HashMap<>(jj.size());
 		for (Entry<String, Object> e : jj.entrySet()) {
 			if (e.getValue() instanceof Collection) {
-				json.put(e.getKey(), colorizeList((Collection<?>) e.getValue(), p, msg));
+				json.put(e.getKey(), colorizeList((Collection<?>) e.getValue(), p, msg,colors));
 				continue;
 			}
 			if (e.getValue() instanceof Map) {
-				json.put(e.getKey(), colorizeMap((Map<String, Object>) e.getValue(), p, msg));
+				json.put(e.getKey(), colorizeMap((Map<String, Object>) e.getValue(), p, msg,colors));
 				continue;
 			}
 			if (e.getValue() instanceof String && !e.getKey().equals("color")) {
-				json.put(e.getKey(), r(p,(String) e.getValue(),msg, true));
+				json.put(e.getKey(), r(p,(String) e.getValue(),msg, true,colors));
 				continue;
 			}
 			json.put(e.getKey(), e.getValue());
@@ -84,27 +83,34 @@ public class ChatFormat implements Listener {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Object r(Player p, Object s, String msg, boolean usejson) {
+	public static Object r(Player p, Object s, String msg, boolean usejson, boolean colors) {
 		if(s.toString().trim().isEmpty())return s;
 		if (usejson) {
 			try {
 				if(s instanceof Map && s!=null) {
-					return colorizeMap((Map<String, Object>) s,p,msg);
+					return colorizeMap((Map<String, Object>) s,p,msg,colors);
 				} //else continue in code below
 				if(s instanceof Collection && s!=null) {
-					return colorizeList((Collection<Object>) s,p,msg);
+					return colorizeList((Collection<Object>) s,p,msg,colors);
 				} //else continue in code below
 			}catch(Exception err) {}
 		}
+		if(colors) {
 		s=s.toString().replace("&u", "§[u]").replace("&U", "§[u]");
 		String orig = (String)s;
-		s=TabList.replace(s.toString(), p, true);
+		s=TabList.replace(s.toString(), p, colors);
 		if(s==null)s=orig;
 		if (msg != null && s.toString().contains("%message%"))
 			s=s.toString().replace("%message%", msg);
 		if(s.toString().contains("§[u]"))
 			s=rainbow(s.toString().replace("§[u]", "§u"));
 		return s;
+		}else {
+			String orig = (String)s;
+			s=TabList.replace(s.toString(), p, colors);
+			if(s==null)s=orig;
+			return s;
+		}
 	}
 	private static Pattern fixedSplit = Pattern.compile("(#[A-Fa-f0-9]{6}|§[Xx](§[A-Fa-f0-9]){6}|§[A-Fa-f0-9UuXx])");
 	
@@ -293,6 +299,7 @@ public class ChatFormat implements Listener {
 			Loader.sendMessages(p, "ChatLock.IsLocked");
 			Loader.sendBroadcasts(p, "ChatLock.Message", Placeholder.c().add("%player%", p.getName())
 					.add("%playername%", p.getDisplayName()).add("%message%", msg), Loader.getPerm("ChatLock", "Other"));
+			if(msg!=null)
 			e.setMessage(r(msg, p));
 			return;
 		}
@@ -327,7 +334,8 @@ public class ChatFormat implements Listener {
 				}
 			}
 		}
-		String colorOfFormat = getColorOf(ChatFormatter.getChatFormat(p, 1)[0]);
+		Object[] format = ChatFormatter.getChatFormat(p, 1);
+		String colorOfFormat = getColorOf(ChatFormat.r(p, format[0], null, (format[0] instanceof Map || format[0] instanceof List) && ChatFormatter.getStatus(p, (int)format[1], "json"), false));
 		if(Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
 			Sound sound = null;
 			String[] title = {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
@@ -349,39 +357,41 @@ public class ChatFormat implements Listener {
 				}
 			}
 		}
-		String ff = r(msg,p);
-		e.setMessage(ff);
-		Object format = ChatFormatter.chat(p, ff);
-		if (format != null) {
-			if(format instanceof String)
-				e.setFormat(((String)format).replace("%", "%%"));
-			else
-			if (format instanceof Map || format instanceof Collection) {
-				if(format instanceof Map) {
-					List<Map<String,Object>> o = new ArrayList<>();
-					o.add((Map<String, Object>) format);
-					format=o;
-				}
-				if(format instanceof List == false) {
-					List<Map<String,Object>> o = new ArrayList<>();
-					for(Object w : ((Collection<Object>)format)) {
-						if(w instanceof Map) {
-							o.add((Map<String, Object>) w);
-						}else {
-							Map<String, Object> g = new HashMap<>();
-							g.put("text", w+"");
-							o.add(g);
-						}
+		if(msg!=null) {
+			String ff = r(msg,p);
+			e.setMessage(ff);
+			Object formatt = ChatFormatter.chat(p, ff);
+			if (formatt != null) {
+				if(formatt instanceof String)
+					e.setFormat(((String)formatt).replace("%", "%%"));
+				else
+				if (formatt instanceof Map || formatt instanceof Collection) {
+					if(formatt instanceof Map) {
+						List<Map<String,Object>> o = new ArrayList<>();
+						o.add((Map<String, Object>) formatt);
+						formatt=o;
 					}
-					format=o;
+					if(formatt instanceof List == false) {
+						List<Map<String,Object>> o = new ArrayList<>();
+						for(Object w : ((Collection<Object>)formatt)) {
+							if(w instanceof Map) {
+								o.add((Map<String, Object>) w);
+							}else {
+								Map<String, Object> g = new HashMap<>();
+								g.put("text", w+"");
+								o.add(g);
+							}
+						}
+						formatt=o;
+					}
+					List<Map<String,Object>> list = ChatMessage.fixListMap((List<Map<String,Object>>)formatt);
+					e.setFormat(convertToLegacy(list).replace("%", "%%"));
+					if(!e.isCancelled())
+					Ref.sendPacket(e.getRecipients(), NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write(list))));
+					e.getRecipients().clear(); //for our custom chat
 				}
-				List<Map<String,Object>> list = ChatMessage.fixListMap((List<Map<String,Object>>)format);
-				e.setFormat(convertToLegacy(list).replace("%", "%%"));
-				if(!e.isCancelled())
-				Ref.sendPacket(e.getRecipients(), NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write(list))));
-				e.getRecipients().clear(); //for our custom chat
 			}
-		}
+		}else e.setCancelled(true);
 	}
 	
 	String replacePlayer(String color, String format, String msg, String player, Player p) {
@@ -393,7 +403,6 @@ public class ChatFormat implements Listener {
 		String[] split = g.split(msg);
 		for(String aa : split) {
 			last=getLastColors(last+aa);
-			Bukkit.broadcastMessage(last+"CCCC");
 			if(count++<split.length)
 				buf.append(aa+c+((last.toLowerCase().contains("&u")||last.toLowerCase().contains("§u"))?last:StringUtils.colorize(last)));
 			else
@@ -462,16 +471,12 @@ public class ChatFormat implements Listener {
 	}
 	private static Pattern getLast = Pattern.compile("(#[A-Fa-f0-9]{6}|[&§][Xx]([&§][A-Fa-f0-9]){6}|[&§][A-Fa-f0-9K-Ok-oUuXx])");
 
-	/**
-	 * @see see Get last colors from String (HEX SUPPORT!)
-	 * @return String
-	 */
 	public static String getLastColors(String s) {
 		Matcher m = getLast.matcher(s);
 		String colors = "";
 		while(m.find()) {
 			String last = m.group(1);
-			if(last.matches("[&§][A-Fa-f0-9]|#[A-Fa-f0-9]{6}|[&§][Xx]([§&][A-Fa-f0-9]){6}|[&§][Uu]"))
+			if(last.matches("[&§][A-Fa-f0-9Uu]|#[A-Fa-f0-9]{6}|[&§][Xx]([§&][A-Fa-f0-9]){6}"))
 				colors=last;
 			else
 				colors+=last;

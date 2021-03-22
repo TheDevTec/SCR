@@ -16,7 +16,7 @@ public class ChatFormatter {
 	public static String displayName(Player p) {
 		Object[] format = getChatFormat(p, 0);
 		if (format!=null)
-			return Colors.colorize(ChatFormat.r(p, PlaceholderAPI.setPlaceholders(p, format[0].toString()), null, false).toString(), false, p);
+			return Colors.colorize(ChatFormat.r(p, PlaceholderAPI.setPlaceholders(p, format[0].toString()), null, false, true).toString(), false, p);
 		return Loader.getChatFormat(p, Item.PREFIX) + p.getName() + Loader.getChatFormat(p, Item.SUFFIX);
 	}
 	
@@ -34,7 +34,7 @@ public class ChatFormatter {
 	
 	public static Object chat(Player p, String message) {
 		Object[] format = getChatFormat(p, 1);
-		return format!=null?ChatFormat.r(p, format[0], message, (format[0] instanceof Map || format[0] instanceof List) && getStatus(p, (int)format[1], "json")):null;
+		return format!=null?ChatFormat.r(p, format[0], message, (format[0] instanceof Map || format[0] instanceof List) && getStatus(p, (int)format[1], "json"), true):null;
 	}
 	public static Object[] getChatFormat(Player player, int type) {
 		String t = type==0?".name":".chat";

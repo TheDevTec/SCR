@@ -16,6 +16,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.HoverMessage.ClickAction;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.User;
 
 public class Uuid implements CommandExecutor, TabCompleter {
 
@@ -29,49 +30,77 @@ public class Uuid implements CommandExecutor, TabCompleter {
 
 	@SuppressWarnings("unchecked")
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
-		Player p = (Player) sender;
-		if(Loader.has(p, "Uuid", "Other")) {
-		if(args.length==0) {
-			Loader.Help(p, "Uuid", "Other");
-			return true;
-		}
-		if (args.length==1) {
+		if(Loader.has(sender, "Uuid", "Other")) {
+			if(args.length==0) {
+				Loader.Help(sender, "Uuid", "Other");
+				return true;
+			}
+			if(sender instanceof Player) {
+				Player pl = TheAPI.getPlayerOrNull(args[0]);
+				if (pl!=null) {
+					Object o = Loader.getTranslation("Uuid.Message");
+					if(o!=null) {
+						if(o instanceof String) {
+							StringUtils.getHoverMessage(Loader.placeholder(sender, (String)o, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString()))
+									).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, pl.getUniqueId().toString()).send((Player)sender);
+						}
+						if(o instanceof Collection) {
+							for (String a : (Collection<String>)o) {
+								StringUtils.getHoverMessage(Loader.placeholder(sender, (String)a, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString()))
+										).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, pl.getUniqueId().toString()).send((Player)sender);
+							}						
+						}
+					}
+					return true;
+				}
+				Object o = Loader.getTranslation("Uuid.Message");
+				User d = TheAPI.getUser(args[0]);
+				String uuid = d.getUUID().toString(), name = d.getName();
+				if(o!=null) {
+					if(o instanceof String) {
+						StringUtils.getHoverMessage(Loader.placeholder(sender, (String)o, Placeholder.c().add("%player%", name).replace("%uuid%", uuid))
+								).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, uuid).send((Player)sender);
+					}
+					if(o instanceof Collection) {
+						for (String a : (Collection<String>)o) {
+							StringUtils.getHoverMessage(Loader.placeholder(sender, (String)a, Placeholder.c().add("%player%",name).replace("%uuid%", uuid))
+									).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, uuid).send((Player)sender);
+						}						
+					}
+				}
+				return true;
+			}
 			Player pl = TheAPI.getPlayerOrNull(args[0]);
 			if (pl!=null) {
 				Object o = Loader.getTranslation("Uuid.Message");
 				if(o!=null) {
 					if(o instanceof String) {
-						StringUtils.getHoverMessage(Loader.placeholder(sender, (String)o, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString()))
-								).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, pl.getUniqueId().toString()).send(p);
+						TheAPI.msg(Loader.placeholder(sender, (String)o, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString())),sender);
 					}
 					if(o instanceof Collection) {
 						for (String a : (Collection<String>)o) {
-							StringUtils.getHoverMessage(Loader.placeholder(sender, (String)a, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString()))
-									).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, pl.getUniqueId().toString()).send(p);
+							TheAPI.msg(Loader.placeholder(sender, a, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString())),sender);
 						}						
 					}
 				}
 				return true;
-			} else {
-				Object o = Loader.getTranslation("Uuid.Message");
-				String name = args[0];
-				String uuid = TheAPI.getUser(args[0]).getUUID().toString();
-				if(o!=null) {
-					if(o instanceof String) {
-						StringUtils.getHoverMessage(Loader.placeholder(sender, (String)o, Placeholder.c().add("%player%", name).replace("%uuid%", uuid))
-								).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, uuid).send(p);
-					}
-					if(o instanceof Collection) {
-						for (String a : (Collection<String>)o) {
-							StringUtils.getHoverMessage(Loader.placeholder(sender, (String)a, Placeholder.c().add("%player%",name).replace("%uuid%", uuid))
-									).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, uuid).send(p);
-						}						
-					}
+			}
+			Object o = Loader.getTranslation("Uuid.Message");
+			User d = TheAPI.getUser(args[0]);
+			String uuid = d.getUUID().toString(), name = d.getName();
+			if(o!=null) {
+				if(o instanceof String) {
+					TheAPI.msg(Loader.placeholder(sender, (String)o, Placeholder.c().add("%player%", name).replace("%uuid%", uuid)),sender);
 				}
-				return true;
-			}}
-		Loader.noPerms(p, "Uuid", "Other");
+				if(o instanceof Collection) {
+					for (String a : (Collection<String>)o) {
+						TheAPI.msg(Loader.placeholder(sender, a, Placeholder.c().add("%player%", name).replace("%uuid%", uuid)),sender);
+					}						
+				}
+			}
+			return true;
 		}
-	return true;
+		Loader.noPerms(sender, "Uuid", "Other");
+		return true;
 	}
 }
