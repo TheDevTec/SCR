@@ -850,4 +850,7 @@ Trash:
   Name: "&7Trash"
   Clear: "&eEmpty the bin"
 
+Mirror:
+   Types: "%prefix% &7Mirror types: &e%types%"
+
 Config: "%prefix% Configurations and tasks reloaded"

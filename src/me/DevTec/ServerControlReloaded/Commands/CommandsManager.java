@@ -136,6 +136,7 @@ import me.DevTec.ServerControlReloaded.Commands.Weather.PSun;
 import me.DevTec.ServerControlReloaded.Commands.Weather.Rain;
 import me.DevTec.ServerControlReloaded.Commands.Weather.Sun;
 import me.DevTec.ServerControlReloaded.Commands.Weather.Thunder;
+import me.DevTec.ServerControlReloaded.Modules.Mirror.MirrorCommand;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.GUICreator;
 import me.devtec.theapi.TheAPI;
@@ -294,6 +295,9 @@ public class CommandsManager {
 		load("TpSystem", "TpAll", new Tpall());
 		load("TpSystem", "TpaAccept", new Tpaccept());
 		load("TpSystem", "TpaDeny", new Tpadeny());
+		
+		//Modules -> package Modules
+		load("Other", "Mirror", new MirrorCommand());
 		
 		//Other
 		load("Other", "Top",new Top());

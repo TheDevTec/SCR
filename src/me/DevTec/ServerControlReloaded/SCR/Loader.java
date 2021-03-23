@@ -36,6 +36,7 @@ import me.DevTec.ServerControlReloaded.Events.SecurityListenerCooldowns;
 import me.DevTec.ServerControlReloaded.Events.SecurityListenerV4;
 import me.DevTec.ServerControlReloaded.Events.Signs;
 import me.DevTec.ServerControlReloaded.Events.WorldChange;
+import me.DevTec.ServerControlReloaded.Modules.Mirror.MirrorEvents;
 import me.DevTec.ServerControlReloaded.Utils.Configs;
 import me.DevTec.ServerControlReloaded.Utils.Converter;
 import me.DevTec.ServerControlReloaded.Utils.DisplayManager;
@@ -720,6 +721,7 @@ public class Loader extends JavaPlugin implements Listener {
 		EventC(new EntitySpawn());
 		EventC(new Signs());
 		EventC(new FarmingSystem());
+		EventC(new MirrorEvents());
 	}
 	
 	public static void notOnline(CommandSender s, String player) {

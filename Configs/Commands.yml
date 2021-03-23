@@ -796,6 +796,11 @@ Info:
     Enabled: true
     
 Other:
+  Mirror:
+    Name: "mirror"
+    Permission: "SCR.Command.Mirror"
+    Help: "/Mirror <type | none> - Set your mirror type"
+    Enabled: true
   AFK:
     Name: "afk"
     Permission: "SCR.Command.Afk"
