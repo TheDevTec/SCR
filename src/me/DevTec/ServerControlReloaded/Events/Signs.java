@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,6 +16,7 @@ import me.DevTec.ServerControlReloaded.Utils.Colors;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.SignAPI;
 import me.devtec.theapi.apis.SignAPI.SignAction;
+import me.devtec.theapi.utils.Position;
 
 public class Signs implements Listener {
 	public Loader ps = Loader.getInstance;
@@ -47,7 +47,7 @@ public class Signs implements Listener {
 				e.setLine(1, TheAPI.colorize("&a" + warp(f)));
 				e.getBlock().getState().update();
 				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Warp " + warp(f)));
-				SignAPI.setActions((Sign) e.getBlock().getState(), a);
+				SignAPI.setActions(new Position(e.getBlock()), a);
 			}
 		}
 		if (l.equalsIgnoreCase("[workbench]") && p.hasPermission("SCR.Other.SignCreate.Workbench")) {
@@ -55,60 +55,60 @@ public class Signs implements Listener {
 			e.getBlock().getState().update();
 
 			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Workbench"));
-			SignAPI.setActions((Sign) e.getBlock().getState(), a);
+			SignAPI.setActions(new Position(e.getBlock()), a);
 		}
 		if (l.equalsIgnoreCase("[Enderchest]") && p.hasPermission("SCR.Other.SignCreate.EnderChest")) {
 			e.setLine(0, TheAPI.colorize("&0[&9EnderChest&0]"));
 			e.getBlock().getState().update();
 
 			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Enderchest"));
-			SignAPI.setActions((Sign) e.getBlock().getState(), a);
+			SignAPI.setActions(new Position(e.getBlock()), a);
 		}
 		if (l.equalsIgnoreCase("[Suicide]") && p.hasPermission("SCR.Other.SignCreate.Suicide")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Suicide&0]"));
 			e.getBlock().getState().update();
 			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Suicide"));
-			SignAPI.setActions((Sign) e.getBlock().getState(), a);
+			SignAPI.setActions(new Position(e.getBlock()), a);
 		}
 		if (l.equalsIgnoreCase("[repair]") && p.hasPermission("SCR.Other.SignCreate.Repair")) {
 			if (f == null) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.getBlock().getState().update();
 				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("servercontrolreloaded:repair Hand"));
-				SignAPI.setActions((Sign) e.getBlock().getState(), a);
+				SignAPI.setActions(new Position(e.getBlock()), a);
 			}
 			if (f.equalsIgnoreCase("Hand")) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.setLine(1, TheAPI.colorize("&aHand"));
 				e.getBlock().getState().update();
 				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("servercontrolreloaded:repair Hand"));
-				SignAPI.setActions((Sign) e.getBlock().getState(), a);
+				SignAPI.setActions(new Position(e.getBlock()), a);
 			}
 			if (f.equalsIgnoreCase("All")) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.setLine(1, TheAPI.colorize("&aAll"));
 				e.getBlock().getState().update();
 				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("servercontrolreloaded:repair All"));
-				SignAPI.setActions((Sign) e.getBlock().getState(), a);
+				SignAPI.setActions(new Position(e.getBlock()), a);
 			}
 		}
 		if (l.equalsIgnoreCase("[Feed]") && p.hasPermission("SCR.Other.SignCreate.Feed")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Feed&0]"));
 			e.getBlock().getState().update();
 			a.put(SignAction.CONSOLE_COMMANDS, Arrays.asList("Feed %player%"));
-			SignAPI.setActions((Sign) e.getBlock().getState(), a);
+			SignAPI.setActions(new Position(e.getBlock()), a);
 		}
 		if (l.equalsIgnoreCase("[Trash]") && p.hasPermission("SCR.Other.SignCreate.Trash")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Trash&0]"));
 			e.getBlock().getState().update();
 			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Trash"));
-			SignAPI.setActions((Sign) e.getBlock().getState(), a);
+			SignAPI.setActions(new Position(e.getBlock()), a);
 		}
 		if (l.equalsIgnoreCase("[Heal]") && p.hasPermission("SCR.Other.SignCreate.Heal")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Heal&0]"));
 			e.getBlock().getState().update();
 			a.put(SignAction.CONSOLE_COMMANDS, Arrays.asList("Heal %player%"));
-			SignAPI.setActions((Sign) e.getBlock().getState(), a);
+			SignAPI.setActions(new Position(e.getBlock()), a);
 		}
 	}
 }

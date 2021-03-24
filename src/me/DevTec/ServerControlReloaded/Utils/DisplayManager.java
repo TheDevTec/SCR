@@ -9,6 +9,9 @@ import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.bossbar.BarColor;
+import me.devtec.theapi.bossbar.BarStyle;
+import me.devtec.theapi.bossbar.BossBar;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
@@ -250,6 +253,7 @@ public class DisplayManager {
 		}.runRepeating(0, StringUtils.calculate(Loader.ac.getString("RefleshTick")).longValue()));
 		if(Loader.bb.getBoolean("Enabled"))
 		tasks.add(new Tasker() {
+			int cc = 0;
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
 					try {
@@ -273,16 +277,33 @@ public class DisplayManager {
 							if(!isToggleable(s, DisplayType.BOSSBAR)) {
 								String text = "Text";
 								String stage = "Stage";
+								String style = "Style";
+								String color = "Color";
 								if(Loader.bb.exists("PerPlayer."+s.getName())) {
 									text="PerPlayer."+s.getName()+".Text";
 									stage="PerPlayer."+s.getName()+".Stage";
+									style="PerPlayer."+s.getName()+".Style";
+									color="PerPlayer."+s.getName()+".Color";
 								}else {
 									if(Loader.bb.exists("PerWorld."+s.getWorld().getName())) {
 										text="PerWorld."+s.getWorld().getName()+".Text";
 										stage="PerWorld."+s.getWorld().getName()+".Stage";
+										style="PerWorld."+s.getWorld().getName()+".Style";
+										color="PerWorld."+s.getWorld().getName()+".Color";
 									}
 								}
-								TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+								BossBar b = TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+								if(Loader.bb.getString(color)!=null)
+									try {
+										if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
+											b.setColor(BarColor.values()[cc]);
+										}else
+										b.setColor(BarColor.valueOf(Loader.bb.getString(color).toUpperCase()));
+									}catch(Exception | NoSuchFieldError e) {}
+								if(Loader.bb.getString(style)!=null)
+									try {
+										b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
+									}catch(Exception | NoSuchFieldError e) {}
 								continue;
 							}
 							hide.get(DisplayType.BOSSBAR).add(s.getName());
@@ -293,16 +314,33 @@ public class DisplayManager {
 								hide.get(DisplayType.BOSSBAR).remove(s.getName());
 								String text = "Text";
 								String stage = "Stage";
+								String style = "Style";
+								String color = "Color";
 								if(Loader.bb.exists("PerPlayer."+s.getName())) {
 									text="PerPlayer."+s.getName()+".Text";
 									stage="PerPlayer."+s.getName()+".Stage";
+									style="PerPlayer."+s.getName()+".Style";
+									color="PerPlayer."+s.getName()+".Color";
 								}else {
 									if(Loader.bb.exists("PerWorld."+s.getWorld().getName())) {
 										text="PerWorld."+s.getWorld().getName()+".Text";
 										stage="PerWorld."+s.getWorld().getName()+".Stage";
+										style="PerWorld."+s.getWorld().getName()+".Style";
+										color="PerWorld."+s.getWorld().getName()+".Color";
 									}
 								}
-								TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+								BossBar b = TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+								if(Loader.bb.getString(color)!=null)
+									try {
+										if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
+											b.setColor(BarColor.values()[cc]);
+										}else
+										b.setColor(BarColor.valueOf(Loader.bb.getString(color).toUpperCase()));
+									}catch(Exception | NoSuchFieldError e) {}
+								if(Loader.bb.getString(style)!=null)
+									try {
+										b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
+									}catch(Exception | NoSuchFieldError e) {}
 								continue;
 							}
 							//already gone
@@ -312,20 +350,39 @@ public class DisplayManager {
 						hide.get(DisplayType.BOSSBAR).remove(s.getName());
 						String text = "Text";
 						String stage = "Stage";
+						String style = "Style";
+						String color = "Color";
 						if(Loader.bb.exists("PerPlayer."+s.getName())) {
 							text="PerPlayer."+s.getName()+".Text";
 							stage="PerPlayer."+s.getName()+".Stage";
+							style="PerPlayer."+s.getName()+".Style";
+							color="PerPlayer."+s.getName()+".Color";
 						}else {
 							if(Loader.bb.exists("PerWorld."+s.getWorld().getName())) {
 								text="PerWorld."+s.getWorld().getName()+".Text";
 								stage="PerWorld."+s.getWorld().getName()+".Stage";
+								style="PerWorld."+s.getWorld().getName()+".Style";
+								color="PerWorld."+s.getWorld().getName()+".Color";
 							}
 						}
-						TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+						BossBar b = TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+						if(Loader.bb.getString(color)!=null)
+							try {
+								if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
+									b.setColor(BarColor.values()[cc]);
+								}else
+								b.setColor(BarColor.valueOf(Loader.bb.getString(color).toUpperCase()));
+							}catch(Exception | NoSuchFieldError e) {}
+						if(Loader.bb.getString(style)!=null)
+							try {
+								b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
+							}catch(Exception | NoSuchFieldError e) {}
 						continue;
 					}
 					}catch(Exception er) {}
 				}
+				if(cc==6)cc=0;
+				else ++cc;
 			}
 		}.runRepeating(0, StringUtils.calculate(Loader.bb.getString("RefleshTick")).longValue()));
 		if (setting.sb)
