@@ -23,7 +23,7 @@ import me.devtec.theapi.utils.reflections.Ref;
 public class MirrorManager {
 	protected static HashMap<Player, MirrorType> mirror = new HashMap<>();
 	protected static HashMap<Player, Position> location = new HashMap<>();
-	protected static HashMap<Block, List<Position>> signs = new HashMap<>(); // Original sign X Player
+	protected static HashMap<Block, List<Position>> signs = new HashMap<>(); // Original sign X List of new Sign
 	
 	public static void add(Player player, String t) {
 		MirrorType type = null;
@@ -94,11 +94,6 @@ public class MirrorManager {
 			loc2 = new Position( loc.getWorld(), block.getX(), block.getY(), axisZ+vZ );
 			loc3 = new Position( loc.getWorld(), axisX+vX , block.getY(), axisZ+vZ );
 			
-			mirrorPlace(p, MirrorType.AXISZ, block);
-			mirrorPlace(p, MirrorType.AXISX, block);
-			mirrorPlace(p, MirrorType.AXISX, loc1.getBlock());
-
-
 			if(block.getType().name().contains("_SIGN")) {
 				List<Position> list = new ArrayList<>();
 				if(!signs.isEmpty() && signs.containsKey(block)) list = signs.get(block);
@@ -107,6 +102,13 @@ public class MirrorManager {
 				list.add(loc3);
 				signs.put(block, list);
 			}
+			
+			mirrorPlace(p, MirrorType.AXISZ, block);
+			mirrorPlace(p, MirrorType.AXISX, block);
+			mirrorPlace(p, MirrorType.AXISX, loc1.getBlock());
+
+
+
 			/*loc1.getBlock().setType(block.getType());
 			loc2.getBlock().setType(block.getType());
 			loc3.getBlock().setType(block.getType());
@@ -218,22 +220,37 @@ public class MirrorManager {
 		if(type==MirrorType.AXISZ) {
         if(f==BlockFace.EAST) return BlockFace.WEST;
         if(f==BlockFace.WEST) return BlockFace.EAST;
-
-
-        if(f==BlockFace.SOUTH_EAST) return BlockFace.NORTH_EAST;
-        if(f==BlockFace.NORTH_EAST) return BlockFace.SOUTH_EAST;
-        if(f==BlockFace.SOUTH_SOUTH_EAST) return BlockFace.NORTH_NORTH_EAST;
-        if(f==BlockFace.NORTH_NORTH_EAST) return BlockFace.SOUTH_SOUTH_EAST;
-        if(f==BlockFace.EAST_SOUTH_EAST) return BlockFace.EAST_NORTH_EAST;
-        if(f==BlockFace.EAST_NORTH_EAST) return BlockFace.EAST_SOUTH_EAST;
+        //Fixed Sign rotation:
+        if(f==BlockFace.SOUTH_EAST) return BlockFace.SOUTH_WEST;
+        if(f==BlockFace.SOUTH_SOUTH_EAST) return BlockFace.SOUTH_SOUTH_WEST;
+        if(f==BlockFace.EAST_SOUTH_EAST) return BlockFace.WEST_SOUTH_WEST;
+        if(f==BlockFace.SOUTH_WEST) return BlockFace.SOUTH_EAST;
+        if(f==BlockFace.SOUTH_SOUTH_WEST) return BlockFace.SOUTH_SOUTH_EAST;
+        if(f==BlockFace.WEST_SOUTH_WEST) return BlockFace.EAST_SOUTH_EAST;
+        
+        if(f==BlockFace.NORTH_EAST) return BlockFace.NORTH_WEST;
+        if(f==BlockFace.NORTH_NORTH_EAST) return BlockFace.NORTH_NORTH_WEST;
+        if(f==BlockFace.EAST_NORTH_EAST) return BlockFace.WEST_NORTH_WEST;
+        if(f==BlockFace.NORTH_WEST) return BlockFace.NORTH_WEST;
+        if(f==BlockFace.NORTH_NORTH_WEST) return BlockFace.NORTH_NORTH_WEST;
+        if(f==BlockFace.WEST_NORTH_WEST) return BlockFace.WEST_NORTH_WEST;
+        
+        
+        
+        //if(f==BlockFace.SOUTH_EAST) return BlockFace.NORTH_EAST;
+        //if(f==BlockFace.NORTH_EAST) return BlockFace.NORTH_WEST;
+        //if(f==BlockFace.SOUTH_SOUTH_EAST) return BlockFace.NORTH_NORTH_EAST;
+        //if(f==BlockFace.NORTH_NORTH_EAST) return BlockFace.NORTH_NORTH_WEST;
+        //if(f==BlockFace.EAST_SOUTH_EAST) return BlockFace.EAST_NORTH_EAST;
+        //if(f==BlockFace.EAST_NORTH_EAST) return BlockFace.WEST_NORTH_WEST;
         
 
-        if(f==BlockFace.SOUTH_WEST) return BlockFace.NORTH_WEST;
+      /* if(f==BlockFace.SOUTH_WEST) return BlockFace.NORTH_WEST;
         if(f==BlockFace.NORTH_WEST) return BlockFace.SOUTH_WEST;
         if(f==BlockFace.SOUTH_SOUTH_WEST) return BlockFace.NORTH_NORTH_WEST;
         if(f==BlockFace.NORTH_NORTH_WEST) return BlockFace.SOUTH_SOUTH_WEST;
         if(f==BlockFace.WEST_SOUTH_WEST) return BlockFace.WEST_NORTH_WEST;
-        if(f==BlockFace.WEST_NORTH_WEST) return BlockFace.WEST_SOUTH_WEST;
+        if(f==BlockFace.WEST_NORTH_WEST) return BlockFace.WEST_SOUTH_WEST;*/
 		}
 		if(type==MirrorType.CENTER) { //TODO - DODĚLAT PRO 4 KVADRANTY!!!
 	        if(f==BlockFace.SOUTH) return BlockFace.NORTH;
