@@ -196,10 +196,25 @@ public class MirrorManager {
         if(f==BlockFace.NORTH_EAST) return BlockFace.NORTH_WEST;
         if(f==BlockFace.NORTH_NORTH_EAST) return BlockFace.NORTH_NORTH_WEST;
         if(f==BlockFace.EAST_NORTH_EAST) return BlockFace.WEST_NORTH_WEST;
+        if(f==BlockFace.NORTH_WEST) return BlockFace.NORTH_EAST;
+        if(f==BlockFace.NORTH_NORTH_WEST) return BlockFace.NORTH_NORTH_EAST;
+        if(f==BlockFace.WEST_NORTH_WEST) return BlockFace.EAST_NORTH_EAST;
+        
+        /* OLD
+        if(f==BlockFace.SOUTH_EAST) return BlockFace.SOUTH_WEST;
+        if(f==BlockFace.SOUTH_SOUTH_EAST) return BlockFace.SOUTH_SOUTH_WEST;
+        if(f==BlockFace.EAST_SOUTH_EAST) return BlockFace.WEST_SOUTH_WEST;
+        if(f==BlockFace.SOUTH_WEST) return BlockFace.SOUTH_EAST;
+        if(f==BlockFace.SOUTH_SOUTH_WEST) return BlockFace.SOUTH_SOUTH_EAST;
+        if(f==BlockFace.WEST_SOUTH_WEST) return BlockFace.EAST_SOUTH_EAST;
+        
+        if(f==BlockFace.NORTH_EAST) return BlockFace.NORTH_WEST;
+        if(f==BlockFace.NORTH_NORTH_EAST) return BlockFace.NORTH_NORTH_WEST;
+        if(f==BlockFace.EAST_NORTH_EAST) return BlockFace.WEST_NORTH_WEST;
         if(f==BlockFace.NORTH_WEST) return BlockFace.NORTH_WEST;
         if(f==BlockFace.NORTH_NORTH_WEST) return BlockFace.NORTH_NORTH_WEST;
         if(f==BlockFace.WEST_NORTH_WEST) return BlockFace.WEST_NORTH_WEST;
-        
+         */
         
         
         //if(f==BlockFace.SOUTH_EAST) return BlockFace.NORTH_EAST;
