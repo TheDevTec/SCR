@@ -661,8 +661,9 @@ public class Loader extends JavaPlugin implements Listener {
 		s.kick = 0;
 		s.bc = true;
 		s.manual = true;
-		for(Player canSee : API.getPlayers(s.getPlayer()))
+		for(Player canSee : API.getPlayers(s.getPlayer())) {
 			Loader.sendMessages(canSee, player, "AFK.Start");
+		}
 	}
 	public void setAFK(SPlayer s, String reason) {
 		Player player = s.getPlayer();
