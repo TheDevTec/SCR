@@ -1,7 +1,6 @@
 package me.DevTec.ServerControlReloaded.Modules.Mirror;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +15,7 @@ import org.bukkit.block.data.type.Stairs;
 import org.bukkit.block.data.type.Stairs.Shape;
 import org.bukkit.entity.Player;
 
+import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.blocksapi.schematic.construct.SerializedBlock;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.reflections.Ref;
@@ -128,24 +128,6 @@ public class MirrorManager {
        |
        |
  */
-	private static final Constructor<?> nbt = Ref.constructor(Ref.nms("NBTTagCompound")); //a load, b save
-	private static Method save, load;
-	private static int old;
-	static {
-		save=Ref.method(Ref.nms("TileEntity"), "save", Ref.nms("NBTTagCompound"));
-		load=Ref.method(Ref.nms("TileEntity"), "load", Ref.nms("IBlockData"), Ref.nms("NBTTagCompound"));
-
-		if(save==null) {
-			save=Ref.method(Ref.nms("TileEntity"), "b", Ref.nms("NBTTagCompound"));
-		}
-		if(load==null) {
-			old=1;
-			load=Ref.method(Ref.nms("TileEntity"), "load", Ref.nms("NBTTagCompound"));
-			if(load==null) {
-				load=Ref.method(Ref.nms("TileEntity"), "a", Ref.nms("NBTTagCompound"));
-			}
-		}
-	}
 	public static void rotate(Block block, Block old,  MirrorType type) {
         if (block == null)
             return;
@@ -157,21 +139,21 @@ public class MirrorManager {
 			rotateSign(block, old, type);
 			return;
 		}
-        BlockData d = old.getBlockData();
-        if(d==null) return;
-        // -------- Straikerina - Clone BlockData & BlockState
-        block.setBlockData(d); //BlockData
-        //BlockState
+        // -------- Straikerina - Clone BlockState
         Position o = new Position(old);
         Object ed = SerializedBlock.getState(o);
         if(ed!=null) { //for banners, heads...
-        	Object nbt = Ref.newInstance(MirrorManager.nbt);
-        	Ref.invoke(ed, save, nbt); //serialize to nbt
-        	ed = SerializedBlock.getState(new Position(block));
-        	if(MirrorManager.old==1)
-            	Ref.invoke(ed, load, nbt); //deserialize nbt & load
-        	Ref.invoke(ed, load, o.getIBlockData(), nbt); //deserialize nbt & load
+            Object sec = SerializedBlock.getState(new Position(block));
+        	for(Field f : Ref.getDeclaredFields(ed.getClass())) {
+        		Ref.set(sec, f, Ref.get(ed, f));
+        	}
+        	Ref.sendPacket(TheAPI.getOnlinePlayers(), Ref.invoke(ed, "getUpdatePacket"));
         }
+        // -------- End
+        BlockData d = old.getBlockData();
+        if(d==null) return;
+        // -------- Straikerina - Clone BlockData
+        block.setBlockData(d);
         // -------- End
         if(d instanceof Directional) {
               Directional dir = (Directional)d;
