@@ -30,6 +30,8 @@ public class MirrorEvents implements Listener {
 		MirrorType type = MirrorManager.getType(p);
 		Position loc = MirrorManager.getLocation(p);
 		Block block = e.getBlock();
+		new Position(block).setTypeAndUpdate(Material.AIR);
+		e.setCancelled(true);
 		if(type==MirrorType.AXISX || type==MirrorType.AXISZ) {
 			int axis, bl, v;
 			if(type==MirrorType.AXISX) {

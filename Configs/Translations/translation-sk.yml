@@ -833,4 +833,9 @@ Trash:
   Name: "&7Kôš"
   Clear: "&eVysypať kôš"
 
+Mirror:
+   Types: "%prefix% &7Typy zrkadlenia: &e%types%"
+   Enabled: "%prefix% &7Zapol si si mirror. Zvolený typ: &e%type%"
+   Disabled: "%prefix% &7Vypol si si mirror."
+   
 Config: "%prefix% Konfigurácia a úlohy boli znovu načítané1!"

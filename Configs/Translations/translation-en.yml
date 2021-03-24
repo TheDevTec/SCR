@@ -852,5 +852,7 @@ Trash:
 
 Mirror:
    Types: "%prefix% &7Mirror types: &e%types%"
+   Enabled: "%prefix% &7You turned your mirror on. Mirror type: &e%type%"
+   Disabled: "%prefix% &7You disabled your mirror."
 
 Config: "%prefix% Configurations and tasks reloaded"

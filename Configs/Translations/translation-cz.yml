@@ -841,4 +841,9 @@ Trash:
   Name: "&7Koš"
   Clear: "&eVysypat koš"
 
+Mirror:
+   Types: "%prefix% &7Typy zrcadlení: &e%types%"
+   Enabled: "%prefix% &7Zapnul jsi mirror. Zvolený typ: &e%type%"
+   Disabled: "%prefix% &7Vypnul jsi mirror."
+   
 Config: "%prefix% Konfigurace a tasky znovunačteny"
