@@ -162,7 +162,6 @@ public class GUICreator implements CommandExecutor {
             }
         }
     }
-
     public void methodenzi(GUI g ,Player p,String a){
         if(a.startsWith("close")){
             g.close(p);
