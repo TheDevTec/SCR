@@ -10,8 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.type.Sign;
-import org.bukkit.block.data.type.Stairs;
+import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.type.Stairs.Shape;
 import org.bukkit.entity.Player;
 
@@ -75,9 +74,7 @@ public class MirrorManager {
 				n = new Location(loc.getWorld(), v, block.getY(), block.getZ());
 			n.getBlock().setType(block.getType());
 			n.getBlock().setBlockData(block.getBlockData());
-			
-			if(block.getType().name().contains("_STAIRS")) setStairs(n.getBlock(), block, type);
-			else rotate(n.getBlock(), block, type);
+			rotate(n.getBlock(), block, type);
 			return;
 		}
 
@@ -133,14 +130,6 @@ public class MirrorManager {
 	public static void rotate(Block block, Block old,  MirrorType type) {
         if (block == null)
             return;
-		if(block.getType().name().contains("_STAIRS")) { 
-			setStairs(block, old, type);
-			return;
-		}
-		if(block.getType().name().contains("_SIGN")) { 
-			rotateSign(block, old, type);
-			return;
-		}
         // -------- Straikerina - Clone BlockState
         Position o = new Position(old);
         Object ed = SerializedBlock.getState(o);
@@ -158,45 +147,21 @@ public class MirrorManager {
         block.setBlockData(d);
         // -------- End
         if(d instanceof Directional) {
-              Directional dir = (Directional)d;
-              BlockFace f =dir.getFacing();
-              if(f==null)
-              	return;
-              f = getFace(f, type);
-              dir.setFacing(f);
-              block.setBlockData(dir);
-        }
+            Directional dir = (Directional)d;
+            BlockFace f =dir.getFacing();
+            f = getFace(f, type);
+            dir.setFacing(f);
+            block.setBlockData(dir);
+      }
+        if(d instanceof Rotatable) {
+        	Rotatable dir = (Rotatable)d;
+            BlockFace f =dir.getRotation();
+            f = getFace(f, type);
+            dir.setRotation(f);
+            block.setBlockData(dir);
+      }
     }
 	
-	public static void setStairs(Block block, Block old,  MirrorType type) {
-        if (block == null)
-            return;
-		BlockFace face = old.getFace(block);
-        Stairs stairs = (Stairs) old.getBlockData();
-        BlockFace f = stairs.getFacing();
-        if(f==null)
-        	return;
-        face=getFace(f, type);
-        stairs.setFacing(face);
-        stairs.setShape(getShape(stairs.getShape(), type));
-        
-        block.setBlockData(stairs);
-    }
-
-	public static void rotateSign(Block block, Block old,  MirrorType type) {
-        if (block == null)
-            return;
-		//TODO - WALL SIGN
-		Sign sign = (Sign) old.getBlockData();
-		BlockFace rotation = sign.getRotation();
-        if(rotation==null)
-        	return;
-        rotation=getFace(rotation, type);
-        sign.setRotation(rotation);
-        
-        block.setBlockData(sign);
-    }
-
 	public static BlockFace getFace(BlockFace f, MirrorType type) {
 		if(type==MirrorType.AXISX) {
         if(f==BlockFace.SOUTH) return BlockFace.NORTH;
