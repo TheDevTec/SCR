@@ -1,6 +1,5 @@
 package me.DevTec.ServerControlReloaded.Modules.Mirror;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -9,6 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
+
+import me.devtec.theapi.utils.Position;
 
 public class MirrorEvents implements Listener {
 
@@ -27,7 +28,7 @@ public class MirrorEvents implements Listener {
 		Player p = e.getPlayer();
 		if(!MirrorManager.isMirroring(p)) return;
 		MirrorType type = MirrorManager.getType(p);
-		Location loc = MirrorManager.getLocation(p);
+		Position loc = MirrorManager.getLocation(p);
 		Block block = e.getBlock();
 		if(type==MirrorType.AXISX || type==MirrorType.AXISZ) {
 			int axis, bl, v;
@@ -41,37 +42,34 @@ public class MirrorEvents implements Listener {
 			}
 			if(axis==bl) return;
 			v= axis+(axis-bl);
-			Location n;
+			Position n;
 			if(type==MirrorType.AXISX)
-				n = new Location(loc.getWorld(), block.getX(), block.getY(), v);
+				n = new Position(loc.getWorld(), block.getX(), block.getY(), v);
 			else
-				n = new Location(loc.getWorld(), v, block.getY(), block.getZ());
-			n.getBlock().setType(Material.AIR);
+				n = new Position(loc.getWorld(), v, block.getY(), block.getZ());
+			n.setTypeAndUpdate(Material.AIR);
 		}
 		if(type==MirrorType.CENTER) {
 			int axisX, axisZ; // Souřadnice os X a Z
 			int vX, vZ; // Výsledný rozdíl mezi osou a položeným blockem
-			Location loc1, loc2, loc3;
+			Position loc1, loc2, loc3;
 			axisX = loc.getBlockX();
 			axisZ = loc.getBlockZ();
 			
 			vZ = axisZ- block.getZ();
 			vX = axisX- block.getX();
-			loc1 = new Location( loc.getWorld(), axisX+vX, block.getY(), block.getZ());
-			loc2 = new Location( loc.getWorld(), block.getX(), block.getY(), axisZ+vZ );
-			loc3 = new Location( loc.getWorld(), axisX+vX , block.getY(), axisZ+vZ );
-			
-			loc1.getBlock().setType(Material.AIR);
-			loc2.getBlock().setType(Material.AIR);
-			loc3.getBlock().setType(Material.AIR);
+			loc1 = new Position( loc.getWorld(), axisX+vX, block.getY(), block.getZ());
+			loc2 = new Position( loc.getWorld(), block.getX(), block.getY(), axisZ+vZ );
+			loc3 = new Position( loc.getWorld(), axisX+vX , block.getY(), axisZ+vZ );
+
+			loc1.setTypeAndUpdate(Material.AIR);
+			loc2.setTypeAndUpdate(Material.AIR);
+			loc3.setTypeAndUpdate(Material.AIR);
 		}
 	}
 	@EventHandler
 	public void eventSignChanged(SignChangeEvent event){
-		Block original = event.getBlock();
-		if(!MirrorManager.isSign(original)) return;
-		//String[] lines = event.getLines();
-		MirrorSigns.setSigns(event.getPlayer(), original, event.getLines());
+		MirrorSigns.setSigns(event.getPlayer(), event.getBlock(), event.getLines());
 	}
 	
 	

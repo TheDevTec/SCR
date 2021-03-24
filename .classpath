@@ -9,7 +9,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Vault.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/spigot-1.16.5.jar"/>
-	<classpathentry kind="lib" path="C:/EclipseUtils/TheAPI.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/LuckPerms.jar"/>
+	<classpathentry kind="lib" path="C:/EclipseUtils/TheAPI.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

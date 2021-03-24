@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -15,12 +14,14 @@ import org.bukkit.block.data.type.Stairs;
 import org.bukkit.block.data.type.Stairs.Shape;
 import org.bukkit.entity.Player;
 
+import me.devtec.theapi.utils.Position;
+
 public class MirrorManager {
 
 
-	public static HashMap<Player, MirrorType> mirror = new HashMap<Player, MirrorType>();
-	public static HashMap<Player, Location> location = new HashMap<Player, Location>();
-	public static HashMap<Block, List<Location>> signs = new HashMap<Block, List<Location> >(); // Original sign X Player
+	public static HashMap<Player, MirrorType> mirror = new HashMap<>();
+	public static HashMap<Player, Position> location = new HashMap<>();
+	public static HashMap<Block, List<Position>> signs = new HashMap<>(); // Original sign X Player
 	
 	/*
 	 * Add | Remove void
@@ -34,7 +35,7 @@ public class MirrorManager {
 		if(type==null) return;
 		
 		mirror.put(player, type);
-		location.put(player, player.getLocation().getBlock().getLocation() );
+		location.put(player, new Position(player.getLocation().getBlock()));
 		
 	}
 	public static void remove(Player player) {
@@ -55,7 +56,7 @@ public class MirrorManager {
 	public static MirrorType getType(Player player) {
 		return mirror.get(player);
 	}
-	public static Location getLocation(Player player) {
+	public static Position getLocation(Player player) {
 		return location.get(player);
 	}
 	
@@ -64,7 +65,7 @@ public class MirrorManager {
 	 */
 	
 	public static void mirrorPlace(Player p, MirrorType type, Block block) {
-		Location loc = location.get(p);
+		Position loc = location.get(p);
 		if(type==MirrorType.AXISX || type==MirrorType.AXISZ) {
 			int axis, bl, v;
 			if(type==MirrorType.AXISX) {
@@ -94,15 +95,15 @@ public class MirrorManager {
 		if(type==MirrorType.CENTER) {
 			int axisX , axisZ ; // Souřadnice os X a Z
 			int vX , vZ ; // Výsledný rozdíl mezi osou a položeným blockem
-			Location loc1 , loc2, loc3 ;
+			Position loc1 , loc2, loc3 ;
 			axisX = loc.getBlockX();
 			axisZ = loc.getBlockZ();
 			
 			vZ = axisZ- block.getZ();
 			vX = axisX- block.getX();
-			loc1 = new Location( loc.getWorld(), axisX+vX, block.getY(), block.getZ());
-			loc2 = new Location( loc.getWorld(), block.getX(), block.getY(), axisZ+vZ );
-			loc3 = new Location( loc.getWorld(), axisX+vX , block.getY(), axisZ+vZ );
+			loc1 = new Position( loc.getWorld(), axisX+vX, block.getY(), block.getZ());
+			loc2 = new Position( loc.getWorld(), block.getX(), block.getY(), axisZ+vZ );
+			loc3 = new Position( loc.getWorld(), axisX+vX , block.getY(), axisZ+vZ );
 			
 			mirrorPlace(p, MirrorType.AXISZ, block);
 			mirrorPlace(p, MirrorType.AXISX, block);
@@ -110,7 +111,7 @@ public class MirrorManager {
 
 
 			if(block.getType().name().contains("_SIGN")) { 
-				List<Location>  list = new ArrayList<Location>();
+				List<Position>  list = new ArrayList<>();
 				if(!signs.isEmpty() && signs.containsKey(block)) list = signs.get(block);
 				list.add(loc1);
 				list.add(loc2);
@@ -185,21 +186,18 @@ public class MirrorManager {
 	public static void rotateSign(Block block, Block old,  MirrorType type) {
         if (block == null)
             return;
-		Bukkit.broadcastMessage("");
 		//TODO - WALL SIGN
 		Sign sign = (Sign) old.getBlockData();
 		BlockFace rotation = sign.getRotation();
         if(rotation==null)
         	return;
         rotation=getFace(rotation, type);
-		Bukkit.broadcastMessage(rotation.name()+ " ; "+type.name());
         sign.setRotation(rotation);
         
         block.setBlockData(sign);
     }
 
 	public static BlockFace getFace(BlockFace f, MirrorType type) {
-		Bukkit.broadcastMessage(f.name()+" ; "+type.name());
 		if(type==MirrorType.AXISX) {
         if(f==BlockFace.SOUTH) return BlockFace.NORTH;
         if(f==BlockFace.NORTH) return BlockFace.SOUTH;
@@ -244,7 +242,6 @@ public class MirrorManager {
 	        if(f==BlockFace.NORTH) return BlockFace.SOUTH;
 	        if(f==BlockFace.EAST) return BlockFace.WEST;
 	        if(f==BlockFace.WEST) return BlockFace.EAST;
-	        Bukkit.broadcastMessage("používám!");
 		}
 		return f;
 	}
