@@ -1,5 +1,7 @@
 package me.DevTec.ServerControlReloaded.Modules.Mirror;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,26 +16,22 @@ import org.bukkit.block.data.type.Stairs;
 import org.bukkit.block.data.type.Stairs.Shape;
 import org.bukkit.entity.Player;
 
+import me.devtec.theapi.blocksapi.schematic.construct.SerializedBlock;
 import me.devtec.theapi.utils.Position;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class MirrorManager {
-
-
-	public static HashMap<Player, MirrorType> mirror = new HashMap<>();
-	public static HashMap<Player, Position> location = new HashMap<>();
-	public static HashMap<Block, List<Position>> signs = new HashMap<>(); // Original sign X Player
+	protected static HashMap<Player, MirrorType> mirror = new HashMap<>();
+	protected static HashMap<Player, Position> location = new HashMap<>();
+	protected static HashMap<Block, List<Position>> signs = new HashMap<>(); // Original sign X Player
 	
-	/*
-	 * Add | Remove void
-	 */
 	public static void add(Player player, String t) {
 		MirrorType type = null;
-		
-		if(t.equalsIgnoreCase("AxisX")) type = MirrorType.AXISX;
-		if(t.equalsIgnoreCase("AxisZ")) type = MirrorType.AXISZ;
-		if(t.equalsIgnoreCase("Center")) type = MirrorType.CENTER;
-		if(type==null) return;
-		
+		try {
+			type = MirrorType.valueOf(t.toUpperCase());
+		}catch(Exception | NoSuchFieldError err) {
+			return;
+		}
 		mirror.put(player, type);
 		location.put(player, new Position(player.getLocation().getBlock()));
 		
@@ -43,26 +41,18 @@ public class MirrorManager {
 		location.remove( player);
 	}
 	
-	/*
-	 * Is... voids
-	 */
 	public static boolean isMirroring(Player player) {
 		if(mirror.containsKey(player) && location.containsKey(player)) return true;
 		return false;
 	}
-	/*
-	 * Get... voids
-	 */
+	
 	public static MirrorType getType(Player player) {
 		return mirror.get(player);
 	}
+	
 	public static Position getLocation(Player player) {
 		return location.get(player);
 	}
-	
-	/*
-	 * Mirroring voids
-	 */
 	
 	public static void mirrorPlace(Player p, MirrorType type, Block block) {
 		Position loc = location.get(p);
@@ -88,7 +78,6 @@ public class MirrorManager {
 			
 			if(block.getType().name().contains("_STAIRS")) setStairs(n.getBlock(), block, type);
 			else rotate(n.getBlock(), block, type);
-			//TheAPI.msg("Debug: Nasteven block "+n.getX()+" ; "+n.getY()+" ; "+n.getZ()+" na materiál: "+block.getType().name(), p);
 			return;
 		}
 
@@ -110,8 +99,8 @@ public class MirrorManager {
 			mirrorPlace(p, MirrorType.AXISX, loc1.getBlock());
 
 
-			if(block.getType().name().contains("_SIGN")) { 
-				List<Position>  list = new ArrayList<>();
+			if(block.getType().name().contains("_SIGN")) {
+				List<Position> list = new ArrayList<>();
 				if(!signs.isEmpty() && signs.containsKey(block)) list = signs.get(block);
 				list.add(loc1);
 				list.add(loc2);
@@ -139,22 +128,51 @@ public class MirrorManager {
        |
        |
  */
-	@SuppressWarnings("unchecked")
-	public static <DirectionalBlockData> void rotate(Block block, Block old,  MirrorType type) {
+	private static final Constructor<?> nbt = Ref.constructor(Ref.nms("NBTTagCompound")); //a load, b save
+	private static Method save, load;
+	private static int old;
+	static {
+		save=Ref.method(Ref.nms("TileEntity"), "save", Ref.nms("NBTTagCompound"));
+		load=Ref.method(Ref.nms("TileEntity"), "load", Ref.nms("IBlockData"), Ref.nms("NBTTagCompound"));
+
+		if(save==null) {
+			save=Ref.method(Ref.nms("TileEntity"), "b", Ref.nms("NBTTagCompound"));
+		}
+		if(load==null) {
+			old=1;
+			load=Ref.method(Ref.nms("TileEntity"), "load", Ref.nms("NBTTagCompound"));
+			if(load==null) {
+				load=Ref.method(Ref.nms("TileEntity"), "a", Ref.nms("NBTTagCompound"));
+			}
+		}
+	}
+	public static void rotate(Block block, Block old,  MirrorType type) {
         if (block == null)
             return;
 		if(block.getType().name().contains("_STAIRS")) { 
 			setStairs(block, old, type);
-		return;
+			return;
 		}
 		if(block.getType().name().contains("_SIGN")) { 
 			rotateSign(block, old, type);
-			
-		return;
+			return;
 		}
-        BlockData data = old.getBlockData();
-        if(data==null) return;
-        DirectionalBlockData d = (DirectionalBlockData) data;
+        BlockData d = old.getBlockData();
+        if(d==null) return;
+        // -------- Straikerina - Clone BlockData & BlockState
+        block.setBlockData(d); //BlockData
+        //BlockState
+        Position o = new Position(old);
+        Object ed = SerializedBlock.getState(o);
+        if(ed!=null) { //for banners, heads...
+        	Object nbt = Ref.newInstance(MirrorManager.nbt);
+        	Ref.invoke(ed, save, nbt); //serialize to nbt
+        	ed = SerializedBlock.getState(new Position(block));
+        	if(MirrorManager.old==1)
+            	Ref.invoke(ed, load, nbt); //deserialize nbt & load
+        	Ref.invoke(ed, load, o.getIBlockData(), nbt); //deserialize nbt & load
+        }
+        // -------- End
         if(d instanceof Directional) {
               Directional dir = (Directional)d;
               BlockFace f =dir.getFacing();
@@ -170,15 +188,13 @@ public class MirrorManager {
         if (block == null)
             return;
 		BlockFace face = old.getFace(block);
-		
         Stairs stairs = (Stairs) old.getBlockData();
-        
         BlockFace f = stairs.getFacing();
         if(f==null)
         	return;
         face=getFace(f, type);
         stairs.setFacing(face);
-        stairs.setShape( getShape(stairs.getShape(), type));
+        stairs.setShape(getShape(stairs.getShape(), type));
         
         block.setBlockData(stairs);
     }
@@ -265,14 +281,5 @@ public class MirrorManager {
         if(f==BlockFace.NORTH_EAST) face=BlockFace.SOUTH_WEST;*/
 		
 		return shape;
-	}
-	
-	/*
-	 * Sign events
-	 */
-	public static boolean isSign(Block original) {
-		if(signs.containsKey(original)) return true;
-		return false;
-		
 	}
 }
