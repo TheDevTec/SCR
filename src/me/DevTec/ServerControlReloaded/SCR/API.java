@@ -45,7 +45,21 @@ public class API {
 		return cache.get(p);
 	}
 	
-	public static List<Player> getPlayers(CommandSender s){
+	public static List<Player> getPlayers(CommandSender s){ // Players which can be seen by CommandSender
+		List<Player> p = TheAPI.getOnlinePlayers();
+		if(s instanceof Player) {
+			Iterator<Player> it = p.iterator();
+			while(it.hasNext()) {
+				Player pd = it.next();
+	           	if( pd!=s && !((Player)s).canSee(pd) ) {
+	           		it.remove();
+	           	}
+			}
+		}
+		return p;
+	}
+	
+	public static List<Player> getPlayersThatCanSee(CommandSender s){ // Player which can see CommandSender
 		List<Player> p = TheAPI.getOnlinePlayers();
 		if(s instanceof Player) {
 			Iterator<Player> it = p.iterator();

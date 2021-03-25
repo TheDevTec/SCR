@@ -635,7 +635,7 @@ public class Loader extends JavaPlugin implements Listener {
 						if (getTime(s) <= 0) {
 							if (!s.bc) {
 								s.bc = true;
-								for(Player canSee : API.getPlayers(p))
+								for(Player canSee : API.getPlayersThatCanSee(p))
 									Loader.sendMessages(canSee, p, "AFK.Start");
 							}
 							if (setting.afk_kick) {
@@ -661,7 +661,7 @@ public class Loader extends JavaPlugin implements Listener {
 		s.kick = 0;
 		s.bc = true;
 		s.manual = true;
-		for(Player canSee : API.getPlayers(s.getPlayer())) {
+		for(Player canSee : API.getPlayersThatCanSee(s.getPlayer())) {
 			Loader.sendMessages(canSee, player, "AFK.Start");
 		}
 	}
@@ -670,7 +670,7 @@ public class Loader extends JavaPlugin implements Listener {
 		save(player);
 		s.bc = true;
 		s.manual = true;
-		for(Player canSee : API.getPlayers(player))
+		for(Player canSee : API.getPlayersThatCanSee(player))
 			Loader.sendMessages(canSee, player, "AFK.Start_WithReason", Placeholder.c().add("%reason%", reason));
 	}
 	
@@ -682,7 +682,7 @@ public class Loader extends JavaPlugin implements Listener {
 		moving.put(d.getName(), d.getLocation());
 		SPlayer s = API.getSPlayer(d);
 		if(isAFK(s) || isManualAfk(s)) {
-			for(Player canSee : API.getPlayers(d))
+			for(Player canSee : API.getPlayersThatCanSee(d))
 				Loader.sendMessages(canSee, d, "AFK.End");
 		}
 		s.afk=0;
