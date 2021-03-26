@@ -366,13 +366,11 @@ public class ChatFormat implements Listener {
 					e.setFormat(((String)formatt).replace("%", "%%"));
 				else
 				if (formatt instanceof Map || formatt instanceof Collection) {
+					List<Map<String,Object>> o = new ArrayList<>();
 					if(formatt instanceof Map) {
-						List<Map<String,Object>> o = new ArrayList<>();
 						o.add((Map<String, Object>) formatt);
 						formatt=o;
-					}
-					if(formatt instanceof List == false) {
-						List<Map<String,Object>> o = new ArrayList<>();
+					}else {
 						for(Object w : ((Collection<Object>)formatt)) {
 							if(w instanceof Map) {
 								o.add((Map<String, Object>) w);
