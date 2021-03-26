@@ -5,12 +5,14 @@ import java.io.FileWriter;
 import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.datakeeper.Data;
 import me.devtec.theapi.utils.datakeeper.loader.YamlLoader;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class Configs {
 	@SuppressWarnings("unchecked")
@@ -31,30 +33,40 @@ public class Configs {
     		}catch(Exception e) {}
 	    	boolean change = false;
 	    	try {
-    		if(data.getHeader()!=null && !data.getHeader().isEmpty())
-    			if(c.getHeader()==null||!data.getHeader().containsAll(c.getHeader())) {
-    				c.setHeader(data.getHeader());
-					change=true;
-				}
-    		if(data.getFooter()!=null && !data.getFooter().isEmpty())
-    			if(c.getFooter()==null||!data.getFooter().containsAll(c.getFooter())) {
-    				c.setFooter(data.getFooter());
-    				change=true;
-    			}
-	    	}catch(Exception unsuported) {}
-	    	for(String sr : data.getKeys()) {
-	    		if(c.get(sr)==null && data.get().get(sr)[0]!=null) {
-	    			c.set(sr, data.get().get(sr)[0]);
-	    			change = true;
+	    		for(Entry<String, Object[]> s : data.get().entrySet()) {
+	    			if(c.get(s.getKey())==null && s.getValue()[0]!=null) {
+	    				Object[] o = (Object[]) Ref.invoke(c.getData(),"getOrCreateData",s.getKey());
+	    				o[0]=s.getValue()[0];
+	    				try {
+	    				o[2]=s.getValue()[2]==null?null:s.getValue()[2]+"";
+	    				}catch(Exception outOfBoud) {
+	    					try {
+	    						o[2]=s.getValue()[0]==null?null:s.getValue()[0]+"";
+	    					}catch(Exception outOfBoud2) {
+	    						
+	    					}
+	    				}
+	    				change = true;
+	    			}
+	    			try {
+	    				if(data.getHeader()==null || data.getHeader()!=null && !data.getHeader().isEmpty() && (c.getHeader().isEmpty()||!data.getHeader().containsAll(c.getHeader()))) {
+	    					c.setHeader(data.getHeader());
+	    					change = true;
+	    				}
+	    				if(data.getFooter()==null ||data.getFooter()!=null && !data.getFooter().isEmpty() && (c.getFooter().isEmpty()||!data.getFooter().containsAll(c.getFooter()))) {
+	    					c.setFooter(data.getFooter());
+	    					change = true;
+	    				}
+	    			}catch(Exception nope) {}
+	    			if(s.getValue()[1]!=null && !((List<String>) s.getValue()[1]).isEmpty())
+	        		if(c.getComments(s.getKey())==null || c.getComments(s.getKey()).isEmpty()) {
+	        			if(c.getHeader()!=null && !c.getHeader().isEmpty() && ((List<String>)s.getValue()[1]).containsAll(c.getHeader())
+	        					|| c.getFooter()!=null && !c.getFooter().isEmpty() && ((List<String>) s.getValue()[1]).containsAll(c.getFooter()))continue;
+	        			c.setComments(s.getKey(), (List<String>)s.getValue()[1]);
+	        			change = true;
+	        		}
 	    		}
-	    		if(data.get().get(sr)[1]!=null)
-	    		if((c.getComments(sr)==null || c.getComments(sr).isEmpty()) && !((List<String>) data.get().get(sr)[1]).isEmpty()) {
-	    			if(c.getHeader()!=null && ((List<String>) data.get().get(sr)[1]).containsAll(c.getHeader())
-	    					|| c.getFooter()!=null && ((List<String>) data.get().get(sr)[1]).containsAll(c.getFooter()))continue;
-	    			c.setComments(sr, (List<String>) data.get().get(sr)[1]);
-	    			change = true;
-	    		}
-	    	}
+	    	}catch(Exception error) {}
 	    	data.reset();
 	    	if(change)
 	    	c.save();
