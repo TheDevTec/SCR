@@ -48,8 +48,7 @@ public class DisplayManager {
 		if(TheAPI.getBossBar(p)!=null)
 		TheAPI.removeBossBar(p);
 		if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(p.getName()))
-		((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(p.getName()).destroy();
-		((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(p.getName());
+		((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(p.getName()).destroy();
 	}
 	
 	public static void show(Player p, DisplayType type) {

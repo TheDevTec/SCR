@@ -251,7 +251,6 @@ public class OnPlayerJoin implements Listener {
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
 		User d = TheAPI.getUser(p);
-		p.setScoreboard(p.getServer().getScoreboardManager().getNewScoreboard());
 		new Tasker() {
 			public void run() {
 				Vanish.task.remove(e.getPlayer().getName());
@@ -263,7 +262,7 @@ public class OnPlayerJoin implements Listener {
 									if(fa!=null)
 									TheAPI.bcMsg(replaceAll(fa+"",p));
 								}}else
-									if(!(""+o).isEmpty())
+									if(!(""+o).trim().isEmpty())
 										TheAPI.bcMsg(replaceAll(""+o, p));
 					}}
 				Object o = Loader.events.get("onQuit.Messages");
@@ -273,7 +272,7 @@ public class OnPlayerJoin implements Listener {
 						if(fa!=null)
 						TheAPI.msg(replaceAll(fa+"",p),p);
 					}}else
-						if(!(""+o).isEmpty())
+						if(!(""+o).trim().isEmpty())
 							TheAPI.msg(replaceAll(""+o, p),p);
 				}
 				o = Loader.events.get("onQuit.Commands");
@@ -283,7 +282,7 @@ public class OnPlayerJoin implements Listener {
 						if(fa!=null)
 							TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
 					}}else
-						if(!(""+o).isEmpty())
+						if(!(""+o).trim().isEmpty())
 							TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
 				}
 				o = Loader.events.get("onQuit.Broadcast");
@@ -293,18 +292,17 @@ public class OnPlayerJoin implements Listener {
 							if(fa!=null)
 							TheAPI.bcMsg(replaceAll(fa+"",p));
 						}}else
-							if(!(""+o).isEmpty())
+							if(!(""+o).trim().isEmpty())
 								TheAPI.bcMsg(replaceAll(""+o, p));
 				}
 				d.set("LastLeave", setting.format_date_time.format(new Date()));
 				d.setAndSave("DisconnectWorld", p.getWorld().getName());
 			}
 		}.runTask();
-		if(p.isFlying())
-		d.setAndSave("FlyOnQuit", true);
+		if(p.isFlying() && p.getAllowFlight())
+		d.set("FlyOnQuit", true);
 		else {
 			d.remove("FlyOnQuit");
-			d.save();
 		}
 		p.setFlying(false);
 		p.setAllowFlight(false);

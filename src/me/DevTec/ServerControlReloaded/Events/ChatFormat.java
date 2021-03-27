@@ -435,6 +435,7 @@ public class ChatFormat implements Listener {
 	private String getColorOf(Object format) {
 		String text = null;
 		if(format instanceof Map) {
+			try {
 			if(((Map<String, Object>) format).containsKey("color") && ((Map<String, Object>) format).containsKey("text")) {
 				text=((Map<String, Object>) format).get("color").toString();
 			}else {
@@ -442,10 +443,12 @@ public class ChatFormat implements Listener {
 					text=(((Map<String, Object>) format).get("text")+"").split("\\%message\\%")[0];
 				}
 			}
+			}catch(Exception er) {}
 		}else
 		if(format instanceof Collection) {
 			for(Object o : ((Collection<?>)format)) {
 				if(o instanceof Map) {
+					try {
 					if(((Map<String, Object>) o).containsKey("color") && ((Map<String, Object>) o).containsKey("text")) {
 						if((((Map<String, Object>) o).get("text")+"").contains("%message%")) {
 							return text=((Map<String, Object>) o).get("color").toString();
@@ -456,14 +459,19 @@ public class ChatFormat implements Listener {
 							text=(((Map<String, Object>) o).get("text")+"").split("\\%message\\%")[0];
 						}
 					}
+					}catch(Exception er) {}
 				}else {
+					try {
 					if((""+o).contains("%message%")) {
 						text=(""+o).split("\\%message\\%")[0];
 					}
+				}catch(Exception er) {}
 				}
 			}
 		}else
+			try {
 			text=(""+format).split("\\%message\\%")[0];
+			}catch(Exception er) {}
 		if(text==null)return "";
 		return getLastColors(text);
 	}
