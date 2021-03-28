@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -23,11 +24,14 @@ public class SecurityListenerCooldowns implements Listener {
 		if (setting.cool_chat && !p.hasPermission("SCR.Other.Cooldown.Chat")
 				&& StringUtils.timeFromString(Loader.config.getString("Options.Cooldowns.Chat.Time")) > 0) {
 			CooldownAPI s = TheAPI.getCooldownAPI(p.getName());
+			Bukkit.broadcastMessage("Ex: "+s.getCooldown("Cooldown.Msgs")+" ; "+s.getStart("Cooldown.Msgs")+ " ; "+s.getTimeToExpire("Cooldown.Msgs")+" ; "+s.expired("Cooldown.Msgs"));
 			if (!s.expired("Cooldown.Msgs")) {
-				Loader.sendMessages(p, "Cooldowns.Messages", Placeholder.c().add("%time%", StringUtils.setTimeToString(s.getTimeToExpire("Cooldown.Msgs") )));
+				Loader.sendMessages(p, "Cooldowns.Messages", Placeholder.c().add("%time%", StringUtils.setTimeToString(s.getTimeToExpire("Cooldown.Msgs")*20 )));
 				e.setCancelled(true);
-			} else
-				s.createCooldown("Cooldown.Msgs", StringUtils.getTimeFromString(Loader.config.getString("Options.Cooldowns.Chat.Time")));
+			} else {
+				s.createCooldown("Cooldown.Msgs", StringUtils.getTimeFromString(Loader.config.getString("Options.Cooldowns.Chat.Time"))/20);
+				Bukkit.broadcastMessage("Set: "+Loader.config.getString("Options.Cooldowns.Chat.Time"));
+			}
 		}
 	}
 
