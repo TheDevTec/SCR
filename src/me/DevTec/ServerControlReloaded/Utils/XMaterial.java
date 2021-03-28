@@ -22,6 +22,7 @@
  */
 package me.DevTec.ServerControlReloaded.Utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -1128,39 +1129,43 @@ public enum XMaterial {
     private final Material material;
 
     XMaterial(int data, int version, String... legacy) {
-        this.data = data;
         this.version = version;
         this.legacy = legacy;
+        this.data = data;
         int i = -1;
         Material mat = null;
         if(TheAPI.isNewVersion()) {
     	try {
-    		mat=Material.getMaterial(name(),true);
+    		mat=Material.matchMaterial(name());
     	}catch(Exception er) {}
         if (mat == null)
             for (String s : legacy) {
             	try {
-                mat = Material.getMaterial(s,true);
+                mat = Material.matchMaterial(s);
                 if (mat != null) break;
             	}catch(Exception er) {}
             }
+	        try {
+	        	i=Bukkit.getUnsafe().toLegacy(mat).getId();
+	        	if(i==0 && !mat.isAir())i=-1;
+	        }catch(Exception not) {}
         }else {
         	try {
-        		mat=Material.getMaterial(name());
+        		mat=Material.matchMaterial(name());
         	}catch(Exception er) {}
             if (mat == null)
                 for (String s : legacy) {
                 	try {
-                    mat = Material.getMaterial(s);
+                    mat = Material.matchMaterial(s);
                     if (mat != null) break;
                 	}catch(Exception er) {}
                 }
+            try {
+            	i=mat.getId();
+            }catch(Exception not) {}
         }
         if(mat==null)mat=Material.STONE;
         this.material = mat;
-        try {
-        	i=mat.getId();
-        }catch(Exception not) {}
         id=i;
     }
 
@@ -1184,31 +1189,35 @@ public enum XMaterial {
         return matchXMaterial(item.getType(), (byte)(item.getType().getMaxDurability() > 0 ? 0 : item.getDurability()));
     }
 
-    public static XMaterial matchXMaterial(int id, byte data) {
+    public static XMaterial matchXMaterial(int id, byte data) {;
         if (id < 0 || id > MAX_ID || data < 0) return null;
         for (XMaterial materials : values())
-            if (materials.data == data && materials.getId() == id) return materials;
+            if (materials.data == data && materials.id == id) return materials;
         return null;
     }
 
     public static XMaterial matchXMaterial(String name) {
         if (name==null) return null;
-        if(name.matches("[0-9]+"))return matchXMaterial(StringUtils.getInt(name), (byte)0);
+        if(name.matches("[0-9+-]+"))return matchXMaterial(StringUtils.getInt(name), (byte)0);
         if(name.contains(":"))return matchXMaterial(name.split(":")[0], StringUtils.getByte(name.split(":")[1]));
+        try {
         XMaterial item = XMaterial.valueOf(name.toUpperCase());
         if(item!=null)return item;
         for (XMaterial materials : values())
             if (materials.isDuplicate(name))return materials;
+        }catch(Exception | NoSuchFieldError e) {}
         return null;
     }
 
     public static XMaterial matchXMaterial(String name, byte data) {
         if (name==null || data < 0) return null;
-        if(name.matches("[0-9]+"))return matchXMaterial(StringUtils.getInt(name), data);
+        if(name.matches("[0-9+-]+"))return matchXMaterial(StringUtils.getInt(name), data);
+        try {
         XMaterial item = XMaterial.valueOf(name.toUpperCase());
         if(item!=null && item.getData()==data)return item;
         for (XMaterial materials : values())
             if ((materials.isDuplicate(name)) && materials.getData()==data) return materials;
+        }catch(Exception | NoSuchFieldError e) {}
         return null;
     }
 
