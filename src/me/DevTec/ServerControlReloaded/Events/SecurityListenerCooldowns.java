@@ -26,7 +26,6 @@ public class SecurityListenerCooldowns implements Listener {
 			if (!s.expired("Cooldown.Msgs")) {
 				Loader.sendMessages(p, "Cooldowns.Messages", Placeholder.c().add("%time%", StringUtils.setTimeToString(s.getTimeToExpire("Cooldown.Msgs")/20)));
 				e.setCancelled(true);
-				return;
 			} else
 				s.createCooldown("Cooldown.Msgs", Loader.config.getLong("Cooldown.Chat")*20);
 		}
@@ -42,18 +41,18 @@ public class SecurityListenerCooldowns implements Listener {
 			if (setting.cool_percmd)
 				for (String s : Loader.config.getStringList("Options.Cooldowns.Commands.PerCommand.List")) {
 					if (!p.hasPermission("SCR.Other.Cooldown.PerCommand."+s)) {
-					String[] c = s.split(":");
-					if (e.getMessage().replaceFirst("/", "").toLowerCase().startsWith(c[0].toLowerCase())
-							|| c[0].equalsIgnoreCase(e.getMessage().replaceFirst("/", ""))) {
-						find = true;
-						if (as.expired("Cooldown.Cmds." + c[0])) {
-							as.createCooldown("Cooldown.Cmds." + c[0], StringUtils.getLong(c[1])*20);
-						} else {
-							e.setCancelled(true);
-							Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmds." + c[0])/20)));
+						String[] c = s.split(":");
+						if (e.getMessage().replaceFirst("/", "").toLowerCase().startsWith(c[0].toLowerCase())
+								|| c[0].equalsIgnoreCase(e.getMessage().replaceFirst("/", ""))) {
+							find = true;
+							if (as.expired("Cooldown.Cmds." + c[0])) {
+								as.createCooldown("Cooldown.Cmds." + c[0], StringUtils.timeFromString(c[1])*20);
+							} else {
+								e.setCancelled(true);
+								Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmds." + c[0])/20)));
+							}
+							break;
 						}
-						break;
-					}
 					}
 				}
 			if (!find && setting.cool_cmd && time > 0) {
