@@ -423,10 +423,8 @@ public class Give implements CommandExecutor, TabCompleter {
 		return h;
 	}
 
-	public String getItem(String s) {
-		if (list.contains(s.toUpperCase()) || XMaterial.matchXMaterial(s)!=null)
-			return s.toUpperCase();
-		return null;
+	public boolean existsItem(String s) {
+		return list.contains(s.toUpperCase());
 	}
 
 	@Override
@@ -445,7 +443,7 @@ public class Give implements CommandExecutor, TabCompleter {
 						Loader.Help(s, "Give", "Other");
 						return true;
 					}
-					if (getItem(g) != null) {
+					if (existsItem(g)) {
 							Player p = (Player) s;
 							try {
 								if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
@@ -474,7 +472,7 @@ public class Give implements CommandExecutor, TabCompleter {
 						Repeat.a(s, "give * " + args[1].toLowerCase().replaceFirst("minecraft:", "").toUpperCase());
 						return true;
 					}
-					if (getItem(g) != null) {
+					if (existsItem(g)) {
 						ps = (Player) s;
 						try {
 							if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
@@ -500,7 +498,7 @@ public class Give implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				String g = args[1].toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
-				if (getItem(g) != null) {
+				if (existsItem(g)) {
 					if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
 							&& !g.startsWith("POTION_OF_"))
 						TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).getMaterial(), 1);
@@ -527,7 +525,7 @@ public class Give implements CommandExecutor, TabCompleter {
 						Repeat.a(s, "give * " + g + " " + args[2]);
 						return true;
 					}
-					if (getItem(args[1]) != null) {
+					if (existsItem(args[1])) {
 						if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
 								&& !g.startsWith("POTION_OF_"))
 							TheAPI.giveItem(ps, XMaterial.matchXMaterial(g).getMaterial(),
