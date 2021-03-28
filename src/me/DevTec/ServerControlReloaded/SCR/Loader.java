@@ -305,6 +305,7 @@ public class Loader extends JavaPlugin implements Listener {
 			disable=true;
 			return;
 		}
+		XMaterial.matchXMaterial("STONE"); //intialize ids on load
         boolean save = false;
         Data c = new Data("plugins/bStats/config.yml");
         if(c.setIfAbsent("enabled", true))save=true;
