@@ -197,11 +197,11 @@ public class SPlayer {
 		if (d.exist("WalkSpeed")) {
 			Player f = getPlayer();
 			if (d.getDouble("WalkSpeed") < 0.0)
-				f.setFlySpeed(0);
+				f.setWalkSpeed(0);
 			else if (d.getDouble("WalkSpeed") > 10.0)
-				f.setFlySpeed(10);
+				f.setWalkSpeed(10);
 			else
-				f.setFlySpeed(d.getFloat("WalkSpeed"));
+				f.setWalkSpeed(d.getFloat("WalkSpeed"));
 		}
 	}
 

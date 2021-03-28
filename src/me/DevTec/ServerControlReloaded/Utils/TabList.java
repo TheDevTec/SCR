@@ -200,6 +200,9 @@ public class TabList {
 				if(API.canSee(p,s.getName()))++seen;
 			header=header.replace("%online%", seen + "");
 		}
+		if(header.contains("%playtime%")) {
+			header=header.replace("%playtime%", StringUtils.timeToString(playtime(p)));
+		}
 		if(header.contains("%ping%"))
 			header=header.replace("%ping%", Loader.getInstance.pingPlayer(p));
 		;if(header.contains("%world%"))
@@ -298,6 +301,23 @@ public class TabList {
 		String name = getNameFormat(p).replace("%tab_prefix%", (p2!=null?replace(p2, p, true):"")).replace("%tab_suffix%", (s2!=null?replace(s2, p, true):""));
 		p.setPlayerListName(AnimationManager.replace(p,name));
 		NameTagChanger.setNameTag(p, p1!=null?AnimationManager.replaceWithoutColors(p,replace(p1, p, false)):"", s1!=null?AnimationManager.replaceWithoutColors(p,replace(s1, p, false)):"");
+	}
+	static Statistic st;
+	static long del=60, addOrRemove=1;
+	
+	static {
+		try {
+			st=Statistic.valueOf("PLAY_ONE_MINUTE");
+		}catch(Exception|NoSuchFieldError er) {
+			st=Statistic.valueOf("PLAY_ONE_TICK");
+			addOrRemove=0;
+			del=20;
+		}
+	}
+	
+	static long playtime(Player s) {
+		if(s==null)return -1;
+		return addOrRemove==0?s.getStatistic(st)*del:s.getStatistic(st)/del;
 	}
 	
 	static int test;

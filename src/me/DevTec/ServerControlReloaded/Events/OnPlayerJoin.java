@@ -87,6 +87,20 @@ public class OnPlayerJoin implements Listener {
             if(p!=s)
             if (!API.canSee(p, s.getName()))
                 p.hidePlayer(s);
+		User d = TheAPI.getUser(p);
+		boolean fly = d.getBoolean("FlyOnQuit");
+		d.remove("FlyOnQuit");
+		SPlayer s = API.getSPlayer(p); 
+		s.setFlySpeed();
+		s.setWalkSpeed();
+		if (s.hasTempFlyEnabled())
+			s.enableTempFly();
+		else if ((s.hasFlyEnabled()||fly) && Loader.has(p, "Fly", "Other"))
+			s.enableFly();
+		else
+			s.disableFly();
+		if (s.hasGodEnabled())
+			s.enableGod();
         API.setVanish(p.getName(), Loader.getPerm("Vanish","Other"), API.hasVanish(p.getName()));
 		new Tasker() {
 			public void run() {
@@ -94,7 +108,6 @@ public class OnPlayerJoin implements Listener {
 		    		LoginEvent.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
 		    	DisplayManager.initializePlayer(p);
 				Tasks.regPlayer(p);
-				User d = TheAPI.getUser(p);
 				Config f = Loader.config;
 				if(API.hasVanish(e.getPlayer().getName())) {
 					if(setting.vanish_action) {
@@ -222,23 +235,6 @@ public class OnPlayerJoin implements Listener {
 				if(setting.tab_nametag)
 				TabList.setName(p);
 				}
-				boolean fly = d.getBoolean("FlyOnQuit");
-				d.remove("FlyOnQuit");
-				SPlayer s = API.getSPlayer(p); 
-				new Tasker() {
-					public void run() {
-						s.setFlySpeed();
-						s.setWalkSpeed();
-						if (s.hasTempFlyEnabled())
-							s.enableTempFly();
-						else if ((s.hasFlyEnabled()||fly) && Loader.has(p, "Fly", "Other"))
-							s.enableFly();
-						else
-							s.disableFly();
-						if (s.hasGodEnabled())
-							s.enableGod();
-					}
-				}.runTaskSync();
 				d.setAndSave("Joins", d.getInt("Joins")+1);
 			}}.runTask();
 	}

@@ -57,6 +57,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 					String ip = PunishmentAPI.getIP(a[0]);
 					if (ip == null)
 						ip = "Unknown";
+					else ip=ip.replace("_", ".");
 					Map<String, Object> country = getCountry(ip);
 					boolean d = false;
 					String afk = "false";
@@ -89,7 +90,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 		Loader.noPerms(s, "WhoIs", "Info");
 		return true;
 	}
-
+	
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] args) {
