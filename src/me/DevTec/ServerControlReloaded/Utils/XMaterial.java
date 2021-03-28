@@ -25,6 +25,7 @@ package me.DevTec.ServerControlReloaded.Utils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public enum XMaterial {
@@ -1121,6 +1122,7 @@ public enum XMaterial {
     private static final short MAX_ID = 2267;
 
     private final int data;
+    private final int id;
     private final int version;
     private final String[] legacy;
     private final Material material;
@@ -1129,20 +1131,37 @@ public enum XMaterial {
         this.data = data;
         this.version = version;
         this.legacy = legacy;
-
+        int i = -1;
         Material mat = null;
+        if(TheAPI.isNewVersion()) {
     	try {
-    		mat=Material.getMaterial(name());
+    		mat=Material.getMaterial(name(),true);
     	}catch(Exception er) {}
         if (mat == null)
             for (String s : legacy) {
             	try {
-                mat = Material.getMaterial(s);
+                mat = Material.getMaterial(s,true);
                 if (mat != null) break;
             	}catch(Exception er) {}
             }
+        }else {
+        	try {
+        		mat=Material.getMaterial(name());
+        	}catch(Exception er) {}
+            if (mat == null)
+                for (String s : legacy) {
+                	try {
+                    mat = Material.getMaterial(s);
+                    if (mat != null) break;
+                	}catch(Exception er) {}
+                }
+        }
         if(mat==null)mat=Material.STONE;
         this.material = mat;
+        try {
+        	i=mat.getId();
+        }catch(Exception not) {}
+        id=i;
     }
 
     XMaterial(int data, String... legacy) {
@@ -1216,7 +1235,7 @@ public enum XMaterial {
     }
 
     public int getId() {
-        return getVersion() < 13?-1:getMaterial().getId();
+    	return id;
     }
 
     public int getData() {
@@ -1224,7 +1243,7 @@ public enum XMaterial {
     }
 
     public ItemStack parseItem() {
-        return getVersion()>12 ? new ItemStack(material) : new ItemStack(material, 1, (byte)data);
+        return getVersion()<13 ? new ItemStack(material, 1, (byte)data) : new ItemStack(material);
     }
 
     public Material getMaterial() {
