@@ -25,7 +25,6 @@ package me.DevTec.ServerControlReloaded.Utils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public enum XMaterial {
@@ -1217,7 +1216,7 @@ public enum XMaterial {
     }
 
     public int getId() {
-        return getVersion() > 12?-1:getMaterial().getId();
+        return getVersion() < 13?-1:getMaterial().getId();
     }
 
     public int getData() {
@@ -1225,7 +1224,7 @@ public enum XMaterial {
     }
 
     public ItemStack parseItem() {
-        return getVersion()>12 ? (TheAPI.isNewVersion()?new ItemStack(material):null) : new ItemStack(material, 1, (byte)data);
+        return getVersion()>12 ? new ItemStack(material) : new ItemStack(material, 1, (byte)data);
     }
 
     public Material getMaterial() {
