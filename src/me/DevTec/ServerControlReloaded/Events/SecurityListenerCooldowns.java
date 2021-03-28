@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -18,10 +18,10 @@ import me.devtec.theapi.utils.StringUtils;
 public class SecurityListenerCooldowns implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void CooldownChat(PlayerChatEvent e) {
+	public void CooldownChat(AsyncPlayerChatEvent e) {
 		Player p = e.getPlayer();
 		if (setting.cool_chat && !p.hasPermission("SCR.Other.Cooldown.Chat")
-				&& Loader.config.getInt("Options.Cooldowns.Chat.Time") > 0) {
+				&& StringUtils.timeFromString(Loader.config.getString("Options.Cooldowns.Chat.Time")) > 0) {
 			CooldownAPI s = TheAPI.getCooldownAPI(p.getName());
 			if (!s.expired("Cooldown.Msgs")) {
 				Loader.sendMessages(p, "Cooldowns.Messages", Placeholder.c().add("%time%", StringUtils.setTimeToString(s.getTimeToExpire("Cooldown.Msgs")/20)));
@@ -36,7 +36,7 @@ public class SecurityListenerCooldowns implements Listener {
 	public void CooldownCommands(PlayerCommandPreprocessEvent e) {
 		Player p = e.getPlayer();
 		if (!p.hasPermission("SCR.Other.Cooldown.Commands")) {
-			int time = Loader.config.getInt("Options.Cooldowns.Commands.Time");
+			long time = StringUtils.timeFromString(Loader.config.getString("Options.Cooldowns.Commands.Time"));
 			boolean find = false;
 			CooldownAPI as = TheAPI.getCooldownAPI(p.getName());
 			if (setting.cool_percmd)
