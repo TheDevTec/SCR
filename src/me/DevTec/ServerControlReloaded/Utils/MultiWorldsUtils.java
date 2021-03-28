@@ -136,7 +136,8 @@ public class MultiWorldsUtils {
 					as.setGameRuleValue(g, Loader.mw.getString("WorldsSettings." + as.getName() + ".Gamerule." + g));
 		
 			String dif = null;
-			dif = Loader.mw.getString("WorldsSettings." + as.getName() + ".Difficulty").toUpperCase();
+			if(Loader.mw.exists("WorldsSettings." + as.getName() + ".Difficulty"))
+				dif = Loader.mw.getString("WorldsSettings." + as.getName() + ".Difficulty").toUpperCase();
 			boolean keepspawn = Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".KeepSpawnInMemory");
 			boolean autosave = Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".AutoSave");
 			boolean pvp = Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".PvP");
@@ -150,6 +151,7 @@ public class MultiWorldsUtils {
 				an = Loader.mw.getInt("WorldsSettings." + as.getName() + ".TicksPerAnimalSpawn");
 				mo = Loader.mw.getInt("WorldsSettings." + as.getName() + ".TicksPerMonsterSpawn");
 			}
+			if(dif!=null)
 			if (dif.equalsIgnoreCase("EASY") || dif.equalsIgnoreCase("NORMAL") || dif.equalsIgnoreCase("HARD") || dif.equalsIgnoreCase("PEACEFUL")) {
 				as.setDifficulty(Difficulty.valueOf(dif.toUpperCase()));
 			}else {
