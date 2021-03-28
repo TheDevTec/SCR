@@ -51,8 +51,6 @@ public class API {
 			Iterator<Player> it = p.iterator();
 			while(it.hasNext()) {
 				Player pd = it.next();
-	           	//if( pd!=s && !((Player)s).canSee(pd) ) {
-		        //if( pd!=s && !pd.canSee((Player)s) ) {
 				if( pd!=s && !canSee( ( (Player)s), pd.getName()) ) {
 	           		it.remove();
 	           	}
@@ -67,7 +65,6 @@ public class API {
 			Iterator<Player> it = p.iterator();
 			while(it.hasNext()) {
 				Player pd = it.next();
-	           	//if( pd!=s && !pd.canSee((Player)s) ) {
 				if( pd!=s && !canSee(pd, s.getName()) ) {
 	           		it.remove();
 	           	}

@@ -24,10 +24,10 @@ public class SecurityListenerCooldowns implements Listener {
 				&& StringUtils.timeFromString(Loader.config.getString("Options.Cooldowns.Chat.Time")) > 0) {
 			CooldownAPI s = TheAPI.getCooldownAPI(p.getName());
 			if (!s.expired("Cooldown.Msgs")) {
-				Loader.sendMessages(p, "Cooldowns.Messages", Placeholder.c().add("%time%", StringUtils.setTimeToString(s.getTimeToExpire("Cooldown.Msgs")/20)));
+				Loader.sendMessages(p, "Cooldowns.Messages", Placeholder.c().add("%time%", StringUtils.setTimeToString(s.getTimeToExpire("Cooldown.Msgs") )));
 				e.setCancelled(true);
 			} else
-				s.createCooldown("Cooldown.Msgs", Loader.config.getLong("Cooldown.Chat")*20);
+				s.createCooldown("Cooldown.Msgs", StringUtils.getTimeFromString(Loader.config.getString("Options.Cooldowns.Chat.Time")));
 		}
 	}
 
@@ -46,10 +46,10 @@ public class SecurityListenerCooldowns implements Listener {
 								|| c[0].equalsIgnoreCase(e.getMessage().replaceFirst("/", ""))) {
 							find = true;
 							if (as.expired("Cooldown.Cmds." + c[0])) {
-								as.createCooldown("Cooldown.Cmds." + c[0], StringUtils.timeFromString(c[1])*20);
+								as.createCooldown("Cooldown.Cmds." + c[0], StringUtils.timeFromString(c[1]));
 							} else {
 								e.setCancelled(true);
-								Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmds." + c[0])/20)));
+								Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmds." + c[0]))));
 							}
 							break;
 						}
@@ -58,9 +58,9 @@ public class SecurityListenerCooldowns implements Listener {
 			if (!find && setting.cool_cmd && time > 0) {
 				if (!as.expired("Cooldown.Cmdss")) {
 					e.setCancelled(true);
-					Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmdss")/20)));
+					Loader.sendMessages(p, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.setTimeToString(as.getTimeToExpire("Cooldown.Cmdss"))));
 				} else
-					as.createCooldown("Cooldown.Cmdss", time*20);
+					as.createCooldown("Cooldown.Cmdss", time);
 			}
 		}
 	}
