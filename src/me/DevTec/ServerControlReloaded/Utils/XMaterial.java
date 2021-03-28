@@ -1189,7 +1189,7 @@ public enum XMaterial {
         return matchXMaterial(item.getType(), (byte)(item.getType().getMaxDurability() > 0 ? 0 : item.getDurability()));
     }
 
-    public static XMaterial matchXMaterial(int id, byte data) {;
+    public static XMaterial matchXMaterial(int id, byte data) {
         if (id < 0 || id > MAX_ID || data < 0) return null;
         for (XMaterial materials : values())
             if (materials.data == data && materials.id == id) return materials;
@@ -1253,6 +1253,10 @@ public enum XMaterial {
 
     public ItemStack parseItem() {
         return getVersion()<13 ? new ItemStack(material, 1, (byte)data) : new ItemStack(material);
+    }
+
+    public ItemStack parseItem(int amount) {
+        return getVersion()<13 ? new ItemStack(material, amount, (byte)data) : new ItemStack(material, amount);
     }
 
     public Material getMaterial() {
