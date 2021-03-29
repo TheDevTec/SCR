@@ -48,7 +48,6 @@ public class Skin implements CommandExecutor, TabCompleter {
 				SkinManager.generateSkin(s.getName(), new SkinCallback() {
 					@Override
 					public void run(SkinData data) {
-						SkinManager.setSkin(s.getName(), data);
 						SkinManager.loadSkin((Player)s, data);
 					}
 				}, false);
@@ -59,7 +58,6 @@ public class Skin implements CommandExecutor, TabCompleter {
 			SkinManager.generateSkin(args[0], new SkinCallback() {
 				@Override
 				public void run(SkinData data) {
-					SkinManager.setSkin(s.getName(), data);
 					SkinManager.loadSkin((Player)s, data);
 				}
 			}, false);
@@ -79,7 +77,6 @@ public class Skin implements CommandExecutor, TabCompleter {
 			SkinManager.generateSkin(a.getName(), new SkinCallback() {
 				@Override
 				public void run(SkinData data) {
-					SkinManager.setSkin(a.getName(), data);
 					SkinManager.loadSkin(a, data);
 				}
 			}, false);
@@ -91,7 +88,6 @@ public class Skin implements CommandExecutor, TabCompleter {
 		SkinManager.generateSkin(args[0], new SkinCallback() {
 			@Override
 			public void run(SkinData data) {
-				SkinManager.setSkin(a.getName(), data);
 				SkinManager.loadSkin(a, data);
 			}
 		}, false);

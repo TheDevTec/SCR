@@ -1,7 +1,6 @@
 
 package me.DevTec.ServerControlReloaded.Events;
 
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Date;
 
@@ -60,7 +59,6 @@ public class OnPlayerJoin implements Listener {
 					@Override
 					public void run(SkinData data) {
 						if(!p.isOnline())return;
-						SkinManager.setSkin(p.getName(), data);
 						SkinManager.loadSkin(p, data);
 					}
 				}, false);
@@ -71,7 +69,6 @@ public class OnPlayerJoin implements Listener {
 					@Override
 					public void run(SkinData data) {
 						if(!p.isOnline())return;
-						SkinManager.setSkin(p.getName(), data);
 						SkinManager.loadSkin(p, data);
 					}
 				}, false);
@@ -87,23 +84,23 @@ public class OnPlayerJoin implements Listener {
             if(p!=s)
             if (!API.canSee(p, s.getName()))
                 p.hidePlayer(s);
-		User d = TheAPI.getUser(p);
-		boolean fly = d.getBoolean("FlyOnQuit");
-		d.remove("FlyOnQuit");
-		SPlayer s = API.getSPlayer(p); 
-		s.setFlySpeed();
-		s.setWalkSpeed();
-		if (s.hasTempFlyEnabled())
-			s.enableTempFly();
-		else if ((s.hasFlyEnabled()||fly) && Loader.has(p, "Fly", "Other"))
-			s.enableFly();
-		else
-			s.disableFly();
-		if (s.hasGodEnabled())
-			s.enableGod();
         API.setVanish(p.getName(), Loader.getPerm("Vanish","Other"), API.hasVanish(p.getName()));
 		new Tasker() {
 			public void run() {
+				User d = TheAPI.getUser(p);
+				boolean fly = d.getBoolean("FlyOnQuit");
+				d.remove("FlyOnQuit");
+				SPlayer s = API.getSPlayer(p); 
+				s.setFlySpeed();
+				s.setWalkSpeed();
+				if (s.hasTempFlyEnabled())
+					s.enableTempFly();
+				else if ((s.hasFlyEnabled()||fly) && Loader.has(p, "Fly", "Other"))
+					s.enableFly();
+				else
+					s.disableFly();
+				if (s.hasGodEnabled())
+					s.enableGod();
 		        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
 		    		LoginEvent.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
 		    	DisplayManager.initializePlayer(p);
@@ -238,8 +235,6 @@ public class OnPlayerJoin implements Listener {
 				d.setAndSave("Joins", d.getInt("Joins")+1);
 			}}.runTask();
 	}
-
-	Method cdd = null;
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerQuit(PlayerQuitEvent e) {
@@ -247,6 +242,7 @@ public class OnPlayerJoin implements Listener {
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
 		User d = TheAPI.getUser(p);
+		boolean fly = p.isFlying() && p.getAllowFlight();
 		new Tasker() {
 			public void run() {
 				Vanish.task.remove(e.getPlayer().getName());
@@ -292,14 +288,13 @@ public class OnPlayerJoin implements Listener {
 								TheAPI.bcMsg(replaceAll(""+o, p));
 				}
 				d.set("LastLeave", setting.format_date_time.format(new Date()));
+				if(fly)
+					d.set("FlyOnQuit", true);
+				else
+					d.remove("FlyOnQuit");
 				d.setAndSave("DisconnectWorld", p.getWorld().getName());
 			}
 		}.runTask();
-		if(p.isFlying() && p.getAllowFlight())
-		d.set("FlyOnQuit", true);
-		else {
-			d.remove("FlyOnQuit");
-		}
 		p.setFlying(false);
 		p.setAllowFlight(false);
 	}
