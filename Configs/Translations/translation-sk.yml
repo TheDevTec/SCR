@@ -26,6 +26,7 @@ Give:
 Seen:
   Online: "%prefix% &e%player%&7 je &aonline &7už &a%online%"
   Offline: "%prefix% &e%player%&7 je &coffline &7už &c%offline%"
+  Similiar: "%prefix% Mal si na mysli tento nick: &e%names%"
   
 # Translations for /SocialSpy command
 SocialSpy:

@@ -26,6 +26,7 @@ Give:
 Seen:
   Online: "%prefix% &e%player%&7 is &aonline &7for &a%online%"
   Offline: "%prefix% &e%player%&7 is &coffline &7for &c%offline%"
+  Similiar: "%prefix% Do you mean nick: &e%names%"
   
 # Translations for /SocialSpy command
 SocialSpy:
