@@ -84,11 +84,14 @@ public class OnPlayerJoin implements Listener {
             if(p!=s)
             if (!API.canSee(p, s.getName()))
                 p.hidePlayer(s);
-        API.setVanish(p.getName(), Loader.getPerm("Vanish","Other"), API.hasVanish(p.getName()));
 		new Tasker() {
 			public void run() {
 				User d = TheAPI.getUser(p);
+	            if(d.exists("vanish"))
+		        API.setVanish(d, Loader.getPerm("Vanish","Other"), d.getBoolean("vanish"));
+				try {
 				boolean fly = d.getBoolean("FlyOnQuit");
+				if(fly)
 				d.remove("FlyOnQuit");
 				SPlayer s = API.getSPlayer(p); 
 				s.setFlySpeed();
@@ -97,8 +100,6 @@ public class OnPlayerJoin implements Listener {
 					s.enableTempFly();
 				else if ((s.hasFlyEnabled()||fly) && Loader.has(p, "Fly", "Other"))
 					s.enableFly();
-				else
-					s.disableFly();
 				if (s.hasGodEnabled())
 					s.enableGod();
 		        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
@@ -232,7 +233,9 @@ public class OnPlayerJoin implements Listener {
 				if(setting.tab_nametag)
 				TabList.setName(p);
 				}
-				d.setAndSave("Joins", d.getInt("Joins")+1);
+				d.set("Joins", d.getInt("Joins")+1);
+				}catch(Exception | NoSuchFieldError | NoSuchMethodError e) {}
+				d.save();
 			}}.runTask();
 	}
 	
@@ -243,8 +246,11 @@ public class OnPlayerJoin implements Listener {
 		DisplayManager.removeCache(p);
 		User d = TheAPI.getUser(p);
 		boolean fly = p.isFlying() && p.getAllowFlight();
+		p.setFlying(false);
+		p.setAllowFlight(false);
 		new Tasker() {
 			public void run() {
+				try {
 				Vanish.task.remove(e.getPlayer().getName());
 				if (!API.hasVanish(p.getName())) {
 						Object o = Loader.events.get("onQuit.Text");
@@ -292,10 +298,10 @@ public class OnPlayerJoin implements Listener {
 					d.set("FlyOnQuit", true);
 				else
 					d.remove("FlyOnQuit");
-				d.setAndSave("DisconnectWorld", p.getWorld().getName());
+				d.set("DisconnectWorld", p.getWorld().getName());
+				}catch(Exception | NoSuchFieldError | NoSuchMethodError e) {}
+				d.save();
 			}
 		}.runTask();
-		p.setFlying(false);
-		p.setAllowFlight(false);
 	}
 }

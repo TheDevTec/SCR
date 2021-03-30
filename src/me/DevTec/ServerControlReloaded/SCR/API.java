@@ -100,32 +100,32 @@ public class API {
 		return "default";
 	}
 	
-    public static void setVanish(String playerName, String permission, boolean value) {
-        Player s = TheAPI.getPlayerOrNull(playerName);
+    public static void setVanish(User i, String permission, boolean value) {
+        Player s = TheAPI.getPlayerOrNull(i.getName());
         if (s != null)
-            applyVanish(TheAPI.getUser(s),s, permission, value);
+            applyVanish(i,s, permission, value);
         else {
-            User i = TheAPI.getUser(playerName);
             if(value) {
             	i.set("vanish", value);
-            	i.setAndSave("vanish.perm", permission);
+            	i.set("vanish.perm", permission);
             }else {
             	i.remove("vanish");
             }
-            i.save();
         }
     }
 	
     public static void setVanish(Player playerName, String permission, boolean value) {
-        if (playerName != null)
-            applyVanish(TheAPI.getUser(playerName), playerName, permission, value);
+        if (playerName != null) {
+        	User s = TheAPI.getUser(playerName);
+            applyVanish(s, playerName, permission, value);
+            s.save();
+        }
     }
  
     private static void applyVanish(User i, Player s, String perm, boolean var) {
             if (var) {
                 i.set("vanish", var);
                 i.set("vanish.perm", perm);
-                i.save();
                 List<Player> l = TheAPI.getOnlinePlayers();
                 l.remove(s);
                 for(Player d : l)
@@ -134,7 +134,6 @@ public class API {
                 return;
             }
             i.remove("vanish");
-            i.save();
             List<Player> l = TheAPI.getOnlinePlayers();
             l.remove(s);
             for (Player d : l)
