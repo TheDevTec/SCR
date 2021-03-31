@@ -98,10 +98,15 @@ public class OnPlayerJoin implements Listener {
 				s.setWalkSpeed();
 				if (s.hasTempFlyEnabled())
 					s.enableTempFly();
-				else if ((s.hasFlyEnabled()||fly) && Loader.has(p, "Fly", "Other"))
-					s.enableFly();
-				if (s.hasGodEnabled())
-					s.enableGod();
+				else if ((s.hasFlyEnabled()||fly) && Loader.has(p, "Fly", "Other")) {
+					e.getPlayer().setAllowFlight(true);
+					e.getPlayer().setFlying(true);
+				}
+				if (s.hasGodEnabled()){
+					s.setHP();
+					s.setFood();
+					s.setFire();
+				}
 		        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
 		    		LoginEvent.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
 		    	DisplayManager.initializePlayer(p);

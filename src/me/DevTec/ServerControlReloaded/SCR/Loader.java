@@ -456,8 +456,6 @@ public class Loader extends JavaPlugin implements Listener {
 		CommandsManager.unload();
 		org.bukkit.event.HandlerList.unregisterAll(this);
 		for (Player p : TheAPI.getOnlinePlayers()) {
-			p.setFlying(false);
-			p.setAllowFlight(false);
 			p.setDisplayName(null);
 			p.setCustomName(null);
 		}
