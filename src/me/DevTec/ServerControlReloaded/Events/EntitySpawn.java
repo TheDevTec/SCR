@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import me.DevTec.ServerControlReloaded.SCR.Loader;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -8,8 +9,6 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-
-import me.DevTec.ServerControlReloaded.SCR.Loader;
 
 public class EntitySpawn implements Listener {
 

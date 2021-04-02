@@ -1,12 +1,12 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
-
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.SoundAPI;
 import me.devtec.theapi.configapi.Config;
+
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 public class setting {
 	public static enum DeathTp {

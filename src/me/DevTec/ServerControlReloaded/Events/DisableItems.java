@@ -1,5 +1,7 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.Utils.setting;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,9 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.Utils.setting;
 
 public class DisableItems implements Listener {
 

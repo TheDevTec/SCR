@@ -1,19 +1,18 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
 
-import java.util.Arrays;
-import java.util.List;
-
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.devtec.theapi.apis.PluginManagerAPI;
+import me.devtec.theapi.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.devtec.theapi.apis.PluginManagerAPI;
-import me.devtec.theapi.utils.StringUtils;
+import java.util.Arrays;
+import java.util.List;
 
 public class SCR implements CommandExecutor, TabCompleter {
 

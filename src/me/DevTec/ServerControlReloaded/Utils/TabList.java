@@ -1,15 +1,5 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-import org.bukkit.Statistic;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Player;
-
 import me.DevTec.ServerControlReloaded.Commands.Info.Staff;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -22,6 +12,15 @@ import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
+import org.bukkit.Statistic;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Player;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 public class TabList {
 	// GROUP, PRIORITE
@@ -126,7 +125,6 @@ public class TabList {
 	 * 
 	 * @param path Name
 	 * @param type 0 - player, 1 - world, 2 - group
-	 * @param value New header
 	 */
 	public static List<String> getHeader(String path, int type) {
 		return Loader.tab.getStringList(path==null?"Header":(type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) + path+".Header");
@@ -136,7 +134,6 @@ public class TabList {
 	 * 
 	 * @param path Name
 	 * @param type 0 - player, 1 - world, 2 - group
-	 * @param value New header
 	 */
 	public static List<String> getFooter(String path, int type) {
 		return Loader.tab.getStringList(path==null?"Footer":(type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) + path+".Footer");

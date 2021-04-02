@@ -1,11 +1,12 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import me.DevTec.ServerControlReloaded.SCR.API;
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.reflections.Ref;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,12 +17,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import me.DevTec.ServerControlReloaded.SCR.API;
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.reflections.Ref;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Item implements CommandExecutor, TabCompleter{
 	private static List<String> flags = new ArrayList<>();

@@ -1,23 +1,18 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.io.File;
-import java.util.List;
-import java.util.Random;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Difficulty;
-import org.bukkit.World;
-import org.bukkit.World.Environment;
-import org.bukkit.WorldType;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.worldsapi.WorldsAPI;
+import org.bukkit.*;
+import org.bukkit.World.Environment;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.io.File;
+import java.util.List;
+import java.util.Random;
 
 public class MultiWorldsUtils {
 	public static void unloadWorld(String w, CommandSender sender) {

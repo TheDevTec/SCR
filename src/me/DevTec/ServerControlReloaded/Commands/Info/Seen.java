@@ -1,22 +1,20 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
-
 import com.google.common.collect.Lists;
-
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.API.SeenType;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 public class Seen implements CommandExecutor, TabCompleter {
 	List<String> getS(String a) {

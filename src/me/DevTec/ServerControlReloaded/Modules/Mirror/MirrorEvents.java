@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.Modules.Mirror;
 
+import me.devtec.theapi.utils.Position;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -8,8 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
-
-import me.devtec.theapi.utils.Position;
 
 public class MirrorEvents implements Listener {
 

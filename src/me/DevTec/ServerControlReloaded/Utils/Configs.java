@@ -1,18 +1,18 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.net.URLConnection;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map.Entry;
-
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.datakeeper.Data;
 import me.devtec.theapi.utils.datakeeper.loader.YamlLoader;
 import me.devtec.theapi.utils.reflections.Ref;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.net.URLConnection;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map.Entry;
 
 public class Configs {
 	@SuppressWarnings("unchecked")

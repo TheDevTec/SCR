@@ -1,14 +1,13 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Colors {

@@ -1,14 +1,5 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.lang.reflect.Method;
-
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
@@ -17,6 +8,14 @@ import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.reflections.Ref;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+
+import java.lang.reflect.Method;
 
 public class SPlayer {
 	public boolean lock;

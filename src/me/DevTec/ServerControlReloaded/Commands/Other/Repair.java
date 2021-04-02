@@ -1,9 +1,11 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
 
-import java.util.Arrays;
-import java.util.List;
-
+import me.DevTec.ServerControlReloaded.SCR.API;
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,11 +14,8 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import me.DevTec.ServerControlReloaded.SCR.API;
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.StringUtils;
+import java.util.Arrays;
+import java.util.List;
 
 public class Repair implements CommandExecutor, TabCompleter {
 

@@ -1,16 +1,14 @@
 package me.DevTec.ServerControlReloaded.Events;
 
-import java.lang.reflect.Method;
-
+import com.bekvon.bukkit.residence.containers.Flags;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
+import me.devtec.theapi.apis.PluginManagerAPI;
+import me.devtec.theapi.utils.reflections.Ref;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.bekvon.bukkit.residence.containers.Flags;
-import com.bekvon.bukkit.residence.protection.ClaimedResidence;
-
-import me.devtec.theapi.apis.PluginManagerAPI;
-import me.devtec.theapi.utils.reflections.Ref;
+import java.lang.reflect.Method;
 
 public class FarmingSystemAccess {
 	public static boolean hasAccess(Player player, Location loc) {
@@ -31,7 +29,7 @@ public class FarmingSystemAccess {
     private static class WGAccess {
     	private static Object[] block_break = new Object[] {Ref.getStatic(Ref.getClass("com.sk89q.worldguard.protection.flags.DefaultFlag")!=null?Ref.getClass("com.sk89q.worldguard.protection.flags.DefaultFlag"):Ref.getClass("com.sk89q.worldguard.protection.flags.Flags"), "BLOCK_BREAK")};
     	private static Object inst = Ref.invokeStatic(Ref.getClass("com.sk89q.worldguard.bukkit.WorldGuardPlugin"), "inst");
-    	private static Method wrap = Ref.method(inst.getClass(), "warpPlayer", Player.class), 
+    	private static Method wrap = Ref.method(inst.getClass(), "warpPlayer", Player.class),
     			test=Ref.findMethodByName(Ref.getClass("com.sk89q.worldguard.protection.ApplicableRegionSet"), "testState");
     	private static Object region = Ref.invoke(Ref.invoke(Ref.invokeStatic(Ref.getClass("com.sk89q.worldguard.WorldGuard"), "getInstance"),"getPlatform"),"getRegionContainer");
     	private static Method get = Ref.method(Ref.nms("com.sk89q.worldguard.protection.regions.RegionContainer"), "get", Ref.getClass("com.sk89q.worldedit.world.World"));

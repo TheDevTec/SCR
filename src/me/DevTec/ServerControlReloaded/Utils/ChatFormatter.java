@@ -1,16 +1,15 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.entity.Player;
-
 import me.DevTec.ServerControlReloaded.Events.ChatFormat;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Item;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.Map;
 
 public class ChatFormatter {
 	public static String displayName(Player p) {

@@ -1,7 +1,9 @@
 package me.DevTec.ServerControlReloaded.Events;
 
-import java.util.Collection;
-
+import me.DevTec.ServerControlReloaded.Commands.CommandsManager;
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.devtec.theapi.punishmentapi.PlayerBanList;
+import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,10 +13,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import me.DevTec.ServerControlReloaded.Commands.CommandsManager;
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.devtec.theapi.punishmentapi.PlayerBanList;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
+import java.util.Collection;
 
 public class AFkPlayerEvents implements Listener {
 

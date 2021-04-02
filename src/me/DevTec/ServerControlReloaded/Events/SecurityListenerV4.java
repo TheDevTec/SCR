@@ -1,9 +1,9 @@
 package me.DevTec.ServerControlReloaded.Events;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.Utils.Rule;
+import me.DevTec.ServerControlReloaded.Utils.setting;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -18,9 +18,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.Utils.Rule;
-import me.DevTec.ServerControlReloaded.Utils.setting;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 18.11. 2020

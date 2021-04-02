@@ -1,5 +1,9 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.Utils.XMaterial;
+import me.DevTec.ServerControlReloaded.Utils.setting;
+import me.devtec.theapi.TheAPI;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.NetherWartsState;
@@ -13,11 +17,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Crops;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.NetherWarts;
-
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.Utils.XMaterial;
-import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.devtec.theapi.TheAPI;
 
 
 public class FarmingSystem implements Listener {

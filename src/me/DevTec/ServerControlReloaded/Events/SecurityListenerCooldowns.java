@@ -1,5 +1,11 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.DevTec.ServerControlReloaded.Utils.setting;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.cooldownapi.CooldownAPI;
+import me.devtec.theapi.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,13 +13,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.cooldownapi.CooldownAPI;
-import me.devtec.theapi.utils.StringUtils;
 
 
 public class SecurityListenerCooldowns implements Listener {

@@ -1,13 +1,12 @@
 package me.DevTec.ServerControlReloaded.Events;
 
+import me.DevTec.ServerControlReloaded.SCR.Loader;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.world.PortalCreateEvent;
-
-import me.DevTec.ServerControlReloaded.SCR.Loader;
 
 public class CreatePortal implements Listener {
 	

@@ -1,12 +1,11 @@
 package me.DevTec.ServerControlReloaded.Modules.Mirror;
 
-import java.util.List;
-
+import me.devtec.theapi.apis.SignAPI;
+import me.devtec.theapi.utils.Position;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import me.devtec.theapi.apis.SignAPI;
-import me.devtec.theapi.utils.Position;
+import java.util.List;
 
 public class MirrorSigns {
 	

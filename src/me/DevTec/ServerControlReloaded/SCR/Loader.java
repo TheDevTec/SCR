@@ -1,55 +1,10 @@
 package me.DevTec.ServerControlReloaded.SCR;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicePriority;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import me.DevTec.ServerControlReloaded.Commands.CommandsManager;
 import me.DevTec.ServerControlReloaded.Commands.Other.Trash;
-import me.DevTec.ServerControlReloaded.Events.AFkPlayerEvents;
-import me.DevTec.ServerControlReloaded.Events.ChatFormat;
-import me.DevTec.ServerControlReloaded.Events.CreatePortal;
-import me.DevTec.ServerControlReloaded.Events.DeathEvent;
-import me.DevTec.ServerControlReloaded.Events.DisableItems;
-import me.DevTec.ServerControlReloaded.Events.EntitySpawn;
-import me.DevTec.ServerControlReloaded.Events.FarmingSystem;
-import me.DevTec.ServerControlReloaded.Events.LoginEvent;
-import me.DevTec.ServerControlReloaded.Events.OnPlayerJoin;
-import me.DevTec.ServerControlReloaded.Events.RewardsListenerChat;
-import me.DevTec.ServerControlReloaded.Events.SecurityListenerCooldowns;
-import me.DevTec.ServerControlReloaded.Events.SecurityListenerV4;
-import me.DevTec.ServerControlReloaded.Events.Signs;
-import me.DevTec.ServerControlReloaded.Events.WorldChange;
+import me.DevTec.ServerControlReloaded.Events.*;
 import me.DevTec.ServerControlReloaded.Modules.Mirror.MirrorEvents;
-import me.DevTec.ServerControlReloaded.Utils.Configs;
-import me.DevTec.ServerControlReloaded.Utils.Converter;
-import me.DevTec.ServerControlReloaded.Utils.DisplayManager;
-import me.DevTec.ServerControlReloaded.Utils.Eco;
-import me.DevTec.ServerControlReloaded.Utils.Kit;
-import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
-import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
-import me.DevTec.ServerControlReloaded.Utils.Rule;
-import me.DevTec.ServerControlReloaded.Utils.SPlayer;
-import me.DevTec.ServerControlReloaded.Utils.TabList;
-import me.DevTec.ServerControlReloaded.Utils.Tasks;
-import me.DevTec.ServerControlReloaded.Utils.XMaterial;
-import me.DevTec.ServerControlReloaded.Utils.setting;
+import me.DevTec.ServerControlReloaded.Utils.*;
 import me.DevTec.ServerControlReloaded.Utils.metrics.Metrics;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
@@ -70,6 +25,19 @@ import me.devtec.theapi.utils.reflections.Ref;
 import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class Loader extends JavaPlugin implements Listener {
 	public static Config config, plac, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb,guicreator;

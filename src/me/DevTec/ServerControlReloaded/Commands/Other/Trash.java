@@ -1,16 +1,15 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
-import java.util.Arrays;
-import java.util.List;
-
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.devtec.theapi.guiapi.GUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.devtec.theapi.guiapi.GUI;
+import java.util.Arrays;
+import java.util.List;
 
 public class Trash implements CommandExecutor, TabCompleter {
 

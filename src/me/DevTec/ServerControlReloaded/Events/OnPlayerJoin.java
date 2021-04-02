@@ -1,29 +1,13 @@
 
 package me.DevTec.ServerControlReloaded.Events;
 
-import java.util.Collection;
-import java.util.Date;
-
-import org.bukkit.GameMode;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-
 import me.DevTec.ServerControlReloaded.Commands.Message.Mail;
 import me.DevTec.ServerControlReloaded.Commands.Other.Vanish;
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.API.TeleportLocation;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.ServerControlReloaded.Utils.DisplayManager;
-import me.DevTec.ServerControlReloaded.Utils.SPlayer;
-import me.DevTec.ServerControlReloaded.Utils.TabList;
-import me.DevTec.ServerControlReloaded.Utils.Tasks;
-import me.DevTec.ServerControlReloaded.Utils.setting;
+import me.DevTec.ServerControlReloaded.Utils.*;
 import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinCallback;
 import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinData;
 import me.DevTec.ServerControlReloaded.Utils.Skins.Manager.SkinManager;
@@ -36,6 +20,17 @@ import me.devtec.theapi.punishmentapi.PlayerBanList;
 import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.datakeeper.User;
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.Collection;
+import java.util.Date;
 
 public class OnPlayerJoin implements Listener {
 

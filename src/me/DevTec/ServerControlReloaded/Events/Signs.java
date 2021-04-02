@@ -1,22 +1,21 @@
 package me.DevTec.ServerControlReloaded.Events;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.SignChangeEvent;
-
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.Colors;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.SignAPI;
 import me.devtec.theapi.apis.SignAPI.SignAction;
 import me.devtec.theapi.utils.Position;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.SignChangeEvent;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Signs implements Listener {
 	public Loader ps = Loader.getInstance;

@@ -1,11 +1,10 @@
 package me.DevTec.ServerControlReloaded.Commands.Other.tablist;
 
-import org.bukkit.command.CommandSender;
-
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.devtec.theapi.utils.StringUtils;
+import org.bukkit.command.CommandSender;
 
 public class FormatTabWorld {
 

@@ -1,9 +1,9 @@
 package me.DevTec.ServerControlReloaded.Utils.Skins.Manager;
 
+import me.devtec.theapi.utils.json.Writer;
+
 import java.util.HashMap;
 import java.util.UUID;
-
-import me.devtec.theapi.utils.json.Writer;
 
 public class SkinData {
 	public UUID uuid; //Nullable

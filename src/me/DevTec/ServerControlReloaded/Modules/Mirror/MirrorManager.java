@@ -1,10 +1,9 @@
 package me.DevTec.ServerControlReloaded.Modules.Mirror;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.blocksapi.schematic.construct.SerializedBlock;
+import me.devtec.theapi.utils.Position;
+import me.devtec.theapi.utils.reflections.Ref;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -14,10 +13,10 @@ import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.data.type.Stairs.Shape;
 import org.bukkit.entity.Player;
 
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.blocksapi.schematic.construct.SerializedBlock;
-import me.devtec.theapi.utils.Position;
-import me.devtec.theapi.utils.reflections.Ref;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MirrorManager {
 	protected static HashMap<Player, MirrorType> mirror = new HashMap<>();

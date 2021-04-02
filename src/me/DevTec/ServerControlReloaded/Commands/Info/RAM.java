@@ -1,18 +1,17 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
-
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.apis.MemoryAPI;
 import me.devtec.theapi.utils.StringUtils;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class RAM implements CommandExecutor, TabCompleter {
 	private boolean clearing;

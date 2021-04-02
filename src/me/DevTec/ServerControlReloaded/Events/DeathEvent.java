@@ -1,13 +1,5 @@
 package me.DevTec.ServerControlReloaded.Events;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.API.TeleportLocation;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
@@ -16,6 +8,13 @@ import me.DevTec.ServerControlReloaded.Utils.setting.DeathTp;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.utils.datakeeper.User;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class DeathEvent implements Listener {
 

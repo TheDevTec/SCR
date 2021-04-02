@@ -1,21 +1,20 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import me.DevTec.ServerControlReloaded.SCR.API;
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.devtec.theapi.apis.EnchantmentAPI;
+import me.devtec.theapi.apis.ItemCreatorAPI;
+import me.devtec.theapi.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-import me.DevTec.ServerControlReloaded.SCR.API;
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.devtec.theapi.apis.EnchantmentAPI;
-import me.devtec.theapi.apis.ItemCreatorAPI;
-import me.devtec.theapi.utils.StringUtils;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Kit {
 	private List<ItemStack> a;

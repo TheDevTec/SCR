@@ -1,15 +1,14 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
-import java.util.Arrays;
-import java.util.List;
-
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.Utils.setting;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.Utils.setting;
+import java.util.Arrays;
+import java.util.List;
 
 public class Maintenance implements CommandExecutor, TabCompleter {
 

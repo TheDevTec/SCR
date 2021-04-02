@@ -1,15 +1,16 @@
 package me.DevTec.ServerControlReloaded.Events;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import me.DevTec.ServerControlReloaded.Commands.Message.PrivateMessageManager;
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.DevTec.ServerControlReloaded.Utils.*;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.ChatMessage;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.User;
+import me.devtec.theapi.utils.json.Writer;
+import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.reflections.Ref;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -19,22 +20,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import me.DevTec.ServerControlReloaded.Commands.Message.PrivateMessageManager;
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.ServerControlReloaded.Utils.ChatFormatter;
-import me.DevTec.ServerControlReloaded.Utils.Colors;
-import me.DevTec.ServerControlReloaded.Utils.MultiWorldsGUI;
-import me.DevTec.ServerControlReloaded.Utils.Rule;
-import me.DevTec.ServerControlReloaded.Utils.TabList;
-import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.ChatMessage;
-import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.json.Writer;
-import me.devtec.theapi.utils.nms.NMSAPI;
-import me.devtec.theapi.utils.reflections.Ref;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ChatFormat implements Listener {
 	static Loader plugin = Loader.getInstance;

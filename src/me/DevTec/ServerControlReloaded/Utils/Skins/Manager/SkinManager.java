@@ -1,30 +1,23 @@
 package me.DevTec.ServerControlReloaded.Utils.Skins.Manager;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.zip.GZIPInputStream;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.WorldType;
-import org.bukkit.entity.Player;
-
 import com.google.common.hash.Hashing;
-
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.json.Reader;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.WorldType;
+import org.bukkit.entity.Player;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
+import java.util.zip.GZIPInputStream;
 
 public class SkinManager {
 	private static final String URL_FORMAT = "https://api.mineskin.org/generate/url?url=%s&%s",

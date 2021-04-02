@@ -1,17 +1,5 @@
 package me.DevTec.ServerControlReloaded.Events;
 
-import java.lang.reflect.Array;
-import java.util.Date;
-import java.util.List;
-
-import org.bukkit.GameMode;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerLoginEvent.Result;
-
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.ChatFormatter;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
@@ -20,6 +8,17 @@ import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.reflections.Ref;
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
+
+import java.lang.reflect.Array;
+import java.util.Date;
+import java.util.List;
 
 public class LoginEvent implements Listener {
 	private static Class<?> cc = Ref.nms("EnumGamemode")!=null?Ref.nms("EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");

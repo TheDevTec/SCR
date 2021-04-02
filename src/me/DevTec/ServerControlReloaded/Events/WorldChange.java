@@ -1,12 +1,16 @@
 package me.DevTec.ServerControlReloaded.Events;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import me.DevTec.ServerControlReloaded.SCR.API;
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
+import me.DevTec.ServerControlReloaded.Utils.SPlayer;
+import me.DevTec.ServerControlReloaded.Utils.setting;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.scheduler.Scheduler;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.worldsapi.voidGenerator;
+import me.devtec.theapi.worldsapi.voidGenerator_1_8;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -22,17 +26,12 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
-import me.DevTec.ServerControlReloaded.SCR.API;
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.Utils.MultiWorldsUtils;
-import me.DevTec.ServerControlReloaded.Utils.SPlayer;
-import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.scheduler.Scheduler;
-import me.devtec.theapi.scheduler.Tasker;
-import me.devtec.theapi.utils.reflections.Ref;
-import me.devtec.theapi.worldsapi.voidGenerator;
-import me.devtec.theapi.worldsapi.voidGenerator_1_8;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WorldChange implements Listener {
 

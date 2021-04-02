@@ -1,15 +1,14 @@
 package me.DevTec.ServerControlReloaded.Commands.Other.tablist;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
+import me.DevTec.ServerControlReloaded.SCR.Loader;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import me.DevTec.ServerControlReloaded.SCR.Loader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tab implements CommandExecutor, TabCompleter {
 	//tablist prefix <player/group> [name] <tablist/nametag> get

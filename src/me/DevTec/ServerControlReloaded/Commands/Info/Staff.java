@@ -1,9 +1,11 @@
 package me.DevTec.ServerControlReloaded.Commands.Info;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import me.DevTec.ServerControlReloaded.SCR.API;
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.DevTec.ServerControlReloaded.Utils.setting;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.PluginManagerAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,12 +13,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import me.DevTec.ServerControlReloaded.SCR.API;
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.DevTec.ServerControlReloaded.Utils.setting;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.PluginManagerAPI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Staff implements CommandExecutor, TabCompleter {
 	public static String getGroup(Player a) {

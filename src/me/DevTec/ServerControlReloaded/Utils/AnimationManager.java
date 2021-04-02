@@ -1,15 +1,14 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.bukkit.entity.Player;
-
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.Animation;
 import me.devtec.theapi.utils.StringUtils;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class AnimationManager {
 	static Map<String, Animation> a = new HashMap<>();

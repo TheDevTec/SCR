@@ -1,12 +1,11 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import java.util.HashMap;
-
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.NameTagAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.NameTagAPI;
+import java.util.HashMap;
 
 public class NameTagChanger {
 	static HashMap<Player, NameTagAPI> t = new HashMap<>();

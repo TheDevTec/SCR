@@ -22,12 +22,11 @@
  */
 package me.DevTec.ServerControlReloaded.Utils;
 
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.StringUtils;
 
 public enum XMaterial {
     ACACIA_BOAT("BOAT_ACACIA"),
