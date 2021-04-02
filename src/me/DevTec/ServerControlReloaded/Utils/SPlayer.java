@@ -60,6 +60,27 @@ public class SPlayer {
 		getPlayer().setRemainingAir(getPlayer().getMaximumAir());
 	}
 
+	public void enableTempGameMode(long time,GameMode g,boolean t){
+		User s = TheAPI.getUser(this.s);
+		s.set("TempGamemode.Start",System.currentTimeMillis());
+		s.set("TempGamemode.Time",time);
+		s.set("TempGamemode.Prev",getPlayer().getGameMode());
+		if(!hasGameMode()){
+			s.setAndSave("TempGamemode.Use",true);
+			getPlayer().setGameMode(g);
+			if(t==false){
+				TheAPI.msg(Loader.getTranslation("GameMode.Temp.You").toString().replace("%time%",StringUtils.timeToString(time)).replace("%gamemode%",g.toString().toLowerCase()),getPlayer());
+			}else{
+				TheAPI.msg(Loader.getTranslation("GameMode.Temp.Other.Reciever").toString().replace("%time%",StringUtils.timeToString(time)).replace("%gamemode%",g.toString().toLowerCase()),getPlayer());
+			}
+		}else s.save();
+		if(getPlayer()==null)return;
+	}
+
+	public boolean hasGameMode(){
+		return TheAPI.getUser(this.s).getBoolean("TempGamemode.Use");
+	}
+
 	public void enableTempFly(long stop) {
 		User s = TheAPI.getUser(this.s);
 		s.set("TempFly.Start", System.currentTimeMillis());

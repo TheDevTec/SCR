@@ -322,6 +322,15 @@ Chunks:
   
 # Translations for gamemode commands
 GameMode:
+    Temp:
+      Remove: "%prefix% Temp-Gamemode odobraný"
+      EndIn: "%prefix% Temp-Gamemode vyprší za &e%time%"
+      End: "%prefix% Temp-Gamemode vypršal"
+      You: "%prefix% Váš dočasný gamemode bol nastavený na &c%gamemode%&7 na &e%time%"
+      Other:
+        Remove: "%prefix% Váš dočasný gamemode bol odobraný"
+        Sender: "%prefix% Dočasný gamemode &c%gamemode% &7bol nastavený na &e%time% &7pro hráča &a%player%"
+        Reciever: "%prefix% Váš dočasný gamemode bol nastavený na &c%gamemode%&7 na &e%time%"
     Your:
       Survival: "%prefix% Tvoj gamemode bol nastavený na &eSurvival"
       Creative: "%prefix% Tvoj gamemode bol nastavený na &eCreative"

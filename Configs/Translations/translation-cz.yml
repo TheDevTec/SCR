@@ -126,7 +126,7 @@ Item:
   Type:
     Get: "%prefix% Typ předmětu ve vaší ruce je &e%nbt%"
     Set: "%prefix% Typ předmětu ve vaší ruce byl změněn na &e%nbt%"
-  Type:
+  Amount:
     Get: "%prefix% Množství předmětů ve vaší ruce je &e%type%"
     Set: "%prefix% Množství předmětů ve vaší ruce bylo změneno na &e%type%"
   Durability:
@@ -331,6 +331,15 @@ Chunks:
   
 # Translations for gamemode commands
 GameMode:
+    Temp:
+      Remove: "%prefix% Temp-Gamemode zrušen"
+      EndIn: "%prefix% Temp-Gamemode vyprší za &e%time%"
+      End: "%prefix% Temp-Gamemode vypršel"
+      You: "%prefix% Váš dočasný gamemode byl nastaven na &c%gamemode%&7 po dobu &e%time%"
+      Other:
+        Remove: "%prefix% Váš dočasný gamemode byl odebraný"
+        Sender: "%prefix% Dočasný gamemode &c%gamemode% &7byl nastaven po dobu &e%time% &7hráči &a%player%"
+        Reciever: "%prefix% Váš dočasný gamemode byl nastaven na &c%gamemode%&7 po dobu &e%time%"
     Your:
       Survival: "%prefix% Váš gamemode byl změněn na &eSurvival"
       Creative: "%prefix% Váš gamemode byl změněn na &eCreative"
@@ -349,7 +358,6 @@ GameMode:
       Spectator:
         Sender: "%prefix% Gamemode hráče &e%player% &7byl změněn na &eSpectator"
         Receiver: "%prefix% Váš gamemode byl změněn na &eSpectator"
-        
 # Translations for TPS command
 TPS:
 - "%prefix% Aktuální TPS: &e%tps%"

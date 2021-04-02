@@ -336,6 +336,15 @@ Chunks:
   
 # Translations for gamemode commands
 GameMode:
+    Temp:
+      Remove: "%prefix% Temp-Gamemode removed"
+      EndIn: "%prefix% Temp-Gamemode expires in &e%time%"
+      End: "%prefix% Temp-Gamemode expired"
+      You: "%prefix% Your temporary gamemode were set to &c%gamemode%&7 for &e%time%"
+      Other:
+        Remove: "%prefix% Your temporary gamemode were removed"
+        Sender: "%prefix% Temporary gamemode &c%gamemode% &7were set for &e%time% &7to player &a%player%"
+        Reciever: "%prefix% Your temporary gamemode were set to &c%gamemode%&7 for &e%time%"
     Your:
       Survival: "%prefix% Your gamemode has been set to &eSurvival"
       Creative: "%prefix% Your gamemode has been set to &eCreative"

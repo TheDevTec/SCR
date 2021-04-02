@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -71,6 +72,7 @@ public class Tasks {
 		
 		other();
 		tempfly();
+		tempGamemode();
 	}
 
 	public static void reload() {
@@ -102,6 +104,33 @@ public class Tasks {
 					}
 				}
 		}.runRepeating(0, 20));
+	}
+
+	private static void tempGamemode(){
+		tasks.add(new Tasker() {
+			@Override
+			public void run() {
+				for(Player s:TheAPI.getOnlinePlayers()) {
+					if (!TheAPI.getUser(s).getBoolean("TempGamemode.Use")) continue;
+					long start = TheAPI.getUser(s).getLong("TempGamemode.Start");
+					int end = TheAPI.getUser(s).getInt("TempGamemode.Time");
+					long timeout = start / 1000 - System.currentTimeMillis() / 1000 + end;
+					if (timeout <= 0) {
+						if (s != null) {
+							try{
+							Loader.sendMessages(s, "GameMode.Temp.End");
+							s.setGameMode(GameMode.valueOf(TheAPI.getUser(s).getString("TempGamemode.Prev")));
+							TheAPI.getUser(s).remove("TempGamemode");
+							TheAPI.getUser(s).save();}catch (Exception e){e.printStackTrace();}
+						}
+						return;
+					}
+					if (s != null)
+						if (timeout <= 3 || timeout == 10 || timeout == 15 || timeout == 30 || timeout == 45 || timeout == 60)
+							Loader.sendMessages(s, "GameMode.Temp.EndIn", Placeholder.c().add("%time%", StringUtils.setTimeToString(timeout)));
+				}
+			}
+		}.runRepeatingSync(0,20));
 	}
 
 	private static void savetask() {

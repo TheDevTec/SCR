@@ -383,8 +383,16 @@ Inventory:
     Permission: "SCR.Command.Anvil"
     Help: "/Anvil <player> - Opens player virtual anvil"
     Enabled: true
-    
 GameMode:
+  TempGamemode:
+    Name: "tempgamemode"
+    Aliases:
+      - "tgm"
+    Permission: "SCR.Command.TempGamemode"
+    SubPermission:
+      Info: "SCR.Command.TempGamemode.Info"
+    Help: "/tempgamemode [player] <time> <0/1/2/3>"
+    Enabled: true
   GameMode:
     Name: "gamemode"
     Aliases:
