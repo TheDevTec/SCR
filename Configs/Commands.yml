@@ -802,6 +802,13 @@ Info:
     Permission: "SCR.Command.WhoIs"
     Help: "/WhoIs <player> - Shows info about player"
     Enabled: true
+  CountryBlocker:
+    Name: "countryblocker"
+    Aliases:
+      - "cb"
+    Permission: "SCR.Command.CountryBlocker"
+    Help: "/countryblocker <add/remove/list> [player]"
+    Enabled: true
     
 Other:
   Mirror:

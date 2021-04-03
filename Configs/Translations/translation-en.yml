@@ -333,7 +333,15 @@ Chunks:
   Load: "%prefix% &e%world%&7: &e%chunks% &7chunks"
   Unload: "%prefix% Unloaded &e%chunks% &7chunks"
   TotalLoad: "%prefix% Total is loaded &e%chunks% &7chunks"
-  
+
+# CountryBlocker translations
+CountryBlocker:
+  ListMess: "%prefix% List of players on whitelist:"
+  List: "%prefix% » &e%player%"
+  Add: "%prefix% Player &e%player% &7added on whitelist"
+  Remove: "%prefix% Player &e%player% &7removed from whitelist"
+  NotWhitelisted: "%prefix% Player &e%player% &7isn't on whitelist!"
+
 # Translations for gamemode commands
 GameMode:
     Temp:

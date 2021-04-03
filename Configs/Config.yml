@@ -400,3 +400,14 @@ Format:
   PrivateMessageTo: "&8(&7You -> &e%to%&8)&7: &e%message%"
   PrivateMessageFrom: "&8(&e%from% -> &7You&8)&7: &e%message%"
   HelpOp: "&0[&4HelpOp&0] &7%sender%&7: &c%message%"
+
+CountryBlocker:
+  Enabled: true
+  List:
+    - "us"
+    - "se"
+    - "de"
+  Whitelist:
+    - "petulikan1"
+    - "StraikerinaCZ"
+  KickMessage: "&cYour country is currently blocked! &eContact admins for whitelist"

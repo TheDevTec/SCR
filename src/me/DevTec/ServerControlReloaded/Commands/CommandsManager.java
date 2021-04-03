@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.DevTec.ServerControlReloaded.Commands.Info.*;
 import me.DevTec.ServerControlReloaded.Commands.Other.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -41,17 +42,6 @@ import me.DevTec.ServerControlReloaded.Commands.GameMode.GamemodeA;
 import me.DevTec.ServerControlReloaded.Commands.GameMode.GamemodeC;
 import me.DevTec.ServerControlReloaded.Commands.GameMode.GamemodeS;
 import me.DevTec.ServerControlReloaded.Commands.GameMode.GamemodeSP;
-import me.DevTec.ServerControlReloaded.Commands.Info.ChatFormat;
-import me.DevTec.ServerControlReloaded.Commands.Info.Chunks;
-import me.DevTec.ServerControlReloaded.Commands.Info.ListCmd;
-import me.DevTec.ServerControlReloaded.Commands.Info.Maintenance;
-import me.DevTec.ServerControlReloaded.Commands.Info.Ping;
-import me.DevTec.ServerControlReloaded.Commands.Info.RAM;
-import me.DevTec.ServerControlReloaded.Commands.Info.SCR;
-import me.DevTec.ServerControlReloaded.Commands.Info.Seen;
-import me.DevTec.ServerControlReloaded.Commands.Info.Staff;
-import me.DevTec.ServerControlReloaded.Commands.Info.TPS;
-import me.DevTec.ServerControlReloaded.Commands.Info.WhoIs;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.Anvil;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.ClearConfirmToggle;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.ClearInv;
@@ -166,7 +156,8 @@ public class CommandsManager {
 		load("Info","WhoIs", new WhoIs()); 
 		load("Info", "Maintenance",new Maintenance());
 		load("Info", "Ping",new Ping());
-		
+		load("Info","CountryBlocker",new CountryBlocker());
+
 		//Speed
 		load("Speed", "FlySpeed",new FlySpeed());
 		load("Speed", "WalkSpeed",new WalkSpeed());

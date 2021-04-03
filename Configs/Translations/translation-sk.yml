@@ -319,7 +319,15 @@ Chunks:
   Load: "%prefix% &e%world%&7: &e%chunks% &7chunkov"
   Unload: "%prefix% Odnačítaných &e%chunks% &7chunkov"
   TotalLoad: "%prefix% Celkovo načítaných &e%chunks% &7chunkov"
-  
+
+# CountryBlocker translations
+CountryBlocker:
+  ListMess: "%prefix% Zoznam hráčů vo whitelistě:"
+  List: "%prefix% » &e%player%"
+  Add: "%prefix% Hráč &e%player% &7pridán na whitelist"
+  Remove: "%prefix% Hráč &e%player% &7odobrán z whitelistu"
+  NotWhitelisted: "%prefix% Hráč &e%player% &7není na whitelistu!"
+
 # Translations for gamemode commands
 GameMode:
     Temp:
