@@ -43,6 +43,7 @@ public class CountryBlocker implements CommandExecutor, TabCompleter {
                         Loader.config.set("CountryBlocker.Whitelist",list);
                         Loader.config.save();
                         Loader.sendMessages(s,"CountryBlocker.Remove", Loader.Placeholder.c().add("%player%",args[1]));
+                        return true;
                     }else{
                         Loader.sendMessages(s,"CountryBlocker.NotWhitelisted", Loader.Placeholder.c().add("%player%",args[1]));
                         return true;
@@ -50,6 +51,7 @@ public class CountryBlocker implements CommandExecutor, TabCompleter {
                 }
             }
         }
+        Loader.Help(s,"CountryBlocker","Info");
         return true;
     }
 
