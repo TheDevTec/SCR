@@ -488,6 +488,10 @@ MultiWorld:
   Spawn:
     Set: "%prefix% Spawn bol nastavený na pozícii &e%x%&7, &e%y%&7, &e%z%"
     Get: "%prefix% Spawn vo svete &e%world% &7bol nastavený na pozícii &e%x%&7, &e%y%&7, &e%z%"
+  Flag:
+    Set: "%prefix% Vlajka &e%flag%&7 sveta &e%world%&7 nastavená na &e%value%"
+    Get: "%prefix% Vlajka &e%flag%&7 sveta &e%world%&7 je nastavená na &e%value%"
+    Wrong: "%prefix% Hodnota vlajky &e%flag%&7 môže být iba &e%value%"
     
 # Translations for /Mail command
 Mail:
