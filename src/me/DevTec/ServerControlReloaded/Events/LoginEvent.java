@@ -1,7 +1,6 @@
 package me.DevTec.ServerControlReloaded.Events;
 
 import java.lang.reflect.Array;
-import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,17 +13,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
-import org.bukkit.event.player.PlayerPreLoginEvent;
 
+import me.DevTec.ServerControlReloaded.Commands.Info.WhoIs;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.Utils.ChatFormatter;
 import me.DevTec.ServerControlReloaded.Utils.Tasks;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.configapi.Config;
-import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.json.Reader;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class LoginEvent implements Listener {
@@ -110,32 +107,24 @@ public class LoginEvent implements Listener {
 			}
 		}
 	}
-	@SuppressWarnings("unchecked")
-	public static Map<String, Object> getCountry(String a) {
-		try {
-			URL url = new URL("http://ip-api.com/json/" + a.replace("_", "."));
-			return (Map<String,Object>) Reader.read(StreamUtils.fromStream(url.openStream()));
-		} catch (Exception e) {}
-		return null;
-	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void AsyncPreLoginEvent(AsyncPlayerPreLoginEvent e){
 		if(Loader.config.getBoolean("CountryBlocker.Enabled")){
-			Map<String,Object>country = getCountry(e.getAddress().getHostAddress());
+			Map<String,Object> country = WhoIs.getCountry(e.getAddress().getHostAddress().replaceAll("[^0-9.]", "").replace("..", ""));
 			for(String a : Loader.config.getStringList("CountryBlocker.List")){
 				if(country.getOrDefault("countryCode","UNKNOWN").equals(a.toUpperCase())){
 					for(String b:Loader.config.getStringList("CountryBlocker.Whitelist")){
 						if(e.getName().equalsIgnoreCase(b)){
-							e.setResult(PlayerPreLoginEvent.Result.ALLOWED);
+							e.setLoginResult(AsyncPlayerPreLoginEvent.Result.ALLOWED);
 							break;
 						}else{
 							e.setKickMessage(TheAPI.colorize(Loader.config.getString("CountryBlocker.KickMessage")));
-							e.setResult(PlayerPreLoginEvent.Result.KICK_WHITELIST);
+							e.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST);
 						}
 					}
 				}else{
-					e.setResult(PlayerPreLoginEvent.Result.ALLOWED);
+					e.setLoginResult(AsyncPlayerPreLoginEvent.Result.ALLOWED);
 				}
 			}
 		}
