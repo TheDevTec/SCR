@@ -97,7 +97,6 @@ public class MultiWorldsUtils {
 		} else
 			Loader.sendMessages(s, "MultiWorld.NotExists", Placeholder.c().add("%world%", w));
 	}
-
 	
 	public static void defaultSet(World as, String gen) {
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".GameMode", "SURVIVAL");
@@ -244,5 +243,62 @@ public class MultiWorldsUtils {
 			defaultSet(Bukkit.getWorld(s), biome);
 			Loader.sendMessages(sender, "MultiWorld.Create", Placeholder.c().add("%world%", s).replace("%generator%", biome));
 		}
+	}
+
+	public static String getFlag(World as, String string) {
+		if(string.equalsIgnoreCase("GAMEMODE"))
+			return Loader.mw.getString("WorldsSettings." + as.getName() + ".GameMode");
+		if(string.equalsIgnoreCase("DIFFICULTY"))
+			return Loader.mw.getString("WorldsSettings." + as.getName() + ".Difficulty");
+		if(string.equalsIgnoreCase("KEEP_SPAWN_IN_MEMORY"))
+			return Loader.mw.getString("WorldsSettings." + as.getName() + ".KeepSpawnInMemory");
+		if(string.equalsIgnoreCase("AUTOSAVE"))
+			return Loader.mw.getString("WorldsSettings." + as.getName() + ".AutoSave");
+		if(string.equalsIgnoreCase("PVP"))
+			return Loader.mw.getString("WorldsSettings." + as.getName() + ".PvP");
+		if(string.equalsIgnoreCase("PORTAL_CREATE"))
+			return Loader.mw.getString("WorldsSettings." + as.getName() + ".CreatePortal");
+		if(string.equalsIgnoreCase("NO_MOBS"))
+			return Loader.mw.getString("WorldsSettings." + as.getName() + ".NoMobs");
+		if(string.equalsIgnoreCase("PORTAL_TELEPORT"))
+			return Loader.mw.getString("WorldsSettings." + as.getName() + ".PortalTeleport");
+		if(string.equalsIgnoreCase("DO_FIRE_DAMAGE"))
+			return Loader.mw.getString("WorldsSettings." + as.getName() + ".DoFireDamage");
+		if(string.equalsIgnoreCase("DO_DROWNING_DAMAGE"))
+			return Loader.mw.getString("WorldsSettings." + as.getName() + ".DoDrownDamage");
+		if(string.equalsIgnoreCase("DO_FALL_DAMAGE"))
+			return Loader.mw.getString("WorldsSettings." + as.getName() + ".DoFallDamage");
+		for(String g : as.getGameRules())
+			if(g.equalsIgnoreCase(string))
+				return Loader.mw.getString("WorldsSettings." + as.getName() + ".Gamerule."+g);
+		return "";
+	}
+
+	public static void setFlag(World as, String string, String value) {
+		if(string.equalsIgnoreCase("GAMEMODE"))
+			Loader.mw.set("WorldsSettings." + as.getName() + ".GameMode", value);
+		if(string.equalsIgnoreCase("DIFFICULTY"))
+			Loader.mw.set("WorldsSettings." + as.getName() + ".Difficulty", value);
+		if(string.equalsIgnoreCase("KEEP_SPAWN_IN_MEMORY"))
+			Loader.mw.set("WorldsSettings." + as.getName() + ".KeepSpawnInMemory", value);
+		if(string.equalsIgnoreCase("AUTOSAVE"))
+			Loader.mw.set("WorldsSettings." + as.getName() + ".AutoSave", value);
+		if(string.equalsIgnoreCase("PVP"))
+			Loader.mw.set("WorldsSettings." + as.getName() + ".PvP", value);
+		if(string.equalsIgnoreCase("PORTAL_CREATE"))
+			Loader.mw.set("WorldsSettings." + as.getName() + ".CreatePortal", value);
+		if(string.equalsIgnoreCase("NO_MOBS"))
+			Loader.mw.set("WorldsSettings." + as.getName() + ".NoMobs", value);
+		if(string.equalsIgnoreCase("PORTAL_TELEPORT"))
+			Loader.mw.set("WorldsSettings." + as.getName() + ".PortalTeleport", value);
+		if(string.equalsIgnoreCase("DO_FIRE_DAMAGE"))
+			Loader.mw.set("WorldsSettings." + as.getName() + ".DoFireDamage", value);
+		if(string.equalsIgnoreCase("DO_DROWNING_DAMAGE"))
+			Loader.mw.set("WorldsSettings." + as.getName() + ".DoDrownDamage", value);
+		if(string.equalsIgnoreCase("DO_FALL_DAMAGE"))
+			Loader.mw.set("WorldsSettings." + as.getName() + ".DoFallDamage", value);
+		for(String g : as.getGameRules())
+			if(g.equalsIgnoreCase(string))
+				Loader.mw.set("WorldsSettings." + as.getName() + ".Gamerule."+g, value);
 	}
 }

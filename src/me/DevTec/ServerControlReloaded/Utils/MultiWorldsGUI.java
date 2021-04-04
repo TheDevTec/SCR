@@ -13,6 +13,7 @@ import me.devtec.theapi.guiapi.GUI.ClickType;
 import me.devtec.theapi.guiapi.HolderGUI;
 import me.devtec.theapi.guiapi.ItemGUI;
 import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.worldsapi.WorldsAPI;
 import org.apache.commons.lang.WordUtils;
@@ -179,7 +180,12 @@ public class MultiWorldsGUI {
 					}catch(NoSuchMethodError err) {
 						s.getWorld().setSpawnLocation(s.getLocation().getBlockX(), s.getLocation().getBlockY(), s.getLocation().getBlockZ());
 					}
-					Loader.sendMessages(s, "MultiWorld.Spawn.Set", Placeholder.c().add("%world%", world));
+					Loader.sendMessages(s, "MultiWorld.Spawn.Set", Placeholder.c().add("%world%", world)
+							.add("%x%", StringUtils.fixedFormatDouble(s.getLocation().getX()))
+							.add("%y%", StringUtils.fixedFormatDouble(s.getLocation().getY()))
+							.add("%z%", StringUtils.fixedFormatDouble(s.getLocation().getZ()))
+							.add("%pitch%", StringUtils.fixedFormatDouble(s.getLocation().getPitch()))
+							.add("%yaw%", StringUtils.fixedFormatDouble(s.getLocation().getYaw())));
 				}
 			}
 		};
@@ -571,13 +577,13 @@ public class MultiWorldsGUI {
 				g.setItem(6, this);
 			}
 		});
-		a.setItem(7,new ItemGUI(createItem("&6Can be portal used in this world", XMaterial.CREEPER_HEAD, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".NoMobs") + ""))) {
+		a.setItem(7,new ItemGUI(createItem("&6No mobs", XMaterial.CREEPER_HEAD, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".NoMobs") + ""))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				boolean sassw = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".NoMobs");
 				sassw=!sassw;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".NoMobs", sassw);
-				this.setItem(createItem("&6Can be portal used in this world", XMaterial.CREEPER_HEAD, Arrays.asList(sassw + "")));
+				this.setItem(createItem("&6No mobs", XMaterial.CREEPER_HEAD, Arrays.asList(sassw + "")));
 				g.setItem(7, this);
 			}
 		});
@@ -611,11 +617,21 @@ public class MultiWorldsGUI {
 				g.setItem(10, this);
 			}
 		});
-		int i = 10;
+		a.setItem(11,new ItemGUI(createItem("&6Hardcore", XMaterial.REDSTONE, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".Hardcore") + ""))) {
+			@Override
+			public void onClick(Player s, HolderGUI g, ClickType c) {
+				boolean ddfire = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".Hardcore");
+				ddfire=!ddfire;
+				Loader.mw.set("WorldsSettings." + w.getName() + ".Hardcore", ddfire);
+				w.setHardcore(ddfire);
+				this.setItem(createItem("&6Hardcore", XMaterial.REDSTONE, Arrays.asList(ddfire + "")));
+				g.setItem(11, this);
+			}
+		});
+		int i = 11;
 		if(Loader.mw.exists("WorldsSettings." + w.getName() + ".Gamerule"))
 		for (String ds : Loader.mw.getKeys("WorldsSettings." + w.getName() + ".Gamerule")) {
-			++i;
-			int slot = i;
+			int slot = ++i;
 			XMaterial x = null;
 			switch (ds) {
 			case "COMMAND_BLOCK_OUTPUT":
@@ -632,6 +648,9 @@ public class MultiWorldsGUI {
 				break;
 			case "DISABLE_ELYTRA_MOVEMENT_CHECK":
 				x = XMaterial.ELYTRA;
+				break;
+			case "UNIVERSAL_ANGER":
+				x = XMaterial.GOLD_NUGGET;
 				break;
 			case "DO_IMMEDIATE_RESPAWN":
 				x = XMaterial.RED_BED;

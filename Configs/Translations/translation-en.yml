@@ -504,6 +504,10 @@ MultiWorld:
   Spawn:
     Set: "%prefix% Set world spawn at &e%x%&7, &e%y%&7, &e%z%"
     Get: "%prefix% Spawn in world &e%world% &7is set at &e%x%&7, &e%y%&7, &e%z%"
+  Flag:
+    Set: "%prefix% Flag &e%flag%&7 of world &e%world%&7 set to &e%value%"
+    Get: "%prefix% Flag &e%flag%&7 of world &e%world%&7is set to &e%value%"
+    Wrong: "%prefix% Value of flag &e%flag%&7 can be only &e%value%"
     
 # Translations for /Mail command
 Mail:
