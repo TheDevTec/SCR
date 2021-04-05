@@ -1,6 +1,17 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+
 import me.DevTec.ServerControlReloaded.SCR.API;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
@@ -15,15 +26,7 @@ import me.devtec.theapi.utils.listener.events.ServerListPingEvent;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.NMSAPI.ChatType;
 import me.devtec.theapi.utils.reflections.Ref;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import me.devtec.theapi.utils.serverlist.PlayerProfile;
 
 public class Tasks {
 	
@@ -38,6 +41,10 @@ public class Tasks {
 			if (setting.motd) {
 				e.setMotd(TheAPI.colorize(PlaceholderAPI.setPlaceholders(null,Loader.config.getString((!setting.lock_server || setting.lock_server && !setting.motd_maintenance)?"Options.ServerList.MOTD.Text.Normal":"Options.ServerList.MOTD.Text.Maintenance")
 						.replace("%next%", "\n").replace("%line%", "\n"))));
+			}
+			Iterator<PlayerProfile> p = e.getPlayersText().iterator();
+			while(p.hasNext()) {
+				if(Bukkit.getPlayer(p.next().getUUID())!=null && API.hasVanish(Bukkit.getPlayer(p.next().getUUID())))p.remove();
 			}
 			e.setMaxPlayers(TheAPI.getMaxPlayers());
 		}
