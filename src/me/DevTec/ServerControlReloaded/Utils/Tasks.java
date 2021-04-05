@@ -43,9 +43,14 @@ public class Tasks {
 						.replace("%next%", "\n").replace("%line%", "\n"))));
 			}
 			Iterator<PlayerProfile> p = e.getPlayersText().iterator();
+			int vanis=0;
 			while(p.hasNext()) {
-				if(Bukkit.getPlayer(p.next().getUUID())!=null && API.hasVanish(Bukkit.getPlayer(p.next().getUUID())))p.remove();
+				if(Bukkit.getPlayer(p.next().getUUID())!=null && API.hasVanish(Bukkit.getPlayer(p.next().getUUID()))) {
+					p.remove();
+					++vanis;
+				}
 			}
+			e.setOnlinePlayers(e.getOnlinePlayers()-vanis);
 			e.setMaxPlayers(TheAPI.getMaxPlayers());
 		}
 	};
