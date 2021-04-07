@@ -168,7 +168,7 @@ public class SkinManager {
 				}else if(TheAPI.isNewerThan(13)) { //1.14
 					re=Ref.newInstance(respawnC, Ref.get(w, "dimension"), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
 				}else //1.7 - 1.13
-					re=Ref.newInstance(respawnC, (byte)((player.getWorld().getEnvironment().getId() >= 0) ? -1 : 0), Ref.invoke(w, "getDifficulty"), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
+					re=Ref.newInstance(respawnC, player.getWorld().getEnvironment().getId(), Ref.invoke(w, "getDifficulty"), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
 				Ref.sendPacket(p, re);
 				Object pos = null;
 				if(TheAPI.isOlderThan(8)) { //1.7

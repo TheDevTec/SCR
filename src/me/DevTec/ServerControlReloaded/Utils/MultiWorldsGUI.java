@@ -411,7 +411,11 @@ public class MultiWorldsGUI {
 					Location loc = new Location(w, x,y, z, x_head, z_head);
 					API.setBack(s);
 					s.setNoDamageTicks(20);
-					s.teleport(loc);
+					NMSAPI.postToMainThread(new Runnable() {
+						public void run() {
+							s.teleport(loc);
+						}
+					});
 					Loader.sendMessages(s, "MultiWorld.Teleport.You", Placeholder.c().add("%world%", w.getName()));
 				}
 			});

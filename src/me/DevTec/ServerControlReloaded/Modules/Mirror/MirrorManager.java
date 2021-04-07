@@ -1,22 +1,21 @@
 package me.DevTec.ServerControlReloaded.Modules.Mirror;
 
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.blocksapi.schematic.construct.SerializedBlock;
-import me.devtec.theapi.utils.Position;
-import me.devtec.theapi.utils.reflections.Ref;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.Rotatable;
-import org.bukkit.block.data.type.Stairs.Shape;
-import org.bukkit.entity.Player;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.entity.Player;
+import org.bukkit.material.Directional;
+import org.bukkit.material.MaterialData;
+
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.blocksapi.schematic.construct.SerializedBlock;
+import me.devtec.theapi.utils.Position;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class MirrorManager {
 	protected static HashMap<Player, MirrorType> mirror = new HashMap<>();
@@ -66,11 +65,11 @@ public class MirrorManager {
 			}
 			if(axis==bl) return;
 			v= axis+(axis-bl);
-			Location n;
+			Position n;
 			if(type==MirrorType.AXISX)
-				n = new Location(loc.getWorld(), block.getX(), block.getY(), v);
+				n = new Position(loc.getWorld(), block.getX(), block.getY(), v);
 			else
-				n = new Location(loc.getWorld(), v, block.getY(), block.getZ());
+				n = new Position(loc.getWorld(), v, block.getY(), block.getZ());
 			n.getBlock().setType(block.getType());
 			n.getBlock().setBlockData(block.getBlockData());
 			rotate(n.getBlock(), block, type);
@@ -78,7 +77,7 @@ public class MirrorManager {
 			if(block.getType().name().contains("_SIGN")) {
 				List<Position> list = new ArrayList<>();
 				if(!signs.isEmpty() && signs.containsKey(p)) list = signs.get(p);
-				list.add(new Position(n));
+				list.add(n);
 				signs.put(p, list);
 			}
 			
@@ -86,27 +85,12 @@ public class MirrorManager {
 		}
 
 		if(type==MirrorType.CENTER) {
-			int axisX /*, axisZ*/ ; // X & Y
-			int vX /*, vZ*/ ; // Výsledný rozdíl mezi osou a položeným blockem
-			Position loc1 /*, loc2, loc3*/ ;
+			int axisX;
+			int vX;
+			Position loc1;
 			axisX = loc.getBlockX();
-			//axisZ = loc.getBlockZ();
-			
-			//vZ = axisZ- block.getZ();
 			vX = axisX- block.getX();
 			loc1 = new Position( loc.getWorld(), axisX+vX, block.getY(), block.getZ());
-			//loc2 = new Position( loc.getWorld(), block.getX(), block.getY(), axisZ+vZ );
-			//loc3 = new Position( loc.getWorld(), axisX+vX , block.getY(), axisZ+vZ );
-			
-			/*if(block.getType().name().contains("_SIGN")) {
-				List<Position> list = new ArrayList<>();
-				if(!signs.isEmpty() && signs.containsKey(p)) list = signs.get(p);
-				list.add(loc1);
-				list.add(loc2);
-				list.add(loc3);
-				signs.put(p, list);
-			}*/
-			
 			mirrorPlace(p, MirrorType.AXISZ, block);
 			mirrorPlace(p, MirrorType.AXISX, block);
 			mirrorPlace(p, MirrorType.AXISX, loc1.getBlock());
@@ -133,26 +117,18 @@ public class MirrorManager {
         	}
         	Ref.sendPacket(TheAPI.getOnlinePlayers(), Ref.invoke(ed, "getUpdatePacket"));
         }
-        // --- End
-        BlockData d = old.getBlockData();
-        if(d==null) return;
-        // Clone BlockData
-        block.setBlockData(d);
-        // --- End
-        if(d instanceof Directional) {
-            Directional dir = (Directional)d;
-            BlockFace f =dir.getFacing();
-            f = getFace(f, type);
-            dir.setFacing(f);
-            block.setBlockData(dir);
-      }
-        if(d instanceof Rotatable) {
-        	Rotatable dir = (Rotatable)d;
-            BlockFace f =dir.getRotation();
-            f = getFace(f, type);
-            dir.setRotation(f);
-            block.setBlockData(dir);
-      }
+        try {
+        	BlockState state = old.getState();
+	        MaterialData d = state.getData();
+	        if(d instanceof Directional) {
+	            Directional dir = (Directional)d;
+	            BlockFace f =dir.getFacing();
+	            f = getFace(f, type);
+	            dir.setFacingDirection(f);
+	            state.setData((MaterialData) dir);
+	            state.update(true,false);
+	        }
+        }catch(Exception | NoSuchMethodError|NoSuchFieldError|NoClassDefFoundError e) {}
     }
 	
 	public static BlockFace getFace(BlockFace f, MirrorType type) {
@@ -199,7 +175,7 @@ public class MirrorManager {
 	        if(f==BlockFace.WEST) return BlockFace.EAST;
 		}
 		return f;
-	}
+	}/*
 	public static Shape getShape(Shape shape, MirrorType type) {
 		if(shape == Shape.STRAIGHT) return Shape.STRAIGHT;
 		if(type==MirrorType.AXISX) {
@@ -215,5 +191,5 @@ public class MirrorManager {
 			if(shape== Shape.OUTER_RIGHT) return Shape.OUTER_LEFT;
 		}
 		return shape;
-	}
+	}*/
 }
