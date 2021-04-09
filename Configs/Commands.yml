@@ -707,31 +707,6 @@ Warps:
     Enabled: true
     
 Info:
-  ChatFormat:
-    Name: "chatformat"
-    Aliases:
-    - "chatf"
-    - "cf"
-    Permission: "SCR.Command.ChatFormat"
-    SubPermission:
-      Create: "SCR.Command.ChatFormat.Create"
-      Delete: "SCR.Command.ChatFormat.Delete"
-      List: "SCR.Command.ChatFormat.List"
-      Info: "SCR.Command.ChatFormat.Info"
-      Set: "SCR.Command.ChatFormat.Set"
-    Help:
-    - "/ChatFormat Create <group>"
-    - "/ChatFormat Delete <group>"
-    - "/ChatFormat Set <group> <chat/name> <value>"
-    - "/ChatFormat Info <group> <chat/name>"
-    - "/ChatFormat List"
-    AdvancedHelp:
-      Create: "/ChatFormat Create <group>"
-      Delete: "/ChatFormat Delete <group>"
-      List: "/ChatFormat List"
-      Info: "/ChatFormat Info <group> <chat/name>"
-      Set: "/ChatFormat Set <group> <chat/name> <value>"
-    Enabled: true
   Chunks:
     Name: "chunk"
     Aliases:

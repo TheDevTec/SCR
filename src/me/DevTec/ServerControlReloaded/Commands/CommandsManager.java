@@ -149,7 +149,6 @@ public class CommandsManager {
 		load("Info", "Chunks",new Chunks());
 		load("Info", "SCR",new SCR());
 		load("Info","Seen", new Seen());
-		load("Info","ChatFormat", new ChatFormat());
 		load("Info","List", new ListCmd());
 		load("Info","Staff", new Staff());
 		load("Info", "TPS",new TPS());

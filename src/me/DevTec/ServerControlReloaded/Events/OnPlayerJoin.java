@@ -35,11 +35,12 @@ import java.util.Date;
 public class OnPlayerJoin implements Listener {
 
 	public static String replaceAll(String s, Player p) {
-		String name = p.getDisplayName();
+		String name = p.getDisplayName()==null?p.getName():p.getDisplayName();
 		return PlaceholderAPI.setPlaceholders(p, s.replace("%player%", p.getName())
 				.replace("%playername%", name)
 				.replace("%customname%", p.getCustomName() != null ? p.getCustomName() : name)
-				.replace("%prefix%", setting.prefix).replace("%time%", setting.format_time.format(new Date()))
+				.replace("%prefix%", setting.prefix+"")
+				.replace("%time%", setting.format_time.format(new Date()))
 				.replace("%date%", setting.format_date.format(new Date()))
 				.replace("%date-time%", setting.format_date_time.format(new Date())));
 	}
