@@ -766,24 +766,6 @@ WhoIs:
   - "%prefix% Banned: %banned%"
   - "%prefix% IP-Banned: %ip-banned%"
   
-ChatFormat:
-  Group:
-    Exists: "%prefix% Group &e%group% &6already exist"
-    NotExist: "%prefix% Group &e%group% &7doesn't exist"
-    Create: "%prefix% Group &e%group% &7created"
-    Delete: "%prefix% Group &e%group% &7deleted"
-  Edit:
-    Name: "%prefix% Set &eName &7format to &r%value%&r &7on group &e%group%"
-    Chat: "%prefix% Set &eChat &7format to &r%value%&r &7on group &e%group%"
-  List:
-  - "%prefix% »=== &eGroups &7===«"
-  - "%prefix% Groups: &e%groups%"
-  Info:
-  - "%prefix% »=== &eInfo &7===«"
-  - "%prefix% Group: &e%group%"
-  - "%prefix% Name: &e%name%"
-  - "%prefix% Chat: &e%chat%"
-  
 Inventory:
   ClearConfirmToggle:
     Enabled: "%prefix% Disabled require to confirm clear inventory"

@@ -748,24 +748,6 @@ WhoIs:
   - "%prefix% Banned: %banned%"
   - "%prefix% IP-Banned: %ip-banned%"
   
-ChatFormat:
-  Group:
-    Exists: "%prefix% Skupina &e%group% &6už existuje"
-    NotExist: "%prefix% Skupina &e%group% &7neexistuje"
-    Create: "%prefix% Skupina &e%group% &7vytvorená"
-    Delete: "%prefix% Skupina &e%group% &7vymazaná"
-  Edit:
-    Name: "%prefix% Nastavený &eName &7formát na &r%value%&r &7pre skupinu &e%group%"
-    Chat: "%prefix% Nastavený &eChat &7formát na &r%value%&r &7pre skupinu &e%group%"
-  List:
-  - "%prefix% »=== &eGroups &7===«"
-  - "%prefix% Skupiny: &e%groups%"
-  Info:
-  - "%prefix% »=== &eInfo &7===«"
-  - "%prefix% Skupina: &e%group%"
-  - "%prefix% Meno: &e%name%"
-  - "%prefix% Chat: &e%chat%"
-  
 Inventory:
   ClearConfirmToggle:
     Enabled: "%prefix% Potrvdenie na vymazanie inventáru &ezapnuté"
@@ -807,7 +789,6 @@ Inventory:
     Other:
       Sender: "%prefix% Otváram kovadlinu pre &e%player%"
       Receiver: "%prefix% Otváram kovadlinu"
-      
 
 DisplayManager:
   Scoreboard:

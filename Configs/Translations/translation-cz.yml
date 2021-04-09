@@ -756,24 +756,6 @@ WhoIs:
   - "%prefix% Banned: %banned%"
   - "%prefix% IP-Banned: %ip-banned%"
   
-ChatFormat:
-  Group:
-    Exists: "%prefix% Skupina &e%group% &6už existuje"
-    NotExist: "%prefix% Skupina &e%group% &7neexistuje"
-    Create: "%prefix% Skupina &e%group% &7vytvořena"
-    Delete: "%prefix% Skupina &e%group% &7odstraněna"
-  Edit:
-    Name: "%prefix% Nastaven &eName &7formát na &r%value%&r &7pro skupinu &e%group%"
-    Chat: "%prefix% Nastaven &eChat &7formát na &r%value%&r &7pro skupinu &e%group%"
-  List:
-  - "%prefix% »=== &eSkupiny &7===«"
-  - "%prefix% Skupiny: &e%groups%"
-  Info:
-  - "%prefix% »=== &eInfo &7===«"
-  - "%prefix% Skupina: &e%group%"
-  - "%prefix% Jméno: &e%name%"
-  - "%prefix% Chat: &e%chat%"
-  
 Inventory:
   ClearConfirmToggle:
     Enabled: "%prefix% Vypnuto potvrzení pro smazání inventáře"
