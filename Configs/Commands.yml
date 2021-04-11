@@ -895,6 +895,7 @@ Other:
        Durability: "SCR.Item.Durability"
        Type: "SCR.Item.Type"
        Amount: "SCR.Item.Amount"
+       Process: "SCR.Item.Process"
     AdvancedHelp:
        Name: "/Item Name <value> - Change name of the item in your hand"
        Lore:
@@ -918,6 +919,32 @@ Other:
        Amount:
          Set: "/Item Amount Set <value> - Change amount of the item in your hand"
          Get: "/Item Amount Get - Get amount of the item in your hand"
+       Process:
+         Cooldown:
+         - "/Item Process Cooldown Get - Get use cooldown of the item in your hand"
+         - "/Item Process Cooldown Set <integer> - Change use cooldown of the item in your hand"
+         Usage:
+         - "/Item Process Usage Get - Get usage amount of the item in your hand"
+         - "/Item Process Usage Set <integer> - Change usage amount of the item in your hand"
+         Cmd:
+         - "/Item Process Cmd List <console/player> - Get list of commands for <console/player> sender"
+         - "/Item Process Cmd Add <console/player> <value> - Add command to the list of commands for <console/player> sender"
+         - "/Item Process Cmd Remove <console/player> <id> - Remove command from the list of commands for <console/player> sender"
+         Msg:
+         - "/Item Process Msg List - Get list of messages"
+         - "/Item Process Msg Add <value> - Add message to the list of messages"
+         - "/Item Process Msg Remove <id> - Remove message from the list of messages"
+         Global:
+         - "/Item Process Msg List - Get list of messages"
+         - "/Item Process Msg Add <value> - Add message to the list of messages"
+         - "/Item Process Msg Remove <id> - Remove message from the list of messages"
+         - "/Item Process Cmd List <console/player> - Get list of commands for <console/player> sender"
+         - "/Item Process Cmd Add <console/player> <value> - Add command to the list of commands for <console/player> sender"
+         - "/Item Process Cmd Remove <console/player> <id> - Remove command from the list of commands for <console/player> sender"
+         - "/Item Process Cooldown Get - Get use cooldown of the item in your hand"
+         - "/Item Process Cooldown Set <integer> - Change use cooldown of the item in your hand"
+         - "/Item Process Usage Get - Get usage amount of the item in your hand"
+         - "/Item Process Usage Set <integer> - Change usage amount of the item in your hand"
     Enabled: true
   Kits:
     Name: "kits"

@@ -1,12 +1,12 @@
 package me.DevTec.ServerControlReloaded.Commands.Other;
 
 
-import me.DevTec.ServerControlReloaded.SCR.API;
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.reflections.Ref;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,9 +17,16 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import me.DevTec.ServerControlReloaded.SCR.API;
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.json.Reader;
+import me.devtec.theapi.utils.json.Writer;
+import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.nms.nbt.NBTEdit;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class Item implements CommandExecutor, TabCompleter{
 	private static List<String> flags = new ArrayList<>();
@@ -34,11 +41,12 @@ public class Item implements CommandExecutor, TabCompleter{
 		f.add("set");
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Item", "Other")&&(Loader.has(s, "Item", "Other", "Name")||Loader.has(s, "Item", "Other", "Lore")
 				||Loader.has(s, "Item", "Other", "Flag")||Loader.has(s, "Item", "Other", "Nbt")
-				||Loader.has(s, "Item", "Other", "Durability")||Loader.has(s, "Item", "Other", "Type"))) {
+				||Loader.has(s, "Item", "Other", "Durability")||Loader.has(s, "Item", "Other", "Type")||Loader.has(s, "Item", "Other", "Process"))) {
 			if(s instanceof Player) {
 				if(args.length==0) {
 					if(Loader.has(s, "Item", "Other", "Name")) Loader.advancedHelp(s, "Item","Other" ,"Name");		
@@ -238,8 +246,7 @@ public class Item implements CommandExecutor, TabCompleter{
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("get")) {
-						Object stack = Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "asNMSCopy", ItemStack.class),item);
-						Loader.sendMessages(s,"Item.Nbt.Get",Placeholder.c().add("%nbt%", Ref.invoke(stack, "getOrCreateTag").toString()));
+						Loader.sendMessages(s,"Item.Nbt.Get",Placeholder.c().add("%nbt%", Ref.invoke(NMSAPI.asNMSItem(item), "getOrCreateTag").toString()));
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("set")) {
@@ -247,12 +254,224 @@ public class Item implements CommandExecutor, TabCompleter{
 							Loader.advancedHelp(s, "Item", "Other", "Nbt", "Set");
 							return true;
 						}
-						Object itemstack = Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "asNMSCopy", ItemStack.class), item);
-						Object nbt = Ref.invokeNulled(Ref.method(Ref.nms("MojangsonParser"), "parse", String.class), StringUtils.buildString(2, args));
-						Ref.invoke(itemstack, Ref.method(Ref.nms("NBTTagCompound"), "setTag", Ref.nms("NBTTagCompound")), nbt);
-						item.setItemMeta((ItemMeta) Ref.invokeNulled(Ref.method(Ref.craft("inventory.CraftItemStack"), "getItemMeta", Ref.nms("ItemStack")), itemstack));
+						Object nbt = Ref.invokeNulled(parser, StringUtils.buildString(2, args));
+						NMSAPI.setNBT(item, nbt);
 						Loader.sendMessages(s,"Item.Nbt.Set",Placeholder.c().add("%nbt%", nbt.toString()));
 						return true;
+					}
+				}
+				
+				if(args[0].equalsIgnoreCase("process") && Loader.has(s, "Item", "Other", "Process")) {
+					if(args.length==1) {
+						Loader.advancedHelp(s, "Item", "Other", "Process","Global");
+						return true;
+					}
+					if(args[1].equalsIgnoreCase("cmd")) {
+						if(args.length<=3) {
+							Loader.advancedHelp(s, "Item", "Other", "Process", "Cmd");
+							return true;
+						}
+						String target = args[3].toLowerCase();
+						if(!target.equals("console")&&!target.equals("player")) {
+							Loader.sendMessages(s, "Item.Process.Cmd.InvalidTarget");
+							return true;
+						}
+						if(args[2].equalsIgnoreCase("list")) {
+							String val = new NBTEdit(item).getString("process."+target+".cmd");
+							if(val==null) {
+								Loader.sendMessages(s, "Item.Process.Cmd.List.Empty");
+								return true;
+							}
+							Object o = Reader.read(val);
+							if(o instanceof Collection == false) {
+								Loader.sendMessages(s, "Item.Process.Cmd.List.Empty");
+								return true;
+							}
+							Collection<String> text = (Collection<String>)o;
+							Loader.sendMessages(s, "Item.Process.Cmd.List.Above", Placeholder.c().add("%total%", text.size()));
+							int id = 0;
+							for(String d : text)
+								Loader.sendMessages(s, "Item.Process.Cmd.List.Item", Placeholder.c().add("%position%", id++)
+										.add("%value%", d).add("%total%", text.size()));
+							return true;
+						}
+						if(args[2].equalsIgnoreCase("add")) {
+							if(args.length<6) {
+								Loader.advancedHelp(s, "Item", "Other", "Process", "Cmd");
+								return true;
+							}
+							NBTEdit e = new NBTEdit(item);
+							String val = e.getString("process."+target+".cmd");
+							Object o = null;
+							Collection<String> text = val==null?new ArrayList<>():((o=Reader.read(val)) instanceof Collection?(Collection<String>)o:new ArrayList<>());
+							String i = StringUtils.buildString(4,args);
+							text.add(i);
+							e.setString("process", "0");
+							e.setString("process."+target+".cmd", Writer.write(text));
+							NMSAPI.setNBT(item, e);
+							Loader.sendMessages(s, "Item.Process.Cmd.Add", Placeholder.c().add("%value%", i).add("%position%", text.size()-1));
+							return true;
+						}
+						if(args[2].equalsIgnoreCase("remove")) {
+							if(args.length<6) {
+								Loader.advancedHelp(s, "Item", "Other", "Process", "Cmd");
+								return true;
+							}
+							NBTEdit e = new NBTEdit(item);
+							String val = e.getString("process."+target+".cmd");
+							Object o = Reader.read(val);
+							if(o instanceof Collection == false) {
+								Loader.sendMessages(s, "Item.Process.Cmd.List.Empty");
+								return true;
+							}
+							Collection<String> text = val==null?new ArrayList<>():(Collection<String>)o;
+							if(text.isEmpty()) {
+								Loader.sendMessages(s, "Item.Process.Cmd.List.Empty");
+								return true;
+							}
+							String removed = "";
+							try {
+								if(text instanceof List == false) {
+									text=new ArrayList<>(text);
+								}
+								removed=((List<String>)text).remove(StringUtils.getInt(args[5]));
+							}catch(Exception outOfBoud) {}
+							if(text.isEmpty()) {
+								e.remove("process."+target+".cmd");
+								if(!!e.hasKey("process.msg") && !e.hasKey("process.console.cmd") && !e.hasKey("process.console.cmd")
+										&& !e.hasKey("process.cooldown") && !e.hasKey("process.usage")) {
+									e.remove("process");
+									e.remove("process.uses");
+									e.remove("process.last");
+								}
+							}else {
+								e.setString("process", "0");
+								e.setString("process."+target+".cmd", Writer.write(text));
+							}
+							NMSAPI.setNBT(item, e);
+							Loader.sendMessages(s, "Item.Process.Cmd.Remove", Placeholder.c().add("%value%", removed).add("%position%", StringUtils.getInt(args[5])));
+							return true;
+						}
+					}
+					if(args[1].equalsIgnoreCase("msg")) {
+						if(args.length<=2) {
+							Loader.advancedHelp(s, "Item", "Other", "Process", "Msg");
+							return true;
+						}
+						if(args[2].equalsIgnoreCase("list")) {
+							String val = new NBTEdit(item).getString("process.msg");
+							if(val==null) {
+								Loader.sendMessages(s, "Item.Process.Msg.List.Empty");
+								return true;
+							}
+							Object o = Reader.read(val);
+							if(o instanceof Collection == false) {
+								Loader.sendMessages(s, "Item.Process.Msg.List.Empty");
+								return true;
+							}
+							Collection<String> text = (Collection<String>)o;
+							Loader.sendMessages(s, "Item.Process.Msg.List.Above", Placeholder.c().add("%total%", text.size()));
+							int id = 0;
+							for(String d : text)
+								Loader.sendMessages(s, "Item.Process.Msg.List.Item", Placeholder.c().add("%position%", id++)
+										.add("%value%", d).add("%total%", text.size()));
+							return true;
+						}
+						if(args[2].equalsIgnoreCase("add")) {
+							if(args.length<4) {
+								Loader.advancedHelp(s, "Item", "Other", "Process", "Msg");
+								return true;
+							}
+							NBTEdit e = new NBTEdit(item);
+							String val = e.getString("process.msg");
+							Object o = null;
+							Collection<String> text = val==null?new ArrayList<>():((o=Reader.read(val)) instanceof Collection?(Collection<String>)o:new ArrayList<>());
+							String i = StringUtils.buildString(3,args);
+							text.add(i);
+							e.setString("process", "0");
+							e.setString("process.msg", Writer.write(text));
+							NMSAPI.setNBT(item, e);
+							Loader.sendMessages(s, "Item.Process.Msg.Add", Placeholder.c().add("%value%", i).add("%position%", text.size()-1));
+							return true;
+						}
+						if(args[2].equalsIgnoreCase("remove")) {
+							if(args.length<4) {
+								Loader.advancedHelp(s, "Item", "Other", "Process", "Msg");
+								return true;
+							}
+							NBTEdit e = new NBTEdit(item);
+							String val = e.getString("process.msg");
+							Object o = Reader.read(val);
+							if(o instanceof Collection == false) {
+								Loader.sendMessages(s, "Item.Process.Msg.List.Empty");
+								return true;
+							}
+							Collection<String> text = val==null?new ArrayList<>():(Collection<String>)o;
+							if(text.isEmpty()) {
+								Loader.sendMessages(s, "Item.Process.Msg.List.Empty");
+								return true;
+							}
+							String removed = "";
+							try {
+								if(text instanceof List == false) {
+									text=new ArrayList<>(text);
+								}
+								removed=((List<String>)text).remove(StringUtils.getInt(args[3]));
+							}catch(Exception outOfBoud) {}
+							if(text.isEmpty()) {
+								e.remove("process.msg");
+								if(!e.hasKey("process.msg") && !e.hasKey("process.console.cmd") && !e.hasKey("process.console.cmd")
+										&& !e.hasKey("process.cooldown") && !e.hasKey("process.usage")) {
+									e.remove("process");
+									e.remove("process.uses");
+									e.remove("process.last");
+								}
+							}else {
+								e.setString("process", "0");
+								e.setString("process.msg", Writer.write(text));
+							}
+							NMSAPI.setNBT(item, e);
+							Loader.sendMessages(s, "Item.Process.Msg.Remove", Placeholder.c().add("%value%", removed).add("%position%", StringUtils.getInt(args[3])));
+							return true;
+						}
+					}
+					if(args[1].equalsIgnoreCase("cooldown")||args[1].equalsIgnoreCase("usage")) {
+						String path = args[1].equalsIgnoreCase("cooldown")?"Cooldown":"Usage";
+						if(args.length<=2) {
+							Loader.advancedHelp(s, "Item", "Other", "Process", path);
+							return true;
+						}
+						if(args[2].equalsIgnoreCase("get")) {
+							long val = new NBTEdit(item).getLong("process."+path.toLowerCase());
+							Loader.sendMessages(s, "Item.Process."+path+".Get", Placeholder.c().add("%value%", val));
+							return true;
+						}
+						if(args[2].equalsIgnoreCase("set")) {
+							if(args.length<4) {
+								Loader.advancedHelp(s, "Item", "Other", "Process", path);
+								return true;
+							}
+							NBTEdit e = new NBTEdit(item);
+							if((args[1].equalsIgnoreCase("cooldown")?StringUtils.timeFromString(args[3]):StringUtils.getInt(args[3])) <= 0) {
+								e.remove("process."+path.toLowerCase());
+								if(path.equalsIgnoreCase("usage"))
+								e.remove("process.uses");
+								else
+									e.remove("process.last");
+								if(!e.hasKey("process.msg") && !e.hasKey("process.console.cmd") && !e.hasKey("process.console.cmd")
+										&& !e.hasKey("process.cooldown") && !e.hasKey("process.usage")) {
+									e.remove("process");
+									e.remove("process.uses");
+									e.remove("process.last");
+								}
+							}else {
+								e.setString("process", "0");
+								e.setLong("process."+path.toLowerCase(), args[1].equalsIgnoreCase("cooldown")?StringUtils.timeFromString(args[3]):StringUtils.getInt(args[3]));
+							}
+							NMSAPI.setNBT(item, e);
+							Loader.sendMessages(s, "Item.Process."+path+".Set", Placeholder.c().add("%value%", args[1].equalsIgnoreCase("cooldown")?StringUtils.timeFromString(args[3])+"":StringUtils.getInt(args[3])));
+							return true;
+						}
 					}
 				}
 				
@@ -316,6 +535,8 @@ public class Item implements CommandExecutor, TabCompleter{
 		Loader.noPerms(s, "Item", "Other");		
 		return true;
 	}
+
+	private static Method parser = Ref.method(Ref.nms("MojangsonParser"), "parse", String.class);
 	
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(Loader.has(s, "Item", "Other")) {
@@ -327,8 +548,51 @@ public class Item implements CommandExecutor, TabCompleter{
 			if(Loader.has(s, "Item", "Other", "Nbt")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Nbt")));
 			if(Loader.has(s, "Item", "Other", "Durability"))c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Durability")));	
 			if(Loader.has(s, "Item", "Other", "Type")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Type")));
+			if(Loader.has(s, "Item", "Other", "Process")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Process")));
 			if(Loader.has(s, "Item", "Other", "Amount")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Amount")));
 			return c;
+		}
+		if(args[0].equalsIgnoreCase("process") && Loader.has(s, "Item", "Other", "Process")) {
+			if(args.length==2) {
+				return StringUtils.copyPartialMatches(args[1], Arrays.asList("Cmd","Msg","Cooldown","Usage"));
+			}
+			if(args.length==3) {
+				if(args[1].equalsIgnoreCase("usage")||args[1].equalsIgnoreCase("cooldown"))
+					return StringUtils.copyPartialMatches(args[2], Arrays.asList("Get","Set"));
+				if(args[1].equalsIgnoreCase("cmd")||args[1].equalsIgnoreCase("msg"))
+					return StringUtils.copyPartialMatches(args[2], Arrays.asList("Add","Remove","List"));
+				return Arrays.asList();
+			}
+			if(args.length==4) {
+				if((args[1].equalsIgnoreCase("usage")||args[1].equalsIgnoreCase("cooldown")) && args[2].equalsIgnoreCase("set"))
+					return StringUtils.copyPartialMatches(args[3], Arrays.asList("0","3","5","10","15"));
+				if(args[1].equalsIgnoreCase("cmd"))
+					return StringUtils.copyPartialMatches(args[3], Arrays.asList("Player","Console"));
+				if(args[1].equalsIgnoreCase("msg")) {
+					if(args[2].equalsIgnoreCase("add")) {
+						return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
+					}
+					if(args[2].equalsIgnoreCase("remove")) {
+						return Arrays.asList("?");
+					}
+				}
+				return Arrays.asList();
+			}
+			if(args[1].equalsIgnoreCase("msg")) {
+				if(args[2].equalsIgnoreCase("add"))
+				return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
+				return Arrays.asList();
+			}
+			if(!(args[3].equalsIgnoreCase("player")||args[3].equalsIgnoreCase("console")))return Arrays.asList();
+			if(args[1].equalsIgnoreCase("cmd")) {
+				if(args[2].equalsIgnoreCase("add")) {
+					return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
+				}
+				if(args[2].equalsIgnoreCase("remove") && args.length==5) {
+					return Arrays.asList("?");
+				}
+			}
+			return Arrays.asList();
 		}
 		if(args[0].equalsIgnoreCase("name") && Loader.has(s, "Item", "Other", "Name"))
 			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));

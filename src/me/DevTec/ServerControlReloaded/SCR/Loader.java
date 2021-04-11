@@ -55,8 +55,8 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	public static class Placeholder {
 		private final HashMap<String, String> set = new HashMap<>();
-		public Placeholder add(String placeholder, String replace) {
-			set.put(placeholder, replace);
+		public Placeholder add(String placeholder, Object replace) {
+			set.put(placeholder, replace+"");
 			return this;
 		}
 		
@@ -64,7 +64,7 @@ public class Loader extends JavaPlugin implements Listener {
 			return new Placeholder();
 		}
 
-		public Placeholder replace(String placeholder, String replace) {
+		public Placeholder replace(String placeholder, Object replace) {
 			return add(placeholder, replace);
 		}
 	}
@@ -690,6 +690,7 @@ public class Loader extends JavaPlugin implements Listener {
 		EventC(new Signs());
 		EventC(new FarmingSystem());
 		EventC(new MirrorEvents());
+		EventC(new ItemUse());
 	}
 	
 	public static void notOnline(CommandSender s, String player) {

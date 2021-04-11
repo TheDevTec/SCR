@@ -131,6 +131,28 @@ Item:
   Durability:
     Get: "%prefix% The durability of item in your hand is &e%durability%"
     Set: "%prefix% The durability of item in your hand has been changed to &e%durability%"
+  Process:
+    Cmd:
+      List:
+        Above: "%prefix% List of commands (%total%):"
+        Item: "%prefix% - &e%position% &f%value%"
+        Empty: "%prefix% List of commands is empty"
+      InvalidTarget: "%prefix% Selected target is invalid, valid targets: &eCONSOLE, PLAYER"
+      Add: "%prefix% Added the &e%value%&7 command to the list of commands"
+      Remove: "%prefix% Removed the &e%value%&7 command (%position%) from the list of commands"
+    Msg:
+      List:
+        Above: "%prefix% List of messages (%total%):"
+        Item: "%prefix% - &e%position% &f%value%"
+        Empty: "%prefix% List of messages is empty"
+      Add: "%prefix% Added the &e%value%&7 message to the list of messages"
+      Remove: "%prefix% Removed the &e%value%&7 message (%position%) from the list of messages"
+    Usage:
+      Set: "%prefix% Item usage amount set to &e%value%"
+      Get: "%prefix% Item usage amount is set to &e%value%"
+    Cooldown:
+      Set: "%prefix% Item usage cooldown set to &e%value%"
+      Get: "%prefix% Item usage cooldown is set to &e%value%"
     
 # Translations for /Hat command
 Hat:

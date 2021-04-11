@@ -132,6 +132,28 @@ Item:
   Durability:
     Get: "%prefix% Durability předmětu ve vaší ruce je &e%nbt%"
     Set: "%prefix% Durability předmětu ve vaší ruce byla změněna na &e%nbt%"
+  Process:
+    Cmd:
+      List:
+        Above: "%prefix% Seznam příkazů (%total%):"
+        Item: "%prefix% - &e%position% &f%value%"
+        Empty: "%prefix% Seznam příkazů je prázdný"
+      InvalidTarget: "%prefix% Vybraný cíl není platný, platné cíly jsou: &eCONSOLE, PLAYER"
+      Add: "%prefix% Přidán příkaz &e%value%&7 do seznamu příkazů"
+      Remove: "%prefix% Odstraněn příkaz &e%value%&7 (%position%) ze seznamu příkazů"
+    Msg:
+      List:
+        Above: "%prefix% Seznam zpráv (%total%):"
+        Item: "%prefix% - &e%position% &f%value%"
+        Empty: "%prefix% Seznam zpráv je prázdný"
+      Add: "%prefix% Přidána zpráva &e%value%&7 do seznamu zpráv"
+      Remove: "%prefix% Odebrána zpráva &e%value%&7 (%position%) ze seznamu zpráv"
+    Usage:
+      Set: "%prefix% Počet použití předmětu nastaveno na &e%value%"
+      Get: "%prefix% Počet použití předmětu je nastaveno na &e%value%"
+    Cooldown:
+      Set: "%prefix% Čas použití itemu nastaven na &e%value%"
+      Get: "%prefix% Čas použití itemu je nastaven na &e%value%"
 
 # Translations for /Hat command
 Hat:
