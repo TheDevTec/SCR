@@ -1,18 +1,18 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
-import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.devtec.theapi.configapi.Config;
-import me.devtec.theapi.utils.StreamUtils;
-import me.devtec.theapi.utils.datakeeper.Data;
-import me.devtec.theapi.utils.datakeeper.loader.YamlLoader;
-import me.devtec.theapi.utils.reflections.Ref;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
+
+import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.devtec.theapi.configapi.Config;
+import me.devtec.theapi.utils.StreamUtils;
+import me.devtec.theapi.utils.datakeeper.Data;
+import me.devtec.theapi.utils.datakeeper.loader.YamlLoader;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class Configs {
 	@SuppressWarnings("unchecked")
@@ -73,7 +73,12 @@ public class Configs {
 	    	Loader.trans=c;
 		}
 		setting.load(settingMessage);
-		AnimationManager.reload();
+		Tasks.aa.reload();
+		TabList.aset.reload();
+		DisplayManager.sb.reload();
+		DisplayManager.ac.reload();
+		DisplayManager.bb.reload();
+		NameTagChanger.anim.reload();
 	}
 	
 	static List<String> datas = Arrays.asList("Config.yml","Rules.txt","Colors.txt","Scoreboard.yml","Placeholders.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml","GUICreator.yml");

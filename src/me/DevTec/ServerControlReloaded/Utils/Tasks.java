@@ -196,17 +196,17 @@ public class Tasks {
 		tasks.add(new Tasker() {
 			@Override
 			public void run() {
-				for (Player p : TheAPI.getOnlinePlayers()) {
+				for (Player p : TheAPI.getOnlinePlayers())
 					TabList.setFooterHeader(p);
-				}
+				TabList.update();
 			}
 		}.runRepeating(0, Loader.tab.getInt("Options.RefleshTick.Tablist")));
 		tasks.add(new Tasker() {
 			@Override
 			public void run() {
-				for (Player p : TheAPI.getOnlinePlayers()) {
+				for (Player p : TheAPI.getOnlinePlayers())
 					TabList.setName(p);
-				}
+				TabList.update();
 			}
 		}.runRepeating(0, r));
 	}
@@ -229,10 +229,11 @@ public class Tasks {
 			}
 		}.runRepeating(0, 200));
 	}
+
+	protected static AnimationManager aa = new AnimationManager();
 	
 	private static void automessage() {
 		tasks.add(new Tasker() {
-			@Override
 			public void run() {
 				if (TheAPI.getOnlinePlayers().size() < Loader.config.getInt("Options.AutoMessage.MinimalPlayers"))
 					return;
@@ -240,10 +241,10 @@ public class Tasks {
 				if (setting.am_random) {
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
-							String json = StringUtils.colorizeJson(AnimationManager.replaceWithoutColors(p,TheAPI.getRandomFromList(l)));
+							String json = StringUtils.colorizeJson(aa.replaceWithoutColors(p,TheAPI.getRandomFromList(l)));
 							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentFromCraftBukkit(json)));
 						}else {
-							TheAPI.msg(AnimationManager.replace(p,TheAPI.getRandomFromList(l)), p);
+							TheAPI.msg(aa.replace(p,TheAPI.getRandomFromList(l)), p);
 						}
 					}
 				} else {
@@ -251,13 +252,14 @@ public class Tasks {
 						tests = 0;
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
-							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentFromCraftBukkit(StringUtils.colorizeJson(AnimationManager.replaceWithoutColors(p,l.get(tests))))));
+							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentFromCraftBukkit(StringUtils.colorizeJson(aa.replaceWithoutColors(p,l.get(tests))))));
 						}else {
-							TheAPI.msg(AnimationManager.replace(p,l.get(tests)), p);
+							TheAPI.msg(aa.replace(p,l.get(tests)), p);
 						}
 					}
 					++tests;
 				}
+				aa.update();
 			}
 
 		}.runRepeating(0, 20* StringUtils.getTimeFromString(Loader.config.getString("Options.AutoMessage.Interval"))));

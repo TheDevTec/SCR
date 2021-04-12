@@ -1,5 +1,12 @@
 package me.DevTec.ServerControlReloaded.Utils;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.entity.Player;
+
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.bossbar.BarColor;
@@ -12,12 +19,6 @@ import me.devtec.theapi.scoreboardapi.ScoreboardAPI;
 import me.devtec.theapi.scoreboardapi.SimpleScore;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.reflections.Ref;
-import org.bukkit.entity.Player;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class DisplayManager {
 	public static enum DisplayType {
@@ -33,8 +34,7 @@ public class DisplayManager {
 				ignore.get(t).add(p.getName());
 		}
 		if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(p.getName()))
-		((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(p.getName()).destroy();
-		((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(p.getName());
+		((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(p.getName()).destroy();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -71,6 +71,7 @@ public class DisplayManager {
 	}
 	
 	private static SimpleScore score = new SimpleScore();
+	protected static AnimationManager ac = new AnimationManager(), bb= new AnimationManager(), sb=new AnimationManager();
 	
 	@SuppressWarnings("unchecked")
 	public static void hide(Player s, DisplayType type) {
@@ -81,15 +82,6 @@ public class DisplayManager {
 			case ACTIONBAR:{
 				Loader.sendMessages(s, "DisplayManager.ActionBar.Hide");
 				if(!isToggleable(s, DisplayType.ACTIONBAR)) {
-					String text = "Text";
-					if(Loader.ac.exists("PerPlayer."+s.getName())) {
-						text="PerPlayer."+s.getName()+".Text";
-					}else {
-						if(Loader.ac.exists("PerWorld."+s.getWorld().getName())) {
-							text="PerWorld."+s.getWorld().getName()+".Text";
-						}
-					}
-					TheAPI.sendActionBar(s, AnimationManager.replace(s, Loader.ac.getString(text)));
 					return;
 				}
 				hide.get(DisplayType.ACTIONBAR).add(s.getName());
@@ -99,18 +91,6 @@ public class DisplayManager {
 			case BOSSBAR:{
 				Loader.sendMessages(s, "DisplayManager.BossBar.Hide");
 				if(!isToggleable(s, DisplayType.BOSSBAR)) {
-					String text = "Text";
-					String stage = "Stage";
-					if(Loader.bb.exists("PerPlayer."+s.getName())) {
-						text="PerPlayer."+s.getName()+".Text";
-						stage="PerPlayer."+s.getName()+".Stage";
-					}else {
-						if(Loader.bb.exists("PerWorld."+s.getWorld().getName())) {
-							text="PerWorld."+s.getWorld().getName()+".Text";
-							stage="PerWorld."+s.getWorld().getName()+".Stage";
-						}
-					}
-					TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
 					return;
 				}
 				hide.get(DisplayType.BOSSBAR).add(s.getName());
@@ -120,26 +100,11 @@ public class DisplayManager {
 			case SCOREBOARD:{
 				Loader.sendMessages(s, "DisplayManager.Scoreboard.Hide");
 				if(!isToggleable(s, DisplayType.SCOREBOARD)) {
-					String name = "Name";
-					String lines = "Lines";
-					if(Loader.sb.exists("PerPlayer."+s.getName())) {
-						name="PerPlayer."+s.getName()+".Name";
-						lines="PerPlayer."+s.getName()+".Lines";
-					}else if(Loader.sb.exists("PerWorld."+s.getWorld().getName())) {
-						name="PerWorld."+s.getWorld().getName()+".Name";
-						lines="PerWorld."+s.getWorld().getName()+".Lines";
-					}
-					score.setTitle(AnimationManager.replace(s, Loader.sb.getString(name)));
-					for(String line : Loader.sb.getStringList(lines)) {
-						score.addLine(AnimationManager.replace(s, line));
-					}
-					score.send(s);
 					return;
 				}
 				hide.get(DisplayType.SCOREBOARD).add(s.getName());
 				if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
-					((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(s.getName()).destroy();
-					((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()); //remove
+					((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()).destroy();
 				}
 			}
 			break;
@@ -178,7 +143,7 @@ public class DisplayManager {
 	public static void load() {
 		for(Player s : TheAPI.getOnlinePlayers())
 			initializePlayer(s);
-		if(Loader.ac.getBoolean("Enabled"))
+		if(Loader.ac.getBoolean("Enabled")) {
 		tasks.add(new Tasker() {
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
@@ -209,7 +174,7 @@ public class DisplayManager {
 										text="PerWorld."+s.getWorld().getName()+".Text";
 									}
 								}
-								TheAPI.sendActionBar(s, AnimationManager.replace(s, Loader.ac.getString(text)));
+								TheAPI.sendActionBar(s, ac.replace(s, Loader.ac.getString(text)));
 								continue;
 							}
 							hide.get(DisplayType.ACTIONBAR).add(s.getName());
@@ -226,7 +191,7 @@ public class DisplayManager {
 										text="PerWorld."+s.getWorld().getName()+".Text";
 									}
 								}
-								TheAPI.sendActionBar(s, AnimationManager.replace(s, Loader.ac.getString(text)));
+								TheAPI.sendActionBar(s, ac.replace(s, Loader.ac.getString(text)));
 								continue;
 							}
 							//already gone
@@ -242,13 +207,15 @@ public class DisplayManager {
 								text="PerWorld."+s.getWorld().getName()+".Text";
 							}
 						}
-						TheAPI.sendActionBar(s, AnimationManager.replace(s, Loader.ac.getString(text)));
+						TheAPI.sendActionBar(s, ac.replace(s, Loader.ac.getString(text)));
 						continue;
 					}
 					}catch(Exception er) {}
 				}
+				ac.update();
 			}
 		}.runRepeating(0, StringUtils.calculate(Loader.ac.getString("RefleshTick")).longValue()));
+		}
 		if(Loader.bb.getBoolean("Enabled"))
 		tasks.add(new Tasker() {
 			int cc = 0;
@@ -290,7 +257,7 @@ public class DisplayManager {
 										color="PerWorld."+s.getWorld().getName()+".Color";
 									}
 								}
-								BossBar b = TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+								BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
 								if(Loader.bb.getString(color)!=null)
 									try {
 										if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
@@ -327,7 +294,7 @@ public class DisplayManager {
 										color="PerWorld."+s.getWorld().getName()+".Color";
 									}
 								}
-								BossBar b = TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+								BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
 								if(Loader.bb.getString(color)!=null)
 									try {
 										if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
@@ -363,7 +330,7 @@ public class DisplayManager {
 								color="PerWorld."+s.getWorld().getName()+".Color";
 							}
 						}
-						BossBar b = TheAPI.sendBossBar(s, AnimationManager.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+						BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
 						if(Loader.bb.getString(color)!=null)
 							try {
 								if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
@@ -381,6 +348,7 @@ public class DisplayManager {
 				}
 				if(cc==6)cc=0;
 				else ++cc;
+				bb.update();
 			}
 		}.runRepeating(0, StringUtils.calculate(Loader.bb.getString("RefleshTick")).longValue()));
 		if (setting.sb)
@@ -393,8 +361,7 @@ public class DisplayManager {
 						if(!hide.get(DisplayType.SCOREBOARD).contains(s.getName())) {
 							hide.get(DisplayType.SCOREBOARD).add(s.getName());
 							if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
-								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(s.getName()).destroy();
-								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()); //remove
+								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()).destroy();
 							}
 						}
 						continue;
@@ -403,8 +370,7 @@ public class DisplayManager {
 						if(!hide.get(DisplayType.SCOREBOARD).contains(s.getName())) {
 							hide.get(DisplayType.SCOREBOARD).add(s.getName());
 							if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
-								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(s.getName()).destroy();
-								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()); //remove
+								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()).destroy();
 							}
 							continue;
 						}
@@ -422,17 +388,16 @@ public class DisplayManager {
 									name="PerWorld."+s.getWorld().getName()+".Name";
 									lines="PerWorld."+s.getWorld().getName()+".Lines";
 								}
-								score.setTitle(AnimationManager.replace(s, Loader.sb.getString(name)));
+								score.setTitle(sb.replace(s, Loader.sb.getString(name)));
 								for(String line : Loader.sb.getStringList(lines)) {
-									score.addLine(AnimationManager.replace(s, line));
+									score.addLine(sb.replace(s, line));
 								}
 								score.send(s);
 								continue;
 							}
 							hide.get(DisplayType.SCOREBOARD).add(s.getName());
 							if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
-								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(s.getName()).destroy();
-								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()); //remove
+								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()).destroy();
 							}
 							continue;
 						}else {
@@ -447,9 +412,9 @@ public class DisplayManager {
 									name="PerWorld."+s.getWorld().getName()+".Name";
 									lines="PerWorld."+s.getWorld().getName()+".Lines";
 								}
-								score.setTitle(AnimationManager.replace(s, Loader.sb.getString(name)));
+								score.setTitle(sb.replace(s, Loader.sb.getString(name)));
 								for(String line : Loader.sb.getStringList(lines)) {
-									score.addLine(AnimationManager.replace(s, line));
+									score.addLine(sb.replace(s, line));
 								}
 								score.send(s);
 								continue;
@@ -468,15 +433,16 @@ public class DisplayManager {
 							name="PerWorld."+s.getWorld().getName()+".Name";
 							lines="PerWorld."+s.getWorld().getName()+".Lines";
 						}
-						score.setTitle(AnimationManager.replace(s, Loader.sb.getString(name)));
+						score.setTitle(sb.replace(s, Loader.sb.getString(name)));
 						for(String line : Loader.sb.getStringList(lines)) {
-							score.addLine(AnimationManager.replace(s, line));
+							score.addLine(sb.replace(s, line));
 						}
 						score.send(s);
 						continue;
 					}
 					}catch(Exception er) {}
 				}
+				sb.update();
 			}
 		}.runRepeating(0, StringUtils.calculate(Loader.sb.getString("Options.RefleshTick")).longValue()));
 		
@@ -491,8 +457,7 @@ public class DisplayManager {
 			if(TheAPI.getBossBar(s)!=null)
 			TheAPI.removeBossBar(s);
 			if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
-				((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).get(s.getName()).destroy();
-				((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()); //remove
+				((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()).destroy();
 			}
 		}
 		tasks.clear();

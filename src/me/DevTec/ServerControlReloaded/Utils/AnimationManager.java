@@ -2,7 +2,6 @@ package me.DevTec.ServerControlReloaded.Utils;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
-import me.devtec.theapi.utils.Animation;
 import me.devtec.theapi.utils.StringUtils;
 import org.bukkit.entity.Player;
 
@@ -11,9 +10,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class AnimationManager {
-	static Map<String, Animation> a = new HashMap<>();
+	Map<String, Animation> a = new HashMap<>();
 	
-	public static void reload() {
+	public void reload() {
 		a.clear();
 		for(String anim : Loader.anim.getKeys()) {
 			Animation s = new Animation(Loader.anim.getStringList(anim+".lines")
@@ -22,13 +21,13 @@ public class AnimationManager {
 		}
 	}
 	
-	public static String requestAnimation(String name) {
+	public String requestAnimation(String name) {
 		Animation get = a.getOrDefault(name, null);
 		if(get==null)return null;
 		return get.get();
 	}
 	
-	public static String replace(Player player, String where) {
+	public String replace(Player player, String where) {
 		if(where==null)return null;
 		for(Entry<String, Animation> e : a.entrySet()) {
 			where=where.replace("%animation-"+e.getKey()+"%", e.getValue().get());
@@ -36,11 +35,16 @@ public class AnimationManager {
 		return PlaceholderAPI.setPlaceholders(player, TabList.replace(where, player, true));
 	}
 
-	public static String replaceWithoutColors(Player player, String string) {
+	public String replaceWithoutColors(Player player, String string) {
 		if(string==null)return null;
 		for(Entry<String, Animation> e : a.entrySet()) {
 			string=string.replace("%animation-"+e.getKey()+"%", e.getValue().get());
 		}
 		return PlaceholderAPI.setPlaceholders(player, TabList.replace(string, player, false));
+	}
+	
+	public void update() {
+		for(Animation e : a.values())
+			e.update();
 	}
 }

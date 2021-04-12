@@ -9,16 +9,17 @@ import java.util.HashMap;
 
 public class NameTagChanger {
 	static HashMap<Player, NameTagAPI> t = new HashMap<>();
+	static AnimationManager anim = new AnimationManager();
 
 	public static void setNameTag(Player p, String prefix, String suffix) {
 		Tasks.regPlayer(p);
 		if (setting.tab_sort) {
 			if (setting.tab_nametag) {
 				if (!t.containsKey(p))
-					t.put(p, TheAPI.getNameTagAPI(p, AnimationManager.replace(p,prefix), AnimationManager.replace(p,suffix)));
+					t.put(p, TheAPI.getNameTagAPI(p, anim.replace(p,prefix), anim.replace(p,suffix)));
 				NameTagAPI n = t.get(p);
-				n.setPrefix(AnimationManager.replace(p,prefix));
-				n.setSuffix(AnimationManager.replace(p,suffix));
+				n.setPrefix(anim.replace(p,prefix));
+				n.setSuffix(anim.replace(p,suffix));
 				n.setNameTag(Tasks.sss.get(p.getName()));
 			} else {
 				String pname = p.getName();
@@ -34,13 +35,17 @@ public class NameTagChanger {
 		} else {
 			if (setting.tab_nametag) {
 				if (!t.containsKey(p))
-					t.put(p, TheAPI.getNameTagAPI(p, AnimationManager.replace(p,prefix), AnimationManager.replace(p,suffix)));
+					t.put(p, TheAPI.getNameTagAPI(p, anim.replace(p,prefix), anim.replace(p,suffix)));
 				NameTagAPI n = t.get(p);
-				n.setPrefix(AnimationManager.replace(p,prefix));
-				n.setSuffix(AnimationManager.replace(p,suffix));
+				n.setPrefix(anim.replace(p,prefix));
+				n.setSuffix(anim.replace(p,suffix));
 				n.setNameTag(Tasks.sss.get(p.getName()));
 			}
 		}
+	}
+	
+	public static void update() {
+		anim.update();
 	}
 
 	public static void remove(Player p) {

@@ -24,6 +24,7 @@ public class FormatTab {
 				String val = StringUtils.buildString(4, args);
 				if(val.startsWith("\"") && val.endsWith("\""))val=val.substring(1, val.length()-1);
 				TabList.setNameFormat(name, 0, val);
+				TabList.update();
 				Loader.sendMessages(s, "TabList.Set.Format.Player", 
 						Placeholder.c().add("%value%", val).replace("%name%", name));
 				return;
@@ -31,6 +32,7 @@ public class FormatTab {
 			String val = StringUtils.buildString(4, args);
 			if(val.startsWith("\"") && val.endsWith("\""))val=val.substring(1, val.length()-1);
 			TabList.setNameFormat(name, 2, val);
+			TabList.update();
 			Loader.sendMessages(s, "TabList.Set.Format.Group", 
 					Placeholder.c().add("%value%", val).replace("%name%", name));
 			return;

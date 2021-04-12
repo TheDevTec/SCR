@@ -233,6 +233,7 @@ public class OnPlayerJoin implements Listener {
 				TabList.setFooterHeader(p);
 				if(setting.tab_nametag)
 				TabList.setName(p);
+				TabList.update();
 				}
 				d.set("Joins", d.getInt("Joins")+1);
 				}catch(Exception | NoSuchFieldError | NoSuchMethodError e) {}

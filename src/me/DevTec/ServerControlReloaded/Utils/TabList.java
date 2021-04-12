@@ -293,11 +293,17 @@ public class TabList {
 		return header;
 	}
 	
+	public static AnimationManager aset = new AnimationManager();
+	
+	public static void update() {
+		aset.update();
+	}
+	
 	public static void setName(Player p) {
 		String p1 = getPrefix(p, true), p2 = getPrefix(p, false), s1 = getSuffix(p, true), s2 = getSuffix(p, false);
 		String name = getNameFormat(p).replace("%tab_prefix%", (p2!=null?replace(p2, p, true):"")).replace("%tab_suffix%", (s2!=null?replace(s2, p, true):""));
-		p.setPlayerListName(AnimationManager.replace(p,name));
-		NameTagChanger.setNameTag(p, p1!=null?AnimationManager.replaceWithoutColors(p,replace(p1, p, false)):"", s1!=null?AnimationManager.replaceWithoutColors(p,replace(s1, p, false)):"");
+		p.setPlayerListName(aset.replace(p,name));
+		NameTagChanger.setNameTag(p, p1!=null?aset.replaceWithoutColors(p,replace(p1, p, false)):"", s1!=null?aset.replaceWithoutColors(p,replace(s1, p, false)):"");
 	}
 	static Statistic st;
 	static long del=60, addOrRemove=1;
@@ -350,6 +356,6 @@ public class TabList {
 	}
 	
 	public static void setFooterHeader(Player p) {
-		TabListAPI.setHeaderFooter(p, AnimationManager.replaceWithoutColors(p,getPath(p, "Header")), AnimationManager.replaceWithoutColors(p,getPath(p, "Footer")));
+		TabListAPI.setHeaderFooter(p, aset.replaceWithoutColors(p,getPath(p, "Header")), aset.replaceWithoutColors(p,getPath(p, "Footer")));
 	}
 }
