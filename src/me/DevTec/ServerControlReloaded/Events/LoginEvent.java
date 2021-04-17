@@ -111,7 +111,8 @@ public class LoginEvent implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void AsyncPreLoginEvent(AsyncPlayerPreLoginEvent e){
 		if(Loader.config.getBoolean("CountryBlocker.Enabled")){
-			Map<String,Object> country = WhoIs.getCountry(e.getAddress().getHostAddress().replaceAll("[^0-9.]", "").replace("..", ""));
+			try {
+			Map<String,Object> country = WhoIs.getCountry(e.getAddress().toString().replaceAll("[^0-9.]", "").replace("..", ""));
 			for(String a : Loader.config.getStringList("CountryBlocker.List")){
 				if(country.getOrDefault("countryCode","UNKNOWN").equals(a.toUpperCase())){
 					for(String b:Loader.config.getStringList("CountryBlocker.Whitelist")){
@@ -127,6 +128,7 @@ public class LoginEvent implements Listener {
 					e.setLoginResult(AsyncPlayerPreLoginEvent.Result.ALLOWED);
 				}
 			}
+			}catch(Exception err) {}
 		}
 	}
 }
