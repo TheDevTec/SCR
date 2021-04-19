@@ -63,6 +63,8 @@ public class Eco implements CommandExecutor, TabCompleter {
 				}
 				if (TheAPI.existsUser(args[1])) {
 					double given = API.convertMoney(args[2]);
+					if(given<0)
+						given=0;
 					EconomyAPI.depositPlayer(args[1], given);
 					Loader.sendMessages(s, "Economy.Give.Sender", Placeholder.c().replace("%player%", args[1]).replace("%playername%", args[1])
 							.replace("%money%", API.setMoneyFormat(given, true)));
@@ -90,6 +92,8 @@ public class Eco implements CommandExecutor, TabCompleter {
 					}
 					if (TheAPI.existsUser(args[1])) {
 						double taken = API.convertMoney(args[2]);
+						if(taken<0)
+							taken=0;
 						EconomyAPI.withdrawPlayer(args[1], taken);
 						Loader.sendMessages(s, "Economy.Take.Sender", Placeholder.c().replace("%player%", args[1]).replace("%playername%", args[1])
 								.replace("%money%", API.setMoneyFormat(taken, true)));
@@ -114,10 +118,8 @@ public class Eco implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					if (TheAPI.existsUser(args[1])) {
-						String moneyfromargs = args[2];
-						if (moneyfromargs.startsWith("-"))
-							moneyfromargs = "0.0";
 						double money = API.convertMoney(args[2]);
+						if(money<0)money=0;
 						if (EconomyAPI.has(p.getName(), money)
 								|| s.hasPermission("ServerControl.Economy.InMinus")) {
 							String w = p.getWorld().getName();

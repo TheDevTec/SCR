@@ -39,7 +39,7 @@ public class Colors {
 			//colors
 			for (String ff : split) {
 				if (ff.toLowerCase().contains("§u")||ff.toLowerCase().contains("&u"))
-					ff = StringUtils.colorize(StringUtils.color.colorize(ff.replaceAll("[§&][Uu]","")));
+					ff = StringUtils.color.colorize(ff.replaceAll("[§&][Uu]",""));
 				d.append(ff);
 			}
 			b=d.toString();
@@ -55,23 +55,22 @@ public class Colors {
 		                String color = match.group();
 		                StringBuilder magic = new StringBuilder("§x");
 		                char[] c = color.substring(1).toCharArray();
-		                for(int i = 0; i < c.length; ++i) {
-		                    magic.append(("§"+c[i]).toLowerCase());
-		                }
-		                b = b.replace(color, magic.toString() + "");
+		                for(int i = 0; i < c.length; ++i)
+		                    magic.append("§"+Character.toLowerCase(c[i]));
+		                b = b.replace(color, magic.toString());
 		            }
 				}
 			}
 		}
 		if ((Loader.config.getString("Options.Colors." + p + ".Permission.Color")!=null && !Loader.config.getString("Options.Colors." + p + ".Permission.Color").equals("")) && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
 			for (int i = 0; i < 10; ++i)
-				b = b.replace("&" + i, ChatColor.getByChar(i+"")+"");
-			b = b.replace("&a", ChatColor.getByChar("a")+"");
-			b = b.replace("&b", ChatColor.getByChar("b")+"");
-			b = b.replace("&c", ChatColor.getByChar("c")+"");
-			b = b.replace("&d", ChatColor.getByChar("d")+"");
-			b = b.replace("&e", ChatColor.getByChar("e")+"");
-			b = b.replace("&f", ChatColor.getByChar("f")+"");
+				b = b.replace("&" + i, "§"+i);
+			b = b.replace("&a", "§a");
+			b = b.replace("&b", "§b");
+			b = b.replace("&c", "§c");
+			b = b.replace("&d", "§d");
+			b = b.replace("&e", "§e");
+			b = b.replace("&f", "§f");
 		}
 		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Format"))) {
 			b = b.replace("&l", ChatColor.getByChar("l")+"");

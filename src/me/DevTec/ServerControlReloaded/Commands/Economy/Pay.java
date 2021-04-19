@@ -37,10 +37,8 @@ public class Pay implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					if (TheAPI.existsUser(args[0])) {
-						String moneyfromargs = args[1];
-						if (moneyfromargs.startsWith("-"))
-							moneyfromargs = "0.0";
 						double money = API.convertMoney(args[1]);
+						if(money<0)money=0;
 						if (EconomyAPI.has(p.getName(), money)
 								|| s.hasPermission("ServerControl.Economy.InMinus")) {
 							String w = p.getWorld().getName();
