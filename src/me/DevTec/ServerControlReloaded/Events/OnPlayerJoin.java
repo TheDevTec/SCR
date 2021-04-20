@@ -76,15 +76,15 @@ public class OnPlayerJoin implements Listener {
 	public void playerJoin(PlayerJoinEvent e) {
 		e.setJoinMessage("");
 		Player p = e.getPlayer();
+		User d = TheAPI.getUser(p);
+        if(d.exists("vanish"))
+        API.setVanish(d, Loader.getPerm("Vanish","Other"), d.getBoolean("vanish"));
         for (Player s : TheAPI.getOnlinePlayers())
             if(p!=s)
             if (!API.canSee(p, s.getName()))
                 p.hidePlayer(s);
 		new Tasker() {
 			public void run() {
-				User d = TheAPI.getUser(p);
-	            if(d.exists("vanish"))
-		        API.setVanish(d, Loader.getPerm("Vanish","Other"), d.getBoolean("vanish"));
 				try {
 				boolean fly = d.getBoolean("FlyOnQuit");
 				if(fly)
@@ -95,8 +95,8 @@ public class OnPlayerJoin implements Listener {
 				if (s.hasTempFlyEnabled())
 					s.enableTempFly();
 				else if ((s.hasFlyEnabled()||fly) && Loader.has(p, "Fly", "Other")) {
-					e.getPlayer().setAllowFlight(true);
-					e.getPlayer().setFlying(true);
+					p.setAllowFlight(true);
+					p.setFlying(true);
 				}
 				if (s.hasGodEnabled()){
 					s.setHP();
@@ -108,16 +108,16 @@ public class OnPlayerJoin implements Listener {
 		    	DisplayManager.initializePlayer(p);
 				Tasks.regPlayer(p);
 				Config f = Loader.config;
-				if(API.hasVanish(e.getPlayer().getName())) {
+				if(API.hasVanish(p.getName())) {
 					if(setting.vanish_action) {
-						Vanish.task.put(e.getPlayer().getName(), new Tasker() {
+						Vanish.task.put(p.getName(), new Tasker() {
 							@Override
 							public void run() {
-								if(!API.hasVanish(e.getPlayer().getName()) || !e.getPlayer().isOnline()) {
+								if(!API.hasVanish(p.getName()) || !p.isOnline()) {
 									cancel();
 									return;
 								}
-								TheAPI.sendActionBar(e.getPlayer(), Loader.getTranslation("Vanish.Active").toString());
+								TheAPI.sendActionBar(p, Loader.getTranslation("Vanish.Active").toString());
 							}
 						}.runRepeating(0, 20));
 					}
@@ -253,7 +253,7 @@ public class OnPlayerJoin implements Listener {
 		new Tasker() {
 			public void run() {
 				try {
-				Vanish.task.remove(e.getPlayer().getName());
+				Vanish.task.remove(p.getName());
 				if (!API.hasVanish(p.getName())) {
 						Object o = Loader.events.get("onQuit.Text");
 						if(o!=null) {
