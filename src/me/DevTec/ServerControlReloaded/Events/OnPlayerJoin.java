@@ -132,15 +132,15 @@ public class OnPlayerJoin implements Listener {
 					d.set("FirstJoin", setting.format_date_time.format(new Date()));
 				if (!p.hasPlayedBefore()) {
 					if (!API.hasVanish(p.getName())) {
-							Object o = Loader.events.get("onJoin.First.Text");
-							if(o!=null) {
-							if(o instanceof Collection) {
-							for(Object fa : (Collection<?>)o) {
-								if(fa!=null)
-								TheAPI.bcMsg(replaceAll(fa+"",p));
-							}}else
-								if(!(""+o).isEmpty())
-									TheAPI.bcMsg(replaceAll(""+o, p));
+						Object o = Loader.events.get("onJoin.First.Text");
+						if(o!=null) {
+						if(o instanceof Collection) {
+						for(Object fa : (Collection<?>)o) {
+							if(fa!=null)
+							TheAPI.bcMsg(replaceAll(fa+"",p));
+						}}else
+							if(!(""+o).isEmpty())
+								TheAPI.bcMsg(replaceAll(""+o, p));
 						}
 					}
 					Object o = Loader.events.get("onJoin.First.Messages");

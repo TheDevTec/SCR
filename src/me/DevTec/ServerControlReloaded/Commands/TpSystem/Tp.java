@@ -18,6 +18,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 
 public class Tp implements CommandExecutor, TabCompleter {
@@ -199,7 +200,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 							Loader.sendMessages(s, "TpSystem.Tp.Player.YouToPlayer", Placeholder.c().replace("%player%", target.getName()));
 							API.setBack(((Player) s));
 							if (setting.tp_safe)
-								API.safeTeleport((Player) s,target.getLocation());
+								API.safeTeleport((Player) s,new Position(target.getLocation()));
 							else ((Player) s).teleport(target);
 							return true;
 						}
@@ -237,7 +238,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 								.replace("%next-playername%", playername1));
 						API.setBack(p0);
 						if (setting.tp_safe)
-							API.safeTeleport(p0,p1.getLocation());
+							API.safeTeleport(p0,new Position(p1.getLocation()));
 						else
 							p0.teleport(p1.getLocation());
 						return true;
@@ -252,8 +253,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 						if (s instanceof Player) {
 							p=(Player)s;
 							double x=StringUtils.calculate(args[0].replace("~", p.getLocation().getX()+"")).doubleValue()
-							, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getX()+"")).doubleValue(), 
-							z=StringUtils.calculate(args[2].replace("~", p.getLocation().getX()+"")).doubleValue();
+							, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getY()+"")).doubleValue(), 
+							z=StringUtils.calculate(args[2].replace("~", p.getLocation().getZ()+"")).doubleValue();
 						Loader.sendMessages(p, "TpSystem.Tp.Location.YouToLocation", Placeholder.c()
 								.replace("%x%", StringUtils.fixedFormatDouble(x))
 								.replace("%y%", StringUtils.fixedFormatDouble(y))
@@ -261,7 +262,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 								.replace("%yaw%", "0").replace("%pitch%", "0"));
 						API.setBack(p);
 						if (setting.tp_safe)
-							API.safeTeleport(p,new Location(p.getWorld(), x, y, z, 0, 0));
+							API.safeTeleport(p,new Position(p.getWorld(), x, y, z, 0, 0));
 						else p.teleport(new Location(p.getWorld(), x, y, z, 0, 0));
 						return true;
 						}
@@ -275,8 +276,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 				if(Loader.has(s, "Tp", "TpSystem","Location") && s instanceof Player) {
 					Player p = (Player)s;
 					double x=StringUtils.calculate(args[0].replace("~", p.getLocation().getX()+"")).doubleValue()
-					, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getX()+"")).doubleValue(), 
-					z=StringUtils.calculate(args[2].replace("~", p.getLocation().getX()+"")).doubleValue();
+					, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getY()+"")).doubleValue(), 
+					z=StringUtils.calculate(args[2].replace("~", p.getLocation().getZ()+"")).doubleValue();
 					float yaw = StringUtils.calculate(args[3].replace("~", p.getLocation().getYaw()+"")).floatValue();
 					Loader.sendMessages(s, "TpSystem.Tp.Location.YouToLocation", Placeholder.c().add("%player%", s.getName())
 							.replace("%x%", StringUtils.fixedFormatDouble(x))
@@ -287,15 +288,15 @@ public class Tp implements CommandExecutor, TabCompleter {
 					
 					API.setBack((Player) s);
 					if(setting.tp_safe)						
-						API.safeTeleport((Player)s, new Location(p.getWorld(), x, y, z, yaw, 0)); 
+						API.safeTeleport((Player)s, new Position(p.getWorld(), x, y, z, yaw, 0)); 
 					else p.teleport(new Location(p.getWorld(), x, y, z, yaw, 0)); return true;
 				}
 				if (Loader.has(s, "Tp","TpSystem","LocationOther")) {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p != null && API.getPlayers(s).contains(p)) {
 						double x=StringUtils.calculate(args[0].replace("~", p.getLocation().getX()+"")).doubleValue()
-								, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getX()+"")).doubleValue(), 
-								z=StringUtils.calculate(args[2].replace("~", p.getLocation().getX()+"")).doubleValue();
+								, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getY()+"")).doubleValue(), 
+								z=StringUtils.calculate(args[2].replace("~", p.getLocation().getZ()+"")).doubleValue();
 							Loader.sendMessages(s, "TpSystem.Tp.Location.PlayerToLocation", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 									.replace("%x%", StringUtils.fixedFormatDouble(x))
 									.replace("%y%", StringUtils.fixedFormatDouble(y))
@@ -310,7 +311,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 									.add("%pitch%", "0"));
 							API.setBack(p);
 							if (setting.tp_safe)
-								API.safeTeleport(p,new Location(p.getWorld(), x, y, z, 0, 0));
+								API.safeTeleport(p,new Position(p.getWorld(), x, y, z, 0, 0));
 							else p.teleport(new Location(p.getWorld(), x, y, z, 0, 0));
 							return true;
 					}
@@ -324,8 +325,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 				if(Loader.has(s, "Tp", "TpSystem","Location") && s instanceof Player) {
 					Player p = (Player)s;
 					double x=StringUtils.calculate(args[0].replace("~", p.getLocation().getX()+"")).doubleValue()
-					, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getX()+"")).doubleValue(), 
-					z=StringUtils.calculate(args[2].replace("~", p.getLocation().getX()+"")).doubleValue();
+					, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getZ()+"")).doubleValue(), 
+					z=StringUtils.calculate(args[2].replace("~", p.getLocation().getY()+"")).doubleValue();
 					float yaw = StringUtils.calculate(args[3].replace("~", p.getLocation().getYaw()+"")).floatValue(),
 							pitch = StringUtils.calculate(args[4].replace("~", p.getLocation().getPitch()+"")).floatValue();
 					Loader.sendMessages(s, "TpSystem.Tp.Location.YouToLocation", Placeholder.c().add("%player%", s.getName())
@@ -337,15 +338,15 @@ public class Tp implements CommandExecutor, TabCompleter {
 					
 					API.setBack((Player) s);
 					if(setting.tp_safe)						
-						API.safeTeleport((Player)s, new Location(p.getWorld(), x, y, z, yaw, pitch)); 
+						API.safeTeleport((Player)s, new Position(p.getWorld(), x, y, z, yaw, pitch)); 
 					else p.teleport(new Location(p.getWorld(), x, y, z, yaw, pitch)); return true;
 				}
 				if (Loader.has(s, "Tp","TpSystem","LocationOther")) {
 					Player p = TheAPI.getPlayer(args[0]);
 					if (p != null && API.getPlayers(s).contains(p)) {
 						double x=StringUtils.calculate(args[0].replace("~", p.getLocation().getX()+"")).doubleValue()
-							, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getX()+"")).doubleValue(), 
-							z=StringUtils.calculate(args[2].replace("~", p.getLocation().getX()+"")).doubleValue();
+							, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getY()+"")).doubleValue(), 
+							z=StringUtils.calculate(args[2].replace("~", p.getLocation().getZ()+"")).doubleValue();
 							float yaw = StringUtils.calculate(args[3].replace("~", p.getLocation().getYaw()+"")).floatValue();
 							Loader.sendMessages(s, "TpSystem.Tp.Location.PlayerToLocation", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 									.replace("%x%", StringUtils.fixedFormatDouble(x))
@@ -361,7 +362,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 									.replace("%pitch%", "0"));
 							API.setBack(p);
 							if (setting.tp_safe)
-								API.safeTeleport(p,new Location(p.getWorld(), x, y, z, yaw, 0));
+								API.safeTeleport(p,new Position(p.getWorld(), x, y, z, yaw, 0));
 							else p.teleport(new Location(p.getWorld(), x, y, z, yaw, 0));
 							return true;
 					}
@@ -376,8 +377,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null && API.getPlayers(s).contains(p)) {
 					double x=StringUtils.calculate(args[0].replace("~", p.getLocation().getX()+"")).doubleValue()
-					, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getX()+"")).doubleValue(), 
-					z=StringUtils.calculate(args[2].replace("~", p.getLocation().getX()+"")).doubleValue();
+					, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getY()+"")).doubleValue(), 
+					z=StringUtils.calculate(args[2].replace("~", p.getLocation().getZ()+"")).doubleValue();
 					float yaw = StringUtils.calculate(args[3].replace("~", p.getLocation().getYaw()+"")).floatValue(),
 							pitch = StringUtils.calculate(args[4].replace("~", p.getLocation().getPitch()+"")).floatValue();
 					Loader.sendMessages(s, "TpSystem.Tp.Location.PlayerToLocation", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName())
@@ -394,7 +395,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 							.replace("%pitch%", StringUtils.fixedFormatDouble(pitch)));
 					API.setBack(p);
 					if (setting.tp_safe)
-						API.safeTeleport(p,new Location(p.getWorld(), x, y, z, yaw, pitch));
+						API.safeTeleport(p,new Position(p.getWorld(), x, y, z, yaw, pitch));
 					else p.teleport(new Location(p.getWorld(), x, y, z, yaw, pitch));
 					return true;
 				}

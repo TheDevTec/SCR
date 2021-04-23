@@ -14,6 +14,7 @@ import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 
 public class Tphere implements CommandExecutor, TabCompleter {
@@ -43,7 +44,7 @@ public class Tphere implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(target, "TpSystem.TpHere.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", ((Player)s).getDisplayName()));
 				API.setBack(target);
 				if (setting.tp_safe)
-					API.safeTeleport(target,((Player)s).getLocation());
+					API.safeTeleport(target,new Position(((Player)s).getLocation()));
 				else target.teleport((Player)s);
 				return true;
 			}

@@ -1,5 +1,24 @@
 package me.DevTec.ServerControlReloaded.SCR;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
@@ -8,20 +27,8 @@ import me.devtec.theapi.blocksapi.BlockIterator;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
+import me.devtec.theapi.utils.nms.NMSAPI;
 import net.luckperms.api.LuckPermsProvider;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class API {
 	protected static Loader plugin = Loader.getInstance;
@@ -207,7 +214,7 @@ public class API {
 		Location a = getTeleportLocation(p, location);
 		if (a != null)
 			if (setting.tp_safe)
-				safeTeleport(p,a);
+				safeTeleport(p,new Position(a));
 			else
 				p.teleport(a);
 
@@ -413,42 +420,50 @@ public class API {
 	}
 	
 	//Can be teleport cancelled if plugin not find any safe location!
-	public static void safeTeleport(Player s, Location location) {
+	public static void safeTeleport(Player s, Position location) {
 		if(location==null) {
 			Loader.sendMessages(s, "TpSystem.NotSafe");
 			return;
 		}
 		if(!isSafe(location)) {
-			Location safe = findSafeLocation(location);
-			if(safe!=null) {
-				s.setNoDamageTicks(40);
-				s.teleport(safe);
-			}else {
-				Loader.sendMessages(s, "TpSystem.NotSafe");
-			}
+			new Thread(new Runnable() {
+				public void run() {
+					Location safe = findSafeLocation(location);
+					if(safe!=null) {
+						NMSAPI.postToMainThread(new Runnable() {
+							public void run() {
+								s.setNoDamageTicks(40);
+								s.teleport(safe);
+							};
+						});
+					}else {
+						Loader.sendMessages(s, "TpSystem.NotSafe");
+					}
+				}
+			}).start();
 		}else {
 			s.setNoDamageTicks(40);
-			s.teleport(location);
+			s.teleport(location.toLocation());
 		}
 	}
 	
-	public static boolean isSafe(Location loc) {
+	public static boolean isSafe(Position loc) {
 		if(loc==null)return false;
-		Material under = loc.clone().add(0,-1,0).getBlock().getType();
-		Material current = loc.getBlock().getType();
-		Material above = loc.clone().add(0,1,0).getBlock().getType();
+		Material under = loc.clone().add(0,-1,0).getBukkitType();
+		Material current = loc.getBukkitType();
+		Material above = loc.clone().add(0,1,0).getBukkitType();
 		return c(1, under.name()) && c(2, current.name()) && c(2, above.name());
 	}
 	
-	public static Location findSafeLocation(Location start) {
-		Location f = null;
-			BlockIterator g = new BlockIterator(new Position(start.clone().add(20,20,20)), new Position(start.clone().add(-20,-20,-20)));
+	public static Location findSafeLocation(Position start) {
+		Position f = null;
+			BlockIterator g = new BlockIterator(start.clone().add(20,20,20), start.clone().add(-20,-20,-20));
 		while(g.has()) {
 			Position a1 = g.get();
 			a1.setX(a1.getX()+0.5);
 			a1.setZ(a1.getZ()+0.5);
-			if(isSafe(a1.toLocation())) {
-				Location safef=a1.toLocation();
+			if(isSafe(a1)) {
+				Position safef=a1;
 				safef.setPitch(start.getPitch());
 				safef.setYaw(start.getYaw());
 				if(f==null)f=safef;
@@ -457,7 +472,7 @@ public class API {
 						f=safef;
 				}
 		}}
-		return f;
+		return f.toLocation();
 	}
 	
     private static boolean c(int i, String c) {

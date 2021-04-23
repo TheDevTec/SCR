@@ -115,7 +115,7 @@ public class RequestMap {
 		if(TheAPI.getUser(sender).getInt("teleport."+target.getName()+".a")==0) {
 			API.setBack(target);
 		if (setting.tp_safe)
-			API.safeTeleport(target,sender.getLocation());
+			API.safeTeleport(target,new Position(sender.getLocation()));
 		else
 			target.teleport(sender);
 		Loader.sendMessages(sender, "TpSystem.Tpa.Accept.Sender", Placeholder.c()
@@ -129,9 +129,9 @@ public class RequestMap {
 		API.setBack(sender);
 		if (setting.tp_safe)
 			if (setting.tp_onreqloc && getPos(sender.getName(), target.getName()) != null)
-				API.safeTeleport(sender,getPos(sender.getName(), target.getName()).toLocation());
+				API.safeTeleport(sender,getPos(sender.getName(), target.getName()));
 			else
-				API.safeTeleport(sender,target.getLocation());
+				API.safeTeleport(sender,new Position(target.getLocation()));
 		else
 			if (setting.tp_onreqloc && getPos(sender.getName(), target.getName()) != null)
 				sender.teleport(getPos(sender.getName(), target.getName()).toLocation());

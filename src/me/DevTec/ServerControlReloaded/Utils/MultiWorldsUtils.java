@@ -129,9 +129,8 @@ public class MultiWorldsUtils {
 			if(Loader.mw.exists("WorldsSettings." + as.getName()+".Gamerule."+g))
 					as.setGameRuleValue(g, Loader.mw.getString("WorldsSettings." + as.getName() + ".Gamerule." + g));
 		
-			String dif = null;
-			if(Loader.mw.exists("WorldsSettings." + as.getName() + ".Difficulty"))
-				dif = Loader.mw.getString("WorldsSettings." + as.getName() + ".Difficulty").toUpperCase();
+			String dif = Loader.mw.getString("WorldsSettings." + as.getName() + ".Difficulty");
+			if(dif!=null)dif=dif.toUpperCase();
 			boolean keepspawn = Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".KeepSpawnInMemory");
 			boolean autosave = Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".AutoSave");
 			boolean pvp = Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".PvP");

@@ -37,7 +37,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 						if (loc != null) {
 							API.setBack(p);
 							if (setting.tp_safe)
-								API.safeTeleport((Player)s,loc.toLocation());
+								API.safeTeleport((Player)s,loc);
 							else
 								((Player)s).teleport(loc.toLocation());
 							Loader.sendMessages(s, "Home.Other.Teleporting", Placeholder.c()
@@ -65,7 +65,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 						if (loc != null) {
 							API.setBack(pl);
 							if (setting.tp_safe)
-								API.safeTeleport(pl,loc.toLocation());
+								API.safeTeleport(pl,loc);
 							else
 								pl.teleport(loc.toLocation());
 							Loader.sendMessages(s, "Home.Other.Teleporting", Placeholder.c()
