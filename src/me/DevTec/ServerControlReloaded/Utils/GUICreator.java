@@ -15,6 +15,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collection;
 import java.util.List;
@@ -46,9 +48,9 @@ public class GUICreator implements CommandExecutor {
                 }
             } else if(c.exists("GUI."+b+".items."+j+".type")){
                 if(c.exists("GUI."+b+".items."+j+".lore")){
-                    itemGUI=MethodaItem(gui,itemGUI,c.getString("GUI."+b+".items."+j+".name"),c.getString("GUI."+b+".items."+j+".type").toUpperCase(),j,c.getStringList("GUI."+b+".items."+j+".lore"),b);
+                    itemGUI=MethodaItem(gui,itemGUI,c.getString("GUI."+b+".items."+j+".name"),c.getString("GUI."+b+".items."+j+".type").toUpperCase(),j,c.getStringList("GUI."+b+".items."+j+".lore"),b,c.getInt("GUI."+b+".items."+j+".data"),c.getInt("GUI."+b+".items."+j+".modelData"));
                 }else{
-                    itemGUI=MethodaItem(gui,itemGUI,c.getString("GUI."+b+".items."+j+".name"),c.getString("GUI."+b+".items."+j+".type").toUpperCase(),j,b);
+                    itemGUI=MethodaItem(gui,itemGUI,c.getString("GUI."+b+".items."+j+".name"),c.getString("GUI."+b+".items."+j+".type").toUpperCase(),j,b,c.getInt("GUI."+b+".items."+j+".data"),c.getInt("GUI."+b+".items."+j+".modelData"));
                 }
             } else {
                 if(c.get("GUI."+b+".items."+j+".headURL")==null){
@@ -156,6 +158,10 @@ public class GUICreator implements CommandExecutor {
                     if (clickType == GUI.ClickType.RIGHT_PICKUP) {
                         methodenzi(g, p, a.substring(6));
                     }
+                } else if (a.startsWith("middle")) {
+                    if (clickType == GUI.ClickType.MIDDLE_PICKUP) {
+                        methodenzi(g, p, a.substring(6));
+                    }
                 } else if (a.startsWith("any")) {
                     methodenzi(g, p, a.substring(4));
                 }
@@ -196,8 +202,8 @@ public class GUICreator implements CommandExecutor {
         };
         return g;
     }
-    private ItemGUI MethodaItem(GUI gui, ItemGUI g, String name, String material, String item, List<String> lore, String other){
-        g=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(material),1,name,lore)) {
+    private ItemGUI MethodaItem(GUI gui, ItemGUI g, String name, String material, String item, List<String> lore, String other, int data, int modelData){
+        g=new ItemGUI(setModel(ItemCreatorAPI.create(Material.getMaterial(material),1,name,lore,data),modelData)) {
             @Override
             public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
                 try {vecinator(gui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
@@ -205,8 +211,8 @@ public class GUICreator implements CommandExecutor {
         };
         return g;
     }
-    private ItemGUI MethodaItem(GUI gui, ItemGUI g, String name, String material,String item,String other){
-        g=new ItemGUI(ItemCreatorAPI.create(Material.getMaterial(material),1,name)) {
+    private ItemGUI MethodaItem(GUI gui, ItemGUI g, String name, String material,String item,String other, int data, int modelData){
+        g=new ItemGUI(setModel(ItemCreatorAPI.create(Material.getMaterial(material),1,name,data),modelData)) {
             @Override
             public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
                 try {vecinator(gui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
@@ -214,5 +220,18 @@ public class GUICreator implements CommandExecutor {
         };
         return g;
     }
+    
+	public static ItemStack setModel(ItemStack s, int model) {
+		if(model==0)return s;
+		try {
+			ItemMeta meta = s.getItemMeta();
+			meta.setCustomModelData(model);
+			s.setItemMeta(meta);
+			return s;
+		}catch(Exception | NoSuchMethodError | NoSuchFieldError e) {
+			s.setDurability((short)model);
+			return s;
+		}
+	}
 
 }
