@@ -1,5 +1,6 @@
 package me.DevTec.ServerControlReloaded.SCR;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -23,11 +24,13 @@ import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.PluginManagerAPI;
-import me.devtec.theapi.blocksapi.BlockIterator;
+import me.devtec.theapi.utils.BlockMathIterator;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.TheMaterial;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.reflections.Ref;
 import net.luckperms.api.LuckPermsProvider;
 
 public class API {
@@ -239,11 +242,11 @@ public class API {
     	case "b":
     		return 1000000000;
     	case "t":
-    		return new BigDecimal("1000000000000").longValue();
+    		return 1000000000000L;
     	case "qua":
-    		return new BigDecimal("1000000000000000").longValue();
+    		return 1000000000000000L;
     	case "qui":
-    		return new BigDecimal("1000000000000000000").longValue();
+    		return 1000000000000000000L;
     	case "sex":
     		return new BigDecimal("1000000000000000000000").longValue();
     	case "sep":
@@ -377,13 +380,13 @@ public class API {
 	    	a= (a("sex")).format(money.divide(new BigDecimal("1000000000000000000000"))); 
 			else
 		if (s.length >= 7 && s.length < 8)
-	    	a= (a("qui")).format(money.divide(new BigDecimal("1000000000000000000"))); 
+	    	a= (a("qui")).format(money.divide(new BigDecimal(1000000000000000000L))); 
 			else
 		if (s.length >= 6 && s.length < 7)
-	    	a= (a("qua")).format(money.divide(new BigDecimal("1000000000000000"))); 
+	    	a= (a("qua")).format(money.divide(new BigDecimal(1000000000000000L))); 
 			else
 		if (s.length >= 5 && s.length < 6)
-	    	a= (a("t")).format(money.divide(new BigDecimal("1000000000000"))); 
+	    	a= (a("t")).format(money.divide(new BigDecimal(1000000000000L))); 
 			else
 		if (s.length >= 4 && s.length < 5) 
 	    	a= (a("b")).format(money.divide(new BigDecimal(1000000000))); 
@@ -428,67 +431,101 @@ public class API {
 		if(!isSafe(location)) {
 			new Thread(new Runnable() {
 				public void run() {
-					Location safe = findSafeLocation(location);
-					if(safe!=null) {
+					s.setNoDamageTicks(60);
+					Position safe = findSafeLocation(location);
+					if(safe!=null)
 						NMSAPI.postToMainThread(new Runnable() {
+							@Override
 							public void run() {
-								s.setNoDamageTicks(40);
-								s.teleport(safe);
-							};
+								s.teleport(safe.toLocation());
+							}
 						});
-					}else {
+					else
 						Loader.sendMessages(s, "TpSystem.NotSafe");
-					}
 				}
 			}).start();
 		}else {
-			s.setNoDamageTicks(40);
+			s.setNoDamageTicks(60);
 			s.teleport(location.toLocation());
 		}
 	}
 	
+	public static boolean isSafe(Map<Long, Object> loaded, Position loc) {
+		Object chunk = loaded.get(loc.getChunkKey());
+		if(chunk==null)
+			loaded.put(loc.getChunkKey(), chunk=loc.getNMSChunk());
+		Material under = getType(loc.add(0,-1,0),chunk).getType();
+		Material above = getType(loc.add(0,2,0),chunk).getType();
+		Material current = getType(loc.add(0,-1,0),chunk).getType();
+		return c(1, under.name(),under) && c(2, current.name(),current) && c(2, above.name(),above);
+	}
+	
 	public static boolean isSafe(Position loc) {
-		if(loc==null)return false;
-		Material under = loc.clone().add(0,-1,0).getBukkitType();
-		Material current = loc.getBukkitType();
-		Material above = loc.clone().add(0,1,0).getBukkitType();
-		return c(1, under.name()) && c(2, current.name()) && c(2, above.name());
+		Object chunk = loc.getNMSChunk();
+		Material under = getType(loc.add(0,-1,0),chunk).getType();
+		Material above = getType(loc.add(0,2,0),chunk).getType();
+		Material current = getType(loc.add(0,-1,0),chunk).getType();
+		return c(1, under.name(),under) && c(2, current.name(),current) && c(2, above.name(),above);
 	}
 	
-	public static Location findSafeLocation(Position start) {
-		Position f = null;
-			BlockIterator g = new BlockIterator(start.clone().add(20,20,20), start.clone().add(-20,-20,-20));
+	private static Method getter = (Method) Ref.getStatic(Position.class, "getter"), getdata = (Method) Ref.getStatic(Position.class, "getdata");
+	
+	public static TheMaterial getType(Position p, Object chunk) {
+		if (TheAPI.isOlderThan((int) 8)) {
+			return TheMaterial.fromData(
+					Ref.invoke(chunk, getter,
+							(int) p.getX() & 15, (int) p.getY() & 15, (int) p.getZ() & 15),
+					(int) ((byte) Ref.invoke(chunk, getdata,
+							(int) p.getX() & 15, (int) p.getY() & 15, (int) p.getZ() & 15)));
+		}
+		return TheMaterial.fromData(Ref.invoke(chunk, getter, p.getBlockPosition()));
+	}
+	
+	public Object getIBlockData(Object chunk, Position p) {
+		if (TheAPI.isOlderThan((int) 8)) {
+			return Ref.invoke((Object) chunk, getter, (int) p.getX() & 15, (int) p.getY() & 15, (int) p.getZ() & 15);
+		}
+		return Ref.invoke((Object) chunk, getter, p.getBlockPosition());
+	}
+	
+	public static Position findSafeLocation(Position start) {
+		Position f = start.clone();
+		double oldDistance = 100;
+		BlockMathIterator g = new BlockMathIterator(start.getBlockX()+10,start.getBlockY()+10,start.getBlockZ()+10,
+				start.getBlockX()-10,start.getBlockY()-10,start.getBlockZ()-10);
+		Map<Long,Object> loaded = new HashMap<>();
+		long time = -System.currentTimeMillis();
 		while(g.has()) {
-			Position a1 = g.get();
-			a1.setX(a1.getX()+0.5);
-			a1.setZ(a1.getZ()+0.5);
-			if(isSafe(a1)) {
-				Position safef=a1;
-				safef.setPitch(start.getPitch());
-				safef.setYaw(start.getYaw());
-				if(f==null)f=safef;
-				else {
-					if(f.distance(start) > safef.distance(start))
-						f=safef;
+			int[] a = g.get();
+			Position a1 = new Position(start.getWorld(), a[0],a[1],a[2]);
+			if(isSafe(loaded,a1)) {
+				if(start.distance(a1) <= oldDistance) {
+					oldDistance=start.distance(a1);
+					f.setX(a[0]);
+					f.setY(a[1]);
+					f.setZ(a[2]);
 				}
-		}}
-		return f.toLocation();
+			}
+		}
+		time+=System.currentTimeMillis();
+		TheAPI.bcMsg(time);
+		double x = StringUtils.getDouble("0."+(start.getX()+"").split("\\.")[1]),z=StringUtils.getDouble("0."+(start.getZ()+"").split("\\.")[1]);
+		return oldDistance!=100?f.add(x,0,z):null;
 	}
 	
-    private static boolean c(int i, String c) {
-        boolean d = false;
+    private static boolean c(int i, String c, Material d) {
         switch (i) {
         case 1:
-            if (!c(2, c) && !c.contains("LAVA") && Material.matchMaterial(c).isBlock())
-                d = true;
+            if (!c(2, c,d) && !c.contains("LAVA") && d.isBlock())
+                return true;
             break;
         case 2:
             if (c.contains("AIR") || c.equals("SEAGRASS") || c.equals("LONG_GRASS") || c.equals("FLOWER") || c.contains("BUTTON") || c.contains("DOOR") || c.contains("SIGN")
-                    || c.contains("TORCH") || c.equals("MUSHROOM_STEM") || c.contains("WATER")||c.contains("RED_MUSHROOM") || c.contains("BROWN_MUSHROOM"))
-                d = true;
+                    || c.contains("TORCH") || c.equals("MUSHROOM_STEM") ||c.contains("RED_MUSHROOM") || c.contains("BROWN_MUSHROOM"))
+                return true;
             break;
         }
-        return d;
+        return false;
     }
 	
 }
