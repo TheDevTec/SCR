@@ -200,7 +200,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 							Loader.sendMessages(s, "TpSystem.Tp.Player.YouToPlayer", Placeholder.c().replace("%player%", target.getName()));
 							API.setBack(((Player) s));
 							if (setting.tp_safe)
-								API.safeTeleport((Player) s,new Position(target.getLocation()));
+								API.safeTeleport((Player) s,((Player) s).isFlying(),new Position(target.getLocation()));
 							else ((Player) s).teleport(target);
 							return true;
 						}
@@ -238,7 +238,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 								.replace("%next-playername%", playername1));
 						API.setBack(p0);
 						if (setting.tp_safe)
-							API.safeTeleport(p0,new Position(p1.getLocation()));
+							API.safeTeleport(p0,p0.isFlying(),new Position(p1.getLocation()));
 						else
 							p0.teleport(p1.getLocation());
 						return true;
@@ -262,8 +262,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 								.replace("%yaw%", "0").replace("%pitch%", "0"));
 						API.setBack(p);
 						if (setting.tp_safe)
-							API.safeTeleport(p,new Position(p.getWorld(), x, y, z, 0, 0));
-						else p.teleport(new Location(p.getWorld(), x, y, z, 0, 0));
+							API.safeTeleport(p,p.isFlying(),new Position(p.getWorld(), x, y, z, p.getLocation().getYaw(),p.getLocation().getPitch()));
+						else p.teleport(new Location(p.getWorld(), x, y, z, p.getLocation().getYaw(),p.getLocation().getPitch()));
 						return true;
 						}
 						Loader.Help(s, "Tp", "TpSystem");
@@ -288,7 +288,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 					
 					API.setBack((Player) s);
 					if(setting.tp_safe)						
-						API.safeTeleport((Player)s, new Position(p.getWorld(), x, y, z, yaw, 0)); 
+						API.safeTeleport((Player)s,((Player)s).isFlying(), new Position(p.getWorld(), x, y, z, yaw, ((Player)s).getLocation().getPitch())); 
 					else p.teleport(new Location(p.getWorld(), x, y, z, yaw, 0)); return true;
 				}
 				if (Loader.has(s, "Tp","TpSystem","LocationOther")) {
@@ -311,7 +311,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 									.add("%pitch%", "0"));
 							API.setBack(p);
 							if (setting.tp_safe)
-								API.safeTeleport(p,new Position(p.getWorld(), x, y, z, 0, 0));
+								API.safeTeleport(p,p.isFlying(),new Position(p.getWorld(), x, y, z, p.getLocation().getYaw(),p.getLocation().getPitch()));
 							else p.teleport(new Location(p.getWorld(), x, y, z, 0, 0));
 							return true;
 					}
@@ -338,7 +338,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 					
 					API.setBack((Player) s);
 					if(setting.tp_safe)						
-						API.safeTeleport((Player)s, new Position(p.getWorld(), x, y, z, yaw, pitch)); 
+						API.safeTeleport((Player)s,((Player)s).isFlying(), new Position(p.getWorld(), x, y, z, yaw, pitch)); 
 					else p.teleport(new Location(p.getWorld(), x, y, z, yaw, pitch)); return true;
 				}
 				if (Loader.has(s, "Tp","TpSystem","LocationOther")) {
@@ -362,7 +362,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 									.replace("%pitch%", "0"));
 							API.setBack(p);
 							if (setting.tp_safe)
-								API.safeTeleport(p,new Position(p.getWorld(), x, y, z, yaw, 0));
+								API.safeTeleport(p,p.isFlying(),new Position(p.getWorld(), x, y, z, yaw, p.getLocation().getPitch()));
 							else p.teleport(new Location(p.getWorld(), x, y, z, yaw, 0));
 							return true;
 					}
@@ -395,7 +395,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 							.replace("%pitch%", StringUtils.fixedFormatDouble(pitch)));
 					API.setBack(p);
 					if (setting.tp_safe)
-						API.safeTeleport(p,new Position(p.getWorld(), x, y, z, yaw, pitch));
+						API.safeTeleport(p,p.isFlying(),new Position(p.getWorld(), x, y, z, yaw, pitch));
 					else p.teleport(new Location(p.getWorld(), x, y, z, yaw, pitch));
 					return true;
 				}

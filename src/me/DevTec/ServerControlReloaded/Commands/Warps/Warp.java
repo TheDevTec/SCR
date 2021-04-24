@@ -53,7 +53,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 								if (s.hasPermission(Loader.cmds.getString("Warps.Warp.SubPermission.PerWarp").replace("%warp%", warp(args[0])))) {
 									API.setBack((Player) s);
 									if (setting.tp_safe)
-										API.safeTeleport((Player)s, new Position(loc));
+										API.safeTeleport((Player)s,false, new Position(loc));
 									else
 										((Player) s).teleport(loc);
 									Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
@@ -67,7 +67,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 							}
 							API.setBack((Player) s);
 							if (setting.tp_safe)
-								API.safeTeleport((Player)s, new Position(loc));
+								API.safeTeleport((Player)s,false, new Position(loc));
 							else
 								((Player) s).teleport(loc);
 							Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
@@ -97,7 +97,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 							if (s.hasPermission(Loader.getPerm("Warp", "Warps", "PerWarp").replace("%warp%", warp(args[0])))) {
 								API.setBack((Player) s);
 								if (setting.tp_safe)
-									API.safeTeleport((Player)s, new Position(loc));
+									API.safeTeleport((Player)s,false, new Position(loc));
 								else
 									((Player) s).teleport(loc);
 								Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
@@ -110,7 +110,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 						}
 						API.setBack(p);
 						if (setting.tp_safe)
-							API.safeTeleport(p, new Position(loc));
+							API.safeTeleport(p,false, new Position(loc));
 						else
 							p.teleport(loc);
 						Loader.sendMessages(p, "Warp.Teleport.You", Placeholder.c()

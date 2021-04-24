@@ -44,7 +44,7 @@ public class Tphere implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(target, "TpSystem.TpHere.Receiver", Placeholder.c().replace("%player%", s.getName()).replace("%playername%", ((Player)s).getDisplayName()));
 				API.setBack(target);
 				if (setting.tp_safe)
-					API.safeTeleport(target,new Position(((Player)s).getLocation()));
+					API.safeTeleport(target,target.isFlying(),new Position(((Player)s).getLocation()));
 				else target.teleport((Player)s);
 				return true;
 			}

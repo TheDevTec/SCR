@@ -217,7 +217,7 @@ public class API {
 		Location a = getTeleportLocation(p, location);
 		if (a != null)
 			if (setting.tp_safe)
-				safeTeleport(p,new Position(a));
+				safeTeleport(p,false,new Position(a));
 			else
 				p.teleport(a);
 
@@ -423,16 +423,16 @@ public class API {
 	}
 	
 	//Can be teleport cancelled if plugin not find any safe location!
-	public static void safeTeleport(Player s, Position location) {
+	public static void safeTeleport(Player s, boolean air, Position location) {
 		if(location==null) {
 			Loader.sendMessages(s, "TpSystem.NotSafe");
 			return;
 		}
-		if(!isSafe(location)) {
+		if(!isSafe(air, location)) {
 			new Thread(new Runnable() {
 				public void run() {
 					s.setNoDamageTicks(60);
-					Position safe = findSafeLocation(location);
+					Position safe = findSafeLocation(air,location);
 					if(safe!=null)
 						NMSAPI.postToMainThread(new Runnable() {
 							@Override
@@ -451,21 +451,29 @@ public class API {
 	}
 	
 	public static boolean isSafe(Map<Long, Object> loaded, Position loc) {
+		return isSafe(false,loaded,loc);
+	}
+	
+	public static boolean isSafe(boolean air, Map<Long, Object> loaded, Position loc) {
 		Object chunk = loaded.get(loc.getChunkKey());
 		if(chunk==null)
 			loaded.put(loc.getChunkKey(), chunk=loc.getNMSChunk());
 		Material under = getType(loc.add(0,-1,0),chunk).getType();
 		Material above = getType(loc.add(0,2,0),chunk).getType();
 		Material current = getType(loc.add(0,-1,0),chunk).getType();
-		return c(1, under.name(),under) && c(2, current.name(),current) && c(2, above.name(),above);
+		return c(air,1, under.name(),under) && c(air,2, current.name(),current) && c(air,2, above.name(),above);
 	}
 	
 	public static boolean isSafe(Position loc) {
+		return isSafe(false,loc);
+	}
+	
+	public static boolean isSafe(boolean air, Position loc) {
 		Object chunk = loc.getNMSChunk();
 		Material under = getType(loc.add(0,-1,0),chunk).getType();
 		Material above = getType(loc.add(0,2,0),chunk).getType();
 		Material current = getType(loc.add(0,-1,0),chunk).getType();
-		return c(1, under.name(),under) && c(2, current.name(),current) && c(2, above.name(),above);
+		return c(air,1, under.name(),under) && c(air,2, current.name(),current) && c(air,2, above.name(),above);
 	}
 	
 	private static Method getter = (Method) Ref.getStatic(Position.class, "getter"), getdata = (Method) Ref.getStatic(Position.class, "getdata");
@@ -489,40 +497,41 @@ public class API {
 	}
 	
 	public static Position findSafeLocation(Position start) {
+		return findSafeLocation(false,start);
+	}
+	
+	public static Position findSafeLocation(boolean canBeAir, Position start) {
 		Position f = start.clone();
 		double oldDistance = 100;
 		BlockMathIterator g = new BlockMathIterator(start.getBlockX()+10,start.getBlockY()+10,start.getBlockZ()+10,
 				start.getBlockX()-10,start.getBlockY()-10,start.getBlockZ()-10);
 		Map<Long,Object> loaded = new HashMap<>();
-		long time = -System.currentTimeMillis();
 		while(g.has()) {
 			int[] a = g.get();
 			Position a1 = new Position(start.getWorld(), a[0],a[1],a[2]);
-			if(isSafe(loaded,a1)) {
-				if(start.distance(a1) <= oldDistance) {
-					oldDistance=start.distance(a1);
+			if(isSafe(canBeAir,loaded,a1)) {
+				if(a1.distance(start) <= oldDistance) {
+					oldDistance=a1.distance(start);
 					f.setX(a[0]);
 					f.setY(a[1]);
 					f.setZ(a[2]);
 				}
 			}
 		}
-		time+=System.currentTimeMillis();
-		TheAPI.bcMsg(time);
-		double x = StringUtils.getDouble("0."+(start.getX()+"").split("\\.")[1]),z=StringUtils.getDouble("0."+(start.getZ()+"").split("\\.")[1]);
-		return oldDistance!=100?f.add(x,0,z):null;
+		return oldDistance!=100?f.add(StringUtils.getDouble("0."+(start.getX()+"").split("\\.")[1])==0?0.5:StringUtils.getDouble("0."+(start.getX()+"").split("\\.")[1]),0,StringUtils.getDouble("0."+(start.getZ()+"").split("\\.")[1])==0?0.5:StringUtils.getDouble("0."+(start.getZ()+"").split("\\.")[1])):null;
 	}
 	
-    private static boolean c(int i, String c, Material d) {
-        switch (i) {
+    private static boolean c(boolean air, int i, String c, Material d) {
+    	if(air && i == 2)return !c.contains("LAVA");
+    	switch (i) {
         case 1:
-            if (!c(2, c,d) && !c.contains("LAVA") && d.isBlock())
+            if (air?true:!c(air,2, c,d) && !c.contains("LAVA") && d.isBlock())
                 return true;
             break;
         case 2:
-            if (c.contains("AIR") || c.equals("SEAGRASS") || c.equals("LONG_GRASS") || c.equals("FLOWER") || c.contains("BUTTON") || c.contains("DOOR") || c.contains("SIGN")
-                    || c.contains("TORCH") || c.equals("MUSHROOM_STEM") ||c.contains("RED_MUSHROOM") || c.contains("BROWN_MUSHROOM"))
-                return true;
+        	if (c.contains("AIR") || c.equals("SEAGRASS") || c.equals("LONG_GRASS") || c.equals("FLOWER") || c.contains("BUTTON") || c.contains("DOOR") || c.contains("SIGN")
+                        || c.contains("TORCH") || c.equals("MUSHROOM_STEM") ||c.contains("RED_MUSHROOM") || c.contains("BROWN_MUSHROOM"))
+                    return true;
             break;
         }
         return false;
