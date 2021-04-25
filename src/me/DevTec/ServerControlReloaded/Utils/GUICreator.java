@@ -10,6 +10,8 @@ import me.devtec.theapi.guiapi.GUI;
 import me.devtec.theapi.guiapi.HolderGUI;
 import me.devtec.theapi.guiapi.ItemGUI;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.nms.NMSAPI;
+
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -174,11 +176,15 @@ public class GUICreator implements CommandExecutor {
         } else if (a.startsWith("msg")){
             TheAPI.msg(a.replace("%player%",p.getName()).substring(4),p);
         } else if(a.startsWith("cmd")){
-            if(a.substring(4).startsWith("player")){
-            	TheAPI.sudo(p,SudoType.COMMAND,a.substring(11).replace("%player%",p.getName()));
-            } else if(a.substring(4).startsWith("console")){
-                TheAPI.sudoConsole(a.substring(12).replace("%player%",p.getName()));
-            }
+            NMSAPI.postToMainThread(new Runnable() {
+				public void run() {
+					if(a.substring(4).startsWith("player")){
+		            	TheAPI.sudo(p,SudoType.COMMAND,a.substring(11).replace("%player%",p.getName()));
+		            } else if(a.substring(4).startsWith("console")){
+		                TheAPI.sudoConsole(a.substring(12).replace("%player%",p.getName()));
+		            }
+				}
+			});
         } else if(a.startsWith("open")){
             udelator(a.substring(5),p);
         }

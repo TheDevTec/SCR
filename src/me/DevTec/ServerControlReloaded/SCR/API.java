@@ -1,6 +1,5 @@
 package me.DevTec.ServerControlReloaded.SCR;
 
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -17,20 +16,23 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.data.type.Slab;
+import org.bukkit.block.data.type.Snow;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.material.Crops;
+import org.bukkit.material.MaterialData;
+import org.bukkit.material.Openable;
 
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.PluginManagerAPI;
-import me.devtec.theapi.utils.BlockMathIterator;
+import me.devtec.theapi.blocksapi.BlockIterator;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.TheMaterial;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.nms.NMSAPI;
-import me.devtec.theapi.utils.reflections.Ref;
 import net.luckperms.api.LuckPermsProvider;
 
 public class API {
@@ -186,7 +188,7 @@ public class API {
 		case HOME: {
 			String home = null;
 			User d = TheAPI.getUser(p);
-			List<String> homes = new ArrayList<String>();
+			List<String> homes = new ArrayList<>();
 			for (String s : d.getKeys("Homes"))
 				homes.add(s);
 			if (homes.isEmpty() == false) {
@@ -428,72 +430,26 @@ public class API {
 			Loader.sendMessages(s, "TpSystem.NotSafe");
 			return;
 		}
-		if(!isSafe(air, location)) {
 			new Thread(new Runnable() {
 				public void run() {
-					s.setNoDamageTicks(60);
 					Position safe = findSafeLocation(air,location);
-					if(safe!=null)
+					if(safe!=null) {
+						s.setNoDamageTicks(60);
 						NMSAPI.postToMainThread(new Runnable() {
 							@Override
 							public void run() {
 								s.teleport(safe.toLocation());
 							}
 						});
+					}
 					else
 						Loader.sendMessages(s, "TpSystem.NotSafe");
 				}
 			}).start();
-		}else {
-			s.setNoDamageTicks(60);
-			s.teleport(location.toLocation());
-		}
-	}
-	
-	public static boolean isSafe(Map<Long, Object> loaded, Position loc) {
-		return isSafe(false,loaded,loc);
-	}
-	
-	public static boolean isSafe(boolean air, Map<Long, Object> loaded, Position loc) {
-		Object chunk = loaded.get(loc.getChunkKey());
-		if(chunk==null)
-			loaded.put(loc.getChunkKey(), chunk=loc.getNMSChunk());
-		Material under = getType(loc.add(0,-1,0),chunk).getType();
-		Material above = getType(loc.add(0,2,0),chunk).getType();
-		Material current = getType(loc.add(0,-1,0),chunk).getType();
-		return c(air,1, under.name(),under) && c(air,2, current.name(),current) && c(air,2, above.name(),above);
 	}
 	
 	public static boolean isSafe(Position loc) {
 		return isSafe(false,loc);
-	}
-	
-	public static boolean isSafe(boolean air, Position loc) {
-		Object chunk = loc.getNMSChunk();
-		Material under = getType(loc.add(0,-1,0),chunk).getType();
-		Material above = getType(loc.add(0,2,0),chunk).getType();
-		Material current = getType(loc.add(0,-1,0),chunk).getType();
-		return c(air,1, under.name(),under) && c(air,2, current.name(),current) && c(air,2, above.name(),above);
-	}
-	
-	private static Method getter = (Method) Ref.getStatic(Position.class, "getter"), getdata = (Method) Ref.getStatic(Position.class, "getdata");
-	
-	public static TheMaterial getType(Position p, Object chunk) {
-		if (TheAPI.isOlderThan((int) 8)) {
-			return TheMaterial.fromData(
-					Ref.invoke(chunk, getter,
-							(int) p.getX() & 15, (int) p.getY() & 15, (int) p.getZ() & 15),
-					(int) ((byte) Ref.invoke(chunk, getdata,
-							(int) p.getX() & 15, (int) p.getY() & 15, (int) p.getZ() & 15)));
-		}
-		return TheMaterial.fromData(Ref.invoke(chunk, getter, p.getBlockPosition()));
-	}
-	
-	public Object getIBlockData(Object chunk, Position p) {
-		if (TheAPI.isOlderThan((int) 8)) {
-			return Ref.invoke((Object) chunk, getter, (int) p.getX() & 15, (int) p.getY() & 15, (int) p.getZ() & 15);
-		}
-		return Ref.invoke((Object) chunk, getter, p.getBlockPosition());
 	}
 	
 	public static Position findSafeLocation(Position start) {
@@ -503,38 +459,136 @@ public class API {
 	public static Position findSafeLocation(boolean canBeAir, Position start) {
 		Position f = start.clone();
 		double oldDistance = 100;
-		BlockMathIterator g = new BlockMathIterator(start.getBlockX()+10,start.getBlockY()+10,start.getBlockZ()+10,
-				start.getBlockX()-10,start.getBlockY()-10,start.getBlockZ()-10);
-		Map<Long,Object> loaded = new HashMap<>();
+		BlockIterator g = new BlockIterator(start.clone().add(10,10,10),start.clone().add(-10,-10,-10));
 		while(g.has()) {
-			int[] a = g.get();
-			Position a1 = new Position(start.getWorld(), a[0],a[1],a[2]);
-			if(isSafe(canBeAir,loaded,a1)) {
-				if(a1.distance(start) <= oldDistance) {
-					oldDistance=a1.distance(start);
-					f.setX(a[0]);
-					f.setY(a[1]);
-					f.setZ(a[2]);
+			Position a1 = g.get().clone();
+			double distance = start.distanceSquared(a1);
+			if(distance <= oldDistance) {
+				if(isSafe(canBeAir,a1)) {
+					oldDistance=distance;
+					f=a1;
+				}else {
+					if(isSafe(canBeAir,a1.add(0,1,0))) {
+						oldDistance=distance;
+						f=a1;
+					}
 				}
 			}
 		}
-		return oldDistance!=100?f.add(StringUtils.getDouble("0."+(start.getX()+"").split("\\.")[1])==0?0.5:StringUtils.getDouble("0."+(start.getX()+"").split("\\.")[1]),0,StringUtils.getDouble("0."+(start.getZ()+"").split("\\.")[1])==0?0.5:StringUtils.getDouble("0."+(start.getZ()+"").split("\\.")[1])):null;
+		return oldDistance!=100?Position.fromString(("[Position:" + start.getWorldName() + 
+				"/" + (f.getX()+"").split("\\.")[0]+"."+(start.getX()+"").split("\\.")[1] + "/" + 
+				f.getY()+ "/" 
+				+ (f.getZ()+"").split("\\.")[0]+"."+(start.getZ()+"").split("\\.")[1] + "/"
+				+ start.getYaw() + "/" + start.getPitch() + "]").replace(".", ":")):null;
+	}
+
+	public static boolean isSafe(boolean air, Position loc) {
+		Position down = loc.clone().add(0, -1, 0);
+		int i = toInt(down);
+		Position middle = loc.clone();
+		int i1 = toInt(middle);
+		Position top = loc.clone().add(0, 1, 0);
+		int i2 = toInt(top);
+		if(i1==3) {
+			String c = middle.getBukkitType().name();
+			if(c.equals("SNOW")) {
+			int stage = getSnowLevel(middle);
+			if(stage<=2) { //lowest
+				c = top.getBukkitType().name();
+				if(c.contains("SLAB")||c.contains("STEP"))
+					return getSlabLevel(down)==0; //only top
+				return false;
+			}
+			}
+			return false;
+		}
+		if(i==3) {
+			if(i2==0) {
+				loc.add(0,-1,0);
+				return true; //empty block
+			}
+			if(i1==0) {
+				loc.add(0,-1,0);
+				return true; //empty block
+			} //can be empty block
+			if(i2==2)return false; //lavaaa!
+			if(!TheAPI.isNewVersion())return false;
+			String c = down.getBukkitType().name();
+			if(c.contains("SLAB")||c.contains("STEP")) {
+				if(i1!=0)return false; //must be empty block
+				if(getSlabLevel(down)==1) //button
+					return true; //can be everything
+				if(getSlabLevel(down)==0) { //top
+					if(i2==1)return false; //solid block
+					c = top.getBukkitType().name();
+					if(c.contains("SLAB")||c.contains("STEP"))
+						return getSlabLevel(top)==0;
+					return false;
+				}
+			}else { //snow
+				int stage = getSnowLevel(middle);
+				if(stage<=2) { //lowest
+					c = top.getBukkitType().name();
+					if(c.contains("SLAB")||c.contains("STEP"))
+						return getSlabLevel(down)==0; //only top
+					return false;
+				}
+				if(stage<=5) { //low
+					if(i1!=0)return false; //must be empty block
+					return true;
+				}
+				if(i1!=0)return false; //must be empty block
+				c = top.getBukkitType().name();
+				if(c.contains("SLAB")||c.contains("STEP"))
+					return getSlabLevel(down)==0; //only top
+				return false;
+			}
+		}
+		return air?i!=2:i==1 && i1==0 && i2==0;
 	}
 	
-    private static boolean c(boolean air, int i, String c, Material d) {
-    	if(air && i == 2)return !c.contains("LAVA");
-    	switch (i) {
-        case 1:
-            if (air?true:!c(air,2, c,d) && !c.contains("LAVA") && d.isBlock())
-                return true;
-            break;
-        case 2:
-        	if (c.contains("AIR") || c.equals("SEAGRASS") || c.equals("LONG_GRASS") || c.equals("FLOWER") || c.contains("BUTTON") || c.contains("DOOR") || c.contains("SIGN")
-                        || c.contains("TORCH") || c.equals("MUSHROOM_STEM") ||c.contains("RED_MUSHROOM") || c.contains("BROWN_MUSHROOM"))
-                    return true;
-            break;
-        }
-        return false;
-    }
+	private static int toInt(Position loc) {
+		Material a = loc.getBukkitType();
+		String c = a.name();
+		if(c.contains("LAVA"))return 2;
+		MaterialData d = loc.getBlock().getState().getData();
+		if(d instanceof Crops||d instanceof org.bukkit.material.Sapling||d instanceof org.bukkit.material.NetherWarts)return 1;
+		if(c.contains("AIR")||c.contains("WATER")||c.contains("BANNER")||c.equals("SEAGRASS") || c.equals("LONG_GRASS") || c.equals("FLOWER")
+				|| c.equals("CARPET") || c.contains("BUTTON") || c.contains("DOOR") || c.contains("SIGN")
+                || c.contains("TORCH") || isFlower(c) ||c.contains("RED_MUSHROOM") || c.contains("BROWN_MUSHROOM")|| c.contains("PLATE")|| c.contains("GATE") && isOpen(loc))return 0;
+		return ((c.contains("SLAB")||c.contains("STEP")) && getSlabLevel(loc)!=2 || a==Material.SNOW&& getSnowLevel(loc)!=8)?3:1;
+	}
 	
+	private static boolean isFlower(String c) {
+		if(!c.contains("POTTED"))
+		return c.equals("PEONY")||c.equals("SUNFLOWER")||c.contains("TULIP")
+				||c.equals("DANDELION")||c.equals("DEAD_BUSH")||c.contains("SEAGRASS")||c.equals("GRASS")
+				||c.equals("TALL_GRASS")||c.contains("FERN")||c.equals("POPPY")||c.equals("BLUE_ORCHID")
+				||c.equals("ALLIUM")||c.equals("AZURE_BLUET")||c.equals("OXEYE_DAISY")||c.equals("CORNFLOWER")
+				||c.equals("LILY_OF_THE_VALLEY")||c.equals("WITHER_ROSE")||c.contains("FUNGUS")||c.endsWith("ROOTS")
+				||c.equals("SUGAR_CANE")||c.equals("DOUBLE_PLANT")||c.contains("YELLOW_FLOWER")||c.equals("RED_ROSE")
+				||c.contains("CORAL") && !c.contains("BLOCK")||c.equals("LILAC")||c.equals("ROSE_BUSH");
+		return false;
+	}
+
+	private static boolean isOpen(Position loc) {
+		return TheAPI.isNewerThan(14)?((org.bukkit.block.data.Openable)loc.getBlock().getBlockData()).isOpen():((Openable)loc.getBukkitType().getNewData((byte)loc.getData())).isOpen();
+	}
+
+	private static int getSlabLevel(Position pos) {
+		Material a = pos.getBukkitType();
+		String c = a.name();
+		if(c.contains("SLAB")) {
+		if(TheAPI.isNewVersion())
+			return ((Slab)pos.getBlock().getBlockData()).getType().ordinal();
+		if(pos.getBukkitType().name().contains("DOUBLE_SLAB")||pos.getBukkitType().name().contains("DOUBLE_STEP"))
+			return 2;
+		return pos.getData();
+		}
+		return 0;
+	}
+
+	private static int getSnowLevel(Position pos) {
+		return TheAPI.isNewVersion()?(((Snow)pos.getBlock().getBlockData()).getLayers()):pos.getData();
+	}
 }
