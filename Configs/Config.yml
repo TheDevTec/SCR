@@ -123,25 +123,54 @@ Options:
     Reload:
       Use: true
       PauseTime: 5
+      Process:
+      - "&8****** &4Reload &8******"
+      - "&7Server is reloading..."
+      - "&8****** &4Reload &8******"
+      Cancelled:
+      - "&8****** &4Reload &8******"
+      - "&7Server reload cancelled"
+      - "&8****** &4Reload &8******"
       Messages:
       - "&8****** &4Reload &8******"
-      - "&7Reload of server in &e%time%"
-      - "&7Please login using &e/login <password>"
+      - "&7Reloading of server in &e%time%"
       - "&8****** &4Reload &8******"
     Restart:
       Use: true
       PauseTime: 15
+      Process:
+      - "&8****** &4Restart &8******"
+      - "&7Server is restarting..."
+      - "&8****** &4Restart &8******"
+      Cancelled:
+      - "&8****** &4Restart &8******"
+      - "&7Server restart cancelled"
+      - "&8****** &4Restart &8******"
       Messages:
       - "&8****** &4Restart &8******"
       - "&7Restart of server in &e%time%"
       - "&8****** &4Restart &8******"
+      Commands:
+      - "send * lobby"
+      Kick: "&cServer is restarting"
     Stop:
       Use: true
       PauseTime: 15
+      Process:
+      - "&8****** &4Shutdown &8******"
+      - "&7Shutting down the server..."
+      - "&8****** &4Shutdown &8******"
+      Cancelled:
+      - "&8****** &4Shutdown &8******"
+      - "&7Server shutdown cancelled"
+      - "&8****** &4Shutdown &8******"
       Messages:
-      - "&8****** &4Stop &8******"
-      - "&7Stopping of server in &e%time%"
-      - "&8****** &4Stop &8******"
+      - "&8****** &4Shutdown &8******"
+      - "&7Shutdown of server in &e%time%"
+      - "&8****** &4Shutdown &8******"
+      Commands:
+      - "send * lobby"
+      Kick: "&cServer closed"
       
   AutoMessage:
     Use: true
@@ -402,7 +431,7 @@ Format:
   HelpOp: "&0[&4HelpOp&0] &7%sender%&7: &c%message%"
 
 CountryBlocker:
-  Enabled: true
+  Enabled: false
   List:
     - "us"
     - "se"

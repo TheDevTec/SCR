@@ -21,7 +21,10 @@ Give:
     Other:
       Sender: "%prefix% Added &e%amount%x %item% &7to &e%player%"
       Receiver: "%prefix% You got &e%amount%x %item%"
-      
+    
+# Translation for /Send command
+Send: "%prefix% Sending &e%player%&7 to server &e%server%"
+     
 # Translations for /Seen command
 Seen:
   Online: "%prefix% &e%player%&7 is &aonline &7for &a%online%"

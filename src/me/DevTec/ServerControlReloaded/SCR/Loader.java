@@ -307,6 +307,8 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
+		if(Ref.getClass("net.md_5.bungee.api.ChatColor")!=null)
+			Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		EventsRegister();
 		updater = new UpdateChecker();
 		switch(updater.checkForUpdates()) {

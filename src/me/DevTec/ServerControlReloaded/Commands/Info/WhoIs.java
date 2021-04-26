@@ -5,6 +5,7 @@ import me.DevTec.ServerControlReloaded.SCR.API.SeenType;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.DevTec.ServerControlReloaded.SCR.Loader.Placeholder;
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
+import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.punishmentapi.PunishmentAPI;
@@ -82,6 +83,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 							.add("%ip-arrested%", PunishmentAPI.getBanList(c.getName()).isIPJailed()+"")
 							.add("%ip-muted%", PunishmentAPI.getBanList(c.getName()).isIPMuted()+"")
 							.add("%muted%", PunishmentAPI.getBanList(c.getName()).isMuted()+"")
+							.add("%playtime%", d?StringUtils.timeToString(TabList.playtime(c.getPlayer())):"-1s")
 							.add("%ip-banned%", PunishmentAPI.getBanList(c.getName()).isIPBanned()+""));
 				}}.runTask();
 			return true;

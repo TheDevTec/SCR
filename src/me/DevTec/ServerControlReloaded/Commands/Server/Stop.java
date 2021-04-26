@@ -23,7 +23,7 @@ public class Stop implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("cancel")) {
-				BigTask.cancel();
+				BigTask.cancel(true);
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("now")) {

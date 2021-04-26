@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.DevTec.ServerControlReloaded.Commands.Info.*;
-import me.DevTec.ServerControlReloaded.Commands.Other.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
@@ -42,6 +40,17 @@ import me.DevTec.ServerControlReloaded.Commands.GameMode.GamemodeA;
 import me.DevTec.ServerControlReloaded.Commands.GameMode.GamemodeC;
 import me.DevTec.ServerControlReloaded.Commands.GameMode.GamemodeS;
 import me.DevTec.ServerControlReloaded.Commands.GameMode.GamemodeSP;
+import me.DevTec.ServerControlReloaded.Commands.Info.Chunks;
+import me.DevTec.ServerControlReloaded.Commands.Info.CountryBlocker;
+import me.DevTec.ServerControlReloaded.Commands.Info.ListCmd;
+import me.DevTec.ServerControlReloaded.Commands.Info.Maintenance;
+import me.DevTec.ServerControlReloaded.Commands.Info.Ping;
+import me.DevTec.ServerControlReloaded.Commands.Info.RAM;
+import me.DevTec.ServerControlReloaded.Commands.Info.SCR;
+import me.DevTec.ServerControlReloaded.Commands.Info.Seen;
+import me.DevTec.ServerControlReloaded.Commands.Info.Staff;
+import me.DevTec.ServerControlReloaded.Commands.Info.TPS;
+import me.DevTec.ServerControlReloaded.Commands.Info.WhoIs;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.Anvil;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.ClearConfirmToggle;
 import me.DevTec.ServerControlReloaded.Commands.Inventory.ClearInv;
@@ -63,6 +72,37 @@ import me.DevTec.ServerControlReloaded.Commands.Message.SocialSpy;
 import me.DevTec.ServerControlReloaded.Commands.Message.Sudo;
 import me.DevTec.ServerControlReloaded.Commands.Nickname.Nick;
 import me.DevTec.ServerControlReloaded.Commands.Nickname.NickReset;
+import me.DevTec.ServerControlReloaded.Commands.Other.AFK;
+import me.DevTec.ServerControlReloaded.Commands.Other.ActionBar;
+import me.DevTec.ServerControlReloaded.Commands.Other.BossBar;
+import me.DevTec.ServerControlReloaded.Commands.Other.Butcher;
+import me.DevTec.ServerControlReloaded.Commands.Other.ChatLock;
+import me.DevTec.ServerControlReloaded.Commands.Other.ColorsCmd;
+import me.DevTec.ServerControlReloaded.Commands.Other.Exp;
+import me.DevTec.ServerControlReloaded.Commands.Other.Feed;
+import me.DevTec.ServerControlReloaded.Commands.Other.Fly;
+import me.DevTec.ServerControlReloaded.Commands.Other.GUICreator;
+import me.DevTec.ServerControlReloaded.Commands.Other.Give;
+import me.DevTec.ServerControlReloaded.Commands.Other.God;
+import me.DevTec.ServerControlReloaded.Commands.Other.Hat;
+import me.DevTec.ServerControlReloaded.Commands.Other.Heal;
+import me.DevTec.ServerControlReloaded.Commands.Other.Item;
+import me.DevTec.ServerControlReloaded.Commands.Other.Kits;
+import me.DevTec.ServerControlReloaded.Commands.Other.MultiWorlds;
+import me.DevTec.ServerControlReloaded.Commands.Other.Repair;
+import me.DevTec.ServerControlReloaded.Commands.Other.RulesCmd;
+import me.DevTec.ServerControlReloaded.Commands.Other.Scoreboard;
+import me.DevTec.ServerControlReloaded.Commands.Other.Send;
+import me.DevTec.ServerControlReloaded.Commands.Other.Skin;
+import me.DevTec.ServerControlReloaded.Commands.Other.Skull;
+import me.DevTec.ServerControlReloaded.Commands.Other.Spawner;
+import me.DevTec.ServerControlReloaded.Commands.Other.TempFly;
+import me.DevTec.ServerControlReloaded.Commands.Other.TempGamemode;
+import me.DevTec.ServerControlReloaded.Commands.Other.Thor;
+import me.DevTec.ServerControlReloaded.Commands.Other.Top;
+import me.DevTec.ServerControlReloaded.Commands.Other.Trash;
+import me.DevTec.ServerControlReloaded.Commands.Other.Uuid;
+import me.DevTec.ServerControlReloaded.Commands.Other.Vanish;
 import me.DevTec.ServerControlReloaded.Commands.Other.tablist.Tab;
 import me.DevTec.ServerControlReloaded.Commands.Server.Reload;
 import me.DevTec.ServerControlReloaded.Commands.Server.Restart;
@@ -101,8 +141,8 @@ import me.DevTec.ServerControlReloaded.Commands.Weather.Sun;
 import me.DevTec.ServerControlReloaded.Commands.Weather.Thunder;
 import me.DevTec.ServerControlReloaded.Modules.Mirror.MirrorCommand;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
-import me.DevTec.ServerControlReloaded.Utils.GUICreator;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.reflections.Ref;
 public class CommandsManager {
 	private static Map<String, PluginCommand> commands = new HashMap<>();
 	
@@ -264,6 +304,8 @@ public class CommandsManager {
 		load("Other", "Mirror", new MirrorCommand());
 		
 		//Other
+		if(Ref.getClass("net.md_5.bungee.api.ChatColor")!=null)
+		load("Other", "Send",new Send()); //requres spigot
 		load("Other", "Top",new Top());
 		load("Other", "ChatLock",new ChatLock());
 		load("Other", "Repair", new Repair());

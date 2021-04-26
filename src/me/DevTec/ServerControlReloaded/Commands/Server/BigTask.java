@@ -4,11 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import me.DevTec.ServerControlReloaded.SCR.Loader;
+import me.DevTec.ServerControlReloaded.Utils.TabList;
 import me.DevTec.ServerControlReloaded.Utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class BigTask {
@@ -30,45 +32,38 @@ public class BigTask {
 					+ ".Messages"))
 				TheAPI.broadcastMessage(
 						s.replace("%time%", "" + StringUtils.setTimeToString(h)));
-			if (r == -1) {
+			if (r != -1)cancel(false);
 				r = new Tasker() {
-					long f = h;
-
-					@Override
-					public void run() {
-						if (f <= 0) {
-							new Tasker() {
-								public void run() {
-									end();
-								}
-							}.runTaskSync();
-							return;
-						} else if (f == 60 || f == 45 || f == 30 || f == 15 || f <= 5) {
-							for (String s : Loader.config.getStringList("Options.WarningSystem."
-									+ (t == TaskType.STOP ? "Stop" : (t == TaskType.RELOAD ? "Reload" : "Restart"))
-									+ ".Messages"))
-								TheAPI.broadcastMessage(
-										s.replace("%time%", "" + StringUtils.setTimeToString(f)));
-						}
-						--f;
+				long f = h;
+				public void run() {
+					if (f <= 0) {
+						NMSAPI.postToMainThread(() ->end());
+						return;
+					} else if (f == 60 || f == 45 || f == 30 || f == 15 || f <= 5) {
+						for (String s : Loader.config.getStringList("Options.WarningSystem."
+								+ (t == TaskType.STOP ? "Stop" : (t == TaskType.RELOAD ? "Reload" : "Restart"))
+								+ ".Messages"))
+							TheAPI.broadcastMessage(
+									s.replace("%time%", "" + StringUtils.setTimeToString(f)));
 					}
-				}.runRepeating(0, 20);
-				return true;
-			}
-			return false;
+					--f;
+				}
+			}.runRepeating(0, 20);
+			return true;
 		} else {
 			end();
 			return true;
 		}
 	}
 
-	public static void cancel() {
+	public static void cancel(boolean msg) {
 		if (r != -1) {
 			Scheduler.cancelTask(r);
 			r = -1;
-			TheAPI.broadcastMessage("&eCancelled "
-					+ (s == TaskType.STOP ? "stopping" : (s == TaskType.RELOAD ? "reloading" : "restarting"))
-					+ " of server!");
+			if(msg)
+				for (String s : Loader.config.getStringList("Options.WarningSystem."
+						+ (s == TaskType.STOP ? "Stop.Cancelled" : (s == TaskType.RELOAD ? "Reload.Cancelled" : "Restart.Cancelled"))))
+					TheAPI.broadcastMessage(s);
 		}
 	}
 
@@ -76,16 +71,19 @@ public class BigTask {
 		if (r != -1) {
 			Scheduler.cancelTask(r);
 			r = -1;
-			String text = "&c" + (s == TaskType.STOP ? "Stopping" : (s == TaskType.RELOAD ? "Reloading" : "Restarting"))
-					+ " of server..";
-			TheAPI.broadcastMessage(text);
+			for (String s : Loader.config.getStringList("Options.WarningSystem."
+					+ (s == TaskType.STOP ? "Stop.Process" : (s == TaskType.RELOAD ? "Reload.Process" : "Restart.Process"))))
+				TheAPI.broadcastMessage(s);
+			for (String s : Loader.config.getStringList("Options.WarningSystem."
+					+ (s == TaskType.STOP ? "Stop.Commands" : (s == TaskType.RELOAD ? "Reload.Commands" : "Restart.Commands"))))
+				TheAPI.sudoConsole(s);
 			switch (s) {
 			case RELOAD:
 				Bukkit.reload();
 				break;
 			case RESTART:
 				for(Player s : TheAPI.getOnlinePlayers())
-					s.kickPlayer(TheAPI.colorize(text));
+					s.kickPlayer(TabList.replace(Loader.config.getString("Options.WarningSystem.Restart.Kick"),s,true));
 				if (Ref.getClass("net.md_5.bungee.api.ChatColor")!=null)
 					try {
 					Bukkit.spigot().restart();
@@ -97,7 +95,7 @@ public class BigTask {
 				break;
 			case STOP:
 				for(Player s : TheAPI.getOnlinePlayers())
-					s.kickPlayer(TheAPI.colorize(text));
+					s.kickPlayer(TabList.replace(Loader.config.getString("Options.WarningSystem.Stop.Kick"),s,true));
 				Bukkit.shutdown();
 				break;
 			}

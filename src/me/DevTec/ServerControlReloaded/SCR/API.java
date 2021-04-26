@@ -16,6 +16,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.command.CommandSender;
@@ -23,6 +25,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.material.Crops;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Openable;
+
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 
 import me.DevTec.ServerControlReloaded.Utils.SPlayer;
 import me.DevTec.ServerControlReloaded.Utils.setting;
@@ -551,8 +556,13 @@ public class API {
 		Material a = loc.getBukkitType();
 		String c = a.name();
 		if(c.contains("LAVA"))return 2;
-		MaterialData d = loc.getBlock().getState().getData();
-		if(d instanceof Crops||d instanceof org.bukkit.material.Sapling||d instanceof org.bukkit.material.NetherWarts)return 1;
+		if(!TheAPI.isNewVersion()) {
+			MaterialData d = loc.getType().toItemStack().getData();
+			if(d instanceof Crops||d instanceof org.bukkit.material.Sapling||d instanceof org.bukkit.material.NetherWarts)return 1;
+		}else {
+			BlockData d = loc.getBlock().getBlockData();
+			if(d instanceof Ageable)return 1;
+		}
 		if(c.contains("AIR")||c.contains("WATER")||c.contains("BANNER")||c.equals("SEAGRASS") || c.equals("LONG_GRASS") || c.equals("FLOWER")
 				|| c.equals("CARPET") || c.contains("BUTTON") || c.contains("DOOR") || c.contains("SIGN")
                 || c.contains("TORCH") || isFlower(c) ||c.contains("RED_MUSHROOM") || c.contains("BROWN_MUSHROOM")|| c.contains("PLATE")|| c.contains("GATE") && isOpen(loc))return 0;
@@ -590,5 +600,12 @@ public class API {
 
 	private static int getSnowLevel(Position pos) {
 		return TheAPI.isNewVersion()?(((Snow)pos.getBlock().getBlockData()).getLayers()):pos.getData();
+	}
+
+	public static void send(Player p, String server) {
+		ByteArrayDataOutput d = ByteStreams.newDataOutput();
+		d.writeUTF("send");
+		d.writeUTF(server);
+		p.sendPluginMessage(plugin, "BungeeCord", d.toByteArray());
 	}
 }

@@ -318,7 +318,7 @@ public class TabList {
 		}
 	}
 	
-	static long playtime(Player s) {
+	public static long playtime(Player s) {
 		if(s==null)return -1;
 		return addOrRemove==0?s.getStatistic(st)*del:s.getStatistic(st)/del;
 	}
