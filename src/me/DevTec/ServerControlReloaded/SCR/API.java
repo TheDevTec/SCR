@@ -604,7 +604,7 @@ public class API {
 
 	public static void send(Player p, String server) {
 		ByteArrayDataOutput d = ByteStreams.newDataOutput();
-		d.writeUTF("send");
+		d.writeUTF("Connect");
 		d.writeUTF(server);
 		p.sendPluginMessage(plugin, "BungeeCord", d.toByteArray());
 	}
