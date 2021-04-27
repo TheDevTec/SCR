@@ -1,6 +1,7 @@
 package me.DevTec.ServerControlReloaded.Commands;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,9 +152,9 @@ public class CommandsManager {
 			PluginCommand c = TheAPI.createCommand(Loader.cmds.getString(section+"."+command+".Name"), Loader.getInstance);
 			List<String> aliases = new ArrayList<>();
 			if(Loader.cmds.exists(section+"."+command+".Aliases")) {
-			if(Loader.cmds.get(section+"."+command+".Aliases") instanceof List)
+			if(Loader.cmds.get(section+"."+command+".Aliases") instanceof Collection)
 				aliases=Loader.cmds.getStringList(section+"."+command+".Aliases");
-			else aliases.add(Loader.cmds.getString(section+"."+command+".Aliases"));
+				else aliases.add(Loader.cmds.getString(section+"."+command+".Aliases"));
 			}
 			c.setAliases(aliases);
 			c.setExecutor(cs);
@@ -278,7 +279,7 @@ public class CommandsManager {
 		load("Inventory", "EnderChest", new EnderChest());
 		load("Inventory", "CloseInventory", new CloseInventory());
 		load("Inventory", "ClearInventory",new ClearInv());
-		load("Inventory", "ClearConfirmToggle", new ClearConfirmToggle());
+		load("Inventory", "ClearInventoryToggle", new ClearConfirmToggle());
 		load("Inventory", "Invsee", new Invsee());
 		load("Inventory", "Workbench", new Craft());
 		load("Inventory", "Anvil", new Anvil());

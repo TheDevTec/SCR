@@ -383,6 +383,7 @@ Inventory:
     Permission: "SCR.Command.Anvil"
     Help: "/Anvil <player> - Opens player virtual anvil"
     Enabled: true
+    
 GameMode:
   TempGamemode:
     Name: "tempgamemode"

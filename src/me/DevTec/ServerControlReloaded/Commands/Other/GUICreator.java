@@ -221,14 +221,21 @@ public class GUICreator implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender s, Command uu, String u, String[] args) {
-        if(!(s instanceof Player)){
+    	if(args.length==0||!s.hasPermission("scr.command.gui")) {
+    		if(s instanceof Player == false)return true;
+        	String perm = c.getString("GUI."+gui+".permission");
+        	if(perm!=null)perm=perm.trim();
+        	if(perm!=null && perm.equals(""))perm=null;
+        	if(perm==null||perm!=null && perm.startsWith("-")?s.hasPermission(perm.substring(1)):!s.hasPermission(perm))
+            maker.get(gui).make().open((Player)s);
             return true;
-        }
-    	String perm = c.getString("GUI."+gui+".permission");
-    	if(perm!=null)perm=perm.trim();
-    	if(perm!=null && perm.equals(""))perm=null;
-    	if(perm==null||perm!=null && perm.startsWith("-")?s.hasPermission(perm.substring(1)):!s.hasPermission(perm))
-        maker.get(gui).make().open((Player)s);
+    	}
+    	Player target = TheAPI.getPlayer(args[0]);
+    	if(target==null) {
+    		Loader.notOnline(s, args[0]);
+    		return true;
+    	}
+        maker.get(gui).make().open(target);
         return true;
     }
 }

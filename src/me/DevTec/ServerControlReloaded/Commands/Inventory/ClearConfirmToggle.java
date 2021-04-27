@@ -24,7 +24,7 @@ public class ClearConfirmToggle implements CommandExecutor, TabCompleter {
 				} else {
 					if (Loader.has(s, "ClearConfirmToggle", "Inventory", "Other")) {
 						User d = TheAPI.getUser(s.getName());
-						if (d.getBoolean("ClearInvConfirm") == true) {
+						if (d.getBoolean("ClearInvConfirm")) {
 							d.setAndSave("ClearInvConfirm", false);
 							Loader.sendMessages(s, "Inventory.ClearConfirmToggle.Enabled");
 							return true;
