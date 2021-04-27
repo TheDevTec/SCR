@@ -1072,6 +1072,11 @@ Other:
   Uuid:
     Name: "uuid"
     Permission: "SCR.Command.Uuid"
-    Help: "/uuid - Get player's uuid"  
+    Help: "/Uuid <player> - Get player's uuid"  
+    Enabled: true
+  Send:
+    Name: "send"
+    Permission: "SCR.Command.Send"
+    Help: "/Send <player> <server> - Send player to specified server"  
     Enabled: true
   
