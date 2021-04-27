@@ -21,6 +21,9 @@ Give:
     Other:
       Sender: "%prefix% Dal jsi &e%amount%x %item% &7hráči &e%player%"
       Receiver: "%prefix% Dostal jsi &e%amount%x %item%"
+    
+# Translation for /Send command
+Send: "%prefix% Posílám &e%player%&7 na server &e%server%"
       
 # Translations for /Seen command
 Seen:
