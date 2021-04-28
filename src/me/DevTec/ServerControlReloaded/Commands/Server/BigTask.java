@@ -23,6 +23,7 @@ public class BigTask {
 	private static TaskType s;
 
 	public static boolean start(TaskType t, long h) {
+		if (r != -1)cancel(false);
 		s = t;
 		if ((t == TaskType.STOP ? setting.warn_stop
 				: (t == TaskType.RELOAD ? setting.warn_reload : setting.warn_restart))) {
@@ -32,7 +33,6 @@ public class BigTask {
 					+ ".Messages"))
 				TheAPI.broadcastMessage(
 						s.replace("%time%", "" + StringUtils.setTimeToString(h)));
-			if (r != -1)cancel(false);
 				r = new Tasker() {
 				long f = h;
 				public void run() {
@@ -77,27 +77,40 @@ public class BigTask {
 			for (String s : Loader.config.getStringList("Options.WarningSystem."
 					+ (s == TaskType.STOP ? "Stop.Commands" : (s == TaskType.RELOAD ? "Reload.Commands" : "Restart.Commands"))))
 				TheAPI.sudoConsole(s);
-			switch (s) {
-			case RELOAD:
-				Bukkit.reload();
-				break;
-			case RESTART:
-				for(Player s : TheAPI.getOnlinePlayers())
-					s.kickPlayer(TabList.replace(Loader.config.getString("Options.WarningSystem.Restart.Kick"),s,true));
-				if (Ref.getClass("net.md_5.bungee.api.ChatColor")!=null)
+			new Thread(new Runnable() {
+				public void run() {
 					try {
-					Bukkit.spigot().restart();
-					}catch(Exception | NoSuchMethodError e) {
-						Bukkit.shutdown();
+						Thread.sleep(1000+TheAPI.getOnlinePlayers().size()*50);
+					} catch (Exception e1) {
 					}
-				else
-					Bukkit.shutdown();
-				break;
-			case STOP:
-				for(Player s : TheAPI.getOnlinePlayers())
-					s.kickPlayer(TabList.replace(Loader.config.getString("Options.WarningSystem.Stop.Kick"),s,true));
-				Bukkit.shutdown();
-				break;
-			}
-	}}
+					NMSAPI.postToMainThread(new Runnable() {
+						public void run() {
+							switch (s) {
+							case RELOAD:
+								Bukkit.reload();
+								break;
+							case RESTART:
+								for(Player s : TheAPI.getOnlinePlayers())
+									s.kickPlayer(TabList.replace(Loader.config.getString("Options.WarningSystem.Restart.Kick"),s,true));
+								if (Ref.getClass("net.md_5.bungee.api.ChatColor")!=null)
+									try {
+									Bukkit.spigot().restart();
+									}catch(Exception | NoSuchMethodError e) {
+										Bukkit.shutdown();
+									}
+								else
+									Bukkit.shutdown();
+								break;
+							case STOP:
+								for(Player s : TheAPI.getOnlinePlayers())
+									s.kickPlayer(TabList.replace(Loader.config.getString("Options.WarningSystem.Stop.Kick"),s,true));
+								Bukkit.shutdown();
+								break;
+							}
+						}
+					});
+				}
+			}).start();
+		}
+	}
 }
