@@ -29,6 +29,13 @@ import me.devtec.theapi.utils.nms.NMSAPI;
 
 public class GUICreator implements CommandExecutor {
     private static Config c = Loader.guicreator;
+	public static Map<String, GUIMaker> maker = new HashMap<>();
+    
+    static {
+    	for(String a : c.getKeys("GUI"))
+    		maker.put(a, new GUIMaker(a));
+    }
+    
 	public static class GUIMaker {
 	    private String gui;
 	    public GUIMaker(String a){
@@ -55,8 +62,8 @@ public class GUICreator implements CommandExecutor {
 	                }
 	            }
 	            if(itemGUI!=null)
-	            for(String slot : j.split(",[ ]*"))
-	            	set(StringUtils.getInt(slot), itemGUI);
+	            	for(String slot : j.split(",[ ]*"))
+	            		set(StringUtils.getInt(slot), itemGUI);
 	        }
 		}
 
@@ -77,11 +84,14 @@ public class GUICreator implements CommandExecutor {
 
 	    public static void vecinator(HolderGUI g ,Player p, String b, String s, GUI.ClickType clickType){
 	    	String perm = c.getString("GUI."+b+".items."+s+".permission");
-	    	if(perm!=null)perm=perm.trim();
-	    	if(perm!=null && perm.equals(""))perm=null;
-	    	if(perm!=null && perm.startsWith("-")?p.hasPermission(perm.substring(1)):!p.hasPermission(perm)) {
+	    	if(perm!=null && perm.trim().equals(""))perm=null;
+        	if(perm!=null && (perm.startsWith("-")?p.hasPermission(perm.substring(1)):!p.hasPermission(perm))) {
 	    		process(clickType, g,p,b,s,"noPermission");
+	    		return;
 	    	}
+        	if(c.getDouble("GUI."+b+".items."+s+".cost")<=0)
+    		process(clickType, g,p,b,s,"action");
+        	else
 	        if(EconomyAPI.has(p,c.getDouble("GUI."+b+".items."+s+".cost"))) {
 	            if(c.getBoolean("GUI."+b+".items."+s+".takeMoney")){
 	                EconomyAPI.withdrawPlayer(p,c.getDouble("GUI."+b+".items."+s+".cost"));
@@ -92,7 +102,6 @@ public class GUICreator implements CommandExecutor {
 	        }
 	    }
 	    private static void process(ClickType clickType, HolderGUI g, Player p, String b, String s, String string) {
-
             if (c.get("GUI." + b + ".items." + s + "."+string) instanceof Collection&&c.exists("GUI."+b+".items."+s+"."+string)) {
                 for (String a : c.getStringList("GUI." + b + ".items." + s + "."+string)) {
                     if (a.startsWith("sleft")) {
@@ -160,7 +169,9 @@ public class GUICreator implements CommandExecutor {
 					}
 				});
 	        } else if(a.startsWith("open")){
-	            maker.get(a.substring(5)).make().open(p);
+	        	GUIMaker f = maker.get(a.substring(5));
+	        	if(f!=null)
+	            f.make().open(p);
 	        }
 	    }
 
@@ -211,13 +222,10 @@ public class GUICreator implements CommandExecutor {
 		}
 	}
 	
-	public static Map<String, GUIMaker> maker = new HashMap<>();
-	
     private String gui;
 
     public GUICreator(String a){
     	gui=a;
-    	maker.put(a, new GUIMaker(a));
     }
 
     public boolean onCommand(CommandSender s, Command uu, String u, String[] args) {
@@ -226,7 +234,7 @@ public class GUICreator implements CommandExecutor {
         	String perm = c.getString("GUI."+gui+".permission");
         	if(perm!=null)perm=perm.trim();
         	if(perm!=null && perm.equals(""))perm=null;
-        	if(perm==null||perm!=null && perm.startsWith("-")?s.hasPermission(perm.substring(1)):!s.hasPermission(perm))
+        	if(perm==null||(perm.startsWith("-")?s.hasPermission(perm.substring(1)):!s.hasPermission(perm)))
             maker.get(gui).make().open((Player)s);
             return true;
     	}
