@@ -32,7 +32,12 @@ public class Anvil implements CommandExecutor, TabCompleter {
 			if (s instanceof Player) {
 				if (args.length == 0) {
 					Loader.sendMessages(s, "Inventory.Anvil.You");
-					new AnvilGUI("&7Anvil", (Player)s).setInsertable(true);
+					new AnvilGUI("&7Anvil", (Player)s) {
+						public void onPreClose(Player player) {
+							for(int i = 0; i < 2; ++i)
+							TheAPI.giveItem(player, getItem(player, i));
+						}
+					}.setInsertable(true);
 					return true;
 				}
 				if (args.length == 1) {
@@ -43,7 +48,12 @@ public class Anvil implements CommandExecutor, TabCompleter {
 					}
 					Loader.sendMessages(s, "Inventory.Anvil.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
 					Loader.sendMessages(t, "Inventory.Anvil.Other.Target", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
-					new AnvilGUI("&7Anvil", t).setInsertable(true);
+					new AnvilGUI("&7Anvil", t) {
+						public void onPreClose(Player player) {
+							for(int i = 0; i < 2; ++i)
+							TheAPI.giveItem(player, getItem(player, i));
+						}
+					}.setInsertable(true);
 					return true;
 				}
 			}
