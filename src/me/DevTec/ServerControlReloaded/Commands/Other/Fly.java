@@ -29,7 +29,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 				if (s instanceof Player) {
 					SPlayer p = API.getSPlayer((Player) s);
 					if (task.get(p) != null)
-						Scheduler.cancelTask(task.get(p));
+						Scheduler.cancelTask(task.remove(p));
 					p.toggleFly(null);
 					return true;
 				}
@@ -46,7 +46,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 				if (Loader.has(s, "Fly", "Other")) {
 				target = API.getSPlayer((Player)s);
 				if (task.get(target) != null)
-					Scheduler.cancelTask(task.get(target));
+					Scheduler.cancelTask(task.remove(target));
 				target.disableFly();
 				Loader.sendMessages(s, "Fly.Disabled.You");
 				return true;
@@ -58,7 +58,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 				if (Loader.has(s, "Fly", "Other")) {
 				target = API.getSPlayer((Player)s);
 				if (task.get(target) != null)
-					Scheduler.cancelTask(task.get(target));
+					Scheduler.cancelTask(task.remove(target));
 				target.enableFly();
 				Loader.sendMessages(s, "Fly.Enabled.You");
 				return true;
@@ -74,7 +74,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 			if (target.getPlayer() == s) {
 				if (Loader.has(s, "Fly", "Other")) {
 					if (task.get(target) != null)
-						Scheduler.cancelTask(task.get(target));
+						Scheduler.cancelTask(task.remove(target));
 					target.toggleFly(null);
 					return true;
 				}
@@ -83,7 +83,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 			} else {
 				if (Loader.has(s, "Fly", "Other", "Other")) {
 					if (task.get(target) != null)
-						Scheduler.cancelTask(task.get(target));
+						Scheduler.cancelTask(task.remove(target));
 					target.toggleFly(s);
 					return true;
 				}
@@ -101,7 +101,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 				if (Loader.has(s, "Fly", "Other", "Other")) {
 					if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
 						if (task.get(target) != null)
-							Scheduler.cancelTask(task.get(target));
+							Scheduler.cancelTask(task.remove(target));
 						target.disableFly();
 						Loader.sendMessages(s, "Fly.Disabled.Other.Sender", Placeholder.c().replace("%player%", target.getName())
 								.replace("%playername%", target.getDisplayName()));
@@ -111,7 +111,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 					}
 					if (args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true")) {
 						if (task.get(target) != null)
-							Scheduler.cancelTask(task.get(target));
+							Scheduler.cancelTask(task.remove(target));
 						target.enableFly();
 						Loader.sendMessages(s, "Fly.Enabled.Other.Sender", Placeholder.c().replace("%player%", target.getName())
 								.replace("%playername%", target.getDisplayName()));
@@ -128,14 +128,14 @@ public class Fly implements CommandExecutor, TabCompleter {
 				if (Loader.has(s, "Fly", "Other")) {
 					if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
 						if (task.get(target) != null)
-							Scheduler.cancelTask(task.get(target));
+							Scheduler.cancelTask(task.remove(target));
 						target.disableFly();
 						Loader.sendMessages(s, "Fly.Disabled.You");
 						return true;
 					}
 					if (args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true")) {
 						if (task.get(target) != null)
-							Scheduler.cancelTask(task.get(target));
+							Scheduler.cancelTask(task.remove(target));
 						target.enableFly();
 						Loader.sendMessages(s, "Fly.Enabled.You");
 						return true;

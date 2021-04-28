@@ -103,9 +103,10 @@ public class Tasks {
 						if (timeout <= 0) {
 							if (s != null) {
 								Loader.sendMessages(s, "Fly.Temp.End");
-								API.getSPlayer(s).disableFly();
-								TheAPI.getUser(s).remove("TempFly");
-								TheAPI.getUser(s).save();
+								SPlayer p = API.getSPlayer(s);
+								p.disableFly();
+								p.getUser().remove("TempFly");
+								p.getUser().save();
 							}
 							return;
 						}
@@ -128,11 +129,17 @@ public class Tasks {
 					long timeout = start / 1000 - System.currentTimeMillis() / 1000 + end;
 					if (timeout <= 0) {
 						if (s != null) {
-							try{
 							Loader.sendMessages(s, "GameMode.Temp.End");
-							s.setGameMode(GameMode.valueOf(TheAPI.getUser(s).getString("TempGamemode.Prev")));
-							TheAPI.getUser(s).remove("TempGamemode");
-							TheAPI.getUser(s).save();}catch (Exception e){e.printStackTrace();}
+							SPlayer p = API.getSPlayer(s);
+							if (!s.hasPermission("SCR.Other.GamemodeChangePrevent")) {
+								if (Loader.mw.exists("WorldsSettings." + s.getWorld().getName() + ".GameMode"))
+									try {
+									s.setGameMode(GameMode.valueOf(Loader.mw.getString("WorldsSettings." + s.getWorld().getName() + ".GameMode").toUpperCase()));
+									}catch(Exception | NoSuchFieldError err) {}
+								}else
+									s.setGameMode(GameMode.valueOf(p.getUser().getString("TempGamemode.Prev")));
+							p.getUser().remove("TempGamemode");
+							p.getUser().save();
 						}
 						return;
 					}

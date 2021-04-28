@@ -23,16 +23,22 @@ public class SPlayer {
 	public int kick, afk;
 	public boolean bc, manual;
 	public String reply, type;
+	private User f;
 	public Location l;
 	
 	public SPlayer(Player p) {
 		s = p.getName();
+		f=TheAPI.getUser(p);
 	}
 	
 	public SPlayer(String p) {
 		s = p;
+		f=TheAPI.getUser(p);
 	}
 
+	public User getUser() {
+		return f;
+	}
 	
 	public void setHP() {
 		if(getPlayer()==null)return;
@@ -59,35 +65,34 @@ public class SPlayer {
 		getPlayer().setRemainingAir(getPlayer().getMaximumAir());
 	}
 
-	public void enableTempGameMode(long time,GameMode g,boolean t){
-		User s = TheAPI.getUser(this.s);
-		s.set("TempGamemode.Start",System.currentTimeMillis());
-		s.set("TempGamemode.Time",time);
-		s.set("TempGamemode.Prev",getPlayer().getGameMode());
+	public void enableTempGameMode(long time,GameMode g,boolean t) {
+		f.set("TempGamemode.Start",System.currentTimeMillis());
+		f.set("TempGamemode.Time",time);
+		f.set("TempGamemode.Prev",getPlayer().getGameMode());
+		f.save();
+		if(getPlayer()==null)return;
 		if(!hasGameMode()){
-			s.setAndSave("TempGamemode.Use",true);
+			f.setAndSave("TempGamemode.Use",true);
 			getPlayer().setGameMode(g);
 			if(t==false){
-				TheAPI.msg(Loader.getTranslation("GameMode.Temp.You").toString().replace("%time%",StringUtils.timeToString(time)).replace("%gamemode%",g.toString().toLowerCase()),getPlayer());
+				Loader.sendMessages(getPlayer(), "GameMode.Temp.You", Placeholder.c().add("%time%", StringUtils.timeToString(time)).add("%gamemode%",g.toString().toLowerCase()));
 			}else{
-				TheAPI.msg(Loader.getTranslation("GameMode.Temp.Other.Reciever").toString().replace("%time%",StringUtils.timeToString(time)).replace("%gamemode%",g.toString().toLowerCase()),getPlayer());
+				Loader.sendMessages(getPlayer(), "GameMode.Temp.Reciever", Placeholder.c().add("%time%", StringUtils.timeToString(time)).add("%gamemode%",g.toString().toLowerCase()));
 			}
-		}else s.save();
-		if(getPlayer()==null)return;
+		}
 	}
 
 	public boolean hasGameMode(){
-		return TheAPI.getUser(this.s).getBoolean("TempGamemode.Use");
+		return f.getBoolean("TempGamemode.Use");
 	}
 
 	public void enableTempFly(long stop) {
-		User s = TheAPI.getUser(this.s);
-		s.set("TempFly.Start", System.currentTimeMillis());
-		s.set("TempFly.Time", stop);
+		f.set("TempFly.Start", System.currentTimeMillis());
+		f.set("TempFly.Time", stop);
 		if (!hasTempFlyEnabled()) {
-			s.setAndSave("TempFly.Use", true);
+			f.setAndSave("TempFly.Use", true);
 			enableTempFly();
-		}else s.save();
+		}else f.save();
 		if(getPlayer()==null)return;
 		Loader.sendMessages(getPlayer(), "Fly.Temp.Enabled.You", Placeholder.c().add("%time%", StringUtils.setTimeToString(stop)));
 	}
@@ -102,19 +107,18 @@ public class SPlayer {
 
 	public void enableFly() {
 		if (hasTempFlyEnabled()) {
-			TheAPI.getUser(s).setAndSave("TempFly.Use", false);
+			f.setAndSave("TempFly.Use", false);
 		}
-		TheAPI.getUser(s).setAndSave("Fly", true);
+		f.setAndSave("Fly", true);
 		if(getPlayer()==null)return;
 		getPlayer().setAllowFlight(true);
 		getPlayer().setFlying(true);
 	}
 
 	public void disableFly() {
-		User d = TheAPI.getUser(s);
-		d.remove("TempFly");
-		d.remove("Fly");
-		d.save();
+		f.remove("TempFly");
+		f.remove("Fly");
+		f.save();
 		if(getPlayer()==null)return;
 		getPlayer().setFlying(false);
 		getPlayer().setAllowFlight(false);
@@ -213,34 +217,32 @@ public class SPlayer {
 
 	public void setWalkSpeed() {
 		if(getPlayer()==null)return;
-		User d = TheAPI.getUser(s);
-		if (d.exist("WalkSpeed")) {
-			Player f = getPlayer();
-			if (d.getDouble("WalkSpeed") < 0.0)
-				f.setWalkSpeed(0);
-			else if (d.getDouble("WalkSpeed") > 10.0)
-				f.setWalkSpeed(10);
+		if (f.exist("WalkSpeed")) {
+			Player g = getPlayer();
+			if (f.getDouble("WalkSpeed") < 0.0)
+				g.setWalkSpeed(0);
+			else if (f.getDouble("WalkSpeed") > 10.0)
+				g.setWalkSpeed(10);
 			else
-				f.setWalkSpeed(d.getFloat("WalkSpeed"));
+				g.setWalkSpeed(f.getFloat("WalkSpeed"));
 		}
 	}
 
 	public void setFlySpeed() {
 		if(getPlayer()==null)return;
-		User d = TheAPI.getUser(s);
-		if (d.exist("FlySpeed")) {
-			Player f = getPlayer();
-			if (d.getDouble("FlySpeed") < 0.0)
-				f.setFlySpeed(0);
-			else if (d.getDouble("FlySpeed") > 10.0)
-				f.setFlySpeed(10);
+		if (f.exist("FlySpeed")) {
+			Player g = getPlayer();
+			if (f.getDouble("FlySpeed") < 0.0)
+				g.setFlySpeed(0);
+			else if (f.getDouble("FlySpeed") > 10.0)
+				g.setFlySpeed(10);
 			else
-				f.setFlySpeed(d.getFloat("FlySpeed"));
+				g.setFlySpeed(f.getFloat("FlySpeed"));
 		}
 	}
 
 	public void enableGod() {
-		TheAPI.getUser(s).setAndSave("God", true);
+		f.setAndSave("God", true);
 		setHP();
 		setFood();
 		setFire();
@@ -256,9 +258,8 @@ public class SPlayer {
 	}
 
 	public void disableGod() {
-		User d = TheAPI.getUser(s);
-		d.remove("God");
-		d.save();
+		f.remove("God");
+		f.save();
 	}
 
 	public void createEconomyAccount() {
@@ -277,14 +278,14 @@ public class SPlayer {
 	}
 
 	public boolean hasFlyEnabled() {
-		return TheAPI.getUser(s).getBoolean("Fly")||getPlayer()!=null&&getPlayer().isFlying();
+		return f.getBoolean("Fly")||getPlayer()!=null&&getPlayer().isFlying();
 	}
 
 	public boolean hasGodEnabled() {
-		return TheAPI.getUser(s).getBoolean("God");
+		return f.getBoolean("God");
 	}
 
 	public boolean hasTempFlyEnabled() {
-		return TheAPI.getUser(s).getBoolean("TempFly.Use");
+		return f.getBoolean("TempFly.Use");
 	}
 }
