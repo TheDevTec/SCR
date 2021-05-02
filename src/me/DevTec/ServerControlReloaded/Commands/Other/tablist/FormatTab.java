@@ -11,13 +11,13 @@ public class FormatTab {
 	public FormatTab(CommandSender s, String[] args) {
 		String type = args[1];
 		if(!(type.equalsIgnoreCase("player")||type.equalsIgnoreCase("group"))) {
-			Loader.advancedHelp(s, "TabList", "Other", "Format");
+			Loader.advancedHelp(s, "Tablist", "Other", "Format");
 			return;
 		}
 		String name = args[2];
 		if(args[3].equalsIgnoreCase("set")) {
 			if(args.length==4) {
-				Loader.advancedHelp(s, "TabList", "Other", "Format");
+				Loader.advancedHelp(s, "Tablist", "Other", "Format");
 				return;
 			}
 			if(type.equalsIgnoreCase("player")) {
@@ -47,7 +47,7 @@ public class FormatTab {
 					Placeholder.c().add("%value%", TabList.getNameFormat(name, 2)).replace("%name%", name));
 			return;
 		}
-		Loader.advancedHelp(s, "TabList", "Other", "Format");
+		Loader.advancedHelp(s, "Tablist", "Other", "Format");
 	}
 
 }

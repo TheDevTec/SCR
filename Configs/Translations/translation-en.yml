@@ -730,7 +730,7 @@ Immune:
       Receiver: "%prefix% Your immunity has been &edisabled"
   NoPunish: "%prefix% &e%player% &7has immunity."
   
-TabList:
+Tablist:
   Prefix:
     Get:
       NameTag: "%prefix% Prefix of group &e%group% &7of nametag is &r%value%"

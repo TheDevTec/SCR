@@ -13,7 +13,7 @@ public class FooterTab {
 	public FooterTab(CommandSender s, String[] args) {
 		String type = args[1];
 		if(!(type.equalsIgnoreCase("player")||type.equalsIgnoreCase("global")||type.equalsIgnoreCase("group"))) {
-			Loader.advancedHelp(s, "TabList", "Other", "Footer");
+			Loader.advancedHelp(s, "Tablist", "Other", "Footer");
 			return;
 		}
 		if(type.equalsIgnoreCase("global")) {
@@ -57,7 +57,7 @@ public class FooterTab {
 					Loader.sendMessages(s, "TabList.Get.Footer.Global.List", Placeholder.c().replace("%line%", (id++)+"").replace("%value%",ssd));
 				return;
 			}
-			Loader.advancedHelp(s, "TabList", "Other", "Footer");
+			Loader.advancedHelp(s, "Tablist", "Other", "Footer");
 			return;
 		}
 		if(args[3].equalsIgnoreCase("add")) {
@@ -100,7 +100,7 @@ public class FooterTab {
 				Loader.sendMessages(s, "TabList.Get.Footer."+(type.equalsIgnoreCase("group")?"Group":"Player")+".List", Placeholder.c().replace("%line%", (id++)+"").replace("%value%",ssd));
 			return;
 		}
-		Loader.advancedHelp(s, "TabList", "Other", "Footer");
+		Loader.advancedHelp(s, "Tablist", "Other", "Footer");
 	}
 
 }

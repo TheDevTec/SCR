@@ -721,7 +721,7 @@ Immune:
       Receiver: "%prefix% Imunita &evypnuta"
   NoPunish: "%prefix% &e%player% &7má imunitu"
   
-TabList:
+Tablist:
   Prefix:
     Get:
       NameTag: "%prefix% Prefix skupiny &e%group% &7nametagu je &r%value%"

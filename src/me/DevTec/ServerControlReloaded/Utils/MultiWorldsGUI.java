@@ -727,7 +727,7 @@ public class MultiWorldsGUI {
 				break;
 			}
 			XMaterial d = x;
-			String name = WordUtils.capitalize(d.name().replace("_", " "));
+			String name = WordUtils.capitalize(ds.replace("_", " "));
 			a.setItem(slot, new ItemGUI(createItem("&6" + name, d ,Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds)))) {
 				
 				@Override

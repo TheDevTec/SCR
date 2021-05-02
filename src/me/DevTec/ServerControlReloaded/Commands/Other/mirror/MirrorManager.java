@@ -1,4 +1,4 @@
-package me.DevTec.ServerControlReloaded.Modules.Mirror;
+package me.DevTec.ServerControlReloaded.Commands.Other.mirror;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

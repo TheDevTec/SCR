@@ -1,4 +1,4 @@
-package me.DevTec.ServerControlReloaded.Modules.Mirror;
+package me.DevTec.ServerControlReloaded.Commands.Other.mirror;
 
 import me.devtec.theapi.utils.Position;
 import org.bukkit.Material;

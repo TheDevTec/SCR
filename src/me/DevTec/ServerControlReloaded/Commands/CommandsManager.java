@@ -104,6 +104,7 @@ import me.DevTec.ServerControlReloaded.Commands.Other.Top;
 import me.DevTec.ServerControlReloaded.Commands.Other.Trash;
 import me.DevTec.ServerControlReloaded.Commands.Other.Uuid;
 import me.DevTec.ServerControlReloaded.Commands.Other.Vanish;
+import me.DevTec.ServerControlReloaded.Commands.Other.mirror.MirrorCommand;
 import me.DevTec.ServerControlReloaded.Commands.Other.tablist.Tab;
 import me.DevTec.ServerControlReloaded.Commands.Server.Reload;
 import me.DevTec.ServerControlReloaded.Commands.Server.Restart;
@@ -140,7 +141,6 @@ import me.DevTec.ServerControlReloaded.Commands.Weather.PSun;
 import me.DevTec.ServerControlReloaded.Commands.Weather.Rain;
 import me.DevTec.ServerControlReloaded.Commands.Weather.Sun;
 import me.DevTec.ServerControlReloaded.Commands.Weather.Thunder;
-import me.DevTec.ServerControlReloaded.Modules.Mirror.MirrorCommand;
 import me.DevTec.ServerControlReloaded.SCR.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.reflections.Ref;
@@ -328,7 +328,7 @@ public class CommandsManager {
 		load("Other", "Butcher",new Butcher());
 		load("Other", "AFK",new AFK());
 		load("Other", "MultiWorlds",new MultiWorlds());
-		load("Other", "TabList",new Tab());
+		load("Other", "Tablist",new Tab());
 		load("Other", "Hat",new Hat());
 		load("Other", "Skin",new Skin());
 		load("Other", "Experiences", new Exp());
@@ -341,7 +341,7 @@ public class CommandsManager {
 			for(String a : Loader.guicreator.getKeys("Commands")){
 				if(commands.containsKey(a))return;
 				PluginCommand c = TheAPI.createCommand(a,Loader.getInstance);
-				c.setExecutor(new GUICreator(Loader.guicreator.getString("Commands."+a+".gui")));
+				c.setExecutor(new GUICreator(a,Loader.guicreator.getString("Commands."+a+".gui")));
 				c.setAliases(Loader.guicreator.getStringList("Commands."+a+".aliases"));
 				c.setPermission(Loader.guicreator.getString("Commands."+a+".permission"));
 				commands.put("other:"+a,c);

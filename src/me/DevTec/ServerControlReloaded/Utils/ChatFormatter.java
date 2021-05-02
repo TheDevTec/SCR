@@ -113,4 +113,20 @@ public class ChatFormatter {
 		}
 		return Loader.config.getBoolean("ChatFormat.global"+t);
 	}
+
+	public static boolean getNotify(Player s) {
+		return TheAPI.getUser(s).getBoolean("notify.chat");
+	}
+
+	public static void setNotify(Player s, boolean b) {
+		TheAPI.getUser(s).setAndSave("notify.chat", b);
+	}
+
+	public static String getChatOrientation(Player s) {
+		return TheAPI.getUser(s).getString("notify.orient");
+	}
+
+	public static void setChatOrientation(Player s, String b) {
+		TheAPI.getUser(s).setAndSave("notify.orient", b);
+	}
 }

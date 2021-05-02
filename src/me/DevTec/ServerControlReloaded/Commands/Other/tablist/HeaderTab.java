@@ -13,7 +13,7 @@ public class HeaderTab {
 	public HeaderTab(CommandSender s, String[] args) {
 		String type = args[1];
 		if(!(type.equalsIgnoreCase("player")||type.equalsIgnoreCase("global")||type.equalsIgnoreCase("group"))) {
-			Loader.advancedHelp(s, "TabList", "Other", "Header");
+			Loader.advancedHelp(s, "Tablist", "Other", "Header");
 			return;
 		}
 		if(type.equalsIgnoreCase("global")) {
@@ -57,7 +57,7 @@ public class HeaderTab {
 					Loader.sendMessages(s, "TabList.Get.Header.Global.List", Placeholder.c().replace("%line%", (id++)+"").replace("%value%",ssd));
 				return;
 			}
-			Loader.advancedHelp(s, "TabList", "Other", "Header");
+			Loader.advancedHelp(s, "Tablist", "Other", "Header");
 			return;
 		}
 		if(args[3].equalsIgnoreCase("add")) {
@@ -100,6 +100,6 @@ public class HeaderTab {
 				Loader.sendMessages(s, "TabList.Get.Header."+(type.equalsIgnoreCase("group")?"Group":"Player")+".List", Placeholder.c().replace("%line%", (id++)+"").replace("%value%",ssd));
 			return;
 		}
-		Loader.advancedHelp(s, "TabList", "Other", "Header");
+		Loader.advancedHelp(s, "Tablist", "Other", "Header");
 	}
 }

@@ -51,6 +51,6 @@ public class HeaderTabWorld {
 				Loader.sendMessages(s, "TabList.Get.Header.World.List", Placeholder.c().replace("%line%", (id++)+"").replace("%value%",ssd));
 			return;
 		}
-		Loader.advancedHelp(s, "TabList", "Other", "HeaderWorld");
+		Loader.advancedHelp(s, "Tablist", "Other", "HeaderWorld");
 	}
 }

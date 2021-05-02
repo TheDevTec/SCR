@@ -2,8 +2,8 @@ package me.DevTec.ServerControlReloaded.SCR;
 
 import me.DevTec.ServerControlReloaded.Commands.CommandsManager;
 import me.DevTec.ServerControlReloaded.Commands.Other.Trash;
+import me.DevTec.ServerControlReloaded.Commands.Other.mirror.MirrorEvents;
 import me.DevTec.ServerControlReloaded.Events.*;
-import me.DevTec.ServerControlReloaded.Modules.Mirror.MirrorEvents;
 import me.DevTec.ServerControlReloaded.Utils.*;
 import me.DevTec.ServerControlReloaded.Utils.metrics.Metrics;
 import me.devtec.theapi.TheAPI;

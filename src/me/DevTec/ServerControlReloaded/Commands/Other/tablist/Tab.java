@@ -55,34 +55,34 @@ public class Tab implements CommandExecutor, TabCompleter {
 				help(s, i);
 			break;
 		case 0:
-			Loader.advancedHelp(s, "TabList", "Other", "Prefix");
+			Loader.advancedHelp(s, "Tablist", "Other", "Prefix");
 			break;
 		case 1:
-			Loader.advancedHelp(s, "TabList", "Other", "Suffix");
+			Loader.advancedHelp(s, "Tablist", "Other", "Suffix");
 			break;
 		case 2:
-			Loader.advancedHelp(s, "TabList", "Other", "Format");
+			Loader.advancedHelp(s, "Tablist", "Other", "Format");
 			break;
 		case 3:
-			Loader.advancedHelp(s, "TabList", "Other", "PrefixWorld");
+			Loader.advancedHelp(s, "Tablist", "Other", "PrefixWorld");
 			break;
 		case 4:
-			Loader.advancedHelp(s, "TabList", "Other", "SuffixWorld");
+			Loader.advancedHelp(s, "Tablist", "Other", "SuffixWorld");
 			break;
 		case 5:
-			Loader.advancedHelp(s, "TabList", "Other", "FormatWorld");
+			Loader.advancedHelp(s, "Tablist", "Other", "FormatWorld");
 			break;
 		case 6:
-			Loader.advancedHelp(s, "TabList", "Other", "Header");
+			Loader.advancedHelp(s, "Tablist", "Other", "Header");
 			break;
 		case 7:
-			Loader.advancedHelp(s, "TabList", "Other", "Footer");
+			Loader.advancedHelp(s, "Tablist", "Other", "Footer");
 			break;
 		case 8:
-			Loader.advancedHelp(s, "TabList", "Other", "HeaderWorld");
+			Loader.advancedHelp(s, "Tablist", "Other", "HeaderWorld");
 			break;
 		case 9:
-			Loader.advancedHelp(s, "TabList", "Other", "FooterWorld");
+			Loader.advancedHelp(s, "Tablist", "Other", "FooterWorld");
 			break;
 		}
 	}

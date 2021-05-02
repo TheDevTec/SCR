@@ -85,7 +85,7 @@ public class GUICreator implements CommandExecutor {
 	    public static void vecinator(HolderGUI g ,Player p, String b, String s, GUI.ClickType clickType){
 	    	String perm = c.getString("GUI."+b+".items."+s+".permission");
 	    	if(perm!=null && perm.trim().equals(""))perm=null;
-        	if(perm!=null && (perm.startsWith("-")?p.hasPermission(perm.substring(1)):!p.hasPermission(perm))) {
+        	if(perm!=null && (perm.startsWith("-")?!p.hasPermission(perm.substring(1)):p.hasPermission(perm))) {
 	    		process(clickType, g,p,b,s,"noPermission");
 	    		return;
 	    	}
@@ -222,19 +222,20 @@ public class GUICreator implements CommandExecutor {
 		}
 	}
 	
-    private String gui;
+    private String gui, cmd;
 
-    public GUICreator(String a){
+    public GUICreator(String cmd, String a){
     	gui=a;
+    	this.cmd=cmd;
     }
 
     public boolean onCommand(CommandSender s, Command uu, String u, String[] args) {
     	if(args.length==0||!s.hasPermission("scr.command.gui")) {
     		if(s instanceof Player == false)return true;
-        	String perm = c.getString("GUI."+gui+".permission");
+        	String perm = c.getString("Commands."+cmd+".permission");
         	if(perm!=null)perm=perm.trim();
         	if(perm!=null && perm.equals(""))perm=null;
-        	if(perm==null||(perm.startsWith("-")?s.hasPermission(perm.substring(1)):!s.hasPermission(perm)))
+        	if(perm==null||(perm.startsWith("-")?!s.hasPermission(perm.substring(1)):s.hasPermission(perm)))
             maker.get(gui).make().open((Player)s);
             return true;
     	}

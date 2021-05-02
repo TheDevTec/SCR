@@ -51,6 +51,6 @@ public class FooterTabWorld {
 				Loader.sendMessages(s, "TabList.Get.Footer.World.List", Placeholder.c().replace("%line%", (id++)+"").replace("%value%",ssd));
 			return;
 		}
-		Loader.advancedHelp(s, "TabList", "Other", "FooterWorld");
+		Loader.advancedHelp(s, "Tablist", "Other", "FooterWorld");
 	}
 }
