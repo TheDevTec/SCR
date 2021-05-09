@@ -6,6 +6,8 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.apis.EnchantmentAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.nms.NMSAPI;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -95,7 +97,7 @@ public class Kit {
 					else
 						a.addEnchantment(nonum, StringUtils.getInt(enchs.replaceAll("[^+0-9]+", ""))<=0?1:StringUtils.getInt(enchs.replaceAll("[^+0-9]+", "")));
 				}
-				kit.a.add(a.create());
+				kit.a.add(setNbt(a.create(),Loader.kit.getString("Kits." + name + ".items.add." + id + ".nbt")));
 			}
 		}
 		if(Loader.kit.exists("Kits." + name + ".items.set")) {
@@ -138,10 +140,16 @@ public class Kit {
 					else
 						a.addEnchantment(nonum, StringUtils.getInt(enchs.replaceAll("[^+0-9]+", ""))<=0?1:StringUtils.getInt(enchs.replaceAll("[^+0-9]+", "")));
 				}
-				kit.s.put(StringUtils.getInt(id), a.create());
+				kit.s.put(StringUtils.getInt(id), setNbt(a.create(),Loader.kit.getString("Kits." + name + ".items.set." + id + ".nbt")));
 			}
 		}
 		return kit;
+	}
+
+	private static ItemStack setNbt(ItemStack create, String string) {
+		if(string!=null && string.startsWith("{") && string.endsWith("}"))
+			create=NMSAPI.setNBT(create, string);
+		return create;
 	}
 
 	private String name;
