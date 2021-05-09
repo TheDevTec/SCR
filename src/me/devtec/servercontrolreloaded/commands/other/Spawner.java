@@ -49,12 +49,14 @@ public class Spawner implements CommandExecutor, TabCompleter {
 							return true;
 						}
 						Block b = BlocksAPI.getLookingBlock(p, 10);
-						if (b.getType().name() == "SPAWNER") {
+						if (b.getType().name().contains("SPAWNER")) {
 							CreatureSpawner ss = (CreatureSpawner) b.getState();
 							ss.setSpawnCount(StringUtils.getInt(args[1]));
 							ss.update();
+							Loader.sendMessages(s, "Spawner.Set.Amount", Placeholder.c().replace("%amount%", "" + StringUtils.getInt(args[1])));
+							return true;
 						}
-						Loader.sendMessages(s, "Spawner.Set.Amount", Placeholder.c().replace("%amount%", "" + StringUtils.getInt(args[1])));
+						Loader.sendMessages(s, "Spawner.BlockNotSpawner");
 						return true;
 					}
 
@@ -64,12 +66,14 @@ public class Spawner implements CommandExecutor, TabCompleter {
 							return true;
 						}
 						Block b = BlocksAPI.getLookingBlock(p, 10);
-						if (b.getType().name() == "SPAWNER") {
+						if (b.getType().name().contains("SPAWNER")) {
 							CreatureSpawner ss = (CreatureSpawner) b.getState();
 							ss.setRequiredPlayerRange(StringUtils.getInt(args[1]));
 							ss.update();
+							Loader.sendMessages(s, "Spawner.Set.Range", Placeholder.c().replace("%range%", "" + StringUtils.getInt(args[1])));
+							return true;
 						}
-						Loader.sendMessages(s, "Spawner.Set.Range", Placeholder.c().replace("%range%", "" + StringUtils.getInt(args[1])));
+						Loader.sendMessages(s, "Spawner.BlockNotSpawner");
 						return true;
 					}
 				} else {
@@ -81,12 +85,14 @@ public class Spawner implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					Block b = BlocksAPI.getLookingBlock(p, 10);
-					if (b.getType().name() == "SPAWNER") {
+					if (b.getType().name().contains("SPAWNER")) {
 						CreatureSpawner ss = (CreatureSpawner) b.getState();
 						ss.setDelay(StringUtils.getInt(args[1]));
 						ss.update();
+						Loader.sendMessages(s, "Spawner.Set.SpawnTime", Placeholder.c().replace("%time%", "" + StringUtils.getInt(args[1])));
+						return true;
 					}
-					Loader.sendMessages(s, "Spawner.Set.SpawnTime", Placeholder.c().replace("%time%", "" + StringUtils.getInt(args[1])));
+					Loader.sendMessages(s, "Spawner.BlockNotSpawner");
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("setMob")) {
@@ -95,7 +101,7 @@ public class Spawner implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					Block b = BlocksAPI.getLookingBlock(p, 10);
-					if (b.getType().name() == "SPAWNER") {
+					if (b.getType().name().contains("SPAWNER")) {
 						
 						EntityType type = EntityType.fromName(args[1]);
 						if (type != null) {
@@ -108,7 +114,7 @@ public class Spawner implements CommandExecutor, TabCompleter {
 						Loader.sendMessages(s, "Missing.Entity", Placeholder.c().replace("%entity%", args[1]));
 						return true;
 					}
-					Loader.sendMessages(s, "Spawner.Set.BlockNotSpawner");
+					Loader.sendMessages(s, "Spawner.BlockNotSpawner");
 					return true;
 				}
 				Loader.Help(s, "Spawner", "Other");
