@@ -9,6 +9,34 @@ Prefix: "&6&lS&r&lerver &8&l»&7"
 # Translation for no perms message
 NoPerms: "%prefix% You don't have enought permissions to do that (&e%permission%&7)"
 
+# Translations for /Portal command
+Portals:
+  NotExist: "%prefix% Portal &e%name% &7doesn't exist"
+  Exists: "%prefix% Portal &e%name% &7already exists"
+  Delete: "%prefix% Portal &e%name% &7deleted"
+  PosSet: "%prefix% Position &e%position%# &7of portal &e%name% &7set at coords &e%x%&7, &e%y%&7, &e%z%"
+  Particle: "%prefix% Set particle &e%value% &7for portal &e%name%"
+  Server: "%prefix% Set foward server &e%server% &7for portal &e%name%"
+  Create:
+  - "%prefix% Portal &e%name% &7created"
+  - "%prefix% Setup portal via '/portal set' command"
+  List:
+  - "%prefix% List of portals:"
+  - "&e%list%"
+  Cmds:
+    Add: "%prefix% Added command '&e%value%&7'to portal &e%name%"
+    Remove: "%prefix% Removed command on position &e%position% &7of portal &e%name%"
+    List:
+    - "%prefix% List of commands of portal &e%name%&7:"
+    - "&e%list%"
+    
+# Translations for /ChatNotify command
+Notify:
+  Enable: "%prefix% Notifications in chat enabled"
+  Disable: "%prefix% Notifications in chat disabled"
+  EnableOther: "%prefix% Notifications in chat of &e%player% &7enabled"
+  DisableOther: "%prefix% Notifications in chat of &e%player% &7disabled"
+
 # Translations for /Give and /Skull commands
 Give:
   Skull:

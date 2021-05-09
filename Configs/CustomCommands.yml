@@ -1,0 +1,13 @@
+Discord:
+  Enabled: false
+  Name: "discord"
+  Aliases:
+  - "disc"
+  - "dc"
+  Permission: "scr.command.discord"
+  
+  Messages:
+  - "&cDiscord: &eURL"
+  
+  Commands:
+  - "say %player% used discord command"

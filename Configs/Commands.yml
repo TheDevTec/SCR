@@ -792,6 +792,26 @@ Other:
     Permission: "SCR.Command.Mirror"
     Help: "/Mirror <type | none> - Set your mirror type"
     Enabled: true
+  Portal:
+    Name: "portal"
+    Permission: "SCR.Command.Portal"
+    Help:
+    - "/Portal Create <name> - Create new portal"
+    - "/Portal Delete <name> - Delete portal"
+    - "/Portal Set Pos1/Pos2/Particle <name> [value] - Sets the portal value"
+    - "/Portal Server <name> <server> - Sets the portal foward server"
+    - "/Portal Cmds <add/remove/list> [value] - Manager of commands of portal"
+    - "/Portal BCmds <add/remove/list> [value] - Manager of bungee commands of portal"
+    AdvancedHelp:
+      Set:
+      - "/Portal Set Pos1/Pos2/Particle <name> [value] - Sets the portal value"
+      Server:
+      - "/Portal Server <name> <server> - Sets the portal foward server"
+      Cmds:
+      - "/Portal Cmds <add/remove/list> [value] - Manager of commands of portal"
+      BCmds:
+      - "/Portal BCmds <add/remove/list> [value] - Manager of bungee commands of portal"
+    Enabled: true
   AFK:
     Name: "afk"
     Permission: "SCR.Command.Afk"
@@ -801,6 +821,15 @@ Other:
       Other: "SCR.Command.Afk.Other"
       Bypass: "SCR.Command.Afk.Bypass"
     Help: "/Afk - Set your status to afk"
+    Enabled: true
+  ChatNotify:
+    Name: "chatnotify"
+    Permission: "SCR.Command.ChatNotify"
+    Aliases:
+    - "cnotify"
+    - "notify"
+    SubPermission:
+      Other: "SCR.Command.ChatNotify.Other"
     Enabled: true
   Top:
     Name: "top"

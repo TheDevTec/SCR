@@ -9,6 +9,34 @@ Prefix: "&6&lS&r&lerver &8&l»&7"
 # Translation for no perms message
 NoPerms: "%prefix% Na toto nemáš práva (&e%permission%&7)"
 
+# Translations for /Portal command
+Portals:
+  NotExist: "%prefix% Portál &e%name% &7neexistuje"
+  Exists: "%prefix% Portál &e%name% &7už existuje"
+  Delete: "%prefix% Portál &e%name% &7bol zmazaný"
+  PosSet: "%prefix% Pozícia &e%position%# &7portálu &e%name% &7nastavená na súradnice: &e%x%&7, &e%y%&7, &e%z%"
+  Particle: "%prefix% Particle efekt nastavený na &e%value% &7pre portál &e%name%"
+  Server: "%prefix% Server &e%server% &7nastavený pre portál &e%name%"
+  Create:
+  - "%prefix% Portál &e%name% &7bol vytvorený"
+  - "%prefix% Nastav portál pomocou '/portal set' "
+  List:
+  - "%prefix% Zaznam portálov:"
+  - "&e%list%"
+  Cmds:
+    Add: "%prefix% Pridaný príkaz '&e%value%&7' pre portál &e%name%"
+    Remove: "%prefix% Odobraný príkaz na pozíciu &e%position% &7portálu &e%name%"
+    List:
+    - "%prefix% Zoznam príkazov pre portál &e%name%&7:"
+    - "&e%list%"
+    
+# Translations for /ChatNotify command
+Notify:
+  Enable: "%prefix% Notifikácie v chate zapnuté"
+  Disable: "%prefix% Notifikácie v chate vypnuté"
+  EnableOther: "%prefix% Notifikácie v chate hráča &e%player% &7zapnuté"
+  DisableOther: "%prefix% Notifikácie v chate hráča &e%player% &7vypnuté"
+
 # Translations for /Give and /Skull commands
 Give:
   Skull:

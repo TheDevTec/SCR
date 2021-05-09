@@ -1,18 +1,19 @@
 package me.devtec.servercontrolreloaded.commands.time;
 
-import me.devtec.servercontrolreloaded.scr.API;
-import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.StringUtils;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.List;
+import me.devtec.servercontrolreloaded.scr.API;
+import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class PDay implements CommandExecutor, TabCompleter {
 
@@ -22,7 +23,7 @@ public class PDay implements CommandExecutor, TabCompleter {
 			if (s instanceof Player) {
 				if (Loader.has(s, "PlayerDay", "Time")) {
 					((Player) s).setPlayerTime(1000, true);
-					Loader.sendMessages(s, "Time.PDay", Placeholder.c().add("%world%", ((Player) s).getLocation().getWorld().getName())
+					Loader.sendMessages(s, "Time.PlayerDay", Placeholder.c().add("%world%", ((Player) s).getWorld().getName())
 							.add("%player%", s.getName()));
 					return true;
 				}
@@ -36,7 +37,7 @@ public class PDay implements CommandExecutor, TabCompleter {
 			if (Loader.has(s, "PlayerDay", "Time", "Other")) {
 				if (TheAPI.getPlayer(args[0]) != null) {
 					TheAPI.getPlayer(args[0]).setPlayerTime(0, true);
-					Loader.sendMessages(s, "Time.PDay", Placeholder.c().add("%world%", ((Player) s).getLocation().getWorld().getName())
+					Loader.sendMessages(s, "Time.PlayerDay", Placeholder.c().add("%world%", TheAPI.getPlayer(args[0]).getWorld().getName())
 							.add("%player%", args[0]));
 					return true;
 				}

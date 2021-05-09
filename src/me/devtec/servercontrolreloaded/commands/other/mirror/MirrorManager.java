@@ -34,8 +34,8 @@ public class MirrorManager {
 		
 	}
 	public static void remove(Player player) {
-		mirror.remove( player);
-		location.remove( player);
+		mirror.remove(player);
+		location.remove(player);
 	}
 	
 	public static boolean isMirroring(Player player) {

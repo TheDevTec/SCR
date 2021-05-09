@@ -1,15 +1,17 @@
 package me.devtec.servercontrolreloaded.utils;
 
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.entity.Player;
+
 import me.devtec.servercontrolreloaded.events.ChatFormat;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Item;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
-import org.bukkit.entity.Player;
-
-import java.util.List;
-import java.util.Map;
+import me.devtec.theapi.utils.datakeeper.User;
 
 public class ChatFormatter {
 	public static String displayName(Player p) {
@@ -115,7 +117,9 @@ public class ChatFormatter {
 	}
 
 	public static boolean getNotify(Player s) {
-		return TheAPI.getUser(s).getBoolean("notify.chat");
+		User a = TheAPI.getUser(s);
+		if(!a.exist("notify.chat"))return true;
+		return a.getBoolean("notify.chat");
 	}
 
 	public static void setNotify(Player s, boolean b) {

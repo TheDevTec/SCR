@@ -79,6 +79,7 @@ import me.devtec.servercontrolreloaded.commands.other.BossBar;
 import me.devtec.servercontrolreloaded.commands.other.Butcher;
 import me.devtec.servercontrolreloaded.commands.other.ChatLock;
 import me.devtec.servercontrolreloaded.commands.other.ColorsCmd;
+import me.devtec.servercontrolreloaded.commands.other.CustomCommand;
 import me.devtec.servercontrolreloaded.commands.other.Exp;
 import me.devtec.servercontrolreloaded.commands.other.Feed;
 import me.devtec.servercontrolreloaded.commands.other.Fly;
@@ -104,7 +105,9 @@ import me.devtec.servercontrolreloaded.commands.other.Top;
 import me.devtec.servercontrolreloaded.commands.other.Trash;
 import me.devtec.servercontrolreloaded.commands.other.Uuid;
 import me.devtec.servercontrolreloaded.commands.other.Vanish;
+import me.devtec.servercontrolreloaded.commands.other.chat.ChatNotify;
 import me.devtec.servercontrolreloaded.commands.other.mirror.MirrorCommand;
+import me.devtec.servercontrolreloaded.commands.other.portal.Portal;
 import me.devtec.servercontrolreloaded.commands.other.tablist.Tab;
 import me.devtec.servercontrolreloaded.commands.server.Reload;
 import me.devtec.servercontrolreloaded.commands.server.Restart;
@@ -170,8 +173,7 @@ public class CommandsManager {
 	}
 	
 	public static void unload(String section, String command) {
-		TheAPI.unregisterCommand(commands.get(section+":"+command));
-		commands.remove(section+":"+command);
+		TheAPI.unregisterCommand(commands.remove(section+":"+command));
 	}
 	
 	public static void load() {
@@ -308,6 +310,8 @@ public class CommandsManager {
 		if(Ref.getClass("net.md_5.bungee.api.ChatColor")!=null)
 		load("Other", "Send",new Send()); //requres spigot
 		load("Other", "Top",new Top());
+		load("Other", "Portal",new Portal());
+		load("Other", "ChatNotify",new ChatNotify());
 		load("Other", "ChatLock",new ChatLock());
 		load("Other", "Repair", new Repair());
 		load("Other", "Feed", new Feed());
@@ -351,11 +355,41 @@ public class CommandsManager {
 		//Nickname
 		load("Nickname", "Nickname", new Nick());
 		load("Nickname", "NicknameReset", new NickReset());
+		
+		loadCustomCommands();
+		
 		if(TheAPI.isNewerThan(12))
 		for(Player p : TheAPI.getOnlinePlayers())
 			p.updateCommands();
 		}
 	
+	private static void loadCustomCommands() {
+		for(String command : Loader.customCmds.getKeys()) {
+			load(command, new CustomCommand(command));
+		}
+	}
+	
+	private static void load(String command, CommandExecutor cs) {
+		if(Loader.customCmds.getBoolean(command+".Enabled")) {
+			PluginCommand c = TheAPI.createCommand(Loader.customCmds.getString(command+".Name"), Loader.getInstance);
+			List<String> aliases = new ArrayList<>();
+			if(Loader.customCmds.exists(command+".Aliases")) {
+			if(Loader.customCmds.get(command+".Aliases") instanceof Collection)
+				aliases=Loader.customCmds.getStringList(command+".Aliases");
+				else aliases.add(Loader.customCmds.getString(command+".Aliases"));
+			}
+			c.setAliases(aliases);
+			c.setExecutor(cs);
+			c.setPermission(Loader.customCmds.getString(command+".Permission"));
+			TheAPI.registerCommand(c);
+			commands.put("scr:customcmd:"+command, c);
+		}else {
+			if(commands.containsKey("scr:customcmd:"+command)){
+				TheAPI.unregisterCommand(commands.remove("scr:customcmd:"+command));
+			}
+		}
+	}
+
 	public static void unload() {
 		for(PluginCommand s : commands.values())
 			TheAPI.unregisterCommand(s);

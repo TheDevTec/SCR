@@ -127,7 +127,7 @@ public class MultiWorldsUtils {
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Spawn.Z_Pos_Head", 0);
 		Loader.mw.save();
 		for(String g : as.getGameRules())
-			if(Loader.mw.exists("WorldsSettings." + as.getName()+".Gamerule."+g) && !Loader.mw.getString("WorldsSettings." + as.getName() + ".Gamerule." + g).trim().equals(""))
+			if(Loader.mw.getString("WorldsSettings." + as.getName()+".Gamerule."+g)!=null && !Loader.mw.getString("WorldsSettings." + as.getName() + ".Gamerule." + g).trim().equals(""))
 				as.setGameRuleValue(g, Loader.mw.getString("WorldsSettings." + as.getName() + ".Gamerule." + g));
 			String dif = Loader.mw.getString("WorldsSettings." + as.getName() + ".Difficulty");
 			if(dif!=null)dif=dif.toUpperCase();

@@ -1,10 +1,58 @@
 package me.devtec.servercontrolreloaded.scr;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.commands.other.Trash;
 import me.devtec.servercontrolreloaded.commands.other.mirror.MirrorEvents;
-import me.devtec.servercontrolreloaded.events.*;
-import me.devtec.servercontrolreloaded.utils.*;
+import me.devtec.servercontrolreloaded.events.AFkPlayerEvents;
+import me.devtec.servercontrolreloaded.events.ChatFormat;
+import me.devtec.servercontrolreloaded.events.CreatePortal;
+import me.devtec.servercontrolreloaded.events.DeathEvent;
+import me.devtec.servercontrolreloaded.events.DisableItems;
+import me.devtec.servercontrolreloaded.events.EntitySpawn;
+import me.devtec.servercontrolreloaded.events.FarmingSystem;
+import me.devtec.servercontrolreloaded.events.ItemUse;
+import me.devtec.servercontrolreloaded.events.LoginEvent;
+import me.devtec.servercontrolreloaded.events.OnPlayerJoin;
+import me.devtec.servercontrolreloaded.events.RewardsListenerChat;
+import me.devtec.servercontrolreloaded.events.SecurityListenerCooldowns;
+import me.devtec.servercontrolreloaded.events.SecurityListenerV4;
+import me.devtec.servercontrolreloaded.events.Signs;
+import me.devtec.servercontrolreloaded.events.WorldChange;
+import me.devtec.servercontrolreloaded.utils.BungeeListener;
+import me.devtec.servercontrolreloaded.utils.Configs;
+import me.devtec.servercontrolreloaded.utils.Converter;
+import me.devtec.servercontrolreloaded.utils.DisplayManager;
+import me.devtec.servercontrolreloaded.utils.Eco;
+import me.devtec.servercontrolreloaded.utils.Kit;
+import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
+import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
+import me.devtec.servercontrolreloaded.utils.Portal;
+import me.devtec.servercontrolreloaded.utils.Rule;
+import me.devtec.servercontrolreloaded.utils.SPlayer;
+import me.devtec.servercontrolreloaded.utils.TabList;
+import me.devtec.servercontrolreloaded.utils.Tasks;
+import me.devtec.servercontrolreloaded.utils.XMaterial;
+import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.servercontrolreloaded.utils.metrics.Metrics;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
@@ -25,22 +73,9 @@ import me.devtec.theapi.utils.reflections.Ref;
 import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicePriority;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.*;
-import java.util.Map.Entry;
 
 public class Loader extends JavaPlugin implements Listener {
-	public static Config config, plac, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb,guicreator;
+	public static Config config, plac, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb,guicreator,portals,customCmds;
 	public static List<Rule> rules = new ArrayList<>();
 	private int task;
 	private long time, rkick;
@@ -174,7 +209,7 @@ public class Loader extends JavaPlugin implements Listener {
 		Object o = getTranslation(path);
 		if(!existsTranslation(path)) {
 			Bukkit.getLogger().severe("[BUG] Missing configuration path [Translations]!");
-			Bukkit.getLogger().severe("[BUG] Report this to the DevTec discord:");
+			Bukkit.getLogger().severe("[BUG] Report this to the DevTec discord to channel #scr-bugs:");
 			Bukkit.getLogger().severe("[BUG] Missing path: "+path);
 			return;
 		}
@@ -313,6 +348,7 @@ public class Loader extends JavaPlugin implements Listener {
 				hasBungee=true;
 				Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 				Bukkit.getMessenger().registerOutgoingPluginChannel(this, "scr:community");
+				Bukkit.getMessenger().registerIncomingPluginChannel(this, "scr:community", new BungeeListener());
 			}
 		}
 		EventsRegister();
@@ -437,6 +473,7 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		TabList.removeTab();
 		Tasks.unload();
+		Portal.unload();
 		stop();
 		DisplayManager.unload();
 		for (String w : mw.getStringList("Worlds"))
@@ -575,6 +612,7 @@ public class Loader extends JavaPlugin implements Listener {
 			if (EconomyAPI.getEconomy() != null && !EconomyAPI.hasAccount(p))
 				EconomyAPI.createAccount(p);
 		}
+		Portal.reload();
 		MultiWorldsUtils.gamemodeWorldCheck();
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading kits:", TheAPI.getConsole());
 		for (String s : Loader.kit.getKeys("Kits")) {

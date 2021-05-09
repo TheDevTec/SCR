@@ -22,7 +22,7 @@ public class PNight implements CommandExecutor, TabCompleter {
 			if (s instanceof Player) {
 				if (Loader.has(s, "PlayerNight", "Time")) {
 					((Player) s).setPlayerTime(13000, true);
-					Loader.sendMessages(s, "Time.PNight", Placeholder.c().add("%world%", ((Player) s).getLocation().getWorld().getName())
+					Loader.sendMessages(s, "Time.PlayerNight", Placeholder.c().add("%world%", ((Player) s).getWorld().getName())
 							.add("%player%", s.getName()));
 					return true;
 				}
@@ -36,7 +36,7 @@ public class PNight implements CommandExecutor, TabCompleter {
 			if (Loader.has(s, "PlayerNight", "Time", "Other")) {
 				if (TheAPI.getPlayer(args[0]) != null) {
 					TheAPI.getPlayer(args[0]).setPlayerTime(12000, true);
-					Loader.sendMessages(s, "Time.PNight", Placeholder.c().add("%world%", ((Player) s).getLocation().getWorld().getName())
+					Loader.sendMessages(s, "Time.PlayerNight", Placeholder.c().add("%world%", TheAPI.getPlayer(args[0]).getWorld().getName())
 							.add("%player%", args[0]));
 					return true;
 				}

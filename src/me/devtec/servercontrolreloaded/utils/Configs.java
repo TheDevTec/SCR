@@ -17,6 +17,10 @@ import me.devtec.theapi.utils.reflections.Ref;
 public class Configs {
 	@SuppressWarnings("unchecked")
 	public static void load(boolean settingMessage) {
+		Loader.portals= new Config("ServerControlReloaded/Portals.yml");
+		if(!new File("plugins/ServerControlReloaded/CustomCommands.yml").exists()) {
+			Loader.customCmds=Config.loadConfig(Loader.getInstance, "Configs/CustomCommands.yml", "ServerControlReloaded/CustomCommands.yml");
+		}else Loader.customCmds=new Config("ServerControlReloaded/CustomCommands.yml");
 		copyDefauts();
 		String lang = Loader.config.getString("Options.Language");
 		if(lang!=null) {

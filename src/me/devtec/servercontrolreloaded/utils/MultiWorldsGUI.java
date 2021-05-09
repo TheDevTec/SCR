@@ -1,6 +1,21 @@
 package me.devtec.servercontrolreloaded.utils;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang.WordUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.World.Environment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
 import com.google.common.collect.Lists;
 
 import me.devtec.servercontrolreloaded.scr.API;
@@ -17,15 +32,6 @@ import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.worldsapi.WorldsAPI;
-import org.apache.commons.lang.WordUtils;
-import org.bukkit.*;
-import org.bukkit.World.Environment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class MultiWorldsGUI {
 
@@ -499,9 +505,11 @@ public class MultiWorldsGUI {
 						g="SPECTATOR";
 					else g="SURVIVAL";
 					Loader.mw.set("WorldsSettings." + w.getName() + ".GameMode", g);
-					for (Player p : TheAPI.getOnlinePlayers())
-						if (p.getWorld() == w)
-							p.setGameMode(GameMode.valueOf(g));
+					GameMode gg = GameMode.valueOf(g);
+					NMSAPI.postToMainThread(() -> {
+						for (Player p : TheAPI.getOnlinePlayers())
+							if (p.getWorld() == w)p.setGameMode(gg);
+					});
 					this.setItem(createItem("&6GameMode", XMaterial.BRICKS, Arrays.asList(g)));
 					gui.setItem(1, this);
 					break;
@@ -516,9 +524,11 @@ public class MultiWorldsGUI {
 						g="CREATIVE";
 					else g="SURVIVAL";
 					Loader.mw.set("WorldsSettings." + w.getName() + ".GameMode", g);
-					for (Player p : TheAPI.getOnlinePlayers())
-						if (p.getWorld() == w)
-							p.setGameMode(GameMode.valueOf(g));
+					gg = GameMode.valueOf(g);
+					NMSAPI.postToMainThread(() -> {
+						for (Player p : TheAPI.getOnlinePlayers())
+							if (p.getWorld() == w)p.setGameMode(gg);
+					});
 					this.setItem(createItem("&6GameMode", XMaterial.BRICKS, Arrays.asList(g)));
 					gui.setItem(1, this);
 					break;
@@ -636,104 +646,152 @@ public class MultiWorldsGUI {
 		int i = 11;
 		if(Loader.mw.exists("WorldsSettings." + w.getName() + ".Gamerule"))
 		for (String ds : Loader.mw.getKeys("WorldsSettings." + w.getName() + ".Gamerule")) {
+			if(Arrays.asList(toUpper(w.getGameRules())).contains(ds.toUpperCase())) {
 			int slot = ++i;
 			XMaterial x = null;
-			switch (ds) {
+			switch (ds.toUpperCase()) {
 			case "COMMAND_BLOCK_OUTPUT":
+			case "COMMANDBLOCKOUTPUT":
 				x = XMaterial.COMMAND_BLOCK;
 				break;
 			case "DO_TRADER_SPAWNING":
+			case "DOTRADERSPAWNING":
 				x = XMaterial.LEAD;
 				break;
 			case "NATURAL_REGENERATION":
+			case "NATURALREGENERATION":
 				x = XMaterial.RED_DYE;
 				break;
 			case "FORGIVE_DEAD_PLAYERS":
+			case "FORGIVEDEADPLAYERS":
 				x = XMaterial.GOLD_NUGGET;
 				break;
+			case "FIREDAMAGE":
+			case "FIRE_DAMAGE":
+				x = XMaterial.BLAZE_POWDER;
+				break;
+			case "DROWNINGDAMAGE":
+			case "DROWNING_DAMAGE":
+				x = XMaterial.WATER_BUCKET;
+				break;
 			case "DISABLE_ELYTRA_MOVEMENT_CHECK":
+			case "DISABLEELYTRAMOVEMENTCHECK":
 				x = XMaterial.ELYTRA;
 				break;
 			case "UNIVERSAL_ANGER":
+			case "UNIVERSALANGER":
 				x = XMaterial.GOLD_NUGGET;
 				break;
 			case "DO_IMMEDIATE_RESPAWN":
+			case "DOIMMEDIATERESPAWN":
 				x = XMaterial.RED_BED;
 				break;
 			case "DO_INSOMNIA":
+			case "DOINSOMNIA":
 				x = XMaterial.RED_BED;
 				break;
 			case "DO_PATROL_SPAWNING":
+			case "DOPATROLSPAWNING":
 				x = XMaterial.ENDER_EYE;
 				break;
 			case "DISABLE_RAIDS":
+			case "DISABLERAIDS":
 				x = XMaterial.IRON_AXE;
 				break;
 			case "DO_DAYLIGHT_CYCLE":
+			case "DODAYLIGHTCYCLE":
 				x = XMaterial.CLOCK;
 				break;
 			case "DO_ENTITY_DROPS":
+			case "DOENTITYDROPS":
 				x = XMaterial.ROTTEN_FLESH;
 				break;
 			case "DO_FIRE_TICK":
+			case "DOFIRETICK":
 				x = XMaterial.FLINT_AND_STEEL;
 				break;
 			case "DO_LIMITED_CRAFTING":
+			case "DOLIMITEDCRAFTING":
 				x = XMaterial.CRAFTING_TABLE;
 				break;
 			case "DO_MOB_LOOT":
+			case "DOMOBLOOT":
 				x = XMaterial.PORKCHOP;
 				break;
 			case "DO_TILE_DROPS":
+			case "DOTILEDROPS":
 				x = XMaterial.CHEST;
 				break;
+			case "DO_MOB_SPAWNING":
+			case "DOMOBSPAWNING":
+				x = XMaterial.ZOMBIE_HEAD;
+				break;
+			case "FALL_DAMAGE":
+			case "FALLDAMAGE":
+				x = XMaterial.IRON_BOOTS;
+				break;
 			case "DO_WEATHER_CYCLE":
+			case "DOWEATHERCYCLE":
 				x = XMaterial.WATER_BUCKET;
 				break;
 			case "KEEP_INVENTORY":
+			case "KEEPINVENTORY":
 				x = XMaterial.CHEST;
 				break;
 			case "LOG_ADMIN_COMMANDS":
+			case "LOGADMINCOMMANDS":
 				x = XMaterial.PAPER;
 				break;
 			case "MAX_COMMAND_CHAIN_LENGTH":
+			case "MAXCOMMANDCHAINLENGTH":
 				x = XMaterial.CHAIN_COMMAND_BLOCK;
 				break;
 			case "MAX_ENTITY_CRAMMING":
+			case "MAXENTITYCRAMMING":
 				x = XMaterial.ZOMBIE_SPAWN_EGG;
 				break;
 			case "MOB_GRIEFING":
+			case "MOBGRIEFING":
 				x = XMaterial.OAK_DOOR;
 				break;
 			case "RANDOM_TICK_SPEED":
+			case "RANDOMTICKSPEED":
 				x = XMaterial.GOLDEN_HOE;
 				break;
 			case "REDUCED_DEBUG_INFO":
+			case "REDUCEDDEBUGINFO":
 				x = XMaterial.EGG;
 				break;
 			case "SEND_COMMAND_FEEDBACK":
+			case "SENDCOMMANDFEEDBACK":
 				x = XMaterial.BOOK;
 				break;
 			case "SHOW_DEATH_MESSAGES":
+			case "SHOWDEATHMESSAGES":
 				x = XMaterial.MOSSY_COBBLESTONE;
 				break;
 			case "SPAWN_RADIUS":
+			case "SPAWNRADIUS":
 				x = XMaterial.GOLDEN_APPLE;
 				break;
 			case "SPECTATORS_GENERATE_CHUNKS":
+			case "SPECTATORSGENERATECHUNKS":
 				x = XMaterial.GRASS_BLOCK;
 				break;
 			case "ANNOUNCE_ADVANCEMENTS":
+			case "ANNOUNCEADVANCEMENTS":
 				x = XMaterial.DIAMOND;
 				break;
 			}
 			XMaterial d = x;
 			String name = WordUtils.capitalize(ds.replace("_", " "));
-			a.setItem(slot, new ItemGUI(createItem("&6" + name, d ,Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds)))) {
+			a.setItem(slot, new ItemGUI(createItem("&6" + name, d ,Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds)==null?"":Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds)))) {
 				
 				@Override
 				public void onClick(Player p, HolderGUI g, ClickType c) {
-					if(ds.equalsIgnoreCase("MAX_COMMAND_CHAIN_LENGTH")||ds.equalsIgnoreCase("MAX_ENTITY_CRAMMING")||ds.equalsIgnoreCase("RANDOM_TICK_SPEED")||ds.equalsIgnoreCase("SPAWN_RADIUS")) {
+					if(ds.equalsIgnoreCase("MAX_COMMAND_CHAIN_LENGTH")||ds.equalsIgnoreCase("MAX_ENTITY_CRAMMING")||ds.equalsIgnoreCase("RANDOM_TICK_SPEED")||ds.equalsIgnoreCase("SPAWN_RADIUS")
+							||
+							ds.equalsIgnoreCase("MAXCOMMANDCHAINLENGTH")||ds.equalsIgnoreCase("MAXENTITYCRAMMING")||ds.equalsIgnoreCase("RANDOMTICKSPEED")||ds.equalsIgnoreCase("SPAWNRADIUS")) {
 						switch(c) {
 						case LEFT_PICKUP:
 						case SHIFT_LEFT_DROP:
@@ -768,8 +826,15 @@ public class MultiWorldsGUI {
 						g.setItem(slot, this);
 					}
 				}});
+			}
 	}}
 	
+	private static String[] toUpper(String[] gameRules) {
+		for(int i = 0; i < gameRules.length; ++i)
+			gameRules[i]=gameRules[i].toUpperCase();
+		return gameRules;
+	}
+
 	public static ItemGUI empty=new ItemGUI(createItem(" ", XMaterial.BLACK_STAINED_GLASS_PANE, null)) {public void onClick(Player s, HolderGUI g, ClickType c) {};};
 
 	public static void smallInv(GUI a) {

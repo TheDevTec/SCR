@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.ChatFormatter;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
@@ -63,12 +64,31 @@ public class ChatNotify implements CommandExecutor, TabCompleter {
 				}
 				if(Loader.has(s, "ChatNotify", "Other", "ToggleOther")) {
 					ChatFormatter.setNotify(d, !ChatFormatter.getNotify(d));
-					Loader.sendMessages(s, "Notify."+(ChatFormatter.getNotify(d)?"Enable":"Disable"));
+					Loader.sendMessages(d, "Notify."+(ChatFormatter.getNotify(d)?"Enable":"Disable"));
+					Loader.sendMessages(s, "Notify."+(ChatFormatter.getNotify(d)?"EnableOther":"DisableOther"), Placeholder.c().add("%player%",d.getName()).replace("%playername%", d.getDisplayName()==null?(d.getCustomName()==null?d.getName():d.getCustomName()):d.getDisplayName()));
 					return true;
 				}
-				Loader.advancedHelp(s, "ChatNotify", "Other", "ToggleOther");
+				Loader.noPerms(s, "ChatNotify", "Other", "ToggleOther");
 				return true;
 			}
+			Player d = TheAPI.getPlayer(args[0]);
+			if(d==null) {
+				Loader.notOnline(s, args[0]);
+				return true;
+			}
+			if(d==s) {
+				ChatFormatter.setNotify((Player)s, !ChatFormatter.getNotify((Player)s));
+				Loader.sendMessages(s, "Notify."+(ChatFormatter.getNotify((Player)s)?"Enable":"Disable"));
+				return true;
+			}
+			if(Loader.has(s, "ChatNotify", "Other", "ToggleOther")) {
+				ChatFormatter.setNotify(d, !ChatFormatter.getNotify(d));
+				Loader.sendMessages(d, "Notify."+(ChatFormatter.getNotify(d)?"Enable":"Disable"));
+				Loader.sendMessages(s, "Notify."+(ChatFormatter.getNotify(d)?"EnableOther":"DisableOther"), Placeholder.c().add("%player%",d.getName()).replace("%playername%", d.getDisplayName()==null?(d.getCustomName()==null?d.getName():d.getCustomName()):d.getDisplayName()));
+				return true;
+			}
+			Loader.noPerms(s, "ChatNotify", "Other", "ToggleOther");
+			return true;
 		}
 		Loader.noPerms(s, "ChatNotify", "Other");
 		return true;

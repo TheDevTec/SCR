@@ -21,23 +21,22 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class DisplayManager {
+	@SuppressWarnings("unchecked")
+	private static Map<String, ScoreboardAPI> map = (Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores");
+	
 	public static enum DisplayType {
 		ACTIONBAR,
 		BOSSBAR,
 		SCOREBOARD
 	}
 
-	@SuppressWarnings("unchecked")
 	public static void initializePlayer(Player p) {
 		for(DisplayType t : DisplayType.values()) {
 			if(TheAPI.getUser(p).getBoolean("SCR."+t.name()) && !ignore.get(t).contains(p.getName()))
 				ignore.get(t).add(p.getName());
 		}
-		if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(p.getName()))
-		((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(p.getName()).destroy();
 	}
 
-	@SuppressWarnings("unchecked")
 	public static void removeCache(Player p) {
 		for(DisplayType t : DisplayType.values()) {
 			ignore.get(t).remove(p.getName());
@@ -46,8 +45,8 @@ public class DisplayManager {
 		TheAPI.sendActionBar(p, "");
 		if(TheAPI.getBossBar(p)!=null)
 		TheAPI.removeBossBar(p);
-		if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(p.getName()))
-		((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(p.getName()).destroy();
+		if(map.containsKey(p.getName()))
+		map.remove(p.getName()).destroy();
 	}
 	
 	public static void show(Player p, DisplayType type) {
@@ -73,7 +72,6 @@ public class DisplayManager {
 	private static SimpleScore score = new SimpleScore();
 	protected static AnimationManager ac = new AnimationManager(), bb= new AnimationManager(), sb=new AnimationManager();
 	
-	@SuppressWarnings("unchecked")
 	public static void hide(Player s, DisplayType type) {
 		TheAPI.getUser(s).setAndSave("SCR."+type.name(), true);
 		if(!ignore.get(type).contains(s.getName()))
@@ -103,9 +101,8 @@ public class DisplayManager {
 					return;
 				}
 				hide.get(DisplayType.SCOREBOARD).add(s.getName());
-				if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
-					((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()).destroy();
-				}
+				if(map.containsKey(s.getName()))
+					map.remove(s.getName()).destroy();
 			}
 			break;
 		}
@@ -353,15 +350,14 @@ public class DisplayManager {
 		}.runRepeating(0, StringUtils.calculate(Loader.bb.getString("RefleshTick")).longValue()));
 		if (setting.sb)
 		tasks.add(new Tasker() {
-			@SuppressWarnings("unchecked")
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
 					try {
 					if(!s.hasPermission(Loader.sb.getString("Options.Permission"))) {
 						if(!hide.get(DisplayType.SCOREBOARD).contains(s.getName())) {
 							hide.get(DisplayType.SCOREBOARD).add(s.getName());
-							if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
-								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()).destroy();
+							if(map.containsKey(s.getName())) {
+								map.remove(s.getName()).destroy();
 							}
 						}
 						continue;
@@ -369,8 +365,8 @@ public class DisplayManager {
 					if(Loader.sb.getStringList("Options.ForbiddenWorlds").contains(s.getWorld().getName())) {
 						if(!hide.get(DisplayType.SCOREBOARD).contains(s.getName())) {
 							hide.get(DisplayType.SCOREBOARD).add(s.getName());
-							if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
-								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()).destroy();
+							if(map.containsKey(s.getName())) {
+								map.remove(s.getName()).destroy();
 							}
 							continue;
 						}
@@ -396,8 +392,8 @@ public class DisplayManager {
 								continue;
 							}
 							hide.get(DisplayType.SCOREBOARD).add(s.getName());
-							if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
-								((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()).destroy();
+							if(map.containsKey(s.getName())) {
+								map.remove(s.getName()).destroy();
 							}
 							continue;
 						}else {
@@ -448,22 +444,20 @@ public class DisplayManager {
 		
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static void unload() {
 		for(int i : tasks)
 			Scheduler.cancelTask(i);
-		for(Player s : TheAPI.getOnlinePlayers()) {
-			TheAPI.sendActionBar(s, "");
-			if(TheAPI.getBossBar(s)!=null)
-			TheAPI.removeBossBar(s);
-			if(((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).containsKey(s.getName())) {
-				((Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores")).remove(s.getName()).destroy();
-			}
-		}
 		tasks.clear();
 		for(DisplayType t : DisplayType.values()) {
 			ignore.get(t).clear();
 			hide.get(t).clear();
+		}
+		for(Player s : TheAPI.getOnlinePlayers()) {
+			TheAPI.sendActionBar(s, "");
+			if(TheAPI.getBossBar(s)!=null)
+			TheAPI.removeBossBar(s);
+			if(map.containsKey(s.getName()))
+				map.remove(s.getName()).destroy();
 		}
 	}
 }

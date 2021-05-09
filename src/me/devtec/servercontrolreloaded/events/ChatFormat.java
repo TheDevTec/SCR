@@ -336,11 +336,13 @@ public class ChatFormat implements Listener {
 			for(Player s : e.getRecipients())
 				if(p.canSee(s) && p!=s && msg.contains(s.getName())) {
 					msg=replacePlayer(color, colorOfFormat, msg, s.getName(), p);
+					if(ChatFormatter.getNotify(s)) {
 					if(sound!=null)
 						s.playSound(s.getLocation(), sound, 1,1);
 					if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
 						TheAPI.sendTitle(s, title[0].trim().isEmpty()?"":TabList.replace(title[0], s, true), title[1].trim().isEmpty()?"":TabList.replace(title[1], s, true));
 					if(!actionbar.trim().isEmpty())TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
+					}
 				}
 		}
 		if(msg!=null) {
