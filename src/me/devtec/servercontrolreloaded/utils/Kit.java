@@ -1,12 +1,11 @@
 package me.devtec.servercontrolreloaded.utils;
 
 
-import me.devtec.servercontrolreloaded.scr.API;
-import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.theapi.apis.EnchantmentAPI;
-import me.devtec.theapi.apis.ItemCreatorAPI;
-import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.nms.NMSAPI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -14,9 +13,14 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import me.devtec.servercontrolreloaded.scr.API;
+import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.theapi.apis.EnchantmentAPI;
+import me.devtec.theapi.apis.ItemCreatorAPI;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.json.Reader;
+import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.nms.nbt.NBTEdit;
 
 public class Kit {
 	private List<ItemStack> a;
@@ -147,8 +151,42 @@ public class Kit {
 	}
 
 	private static ItemStack setNbt(ItemStack create, String string) {
-		if(string!=null && string.startsWith("{") && string.endsWith("}"))
-			create=NMSAPI.setNBT(create, string);
+		if(string!=null && string.startsWith("{") && string.endsWith("}")) {
+			NBTEdit e = new NBTEdit(create);
+			@SuppressWarnings("unchecked")
+			Map<String, Object> vals = (Map<String, Object>)Reader.read(string);
+			for(Entry<String, Object> a : vals.entrySet()) {
+				if(a.getValue() instanceof String)
+				e.setString(a.getKey(), (String) a.getValue());
+				else
+				if(a.getValue() instanceof Double)
+				e.setDouble(a.getKey(), (Double) a.getValue());
+				else
+				if(a.getValue() instanceof Long)
+				e.setLong(a.getKey(), (Long) a.getValue());
+				else
+				if(a.getValue() instanceof Integer)
+				e.setInt(a.getKey(), (Integer) a.getValue());
+				else
+				if(a.getValue() instanceof Float)
+				e.setFloat(a.getKey(), (Float) a.getValue());
+				else
+				if(a.getValue() instanceof int[])
+				e.setIntArray(a.getKey(), (int[]) a.getValue());
+				else
+				if(a.getValue() instanceof byte[])
+				e.setByteArray(a.getKey(), (byte[]) a.getValue());
+				else
+				if(a.getValue() instanceof Byte)
+				e.setByte(a.getKey(), (Byte) a.getValue());
+				else
+				if(a.getValue() instanceof Boolean)
+				e.setBoolean(a.getKey(), (Boolean) a.getValue());
+				else
+				e.set(a.getKey(), a.getValue());
+			}
+			NMSAPI.setNBT(create,e);
+		}
 		return create;
 	}
 

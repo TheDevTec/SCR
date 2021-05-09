@@ -73,7 +73,7 @@ public class Kits implements CommandExecutor, TabCompleter {
 				}
 			} else {
 				if (economy) {
-					if (EconomyAPI.has(p, kit.getCost())) {
+					if (kit.getCost()==0||EconomyAPI.has(p, kit.getCost())) {
 						CooldownAPI a = TheAPI.getCooldownAPI(p);
 						if (!a.expired("Kit." + kit.getName())) {
 							if(messages)
