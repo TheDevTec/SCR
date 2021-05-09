@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.utils.TabList;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.TheAPI.SudoType;
 import me.devtec.theapi.apis.ItemCreatorAPI;
@@ -24,6 +26,7 @@ import me.devtec.theapi.guiapi.GUI;
 import me.devtec.theapi.guiapi.GUI.ClickType;
 import me.devtec.theapi.guiapi.HolderGUI;
 import me.devtec.theapi.guiapi.ItemGUI;
+import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.nms.NMSAPI;
 
@@ -37,14 +40,26 @@ public class GUICreator implements CommandExecutor {
     }
     
 	public static class GUIMaker {
-	    private String gui;
+		private String gui;
 	    public GUIMaker(String a){
 	    	gui=a;
-			load();
+	    	if(!c.getBoolean("GUI."+gui+".perplayer"))
+				load();
+	    	if(c.getInt("GUI."+gui+".update")>0) {
+	    		new Tasker() {
+					public void run() {
+						update();
+					}
+				}.runRepeating(c.getInt("GUI."+gui+".update")*20, c.getInt("GUI."+gui+".update")*20);
+	    	}
 	    }
-	    
+	    //static
 	    public Map<Integer, ItemGUI> map = new HashMap<>();
-	    	
+	    
+	    //per player
+	    public Map<String, ItemGUI> pmap = new HashMap<>();
+	    public Map<String, List<String>> rmap = new HashMap<>();
+	    
 	    private void load() {
 	        for(String j : c.getKeys("GUI."+gui+".items")){
 	        	ItemGUI itemGUI = null;
@@ -62,8 +77,30 @@ public class GUICreator implements CommandExecutor {
 	                }
 	            }
 	            if(itemGUI!=null)
-	            	for(String slot : j.split(",[ ]*"))
+	            	for(String slot : j.split("[ ]*,[ ]*"))
 	            		set(StringUtils.getInt(slot), itemGUI);
+	        }
+		}
+	    
+	    private void load(Player a) {
+	        for(String j : c.getKeys("GUI."+gui+".items")){
+	        	ItemGUI itemGUI = null;
+	            if(c.exists("GUI."+gui+".items."+j+".headURL")){
+	                if(c.exists("GUI."+gui+".items."+j+".lore")){
+	                    itemGUI=MethodaHead(a,c.getString("GUI."+gui+".items."+j+".name"),c.getStringList("GUI."+gui+".items."+j+".lore"),c.getString("GUI."+gui+".items."+j+".headURL"),j,gui);
+	                }else{
+	                    itemGUI=MethodaHead(a,c.getString("GUI."+gui+".items."+j+".name"),c.getString("GUI."+gui+".items."+j+".headURL"),j,gui);
+	                }
+	            } else if(c.exists("GUI."+gui+".items."+j+".type")){
+	                if(c.exists("GUI."+gui+".items."+j+".lore")){
+	                    itemGUI=MethodaItem(a,c.getString("GUI."+gui+".items."+j+".name"),c.getString("GUI."+gui+".items."+j+".type").toUpperCase(),j,c.getStringList("GUI."+gui+".items."+j+".lore"),gui,c.getInt("GUI."+gui+".items."+j+".data"),c.getInt("GUI."+gui+".items."+j+".modelData"));
+	                }else{
+	                    itemGUI=MethodaItem(a,c.getString("GUI."+gui+".items."+j+".name"),c.getString("GUI."+gui+".items."+j+".type").toUpperCase(),j,gui,c.getInt("GUI."+gui+".items."+j+".data"),c.getInt("GUI."+gui+".items."+j+".modelData"));
+	                }
+	            }
+	            if(itemGUI!=null)
+	            	for(String slot : j.split("[ ]*,[ ]*"))
+	            		set(a.getName(),StringUtils.getInt(slot), itemGUI);
 	        }
 		}
 
@@ -74,12 +111,51 @@ public class GUICreator implements CommandExecutor {
 	    public void set(int i, ItemGUI g) {
 	    	map.put(i, g);
 	    }
-	    	
-	    public GUI make() {
-	           GUI g = new GUI(c.getString("GUI."+gui+".title"),c.getInt("GUI."+gui+".size"));
-	           for(Entry<Integer, ItemGUI> c : map.entrySet())
-	           	g.setItem(c.getKey(), c.getValue());
-	           return g;
+	    
+	    public void set(String a, int i, ItemGUI g) {
+	    	if(!rmap.get(a).contains(a+i))
+	    		rmap.get(a).add(a+i);
+	    	pmap.put(a+i, g);
+	    }
+	    
+	    private List<GUI> guis = new ArrayList<>();
+	    
+	    public void update() {
+	    	if(!c.getBoolean("GUI."+gui+".perplayer")) {
+		    	load();
+		    	for(GUI g : guis)
+			    	for(Entry<Integer, ItemGUI> c : map.entrySet())
+			    		g.setItem(c.getKey(), c.getValue());
+	    	}else {
+		    	for(GUI g : guis) {
+		    		if(!g.getPlayers().isEmpty()) {
+			    		load((g.getPlayers() instanceof List?(List<Player>)g.getPlayers():new ArrayList<>(g.getPlayers())).get(0));
+			    		for(Entry<Integer, ItemGUI> c : map.entrySet())
+			    			g.setItem(c.getKey(), c.getValue());
+		    		}
+		    	}
+	    	}
+	    }
+	    
+	    public GUI make(Player p) {
+	    	if(!c.getBoolean("GUI."+gui+".perplayer")) {
+	    		GUI g = new GUI(c.getString("GUI."+gui+".title"),c.getInt("GUI."+gui+".size"));
+		    	for(Entry<Integer, ItemGUI> c : map.entrySet())
+		    	   g.setItem(c.getKey(), c.getValue());
+		    	guis.add(g);
+		    	return g;
+	    	}else {
+		    	GUI g = new GUI(c.getString("GUI."+gui+".title"),c.getInt("GUI."+gui+".size")) {
+		    		public void onClose(Player player) {
+		    			for(String s : rmap.get(player.getName()))
+		    				pmap.remove(s);
+		    			rmap.remove(player.getName());
+		    		}
+		    	};
+		    	load(p);
+		    	guis.add(g);
+		    	return g;
+	    	}
 	    }
 
 	    public static void vecinator(HolderGUI g ,Player p, String b, String s, GUI.ClickType clickType){
@@ -171,12 +247,45 @@ public class GUICreator implements CommandExecutor {
 	        } else if(a.startsWith("open")){
 	        	GUIMaker f = maker.get(a.substring(5));
 	        	if(f!=null)
-	            f.make().open(p);
+	            f.make(p).open(p);
 	        }
 	    }
 
+	    private static ItemGUI MethodaHead(Player a, String name,List<String> list,String headURL,String item,String other){
+	        return new ItemGUI(ItemCreatorAPI.createHeadByValues(1,TabList.replace(name, a, false),TabList.replace(list, a, false),TabList.replace(headURL, a, false))) {
+	            @Override
+	            public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
+	                try {vecinator(hgui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
+	            }
+	        };
+	    }
+	    private static ItemGUI MethodaHead(Player a, String name, String headURL,String item,String other){
+	        return new ItemGUI(ItemCreatorAPI.createHeadByValues(1,TabList.replace(name, a, false),TabList.replace(headURL, a, false))) {
+	            @Override
+	            public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
+	                try {vecinator(hgui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
+	            }
+	        };
+	    }
+	    private static ItemGUI MethodaItem(Player a, String name, String material, String item, List<String> lore, String other, int data, int modelData){
+	    	return new ItemGUI(setModel(ItemCreatorAPI.create(Material.getMaterial(TabList.replace(material, a, false)),1,TabList.replace(name, a, false),TabList.replace(lore, a, false),data),modelData)) {
+	            @Override
+	            public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
+	                try {vecinator(hgui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
+	            }
+	        };
+	    }
+	    private static ItemGUI MethodaItem(Player a, String name, String material,String item,String other, int data, int modelData){
+	    	return new ItemGUI(setModel(ItemCreatorAPI.create(Material.getMaterial(TabList.replace(material, a, false)),1,TabList.replace(name, a, false),data),modelData)) {
+	            @Override
+	            public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
+	                try {vecinator(hgui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
+	            }
+	        };
+	    }
+
 	    private static ItemGUI MethodaHead(String name,List<String> list,String headURL,String item,String other){
-	        return new ItemGUI(ItemCreatorAPI.createHeadByValues(1,name,list,headURL)) {
+	        return new ItemGUI(ItemCreatorAPI.createHeadByValues(1,TabList.replace(name, null, false),TabList.replace(list, null, false),TabList.replace(headURL, null, false))) {
 	            @Override
 	            public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
 	                try {vecinator(hgui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
@@ -184,7 +293,7 @@ public class GUICreator implements CommandExecutor {
 	        };
 	    }
 	    private static ItemGUI MethodaHead(String name, String headURL,String item,String other){
-	        return new ItemGUI(ItemCreatorAPI.createHeadByValues(1,name,headURL)) {
+	        return new ItemGUI(ItemCreatorAPI.createHeadByValues(1,TabList.replace(name, null, false),TabList.replace(headURL, null, false))) {
 	            @Override
 	            public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
 	                try {vecinator(hgui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
@@ -192,7 +301,7 @@ public class GUICreator implements CommandExecutor {
 	        };
 	    }
 	    private static ItemGUI MethodaItem(String name, String material, String item, List<String> lore, String other, int data, int modelData){
-	    	return new ItemGUI(setModel(ItemCreatorAPI.create(Material.getMaterial(material),1,name,lore,data),modelData)) {
+	    	return new ItemGUI(setModel(ItemCreatorAPI.create(Material.getMaterial(TabList.replace(material, null, false)),1,TabList.replace(name, null, false),TabList.replace(lore, null, false),data),modelData)) {
 	            @Override
 	            public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
 	                try {vecinator(hgui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
@@ -200,7 +309,7 @@ public class GUICreator implements CommandExecutor {
 	        };
 	    }
 	    private static ItemGUI MethodaItem(String name, String material,String item,String other, int data, int modelData){
-	    	return new ItemGUI(setModel(ItemCreatorAPI.create(Material.getMaterial(material),1,name,data),modelData)) {
+	    	return new ItemGUI(setModel(ItemCreatorAPI.create(Material.getMaterial(TabList.replace(material, null, false)),1,TabList.replace(name, null, false),data),modelData)) {
 	            @Override
 	            public void onClick(Player player, HolderGUI hgui, GUI.ClickType click) {
 	                try {vecinator(hgui,player,other,item,click);}catch (Exception e){e.printStackTrace();}
@@ -236,7 +345,7 @@ public class GUICreator implements CommandExecutor {
         	if(perm!=null)perm=perm.trim();
         	if(perm!=null && perm.equals(""))perm=null;
         	if(perm==null||(perm.startsWith("-")?!s.hasPermission(perm.substring(1)):s.hasPermission(perm)))
-            maker.get(gui).make().open((Player)s);
+            maker.get(gui).make((Player)s).open((Player)s);
             return true;
     	}
     	Player target = TheAPI.getPlayer(args[0]);
@@ -244,7 +353,7 @@ public class GUICreator implements CommandExecutor {
     		Loader.notOnline(s, args[0]);
     		return true;
     	}
-        maker.get(gui).make().open(target);
+        maker.get(gui).make(target).open(target);
         return true;
     }
 }

@@ -358,4 +358,9 @@ public class TabList {
 	public static void setFooterHeader(Player p) {
 		TabListAPI.setHeaderFooter(p, aset.replaceWithoutColors(p,getPath(p, "Header")), aset.replaceWithoutColors(p,getPath(p, "Footer")));
 	}
+
+	public static List<String> replace(List<String> lore, Player a, boolean color) {
+		lore.replaceAll(as -> replace(as,a,color));
+		return lore;
+	}
 }
