@@ -1,14 +1,11 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 
-import me.devtec.servercontrolreloaded.scr.API;
-import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.servercontrolreloaded.utils.Repeat;
-import me.devtec.servercontrolreloaded.utils.XMaterial;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.ItemCreatorAPI;
-import me.devtec.theapi.utils.StringUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,10 +17,14 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import me.devtec.servercontrolreloaded.scr.API;
+import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.servercontrolreloaded.utils.XMaterial;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.ItemCreatorAPI;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.nms.NMSAPI;
 
 public class Give implements CommandExecutor, TabCompleter {
 	List<String> list = new ArrayList<String>();
@@ -423,165 +424,85 @@ public class Give implements CommandExecutor, TabCompleter {
 	}
 
 	public boolean existsItem(String s) {
-		return list.contains(s.toUpperCase()) || XMaterial.matchXMaterial(s.toUpperCase())!=null;
+		return XMaterial.matchXMaterial(s.toUpperCase())!=null;
+	}
+
+	private void giveItem(CommandSender sender, Player target, String type, int amount, String nbt) {
+		type = type.toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
+		ItemStack stack;
+		try {
+			if (!type.startsWith("LINGERING_POTION_OF_") && !type.startsWith("SPLASH_POTION_OF_")
+					&& !type.startsWith("POTION_OF_")) {
+				stack = XMaterial.matchXMaterial(type).parseItem(amount);
+			}else {
+				stack = getPotion(type);
+				stack.setAmount(amount);
+			}
+		}catch(Exception err) {
+			Loader.sendMessages(sender, "Missing.Material", Placeholder.c().add("%material%", type));
+			return;
+		}
+		if(nbt!=null && nbt.startsWith("{") && nbt.endsWith("}")) {
+			Object nms = NMSAPI.asNMSItem(stack);
+			NMSAPI.setNBT(nms, NMSAPI.parseNBT(nbt));
+			TheAPI.bcMsg(NMSAPI.parseNBT(nbt));
+			stack=NMSAPI.asBukkitItem(nms);
+		}
+		TheAPI.giveItem(target, stack);
+		if(target==null||sender==target)
+			Loader.sendMessages(sender, "Give.Item.You", Placeholder.c().add("%item%", type.toUpperCase()).add("%amount%", amount+"").add("%nbt%", nbt==null?"":nbt));
+		else {
+			Loader.sendMessages(sender, "Give.Item.Other.Sender", Placeholder.c().add("%item%", type.toUpperCase()).add("%amount%", amount+"")
+					.add("%nbt%", nbt==null?"":nbt)
+					.add("%player%", target.getName()).replace("%playername%", target.getDisplayName()));
+			Loader.sendMessages(target, "Give.Item.Other.Receiver", Placeholder.c().add("%item%", type.toUpperCase()).add("%amount%", amount+"")
+					.add("%nbt%", nbt==null?"":nbt)
+					.add("%player%", sender.getName()).replace("%playername%", sender.getName()));
+		}
 	}
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Give", "Other")) {
-			if (args.length == 0) {
+			switch(args.length) {
+			case 0:
 				Loader.Help(s, "Give", "Other");
-				return true;
-			}
-			if (args.length == 1) {
-				Player ps = TheAPI.getPlayer(args[0]);
-				if (ps == null) {
-					String g = args[0].toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
-
-					if (s instanceof Player == false) {
-						Loader.Help(s, "Give", "Other");
-						return true;
-					}
-					if (existsItem(g)) {
-							Player p = (Player) s;
-							try {
-								if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
-										&& !g.startsWith("POTION_OF_")) {
-									XMaterial cc = XMaterial.matchXMaterial(g);
-									TheAPI.giveItem(p, cc.parseItem());
-									Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", cc.name()).add("%amount%", "1"));
-								}else {
-									TheAPI.giveItem(p, getPotion(g));
-									Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", g.toUpperCase()).add("%amount%", "1"));
-								}
-								return true;
-							} catch (Exception e) {
-								Loader.sendMessages(s, "Missing.Item", Placeholder.c().add("%item%", g));
-								return true;
-							}
-					}
-					Loader.sendMessages(s, "Missing.Material", Placeholder.c().add("%material%", args[0]));
-					return true;
-				}
-				Loader.Help(s, "Give", "Other");
-				return true;
-			}
-			if (args.length == 2) {
-				Player ps = TheAPI.getPlayer(args[0]);
-				if (ps == null) {
-					String g = args[0].toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
-					if (args[0].equals("*")) {
-						Repeat.a(s, "give * " + args[1].toLowerCase().replaceFirst("minecraft:", "").toUpperCase());
-						return true;
-					}
-					if (existsItem(g)) {
-						ps = (Player) s;
-						try {
-							if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
-									&& !g.startsWith("POTION_OF_")) {
-								XMaterial cc = XMaterial.matchXMaterial(g);
-								TheAPI.giveItem(ps, cc.parseItem(StringUtils.getInt(args[1])));
-								Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", cc.name()).add("%amount%", "1"));
-							}else {
-								ItemStack a = getPotion(g);
-								a.setAmount(StringUtils.getInt(args[1]));
-								TheAPI.giveItem(ps, a);
-								Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", g.toUpperCase()).add("%amount%", "1"));
-							}
-							return true;
-						} catch (Exception e) {
-							Loader.sendMessages(s, "Missing.Item", Placeholder.c().add("%item%", g));
-							return true;
-						}
-					}
-					if (s instanceof Player == false)
-						Loader.notOnline(s, args[1]);
+				break;
+			case 1:
+				giveItem(s, (Player)s, args[0], 1, null);
+				break;
+			case 2:
+				if(TheAPI.getPlayer(args[0])!=null)
+					giveItem(s, TheAPI.getPlayer(args[0]), args[1], 1, null);
+				else {
+					if(args[1].startsWith("{"))
+						giveItem(s, (Player)s, args[0], 1, args[1]);
 					else
-						Loader.sendMessages(s, "Missing.Material", Placeholder.c().add("%material%", g));
-					return true;
+						giveItem(s, (Player)s, args[0], StringUtils.getInt(args[1]), null);
 				}
-				String g = args[1].toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
-				if (existsItem(g)) {
-					if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
-							&& !g.startsWith("POTION_OF_")) {
-						XMaterial cc = XMaterial.matchXMaterial(g);
-						TheAPI.giveItem(ps, cc.parseItem());
-						if(ps==s) {
-							Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", cc.name()).add("%amount%", "1"));
-						}else {
-						Loader.sendMessages(s, "Give.Item.Other.Sender", Placeholder.c().add("%item%", cc.name()).add("%amount%", "1")
-								.add("%player%", ps.getName()).replace("%playername%", ps.getDisplayName()));
-						Loader.sendMessages(ps, "Give.Item.Other.Receiver", Placeholder.c().add("%item%", cc.name()).add("%amount%", "1")
-								.add("%player%", s.getName()).replace("%playername%", s.getName()));
-						}
-						Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", cc.name()).add("%amount%", "1"));
-					}else {
-						TheAPI.giveItem(ps, getPotion(g));
-						if(ps==s) {
-							Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", g.toUpperCase()).add("%amount%", "1"));
-						}else {
-						Loader.sendMessages(s, "Give.Item.Other.Sender", Placeholder.c().add("%item%", g.toUpperCase()).add("%amount%", "1")
-								.add("%player%", ps.getName()).replace("%playername%", ps.getDisplayName()));
-						Loader.sendMessages(ps, "Give.Item.Other.Receiver", Placeholder.c().add("%item%", g.toUpperCase()).add("%amount%", "1")
-								.add("%player%", s.getName()).replace("%playername%", s.getName()));
-						}
-						Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", g.toUpperCase()).add("%amount%", "1"));
-					}
-					return true;
+				break;
+			case 3://give STONE 1 NBT
+				//give PLAYER STONE NBT/1
+				if(TheAPI.getPlayer(args[0])!=null) {
+					if(args[2].startsWith("{"))
+						giveItem(s, TheAPI.getPlayer(args[0]), args[1], 1, args[2]);
+					else
+						giveItem(s, TheAPI.getPlayer(args[0]), args[1], StringUtils.getInt(args[2]), null);
+				}else {
+					if(args[2].startsWith("{")) {
+						giveItem(s, (Player)s, args[0], StringUtils.getInt(args[1]), args[2]);
+					}else
+						Loader.notOnline(s, args[0]);
 				}
-				Loader.sendMessages(s, "Missing.Material", Placeholder.c().add("%material%", g));
-				return true;
+				break;
+			default://give PLAYER STONE 1 NBT
+				if(TheAPI.getPlayer(args[0])!=null)
+					giveItem(s, TheAPI.getPlayer(args[0]), args[1], StringUtils.getInt(args[2]), StringUtils.buildString(3,args));
+				else
+					Loader.notOnline(s, args[0]);
+				break;
 			}
-			if (args.length == 3) {
-				Player ps = TheAPI.getPlayer(args[0]);
-				if (ps != null) {
-					String g = args[1].toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
-					if (args[0].equals("*")) {
-						Repeat.a(s, "give * " + g + " " + args[2]);
-						return true;
-					}
-					if (existsItem(args[1])) {
-						if (!g.startsWith("LINGERING_POTION_OF_") && !g.startsWith("SPLASH_POTION_OF_")
-								&& !g.startsWith("POTION_OF_")) {
-							XMaterial cc = XMaterial.matchXMaterial(g);
-							TheAPI.giveItem(ps, cc.parseItem(StringUtils.getInt(args[2])));
-							if(ps==s) {
-								Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", cc.name()).add("%amount%", StringUtils.getInt(args[2])+""));
-							}else {
-							Loader.sendMessages(s, "Give.Item.Other.Sender", Placeholder.c().add("%item%", cc.name()).add("%amount%", StringUtils.getInt(args[2])+"")
-									.add("%player%", ps.getName()).replace("%playername%", ps.getDisplayName()));
-							Loader.sendMessages(ps, "Give.Item.Other.Receiver", Placeholder.c().add("%item%", cc.name()).add("%amount%", StringUtils.getInt(args[2])+"")
-									.add("%player%", s.getName()).replace("%playername%", s.getName()));
-							}
-							Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", cc.name()).add("%amount%", StringUtils.getInt(args[2])+""));
-						}else {
-							ItemStack a = getPotion(g);
-							a.setAmount(StringUtils.getInt(args[2]));
-							TheAPI.giveItem(ps, a);
-							if(ps==s) {
-								Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", g.toUpperCase()).add("%amount%", StringUtils.getInt(args[2])+""));
-							}else {
-							Loader.sendMessages(s, "Give.Item.Other.Sender", Placeholder.c().add("%item%", g.toUpperCase()).add("%amount%", StringUtils.getInt(args[2])+"")
-									.add("%player%", ps.getName()).replace("%playername%", ps.getDisplayName()));
-							Loader.sendMessages(ps, "Give.Item.Other.Receiver", Placeholder.c().add("%item%", g.toUpperCase()).add("%amount%", StringUtils.getInt(args[2])+"")
-									.add("%player%", s.getName()).replace("%playername%", s.getName()));
-							}
-							Loader.sendMessages(s, "Give.Item.You", Placeholder.c().add("%item%", g.toUpperCase()).add("%amount%", StringUtils.getInt(args[2])+""));
-						}
-						return true;
-					}
-					Loader.sendMessages(s, "Missing.Material", Placeholder.c().add("%material%", g));
-					return true;
-				}
-				if (args[0].equals("*")) {
-					Repeat.a(s, "give * " + args[1].toLowerCase().replaceFirst("minecraft:", "").toUpperCase() + " "
-							+ StringUtils.getInt(args[2]));
-					return true;
-				}
-				Loader.notOnline(s, args[1]);
-				return true;
-			}
-
+			return true;
 		}
 		Loader.noPerms(s, "Give", "Other");
 		return true;

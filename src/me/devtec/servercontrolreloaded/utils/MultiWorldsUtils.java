@@ -107,7 +107,9 @@ public class MultiWorldsUtils {
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".PvP", as.getPVP());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".CreatePortal", true);
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".NoMobs", false);
+		try {
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Hardcore", as.isHardcore());
+		}catch(NoSuchMethodError e) {}
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".PortalTeleport", true);
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".DoFireDamage", true);
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".DoDrownDamage", true);
@@ -133,7 +135,6 @@ public class MultiWorldsUtils {
 			if(dif!=null)dif=dif.toUpperCase();
 			boolean keepspawn = Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".KeepSpawnInMemory");
 			boolean autosave = Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".AutoSave");
-			boolean hard = Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".Hardcore");
 			boolean pvp = Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".PvP");
 			int monster = 0;
 			int animal = 0;
@@ -155,7 +156,10 @@ public class MultiWorldsUtils {
 				as.setDifficulty(Difficulty.EASY);
 			}
 			as.setKeepSpawnInMemory(keepspawn);
-			as.setHardcore(hard);
+			try {
+				boolean hard = Loader.mw.getBoolean("WorldsSettings." + as.getName() + ".Hardcore");
+				as.setHardcore(hard);
+			}catch(NoSuchMethodError e) {}
 			as.setAutoSave(autosave);
 			as.setPVP(pvp);
 			if (Loader.mw.getBoolean("ModifyMobsSpawnRates")) {
