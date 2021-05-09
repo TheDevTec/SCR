@@ -296,7 +296,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							return true;
 						}
 						if(args[2].equalsIgnoreCase("add")) {
-							if(args.length<6) {
+							if(args.length<5) {
 								Loader.advancedHelp(s, "Item", "Other", "Process", "Cmd");
 								return true;
 							}
@@ -313,7 +313,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							return true;
 						}
 						if(args[2].equalsIgnoreCase("remove")) {
-							if(args.length<6) {
+							if(args.length<5) {
 								Loader.advancedHelp(s, "Item", "Other", "Process", "Cmd");
 								return true;
 							}
@@ -334,7 +334,7 @@ public class Item implements CommandExecutor, TabCompleter{
 								if(text instanceof List == false) {
 									text=new ArrayList<>(text);
 								}
-								removed=((List<String>)text).remove(StringUtils.getInt(args[5]));
+								removed=((List<String>)text).remove(StringUtils.getInt(args[4]));
 							}catch(Exception outOfBoud) {}
 							if(text.isEmpty()) {
 								e.remove("process."+target+".cmd");
@@ -349,7 +349,7 @@ public class Item implements CommandExecutor, TabCompleter{
 								e.setString("process."+target+".cmd", Writer.write(text));
 							}
 							NMSAPI.setNBT(item, e);
-							Loader.sendMessages(s, "Item.Process.Cmd.Remove", Placeholder.c().add("%value%", removed).add("%position%", StringUtils.getInt(args[5])));
+							Loader.sendMessages(s, "Item.Process.Cmd.Remove", Placeholder.c().add("%value%", removed).add("%position%", StringUtils.getInt(args[4])));
 							return true;
 						}
 					}
