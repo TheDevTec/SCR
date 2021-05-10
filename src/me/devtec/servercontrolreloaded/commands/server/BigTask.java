@@ -27,7 +27,7 @@ public class BigTask {
 		s = t;
 		if ((t == TaskType.STOP ? setting.warn_stop
 				: (t == TaskType.RELOAD ? setting.warn_reload : setting.warn_restart))) {
-			if(h > 15 && h!=30 && h!=45 && h!=60)
+			if(h > 5 && h!=15 && h!=30 && h!=45 && h!=60)
 			for (String s : Loader.config.getStringList("Options.WarningSystem."
 					+ (t == TaskType.STOP ? "Stop" : (t == TaskType.RELOAD ? "Reload" : "Restart"))
 					+ ".Messages"))
@@ -38,6 +38,7 @@ public class BigTask {
 				public void run() {
 					if (f <= 0) {
 						NMSAPI.postToMainThread(() ->end());
+						cancel();
 						return;
 					} else if (f == 60 || f == 45 || f == 30 || f == 15 || f <= 5) {
 						for (String s : Loader.config.getStringList("Options.WarningSystem."
@@ -94,7 +95,7 @@ public class BigTask {
 									s.kickPlayer(TabList.replace(Loader.config.getString("Options.WarningSystem.Restart.Kick"),s,true));
 								if (Ref.getClass("net.md_5.bungee.api.ChatColor")!=null)
 									try {
-									Bukkit.spigot().restart();
+										Bukkit.spigot().restart();
 									}catch(Exception | NoSuchMethodError e) {
 										Bukkit.shutdown();
 									}
