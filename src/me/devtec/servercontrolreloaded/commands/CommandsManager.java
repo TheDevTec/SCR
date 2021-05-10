@@ -146,7 +146,6 @@ import me.devtec.servercontrolreloaded.commands.weather.Sun;
 import me.devtec.servercontrolreloaded.commands.weather.Thunder;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.reflections.Ref;
 public class CommandsManager {
 	private static Map<String, PluginCommand> commands = new HashMap<>();
 	
@@ -307,7 +306,7 @@ public class CommandsManager {
 		load("Other", "Mirror", new MirrorCommand());
 		
 		//Other
-		if(Ref.getClass("net.md_5.bungee.api.ChatColor")!=null)
+		if(Loader.hasBungee)
 		load("Other", "Send",new Send()); //requres spigot
 		load("Other", "Top",new Top());
 		load("Other", "Portal",new Portal());
