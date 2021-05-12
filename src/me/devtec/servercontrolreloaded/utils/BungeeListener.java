@@ -37,7 +37,7 @@ public class BungeeListener implements PluginMessageListener {
 					for(String s : cmds)
 						TheAPI.sudoConsole(TabList.replace(s, p, true));
 				}
-			}.runLaterSync(1);
+			}.runLaterSync(5);
 			return;
 		}
 		if(action.equals("helpop")) {

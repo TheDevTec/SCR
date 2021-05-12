@@ -7,7 +7,11 @@ import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.servercontrolreloaded.utils.setting.DeathTp;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.punishmentapi.PunishmentAPI;
+import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.datakeeper.User;
+
+import java.util.Collection;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,6 +40,41 @@ public class DeathEvent implements Listener {
 		}
 		User s = TheAPI.getUser(p);
 		s.setAndSave("Deaths", s.getInt("Deaths") + 1);
+		Object o = Loader.events.get("onDeath.Messages");
+		if(o!=null) {
+			if(o instanceof Collection) {
+			for(Object fa : (Collection<?>)o) {
+				if(fa!=null)
+				TheAPI.msg(OnPlayerJoin.replaceAll(fa+"",p),p);
+			}}else
+				if(!(""+o).isEmpty())
+					TheAPI.msg(OnPlayerJoin.replaceAll(""+o, p),p);
+		}
+
+		new Tasker() {
+			public void run() {
+		Object o = Loader.events.get("onDeath.Commands");
+		if(o!=null) {
+			if(o instanceof Collection) {
+			for(Object fa : (Collection<?>)o) {
+				if(fa!=null)
+					TheAPI.sudoConsole(TheAPI.colorize(OnPlayerJoin.replaceAll(""+fa, p)));
+			}}else
+				if(!(""+o).isEmpty())
+					TheAPI.sudoConsole(TheAPI.colorize(OnPlayerJoin.replaceAll(""+o, p)));
+		}}
+		}.runTaskSync();
+		o = Loader.events.get("onDeath.Broadcast");
+		if(o!=null) {
+			if(o instanceof Collection) {
+			for(Object fa : (Collection<?>)o) {
+				if(fa!=null)
+				TheAPI.bcMsg(OnPlayerJoin.replaceAll(fa+"",p));
+			}}else
+				if(!(""+o).isEmpty())
+					TheAPI.bcMsg(OnPlayerJoin.replaceAll(""+o, p));
+		}
+		
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)

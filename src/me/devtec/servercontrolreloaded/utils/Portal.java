@@ -45,6 +45,7 @@ public class Portal {
 		this.cmds=cmds;
 		server=s;
 		this.bcmds=bcmds;
+		if(a.getWorld()!=null && b.getWorld()!=null && a.getWorld().equals(b.getWorld()))
 		for(Position c : new BlockIterator(a, b)) {
 			if(Ref.invoke(c.getIBlockData(),getBlock).equals(air))
 				blocks.add(c.clone());
@@ -143,6 +144,7 @@ public class Portal {
 	}
 	
 	private static Particle makeParticle(String string) {
+		if(string==null)return null;
 		if(string.contains("{")&&string.contains("}")) {
 			String particle = string.split("\\{")[0];
 			String[] values = string.split("\\{")[1].split("\\}")[0].split(",");

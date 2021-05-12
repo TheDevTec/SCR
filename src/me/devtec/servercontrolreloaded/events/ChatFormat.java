@@ -304,15 +304,15 @@ public class ChatFormat implements Listener {
 			}
 			if(s.hasPermission("SCR.Other.ChatTypeBypass"))continue;
 			if(ty.equalsIgnoreCase("per_world")
-					||Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("perworld")||
-				Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("world")) {
+					||ty.equalsIgnoreCase("aperworld")||
+					ty.equalsIgnoreCase("world")) {
 					if(!p.getWorld().equals(s.getWorld())) {
 						a.remove();
 						continue;
 				}
 			}
 			if(ty.equalsIgnoreCase("per_distance")
-					||Loader.config.getString("Options.Chat.Type").equalsIgnoreCase("distance")) {
+					||ty.equalsIgnoreCase("distance")) {
 					if(!p.getWorld().equals(s.getWorld())) {
 						a.remove();
 						continue;

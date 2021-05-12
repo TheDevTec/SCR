@@ -209,7 +209,7 @@ public class OnPlayerJoin implements Listener {
 						if(o instanceof Collection) {
 						for(Object fa : (Collection<?>)o) {
 							if(fa!=null)
-								TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
+								TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+fa, p)));
 						}}else
 							if(!(""+o).isEmpty())
 								TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));

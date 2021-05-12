@@ -139,13 +139,13 @@ public class GUICreator implements CommandExecutor {
 	    
 	    public GUI make(Player p) {
 	    	if(!c.getBoolean("GUI."+gui+".perplayer")) {
-	    		GUI g = new GUI(c.getString("GUI."+gui+".title"),c.getInt("GUI."+gui+".size"));
+	    		GUI g = new GUI(TabList.replace(c.getString("GUI."+gui+".title"),null,false),c.getInt("GUI."+gui+".size"));
 		    	for(Entry<Integer, ItemGUI> c : map.entrySet())
 		    	   g.setItem(c.getKey(), c.getValue());
 		    	guis.add(g);
 		    	return g;
 	    	}else {
-		    	GUI g = new GUI(c.getString("GUI."+gui+".title"),c.getInt("GUI."+gui+".size")) {
+		    	GUI g = new GUI(TabList.replace(c.getString("GUI."+gui+".title"),p,false),c.getInt("GUI."+gui+".size")) {
 		    		public void onClose(Player player) {
 		    			for(String s : rmap.get(player.getName()))
 		    				pmap.remove(s);

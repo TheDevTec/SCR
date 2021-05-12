@@ -29,13 +29,16 @@ public class ItemUse implements Listener {
 			if(!canUse(e.getItem()))return;
 			Collection<String> c = (Collection<String>)getActions(e.getItem(), "process.msg", COLLECTION);
 			if(c!=null)for(String f : c)
-				TheAPI.msg(PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())), e.getPlayer());
+				TheAPI.msg(PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
+						.replace("%whoused%", e.getPlayer().getName())), e.getPlayer());
 			c = (Collection<String>)getActions(e.getItem(), "process.console.cmd", COLLECTION);
 			if(c!=null)for(String f : c)
-				TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())));
+				TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
+						.replace("%whoused%", e.getPlayer().getName())));
 			c = (Collection<String>)getActions(e.getItem(), "process.player.cmd", COLLECTION);
 			if(c!=null)for(String f : c)
-				TheAPI.sudo(e.getPlayer(), SudoType.COMMAND, PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())));
+				TheAPI.sudo(e.getPlayer(), SudoType.COMMAND, PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
+						.replace("%whoused%", e.getPlayer().getName())));
 			doUse(e.getPlayer(), e.getItem());
 		}
 	}

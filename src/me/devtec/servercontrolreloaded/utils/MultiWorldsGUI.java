@@ -799,8 +799,8 @@ public class MultiWorldsGUI {
 							Loader.mw.set("WorldsSettings." + w.getName() + ".Gamerule." + ds,
 									Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) + 1);
 							Loader.mw.save();
-							w.setGameRuleValue(ds,
-									"" + (Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) + 1));
+							NMSAPI.postToMainThread(() -> w.setGameRuleValue(ds,
+									"" + (Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) + 1)));
 							this.setItem(createItem("&6"+name, d, Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
 							g.setItem(slot, this);
 							break;
@@ -810,8 +810,8 @@ public class MultiWorldsGUI {
 							Loader.mw.set("WorldsSettings." + w.getName() + ".Gamerule." + ds,
 									Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) - 1);
 							Loader.mw.save();
-							w.setGameRuleValue(ds,
-									"" + (Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) - 1));
+							NMSAPI.postToMainThread(() -> w.setGameRuleValue(ds,
+									"" + (Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) - 1)));
 							this.setItem(createItem("&6"+name, d, Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
 							g.setItem(slot, this);
 							break;
@@ -821,7 +821,8 @@ public class MultiWorldsGUI {
 					}else {
 						Loader.mw.set("WorldsSettings." + w.getName() + ".Gamerule." + ds, !Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".Gamerule." + ds));
 						Loader.mw.save();
-						w.setGameRuleValue(ds, "" + (!Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".Gamerule." + ds)));
+						NMSAPI.postToMainThread(() -> w.setGameRuleValue(ds,
+								 "" + (!Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
 						this.setItem(createItem("&6"+name, d, Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
 						g.setItem(slot, this);
 					}

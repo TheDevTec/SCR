@@ -19,6 +19,12 @@ onJoin:
     - "%prefix% Server time: &e%time%"
     - "%prefix% »==========«"
   Text: "%prefix% Player &e%player% &7joined the game"
+  
+# On player dead
+onDeath:
+  Messages: []
+  Commands: []
+  
 # On player quit
 onQuit:
   Text: "%prefix% Player &e%player% &7left the game"

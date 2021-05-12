@@ -36,7 +36,7 @@ public class Day implements CommandExecutor, TabCompleter {
 		if (args.length == 1) {
 			if (Loader.has(s, "Day", "Time")) {
 				if (Bukkit.getWorld(args[0]) != null) {
-					Bukkit.getWorld(args[0]).setTime(0);
+					Bukkit.getWorld(args[0]).setTime(1000);
 					Loader.sendMessages(s, "Time.Day", Placeholder.c().add("%world%", (args[0])));
 					return true;
 				}
