@@ -69,6 +69,7 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.Data;
 import me.devtec.theapi.utils.datakeeper.DataType;
 import me.devtec.theapi.utils.listener.Listener;
+import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.chat.Chat;
@@ -650,11 +651,18 @@ public class Loader extends JavaPlugin implements Listener {
 								s.bc = true;
 								for(Player canSee : API.getPlayersThatCanSee(p))
 									Loader.sendMessages(canSee, p, "AFK.Start");
+								NMSAPI.postToMainThread(() -> {
+									for(String ds : Loader.config.getStringList("Options.AFK.Action.onStartAFK"))
+										TheAPI.sudoConsole(TabList.replace(ds,p,true));
+								});
 							}
 							if (setting.afk_kick) {
 								if (s.kick >= rkick) {
 									if (!p.hasPermission(getPerm("AFK", "Other", "Bypass"))) {
-										Ref.invoke(Ref.playerCon(p), "disconnect", TheAPI.colorize(Loader.config.getString("Options.AFK.KickMessage")));
+										NMSAPI.postToMainThread(() -> {
+											for(String ds : Loader.config.getStringList("Options.AFK.Action.onKickAFK"))
+												TheAPI.sudoConsole(TabList.replace(ds,p,true));
+										});
 									}
 								} else
 									++s.kick;
@@ -697,6 +705,10 @@ public class Loader extends JavaPlugin implements Listener {
 		if(isAFK(s) || isManualAfk(s)) {
 			for(Player canSee : API.getPlayersThatCanSee(d))
 				Loader.sendMessages(canSee, d, "AFK.End");
+			NMSAPI.postToMainThread(() -> {
+				for(String ds : Loader.config.getStringList("Options.AFK.Action.onStopAFK"))
+					TheAPI.sudoConsole(TabList.replace(ds,d,true));
+			});
 		}
 		s.afk=0;
 		s.kick = 0;

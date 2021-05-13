@@ -109,6 +109,7 @@ public class SPlayer {
 		if (hasTempFlyEnabled()) {
 			f.setAndSave("TempFly.Use", false);
 		}
+		if(!f.getBoolean("Fly"))
 		f.setAndSave("Fly", true);
 		if(getPlayer()==null)return;
 		getPlayer().setAllowFlight(true);
@@ -242,6 +243,7 @@ public class SPlayer {
 	}
 
 	public void enableGod() {
+		if(!f.getBoolean("God"))
 		f.setAndSave("God", true);
 		setHP();
 		setFood();

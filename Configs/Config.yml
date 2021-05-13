@@ -103,7 +103,12 @@ Options:
     AutoKick: true
     TimeToAFK: "5min"
     TimeToKick: "10min"
-    KickMessage: "&7You were kicked for &eAFK &7longer than 10 minutes"
+    # List of commands
+    Action:
+      onStartAFK: []
+      onStopAFK: []
+      onKickAFK:
+      - "kick %player% &7You were kicked for &eAFK &7longer than 15 minutes"
     
   Economy:
     Money: 250.0
