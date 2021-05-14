@@ -23,8 +23,9 @@ public class ItemUse implements Listener {
 	@EventHandler
 	public void onUse(PlayerInteractEvent e) {
 		if(e.getItem()!=null && e.getItem().getType()!=Material.AIR) {
-			String has = (String)getActions(e.getItem(), "process", STRING);
+			String has = (String)getActions(e.getItem(), "process", NUMBER);
 			if(has==null||has.trim().equals(""))return;
+			TheAPI.bcMsg(has);
 			e.setCancelled(true);
 			if(!canUse(e.getItem()))return;
 			Collection<String> c = (Collection<String>)getActions(e.getItem(), "process.msg", COLLECTION);
@@ -39,6 +40,7 @@ public class ItemUse implements Listener {
 			if(c!=null)for(String f : c)
 				TheAPI.sudo(e.getPlayer(), SudoType.COMMAND, PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
 						.replace("%whoused%", e.getPlayer().getName())));
+			TheAPI.bcMsg(c);
 			doUse(e.getPlayer(), e.getItem());
 		}
 	}
