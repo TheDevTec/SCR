@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -30,15 +32,24 @@ import me.devtec.theapi.utils.reflections.Ref;
 public class Portal {
 	private Position a, b;
 	private Particle p;
+	private String perm;
 	private List<String> cmds = new ArrayList<>();
 	private String server,id;
 	private List<String> bcmds = new ArrayList<>();
 	private double cooldown;
+	private boolean perplayer, kickBack;
 	private List<Position> blocks = new ArrayList<>();
+	private long lastEnter;
 	
-	public Portal(String id, double cooldown, Position a, Position b, Particle p, List<String> cmds, String s, List<String> bcmds) {
+	public Portal(String id, Vector v, double cooldown, boolean perPlayer, boolean kickBack, Position a, Position b, Particle p, List<String> cmds, String s, List<String> bcmds, String permission) {
 		this.a=a;
+		perplayer=perPlayer;
+		this.kickBack=kickBack;
 		this.id=id;
+		perm=permission;
+		if(permission!=null) {
+			if(permission.trim().equals(""))perm=null;
+		}
 		this.cooldown=cooldown;
 		this.b=b;
 		this.p=p;
@@ -58,6 +69,10 @@ public class Portal {
 			getBlock=Ref.method(Ref.nms("IBlockData"), "getMaterial");
 	}
 	private static Object air = Ref.getStatic(Ref.nms("Material"),"AIR");
+	
+	public String getPermission() {
+		return perm;
+	}
 	
 	public void spawnParticles() {
 		if(p==null||p.getParticle()==null)return;
@@ -84,6 +99,33 @@ public class Portal {
 		}
 	}
 	
+	public void kickBack(Player p) {
+        p.setVelocity(p.getLocation().getDirection().multiply(-1).normalize().setY(0.3));
+        p.setFallDistance(0);
+	}
+
+	public boolean canEnter(Player p) {
+		if(perm==null||p.hasPermission(perm)) {
+			if(cooldown==0) {
+				return true;
+			}else {
+				if(perplayer) {
+					CooldownAPI cd = new CooldownAPI(p);
+					if(cd.expired("portals."+id)) {
+						cd.createCooldown("portals."+id, cooldown);
+						return true;
+					}
+				}else {
+					if(lastEnter-System.currentTimeMillis()/50+cooldown <= 0) {
+						lastEnter=System.currentTimeMillis()/50;
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 	static List<Portal> portals = new ArrayList<>();
 	static int task, moveTask;
 	
@@ -101,12 +143,17 @@ public class Portal {
 		unload();
 		for(String s : Loader.portals.getKeys()) {
 			if(Loader.portals.get(s+".pos.1")==null||Loader.portals.get(s+".pos.2")==null)continue;
-			Portal p = new Portal(s,Loader.portals.getDouble(s+".cooldown"),Position.fromString(Loader.portals.getString(s+".pos.1")), 
+			Portal p = new Portal(s,new Vector(Loader.portals.getDouble(s+".kickVector.x"),Loader.portals.getDouble(s+".kickVector.y"),Loader.portals.getDouble(s+".kickVector.z"))
+					,Loader.portals.getDouble(s+".cooldown")
+					,Loader.portals.getBoolean(s+".perPlayerCooldown")
+					,Loader.portals.getBoolean(s+".kickBack")
+					,Position.fromString(Loader.portals.getString(s+".pos.1")), 
 					Position.fromString(Loader.portals.getString(s+".pos.2")), 
 					makeParticle(Loader.portals.getString(s+".particle")), 
 					Loader.portals.getStringList(s+".cmds"), 
 					Loader.portals.getString(s+".server"), 
-					Loader.portals.getStringList(s+".bcmds"));
+					Loader.portals.getStringList(s+".bcmds"), 
+					Loader.portals.getString(s+".permission"));
 			portals.add(p);
 		}
 		task=new Tasker() {
@@ -117,27 +164,21 @@ public class Portal {
 		moveTask=new Tasker() {
 			HashMap<Player, Portal> inPortal = new HashMap<>();
 			public void run() {
-				for(Player p : TheAPI.getOnlinePlayers())
+				for(Player p : TheAPI.getOnlinePlayers()) {
+					if(TheAPI.isNewerThan(7) ? p.getGameMode()!=GameMode.SPECTATOR : true)
 				for(Portal a : portals) {
 					if(!a.a.getWorld().equals(p.getWorld()))continue;
 					boolean is = isInside(p.getLocation(), a.a, a.b);
 					if(is) {
 						if(!inPortal.containsKey(p) || !inPortal.get(p).equals(a)) {
-							if(a.cooldown==0) {
-								inPortal.put(p,a);
+							if(a.canEnter(p))
 								NMSAPI.postToMainThread(() -> a.processCommands(p));
-							}else {
-								CooldownAPI cd = new CooldownAPI(p);
-								if(cd.expired("portals."+a.id)) {
-									cd.createCooldown("portals."+a.id, a.cooldown);
-									inPortal.put(p,a);
-									NMSAPI.postToMainThread(() -> a.processCommands(p));
-								}
-							}
-						}
-					}else
-						if(a.equals(inPortal.get(p)))
-							inPortal.remove(p);
+							else if(a.kickBack)a.kickBack(p);
+						}else
+							if(a.equals(inPortal.get(p)))
+								inPortal.remove(p);
+					}	
+				}
 				}
 			}
 		}.runRepeating(0, 1);

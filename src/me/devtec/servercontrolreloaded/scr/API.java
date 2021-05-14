@@ -55,6 +55,14 @@ public class API {
 			cache.put(p, new SPlayer(p));
 		return cache.get(p);
 	}
+
+	public static SPlayer removeSPlayer(Player p) {
+		return cache.remove(p.getName());
+	}
+
+	public static SPlayer removeSPlayer(String p) {
+		return cache.remove(p);
+	}
 	
 	public static List<Player> getPlayers(CommandSender s){ // Players which can be seen by CommandSender
 		List<Player> p = TheAPI.getOnlinePlayers();

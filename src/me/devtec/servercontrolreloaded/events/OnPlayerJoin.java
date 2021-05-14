@@ -305,5 +305,6 @@ public class OnPlayerJoin implements Listener {
 				d.save();
 			}
 		}.runTask();
+		API.removeSPlayer(p);
 	}
 }
