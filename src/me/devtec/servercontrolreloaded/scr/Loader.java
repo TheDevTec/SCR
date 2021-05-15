@@ -344,6 +344,7 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
+		MultiWorldsUtils.loadWorlds();
 		if(Ref.getClass("net.md_5.bungee.api.ChatColor")!=null) {
 			if(new Data("spigot.yml").getBoolean("settings.bungeecord")) {
 				hasBungee=true;
@@ -578,7 +579,6 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		rules.clear();
 		Converter.convert();
-		MultiWorldsUtils.loadWorlds();
 		ItemGUI clear=new ItemGUI(ItemCreatorAPI.create(XMaterial.LAVA_BUCKET.getMaterial(), 1, Loader.getTranslation("Trash.Clear")+"")) {
 				public void onClick(Player s, HolderGUI g, me.devtec.theapi.guiapi.GUI.ClickType c) {
 					for (int i = 0; i < 45; ++i)

@@ -17,15 +17,14 @@ import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
 
 public class ItemUse implements Listener {
-	public static int STRING = 2, COLLECTION = 1, NUMBER = 0;
+	public static int COLLECTION = 1;
 
 	@SuppressWarnings("unchecked")
 	@EventHandler
 	public void onUse(PlayerInteractEvent e) {
 		if(e.getItem()!=null && e.getItem().getType()!=Material.AIR) {
-			String has = (String)getActions(e.getItem(), "process", NUMBER);
-			if(has==null||has.trim().equals(""))return;
-			TheAPI.bcMsg(has);
+			Object has = getActions(e.getItem(), "process", 0);
+			if(has==null||has.toString().trim().isEmpty())return;
 			e.setCancelled(true);
 			if(!canUse(e.getItem()))return;
 			Collection<String> c = (Collection<String>)getActions(e.getItem(), "process.msg", COLLECTION);
@@ -40,7 +39,6 @@ public class ItemUse implements Listener {
 			if(c!=null)for(String f : c)
 				TheAPI.sudo(e.getPlayer(), SudoType.COMMAND, PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
 						.replace("%whoused%", e.getPlayer().getName())));
-			TheAPI.bcMsg(c);
 			doUse(e.getPlayer(), e.getItem());
 		}
 	}
@@ -79,8 +77,6 @@ public class ItemUse implements Listener {
 		if(val==null)return null;
 		Object o = Reader.read(val);
 		if(type==1 && o instanceof Collection == false)return null;
-		if(type==0 && o instanceof Number == false)return null;
-		if(type==2 && o instanceof String == false)return null;
 		return o;
 	}
 }

@@ -211,20 +211,17 @@ public class TabList {
 		if(header.contains("%food%"))
 			header=header.replace("%food%", p.getFoodLevel() + "")
 		;if(header.contains("%x%"))
-			header=header.replace("%x%", p.getLocation().getBlockX() + "");
-		if(header.contains("%y%"))header=header.replace("%y%", p.getLocation().getBlockY() + "")
+			header=header.replace("%x%", StringUtils.fixedFormatDouble(p.getLocation().getX()));
+		if(header.contains("%y%"))header=header.replace("%y%", StringUtils.fixedFormatDouble(p.getLocation().getY()))
 		;if(header.contains("%z%"))
-			header=header.replace("%z%", p.getLocation().getBlockZ() + "");
+			header=header.replace("%z%", StringUtils.fixedFormatDouble(p.getLocation().getZ()));
 		if(header.contains("%vault_group%")) {
-			String group = API.getGroup(p);
-		if (Loader.vault != null)
-			group = Loader.vault.getPrimaryGroup(p);
-			header=header.replace("%vault_group%", group);
+			header=header.replace("%vault_group%", API.getGroup(p));
 		}
 		if(header.contains("%vault_prefix%"))
-			header=header.replace("%vault_prefix%", Loader.getChatFormat(p, Item.PREFIX))
+			header=header.replace("%vault_prefix%", ""+Loader.getChatFormat(p, Item.PREFIX))
 		;if(header.contains("%vault_suffix%"))
-			header=header.replace("%vault_suffix%", Loader.getChatFormat(p, Item.SUFFIX))
+			header=header.replace("%vault_suffix%", ""+Loader.getChatFormat(p, Item.SUFFIX))
 		;if(header.contains("%group%"))
 			header=header.replace("%group%", Staff.getGroup(p));
 		if(header.contains("%kills%"))
