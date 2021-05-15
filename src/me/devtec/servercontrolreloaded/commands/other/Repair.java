@@ -28,6 +28,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 				if (args.length == 0) {
 					Material hand = p.getItemInHand().getType();
 					if (hand != Material.AIR) {
+						if(isTool(p.getItemInHand().getType().name()))
 						p.getItemInHand().setDurability((short) 0);
 					Loader.sendMessages(s, "Repair.Hand.You");
 					return true;
@@ -39,6 +40,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 					ItemStack[] items = p.getInventory().getContents();
 					for (ItemStack t : items) {
 						if (t != null && t.getType()!=Material.AIR)
+							if(isTool(p.getItemInHand().getType().name()))
 							t.setDurability((short) 0);
 					}
 					Loader.sendMessages(s, "Repair.All.You");
@@ -46,6 +48,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 				}
 					Material hand = p.getItemInHand().getType();
 					if (hand != Material.AIR) {
+						if(isTool(p.getItemInHand().getType().name()))
 						p.getItemInHand().setDurability((short) 0);
 					Loader.sendMessages(s, "Repair.Hand.You");
 					return true;
@@ -69,6 +72,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 				ItemStack[] items = p.getInventory().getContents();
 				for (ItemStack t : items) {
 					if (t != null && t.getType()!=Material.AIR)
+						if(isTool(p.getItemInHand().getType().name()))
 						t.setDurability((short) 0);
 				}
 				Loader.sendMessages(s, "Repair.All.Other.Sender");
@@ -78,6 +82,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 			}
 			Material hand = p.getItemInHand().getType();
 			if (hand != Material.AIR) {
+				if(isTool(p.getItemInHand().getType().name()))
 				p.getItemInHand().setDurability((short) 0);
 				Loader.sendMessages(s, "Repair.Hand.Other.Sender");
 				Loader.sendMessages(p, "Repair.Hand.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
@@ -90,6 +95,14 @@ public class Repair implements CommandExecutor, TabCompleter {
 		}
 		Loader.noPerms(s, "Repair", "Other", "Other");
 		return true;
+	}
+
+	private boolean isTool(String name) {
+		return name.endsWith("_PICKAXE")||name.endsWith("_AXE")||name.endsWith("_SPADE")||name.endsWith("_SHOVEL")
+				||name.endsWith("_HOE")||name.endsWith("_HELMET")||name.endsWith("_BOOTS")||
+		name.endsWith("_LEGGINGS")||name.endsWith("_CHESTPLATE")||name.endsWith("_SWORD")||name.equals("BOW")
+		||name.equals("SHEARS")||name.equals("FLINT_AND_STEEL")||name.equals("TRIDENT")||name.equals("ELYTRA")
+		||name.equals("CROSSBOW")||name.equals("SHIELD")||name.equals("FISHING_ROD");
 	}
 
 	List<String> sd = Arrays.asList("Hand", "All");

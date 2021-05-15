@@ -155,14 +155,14 @@ Item:
     Get: "%prefix% NBT tagy na predmete vo vašej ruke sú: &e%nbt%"
     Set: "%prefix% NBT tagy na predmete vo vašej ruke boli zmenené na &e%nbt%"
   Type:
-    Get: "%prefix% Typ predmetu vo vašej ruke je &e%nbt%"
-    Set: "%prefix% Typ predmetu vo vašej ruke bol zmenený na &e%nbt%"
+    Get: "%prefix% Typ predmetu vo vašej ruke je &e%type%"
+    Set: "%prefix% Typ predmetu vo vašej ruke bol zmenený na &e%type%"
   Amount:
-    Get: "%prefix% Množstvo predmetov vo vašej ruke je &e%type%"
-    Set: "%prefix% Množstvo predmetov vo vašej ruke bolo zmenené na &e%type%"
+    Get: "%prefix% Množstvo predmetov vo vašej ruke je &e%amount%"
+    Set: "%prefix% Množstvo predmetov vo vašej ruke bolo zmenené na &e%amount%"
   Durability:
-    Get: "%prefix% Durability predmetu vo vašej ruke je &e%nbt%"
-    Set: "%prefix% Durability predmetu vo vašej ruke bola zmenená na &e%nbt%"
+    Get: "%prefix% Durability predmetu vo vašej ruke je &e%durability%"
+    Set: "%prefix% Durability predmetu vo vašej ruke bola zmenená na &e%durability%"
   Process:
     Cmd:
       List:
