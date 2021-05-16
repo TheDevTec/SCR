@@ -12,7 +12,6 @@ import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.datakeeper.Data;
 import me.devtec.theapi.utils.datakeeper.loader.YamlLoader;
-import me.devtec.theapi.utils.reflections.Ref;
 
 public class Configs {
 	@SuppressWarnings("unchecked")
@@ -33,47 +32,45 @@ public class Configs {
 			Config c = new Config("ServerControlReloaded/Translations/translation-"+lang+".yml");
     		YamlLoader data = new YamlLoader();
     		try {
-    		data.load(StreamUtils.fromStream(new File("plugins/ServerControlReloaded/Translations/translation-"+lang+".yml")));
+    		data.load(new File("plugins/ServerControlReloaded/Translations/translation-"+lang+".yml"));
     		}catch(Exception e) {}
 	    	boolean change = false;
-	    	try {
-	    		for(Entry<String, Object[]> s : data.get().entrySet()) {
-	    			if(c.get(s.getKey())==null && s.getValue()[0]!=null) {
-	    				Object[] o = (Object[]) Ref.invoke(c.getData(),"getOrCreateData",s.getKey());
-	    				o[0]=s.getValue()[0];
-	    				try {
-	    				o[2]=s.getValue()[2]==null?null:s.getValue()[2]+"";
-	    				}catch(Exception outOfBoud) {
-	    					try {
-	    						o[2]=s.getValue()[0]==null?null:s.getValue()[0]+"";
-	    					}catch(Exception outOfBoud2) {
-	    						
-	    					}
-	    				}
-	    				change = true;
-	    			}
-	    			try {
-	    				if(data.getHeader()==null || data.getHeader()!=null && !data.getHeader().isEmpty() && (c.getHeader().isEmpty()||!data.getHeader().containsAll(c.getHeader()))) {
-	    					c.setHeader(data.getHeader());
-	    					change = true;
-	    				}
-	    				if(data.getFooter()==null ||data.getFooter()!=null && !data.getFooter().isEmpty() && (c.getFooter().isEmpty()||!data.getFooter().containsAll(c.getFooter()))) {
-	    					c.setFooter(data.getFooter());
-	    					change = true;
-	    				}
-	    			}catch(Exception nope) {}
-	    			if(s.getValue()[1]!=null && !((List<String>) s.getValue()[1]).isEmpty())
-	        		if(c.getComments(s.getKey())==null || c.getComments(s.getKey()).isEmpty()) {
-	        			if(c.getHeader()!=null && !c.getHeader().isEmpty() && ((List<String>)s.getValue()[1]).containsAll(c.getHeader())
-	        					|| c.getFooter()!=null && !c.getFooter().isEmpty() && ((List<String>) s.getValue()[1]).containsAll(c.getFooter()))continue;
-	        			c.setComments(s.getKey(), (List<String>)s.getValue()[1]);
-	        			change = true;
-	        		}
-	    		}
-	    	}catch(Exception error) {}
-	    	data.reset();
-	    	if(change)
-	    	c.save();
+				try {
+					if(c.getHeader()==null || c.getHeader()!=null && !c.getHeader().isEmpty() && (data.getHeader().isEmpty()||!c.getHeader().containsAll(data.getHeader()))) {
+						c.getHeader().clear();
+						c.getHeader().addAll(data.getHeader());
+						change = true;
+					}
+					if(c.getFooter()==null || c.getFooter()!=null && !c.getFooter().isEmpty() && (data.getFooter().isEmpty()||!c.getFooter().containsAll(data.getFooter()))) {
+						c.getFooter().clear();
+						c.getFooter().addAll(data.getFooter());
+						change = true;
+					}
+				}catch(Exception nope) {}
+				try {
+				for(Entry<String, Object[]> s : c.getData().getDataLoader().get().entrySet()) {
+					Object[] o = c.getData().getOrCreateData(s.getKey());
+					if(o[0]==null && s.getValue()[0]!=null) {
+						o[0]=s.getValue()[0];
+						try {
+						o[2]=s.getValue()[2];
+						}catch(Exception outOfBoud) {}
+						change = true;
+					}
+					if(s.getValue()[1]!=null && !((List<String>) s.getValue()[1]).isEmpty()) {
+						List<String> cc = (List<String>)o[1];
+			    		if(cc==null || cc.isEmpty()) {
+			    			if(c.getHeader()!=null && !c.getHeader().isEmpty() && ((List<String>)s.getValue()[1]).containsAll(c.getHeader())
+		        					|| c.getFooter()!=null && !c.getFooter().isEmpty() && ((List<String>) s.getValue()[1]).containsAll(c.getFooter()))continue;
+		        			o[1]=(List<String>)s.getValue()[1];
+			    			change = true;
+			    		}
+					}
+				}
+				}catch(Exception err) {}
+		    	data.reset();
+				if(change)
+			    	c.save();
 	    	Loader.trans=c;
 		}
 		setting.load(settingMessage);
@@ -176,9 +173,8 @@ public class Configs {
     		u.setUseCaches(false);
     		data.reload(StreamUtils.fromStream(u.getInputStream()));
     		}catch(Exception e) {}
-	    	boolean change = c.getData().merge(data, true, true);
-	    	if(change)
-	    	c.save();
+	    	if(c.getData().merge(data, true, true))
+	    		c.save();
 	    	switch(s) {
 	    	case "Kits.yml":
 	    		Loader.kit=c;
