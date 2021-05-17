@@ -22,6 +22,7 @@ public class ItemUse implements Listener {
 	@SuppressWarnings("unchecked")
 	@EventHandler
 	public void onUse(PlayerInteractEvent e) {
+		if(!e.getAction().name().contains("RIGHT"))return;
 		if(e.getItem()!=null && e.getItem().getType()!=Material.AIR) {
 			Object has = getActions(e.getItem(), "process", 0);
 			if(has==null||has.toString().trim().isEmpty())return;

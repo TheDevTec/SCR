@@ -1,11 +1,9 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
-import me.devtec.servercontrolreloaded.scr.API;
-import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.servercontrolreloaded.utils.setting;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.PluginManagerAPI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,31 +11,44 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import me.devtec.servercontrolreloaded.scr.API;
+import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.servercontrolreloaded.utils.setting;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.PluginManagerAPI;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.user.User;
 
 public class Staff implements CommandExecutor, TabCompleter {
-	public static String getGroup(Player a) {
-		try {
-			if (PluginManagerAPI.getPlugin("Vault") != null)
-				if (Loader.vault != null)
-					if (Loader.vault.getPrimaryGroup(a) != null)
-						return Loader.vault.getPrimaryGroup(a);
-		} catch (Exception e) {
-			return "default";
+	public static String getGroup(Player p) {
+		if(PluginManagerAPI.isEnabledPlugin("LuckPerms"))
+			return LuckPermsProvider.get().getUserManager().getUser(p.getUniqueId()).getPrimaryGroup();
+		if (Loader.vault != null) {
+			return Loader.vault.getPrimaryGroup(p);
+		}
+		if (Loader.perms != null) {
+			return Loader.perms.getPrimaryGroup(p);
 		}
 		return "default";
 	}
 	
-	public static String getGroup(String a) {
-		try {
-			if (PluginManagerAPI.getPlugin("Vault") != null)
-				if (Loader.vault != null)
-					if (Loader.vault.getPrimaryGroup(Bukkit.getWorld("world"), a) != null)
-						return Loader.vault.getPrimaryGroup(Bukkit.getWorld("world"), a);
-		} catch (Exception e) {
-			return "default";
+	public static String getGroup(String p) {
+		if(PluginManagerAPI.isEnabledPlugin("LuckPerms")) {
+			User u = LuckPermsProvider.get().getUserManager().getUser(p);
+			if(u==null)
+				try {
+					u=LuckPermsProvider.get().getUserManager().loadUser(TheAPI.getUser(p).getUUID()).get();
+				} catch (Exception e) {
+				}
+			if(u!=null)
+				return u.getPrimaryGroup();
+		}
+		if (Loader.vault != null) {
+			return Loader.vault.getPrimaryGroup(Bukkit.getWorlds().get(0),p);
+		}
+		if (Loader.perms != null) {
+			return Loader.perms.getPrimaryGroup(Bukkit.getWorlds().get(0),p);
 		}
 		return "default";
 	}
