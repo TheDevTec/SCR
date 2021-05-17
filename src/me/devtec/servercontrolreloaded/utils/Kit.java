@@ -81,7 +81,7 @@ public class Kit {
 				for (String flag : Loader.kit.getStringList("Kits." + name + ".items.add." + id + ".flags")) {
 					try {
 					a.addItemFlag(ItemFlag.valueOf(flag));
-					}catch(Exception er) {
+					}catch(Exception | NoSuchFieldError | NoSuchMethodError | NoClassDefFoundError er) {
 						Bukkit.getLogger().warning("Error when preparing (kit:" + name + ", id:"+id+", section:add) of itemflag " + flag + ", itemflag is invalid");
 					}
 				}

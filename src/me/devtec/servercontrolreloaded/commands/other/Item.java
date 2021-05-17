@@ -34,7 +34,7 @@ public class Item implements CommandExecutor, TabCompleter{
 	static {
 		try {
 		for(ItemFlag a : ItemFlag.values())flags.add(a.name());
-		}catch(Exception | NoSuchFieldError | NoSuchMethodError e) {}
+		}catch(Exception | NoSuchFieldError | NoSuchMethodError | NoClassDefFoundError e) {}
 		f.add("add");
 		f.add("remove");
 		f.add("list");
