@@ -19,7 +19,7 @@ public class Restart implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Restart", "Server")) {
 			if (args.length == 0) {
-				BigTask.start(TaskType.RESTART, Loader.config.getLong("Options.WarningSystem.Restart.PauseTime"));
+				BigTask.start(TaskType.RESTART, StringUtils.timeFromString(Loader.config.getString("Options.WarningSystem.Restart.PauseTime")));
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("cancel")) {

@@ -19,7 +19,7 @@ public class Stop implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Stop", "Server")) {
 			if (args.length == 0) {
-				BigTask.start(TaskType.STOP, Loader.config.getLong("Options.WarningSystem.Stop.PauseTime"));
+				BigTask.start(TaskType.STOP, StringUtils.timeFromString(Loader.config.getString("Options.WarningSystem.Stop.PauseTime")));
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("cancel")) {

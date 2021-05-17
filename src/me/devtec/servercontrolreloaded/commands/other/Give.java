@@ -443,9 +443,7 @@ public class Give implements CommandExecutor, TabCompleter {
 			return;
 		}
 		if(nbt!=null && nbt.startsWith("{") && nbt.endsWith("}")) {
-			Object nms = NMSAPI.asNMSItem(stack);
-			NMSAPI.setNBT(nms, NMSAPI.parseNBT(nbt));
-			stack=NMSAPI.asBukkitItem(nms);
+			stack=NMSAPI.setNBT(stack, nbt);
 		}
 		TheAPI.giveItem(target, stack);
 		if(target==null||sender==target)

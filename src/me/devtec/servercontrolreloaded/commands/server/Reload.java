@@ -19,7 +19,7 @@ public class Reload implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Reload", "Server")) {
 			if (args.length == 0) {
-				BigTask.start(TaskType.RELOAD, Loader.config.getLong("Options.WarningSystem.Reload.PauseTime"));
+				BigTask.start(TaskType.RELOAD, StringUtils.timeFromString(Loader.config.getString("Options.WarningSystem.Reload.PauseTime")));
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("cancel")) {

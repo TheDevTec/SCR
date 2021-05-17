@@ -1,7 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,7 +25,6 @@ import me.devtec.theapi.utils.json.Reader;
 import me.devtec.theapi.utils.json.Writer;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
-import me.devtec.theapi.utils.reflections.Ref;
 
 public class Item implements CommandExecutor, TabCompleter{
 	private static List<String> flags = new ArrayList<>();
@@ -246,7 +244,7 @@ public class Item implements CommandExecutor, TabCompleter{
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("get")) {
-						Loader.sendMessages(s,"Item.Nbt.Get",Placeholder.c().add("%nbt%", Ref.invoke(NMSAPI.asNMSItem(item), "getOrCreateTag").toString()));
+						Loader.sendMessages(s,"Item.Nbt.Get",Placeholder.c().add("%nbt%", NMSAPI.getNBT(item)+""));
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("set")) {
@@ -254,10 +252,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							Loader.advancedHelp(s, "Item", "Other", "Nbt", "Set");
 							return true;
 						}
-						Object nms = NMSAPI.asNMSItem(item);
-						NMSAPI.setNBT(nms, NMSAPI.parseNBT(StringUtils.buildString(2,args)));
-						item=NMSAPI.asBukkitItem(nms);
-						((Player) s).getItemInHand().setItemMeta(item.getItemMeta());
+						NMSAPI.setNBT(item, StringUtils.buildString(2,args));
 						Loader.sendMessages(s,"Item.Nbt.Set",Placeholder.c().add("%nbt%", StringUtils.buildString(2,args)));
 						return true;
 					}
@@ -537,8 +532,6 @@ public class Item implements CommandExecutor, TabCompleter{
 		Loader.noPerms(s, "Item", "Other");		
 		return true;
 	}
-
-	private static Method parser = Ref.method(Ref.nms("MojangsonParser"), "parse", String.class);
 	
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(Loader.has(s, "Item", "Other")) {
