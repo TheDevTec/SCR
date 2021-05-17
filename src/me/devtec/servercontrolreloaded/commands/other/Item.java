@@ -254,9 +254,11 @@ public class Item implements CommandExecutor, TabCompleter{
 							Loader.advancedHelp(s, "Item", "Other", "Nbt", "Set");
 							return true;
 						}
-						Object nbt = Ref.invokeNulled(parser, StringUtils.buildString(2, args));
-						NMSAPI.setNBT(item, nbt);
-						Loader.sendMessages(s,"Item.Nbt.Set",Placeholder.c().add("%nbt%", nbt.toString()));
+						Object nms = NMSAPI.asNMSItem(item);
+						NMSAPI.setNBT(nms, NMSAPI.parseNBT(StringUtils.buildString(2,args)));
+						item=NMSAPI.asBukkitItem(nms);
+						((Player) s).getItemInHand().setItemMeta(item.getItemMeta());
+						Loader.sendMessages(s,"Item.Nbt.Set",Placeholder.c().add("%nbt%", StringUtils.buildString(2,args)));
 						return true;
 					}
 				}
