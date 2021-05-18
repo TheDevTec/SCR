@@ -63,6 +63,8 @@ import me.devtec.theapi.guiapi.GUI;
 import me.devtec.theapi.guiapi.HolderGUI;
 import me.devtec.theapi.guiapi.ItemGUI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.placeholderapi.PlaceholderRegister;
+import me.devtec.theapi.placeholderapi.ThePlaceholder;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
@@ -338,12 +340,38 @@ public class Loader extends JavaPlugin implements Listener {
 	private static long loading;
 	public static boolean hasBungee;
 
+	private Object reg;
+
 	@Override
 	public void onEnable() {
 		if(disable) {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
+		
+		//LOAD PLACEHOLDERS
+		if(PluginManagerAPI.isEnabledPlugin("PlaceholderAPI")) {
+			reg=new PlaceholderRegister("scr", "DevTec", getDescription().getVersion()) {
+				
+				@Override
+				public String onRequest(Player player, String params) {
+					return TabList.replace(params, player, true);
+				}
+			};
+			((PlaceholderRegister)reg).register();
+		}else {
+			reg=new ThePlaceholder("ServerControlReloaded") {
+				
+				@Override
+				public String onRequest(Player player, String placeholder) {
+					if(!placeholder.toLowerCase().startsWith("scr_"))return null;
+					placeholder=placeholder.substring(4);
+					return TabList.replace(placeholder, player, true);
+				}
+			};
+			((ThePlaceholder)reg).register();
+		}
+		
 		MultiWorldsUtils.loadWorlds();
 		if(Ref.getClass("net.md_5.bungee.api.ChatColor")!=null) {
 			if(new Data("spigot.yml").getBoolean("settings.bungeecord")) {
@@ -483,6 +511,7 @@ public class Loader extends JavaPlugin implements Listener {
 				Bukkit.getLogger().info("Saving world '" + w + "'");
 				Bukkit.getWorld(w).save();
 			}
+		if(reg instanceof ThePlaceholder)((ThePlaceholder)reg).unregister();
 	}
 
 	private static boolean setupVault() {

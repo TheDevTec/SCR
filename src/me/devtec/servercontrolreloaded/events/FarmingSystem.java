@@ -1,13 +1,12 @@
 package me.devtec.servercontrolreloaded.events;
 
-import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.utils.XMaterial;
-import me.devtec.servercontrolreloaded.utils.setting;
-import me.devtec.theapi.TheAPI;
+import java.lang.reflect.Constructor;
+
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.NetherWartsState;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,6 +16,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Crops;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.NetherWarts;
+
+import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.utils.XMaterial;
+import me.devtec.servercontrolreloaded.utils.setting;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.reflections.Ref;
 
 
 public class FarmingSystem implements Listener {
@@ -37,6 +43,7 @@ public class FarmingSystem implements Listener {
 			s.setData(data);
 			s.update(true,false);
             e.setCancelled(true);
+            callHand(e.getPlayer());
             int random = TheAPI.generateRandomInt(5);
 			if (random != 0)
 			TheAPI.giveItem(e.getPlayer(), new ItemStack(XMaterial.NETHER_WART.getMaterial(), random));
@@ -52,6 +59,7 @@ public class FarmingSystem implements Listener {
 					s.setData(md);
 					s.update(true,false);
 		            e.setCancelled(true);
+		            callHand(e.getPlayer());
 					int random = TheAPI.generateRandomInt(2);
 					if (random != 0)
 					TheAPI.giveItem(e.getPlayer(), new ItemStack(XMaterial.WHEAT_SEEDS.getMaterial(), random));
@@ -64,6 +72,7 @@ public class FarmingSystem implements Listener {
 						s.setData(md);
 						s.update(true,false);
 			            e.setCancelled(true);
+			            callHand(e.getPlayer());
 						int random = TheAPI.generateRandomInt(3);
 						if (random != 0)
 						TheAPI.giveItem(e.getPlayer(), new ItemStack(Material.BEETROOT_SEEDS, random));
@@ -78,6 +87,7 @@ public class FarmingSystem implements Listener {
 						s.setData(md);
 						s.update(true,false);
 			            e.setCancelled(true);
+			            callHand(e.getPlayer());
 						int random = TheAPI.generateRandomInt(4);
 						if (random != 0)
 						TheAPI.giveItem(e.getPlayer(), new ItemStack(XMaterial.POTATO.getMaterial(), random));
@@ -91,6 +101,7 @@ public class FarmingSystem implements Listener {
 						s.setData(md);
 						s.update(true,false);
 			            e.setCancelled(true);
+			            callHand(e.getPlayer());
 						int random = TheAPI.generateRandomInt(4);
 						if (random != 0)
 						TheAPI.giveItem(e.getPlayer(), new ItemStack(XMaterial.CARROT.getMaterial(), random));
@@ -99,5 +110,11 @@ public class FarmingSystem implements Listener {
 				} catch (Exception | NoSuchFieldError es) {
 				}
 			}
+	}
+
+	private static Constructor<?> packet = Ref.constructor(Ref.nms("PacketPlayOutAnimation"), Ref.nms("Entity"), int.class);
+	
+	private void callHand(Player player) {
+		Ref.sendPacket(TheAPI.getOnlinePlayers(), Ref.newInstance(packet, NMSAPI.getEntity(player), 0));
 	}
 }
