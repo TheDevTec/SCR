@@ -211,8 +211,10 @@ public class Tasks {
 		tasks.add(new Tasker() {
 			@Override
 			public void run() {
-				for (Player p : TheAPI.getOnlinePlayers())
-					TabList.setName(p);
+				for (Player p : TheAPI.getOnlinePlayers()) {
+					TabList.setTabName(p);
+					TabList.setNameTag(p);
+				}
 				TabList.update();
 			}
 		}.runRepeating(0, r));

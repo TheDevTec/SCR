@@ -21,7 +21,7 @@ public class setting {
 			ad_itempick, cool_cmd, cool_chat, cool_percmd, color_chat_perm,
 			color_sign_perm, tp_safe, tp_onreqloc, ram, spam_double, caps_chat, caps_cmd, deathspawnbol
 			,list, staff_hide, staff_replace, farming, farming_packet, tab_vanish, tab_move, vanish_action,
-			pm, helpop;
+			pm, helpop,tab_name;
 	public static String prefix;
 	public static DeathTp deathspawn;
 
@@ -89,6 +89,7 @@ public class setting {
 			tab_header = Loader.tab.getBoolean("Options.Modify.Header");
 			tab_footer = Loader.tab.getBoolean("Options.Modify.Footer");
 			tab_nametag = Loader.tab.getBoolean("Options.Modify.NameTags");
+			tab_name = Loader.tab.getBoolean("Options.Modify.TabListName");
 			tab_sort = Loader.tab.getBoolean("Options.Sorting");
 			if(TheAPI.isNewerThan(7)) {
 				tab_vanish=Loader.tab.getBoolean("Options.VanishToSpectator");
@@ -97,6 +98,7 @@ public class setting {
 		}else {
 			tab_header = false;
 			tab_footer = false;
+			tab_name=false;
 			tab_nametag = false;
 			tab_sort = false;
 			tab_vanish = false;

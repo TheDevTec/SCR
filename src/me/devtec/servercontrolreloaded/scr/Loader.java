@@ -43,6 +43,7 @@ import me.devtec.servercontrolreloaded.utils.Configs;
 import me.devtec.servercontrolreloaded.utils.Converter;
 import me.devtec.servercontrolreloaded.utils.DisplayManager;
 import me.devtec.servercontrolreloaded.utils.Eco;
+import me.devtec.servercontrolreloaded.utils.InstantTAB;
 import me.devtec.servercontrolreloaded.utils.Kit;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
@@ -341,6 +342,7 @@ public class Loader extends JavaPlugin implements Listener {
 	public static boolean hasBungee;
 
 	private Object reg;
+	private InstantTAB tabb;
 
 	@Override
 	public void onEnable() {
@@ -348,6 +350,8 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
+		tabb = new InstantTAB();
+		tabb.reg();
 		
 		//LOAD PLACEHOLDERS
 		if(PluginManagerAPI.isEnabledPlugin("PlaceholderAPI")) {
@@ -355,7 +359,9 @@ public class Loader extends JavaPlugin implements Listener {
 				
 				@Override
 				public String onRequest(Player player, String params) {
-					return TabList.replace(params, player, true);
+					params='%'+params+'%';
+					String f = TabList.replace(params, player, true);
+					return params.equals(f)?null:f;
 				}
 			};
 			((PlaceholderRegister)reg).register();
@@ -366,6 +372,7 @@ public class Loader extends JavaPlugin implements Listener {
 				public String onRequest(Player player, String placeholder) {
 					if(!placeholder.toLowerCase().startsWith("scr_"))return null;
 					placeholder=placeholder.substring(4);
+					placeholder='%'+placeholder+'%';
 					return TabList.replace(placeholder, player, true);
 				}
 			};
@@ -494,6 +501,7 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onDisable() {
+		tabb.unreg();
 		unhook();
 		CommandsManager.unload();
 		org.bukkit.event.HandlerList.unregisterAll(this);

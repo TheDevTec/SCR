@@ -1,13 +1,30 @@
 
 package me.devtec.servercontrolreloaded.events;
 
+import java.util.Collection;
+import java.util.Date;
+
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
 import me.devtec.servercontrolreloaded.commands.message.Mail;
 import me.devtec.servercontrolreloaded.commands.other.Vanish;
 import me.devtec.servercontrolreloaded.scr.API;
-import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.API.TeleportLocation;
+import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.servercontrolreloaded.utils.*;
+import me.devtec.servercontrolreloaded.utils.DisplayManager;
+import me.devtec.servercontrolreloaded.utils.NameTagChanger;
+import me.devtec.servercontrolreloaded.utils.SPlayer;
+import me.devtec.servercontrolreloaded.utils.TabList;
+import me.devtec.servercontrolreloaded.utils.Tasks;
+import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.servercontrolreloaded.utils.skins.manager.SkinCallback;
 import me.devtec.servercontrolreloaded.utils.skins.manager.SkinData;
 import me.devtec.servercontrolreloaded.utils.skins.manager.SkinManager;
@@ -20,17 +37,7 @@ import me.devtec.theapi.punishmentapi.PlayerBanList;
 import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.datakeeper.User;
-import org.bukkit.GameMode;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.util.Collection;
-import java.util.Date;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class OnPlayerJoin implements Listener {
 
@@ -232,7 +239,7 @@ public class OnPlayerJoin implements Listener {
 					if(setting.tab_footer || setting.tab_header)
 				TabList.setFooterHeader(p);
 				if(setting.tab_nametag)
-				TabList.setName(p);
+				TabList.setNameTag(p);
 				TabList.update();
 				}
 				d.set("Joins", d.getInt("Joins")+1);
@@ -246,6 +253,9 @@ public class OnPlayerJoin implements Listener {
 		e.setQuitMessage(null);
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
+		NameTagChanger.remove(p);
+		p.setPlayerListName(p.getName());
+		Ref.sendPacket(p,TabList.empty);
 		User d = TheAPI.getUser(p);
 		boolean fly = p.isFlying() && p.getAllowFlight();
 		p.setFlying(false);
