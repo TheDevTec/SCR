@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -27,8 +28,12 @@ public class Heal implements CommandExecutor, TabCompleter {
 	}
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
+		if (Loader.has(s, "Heal", "Other")) {
 		if (args.length == 0) {
-			if (Loader.has(s, "Heal", "Other")) {
+				if(!CommandsManager.canUse("Other.Heal", s)) {
+					Loader.sendMessages(s, "Cooldowns.Commands");
+					return true;
+				}
 			if (s instanceof Player) {
 				Player p = (Player) s;
 				p.setFoodLevel(20);
@@ -42,11 +47,7 @@ public class Heal implements CommandExecutor, TabCompleter {
 			}
 			Loader.Help(s, "Heal", "Other");
 			return true;
-			}
-			Loader.noPerms(s, "Heal", "Other");
-			return true;
 		}
-		if (args.length == 1) {
 			if (args[0].equals("*")) {
 				Repeat.a(s, "heal *");
 				return true;
@@ -86,6 +87,7 @@ public class Heal implements CommandExecutor, TabCompleter {
 			Loader.noPerms(s, "Hat", "Other", "Other");
 			return true;
 		}
+		Loader.noPerms(s, "Heal", "Other");
 		return true;
 	}
 }

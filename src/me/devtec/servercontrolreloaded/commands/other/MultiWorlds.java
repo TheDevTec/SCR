@@ -14,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
@@ -31,6 +32,10 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if(!Loader.has(s,"MultiWorlds","Other")){
 			Loader.noPerms(s,"MultiWorlds","Other");
+			return true;
+		}
+		if(!CommandsManager.canUse("Other.MultiWorlds", s)) {
+			Loader.sendMessages(s, "Cooldowns.Commands");
 			return true;
 		}
 		if (args.length == 0) {

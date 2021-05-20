@@ -8,6 +8,8 @@ import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Stairs.Shape;
 import org.bukkit.entity.Player;
 import org.bukkit.material.Directional;
 import org.bukkit.material.MaterialData;
@@ -58,8 +60,7 @@ public class MirrorManager {
 			if(type==MirrorType.AXISX) {
 				axis=loc.getBlockZ();
 				bl=block.getZ();
-			}
-			else  {
+			}else  {
 				axis=loc.getBlockX();
 				bl=block.getX();
 			}
@@ -70,9 +71,15 @@ public class MirrorManager {
 				n = new Position(loc.getWorld(), block.getX(), block.getY(), v);
 			else
 				n = new Position(loc.getWorld(), v, block.getY(), block.getZ());
-			n.getBlock().setType(block.getType());
-			n.getBlock().setBlockData(block.getBlockData());
+			n.setTypeAndUpdate(block.getType());
+			BlockState st = n.getBlock().getState();
+			st.setData(block.getState().getData());
+			st.update(true, true);
+			try { //1.13+
+				n.getBlock().setBlockData(block.getBlockData());
+			}catch(Exception | NoSuchMethodError | NoClassDefFoundError | NoSuchFieldError e) {}
 			rotate(n.getBlock(), block, type);
+			
 			
 			if(block.getType().name().contains("_SIGN")) {
 				List<Position> list = new ArrayList<>();
@@ -83,7 +90,6 @@ public class MirrorManager {
 			
 			return;
 		}
-
 		if(type==MirrorType.CENTER) {
 			int axisX;
 			int vX;
@@ -118,7 +124,37 @@ public class MirrorManager {
         	Ref.sendPacket(TheAPI.getOnlinePlayers(), Ref.invoke(ed, "getUpdatePacket"));
         }
         try {
-        	BlockState state = old.getState();
+        	BlockData state = block.getBlockData(); //1.13+
+	        if(state instanceof org.bukkit.block.data.Directional) {
+	        	org.bukkit.block.data.Directional dir = (org.bukkit.block.data.Directional)state;
+	            BlockFace f =dir.getFacing();
+	            f = getFace(f, type);
+	            dir.setFacing(f);
+	            block.setBlockData(dir);
+	        }
+	        if(state instanceof org.bukkit.block.data.Rotatable) {
+	        	org.bukkit.block.data.Rotatable dir = (org.bukkit.block.data.Rotatable)state;
+	            BlockFace f =dir.getRotation();
+	            f = getFace(f, type);
+	            dir.setRotation(f);
+	            block.setBlockData(dir);
+	        }
+	        if(state instanceof org.bukkit.block.data.type.Stairs) {
+	        	org.bukkit.block.data.type.Stairs dir = (org.bukkit.block.data.type.Stairs)state;
+	            Shape f =dir.getShape();
+	            f = getShape(f, type);
+	            dir.setShape(f);
+	            block.setBlockData(dir);
+	        }
+	        if(state instanceof org.bukkit.block.data.Rail) {
+	        	org.bukkit.block.data.Rail dir = (org.bukkit.block.data.Rail)state;
+	            org.bukkit.block.data.Rail.Shape f =dir.getShape();
+	            f = getShape(f, type);
+	            dir.setShape(f);
+	            block.setBlockData(dir);
+	        }
+        }catch(Exception | NoSuchMethodError|NoSuchFieldError|NoClassDefFoundError e) { //1.12.2 - 1.7.10
+        	BlockState state = block.getState();
 	        MaterialData d = state.getData();
 	        if(d instanceof Directional) {
 	            Directional dir = (Directional)d;
@@ -128,7 +164,7 @@ public class MirrorManager {
 	            state.setData((MaterialData) dir);
 	            state.update(true,false);
 	        }
-        }catch(Exception | NoSuchMethodError|NoSuchFieldError|NoClassDefFoundError e) {}
+        }
     }
 	
 	public static BlockFace getFace(BlockFace f, MirrorType type) {
@@ -175,7 +211,13 @@ public class MirrorManager {
 	        if(f==BlockFace.WEST) return BlockFace.EAST;
 		}
 		return f;
-	}/*
+	}
+	
+	public static org.bukkit.block.data.Rail.Shape getShape(org.bukkit.block.data.Rail.Shape shape, MirrorType type) {
+		//TODO - houska
+		return shape;
+	}
+	
 	public static Shape getShape(Shape shape, MirrorType type) {
 		if(shape == Shape.STRAIGHT) return Shape.STRAIGHT;
 		if(type==MirrorType.AXISX) {
@@ -191,5 +233,5 @@ public class MirrorManager {
 			if(shape== Shape.OUTER_RIGHT) return Shape.OUTER_LEFT;
 		}
 		return shape;
-	}*/
+	}
 }

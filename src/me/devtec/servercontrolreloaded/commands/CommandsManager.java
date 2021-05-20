@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 
@@ -145,12 +146,95 @@ import me.devtec.servercontrolreloaded.commands.weather.Rain;
 import me.devtec.servercontrolreloaded.commands.weather.Sun;
 import me.devtec.servercontrolreloaded.commands.weather.Thunder;
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.PluginManagerAPI;
+import me.devtec.theapi.utils.StringUtils;
 public class CommandsManager {
+	
+
+	private static Map<String, Map<String,Long>> cooldownMap = new HashMap<>();
+	private static Map<String, Long> cooldown = new HashMap<>();
+	
+	//global
+	private static Map<String, Long> waitingCooldown= new HashMap<>();
+	private static Map<String,Boolean> global= new HashMap<>();
+	
+	public static boolean canUse(String path, CommandSender s) {
+		if(!cooldown.containsKey(path))return true;
+		if(s instanceof Player) {
+			for(String d : Loader.cmds.getStringList(path+".CooldownCmds")) {
+				if(!canUseSimple(d,s))return false;
+			}
+			if(global.getOrDefault(path,false)) {
+				if(waitingCooldown.getOrDefault(path, (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path)<= 0) {
+					waitingCooldown.put(path, System.currentTimeMillis()/1000);
+					return true;
+				}
+				return false;
+			}
+			Map<String, Long> waitingCooldown = cooldownMap.get(path);
+			if(waitingCooldown==null) {
+				cooldownMap.put(path, waitingCooldown=new HashMap<>());
+			}
+			if(waitingCooldown.getOrDefault(s.getName(), (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path) <= 0) {
+				waitingCooldown.put(s.getName(), System.currentTimeMillis()/1000);
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+	
+	public static long expire(String path, CommandSender s) {
+		if(!cooldown.containsKey(path))return 0;
+		if(s instanceof Player) {
+			for(String d : Loader.cmds.getStringList(path+".CooldownCmds")) {
+				if(!canUseSimple(d,s))return expire(d,s);
+			}
+			if(global.getOrDefault(path,false)) {
+				return waitingCooldown.getOrDefault(path, (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path);
+			}
+			Map<String, Long> waitingCooldown = cooldownMap.get(path);
+			if(waitingCooldown==null) {
+				cooldownMap.put(path, waitingCooldown=new HashMap<>());
+			}
+			return waitingCooldown.getOrDefault(s.getName(), (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path);
+		}
+		return 0;
+	}
+	
+	private static boolean canUseSimple(String path, CommandSender s) {
+		if(s instanceof Player) {
+			if(global.get(path)) {
+				if(waitingCooldown.getOrDefault(path, (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path)<= 0) {
+					waitingCooldown.put(path, System.currentTimeMillis()/1000);
+					return true;
+				}
+				return false;
+			}
+			Map<String, Long> waitingCooldown = cooldownMap.get(path);
+			if(waitingCooldown==null) {
+				cooldownMap.put(path, waitingCooldown=new HashMap<>());
+			}
+			if(waitingCooldown.getOrDefault(s.getName(), (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path) <= 0) {
+				waitingCooldown.put(s.getName(), System.currentTimeMillis()/1000);
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+	
 	private static Map<String, PluginCommand> commands = new HashMap<>();
 	
 	public static boolean load(String section, String command, CommandExecutor cs) {
 		if(Loader.cmds.getBoolean(section+"."+command+".Enabled")) {
+			long time = StringUtils.timeFromString(Loader.cmds.getString(section+"."+command+".Cooldown"));
+			if(time>0) {
+				global.put(section+'.'+command, Loader.cmds.getBoolean(section+"."+command+".CooldownGlobal"));
+				cooldown.put(section+'.'+command, time);
+			}
 			PluginCommand c = TheAPI.createCommand(Loader.cmds.getString(section+"."+command+".Name"), Loader.getInstance);
 			List<String> aliases = new ArrayList<>();
 			if(Loader.cmds.exists(section+"."+command+".Aliases")) {
@@ -162,17 +246,17 @@ public class CommandsManager {
 			c.setExecutor(cs);
 			c.setPermission(Loader.cmds.getString(section+"."+command+".Permission"));
 			TheAPI.registerCommand(c);
-			commands.put(section+":"+command, c);
+			commands.put(section.toLowerCase()+":"+command.toLowerCase(), c);
 			return true;
 		}else {
-			if(commands.containsKey(section+":"+command))
+			if(commands.containsKey(section.toLowerCase()+":"+command.toLowerCase()))
 				unload(section,command);
 		}
 		return false;
 	}
 	
 	public static void unload(String section, String command) {
-		TheAPI.unregisterCommand(commands.remove(section+":"+command));
+		TheAPI.unregisterCommand(commands.remove(section.toLowerCase()+":"+command.toLowerCase()));
 	}
 	
 	public static void load() {
@@ -182,90 +266,94 @@ public class CommandsManager {
 		load("Server", "Restart", new Restart());
 		
 		//Kill
-		load("Kill", "Kill",new Kill());
-		load("Kill", "KillAll",new KillAll());
-		load("Kill", "Suicide",new Suicide());
+		load("Kill", "Kill", new Kill());
+		load("Kill", "KillAll", new KillAll());
+		load("Kill", "Suicide", new Suicide());
 		
 		//Info
-		load("Info", "Memory",new RAM());
-		load("Info", "Chunks",new Chunks());
-		load("Info", "SCR",new SCR());
-		load("Info","Seen", new Seen());
-		load("Info","List", new ListCmd());
-		load("Info","Staff", new Staff());
-		load("Info", "TPS",new TPS());
-		load("Info","WhoIs", new WhoIs()); 
-		load("Info", "Maintenance",new Maintenance());
-		load("Info", "Ping",new Ping());
-		load("Info","CountryBlocker",new CountryBlocker());
+		load("Info", "Memory", new RAM());
+		load("Info", "Chunks", new Chunks());
+		load("Info", "SCR", new SCR());
+		load("Info", "Seen", new Seen());
+		load("Info", "List", new ListCmd());
+		load("Info", "Staff", new Staff());
+		load("Info", "TPS", new TPS());
+		load("Info", "WhoIs", new WhoIs()); 
+		load("Info", "Maintenance", new Maintenance());
+		load("Info", "Ping", new Ping());
+		if(Loader.config.getBoolean("CountryBlocker.Enabled"))
+		load("Info", "CountryBlocker", new CountryBlocker());
 
 		//Speed
-		load("Speed", "FlySpeed",new FlySpeed());
-		load("Speed", "WalkSpeed",new WalkSpeed());
+		load("Speed", "FlySpeed", new FlySpeed());
+		load("Speed", "WalkSpeed", new WalkSpeed());
 		
 		//Warps
-		load("Warps", "SetSpawn",new SetSpawn());
-		load("Warps", "Spawn",new Spawn());
-		load("Warps", "SetWarp",new SetWarp());
-		load("Warps", "DelWarp",new DelWarp());
-		load("Warps", "Warp",new Warp());
-		load("Warps", "Home",new Home());
+		load("Warps", "SetSpawn", new SetSpawn());
+		load("Warps", "Spawn", new Spawn());
+		load("Warps", "SetWarp", new SetWarp());
+		load("Warps", "DelWarp", new DelWarp());
+		load("Warps", "Warp", new Warp());
+		load("Warps", "Home", new Home());
 		load("Warps", "HomeOther", new HomeOther());
-		load("Warps", "SetHome",new SetHome());
-		load("Warps", "DelHome",new DelHome());
-		load("Warps", "Homes",new Homes());
-		load("Warps", "Back",new Back());
+		load("Warps", "SetHome", new SetHome());
+		load("Warps", "DelHome", new DelHome());
+		load("Warps", "Homes", new Homes());
+		load("Warps", "Back", new Back());
 		
 		//Economy
-		load("Economy", "BalanceTop",new EcoTop());
-		load("Economy", "Balance",new Balance());
-		load("Economy", "Economy",new Eco());
-		load("Economy", "Pay",new Pay());
-		load("Economy", "MultiEconomy", new MultiEconomy());
+		if(PluginManagerAPI.getPlugin("Vault")!=null) {
+			load("Economy", "BalanceTop", new EcoTop());
+			load("Economy", "Balance", new Balance());
+			load("Economy", "Economy", new Eco());
+			load("Economy", "Pay", new Pay());
+			if(setting.eco_multi)
+			load("Economy", "MultiEconomy", new MultiEconomy());
+		}
 		
 		//Weather
-		load("Weather", "Sun",new Sun());
-		load("Weather", "Thunder",new Thunder());
-		load("Weather", "Rain",new Rain());
-		load("Weather", "PlayerSun",new PSun());
-		load("Weather", "PlayerRain",new PRain());
+		load("Weather", "Sun", new Sun());
+		load("Weather", "Thunder", new Thunder());
+		load("Weather", "Rain", new Rain());
+		load("Weather", "PlayerSun", new PSun());
+		load("Weather", "PlayerRain", new PRain());
 		
 		//Time
-		load("Time", "Day",new Day());
-		load("Time", "Night",new Night());
-		load("Time", "PDay",new PDay());
-		load("Time", "PNight",new PNight());
+		load("Time", "Day", new Day());
+		load("Time", "Night", new Night());
+		load("Time", "PDay", new PDay());
+		load("Time", "PNight", new PNight());
 		
 		//Message
-		load("Message","SocialSpy", new SocialSpy());
-		load("Message","Mail", new Mail());
-		load("Message","Sudo", new Sudo());
-		load("Message","Broadcast", new Broadcast());
+		load("Message", "SocialSpy", new SocialSpy());
+		load("Message", "Mail", new Mail());
+		load("Message", "Sudo", new Sudo());
+		load("Message", "Broadcast", new Broadcast());
 		load("Message", "PrivateMessage", new PrivateMessage());
-		load("Message", "ClearChat",new ClearChat());
-		load("Message","Helpop", new Helpop());
-		load("Message","Reply", new ReplyPrivateMes());
-		load("Message","Ignore", new PrivateMessageIgnore());
+		load("Message", "ClearChat", new ClearChat());
+		load("Message", "Helpop", new Helpop());
+		load("Message", "Reply", new ReplyPrivateMes());
+		load("Message", "Ignore", new PrivateMessageIgnore());
 		
 		//Gamemode
-		load("GameMode","TempGamemode",new TempGamemode());
-		load("GameMode", "GameMode",new Gamemode());
-		load("GameMode", "GameModeSurvival",new GamemodeS());
-		load("GameMode", "GameModeCreative",new GamemodeC());
-		load("GameMode", "GameModeAdventure",new GamemodeA());
+		load("GameMode", "TempGamemode", new TempGamemode());
+		load("GameMode", "GameMode", new Gamemode());
+		load("GameMode", "GameModeSurvival", new GamemodeS());
+		load("GameMode", "GameModeCreative", new GamemodeC());
+		load("GameMode", "GameModeAdventure", new GamemodeA());
 		if(TheAPI.isNewerThan(7))
-			load("GameMode", "GameModeSpectator",new GamemodeSP());
+			load("GameMode", "GameModeSpectator", new GamemodeSP());
 			
 		//BanSystem	
 		load("BanSystem", "Kick", new Kick());
 		load("BanSystem", "Ban", new Ban());
 		load("BanSystem", "Immune", new Immune());
 		load("BanSystem", "TempBan", new TempBan());
-		load("BanSystem", "Jail",new Jail());
-		load("BanSystem", "TempBanIP",new TempBanIP());
-		load("BanSystem", "UnJail",new UnJail());
-		load("BanSystem", "SetJail",new SetJail());
-		load("BanSystem", "DelJail",new DelJail());
+		load("BanSystem", "Jail", new Jail());
+		load("BanSystem", "TempBanIP", new TempBanIP());
+		load("BanSystem", "UnJail", new UnJail());
+		load("BanSystem", "SetJail", new SetJail());
+		load("BanSystem", "DelJail", new DelJail());
 		load("BanSystem", "TempJail", new TempJail());
 		load("BanSystem", "BanIP", new BanIP());
 		load("BanSystem", "UnBanIP", new UnBanIP());
@@ -308,6 +396,7 @@ public class CommandsManager {
 		//Other
 		if(Loader.hasBungee)
 		load("Other", "Send",new Send()); //requres spigot
+		
 		load("Other", "Top",new Top());
 		load("Other", "Portal",new Portal());
 		load("Other", "ChatNotify",new ChatNotify());
@@ -316,8 +405,11 @@ public class CommandsManager {
 		load("Other", "Feed", new Feed());
 		load("Other", "Item", new Item());
 		load("Other", "TempFly", new TempFly());
+		if(setting.sb)
 		load("Other", "ScoreBoard", new Scoreboard());
+		if(Loader.ac.getBoolean("Enabled"))
 		load("Other", "ActionBar", new ActionBar());
+		if(Loader.bb.getBoolean("Enabled"))
 		load("Other", "BossBar", new BossBar());
 		load("Other", "Trash", new Trash());
 		load("Other", "Thor", new Thor());
@@ -331,6 +423,7 @@ public class CommandsManager {
 		load("Other", "Butcher",new Butcher());
 		load("Other", "AFK",new AFK());
 		load("Other", "MultiWorlds",new MultiWorlds());
+		if(setting.tab)
 		load("Other", "Tablist",new Tab());
 		load("Other", "Hat",new Hat());
 		load("Other", "Skin",new Skin());
@@ -344,7 +437,7 @@ public class CommandsManager {
 			for(String a : Loader.guicreator.getKeys("Commands")){
 				if(commands.containsKey(a))return;
 				PluginCommand c = TheAPI.createCommand(a,Loader.getInstance);
-				c.setExecutor(new GUICreator(a,Loader.guicreator.getString("Commands."+a+".gui")));
+				c.setExecutor(new GUICreator(StringUtils.timeFromString(Loader.guicreator.getString("Commands."+a+".cooldown")), Loader.guicreator.getBoolean("Commands."+a+".cooldownGlobal"),a,Loader.guicreator.getString("Commands."+a+".gui")));
 				c.setAliases(Loader.guicreator.getStringList("Commands."+a+".aliases"));
 				c.setPermission(Loader.guicreator.getString("Commands."+a+".permission"));
 				commands.put("other:"+a,c);
@@ -370,6 +463,11 @@ public class CommandsManager {
 	
 	private static void load(String command, CommandExecutor cs) {
 		if(Loader.customCmds.getBoolean(command+".Enabled")) {
+			long time = StringUtils.timeFromString(Loader.customCmds.getString(command+".Cooldown"));
+			if(time>0) {
+				global.put("CustomCommand."+command, Loader.customCmds.getBoolean(command+".CooldownGlobal"));
+				cooldown.put("CustomCommand."+command, time);
+			}
 			PluginCommand c = TheAPI.createCommand(Loader.customCmds.getString(command+".Name"), Loader.getInstance);
 			List<String> aliases = new ArrayList<>();
 			if(Loader.customCmds.exists(command+".Aliases")) {
@@ -381,24 +479,32 @@ public class CommandsManager {
 			c.setExecutor(cs);
 			c.setPermission(Loader.customCmds.getString(command+".Permission"));
 			TheAPI.registerCommand(c);
-			commands.put("scr:customcmd:"+command, c);
+			commands.put("scr:customcmd:"+command.toLowerCase(), c);
 		}else {
-			if(commands.containsKey("scr:customcmd:"+command)){
-				TheAPI.unregisterCommand(commands.remove("scr:customcmd:"+command));
+			if(commands.containsKey("scr:customcmd:"+command.toLowerCase())){
+				TheAPI.unregisterCommand(commands.remove("scr:customcmd:"+command.toLowerCase()));
 			}
 		}
 	}
 
 	public static void unload() {
+		cooldown.clear();
+		cooldownMap.clear();
+		waitingCooldown.clear();
+		global.clear();
 		for(PluginCommand s : commands.values())
 			TheAPI.unregisterCommand(s);
 		commands.clear();
 		if(TheAPI.isNewerThan(12))
-		for(Player p : TheAPI.getOnlinePlayers())
-			p.updateCommands();
+			for(Player p : TheAPI.getOnlinePlayers())
+				p.updateCommands();
 	}
 
 	public static boolean isLoaded(String section, String command) {
-		return commands.containsKey(section+":"+command);
+		return commands.containsKey(section.toLowerCase()+":"+command.toLowerCase());
+	}
+
+	public static PluginCommand get(String s) {
+		return commands.get(s.toLowerCase());
 	}
 }

@@ -10,6 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.commands.other.GUICreator;
 import me.devtec.servercontrolreloaded.commands.other.GUICreator.GUIMaker;
 import me.devtec.servercontrolreloaded.scr.Loader;
@@ -22,6 +23,10 @@ public class SCR implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "SCR", "Info")) {
+			if(!CommandsManager.canUse("Info.SCR", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Info.SCR", s))));
+				return true;
+			}
 			if (args.length == 0) {
 				Loader.Help(s, "SCR", "Info");
 				return true;

@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -27,6 +28,10 @@ public class SetJail implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "SetJail", "BanSystem")) {
+			if(!CommandsManager.canUse("BanSystem.SetJail", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("BanSystem.SetJail", s))));
+				return true;
+			}
 			if (s instanceof Player) {
 				if (args.length == 0) {
 					Loader.Help(s, "SetJail", "BanSystem");

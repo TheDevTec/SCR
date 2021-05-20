@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.utils.setting;
 
@@ -16,6 +17,10 @@ public class Maintenance implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 			if (Loader.has(s, "Maintenance", "Info")) {
+				if(!CommandsManager.canUse("Info.Maintenance", s)) {
+					Loader.sendMessages(s, "Cooldowns.Commands");
+					return true;
+				}
 				if (setting.lock_server) {
 					Loader.config.set("Options.Maintenance.Enabled", false);
 					Loader.config.save();

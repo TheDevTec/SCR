@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -45,6 +46,10 @@ public class Item implements CommandExecutor, TabCompleter{
 		if (Loader.has(s, "Item", "Other")&&(Loader.has(s, "Item", "Other", "Name")||Loader.has(s, "Item", "Other", "Lore")
 				||Loader.has(s, "Item", "Other", "Flag")||Loader.has(s, "Item", "Other", "Nbt")
 				||Loader.has(s, "Item", "Other", "Durability")||Loader.has(s, "Item", "Other", "Type")||Loader.has(s, "Item", "Other", "Process"))) {
+			if(!CommandsManager.canUse("Other.Item", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.Item", s))));
+				return true;
+			}
 			if(s instanceof Player) {
 				if(args.length==0) {
 					if(Loader.has(s, "Item", "Other", "Name")) Loader.advancedHelp(s, "Item","Other" ,"Name");		

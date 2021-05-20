@@ -332,13 +332,38 @@ public class GUICreator implements CommandExecutor {
 	}
 	
     private String gui, cmd;
+    private Map<String, Long> cooldownMap = new HashMap<>();
+    private long cooldown, waitingCooldown;
+    private boolean global;
+	
+	private boolean canUseSimple(CommandSender s) {
+		if(s instanceof Player) {
+			if(global) {
+				if(waitingCooldown-System.currentTimeMillis()/1000 + cooldown<= 0) {
+					waitingCooldown=System.currentTimeMillis()/1000;
+					return true;
+				}
+				return false;
+			}
+			if(cooldownMap.getOrDefault(s.getName(), (long)0)-System.currentTimeMillis()/1000 + cooldown <= 0) {
+				cooldownMap.put(s.getName(), System.currentTimeMillis()/1000);
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+	
 
-    public GUICreator(String cmd, String a){
+    public GUICreator(long cooldown, boolean globalC, String cmd, String a){
+    	this.cooldown=cooldown;
+    	this.global=globalC;
     	gui=a;
     	this.cmd=cmd;
     }
 
     public boolean onCommand(CommandSender s, Command uu, String u, String[] args) {
+    	if(s instanceof Player && !canUseSimple(s) || s instanceof Player == false) {
     	if(args.length==0||!s.hasPermission("scr.command.gui")) {
     		if(s instanceof Player == false)return true;
         	String perm = c.getString("Commands."+cmd+".permission");
@@ -355,5 +380,8 @@ public class GUICreator implements CommandExecutor {
     	}
         maker.get(gui).make(target).open(target);
         return true;
+    	}
+		Loader.sendMessages(s, "Cooldowns.Commands");
+    	return true;
     }
 }

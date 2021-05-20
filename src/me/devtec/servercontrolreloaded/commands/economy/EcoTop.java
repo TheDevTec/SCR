@@ -13,8 +13,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.Eco;
 import me.devtec.servercontrolreloaded.utils.Pagination;
 import me.devtec.theapi.TheAPI;
@@ -32,13 +34,17 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if (Loader.has(s, "BalanceTop", "Economy")) {
-			
+			if(!CommandsManager.canUse("Economy.BalanceTop", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Economy.BalanceTop", s))));
+				return true;
+			}
+			Loader.sendMessages(s, "Economy.BalanceTopLoading");
 			new Tasker() {
 				public void run() {
 				String world = Eco.getEconomyGroupByWorld(Bukkit.getWorlds().get(0).getName());
 				if (s instanceof Player)
 					world = Eco.getEconomyGroupByWorld(((Player) s).getWorld().getName());
-				Pagination<Entry<String, Double>> m = h.containsKey(world) ? h.get(world) : null;
+				Pagination<Entry<String, Double>> m = h.get(world);
 				if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
 					TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300*20); 
 					HashMap<String, Double> money = new HashMap<>();

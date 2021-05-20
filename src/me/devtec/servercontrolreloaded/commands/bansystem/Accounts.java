@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -20,6 +21,10 @@ public class Accounts implements CommandExecutor, TabCompleter{
 	@Override
 	public boolean onCommand(CommandSender cs, Command arg1, String arg2, String[] args) {
 		if(Loader.has(cs, "Accounts", "BanSystem")) {
+			if(!CommandsManager.canUse("BanSystem.Accounts", cs)) {
+				Loader.sendMessages(cs, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("BanSystem.Accounts", cs))));
+				return true;
+			}
 			if(args.length==0) {
 				Loader.Help(cs, "Accounts", "BanSystem");
 				return true; 
@@ -28,9 +33,10 @@ public class Accounts implements CommandExecutor, TabCompleter{
 				Loader.sendMessages(cs, "Accounts.NoAccounts", Placeholder.c().add("%player%", args[0]));
 			else
 				Loader.sendMessages(cs, "Accounts.Users", Placeholder.c().add("%player%", args[0])
-					.add("%players%", StringUtils.join(PunishmentAPI.getPlayersOnIP(TheAPI.getUser(args[0]).getString("ip")), ", ")));
+					.add("%players%", StringUtils.join(PunishmentAPI.getPlayersOnIP(TheAPI.getUser(args[0]).getString("ip").replace('_', '.')), ", ")));
 			return true;
 		}
+		Loader.noPerms(cs, "Accounts", "BanSystem");
 		return true;
 	}
 

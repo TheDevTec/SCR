@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -28,25 +29,29 @@ public class Uuid implements CommandExecutor, TabCompleter {
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
-		if(Loader.has(sender, "Uuid", "Other")) {
-			if(args.length==0) {
-				Loader.Help(sender, "Uuid", "Other");
+	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+		if(Loader.has(s, "Uuid", "Other")) {
+			if(!CommandsManager.canUse("Other.Uuid", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.Uuid", s))));
 				return true;
 			}
-			if(sender instanceof Player) {
+			if(args.length==0) {
+				Loader.Help(s, "Uuid", "Other");
+				return true;
+			}
+			if(s instanceof Player) {
 				Player pl = TheAPI.getPlayerOrNull(args[0]);
 				if (pl!=null) {
 					Object o = Loader.getTranslation("Uuid.Message");
 					if(o!=null) {
 						if(o instanceof String) {
-							StringUtils.getHoverMessage(Loader.placeholder(sender, (String)o, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString()))
-									).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, pl.getUniqueId().toString()).send((Player)sender);
+							StringUtils.getHoverMessage(Loader.placeholder(s, (String)o, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString()))
+									).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, pl.getUniqueId().toString()).send((Player)s);
 						}
 						if(o instanceof Collection) {
 							for (String a : (Collection<String>)o) {
-								StringUtils.getHoverMessage(Loader.placeholder(sender, (String)a, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString()))
-										).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, pl.getUniqueId().toString()).send((Player)sender);
+								StringUtils.getHoverMessage(Loader.placeholder(s, (String)a, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString()))
+										).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, pl.getUniqueId().toString()).send((Player)s);
 							}						
 						}
 					}
@@ -57,13 +62,13 @@ public class Uuid implements CommandExecutor, TabCompleter {
 				String uuid = d.getUUID().toString(), name = d.getName();
 				if(o!=null) {
 					if(o instanceof String) {
-						StringUtils.getHoverMessage(Loader.placeholder(sender, (String)o, Placeholder.c().add("%player%", name).replace("%uuid%", uuid))
-								).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, uuid).send((Player)sender);
+						StringUtils.getHoverMessage(Loader.placeholder(s, (String)o, Placeholder.c().add("%player%", name).replace("%uuid%", uuid))
+								).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, uuid).send((Player)s);
 					}
 					if(o instanceof Collection) {
 						for (String a : (Collection<String>)o) {
-							StringUtils.getHoverMessage(Loader.placeholder(sender, (String)a, Placeholder.c().add("%player%",name).replace("%uuid%", uuid))
-									).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, uuid).send((Player)sender);
+							StringUtils.getHoverMessage(Loader.placeholder(s, (String)a, Placeholder.c().add("%player%",name).replace("%uuid%", uuid))
+									).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, uuid).send((Player)s);
 						}						
 					}
 				}
@@ -74,11 +79,11 @@ public class Uuid implements CommandExecutor, TabCompleter {
 				Object o = Loader.getTranslation("Uuid.Message");
 				if(o!=null) {
 					if(o instanceof String) {
-						TheAPI.msg(Loader.placeholder(sender, (String)o, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString())),sender);
+						TheAPI.msg(Loader.placeholder(s, (String)o, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString())),s);
 					}
 					if(o instanceof Collection) {
 						for (String a : (Collection<String>)o) {
-							TheAPI.msg(Loader.placeholder(sender, a, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString())),sender);
+							TheAPI.msg(Loader.placeholder(s, a, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString())),s);
 						}						
 					}
 				}
@@ -89,17 +94,17 @@ public class Uuid implements CommandExecutor, TabCompleter {
 			String uuid = d.getUUID().toString(), name = d.getName();
 			if(o!=null) {
 				if(o instanceof String) {
-					TheAPI.msg(Loader.placeholder(sender, (String)o, Placeholder.c().add("%player%", name).replace("%uuid%", uuid)),sender);
+					TheAPI.msg(Loader.placeholder(s, (String)o, Placeholder.c().add("%player%", name).replace("%uuid%", uuid)),s);
 				}
 				if(o instanceof Collection) {
 					for (String a : (Collection<String>)o) {
-						TheAPI.msg(Loader.placeholder(sender, a, Placeholder.c().add("%player%", name).replace("%uuid%", uuid)),sender);
+						TheAPI.msg(Loader.placeholder(s, a, Placeholder.c().add("%player%", name).replace("%uuid%", uuid)),s);
 					}						
 				}
 			}
 			return true;
 		}
-		Loader.noPerms(sender, "Uuid", "Other");
+		Loader.noPerms(s, "Uuid", "Other");
 		return true;
 	}
 }

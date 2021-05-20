@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.events.LoginEvent;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
@@ -33,6 +34,10 @@ public class Vanish implements CommandExecutor, TabCompleter{
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "Vanish", "Other")) {
+			if(!CommandsManager.canUse("Other.Vanish", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.Vanish", s))));
+				return true;
+			}
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					Player p = (Player) s;

@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -28,12 +29,13 @@ public class WalkSpeed implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
+		if (Loader.has(s, "WalkSpeed", "Speed")) {
+		if(!CommandsManager.canUse("Speed.WalkSpeed", s)) {
+			Loader.sendMessages(s, "Cooldowns.Commands");
+			return true;
+		}
 		if (args.length == 0) {
-			if (Loader.has(s, "WalkSpeed", "Speed")) {
-				speed(s);
-				return true;
-			}
-			Loader.noPerms(s, "WalkSpeed", "Speed");
+			speed(s);
 			return true;
 		}
 		if (args.length == 1) {
@@ -56,7 +58,6 @@ public class WalkSpeed implements CommandExecutor, TabCompleter {
 				return true;
 			}
 		}
-		if (args.length == 2) {
 			if (Loader.has(s, "WalkSpeed", "Speed", "Other")) {
 				Player target = TheAPI.getPlayer(args[0]);
 				if (target != null) {
@@ -79,7 +80,8 @@ public class WalkSpeed implements CommandExecutor, TabCompleter {
 			Loader.noPerms(s, "WalkSpeed", "Speed", "Other");
 			return true;
 		}
-		return false;
+		Loader.noPerms(s, "WalkSpeed", "Speed");
+		return true;
 	}
 
 	@Override

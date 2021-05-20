@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -27,12 +28,13 @@ public class FlySpeed implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
+		if (Loader.has(s, "FlySpeed", "Speed")) {
+		if(!CommandsManager.canUse("Speed.FlySpeed", s)) {
+			Loader.sendMessages(s, "Cooldowns.Commands");
+			return true;
+		}
 		if (args.length == 0) {
-			if (Loader.has(s, "FlySpeed", "Speed")) {
-				speed(s);
-				return true;
-			}
-			Loader.noPerms(s, "FlySpeed", "Speed");
+			speed(s);
 			return true;
 		}
 		if (args.length == 1) {
@@ -55,7 +57,6 @@ public class FlySpeed implements CommandExecutor, TabCompleter {
 				return true;
 			}
 		}
-		if (args.length == 2) {
 			if (Loader.has(s, "FlySpeed", "Speed", "Other")) {
 				Player target = TheAPI.getPlayer(args[0]);
 				if (target != null) {
@@ -79,7 +80,8 @@ public class FlySpeed implements CommandExecutor, TabCompleter {
 			Loader.noPerms(s, "FlySpeed", "Speed", "Other");
 			return true;
 		}
-		return false;
+		Loader.noPerms(s, "FlySpeed", "Speed");
+		return true;
 	}
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1,

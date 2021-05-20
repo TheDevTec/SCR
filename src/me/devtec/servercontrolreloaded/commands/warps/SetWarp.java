@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -28,6 +29,10 @@ public class SetWarp implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "SetWarp", "Warps")) {
+			if(!CommandsManager.canUse("Warps.SetWarp", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Warps.SetWarp", s))));
+				return true;
+			}
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					Loader.Help(s, "SetWarp", "Warps");
@@ -51,7 +56,7 @@ public class SetWarp implements CommandExecutor, TabCompleter {
 				}
 				return true;
 			}
-			if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("yes")) {
+			if (StringUtils.getBoolean(args[1])) {
 				if (s instanceof Player) {
 					if (warp(args[0])==null) {
 						Player p = (Player) s;

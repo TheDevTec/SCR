@@ -8,8 +8,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.setting;
+import me.devtec.theapi.utils.StringUtils;
 
 public class ChatLock implements CommandExecutor, TabCompleter {
 
@@ -22,6 +25,10 @@ public class ChatLock implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "ChatLock", "Other")) {
+			if(!CommandsManager.canUse("Other.ChatLock", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.ChatLock", s))));
+				return true;
+			}
 			if (!setting.lock_chat) {
 				Loader.sendBroadcasts(s, "ChatLock.Lock");
 				Loader.config.set("Options.ChatLock", true);

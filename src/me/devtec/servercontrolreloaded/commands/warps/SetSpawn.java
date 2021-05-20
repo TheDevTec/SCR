@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.utils.Position;
@@ -20,6 +21,10 @@ public class SetSpawn implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 			if (s instanceof Player) {
 				if (Loader.has(s, "SetSpawn", "Warps")) {
+					if(!CommandsManager.canUse("Warps.SetSpawn", s)) {
+						Loader.sendMessages(s, "Cooldowns.Commands");
+						return true;
+					}
 				Player p = (Player) s;
 				Position local = new Position(p.getLocation());
 				try {

@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -21,9 +22,13 @@ public class Repair implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+		if (Loader.has(s, "Repair", "Other")) {
+			if(!CommandsManager.canUse("Other.Repair", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.Repair", s))));
+				return true;
+			}
 		if(args.length<2) {
 		if (s instanceof Player) {
-			if (Loader.has(s, "Repair", "Other")) {
 				Player p = (Player) s;
 				if (args.length == 0) {
 					Material hand = p.getItemInHand().getType();
@@ -56,9 +61,6 @@ public class Repair implements CommandExecutor, TabCompleter {
 					Loader.sendMessages(s, "Missing.HandEmpty");
 					return true;
 			}
-			Loader.noPerms(s, "Repair", "Other");
-			return true;
-		}
 		Loader.Help(s, "Repair", "Other");
 		return true;
 		}
@@ -94,6 +96,9 @@ public class Repair implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		Loader.noPerms(s, "Repair", "Other", "Other");
+		return true;
+		}
+		Loader.noPerms(s, "Repair", "Other");
 		return true;
 	}
 

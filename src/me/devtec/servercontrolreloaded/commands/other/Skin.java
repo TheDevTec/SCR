@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -36,6 +37,11 @@ public class Skin implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+		if(Loader.has(s,"Skin","Other")) {
+		if(!CommandsManager.canUse("Other.Skin", s)) {
+			Loader.sendMessages(s, "Cooldowns.Commands");
+			return true;
+		}
 		if(args.length==0) {
 			Loader.Help(s, "Skin", "Other");
 			return true;
@@ -92,6 +98,9 @@ public class Skin implements CommandExecutor, TabCompleter {
 		}, false);
 		Loader.sendMessages(s, "Skin.Set.Other.Sender", Placeholder.c().add("%skin%", args[0]).add("%player%", a.getName()).add("%playername%", a.getDisplayName()).add("%skin%", args[0]));
 		Loader.sendMessages(a, "Skin.Set.Other.Receiver", Placeholder.c().add("%skin%", args[0]).add("%player%", s.getName()).add("%playername%", s.getName()).add("%skin%", args[0]));
+		return true;
+		}
+		Loader.noPerms(s, "Skin", "Other");
 		return true;
 	}
 }

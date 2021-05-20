@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
@@ -20,6 +21,10 @@ public class Chunks implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "Chunks", "Info")) {
+			if(!CommandsManager.canUse("Info.Chunks", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Info.Chunks", s))));
+				return true;
+			}
 			if (args.length == 0) {
 				int chunks = 0;
 				for (World w : Bukkit.getWorlds()) {

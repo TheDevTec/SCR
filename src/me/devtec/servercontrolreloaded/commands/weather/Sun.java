@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.utils.StringUtils;
@@ -21,17 +22,18 @@ public class Sun implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+		if (Loader.has(s, "Sun", "Weather")) {
+		if(!CommandsManager.canUse("Weather.Sun", s)) {
+			Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Weather.Sun", s))));
+			return true;
+		}
 		if (args.length == 0) {
 			if (s instanceof Player) {
-				if (Loader.has(s, "Sun", "Weather")) {
 					((Player) s).getLocation().getWorld().setStorm(false);
 					((Player) s).getLocation().getWorld().setWeatherDuration(100000000);
 					Loader.sendMessages(s, "Weather.Sun", Placeholder.c()
 							.add("%world%", ((Player) s).getLocation().getWorld().getName()));
 					return true;
-				}
-				Loader.noPerms(s, "Sun", "Weather");
-				return true;
 			}
 			Loader.Help(s, "Sun", "Weather");
 			return true;
@@ -46,6 +48,9 @@ public class Sun implements CommandExecutor, TabCompleter {
 			Loader.sendMessages(s, "Missing.World", Placeholder.c()
 					.add("%world%", args[0]));
 			return true;
+		}
+		Loader.noPerms(s, "Sun", "Weather");
+		return true;
 		}
 		Loader.noPerms(s, "Sun", "Weather");
 		return true;

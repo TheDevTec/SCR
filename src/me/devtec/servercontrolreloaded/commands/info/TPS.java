@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
@@ -17,8 +18,11 @@ public class TPS implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
-
 		if (Loader.has(s, "TPS", "Info")) {
+			if(!CommandsManager.canUse("Info.TPS", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Info.TPS", s))));
+				return true;
+			}
 			if (args.length == 0) {
 			Loader.sendMessages(s, "TPS", Placeholder.c()
 					.add("%tps%", StringUtils.fixedFormatDouble(TheAPI.getServerTPS()))

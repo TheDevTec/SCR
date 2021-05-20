@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -26,6 +27,10 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 		if (s instanceof Player) {
 			Player p = (Player) s;
 			if (Loader.has(s, "HomeOther", "Warps")) {
+				if(!CommandsManager.canUse("Warps.HomeOther", s)) {
+					Loader.sendMessages(s, "Cooldowns.Commands");
+					return true;
+				}
 				if (args.length <= 1) {
 					Loader.Help(s, "HomeOther", "Warps");
 					return true;
@@ -39,7 +44,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 							if (setting.tp_safe)
 								API.safeTeleport((Player)s,false,loc);
 							else
-								((Player)s).teleport(loc.toLocation());
+								API.teleport((Player)s, loc);
 							Loader.sendMessages(s, "Home.Other.Teleporting", Placeholder.c()
 									.add("%home%", args[1])
 									.add("%player%", p.getName())
@@ -53,7 +58,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 							.add("%playername%", p.getDisplayName()));
 					return true;
 				}
-				if (args.length == 3 && Loader.has(s, "HomeOther", "Warps", "Other")) {
+				if (Loader.has(s, "HomeOther", "Warps", "Other")) {
 					Player pl = TheAPI.getPlayer(args[2]);
 					if (pl == null) {
 						Loader.notOnline(s, args[2]);
@@ -67,7 +72,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 							if (setting.tp_safe)
 								API.safeTeleport(pl,false,loc);
 							else
-								pl.teleport(loc.toLocation());
+								API.teleport(pl, loc);
 							Loader.sendMessages(s, "Home.Other.Teleporting", Placeholder.c()
 									.add("%home%", args[1])
 									.add("%player%", p.getName())

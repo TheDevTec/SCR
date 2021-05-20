@@ -216,10 +216,10 @@ Options:
       Use: true
       Time: 2
     Commands:
-      Use: true
+      Use: false
       Time: 3
       PerCommand:
-        Use: true
+        Use: false
         # Command:Time
         List:
         - "Heal:300"

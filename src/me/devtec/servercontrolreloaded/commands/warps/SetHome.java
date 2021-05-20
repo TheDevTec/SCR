@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -24,6 +25,10 @@ public class SetHome implements CommandExecutor, TabCompleter {
 		if (s instanceof Player) {
 			Player p = (Player) s;
 			if (Loader.has(s, "SetHome", "Warps")) {
+				if(!CommandsManager.canUse("Warps.SetHome", s)) {
+					Loader.sendMessages(s, "Cooldowns.Commands");
+					return true;
+				}
 				if (Loader.vault == null) {
 					if (args.length == 0) {
 						TheAPI.getUser(p).setAndSave("Homes.home",

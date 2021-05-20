@@ -13,6 +13,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.utils.StringUtils;
@@ -22,6 +23,10 @@ public class EnchantTableRemoveAll implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "EnchantRemoveAll", "Enchantment")) {
+			if(!CommandsManager.canUse("Enchantment.EnchantRemoveAll", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Enchantment.EnchantRemoveAll", s))));
+				return true;
+			}
 			if (s instanceof Player) {
 				if (args.length == 0) {
 					Player p = (Player) s;

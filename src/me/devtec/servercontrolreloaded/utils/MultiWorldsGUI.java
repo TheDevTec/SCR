@@ -420,7 +420,7 @@ public class MultiWorldsGUI {
 					s.setNoDamageTicks(20);
 					NMSAPI.postToMainThread(new Runnable() {
 						public void run() {
-							s.teleport(loc);
+							API.teleport(s, loc);
 						}
 					});
 					Loader.sendMessages(s, "MultiWorld.Teleport.You", Placeholder.c().add("%world%", w.getName()));

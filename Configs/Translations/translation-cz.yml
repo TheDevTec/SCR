@@ -1,4 +1,4 @@
-# Odkazy:
+ů# Odkazy:
 #  Github: https://github.com/TheDevTec/ServerControlReloaded
 #  Discord: https://discord.io/spigotdevtec
 #  Spigot: https://www.spigotmc.org/resources/71147/
@@ -209,6 +209,7 @@ Economy:
   # Translation for /BalanceTop command
   NoEconomyAccount: "%prefix% Nebyl nalezen žádný ekonomický účet"
   NotEnought: "%prefix% Nemáte dostatek peněz"
+  BalanceTopLoading: "%prefix% "
   Reset:
     Sender: "%prefix% Ekonomický účet hráče &e%player% &7byl zresetován"
     Receiver: "%prefix% Váš ekonomický účet byl zresetován"

@@ -1,3 +1,4 @@
+
 package me.devtec.servercontrolreloaded.commands.info;
 
 import java.util.ArrayList;
@@ -11,12 +12,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.PluginManagerAPI;
+import me.devtec.theapi.utils.StringUtils;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 
@@ -86,6 +89,10 @@ public class Staff implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Staff", "Info")) {
+			if(!CommandsManager.canUse("Info.Staff", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Info.Staff", s))));
+				return true;
+			}
 			if(Loader.has(s, "Staff", "Info", "Vanished")) {
 				boolean e=joinercount(s)==0;
 				if (e && setting.staff_hide) {

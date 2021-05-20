@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
@@ -23,6 +24,10 @@ public class DelHome implements CommandExecutor, TabCompleter {
 		if (s instanceof Player) {
 			Player p = (Player) s;
 			if (Loader.has(s, "DelHome", "Warps")) {
+				if(!CommandsManager.canUse("Warps.DelHome", s)) {
+					Loader.sendMessages(s, "Cooldowns.Commands");
+					return true;
+				}
 				if (args.length == 0) {
 					Loader.Help(s, "DelHome", "Warps");
 					return true;

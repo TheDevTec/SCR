@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -27,8 +28,12 @@ public class Feed implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+		if (Loader.has(s, "Feed", "Other")) {
+		if(!CommandsManager.canUse("Other.Feed", s)) {
+			Loader.sendMessages(s, "Cooldowns.Commands");
+			return true;
+		}
 			if (args.length == 0) {
-				if (Loader.has(s, "Feed", "Other")) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
 					p.setFoodLevel(20);
@@ -37,41 +42,38 @@ public class Feed implements CommandExecutor, TabCompleter {
 				}
 				Loader.Help(s, "Feed", "Other");
 				return true;
+			}
+			if (args[0].equals("*")) {
+				Repeat.a(s, "feed *");
+				return true;
+			}
+			Player p = TheAPI.getPlayer(args[0]);
+			if(p==null) {
+				Loader.notOnline(s, args[0]);
+				return true;
+			}
+			if (p == s) {
+				if (Loader.has(s, "Feed", "Other")) {
+				p.setFoodLevel(20);
+				Loader.sendMessages(s, "Feed.You");
+				return true;
 				}
 				Loader.noPerms(s, "Feed", "Other");
 				return true;
 			}
-			if (args.length == 1) {
-				if (args[0].equals("*")) {
-					Repeat.a(s, "feed *");
-					return true;
-				}
-				Player p = TheAPI.getPlayer(args[0]);
-				if(p==null) {
-					Loader.notOnline(s, args[0]);
-					return true;
-				}
-				if (p == s) {
-					if (Loader.has(s, "Feed", "Other")) {
-					p.setFoodLevel(20);
-					Loader.sendMessages(s, "Feed.You");
-					return true;
-					}
-					Loader.noPerms(s, "Feed", "Other");
-					return true;
-				}
-				if (Loader.has(s, "Feed", "Other","Other")) {
-					p.setFoodLevel(20);
-					Loader.sendMessages(s, "Feed.Other.Sender", Placeholder.c().replace("%player%", p.getName())
-							.replace("%playername%", p.getDisplayName()));
-					Loader.sendMessages(p, "Feed.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
-							.replace("%playername%", s.getName()));
-					return true;
-				}
-				Loader.noPerms(s, "Feed", "Other", "Other");
+			if (Loader.has(s, "Feed", "Other","Other")) {
+				p.setFoodLevel(20);
+				Loader.sendMessages(s, "Feed.Other.Sender", Placeholder.c().replace("%player%", p.getName())
+						.replace("%playername%", p.getDisplayName()));
+				Loader.sendMessages(p, "Feed.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
+						.replace("%playername%", s.getName()));
 				return true;
 			}
+			Loader.noPerms(s, "Feed", "Other", "Other");
 			return true;
+		}
+		Loader.noPerms(s, "Feed", "Other");
+		return true;
 	}
 
 }

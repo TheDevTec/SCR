@@ -13,6 +13,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -22,7 +23,6 @@ import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 
 public class Tp implements CommandExecutor, TabCompleter {
-
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] args) {
@@ -181,10 +181,13 @@ public class Tp implements CommandExecutor, TabCompleter {
 		return Arrays.asList();
 	}
 	
-	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Tp","TpSystem")) {
+			if(!CommandsManager.canUse("TpSystem.Tp", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("TpSystem.Tp", s))));
+				return true;
+			}
 			if (args.length == 0) {
 				Loader.Help(s, "Tp", "TpSystem");
 				return true;
@@ -201,7 +204,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 							API.setBack(((Player) s));
 							if (setting.tp_safe)
 								API.safeTeleport((Player) s,((Player) s).isFlying(),new Position(target.getLocation()));
-							else ((Player) s).teleport(target);
+							else
+								API.teleport((Player)s, target.getLocation());
 							return true;
 						}
 						Loader.sendMessages(s, "TpSystem.Block.IsBlocked.Teleport", Placeholder.c().replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()));
@@ -240,7 +244,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 						if (setting.tp_safe)
 							API.safeTeleport(p0,p0.isFlying(),new Position(p1.getLocation()));
 						else
-							p0.teleport(p1.getLocation());
+							API.teleport(p0, p1.getLocation());
 						return true;
 					}
 				}
@@ -263,7 +267,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 						API.setBack(p);
 						if (setting.tp_safe)
 							API.safeTeleport(p,p.isFlying(),new Position(p.getWorld(), x, y, z, p.getLocation().getYaw(),p.getLocation().getPitch()));
-						else p.teleport(new Location(p.getWorld(), x, y, z, p.getLocation().getYaw(),p.getLocation().getPitch()));
+						else
+							API.teleport(p, new Location(p.getWorld(), x, y, z, p.getLocation().getYaw(),p.getLocation().getPitch()));
 						return true;
 						}
 						Loader.Help(s, "Tp", "TpSystem");
@@ -289,7 +294,9 @@ public class Tp implements CommandExecutor, TabCompleter {
 					API.setBack((Player) s);
 					if(setting.tp_safe)						
 						API.safeTeleport((Player)s,((Player)s).isFlying(), new Position(p.getWorld(), x, y, z, yaw, ((Player)s).getLocation().getPitch())); 
-					else p.teleport(new Location(p.getWorld(), x, y, z, yaw, 0)); return true;
+					else
+						API.teleport(p, new Location(p.getWorld(), x, y, z, yaw, 0));
+					return true;
 				}
 				if (Loader.has(s, "Tp","TpSystem","LocationOther")) {
 					Player p = TheAPI.getPlayer(args[0]);
@@ -312,7 +319,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 							API.setBack(p);
 							if (setting.tp_safe)
 								API.safeTeleport(p,p.isFlying(),new Position(p.getWorld(), x, y, z, p.getLocation().getYaw(),p.getLocation().getPitch()));
-							else p.teleport(new Location(p.getWorld(), x, y, z, 0, 0));
+							else
+							API.teleport(p, new Location(p.getWorld(), x, y, z, 0, 0));
 							return true;
 					}
 					Loader.Help(s, "Tp", "TpSystem");
@@ -339,7 +347,9 @@ public class Tp implements CommandExecutor, TabCompleter {
 					API.setBack((Player) s);
 					if(setting.tp_safe)						
 						API.safeTeleport((Player)s,((Player)s).isFlying(), new Position(p.getWorld(), x, y, z, yaw, pitch)); 
-					else p.teleport(new Location(p.getWorld(), x, y, z, yaw, pitch)); return true;
+					else
+						API.teleport(p, new Location(p.getWorld(), x, y, z, yaw, pitch));
+					return true;
 				}
 				if (Loader.has(s, "Tp","TpSystem","LocationOther")) {
 					Player p = TheAPI.getPlayer(args[0]);
@@ -363,7 +373,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 							API.setBack(p);
 							if (setting.tp_safe)
 								API.safeTeleport(p,p.isFlying(),new Position(p.getWorld(), x, y, z, yaw, p.getLocation().getPitch()));
-							else p.teleport(new Location(p.getWorld(), x, y, z, yaw, 0));
+							else
+								API.teleport(p, new Location(p.getWorld(), x, y, z, yaw, 0));
 							return true;
 					}
 					Loader.Help(s, "Tp", "TpSystem");
@@ -396,7 +407,8 @@ public class Tp implements CommandExecutor, TabCompleter {
 					API.setBack(p);
 					if (setting.tp_safe)
 						API.safeTeleport(p,p.isFlying(),new Position(p.getWorld(), x, y, z, yaw, pitch));
-					else p.teleport(new Location(p.getWorld(), x, y, z, yaw, pitch));
+					else 
+						API.teleport(p, new Location(p.getWorld(), x, y, z, yaw, pitch));
 					return true;
 				}
 				Loader.Help(s, "Tp", "TpSystem");

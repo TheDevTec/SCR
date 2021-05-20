@@ -14,6 +14,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -53,12 +54,16 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 			}
 			return true;
 		} else {
+			if (Loader.has(s, "ClearInventory", "Inventory")) {
+			if(!CommandsManager.canUse("Inventory.ClearInventory", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Inventory.ClearInventory", s))));
+				return true;
+			}
 			Player p = (Player) s;
 			User d = TheAPI.getUser(p);
 			int take = Loader.config.getInt("Options.Cost-ClearInvUndo");
 
 			if (args.length == 0) {
-				if (Loader.has(s, "ClearInventory", "Inventory")) {
 					if (!d.getBoolean("ClearInvConfirm")) {
 						d.setAndSave("ClearInvCooldown", System.currentTimeMillis() / 1000);
 						Loader.sendMessages(s, "Inventory.ClearInventory.ClearConfirm");
@@ -71,9 +76,6 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 						p.getInventory().clear();
 						return true;
 					}
-				}
-				Loader.noPerms(s, "ClearInventory", "Inventory");
-				return true;
 			}
 			if (args[0].equalsIgnoreCase("Other")) {
 				if (Loader.has(s, "ClearInventory", "Inventory", "Other")) {
@@ -175,6 +177,9 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 				Loader.noPerms(s, "ClearInventory", "Inventory", "Undo");
 				return true;
 			}
+			return true;
+			}
+			Loader.noPerms(s, "ClearInventory", "Inventory");
 			return true;
 		}
 	}

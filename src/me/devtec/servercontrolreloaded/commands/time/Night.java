@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.time;
 
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.utils.StringUtils;
@@ -20,21 +21,20 @@ public class Night implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-
-		if (args.length == 0) {
-			if (s instanceof Player) {
-				if (Loader.has(s, "Night", "Time")) {
-					((Player) s).getLocation().getWorld().setTime(13000);
-					Loader.sendMessages(s, "Time.Night", Placeholder.c().add("%world%", ((Player) s).getLocation().getWorld().getName()));
-					return true;
-				}
-				Loader.noPerms(s, "Night", "Time");
+		if (Loader.has(s, "Night", "Time")) {
+			if(!CommandsManager.canUse("Time.Night", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Time.Night", s))));
 				return true;
 			}
-			Loader.Help(s, "/Night <world>", "Time");
-			return true;
-		}
-		if (args.length == 1) {
+			if (args.length == 0) {
+				if (s instanceof Player) {
+						((Player) s).getLocation().getWorld().setTime(13000);
+						Loader.sendMessages(s, "Time.Night", Placeholder.c().add("%world%", ((Player) s).getLocation().getWorld().getName()));
+						return true;
+				}
+				Loader.Help(s, "/Night <world>", "Time");
+				return true;
+			}
 			if (Loader.has(s, "Night", "Time")) {
 				if (Bukkit.getWorld(args[0]) != null) {
 					Bukkit.getWorld(args[0]).setTime(13000);
@@ -47,7 +47,8 @@ public class Night implements CommandExecutor, TabCompleter {
 			Loader.noPerms(s, "Night", "Time");
 			return true;
 		}
-		return false;
+		Loader.noPerms(s, "Night", "Time");
+		return true;
 	}
 
 	public List<String> worlds() {

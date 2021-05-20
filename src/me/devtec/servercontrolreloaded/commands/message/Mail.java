@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -23,6 +24,10 @@ public class Mail implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String label, String[] args) {
 		if(!Loader.has(s, "Mail", "Message")) {
 			Loader.noPerms(s, "Mail", "Message");
+			return true;
+		}
+		if(!CommandsManager.canUse("Message.Mail", s)) {
+			Loader.sendMessages(s, "Cooldowns.Commands");
 			return true;
 		}
 		if (args.length == 0) {

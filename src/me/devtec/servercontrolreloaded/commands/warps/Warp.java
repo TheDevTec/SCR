@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -34,6 +35,10 @@ public class Warp implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "Warp", "Warps")) {
+			if(!CommandsManager.canUse("Warps.Warp", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Warps.Warp", s))));
+				return true;
+			}
 			if (Loader.config.exists("Warps")) {
 				if (args.length == 0) {
 					Loader.sendMessages(s, "Warp.List", Placeholder.c()
@@ -55,7 +60,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 									if (setting.tp_safe)
 										API.safeTeleport((Player)s,false, new Position(loc));
 									else
-										((Player) s).teleport(loc);
+										API.teleport((Player)s, loc);
 									Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
 											.add("%warp%", warp(args[0])));
 									return true;
@@ -69,7 +74,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 							if (setting.tp_safe)
 								API.safeTeleport((Player)s,false, new Position(loc));
 							else
-								((Player) s).teleport(loc);
+								API.teleport((Player)s, loc);
 							Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
 									.add("%warp%", warp(args[0])));
 							return true;
@@ -99,7 +104,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 								if (setting.tp_safe)
 									API.safeTeleport((Player)s,false, new Position(loc));
 								else
-									((Player) s).teleport(loc);
+									API.teleport((Player)s, loc);
 								Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
 										.add("%warp%", warp(args[0])));
 								return true;
@@ -112,7 +117,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 						if (setting.tp_safe)
 							API.safeTeleport(p,false, new Position(loc));
 						else
-							p.teleport(loc);
+							API.teleport(p, loc);
 						Loader.sendMessages(p, "Warp.Teleport.You", Placeholder.c()
 								.add("%warp%", warp(args[0])));
 						Loader.sendMessages(s, "Warp.Teleport.Other.Sender", Placeholder.c()

@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.kill;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -18,8 +19,12 @@ public class Suicide implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(args.length==0) {
 		if (Loader.has(s, "Suicide", "Kill")) {
+		if(!CommandsManager.canUse("Kill.Suicide", s)) {
+			Loader.sendMessages(s, "Cooldowns.Commands");
+			return true;
+		}
+		if(args.length==0) {
 			if (s instanceof Player) {
 				Player p = (Player) s;
 				p.setHealth(0);
@@ -32,9 +37,6 @@ public class Suicide implements CommandExecutor, TabCompleter {
 			Loader.Help(s, "Suicide", "Kill");
 			return true;
 		}
-		Loader.noPerms(s, "Suicide", "Kill");
-		}
-		if(args.length==1) {
 			if(Loader.has(s, "Suicide", "Kill", "Other")) {
 				Player o = TheAPI.getPlayer(args[0]);
 				if(o==null) {
@@ -51,14 +53,9 @@ public class Suicide implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			Loader.noPerms(s, "Suicide", "Kill", "Other");
-		}
-		if(args.length>1) {
-			if(Loader.has(s, "Suicide", "Kill", "Other"))
-				Loader.advancedHelp(s, "Suicide", "Kill", "Other");
-			if(Loader.has(s, "Suicide", "Kill")) 
-				Loader.Help(s, "Suicide","Kill");
 			return true;
 		}
+		Loader.noPerms(s, "Suicide", "Kill");
 		return true;
 	}
 

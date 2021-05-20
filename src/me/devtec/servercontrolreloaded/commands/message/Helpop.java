@@ -12,8 +12,10 @@ import org.bukkit.entity.Player;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
@@ -23,6 +25,10 @@ public class Helpop implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Helpop", "Message")) {
+			if(!CommandsManager.canUse("Message.Helpop", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Message.Helpop", s))));
+				return true;
+			}
 			if (args.length == 0) {
 				if(s instanceof Player && setting.helpop) {
 					if (Loader.has(s, "Helpop", "Message", "Lock")) {

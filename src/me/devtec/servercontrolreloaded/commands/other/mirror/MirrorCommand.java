@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.other.mirror;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.utils.StringUtils;
@@ -17,6 +18,10 @@ public class MirrorCommand implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String arg2, String[] args) {
 		if(Loader.has(s, "Mirror", "Other")) {
+			if(!CommandsManager.canUse("Other.Mirror", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.Mirror", s))));
+				return true;
+			}
 			if(args.length==0) {
 				Loader.Help(s, "Mirror", "Other");
 				Loader.sendMessages(s, "Mirror.Types", Placeholder.c().add("%types%", "AxisX, AxisZ, Center"));

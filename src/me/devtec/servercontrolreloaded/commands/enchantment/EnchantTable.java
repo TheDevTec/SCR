@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.Lists;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
@@ -30,6 +31,10 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Enchant", "Enchantment")) {
+			if(!CommandsManager.canUse("Enchantment.Enchant", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Enchantment.Enchant", s))));
+				return true;
+			}
 			if (s instanceof Player) {
 				Player p = (Player) s;
 				if (args.length == 0) {

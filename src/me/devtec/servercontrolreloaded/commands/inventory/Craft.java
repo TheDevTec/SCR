@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -28,23 +29,28 @@ public class Craft implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Workbench", "Inventory")) {
-			if (s instanceof Player) {
-				if (args.length == 0) {
+			if(!CommandsManager.canUse("Inventory.Workbench", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Inventory.Workbench", s))));
+				return true;
+			}
+			if (args.length == 0) {
+				if (s instanceof Player) {
 					Loader.sendMessages(s, "Inventory.Workbench.You");
 					((Player) s).openWorkbench(((Player) s).getLocation(), true);
 					return true;
 				}
-				if (args.length == 1) {
-					Player t = TheAPI.getPlayer(args[0]);
-					if (t == null) {
-						Loader.notOnline(s, args[0]);
-						return true;
-					}
-					Loader.sendMessages(s, "Inventory.Workbench.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
-					Loader.sendMessages(t, "Inventory.Workbench.Other.Target", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
-					t.openWorkbench(t.getLocation(), true);
+				return true;
+			}
+			if (args.length == 1) {
+				Player t = TheAPI.getPlayer(args[0]);
+				if (t == null) {
+					Loader.notOnline(s, args[0]);
 					return true;
 				}
+				Loader.sendMessages(s, "Inventory.Workbench.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
+				Loader.sendMessages(t, "Inventory.Workbench.Other.Target", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
+				t.openWorkbench(t.getLocation(), true);
+				return true;
 			}
 			return true;
 		}

@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -24,79 +25,79 @@ public class Fly implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
-		if (args.length == 0) {
-			if (Loader.has(s, "Fly", "Other")) {
-				if (s instanceof Player) {
-					SPlayer p = API.getSPlayer((Player) s);
-					if (task.get(p) != null)
-						Scheduler.cancelTask(task.remove(p));
-					p.toggleFly(null);
+		if (Loader.has(s, "Fly", "Other")) {
+			if(!CommandsManager.canUse("Other.Fly", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.Fly", s))));
+				return true;
+			}
+			if (args.length == 0) {
+					if (s instanceof Player) {
+						SPlayer p = API.getSPlayer((Player) s);
+						if (task.get(p) != null)
+							Scheduler.cancelTask(task.remove(p));
+						p.toggleFly(null);
+						return true;
+					}
+					Loader.Help(s, "Fly", "Other");
+					return true;
+			}
+			SPlayer target = null;
+			if (args.length == 1) {
+				if(s instanceof Player) {
+				if (args[0].equalsIgnoreCase("off") || args[0].equalsIgnoreCase("false")) {
+					if (Loader.has(s, "Fly", "Other")) {
+					target = API.getSPlayer((Player)s);
+					if (task.get(target) != null)
+						Scheduler.cancelTask(task.remove(target));
+					target.disableFly();
+					Loader.sendMessages(s, "Fly.Disabled.You");
+					return true;
+					}
+					Loader.noPerms(s, "Fly", "Other");
 					return true;
 				}
-				Loader.Help(s, "Fly", "Other");
-				return true;
-			}
-			Loader.noPerms(s, "Fly", "Other");
-			return true;
-		}
-		SPlayer target = null;
-		if (args.length == 1) {
-			if(s instanceof Player) {
-			if (args[0].equalsIgnoreCase("off") || args[0].equalsIgnoreCase("false")) {
-				if (Loader.has(s, "Fly", "Other")) {
-				target = API.getSPlayer((Player)s);
-				if (task.get(target) != null)
-					Scheduler.cancelTask(task.remove(target));
-				target.disableFly();
-				Loader.sendMessages(s, "Fly.Disabled.You");
-				return true;
+				if (args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("true")) {
+					if (Loader.has(s, "Fly", "Other")) {
+					target = API.getSPlayer((Player)s);
+					if (task.get(target) != null)
+						Scheduler.cancelTask(task.remove(target));
+					target.enableFly();
+					Loader.sendMessages(s, "Fly.Enabled.You");
+					return true;
+					}
+					Loader.noPerms(s, "Fly", "Other");
+					return true;
+				}}
+				if (TheAPI.getPlayer(args[0]) == null) {
+					Loader.notOnline(s, args[0]);
+					return true;
 				}
-				Loader.noPerms(s, "Fly", "Other");
-				return true;
-			}
-			if (args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("true")) {
-				if (Loader.has(s, "Fly", "Other")) {
-				target = API.getSPlayer((Player)s);
-				if (task.get(target) != null)
-					Scheduler.cancelTask(task.remove(target));
-				target.enableFly();
-				Loader.sendMessages(s, "Fly.Enabled.You");
-				return true;
+				target = API.getSPlayer(TheAPI.getPlayer(args[0]));
+				if (target.getPlayer() == s) {
+					if (Loader.has(s, "Fly", "Other")) {
+						if (task.get(target) != null)
+							Scheduler.cancelTask(task.remove(target));
+						target.toggleFly(null);
+						return true;
+					}
+					Loader.noPerms(s, "Fly", "Other");
+					return true;
+				} else {
+					if (Loader.has(s, "Fly", "Other", "Other")) {
+						if (task.get(target) != null)
+							Scheduler.cancelTask(task.remove(target));
+						target.toggleFly(s);
+						return true;
+					}
+					Loader.noPerms(s, "Fly", "Other", "Other");
+					return true;
 				}
-				Loader.noPerms(s, "Fly", "Other");
-				return true;
-			}}
+			}
 			if (TheAPI.getPlayer(args[0]) == null) {
 				Loader.notOnline(s, args[0]);
 				return true;
 			}
 			target = API.getSPlayer(TheAPI.getPlayer(args[0]));
-			if (target.getPlayer() == s) {
-				if (Loader.has(s, "Fly", "Other")) {
-					if (task.get(target) != null)
-						Scheduler.cancelTask(task.remove(target));
-					target.toggleFly(null);
-					return true;
-				}
-				Loader.noPerms(s, "Fly", "Other");
-				return true;
-			} else {
-				if (Loader.has(s, "Fly", "Other", "Other")) {
-					if (task.get(target) != null)
-						Scheduler.cancelTask(task.remove(target));
-					target.toggleFly(s);
-					return true;
-				}
-				Loader.noPerms(s, "Fly", "Other", "Other");
-				return true;
-			}
-		}
-		if (TheAPI.getPlayer(args[0]) == null) {
-			Loader.notOnline(s, args[0]);
-			return true;
-		}
-		target = API.getSPlayer(TheAPI.getPlayer(args[0]));
-		if (args.length == 2) {
 			if (target.getPlayer() != s) {
 				if (Loader.has(s, "Fly", "Other", "Other")) {
 					if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
@@ -147,6 +148,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 				return true;
 			}
 		}
+		Loader.noPerms(s, "Fly", "Other");
 		return true;
 	}
 

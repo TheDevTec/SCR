@@ -117,7 +117,7 @@ public class RequestMap {
 		if (setting.tp_safe)
 			API.safeTeleport(target,target.isFlying(),new Position(sender.getLocation()));
 		else
-			target.teleport(sender);
+			API.teleport(target, sender.getLocation());
 		Loader.sendMessages(sender, "TpSystem.Tpa.Accept.Sender", Placeholder.c()
 				.add("%player%", target.getName()).add("%playername%", target.getDisplayName()));
 		Loader.sendMessages(target, "TpSystem.Tpa.Accept.Receiver", Placeholder.c()
@@ -134,9 +134,9 @@ public class RequestMap {
 				API.safeTeleport(sender,sender.isFlying(),new Position(target.getLocation()));
 		else
 			if (setting.tp_onreqloc && getPos(sender.getName(), target.getName()) != null)
-				sender.teleport(getPos(sender.getName(), target.getName()).toLocation());
+				API.teleport(sender, getPos(sender.getName(), target.getName()).toLocation());
 			else
-				sender.teleport(target);
+				API.teleport(sender, target.getLocation());
 		Loader.sendMessages(sender, "TpSystem.Tpahere.Accept.Sender", Placeholder.c()
 				.add("%player%", target.getName()).add("%playername%", target.getDisplayName()));
 		Loader.sendMessages(target, "TpSystem.Tpahere.Accept.Receiver", Placeholder.c()

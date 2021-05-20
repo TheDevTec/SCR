@@ -6,7 +6,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.theapi.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +93,11 @@ public class Tab implements CommandExecutor, TabCompleter {
 	
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String awd, String[] args) {
+		if (Loader.has(s, "Tablist", "Other")) {
+		if(!CommandsManager.canUse("Other.Tablist", s)) {
+			Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.Tablist", s))));
+			return true;
+		}
 		if(args.length==0) {
 			help(s, -1);
 			return true;
@@ -177,6 +185,9 @@ public class Tab implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		help(s, -1);
+		return true;
+		}
+		Loader.noPerms(s, "Tablist", "Other");
 		return true;
 	}
 

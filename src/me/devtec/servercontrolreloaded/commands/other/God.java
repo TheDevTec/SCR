@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -21,17 +22,18 @@ public class God implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
+		if (Loader.has(s, "God", "Other")) {
+		if(!CommandsManager.canUse("Other.God", s)) {
+			Loader.sendMessages(s, "Cooldowns.Commands");
+			return true;
+		}
 		if (args.length == 0) {
-			if (Loader.has(s, "God", "Other")) {
-				if (s instanceof Player) {
-					SPlayer p = API.getSPlayer((Player) s);
-					p.toggleGod(null);
-					return true;
-				}
-				Loader.Help(s, "God", "Other");
+			if (s instanceof Player) {
+				SPlayer p = API.getSPlayer((Player) s);
+				p.toggleGod(null);
 				return true;
 			}
-			Loader.noPerms(s, "God", "Other");
+			Loader.Help(s, "God", "Other");
 			return true;
 		}
 		SPlayer target = null;
@@ -83,49 +85,49 @@ public class God implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		target = API.getSPlayer(TheAPI.getPlayer(args[0]));
-		if (args.length == 2) {
-			if (target.getPlayer() != s) {
-				if (Loader.has(s, "God", "Other", "Other")) {
-					if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
-						target.disableGod();
-						Loader.sendMessages(s, "God.Disabled.Other.Sender", Placeholder.c().replace("%player%", target.getName())
-								.replace("%playername%", target.getDisplayName()));
-						Loader.sendMessages(target.getPlayer(), "God.Disabled.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
-								.replace("%playername%", s.getName()));
-						return true;
-					}
-					if (args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true")) {
-						target.enableGod();
-						Loader.sendMessages(s, "God.Enabled.Other.Sender", Placeholder.c().replace("%player%", target.getName())
-								.replace("%playername%", target.getDisplayName()));
-						Loader.sendMessages(target.getPlayer(), "God.Enabled.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
-								.replace("%playername%", s.getName()));
-						return true;
-					}
-					Loader.Help(s, "God", "Other");
+		if (target.getPlayer() != s) {
+			if (Loader.has(s, "God", "Other", "Other")) {
+				if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
+					target.disableGod();
+					Loader.sendMessages(s, "God.Disabled.Other.Sender", Placeholder.c().replace("%player%", target.getName())
+							.replace("%playername%", target.getDisplayName()));
+					Loader.sendMessages(target.getPlayer(), "God.Disabled.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
+							.replace("%playername%", s.getName()));
 					return true;
 				}
-				Loader.noPerms(s, "God", "Other", "Other");
-				return true;
-			} else {
-				if (Loader.has(s, "God", "Other")) {
-					if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
-						target.disableGod();
-						Loader.sendMessages(s, "God.Disabled.You");
-						return true;
-					}
-					if (args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true")) {
-						target.enableGod();
-						Loader.sendMessages(s, "God.Enabled.You");
-						return true;
-					}
-					Loader.Help(s, "God", "Other");
+				if (args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true")) {
+					target.enableGod();
+					Loader.sendMessages(s, "God.Enabled.Other.Sender", Placeholder.c().replace("%player%", target.getName())
+							.replace("%playername%", target.getDisplayName()));
+					Loader.sendMessages(target.getPlayer(), "God.Enabled.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
+							.replace("%playername%", s.getName()));
 					return true;
 				}
-				Loader.noPerms(s, "God", "Other");
+				Loader.Help(s, "God", "Other");
 				return true;
 			}
+			Loader.noPerms(s, "God", "Other", "Other");
+			return true;
+		} else {
+			if (Loader.has(s, "God", "Other")) {
+				if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
+					target.disableGod();
+					Loader.sendMessages(s, "God.Disabled.You");
+					return true;
+				}
+				if (args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true")) {
+					target.enableGod();
+					Loader.sendMessages(s, "God.Enabled.You");
+					return true;
+				}
+				Loader.Help(s, "God", "Other");
+				return true;
+			}
+			Loader.noPerms(s, "God", "Other");
+			return true;
 		}
+		}
+		Loader.noPerms(s, "God", "Other");
 		return true;
 	}
 

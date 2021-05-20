@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -63,10 +64,14 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 			}
 			if (s instanceof Player) {
 				if (Loader.has(s, "GameMode"+gamemode, "GameMode")) {
-						((Player) s).setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
-						Loader.sendMessages(s, "GameMode.Your."+gamemode, Placeholder.c()
-								.add("%gamemode%", gamemode));
+					if(!CommandsManager.canUse("GameMode.GameMode"+gamemode, s)) {
+						Loader.sendMessages(s, "Cooldowns.Commands");
 						return true;
+					}
+					((Player) s).setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
+					Loader.sendMessages(s, "GameMode.Your."+gamemode, Placeholder.c()
+							.add("%gamemode%", gamemode));
+					return true;
 				}
 				Loader.noPerms(s, "GameMode" + gamemode, "GameMode");
 				return true;
@@ -75,6 +80,10 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if (Loader.has(s, "GameMode" + gamemode, "GameMode","Other")) {
+			if(!CommandsManager.canUse("GameMode.GameMode"+gamemode, s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands");
+				return true;
+			}
 			Player p = TheAPI.getPlayer(args[1]);
 				if (p != null) {
 					p.setGameMode(GameMode.valueOf(gamemode.toUpperCase()));

@@ -1,19 +1,26 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
-
-import java.util.ArrayList;
-import java.util.List;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.theapi.utils.StringUtils;
 
 public class CountryBlocker implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender s, Command command, String u, String[] args) {
         if(Loader.has(s,"CountryBlocker","Info")){
+			if(!CommandsManager.canUse("Info.CountryBlocker", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Info.CountryBlocker", s))));
+				return true;
+			}
             if(args.length==0){
                 Loader.Help(s,"CountryBlocker","Info");
                 return true;

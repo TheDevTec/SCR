@@ -9,8 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
 
@@ -27,6 +29,10 @@ public class Tpa implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender f, Command arg1, String arg2, String[] args) {
 		if (Loader.has(f, "Tpa", "TpSystem")) {
+			if(!CommandsManager.canUse("TpSystem.Tpa", f)) {
+				Loader.sendMessages(f, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("TpSystem.Tpa", f))));
+				return true;
+			}
 			if (f instanceof Player) {
 				Player s = (Player) f;
 				if (args.length == 0) {

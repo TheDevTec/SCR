@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.setting;
@@ -18,6 +19,10 @@ public class RAM implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "Memory", "Info")) {
+			if(!CommandsManager.canUse("Info.Memory", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Info.Memory", s))));
+				return true;
+			}
 			if (args.length == 0) {
 				if (setting.ram) {
 					Loader.sendMessages(s, "Memory.Info", Placeholder.c()

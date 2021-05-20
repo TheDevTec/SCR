@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -28,14 +29,15 @@ public class Eco implements CommandExecutor, TabCompleter {
 			s.sendMessage("Missing Vault or Economy plugin.");
 			return true;
 		}
+		if (Loader.has(s, "Economy", "Economy")) {
+			if(!CommandsManager.canUse("Economy.Economy", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Economy.Economy", s))));
+				return true;
+			}
 		if (args.length == 0) {
 			if (s instanceof Player) {
-				if (Loader.has(s, "Economy", "Economy")) {
 					Loader.sendMessages(s, "Economy.Balance.Your");
 					return true;
-				}
-				Loader.noPerms(s, "Economy", "Economy");
-				return true;
 			}
 			Loader.Help(s, "Economy", "Economy");
 			return true;
@@ -185,6 +187,9 @@ public class Eco implements CommandExecutor, TabCompleter {
 			Loader.noPerms(s, "Economy", "Economy", "Set");
 			return true;
 		}
+		return true;
+		}
+		Loader.noPerms(s, "Economy", "Economy");
 		return true;
 	}
 

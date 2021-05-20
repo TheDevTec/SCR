@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -27,6 +28,10 @@ public class Balance implements CommandExecutor, TabCompleter {
 		if (args.length == 0) {
 			if (s instanceof Player) {
 				if (Loader.has(s, "Economy", "Economy", "Balance")) {
+					if(!CommandsManager.canUse("Economy.Economy", s)) {
+						Loader.sendMessages(s, "Cooldowns.Commands");
+						return true;
+					}
 					Loader.sendMessages(s, "Economy.Balance.Your");
 					return true;
 				}
@@ -37,6 +42,10 @@ public class Balance implements CommandExecutor, TabCompleter {
 		}
 		if (TheAPI.existsUser(args[0])) {
 			if (Loader.has(s, "Economy", "Economy", "BalanceOther")) {
+				if(!CommandsManager.canUse("Economy.Economy", s)) {
+					Loader.sendMessages(s, "Cooldowns.Commands");
+					return true;
+				}
 				String world = s instanceof Player ? ((Player) s).getWorld().getName() :Bukkit.getWorlds().get(0).getName();
 				Loader.sendMessages(s, "Economy.Balance.Other", Placeholder.c()
 						.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(args[0], world), true))

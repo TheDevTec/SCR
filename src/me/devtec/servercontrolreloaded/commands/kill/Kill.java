@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.kill;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -19,6 +20,10 @@ public class Kill implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Kill", "Kill")) {
+			if(!CommandsManager.canUse("Kill.Kill", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Kill.Kill", s))));
+				return true;
+			}
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					Player p = (Player) s;
@@ -27,10 +32,9 @@ public class Kill implements CommandExecutor, TabCompleter {
 					if ((p.isDead() || p.getHealth()==0) && !i)
 						Loader.sendMessages(s, "Kill.Killed", Placeholder.c().add("%player%", p.getName()).replace("%playername%", p.getDisplayName()));
 					return true;
-				} else {
-					Loader.Help(s, "Kill", "Kill");
-					return true;
 				}
+				Loader.Help(s, "Kill", "Kill");
+				return true;
 			}
 			Player p = TheAPI.getPlayer(args[0]);
 			if (p == null) {

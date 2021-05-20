@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -19,6 +20,10 @@ public class Ping implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Ping", "Info")) {
+			if(!CommandsManager.canUse("Info.Ping", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Info.Ping", s))));
+				return true;
+			}
 			if(args.length==0) {
 				if(s instanceof Player)
 				Loader.sendMessages(s, "Ping.You", Placeholder.c().add("%ping%", ""+TheAPI.getPlayerPing((Player)s)));

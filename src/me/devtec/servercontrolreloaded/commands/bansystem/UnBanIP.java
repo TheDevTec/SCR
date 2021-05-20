@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.punishmentapi.BanList;
@@ -30,6 +31,10 @@ public class UnBanIP implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "UnBanIP", "BanSystem")) {
+			if(!CommandsManager.canUse("BanSystem.UnBanIP", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("BanSystem.UnBanIP", s))));
+				return true;
+			}
 			if (args.length == 0) {
 				Loader.Help(s, "UnBanIP", "BanSystem");
 				return true;

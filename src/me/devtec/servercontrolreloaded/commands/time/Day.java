@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.time;
 
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.utils.StringUtils;
@@ -20,20 +21,20 @@ public class Day implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (args.length == 0) {
-			if (s instanceof Player) {
-				if (Loader.has(s, "Day", "Time")) {
+		if (Loader.has(s, "Day", "Time")) {
+			if(!CommandsManager.canUse("Time.Day", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Time.Day", s))));
+				return true;
+			}
+			if (args.length == 0) {
+				if (s instanceof Player) {
 					((Player) s).getLocation().getWorld().setTime(1000);
 					Loader.sendMessages(s, "Time.Day", Placeholder.c().add("%world%", ((Player) s).getLocation().getWorld().getName()));
 					return true;
 				}
-				Loader.noPerms(s, "Day", "Time");
+				Loader.Help(s, "/Day <world>", "Time");
 				return true;
 			}
-			Loader.Help(s, "/Day <world>", "Time");
-			return true;
-		}
-		if (args.length == 1) {
 			if (Loader.has(s, "Day", "Time")) {
 				if (Bukkit.getWorld(args[0]) != null) {
 					Bukkit.getWorld(args[0]).setTime(1000);
@@ -46,7 +47,8 @@ public class Day implements CommandExecutor, TabCompleter {
 			Loader.noPerms(s, "Day", "Time");
 			return true;
 		}
-		return false;
+		Loader.noPerms(s, "Day", "Time");
+		return true;
 	}
 
 	public List<String> worlds() {

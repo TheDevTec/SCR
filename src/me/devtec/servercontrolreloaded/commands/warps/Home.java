@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.API.TeleportLocation;
@@ -25,9 +26,13 @@ public class Home implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (s instanceof Player) {
-			Player p = (Player) s;
-			User d = TheAPI.getUser(p);
 			if (Loader.has(s, "Home", "Warps")) {
+				if(!CommandsManager.canUse("Warps.Home", s)) {
+					Loader.sendMessages(s, "Cooldowns.Commands");
+					return true;
+				}
+				Player p = (Player) s;
+				User d = TheAPI.getUser(p);
 				if (args.length == 0) {
 					if (d.exist("Homes.home")) {
 						Position loc = Position.fromString(d.getString("Homes.home"));
@@ -36,7 +41,7 @@ public class Home implements CommandExecutor, TabCompleter {
 							if (setting.tp_safe)
 								API.safeTeleport((Player)s,false,loc);
 							else
-								((Player)s).teleport(loc.toLocation());
+								API.teleport((Player)s, loc);
 							Loader.sendMessages(s, "Home.Teleporting", Placeholder.c()
 									.add("%home%", "home"));
 							return true;
@@ -51,7 +56,7 @@ public class Home implements CommandExecutor, TabCompleter {
 							if(setting.tp_safe)
 								API.safeTeleport((Player)s,false,loc2);
 							else
-								((Player)s).teleport(loc2.toLocation());
+								API.teleport((Player)s, loc2);
 							Loader.sendMessages(s, "Home.Teleporting", Placeholder.c()
 									.add("%home%", home));
 							return true;
@@ -65,24 +70,22 @@ public class Home implements CommandExecutor, TabCompleter {
 					Loader.sendMessages(s, "Home.TpSpawn");
 					return true;
 				}
-				if (args.length == 1) {
-					if (d.exists("Homes." + args[0]) && d.getString("Homes." + args[0])!=null) {
-						Position loc2 = Position.fromString(d.getString("Homes." + args[0]));
-						if (loc2 != null) {
-							API.setBack(p);
-							if(setting.tp_safe)
-								API.safeTeleport((Player)s,false,loc2);
-							else
-								((Player)s).teleport(loc2.toLocation());
-							Loader.sendMessages(s, "Home.Teleporting", Placeholder.c()
-									.add("%home%", args[0]));
-							return true;
-						}
+				if (d.getString("Homes." + args[0])!=null) {
+					Position loc2 = Position.fromString(d.getString("Homes." + args[0]));
+					if (loc2 != null) {
+						API.setBack(p);
+						if(setting.tp_safe)
+							API.safeTeleport((Player)s,false,loc2);
+						else
+							API.teleport((Player)s, loc2);
+						Loader.sendMessages(s, "Home.Teleporting", Placeholder.c()
+								.add("%home%", args[0]));
+						return true;
 					}
-					Loader.sendMessages(s, "Home.NotExist", Placeholder.c()
-							.add("%home%", args[0]));
-					return true;
 				}
+				Loader.sendMessages(s, "Home.NotExist", Placeholder.c()
+						.add("%home%", args[0]));
+				return true;
 			}
 			Loader.noPerms(s, "Home", "Warps");
 			return true;

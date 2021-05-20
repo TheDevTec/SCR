@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -20,17 +21,18 @@ public class PRain implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+		if(!CommandsManager.canUse("Weather.PRain", s)) {
+			Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Weather.PRain", s))));
+			return true;
+		}
+		if (Loader.has(s, "PRain", "Weather")) {
 		if (args.length == 0) {
 			if (s instanceof Player) {
-				if (Loader.has(s, "PRain", "Weather")) {
 					((Player) s).setPlayerWeather(WeatherType.DOWNFALL);
 					Loader.sendMessages(s, "Weather.PRain", Placeholder.c()
 							.add("%player%", s.getName()).add("%player%", ((Player) s).getDisplayName()));
 					return true;
 				}
-				Loader.noPerms(s, "PRain", "Weather");
-				return true;
-			}
 			Loader.Help(s, "PRain", "Weather");
 			return true;
 		}
@@ -46,6 +48,9 @@ public class PRain implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		Loader.noPerms(s, "PRain", "Weather","Other");
+		return true;
+		}
+		Loader.noPerms(s, "PRain", "Weather");
 		return true;
 	}
 	
