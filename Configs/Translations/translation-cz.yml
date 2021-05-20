@@ -209,7 +209,7 @@ Economy:
   # Translation for /BalanceTop command
   NoEconomyAccount: "%prefix% Nebyl nalezen žádný ekonomický účet"
   NotEnought: "%prefix% Nemáte dostatek peněz"
-  BalanceTopLoading: "%prefix% "
+  BalanceTopLoading: "%prefix% Sčítání bohactví všech hráčů, prosím vydržte.."
   Reset:
     Sender: "%prefix% Ekonomický účet hráče &e%player% &7byl zresetován"
     Receiver: "%prefix% Váš ekonomický účet byl zresetován"

@@ -208,7 +208,7 @@ Economy:
   # Translation for /BalanceTop command
   NoEconomyAccount: "%prefix% There is no economy account"
   NotEnought: "%prefix% You have enough money"
-  BalanceTopLoading: "%prefix% "
+  BalanceTopLoading: "%prefix% Counting the wealth of all players, please, hold on.."
   Reset:
     Sender: "%prefix% Economy account of &e%player% &7has been reset"
     Receiver: "%prefix% Your economy account has been reset"

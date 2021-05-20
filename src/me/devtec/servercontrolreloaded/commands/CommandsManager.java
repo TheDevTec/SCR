@@ -163,6 +163,7 @@ public class CommandsManager {
 	public static boolean canUse(String path, CommandSender s) {
 		if(!cooldown.containsKey(path))return true;
 		if(s instanceof Player) {
+			if(s.hasPermission("SCR.Other.Cooldown.Commands"))return true;
 			for(String d : Loader.cmds.getStringList(path+".CooldownCmds")) {
 				if(!canUseSimple(d,s))return false;
 			}
@@ -205,8 +206,10 @@ public class CommandsManager {
 	}
 	
 	private static boolean canUseSimple(String path, CommandSender s) {
+		if(!cooldown.containsKey(path))return true;
 		if(s instanceof Player) {
-			if(global.get(path)) {
+			if(s.hasPermission("SCR.Other.Cooldown.Commands"))return true;
+			if(global.getOrDefault(path,false)) {
 				if(waitingCooldown.getOrDefault(path, (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path)<= 0) {
 					waitingCooldown.put(path, System.currentTimeMillis()/1000);
 					return true;
