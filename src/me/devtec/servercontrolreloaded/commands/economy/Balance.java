@@ -29,7 +29,7 @@ public class Balance implements CommandExecutor, TabCompleter {
 			if (s instanceof Player) {
 				if (Loader.has(s, "Economy", "Economy", "Balance")) {
 					if(!CommandsManager.canUse("Economy.Economy", s)) {
-						Loader.sendMessages(s, "Cooldowns.Commands");
+						Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Economy.Economy", s))));
 						return true;
 					}
 					Loader.sendMessages(s, "Economy.Balance.Your");

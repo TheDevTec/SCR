@@ -24,7 +24,7 @@ public class God implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "God", "Other")) {
 		if(!CommandsManager.canUse("Other.God", s)) {
-			Loader.sendMessages(s, "Cooldowns.Commands");
+			Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.God", s))));
 			return true;
 		}
 		if (args.length == 0) {

@@ -31,7 +31,7 @@ public class WalkSpeed implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "WalkSpeed", "Speed")) {
 		if(!CommandsManager.canUse("Speed.WalkSpeed", s)) {
-			Loader.sendMessages(s, "Cooldowns.Commands");
+			Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Speed.WalkSpeed", s))));
 			return true;
 		}
 		if (args.length == 0) {

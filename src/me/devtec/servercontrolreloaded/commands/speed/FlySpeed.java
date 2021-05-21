@@ -30,7 +30,7 @@ public class FlySpeed implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "FlySpeed", "Speed")) {
 		if(!CommandsManager.canUse("Speed.FlySpeed", s)) {
-			Loader.sendMessages(s, "Cooldowns.Commands");
+			Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Speed.FlySpeed", s))));
 			return true;
 		}
 		if (args.length == 0) {

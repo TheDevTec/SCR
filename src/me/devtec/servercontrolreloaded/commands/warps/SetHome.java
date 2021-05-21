@@ -26,7 +26,7 @@ public class SetHome implements CommandExecutor, TabCompleter {
 			Player p = (Player) s;
 			if (Loader.has(s, "SetHome", "Warps")) {
 				if(!CommandsManager.canUse("Warps.SetHome", s)) {
-					Loader.sendMessages(s, "Cooldowns.Commands");
+					Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Warps.SetHome", s))));
 					return true;
 				}
 				if (Loader.vault == null) {

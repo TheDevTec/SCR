@@ -25,7 +25,7 @@ public class DelHome implements CommandExecutor, TabCompleter {
 			Player p = (Player) s;
 			if (Loader.has(s, "DelHome", "Warps")) {
 				if(!CommandsManager.canUse("Warps.DelHome", s)) {
-					Loader.sendMessages(s, "Cooldowns.Commands");
+					Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Warps.DelHome", s))));
 					return true;
 				}
 				if (args.length == 0) {

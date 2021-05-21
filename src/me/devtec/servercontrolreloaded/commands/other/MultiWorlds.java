@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
 import me.devtec.theapi.TheAPI;
@@ -35,7 +36,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if(!CommandsManager.canUse("Other.MultiWorlds", s)) {
-			Loader.sendMessages(s, "Cooldowns.Commands");
+			Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.MultiWorlds", s))));
 			return true;
 		}
 		if (args.length == 0) {

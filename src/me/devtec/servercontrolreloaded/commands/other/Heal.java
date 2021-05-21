@@ -29,11 +29,11 @@ public class Heal implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if (Loader.has(s, "Heal", "Other")) {
+			if(!CommandsManager.canUse("Other.Heal", s)) {
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.Heal", s))));
+				return true;
+			}
 		if (args.length == 0) {
-				if(!CommandsManager.canUse("Other.Heal", s)) {
-					Loader.sendMessages(s, "Cooldowns.Commands");
-					return true;
-				}
 			if (s instanceof Player) {
 				Player p = (Player) s;
 				p.setFoodLevel(20);

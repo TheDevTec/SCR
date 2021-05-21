@@ -65,7 +65,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 			if (s instanceof Player) {
 				if (Loader.has(s, "GameMode"+gamemode, "GameMode")) {
 					if(!CommandsManager.canUse("GameMode.GameMode"+gamemode, s)) {
-						Loader.sendMessages(s, "Cooldowns.Commands");
+						Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("GameMode.GameMode"+gamemode, s))));
 						return true;
 					}
 					((Player) s).setGameMode(GameMode.valueOf(gamemode.toUpperCase()));
@@ -81,7 +81,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 		}
 		if (Loader.has(s, "GameMode" + gamemode, "GameMode","Other")) {
 			if(!CommandsManager.canUse("GameMode.GameMode"+gamemode, s)) {
-				Loader.sendMessages(s, "Cooldowns.Commands");
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("GameMode.GameMode"+gamemode, s))));
 				return true;
 			}
 			Player p = TheAPI.getPlayer(args[1]);

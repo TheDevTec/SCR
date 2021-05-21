@@ -28,7 +28,7 @@ public class Home implements CommandExecutor, TabCompleter {
 		if (s instanceof Player) {
 			if (Loader.has(s, "Home", "Warps")) {
 				if(!CommandsManager.canUse("Warps.Home", s)) {
-					Loader.sendMessages(s, "Cooldowns.Commands");
+					Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Warps.Home", s))));
 					return true;
 				}
 				Player p = (Player) s;

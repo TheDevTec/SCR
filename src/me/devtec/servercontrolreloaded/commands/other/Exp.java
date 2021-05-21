@@ -24,7 +24,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Experiences", "Other")) {
 		if(!CommandsManager.canUse("Other.Experiences", s)) {
-			Loader.sendMessages(s, "Cooldowns.Commands");
+			Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.Experiences", s))));
 			return true;
 		}
 		if (args.length == 0) {

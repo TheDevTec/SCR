@@ -39,7 +39,7 @@ public class Skin implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(Loader.has(s,"Skin","Other")) {
 		if(!CommandsManager.canUse("Other.Skin", s)) {
-			Loader.sendMessages(s, "Cooldowns.Commands");
+			Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.Skin", s))));
 			return true;
 		}
 		if(args.length==0) {

@@ -28,7 +28,7 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 			Player p = (Player) s;
 			if (Loader.has(s, "HomeOther", "Warps")) {
 				if(!CommandsManager.canUse("Warps.HomeOther", s)) {
-					Loader.sendMessages(s, "Cooldowns.Commands");
+					Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Warps.HomeOther", s))));
 					return true;
 				}
 				if (args.length <= 1) {

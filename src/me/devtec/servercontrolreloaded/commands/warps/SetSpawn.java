@@ -22,7 +22,7 @@ public class SetSpawn implements CommandExecutor, TabCompleter {
 			if (s instanceof Player) {
 				if (Loader.has(s, "SetSpawn", "Warps")) {
 					if(!CommandsManager.canUse("Warps.SetSpawn", s)) {
-						Loader.sendMessages(s, "Cooldowns.Commands");
+						Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Warps.SetSpawn", s))));
 						return true;
 					}
 				Player p = (Player) s;
