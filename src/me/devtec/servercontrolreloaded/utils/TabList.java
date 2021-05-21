@@ -152,6 +152,7 @@ public class TabList {
 	}
 
 	public static String getPrefix(Player p, boolean nametag) {
+		if(Loader.tab==null)return null;
 		if (Loader.tab.exists("PerPlayer." + p.getName() + '.'+(nametag?"NameTag":"TabList")+".Prefix"))
 			return replace(Loader.tab.getString("PerPlayer." + p.getName() + '.'+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
 		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + '.'+(nametag?"NameTag":"TabList")+".Prefix"))
@@ -163,6 +164,7 @@ public class TabList {
 	}
 
 	public static String getSuffix(Player p, boolean nametag) {
+		if(Loader.tab==null)return null;
 		if (Loader.tab.exists("PerPlayer." + p.getName() + '.'+(nametag?"NameTag":"TabList")+".Suffix"))
 			return replace(Loader.tab.getString("PerPlayer." + p.getName() + '.'+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
 		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + '.'+(nametag?"NameTag":"TabList")+".Suffix"))
@@ -174,6 +176,7 @@ public class TabList {
 	}
 
 	public static String getNameFormat(Player p) {
+		if(Loader.tab==null)return p.getName();
 		if (Loader.tab.exists("PerPlayer." + p.getName() + ".Format"))
 			return replace(Loader.tab.getString("PerPlayer." + p.getName() + ".Format"), p, true);
 		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + ".Format"))

@@ -43,7 +43,6 @@ import me.devtec.servercontrolreloaded.utils.Configs;
 import me.devtec.servercontrolreloaded.utils.Converter;
 import me.devtec.servercontrolreloaded.utils.DisplayManager;
 import me.devtec.servercontrolreloaded.utils.Eco;
-import me.devtec.servercontrolreloaded.utils.InstantTAB;
 import me.devtec.servercontrolreloaded.utils.Kit;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
@@ -294,7 +293,7 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public String pingPlayer(Player who) {
-		if (tab.getBoolean("Colored-Ping") == true)
+		if (tab.getBoolean("Colored-Ping"))
 			return getColoredPing(who);
 		return String.valueOf(TheAPI.getPlayerPing(who));
 	}
@@ -342,7 +341,6 @@ public class Loader extends JavaPlugin implements Listener {
 	public static boolean hasBungee;
 
 	private Object reg;
-	private InstantTAB tabb;
 
 	@Override
 	public void onEnable() {
@@ -350,9 +348,6 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
-		tabb = new InstantTAB();
-		tabb.reg();
-		
 		//LOAD PLACEHOLDERS
 		if(PluginManagerAPI.isEnabledPlugin("PlaceholderAPI")) {
 			reg=new PlaceholderRegister("scr", "DevTec", getDescription().getVersion()) {
@@ -501,7 +496,6 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onDisable() {
-		tabb.unreg();
 		unhook();
 		CommandsManager.unload();
 		org.bukkit.event.HandlerList.unregisterAll(this);

@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.TabList;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.TheAPI.SudoType;
@@ -337,6 +338,7 @@ public class GUICreator implements CommandExecutor {
     private boolean global;
 	
 	private boolean canUseSimple(CommandSender s) {
+		if(cooldown<=0)return true;
 		if(s instanceof Player) {
 			if(global) {
 				if(waitingCooldown-System.currentTimeMillis()/1000 + cooldown<= 0) {
@@ -354,6 +356,17 @@ public class GUICreator implements CommandExecutor {
 		return true;
 	}
 	
+	public long expire(CommandSender s) {
+		if(cooldown<=0)return 0;
+		if(s instanceof Player) {
+			if(global) {
+				return waitingCooldown-System.currentTimeMillis()/1000 + cooldown;
+			}
+			return cooldownMap.getOrDefault(s.getName(), (long)0)-System.currentTimeMillis()/1000 + cooldown;
+		}
+		return 0;
+	}
+	
 
     public GUICreator(long cooldown, boolean globalC, String cmd, String a){
     	this.cooldown=cooldown;
@@ -363,7 +376,7 @@ public class GUICreator implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender s, Command uu, String u, String[] args) {
-    	if(s instanceof Player && !canUseSimple(s) || s instanceof Player == false) {
+    	if(canUseSimple(s)) {
     	if(args.length==0||!s.hasPermission("scr.command.gui")) {
     		if(s instanceof Player == false)return true;
         	String perm = c.getString("Commands."+cmd+".permission");
@@ -381,7 +394,7 @@ public class GUICreator implements CommandExecutor {
         maker.get(gui).make(target).open(target);
         return true;
     	}
-		Loader.sendMessages(s, "Cooldowns.Commands");
+		Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(expire(s))));
     	return true;
     }
 }

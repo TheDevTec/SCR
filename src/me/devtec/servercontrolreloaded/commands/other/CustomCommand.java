@@ -12,6 +12,7 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.TabList;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public class CustomCommand implements CommandExecutor {
 	
@@ -24,8 +25,8 @@ public class CustomCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(Loader.customCmds.getString(d+".Permission")==null||Loader.customCmds.getString(d+".Permission").trim().equals("")||s.hasPermission(Loader.customCmds.getString(d+".Permission"))) {
 			if(!CommandsManager.canUse("CustomCommand."+d, s)) {
-				Loader.sendMessages(s, "Cooldowns.Commands");
-				return true;
+				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("CustomCommand."+d, s))));
+		    	return true;
 			}
 			if(args.length==0 && s instanceof Player) {
 			Object o = Loader.customCmds.get(d+".Messages");

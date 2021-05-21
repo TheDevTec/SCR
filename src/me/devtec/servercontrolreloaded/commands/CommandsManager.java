@@ -164,69 +164,63 @@ public class CommandsManager {
 		if(!cooldown.containsKey(path))return true;
 		if(s instanceof Player) {
 			if(s.hasPermission("SCR.Other.Cooldown.Commands"))return true;
-			for(String d : Loader.cmds.getStringList(path+".CooldownCmds")) {
-				if(!canUseSimple(d,s))return false;
-			}
-			if(global.getOrDefault(path,false)) {
-				if(waitingCooldown.getOrDefault(path, (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path)<= 0) {
-					waitingCooldown.put(path, System.currentTimeMillis()/1000);
-					return true;
-				}
-				return false;
-			}
-			Map<String, Long> waitingCooldown = cooldownMap.get(path);
-			if(waitingCooldown==null) {
-				cooldownMap.put(path, waitingCooldown=new HashMap<>());
-			}
-			if(waitingCooldown.getOrDefault(s.getName(), (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path) <= 0) {
-				waitingCooldown.put(s.getName(), System.currentTimeMillis()/1000);
-				return true;
-			}
-			return false;
+			List<String> set = new ArrayList<>();
+			set.add(path);
+			return canUse(set,path,s);
 		}
 		return true;
 	}
 	
+	private static boolean canUse(List<String> set, String path, CommandSender s) {
+		for(String d : Loader.cmds.getStringList(path+".CooldownCmds")) {
+			if(set.contains(d))continue;
+			boolean expire = canUse(set,d,s);
+			if(!expire)return expire;
+		}
+	if(global.getOrDefault(path,false)) {
+		if(waitingCooldown.getOrDefault(path, (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path)<= 0) {
+			waitingCooldown.put(path, System.currentTimeMillis()/1000);
+			return true;
+		}
+		return false;
+	}
+	Map<String, Long> waitingCooldown = cooldownMap.get(path);
+	if(waitingCooldown==null) {
+		cooldownMap.put(path, waitingCooldown=new HashMap<>());
+	}
+	if(waitingCooldown.getOrDefault(s.getName(), (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path) <= 0) {
+		waitingCooldown.put(s.getName(), System.currentTimeMillis()/1000);
+		return true;
+	}
+	return false;
+	}
+
 	public static long expire(String path, CommandSender s) {
 		if(!cooldown.containsKey(path))return 0;
 		if(s instanceof Player) {
-			for(String d : Loader.cmds.getStringList(path+".CooldownCmds")) {
-				if(!canUseSimple(d,s))return expire(d,s);
-			}
-			if(global.getOrDefault(path,false)) {
-				return waitingCooldown.getOrDefault(path, (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path);
-			}
-			Map<String, Long> waitingCooldown = cooldownMap.get(path);
-			if(waitingCooldown==null) {
-				cooldownMap.put(path, waitingCooldown=new HashMap<>());
-			}
-			return waitingCooldown.getOrDefault(s.getName(), (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path);
+			List<String> set = new ArrayList<>();
+			set.add(path);
+			return expire(set, path, s);
 		}
 		return 0;
 	}
 	
-	private static boolean canUseSimple(String path, CommandSender s) {
-		if(!cooldown.containsKey(path))return true;
-		if(s instanceof Player) {
-			if(s.hasPermission("SCR.Other.Cooldown.Commands"))return true;
-			if(global.getOrDefault(path,false)) {
-				if(waitingCooldown.getOrDefault(path, (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path)<= 0) {
-					waitingCooldown.put(path, System.currentTimeMillis()/1000);
-					return true;
-				}
-				return false;
-			}
-			Map<String, Long> waitingCooldown = cooldownMap.get(path);
-			if(waitingCooldown==null) {
-				cooldownMap.put(path, waitingCooldown=new HashMap<>());
-			}
-			if(waitingCooldown.getOrDefault(s.getName(), (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path) <= 0) {
-				waitingCooldown.put(s.getName(), System.currentTimeMillis()/1000);
-				return true;
-			}
-			return false;
+	private static long expire(List<String> done, String path, CommandSender s) {
+		if(!done.contains(path))
+			done.add(path);
+		for(String d : Loader.cmds.getStringList(path+".CooldownCmds")) {
+			if(done.contains(d))continue;
+			long expire = expire(done,d,s);
+			if(expire>0)return expire;
 		}
-		return true;
+		if(global.getOrDefault(path,false)) {
+			return waitingCooldown.getOrDefault(path, (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path);
+		}
+		Map<String, Long> waitingCooldown = cooldownMap.get(path);
+		if(waitingCooldown==null) {
+			cooldownMap.put(path, waitingCooldown=new HashMap<>());
+		}
+		return waitingCooldown.getOrDefault(s.getName(), (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path);
 	}
 	
 	private static Map<String, PluginCommand> commands = new HashMap<>();
