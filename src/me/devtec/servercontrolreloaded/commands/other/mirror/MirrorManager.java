@@ -8,8 +8,6 @@ import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Stairs.Shape;
 import org.bukkit.entity.Player;
 import org.bukkit.material.Directional;
 import org.bukkit.material.MaterialData;
@@ -124,7 +122,7 @@ public class MirrorManager {
         	Ref.sendPacket(TheAPI.getOnlinePlayers(), Ref.invoke(ed, "getUpdatePacket"));
         }
         try {
-        	BlockData state = block.getBlockData(); //1.13+
+        	org.bukkit.block.data.BlockData state = block.getBlockData(); //1.13+
 	        if(state instanceof org.bukkit.block.data.Directional) {
 	        	org.bukkit.block.data.Directional dir = (org.bukkit.block.data.Directional)state;
 	            BlockFace f =dir.getFacing();
@@ -141,7 +139,7 @@ public class MirrorManager {
 	        }
 	        if(state instanceof org.bukkit.block.data.type.Stairs) {
 	        	org.bukkit.block.data.type.Stairs dir = (org.bukkit.block.data.type.Stairs)state;
-	            Shape f =dir.getShape();
+	        	org.bukkit.block.data.type.Stairs.Shape f =dir.getShape();
 	            f = getShape(f, type);
 	            dir.setShape(f);
 	            block.setBlockData(dir);
@@ -218,19 +216,19 @@ public class MirrorManager {
 		return shape;
 	}
 	
-	public static Shape getShape(Shape shape, MirrorType type) {
-		if(shape == Shape.STRAIGHT) return Shape.STRAIGHT;
+	public static org.bukkit.block.data.type.Stairs.Shape getShape(org.bukkit.block.data.type.Stairs.Shape shape, MirrorType type) {
+		if(shape == org.bukkit.block.data.type.Stairs.Shape.STRAIGHT) return org.bukkit.block.data.type.Stairs.Shape.STRAIGHT;
 		if(type==MirrorType.AXISX) {
-			if(shape== Shape.INNER_LEFT) return Shape.INNER_RIGHT;
-			if(shape== Shape.INNER_RIGHT) return Shape.INNER_LEFT;
-			if(shape== Shape.OUTER_LEFT) return Shape.OUTER_RIGHT;
-			if(shape== Shape.OUTER_RIGHT) return Shape.OUTER_LEFT;
+			if(shape== org.bukkit.block.data.type.Stairs.Shape.INNER_LEFT) return org.bukkit.block.data.type.Stairs.Shape.INNER_RIGHT;
+			if(shape== org.bukkit.block.data.type.Stairs.Shape.INNER_RIGHT) return org.bukkit.block.data.type.Stairs.Shape.INNER_LEFT;
+			if(shape== org.bukkit.block.data.type.Stairs.Shape.OUTER_LEFT) return org.bukkit.block.data.type.Stairs.Shape.OUTER_RIGHT;
+			if(shape== org.bukkit.block.data.type.Stairs.Shape.OUTER_RIGHT) return org.bukkit.block.data.type.Stairs.Shape.OUTER_LEFT;
 		}
 		if(type==MirrorType.AXISZ) {
-			if(shape== Shape.INNER_LEFT) return Shape.INNER_RIGHT;
-			if(shape== Shape.INNER_RIGHT) return Shape.INNER_LEFT;
-			if(shape== Shape.OUTER_LEFT) return Shape.OUTER_RIGHT;
-			if(shape== Shape.OUTER_RIGHT) return Shape.OUTER_LEFT;
+			if(shape== org.bukkit.block.data.type.Stairs.Shape.INNER_LEFT) return org.bukkit.block.data.type.Stairs.Shape.INNER_RIGHT;
+			if(shape== org.bukkit.block.data.type.Stairs.Shape.INNER_RIGHT) return org.bukkit.block.data.type.Stairs.Shape.INNER_LEFT;
+			if(shape== org.bukkit.block.data.type.Stairs.Shape.OUTER_LEFT) return org.bukkit.block.data.type.Stairs.Shape.OUTER_RIGHT;
+			if(shape== org.bukkit.block.data.type.Stairs.Shape.OUTER_RIGHT) return org.bukkit.block.data.type.Stairs.Shape.OUTER_LEFT;
 		}
 		return shape;
 	}
