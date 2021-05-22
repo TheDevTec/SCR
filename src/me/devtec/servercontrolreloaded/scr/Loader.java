@@ -88,7 +88,6 @@ public class Loader extends JavaPlugin implements Listener {
 	public static List<Rule> rules = new ArrayList<>();
 	private int task;
 	private long time, rkick;
-	public static String[] colorsText, rulesText;
 	public static Object econ;
 	public static Loader getInstance;
 	public static Config english;

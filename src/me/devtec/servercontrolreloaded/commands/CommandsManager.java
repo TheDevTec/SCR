@@ -79,7 +79,6 @@ import me.devtec.servercontrolreloaded.commands.other.ActionBar;
 import me.devtec.servercontrolreloaded.commands.other.BossBar;
 import me.devtec.servercontrolreloaded.commands.other.Butcher;
 import me.devtec.servercontrolreloaded.commands.other.ChatLock;
-import me.devtec.servercontrolreloaded.commands.other.ColorsCmd;
 import me.devtec.servercontrolreloaded.commands.other.CustomCommand;
 import me.devtec.servercontrolreloaded.commands.other.Exp;
 import me.devtec.servercontrolreloaded.commands.other.Feed;
@@ -93,7 +92,6 @@ import me.devtec.servercontrolreloaded.commands.other.Item;
 import me.devtec.servercontrolreloaded.commands.other.Kits;
 import me.devtec.servercontrolreloaded.commands.other.MultiWorlds;
 import me.devtec.servercontrolreloaded.commands.other.Repair;
-import me.devtec.servercontrolreloaded.commands.other.RulesCmd;
 import me.devtec.servercontrolreloaded.commands.other.Scoreboard;
 import me.devtec.servercontrolreloaded.commands.other.Send;
 import me.devtec.servercontrolreloaded.commands.other.Skin;
@@ -428,8 +426,6 @@ public class CommandsManager {
 		load("Other", "Spawner", new Spawner());
 		load("Other", "Uuid", new Uuid());
 		//Utility
-		load("Other", "Colors", new ColorsCmd());
-		load("Other", "Rules", new RulesCmd());
 		if(Loader.guicreator.exists("Commands")){
 			for(String a : Loader.guicreator.getKeys("Commands")){
 				if(commands.containsKey(a))return;
