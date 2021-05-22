@@ -257,7 +257,8 @@ public class Item implements CommandExecutor, TabCompleter{
 							Loader.advancedHelp(s, "Item", "Other", "Nbt", "Set");
 							return true;
 						}
-						NMSAPI.setNBT(item, StringUtils.buildString(2,args));
+						item=NMSAPI.setNBT(item, StringUtils.buildString(2,args));
+						((Player)s).setItemInHand(item);
 						Loader.sendMessages(s,"Item.Nbt.Set",Placeholder.c().add("%nbt%", StringUtils.buildString(2,args)));
 						return true;
 					}

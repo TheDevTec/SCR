@@ -1,16 +1,15 @@
 package me.devtec.servercontrolreloaded.events;
 
-import me.devtec.servercontrolreloaded.commands.message.PrivateMessageManager;
-import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.servercontrolreloaded.utils.*;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.ChatMessage;
-import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.json.Writer;
-import me.devtec.theapi.utils.nms.NMSAPI;
-import me.devtec.theapi.utils.reflections.Ref;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -20,10 +19,23 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import me.devtec.servercontrolreloaded.commands.message.PrivateMessageManager;
+import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.servercontrolreloaded.utils.ChatFormatter;
+import me.devtec.servercontrolreloaded.utils.Colors;
+import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
+import me.devtec.servercontrolreloaded.utils.Rule;
+import me.devtec.servercontrolreloaded.utils.TabList;
+import me.devtec.servercontrolreloaded.utils.setting;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.ChatMessage;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.User;
+import me.devtec.theapi.utils.json.Reader;
+import me.devtec.theapi.utils.json.Writer;
+import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class ChatFormat implements Listener {
 	static Loader plugin = Loader.getInstance;
@@ -360,6 +372,7 @@ public class ChatFormat implements Listener {
 						formatt=o;
 					}else {
 						for(Object w : ((Collection<Object>)formatt)) {
+							if(w instanceof String)w=Reader.read((String)w);
 							if(w instanceof Map) {
 								o.add((Map<String, Object>) w);
 							}else {
@@ -401,12 +414,22 @@ public class ChatFormat implements Listener {
 			buf.append(c);
 		return buf.toString();
 	}
-
+	
 	private String convertToLegacy(List<Map<String, Object>> list) {
 		StringBuilder b = new StringBuilder();
 		for(Map<String, Object> text : list)
-			b.append(StringUtils.colorize(getColor(""+text.getOrDefault("color","")))+text.get("text"));
+			b.append(StringUtils.colorize(getColor(""+text.getOrDefault("color",""))+getStats(text)+text.get("text")));
 		return b.toString();
+	}
+	
+	private static String getStats(Map<String, Object> text) {
+		String s = "";
+		if(text.containsKey("bold") && (boolean)text.get("bold"))s+="&l";
+		if(text.containsKey("italic") && (boolean)text.get("italic"))s+="&o";
+		if(text.containsKey("strikethrough") && (boolean)text.get("strikethrough"))s+="&m";
+		if(text.containsKey("underlined") && (boolean)text.get("underlined"))s+="&n";
+		if(text.containsKey("obfuscated") && (boolean)text.get("obfuscated"))s+="&k";
+		return s;
 	}
 	
 	String getColor(String color) {

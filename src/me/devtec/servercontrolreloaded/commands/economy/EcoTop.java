@@ -1,9 +1,12 @@
 package me.devtec.servercontrolreloaded.commands.economy;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -18,15 +21,14 @@ import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.Eco;
-import me.devtec.servercontrolreloaded.utils.Pagination;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.scheduler.Tasker;
-import me.devtec.theapi.sortedmap.RankingAPI;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class EcoTop implements CommandExecutor, TabCompleter {
-	private HashMap<String, Pagination<Entry<String, Double>>> h = new HashMap<>();
+	private HashMap<String, TreeMap<Double, String>> h = new HashMap<>();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -38,37 +40,61 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Economy.BalanceTop", s))));
 				return true;
 			}
-			Loader.sendMessages(s, "Economy.BalanceTopLoading");
+			Loader.sendMessages(s, "Economy.BalanceTop.Loading");
 			new Tasker() {
 				public void run() {
 				String world = Eco.getEconomyGroupByWorld(Bukkit.getWorlds().get(0).getName());
 				if (s instanceof Player)
 					world = Eco.getEconomyGroupByWorld(((Player) s).getWorld().getName());
-				Pagination<Entry<String, Double>> m = h.get(world);
+				TreeMap<Double, String> m = h.get(world);
 				if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
 					TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300*20); 
-					HashMap<String, Double> money = new HashMap<>();
+					TreeMap<Double, String> money = new TreeMap<>(new Comparator<Double>() {
+						public int compare(Double var1, Double var2) {
+							return var2.compareTo(var1);
+						}
+					});
 					for (UUID sa : TheAPI.getUsers()) {
-						if(Bukkit.getOfflinePlayer(sa).getName()==null||Bukkit.getOfflinePlayer(sa).getName().equals("ServerControlReloaded"))continue;
-						money.put(Bukkit.getOfflinePlayer(sa).getName(),EconomyAPI.getBalance(Bukkit.getOfflinePlayer(sa).getName(), world));
+						String n = LoaderClass.cache.lookupNameById(sa);
+						if(n!=null) {
+							double bal = EconomyAPI.getBalance(n, world);
+							if(bal>0)
+								money.put(bal,n);
+						}
 					}
-					if (m != null)
-						h.remove(world); 
-					m = new Pagination<>(10,new RankingAPI<>(money).entrySet());
-					h.put(world, m);
+					h.put(world, m=money);
 				}
+				int pages = (int) Math.ceil((double) m.size() / 10);
 				int page =args.length!=0?StringUtils.getInt(args[0]):1;
+				if(page<=0)page=1;
+				if(pages<page)page=pages;
 				--page;
-				if(m.totalPages()<=page)page=m.totalPages()-1;
-				TheAPI.msg("&7=====» &cBalanceTop &e"+(page+1)+"/"+(m.totalPages())+" &7«=====", s);
+				
+				
+				Loader.sendMessages(s, "Economy.BalanceTop.Header", Placeholder.c().replace("%page%",(page+1)+"")
+						.replace("%pages%", pages+""));
+				int min = page * 10;
+				int max = ((page * 10) + 10);
+
+				if (max > m.size())
+					max = m.size();
+				
+				int slot=0;
 				int i = 0;
-				for(Entry<String, Double> sf : m.getPage(page)){
-					String key = sf.getKey();
-					++i;
-					TheAPI.msg(Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", (i+(10*(page+1))-10) + "")
-							.replace("%player%", key).replace("%playername%", player(s,key))
-							.replace("%money%", API.setMoneyFormat(sf.getValue(),true)), s);
+				Iterator<Entry<Double, String>> es = m.entrySet().iterator();
+				while(es.hasNext()) {
+					Entry<Double, String> sf = es.next();
+					if(slot<max && slot >= min) {
+						String key = sf.getValue();
+						++i;
+						TheAPI.msg(Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", (i+(10*(page+1))-10) + "")
+								.replace("%player%", key).replace("%playername%", player(s,key))
+								.replace("%money%", API.setMoneyFormat(sf.getKey(),true)), s);
+					}
+					++slot;
 				}
+				Loader.sendMessages(s, "Economy.BalanceTop.Footer", Placeholder.c().replace("%page%",(page+1)+"")
+						.replace("%pages%", pages+""));
 			}}.runTask();
 			return true;
 		}

@@ -4,7 +4,7 @@
 #  Spigot: https://www.spigotmc.org/resources/71147/
 
 # Text for %prefix% placeholder
-Prefix: "&6&lS&r&lerver &8&l»&7"
+Prefix: "&6&lS&f&lerver &8&l»&7"
 
 # Translation for no perms message
 NoPerms: "%prefix% Na toto nemáš práva (&e%permission%&7)"
@@ -209,7 +209,10 @@ Economy:
   # Translation for /BalanceTop command
   NoEconomyAccount: "%prefix% Nenachádza sa tu žiaden ekonomický účet"
   NotEnought: "%prefix% Nemáš peniaze"
-  BalanceTopLoading: "%prefix% Sčítanie bohatstva všetkých hráčov, prosím, počkajte.."
+  BalanceTop:
+    Loading: "%prefix% Sčítanie bohatstva všetkých hráčov, prosím, počkajte.."
+    Header: "%prefix% &7=====» &6Najbohatší hráči &e%page%/%pages% &7«====="
+    Footer: ""
   Reset:
     Sender: "%prefix% Ekonomický účet hráča &e%player% &7bol resetovaný"
     Receiver: "%prefix% Tvoj ekonomický účet bol resetovaný"
