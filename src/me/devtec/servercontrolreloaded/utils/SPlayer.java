@@ -280,7 +280,7 @@ public class SPlayer {
 	}
 
 	public boolean hasFlyEnabled() {
-		return f.getBoolean("Fly")&&(getPlayer()==null||getPlayer()!=null&&getPlayer().isFlying());
+		return f.getBoolean("Fly")&&(getPlayer()==null||getPlayer()!=null&&getPlayer().getAllowFlight());
 	}
 
 	public boolean hasGodEnabled() {
