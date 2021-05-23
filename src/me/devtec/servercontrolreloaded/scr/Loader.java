@@ -169,6 +169,7 @@ public class Loader extends JavaPlugin implements Listener {
 				}else
 					if(!english.getString(path).trim().isEmpty())
 						return english.getString(path).replace("%prefix%",english.getString("Prefix"));
+					else return "";
 			}
 		}else {
 		if(trans.get(path) instanceof Collection) {
@@ -176,6 +177,7 @@ public class Loader extends JavaPlugin implements Listener {
 		}else
 			if(!trans.getString(path).trim().isEmpty())
 				return trans.getString(path).replace("%prefix%", trans.getString("Prefix"));
+			else return "";
 		}
 		return null;
 	}
@@ -227,6 +229,7 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getLogger().severe("[BUG] Missing path: "+path);
 			return;
 		}
+		if(o instanceof String && o.toString().equals(""))return;
 		if(o instanceof Collection || o instanceof Map) { //json?
 			String sf = getTranslationAsString(path);
 			if(sf!=null)
@@ -313,6 +316,7 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getLogger().severe("[BUG] Missing path: "+path);
 			return;
 		}
+		if(o instanceof String && o.toString().equals(""))return;
 		if(o instanceof Collection || o instanceof Map) { //json?
 			String sf = getTranslationAsString(path);
 			if(sf!=null)
@@ -367,6 +371,7 @@ public class Loader extends JavaPlugin implements Listener {
 	public static void sendBroadcasts(CommandSender whoIsSelected, String path, Placeholder placeholders) {
 		Object o = getTranslation(path);
 		if(o==null)return;
+		if(o instanceof String && o.toString().equals(""))return;
 		if(o instanceof Collection || o instanceof Map) { //json?
 			String sf = getTranslationAsString(path);
 			if(sf!=null)
@@ -417,6 +422,7 @@ public class Loader extends JavaPlugin implements Listener {
 	public static void sendBroadcasts(CommandSender whoIsSelected, String path, Placeholder placeholders, String perms) {
 		Object o = getTranslation(path);
 		if(o==null)return;
+		if(o instanceof String && o.toString().equals(""))return;
 		if(o instanceof Collection || o instanceof Map) { //json?
 			String sf = getTranslationAsString(path);
 			if(sf!=null)
