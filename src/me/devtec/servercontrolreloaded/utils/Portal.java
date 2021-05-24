@@ -9,7 +9,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -41,7 +40,7 @@ public class Portal {
 	private List<Position> blocks = new ArrayList<>();
 	private long lastEnter;
 	
-	public Portal(String id, Vector v, double cooldown, boolean perPlayer, boolean kickBack, Position a, Position b, Particle p, List<String> cmds, String s, List<String> bcmds, String permission) {
+	public Portal(String id, double cooldown, boolean perPlayer, boolean kickBack, Position a, Position b, Particle p, List<String> cmds, String s, List<String> bcmds, String permission) {
 		this.a=a;
 		perplayer=perPlayer;
 		this.kickBack=kickBack;
@@ -143,8 +142,7 @@ public class Portal {
 		unload();
 		for(String s : Loader.portals.getKeys()) {
 			if(Loader.portals.get(s+".pos.1")==null||Loader.portals.get(s+".pos.2")==null)continue;
-			Portal p = new Portal(s,new Vector(Loader.portals.getDouble(s+".kickVector.x"),Loader.portals.getDouble(s+".kickVector.y"),Loader.portals.getDouble(s+".kickVector.z"))
-					,Loader.portals.getDouble(s+".cooldown")
+			Portal p = new Portal(s,Loader.portals.getDouble(s+".cooldown")
 					,Loader.portals.getBoolean(s+".perPlayerCooldown")
 					,Loader.portals.getBoolean(s+".kickBack")
 					,Position.fromString(Loader.portals.getString(s+".pos.1")), 
