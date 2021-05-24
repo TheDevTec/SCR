@@ -996,11 +996,13 @@ Other:
     - "/mw delete [world]"
     - "/mw load [world]"
     - "/mw unload [world]"
+    - "/mw tp [world] [player]"
     - "/mw edit [world] [flag] [value]"
     Enabled: true
     AdvancedHelp:
       Create: "/mw create [world] [generator]"
       Delete: "/mw delete [world]"
+      Teleport: "/mw tp [world] [player]]"
       Load: "/mw load [world]"
       Unload: "/mw unload [world]"
       Edit: "/mw edit [world] [flag] [value]"

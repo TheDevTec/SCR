@@ -236,6 +236,7 @@ public class Loader extends JavaPlugin implements Listener {
 				if(sf.startsWith("[") && sf.endsWith("]")||sf.startsWith("{") && sf.endsWith("}")) {
 					Object old = o;
 					o=getTranslationAsObject(path);
+					if(isIBase(o)) {
 					Object json;
 					if(o instanceof Collection) {
 						json = colorizeList((Collection<?>)o,(d)->placeholder(to,d,placeholders));
@@ -269,6 +270,7 @@ public class Loader extends JavaPlugin implements Listener {
 							return;
 						}
 					} // fallback to default
+					}
 					o=old;
 				}
 		}
@@ -280,6 +282,22 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.msg(placeholder(to, o+"", placeholders), to);
 	}
 	
+	private static boolean isIBase(Object o) {
+		if(o instanceof Collection) {
+			for(Object a : (Collection<?>)o) {
+				if(a instanceof Map) {
+					return true;
+				}
+			}
+		}else{
+			for(Entry<?,?> a : ((Map<?,?>)o).entrySet()) {
+				if(a.getKey() instanceof String) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	private static String convertToLegacy(List<Map<String, Object>> list) {
 		StringBuilder b = new StringBuilder();
 		for(Map<String, Object> text : list)

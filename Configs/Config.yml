@@ -44,11 +44,8 @@ Options:
     ActionBar: "&eSomeone tagged you in a chat"
     
   LockChat:
-    Helpop: true
-    PrivateMessage: true
-    
-  # Remove line from list broadcast, if joiner is empty
-  List-RemoveEmptyLine: true
+    Helpop: false
+    PrivateMessage: false
   
   Staff:
     # if staff is empty
@@ -58,7 +55,8 @@ Options:
     ReplaceWith:
     - "%prefix% Anyone from staff is online"
     
-  ChatLock: false
+  # Remove line from list broadcast, if joiner is empty
+  List-RemoveEmptyLine: true
   
   FarmingSystem:
     Use: true
@@ -111,7 +109,7 @@ Options:
       - "kick %player% &7You were kicked for &eAFK &7longer than 15 minutes"
     
   Economy:
-    Money: 250.0
+    Money: 100.0
     DisablePluginEconomy: false
     CanUseOtherEconomy: true
     BalanceTop: "&e%position%. &7%playername% &7(&e$%money%&7)"
@@ -123,6 +121,90 @@ Options:
         - "world"
         - "world_nether"
         - "world_the_end"
+      
+  AutoMessage:
+    Use: true
+    MinimalPlayers: 1
+    Interval: "5min"
+    Random: true
+    # - "{"text":"&0[&e&lINFO&0] &7ServerControlReloaded created by &nDevTec"}"
+    UseJson: false
+    Messages:
+    - "&0[&e&lINFO&0] &7ServerControlReloaded created by &nDevTec"
+    - "&0[&e&lINFO&0] &720% Bugs free"
+    - "&0[&e&lINFO&0] &7Online players &e%online%&7/&e%max_players%"
+    - "&0[&e&lINFO&0] &7You found a bug ? Report it to https://github.com/TheDevTec/ServerControlReloaded"
+    - "&0[&e&lINFO&0] &7Do you like our plugin? Write a comment on the https://www.spigotmc.org/resources/71147"
+    
+  ServerList:
+    MOTD:
+      Use: true
+      # If is enabled maintenance mode, change motd to Maintenance motd
+      Maintenance: false
+      Text:
+        Normal: "&7&l====» &eMinecraft Server%line%&7&lOnline players: &e%server_online%/%server_max_online%"
+        Maintenance: "&7&l====» &eMinecraft Server%line%&eServer is under maintenance mode"
+        
+  VIPSlots:
+    Use: true
+    AddSlots: false
+    SlotsToAdd: 5
+    KickWhenFullServer: true
+    VIPJoinBroadcast: false
+    Text:
+      Kick: "&7Buy &eVIP &7on our website and get access to this &ereserved slot"
+      BroadcastVIPJoin: "&eVIP player joined to the server"
+      FullServer: "&7We are sorry, but all &eVIP Slots &7are in use"
+      
+  Cooldowns:
+    Chat:
+      Use: false
+      Time: 2
+    Commands:
+      Use: false
+      Time: 3
+      PerCommand:
+        Use: false
+        # Command:Time
+        List:
+        - "Heal:300"
+        - "Feed:150"
+        
+  CommandsBlocker:
+    Use: false
+    List:
+    - "pl"
+    - "version"
+    - "ihasbukkit"
+    - "spigot"
+    
+  StaffList:
+  - "owner"
+  - "admin"
+  - "helper"
+  - "builder"
+  
+  Colors:
+    Sign:
+      Use: true
+      Required-Permission: true
+      Permission:
+        Gradient: "SCR.Other.Sign.Gradient" 
+        Color: "SCR.Other.Sign.Color"
+        Format: "SCR.Other.Sign.Format"
+        Magic: "SCR.Other.Sign.Magic"
+        Rainbow: "SCR.Other.Sign.Rainbow"
+        HEX: "SCR.Other.Sign.HEX"
+    Chat:
+      Use: true
+      Required-Permission: true
+      Permission:
+        Gradient: "SCR.Other.Chat.Gradient"
+        Color: "SCR.Other.Chat.Color"
+        Format: "SCR.Other.Chat.Format"
+        Magic: "SCR.Other.Chat.Magic"
+        Rainbow: "SCR.Other.Chat.Rainbow"
+        HEX: "SCR.Other.Chat.HEX"
         
   WarningSystem:
     Reload:
@@ -176,90 +258,6 @@ Options:
       Commands:
       - "send * lobby"
       Kick: "&cServer closed"
-      
-  AutoMessage:
-    Use: true
-    MinimalPlayers: 1
-    Interval: "5min"
-    Random: true
-    # - "{"text":"&0[&e&lINFO&0] &7ServerControlReloaded created by &nDevTec"}"
-    UseJson: false
-    Messages:
-    - "&0[&e&lINFO&0] &7ServerControlReloaded created by &nDevTec"
-    - "&0[&e&lINFO&0] &720% Bugs free"
-    - "&0[&e&lINFO&0] &7Online players &e%online%&7/&e%max_players%"
-    - "&0[&e&lINFO&0] &7You found a bug ? Report it to https://github.com/TheDevTec/ServerControlReloaded"
-    - "&0[&e&lINFO&0] &7Do you like our plugin? Write a comment on the https://www.spigotmc.org/resources/71147"
-    
-  ServerList:
-    MOTD:
-      Use: true
-      # If is enabled maintenance mode, change motd to Maintenance motd
-      Maintenance: false
-      Text:
-        Normal: "&7&l====» &eMinecraft Server%line%&7&lOnline players: &e%server_online%/%server_max_online%"
-        Maintenance: "&7&l====» &eMinecraft Server%line%&eServer is under maintenance mode"
-        
-  VIPSlots:
-    Use: true
-    AddSlots: false
-    SlotsToAdd: 5
-    KickWhenFullServer: true
-    VIPJoinBroadcast: false
-    Text:
-      Kick: "&7Buy &eVIP &7on our website and get access to this &ereserved slot"
-      BroadcastVIPJoin: "&eVIP player joined to the server"
-      FullServer: "&7We are sorry, but all &eVIP Slots &7are in use"
-      
-  Cooldowns:
-    Chat:
-      Use: true
-      Time: 2
-    Commands:
-      Use: false
-      Time: 3
-      PerCommand:
-        Use: false
-        # Command:Time
-        List:
-        - "Heal:300"
-        - "Feed:150"
-        
-  CommandsBlocker:
-    Use: true
-    List:
-    - "pl"
-    - "version"
-    - "ihasbukkit"
-    - "spigot"
-    
-  StaffList:
-  - "owner"
-  - "admin"
-  - "helper"
-  - "builder"
-  
-  Colors:
-    Sign:
-      Use: true
-      Required-Permission: true
-      Permission:
-        Gradient: "SCR.Other.Sign.Gradient" 
-        Color: "SCR.Other.Sign.Color"
-        Format: "SCR.Other.Sign.Format"
-        Magic: "SCR.Other.Sign.Magic"
-        Rainbow: "SCR.Other.Sign.Rainbow"
-        HEX: "SCR.Other.Sign.HEX"
-    Chat:
-      Use: true
-      Required-Permission: true
-      Permission:
-        Gradient: "SCR.Other.Chat.Gradient"
-        Color: "SCR.Other.Chat.Color"
-        Format: "SCR.Other.Chat.Format"
-        Magic: "SCR.Other.Chat.Magic"
-        Rainbow: "SCR.Other.Chat.Rainbow"
-        HEX: "SCR.Other.Chat.HEX"
         
   Maintenance:
     Enabled: false
@@ -299,42 +297,23 @@ Options:
       - "Bedrock"
       world_the_end:
       - "Bedrock"
-      
-BanSystem:
-  TempMute:
-    Text: "&7You are temp-muted for &e%reason%&7 on &e%time%"
-    Time: "1h"
-    Reason: "None"
-  Mute:
-    Text: "&7You are muted for &e%reason%"
-    Reason: "None"
-  Ban:
-    Text: "&7You are banned for &e%reason%\n&7www.example.com"
-    Reason: "None"
-  TempBan:
-    Text: "&7You are temp-banned for &e%reason%&7 on &e%time%\n&7www.example.com"
-    Time: "1h"
-    Reason: "None"
-  Kick:
-    Text: "&7You are kicked for &e%reason%\n&7www.example.com"
-    Reason: "None"
-  BanIP:
-    Text: "&7You are ip-banned for &e%reason%\n&7www.example.com"
-    Reason: "None"
-  TempBanIP:
-    Text: "&7You are temp-ip-banned for &e%reason%&7 on &e%time%\n&7www.example.com"
-    Reason: "None"
-    Time: "1h"
-  TempJail:
-    Text: "&7You are temp-arrested for &e%reason%&7 on &e%time%"
-    Time: "1h"
-    Reason: "None"
-  Jail:
-    Text: "&7You are arrested for &e%reason%"
-    Reason: "None"
-  Warn:
-    Text: "&7You are warned for &e%reason%"
-    Reason: "None"
+
+Homes:
+  #GroupName: amount
+  default: 3
+ # vip: 5
+ # owner: 10
+
+Format:
+  SocialSpy: "&a[&2SP | &6%player% &8>> &e%target%&a] &d%message%"
+  Mail: "&e%player% &7: &e%message%"
+  Time: "HH:mm:ss"
+  Date: "dd.MM.yyyy"
+  DateWithTime: "dd.MM.yyyy HH:mm:ss"
+  Broadcast: "&0[&4Broadcast&0] &a%message%"
+  PrivateMessageTo: "&8(&7You -> &e%to%&8)&7: &e%message%"
+  PrivateMessageFrom: "&8(&e%from% -> &7You&8)&7: &e%message%"
+  HelpOp: "&0[&4HelpOp&0] &7%sender%&7: &c%message%"
     
 ChatFormat:
   global:
@@ -387,11 +366,16 @@ ChatFormat:
  #        chat: "%playername% &8> &3%message%"
  #        name: "&cAdmin &6%player%"
 
-Homes:
-  #GroupName: amount
-  default: 3
- # vip: 5
- # owner: 10 
+CountryBlocker:
+  Enabled: false
+  List:
+    - "us"
+    - "se"
+    - "de"
+  Whitelist:
+    - "petulikan1"
+    - "StraikerinaCZ"
+  KickMessage: "&cYour country is currently blocked! &eContact admins for whitelist"
 
 # Types: REGEX, CONTAINS, EQUALS, STARTS_WITH, ENDS_WITH
 # Regex flags: CASE_INSENSITIVE, COMMENTS, CANON_EQ, DOTALL, LITERAL, MULTILINE, UNICODE_CASE, UNICODE_CHARACTER_CLASS, UNIX_LINES
@@ -423,25 +407,39 @@ Rules:
  #   Replacement:
  #     Use: false
  #     Text: "ANTIAD"
-
-Format:
-  SocialSpy: "&a[&2SP | &6%player% &8>> &e%target%&a] &d%message%"
-  Mail: "&e%player% &7: &e%message%"
-  Time: "HH:mm:ss"
-  Date: "dd.MM.yyyy"
-  DateWithTime: "dd.MM.yyyy HH:mm:ss"
-  Broadcast: "&0[&4Broadcast&0] &a%message%"
-  PrivateMessageTo: "&8(&7You -> &e%to%&8)&7: &e%message%"
-  PrivateMessageFrom: "&8(&e%from% -> &7You&8)&7: &e%message%"
-  HelpOp: "&0[&4HelpOp&0] &7%sender%&7: &c%message%"
-
-CountryBlocker:
-  Enabled: false
-  List:
-    - "us"
-    - "se"
-    - "de"
-  Whitelist:
-    - "petulikan1"
-    - "StraikerinaCZ"
-  KickMessage: "&cYour country is currently blocked! &eContact admins for whitelist"
+      
+BanSystem:
+  TempMute:
+    Text: "&7You are temp-muted for &e%reason%&7 on &e%time%"
+    Time: "1h"
+    Reason: "None"
+  Mute:
+    Text: "&7You are muted for &e%reason%"
+    Reason: "None"
+  Ban:
+    Text: "&7You are banned for &e%reason%\n&7www.example.com"
+    Reason: "None"
+  TempBan:
+    Text: "&7You are temp-banned for &e%reason%&7 on &e%time%\n&7www.example.com"
+    Time: "1h"
+    Reason: "None"
+  Kick:
+    Text: "&7You are kicked for &e%reason%\n&7www.example.com"
+    Reason: "None"
+  BanIP:
+    Text: "&7You are ip-banned for &e%reason%\n&7www.example.com"
+    Reason: "None"
+  TempBanIP:
+    Text: "&7You are temp-ip-banned for &e%reason%&7 on &e%time%\n&7www.example.com"
+    Reason: "None"
+    Time: "1h"
+  TempJail:
+    Text: "&7You are temp-arrested for &e%reason%&7 on &e%time%"
+    Time: "1h"
+    Reason: "None"
+  Jail:
+    Text: "&7You are arrested for &e%reason%"
+    Reason: "None"
+  Warn:
+    Text: "&7You are warned for &e%reason%"
+    Reason: "None"

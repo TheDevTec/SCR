@@ -15,6 +15,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
+import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
@@ -24,11 +25,7 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.worldsapi.WorldsAPI;
 
 public class MultiWorlds implements CommandExecutor, TabCompleter {
-
-
-	/*
-	/mw edit [world] [flag] [boolean]
-	 */
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
 		if(!Loader.has(s,"MultiWorlds","Other")){
@@ -148,6 +145,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 					d.getLocation().getYaw());
 			Loader.mw.set("WorldsSettings." + world+ ".Spawn.Z_Pos_Head",
 					d.getLocation().getPitch());
+			Loader.mw.save();
 			try {
 				d.getWorld().setSpawnLocation(d.getLocation());
 			}catch(NoSuchMethodError err) {
@@ -171,6 +169,30 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			MultiWorldsUtils.unloadWorld(args[1],s);
+			return true;
+		}
+		if(args[0].equalsIgnoreCase("tp")||args[0].equalsIgnoreCase("teleport")) {
+			if(args.length < 2 || args.length==2 && s instanceof Player == false){
+				Loader.advancedHelp(s,"MultiWorlds","Other","Teleport");
+				return true;
+			}
+			if(Bukkit.getWorld(args[1])==null) {
+				Loader.sendMessages(s,"Missing.World", Loader.Placeholder.c().add("%world%",args[1]));
+				return true;
+			}
+			if(args.length==2) {
+				API.teleport((Player)s, Bukkit.getWorld(args[1]).getSpawnLocation());
+				Loader.sendMessages(s,"MultiWorld.Teleport.You", Loader.Placeholder.c().add("%world%",args[1]));
+			}else {
+				Player d = TheAPI.getPlayer(args[2]);
+				if(d==null) {
+					Loader.notOnline(s, args[2]);
+					return true;
+				}
+				API.teleport(d, Bukkit.getWorld(args[1]).getSpawnLocation());
+				Loader.sendMessages(s, d,"MultiWorld.Teleport.Other.Sender", Loader.Placeholder.c().add("%world%",args[1]).add("%sender%",s.getName()));
+				Loader.sendMessages(d, "MultiWorld.Teleport.Other.Receiver", Loader.Placeholder.c().add("%world%",args[1]).add("%sender%",s.getName()));
+			}
 			return true;
 		}
 		Loader.Help(s,"MultiWorlds","Other");
