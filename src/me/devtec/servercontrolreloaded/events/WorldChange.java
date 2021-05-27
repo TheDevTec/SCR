@@ -1,16 +1,12 @@
 package me.devtec.servercontrolreloaded.events;
 
-import me.devtec.servercontrolreloaded.scr.API;
-import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
-import me.devtec.servercontrolreloaded.utils.SPlayer;
-import me.devtec.servercontrolreloaded.utils.setting;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.scheduler.Scheduler;
-import me.devtec.theapi.scheduler.Tasker;
-import me.devtec.theapi.utils.reflections.Ref;
-import me.devtec.theapi.worldsapi.voidGenerator;
-import me.devtec.theapi.worldsapi.voidGenerator_1_8;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -25,13 +21,20 @@ import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.world.WorldUnloadEvent;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import me.devtec.servercontrolreloaded.scr.API;
+import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
+import me.devtec.servercontrolreloaded.utils.Portal;
+import me.devtec.servercontrolreloaded.utils.SPlayer;
+import me.devtec.servercontrolreloaded.utils.setting;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.scheduler.Scheduler;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.worldsapi.voidGenerator;
+import me.devtec.theapi.worldsapi.voidGenerator_1_8;
 
 public class WorldChange implements Listener {
 
@@ -39,6 +42,12 @@ public class WorldChange implements Listener {
 	Map<String, List<Player>> perWorldSleep = new HashMap<>();
 	Constructor<?> c = Ref.constructor(Ref.nms("PacketPlayOutUpdateTime"), long.class, long.class, boolean.class);
 	Method setTime = Ref.method(Ref.nms("WorldServer"), "setDayTime", long.class);
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onLoadWorld(WorldUnloadEvent e) {
+		//UNLOAD PORTALS
+		Portal.unload(e.getWorld());
+	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onLoadWorld(WorldLoadEvent e) {
@@ -59,6 +68,8 @@ public class WorldChange implements Listener {
 			
 		}
 		MultiWorldsUtils.defaultSet(e.getWorld(), gen);
+		//LOAD PORTALS
+		Portal.load(e.getWorld());
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)

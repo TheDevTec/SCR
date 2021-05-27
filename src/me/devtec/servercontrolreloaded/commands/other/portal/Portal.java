@@ -47,6 +47,7 @@ public class Portal implements CommandExecutor, TabCompleter {
 				if(Loader.portals.exists(args[1])) {
 					Loader.portals.remove(args[1]);
 					Loader.portals.save();
+					me.devtec.servercontrolreloaded.utils.Portal.reload();
 					Loader.sendMessages(s, "Portals.Delete", Placeholder.c().add("%name%", args[1]));
 					return true;
 				}

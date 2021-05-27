@@ -3,10 +3,11 @@ package me.devtec.servercontrolreloaded.utils;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
-import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -79,6 +80,8 @@ public class Portal {
 			ParticleAPI.spawnParticle(a.getWorld().getPlayers(), p, c);
 	}
 	
+	private static List<Player> processing = new ArrayList<>();
+	
 	public void processCommands(Player target) {
 		for(String f : cmds)
 			TheAPI.sudoConsole(TabList.replace(f, target, true));
@@ -96,6 +99,7 @@ public class Portal {
 			d.writeUTF(a);
 			target.sendPluginMessage(Loader.getInstance, "scr:community", d.toByteArray());
 		}
+		processing.remove(target);
 	}
 	
 	public void kickBack(Player p) {
@@ -138,10 +142,43 @@ public class Portal {
 		moveTask=0;
 	}
 
+	public static void unload(World w) {
+		if(w==null)return;
+		Iterator<Portal> s = portals.iterator();
+		while(s.hasNext()) {
+			Portal p = s.next();
+			if(p.a.getWorld().equals(w)) {
+				s.remove();
+			}
+		}
+	}
+	
+	public static void load(World w) {
+		if(w==null)return;
+		for(String s : Loader.portals.getKeys()) {
+			if(Loader.portals.get(s+".pos.1")==null||Loader.portals.get(s+".pos.2")==null)continue;
+			if(Position.fromString(Loader.portals.getString(s+".pos.1")).getWorld()!=null &&
+					Position.fromString(Loader.portals.getString(s+".pos.1")).getWorld().equals(w)) {
+				Portal p = new Portal(s,Loader.portals.getDouble(s+".cooldown")
+						,Loader.portals.getBoolean(s+".perPlayerCooldown")
+						,Loader.portals.getBoolean(s+".kickBack")
+						,Position.fromString(Loader.portals.getString(s+".pos.1")), 
+						Position.fromString(Loader.portals.getString(s+".pos.2")), 
+						makeParticle(Loader.portals.getString(s+".particle")), 
+						Loader.portals.getStringList(s+".cmds"), 
+						Loader.portals.getString(s+".server"), 
+						Loader.portals.getStringList(s+".bcmds"), 
+						Loader.portals.getString(s+".permission"));
+				portals.add(p);
+			}
+		}
+	}
+	
 	public static void reload() {
 		unload();
 		for(String s : Loader.portals.getKeys()) {
-			if(Loader.portals.get(s+".pos.1")==null||Loader.portals.get(s+".pos.2")==null)continue;
+			if(Loader.portals.get(s+".pos.1")==null||Loader.portals.get(s+".pos.2")==null
+					||Position.fromString(Loader.portals.getString(s+".pos.1")).getWorld()==null)continue;
 			Portal p = new Portal(s,Loader.portals.getDouble(s+".cooldown")
 					,Loader.portals.getBoolean(s+".perPlayerCooldown")
 					,Loader.portals.getBoolean(s+".kickBack")
@@ -154,36 +191,41 @@ public class Portal {
 					Loader.portals.getString(s+".permission"));
 			portals.add(p);
 		}
-		task=new Tasker() {
-			public void run() {
-				for(Portal a : portals)a.spawnParticles();
-			}
-		}.runRepeating(5, 10);
-		moveTask=new Tasker() {
-			HashMap<Player, Portal> inPortal = new HashMap<>();
-			public void run() {
-				for(Player p : TheAPI.getOnlinePlayers()) {
-					if(TheAPI.isNewerThan(7) ? p.getGameMode()!=GameMode.SPECTATOR : true)
-				for(Portal a : portals) {
-					if(!a.a.getWorld().equals(p.getWorld()))continue;
-					boolean is = isInside(p.getLocation(), a.a, a.b);
-					if(is) {
-						if(!inPortal.containsKey(p) || !inPortal.get(p).equals(a)) {
-							if(a.canEnter(p))
-								NMSAPI.postToMainThread(() -> a.processCommands(p));
-							else if(a.kickBack)a.kickBack(p);
-						}else
-							if(a.equals(inPortal.get(p)))
-								inPortal.remove(p);
-					}	
+		if(!portals.isEmpty()) {
+			task=new Tasker() {
+				public void run() {
+					for(Portal a : portals)if(a.a.getWorld()!=null && !a.a.getWorld().getPlayers().isEmpty())a.spawnParticles();
 				}
+			}.runRepeating(5, 10);
+			moveTask=new Tasker() {
+				HashMap<Player, Portal> inPortal = new HashMap<>();
+				public void run() {
+					for(Portal a : portals) {
+						if(a.a.getWorld().getPlayers().isEmpty())continue;
+						for(Player p : a.a.getWorld().getPlayers()) {
+							if(processing.contains(p))continue;
+							boolean is = isInside(p.getLocation(), a.a, a.b);
+							if(is) {
+								Portal f = inPortal.get(p);
+								if(f==null || !f.equals(a)) {
+									if(a.canEnter(p)) {
+										processing.add(p);
+										NMSAPI.postToMainThread(() -> a.processCommands(p));
+									}else if(a.kickBack)a.kickBack(p);
+								}else
+									if(a.equals(inPortal.get(p)))
+										inPortal.remove(p);
+							}
+						}
+					}
 				}
-			}
-		}.runRepeating(0, 1);
+			}.runRepeating(0, 1);
+		}
 	}
 	
 	private static Particle makeParticle(String string) {
 		if(string==null)return null;
+		try {
 		if(string.contains("{")&&string.contains("}")) {
 			String particle = string.split("\\{")[0];
 			String[] values = string.split("\\{")[1].split("\\}")[0].split(",");
@@ -198,12 +240,15 @@ public class Portal {
 				XMaterial.matchXMaterial(values[0]).parseItem()));
 			if(particle.equalsIgnoreCase("note"))
 				return new Particle(particle, new ParticleData.NoteOptions(StringUtils.getInt(values[0])));
-			if(particle.equalsIgnoreCase("item"))
+			if(particle.equalsIgnoreCase("item")||particle.equalsIgnoreCase("crack_item"))
 				return new Particle(particle, new ParticleData.ItemOptions(values.length>=2?new ItemStack(XMaterial.matchXMaterial(values[0]).getMaterial(),1,StringUtils.getByte(values[1])):
 					XMaterial.matchXMaterial(values[0]).parseItem()));
 			return new Particle(particle);
 			}
 		return new Particle(string);
+		}catch(Exception | NoSuchFieldError err) {
+			return null;
+		}
 	}
 
 	public static boolean isInside(Location loc, Position a, Position b) {
