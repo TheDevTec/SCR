@@ -154,7 +154,7 @@ public class Portal {
 	}
 	
 	public static void load(World w) {
-		if(w==null)return;
+		if(w==null||Loader.portals==null)return;
 		for(String s : Loader.portals.getKeys()) {
 			if(Loader.portals.get(s+".pos.1")==null||Loader.portals.get(s+".pos.2")==null)continue;
 			if(Position.fromString(Loader.portals.getString(s+".pos.1")).getWorld()!=null &&
@@ -176,6 +176,7 @@ public class Portal {
 	
 	public static void reload() {
 		unload();
+		if(Loader.portals==null)return;
 		for(String s : Loader.portals.getKeys()) {
 			if(Loader.portals.get(s+".pos.1")==null||Loader.portals.get(s+".pos.2")==null
 					||Position.fromString(Loader.portals.getString(s+".pos.1")).getWorld()==null)continue;
