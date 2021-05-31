@@ -31,6 +31,7 @@ public class Item implements CommandExecutor, TabCompleter{
 	private static List<String> flags = new ArrayList<>();
 	private static List<String> f = new ArrayList<>();
 	static {
+		if(TheAPI.isNewerThan(7))
 		try {
 		for(ItemFlag a : ItemFlag.values())flags.add(a.name());
 		}catch(Exception | NoSuchFieldError | NoSuchMethodError | NoClassDefFoundError e) {}

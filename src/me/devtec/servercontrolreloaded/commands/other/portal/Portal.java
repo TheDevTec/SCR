@@ -21,12 +21,6 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class Portal implements CommandExecutor, TabCompleter {
-
-	@SuppressWarnings("unchecked")
-	public Portal() {
-		new Particle("HEART"); //inicialize class
-		part = ((Map<String,Object>)Ref.getStatic(Particle.class, "identifier")).keySet();
-	}
 	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -172,7 +166,8 @@ public class Portal implements CommandExecutor, TabCompleter {
 		return true;
 	}
 	
-	private Set<String> part;
+	@SuppressWarnings("unchecked")
+	private Set<String> part = ((Map<String,Object>)Ref.getNulled(Ref.field(Particle.class, "identifier"))).keySet();
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
