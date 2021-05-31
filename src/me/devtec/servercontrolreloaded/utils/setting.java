@@ -20,7 +20,7 @@ public class setting {
 			tab_sort, tab, eco, eco_other, eco_log, eco_multi, ad_book, ad_chat, ad_cmd, ad_sign, ad_anvil, ad_itemdrop,
 			ad_itempick, cool_cmd, cool_chat, cool_percmd, color_chat_perm,
 			color_sign_perm, tp_safe, tp_onreqloc, ram, spam_double, caps_chat, caps_cmd, deathspawnbol
-			,list, staff_hide, staff_replace, farming, farming_packet, tab_vanish, tab_move, vanish_action,
+			,list, staff_hide, staff_replace, farming, tab_vanish, tab_move, vanish_action,
 			pm, helpop,tab_name;
 	public static String prefix;
 	public static DeathTp deathspawn;

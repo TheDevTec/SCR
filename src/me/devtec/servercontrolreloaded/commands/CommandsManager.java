@@ -336,7 +336,7 @@ public class CommandsManager {
 		load("GameMode", "GameModeSurvival", new GamemodeS());
 		load("GameMode", "GameModeCreative", new GamemodeC());
 		load("GameMode", "GameModeAdventure", new GamemodeA());
-		if(TheAPI.isNewerThan(7))
+		if(TheAPI.isNewerThan(13))
 			load("GameMode", "GameModeSpectator", new GamemodeSP());
 			
 		//BanSystem	
@@ -386,7 +386,8 @@ public class CommandsManager {
 		load("TpSystem", "TpaDeny", new Tpadeny());
 		
 		//Modules -> package Modules
-		load("Other", "Mirror", new MirrorCommand());
+		if(TheAPI.isNewerThan(7))
+			load("Other", "Mirror", new MirrorCommand());
 		
 		//Other
 		if(Loader.hasBungee)

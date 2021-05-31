@@ -1088,8 +1088,9 @@ public class Loader extends JavaPlugin implements Listener {
 		EventC(new EntitySpawn());
 		EventC(new Signs());
 		EventC(new FarmingSystem());
-		EventC(new MirrorEvents());
 		EventC(new ItemUse());
+		if(TheAPI.isNewerThan(13))
+			EventC(new MirrorEvents());
 	}
 	
 	public static void notOnline(CommandSender s, String player) {
