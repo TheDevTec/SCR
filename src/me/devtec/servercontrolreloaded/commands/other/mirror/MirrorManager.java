@@ -122,6 +122,7 @@ public class MirrorManager {
         	Ref.sendPacket(TheAPI.getOnlinePlayers(), Ref.invoke(ed, "getUpdatePacket"));
         }
         try {
+        	if(TheAPI.isNewerThan(12)) {
         	org.bukkit.block.data.BlockData state = block.getBlockData(); //1.13+
 	        if(state instanceof org.bukkit.block.data.Directional) {
 	        	org.bukkit.block.data.Directional dir = (org.bukkit.block.data.Directional)state;
@@ -151,6 +152,18 @@ public class MirrorManager {
 	            dir.setShape(f);
 	            block.setBlockData(dir);
 	        }
+        	}else {
+            	BlockState state = block.getState();
+    	        MaterialData d = state.getData();
+    	        if(d instanceof Directional) {
+    	            Directional dir = (Directional)d;
+    	            BlockFace f =dir.getFacing();
+    	            f = getFace(f, type);
+    	            dir.setFacingDirection(f);
+    	            state.setData((MaterialData) dir);
+    	            state.update(true,false);
+    	        }
+        	}
         }catch(Exception | NoSuchMethodError|NoSuchFieldError|NoClassDefFoundError e) { //1.12.2 - 1.7.10
         	BlockState state = block.getState();
 	        MaterialData d = state.getData();
