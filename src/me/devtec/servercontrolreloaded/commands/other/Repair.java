@@ -1,12 +1,9 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 
-import me.devtec.servercontrolreloaded.commands.CommandsManager;
-import me.devtec.servercontrolreloaded.scr.API;
-import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.StringUtils;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,8 +12,14 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.List;
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
+import me.devtec.servercontrolreloaded.scr.API;
+import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.nms.nbt.NBTEdit;
 
 public class Repair implements CommandExecutor, TabCompleter {
 
@@ -33,8 +36,12 @@ public class Repair implements CommandExecutor, TabCompleter {
 				if (args.length == 0) {
 					Material hand = p.getItemInHand().getType();
 					if (hand != Material.AIR) {
-						if(isTool(p.getItemInHand().getType().name()))
-						p.getItemInHand().setDurability((short) 0);
+						if(isTool(p.getItemInHand().getType().name())) {
+							NBTEdit edit = new NBTEdit(p.getItemInHand());
+							edit.remove("Damage");
+							edit.remove("damage");
+							NMSAPI.setNBT(p.getItemInHand(), edit);
+						}
 					Loader.sendMessages(s, "Repair.Hand.You");
 					return true;
 					}
@@ -45,16 +52,24 @@ public class Repair implements CommandExecutor, TabCompleter {
 					ItemStack[] items = p.getInventory().getContents();
 					for (ItemStack t : items) {
 						if (t != null && t.getType()!=Material.AIR)
-							if(isTool(p.getItemInHand().getType().name()))
-							t.setDurability((short) 0);
+							if(isTool(p.getItemInHand().getType().name())) {
+								NBTEdit edit = new NBTEdit(t);
+								edit.remove("Damage");
+								edit.remove("damage");
+								NMSAPI.setNBT(t, edit);
+							}
 					}
 					Loader.sendMessages(s, "Repair.All.You");
 					return true;
 				}
 					Material hand = p.getItemInHand().getType();
 					if (hand != Material.AIR) {
-						if(isTool(p.getItemInHand().getType().name()))
-						p.getItemInHand().setDurability((short) 0);
+						if(isTool(p.getItemInHand().getType().name())) {
+							NBTEdit edit = new NBTEdit(p.getItemInHand());
+							edit.remove("Damage");
+							edit.remove("damage");
+							NMSAPI.setNBT(p.getItemInHand(), edit);
+						}
 					Loader.sendMessages(s, "Repair.Hand.You");
 					return true;
 					}
@@ -74,8 +89,12 @@ public class Repair implements CommandExecutor, TabCompleter {
 				ItemStack[] items = p.getInventory().getContents();
 				for (ItemStack t : items) {
 					if (t != null && t.getType()!=Material.AIR)
-						if(isTool(p.getItemInHand().getType().name()))
-						t.setDurability((short) 0);
+						if(isTool(p.getItemInHand().getType().name())) {
+							NBTEdit edit = new NBTEdit(t);
+							edit.remove("Damage");
+							edit.remove("damage");
+							NMSAPI.setNBT(t, edit);
+						}
 				}
 				Loader.sendMessages(s, "Repair.All.Other.Sender");
 				Loader.sendMessages(p, "Repair.All.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
@@ -84,8 +103,12 @@ public class Repair implements CommandExecutor, TabCompleter {
 			}
 			Material hand = p.getItemInHand().getType();
 			if (hand != Material.AIR) {
-				if(isTool(p.getItemInHand().getType().name()))
-				p.getItemInHand().setDurability((short) 0);
+				if(isTool(p.getItemInHand().getType().name())) {
+					NBTEdit edit = new NBTEdit(p.getItemInHand());
+					edit.remove("Damage");
+					edit.remove("damage");
+					NMSAPI.setNBT(p.getItemInHand(), edit);
+				}
 				Loader.sendMessages(s, "Repair.Hand.Other.Sender");
 				Loader.sendMessages(p, "Repair.Hand.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
 						.replace("%playername%", s.getName()));
@@ -104,7 +127,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 
 	private boolean isTool(String name) {
 		return name.endsWith("_PICKAXE")||name.endsWith("_AXE")||name.endsWith("_SPADE")||name.endsWith("_SHOVEL")
-				||name.endsWith("_HOE")||name.endsWith("_HELMET")||name.endsWith("_BOOTS")||
+				||name.endsWith("_HOE")||name.endsWith("_HELMET")||name.endsWith("_BOOTS")||name.endsWith("_ON_A_STICK")||
 		name.endsWith("_LEGGINGS")||name.endsWith("_CHESTPLATE")||name.endsWith("_SWORD")||name.equals("BOW")
 		||name.equals("SHEARS")||name.equals("FLINT_AND_STEEL")||name.equals("TRIDENT")||name.equals("ELYTRA")
 		||name.equals("CROSSBOW")||name.equals("SHIELD")||name.equals("FISHING_ROD");
