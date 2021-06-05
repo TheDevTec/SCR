@@ -16,13 +16,13 @@ public class AnimationManager {
 		a.clear();
 		for(String anim : Loader.anim.getKeys()) {
 			Animation s = new Animation(Loader.anim.getStringList(anim+".lines")
-					, StringUtils.calculate(Loader.anim.getString(anim+".speed")).longValue());
+					, (long) StringUtils.calculate(Loader.anim.getString(anim+".speed")));
 			a.put(anim, s);
 		}
 	}
 	
 	public String requestAnimation(String name) {
-		Animation get = a.getOrDefault(name, null);
+		Animation get = a.get(name);
 		if(get==null)return null;
 		return get.get();
 	}

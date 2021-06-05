@@ -211,7 +211,7 @@ public class DisplayManager {
 				}
 				ac.update();
 			}
-		}.runRepeating(0, StringUtils.calculate(Loader.ac.getString("RefleshTick")).longValue()));
+		}.runRepeating(0, (long) StringUtils.calculate(Loader.ac.getString("RefleshTick"))));
 		}
 		if(Loader.bb.getBoolean("Enabled"))
 		tasks.add(new Tasker() {
@@ -254,7 +254,7 @@ public class DisplayManager {
 										color="PerWorld."+s.getWorld().getName()+".Color";
 									}
 								}
-								BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+								BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), (double)StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage)))/100);
 								if(Loader.bb.getString(color)!=null)
 									try {
 										if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
@@ -291,7 +291,7 @@ public class DisplayManager {
 										color="PerWorld."+s.getWorld().getName()+".Color";
 									}
 								}
-								BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+								BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), (double)StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage)))/100);
 								if(Loader.bb.getString(color)!=null)
 									try {
 										if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
@@ -327,7 +327,7 @@ public class DisplayManager {
 								color="PerWorld."+s.getWorld().getName()+".Color";
 							}
 						}
-						BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))).doubleValue()/100);
+						BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), (double)StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage)))/100);
 						if(Loader.bb.getString(color)!=null)
 							try {
 								if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
@@ -347,7 +347,7 @@ public class DisplayManager {
 				else ++cc;
 				bb.update();
 			}
-		}.runRepeating(0, StringUtils.calculate(Loader.bb.getString("RefleshTick")).longValue()));
+		}.runRepeating(0, (long) StringUtils.calculate(Loader.bb.getString("RefleshTick"))));
 		if (setting.sb)
 		tasks.add(new Tasker() {
 			public void run() {
@@ -440,7 +440,7 @@ public class DisplayManager {
 				}
 				sb.update();
 			}
-		}.runRepeating(0, StringUtils.calculate(Loader.sb.getString("Options.RefleshTick")).longValue()));
+		}.runRepeating(0, (long) StringUtils.calculate(Loader.sb.getString("Options.RefleshTick"))));
 		
 	}
 	
