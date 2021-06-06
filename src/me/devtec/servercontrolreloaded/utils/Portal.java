@@ -219,8 +219,12 @@ public class Portal {
 							}
 						}
 					}
+					try {
+						Thread.sleep(50);
+					} catch (Exception e) {
+					}
 				}
-			}.runRepeating(0, 1);
+			}.runTask();
 		}
 	}
 	
