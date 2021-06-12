@@ -40,8 +40,8 @@ public class WorldChange implements Listener {
 
 	Map<String, Integer> sleepTask = new HashMap<>();
 	Map<String, List<Player>> perWorldSleep = new HashMap<>();
-	Constructor<?> c = Ref.constructor(Ref.nms("PacketPlayOutUpdateTime"), long.class, long.class, boolean.class);
-	Method setTime = Ref.method(Ref.nms("WorldServer"), "setDayTime", long.class);
+	Constructor<?> c = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutUpdateTime","PacketPlayOutUpdateTime"), long.class, long.class, boolean.class);
+	Method setTime = Ref.method(Ref.nmsOrOld("server.level.WorldServer","WorldServer"), "setDayTime", long.class);
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onLoadWorld(WorldUnloadEvent e) {

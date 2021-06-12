@@ -333,7 +333,7 @@ public class TabList {
 		return addOrRemove==0?s.getStatistic(st)*del:s.getStatistic(st)/del;
 	}
 	
-	public static Object empty = NMSAPI.getPacketPlayOutPlayerListHeaderFooter("","");
+	public static Object empty = NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentText(""),NMSAPI.getIChatBaseComponentText(""));
 	
 	static int test;
 	public static void removeTab() {

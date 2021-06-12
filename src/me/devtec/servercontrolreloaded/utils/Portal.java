@@ -63,12 +63,12 @@ public class Portal {
 		}
 	}
 	
-	private static Method getBlock = Ref.method(Ref.nms("BlockBase$BlockData")!=null?Ref.nms("BlockBase$BlockData"):Ref.nms("IBlockProperties"),"getMaterial");
+	private static Method getBlock = Ref.method(Ref.nmsOrOld("world.level.block.state.BlockBase$BlockData","BlockBase$BlockData")!=null?Ref.nmsOrOld("world.level.block.state.BlockBase$BlockData","BlockBase$BlockData"):Ref.nms("IBlockProperties"),"getMaterial");
 	static {
 		if(getBlock==null)
-			getBlock=Ref.method(Ref.nms("IBlockData"), "getMaterial");
+			getBlock=Ref.method(Ref.nmsOrOld("world.level.block.state.IBlockData","IBlockData"), "getMaterial");
 	}
-	private static Object air = Ref.getStatic(Ref.nms("Material"),"AIR");
+	private static Object air = Ref.getStatic(Ref.nmsOrOld("world.level.material.Material","Material"),TheAPI.isNewerThan(16)?"a":"AIR");
 	
 	public String getPermission() {
 		return perm;

@@ -56,26 +56,30 @@ public class OnPlayerJoin implements Listener {
 	public void onLogin(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
 		if(Loader.config.getBoolean("Options.Skins.onJoin")) {
-			if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
-				String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
-				SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
-					@Override
-					public void run(SkinData data) {
-						if(!p.isOnline())return;
-						SkinManager.loadSkin(p, data);
+			new Tasker() {
+				public void run() {
+					if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
+						String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
+						SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
+							@Override
+							public void run(SkinData data) {
+								if(!p.isOnline())return;
+								SkinManager.loadSkin(p, data);
+							}
+						}, false);
+					}else {
+						String skin = TheAPI.getUser(p).getString("skin");
+						if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
+						SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
+							@Override
+							public void run(SkinData data) {
+								if(!p.isOnline())return;
+								SkinManager.loadSkin(p, data);
+							}
+						}, false);
 					}
-				}, false);
-			}else {
-				String skin = TheAPI.getUser(p).getString("skin");
-				if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
-				SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
-					@Override
-					public void run(SkinData data) {
-						if(!p.isOnline())return;
-						SkinManager.loadSkin(p, data);
-					}
-				}, false);
-			}
+				}
+			}.runTask();
 		}
 	}
 	
@@ -252,10 +256,9 @@ public class OnPlayerJoin implements Listener {
 	public void playerQuit(PlayerQuitEvent e) {
 		e.setQuitMessage(null);
 		Player p = e.getPlayer();
-		DisplayManager.removeCache(p);
 		NameTagChanger.remove(p);
-		p.setPlayerListName(p.getName());
 		Ref.sendPacket(p,TabList.empty);
+		p.setPlayerListName(p.getName());
 		User d = TheAPI.getUser(p);
 		boolean fly = p.isFlying() && p.getAllowFlight();
 		p.setFlying(false);

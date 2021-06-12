@@ -112,7 +112,7 @@ public class FarmingSystem implements Listener {
 			}
 	}
 
-	private static Constructor<?> packet = Ref.constructor(Ref.nms("PacketPlayOutAnimation"), Ref.nms("Entity"), int.class);
+	private static Constructor<?> packet = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutAnimation","PacketPlayOutAnimation"), Ref.nmsOrOld("world.entity.Entity","Entity"), int.class);
 	
 	private void callHand(Player player) {
 		Ref.sendPacket(TheAPI.getOnlinePlayers(), Ref.newInstance(packet, NMSAPI.getEntity(player), 0));

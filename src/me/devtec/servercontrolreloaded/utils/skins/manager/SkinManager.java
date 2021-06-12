@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -93,15 +94,15 @@ public class SkinManager {
 	
 	private static Object remove, add;
 	private static Method oldRemove, oldAdd;
-	private static Class<?> cc = Ref.nms("WorldSettings$EnumGamemode")==null?Ref.nms("EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
+	private static Class<?> cc = Ref.nms("WorldSettings$EnumGamemode")==null?Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
 	private static Constructor<?> infoC, headC,handC,respawnC, posC;
 	static {
-		headC = Ref.constructor(Ref.nms("PacketPlayOutEntityHeadRotation"), Ref.nms("Entity"), byte.class);
-		handC = Ref.constructor(Ref.nms("PacketPlayOutHeldItemSlot"), int.class);
+		headC = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutEntityHeadRotation","PacketPlayOutEntityHeadRotation"), Ref.nmsOrOld("world.entity.Entity","Entity"), byte.class);
+		handC = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutHeldItemSlot","PacketPlayOutHeldItemSlot"), int.class);
 		if(TheAPI.isNewerThan(7)) {
-			remove=Ref.getNulled(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),"REMOVE_PLAYER");
-			add=Ref.getNulled(Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),"ADD_PLAYER");
-			infoC = Ref.constructor(Ref.nms("PacketPlayOutPlayerInfo"), Ref.nms("PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), Iterable.class);
+			remove=Ref.getNulled(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),TheAPI.isNewerThan(16)?"b":"REMOVE_PLAYER");
+			add=Ref.getNulled(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),TheAPI.isNewerThan(16)?"a":"ADD_PLAYER");
+			infoC = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo","PacketPlayOutPlayerInfo"), Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),TheAPI.isNewerThan(16)?Collection.class:Iterable.class);
 		}else {
 			oldRemove=Ref.method(Ref.nms("PacketPlayOutPlayerInfo"), "removePlayer", Ref.nms("EntityPlayer"));
 			oldAdd=Ref.method(Ref.nms("PacketPlayOutPlayerInfo"), "addPlayer", Ref.nms("EntityPlayer"));
@@ -112,10 +113,12 @@ public class SkinManager {
 		}else if(TheAPI.isOlderThan(9)) { //1.8
 			posC=Ref.constructor(Ref.nms("PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class);
 		}else //1.9+
-			posC=Ref.constructor(Ref.nms("PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class, int.class);
+			posC=Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPosition","PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class, int.class);
+		if(posC==null)//1.17+
+		posC=Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPosition","PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class, int.class,boolean.class);
 		//RESPAWN PACKET
 		if(TheAPI.isNewerThan(16)) { //1.17+
-			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("ResourceKey"), long.class, cc, cc, boolean.class, boolean.class, boolean.class);
+			respawnC=Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutRespawn","PacketPlayOutRespawn"),Ref.nmsOrOld("world.level.dimension.DimensionManager","DimensionManager"), Ref.nmsOrOld("resources.ResourceKey","ResourceKey"), long.class, cc, cc, boolean.class, boolean.class, boolean.class);
 		}else
 		if(TheAPI.isNewerThan(15)) { //1.16
 			if(TheAPI.getServerVersion().split("_")[2].equals("R1"))
@@ -155,21 +158,27 @@ public class SkinManager {
 			remove=Ref.invokeNulled(oldRemove, s);
 			add=Ref.invokeNulled(oldAdd, s);
 		}else {
-			Iterable<?> iterable = Arrays.asList(s);
-			remove=Ref.newInstance(infoC, SkinManager.remove, iterable);
-			add = Ref.newInstance(infoC, SkinManager.add, iterable);
+			if(TheAPI.isNewerThan(16)) {
+				Collection<?> iterable = Arrays.asList(s);
+				remove=Ref.newInstance(infoC, SkinManager.remove, iterable);
+				add = Ref.newInstance(infoC, SkinManager.add, iterable);
+			}else {
+				Iterable<?> iterable = Arrays.asList(s);
+				remove=Ref.newInstance(infoC, SkinManager.remove, iterable);
+				add = Ref.newInstance(infoC, SkinManager.add, iterable);
+			}
 		}
 		Object spawn = NMSAPI.getPacketPlayOutNamedEntitySpawn(s);
-		Object head = Ref.newInstance(headC, s, (byte)((float)(Ref.get(s, "yaw"))*256F/360F));
+		Object head = Ref.newInstance(headC, s, (byte)((float)(Ref.get(s, TheAPI.isNewerThan(16)?"aZ":"yaw"))*256F/360F));
 		for(Player p : TheAPI.getPlayers()) {
 			Ref.sendPacket(p, remove);
 			Ref.sendPacket(p, add);
 			if(p == player) {
-				Object w = Ref.get(s, "world");
+				Object w = Ref.world(p.getWorld());
 				Location a = p.getLocation();
 				Object re = null;
 				if(TheAPI.isNewerThan(16)) { //1.17+
-					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(Ref.method(Ref.nms("BiomeManager"), "a", long.class), a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);
+					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(Ref.method(Ref.nmsOrOld("world.level.biome.BiomeManager","BiomeManager"), "a", long.class), a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "d"),"getGameMode"), Ref.invoke(Ref.get(s, "d"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);
 				}else
 				if(TheAPI.isNewerThan(15)) { //1.16
 					if(TheAPI.getServerVersion().split("_")[2].equals("R1"))
@@ -190,7 +199,10 @@ public class SkinManager {
 				}else if(TheAPI.isOlderThan(9)) { //1.8
 					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), sset);
 				}else //1.9+
-					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), sset, 0);
+					if(TheAPI.isNewerThan(16))
+						pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), sset, 0, false);
+					else
+						pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), sset, 0);
 				Ref.sendPacket(p, pos);
 				Ref.sendPacket(p, Ref.newInstance(handC, p.getInventory().getHeldItemSlot()));
 				p.updateInventory();
