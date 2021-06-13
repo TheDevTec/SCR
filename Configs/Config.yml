@@ -172,6 +172,10 @@ Options:
         
   CommandsBlocker:
     Use: false
+    PerWorld:
+      mine_world:
+      - "res"
+      - "residence"
     List:
     - "pl"
     - "version"

@@ -52,6 +52,13 @@ public class SecurityListenerV4 implements Listener {
 						event.setCancelled(true);
 				}
 			}
+			for (String cen : Loader.config.getStringList("Options.CommandsBlocker.PerWorld."+event.getPlayer().getWorld().getName())) {
+				String mes = msg.toLowerCase();
+				if (mes.startsWith("/" + cen.toLowerCase()) || mes.startsWith("/bukkit:" + cen.toLowerCase())
+						|| mes.startsWith("/minecraft:" + cen.toLowerCase())) {
+						event.setCancelled(true);
+				}
+			}
 		}
 		event.setMessage(msg);
 	}
