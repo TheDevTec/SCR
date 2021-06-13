@@ -1,8 +1,5 @@
 package me.devtec.servercontrolreloaded.scr;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,6 +14,7 @@ import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -49,6 +47,7 @@ import me.devtec.servercontrolreloaded.utils.Eco;
 import me.devtec.servercontrolreloaded.utils.Kit;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
+import me.devtec.servercontrolreloaded.utils.NameTagChanger;
 import me.devtec.servercontrolreloaded.utils.Portal;
 import me.devtec.servercontrolreloaded.utils.Rule;
 import me.devtec.servercontrolreloaded.utils.SPlayer;
@@ -71,7 +70,9 @@ import me.devtec.theapi.placeholderapi.ThePlaceholder;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.ChatMessage;
+import me.devtec.theapi.utils.SpigotUpdateChecker;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.VersionChecker;
 import me.devtec.theapi.utils.datakeeper.Data;
 import me.devtec.theapi.utils.datakeeper.DataType;
 import me.devtec.theapi.utils.json.Reader;
@@ -91,7 +92,7 @@ public class Loader extends JavaPlugin implements Listener {
 	public static Object econ;
 	public static Loader getInstance;
 	public static Config english;
-	private static UpdateChecker updater;
+	private static SpigotUpdateChecker updater;
 	public static Chat vault = null;
 	public static Permission perms = null;
 	private static int aad = 0;
@@ -612,7 +613,7 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onLoad() {
-		if(VersionChecker.getVersion(PluginManagerAPI.getVersion("TheAPI"), "5.9.9")==VersionChecker.Version.NEW) {
+		if(VersionChecker.getVersion(PluginManagerAPI.getVersion("TheAPI"), "6.0")==VersionChecker.Version.NEW) {
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4SECURITY: &cYou are running on outdated version of plugin TheAPI", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4SECURITY: &cPlease update plugin TheAPI to latest version.", TheAPI.getConsole());
@@ -651,6 +652,7 @@ public class Loader extends JavaPlugin implements Listener {
 	public static boolean hasBungee;
 
 	private Object reg;
+	private Metrics met;
 
 	@Override
 	public void onEnable() {
@@ -694,7 +696,7 @@ public class Loader extends JavaPlugin implements Listener {
 			}
 		}
 		EventsRegister();
-		updater = new UpdateChecker();
+		updater = new SpigotUpdateChecker(getDescription().getVersion(), 71147);
 		switch(updater.checkForUpdates()) {
 		case UKNOWN:
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
@@ -714,7 +716,7 @@ public class Loader extends JavaPlugin implements Listener {
 		default:
 			break;
 		}
-		new Metrics(this, 10560);
+		met = new Metrics(this, 10560);
 		if(updater!=null)
 		new Tasker() {
 			public void run() {
@@ -749,81 +751,30 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.msg(setting.prefix + "        https://discord.io/spigotdevtec", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 	}
-	
-	public static class VersionChecker {
-		public static enum Version {
-			OLD, NEW, SAME, UKNOWN;
-		}
 		
-		public static Version getVersion(String currentVersion, String version) {
-			if(currentVersion==null || version==null || currentVersion.replaceAll("[^0-9.]+", "").trim().isEmpty()||version.replaceAll("[^0-9.]+", "").trim().isEmpty())return Version.UKNOWN;
-			Version is = Version.UKNOWN;
-			int d = 0;
-	    	String[] s = currentVersion.replaceAll("[^0-9.]+", "").split("\\.");
-	    	for(String f : version.replaceAll("[^0-9.]+", "").split("\\.")) {
-	    		int id = StringUtils.getInt(f), bi = StringUtils.getInt(s[d++]);
-	    		if(id == bi) {
-	    			is=Version.SAME;
-	    			continue;
-	    		}
-	    		is=id > bi?Version.NEW:Version.OLD;
-	    		break;
-	    	}
-	    	return is;
-		}
-	}
-
-	public class UpdateChecker {
-	    private URL checkURL;
-	    
-	    public UpdateChecker reconnect() {
-	    	try {
-				checkURL=new URL("https://api.spigotmc.org/legacy/update.php?resource=71147");
-			} catch (Exception e) {}
-	        return this;
-	    }
-
-	    //0 == SAME VERSION
-	    //1 == NEW VERSION
-	    //2 == BETA VERSION
-	    public VersionChecker.Version checkForUpdates() {
-	    	if(checkURL==null)
-	    		reconnect();
-	    	String[] readerr = null;
-	    	try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(checkURL.openConnection().getInputStream()));
-				ArrayList<String> s = new ArrayList<>();
-				String read;
-				while((read=reader.readLine()) != null)
-					s.add(read);
-				readerr=s.toArray(new String[s.size()]);
-			} catch (Exception e) {
-			}
-	    	if(readerr==null)return VersionChecker.Version.UKNOWN;
-	        return VersionChecker.getVersion(getDescription().getVersion(), readerr[0]);
-	    }
-	}
-	
 	@Override
 	public void onDisable() {
-		unhook();
-		CommandsManager.unload();
-		org.bukkit.event.HandlerList.unregisterAll(this);
-		for (Player p : TheAPI.getOnlinePlayers()) {
-			p.setDisplayName(null);
-			p.setCustomName(null);
-		}
-		TabList.removeTab();
+		if(met!=null)
+		met.stop();
 		Tasks.unload();
 		Portal.unload();
 		stop();
+		unhook();
+		CommandsManager.unload();
 		DisplayManager.unload();
-		for (String w : mw.getStringList("Worlds"))
-			if (Bukkit.getWorld(w) != null) {
-				Bukkit.getLogger().info("Saving world '" + w + "'");
-				Bukkit.getWorld(w).save();
-			}
+		org.bukkit.event.HandlerList.unregisterAll(this);
+		for (Player p : TheAPI.getOnlinePlayers()) {
+			DisplayManager.removeCache(p);
+			NameTagChanger.remove(p);
+			Ref.sendPacket(p,TabList.empty);
+			p.setPlayerListName(p.getName());
+			p.setDisplayName(null);
+			p.setCustomName(null);
+		}
+		for (World w : Bukkit.getWorlds())
+			w.save();
 		if(reg instanceof ThePlaceholder)((ThePlaceholder)reg).unregister();
+		if(reg instanceof PlaceholderRegister)((PlaceholderRegister)reg).doUnregister();
 	}
 
 	private static boolean setupVault() {

@@ -235,6 +235,6 @@ public class SkinManager {
 	}
 
 	public static synchronized SkinData getSkin(String player) {
-		return playerSkins.getOrDefault(player, null);
+		return playerSkins.get(player);
 	}
 }

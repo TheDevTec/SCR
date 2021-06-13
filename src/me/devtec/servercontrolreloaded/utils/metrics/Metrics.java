@@ -57,12 +57,12 @@ public class Metrics {
 
     // The plugin id
     private final int pluginId;
+    private boolean found = false;
 
 	public Metrics(Plugin plugin, int pluginId) {
         this.plugin = plugin;
         this.pluginId = pluginId;
         Data c = new Data("plugins/bStats/config.yml");
-        boolean found = false;
         enabled = c.getBoolean("enabled");
         serverUUID = c.getString("serverUuid");
         logFailedRequests = c.getBoolean("logFailedRequests");
@@ -77,9 +77,17 @@ public class Metrics {
             }
             Bukkit.getServicesManager().register(Metrics.class, this, plugin, ServicePriority.Normal);
             if(!found)
-            startSubmitting();
+            	startSubmitting();
         }
     }
+	
+	public void stop() {
+        if (enabled) {
+			if(found)
+	        scheduler.shutdown();
+            Bukkit.getServicesManager().unregister(Metrics.class, this);
+        }
+	}
 
     public boolean isEnabled() {
         return enabled;

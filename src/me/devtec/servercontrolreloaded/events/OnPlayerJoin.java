@@ -256,9 +256,12 @@ public class OnPlayerJoin implements Listener {
 	public void playerQuit(PlayerQuitEvent e) {
 		e.setQuitMessage(null);
 		Player p = e.getPlayer();
+		DisplayManager.removeCache(p);
 		NameTagChanger.remove(p);
 		Ref.sendPacket(p,TabList.empty);
 		p.setPlayerListName(p.getName());
+		p.setDisplayName(null);
+		p.setCustomName(null);
 		User d = TheAPI.getUser(p);
 		boolean fly = p.isFlying() && p.getAllowFlight();
 		p.setFlying(false);
