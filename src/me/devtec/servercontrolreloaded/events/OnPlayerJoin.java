@@ -56,30 +56,24 @@ public class OnPlayerJoin implements Listener {
 	public void onLogin(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
 		if(Loader.config.getBoolean("Options.Skins.onJoin")) {
-			new Tasker() {
-				public void run() {
-					if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
-						String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
-						SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
-							@Override
-							public void run(SkinData data) {
-								if(!p.isOnline())return;
-								SkinManager.loadSkin(p, data);
-							}
-						}, false);
-					}else {
-						String skin = TheAPI.getUser(p).getString("skin");
-						if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
-						SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
-							@Override
-							public void run(SkinData data) {
-								if(!p.isOnline())return;
-								SkinManager.loadSkin(p, data);
-							}
-						}, false);
+			if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
+				String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
+				SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
+					@Override
+					public void run(SkinData data) {
+						SkinManager.loadSkin(p, data);
 					}
-				}
-			}.runTask();
+				}, false);
+			}else {
+				String skin = TheAPI.getUser(p).getString("skin");
+				if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
+				SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
+					@Override
+					public void run(SkinData data) {
+						SkinManager.loadSkin(p, data);
+					}
+				}, false);
+			}
 		}
 	}
 	
@@ -97,6 +91,7 @@ public class OnPlayerJoin implements Listener {
 		new Tasker() {
 			public void run() {
 				try {
+			    	DisplayManager.initializePlayer(p);
 				boolean fly = d.getBoolean("FlyOnQuit");
 				if(fly)
 				d.remove("FlyOnQuit");
@@ -116,7 +111,6 @@ public class OnPlayerJoin implements Listener {
 				}
 		        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
 		    		LoginEvent.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
-		    	DisplayManager.initializePlayer(p);
 				Tasks.regPlayer(p);
 				Config f = Loader.config;
 				if(API.hasVanish(p.getName())) {

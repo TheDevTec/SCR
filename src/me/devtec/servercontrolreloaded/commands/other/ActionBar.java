@@ -42,7 +42,7 @@ public class ActionBar implements CommandExecutor, TabCompleter {
 			if(args.length==0) {
 				if(s instanceof Player) {
 				if(DisplayManager.hasToggled((Player)s, DisplayType.ACTIONBAR)) {
-					DisplayManager.show((Player)s, DisplayType.ACTIONBAR);
+					DisplayManager.show((Player)s, DisplayType.ACTIONBAR, true);
 				}else {
 					DisplayManager.hide((Player)s, DisplayType.ACTIONBAR);
 				}
@@ -55,7 +55,7 @@ public class ActionBar implements CommandExecutor, TabCompleter {
 				if(args.length==1) {
 					if(s instanceof Player) {
 						if(DisplayManager.hasToggled((Player)s, DisplayType.ACTIONBAR)) {
-							DisplayManager.show((Player)s, DisplayType.ACTIONBAR);
+							DisplayManager.show((Player)s, DisplayType.ACTIONBAR, true);
 						}else {
 							DisplayManager.hide((Player)s, DisplayType.ACTIONBAR);
 						}
@@ -71,7 +71,7 @@ public class ActionBar implements CommandExecutor, TabCompleter {
 				}
 				if(d==s) {
 					if(DisplayManager.hasToggled((Player)s, DisplayType.ACTIONBAR)) {
-						DisplayManager.show((Player)s, DisplayType.ACTIONBAR);
+						DisplayManager.show((Player)s, DisplayType.ACTIONBAR, true);
 					}else {
 						DisplayManager.hide((Player)s, DisplayType.ACTIONBAR);
 					}
@@ -79,7 +79,7 @@ public class ActionBar implements CommandExecutor, TabCompleter {
 				}
 				if(Loader.has(s, "ActionBar", "Other", "ToggleOther")) {
 					if(DisplayManager.hasToggled(d, DisplayType.ACTIONBAR)) {
-						DisplayManager.show(d, DisplayType.ACTIONBAR);
+						DisplayManager.show(d, DisplayType.ACTIONBAR, true);
 						Loader.sendMessages(s, "ActionBar.Show", Placeholder.c().add("%player%", d.getName()).add("%playername%", d.getDisplayName()));
 						}else {
 						DisplayManager.hide(d, DisplayType.ACTIONBAR);

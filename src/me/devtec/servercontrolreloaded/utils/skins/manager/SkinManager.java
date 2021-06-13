@@ -136,7 +136,7 @@ public class SkinManager {
 	private static Set<?> sset = new HashSet<>();
 
 	private static Method set = Ref.method(Ref.getClass("com.google.common.collect.ForwardingMultimap"), "put", Object.class, Object.class);
-	
+	private static Method cf = Ref.method(Ref.nmsOrOld("world.level.biome.BiomeManager","BiomeManager"), "a", long.class);
 	static {
 		if(set==null)
 			set = Ref.method(Ref.getClass("net.minecraft.util.com.google.common.collect.ForwardingMultimap"), "put", Object.class, Object.class);
@@ -170,6 +170,7 @@ public class SkinManager {
 		}
 		Object spawn = NMSAPI.getPacketPlayOutNamedEntitySpawn(s);
 		Object head = Ref.newInstance(headC, s, (byte)((float)(Ref.get(s, TheAPI.isNewerThan(16)?"aZ":"yaw"))*256F/360F));
+		boolean has = player.isFlying() && player.getAllowFlight();
 		for(Player p : TheAPI.getPlayers()) {
 			Ref.sendPacket(p, remove);
 			Ref.sendPacket(p, add);
@@ -178,13 +179,16 @@ public class SkinManager {
 				Location a = p.getLocation();
 				Object re = null;
 				if(TheAPI.isNewerThan(16)) { //1.17+
-					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(Ref.method(Ref.nmsOrOld("world.level.biome.BiomeManager","BiomeManager"), "a", long.class), a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "d"),"getGameMode"), Ref.invoke(Ref.get(s, "d"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);
+					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(cf, a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "d"),"getGameMode"), Ref.invoke(Ref.get(s, "d"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);
 				}else
 				if(TheAPI.isNewerThan(15)) { //1.16
+					Object key = Ref.invoke(w, "getDimensionKey");
+					if(key==null)key=Ref.get(w, "dimensionKey");
 					if(TheAPI.getServerVersion().split("_")[2].equals("R1"))
-						re=Ref.newInstance(respawnC, Ref.invoke(w, "getTypeKey"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(Ref.method(Ref.nms("BiomeManager"), "a", long.class), a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);	
-					else
-						re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(Ref.method(Ref.nms("BiomeManager"), "a", long.class), a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);
+						re=Ref.newInstance(respawnC, Ref.invoke(w, "getTypeKey"), key, Ref.invokeNulled(cf, a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);	
+					else {
+						re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), key, Ref.invokeNulled(cf, a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);
+					}
 				}else if(TheAPI.isNewerThan(14)) { //1.15
 					re=Ref.newInstance(respawnC, Ref.invoke(Ref.invoke(Ref.get(w,"worldProvider"), "getDimensionManager"),"getType"), Hashing.sha256().hashLong(a.getWorld().getSeed()).asLong(), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
 				}else if(TheAPI.isNewerThan(13)) { //1.14
@@ -207,16 +211,17 @@ public class SkinManager {
 				Ref.sendPacket(p, Ref.newInstance(handC, p.getInventory().getHeldItemSlot()));
 				p.updateInventory();
 				Ref.invoke(s, "updateScaledHealth");
-				Ref.invoke(s, "updateInventory");
 				Ref.invoke(p, "triggerHealthUpdate");
-				if (player.isOp()) {
-					new Tasker() {
-						public void run() {
+				NMSAPI.postToMainThread(() -> {
+						if (player.isOp()) {
 		                    player.setOp(false);
 		                    player.setOp(true);
 						}
-					}.runTaskSync();
-	            }
+						if (has) {
+							player.setAllowFlight(true);
+		                    player.setFlying(true);
+						}
+					});
 			}else {
 				Ref.sendPacket(p, destroy);
 				Ref.sendPacket(p, spawn);

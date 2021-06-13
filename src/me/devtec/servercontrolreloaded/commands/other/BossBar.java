@@ -41,7 +41,7 @@ public class BossBar implements CommandExecutor, TabCompleter {
 			if(args.length==0) {
 				if(s instanceof Player) {
 				if(DisplayManager.hasToggled((Player)s, DisplayType.BOSSBAR)) {
-					DisplayManager.show((Player)s, DisplayType.BOSSBAR);
+					DisplayManager.show((Player)s, DisplayType.BOSSBAR, true);
 				}else {
 					DisplayManager.hide((Player)s, DisplayType.BOSSBAR);
 				}
@@ -54,7 +54,7 @@ public class BossBar implements CommandExecutor, TabCompleter {
 				if(args.length==1) {
 					if(s instanceof Player) {
 						if(DisplayManager.hasToggled((Player)s, DisplayType.BOSSBAR)) {
-							DisplayManager.show((Player)s, DisplayType.BOSSBAR);
+							DisplayManager.show((Player)s, DisplayType.BOSSBAR, true);
 						}else {
 							DisplayManager.hide((Player)s, DisplayType.BOSSBAR);
 						}
@@ -70,7 +70,7 @@ public class BossBar implements CommandExecutor, TabCompleter {
 				}
 				if(d==s) {
 					if(DisplayManager.hasToggled((Player)s, DisplayType.BOSSBAR)) {
-						DisplayManager.show((Player)s, DisplayType.BOSSBAR);
+						DisplayManager.show((Player)s, DisplayType.BOSSBAR, true);
 					}else {
 						DisplayManager.hide((Player)s, DisplayType.BOSSBAR);
 					}
@@ -78,7 +78,7 @@ public class BossBar implements CommandExecutor, TabCompleter {
 				}
 				if(Loader.has(s, "BossBar", "Other", "ToggleOther")) {
 					if(DisplayManager.hasToggled(d, DisplayType.BOSSBAR)) {
-						DisplayManager.show(d, DisplayType.BOSSBAR);
+						DisplayManager.show(d, DisplayType.BOSSBAR, true);
 						Loader.sendMessages(s, "BossBar.Show", Placeholder.c().add("%player%", d.getName()).add("%playername%", d.getDisplayName()));
 						}else {
 						DisplayManager.hide(d, DisplayType.BOSSBAR);

@@ -42,7 +42,7 @@ public class Scoreboard implements CommandExecutor, TabCompleter {
 			if(args.length==0) {
 				if(s instanceof Player) {
 				if(DisplayManager.hasToggled((Player)s, DisplayType.SCOREBOARD)) {
-					DisplayManager.show((Player)s, DisplayType.SCOREBOARD);
+					DisplayManager.show((Player)s, DisplayType.SCOREBOARD, true);
 				}else {
 					DisplayManager.hide((Player)s, DisplayType.SCOREBOARD);
 				}
@@ -55,7 +55,7 @@ public class Scoreboard implements CommandExecutor, TabCompleter {
 				if(args.length==1) {
 					if(s instanceof Player) {
 						if(DisplayManager.hasToggled((Player)s, DisplayType.SCOREBOARD)) {
-							DisplayManager.show((Player)s, DisplayType.SCOREBOARD);
+							DisplayManager.show((Player)s, DisplayType.SCOREBOARD, true);
 						}else {
 							DisplayManager.hide((Player)s, DisplayType.SCOREBOARD);
 						}
@@ -71,7 +71,7 @@ public class Scoreboard implements CommandExecutor, TabCompleter {
 				}
 				if(d==s) {
 					if(DisplayManager.hasToggled((Player)s, DisplayType.SCOREBOARD)) {
-						DisplayManager.show((Player)s, DisplayType.SCOREBOARD);
+						DisplayManager.show((Player)s, DisplayType.SCOREBOARD, true);
 					}else {
 						DisplayManager.hide((Player)s, DisplayType.SCOREBOARD);
 					}
@@ -79,7 +79,7 @@ public class Scoreboard implements CommandExecutor, TabCompleter {
 				}
 				if(Loader.has(s, "ScoreBoard", "Other", "ToggleOther")) {
 					if(DisplayManager.hasToggled(d, DisplayType.SCOREBOARD)) {
-						DisplayManager.show(d, DisplayType.SCOREBOARD);
+						DisplayManager.show(d, DisplayType.SCOREBOARD, true);
 						Loader.sendMessages(s, "Scoreboard.Show", Placeholder.c().add("%player%", d.getName()).add("%playername%", d.getDisplayName()));
 						}else {
 						DisplayManager.hide(d, DisplayType.SCOREBOARD);

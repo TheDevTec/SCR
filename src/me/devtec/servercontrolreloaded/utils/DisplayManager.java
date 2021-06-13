@@ -18,11 +18,9 @@ import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.scoreboardapi.ScoreboardAPI;
 import me.devtec.theapi.scoreboardapi.SimpleScore;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.reflections.Ref;
 
 public class DisplayManager {
-	@SuppressWarnings("unchecked")
-	private static Map<String, ScoreboardAPI> map = (Map<String, ScoreboardAPI>)Ref.getNulled(SimpleScore.class,"scores");
+	private static Map<String, ScoreboardAPI> map = SimpleScore.scores;
 	
 	public static enum DisplayType {
 		ACTIONBAR,
@@ -34,6 +32,8 @@ public class DisplayManager {
 		for(DisplayType t : DisplayType.values()) {
 			if(TheAPI.getUser(p).getBoolean("SCR."+t.name()) && !ignore.get(t).contains(p.getName()))
 				ignore.get(t).add(p.getName());
+			if(!ignore.get(t).contains(p.getName()) && (t==DisplayType.ACTIONBAR?Loader.ac.getBoolean("Enabled"):(t==DisplayType.BOSSBAR?Loader.bb.getBoolean("Enabled"):setting.sb)))
+				show(p, t, false);
 		}
 	}
 
@@ -49,21 +49,311 @@ public class DisplayManager {
 		map.remove(p.getName()).destroy();
 	}
 	
-	public static void show(Player p, DisplayType type) {
-		TheAPI.getUser(p).setAndSave("SCR."+type.name(), false);
-		ignore.get(type).remove(p.getName());
-		hide.get(type).remove(p.getName());
+	static int cc = 0;
+	
+	public static void show(Player s, DisplayType type, boolean msg) {
+		TheAPI.getUser(s).setAndSave("SCR."+type.name(), false);
+		ignore.get(type).remove(s.getName());
+		hide.get(type).remove(s.getName());
 		switch(type) {
 			case ACTIONBAR:{
-				Loader.sendMessages(p, "DisplayManager.ActionBar.Show");
+				try {
+				if(!s.hasPermission(Loader.ac.getString("Permission"))) {
+					if(!hide.get(DisplayType.ACTIONBAR).contains(s.getName())) {
+						hide.get(DisplayType.ACTIONBAR).add(s.getName());
+						TheAPI.sendActionBar(s, "");
+					}
+					return;
+				}
+				if(Loader.ac.getStringList("ForbiddenWorlds").contains(s.getWorld().getName())) {
+					if(!hide.get(DisplayType.ACTIONBAR).contains(s.getName())) {
+						hide.get(DisplayType.ACTIONBAR).add(s.getName());
+						TheAPI.sendActionBar(s, "");
+						return;
+					}
+					return;
+				}
+				if(ignore.get(DisplayType.ACTIONBAR).contains(s.getName())) {
+					if(!hide.get(DisplayType.ACTIONBAR).contains(s.getName())) {
+						if(!isToggleable(s, DisplayType.ACTIONBAR)) {
+							String text = "Text";
+							if(Loader.ac.exists("PerPlayer."+s.getName())) {
+								text="PerPlayer."+s.getName()+".Text";
+							}else {
+								if(Loader.ac.exists("PerWorld."+s.getWorld().getName())) {
+									text="PerWorld."+s.getWorld().getName()+".Text";
+								}
+							}
+							TheAPI.sendActionBar(s, ac.replace(s, Loader.ac.getString(text)));
+							if(msg)
+							Loader.sendMessages(s, "DisplayManager.ActionBar.Show");
+							return;
+						}
+						hide.get(DisplayType.ACTIONBAR).add(s.getName());
+						TheAPI.sendActionBar(s, ""); //remove
+						return;
+					}else {
+						if(!isToggleable(s, DisplayType.ACTIONBAR)) {
+							hide.get(DisplayType.ACTIONBAR).remove(s.getName());
+							String text = "Text";
+							if(Loader.ac.exists("PerPlayer."+s.getName())) {
+								text="PerPlayer."+s.getName()+".Text";
+							}else {
+								if(Loader.ac.exists("PerWorld."+s.getWorld().getName())) {
+									text="PerWorld."+s.getWorld().getName()+".Text";
+								}
+							}
+							TheAPI.sendActionBar(s, ac.replace(s, Loader.ac.getString(text)));
+							if(msg)
+							Loader.sendMessages(s, "DisplayManager.ActionBar.Show");
+							return;
+						}
+						//already gone
+						return;
+					}
+				}else {
+					hide.get(DisplayType.ACTIONBAR).remove(s.getName());
+					String text = "Text";
+					if(Loader.ac.exists("PerPlayer."+s.getName())) {
+						text="PerPlayer."+s.getName()+".Text";
+					}else {
+						if(Loader.ac.exists("PerWorld."+s.getWorld().getName())) {
+							text="PerWorld."+s.getWorld().getName()+".Text";
+						}
+					}
+					TheAPI.sendActionBar(s, ac.replace(s, Loader.ac.getString(text)));
+					if(msg)
+					Loader.sendMessages(s, "DisplayManager.ActionBar.Show");
+					return;
+				}
+				}catch(Exception er) {}
 			}
 			break;
 			case BOSSBAR:{
-				Loader.sendMessages(p, "DisplayManager.BossBar.Show");
+				try {
+				if(!s.hasPermission(Loader.bb.getString("Permission"))) {
+					if(!hide.get(DisplayType.BOSSBAR).contains(s.getName())) {
+						hide.get(DisplayType.BOSSBAR).add(s.getName());
+						TheAPI.removeBossBar(s);
+					}
+					return;
+				}	
+				if(Loader.bb.getStringList("ForbiddenWorlds").contains(s.getWorld().getName())) {
+					if(!hide.get(DisplayType.BOSSBAR).contains(s.getName())) {
+						hide.get(DisplayType.BOSSBAR).add(s.getName());
+						TheAPI.removeBossBar(s);
+						return;
+					}
+					return;
+				}
+				if(ignore.get(DisplayType.BOSSBAR).contains(s.getName())) {
+					if(!hide.get(DisplayType.BOSSBAR).contains(s.getName())) {
+						if(!isToggleable(s, DisplayType.BOSSBAR)) {
+							String text = "Text";
+							String stage = "Stage";
+							String style = "Style";
+							String color = "Color";
+							if(Loader.bb.exists("PerPlayer."+s.getName())) {
+								text="PerPlayer."+s.getName()+".Text";
+								stage="PerPlayer."+s.getName()+".Stage";
+								style="PerPlayer."+s.getName()+".Style";
+								color="PerPlayer."+s.getName()+".Color";
+							}else {
+								if(Loader.bb.exists("PerWorld."+s.getWorld().getName())) {
+									text="PerWorld."+s.getWorld().getName()+".Text";
+									stage="PerWorld."+s.getWorld().getName()+".Stage";
+									style="PerWorld."+s.getWorld().getName()+".Style";
+									color="PerWorld."+s.getWorld().getName()+".Color";
+								}
+							}
+							BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), (double)StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage)))/100);
+							if(Loader.bb.getString(color)!=null)
+								try {
+									if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
+										b.setColor(BarColor.values()[cc]);
+									}else
+									b.setColor(BarColor.valueOf(Loader.bb.getString(color).toUpperCase()));
+								}catch(Exception | NoSuchFieldError e) {}
+							if(Loader.bb.getString(style)!=null)
+								try {
+									b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
+								}catch(Exception | NoSuchFieldError e) {}
+							if(msg)
+							Loader.sendMessages(s, "DisplayManager.BossBar.Show");
+							return;
+						}
+						hide.get(DisplayType.BOSSBAR).add(s.getName());
+						TheAPI.removeBossBar(s); //remove
+						return;
+					}else {
+						if(!isToggleable(s, DisplayType.BOSSBAR)) {
+							hide.get(DisplayType.BOSSBAR).remove(s.getName());
+							String text = "Text";
+							String stage = "Stage";
+							String style = "Style";
+							String color = "Color";
+							if(Loader.bb.exists("PerPlayer."+s.getName())) {
+								text="PerPlayer."+s.getName()+".Text";
+								stage="PerPlayer."+s.getName()+".Stage";
+								style="PerPlayer."+s.getName()+".Style";
+								color="PerPlayer."+s.getName()+".Color";
+							}else {
+								if(Loader.bb.exists("PerWorld."+s.getWorld().getName())) {
+									text="PerWorld."+s.getWorld().getName()+".Text";
+									stage="PerWorld."+s.getWorld().getName()+".Stage";
+									style="PerWorld."+s.getWorld().getName()+".Style";
+									color="PerWorld."+s.getWorld().getName()+".Color";
+								}
+							}
+							BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), (double)StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage)))/100);
+							if(Loader.bb.getString(color)!=null)
+								try {
+									if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
+										b.setColor(BarColor.values()[cc]);
+									}else
+									b.setColor(BarColor.valueOf(Loader.bb.getString(color).toUpperCase()));
+								}catch(Exception | NoSuchFieldError e) {}
+							if(Loader.bb.getString(style)!=null)
+								try {
+									b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
+								}catch(Exception | NoSuchFieldError e) {}
+							if(msg)
+							Loader.sendMessages(s, "DisplayManager.BossBar.Show");
+							return;
+						}
+						//already gone
+						return;
+					}
+				}else {
+					hide.get(DisplayType.BOSSBAR).remove(s.getName());
+					String text = "Text";
+					String stage = "Stage";
+					String style = "Style";
+					String color = "Color";
+					if(Loader.bb.exists("PerPlayer."+s.getName())) {
+						text="PerPlayer."+s.getName()+".Text";
+						stage="PerPlayer."+s.getName()+".Stage";
+						style="PerPlayer."+s.getName()+".Style";
+						color="PerPlayer."+s.getName()+".Color";
+					}else {
+						if(Loader.bb.exists("PerWorld."+s.getWorld().getName())) {
+							text="PerWorld."+s.getWorld().getName()+".Text";
+							stage="PerWorld."+s.getWorld().getName()+".Stage";
+							style="PerWorld."+s.getWorld().getName()+".Style";
+							color="PerWorld."+s.getWorld().getName()+".Color";
+						}
+					}
+					BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), (double)StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage)))/100);
+					if(Loader.bb.getString(color)!=null)
+						try {
+							if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
+								b.setColor(BarColor.values()[cc]);
+							}else
+							b.setColor(BarColor.valueOf(Loader.bb.getString(color).toUpperCase()));
+						}catch(Exception | NoSuchFieldError e) {}
+					if(Loader.bb.getString(style)!=null)
+						try {
+							b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
+						}catch(Exception | NoSuchFieldError e) {}
+					if(msg)
+					Loader.sendMessages(s, "DisplayManager.BossBar.Show");
+					return;
+				}
+				}catch(Exception er) {}
 			}
 			break;
 			case SCOREBOARD:{
-				Loader.sendMessages(p, "DisplayManager.Scoreboard.Show");
+				try {
+				if(!s.hasPermission(Loader.sb.getString("Options.Permission"))) {
+					if(!hide.get(DisplayType.SCOREBOARD).contains(s.getName())) {
+						hide.get(DisplayType.SCOREBOARD).add(s.getName());
+						if(map.containsKey(s.getName())) {
+							map.remove(s.getName()).destroy();
+						}
+					}
+					return;
+				}
+				if(Loader.sb.getStringList("Options.ForbiddenWorlds").contains(s.getWorld().getName())) {
+					if(!hide.get(DisplayType.SCOREBOARD).contains(s.getName())) {
+						hide.get(DisplayType.SCOREBOARD).add(s.getName());
+						if(map.containsKey(s.getName())) {
+							map.remove(s.getName()).destroy();
+						}
+						return;
+					}
+					return;
+				}
+				if(ignore.get(DisplayType.SCOREBOARD).contains(s.getName())) {
+					if(!hide.get(DisplayType.SCOREBOARD).contains(s.getName())) {
+						if(!isToggleable(s, DisplayType.SCOREBOARD)) {
+							String name = "Name";
+							String lines = "Lines";
+							if(Loader.sb.exists("PerPlayer."+s.getName())) {
+								name="PerPlayer."+s.getName()+".Name";
+								lines="PerPlayer."+s.getName()+".Lines";
+							}else if(Loader.sb.exists("PerWorld."+s.getWorld().getName())) {
+								name="PerWorld."+s.getWorld().getName()+".Name";
+								lines="PerWorld."+s.getWorld().getName()+".Lines";
+							}
+							score.setTitle(sb.replace(s, Loader.sb.getString(name)));
+							for(String line : Loader.sb.getStringList(lines)) {
+								score.addLine(sb.replace(s, line));
+							}
+							score.send(s);
+							if(msg)
+							Loader.sendMessages(s, "DisplayManager.Scoreboard.Show");
+							return;
+						}
+						hide.get(DisplayType.SCOREBOARD).add(s.getName());
+						if(map.containsKey(s.getName())) {
+							map.remove(s.getName()).destroy();
+						}
+						return;
+					}else {
+						if(!isToggleable(s, DisplayType.SCOREBOARD)) {
+							hide.get(DisplayType.SCOREBOARD).remove(s.getName());
+							String name = "Name";
+							String lines = "Lines";
+							if(Loader.sb.exists("PerPlayer."+s.getName())) {
+								name="PerPlayer."+s.getName()+".Name";
+								lines="PerPlayer."+s.getName()+".Lines";
+							}else if(Loader.sb.exists("PerWorld."+s.getWorld().getName())) {
+								name="PerWorld."+s.getWorld().getName()+".Name";
+								lines="PerWorld."+s.getWorld().getName()+".Lines";
+							}
+							score.setTitle(sb.replace(s, Loader.sb.getString(name)));
+							for(String line : Loader.sb.getStringList(lines)) {
+								score.addLine(sb.replace(s, line));
+							}
+							score.send(s);
+							if(msg)
+							Loader.sendMessages(s, "DisplayManager.Scoreboard.Show");
+							return;
+						}
+						//already gone
+						return;
+					}
+				}else {
+					hide.get(DisplayType.SCOREBOARD).remove(s.getName());
+					String name = "Name";
+					String lines = "Lines";
+					if(Loader.sb.exists("PerPlayer."+s.getName())) {
+						name="PerPlayer."+s.getName()+".Name";
+						lines="PerPlayer."+s.getName()+".Lines";
+					}else if(Loader.sb.exists("PerWorld."+s.getWorld().getName())) {
+						name="PerWorld."+s.getWorld().getName()+".Name";
+						lines="PerWorld."+s.getWorld().getName()+".Lines";
+					}
+					score.setTitle(sb.replace(s, Loader.sb.getString(name)));
+					for(String line : Loader.sb.getStringList(lines)) {
+						score.addLine(sb.replace(s, line));
+					}
+					score.send(s);
+					if(msg)
+					Loader.sendMessages(s, "DisplayManager.Scoreboard.Show");
+					return;
+				}
+				}catch(Exception er) {}
 			}
 			break;
 		}
@@ -215,7 +505,6 @@ public class DisplayManager {
 		}
 		if(Loader.bb.getBoolean("Enabled"))
 		tasks.add(new Tasker() {
-			int cc = 0;
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
 					try {
