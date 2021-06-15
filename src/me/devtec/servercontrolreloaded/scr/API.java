@@ -1,6 +1,5 @@
 package me.devtec.servercontrolreloaded.scr;
 
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -20,9 +19,7 @@ import org.bukkit.World;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.material.Crops;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Openable;
 
@@ -38,7 +35,6 @@ import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.nms.NMSAPI;
-import me.devtec.theapi.utils.reflections.Ref;
 import net.luckperms.api.LuckPermsProvider;
 
 public class API {
@@ -437,20 +433,12 @@ public class API {
 		return false;
 	}
 	
-	private static Method async = Ref.method(Entity.class, "teleportAsync", Location.class);
-
 	public static void teleport(Player s, Position loc) {
-		if(async!=null)
-			Ref.invoke(s, async, loc.toLocation());
-		else
-			s.teleport(loc.toLocation());
+		s.teleport(loc.toLocation());
 	}
 
 	public static void teleport(Player s, Location loc) {
-		if(async!=null)
-			Ref.invoke(s, async, loc);
-		else
-			s.teleport(loc);
+		s.teleport(loc);
 	}
 	
 	//Can be teleport cancelled if plugin not find any safe location!
@@ -487,12 +475,12 @@ public class API {
 	
 	public static Position findSafeLocation(boolean canBeAir, Position start) {
 		Position f = start.clone();
-		double oldDistance = 100;
+		double oldDistance = -1;
 		BlockIterator g = new BlockIterator(start.clone().add(10,10,10),start.clone().add(-10,-10,-10));
 		while(g.has()) {
 			Position a1 = g.get().clone();
 			double distance = start.distanceSquared(a1);
-			if(distance <= oldDistance) {
+			if(distance <= oldDistance || oldDistance < 0) {
 				if(isSafe(canBeAir,a1)) {
 					oldDistance=distance;
 					f=a1;
@@ -504,11 +492,11 @@ public class API {
 				}
 			}
 		}
-		return oldDistance!=100?Position.fromString(("[Position:" + start.getWorldName() + 
-				"/" + (f.getX()+"").split("\\.")[0]+"."+(start.getX()+"").split("\\.")[1] + "/" + 
-				f.getY()+ "/" 
-				+ (f.getZ()+"").split("\\.")[0]+"."+(start.getZ()+"").split("\\.")[1] + "/"
-				+ start.getYaw() + "/" + start.getPitch() + "]").replace(".", ":")):null;
+		return oldDistance!=-1?Position.fromString(("[Position:" + start.getWorldName() + 
+				'/' + (f.getX()+"").split("\\.")[0]+'.'+(start.getX()+"").split("\\.")[1] + '/' + 
+				f.getY()+ '/' 
+				+ (f.getZ()+"").split("\\.")[0]+'.'+(start.getZ()+"").split("\\.")[1] + '/'
+				+ start.getYaw() + '/' + start.getPitch() + "]").replace(".", ":")):null;
 	}
 
 	public static boolean isSafe(boolean air, Position loc) {
@@ -538,10 +526,15 @@ public class API {
 		if(c.contains("LAVA"))return 2;
 		if(!TheAPI.isNewVersion()) {
 			MaterialData d = loc.getType().toItemStack().getData();
-			if(d instanceof Crops||d instanceof org.bukkit.material.NetherWarts)return 1;
+			try {
+				if(d instanceof org.bukkit.material.Crops)return 1;
+			}catch(Exception | NoClassDefFoundError e) {}
 			try {
 				if(d instanceof org.bukkit.material.Sapling)return 1;
-			}catch(NoClassDefFoundError e) {}
+			}catch(Exception | NoClassDefFoundError e) {}
+			try {
+				if(d instanceof org.bukkit.material.NetherWarts)return 1;
+			}catch(Exception | NoClassDefFoundError e) {}
 		}else {
 			BlockData d = loc.getBlock().getBlockData();
 			if(d instanceof Ageable)return 1;
