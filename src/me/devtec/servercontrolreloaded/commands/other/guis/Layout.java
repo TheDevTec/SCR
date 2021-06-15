@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.commands.other.guis.GUICreator.GUIMaker;
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.utils.XMaterial;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.TheAPI.SudoType;
 import me.devtec.theapi.configapi.Config;
@@ -67,9 +67,9 @@ public class Layout {
             }
     	} else if(c.exists(string+".type")){
     		if(c.exists(string+".lore")){
-    			return new ItemBuilder(Material.getMaterial(c.getString(string+".type").toUpperCase()),c.getInt(string+".data"),c.getInt(string+".amount"),c.getString(string+".name"),c.getStringList(string+".lore"), c.getInt(string+".model"));
+    			return new ItemBuilder(XMaterial.matchXMaterial(c.getString(string+".type")),c.getInt(string+".amount"),c.getString(string+".name"),c.getStringList(string+".lore"), c.getInt(string+".model"));
             }else{
-            	return new ItemBuilder(Material.getMaterial(c.getString(string+".type").toUpperCase()),c.getInt(string+".data"),c.getInt(string+".amount"),c.getString(string+".name"),null, c.getInt(string+".model"));
+            	return new ItemBuilder(XMaterial.matchXMaterial(c.getString(string+".type")),c.getInt(string+".amount"),c.getString(string+".name"),null, c.getInt(string+".model"));
            }
         }
 		return null;

@@ -3,11 +3,11 @@ package me.devtec.servercontrolreloaded.commands.other.guis;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.devtec.servercontrolreloaded.utils.XMaterial;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
@@ -15,14 +15,13 @@ import me.devtec.theapi.utils.StringUtils;
 public class ItemBuilder {
 	String name, head;
 	List<String> lore;
-	int model, amount,data;
-	Material type;
-	public ItemBuilder(Material type, int data, int amount, String name, List<String> lore, int model) {
+	int model, amount;
+	XMaterial type;
+	public ItemBuilder(XMaterial type, int amount, String name, List<String> lore, int model) {
 		this.type=type;
 		if(amount<=0)amount=1;
 		this.amount=amount;
 		this.name=name;
-		this.data=data;
 		this.lore=lore;
 		this.model=model;
 	}
@@ -51,9 +50,9 @@ public class ItemBuilder {
 		if(lore!=null) {
 			List<String> copyLore = new ArrayList<>(lore);
 			copyLore.replaceAll(a -> PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(a)));
-			return setModel(ItemCreatorAPI.create(type, amount, name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), copyLore,data),model);
+			return setModel(ItemCreatorAPI.create(type.getMaterial(), amount, name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), copyLore,type.getData()),model);
 		}else {
-			return setModel(ItemCreatorAPI.create(type, amount, name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), null,data),model);
+			return setModel(ItemCreatorAPI.create(type.getMaterial(), amount, name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), null,type.getData()),model);
 		}
 	}
     
