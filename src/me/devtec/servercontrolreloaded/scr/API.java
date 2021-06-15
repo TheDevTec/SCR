@@ -538,7 +538,10 @@ public class API {
 		if(c.contains("LAVA"))return 2;
 		if(!TheAPI.isNewVersion()) {
 			MaterialData d = loc.getType().toItemStack().getData();
-			if(d instanceof Crops||d instanceof org.bukkit.material.Sapling||d instanceof org.bukkit.material.NetherWarts)return 1;
+			if(d instanceof Crops||d instanceof org.bukkit.material.NetherWarts)return 1;
+			try {
+				if(d instanceof org.bukkit.material.Sapling)return 1;
+			}catch(NoClassDefFoundError e) {}
 		}else {
 			BlockData d = loc.getBlock().getBlockData();
 			if(d instanceof Ageable)return 1;

@@ -11,8 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
-import me.devtec.servercontrolreloaded.commands.other.GUICreator;
-import me.devtec.servercontrolreloaded.commands.other.GUICreator.GUIMaker;
+import me.devtec.servercontrolreloaded.commands.other.guis.GUICreator;
+import me.devtec.servercontrolreloaded.commands.other.guis.GUICreator.GUIMaker;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.apis.PluginManagerAPI;
