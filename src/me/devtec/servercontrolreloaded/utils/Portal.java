@@ -28,6 +28,7 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.json.Writer;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Portal {
 	private Position a, b;
@@ -56,19 +57,17 @@ public class Portal {
 		this.cmds=cmds;
 		server=s;
 		this.bcmds=bcmds;
+		if(p==null||p.getParticle()==null)return;
 		if(a.getWorld()!=null && b.getWorld()!=null && a.getWorld().equals(b.getWorld()))
 		for(Position c : new BlockIterator(a, b)) {
-			if(Ref.invoke(c.getIBlockData(),getBlock).equals(air))
+			Object o = Ref.invoke(c.getIBlockData(),getBlock);
+			if(o==null||air.equals(o))
 				blocks.add(c.clone());
 		}
 	}
 	
-	private static Method getBlock = Ref.method(Ref.nmsOrOld("world.level.block.state.BlockBase$BlockData","BlockBase$BlockData")!=null?Ref.nmsOrOld("world.level.block.state.BlockBase$BlockData","BlockBase$BlockData"):Ref.nms("IBlockProperties"),"getMaterial");
-	static {
-		if(getBlock==null)
-			getBlock=Ref.method(Ref.nmsOrOld("world.level.block.state.IBlockData","IBlockData"), "getMaterial");
-	}
-	private static Object air = Ref.getStatic(Ref.nmsOrOld("world.level.material.Material","Material"),TheAPI.isNewerThan(16)?"a":"AIR");
+	private static Method getBlock = Ref.method(Ref.nmsOrOld("world.level.block.state.BlockBase$BlockData","BlockBase$BlockData"),"getBlock");
+	private static Object air = LoaderClass.air;
 	
 	public String getPermission() {
 		return perm;
@@ -234,7 +233,7 @@ public class Portal {
 		if(string.contains("{")&&string.contains("}")) {
 			String particle = string.split("\\{")[0];
 			String[] values = string.split("\\{")[1].split("\\}")[0].split(",");
-			if(particle.equalsIgnoreCase("dust")||particle.equalsIgnoreCase("redstone"))
+			if(particle.equalsIgnoreCase("dust")||particle.equalsIgnoreCase("redstone")||particle.equalsIgnoreCase("dust_color_transition"))
 			return new Particle(particle, values.length>=4? new ParticleData.RedstoneOptions(
 					StringUtils.getFloat(values[0]), StringUtils.getFloat(values[1]), 
 					StringUtils.getFloat(values[2]), StringUtils.getFloat(values[3])):
