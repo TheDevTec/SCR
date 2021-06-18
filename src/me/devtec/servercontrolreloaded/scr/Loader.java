@@ -774,6 +774,7 @@ public class Loader extends JavaPlugin implements Listener {
 		for (World w : Bukkit.getWorlds())
 			w.save();
 		if(reg instanceof ThePlaceholder)((ThePlaceholder)reg).unregister();
+		else
 		if(reg instanceof PlaceholderRegister)((PlaceholderRegister)reg).doUnregister();
 	}
 

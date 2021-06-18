@@ -52,6 +52,7 @@ public class BigTask {
 			}.runRepeating(0, 20);
 			return true;
 		} else {
+			r=0;
 			end();
 			return true;
 		}
@@ -70,6 +71,7 @@ public class BigTask {
 
 	public static void end() {
 		if (r != -1) {
+			if(r!=0)
 			Scheduler.cancelTask(r);
 			r = -1;
 			for (String s : Loader.config.getStringList("Options.WarningSystem."
