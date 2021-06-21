@@ -13,20 +13,14 @@ import org.bukkit.entity.Player;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.guiapi.GUI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 
 public class GUICreator implements CommandExecutor {
-    private static Config c = Loader.guicreator;
 	public static Map<String, GUIMaker> maker = new HashMap<>();
-    
-    static {
-    	for(String a : c.getKeys("GUI"))
-    		maker.put(a, new GUIMaker(a));
-    }
+	private static boolean inicialized;
     
 	public static class GUIMaker {
 		private String gui;
@@ -41,27 +35,27 @@ public class GUICreator implements CommandExecutor {
 	    	gui=a;
 	    	ly=Loader.guicreator.getStringList("GUI."+gui+".layout");
 			load();
-	    	if(c.getBoolean("GUI."+gui+".perplayer"))
+	    	if(Loader.guicreator.getBoolean("GUI."+gui+".perplayer"))
 	    		guis = new ArrayList<>();
 	    	else {
-	    		g = new GUI(PlaceholderAPI.setPlaceholders(null,c.getString("GUI."+gui+".title")),c.getInt("GUI."+gui+".size"));
-		    	l.paste(g, false, ly);
+	    		g = new GUI(PlaceholderAPI.setPlaceholders(null,Loader.guicreator.getString("GUI."+gui+".title")),Loader.guicreator.getInt("GUI."+gui+".size"));
+		    	l.paste(g, null, ly);
 	    	}
-	    	if(c.getInt("GUI."+gui+".update")>0) {
+	    	if(Loader.guicreator.getInt("GUI."+gui+".update")>0) {
 	    		new Tasker() {
 					public void run() {
 						update();
 					}
-				}.runRepeating(c.getInt("GUI."+gui+".update"), c.getInt("GUI."+gui+".update"));
+				}.runRepeating(Loader.guicreator.getInt("GUI."+gui+".update"), Loader.guicreator.getInt("GUI."+gui+".update"));
 	    	}
-	    	if(c.getInt("GUI."+gui+".animation")>0) {
+	    	if(Loader.guicreator.getInt("GUI."+gui+".animation")>0) {
 	    		animated=true;
 				nextAnimation();
 	    		new Tasker() {
 					public void run() {
 						nextAnimation();
 					}
-				}.runRepeating(c.getInt("GUI."+gui+".animation"), c.getInt("GUI."+gui+".animation"));
+				}.runRepeating(Loader.guicreator.getInt("GUI."+gui+".animation"), Loader.guicreator.getInt("GUI."+gui+".animation"));
 	    	}
 	    }
 	    
@@ -76,26 +70,26 @@ public class GUICreator implements CommandExecutor {
 		int current;
 	    public void nextAnimation() {
 	    	++current;
-	    	if(!c.exists("GUI."+gui+".animations."+current))current=0;
+	    	if(!Loader.guicreator.exists("GUI."+gui+".animations."+current))current=0;
 	    	ly=Loader.guicreator.getStringList("GUI."+gui+".animations."+current+".layout");
 	    	if(g!=null) {
-		    	g.setTitle(PlaceholderAPI.setPlaceholders(null,c.getString("GUI."+gui+".animations."+current+".title")));
-		    	l.paste(g, false, ly);
+		    	g.setTitle(PlaceholderAPI.setPlaceholders(null,Loader.guicreator.getString("GUI."+gui+".animations."+current+".title")));
+		    	l.paste(g, null, ly);
 	    	}else {
 	    		for(GUI g : guis) {
 	    			if(g.getPlayers().isEmpty())continue;
-			    	g.setTitle(PlaceholderAPI.setPlaceholders(g.getPlayers().iterator().next(),c.getString("GUI."+gui+".animations."+current+".title")));
-	    			l.paste(g, true, ly);
+			    	g.setTitle(PlaceholderAPI.setPlaceholders(g.getPlayers().iterator().next(),Loader.guicreator.getString("GUI."+gui+".animations."+current+".title")));
+	    			l.paste(g, g.getPlayers().iterator().next(), ly);
 	    		}
 	    	}
 	    }
 	    
 	    public void update() {
 	    	if(g!=null) {
-		    	l.paste(g, false, ly);
+		    	l.paste(g, null, ly);
 	    	}else {
 	    		for(GUI g : guis)
-	    			l.paste(g, true, ly);
+	    			l.paste(g, g.getPlayers().iterator().next(), ly);
 	    	}
 	    }
 	    
@@ -105,18 +99,18 @@ public class GUICreator implements CommandExecutor {
 	    	else {
 	    		GUI g;
 	    		if(animated) {
-			    	g = new GUI(PlaceholderAPI.setPlaceholders(p,c.getString("GUI."+gui+".animations."+current+".title")),c.getInt("GUI."+gui+".size")) {
+			    	g = new GUI(PlaceholderAPI.setPlaceholders(p,Loader.guicreator.getString("GUI."+gui+".animations."+current+".title")),Loader.guicreator.getInt("GUI."+gui+".size")) {
 			    		public void onClose(Player player) {
 			    			guis.remove(this);
 			    		}
 			    	};
 	    		}else
-			    	g = new GUI(PlaceholderAPI.setPlaceholders(p,c.getString("GUI."+gui+".title")),c.getInt("GUI."+gui+".size")) {
+			    	g = new GUI(PlaceholderAPI.setPlaceholders(p,Loader.guicreator.getString("GUI."+gui+".title")),Loader.guicreator.getInt("GUI."+gui+".size")) {
 			    		public void onClose(Player player) {
 			    			guis.remove(this);
 			    		}
 			    	};
-    			l.paste(g, true, ly);
+    			l.paste(g, p, ly);
 		    	guis.add(g);
 		    	return g;
 	    	}
@@ -161,6 +155,11 @@ public class GUICreator implements CommandExecutor {
 	
 
     public GUICreator(long cooldown, boolean globalC, String cmd, String a){
+    	if(!inicialized) {
+    		inicialized=true;
+        	for(String ad : Loader.guicreator.getKeys("GUI"))
+        		maker.put(ad, new GUIMaker(ad));
+    	}
     	this.cooldown=cooldown;
     	this.global=globalC;
     	gui=a;
@@ -169,9 +168,9 @@ public class GUICreator implements CommandExecutor {
 
     public boolean onCommand(CommandSender s, Command uu, String u, String[] args) {
     	if(canUseSimple(s)) {
-    	if(args.length==0||!s.hasPermission("scr.command.gui")) {
+    	if(args.length==0) {
     		if(s instanceof Player == false)return true;
-        	String perm = c.getString("Commands."+cmd+".permission");
+        	String perm = Loader.guicreator.getString("Commands."+cmd+".permission");
         	if(perm!=null)perm=perm.trim();
         	if(perm!=null && perm.equals(""))perm=null;
         	if(perm==null||(perm.startsWith("-")?!s.hasPermission(perm.substring(1)):s.hasPermission(perm)))
