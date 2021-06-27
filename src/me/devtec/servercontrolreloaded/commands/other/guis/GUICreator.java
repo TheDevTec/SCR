@@ -157,6 +157,7 @@ public class GUICreator implements CommandExecutor {
     public GUICreator(long cooldown, boolean globalC, String cmd, String a){
     	if(!inicialized) {
     		inicialized=true;
+    		maker.clear();
         	for(String ad : Loader.guicreator.getKeys("GUI"))
         		maker.put(ad, new GUIMaker(ad));
     	}

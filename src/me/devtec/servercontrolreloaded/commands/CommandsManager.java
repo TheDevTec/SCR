@@ -431,7 +431,7 @@ public class CommandsManager {
 			for(String a : Loader.guicreator.getKeys("Commands")){
 				if(commands.containsKey(a))return;
 				PluginCommand c = TheAPI.createCommand(a,Loader.getInstance);
-				c.setExecutor(new GUICreator(StringUtils.timeFromString(Loader.guicreator.getString("Commands."+a+".cooldown")), Loader.guicreator.getBoolean("Commands."+a+".cooldownGlobal"),a,Loader.guicreator.getString("Commands."+a+".gui")));
+				c.setExecutor(new GUICreator(StringUtils.timeFromString(Loader.guicreator.getString("Commands."+a+".cooldown")), Loader.guicreator.getBoolean("Commands."+a+".cooldownGlobal"),Loader.guicreator.getString("Commands."+a+".gui"),a));
 				c.setAliases(Loader.guicreator.getStringList("Commands."+a+".aliases"));
 				c.setPermission(Loader.guicreator.getString("Commands."+a+".permission"));
 				commands.put("other:"+a,c);
