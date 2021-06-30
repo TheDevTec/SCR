@@ -193,29 +193,29 @@ public class ChatFormat implements Listener {
 	@SuppressWarnings("unchecked")
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void chatFormat(AsyncPlayerChatEvent e) {
-		if(Loader.config.getBoolean("ChatFormat.enabled")) {
-			if (e.isCancelled()) return;
-			Player p = e.getPlayer();
-			ChatFormatter.setupName(p);
-			if (TheAPI.getCooldownAPI(p.getName()).getTimeToExpire("world-create") != -1) {
-				e.setCancelled(true);
-				if (e.getMessage().equalsIgnoreCase("cancel")) {
-					User d = TheAPI.getUser(p);
-					TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
-					d.remove("MultiWorlds-Create");
-					d.remove("MultiWorlds-Generator");
-					d.save();
-					TheAPI.sendTitle(p, "", "&6Cancelled");
-				} else if (TheAPI.getCooldownAPI(p.getName()).expired("world-create")) {
-					TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
-					MultiWorldsGUI.openInvCreate(p);
-				} else {
-					TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
-					TheAPI.getUser(p).setAndSave("MultiWorlds-Create", Colors.remove(e.getMessage()));
-					MultiWorldsGUI.openInvCreate(p);
-				}
-				return;
+		if (e.isCancelled()) return;
+		Player p = e.getPlayer();
+		ChatFormatter.setupName(p);
+		if (TheAPI.getCooldownAPI(p.getName()).getTimeToExpire("world-create") != -1) {
+			e.setCancelled(true);
+			if (e.getMessage().equalsIgnoreCase("cancel")) {
+				User d = TheAPI.getUser(p);
+				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
+				d.remove("MultiWorlds-Create");
+				d.remove("MultiWorlds-Generator");
+				d.save();
+				TheAPI.sendTitle(p, "", "&6Cancelled");
+			} else if (TheAPI.getCooldownAPI(p.getName()).expired("world-create")) {
+				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
+				MultiWorldsGUI.openInvCreate(p);
+			} else {
+				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
+				TheAPI.getUser(p).setAndSave("MultiWorlds-Create", Colors.remove(e.getMessage()));
+				MultiWorldsGUI.openInvCreate(p);
 			}
+			return;
+		}
+		if(Loader.config.getBoolean("ChatFormat.enabled")) {
 			String msg = e.getMessage();
 			if (!p.hasPermission("SCR.Other.Admin")) {
 				if (!p.hasPermission("SCR.Other.RulesBypass")) {
