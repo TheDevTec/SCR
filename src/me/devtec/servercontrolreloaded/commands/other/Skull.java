@@ -4,6 +4,7 @@ import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.servercontrolreloaded.utils.HDBSupport;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.utils.StringUtils;
@@ -44,6 +45,9 @@ public class Skull implements CommandExecutor, TabCompleter {
 			}
 			if (args.length == 1) {
 				if (s instanceof Player) {
+					if(args[0].toLowerCase().startsWith("hdb:"))
+						TheAPI.giveItem((Player) s, HDBSupport.parse(args[0]));
+					else
 					if(args[0].startsWith("https://")||args[0].startsWith("http://"))
 						TheAPI.giveItem((Player) s, ItemCreatorAPI.createHeadByWeb(1, "&7Head from website", args[0]));
 					else
@@ -60,6 +64,9 @@ public class Skull implements CommandExecutor, TabCompleter {
 			if (args.length == 2) {
 				Player p = TheAPI.getPlayer(args[1]);
 				if (p != null) {
+					if(args[0].toLowerCase().startsWith("hdb:"))
+						TheAPI.giveItem(p, HDBSupport.parse(args[0]));
+					else
 					if(args[0].startsWith("https://")||args[0].startsWith("http://"))
 						TheAPI.giveItem(p, ItemCreatorAPI.createHeadByWeb(1, "&7Head from website", args[0]));
 					else

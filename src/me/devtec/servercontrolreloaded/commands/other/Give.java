@@ -21,6 +21,7 @@ import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.servercontrolreloaded.utils.HDBSupport;
 import me.devtec.servercontrolreloaded.utils.XMaterial;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
@@ -31,7 +32,7 @@ public class Give implements CommandExecutor, TabCompleter {
 	List<String> list = new ArrayList<String>();
 	
 	public boolean isAir(Material a) {
-		if (!(a.name().equals("AIR") || a.name().equals("VOID_AIR")
+		if (!(a.name().equals("AIR") || a.name().equals("VOID_AIR") || a.name().equals("CAVE_AIR")
 				|| a.name().equals("STRUCTURE_VOID"))) {
 			return false;
 		}
@@ -429,15 +430,21 @@ public class Give implements CommandExecutor, TabCompleter {
 	}
 
 	private void giveItem(CommandSender sender, Player target, String type, int amount, String nbt) {
-		type = type.toLowerCase().replaceFirst("minecraft:", "").toUpperCase();
+		type = type.toUpperCase();
+		if(type.startsWith("MINECRAFT:"))type=type.substring(10);
 		ItemStack stack;
 		try {
-			if (!type.startsWith("LINGERING_POTION_OF_") && !type.startsWith("SPLASH_POTION_OF_")
-					&& !type.startsWith("POTION_OF_")) {
-				stack = XMaterial.matchXMaterial(type).parseItem(amount);
-			}else {
-				stack = getPotion(type);
+			if(type.startsWith("HDB:")) {
+				stack=HDBSupport.parse(type);
 				stack.setAmount(amount);
+			}else {
+				if (!type.startsWith("LINGERING_POTION_OF_") && !type.startsWith("SPLASH_POTION_OF_")
+						&& !type.startsWith("POTION_OF_")) {
+					stack = XMaterial.matchXMaterial(type).parseItem(amount);
+				}else {
+					stack = getPotion(type);
+					stack.setAmount(amount);
+				}
 			}
 		}catch(Exception err) {
 			Loader.sendMessages(sender, "Missing.Material", Placeholder.c().add("%material%", type));

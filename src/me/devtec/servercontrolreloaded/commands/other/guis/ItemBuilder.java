@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.devtec.servercontrolreloaded.utils.HDBSupport;
 import me.devtec.theapi.apis.EnchantmentAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
@@ -70,10 +71,21 @@ public class ItemBuilder {
 				copyLore.replaceAll(a -> PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(a)));
 				String text = PlaceholderAPI.setPlaceholders(owner, head);
 				if(text==null||text.trim().isEmpty())text=head;
-				if(text.length()<=16)
-					return ItemCreatorAPI.createHead(amount, name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)),text, copyLore);
+				if(text.toLowerCase().startsWith("hdb:")) {
+					ItemStack stack = HDBSupport.parse(text==null?null:PlaceholderAPI.setPlaceholders(owner, text));
+					ItemMeta meta = stack.getItemMeta();
+					if(name!=null)
+					meta.setDisplayName(PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)));
+					if(!copyLore.isEmpty())
+						meta.setLore(copyLore);
+					stack.setItemMeta(meta);
+					stack.setAmount(amount);
+					return stack;
+				}else
 				if(text.startsWith("http://")||text.startsWith("https://"))
 					return ItemCreatorAPI.createHeadByWeb(amount, name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), copyLore, text);
+				if(text.length()<=16)
+					return ItemCreatorAPI.createHead(amount, name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)),text, copyLore);
 				return ItemCreatorAPI.createHeadByValues(amount, name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), copyLore, text);
 			}else {
 				String text = PlaceholderAPI.setPlaceholders(owner, head);

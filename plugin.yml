@@ -6,5 +6,5 @@ description: Fully customizable plugin with many features!
 author: DevTec
 depend: [TheAPI]
 loadbefore: [Paintball,WorldGuard,Residence,MobArena,SpecializedCrates,GoldenCrates,RevoltCrates,AdvancedMonthlyCrates,CrazyCrates,CrateReloaded]
-softdepend: [Essentials,WorldEdit,LuckPerms]
+softdepend: [HeadDatabase,Essentials,WorldEdit,LuckPerms]
 api-version: 1.13
