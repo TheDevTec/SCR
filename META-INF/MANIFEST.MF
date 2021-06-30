@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: F:\Intellij project\ServerControlReloaded\bin\me\devtec\serv
+ ercontrolreloaded\scr\Loader.class
+

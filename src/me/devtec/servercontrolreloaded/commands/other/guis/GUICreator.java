@@ -170,7 +170,7 @@ public class GUICreator implements CommandExecutor {
     public boolean onCommand(CommandSender s, Command uu, String u, String[] args) {
     	if(canUseSimple(s)) {
     	if(args.length==0) {
-    		if(s instanceof Player == false)return true;
+    		if(!(s instanceof Player))return true;
         	String perm = Loader.guicreator.getString("Commands."+cmd+".permission");
         	if(perm!=null)perm=perm.trim();
         	if(perm!=null && perm.equals(""))perm=null;

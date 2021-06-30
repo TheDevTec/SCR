@@ -77,7 +77,9 @@ public class LoginEvent implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void JoinEvent(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
-		ChatFormatter.setupName(p);
+		if(Loader.config.getBoolean("ChatFormat.enabled")) {
+			ChatFormatter.setupName(p);
+		}
 		if (setting.lock_server && !Loader.has(p, "Other", "Maintenance", "Bypass")) {
 			e.disallow(Result.KICK_OTHER, TheAPI.colorize(StringUtils.join(Loader.config.getStringList("Options.Maintenance.KickMessages"), "\n").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())));
 			return;

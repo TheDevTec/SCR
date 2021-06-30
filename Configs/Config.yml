@@ -320,6 +320,7 @@ Format:
   HelpOp: "&0[&4HelpOp&0] &7%sender%&7: &c%message%"
     
 ChatFormat:
+  enabled: true
   global:
     options:
       enabled: true

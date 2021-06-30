@@ -191,7 +191,9 @@ public class Tasks {
 			@Override
 			public void run() {
 				for (Player p : TheAPI.getOnlinePlayers())
-					ChatFormatter.setupName(p);
+					if(Loader.config.getBoolean("ChatFormat.enabled")) {
+						ChatFormatter.setupName(p);
+					}
 			}
 		}.runRepeating(0, 20));
 	}

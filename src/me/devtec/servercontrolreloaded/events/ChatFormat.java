@@ -38,8 +38,6 @@ import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class ChatFormat implements Listener {
-	static Loader plugin = Loader.getInstance;
-	static Pattern colorPattern = Pattern.compile("[XxA-Fa-fUu0-9]");
 
 	@SuppressWarnings("unchecked")
 	public static Collection<?> colorizeList(Collection<?> json, Player p, String msg,boolean colors) {
@@ -54,7 +52,7 @@ public class ChatFormat implements Listener {
 				continue;
 			}
 			if (e instanceof String) {
-				colorized.add(r(p,(String)e,msg, true,colors));
+				colorized.add(r(p,e,msg, true,colors));
 				continue;
 			}
 			colorized.add(e);
@@ -195,202 +193,204 @@ public class ChatFormat implements Listener {
 	@SuppressWarnings("unchecked")
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void chatFormat(AsyncPlayerChatEvent e) {
-		if(e.isCancelled())return;
-		Player p = e.getPlayer();
-		ChatFormatter.setupName(p);
-		if (TheAPI.getCooldownAPI(p.getName()).getTimeToExpire("world-create") != -1) {
-			e.setCancelled(true);
-			if (e.getMessage().toLowerCase().equals("cancel")) {
-				User d = TheAPI.getUser(p);
-				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
-				d.remove("MultiWorlds-Create");
-				d.remove("MultiWorlds-Generator");
-				d.save();
-				TheAPI.sendTitle(p,"", "&6Cancelled");
-			}else
-			if (TheAPI.getCooldownAPI(p.getName()).expired("world-create")) {
-				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
-				MultiWorldsGUI.openInvCreate(p);
-			} else {
-				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
-				TheAPI.getUser(p).setAndSave("MultiWorlds-Create", Colors.remove(e.getMessage()));
-				MultiWorldsGUI.openInvCreate(p);
-			}
-			return;
-		}
-		String msg = e.getMessage();
-		if (!p.hasPermission("SCR.Other.Admin")) {
-			if (!p.hasPermission("SCR.Other.RulesBypass")) {
-		for (Rule rule : Loader.rules) {
-			if(!Loader.events.getStringList("onChat.Rules").contains(rule.getName()))continue;
-			msg = rule.apply(msg);
-			if (msg == null) break;
-		}
-		if (msg == null) {
-			e.setCancelled(true);
-			return;
-		}}
-		String message = msg;
-		String d = ""; // anti doubled letters
-		int up = 0; // anti caps
-		if (setting.spam_double) {
-			if (message.split(" ").length == 0) {
-				if (!is(message)) {
-					up = up + count(message);
-					String removed = removeDoubled(message);
-					d +=" " + (message.length() - removed.length() >= 5 ? removed : message);
-				} else
-					d +=" " + message;
-			} else
-				for (String s : message.split(" ")) {
-					if (!is(s)) {
-						up = up + count(s);
-						String removed = removeDoubled(message);
-						d = d + " " + (message.length() - removed.length() >= 5 ? removed : s);
-					} else
-						d = d + " " + s;
+		if(Loader.config.getBoolean("ChatFormat.enabled")) {
+			if (e.isCancelled()) return;
+			Player p = e.getPlayer();
+			ChatFormatter.setupName(p);
+			if (TheAPI.getCooldownAPI(p.getName()).getTimeToExpire("world-create") != -1) {
+				e.setCancelled(true);
+				if (e.getMessage().equalsIgnoreCase("cancel")) {
+					User d = TheAPI.getUser(p);
+					TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
+					d.remove("MultiWorlds-Create");
+					d.remove("MultiWorlds-Generator");
+					d.save();
+					TheAPI.sendTitle(p, "", "&6Cancelled");
+				} else if (TheAPI.getCooldownAPI(p.getName()).expired("world-create")) {
+					TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
+					MultiWorldsGUI.openInvCreate(p);
+				} else {
+					TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
+					TheAPI.getUser(p).setAndSave("MultiWorlds-Create", Colors.remove(e.getMessage()));
+					MultiWorldsGUI.openInvCreate(p);
 				}
-			d = d.replaceFirst(" ", "");
-		} else
-			d = message;
-		String build = d;
-		if (setting.caps_chat && !p.hasPermission("SCR.Other.Caps")) {
-			if (up != 0 && up / ((double) d.length() / 100) >= 60 && d.length() > 5) {
-				build = "";
-				if (d.split(" ").length == 0) {
-					if (!is(d)) {
-						build = build + " " + d.toLowerCase();
-					} else
-						build = build + " " + d;
-				} else
-					for (String s : d.split(" ")) {
-						if (!is(s)) {
-							build = build + " " + s.toLowerCase();
-						} else
-							build = build + " " + s;
-					}
-				build = build.replaceFirst(" ", "");
+				return;
 			}
-		}
-		message = build;
-		if (Loader.config.getBoolean("SpamWords.SimiliarMessage") && !p.hasPermission("SCR.Other.SimiliarMessage"))
-			if (isSim(p, message)) {
+			String msg = e.getMessage();
+			if (!p.hasPermission("SCR.Other.Admin")) {
+				if (!p.hasPermission("SCR.Other.RulesBypass")) {
+					for (Rule rule : Loader.rules) {
+						if (!Loader.events.getStringList("onChat.Rules").contains(rule.getName())) continue;
+						msg = rule.apply(msg);
+						if (msg == null) break;
+					}
+					if (msg == null) {
+						e.setCancelled(true);
+						return;
+					}
+				}
+				String message = msg;
+				String d = ""; // anti doubled letters
+				int up = 0; // anti caps
+				if (setting.spam_double) {
+					if (message.split(" ").length == 0) {
+						if (!is(message)) {
+							up = up + count(message);
+							String removed = removeDoubled(message);
+							d += " " + (message.length() - removed.length() >= 5 ? removed : message);
+						} else
+							d += " " + message;
+					} else
+						for (String s : message.split(" ")) {
+							if (!is(s)) {
+								up = up + count(s);
+								String removed = removeDoubled(message);
+								d = d + " " + (message.length() - removed.length() >= 5 ? removed : s);
+							} else
+								d = d + " " + s;
+						}
+					d = d.replaceFirst(" ", "");
+				} else
+					d = message;
+				String build = d;
+				if (setting.caps_chat && !p.hasPermission("SCR.Other.Caps")) {
+					if (up != 0 && up / ((double) d.length() / 100) >= 60 && d.length() > 5) {
+						build = "";
+						if (d.split(" ").length == 0) {
+							if (!is(d)) {
+								build = build + " " + d.toLowerCase();
+							} else
+								build = build + " " + d;
+						} else
+							for (String s : d.split(" ")) {
+								if (!is(s)) {
+									build = build + " " + s.toLowerCase();
+								} else
+									build = build + " " + s;
+							}
+						build = build.replaceFirst(" ", "");
+					}
+				}
+				message = build;
+				if (Loader.config.getBoolean("SpamWords.SimiliarMessage") && !p.hasPermission("SCR.Other.SimiliarMessage"))
+					if (isSim(p, message)) {
+						e.setCancelled(true);
+						return;
+					}
+				msg = message;
+			}
+			if (PrivateMessageManager.hasChatLock(p)) {
+				if (PrivateMessageManager.getLockType(p).equalsIgnoreCase("msg")) {
+					PrivateMessageManager.reply(p, msg);
+					String r = PrivateMessageManager.getReply(p);
+					PrivateMessageManager.setReply(r.equalsIgnoreCase("console") ? TheAPI.getConsole() : TheAPI.getPlayerOrNull(r), p.getName());
+				} else if (PrivateMessageManager.getLockType(p).equalsIgnoreCase("helpop")) {
+					TheAPI.broadcast(Loader.config.getString("Format.HelpOp").replace("%sender%", p.getName())
+							.replace("%sendername%", TheAPI.getPlayerOrNull(p.getName()) != null ? TheAPI.getPlayerOrNull(p.getName()).getDisplayName() : p.getName()).replace("%message%", msg), Loader.cmds.getString("Message.Helpop.SubPermission.Receive"));
+					if (!Loader.has(p, "Helpop", "Message", "Receive"))
+						TheAPI.msg(Loader.config.getString("Format.HelpOp").replace("%sender%", p.getName()).replace("%sendername%", TheAPI.getPlayerOrNull(p.getName()) != null ? TheAPI.getPlayerOrNull(p.getName()).getDisplayName() : p.getName()).replace("%message%", msg), p);
+				}
 				e.setCancelled(true);
 				return;
 			}
-		msg=message;
-		}
-		if(PrivateMessageManager.hasChatLock(p)) {
-			if(PrivateMessageManager.getLockType(p).equalsIgnoreCase("msg")) {
-				PrivateMessageManager.reply(p, msg);
-				String r = PrivateMessageManager.getReply(p);
-				PrivateMessageManager.setReply(r.equalsIgnoreCase("console")?TheAPI.getConsole():TheAPI.getPlayerOrNull(r), p.getName());
-			}else
-			if(PrivateMessageManager.getLockType(p).equalsIgnoreCase("helpop")) {
-				TheAPI.broadcast(Loader.config.getString("Format.HelpOp").replace("%sender%", p.getName())
-						.replace("%sendername%", TheAPI.getPlayerOrNull(p.getName())!=null?TheAPI.getPlayerOrNull(p.getName()).getDisplayName():p.getName()).replace("%message%", msg), Loader.cmds.getString("Message.Helpop.SubPermission.Receive"));
-				if (!Loader.has(p, "Helpop", "Message", "Receive"))
-					TheAPI.msg(Loader.config.getString("Format.HelpOp").replace("%sender%", p.getName()).replace("%sendername%", TheAPI.getPlayerOrNull(p.getName())!=null?TheAPI.getPlayerOrNull(p.getName()).getDisplayName():p.getName()).replace("%message%", msg), p);
+			if (setting.lock_chat && !Loader.has(p, "ChatLock", "Other")) {
+				e.setCancelled(true);
+				Loader.sendMessages(p, "ChatLock.IsLocked");
+				Loader.sendBroadcasts(p, "ChatLock.Message", Placeholder.c().add("%player%", p.getName())
+						.add("%playername%", p.getDisplayName()).add("%message%", msg), Loader.getPerm("ChatLock", "Other"));
+				if (msg != null)
+					e.setMessage(r(msg, p));
+				return;
 			}
-			e.setCancelled(true);
-			return;
-		}
-		if (setting.lock_chat && !Loader.has(p, "ChatLock", "Other")) {
-			e.setCancelled(true);
-			Loader.sendMessages(p, "ChatLock.IsLocked");
-			Loader.sendBroadcasts(p, "ChatLock.Message", Placeholder.c().add("%player%", p.getName())
-					.add("%playername%", p.getDisplayName()).add("%message%", msg), Loader.getPerm("ChatLock", "Other"));
-			if(msg!=null)
-			e.setMessage(r(msg, p));
-			return;
-		}
-		Iterator<Player> a = e.getRecipients().iterator();
-		String ty = Loader.config.getString("Options.Chat.Type");
-		double distance = Loader.config.getDouble("Options.Chat.Distance");
-		while(a.hasNext()) {
-			Player s = a.next();
-			if(s.equals(p))continue;
-			if(PrivateMessageManager.getIgnoreList(s.getName()).contains(p.getName())) {
-				a.remove();
-				continue;
-			}
-			if(s.hasPermission("SCR.Other.ChatTypeBypass"))continue;
-			if(ty.equalsIgnoreCase("per_world")
-					||ty.equalsIgnoreCase("aperworld")||
-					ty.equalsIgnoreCase("world")) {
-					if(!p.getWorld().equals(s.getWorld())) {
+			Iterator<Player> a = e.getRecipients().iterator();
+			String ty = Loader.config.getString("Options.Chat.Type");
+			double distance = Loader.config.getDouble("Options.Chat.Distance");
+			while (a.hasNext()) {
+				Player s = a.next();
+				if (s.equals(p)) continue;
+				if (PrivateMessageManager.getIgnoreList(s.getName()).contains(p.getName())) {
+					a.remove();
+					continue;
+				}
+				if (s.hasPermission("SCR.Other.ChatTypeBypass")) continue;
+				if (ty.equalsIgnoreCase("per_world")
+						|| ty.equalsIgnoreCase("aperworld") ||
+						ty.equalsIgnoreCase("world")) {
+					if (!p.getWorld().equals(s.getWorld())) {
 						a.remove();
 						continue;
-				}
-			}
-			if(ty.equalsIgnoreCase("per_distance")
-					||ty.equalsIgnoreCase("distance")) {
-					if(!p.getWorld().equals(s.getWorld())) {
-						a.remove();
-						continue;
-				}
-					else if(p.getLocation().distance(s.getLocation())>distance) {
-						a.remove();
-						continue;
-				}
-			}
-		}
-		Object[] format = ChatFormatter.getChatFormat(p, 1);
-		String colorOfFormat = getColorOf(ChatFormat.r(p, format[0], null, (format[0] instanceof Map || format[0] instanceof List) && ChatFormatter.getStatus(p, (int)format[1], "json"), false));
-		if(Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
-			Sound sound = null;
-			String[] title = {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
-			String actionbar = Loader.config.getString("Options.ChatNotification.ActionBar").replace("%target%", p.getName()).replace("%targetname%", ChatFormatter.displayName(p)).replace("%targetcustomname%", ChatFormatter.customName(p));
-			String color = Loader.config.getString("Options.ChatNotification.Color");
-			try {
-				sound = Sound.valueOf(Loader.config.getString("Options.ChatNotification.Sound").toUpperCase());
-			}catch(Exception | NoSuchFieldError err) {}
-			for(Player s : e.getRecipients())
-				if(p.canSee(s) && p!=s && msg.contains(s.getName())) {
-					msg=replacePlayer(color, colorOfFormat, msg, s.getName(), p);
-					if(ChatFormatter.getNotify(s)) {
-					if(sound!=null)
-						s.playSound(s.getLocation(), sound, 1,1);
-					if(!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
-						TheAPI.sendTitle(s, title[0].trim().isEmpty()?"":TabList.replace(title[0], s, true), title[1].trim().isEmpty()?"":TabList.replace(title[1], s, true));
-					if(!actionbar.trim().isEmpty())TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
 					}
 				}
-		}
-		if(msg!=null) {
-			String ff = r(msg,p);
-			e.setMessage(ff);
-			Object formatt = ChatFormatter.chat(p, ff);
-			if (formatt != null) {
-				if(formatt instanceof String)
-					e.setFormat(((String)formatt).replace("%", "%%"));
-				else
-				if (formatt instanceof Map || formatt instanceof Collection) {
-					List<Map<String,Object>> o = new ArrayList<>();
-					if(formatt instanceof Map) {
-						o.add((Map<String, Object>) formatt);
-						formatt=o;
-					}else {
-						for(Object w : ((Collection<Object>)formatt)) {
-							if(w instanceof String)w=Reader.read((String)w);
-							if(w instanceof Map) {
-								o.add((Map<String, Object>) w);
-							}else {
-								Map<String, Object> g = new HashMap<>();
-								g.put("text", w+"");
-								o.add(g);
-							}
+				if (ty.equalsIgnoreCase("per_distance")
+						|| ty.equalsIgnoreCase("distance")) {
+					if (!p.getWorld().equals(s.getWorld())) {
+						a.remove();
+						continue;
+					} else if (p.getLocation().distance(s.getLocation()) > distance) {
+						a.remove();
+						continue;
+					}
+				}
+			}
+
+			if (Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
+				Object[] format = ChatFormatter.getChatFormat(p, 1);
+				String colorOfFormat = getColorOf(ChatFormat.r(p, format[0], msg, (format[0] instanceof Map || format[0] instanceof List) && ChatFormatter.getStatus(p, (int) format[1], "json"), false));
+				Sound sound = Sound.ENTITY_PLAYER_LEVELUP;
+				String[] title = {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
+				String actionbar = Loader.config.getString("Options.ChatNotification.ActionBar").replace("%target%", p.getName()).replace("%targetname%", ChatFormatter.displayName(p)).replace("%targetcustomname%", ChatFormatter.customName(p));
+				String color = Loader.config.getString("Options.ChatNotification.Color");
+				try {
+					sound = Sound.valueOf(Loader.config.getString("Options.ChatNotification.Sound").toUpperCase());
+				} catch (Exception | NoSuchFieldError err) {
+				}
+				for (Player s : e.getRecipients())
+					if (p.canSee(s) && p != s && msg.contains(s.getName())) {
+						msg = replacePlayer(color, colorOfFormat, msg, s.getName(), p);
+						if (ChatFormatter.getNotify(s)) {
+							if (sound != null)
+								s.playSound(s.getLocation(), sound, 1, 1);
+							if (!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
+								TheAPI.sendTitle(s, title[0].trim().isEmpty() ? "" : TabList.replace(title[0], s, true), title[1].trim().isEmpty() ? "" : TabList.replace(title[1], s, true));
+							if (!actionbar.trim().isEmpty())
+								TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
 						}
-						formatt=o;
 					}
-					List<Map<String,Object>> list = ChatMessage.fixListMap((List<Map<String,Object>>)formatt);
-					e.setFormat(convertToLegacy(list).replace("%", "%%"));
-					if(!e.isCancelled())
-					Ref.sendPacket(e.getRecipients(), NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write(list))));
-					e.getRecipients().clear(); //for our custom chat
-				}
 			}
-		}else e.setCancelled(true);
+			if (msg != null) {
+				String ff = r(msg, p);
+				e.setMessage(ff);
+				Object formatt = ChatFormatter.chat(p, ff);
+				if (formatt != null) {
+					if (formatt instanceof String)
+						e.setFormat(((String) formatt).replace("%", "%%"));
+					else if (formatt instanceof Map || formatt instanceof Collection) {
+						List<Map<String, Object>> o = new ArrayList<>();
+						if (formatt instanceof Map) {
+							o.add((Map<String, Object>) formatt);
+							formatt = o;
+						} else {
+							for (Object w : ((Collection<Object>) formatt)) {
+								if (w instanceof String) w = Reader.read((String) w);
+								if (w instanceof Map) {
+									o.add((Map<String, Object>) w);
+								} else {
+									Map<String, Object> g = new HashMap<>();
+									g.put("text", w + "");
+									o.add(g);
+								}
+							}
+							formatt = o;
+						}
+						List<Map<String, Object>> list = ChatMessage.fixListMap((List<Map<String, Object>>) formatt);
+						e.setFormat(convertToLegacy(list).replace("%", "%%"));
+						if (!e.isCancelled())
+							Ref.sendPacket(e.getRecipients(), NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write(list))));
+						e.getRecipients().clear(); //for our custom chat
+					}
+				}
+			} else e.setCancelled(true);
+		}
 	}
 	
 	String replacePlayer(String color, String format, String msg, String player, Player p) {
