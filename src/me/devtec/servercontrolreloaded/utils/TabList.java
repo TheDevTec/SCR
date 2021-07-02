@@ -316,21 +316,18 @@ public class TabList {
 	}
 	
 	static Statistic st;
-	static long del=60, addOrRemove=1;
 	
 	static {
 		try {
 			st=Statistic.valueOf("PLAY_ONE_MINUTE");
 		}catch(Exception|NoSuchFieldError er) {
 			st=Statistic.valueOf("PLAY_ONE_TICK");
-			addOrRemove=0;
-			del=20;
 		}
 	}
 	
 	public static long playtime(Player s) {
 		if(s==null)return -1;
-		return addOrRemove==0?s.getStatistic(st)*del:s.getStatistic(st)/del;
+		return s.getStatistic(st)/20;
 	}
 	
 	public static Object empty = NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentText(""),NMSAPI.getIChatBaseComponentText(""));
