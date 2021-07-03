@@ -60,9 +60,9 @@ public class Layout {
     private ItemBuilder createItem(String string) {
     	if(Loader.guicreator.exists(string+".head")){
     		if(Loader.guicreator.exists(string+".lore")){
-    			return new ItemBuilder(Loader.guicreator.getString(string+".name"),Loader.guicreator.getInt(string+".amount"),Loader.guicreator.getStringList(string+".lore"),Loader.guicreator.getString(string+".head"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
+    			return new ItemBuilder(Loader.guicreator.getString(string+".name"),Loader.guicreator.getString(string+".amount"),Loader.guicreator.getStringList(string+".lore"),Loader.guicreator.getString(string+".head"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
             }else{
-            	return new ItemBuilder(Loader.guicreator.getString(string+".name"),Loader.guicreator.getInt(string+".amount"),null,Loader.guicreator.getString(string+".head"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
+            	return new ItemBuilder(Loader.guicreator.getString(string+".name"),Loader.guicreator.getString(string+".amount"),null,Loader.guicreator.getString(string+".head"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
             }
     	} else if(Loader.guicreator.exists(string+".type")){
     		Material d = Material.getMaterial(Loader.guicreator.getString(string+".type").toUpperCase());
@@ -71,9 +71,9 @@ public class Layout {
     			Validator.validate(true, "Material named '"+Loader.guicreator.getString(string+".type")+"' doesn't exist");
     		}
     		if(Loader.guicreator.exists(string+".lore")){
-    			return new ItemBuilder(d,Loader.guicreator.getInt(string+".data"),Loader.guicreator.getInt(string+".amount"),Loader.guicreator.getString(string+".name"),Loader.guicreator.getStringList(string+".lore"), Loader.guicreator.getInt(string+".model"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
+    			return new ItemBuilder(d,Loader.guicreator.getString(string+".data"),Loader.guicreator.getString(string+".amount"),Loader.guicreator.getString(string+".name"),Loader.guicreator.getStringList(string+".lore"), Loader.guicreator.getString(string+".model"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
             }else{
-            	return new ItemBuilder(d,Loader.guicreator.getInt(string+".data"),Loader.guicreator.getInt(string+".amount"),Loader.guicreator.getString(string+".name"),null, Loader.guicreator.getInt(string+".model"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
+            	return new ItemBuilder(d,Loader.guicreator.getString(string+".data"),Loader.guicreator.getString(string+".amount"),Loader.guicreator.getString(string+".name"),null, Loader.guicreator.getString(string+".model"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
            }
         }
 		return null;
