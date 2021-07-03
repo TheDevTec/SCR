@@ -77,33 +77,37 @@ public class ItemBuilder {
 					if(!copyLore.isEmpty())
 						meta.setLore(copyLore);
 					stack.setItemMeta(meta);
-					stack.setAmount(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount)));
+					stack.setAmount(fix(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount))));
 					return stack;
 				}else
 				if(text.startsWith("http://")||text.startsWith("https://"))
-					return ItemCreatorAPI.createHeadByWeb(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount)), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), copyLore, text);
+					return ItemCreatorAPI.createHeadByWeb(fix(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount))), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), copyLore, text);
 				if(text.length()<=16)
-					return ItemCreatorAPI.createHead(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount)), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)),text, copyLore);
-				return ItemCreatorAPI.createHeadByValues(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount)), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), copyLore, text);
+					return ItemCreatorAPI.createHead(fix(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount))), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)),text, copyLore);
+				return ItemCreatorAPI.createHeadByValues(fix(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount))), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), copyLore, text);
 			}else {
 				String text = PlaceholderAPI.setPlaceholders(owner, head);
 				if(text==null||text.trim().isEmpty())text=head;
 				if(text.length()<=16)
-					return ItemCreatorAPI.createHead(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount)), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)),text);
+					return ItemCreatorAPI.createHead(fix(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount))), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)),text);
 				if(text.startsWith("http://")||text.startsWith("https://"))
-					return ItemCreatorAPI.createHeadByWeb(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount)), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), text);
-				return ItemCreatorAPI.createHeadByValues(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount)), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), text);
+					return ItemCreatorAPI.createHeadByWeb(fix(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount))), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), text);
+				return ItemCreatorAPI.createHeadByValues(fix(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount))), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), text);
 			}
 		}else
 		if(lore!=null) {
 			List<String> copyLore = new ArrayList<>(lore);
 			copyLore.replaceAll(a -> PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(a)));
-			return setModel(ItemCreatorAPI.create(type, StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount)), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), copyLore,StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, data))),StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, model)));
+			return setModel(ItemCreatorAPI.create(type, fix(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount))), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), copyLore,StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, data))),StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, model)));
 		}else {
-			return setModel(ItemCreatorAPI.create(type, StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount)), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), null,StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, data))),StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, model)));
+			return setModel(ItemCreatorAPI.create(type, fix(StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, amount))), name==null?null:PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)), null,StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, data))),StringUtils.getInt(PlaceholderAPI.setPlaceholders(owner, model)));
 		}
 	}
     
+	private static int fix(int i) {
+		return i <= 0 ? 1 : i;
+	}
+	
 	public static ItemStack setModel(ItemStack s, int model) {
 		if(model==0)return s;
 		try {
