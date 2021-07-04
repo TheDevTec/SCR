@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.reflections.Ref;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -21,6 +23,8 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.json.Reader;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
+
+import javax.swing.plaf.TableHeaderUI;
 
 public class Kit {
 	private List<ItemStack> a;
@@ -185,7 +189,7 @@ public class Kit {
 				else
 				e.set(a.getKey(), a.getValue());
 			}
-			NMSAPI.setNBT(create,e);
+			create=NMSAPI.setNBT(create,e);
 		}
 		return create;
 	}

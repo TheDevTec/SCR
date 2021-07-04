@@ -1,11 +1,16 @@
 package me.devtec.servercontrolreloaded.events;
 
 import java.util.Collection;
+import java.util.List;
 
+import me.devtec.servercontrolreloaded.utils.Kit;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.reflections.Ref;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,6 +20,7 @@ import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.json.Reader;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
+import sun.nio.cs.ext.MS874;
 
 public class ItemUse implements Listener {
 	public static int COLLECTION = 1;
@@ -22,25 +28,29 @@ public class ItemUse implements Listener {
 	@SuppressWarnings("unchecked")
 	@EventHandler
 	public void onUse(PlayerInteractEvent e) {
-		if(!e.getAction().name().contains("RIGHT"))return;
-		if(e.getItem()!=null && e.getItem().getType()!=Material.AIR) {
-			Object has = getActions(e.getItem(), "process", 0);
-			if(has==null||has.toString().trim().isEmpty())return;
-			e.setCancelled(true);
-			if(!canUse(e.getItem()))return;
-			Collection<String> c = (Collection<String>)getActions(e.getItem(), "process.msg", COLLECTION);
-			if(c!=null)for(String f : c)
-				TheAPI.msg(PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
-						.replace("%whoused%", e.getPlayer().getName())), e.getPlayer());
-			c = (Collection<String>)getActions(e.getItem(), "process.console.cmd", COLLECTION);
-			if(c!=null)for(String f : c)
-				TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
-						.replace("%whoused%", e.getPlayer().getName())));
-			c = (Collection<String>)getActions(e.getItem(), "process.player.cmd", COLLECTION);
-			if(c!=null)for(String f : c)
-				TheAPI.sudo(e.getPlayer(), SudoType.COMMAND, PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
-						.replace("%whoused%", e.getPlayer().getName())));
-			doUse(e.getPlayer(), e.getItem());
+		if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)||e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+			if (e.getItem() != null && e.getItem().getType() != Material.AIR) {
+				Object has = getActions(e.getItem(), "process", 0);
+    			if(has==null||has.toString().trim().isEmpty())return;
+				e.setCancelled(true);
+				if (!canUse(e.getItem())) return;
+				Collection<String> c = (Collection<String>) getActions(e.getItem(), "process.msg", COLLECTION);
+				TheAPI.bcMsg(c);
+				if (c != null) for (String f : c)
+					TheAPI.msg(PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
+							.replace("%whoused%", e.getPlayer().getName())), e.getPlayer());
+				c = (Collection<String>) getActions(e.getItem(), "process.console.cmd", COLLECTION);
+				TheAPI.bcMsg(c);
+				if (c != null) for (String f : c)
+					TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
+							.replace("%whoused%", e.getPlayer().getName())));
+				c = (Collection<String>) getActions(e.getItem(), "process.player.cmd", COLLECTION);
+				TheAPI.bcMsg(c);
+				if (c != null) for (String f : c)
+					TheAPI.sudo(e.getPlayer(), SudoType.COMMAND, PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
+							.replace("%whoused%", e.getPlayer().getName())));
+				doUse(e.getPlayer(), e.getItem());
+			}
 		}
 	}
 	
@@ -77,7 +87,7 @@ public class ItemUse implements Listener {
 		String val = new NBTEdit(item).getString(path);
 		if(val==null)return null;
 		Object o = Reader.read(val);
-		if(type==1 && o instanceof Collection == false)return null;
+		if(type==1 && !(o instanceof Collection))return null;
 		return o;
 	}
 }
