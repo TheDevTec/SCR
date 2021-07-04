@@ -154,7 +154,7 @@ public class GUICreator implements CommandExecutor {
 	}
 	
 
-    public GUICreator(long cooldown, boolean globalC, String cmd, String a){
+    public GUICreator(long cooldown, boolean globalC, String cmd, String guiname){
     	if(!inicialized) {
     		inicialized=true;
     		maker.clear();
@@ -163,7 +163,7 @@ public class GUICreator implements CommandExecutor {
     	}
     	this.cooldown=cooldown;
     	this.global=globalC;
-    	gui=a;
+    	gui=guiname;
     	this.cmd=cmd;
     }
 
