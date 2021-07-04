@@ -30,17 +30,14 @@ public class ItemUse implements Listener {
 				e.setCancelled(true);
 				if (!canUse(e.getItem())) return;
 				Collection<String> c = (Collection<String>) getActions(e.getItem(), "process.msg", COLLECTION);
-				TheAPI.bcMsg(c);
 				if (c != null) for (String f : c)
 					TheAPI.msg(PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
 							.replace("%whoused%", e.getPlayer().getName())), e.getPlayer());
 				c = (Collection<String>) getActions(e.getItem(), "process.console.cmd", COLLECTION);
-				TheAPI.bcMsg(c);
 				if (c != null) for (String f : c)
 					TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
 							.replace("%whoused%", e.getPlayer().getName())));
 				c = (Collection<String>) getActions(e.getItem(), "process.player.cmd", COLLECTION);
-				TheAPI.bcMsg(c);
 				if (c != null) for (String f : c)
 					TheAPI.sudo(e.getPlayer(), SudoType.COMMAND, PlaceholderAPI.setPlaceholders(e.getPlayer(), f.replace("%player%", e.getPlayer().getName())
 							.replace("%whoused%", e.getPlayer().getName())));
