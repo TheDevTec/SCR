@@ -207,13 +207,17 @@ public class Tp implements CommandExecutor, TabCompleter {
 								Loader.Help(s, "Tp", "TpSystem");
 								return true;
 							}
-							Location loc = StringUtils.getLocationFromString(u.getString("LastLeavePosition"));
-							API.setBack(((Player) s));
-							if (setting.tp_safe)
-								API.safeTeleport((Player) s,((Player) s).isFlying(),new Position(loc));
-							else
-								API.teleport((Player)s, loc);
-							Loader.sendMessages(s, "TpSystem.Tp.Player.YouToPlayer", Placeholder.c().replace("%player%", u.getName() ));
+							if(Loader.has(s, "TpToggle", "TpSystem", "Bypass") || !Loader.has(s, "TpToggle", "TpSystem", "Bypass") && !RequestMap.isBlocking(s.getName(), args[0])) {
+								Location loc = StringUtils.getLocationFromString(u.getString("LastLeavePosition"));
+								API.setBack(((Player) s));
+								if (setting.tp_safe)
+									API.safeTeleport((Player) s,((Player) s).isFlying(),new Position(loc));
+								else
+									API.teleport((Player)s, loc);
+								Loader.sendMessages(s, "TpSystem.Tp.Player.YouToPlayer", Placeholder.c().replace("%player%", u.getName() ));
+								return true;
+							}		
+							Loader.sendMessages(s, "TpSystem.Block.IsBlocked.Teleport", Placeholder.c().replace("%player%", target.getName()).replace("%playername%", target.getDisplayName()));
 							return true;
 						}
 						Loader.Help(s, "Tp", "TpSystem");
