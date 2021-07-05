@@ -44,7 +44,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 				c.add("X Y");
 				c.add("X");
 			}}
-			if(Loader.has(s, "Tp","TpSystem","Other"))
+			if(Loader.has(s, "Tp","TpSystem"))
 			c.addAll(API.getPlayerNames(s));
 			return StringUtils.copyPartialMatches(args[0], c);
 		}
