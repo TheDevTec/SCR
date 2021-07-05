@@ -235,6 +235,7 @@ TpSystem:
       Location: "SCR.Command.Tp.Location"
       LocationOther: "SCR.Command.Tp.Location"
       Other: "SCR.Command.Tp.Other"
+      ToOfflinePlayer: "SCR.Command.Tp.ToOfflinePlayer"
     Help:
     - "/Tp <player> [player] - Teleport you/player to the target player"
     - "/Tp [player] <x> <y> <z> [yaw] [pitch] - Teleport you/player to the position in the world"

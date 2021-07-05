@@ -36,6 +36,7 @@ import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.punishmentapi.PlayerBanList;
 import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.reflections.Ref;
 
@@ -304,6 +305,7 @@ public class OnPlayerJoin implements Listener {
 						TheAPI.bcMsg(replaceAll(""+o, p));
 		}
 		d.set("LastLeave", setting.format_date_time.format(new Date()));
+		d.set("LastLeavePosition", StringUtils.getLocationAsString(p.getLocation()));
 		if(fly)
 			d.set("FlyOnQuit", true);
 		else

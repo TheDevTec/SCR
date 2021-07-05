@@ -21,6 +21,7 @@ import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.User;
 
 public class Tp implements CommandExecutor, TabCompleter {
 	@Override
@@ -196,6 +197,25 @@ public class Tp implements CommandExecutor, TabCompleter {
 				if (s instanceof Player) {
 					Player target = TheAPI.getPlayer(args[0]);
 					if (target == null || !API.getPlayers(s).contains(target)) {
+						if(!API.getPlayers(s).contains(target)) {
+							Loader.Help(s, "Tp", "TpSystem");
+							return true;
+						}
+						if(Loader.has(s, "Tp","TpSystem", "ToOfflinePlayer")) {
+							User u = TheAPI.getUser(args[0]);
+							if(u==null || !u.exist("LastLeavePosition")) {
+								Loader.Help(s, "Tp", "TpSystem");
+								return true;
+							}
+							Location loc = StringUtils.getLocationFromString(u.getString("LastLeavePosition"));
+							API.setBack(((Player) s));
+							if (setting.tp_safe)
+								API.safeTeleport((Player) s,((Player) s).isFlying(),new Position(loc));
+							else
+								API.teleport((Player)s, loc);
+							Loader.sendMessages(s, "TpSystem.Tp.Player.YouToPlayer", Placeholder.c().replace("%player%", u.getName() ));
+							return true;
+						}
 						Loader.Help(s, "Tp", "TpSystem");
 						return true;
 					} else {
