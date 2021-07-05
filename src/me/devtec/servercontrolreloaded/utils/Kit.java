@@ -69,11 +69,32 @@ public class Kit {
 				try{
 					m=XMaterial.matchXMaterial(mat.toUpperCase()).getMaterial();
 				}catch(Exception e) {}
-				if (m == null) {
+				if (m == null && !Loader.kit.exists("Kits." + name + ".items.add." + id + ".head")) {
 					Bukkit.getLogger().warning("Error when preparing (kit:" + name + ", id:"+id+" of material, section:add) " + mat + ", material is invalid");
 					continue;
 				}
-				ItemCreatorAPI a = new ItemCreatorAPI(m);
+				ItemCreatorAPI a = new ItemCreatorAPI(Material.AIR);
+				if(Loader.kit.exists("Kits." + name + ".items.add." + id + ".head")) {
+					String head = Loader.kit.getString("Kits." + name + ".items.add." + id + ".head");
+					if(head.toLowerCase().startsWith("hdb:"))
+						a = new ItemCreatorAPI( HDBSupport.parse(head));
+					else
+					if(head.startsWith("https://")||head.startsWith("http://"))
+						a =  new ItemCreatorAPI( ItemCreatorAPI.createHeadByWeb(1, "&7Head from website", head) );
+					else
+					if(head.length()>16) {
+						a=  new ItemCreatorAPI( ItemCreatorAPI.createHeadByValues(1, "&7Head from values", head) );
+						a.setOwnerFromValues(head);
+					}
+					else
+						a=  new ItemCreatorAPI( ItemCreatorAPI.createHead(1, "&7" + head + "'s Head", head) );
+					
+					//a = new ItemCreatorAPI( ItemCreatorAPI.createHeadByValues(1, "Name", Loader.kit.getString("Kits." + name + ".items.add." + id + ".head")) );
+					//a.setOwnerFromValues(head);
+				}else
+					a = new ItemCreatorAPI(m);
+				
+				
 				int numb = Loader.kit.getInt("Kits." + name + ".items.add." + id + ".amount");
 				if(numb<1)numb=1;
 				a.setAmount(numb);
@@ -112,11 +133,29 @@ public class Kit {
 				try{
 					m=XMaterial.matchXMaterial(mat.toUpperCase()).getMaterial();
 				}catch(Exception e) {}
-				if (m == null) {
+				if (m == null && !Loader.kit.exists("Kits." + name + ".items.set." + id + ".head")) {
 					Bukkit.getLogger().warning("Error when preparing (kit:" + name + ", id:"+id+", section:set) of material " + mat + ", material is invalid");
 					continue;
 				}
-				ItemCreatorAPI a = new ItemCreatorAPI(m);
+				ItemCreatorAPI a = new ItemCreatorAPI(Material.AIR);
+				if(Loader.kit.exists("Kits." + name + ".items.set." + id + ".head")) {
+					String head = Loader.kit.getString("Kits." + name + ".items.set." + id + ".head");
+					
+					if(head.toLowerCase().startsWith("hdb:"))
+						a = new ItemCreatorAPI( HDBSupport.parse(head));
+					else
+					if(head.startsWith("https://")||head.startsWith("http://"))
+						a =  new ItemCreatorAPI( ItemCreatorAPI.createHeadByWeb(1, "&7Head from website", head) );
+					else
+					if(head.length()>16) {
+						a=  new ItemCreatorAPI( ItemCreatorAPI.createHeadByValues(1, "&7Head from values", head) );
+						a.setOwnerFromValues(head);
+					}
+					else
+						a=  new ItemCreatorAPI( ItemCreatorAPI.createHead(1, "&7" + head + "'s Head", head) );
+				}
+				else
+					a = new ItemCreatorAPI(m);
 				int numb = Loader.kit.getInt("Kits." + name + ".items.set." + id + ".amount");
 				if(numb<1)numb=1;
 				a.setAmount(numb);
