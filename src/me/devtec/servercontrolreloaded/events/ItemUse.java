@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -91,6 +92,17 @@ public class ItemUse implements Listener {
 							.replace("%whoused%", player.getName())));
 				doUse(player, e.getCurrentItem());
 			}
+		}
+		
+	}
+	@EventHandler
+	public void onInventoryClick(PlayerDropItemEvent e) {
+		if(e.getItemDrop()!=null && e.getItemDrop().getItemStack().getType()!=Material.AIR) {
+			Object has = getActions(e.getItemDrop().getItemStack(), "process", 0);
+			if(has==null||has.toString().trim().isEmpty())return;
+			Object movable = getActions(e.getItemDrop().getItemStack(), "process.movable", 0);
+			if(movable!=null && !movable.toString().trim().isEmpty() && StringUtils.getBoolean(movable.toString())==false )
+				e.setCancelled(true);
 		}
 		
 	}
