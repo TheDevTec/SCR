@@ -2,17 +2,21 @@ package me.devtec.servercontrolreloaded.events;
 
 import java.util.Collection;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.TheAPI.SudoType;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.json.Reader;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
@@ -44,6 +48,51 @@ public class ItemUse implements Listener {
 				doUse(e.getPlayer(), e.getItem());
 			}
 		}
+	}
+	/*
+	 process:
+	 	msg: []
+	 	console:
+	 		cmd: []
+	 	player:
+	 		cmd: []
+	 	cooldown:
+	 	last:
+	 	uses:
+	 	usage:
+	 	movable: false | true
+	 */
+	
+	@SuppressWarnings({ "unchecked" })
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent e) {
+		if(e.getAction().toString().startsWith("PLACE")||e.getAction().toString().startsWith("PICKUP") || e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)
+				|| e.getAction().equals(InventoryAction.HOTBAR_SWAP)|| e.getAction().toString().startsWith("DROP")) {
+			if(e.getCurrentItem()!=null && e.getCurrentItem().getType()!=Material.AIR) {
+				Object has = getActions(e.getCurrentItem(), "process", 0);
+    			if(has==null||has.toString().trim().isEmpty())return;
+    			Object movable = getActions(e.getCurrentItem(), "process.movable", 0);
+    			if(movable!=null && !movable.toString().trim().isEmpty() && StringUtils.getBoolean(movable.toString())==false )
+    				e.setCancelled(true);
+    			Player player = Bukkit.getPlayer(e.getWhoClicked().getName());
+    			if(player==null) return;
+				if (!canUse(e.getCurrentItem())) return;
+				Collection<String> c = (Collection<String>) getActions(e.getCurrentItem(), "process.msg", COLLECTION);
+				if (c != null) for (String f : c)
+					TheAPI.msg(PlaceholderAPI.setPlaceholders(player, f.replace("%player%", player.getName())
+							.replace("%whoused%", player.getName())), player);
+				c = (Collection<String>) getActions(e.getCurrentItem(), "process.console.cmd", COLLECTION);
+				if (c != null) for (String f : c)
+					TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(player, f.replace("%player%", player.getName())
+							.replace("%whoused%", player.getName())));
+				c = (Collection<String>) getActions(e.getCurrentItem(), "process.player.cmd", COLLECTION);
+				if (c != null) for (String f : c)
+					TheAPI.sudo(player, SudoType.COMMAND, PlaceholderAPI.setPlaceholders(player, f.replace("%player%", player.getName())
+							.replace("%whoused%", player.getName())));
+				doUse(player, e.getCurrentItem());
+			}
+		}
+		
 	}
 	
 	private boolean canUse(ItemStack item) {

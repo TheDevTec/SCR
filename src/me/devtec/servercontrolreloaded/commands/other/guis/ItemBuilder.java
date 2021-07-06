@@ -46,7 +46,7 @@ public class ItemBuilder {
 			try {
 				ec.put(EnchantmentAPI.byName(f.split("[: ,0-9]+")[0]).getEnchantment(), f.contains(":")?StringUtils.getInt(f):1);
 			}catch(Exception er) {
-				Bukkit.getLogger().severe("ItemFlag named "+f+" doesn't exist");
+				Bukkit.getLogger().severe("Enchant named "+f+" doesn't exist");
 			}
 		}
 	}
