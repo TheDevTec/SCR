@@ -72,6 +72,9 @@ public class ItemUse implements Listener {
 			if(e.getCurrentItem()!=null && e.getCurrentItem().getType()!=Material.AIR) {
 				Object has = getActions(e.getCurrentItem(), "process", 0);
     			if(has==null||has.toString().trim().isEmpty())return;
+    			Object invclick = getActions(e.getCurrentItem(), "process.inventoryclick", 0);
+    			if(invclick==null || invclick.toString().trim().isEmpty())
+    				return;
     			Object movable = getActions(e.getCurrentItem(), "process.movable", 0);
     			if(movable!=null && !movable.toString().trim().isEmpty() && StringUtils.getBoolean(movable.toString())==false )
     				e.setCancelled(true);
