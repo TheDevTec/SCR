@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.utils.skins.manager;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -141,7 +142,7 @@ public class SkinManager {
 		if(set==null)
 			set = Ref.method(Ref.getClass("net.minecraft.util.com.google.common.collect.ForwardingMultimap"), "put", Object.class, Object.class);
 	}
-	
+	static Field res;
 	public static synchronized void loadSkin(Player player, SkinData data) {
 		if(player==null || data==null || !data.isFinite())return;
 		playerSkins.put(player.getName(), data);
@@ -179,7 +180,14 @@ public class SkinManager {
 				Location a = p.getLocation();
 				Object re = null;
 				if(TheAPI.isNewerThan(16)) { //1.17+
-					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(w, "getDimensionKey"), Ref.invokeNulled(cf, a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "d"),"getGameMode"), Ref.invoke(Ref.get(s, "d"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);
+					if(res==null)
+					for(Field f : Ref.getDeclaredFields(w.getClass().getSuperclass()))
+						if(f.getType()==Ref.nmsOrOld("resources.ResourceKey","ResourceKey"))
+							if(f.toString().endsWith(".G"))res=f;
+					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(w, "getDimensionKey")==null?Ref.get(w, res):Ref.invoke(w, "getDimensionKey"), 
+							Ref.invokeNulled(cf, a.getWorld().getSeed()), 
+							Ref.invoke(Ref.get(s, "d"),"getGameMode"), Ref.invoke(Ref.get(s, "d"),"c"), 
+							false, a.getWorld().getWorldType()==WorldType.FLAT, true);
 				}else
 				if(TheAPI.isNewerThan(15)) { //1.16
 					Object key = Ref.invoke(w, "getDimensionKey");
