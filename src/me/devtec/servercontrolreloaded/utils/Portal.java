@@ -41,8 +41,9 @@ public class Portal {
 	private boolean perplayer, kickBack;
 	private List<Position> blocks = new ArrayList<>();
 	private long lastEnter;
+	private String wait;
 	
-	public Portal(String id, double cooldown, boolean perPlayer, boolean kickBack, Position a, Position b, Particle p, List<String> cmds, String s, List<String> bcmds, String permission) {
+	public Portal(String id, double cooldown, boolean perPlayer, boolean kickBack, Position a, Position b, Particle p, List<String> cmds, String s, List<String> bcmds, String permission, int wait) {
 		this.a=a;
 		perplayer=perPlayer;
 		this.kickBack=kickBack;
@@ -56,6 +57,11 @@ public class Portal {
 		this.p=p;
 		this.cmds=cmds;
 		server=s;
+		if(wait==0||wait==-1)
+			this.wait="5";
+		else
+			this.wait=""+wait;
+		
 		this.bcmds=bcmds;
 		if(p==null||p.getParticle()==null)return;
 		if(a.getWorld()!=null && b.getWorld()!=null && a.getWorld().equals(b.getWorld()))
@@ -89,6 +95,7 @@ public class Portal {
 			d.writeUTF("portal");
 			d.writeUTF(target.getName());
 			d.writeUTF(server);
+			d.writeUTF(wait);
 			String a = Writer.write(bcmds);
 			while(a.length()>35000) {
 				d.writeUTF(a.substring(0, 35000));
@@ -167,7 +174,8 @@ public class Portal {
 						Loader.portals.getStringList(s+".cmds"), 
 						Loader.portals.getString(s+".server"), 
 						Loader.portals.getStringList(s+".bcmds"), 
-						Loader.portals.getString(s+".permission"));
+						Loader.portals.getString(s+".permission"), 
+						Loader.portals.getInt(s+".wait"));
 				portals.add(p);
 			}
 		}
@@ -188,7 +196,8 @@ public class Portal {
 					Loader.portals.getStringList(s+".cmds"), 
 					Loader.portals.getString(s+".server"), 
 					Loader.portals.getStringList(s+".bcmds"), 
-					Loader.portals.getString(s+".permission"));
+					Loader.portals.getString(s+".permission"), 
+					Loader.portals.getInt(s+".wait"));
 			portals.add(p);
 		}
 		if(!portals.isEmpty()) {

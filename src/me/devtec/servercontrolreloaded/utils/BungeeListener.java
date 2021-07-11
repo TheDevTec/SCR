@@ -11,6 +11,7 @@ import com.google.common.io.ByteStreams;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.json.Reader;
 
 public class BungeeListener implements PluginMessageListener {
@@ -23,7 +24,10 @@ public class BungeeListener implements PluginMessageListener {
 		String action = d.readUTF();
 		if(action.equals("portal")) {
 			String name = d.readUTF();
+			String server = d.readUTF();
+			String wait = d.readUTF();
 			String msg = "";
+			msg+=server;
 			while(true) {
 				try {
 					msg+=d.readUTF();
@@ -37,7 +41,7 @@ public class BungeeListener implements PluginMessageListener {
 					for(String s : cmds)
 						TheAPI.sudoConsole(TabList.replace(s, p, true));
 				}
-			}.runLaterSync(5);
+			}.runLaterSync(StringUtils.getInt(wait));
 			return;
 		}
 		if(action.equals("helpop")) {
