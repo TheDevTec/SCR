@@ -38,6 +38,7 @@ import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
+import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class OnPlayerJoin implements Listener {
@@ -251,6 +252,9 @@ public class OnPlayerJoin implements Listener {
 	public void playerQuit(PlayerQuitEvent e) {
 		e.setQuitMessage(null);
 		Player p = e.getPlayer();
+		for(Player ps : TheAPI.getOnlinePlayers())
+			if(p!=ps)
+				Ref.sendPacket(p, NMSAPI.getPacketPlayOutEntityDestroy(ps.getEntityId()));
 		DisplayManager.removeCache(p);
 		NameTagChanger.remove(p);
 		Ref.sendPacket(p,TabList.empty);
