@@ -255,6 +255,7 @@ Nickname:
 # Translations for /AFK command and AutoAFK messages
 AFK:
   Start: "%playername%&7 je AFK"
+  Start_WithReason: "%playername%&7 je AFK &7(&e%reason%&7)"
   End: "%playername%&7 už není AFK"
   Command:
     Start: ""

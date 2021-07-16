@@ -1,4 +1,4 @@
-ů# Odkazy:
+# Odkazy:
 #  Github: https://github.com/TheDevTec/ServerControlReloaded
 #  Discord: https://discord.io/spigotdevtec
 #  Spigot: https://www.spigotmc.org/resources/71147/
@@ -255,6 +255,7 @@ Nickname:
 # Translations for /AFK command and AutoAFK messages
 AFK:
   Start: "%playername%&7 je AFK"
+  Start_WithReason: "%playername%&7 je AFK &7(&e%reason%&7)"
   End: "%playername%&7 již není AFK"
   Command:
     Start: ""
