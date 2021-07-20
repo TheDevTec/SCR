@@ -117,6 +117,7 @@ import me.devtec.servercontrolreloaded.commands.time.Day;
 import me.devtec.servercontrolreloaded.commands.time.Night;
 import me.devtec.servercontrolreloaded.commands.time.PDay;
 import me.devtec.servercontrolreloaded.commands.time.PNight;
+import me.devtec.servercontrolreloaded.commands.time.PlayTime;
 import me.devtec.servercontrolreloaded.commands.tpsystem.Tp;
 import me.devtec.servercontrolreloaded.commands.tpsystem.Tpa;
 import me.devtec.servercontrolreloaded.commands.tpsystem.TpaBlock;
@@ -318,6 +319,7 @@ public class CommandsManager {
 		load("Time", "Night", new Night());
 		load("Time", "PDay", new PDay());
 		load("Time", "PNight", new PNight());
+		load("Time", "PlayTime", new PlayTime());
 		
 		//Message
 		load("Message", "SocialSpy", new SocialSpy());

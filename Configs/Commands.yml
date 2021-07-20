@@ -642,6 +642,18 @@ Time:
       Other: "SCR.Command.PlayerDay.Other"
     Help: "/PlayerDay - Change your time to day"
     Enabled: true
+  PlayTime:
+    Name: "playtime"
+    Aliases:
+    - "ptime"
+    Permission: "SCR.Command.PlayTime"
+    SubPermission:
+      Top: "SCR.Command.PlayTime.Top"
+      Other: "SCR.Command.PlayTime.Other"
+    Help:
+    - "/PlayTime <player> - Get you playtime on server"
+    - "/PlayTime Top <page> - Get top active players on server"
+    Enabled: true
     
 Warps:
   Back:

@@ -906,5 +906,15 @@ Mirror:
    Types: "%prefix% &7Typy zrcadlení: &e%types%"
    Enabled: "%prefix% &7Zapnul jsi mirror. Zvolený typ: &e%type%"
    Disabled: "%prefix% &7Vypnul jsi mirror."
-   
+
+# Translations for PlayTime commands
+PlayTime:
+  Time: "%prefix% &7Tvůj odehraný čas je &e%playtime%"
+  Other: "%prefix% &7Odehraný čas hráče &e%player% &7je &e%playtime%"
+  PlayTop:
+    Loading: "%prefix% Počítání hráčů... prosím počkejte .."
+    Header: "%prefix% &7=====» &cPlayTop &e%page%/%pages% &7«====="
+    Top: "&e%position%. &7%playername% &7(&e%playtime%&7)"
+    Footer: ""
+
 Config: "%prefix% Konfigurace a tasky znovunačteny"

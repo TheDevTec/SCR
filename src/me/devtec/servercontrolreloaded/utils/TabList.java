@@ -6,11 +6,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.commands.info.Staff;
+import me.devtec.servercontrolreloaded.commands.time.PlayTime;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Item;
@@ -204,6 +207,23 @@ public class TabList {
 		if(header.contains("%playtime%")) {
 			header=header.replace("%playtime%", StringUtils.timeToString(playtime(p)));
 		}
+		if(header.contains("%playtime_")) {
+			String s = header;
+			if(header.contains("%playtime_top_")) {
+				for(String a : s.split(" ")) {
+					if(a.startsWith("%playtime_top_")) {
+						int pos = StringUtils.getInt(s.replace("%playtime_top_", "").replace("%", ""));
+						header=header.replace(a, PlayTime.getTop(pos));
+					}
+				}
+			}else {
+				String player = s.replace("playtime_", "").replace("%", "");
+				if(TheAPI.existsUser(player)) {
+					header = header.replace("%playtime_"+player+"%", StringUtils.timeToString(playtime(player)));
+				}
+				
+			}
+		}
 		if(header.contains("%ping%"))
 			header=header.replace("%ping%", Loader.getInstance.pingPlayer(p));
 		;if(header.contains("%world%"))
@@ -326,6 +346,11 @@ public class TabList {
 	}
 	
 	public static long playtime(Player s) {
+		if(s==null)return -1;
+		return s.getStatistic(st)/20;
+	}
+	public static long playtime(String player) {
+		OfflinePlayer s = Bukkit.getOfflinePlayer(player);
 		if(s==null)return -1;
 		return s.getStatistic(st)/20;
 	}

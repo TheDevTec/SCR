@@ -6,12 +6,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.time.PlayTime;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
@@ -27,6 +29,7 @@ import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.NMSAPI.ChatType;
 import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.utils.serverlist.PlayerProfile;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Tasks {
 	
@@ -84,6 +87,7 @@ public class Tasks {
 		other();
 		tempfly();
 		tempGamemode();
+		playTop();
 	}
 
 	public static void reload() {
@@ -274,5 +278,23 @@ public class Tasks {
 			}
 
 		}.runRepeating(0, 20* StringUtils.getTimeFromString(Loader.config.getString("Options.AutoMessage.Interval"))));
+	}
+	
+	public static void playTop() {
+		tasks.add(new Tasker() {
+			public void run() {
+				for (UUID sa : TheAPI.getUsers()) {
+					String n = LoaderClass.cache.lookupNameById(sa);
+					if(n!=null) {
+						long time = TabList.playtime(n);
+						if(time>0)
+							PlayTime.playtop.put(sa, time);
+					}
+				}
+				PlayTime.ranks.setMap(PlayTime.playtop);
+			}
+		}.runRepeating(1, 300*20)
+		);
+		PlayTime.task=true;
 	}
 }
