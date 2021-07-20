@@ -197,7 +197,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 				if (s instanceof Player) {
 					Player target = TheAPI.getPlayer(args[0]);
 					if (target == null || !API.getPlayers(s).contains(target)) {
-						if(!API.getPlayers(s).contains(target)) {
+						if(!API.getPlayers(s).contains(target) && target!=null) {
 							Loader.Help(s, "Tp", "TpSystem");
 							return true;
 						}
