@@ -57,11 +57,11 @@ public class AFK implements CommandExecutor, TabCompleter {
 				if(player!=null) {
 					SPlayer p = API.getSPlayer(player);
 					if (p.isAFK()) {
-						Loader.sendMessages(s, "AFK.Command.Other.End", new Placeholder().add("%target%", player.getName()));
+						Loader.sendMessages(s, "AFK.Command.Other.End", new Placeholder().add("%target%", player.getName()).add("%player%", player.getName()));
 						Loader.sendMessages(player, "AFK.Command.End");
 						p.setAFK(false);
 					} else {
-						Loader.sendMessages(s, "AFK.Command.Other.Start", new Placeholder().add("%target%", player.getName()));
+						Loader.sendMessages(s, "AFK.Command.Other.Start", new Placeholder().add("%target%", player.getName()).add("%player%", player.getName()));
 						Loader.sendMessages(player, "AFK.Command.Start");
 						p.setAFK(true);
 					}
