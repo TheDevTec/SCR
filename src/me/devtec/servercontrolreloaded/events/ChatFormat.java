@@ -384,8 +384,11 @@ public class ChatFormat implements Listener {
 						}
 						List<Map<String, Object>> list = ChatMessage.fixListMap((List<Map<String, Object>>) formatt);
 						e.setFormat(convertToLegacy(list).replace("%", "%%"));
-						if (!e.isCancelled())
-							Ref.sendPacket(e.getRecipients(), NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write(list))));
+						if (!e.isCancelled()) {
+							String jsons = Writer.write(list);
+							jsons="[\"\","+jsons.substring(1);
+							Ref.sendPacket(e.getRecipients(),NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+						}
 						e.getRecipients().clear(); //for our custom chat
 					}
 				}

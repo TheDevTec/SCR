@@ -57,6 +57,14 @@ public class OnPlayerJoin implements Listener {
 	@EventHandler
 	public void onLogin(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
+		Tasks.regPlayer(p);
+		User d = TheAPI.getUser(p);
+        if(d.exists("vanish"))
+        API.setVanish(d, Loader.getPerm("Vanish","Other"), d.getBoolean("vanish"));
+        for (Player s : TheAPI.getOnlinePlayers())
+            if(p!=s)
+            if (!API.canSee(p, s.getName()))
+                p.hidePlayer(s);
 		if(Loader.config.getBoolean("Options.Skins.onJoin")) {
 			if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
 				String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
@@ -84,12 +92,6 @@ public class OnPlayerJoin implements Listener {
 		e.setJoinMessage("");
 		Player p = e.getPlayer();
 		User d = TheAPI.getUser(p);
-        if(d.exists("vanish"))
-        API.setVanish(d, Loader.getPerm("Vanish","Other"), d.getBoolean("vanish"));
-        for (Player s : TheAPI.getOnlinePlayers())
-            if(p!=s)
-            if (!API.canSee(p, s.getName()))
-                p.hidePlayer(s);
 		new Tasker() {
 			public void run() {
 				try {
@@ -113,7 +115,6 @@ public class OnPlayerJoin implements Listener {
 				}
 		        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
 		    		LoginEvent.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
-				Tasks.regPlayer(p);
 				Config f = Loader.config;
 				if(API.hasVanish(p.getName())) {
 					if(setting.vanish_action) {

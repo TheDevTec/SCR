@@ -31,7 +31,7 @@ public class setting {
 	 **/
 	public static void load(boolean message) {
 		Config f = Loader.config;
-		prefix = Loader.getTranslation("Prefix")+"";
+		prefix = Loader.getTranslationAsString("Prefix");
 		if(message)
 		TheAPI.msg(setting.prefix + " &7Loading settings..", TheAPI.getConsole());
 		format_date_time = new SimpleDateFormat(f.getString("Format.DateWithTime"));

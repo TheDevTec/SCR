@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.utils;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -674,9 +675,9 @@ public class DisplayManager {
 									lines="PerWorld."+s.getWorld().getName()+".Lines";
 								}
 								score.setTitle(sb.replace(s, Loader.sb.getString(name)));
-								for(String line : Loader.sb.getStringList(lines)) {
-									score.addLine(sb.replace(s, line));
-								}
+								List<String> sdd = Loader.sb.getStringList(lines);
+								sdd.replaceAll(a -> sb.replace(s, a));
+								score.addLines(sdd);
 								score.send(s);
 								continue;
 							}
@@ -698,9 +699,9 @@ public class DisplayManager {
 									lines="PerWorld."+s.getWorld().getName()+".Lines";
 								}
 								score.setTitle(sb.replace(s, Loader.sb.getString(name)));
-								for(String line : Loader.sb.getStringList(lines)) {
-									score.addLine(sb.replace(s, line));
-								}
+								List<String> sdd = Loader.sb.getStringList(lines);
+								sdd.replaceAll(a -> sb.replace(s, a));
+								score.addLines(sdd);
 								score.send(s);
 								continue;
 							}
@@ -719,9 +720,9 @@ public class DisplayManager {
 							lines="PerWorld."+s.getWorld().getName()+".Lines";
 						}
 						score.setTitle(sb.replace(s, Loader.sb.getString(name)));
-						for(String line : Loader.sb.getStringList(lines)) {
-							score.addLine(sb.replace(s, line));
-						}
+						List<String> sdd = Loader.sb.getStringList(lines);
+						sdd.replaceAll(a -> sb.replace(s, a));
+						score.addLines(sdd);
 						score.send(s);
 						continue;
 					}

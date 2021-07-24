@@ -64,7 +64,6 @@ import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.guiapi.GUI;
 import me.devtec.theapi.guiapi.HolderGUI;
 import me.devtec.theapi.guiapi.ItemGUI;
-import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderRegister;
 import me.devtec.theapi.placeholderapi.ThePlaceholder;
 import me.devtec.theapi.scheduler.Scheduler;
@@ -151,58 +150,40 @@ public class Loader extends JavaPlugin implements Listener {
 		for(Entry<String, String> placeholder : placeholders.set.entrySet())
 			string=string.replace(placeholder.getKey()+"", placeholder.getValue()+"");
 		if(sender!=null) {
-		if(sender instanceof Player)
-			string=TabList.replace(string, (Player)sender, true);
-		else
-			string=TabList.replace(string.replace("%player%", sender.getName())
-					.replace("%playername%", sender.getName())
-					.replace("%customname%", sender.getName()),null,true);
-		string=string.replace("%op%", ""+sender.isOp());
+			if(sender instanceof Player)
+				string=TabList.replace(string, (Player)sender, true);
+			else
+				string=TabList.replace(string.replace("%player%", sender.getName())
+						.replace("%playername%", sender.getName())
+						.replace("%customname%", sender.getName()),null,true);
+			string=string.replace("%op%", ""+sender.isOp());
 		}
-		return PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender : null, string);
+		return string;
 	}
 	
 	public static Object getTranslation(String path) {
-		if(trans==null || !trans.exists(path)) {
-			if(english.exists(path)) {
-				if(english.get(path) instanceof Collection) {
-					return english.getStringList(path);
-				}else
-					if(!english.getString(path).trim().isEmpty())
-						return english.getString(path).replace("%prefix%",english.getString("Prefix"));
-					else return "";
+		Object input = getTranslationAsObject(path);
+		if(input!=null)
+			if(input instanceof Collection) {
+				return trans==null||!trans.exists(path)?english.getStringList(path):trans.getStringList(path);
+			}else {
+				return input.toString();
 			}
-		}else {
-		if(trans.get(path) instanceof Collection) {
-			return trans.getStringList(path);
-		}else
-			if(!trans.getString(path).trim().isEmpty())
-				return trans.getString(path).replace("%prefix%", trans.getString("Prefix"));
-			else return "";
-		}
-		return null;
+		return input;
 	}
 	
 	public static String getTranslationAsString(String path) {
-		if(trans==null || !trans.exists(path)) {
-			if(english.exists(path)) {
-				return english.getString(path);
-			}
-		}else {
-			return trans.getString(path);
-		}
-		return null;
+		String input = trans==null?null:trans.getString(path);
+		if(input==null)
+			return english.getString(path);
+		return input;
 	}
 	
 	public static Object getTranslationAsObject(String path) {
-		if(trans==null || !trans.exists(path)) {
-			if(english.exists(path)) {
-				return english.get(path);
-			}
-		}else {
-			return trans.get(path);
-		}
-		return null;
+		Object input = trans==null?null:trans.get(path);
+		if(input==null)
+			return english.get(path);
+		return input;
 	}
 	
 	public static boolean existsTranslation(String path) {
@@ -223,64 +204,59 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@SuppressWarnings("unchecked")
 	public static void sendMessages(CommandSender to, String path, Placeholder placeholders) {
-		Object o = getTranslation(path);
+		Object o = getTranslationAsObject(path);
 		if(o==null) {
 			Bukkit.getLogger().severe("[BUG] Missing configuration path [Translations]!");
 			Bukkit.getLogger().severe("[BUG] Report this to the DevTec discord:");
 			Bukkit.getLogger().severe("[BUG] Missing path: "+path);
 			return;
 		}
-		if(o instanceof String && o.toString().equals(""))return;
+		if(o instanceof String && o.toString().trim().isEmpty())return;
 		if(o instanceof Collection || o instanceof Map) { //json?
-			String sf = getTranslationAsString(path);
-			if(sf!=null)
-				if(sf.startsWith("[") && sf.endsWith("]")||sf.startsWith("{") && sf.endsWith("}")) {
-					Object old = o;
-					o=getTranslationAsObject(path);
-					if(isIBase(o)) {
-					Object json;
-					if(o instanceof Collection) {
-						json = colorizeList((Collection<?>)o,(d)->placeholder(to,d,placeholders));
-					}else
-						json = colorizeMap((Map<String, Object>)o,(d)->placeholder(to,d,placeholders));
-					if(json!=null) {
-						Object formatt = json;
-						if (formatt instanceof Map || formatt instanceof Collection) {
-							List<Map<String,Object>> oo = new ArrayList<>();
-							if(formatt instanceof Map) {
-								oo.add((Map<String, Object>) formatt);
-								formatt=oo;
-							}else {
-								for(Object w : ((Collection<Object>)formatt)) {
-									if(w instanceof String)w=Reader.read((String)w);
-									if(w instanceof Map) {
-										oo.add((Map<String, Object>) w);
-									}else {
-										Map<String, Object> g = new HashMap<>();
-										g.put("text", w+"");
-										oo.add(g);
-									}
+			if(isIBase(o)) {
+				Object json;
+				if(o instanceof Collection) {
+					json = colorizeList((Collection<?>)o,(d)->placeholder(to,d,placeholders));
+				}else
+					json = colorizeMap((Map<String, Object>)o,(d)->placeholder(to,d,placeholders));
+				if(json!=null) {
+					Object formatt = json;
+					if (formatt instanceof Map || formatt instanceof Collection) {
+						List<Map<String,Object>> oo = new ArrayList<>();
+						if(formatt instanceof Map) {
+							oo.add((Map<String, Object>) formatt);
+							formatt=oo;
+						}else {
+							for(Object w : ((Collection<Object>)formatt)) {
+								if(w instanceof String)w=Reader.read((String)w);
+								if(w instanceof Map) {
+									oo.add((Map<String, Object>) w);
+								}else {
+									Map<String, Object> g = new HashMap<>();
+									g.put("text", w+"");
+									oo.add(g);
 								}
-								formatt=oo;
 							}
-							if(to instanceof Player) {
-								Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write((List<Map<String,Object>>)formatt))));
-							}else {
-								to.sendMessage(convertToLegacy(ChatMessage.fixListMap((List<Map<String,Object>>)formatt)));
-							}
-							return;
+							formatt=oo;
 						}
-					} // fallback to default
+						oo=ChatMessage.fixListMap(oo);
+						if(to instanceof Player) {
+							String jsons = Writer.write(oo);
+							jsons="[\"\","+jsons.substring(1);
+							Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+						}else {
+							to.sendMessage(convertToLegacy(oo));
+						}
+						return;
 					}
-					o=old;
-				}
+				} // fallback to default
+			}
 		}
 		if(o instanceof Collection) {
 			for(Object d : (Collection<?>)o)
 				TheAPI.msg(placeholder(to, d+"", placeholders), to);
 		}else
-			if(!(o+"").isEmpty())
-		TheAPI.msg(placeholder(to, o+"", placeholders), to);
+			TheAPI.msg(placeholder(to, o+"", placeholders), to);
 	}
 	
 	private static boolean isIBase(Object o) {
@@ -290,7 +266,7 @@ public class Loader extends JavaPlugin implements Listener {
 					return true;
 				}
 			}
-		}else{
+		}else {
 			for(Entry<?,?> a : ((Map<?,?>)o).entrySet()) {
 				if(a.getKey() instanceof String) {
 					return true;
@@ -367,10 +343,13 @@ public class Loader extends JavaPlugin implements Listener {
 								}
 								formatt=oo;
 							}
+							oo=ChatMessage.fixListMap(oo);
 							if(to instanceof Player) {
-								Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write((List<Map<String,Object>>)formatt))));
+								String jsons = Writer.write(oo);
+								jsons="[\"\","+jsons.substring(1);
+								Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
 							}else {
-								to.sendMessage(convertToLegacy(ChatMessage.fixListMap((List<Map<String,Object>>)formatt)));
+								to.sendMessage(convertToLegacy(oo));
 							}
 							return;
 						}
@@ -422,8 +401,11 @@ public class Loader extends JavaPlugin implements Listener {
 								}
 								formatt=oo;
 							}
-							Ref.sendPacket(TheAPI.getOnlinePlayers(),NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write((List<Map<String,Object>>)formatt))));
-							TheAPI.getConsole().sendMessage(convertToLegacy(ChatMessage.fixListMap((List<Map<String,Object>>)formatt)));
+							oo=ChatMessage.fixListMap(oo);
+							String jsons = Writer.write(oo);
+							jsons="[\"\","+jsons.substring(1);
+							Ref.sendPacket(TheAPI.getOnlinePlayers(),NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+							TheAPI.getConsole().sendMessage(convertToLegacy(oo));
 							return;
 						}
 					} // fallback to default
@@ -477,9 +459,12 @@ public class Loader extends JavaPlugin implements Listener {
 							Iterator<Player> f = p.iterator();
 							while(f.hasNext())
 								if(!f.next().hasPermission(perms))f.remove();
-							Ref.sendPacket(p,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(Writer.write((List<Map<String,Object>>)formatt))));
+							oo=ChatMessage.fixListMap(oo);
+							String jsons = Writer.write(oo);
+							jsons="[\"\","+jsons.substring(1);
+							Ref.sendPacket(p,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
 							if(TheAPI.getConsole().hasPermission(perms))
-								TheAPI.getConsole().sendMessage(convertToLegacy(ChatMessage.fixListMap((List<Map<String,Object>>)formatt)));
+								TheAPI.getConsole().sendMessage(convertToLegacy(oo));
 							return;
 						}
 					} // fallback to default
