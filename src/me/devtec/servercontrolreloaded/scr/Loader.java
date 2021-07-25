@@ -94,6 +94,7 @@ public class Loader extends JavaPlugin implements Listener {
 	private static SpigotUpdateChecker updater;
 	public static Chat vault = null;
 	public static Permission perms = null;
+	public static Map<String, Kit> kits = new HashMap<>();
 	private static int aad = 0;
 	
 	public static class Placeholder {
@@ -897,6 +898,7 @@ public class Loader extends JavaPlugin implements Listener {
 		for (String s : Loader.kit.getKeys("Kits")) {
 			TheAPI.msg(setting.prefix + "   &e"+s+"&7:", TheAPI.getConsole());
 			Kit kit = Kit.load(s);
+			kits.put(s,kit);
 			TheAPI.msg(setting.prefix + "     &7Cooldown: &e" + StringUtils.setTimeToString(kit.getDelay()), TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + "     &7Cost: &e$" + API.setMoneyFormat(kit.getCost(), false), TheAPI.getConsole());
 		}
@@ -1064,6 +1066,8 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static Kit getKit(String kitName) {
+		for(Entry<String, Kit> s : kits.entrySet())
+			if(s.getKey().equalsIgnoreCase(kitName))return s.getValue();	
 		return Kit.load(kitName);
 	}
 
