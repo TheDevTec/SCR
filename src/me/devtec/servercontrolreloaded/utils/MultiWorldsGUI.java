@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.WordUtils;
@@ -31,6 +32,7 @@ import me.devtec.theapi.guiapi.ItemGUI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.worldsapi.WorldsAPI;
 
 public class MultiWorldsGUI {
@@ -258,6 +260,16 @@ public class MultiWorldsGUI {
 			lore.add("&7 - Difficulty: " + w.getDifficulty());
 			lore.add("&7 - GameMode: " + gm);
 			lore.add("&7 - Loaded Chunks: " + w.getLoadedChunks().length);
+			if(TheAPI.isNewerThan(16)) {
+				Iterable<?> t = (Iterable<?>) Ref.invoke(Ref.invoke(Ref.get(Ref.world(w), "G"),"d"),"a");
+				int i = 0;
+				Iterator<?> tt = t.iterator();
+				while(tt.hasNext()) {
+					tt.next();
+					++i;
+				}
+				lore.add("&7 - Entities: " + i);
+			}else
 			lore.add("&7 - Entities: " + w.getEntities().size());
 			lore.add("&7 - Players: " + w.getPlayers().size());
 			a.addItem(new ItemGUI(createItem(start + w.getName(), XMaterial.valueOf(m), lore)) {
