@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
@@ -46,7 +47,9 @@ public class API {
 			cache.put(p.getName(), new SPlayer(p));
 		return cache.get(p.getName());
 	}
-
+	public static SPlayer getSPlayer(OfflinePlayer p) {
+		return new SPlayer(p.getName());
+	}
 	public static SPlayer getSPlayer(String p) {
 		if(!cache.containsKey(p))
 			cache.put(p, new SPlayer(p));

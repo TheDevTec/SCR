@@ -6,17 +6,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.commands.info.Staff;
-import me.devtec.servercontrolreloaded.commands.time.PlayTime;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Item;
+import me.devtec.servercontrolreloaded.utils.playtime.PlayTimeUtils;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.MemoryAPI;
 import me.devtec.theapi.apis.TabListAPI;
@@ -205,7 +203,7 @@ public class TabList {
 			header=header.replace("%online%", seen + "");
 		}
 		if(header.contains("%playtime%")) {
-			header=header.replace("%playtime%", StringUtils.timeToString(playtime(p)));
+			header=header.replace("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime(p)));
 		}
 		if(header.contains("%playtime_")) {
 			String s = header;
@@ -213,13 +211,13 @@ public class TabList {
 				for(String a : s.split(" ")) {
 					if(a.startsWith("%playtime_top_")) {
 						int pos = StringUtils.getInt(s.replace("%playtime_top_", "").replace("%", ""));
-						header=header.replace(a, PlayTime.getTop(pos));
+						header=header.replace(a, PlayTimeUtils.getTop(pos));
 					}
 				}
 			}else {
 				String player = s.replace("playtime_", "").replace("%", "");
 				if(TheAPI.existsUser(player)) {
-					header = header.replace("%playtime_"+player+"%", StringUtils.timeToString(playtime(player)));
+					header = header.replace("%playtime_"+player+"%", StringUtils.timeToString(  PlayTimeUtils.playtime(player) ));
 				}
 				
 			}
@@ -333,26 +331,6 @@ public class TabList {
 	public static void setTabName(Player p) {
 		if(setting.tab_name)
 			p.setPlayerListName(getTabListName(p));
-	}
-	
-	static Statistic st;
-	
-	static {
-		try {
-			st=Statistic.valueOf("PLAY_ONE_MINUTE");
-		}catch(Exception|NoSuchFieldError er) {
-			st=Statistic.valueOf("PLAY_ONE_TICK");
-		}
-	}
-	
-	public static long playtime(Player s) {
-		if(s==null)return -1;
-		return s.getStatistic(st)/20;
-	}
-	public static long playtime(String player) {
-		OfflinePlayer s = Bukkit.getOfflinePlayer(player);
-		if(s==null)return -1;
-		return s.getStatistic(st)/20;
 	}
 	
 	public static Object empty = NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentText(""),NMSAPI.getIChatBaseComponentText(""));

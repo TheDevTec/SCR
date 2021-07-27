@@ -1,5 +1,14 @@
 package me.devtec.servercontrolreloaded.utils;
 
+import java.lang.reflect.Method;
+
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
@@ -8,18 +17,11 @@ import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.reflections.Ref;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-
-import java.lang.reflect.Method;
 
 public class SPlayer {
 	public boolean lock;
 	private final String s;
+	public Player player;
 	public int kick, afk;
 	public boolean bc, manual;
 	public String reply, type;
@@ -27,6 +29,7 @@ public class SPlayer {
 	public Location l;
 	
 	public SPlayer(Player p) {
+		this.player=p;
 		s = p.getName();
 		f=TheAPI.getUser(p);
 	}
@@ -290,4 +293,36 @@ public class SPlayer {
 	public boolean hasTempFlyEnabled() {
 		return f.getBoolean("TempFly.Use");
 	}
+	
+	public void addPlayTime(long seconds) {
+		GameMode g = player.getGameMode();
+
+		f.set("Statistics.PlayTime", f.getLong("Statistics.PlayTime")+seconds);
+		f.set("Statistics."+g.name()+".PlayTime", f.getLong("Statistics."+g.name()+".PlayTime")+seconds);
+		f.set("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime", f.getLong("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime")+seconds);
+		f.set("Statistics."+player.getWorld().getName()+".PlayTime", f.getLong("Statistics."+player.getWorld().getName()+".PlayTime")+seconds);
+		f.save();
+		
+		/*
+		 * Statistics:
+		 *   PlayTime:
+		 *   <GAMEMODE>:
+		 *     PlayTime:
+		 *     <WORLD>:
+		 *       PlayTime:
+		 *   <WORLD>:
+		 *     PlayTime:
+		 */
+	}
+
+	public long getPlayTime(String path) {
+		if(f.exist("Statistics."+path))
+			return f.getLong("Statistics."+path);
+		else
+			return 0;
+	}
+	
+	
+	
+	
 }

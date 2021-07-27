@@ -287,7 +287,13 @@ Options:
     - "xp give %player% 150"
     Commands:
     - "eco give %player% 25"
-    
+  
+  PlayTime:
+    # if you dont't want to count AF time as play time
+    UseAfkTime: false
+    # If you want to use default minecraft palytime statistics turn this off
+    UseCustomPlayTime: true
+  
   Disallowed-Items:
     Use: false
     Worlds:

@@ -1,12 +1,24 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
+import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
-import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.API.SeenType;
+import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.SPlayer;
-import me.devtec.servercontrolreloaded.utils.TabList;
+import me.devtec.servercontrolreloaded.utils.playtime.PlayTimeUtils;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.punishmentapi.PunishmentAPI;
@@ -14,17 +26,6 @@ import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.json.Reader;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
-
-import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 
@@ -88,7 +89,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 							.add("%ip-arrested%", PunishmentAPI.getBanList(c.getName()).isIPJailed()+"")
 							.add("%ip-muted%", PunishmentAPI.getBanList(c.getName()).isIPMuted()+"")
 							.add("%muted%", PunishmentAPI.getBanList(c.getName()).isMuted()+"")
-							.add("%playtime%", d?StringUtils.timeToString(TabList.playtime(c.getPlayer())):"-1s")
+							.add("%playtime%", d?StringUtils.timeToString(PlayTimeUtils.playtime(c.getPlayer())):"-1s")
 							.add("%x%", d?StringUtils.fixedFormatDouble(c.getPlayer().getLocation().getX()):"-1")
 							.add("%y%", d?StringUtils.fixedFormatDouble(c.getPlayer().getLocation().getY()):"-1")
 							.add("%z%", d?StringUtils.fixedFormatDouble(c.getPlayer().getLocation().getZ()):"-1")

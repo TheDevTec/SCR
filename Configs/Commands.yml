@@ -650,9 +650,21 @@ Time:
     SubPermission:
       Top: "SCR.Command.PlayTime.Top"
       Other: "SCR.Command.PlayTime.Other"
+      Gamemode: "SCR.Command.PlayTime.Gamemode"
+      World: "SCR.Command.PlayTime.World"
+      WorldGamemode: "SCR.Command.PlayTime.WorldGamemode"
     Help:
-    - "/PlayTime <player> - Get you playtime on server"
+    - "/PlayTime - Get your playtime on server"
     - "/PlayTime Top <page> - Get top active players on server"
+    - "&7"
+    - "/PlayTime <GAMEMODE> - Get your playtime with gamemode"
+    - "/PlayTime <world> - Get your playtime in a certain world"
+    - "/PlayTime <GAMEMODE> <world> - Get your playtime with gamemode and in certain world"
+    - "&7"
+    - "/PlayTime <player> - Get you players playtime on server"
+    - "/PlayTime <player> <GAMEMODE> - Get players playtime with gamemode"
+    - "/PlayTime <player> <world> - Get players playtime in a certain world"
+    - "/PlayTime <player> <GAMEMODE> <world> - Get players playtime with gamemode and in certain world"
     Enabled: true
     
 Warps:

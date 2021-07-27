@@ -13,10 +13,10 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import me.devtec.servercontrolreloaded.commands.time.PlayTime;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.servercontrolreloaded.utils.playtime.PlayTimeUtils;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Scheduler;
@@ -87,7 +87,7 @@ public class Tasks {
 		other();
 		tempfly();
 		tempGamemode();
-		playTop();
+		playTime();
 	}
 
 	public static void reload() {
@@ -280,21 +280,42 @@ public class Tasks {
 		}.runRepeating(0, 20* StringUtils.getTimeFromString(Loader.config.getString("Options.AutoMessage.Interval"))));
 	}
 	
-	public static void playTop() {
+	public static void playTime() {
+		/*
+		 * PlayTop task
+		 */
 		tasks.add(new Tasker() {
 			public void run() {
 				for (UUID sa : TheAPI.getUsers()) {
 					String n = LoaderClass.cache.lookupNameById(sa);
 					if(n!=null) {
-						long time = TabList.playtime(n);
+						long time = PlayTimeUtils.playtime(n);
 						if(time>0)
-							PlayTime.playtop.put(sa, time);
+							PlayTimeUtils.playtop.put(sa, time);
 					}
 				}
-				PlayTime.ranks.setMap(PlayTime.playtop);
+				PlayTimeUtils.ranks.setMap(PlayTimeUtils.playtop);
 			}
 		}.runRepeating(1, 300*20)
 		);
-		PlayTime.task=true;
+		PlayTimeUtils.task=true;
+		
+		/*
+		 * Custom PlayTime task
+		 */
+
+		tasks.add(new Tasker() {
+			public void run() {
+				
+				for(Player p : TheAPI.getOnlinePlayers()) {
+					if(!API.isAFK(p) || Loader.config.getBoolean("Options.PlayTime.UseAfkTime") ) {
+						SPlayer player = API.getSPlayer(p);
+						player.addPlayTime(1);
+					}
+				}
+				
+			}
+		}.runRepeating(20, 20)
+		);
 	}
 }
