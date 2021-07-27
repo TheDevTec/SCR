@@ -925,10 +925,10 @@ PlayTime:
     World: "%prefix% &7Your playing time in world &e%world% &7is &e%playtime%"
     WorldGamemode: "%prefix% &7Your playing time in world &e%world% &7with gamemode &e%gamemode% &7is &e%playtime%"
   Other: 
-    Global: "%prefix% &7Player %player% played time is &e%playtime%"
-    Gamemode: "%prefix% &7Player %player% played time with gamemode &e%gamemode% &7is &e%playtime%"
-    World: "%prefix% &7Player %player% played time in world &e%world% &7is &e%playtime%"
-    WorldGamemode: "%prefix% &7Player %player% played time in world &e%world% &7with gamemode &e%gamemode% &7is &e%playtime%"
+    Global: "%prefix% &7Player &e%player% &7played time is &e%playtime%"
+    Gamemode: "%prefix% &7Player &e%player% &7played time with gamemode &e%gamemode% &7is &e%playtime%"
+    World: "%prefix% &7Player &e%player% &7played time in world &e%world% &7is &e%playtime%"
+    WorldGamemode: "%prefix% &7Player &e%player% &7played time in world &e%world% &7with gamemode &e%gamemode% &7is &e%playtime%"
   PlayTop:
     Loading: "%prefix% Counting all players, please hold on .."
     Header: "%prefix% &7=====» &cPlayTop &e%page%/%pages% &7«====="

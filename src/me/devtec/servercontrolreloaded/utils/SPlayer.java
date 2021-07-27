@@ -40,9 +40,12 @@ public class SPlayer {
 	}
 
 	public User getUser() {
+		getUserA();
 		return f;
 	}
-	
+	public void getUserA() {
+		this.f= TheAPI.getUser(s);
+	}
 	public void setHP() {
 		if(getPlayer()==null)return;
 		getPlayer().setHealth(((Damageable)getPlayer()).getMaxHealth());
@@ -69,6 +72,7 @@ public class SPlayer {
 	}
 
 	public void enableTempGameMode(long time,GameMode g,boolean t) {
+		getUserA();
 		f.set("TempGamemode.Start",System.currentTimeMillis());
 		f.set("TempGamemode.Time",time);
 		f.set("TempGamemode.Prev",getPlayer().getGameMode());
@@ -86,10 +90,12 @@ public class SPlayer {
 	}
 
 	public boolean hasGameMode(){
+		getUserA();
 		return f.getBoolean("TempGamemode.Use");
 	}
 
 	public void enableTempFly(long stop) {
+		getUserA();
 		f.set("TempFly.Start", System.currentTimeMillis());
 		f.set("TempFly.Time", stop);
 		if (!hasTempFlyEnabled()) {
@@ -109,6 +115,7 @@ public class SPlayer {
 	}
 
 	public void enableFly() {
+		getUserA();
 		if (hasTempFlyEnabled()) {
 			f.setAndSave("TempFly.Use", false);
 		}
@@ -120,6 +127,7 @@ public class SPlayer {
 	}
 
 	public void disableFly() {
+		getUserA();
 		f.remove("TempFly");
 		f.remove("Fly");
 		f.save();
@@ -220,6 +228,7 @@ public class SPlayer {
 	}
 
 	public void setWalkSpeed() {
+		getUserA();
 		if(getPlayer()==null)return;
 		if (f.exist("WalkSpeed")) {
 			Player g = getPlayer();
@@ -233,6 +242,7 @@ public class SPlayer {
 	}
 
 	public void setFlySpeed() {
+		getUserA();
 		if(getPlayer()==null)return;
 		if (f.exist("FlySpeed")) {
 			Player g = getPlayer();
@@ -246,6 +256,7 @@ public class SPlayer {
 	}
 
 	public void enableGod() {
+		getUserA();
 		if(!f.getBoolean("God"))
 		f.setAndSave("God", true);
 		setHP();
@@ -263,6 +274,7 @@ public class SPlayer {
 	}
 
 	public void disableGod() {
+		getUserA();
 		f.remove("God");
 		f.save();
 	}
@@ -283,18 +295,22 @@ public class SPlayer {
 	}
 
 	public boolean hasFlyEnabled() {
+		getUserA();
 		return f.getBoolean("Fly")&&(getPlayer()==null||getPlayer()!=null&&getPlayer().getAllowFlight());
 	}
 
 	public boolean hasGodEnabled() {
+		getUserA();
 		return f.getBoolean("God");
 	}
 
 	public boolean hasTempFlyEnabled() {
+		getUserA();
 		return f.getBoolean("TempFly.Use");
 	}
 	
 	public void addPlayTime(long seconds) {
+		getUserA();
 		GameMode g = player.getGameMode();
 
 		f.set("Statistics.PlayTime", f.getLong("Statistics.PlayTime")+seconds);
@@ -316,6 +332,7 @@ public class SPlayer {
 	}
 
 	public long getPlayTime(String path) {
+		getUserA();
 		if(f.exist("Statistics."+path))
 			return f.getLong("Statistics."+path);
 		else

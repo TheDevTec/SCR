@@ -909,8 +909,16 @@ Mirror:
 
 # Translations for PlayTime commands
 PlayTime:
-  Time: "%prefix% &7Tvůj odehraný čas je &e%playtime%"
-  Other: "%prefix% &7Odehraný čas hráče &e%player% &7je &e%playtime%"
+  Time: 
+    Global: "%prefix% &7Tvůj odehraný čas je &e%playtime%"
+    Gamemode: "%prefix% &7Tvůj odehraný čas s gamemodem &e%gamemode% &7je &e%playtime%"
+    World: "%prefix% &7Tvůj odehraný čas ve světě &e%world% &7je &e%playtime%"
+    WorldGamemode: "%prefix% &7Tvůj odehraný čas ve světě &e%world% &7s gamemodem &e%gamemode% &7je &e%playtime%"
+  Other: 
+    Global: "%prefix% &7Odehraný čas hráče &e%player% &7je &e%playtime%"
+    Gamemode: "%prefix% &7Odehraný čas hráče &e%player% &7s gamemodem &e%gamemode% &7je &e%playtime%"
+    World: "%prefix% &7Odehraný čas hráče &e%player% &7ve světě &e%world% &7je &e%playtime%"
+    WorldGamemode: "%prefix% &7Odehraný čas hráče &e%player% &7ve světě &e%world% &7s gamemodem &e%gamemode% &7je &e%playtime%"
   PlayTop:
     Loading: "%prefix% Počítání hráčů... prosím počkejte .."
     Header: "%prefix% &7=====» &cPlayTop &e%page%/%pages% &7«====="
