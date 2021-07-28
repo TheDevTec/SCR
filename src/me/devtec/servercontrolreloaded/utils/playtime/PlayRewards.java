@@ -7,6 +7,7 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.utils.playtime.PlayTimeUtils.PlayTimeType;
 import me.devtec.theapi.TheAPI;
@@ -75,7 +76,10 @@ public class PlayRewards {
 			return mode;
 		return null;
 	}
-	
+
+	public boolean isEnabled() {
+		return Loader.rewards.getBoolean("PlayTime."+name+".Enabled");
+	}
 	public boolean isValid() {
 		if(type==null) return false;
 		if(name==null || name.isEmpty()) return false;
@@ -111,6 +115,8 @@ public class PlayRewards {
 				public void run() {
 					
 					for(Player p : TheAPI.getOnlinePlayers()) {
+						if(API.isAFK(p) && !Loader.config.getBoolean("Options.PlayTime.UseAfkTime") )
+							continue;
 						long online = 0;
 						if(players.containsKey(p) ) {
 							online=players.get(p);

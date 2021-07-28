@@ -289,7 +289,7 @@ Options:
     - "eco give %player% 25"
   
   PlayTime:
-    # if you dont't want to count AF time as play time
+    # if you dont't want to count AF time as play time (also apply for PlayTime rewards)
     UseAfkTime: false
     # If you want to use default minecraft palytime statistics turn this off
     UseCustomPlayTime: true

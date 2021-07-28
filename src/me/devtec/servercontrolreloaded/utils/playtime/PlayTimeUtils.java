@@ -134,6 +134,9 @@ public class PlayTimeUtils {
 		for(String reward : Loader.rewards.getKeys("PlayTime")) {
 			PlayRewards rew = new PlayRewards(reward);
 			if(rew.isValid()) {
+				if(!rew.isEnabled())
+					continue;
+				
 				rew.start();
 				playrewards.put(reward, rew);
 				continue;
