@@ -905,6 +905,7 @@ public class Loader extends JavaPlugin implements Listener {
 		TabList.reload();
 		Tasks.reload();
 		CommandsManager.load();
+		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading of SCR took "+(System.currentTimeMillis()-loading)+"ms", TheAPI.getConsole());
 		aad=1;
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
