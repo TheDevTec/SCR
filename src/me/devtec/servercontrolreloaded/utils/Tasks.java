@@ -64,6 +64,7 @@ public class Tasks {
 		tests = 0;
 		l.unregister();
 		tasks.clear();
+		PlayTimeUtils.unloadRewards();
 	}
 
 	public static void load() {
@@ -88,6 +89,7 @@ public class Tasks {
 		tempfly();
 		tempGamemode();
 		playTime();
+		PlayTimeUtils.loadRewards();
 	}
 
 	public static void reload() {
@@ -281,6 +283,7 @@ public class Tasks {
 	}
 	
 	public static void playTime() {
+		
 		/*
 		 * PlayTop task
 		 */

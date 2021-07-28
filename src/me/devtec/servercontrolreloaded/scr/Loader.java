@@ -84,7 +84,7 @@ import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
-	public static Config config, plac, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb,guicreator,portals,customCmds;
+	public static Config config, plac, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb,guicreator,portals,customCmds, rewards;
 	public static List<Rule> rules = new ArrayList<>();
 	private int task;
 	private long time, rkick;

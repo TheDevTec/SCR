@@ -1,0 +1,49 @@
+PlayTime:
+  Online:
+    # Types: GLOBAL, GAMEMODE, WORLD, WORLDGAMEMODE
+    Type: "GLOBAL"
+    
+    # GamemodeTypes: SURVIVAL, ADVENTURE, CREATIVE, SPECTATOR
+    # This is needed if Type is GAMEMODE or WORLDGAMEMODE
+    # Gamemode: CREATIVE
+    
+    # World: enter world name
+    # This is needed if Type is WORLD or WORLDGAMEMODE
+    # World: "world"
+    
+    # If Repeatable == true player must meet all the conditions all the time
+    # If Repeatable == false playtime will be counted as the total time on the server (with a certain condition -> Type)
+    Repeatable: true
+    
+    Time: "1h"
+    
+    # Period how often will be plugin checking time and playtime (Ticks -> 20 = 1 sec)
+    # Period: 20
+    
+    Commands: []
+    Messages:
+    - "&7Given reward!! UUuU"
+  Test:
+    # Types: GLOBAL, GAMEMODE, WORLD, WORLDGAMEMODE
+    Type: "GAMEMODE"
+    
+    # GamemodeTypes: SURVIVAL, ADVENTURE, CREATIVE, SPECTATOR
+    # This is needed if Type is GAMEMODE or WORLDGAMEMODE
+    Gamemode: "CREATIVE"
+    
+    # World: enter world name
+    # This is needed if Type is WORLD or WORLDGAMEMODE
+    # World: "world"
+    
+    # If Repeatable == true player must meet all the conditions all the time
+    # If Repeatable == false playtime will be counted as the total time on the server (with a certain condition -> Type)
+    Repeatable: false
+    
+    Time: "300"
+    
+    # Period how often will be plugin checking time and playtime (Ticks -> 20 = 1 sec)
+    # Period: 20
+    
+    Commands: []
+    Messages:
+    - "&7Given reward Test!! UUuU"

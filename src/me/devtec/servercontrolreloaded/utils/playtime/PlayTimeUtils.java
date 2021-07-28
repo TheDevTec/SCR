@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.utils.Tasks;
+import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.sortedmap.RankingAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.theapiutils.LoaderClass;
@@ -126,5 +127,26 @@ public class PlayTimeUtils {
 		return Loader.trans.getString("PlayTime.PlayTop.Top").replace("%position%", pos+ "")
 				.replace("%player%", player).replace("%playername%", player)
 				.replace("%playtime%", StringUtils.timeToString( playtime(player) ));
+	}
+
+	public static HashMap<String, PlayRewards> playrewards = new HashMap<>();
+	public static void loadRewards() {
+		for(String reward : Loader.rewards.getKeys("PlayTime")) {
+			PlayRewards rew = new PlayRewards(reward);
+			if(rew.isValid()) {
+				rew.start();
+				playrewards.put(reward, rew);
+				continue;
+			}
+			else {
+				TheAPI.getConsole().sendMessage("&4ERROR: Reward &c"+reward+" &6is not valid! Try and repair this reward in Rewards.yml");
+			}
+			continue;
+		}
+	}
+
+	public static void unloadRewards() {
+		for(PlayRewards reward : playrewards.values())
+			reward.stop();
 	}
 }

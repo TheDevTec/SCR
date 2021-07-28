@@ -81,7 +81,7 @@ public class Configs {
 		NameTagChanger.anim.reload();
 	}
 	
-	static List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Placeholders.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml","GUICreator.yml");
+	static List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Placeholders.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml","GUICreator.yml", "Rewards.yml");
 	
 	private static void copyDefauts() {
 		Data data = new Data();
@@ -124,6 +124,9 @@ public class Configs {
 	    		break;
 	    	case "Animations.yml":
 	    		c=Loader.anim;
+	    		break;
+	    	case "Rewards.yml":
+	    		c=Loader.rewards;
 	    		break;
 	    	case "Translations/translation-en.yml":
 	    		c=Loader.english;
@@ -173,6 +176,9 @@ public class Configs {
 	    		break;
 	    	case "Animations.yml":
 	    		Loader.anim=c;
+	    		break;
+	    	case "Rewards.yml":
+	    		Loader.rewards=c;
 	    		break;
 			case "GUICreator.yml":
 				Loader.guicreator=c;
