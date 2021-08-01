@@ -76,6 +76,7 @@ public class LoginEvent implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void JoinEvent(PlayerLoginEvent e) {
+		if(e.getResult()!=Result.ALLOWED)return;
 		Player p = e.getPlayer();
 		if(Loader.config.getBoolean("ChatFormat.enabled")) {
 			ChatFormatter.setupName(p);
@@ -112,6 +113,7 @@ public class LoginEvent implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void AsyncPreLoginEvent(AsyncPlayerPreLoginEvent e){
+		if(e.getLoginResult()!=AsyncPlayerPreLoginEvent.Result.ALLOWED)return;
 		if(Loader.config.getBoolean("CountryBlocker.Enabled")){
 			try {
 			Map<String,Object> country = WhoIs.getCountry(e.getAddress().toString().replaceAll("[^0-9.]", "").replace("..", ""));

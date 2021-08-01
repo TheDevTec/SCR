@@ -1,13 +1,15 @@
 package me.devtec.servercontrolreloaded.utils;
 
-import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.theapi.placeholderapi.PlaceholderAPI;
-import me.devtec.theapi.utils.StringUtils;
-import org.bukkit.entity.Player;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.bukkit.entity.Player;
+
+import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.utils.Animation;
+import me.devtec.theapi.utils.StringUtils;
 
 public class AnimationManager {
 	Map<String, Animation> a = new HashMap<>();
@@ -45,6 +47,6 @@ public class AnimationManager {
 	
 	public void update() {
 		for(Animation e : a.values())
-			e.update();
+			e.next();
 	}
 }

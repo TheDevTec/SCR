@@ -58,7 +58,7 @@ public class TabList {
 	 * @param type 0 - player, 1 - world, 2 - group
 	 */
 	public static String getPrefix(String path, boolean nametag, int type) {
-		return Loader.tab.getString((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups."))  +path+ '.'+(nametag?"NameTag":"TabList")+".Prefix");
+		return Loader.tab.getString((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups."))  +path+ "."+(nametag?"NameTag":"TabList")+".Prefix");
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class TabList {
 	 * @param type 0 - player, 1 - world, 2 - group
 	 */
 	public static String getSuffix(String path, boolean nametag, int type) {
-		return Loader.tab.getString((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) + path+'.'+(nametag?"NameTag":"TabList")+".Suffix");
+		return Loader.tab.getString((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) + path+"."+(nametag?"NameTag":"TabList")+".Suffix");
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class TabList {
 	 * @param value New prefix
 	 */
 	public static void setPrefix(String path, boolean nametag, int type, String value) {
-		Loader.tab.set((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups."))  +path+ '.'+(nametag?"NameTag":"TabList")+".Prefix", value);
+		Loader.tab.set((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups."))  +path+ "."+(nametag?"NameTag":"TabList")+".Prefix", value);
 		Loader.tab.save();
 	}
 
@@ -97,7 +97,7 @@ public class TabList {
 	 * @param value New prefix
 	 */
 	public static void setSuffix(String path, boolean nametag, int type, String value) {
-		Loader.tab.set((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) + path+'.'+(nametag?"NameTag":"TabList")+".Suffix", value);
+		Loader.tab.set((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) + path+"."+(nametag?"NameTag":"TabList")+".Suffix", value);
 		Loader.tab.save();
 	}
 
@@ -154,25 +154,25 @@ public class TabList {
 
 	public static String getPrefix(Player p, boolean nametag) {
 		if(Loader.tab==null)return null;
-		if (Loader.tab.exists("PerPlayer." + p.getName() + '.'+(nametag?"NameTag":"TabList")+".Prefix"))
-			return replace(Loader.tab.getString("PerPlayer." + p.getName() + '.'+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
-		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + '.'+(nametag?"NameTag":"TabList")+".Prefix"))
-			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + '.'+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
+		if (Loader.tab.exists("PerPlayer." + p.getName() + "."+(nametag?"NameTag":"TabList")+".Prefix"))
+			return replace(Loader.tab.getString("PerPlayer." + p.getName() + "."+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
+		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + "."+(nametag?"NameTag":"TabList")+".Prefix"))
+			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + "."+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
 		String g = Staff.getGroup(p);
-		if (Loader.tab.exists("Groups." + g + '.'+(nametag?"NameTag":"TabList")+".Prefix"))
-			return replace(Loader.tab.getString("Groups." + g + '.'+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
+		if (Loader.tab.exists("Groups." + g + "."+(nametag?"NameTag":"TabList")+".Prefix"))
+			return replace(Loader.tab.getString("Groups." + g + "."+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
 		return null;
 	}
 
 	public static String getSuffix(Player p, boolean nametag) {
 		if(Loader.tab==null)return null;
-		if (Loader.tab.exists("PerPlayer." + p.getName() + '.'+(nametag?"NameTag":"TabList")+".Suffix"))
-			return replace(Loader.tab.getString("PerPlayer." + p.getName() + '.'+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
-		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + '.'+(nametag?"NameTag":"TabList")+".Suffix"))
-			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + '.'+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
+		if (Loader.tab.exists("PerPlayer." + p.getName() + "."+(nametag?"NameTag":"TabList")+".Suffix"))
+			return replace(Loader.tab.getString("PerPlayer." + p.getName() + "."+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
+		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + "."+(nametag?"NameTag":"TabList")+".Suffix"))
+			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + "."+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
 		String g = Staff.getGroup(p);
-		if (Loader.tab.exists("Groups." + g + '.'+(nametag?"NameTag":"TabList")+".Suffix"))
-			return replace(Loader.tab.getString("Groups." + g + '.'+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
+		if (Loader.tab.exists("Groups." + g + "."+(nametag?"NameTag":"TabList")+".Suffix"))
+			return replace(Loader.tab.getString("Groups." + g + "."+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
 		return null;
 	}
 
@@ -354,12 +354,12 @@ public class TabList {
 	private static String getPath(Player p, String what) {
 		if (what.equalsIgnoreCase("footer") && setting.tab_footer
 				|| what.equalsIgnoreCase("header") && setting.tab_header) {
-			if (Loader.tab.exists("PerPlayer." + p.getName() + '.' + what))
-				return get("PerPlayer." + p.getName() + '.' + what, p);
-			else if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + '.' + what))
-				return get("PerWorld." + p.getWorld().getName() + '.' + what, p);
-			else if (Loader.tab.exists("PerGroup." + Staff.getGroup(p) + '.' + what))
-				return get("PerGroup." + Staff.getGroup(p) + '.' + what, p);
+			if (Loader.tab.exists("PerPlayer." + p.getName() + "." + what))
+				return get("PerPlayer." + p.getName() + "." + what, p);
+			else if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + "." + what))
+				return get("PerWorld." + p.getWorld().getName() + "." + what, p);
+			else if (Loader.tab.exists("PerGroup." + Staff.getGroup(p) + "." + what))
+				return get("PerGroup." + Staff.getGroup(p) + "." + what, p);
 			else {
 				return get(what, p);
 			}

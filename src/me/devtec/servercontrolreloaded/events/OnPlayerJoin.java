@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 
 import me.devtec.servercontrolreloaded.commands.message.Mail;
 import me.devtec.servercontrolreloaded.commands.other.Vanish;
@@ -56,6 +57,7 @@ public class OnPlayerJoin implements Listener {
 	
 	@EventHandler
 	public void onLogin(PlayerLoginEvent e) {
+		if(e.getResult()!=Result.ALLOWED)return;
 		Player p = e.getPlayer();
 		Tasks.regPlayer(p);
 		User d = TheAPI.getUser(p);
@@ -71,6 +73,7 @@ public class OnPlayerJoin implements Listener {
 				SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
 					@Override
 					public void run(SkinData data) {
+						if(!p.isOnline())return;
 						SkinManager.loadSkin(p, data);
 					}
 				}, false);
@@ -80,6 +83,7 @@ public class OnPlayerJoin implements Listener {
 				SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
 					@Override
 					public void run(SkinData data) {
+						if(!p.isOnline())return;
 						SkinManager.loadSkin(p, data);
 					}
 				}, false);
@@ -267,55 +271,55 @@ public class OnPlayerJoin implements Listener {
 		p.setFlying(false);
 		p.setAllowFlight(false);
 		try {
-		Vanish.task.remove(p.getName());
-		if (!API.hasVanish(p.getName())) {
-				Object o = Loader.events.get("onQuit.Text");
-				if(o!=null) {
-					if(o instanceof Collection) {
-						for(Object fa : (Collection<?>)o) {
-							if(fa!=null)
-							TheAPI.bcMsg(replaceAll(fa+"",p));
-						}}else
-							if(!(""+o).trim().isEmpty())
-								TheAPI.bcMsg(replaceAll(""+o, p));
-			}}
-		Object o = Loader.events.get("onQuit.Messages");
-		if(o!=null) {
-			if(o instanceof Collection) {
-			for(Object fa : (Collection<?>)o) {
-				if(fa!=null)
-				TheAPI.msg(replaceAll(fa+"",p),p);
-			}}else
-				if(!(""+o).trim().isEmpty())
-					TheAPI.msg(replaceAll(""+o, p),p);
-		}
-		o = Loader.events.get("onQuit.Commands");
-		if(o!=null) {
-			if(o instanceof Collection) {
-			for(Object fa : (Collection<?>)o) {
-				if(fa!=null)
-					TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
-			}}else
-				if(!(""+o).trim().isEmpty())
-					TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
-		}
-		o = Loader.events.get("onQuit.Broadcast");
-		if(o!=null) {
-			if(o instanceof Collection) {
+			Vanish.task.remove(p.getName());
+			if (!API.hasVanish(p.getName())) {
+					Object o = Loader.events.get("onQuit.Text");
+					if(o!=null) {
+						if(o instanceof Collection) {
+							for(Object fa : (Collection<?>)o) {
+								if(fa!=null)
+								TheAPI.bcMsg(replaceAll(fa+"",p));
+							}}else
+								if(!(""+o).trim().isEmpty())
+									TheAPI.bcMsg(replaceAll(""+o, p));
+				}}
+			Object o = Loader.events.get("onQuit.Messages");
+			if(o!=null) {
+				if(o instanceof Collection) {
 				for(Object fa : (Collection<?>)o) {
 					if(fa!=null)
-					TheAPI.bcMsg(replaceAll(fa+"",p));
+					TheAPI.msg(replaceAll(fa+"",p),p);
 				}}else
 					if(!(""+o).trim().isEmpty())
-						TheAPI.bcMsg(replaceAll(""+o, p));
-		}
-		d.set("LastLeave", setting.format_date_time.format(new Date()));
-		d.set("LastLeavePosition", StringUtils.getLocationAsString(p.getLocation()));
-		if(fly)
-			d.set("FlyOnQuit", true);
-		else
-			d.remove("FlyOnQuit");
-		d.set("DisconnectWorld", p.getWorld().getName());
+						TheAPI.msg(replaceAll(""+o, p),p);
+			}
+			o = Loader.events.get("onQuit.Commands");
+			if(o!=null) {
+				if(o instanceof Collection) {
+				for(Object fa : (Collection<?>)o) {
+					if(fa!=null)
+						TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
+				}}else
+					if(!(""+o).trim().isEmpty())
+						TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
+			}
+			o = Loader.events.get("onQuit.Broadcast");
+			if(o!=null) {
+				if(o instanceof Collection) {
+					for(Object fa : (Collection<?>)o) {
+						if(fa!=null)
+						TheAPI.bcMsg(replaceAll(fa+"",p));
+					}}else
+						if(!(""+o).trim().isEmpty())
+							TheAPI.bcMsg(replaceAll(""+o, p));
+			}
+			d.set("LastLeave", setting.format_date_time.format(new Date()));
+			d.set("LastLeavePosition", StringUtils.getLocationAsString(p.getLocation()));
+			if(fly)
+				d.set("FlyOnQuit", true);
+			else
+				d.remove("FlyOnQuit");
+			d.set("DisconnectWorld", p.getWorld().getName());
 		}catch(Exception | NoSuchFieldError | NoSuchMethodError err) {}
 		new Tasker() {
 			public void run() {
