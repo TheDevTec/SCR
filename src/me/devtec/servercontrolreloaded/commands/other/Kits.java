@@ -149,10 +149,11 @@ public class Kits implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if (args.length == 1) {
-			if (getKits().contains(args[0].toLowerCase())) {
+			String kitname = Loader.findKitName(args[0]);
+			if (kitname!=null) {
 				if (Loader.hasKits(s, kit(args))) {
 					if (s instanceof Player) {
-						giveKit((Player)s, Loader.getKit(args[0].toLowerCase()), true, true, true);
+						giveKit((Player)s, Kit.load((Player)s, kitname), true, true, true);
 						return true;
 					}
 					Loader.Help(s, "Kit", "Other");
@@ -161,14 +162,15 @@ public class Kits implements CommandExecutor, TabCompleter {
 				Loader.noPerms(s, "Kit", "Other");
 				return true;
 			}
-			Loader.sendMessages(s, "Kits.NotExist", Placeholder.c().replace("%kit%", args[0].toLowerCase()));
+			Loader.sendMessages(s, "Kits.NotExist", Placeholder.c().replace("%kit%", args[0]));
 			return true;
 		}
 		if (args.length == 2) {
-			if (getKits().contains(args[0].toLowerCase())) {
+			String kitname = Loader.findKitName(args[0]);
+			if (kitname!=null) {
 				if (Loader.hasKits(s, kit(args))) {
 					if (args[0].equals("*")) {
-						Repeat.a(s, "kit " + args[0].toLowerCase() + " *");
+						Repeat.a(s, "kit " + kitname + " *");
 						return true;
 					}
 					Player t = TheAPI.getPlayer(args[1]);
@@ -177,14 +179,15 @@ public class Kits implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					if (s == t) {
-						giveKit(t, Loader.getKit(args[0].toLowerCase()), true, true, true);
+						giveKit(t, Kit.load(t, kitname), true, true, true);
 						return true;
 					}
 					if(Loader.has(s, "Kits", "Other", "Give")) {
-					giveKit(t, Loader.getKit(args[0].toLowerCase()), false, false, false);
-					Loader.sendMessages(s, "Kits.Give.Sender", Placeholder.c().replace("%kit%", args[0].toLowerCase())
+						Kit kit = Kit.load(t, kitname);
+					giveKit(t, kit, false, false, false);
+					Loader.sendMessages(s, "Kits.Give.Sender", Placeholder.c().replace("%kit%", kit.getName())
 							.replace("%player%", t.getName()).replace("%playername%", t.getDisplayName()));
-					Loader.sendMessages(t, "Kits.Give.Receiver", Placeholder.c().replace("%kit%", args[0].toLowerCase())
+					Loader.sendMessages(t, "Kits.Give.Receiver", Placeholder.c().replace("%kit%", kit.getName())
 							.replace("%player%", s.getName()).replace("%playername%", s.getName()));
 					return true;
 					}
@@ -205,10 +208,14 @@ public class Kits implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		if (args.length == 1)
-			return StringUtils.copyPartialMatches(args[0], kits(s));
-		if (args.length == 2)
-			return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
+		if(Loader.has(s, "Kits", "Other")) {
+			if (args.length == 1)
+				return StringUtils.copyPartialMatches(args[0], kits(s));
+			if(Loader.has(s, "Kits", "Other", "Give")) {
+				if (args.length == 2)
+					return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
+			}
+		}
 		return Arrays.asList();
 	}
 

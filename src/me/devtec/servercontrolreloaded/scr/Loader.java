@@ -44,7 +44,6 @@ import me.devtec.servercontrolreloaded.utils.Configs;
 import me.devtec.servercontrolreloaded.utils.Converter;
 import me.devtec.servercontrolreloaded.utils.DisplayManager;
 import me.devtec.servercontrolreloaded.utils.Eco;
-import me.devtec.servercontrolreloaded.utils.Kit;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
 import me.devtec.servercontrolreloaded.utils.NameTagChanger;
@@ -94,7 +93,6 @@ public class Loader extends JavaPlugin implements Listener {
 	private static SpigotUpdateChecker updater;
 	public static Chat vault = null;
 	public static Permission perms = null;
-	public static Map<String, Kit> kits = new HashMap<>();
 	private static int aad = 0;
 	
 	public static class Placeholder {
@@ -894,14 +892,6 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		Portal.reload();
 		MultiWorldsUtils.gamemodeWorldCheck();
-		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading kits:", TheAPI.getConsole());
-		for (String s : Loader.kit.getKeys("Kits")) {
-			TheAPI.msg(setting.prefix + "   &e"+s+"&7:", TheAPI.getConsole());
-			Kit kit = Kit.load(s);
-			kits.put(s,kit);
-			TheAPI.msg(setting.prefix + "     &7Cooldown: &e" + StringUtils.setTimeToString(kit.getDelay()), TheAPI.getConsole());
-			TheAPI.msg(setting.prefix + "     &7Cost: &e$" + API.setMoneyFormat(kit.getCost(), false), TheAPI.getConsole());
-		}
 		TabList.reload();
 		Tasks.reload();
 		CommandsManager.load();
@@ -1066,10 +1056,10 @@ public class Loader extends JavaPlugin implements Listener {
 		return cmds.exists(section+"."+cmd+".SubPermission."+subPerm)?cmds.getString(section+"."+cmd+".SubPermission."+subPerm).equals("")?true:s.hasPermission(cmds.getString(section+"."+cmd+".SubPermission."+subPerm)):true;
 	}
 
-	public static Kit getKit(String kitName) {
-		for(Entry<String, Kit> s : kits.entrySet())
-			if(s.getKey().equalsIgnoreCase(kitName))return s.getValue();	
-		return Kit.load(kitName);
+	public static String findKitName(String kitName) {
+		for(String s : kit.getKeys("Kits"))
+			if(s.equalsIgnoreCase(kitName))return s;	
+		return null;
 	}
 
 	public static boolean hasKits(CommandSender p, String name) {
