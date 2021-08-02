@@ -112,6 +112,36 @@ public class PlayTimeUtils {
 		return playtime(player);
 		}
 	
+	public static long playtime(Player s, GameMode mode, World world) {
+		if(s==null)return -1;
+		if( !Loader.config.getBoolean("Options.PlayTime.UseCustomPlayTime"))
+			return s.getStatistic(st)/20;
+		else{
+			if(mode!=null && world!=null)
+				return API.getSPlayer(s).getPlayTime(mode+"."+world.getName()+".PlayTime");
+			if(mode!=null)
+				return API.getSPlayer(s).getPlayTime(mode+".PlayTime");
+			if(world!=null)
+				return API.getSPlayer(s).getPlayTime(world.getName()+".PlayTime");
+			}
+		return playtime(s);
+	}
+	public static long playtime(String player, GameMode mode, World world) {
+		OfflinePlayer s = Bukkit.getOfflinePlayer(player);
+		if(s==null)return -1;
+		if( !Loader.config.getBoolean("Options.PlayTime.UseCustomPlayTime"))
+			return s.getStatistic(st)/20;
+		else{
+			if(mode!=null && world!=null)
+				return API.getSPlayer(s).getPlayTime(mode+"."+world.getName()+".PlayTime");
+			if(mode!=null)
+				return API.getSPlayer(s).getPlayTime(mode+".PlayTime");
+			if(world!=null)
+				return API.getSPlayer(s).getPlayTime(world.getName()+".PlayTime");
+			}
+		return playtime(player);
+	}
+	
 	public static boolean task = false;
 	
 	public static String getTop(int pos) {
