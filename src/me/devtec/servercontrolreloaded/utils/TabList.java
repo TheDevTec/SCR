@@ -6,7 +6,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Statistic;
+import org.bukkit.World;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 
@@ -202,6 +205,17 @@ public class TabList {
 				if(API.canSee(p,s.getName()))++seen;
 			header=header.replace("%online%", seen + "");
 		}
+		/*
+		 * Playtime Placeholders
+		 * 
+		 *  %scr_playtime%
+		 *  %scr_playtime_<player>%
+		 *  %scr_playtime_<player>_<world>%
+		 *  %scr_playtime_<player_<world>_<GAMEMODE>%
+		 *  %scr_playtime_<player>_<GAMEMODE>
+		 *  %scr_playtime_top_<position>%
+		 *  
+		 */
 		if(header.contains("%playtime%")) {
 			header=header.replace("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime(p)));
 		}
@@ -215,13 +229,49 @@ public class TabList {
 					}
 				}
 			}else {
-				String player = s.replace("playtime_", "").replace("%", "");
-				if(TheAPI.existsUser(player)) {
-					header = header.replace("%playtime_"+player+"%", StringUtils.timeToString(  PlayTimeUtils.playtime(player) ));
+				String str = s.replace("playtime_", "").replace("%", "");
+				String player = null;
+				GameMode mode = null;
+				World world = null;
+				for(String value : str.split("[_]")) {
+					if(TheAPI.existsUser(value)) {
+						player = value;
+					continue;
+					}
+					if(Bukkit.getWorld(value)!=null) {
+						world = Bukkit.getWorld(value);
+					continue;
+					}
+					if(GameMode.valueOf(value.toUpperCase())!=null) {
+						mode = GameMode.valueOf(value.toUpperCase());
+					continue;
+					}
 				}
-				
+				if( player!=null && !player.isEmpty() && TheAPI.existsUser(player)) {
+					if(mode!=null && world!=null)
+						header = header.replace("%playtime_"+player+"_"+world.getName()+"_"+mode.toString().toLowerCase()+"%", StringUtils.timeToString(PlayTimeUtils.playtime(player, mode, world)));
+					if(mode!=null)
+						header = header.replace("%playtime_"+player+"_"+mode.toString().toLowerCase()+"%", StringUtils.timeToString(PlayTimeUtils.playtime(player, mode, null)));
+					if(world!=null)
+						header = header.replace("%playtime_"+player+"_"+world.getName()+"%", StringUtils.timeToString(PlayTimeUtils.playtime(player, null, world)));
+					if(world==null && mode==null)
+						header = header.replace("%playtime_"+player+"%", StringUtils.timeToString(  PlayTimeUtils.playtime(player) ));
+				}
+				if(player==null) {
+					if(TheAPI.existsUser(p)) {
+						if(mode!=null && world!=null)
+							header = header.replace("%playtime_"+world.getName()+"_"+mode.toString().toLowerCase()+"%", StringUtils.timeToString(PlayTimeUtils.playtime(p, mode, world)));
+						if(mode!=null)
+							header = header.replace("%playtime_"+mode.toString().toLowerCase()+"%", StringUtils.timeToString(PlayTimeUtils.playtime(p, mode, null)));
+						if(world!=null)
+							header = header.replace("%playtime_"+world.getName()+"%", StringUtils.timeToString(PlayTimeUtils.playtime(p, null, world)));
+						if(world==null && mode==null)
+							header = header.replace("%playtime%", StringUtils.timeToString(  PlayTimeUtils.playtime(p) ));
+					}
+				}
 			}
 		}
+		
 		if(header.contains("%ping%"))
 			header=header.replace("%ping%", Loader.getInstance.pingPlayer(p));
 		;if(header.contains("%world%"))
