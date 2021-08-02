@@ -557,6 +557,7 @@ Mail:
   Empty: "%prefix% Nemáš žiaden mail"
   Clear: "%prefix% Maily vymazené"
   Sent: "%prefix% Poslal si mail hráčovi &e%player%"
+  Notification: "%prefix% Máte &e%amount% &7mailů"
   
 # Translations for WalkSpeed, FlySpeed and Speed commands
 Speed:

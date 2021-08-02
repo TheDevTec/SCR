@@ -573,6 +573,7 @@ Mail:
   Empty: "%prefix% You have no mail"
   Clear: "%prefix% Mails cleared"
   Sent: "%prefix% You sent mail to &e%player%"
+  Notification: "%prefix% You have &e%amount% &7mails"
   
 # Translations for WalkSpeed, FlySpeed and Speed commands
 Speed:
