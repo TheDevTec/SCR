@@ -1,9 +1,9 @@
 package me.devtec.servercontrolreloaded.utils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.Statistic;
@@ -26,24 +26,24 @@ import me.devtec.theapi.utils.reflections.Ref;
 
 public class TabList {
 	// GROUP, PRIORITE
-	private static HashMap<String, String> sorting = new HashMap<>();
+	protected static HashMap<String, String> sorting = new HashMap<>();
 
 	public static void reload() {
 		sorting.clear();
-		List<String> priorites = generate(Loader.tab.getKeys("Groups").size());
+		List<String> sd = Loader.tab.getStringList("Options.Sorting-Groups");
+		List<String> priorites = generate(sd.size());
 		int current = 0;
-		for(String a : Loader.tab.getKeys("Groups"))
-			sorting.put(priorites.get(current++), a);
+		for(String a : sd)
+			sorting.put(a, priorites.get(current++));
 		
 	}
 	
 	//limit 1000 groups
 	private static List<String> generate(int size) {
-		List<String> a = new ArrayList<>();
+		List<String> a = new LinkedList<>();
 		for(int i = 0; i < size; ++i) {
 			String s = "";
 			int limit = 4-(i+"").length();
-			if(limit > 0)
 			for(int d = 0; d < limit; ++d)
 				s+="0";
 			s+=i;

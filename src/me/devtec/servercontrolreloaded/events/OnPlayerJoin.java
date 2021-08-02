@@ -20,6 +20,7 @@ import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.API.TeleportLocation;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.servercontrolreloaded.utils.ChatFormatter;
 import me.devtec.servercontrolreloaded.utils.DisplayManager;
 import me.devtec.servercontrolreloaded.utils.NameTagChanger;
 import me.devtec.servercontrolreloaded.utils.SPlayer;
@@ -45,7 +46,8 @@ import me.devtec.theapi.utils.reflections.Ref;
 public class OnPlayerJoin implements Listener {
 
 	public static String replaceAll(String s, Player p) {
-		String name = p.getDisplayName()==null?p.getName():p.getDisplayName();
+		String name = ChatFormatter.displayName(p);
+		if(name==null)name=p.getDisplayName()==null?p.getName():p.getDisplayName();
 		return PlaceholderAPI.setPlaceholders(p, s.replace("%player%", p.getName())
 				.replace("%playername%", name)
 				.replace("%customname%", p.getCustomName() != null ? p.getCustomName() : name)
@@ -125,7 +127,7 @@ public class OnPlayerJoin implements Listener {
 						Vanish.task.put(p.getName(), new Tasker() {
 							@Override
 							public void run() {
-								if(!API.hasVanish(p.getName()) || !p.isOnline()) {
+								if(!p.isOnline() || !API.hasVanish(p.getName())) {
 									cancel();
 									return;
 								}

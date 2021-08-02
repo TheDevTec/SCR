@@ -1,11 +1,13 @@
 package me.devtec.servercontrolreloaded.utils;
 
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.NameTagAPI;
+import java.util.HashMap;
+
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
-import java.util.HashMap;
+import me.devtec.servercontrolreloaded.scr.API;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.NameTagAPI;
 
 public class NameTagChanger {
 	static HashMap<Player, NameTagAPI> t = new HashMap<>();
@@ -14,29 +16,27 @@ public class NameTagChanger {
 	public static void setNameTag(Player p, String prefix, String suffix) {
 		Tasks.regPlayer(p);
 		if (setting.tab_sort) {
+			String sortGroup = TabList.sorting.get(API.getGroup(p))+Tasks.sss.get(p.getName());
 			if (setting.tab_nametag) {
-				if (!t.containsKey(p))
-					t.put(p, TheAPI.getNameTagAPI(p, anim.replace(p,prefix), anim.replace(p,suffix)));
 				NameTagAPI n = t.get(p);
+				if (n==null)
+					t.put(p, n=TheAPI.getNameTagAPI(p, anim.replace(p,prefix), anim.replace(p,suffix)));
 				n.setPrefix(anim.replace(p,prefix));
 				n.setSuffix(anim.replace(p,suffix));
-				n.setNameTag(Tasks.sss.get(p.getName()));
+				n.setNameTag(sortGroup);
 			} else {
-				String pname = p.getName();
-				if (pname.length() > 16)
-					pname = pname.substring(0, 15);
-				if (!t.containsKey(p))
-					t.put(p, TheAPI.getNameTagAPI(p, null, null));
 				NameTagAPI n = t.get(p);
+				if (n==null)
+					t.put(p, n=TheAPI.getNameTagAPI(p, null, null));
 				n.setPrefix(null);
 				n.setSuffix(null);
-				n.setNameTag(pname);
+				n.setNameTag(sortGroup);
 			}
 		} else {
 			if (setting.tab_nametag) {
-				if (!t.containsKey(p))
-					t.put(p, TheAPI.getNameTagAPI(p, anim.replace(p,prefix), anim.replace(p,suffix)));
 				NameTagAPI n = t.get(p);
+				if (n==null)
+					t.put(p, n=TheAPI.getNameTagAPI(p, anim.replace(p,prefix), anim.replace(p,suffix)));
 				n.setPrefix(anim.replace(p,prefix));
 				n.setSuffix(anim.replace(p,suffix));
 				n.setNameTag(Tasks.sss.get(p.getName()));
