@@ -18,10 +18,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
+import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
@@ -65,7 +66,6 @@ public class WorldChange implements Listener {
 				if(e.getWorld().getEnvironment()==Environment.NORMAL && e.getWorld().getWorldType()==WorldType.FLAT)
 					gen="FLAT";
 				else gen="DEFAULT";
-			
 		}
 		MultiWorldsUtils.defaultSet(e.getWorld(), gen);
 		//LOAD PORTALS
@@ -74,6 +74,7 @@ public class WorldChange implements Listener {
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSleep(PlayerBedEnterEvent e) {
+		if(e.isCancelled())return;
 		if (setting.singeplayersleep && canEvent(e)) {
 			World w = e.getBed().getWorld();
 			Object f = Ref.world(w);
@@ -88,23 +89,22 @@ public class WorldChange implements Listener {
 					
 					public void run() {
 						for(Player s : perWorldSleep.get(w.getName())) {
-							int old = (int) Ref.get(Ref.player(s), "sleepTicks");
+							int old = (int) Ref.get(Ref.player(s), TheAPI.isNewerThan(16)?"cp":"sleepTicks");
 							if(old >= 98)
-								Ref.set(Ref.player(s), "sleepTicks", 98);
+								Ref.set(Ref.player(s),  TheAPI.isNewerThan(16)?"cp":"sleepTicks", 98);
 						}
-						
 						if(start >= 24000) {
 							start=0;
 							doNight=true;
-							Object data = Ref.get(Ref.world(w),"worldData");
-							Ref.set(data, "raining", false);
-							Ref.set(data, "thundering", false);
+							Object data = Ref.get(f,TheAPI.isNewerThan(16)?"x":"worldData");
+							Ref.set(data, TheAPI.isNewerThan(16)?"t":"raining", false);
+							Ref.set(data, TheAPI.isNewerThan(16)?"w":"thundering", false);
 							w.setWeatherDuration(0);
 						}
 						if(doNight && start >= 500) {
-							Object data = Ref.get(Ref.world(w),"worldData");
-							Ref.set(data, "raining", false);
-							Ref.set(data, "thundering", false);
+							Object data = Ref.get(f,TheAPI.isNewerThan(16)?"x":"worldData");
+							Ref.set(data, TheAPI.isNewerThan(16)?"t":"raining", false);
+							Ref.set(data, TheAPI.isNewerThan(16)?"w":"thundering", false);
 							w.setWeatherDuration(0);
 							cancel();
 						}
@@ -128,6 +128,7 @@ public class WorldChange implements Listener {
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSleep(PlayerBedLeaveEvent e) {
+		if(e.isCancelled())return;
 		if (setting.singeplayersleep) { //remove cache and stop task
 			if(perWorldSleep.containsKey(e.getBed().getWorld().getName())) {
 			perWorldSleep.get(e.getBed().getWorld().getName()).remove(e.getPlayer());
@@ -143,23 +144,35 @@ public class WorldChange implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void OnPlayerWorldChangeEvent(PlayerChangedWorldEvent e) {
-		SPlayer a = API.getSPlayer(e.getPlayer());
-		a.createEconomyAccount();
-		if (a.hasFlyEnabled())
-			a.enableFly();
-		if (a.hasTempFlyEnabled())
-			a.enableTempFly();
-		if (a.hasGodEnabled())
-			a.enableGod();
-		a.setGamamode();
-
+	public void OnPlayerWorldChangeEvent(PlayerTeleportEvent e) {
+		if(e.isCancelled())return;
+		if(e.getFrom().getWorld()!=e.getTo().getWorld()) { //prepare gamemode
+			SPlayer a = API.getSPlayer(e.getPlayer());
+			new Tasker() {
+				public void run() {
+					TheAPI.bcMsg(a.hasFlyEnabled());
+					if (a.hasFlyEnabled())
+						a.enableFly();
+					if (a.hasTempFlyEnabled())
+						a.enableTempFly();
+					if (a.hasGodEnabled())
+						a.enableGod();
+				}
+			}.runLaterSync(1);
+			Ref.set(Ref.get(Ref.player(e.getPlayer()), TheAPI.isNewerThan(16)?"d":"playerInteractManager"), "b", MultiWorldsUtils.getGamemodeNMS(e.getTo().getWorld()));
+		}
 	}
 
+	@EventHandler
+	public void onSpawn(PlayerSpawnLocationEvent e) {
+		Ref.set(Ref.get(Ref.player(e.getPlayer()), TheAPI.isNewerThan(16)?"d":"playerInteractManager"), "b", MultiWorldsUtils.getGamemodeNMS(e.getSpawnLocation().getWorld()));
+	}
+	
 	Map<String, Integer> task = new HashMap<>();
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChangeGamamode(PlayerGameModeChangeEvent e) {
+		if(e.isCancelled())return;
 		if(TheAPI.isNewerThan(7) && e.getNewGameMode()==GameMode.SPECTATOR) {
 			if(!task.containsKey(e.getPlayer().getName()))
 			task.put(e.getPlayer().getName(), new Tasker() {
@@ -169,12 +182,5 @@ public class WorldChange implements Listener {
 				}
 			}.runLater(1));
 		}
-		SPlayer a = API.getSPlayer(e.getPlayer());
-		if (a.hasFlyEnabled())
-			a.enableFly();
-		if (a.hasTempFlyEnabled())
-			a.enableTempFly();
-		if (a.hasGodEnabled())
-			a.enableGod();
 	}
 }

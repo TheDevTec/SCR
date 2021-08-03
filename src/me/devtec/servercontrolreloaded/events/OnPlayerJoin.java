@@ -75,17 +75,15 @@ public class OnPlayerJoin implements Listener {
 				SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
 					@Override
 					public void run(SkinData data) {
-						if(!p.isOnline())return;
 						SkinManager.loadSkin(p, data);
 					}
 				}, false);
 			}else {
-				String skin = TheAPI.getUser(p).getString("skin");
+				String skin = d.getString("skin");
 				if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
 				SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
 					@Override
 					public void run(SkinData data) {
-						if(!p.isOnline())return;
 						SkinManager.loadSkin(p, data);
 					}
 				}, false);

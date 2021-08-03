@@ -86,7 +86,7 @@ public class Loader extends JavaPlugin implements Listener {
 	public static Config config, plac, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb,guicreator,portals,customCmds, rewards;
 	public static List<Rule> rules = new ArrayList<>();
 	private int task;
-	private long time, rkick;
+	public long time, rkick;
 	public static Object econ;
 	public static Loader getInstance;
 	public static Config english;
@@ -891,7 +891,6 @@ public class Loader extends JavaPlugin implements Listener {
 				EconomyAPI.createAccount(p);
 		}
 		Portal.reload();
-		MultiWorldsUtils.gamemodeWorldCheck();
 		TabList.reload();
 		Tasks.reload();
 		CommandsManager.load();

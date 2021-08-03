@@ -27,6 +27,7 @@ import me.devtec.theapi.utils.listener.Listener;
 import me.devtec.theapi.utils.listener.events.ServerListPingEvent;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.NMSAPI.ChatType;
+import me.devtec.theapi.utils.packetlistenerapi.PacketListener;
 import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.utils.serverlist.PlayerProfile;
 import me.devtec.theapi.utils.theapiutils.LoaderClass;
@@ -57,11 +58,35 @@ public class Tasks {
 			e.setMaxPlayers(TheAPI.getMaxPlayers());
 		}
 	};
+	static PacketListener sleepSkipMessage = new PacketListener() {
+		Class<?> chat = Ref.nmsOrOld("network.protocol.game.PacketPlayOutChat", "PacketPlayOutChat");
+		Class<?> chatmessage = Ref.nmsOrOld("network.chat.ChatMessage", "ChatMessage");
+		@Override
+		public boolean PacketPlayOut(String player, Object packet, Object channel) {
+			if(player==null)return false;
+			if(packet.getClass()==chat) {
+				Object nms = Ref.get(packet, "a");
+				if(nms.getClass()==chatmessage) {
+					String key = (String)Ref.invoke(nms, "getKey");
+					if(key.equals("sleep.skipping_night")||key.equals("sleep.players_sleeping"))return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public boolean PacketPlayIn(String player, Object packet, Object channel) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+	};
 
 	public static void unload() {
 		for (int t : tasks)
 			Scheduler.cancelTask(t);
 		tests = 0;
+		sleepSkipMessage.unregister();
 		l.unregister();
 		tasks.clear();
 		PlayTimeUtils.unloadRewards();
@@ -70,6 +95,8 @@ public class Tasks {
 	public static void load() {
 		a = Loader.getInstance;
 		sss.clear();
+		if(TheAPI.isNewerThan(16) && setting.singeplayersleep)
+			sleepSkipMessage.register();
 		players.clear();
 		l.register();
 		if (setting.am)

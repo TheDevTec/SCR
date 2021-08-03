@@ -184,6 +184,7 @@ public class MultiWorldsGUI {
 							s.getLocation().getYaw());
 					Loader.mw.set("WorldsSettings." + world+ ".Spawn.Z_Pos_Head",
 							s.getLocation().getPitch());
+					Loader.mw.save();
 					try {
 						s.getWorld().setSpawnLocation(s.getLocation());
 					}catch(NoSuchMethodError err) {
@@ -477,6 +478,7 @@ public class MultiWorldsGUI {
 						dif="PEACEFUL";
 					else dif="EASY";
 					Loader.mw.set("WorldsSettings." + w.getName() + ".Difficulty", dif);
+					Loader.mw.save();
 					w.setDifficulty(Difficulty.valueOf(dif));
 					this.setItem(createItem("&6Difficulty", XMaterial.FEATHER, Arrays.asList(dif)));
 					g.setItem(0, this);
@@ -492,6 +494,7 @@ public class MultiWorldsGUI {
 						dif="NORMAL";
 					else dif="HARD";
 					Loader.mw.set("WorldsSettings." + w.getName() + ".Difficulty", dif);
+					Loader.mw.save();
 					w.setDifficulty(Difficulty.valueOf(dif));
 					this.setItem(createItem("&6Difficulty", XMaterial.FEATHER, Arrays.asList(dif)));
 					g.setItem(0, this);
@@ -517,7 +520,10 @@ public class MultiWorldsGUI {
 						g="SPECTATOR";
 					else g="SURVIVAL";
 					Loader.mw.set("WorldsSettings." + w.getName() + ".GameMode", g);
+					Loader.mw.save();
 					GameMode gg = GameMode.valueOf(g);
+					Object gm = Ref.invokeStatic(MultiWorldsUtils.getById,MultiWorldsUtils.toId(g));
+					MultiWorldsUtils.gamemodesnms.put(w, gm);
 					NMSAPI.postToMainThread(() -> {
 						for (Player p : TheAPI.getOnlinePlayers())
 							if (p.getWorld() == w)p.setGameMode(gg);
@@ -536,7 +542,10 @@ public class MultiWorldsGUI {
 						g="CREATIVE";
 					else g="SURVIVAL";
 					Loader.mw.set("WorldsSettings." + w.getName() + ".GameMode", g);
+					Loader.mw.save();
 					gg = GameMode.valueOf(g);
+					gm = Ref.invokeStatic(MultiWorldsUtils.getById,MultiWorldsUtils.toId(g));
+					MultiWorldsUtils.gamemodesnms.put(w, gm);
 					NMSAPI.postToMainThread(() -> {
 						for (Player p : TheAPI.getOnlinePlayers())
 							if (p.getWorld() == w)p.setGameMode(gg);
@@ -555,6 +564,7 @@ public class MultiWorldsGUI {
 				boolean sf = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".KeepSpawnInMemory");
 				sf=!sf;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".KeepSpawnInMemory", sf);
+				Loader.mw.save();
 				w.setKeepSpawnInMemory(sf);
 				this.setItem(createItem("&6Keep Spawn In Memory", XMaterial.MAP, Arrays.asList(sf + "")));
 				g.setItem(2, this);
@@ -567,6 +577,7 @@ public class MultiWorldsGUI {
 				boolean sa = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".AutoSave");
 				sa=!sa;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".AutoSave", sa);
+				Loader.mw.save();
 				w.setAutoSave(sa);
 				this.setItem(createItem("&6Auto Save", XMaterial.EMERALD_BLOCK, Arrays.asList(sa + "")));
 				g.setItem(3, this);
@@ -579,6 +590,7 @@ public class MultiWorldsGUI {
 				boolean sas = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".PvP");
 				sas=!sas;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".PvP", sas);
+				Loader.mw.save();
 				w.setPVP(sas);
 				this.setItem(createItem("&6PvP", XMaterial.DIAMOND_SWORD, Arrays.asList(sas + "")));
 				g.setItem(4, this);
@@ -590,6 +602,7 @@ public class MultiWorldsGUI {
 				boolean sass = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".CreatePortal");
 				sass=!sass;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".CreatePortal", sass);
+				Loader.mw.save();
 				this.setItem(createItem("&6Can be portal created in this world", XMaterial.OBSIDIAN, Arrays.asList(sass + "")));
 				g.setItem(5, this);
 			}
@@ -600,6 +613,7 @@ public class MultiWorldsGUI {
 				boolean sasss = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".PortalTeleport");
 				sasss=!sasss;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".PortalTeleport", sasss);
+				Loader.mw.save();
 				this.setItem(createItem("&6Can be portal used in this world", XMaterial.ENDER_PEARL, Arrays.asList(sasss + "")));
 				g.setItem(6, this);
 			}
@@ -610,6 +624,7 @@ public class MultiWorldsGUI {
 				boolean sassw = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".NoMobs");
 				sassw=!sassw;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".NoMobs", sassw);
+				Loader.mw.save();
 				this.setItem(createItem("&6No mobs", XMaterial.CREEPER_HEAD, Arrays.asList(sassw + "")));
 				g.setItem(7, this);
 			}
@@ -620,6 +635,7 @@ public class MultiWorldsGUI {
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				fire=!fire;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".DoFireDamage", fire);
+				Loader.mw.save();
 				this.setItem(createItem("&6Do Fire Damage", XMaterial.FLINT_AND_STEEL, Arrays.asList(fire + "")));
 				g.setItem(8, this);
 			}
@@ -630,6 +646,7 @@ public class MultiWorldsGUI {
 				boolean dfire = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".DoDrownDamage");
 				dfire=!dfire;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".DoDrownDamage", dfire);
+				Loader.mw.save();
 				this.setItem(createItem("&6Do Drowning Damage", XMaterial.WATER_BUCKET, Arrays.asList(dfire + "")));
 				g.setItem(9, this);
 			}
@@ -640,6 +657,7 @@ public class MultiWorldsGUI {
 				boolean ddfire = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".DoFallDamage");
 				ddfire=!ddfire;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".DoFallDamage", ddfire);
+				Loader.mw.save();
 				this.setItem(createItem("&6Do Fall Damage", XMaterial.IRON_BOOTS, Arrays.asList(ddfire + "")));
 				g.setItem(10, this);
 			}
@@ -650,6 +668,7 @@ public class MultiWorldsGUI {
 				boolean ddfire = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".Hardcore");
 				ddfire=!ddfire;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".Hardcore", ddfire);
+				Loader.mw.save();
 				w.setHardcore(ddfire);
 				this.setItem(createItem("&6Hardcore", XMaterial.REDSTONE, Arrays.asList(ddfire + "")));
 				g.setItem(11, this);

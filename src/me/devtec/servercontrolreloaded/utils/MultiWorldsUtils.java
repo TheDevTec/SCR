@@ -1,18 +1,27 @@
 package me.devtec.servercontrolreloaded.utils;
 
-import me.devtec.servercontrolreloaded.scr.API;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Difficulty;
+import org.bukkit.World;
+import org.bukkit.World.Environment;
+import org.bukkit.WorldType;
+import org.bukkit.command.CommandSender;
+
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.worldsapi.WorldsAPI;
-import org.bukkit.*;
-import org.bukkit.World.Environment;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.io.File;
-import java.util.List;
-import java.util.Random;
+import me.devtec.theapi.worldsapi.voidGenerator;
+import me.devtec.theapi.worldsapi.voidGenerator_1_8;
 
 public class MultiWorldsUtils {
 	public static void unloadWorld(String w, CommandSender sender) {
@@ -42,11 +51,6 @@ public class MultiWorldsUtils {
 		for (World world : Bukkit.getWorlds())
 			chunk = chunk - world.getLoadedChunks().length;
 		Loader.sendMessages(s, "Chunks.Unload", Placeholder.c().add("%chunks%", chunk+""));
-	}
-
-	public static void gamemodeWorldCheck() {
-		for (Player on : TheAPI.getOnlinePlayers())
-			API.getSPlayer(on).setGamamode();
 	}
 
 	public static enum Generator {
@@ -98,8 +102,31 @@ public class MultiWorldsUtils {
 			Loader.sendMessages(s, "MultiWorld.NotExists", Placeholder.c().add("%world%", w));
 	}
 	
+	private static Class<?> cc = Ref.nms("WorldSettings$EnumGamemode")==null?Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
+	protected static Method getById;
+	static{
+		getById = Ref.method(cc, "getById", int.class);
+	}
 	public static void defaultSet(World as, String gen) {
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".GameMode", "SURVIVAL");
+		if(gen==null) { //lookup for gen
+			if(as.getGenerator() instanceof voidGenerator || as.getGenerator() instanceof voidGenerator_1_8) {
+				gen="THE_VOID";
+			}else
+				if(as.getEnvironment()==Environment.THE_END)
+					gen="THE_END";
+			else
+				if(as.getEnvironment()==Environment.NETHER)
+					gen="NETHER";
+			else
+				if(as.getEnvironment()==Environment.NORMAL && as.getWorldType()==WorldType.FLAT)
+					gen="FLAT";
+				else gen="DEFAULT";
+		}
+		Object data = Ref.get(Ref.world(as),TheAPI.isNewerThan(16)?"x":"worldData");
+		Object gm = Loader.mw.getString("WorldsSettings." + as.getName() + ".GameMode")!=null?
+				Ref.invokeStatic(getById,toId(Loader.mw.getString("WorldsSettings." + as.getName() + ".GameMode"))):
+					getGm(data);
+		gamemodesnms.put(as, gm);
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Seed", as.getSeed());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Difficulty", as.getDifficulty().name());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".KeepSpawnInMemory", as.getKeepSpawnInMemory());
@@ -171,12 +198,34 @@ public class MultiWorldsUtils {
 				as.setTicksPerMonsterSpawns(mo);
 			}
 	}
+	
+	private static Object getGm(Object data) {
+		return Ref.invoke(data,"getGameType");
+	}
+
+	protected static int toId(String string) {
+		switch(string.toLowerCase()) {
+		case "1":
+		case "c":
+		case "creative":
+			return 1;
+		case "2":
+		case "a":
+		case "adventure":
+			return 2;
+		case "3":
+		case "sp":
+		case "spectator":
+			return 3;
+		}
+		return 0;
+	}
 
 	public static void loadWorlds() {
 		for (String w : Loader.mw.getStringList("Worlds"))
 			loadWorld(w, null);
 		for (World wa : Bukkit.getWorlds())
-			defaultSet(wa, Loader.mw.getString("WorldsSettings." + wa.getName() + ".Generator"));
+			defaultSet(wa, null); //let fix generator
 	}
 
 	public static void loadWorld(String s, CommandSender sender) {
@@ -305,5 +354,11 @@ public class MultiWorldsUtils {
 		for(String g : as.getGameRules())
 			if(g.equalsIgnoreCase(string))
 				Loader.mw.set("WorldsSettings." + as.getName() + ".Gamerule."+g, value);
+	}
+
+	static Map<World, Object> gamemodesnms = new HashMap<>();
+
+	public static Object getGamemodeNMS(World world) {
+		return gamemodesnms.get(world);
 	}
 }

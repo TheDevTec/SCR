@@ -36,16 +36,14 @@ public class SPlayer {
 	
 	public SPlayer(String p) {
 		s = p;
+		player=TheAPI.getPlayerOrNull(p);
 		f=TheAPI.getUser(p);
 	}
 
 	public User getUser() {
-		getUserA();
 		return f;
 	}
-	public void getUserA() {
-		this.f= TheAPI.getUser(s);
-	}
+	
 	public void setHP() {
 		if(getPlayer()==null)return;
 		getPlayer().setHealth(((Damageable)getPlayer()).getMaxHealth());
@@ -72,7 +70,6 @@ public class SPlayer {
 	}
 
 	public void enableTempGameMode(long time,GameMode g,boolean t) {
-		getUserA();
 		f.set("TempGamemode.Start",System.currentTimeMillis());
 		f.set("TempGamemode.Time",time);
 		f.set("TempGamemode.Prev",getPlayer().getGameMode());
@@ -90,17 +87,18 @@ public class SPlayer {
 	}
 
 	public boolean hasGameMode(){
-		getUserA();
+
 		return f.getBoolean("TempGamemode.Use");
 	}
 
 	public void enableTempFly(long stop) {
-		getUserA();
 		f.set("TempFly.Start", System.currentTimeMillis());
 		f.set("TempFly.Time", stop);
 		if (!hasTempFlyEnabled()) {
 			f.setAndSave("TempFly.Use", true);
-			enableTempFly();
+			if(getPlayer()==null)return;
+			getPlayer().setAllowFlight(true);
+			getPlayer().setFlying(true);
 		}else f.save();
 		if(getPlayer()==null)return;
 		Loader.sendMessages(getPlayer(), "Fly.Temp.Enabled.You", Placeholder.c().add("%time%", StringUtils.setTimeToString(stop)));
@@ -115,19 +113,22 @@ public class SPlayer {
 	}
 
 	public void enableFly() {
-		getUserA();
+		boolean save = false;
 		if (hasTempFlyEnabled()) {
-			f.setAndSave("TempFly.Use", false);
+			f.set("TempFly.Use", false);
+			save=true;
 		}
-		if(!f.getBoolean("Fly"))
-		f.setAndSave("Fly", true);
+		if(!f.getBoolean("Fly")) {
+			f.set("Fly", true);
+			save=true;
+		}
+		if(save)f.save();
 		if(getPlayer()==null)return;
 		getPlayer().setAllowFlight(true);
 		getPlayer().setFlying(true);
 	}
 
 	public void disableFly() {
-		getUserA();
 		f.remove("TempFly");
 		f.remove("Fly");
 		f.save();
@@ -148,7 +149,7 @@ public class SPlayer {
 			}
 		} catch (Exception er) {
 		}
-		return (Loader.getInstance.isAFK(this) || Loader.getInstance.isManualAfk(this));
+		return (Loader.getInstance.time - afk <=0 || manual);
 	}
 
 	public void setAFK(boolean afk) {
@@ -194,7 +195,8 @@ public class SPlayer {
 	}
 
 	public Player getPlayer() {
-		return TheAPI.getPlayerOrNull(s);
+		if(player==null||!player.isOnline())player=TheAPI.getPlayerOrNull(s);
+		return player;
 	}
 
 	public void toggleGod(CommandSender toggler) {
@@ -228,7 +230,6 @@ public class SPlayer {
 	}
 
 	public void setWalkSpeed() {
-		getUserA();
 		if(getPlayer()==null)return;
 		if (f.exist("WalkSpeed")) {
 			Player g = getPlayer();
@@ -242,7 +243,6 @@ public class SPlayer {
 	}
 
 	public void setFlySpeed() {
-		getUserA();
 		if(getPlayer()==null)return;
 		if (f.exist("FlySpeed")) {
 			Player g = getPlayer();
@@ -256,7 +256,6 @@ public class SPlayer {
 	}
 
 	public void enableGod() {
-		getUserA();
 		if(!f.getBoolean("God"))
 		f.setAndSave("God", true);
 		setHP();
@@ -274,7 +273,6 @@ public class SPlayer {
 	}
 
 	public void disableGod() {
-		getUserA();
 		f.remove("God");
 		f.save();
 	}
@@ -284,35 +282,20 @@ public class SPlayer {
 			EconomyAPI.createAccount(s);
 	}
 
-	public void setGamamode() {
-		if(getPlayer()==null)return;
-		if (!getPlayer().hasPermission("SCR.Other.GamemodeChangePrevent")) {
-			if (Loader.mw.exists("WorldsSettings." + getPlayer().getWorld().getName() + ".GameMode"))
-				try {
-				getPlayer().setGameMode(GameMode.valueOf(Loader.mw.getString("WorldsSettings." + getPlayer().getWorld().getName() + ".GameMode").toUpperCase()));
-				}catch(Exception | NoSuchFieldError err) {}
-			}
-	}
-
 	public boolean hasFlyEnabled() {
-		getUserA();
-		return f.getBoolean("Fly")&&(getPlayer()==null||getPlayer()!=null&&getPlayer().getAllowFlight());
+		return f.getBoolean("Fly")||getPlayer()!=null&&getPlayer().getAllowFlight();
 	}
 
 	public boolean hasGodEnabled() {
-		getUserA();
 		return f.getBoolean("God");
 	}
 
 	public boolean hasTempFlyEnabled() {
-		getUserA();
 		return f.getBoolean("TempFly.Use");
 	}
 	
 	public void addPlayTime(long seconds) {
-		getUserA();
 		GameMode g = player.getGameMode();
-
 		f.set("Statistics.PlayTime", f.getLong("Statistics.PlayTime")+seconds);
 		f.set("Statistics."+g.name()+".PlayTime", f.getLong("Statistics."+g.name()+".PlayTime")+seconds);
 		f.set("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime", f.getLong("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime")+seconds);
@@ -332,7 +315,6 @@ public class SPlayer {
 	}
 
 	public long getPlayTime(String path) {
-		getUserA();
 		if(f.exist("Statistics."+path))
 			return f.getLong("Statistics."+path);
 		else
