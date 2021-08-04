@@ -39,7 +39,7 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 			if(!CommandsManager.canUse("Economy.BalanceTop", s)) {
 				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Economy.BalanceTop", s))));
 				return true;
-			}
+			} 
 			Loader.sendMessages(s, "Economy.BalanceTop.Loading");
 			new Tasker() {
 				public void run() {
