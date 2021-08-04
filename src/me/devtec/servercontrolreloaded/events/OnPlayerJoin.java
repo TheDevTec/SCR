@@ -259,7 +259,7 @@ public class OnPlayerJoin implements Listener {
 		Player p = e.getPlayer();
 		for(Player ps : TheAPI.getOnlinePlayers())
 			if(p!=ps)
-				Ref.sendPacket(p, NMSAPI.getPacketPlayOutEntityDestroy(ps.getEntityId()));
+				Ref.sendPacket(ps, NMSAPI.getPacketPlayOutEntityDestroy(p.getEntityId()));
 		DisplayManager.removeCache(p);
 		NameTagChanger.remove(p);
 		Ref.sendPacket(p,TabList.empty);
