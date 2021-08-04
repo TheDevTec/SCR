@@ -66,6 +66,7 @@ public class Tasks {
 			if(player==null)return false;
 			if(packet.getClass()==chat) {
 				Object nms = Ref.get(packet, "a");
+				if(nms!=null)
 				if(nms.getClass()==chatmessage) {
 					String key = (String)Ref.invoke(nms, "getKey");
 					if(key.equals("sleep.skipping_night")||key.equals("sleep.players_sleeping"))return true;

@@ -14,10 +14,13 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 import org.bukkit.command.CommandSender;
+import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.Plugin;
 
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.worldsapi.WorldsAPI;
 import me.devtec.theapi.worldsapi.voidGenerator;
@@ -61,7 +64,7 @@ public class MultiWorldsUtils {
 		return new File(Bukkit.getWorldContainer().getPath() + "/" + w + "/session.lock").exists();
 	}
 
-	public static void importWorld(String w, CommandSender s, Generator type) {
+	public static void importWorld(String w, CommandSender s, String type) {
 		if (Bukkit.getWorld(w) != null)
 			return;
 		if (exists(w)) {
@@ -73,22 +76,39 @@ public class MultiWorldsUtils {
 			} else {
 				List<String> wws = Loader.mw.getStringList("Deleted-Worlds");
 				List<String> worlds = Loader.mw.getStringList("Worlds");
+				boolean create = false;
 				switch (type) {
-				case FLAT:
+				case "FLAT":
+					create = true;
 					WorldsAPI.create(w, Environment.NORMAL, WorldType.FLAT, true, 0);
 					break;
-				case NETHER:
+				case "NETHER":
+					create = true;
 					WorldsAPI.create(w, Environment.NETHER, WorldType.NORMAL, true, 0);
 					break;
-				case NORMAL:
+				case "NORMAL":
+					create = true;
 					WorldsAPI.create(w, Environment.NORMAL, WorldType.NORMAL, true, 0);
 					break;
-				case THE_END:
+				case "THE_END":
+					create = true;
 					WorldsAPI.create(w, Environment.THE_END, WorldType.NORMAL, true, 0);
 					break;
-				case THE_VOID:
+				case "THE_VOID":
+					create = true;
 					WorldsAPI.create(w, Environment.NORMAL, null, true, 0);
 					break;
+				}
+				if(!create) {
+					ChunkGenerator g = null;
+					if(type.contains(":")) {
+						g=PluginManagerAPI.getPlugin(type.split(":")[0]).getDefaultWorldGenerator(w, type.split(":")[1]);
+					}else
+						for(Plugin p : Bukkit.getPluginManager().getPlugins())
+							g=p.getDefaultWorldGenerator(w, type);
+					if(g!=null) {
+						WorldsAPI.create(w, Environment.NORMAL, WorldType.NORMAL, g, true, 0);
+					}
 				}
 				wws.remove(w);
 				worlds.add(w);
