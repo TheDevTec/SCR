@@ -25,23 +25,20 @@ public class SPlayer {
 	public int kick, afk;
 	public boolean bc, manual;
 	public String reply, type;
-	private User f;
 	public Location l;
 	
 	public SPlayer(Player p) {
 		this.player=p;
 		s = p.getName();
-		f=TheAPI.getUser(p);
 	}
 	
 	public SPlayer(String p) {
 		s = p;
 		player=TheAPI.getPlayerOrNull(p);
-		f=TheAPI.getUser(p);
 	}
 
 	public User getUser() {
-		return f;
+		return TheAPI.getUser(s);
 	}
 	
 	public void setHP() {
@@ -70,13 +67,12 @@ public class SPlayer {
 	}
 
 	public void enableTempGameMode(long time,GameMode g,boolean t) {
-		f.set("TempGamemode.Start",System.currentTimeMillis());
-		f.set("TempGamemode.Time",time);
-		f.set("TempGamemode.Prev",getPlayer().getGameMode());
-		f.save();
+		getUser().set("TempGamemode.Start",System.currentTimeMillis());
+		getUser().set("TempGamemode.Time",time);
+		getUser().set("TempGamemode.Prev",getPlayer().getGameMode());
 		if(getPlayer()==null)return;
 		if(!hasGameMode()){
-			f.setAndSave("TempGamemode.Use",true);
+			getUser().set("TempGamemode.Use",true);
 			getPlayer().setGameMode(g);
 			if(t==false){
 				Loader.sendMessages(getPlayer(), "GameMode.Temp.You", Placeholder.c().add("%time%", StringUtils.timeToString(time)).add("%gamemode%",g.toString().toLowerCase()));
@@ -87,19 +83,18 @@ public class SPlayer {
 	}
 
 	public boolean hasGameMode(){
-
-		return f.getBoolean("TempGamemode.Use");
+		return getUser().getBoolean("TempGamemode.Use");
 	}
 
 	public void enableTempFly(long stop) {
-		f.set("TempFly.Start", System.currentTimeMillis());
-		f.set("TempFly.Time", stop);
+		getUser().set("TempFly.Start", System.currentTimeMillis());
+		getUser().set("TempFly.Time", stop);
 		if (!hasTempFlyEnabled()) {
-			f.setAndSave("TempFly.Use", true);
+			getUser().set("TempFly.Use", true);
 			if(getPlayer()==null)return;
 			getPlayer().setAllowFlight(true);
 			getPlayer().setFlying(true);
-		}else f.save();
+		}
 		if(getPlayer()==null)return;
 		Loader.sendMessages(getPlayer(), "Fly.Temp.Enabled.You", Placeholder.c().add("%time%", StringUtils.setTimeToString(stop)));
 	}
@@ -113,25 +108,20 @@ public class SPlayer {
 	}
 
 	public void enableFly() {
-		boolean save = false;
 		if (hasTempFlyEnabled()) {
-			f.set("TempFly.Use", false);
-			save=true;
+			getUser().set("TempFly.Use", false);
 		}
-		if(!f.getBoolean("Fly")) {
-			f.set("Fly", true);
-			save=true;
+		if(!getUser().getBoolean("Fly")) {
+			getUser().set("Fly", true);
 		}
-		if(save)f.save();
 		if(getPlayer()==null)return;
 		getPlayer().setAllowFlight(true);
 		getPlayer().setFlying(true);
 	}
 
 	public void disableFly() {
-		f.remove("TempFly");
-		f.remove("Fly");
-		f.save();
+		getUser().remove("TempFly");
+		getUser().remove("Fly");
 		if(getPlayer()==null)return;
 		getPlayer().setFlying(false);
 		getPlayer().setAllowFlight(false);
@@ -231,33 +221,33 @@ public class SPlayer {
 
 	public void setWalkSpeed() {
 		if(getPlayer()==null)return;
-		if (f.exist("WalkSpeed")) {
+		if (getUser().exist("WalkSpeed")) {
 			Player g = getPlayer();
-			if (f.getDouble("WalkSpeed") < 0.0)
+			if (getUser().getDouble("WalkSpeed") < 0.0)
 				g.setWalkSpeed(0);
-			else if (f.getDouble("WalkSpeed") > 10.0)
+			else if (getUser().getDouble("WalkSpeed") > 10.0)
 				g.setWalkSpeed(10);
 			else
-				g.setWalkSpeed(f.getFloat("WalkSpeed"));
+				g.setWalkSpeed(getUser().getFloat("WalkSpeed"));
 		}
 	}
 
 	public void setFlySpeed() {
 		if(getPlayer()==null)return;
-		if (f.exist("FlySpeed")) {
+		if (getUser().exist("FlySpeed")) {
 			Player g = getPlayer();
-			if (f.getDouble("FlySpeed") < 0.0)
+			if (getUser().getDouble("FlySpeed") < 0.0)
 				g.setFlySpeed(0);
-			else if (f.getDouble("FlySpeed") > 10.0)
+			else if (getUser().getDouble("FlySpeed") > 10.0)
 				g.setFlySpeed(10);
 			else
-				g.setFlySpeed(f.getFloat("FlySpeed"));
+				g.setFlySpeed(getUser().getFloat("FlySpeed"));
 		}
 	}
 
 	public void enableGod() {
-		if(!f.getBoolean("God"))
-		f.setAndSave("God", true);
+		if(!getUser().getBoolean("God"))
+			getUser().set("God", true);
 		setHP();
 		setFood();
 		setFire();
@@ -273,8 +263,7 @@ public class SPlayer {
 	}
 
 	public void disableGod() {
-		f.remove("God");
-		f.save();
+		getUser().remove("God");
 	}
 
 	public void createEconomyAccount() {
@@ -283,24 +272,23 @@ public class SPlayer {
 	}
 
 	public boolean hasFlyEnabled() {
-		return f.getBoolean("Fly")||getPlayer()!=null&&getPlayer().getAllowFlight();
+		return getUser().getBoolean("Fly")||getPlayer()!=null&&getPlayer().getAllowFlight();
 	}
 
 	public boolean hasGodEnabled() {
-		return f.getBoolean("God");
+		return getUser().getBoolean("God");
 	}
 
 	public boolean hasTempFlyEnabled() {
-		return f.getBoolean("TempFly.Use");
+		return getUser().getBoolean("TempFly.Use");
 	}
 	
-	public void addPlayTime(long seconds) {
+	public void addPlayTime(int seconds) {
 		GameMode g = player.getGameMode();
-		f.set("Statistics.PlayTime", f.getLong("Statistics.PlayTime")+seconds);
-		f.set("Statistics."+g.name()+".PlayTime", f.getLong("Statistics."+g.name()+".PlayTime")+seconds);
-		f.set("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime", f.getLong("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime")+seconds);
-		f.set("Statistics."+player.getWorld().getName()+".PlayTime", f.getLong("Statistics."+player.getWorld().getName()+".PlayTime")+seconds);
-		f.save();
+		getUser().set("Statistics.PlayTime", getUser().getInt("Statistics.PlayTime")+seconds);
+		getUser().set("StatisticgetUser()."+g.name()+".PlayTime", getUser().getInt("Statistics."+g.name()+".PlayTime")+seconds);
+		getUser().set("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime", getUser().getInt("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime")+seconds);
+		getUser().set("Statistics."+player.getWorld().getName()+".PlayTime", getUser().getInt("Statistics."+player.getWorld().getName()+".PlayTime")+seconds);
 		
 		/*
 		 * Statistics:
@@ -314,9 +302,9 @@ public class SPlayer {
 		 */
 	}
 
-	public long getPlayTime(String path) {
-		if(f.exist("Statistics."+path))
-			return f.getLong("Statistics."+path);
+	public int getPlayTime(String path) {
+		if(getUser().exist("Statistics."+path))
+			return getUser().getInt("Statistics."+path);
 		else
 			return 0;
 	}

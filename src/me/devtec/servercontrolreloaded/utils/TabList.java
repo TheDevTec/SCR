@@ -291,9 +291,9 @@ public class TabList {
 			header=header.replace("%vault_group%", API.getGroup(p));
 		}
 		if(header.contains("%vault_prefix%"))
-			header=header.replace("%vault_prefix%", ""+Loader.getChatFormat(p, Item.PREFIX))
+			header=header.replace("%vault_prefix%", ""+TheAPI.colorize(Loader.getChatFormat(p, Item.PREFIX)))
 		;if(header.contains("%vault_suffix%"))
-			header=header.replace("%vault_suffix%", ""+Loader.getChatFormat(p, Item.SUFFIX))
+			header=header.replace("%vault_suffix%", ""+TheAPI.colorize(Loader.getChatFormat(p, Item.SUFFIX)))
 		;if(header.contains("%group%"))
 			header=header.replace("%group%", Staff.getGroup(p));
 		if(header.contains("%kills%"))
@@ -354,10 +354,10 @@ public class TabList {
 		;if(header.contains("%ram_max%"))
 			header=header.replace("%ram_max%", MemoryAPI.getMaxMemory() + "").replace("%ram_max_percentage%", "100%");
 		String orig = header;
-		header= PlaceholderAPI.setPlaceholders(p, header);
+		header = PlaceholderAPI.setPlaceholders(p, header);
 		if(header==null)header=orig;
 		if(color)
-		header=TheAPI.colorize(header);
+			header=TheAPI.colorize(header);
 		return header;
 	}
 	

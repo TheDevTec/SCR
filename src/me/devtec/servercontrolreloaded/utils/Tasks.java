@@ -320,7 +320,7 @@ public class Tasks {
 				for (UUID sa : TheAPI.getUsers()) {
 					String n = LoaderClass.cache.lookupNameById(sa);
 					if(n!=null) {
-						long time = PlayTimeUtils.playtime(n);
+						int time = PlayTimeUtils.playtime(n);
 						if(time>0)
 							PlayTimeUtils.playtop.put(sa, time);
 					}

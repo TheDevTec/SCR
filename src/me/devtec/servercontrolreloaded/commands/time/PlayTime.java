@@ -55,7 +55,7 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 									for (UUID sa : TheAPI.getUsers()) {
 										String n = LoaderClass.cache.lookupNameById(sa);
 										if(n!=null) {
-											long time = PlayTimeUtils.playtime(n);
+											int time = PlayTimeUtils.playtime(n);
 											if(time>0)
 												PlayTimeUtils.playtop.put(sa, time);
 										}
@@ -70,7 +70,7 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 								Loader.sendMessages(s, "PlayTime.PlayTop.Header", Placeholder.c().replace("%page%",(page+1)+"")
 										.replace("%pages%", pages+""));
 								
-								RankingAPI<UUID, Long> tops = new RankingAPI<>(PlayTimeUtils.playtop);
+								RankingAPI<UUID, Integer> tops = new RankingAPI<>(PlayTimeUtils.playtop);
 								
 								int min = page * 10;
 								int max = ((page * 10) + 10);
