@@ -150,7 +150,6 @@ public class WorldChange implements Listener {
 			SPlayer a = API.getSPlayer(e.getPlayer());
 			new Tasker() {
 				public void run() {
-					TheAPI.bcMsg(a.hasFlyEnabled());
 					if (a.hasFlyEnabled())
 						a.enableFly();
 					if (a.hasTempFlyEnabled())
