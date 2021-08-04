@@ -286,7 +286,7 @@ public class ChatFormat implements Listener {
 					PrivateMessageManager.setReply(r.equalsIgnoreCase("console") ? TheAPI.getConsole() : TheAPI.getPlayerOrNull(r), p.getName());
 				} else if (PrivateMessageManager.getLockType(p).equalsIgnoreCase("helpop")) {
 					TheAPI.broadcast(Loader.config.getString("Format.HelpOp").replace("%sender%", p.getName())
-							.replace("%sendername%", TheAPI.getPlayerOrNull(p.getName()) != null ? TheAPI.getPlayerOrNull(p.getName()).getDisplayName() : p.getName()).replace("%message%", msg), Loader.cmds.getString("Message.Helpop.SubPermission.Receive"));
+							.replace("%sendername%", TheAPI.getPlayerOrNull(p.getName()) != null ? TheAPI.getPlayerOrNull(p.getName()).getDisplayName() : p.getName()).replace("%message%", msg), Loader.cmds.exists("Message.Helpop.SubPermissions.Receive")?Loader.cmds.getString("Message.Helpop.SubPermissions.Receive"):"SCR.Command.Helpop.Receive");
 					if (!Loader.has(p, "Helpop", "Message", "Receive"))
 						TheAPI.msg(Loader.config.getString("Format.HelpOp").replace("%sender%", p.getName()).replace("%sendername%", TheAPI.getPlayerOrNull(p.getName()) != null ? TheAPI.getPlayerOrNull(p.getName()).getDisplayName() : p.getName()).replace("%message%", msg), p);
 				}
