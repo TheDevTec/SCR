@@ -200,6 +200,7 @@ public class PlayRewards {
 		for(String msg : Loader.rewards.getStringList("PlayTime."+name+".Messages"))
 			TheAPI.msg(msg.replace("%time%", getTimeFormated()).replace("%player%", p.getName()) , p);
 	}
+	
 	public boolean hasFinished(Player p) {
 		User u = TheAPI.getUser(p);
 		if(u.exist("Statistics.Rewards."+getName()+".Finished"))
