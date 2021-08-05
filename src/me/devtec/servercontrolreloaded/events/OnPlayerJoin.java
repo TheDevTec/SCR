@@ -11,8 +11,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import me.devtec.servercontrolreloaded.commands.message.Mail;
 import me.devtec.servercontrolreloaded.commands.other.Vanish;
@@ -40,7 +40,6 @@ import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class OnPlayerJoin implements Listener {
@@ -257,9 +256,6 @@ public class OnPlayerJoin implements Listener {
 	public void playerQuit(PlayerQuitEvent e) {
 		e.setQuitMessage(null);
 		Player p = e.getPlayer();
-		for(Player ps : TheAPI.getOnlinePlayers())
-			if(p!=ps)
-				Ref.sendPacket(ps, NMSAPI.getPacketPlayOutEntityDestroy(p.getEntityId()));
 		DisplayManager.removeCache(p);
 		NameTagChanger.remove(p);
 		Ref.sendPacket(p,TabList.empty);
