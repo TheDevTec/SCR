@@ -1,7 +1,6 @@
 package me.devtec.servercontrolreloaded.utils.playtime;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -17,12 +16,11 @@ import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.sortedmap.RankingAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class PlayTimeUtils {
 	
-	public static HashMap<UUID, Integer> playtop = new HashMap<>(); //Player UUID || PlayTime
-	public static RankingAPI<UUID, Integer> ranks = new RankingAPI<>(playtop);
+	public static HashMap<String, Integer> playtop = new HashMap<>(); //Player UUID || PlayTime
+	public static RankingAPI<String, Integer> ranks = new RankingAPI<>(playtop);
 	
 	static Statistic st;
 	
@@ -150,9 +148,7 @@ public class PlayTimeUtils {
 		}
 		if(ranks.getObject(pos)==null)
 			return "-";
-		UUID uuid = ranks.getObject(pos);
-		String player = LoaderClass.cache.lookupNameById(uuid);
-		
+		String player = ranks.getObject(pos);
 		if(player==null)
 			return "-";
 		return Loader.trans.getString("PlayTime.PlayTop.Top").replace("%position%", pos+ "")

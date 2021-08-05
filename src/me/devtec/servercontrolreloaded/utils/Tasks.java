@@ -317,12 +317,14 @@ public class Tasks {
 		 */
 		tasks.add(new Tasker() {
 			public void run() {
+				PlayTimeUtils.playtop.clear();
 				for (UUID sa : TheAPI.getUsers()) {
 					String n = LoaderClass.cache.lookupNameById(sa);
 					if(n!=null) {
+						if(PlayTimeUtils.playtop.containsKey(n))continue;
 						int time = PlayTimeUtils.playtime(n);
 						if(time>0)
-							PlayTimeUtils.playtop.put(sa, time);
+							PlayTimeUtils.playtop.put(n, time);
 					}
 				}
 				PlayTimeUtils.ranks.setMap(PlayTimeUtils.playtop);
