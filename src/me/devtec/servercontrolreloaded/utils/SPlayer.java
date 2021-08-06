@@ -67,12 +67,13 @@ public class SPlayer {
 	}
 
 	public void enableTempGameMode(long time,GameMode g,boolean t) {
-		getUser().set("TempGamemode.Start",System.currentTimeMillis());
-		getUser().set("TempGamemode.Time",time);
-		getUser().set("TempGamemode.Prev",getPlayer().getGameMode());
+		User u = getUser();
+		u.set("TempGamemode.Start",System.currentTimeMillis());
+		u.set("TempGamemode.Time",time);
+		u.set("TempGamemode.Prev",getPlayer().getGameMode());
 		if(getPlayer()==null)return;
 		if(!hasGameMode()){
-			getUser().set("TempGamemode.Use",true);
+			u.set("TempGamemode.Use",true);
 			getPlayer().setGameMode(g);
 			if(t==false){
 				Loader.sendMessages(getPlayer(), "GameMode.Temp.You", Placeholder.c().add("%time%", StringUtils.timeToString(time)).add("%gamemode%",g.toString().toLowerCase()));
@@ -80,6 +81,7 @@ public class SPlayer {
 				Loader.sendMessages(getPlayer(), "GameMode.Temp.Reciever", Placeholder.c().add("%time%", StringUtils.timeToString(time)).add("%gamemode%",g.toString().toLowerCase()));
 			}
 		}
+		u.save();
 	}
 
 	public boolean hasGameMode(){
@@ -87,16 +89,18 @@ public class SPlayer {
 	}
 
 	public void enableTempFly(long stop) {
-		getUser().set("TempFly.Start", System.currentTimeMillis());
-		getUser().set("TempFly.Time", stop);
+		User u = getUser();
+		u.set("TempFly.Start", System.currentTimeMillis());
+		u.set("TempFly.Time", stop);
 		if (!hasTempFlyEnabled()) {
-			getUser().set("TempFly.Use", true);
+			u.set("TempFly.Use", true);
 			if(getPlayer()==null)return;
 			getPlayer().setAllowFlight(true);
 			getPlayer().setFlying(true);
 		}
 		if(getPlayer()==null)return;
 		Loader.sendMessages(getPlayer(), "Fly.Temp.Enabled.You", Placeholder.c().add("%time%", StringUtils.setTimeToString(stop)));
+		u.save();
 	}
 
 	public void enableTempFly() {
@@ -108,11 +112,14 @@ public class SPlayer {
 	}
 
 	public void enableFly() {
+		User u = getUser();
 		if (hasTempFlyEnabled()) {
-			getUser().set("TempFly.Use", false);
+			u.set("TempFly.Use", false);
+			u.save();
 		}
 		if(!getUser().getBoolean("Fly")) {
-			getUser().set("Fly", true);
+			u.set("Fly", true);
+			u.save();
 		}
 		if(getPlayer()==null)return;
 		getPlayer().setAllowFlight(true);
@@ -120,8 +127,10 @@ public class SPlayer {
 	}
 
 	public void disableFly() {
-		getUser().remove("TempFly");
-		getUser().remove("Fly");
+		User u = getUser();
+		u.remove("TempFly");
+		u.remove("Fly");
+		u.save();
 		if(getPlayer()==null)return;
 		getPlayer().setFlying(false);
 		getPlayer().setAllowFlight(false);
@@ -246,8 +255,11 @@ public class SPlayer {
 	}
 
 	public void enableGod() {
-		if(!getUser().getBoolean("God"))
-			getUser().set("God", true);
+		User u = getUser();
+		if(!u.getBoolean("God")) {
+			u.set("God", true);
+			u.save();
+		}
 		setHP();
 		setFood();
 		setFire();
@@ -284,12 +296,13 @@ public class SPlayer {
 	}
 	
 	public void addPlayTime(int seconds) {
+		User u = getUser();
 		GameMode g = player.getGameMode();
-		getUser().set("Statistics.PlayTime", getUser().getInt("Statistics.PlayTime")+seconds);
-		getUser().set("Statistics."+g.name()+".PlayTime", getUser().getInt("Statistics."+g.name()+".PlayTime")+seconds);
-		getUser().set("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime", getUser().getInt("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime")+seconds);
-		getUser().set("Statistics."+player.getWorld().getName()+".PlayTime", getUser().getInt("Statistics."+player.getWorld().getName()+".PlayTime")+seconds);
-		
+		u.set("Statistics.PlayTime", (getUser().getInt("Statistics.PlayTime")+seconds) );
+		u.set("Statistics."+g.name()+".PlayTime", (getUser().getInt("Statistics."+g.name()+".PlayTime")+seconds));
+		u.set("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime", (getUser().getInt("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime")+seconds));
+		u.set("Statistics."+player.getWorld().getName()+".PlayTime", (getUser().getInt("Statistics."+player.getWorld().getName()+".PlayTime")+seconds));
+		u.save();
 		/*
 		 * Statistics:
 		 *   PlayTime:

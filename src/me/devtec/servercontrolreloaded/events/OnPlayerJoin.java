@@ -102,6 +102,7 @@ public class OnPlayerJoin implements Listener {
 				boolean fly = d.getBoolean("FlyOnQuit");
 				if(fly)
 				d.remove("FlyOnQuit");
+				d.save();
 				SPlayer s = API.getSPlayer(p); 
 				s.setFlySpeed();
 				s.setWalkSpeed();
@@ -116,6 +117,7 @@ public class OnPlayerJoin implements Listener {
 					s.setFood();
 					s.setFire();
 				}
+				User d = TheAPI.getUser(p);
 		        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
 		    		LoginEvent.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
 				Config f = Loader.config;
@@ -316,6 +318,7 @@ public class OnPlayerJoin implements Listener {
 			else
 				d.remove("FlyOnQuit");
 			d.set("DisconnectWorld", p.getWorld().getName());
+			d.save();
 		}catch(Exception | NoSuchFieldError | NoSuchMethodError err) {}
 		new Tasker() {
 			public void run() {
