@@ -329,7 +329,7 @@ public class TabList {
 		if(header.contains("%vanish%"))
 			header=header.replace("%vanish%", Loader.getElse("Vanish", API.hasVanish(p)));
 		if(header.contains("%fly%"))
-			header=header.replace("%fly%", Loader.getElse("Fly", API.getSPlayer(p).hasFlyEnabled()||API.getSPlayer(p).hasTempFlyEnabled()));
+			header=header.replace("%fly%", Loader.getElse("Fly", API.getSPlayer(p).hasFlyEnabled(true)||API.getSPlayer(p).hasTempFlyEnabled()));
 		if(header.contains("%god%"))
 			header=header.replace("%god%", Loader.getElse("God", API.getSPlayer(p).hasGodEnabled()));
 		}else

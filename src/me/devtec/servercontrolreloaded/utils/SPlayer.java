@@ -215,7 +215,7 @@ public class SPlayer {
 
 	public void toggleFly(CommandSender toggler) {
 		if(getPlayer()==null)return;
-		if (hasFlyEnabled()) {
+		if (hasFlyEnabled(true)) {
 			Loader.sendMessages(getPlayer(), "Fly.Disabled.Other.Receiver");
 			if (toggler != null)
 			Loader.sendMessages(toggler, "Fly.Disabled.Other.Sender", Placeholder.c().add("%player%", getName()).add("%playername%", getPlayer().getDisplayName()).add("%customname%", getPlayer().getCustomName()));
@@ -283,8 +283,12 @@ public class SPlayer {
 			EconomyAPI.createAccount(s);
 	}
 
-	public boolean hasFlyEnabled() {
-		return getUser().getBoolean("Fly")||getPlayer()!=null&&getPlayer().getAllowFlight();
+	public boolean hasFlyEnabled(boolean checkEnabled) {
+		if(!checkEnabled)
+			return getUser().getBoolean("Fly")||getPlayer()!=null&&getPlayer().getAllowFlight();
+		else {
+			return getPlayer()!=null&&getPlayer().getAllowFlight();
+		}
 	}
 
 	public boolean hasGodEnabled() {

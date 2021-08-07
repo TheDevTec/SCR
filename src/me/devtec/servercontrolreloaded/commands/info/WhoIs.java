@@ -78,7 +78,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 					Loader.sendMessages(s, "WhoIs."+(d?"Online":"Offline"), Placeholder.c().add("%player%", c.getName()).add("%playername%", c.getName()).add("%customname%", c.getCustomName()).add("%ip%", ip)
 							.add("%country%", (String)country.getOrDefault("country", "Uknown")).add("%region%", (String)country.getOrDefault("regionName", "Uknown"))
 							.add("%city%", (String)country.getOrDefault("city", "Uknown"))
-							.add("%afk%", afk).add("%seen%", seen).add("%fly%", c.hasFlyEnabled()+"").add("%god%", c.hasGodEnabled()+"").add("%tempfly%", c.hasTempFlyEnabled()+"")
+							.add("%afk%", afk).add("%seen%", seen).add("%fly%", c.hasFlyEnabled(true)+"").add("%god%", c.hasGodEnabled()+"").add("%tempfly%", c.hasTempFlyEnabled()+"")
 							.add("%op%", Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(a[0]))+"").add("%uuid%", Bukkit.getOfflinePlayer(a[0]).getUniqueId().toString())
 							.add("%vanish%", API.hasVanish(c.getName())+"").add("%firstjoin%", c.getUser().getString("FirstJoin")+"").add("%group%", Staff.getGroup(a[0]))
 							.add("%money%", EconomyAPI.format(EconomyAPI.getBalance(a[0])))

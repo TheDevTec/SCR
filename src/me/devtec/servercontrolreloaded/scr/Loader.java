@@ -885,7 +885,7 @@ public class Loader extends JavaPlugin implements Listener {
 			SPlayer s = API.getSPlayer(p);
 			if (s.hasTempFlyEnabled())
 				s.enableTempFly();
-			else if (s.hasFlyEnabled())
+			else if (s.hasFlyEnabled(false))
 				s.enableFly();
 			if (EconomyAPI.getEconomy() != null && !EconomyAPI.hasAccount(p))
 				EconomyAPI.createAccount(p);

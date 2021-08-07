@@ -108,7 +108,7 @@ public class OnPlayerJoin implements Listener {
 				s.setWalkSpeed();
 				if (s.hasTempFlyEnabled())
 					s.enableTempFly();
-				else if ((s.hasFlyEnabled()||fly) && Loader.has(p, "Fly", "Other")) {
+				else if ((s.hasFlyEnabled(false)||fly) && Loader.has(p, "Fly", "Other")) {
 					p.setAllowFlight(true);
 					p.setFlying(true);
 				}
@@ -260,7 +260,8 @@ public class OnPlayerJoin implements Listener {
 		Player p = e.getPlayer();
 		DisplayManager.removeCache(p);
 		NameTagChanger.remove(p);
-		Ref.sendPacket(p,TabList.empty);
+		if(Loader.hasBungee)
+			Ref.sendPacket(p,TabList.empty);
 		p.setPlayerListName(p.getName());
 		p.setDisplayName(null);
 		p.setCustomName(null);
@@ -318,13 +319,7 @@ public class OnPlayerJoin implements Listener {
 			else
 				d.remove("FlyOnQuit");
 			d.set("DisconnectWorld", p.getWorld().getName());
-			d.save();
 		}catch(Exception | NoSuchFieldError | NoSuchMethodError err) {}
-		new Tasker() {
-			public void run() {
-				d.save();
-			}
-		}.runTask();
 		API.removeSPlayer(p);
 	}
 }
