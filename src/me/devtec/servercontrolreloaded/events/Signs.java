@@ -21,14 +21,14 @@ public class Signs implements Listener {
 	public Loader ps = Loader.getInstance;
 
 	public String warp(String ss) {
-		for (String s : Loader.config.getKeys("Warps")) {
-			if (s.equalsIgnoreCase(ss)) {
+		for (String s : Loader.config.getKeys("Warps"))
+			if (s.equalsIgnoreCase(ss))
 				return s;
-			}
-		}
 		return null;
 	}
 
+	//TODO REWORK
+	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void signCreate(SignChangeEvent e) {
 		Player p = e.getPlayer();
@@ -73,21 +73,21 @@ public class Signs implements Listener {
 			if (f == null) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.getBlock().getState().update();
-				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("servercontrolreloaded:repair Hand"));
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("repair Hand"));
 				SignAPI.setActions(new Position(e.getBlock()), a);
 			}
 			if (f.equalsIgnoreCase("Hand")) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.setLine(1, TheAPI.colorize("&aHand"));
 				e.getBlock().getState().update();
-				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("servercontrolreloaded:repair Hand"));
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("repair Hand"));
 				SignAPI.setActions(new Position(e.getBlock()), a);
 			}
 			if (f.equalsIgnoreCase("All")) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.setLine(1, TheAPI.colorize("&aAll"));
 				e.getBlock().getState().update();
-				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("servercontrolreloaded:repair All"));
+				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("repair All"));
 				SignAPI.setActions(new Position(e.getBlock()), a);
 			}
 		}

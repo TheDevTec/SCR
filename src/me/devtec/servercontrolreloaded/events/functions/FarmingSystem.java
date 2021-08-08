@@ -1,4 +1,4 @@
-package me.devtec.servercontrolreloaded.events;
+package me.devtec.servercontrolreloaded.events.functions;
 
 import java.lang.reflect.Constructor;
 
@@ -19,7 +19,6 @@ import org.bukkit.material.NetherWarts;
 
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.utils.XMaterial;
-import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
@@ -29,8 +28,7 @@ public class FarmingSystem implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick(PlayerInteractEvent e) {
-		if (e.isCancelled() || !setting.farming || 
-				!e.getPlayer().hasPermission("SCR.Other.FarmingSystem") ||
+		if (e.isCancelled() || !e.getPlayer().hasPermission("SCR.Other.FarmingSystem") ||
 				e.getAction()!=Action.RIGHT_CLICK_BLOCK ||
 				Loader.config.getStringList("Options.FarmingSystem.ForbiddenWorlds").contains(e.getClickedBlock().getWorld().getName()) || 
 				e.getAction()==Action.RIGHT_CLICK_BLOCK && !FarmingSystemAccess.hasAccess(e.getPlayer(), e.getClickedBlock().getLocation()))return;
@@ -115,6 +113,6 @@ public class FarmingSystem implements Listener {
 	private static Constructor<?> packet = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutAnimation","PacketPlayOutAnimation"), Ref.nmsOrOld("world.entity.Entity","Entity"), int.class);
 	
 	private void callHand(Player player) {
-		Ref.sendPacket(TheAPI.getOnlinePlayers(), Ref.newInstance(packet, NMSAPI.getEntity(player), 0));
+		Ref.sendPacket(player.getWorld().getPlayers(), Ref.newInstance(packet, NMSAPI.getEntity(player), 0));
 	}
 }

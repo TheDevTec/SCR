@@ -1,4 +1,4 @@
-package me.devtec.servercontrolreloaded.events;
+package me.devtec.servercontrolreloaded.events.functions;
 
 import java.util.Collection;
 
@@ -16,7 +16,7 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.punishmentapi.PlayerBanList;
 import me.devtec.theapi.punishmentapi.PunishmentAPI;
 
-public class AFkPlayerEvents implements Listener {
+public class AFKEvents implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onBreakBlock(PlayerInteractEvent e) {

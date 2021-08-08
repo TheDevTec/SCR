@@ -37,6 +37,8 @@ import me.devtec.theapi.utils.json.Writer;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 
+//TODO REWORK
+
 public class ChatFormat implements Listener {
 
 	@SuppressWarnings("unchecked")

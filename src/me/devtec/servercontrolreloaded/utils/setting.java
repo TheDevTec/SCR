@@ -25,10 +25,6 @@ public class setting {
 	public static String prefix;
 	public static DeathTp deathspawn;
 
-	/**
-	 * public static boolean offlineinvsee; ///invsee <offline player>, /esee
-	 * <offline player> (Req. SCR_PerWorldInventory)
-	 **/
 	public static void load(boolean message) {
 		Config f = Loader.config;
 		prefix = Loader.getTranslationAsString("Prefix");

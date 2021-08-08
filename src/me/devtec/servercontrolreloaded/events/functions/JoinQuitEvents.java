@@ -1,5 +1,5 @@
 
-package me.devtec.servercontrolreloaded.events;
+package me.devtec.servercontrolreloaded.events.functions;
 
 import java.util.Collection;
 import java.util.Date;
@@ -42,7 +42,7 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.reflections.Ref;
 
-public class OnPlayerJoin implements Listener {
+public class JoinQuitEvents implements Listener {
 
 	public static String replaceAll(String s, Player p) {
 		String name = ChatFormatter.displayName(p);
@@ -102,7 +102,6 @@ public class OnPlayerJoin implements Listener {
 				boolean fly = d.getBoolean("FlyOnQuit");
 				if(fly)
 				d.remove("FlyOnQuit");
-				d.save();
 				SPlayer s = API.getSPlayer(p); 
 				s.setFlySpeed();
 				s.setWalkSpeed();
@@ -119,7 +118,7 @@ public class OnPlayerJoin implements Listener {
 				}
 				User d = TheAPI.getUser(p);
 		        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
-		    		LoginEvent.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
+		    		Vanish.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
 				Config f = Loader.config;
 				if(API.hasVanish(p.getName())) {
 					if(setting.vanish_action) {
@@ -178,7 +177,7 @@ public class OnPlayerJoin implements Listener {
 									if(fa!=null)
 									TheAPI.sudoConsole(TheAPI.colorize(replaceAll(fa,p)));
 								}}else
-							TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
+									TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
 							}
 						}
 					}.runTaskSync();
@@ -217,15 +216,15 @@ public class OnPlayerJoin implements Listener {
 
 					new Tasker() {
 						public void run() {
-					Object o = Loader.events.get("onJoin.Commands");
-					if(o!=null) {
-						if(o instanceof Collection) {
-						for(Object fa : (Collection<?>)o) {
-							if(fa!=null)
-								TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+fa, p)));
-						}}else
-							if(!(""+o).isEmpty())
-								TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
+						Object o = Loader.events.get("onJoin.Commands");
+						if(o!=null) {
+							if(o instanceof Collection) {
+							for(Object fa : (Collection<?>)o) {
+								if(fa!=null)
+									TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+fa, p)));
+							}}else
+								if(!(""+o).isEmpty())
+									TheAPI.sudoConsole(TheAPI.colorize(replaceAll(""+o, p)));
 					}}
 					}.runTaskSync();
 					o = Loader.events.get("onJoin.Broadcast");
@@ -319,6 +318,7 @@ public class OnPlayerJoin implements Listener {
 			else
 				d.remove("FlyOnQuit");
 			d.set("DisconnectWorld", p.getWorld().getName());
+			//d.save(); - Latest build of TheAPI automatically save user file
 		}catch(Exception | NoSuchFieldError | NoSuchMethodError err) {}
 		API.removeSPlayer(p);
 	}

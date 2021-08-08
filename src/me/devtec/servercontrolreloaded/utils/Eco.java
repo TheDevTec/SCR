@@ -1,58 +1,39 @@
 package me.devtec.servercontrolreloaded.utils;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.TheAPI;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-
-import java.util.List;
 
 public class Eco implements Economy {
 	public static String getEconomyGroup(String p) {
-		String wd = "default";
-		String world = null;
-		String a = TheAPI.getUser(p).getString("DisconnectWorld");
-		if (TheAPI.getPlayer(p) != null)
-			world = TheAPI.getPlayer(p).getWorld().getName();
-		else {
-			if (a != null)
-				world = a;
-		}
-		if (a == null)
-			a = Bukkit.getWorlds().get(0).getName();
-		for (String f : Loader.config.getKeys("Options.Economy.MultiEconomy.Types")) {
-				if (Loader.config.getStringList("Options.Economy.MultiEconomy.Types." + f).contains(world)) {
-					wd=f;
-					break;
-				}
-		}
-		return wd;
+		String world = TheAPI.getUser(p).getString("DisconnectWorld");
+		Player online = TheAPI.getPlayer(p);
+		if (online != null)
+			world = online.getWorld().getName();
+		if (world == null)
+			world = Bukkit.getWorlds().get(0).getName();
+		return getEconomyGroupByWorld(world);
 	}
 
 	public static String getEconomyGroupByWorld(String world) {
-		String wd = "default";
-		String wd2 = null;
 		for (String f : Loader.config.getKeys("Options.Economy.MultiEconomy.Types")) {
-			if(wd!="default") {
-				break;
-			}
-			for(String s:Loader.config.getStringList("Options.Economy.MultiEconomy.Types."+f))
-			if (s.equals(world)) {
-				wd2=f;
-				wd=f;
-				break;
-			}
+			if(Loader.config.getStringList("Options.Economy.MultiEconomy.Types."+f).contains(world))
+				return f;
 		}
-		if(wd2==null)wd2= "default";
-		return wd2;
+		return "default";
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return Loader.econ != null;
+		return Loader.getInstance.isEnabled() && Loader.econ != null;
 	}
 
 	@Override
@@ -85,19 +66,22 @@ public class Eco implements Economy {
 		return "$";
 	}
 
-	private String getPaths(String player, String group) {
+	private String getPaths(String player) {
 		String path = "Money";
 		if (Loader.config.getBoolean("Options.Economy.MultiEconomy.Use"))
-			path = path + "." + group;
+			return path + "." + getEconomyGroup(player);
 		return path;
 	}
 
 	private String get(String player) {
-		return getPaths(player, getEconomyGroup(player));
+		return getPaths(player);
 	}
 
 	private String get(String player, String world) {
-		return getPaths(player, getEconomyGroupByWorld(world));
+		String path = "Money";
+		if (Loader.config.getBoolean("Options.Economy.MultiEconomy.Use"))
+			return path + "." + getEconomyGroupByWorld(world);
+		return path;
 	}
 
 	private boolean existPath(String player) {
@@ -190,7 +174,7 @@ public class Eco implements Economy {
 	public EconomyResponse withdrawPlayer(String s, double v) {
 		if (s == null)
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
-					"Failed withdrawed $" + v + ", because player is null");
+					"Failed withdrawed $" + v + ", player is null");
 		if (v < 0) {
 			Loader.EconomyLog("Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
@@ -214,7 +198,7 @@ public class Eco implements Economy {
 	public EconomyResponse withdrawPlayer(String s, String world, double v) {
 		if (s == null)
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
-					"Failed withdrawed $" + v + ", because player is null");
+					"Failed withdrawed $" + v + ", player is null");
 		if (v < 0) {
 			Loader.EconomyLog("Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
@@ -236,7 +220,7 @@ public class Eco implements Economy {
 	public EconomyResponse depositPlayer(String s, double v) {
 		if (s == null)
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
-					"Failed deposited $" + v + ", because player is null");
+					"Failed deposited $" + v + ", player is null");
 		if (v < 0) {
 			Loader.EconomyLog("Failed deposited $" + v + " to player " + s + ", you can't deposite negative amount");
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
@@ -257,7 +241,7 @@ public class Eco implements Economy {
 	public EconomyResponse depositPlayer(String s, String w, double v) {
 		if (s == null)
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
-					"Failed deposited $" + v + ", because player is null");
+					"Failed deposited $" + v + ", player is null");
 		if (v < 0) {
 			Loader.EconomyLog("Failed deposited $" + v + " to player " + s + ", you can't deposite negative amount");
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,

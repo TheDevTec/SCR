@@ -1,4 +1,4 @@
-package me.devtec.servercontrolreloaded.events;
+package me.devtec.servercontrolreloaded.events.functions;
 
 import java.util.Collection;
 
@@ -22,7 +22,7 @@ import me.devtec.theapi.utils.json.Reader;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
 
-public class ItemUse implements Listener {
+public class ItemProcessUse implements Listener {
 	public static int COLLECTION = 1;
 
 	@SuppressWarnings("unchecked")
@@ -50,25 +50,15 @@ public class ItemUse implements Listener {
 			}
 		}
 	}
-	/*
-	 process:
-	 	msg: []
-	 	console:
-	 		cmd: []
-	 	player:
-	 		cmd: []
-	 	cooldown:
-	 	last:
-	 	uses:
-	 	usage:
-	 	movable: false | true
-	 */
 	
 	@SuppressWarnings({ "unchecked" })
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
-		if(e.getAction().toString().startsWith("PLACE")||e.getAction().toString().startsWith("PICKUP") || e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)
-				|| e.getAction().equals(InventoryAction.HOTBAR_SWAP)|| e.getAction().toString().startsWith("DROP")) {
+		if(e.getAction()==InventoryAction.PLACE_ALL||e.getAction()==InventoryAction.PLACE_ONE||e.getAction()==InventoryAction.PLACE_SOME
+				||e.getAction()==InventoryAction.DROP_ALL_CURSOR||e.getAction()==InventoryAction.DROP_ALL_SLOT||e.getAction()==InventoryAction.DROP_ONE_CURSOR
+						||e.getAction()==InventoryAction.DROP_ONE_SLOT
+				||e.getAction()==InventoryAction.PICKUP_ALL||e.getAction()==InventoryAction.PICKUP_HALF||e.getAction()==InventoryAction.PICKUP_ONE||e.getAction()==InventoryAction.PICKUP_SOME
+				|| e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) || e.getAction().equals(InventoryAction.HOTBAR_SWAP)) {
 			if(e.getCurrentItem()!=null && e.getCurrentItem().getType()!=Material.AIR) {
 				Object has = getActions(e.getCurrentItem(), "process", 0);
     			if(has==null||has.toString().trim().isEmpty())return;

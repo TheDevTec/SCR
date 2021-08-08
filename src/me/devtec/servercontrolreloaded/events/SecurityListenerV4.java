@@ -28,6 +28,9 @@ import java.util.List;
  * @author StraikerinaCZ
  *
  */
+
+//TODO REWORK
+
 public class SecurityListenerV4 implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)

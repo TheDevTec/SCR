@@ -1,4 +1,4 @@
-package me.devtec.servercontrolreloaded.events;
+package me.devtec.servercontrolreloaded.events.punishment;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +14,7 @@ import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.cooldownapi.CooldownAPI;
 import me.devtec.theapi.utils.StringUtils;
 
-public class SecurityListenerCooldowns implements Listener {
+public class Cooldowns implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void CooldownChat(AsyncPlayerChatEvent e) {

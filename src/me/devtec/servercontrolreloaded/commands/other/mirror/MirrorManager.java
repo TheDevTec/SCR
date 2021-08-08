@@ -73,9 +73,8 @@ public class MirrorManager {
 			BlockState st = n.getBlock().getState();
 			st.setData(block.getState().getData());
 			st.update(true, true);
-			try { //1.13+
-				n.getBlock().setBlockData(block.getBlockData());
-			}catch(Exception | NoSuchMethodError | NoClassDefFoundError | NoSuchFieldError e) {}
+			if(TheAPI.isNewerThan(12))
+				n.setBlockDataAndUpdate(block.getBlockData());
 			rotate(n.getBlock(), block, type);
 			
 			
@@ -101,13 +100,7 @@ public class MirrorManager {
 		}
 		
 	}
-	/*
-    X  |  O
-       |
- ------|-------
-       |
-       |
- */
+	
 	public static void rotate(Block block, Block old,  MirrorType type) {
         if (block == null)
             return;
@@ -124,34 +117,36 @@ public class MirrorManager {
         try {
         	if(TheAPI.isNewerThan(12)) {
         	org.bukkit.block.data.BlockData state = block.getBlockData(); //1.13+
-	        if(state instanceof org.bukkit.block.data.Directional) {
-	        	org.bukkit.block.data.Directional dir = (org.bukkit.block.data.Directional)state;
-	            BlockFace f =dir.getFacing();
-	            f = getFace(f, type);
-	            dir.setFacing(f);
-	            block.setBlockData(dir);
-	        }
-	        if(state instanceof org.bukkit.block.data.Rotatable) {
-	        	org.bukkit.block.data.Rotatable dir = (org.bukkit.block.data.Rotatable)state;
-	            BlockFace f =dir.getRotation();
-	            f = getFace(f, type);
-	            dir.setRotation(f);
-	            block.setBlockData(dir);
-	        }
-	        if(state instanceof org.bukkit.block.data.type.Stairs) {
-	        	org.bukkit.block.data.type.Stairs dir = (org.bukkit.block.data.type.Stairs)state;
-	        	org.bukkit.block.data.type.Stairs.Shape f =dir.getShape();
-	            f = getShape(f, type);
-	            dir.setShape(f);
-	            block.setBlockData(dir);
-	        }
-	        if(state instanceof org.bukkit.block.data.Rail) {
-	        	org.bukkit.block.data.Rail dir = (org.bukkit.block.data.Rail)state;
-	            org.bukkit.block.data.Rail.Shape f =dir.getShape();
-	            f = getShape(f, type);
-	            dir.setShape(f);
-	            block.setBlockData(dir);
-	        }
+		        if(state instanceof org.bukkit.block.data.Directional) {
+		        	org.bukkit.block.data.Directional dir = (org.bukkit.block.data.Directional)state;
+		            BlockFace f =dir.getFacing();
+		            f = getFace(f, type);
+		            dir.setFacing(f);
+		            block.setBlockData(dir);
+		        }
+		        if(state instanceof org.bukkit.block.data.Rotatable) {
+		        	org.bukkit.block.data.Rotatable dir = (org.bukkit.block.data.Rotatable)state;
+		            BlockFace f =dir.getRotation();
+		            f = getFace(f, type);
+		            dir.setRotation(f);
+		            block.setBlockData(dir);
+		        }
+		        if(state instanceof org.bukkit.block.data.type.Stairs) {
+		        	org.bukkit.block.data.type.Stairs dir = (org.bukkit.block.data.type.Stairs)state;
+		        	org.bukkit.block.data.type.Stairs.Shape f = dir.getShape();
+		            f = (org.bukkit.block.data.type.Stairs.Shape) getShape(f, type);
+		            dir.setShape(f);
+		            block.setBlockData(dir);
+		        }
+		        /*
+		        if(state instanceof org.bukkit.block.data.Rail) {
+		        	org.bukkit.block.data.Rail dir = (org.bukkit.block.data.Rail)state;
+		            org.bukkit.block.data.Rail.Shape f = dir.getShape();
+		            f = getShape(f, type);
+		            dir.setShape(f);
+		            block.setBlockData(dir);
+		        }
+		        */
         	}else {
             	BlockState state = block.getState();
     	        MaterialData d = state.getData();
@@ -224,12 +219,7 @@ public class MirrorManager {
 		return f;
 	}
 	
-	public static org.bukkit.block.data.Rail.Shape getShape(org.bukkit.block.data.Rail.Shape shape, MirrorType type) {
-		//TODO - houska
-		return shape;
-	}
-	
-	public static org.bukkit.block.data.type.Stairs.Shape getShape(org.bukkit.block.data.type.Stairs.Shape shape, MirrorType type) {
+	public static Object getShape(org.bukkit.block.data.type.Stairs.Shape shape, MirrorType type) {
 		if(shape == org.bukkit.block.data.type.Stairs.Shape.STRAIGHT) return org.bukkit.block.data.type.Stairs.Shape.STRAIGHT;
 		if(type==MirrorType.AXISX) {
 			if(shape== org.bukkit.block.data.type.Stairs.Shape.INNER_LEFT) return org.bukkit.block.data.type.Stairs.Shape.INNER_RIGHT;

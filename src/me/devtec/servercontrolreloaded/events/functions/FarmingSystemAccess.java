@@ -1,4 +1,4 @@
-package me.devtec.servercontrolreloaded.events;
+package me.devtec.servercontrolreloaded.events.functions;
 
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;

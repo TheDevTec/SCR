@@ -17,7 +17,7 @@ public class HDBSupport {
 	
 	public static ItemStack parse(String text) {
 		if(api!=null && text.toLowerCase().startsWith("hdb:"))
-		return ((HeadDatabaseAPI)api).getItemHead(text.substring(4));
+			return ((HeadDatabaseAPI)api).getItemHead(text.substring(4));
 		return null;
 	}
 	

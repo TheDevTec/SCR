@@ -1,14 +1,4 @@
-package me.devtec.servercontrolreloaded.events;
-
-import me.devtec.servercontrolreloaded.scr.API;
-import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.scr.API.TeleportLocation;
-import me.devtec.servercontrolreloaded.utils.setting;
-import me.devtec.servercontrolreloaded.utils.setting.DeathTp;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
-import me.devtec.theapi.scheduler.Tasker;
-import me.devtec.theapi.utils.datakeeper.User;
+package me.devtec.servercontrolreloaded.events.functions;
 
 import java.util.Collection;
 
@@ -20,7 +10,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-public class DeathEvent implements Listener {
+import me.devtec.servercontrolreloaded.scr.API;
+import me.devtec.servercontrolreloaded.scr.API.TeleportLocation;
+import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.utils.setting;
+import me.devtec.servercontrolreloaded.utils.setting.DeathTp;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.punishmentapi.PlayerBanList;
+import me.devtec.theapi.punishmentapi.PunishmentAPI;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.datakeeper.User;
+
+public class DeathEvents implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void PlayerDeath(PlayerDeathEvent e) {
@@ -45,10 +46,10 @@ public class DeathEvent implements Listener {
 			if(o instanceof Collection) {
 			for(Object fa : (Collection<?>)o) {
 				if(fa!=null)
-				TheAPI.msg(OnPlayerJoin.replaceAll(fa+"",p),p);
+				TheAPI.msg(JoinQuitEvents.replaceAll(fa+"",p),p);
 			}}else
 				if(!(""+o).isEmpty())
-					TheAPI.msg(OnPlayerJoin.replaceAll(""+o, p),p);
+					TheAPI.msg(JoinQuitEvents.replaceAll(""+o, p),p);
 		}
 
 		new Tasker() {
@@ -58,10 +59,10 @@ public class DeathEvent implements Listener {
 			if(o instanceof Collection) {
 			for(Object fa : (Collection<?>)o) {
 				if(fa!=null)
-					TheAPI.sudoConsole(TheAPI.colorize(OnPlayerJoin.replaceAll(""+fa, p)));
+					TheAPI.sudoConsole(TheAPI.colorize(JoinQuitEvents.replaceAll(""+fa, p)));
 			}}else
 				if(!(""+o).isEmpty())
-					TheAPI.sudoConsole(TheAPI.colorize(OnPlayerJoin.replaceAll(""+o, p)));
+					TheAPI.sudoConsole(TheAPI.colorize(JoinQuitEvents.replaceAll(""+o, p)));
 		}}
 		}.runTaskSync();
 		o = Loader.events.get("onDeath.Broadcast");
@@ -69,10 +70,10 @@ public class DeathEvent implements Listener {
 			if(o instanceof Collection) {
 			for(Object fa : (Collection<?>)o) {
 				if(fa!=null)
-				TheAPI.bcMsg(OnPlayerJoin.replaceAll(fa+"",p));
+				TheAPI.bcMsg(JoinQuitEvents.replaceAll(fa+"",p));
 			}}else
 				if(!(""+o).isEmpty())
-					TheAPI.bcMsg(OnPlayerJoin.replaceAll(""+o, p));
+					TheAPI.bcMsg(JoinQuitEvents.replaceAll(""+o, p));
 		}
 		
 	}
@@ -81,8 +82,8 @@ public class DeathEvent implements Listener {
 	public void Respawn(PlayerRespawnEvent e) {
 		Player p = e.getPlayer();
 		try {
-		if (PunishmentAPI.getBanList(p.getName()).isJailed()
-				|| PunishmentAPI.getBanList(p.getName()).isTempJailed())
+			PlayerBanList banlist = PunishmentAPI.getBanList(p.getName());
+		if (banlist.isJailed() || banlist.isTempJailed())
 			e.setRespawnLocation((Location) Loader.config.get("Jails." + TheAPI.getUser(p).getString("Jail.Location")));
 		else if (setting.deathspawnbol) {
 			if (setting.deathspawn == DeathTp.HOME)

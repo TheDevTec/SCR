@@ -17,6 +17,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,21 +25,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.commands.other.Trash;
 import me.devtec.servercontrolreloaded.commands.other.mirror.MirrorEvents;
-import me.devtec.servercontrolreloaded.events.AFkPlayerEvents;
 import me.devtec.servercontrolreloaded.events.ChatFormat;
-import me.devtec.servercontrolreloaded.events.CreatePortal;
-import me.devtec.servercontrolreloaded.events.DeathEvent;
-import me.devtec.servercontrolreloaded.events.DisableItems;
-import me.devtec.servercontrolreloaded.events.EntitySpawn;
-import me.devtec.servercontrolreloaded.events.FarmingSystem;
-import me.devtec.servercontrolreloaded.events.ItemUse;
-import me.devtec.servercontrolreloaded.events.LoginEvent;
-import me.devtec.servercontrolreloaded.events.OnPlayerJoin;
-import me.devtec.servercontrolreloaded.events.RewardsListenerChat;
-import me.devtec.servercontrolreloaded.events.SecurityListenerCooldowns;
 import me.devtec.servercontrolreloaded.events.SecurityListenerV4;
 import me.devtec.servercontrolreloaded.events.Signs;
-import me.devtec.servercontrolreloaded.events.WorldChange;
+import me.devtec.servercontrolreloaded.events.functions.AFKEvents;
+import me.devtec.servercontrolreloaded.events.functions.Codes;
+import me.devtec.servercontrolreloaded.events.functions.CountryBlocker;
+import me.devtec.servercontrolreloaded.events.functions.DeathEvents;
+import me.devtec.servercontrolreloaded.events.functions.DisableItems;
+import me.devtec.servercontrolreloaded.events.functions.FarmingSystem;
+import me.devtec.servercontrolreloaded.events.functions.ItemProcessUse;
+import me.devtec.servercontrolreloaded.events.functions.JoinQuitEvents;
+import me.devtec.servercontrolreloaded.events.functions.MWWorldSettings;
+import me.devtec.servercontrolreloaded.events.functions.PWGamemode;
+import me.devtec.servercontrolreloaded.events.functions.SinglePlayerSleep;
+import me.devtec.servercontrolreloaded.events.functions.VIPSlots;
+import me.devtec.servercontrolreloaded.events.punishment.Cooldowns;
 import me.devtec.servercontrolreloaded.utils.BungeeListener;
 import me.devtec.servercontrolreloaded.utils.Configs;
 import me.devtec.servercontrolreloaded.utils.Converter;
@@ -679,7 +681,6 @@ public class Loader extends JavaPlugin implements Listener {
 				Bukkit.getMessenger().registerIncomingPluginChannel(this, "scr:community", new BungeeListener());
 			}
 		}
-		EventsRegister();
 		updater = new SpigotUpdateChecker(getDescription().getVersion(), 71147);
 		switch(updater.checkForUpdates()) {
 		case UKNOWN:
@@ -872,11 +873,11 @@ public class Loader extends JavaPlugin implements Listener {
 			for(String d : config.getStringList("Rules."+s+".RegexFlags")) {
 				if(flags==0) {
 					try {
-					flags=(int)Ref.getNulled(java.util.regex.Pattern.class,d);
+					flags=(int)Ref.getNulled(java.util.regex.Pattern.class,d.toUpperCase());
 					}catch(Exception err) {}
 				}
 				try {
-				flags|=(int)Ref.getNulled(java.util.regex.Pattern.class,d);
+				flags|=(int)Ref.getNulled(java.util.regex.Pattern.class,d.toUpperCase());
 				}catch(Exception err) {}
 			}
 			rules.add(new Rule(s, config.getString("Rules."+s+".Text"), config.getString("Rules."+s+".Type"), config.getBoolean("Rules."+s+".Replacement.Use"), config.getString("Rules."+s+".Replacement.Text"),flags));
@@ -894,6 +895,8 @@ public class Loader extends JavaPlugin implements Listener {
 		TabList.reload();
 		Tasks.reload();
 		CommandsManager.load();
+		unregisterEvents();
+		registerEvents();
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 		TheAPI.msg(setting.prefix + " &7"+(aad == 0 ? "L" : "Rel")+"oading of SCR took "+(System.currentTimeMillis()-loading)+"ms", TheAPI.getConsole());
 		aad=1;
@@ -998,28 +1001,42 @@ public class Loader extends JavaPlugin implements Listener {
 		Scheduler.cancelTask(task);
 	}
 	
-	private void EventC(org.bukkit.event.Listener l) {
-		Bukkit.getPluginManager().registerEvents(l, this);
+	private static void regEvent(org.bukkit.event.Listener l) {
+		ev.add(l);
+		Bukkit.getPluginManager().registerEvents(l, getInstance);
 	}
-
-	private void EventsRegister() {
-		EventC(new DisableItems());
-		EventC(new SecurityListenerV4());
-		EventC(new OnPlayerJoin());
-		EventC(new SecurityListenerCooldowns());
-		EventC(new ChatFormat());
-		EventC(new RewardsListenerChat());
-		EventC(new LoginEvent());
-		EventC(new DeathEvent());
-		EventC(new AFkPlayerEvents());
-		EventC(new WorldChange());
-		EventC(new CreatePortal());
-		EventC(new EntitySpawn());
-		EventC(new Signs());
-		EventC(new FarmingSystem());
-		EventC(new ItemUse());
-		if(TheAPI.isNewerThan(13))
-			EventC(new MirrorEvents());
+	
+	static List<org.bukkit.event.Listener> ev = new ArrayList<>();
+	public static void registerEvents() {
+		if(setting.disable_item)
+			regEvent(new DisableItems());
+		if(setting.cool_chat||setting.cool_cmd||setting.cool_percmd)
+			regEvent(new Cooldowns());
+		if(setting.code)
+			regEvent(new Codes());
+		if(Loader.config.getBoolean("CountryBlocker.Enabled"))
+		regEvent(new CountryBlocker());
+		regEvent(new DeathEvents());
+		regEvent(new AFKEvents());
+		regEvent(new PWGamemode());
+		regEvent(new MWWorldSettings());
+		regEvent(new Signs());
+		if(setting.farming)
+			regEvent(new FarmingSystem());
+		if(setting.singeplayersleep)
+			regEvent(new SinglePlayerSleep());
+		regEvent(new VIPSlots());
+		if(CommandsManager.isLoaded("Other", "Mirror"))
+			regEvent(new MirrorEvents());
+		regEvent(new ItemProcessUse());
+		regEvent(new SecurityListenerV4());
+		regEvent(new JoinQuitEvents());
+		regEvent(new ChatFormat());
+	}
+	
+	public static void unregisterEvents() {
+		for(org.bukkit.event.Listener l : ev)HandlerList.unregisterAll(l);
+		ev.clear();
 	}
 	
 	public static void notOnline(CommandSender s, String player) {

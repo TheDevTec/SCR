@@ -388,8 +388,7 @@ public class CommandsManager {
 		load("TpSystem", "TpaDeny", new Tpadeny());
 		
 		//Modules -> package Modules
-		if(TheAPI.isNewerThan(7))
-			load("Other", "Mirror", new MirrorCommand());
+		load("Other", "Mirror", new MirrorCommand());
 		
 		//Other
 		if(Loader.hasBungee)
