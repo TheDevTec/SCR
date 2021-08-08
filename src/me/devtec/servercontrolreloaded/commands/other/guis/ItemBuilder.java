@@ -26,13 +26,16 @@ public class ItemBuilder {
 	Map<Enchantment, Integer> enchants;
 	String model, amount,data;
 	Material type;
-	public ItemBuilder(Material type, String data, String amount, String name, List<String> lore, String model, List<String> itemflags, List<String> enchants) {
+	
+	final String path;
+	public ItemBuilder(String path, Material type, String data, String amount, String name, List<String> lore, String model, List<String> itemflags, List<String> enchants) {
 		this.type=type;
 		this.amount=amount;
 		this.name=name;
 		this.data=data;
 		this.lore=lore;
 		this.model=model;
+		this.path=path;
 		List<ItemFlag> itemFlags = new ArrayList<>();
 		for(String f : itemflags) {
 			try {
@@ -51,11 +54,16 @@ public class ItemBuilder {
 		}
 	}
 
-	public ItemBuilder(String name, String amount, List<String> lore, String head, List<String> itemflags, List<String> enchants) {
+	public ItemBuilder(String path, String name, String amount, List<String> lore, String head, List<String> itemflags, List<String> enchants) {
 		this.name=name;
 		this.amount=amount;
 		this.lore=lore;
 		this.head=head;
+		this.path=path;
+	}
+	
+	public String getPath() {
+		return path;
 	}
 	
 	public ItemStack build() {

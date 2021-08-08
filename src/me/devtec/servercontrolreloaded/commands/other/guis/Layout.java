@@ -30,12 +30,13 @@ public class Layout {
 		int slot = 0;
 		for(String s : map)
 			for(char c : s.toCharArray()) {
-				if(items.containsKey(c))
-				g.setItem(slot++, new ItemGUI(items.get(c).build(p)) {
+				ItemBuilder builder = items.get(c);
+				if(builder!=null)
+				g.setItem(slot++, new ItemGUI(builder.build(p)) {
 					public void onClick(Player player, HolderGUI gui, ClickType clickType) {
 						new Tasker() {
 							public void run() {
-								onUse(player, gui, c+"", clickType);
+								onUse(player, gui, builder.getPath(), clickType);
 							}
 						}.runTask();
 					}
@@ -49,20 +50,56 @@ public class Layout {
 		return g;
 	}
 	
-	public Layout upload(String path) {
+	public Layout upload(Player p, String path) {
 		items.clear();
 		this.s=path;
     	for(String s : Loader.guicreator.getKeys(path))
-    		items.put(s.toCharArray()[0], createItem(path+"."+s));
+    		items.put(s.toCharArray()[0], createItem(p, path+"."+s));
 		return this;
 	}
     
-    private ItemBuilder createItem(String string) {
+    private ItemBuilder createItem(Player s, String string) {
+    	String c = Loader.guicreator.getString(string+".condition");
+    	if(c!=null) {
+    		c = PlaceholderAPI.setPlaceholders(s, c.replace("%player%", s.getName()));
+    		for(String con : Loader.guicreator.getKeys(string+".conditions")) {
+    			//math
+    			if(con.startsWith("> ")) {
+    				con=con.substring(2);
+    				double cc = StringUtils.getDouble(con);
+    				if(cc<StringUtils.getDouble(c)) {
+    					string+=".conditions.> "+con;
+    					break;
+    				}
+    			}
+    			if(con.startsWith("< ")) {
+    				con=con.substring(2);
+    				double cc = StringUtils.getDouble(con);
+    				if(cc>StringUtils.getDouble(c)) {
+    					string+=".conditions.< "+con;
+    					break;
+    				}
+    			}
+    			if(con.startsWith("= ")) {
+    				con=con.substring(2);
+    				double cc = StringUtils.getDouble(con);
+    				if(cc==StringUtils.getDouble(c)) {
+    					string+=".conditions.= "+con;
+    					break;
+    				}
+    			}
+    			//uknown
+    			if(con.equals(c)) {
+					string+=".conditions."+con;
+					break;
+    			}
+    		}
+    	}
     	if(Loader.guicreator.exists(string+".head")){
     		if(Loader.guicreator.exists(string+".lore")){
-    			return new ItemBuilder(Loader.guicreator.getString(string+".name"),Loader.guicreator.getString(string+".amount"),Loader.guicreator.getStringList(string+".lore"),Loader.guicreator.getString(string+".head"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
+    			return new ItemBuilder(string, Loader.guicreator.getString(string+".name"),Loader.guicreator.getString(string+".amount"),Loader.guicreator.getStringList(string+".lore"),Loader.guicreator.getString(string+".head"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
             }else{
-            	return new ItemBuilder(Loader.guicreator.getString(string+".name"),Loader.guicreator.getString(string+".amount"),null,Loader.guicreator.getString(string+".head"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
+            	return new ItemBuilder(string, Loader.guicreator.getString(string+".name"),Loader.guicreator.getString(string+".amount"),null,Loader.guicreator.getString(string+".head"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
             }
     	} else if(Loader.guicreator.exists(string+".type")){
     		Material d = Material.getMaterial(Loader.guicreator.getString(string+".type").toUpperCase());
@@ -71,32 +108,32 @@ public class Layout {
     			Validator.validate(true, "Material named '"+Loader.guicreator.getString(string+".type")+"' doesn't exist");
     		}
     		if(Loader.guicreator.exists(string+".lore")){
-    			return new ItemBuilder(d,Loader.guicreator.getString(string+".data"),Loader.guicreator.getString(string+".amount"),Loader.guicreator.getString(string+".name"),Loader.guicreator.getStringList(string+".lore"), Loader.guicreator.getString(string+".model"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
+    			return new ItemBuilder(string, d,Loader.guicreator.getString(string+".data"),Loader.guicreator.getString(string+".amount"),Loader.guicreator.getString(string+".name"),Loader.guicreator.getStringList(string+".lore"), Loader.guicreator.getString(string+".model"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
             }else{
-            	return new ItemBuilder(d,Loader.guicreator.getString(string+".data"),Loader.guicreator.getString(string+".amount"),Loader.guicreator.getString(string+".name"),null, Loader.guicreator.getString(string+".model"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
+            	return new ItemBuilder(string, d,Loader.guicreator.getString(string+".data"),Loader.guicreator.getString(string+".amount"),Loader.guicreator.getString(string+".name"),null, Loader.guicreator.getString(string+".model"), Loader.guicreator.getStringList(string+".itemflags"), Loader.guicreator.getStringList(string+".enchants"));
            }
         }
 		return null;
 	}
 
-    private void onUse(Player p, HolderGUI g, String string, ClickType clickType){
-    	String perm = Loader.guicreator.getString(s+"."+string+".permission");
+    private void onUse(Player p, HolderGUI g, String path, ClickType clickType){
+    	String perm = Loader.guicreator.getString(path+".permission");
     	if(perm!=null && perm.trim().equals(""))perm=null;
     	if(perm!=null && (perm.startsWith("-")?!p.hasPermission(perm.substring(1)):p.hasPermission(perm))) {
-    		process(clickType, g,p,string+".noPermission");
+    		process(clickType, g,p,path+".noPermission");
     		return;
     	}
-    	if(Loader.guicreator.getInt(s+"."+string+".tokens")<=0 && Loader.guicreator.getDouble(s+"."+string+".cost")<=0)
-		process(clickType, g,p,string+".action");
+    	if(Loader.guicreator.getInt(path+".tokens")<=0 && Loader.guicreator.getDouble(path+".cost")<=0)
+		process(clickType, g,p,path+".action");
     	else {
     		//boolean takeTokens = false, 
     		boolean takeMoney = false;
     		
     		//What about custom implement?
     		
-    		/*if(Loader.guicreator.getInt(s+"."+string+".tokens")>0 && ExtManager.getExt("Tokens")!=null) {
-	    		if(API.has(p.getName(),Loader.guicreator.getInt(s+"."+string+".tokens"))) {
-		            if(Loader.guicreator.getBoolean(s+"."+string+".takeTokens")){
+    		/*if(Loader.guicreator.getInt(path+".tokens")>0 && ExtManager.getExt("Tokens")!=null) {
+	    		if(API.has(p.getName(),Loader.guicreator.getInt(path+".tokens"))) {
+		            if(Loader.guicreator.getBoolean(path+".takeTokens")){
 		            	takeTokens=true;
 		            }
 		        }else {
@@ -104,27 +141,27 @@ public class Layout {
 		    		return;
 		        }
     		}*/
-    		if(Loader.guicreator.getDouble(s+"."+string+".cost")>0) {
-		        if(EconomyAPI.has(p,Loader.guicreator.getDouble(s+"."+string+".cost"))) {
-		            if(Loader.guicreator.getBoolean(s+"."+string+".takeMoney")){
+    		if(Loader.guicreator.getDouble(path+".cost")>0) {
+		        if(EconomyAPI.has(p,Loader.guicreator.getDouble(path+".cost"))) {
+		            if(Loader.guicreator.getBoolean(path+".takeMoney")){
 		            	takeMoney=true;
 		            }
 		        }else {
-		    		process(clickType, g,p,string+".noMoney");
+		    		process(clickType, g,p,path+".noMoney");
 		    		return;
 		        }
     		}
     		if(takeMoney)
-    			EconomyAPI.withdrawPlayer(p,Loader.guicreator.getDouble(s+"."+string+".cost"));
+    			EconomyAPI.withdrawPlayer(p,Loader.guicreator.getDouble(path+".cost"));
     		/*if(takeTokens)
-    			API.remove(null,p.getName(),Loader.guicreator.getInt(s+"."+string+".tokens"));*/
-    		process(clickType, g,p,string+".action");
+    			API.remove(p.getName(),Loader.guicreator.getInt(path+".tokens"));*/
+    		process(clickType, g,p,path+".action");
     	}
     }
     
-    private void process(ClickType clickType, HolderGUI g, Player p, String string) {
-        if (Loader.guicreator.get(s + "."+string) instanceof Collection&&Loader.guicreator.exists(s+"."+string)) {
-            for (String a : Loader.guicreator.getStringList(s + "."+string)) {
+    private void process(ClickType clickType, HolderGUI g, Player p, String path) {
+        if (Loader.guicreator.exists(path) && Loader.guicreator.get(path) instanceof Collection) {
+            for (String a : Loader.guicreator.getStringList(path)) {
                 if(a.startsWith("any"))
                 	prov(g, p, a.substring(4));
                 else
@@ -132,7 +169,7 @@ public class Layout {
                 	prov(g, p, a.substring(fixedName(clickType).length()+1));
             }
         } else {
-            String a = Loader.guicreator.getString(s + "."+string);
+            String a = Loader.guicreator.getString(path);
             if(a==null)return;
             if(a.startsWith("any"))
             	prov(g, p, a.substring(4));
@@ -186,6 +223,11 @@ public class Layout {
         } else if(a.startsWith("wait")){
         	try {
 				Thread.sleep(50*StringUtils.getLong(PlaceholderAPI.setPlaceholders(p, a.substring(5).replace("%player%",p.getName()))));
+			} catch (Exception e) {
+			}
+        } else if(a.equalsIgnoreCase("update")){
+        	try {
+        		upload(p, this.s);
 			} catch (Exception e) {
 			}
         }

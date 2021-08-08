@@ -34,11 +34,11 @@ public class GUICreator implements CommandExecutor {
 	    public GUIMaker(String a){
 	    	gui=a;
 	    	ly=Loader.guicreator.getStringList("GUI."+gui+".layout");
-			load();
 	    	if(Loader.guicreator.getBoolean("GUI."+gui+".perplayer"))
 	    		guis = new ArrayList<>();
 	    	else {
 	    		g = new GUI(PlaceholderAPI.setPlaceholders(null,Loader.guicreator.getString("GUI."+gui+".title")),Loader.guicreator.getInt("GUI."+gui+".size"));
+    	    	l.upload(null, "GUI."+gui+".items");
 		    	l.paste(g, null, ly);
 	    	}
 	    	if(Loader.guicreator.getInt("GUI."+gui+".update")>0) {
@@ -58,10 +58,6 @@ public class GUICreator implements CommandExecutor {
 				}.runRepeating(Loader.guicreator.getInt("GUI."+gui+".animation"), Loader.guicreator.getInt("GUI."+gui+".animation"));
 	    	}
 	    }
-	    
-	    private void load() {
-	    	l.upload("GUI."+gui+".items");
-		}
 
 		public String getName() {
 	    	return gui;
@@ -74,22 +70,30 @@ public class GUICreator implements CommandExecutor {
 	    	ly=Loader.guicreator.getStringList("GUI."+gui+".animations."+current+".layout");
 	    	if(g!=null) {
 		    	g.setTitle(PlaceholderAPI.setPlaceholders(null,Loader.guicreator.getString("GUI."+gui+".animations."+current+".title")));
+    	    	l.upload(null, "GUI."+gui+".items");
 		    	l.paste(g, null, ly);
 	    	}else {
 	    		for(GUI g : guis) {
 	    			if(g.getPlayers().isEmpty())continue;
-			    	g.setTitle(PlaceholderAPI.setPlaceholders(g.getPlayers().iterator().next(),Loader.guicreator.getString("GUI."+gui+".animations."+current+".title")));
-	    			l.paste(g, g.getPlayers().iterator().next(), ly);
+	    			Player p = g.getPlayers().iterator().next();
+			    	g.setTitle(PlaceholderAPI.setPlaceholders(p,Loader.guicreator.getString("GUI."+gui+".animations."+current+".title")));
+	    	    	l.upload(p, "GUI."+gui+".items");
+	    			l.paste(g, p, ly);
 	    		}
 	    	}
 	    }
 	    
 	    public void update() {
 	    	if(g!=null) {
+    	    	l.upload(null, "GUI."+gui+".items");
 		    	l.paste(g, null, ly);
 	    	}else {
-	    		for(GUI g : guis)
-	    			l.paste(g, g.getPlayers().iterator().next(), ly);
+	    		for(GUI g : guis) {
+	    			if(g.getPlayers().isEmpty())continue;
+	    			Player p = g.getPlayers().iterator().next();
+	    	    	l.upload(p, "GUI."+gui+".items");
+	    			l.paste(g, p, ly);
+	    		}
 	    	}
 	    }
 	    
@@ -110,6 +114,7 @@ public class GUICreator implements CommandExecutor {
 			    			guis.remove(this);
 			    		}
 			    	};
+	    	    l.upload(p, "GUI."+gui+".items");
     			l.paste(g, p, ly);
 		    	guis.add(g);
 		    	return g;
