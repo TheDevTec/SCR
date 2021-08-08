@@ -477,9 +477,10 @@ public class API {
 	}
 	
 	public static Position findSafeLocation(boolean canBeAir, Position start) {
+		if(toInt(start.clone().add(0, -1, 0))==0)return start;
 		Position f = start.clone();
 		double oldDistance = -1;
-		BlockIterator g = new BlockIterator(start.clone().add(10,10,10),start.clone().add(-10,-10,-10));
+		BlockIterator g = new BlockIterator(start.clone().add(6,3,6),start.clone().add(-6,-3,-6));
 		while(g.has()) {
 			Position a1 = g.get().clone();
 			double distance = start.distanceSquared(a1);
