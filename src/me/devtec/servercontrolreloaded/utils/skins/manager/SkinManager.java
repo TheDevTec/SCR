@@ -116,7 +116,7 @@ public class SkinManager {
 		}else //1.9+
 			posC=Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPosition","PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class, int.class);
 		if(posC==null)//1.17+
-		posC=Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPosition","PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class, int.class,boolean.class);
+			posC=Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPosition","PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class, int.class,boolean.class);
 		//RESPAWN PACKET
 		if(TheAPI.isNewerThan(16)) { //1.17+
 			respawnC=Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutRespawn","PacketPlayOutRespawn"),Ref.nmsOrOld("world.level.dimension.DimensionManager","DimensionManager"), Ref.nmsOrOld("resources.ResourceKey","ResourceKey"), long.class, cc, cc, boolean.class, boolean.class, boolean.class);
@@ -183,7 +183,7 @@ public class SkinManager {
 					if(res==null)
 					for(Field f : Ref.getDeclaredFields(w.getClass().getSuperclass()))
 						if(f.getType()==Ref.nmsOrOld("resources.ResourceKey","ResourceKey"))
-							if(f.toString().endsWith(".G"))res=f;
+							if(f.getName().equals("G"))res=f;
 					re=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(w, "getDimensionKey")==null?Ref.get(w, res):Ref.invoke(w, "getDimensionKey"), 
 							Ref.invokeNulled(cf, a.getWorld().getSeed()), 
 							Ref.invoke(Ref.get(s, "d"),"getGameMode"), Ref.invoke(Ref.get(s, "d"),"c"), 
@@ -231,11 +231,9 @@ public class SkinManager {
 						}
 					});
 			}else {
-				if(p.getWorld()==player.getWorld()) {
-					Ref.sendPacket(p, destroy);
-					Ref.sendPacket(p, spawn);
-					Ref.sendPacket(p, head);
-				}
+				Ref.sendPacket(p, destroy);
+				Ref.sendPacket(p, spawn);
+				Ref.sendPacket(p, head);
 			}
 		}
 	}
