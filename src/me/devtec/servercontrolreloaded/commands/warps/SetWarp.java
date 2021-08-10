@@ -3,7 +3,6 @@ package me.devtec.servercontrolreloaded.commands.warps;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,6 +13,7 @@ import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 
 public class SetWarp implements CommandExecutor, TabCompleter {
@@ -44,8 +44,8 @@ public class SetWarp implements CommandExecutor, TabCompleter {
 				if (s instanceof Player) {
 					if (warp(args[0])==null) {
 						Player p = (Player) s;
-						Location local = p.getLocation();
-						Loader.config.set("Warps." + args[0], StringUtils.getLocationAsString(local));
+						Position local = new Position(p.getLocation());
+						Loader.config.set("Warps." + args[0], local.toString());
 						Loader.config.save();
 						Loader.sendMessages(s, "Warp.Created.Normal", Placeholder.c()
 								.add("%warp%", args[0]));
@@ -60,9 +60,9 @@ public class SetWarp implements CommandExecutor, TabCompleter {
 				if (s instanceof Player) {
 					if (warp(args[0])==null) {
 						Player p = (Player) s;
-						Location local = p.getLocation();
+						Position local = new Position(p.getLocation());
+						Loader.config.set("Warps." + args[0], local.toString());
 						Loader.config.set("Warps." + args[0] + ".NeedPermission", true);
-						Loader.config.set("Warps." + args[0], StringUtils.getLocationAsString(local));
 						Loader.config.save();
 						Loader.sendMessages(s, "Warp.Created.WithPerms", Placeholder.c()
 								.add("%warp%", args[0])

@@ -23,7 +23,7 @@ public class Top implements CommandExecutor {
 				return true;
 			}
 			Location loc = ((Player)s).getLocation();
-			loc.setY(((Player)s).getWorld().getHighestBlockYAt(((Player)s).getLocation()));
+			loc.setY(((Player)s).getWorld().getHighestBlockYAt(((Player)s).getLocation())+1);
 			API.teleport((Player)s, loc);
 			return true;
 		}

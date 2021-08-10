@@ -189,43 +189,36 @@ public class API {
 	}
 
 	public static Location getTeleportLocation(Player p, TeleportLocation l) {
-		Location a = null;
 		switch (l) {
 		case BED: {
 			if (p.getBedSpawnLocation() != null) {
-				a = p.getBedSpawnLocation();
+				return p.getBedSpawnLocation();
 			} else
-				a = getTeleportLocation(p, TeleportLocation.HOME);
+				return getTeleportLocation(p, TeleportLocation.HOME);
 		}
-			break;
 		case HOME: {
 			String home = null;
 			User d = TheAPI.getUser(p);
-			List<String> homes = new ArrayList<>();
-			for (String s : d.getKeys("Homes"))
-				homes.add(s);
-			if (homes.isEmpty() == false) {
+			List<String> homes = new ArrayList<>(d.getKeys("Homes"));
+			if (!homes.isEmpty())
 				home = homes.get(0);
-			}
 			if (home != null) {
-				return StringUtils.getLocationFromString(d.getString("Homes." + home));
+				return Position.fromString(d.getString("Homes." + home)).toLocation();
 			} else {
 				Loader.sendMessages(p, "Home.TpSpawn");
-				a = getTeleportLocation(p, TeleportLocation.SPAWN);
+				return getTeleportLocation(p, TeleportLocation.SPAWN);
 			}
 		}
-			break;
 		case SPAWN: {
 			World world = Bukkit.getWorlds().get(0);
 			Location loc = world.getSpawnLocation();
 			if (Loader.config.exists("Spawn")) {
-				loc=Position.fromString(Loader.config.getString("Spawn")).toLocation();
+				return Position.fromString(Loader.config.getString("Spawn")).toLocation();
 			}
-			a = loc;
+			return loc;
 		}
-			break;
 		}
-		return a;
+		return null;
 	}
 
 	public static void teleportPlayer(Player p, TeleportLocation location) {
@@ -315,9 +308,9 @@ public class API {
 	}
 
 	public static void TeleportBack(Player p) {
-		Location loc = getBack(p.getName());
+		Position loc = getBack(p.getName());
 		if (loc != null) {
-			TheAPI.getUser(p).set("Back", StringUtils.getLocationAsString(p.getLocation()));
+			TheAPI.getUser(p).set("Back", new Position(p.getLocation()).toString());
 			API.teleport(p, loc);
 			Loader.sendMessages(p, "Back.Teleport.You");
 		} else
@@ -325,15 +318,15 @@ public class API {
 	}
 
 	public static void setBack(Player p) {
-		TheAPI.getUser(p).set("Back", StringUtils.getLocationAsString(p.getLocation()));
+		TheAPI.getUser(p).set("Back", new Position(p.getLocation()).toString());
 	}
 
 	public static void setBack(String p, Location l) {
-		TheAPI.getUser(p).set("Back", StringUtils.getLocationAsString(l));
+		TheAPI.getUser(p).set("Back", new Position(l).toString());
 	}
 
-	public static Location getBack(String p) {
-		return StringUtils.getLocationFromString(TheAPI.getUser(p).getString("Back"));
+	public static Position getBack(String p) {
+		return Position.fromString(TheAPI.getUser(p).getString("Back"));
 	}
 	
 	private static DecimalFormat a(String c) {

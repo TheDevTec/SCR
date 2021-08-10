@@ -83,17 +83,18 @@ public class DeathEvents implements Listener {
 		Player p = e.getPlayer();
 		try {
 			PlayerBanList banlist = PunishmentAPI.getBanList(p.getName());
-		if (banlist.isJailed() || banlist.isTempJailed())
-			e.setRespawnLocation((Location) Loader.config.get("Jails." + TheAPI.getUser(p).getString("Jail.Location")));
-		else if (setting.deathspawnbol) {
-			if (setting.deathspawn == DeathTp.HOME)
-				e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.HOME));
-			else if (setting.deathspawn == DeathTp.BED)
-				e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.BED));
-			else if (setting.deathspawn == DeathTp.SPAWN) {
-				e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.SPAWN));
-				Loader.sendMessages(p, "Spawn.Teleport.You");
+			if (banlist.isJailed() || banlist.isTempJailed())
+				e.setRespawnLocation((Location) Loader.config.get("Jails." + TheAPI.getUser(p).getString("Jail.Location")));
+			else if (setting.deathspawnbol) {
+				if (setting.deathspawn == DeathTp.HOME)
+					e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.HOME));
+				else if (setting.deathspawn == DeathTp.BED)
+					e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.BED));
+				else if (setting.deathspawn == DeathTp.SPAWN) {
+					e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.SPAWN));
+					Loader.sendMessages(p, "Spawn.Teleport.You");
+				}
 			}
-		}}catch(Exception eere) {}
+		}catch(Exception eere) {}
 	}
 }

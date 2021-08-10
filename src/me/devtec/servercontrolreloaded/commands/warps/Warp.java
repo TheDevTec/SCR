@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -48,7 +47,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 				if (args.length == 1) {
 					if (s instanceof Player) {
 						if (warp(args[0]) != null) {
-							Location loc = StringUtils.getLocationFromString(Loader.config.getString("Warps." + warp(args[0])));
+							Position loc = Position.fromString(Loader.config.getString("Warps." + warp(args[0])));
 							if (loc == null) {
 								Loader.sendMessages(s, "Warp.WrongLocation", Placeholder.c()
 										.add("%warp%", warp(args[0])));
@@ -58,7 +57,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 								if (s.hasPermission(Loader.cmds.getString("Warps.Warp.SubPermission.PerWarp").replace("%warp%", warp(args[0])))) {
 									API.setBack((Player) s);
 									if (setting.tp_safe)
-										API.safeTeleport((Player)s,false, new Position(loc));
+										API.safeTeleport((Player)s,false, loc);
 									else
 										API.teleport((Player)s, loc);
 									Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
@@ -72,7 +71,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 							}
 							API.setBack((Player) s);
 							if (setting.tp_safe)
-								API.safeTeleport((Player)s,false, new Position(loc));
+								API.safeTeleport((Player)s,false, loc);
 							else
 								API.teleport((Player)s, loc);
 							Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
@@ -92,7 +91,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					if (warp(args[0]) != null) {
-						Location loc = StringUtils.getLocationFromString(Loader.config.getString("Warps." + warp(args[0])));
+						Position loc = Position.fromString(Loader.config.getString("Warps." + warp(args[0])));
 						if (loc == null) {
 							Loader.sendMessages(s, "Warp.WrongLocation", Placeholder.c()
 									.add("%warp%", warp(args[0])));
@@ -102,7 +101,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 							if (s.hasPermission(Loader.getPerm("Warp", "Warps", "PerWarp").replace("%warp%", warp(args[0])))) {
 								API.setBack((Player) s);
 								if (setting.tp_safe)
-									API.safeTeleport((Player)s,false, new Position(loc));
+									API.safeTeleport((Player)s,false, loc);
 								else
 									API.teleport((Player)s, loc);
 								Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
@@ -115,7 +114,7 @@ public class Warp implements CommandExecutor, TabCompleter {
 						}
 						API.setBack(p);
 						if (setting.tp_safe)
-							API.safeTeleport(p,false, new Position(loc));
+							API.safeTeleport(p,false, loc);
 						else
 							API.teleport(p, loc);
 						Loader.sendMessages(p, "Warp.Teleport.You", Placeholder.c()
