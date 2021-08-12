@@ -71,7 +71,8 @@ public class PWGamemode implements Listener {
 						a.enableGod();
 				}
 			}.runLaterSync(1);
-			Ref.set(Ref.get(Ref.player(e.getPlayer()), TheAPI.isNewerThan(16)?"d":"playerInteractManager"), "b", MultiWorldsUtils.getGamemodeNMS(e.getTo().getWorld()));
+			if(/*e.getPlayer().hasPermission("SCR.Other.Gamemode.Force") && */!e.getPlayer().hasPermission("SCR.Other.Gamemode.Force.Bypass"))
+				Ref.set(Ref.get(Ref.player(e.getPlayer()), TheAPI.isNewerThan(16)?"d":"playerInteractManager"), "b", MultiWorldsUtils.getGamemodeNMS(e.getTo().getWorld()));
 		}
 	}
 
