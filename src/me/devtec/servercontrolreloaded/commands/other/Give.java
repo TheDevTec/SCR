@@ -487,7 +487,10 @@ public class Give implements CommandExecutor, TabCompleter {
 					if(args[1].startsWith("{"))
 						giveItem(s, (Player)s, args[0], 1, args[1]);
 					else
-						giveItem(s, (Player)s, args[0], StringUtils.getInt(args[1]), null);
+						if(s instanceof Player)
+							giveItem(s, (Player)s, args[0], StringUtils.getInt(args[1]), null);
+						else
+							Loader.notOnline(s, args[0]);
 				}
 				break;
 			case 3://give STONE 1 NBT
