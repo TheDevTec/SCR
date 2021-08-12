@@ -66,7 +66,7 @@ public class SetWarp implements CommandExecutor, TabCompleter {
 						Loader.config.save();
 						Loader.sendMessages(s, "Warp.Created.WithPerms", Placeholder.c()
 								.add("%warp%", args[0])
-								.add("%permission%", "ServerControl.Warp." + args[0]));
+								.add("%permission%", Loader.getPerm("Warp", "Warps", "PerWarp").replace("%warp%", warp(args[0])) ) );
 						return true;
 					}
 					Loader.sendMessages(s, "Warp.Exist", Placeholder.c()

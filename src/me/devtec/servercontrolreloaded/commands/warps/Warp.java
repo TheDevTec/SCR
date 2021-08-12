@@ -99,13 +99,17 @@ public class Warp implements CommandExecutor, TabCompleter {
 						}
 						if (Loader.config.getBoolean("Warps." + warp(args[0]) + ".NeedPermission")) {
 							if (s.hasPermission(Loader.getPerm("Warp", "Warps", "PerWarp").replace("%warp%", warp(args[0])))) {
-								API.setBack((Player) s);
+								API.setBack((Player) p);
 								if (setting.tp_safe)
-									API.safeTeleport((Player)s,false, loc);
+									API.safeTeleport((Player)p,false, loc);
 								else
-									API.teleport((Player)s, loc);
-								Loader.sendMessages(s, "Warp.Teleport.You", Placeholder.c()
+									API.teleport((Player)p, loc);
+								Loader.sendMessages(p, "Warp.Teleport.You", Placeholder.c()
 										.add("%warp%", warp(args[0])));
+								Loader.sendMessages(s, "Warp.Teleport.Other.Sender", Placeholder.c()
+										.add("%warp%", warp(args[0]))
+										.add("%player%", p.getName())
+										.add("%playername%", p.getDisplayName()));
 								return true;
 							}
 							Loader.sendMessages(s, "NoPerms", Placeholder.c()
