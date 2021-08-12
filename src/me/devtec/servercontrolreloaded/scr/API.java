@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.bukkit.material.Openable;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
+import me.devtec.servercontrolreloaded.events.functions.JoinQuitEvents;
 import me.devtec.servercontrolreloaded.utils.SPlayer;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
@@ -138,6 +140,35 @@ public class API {
         	User s = TheAPI.getUser(playerName);
             applyVanish(s, playerName, permission, value);
             s.save();
+            
+            if(Loader.events.exists("onVanish")) {
+            	if(value==true) {
+					Object o = Loader.events.get("onVanish.Enable.Broadcast");
+					if(o!=null) {
+						if(o instanceof Collection) {
+						for(Object fa : (Collection<?>)o) {
+							if(fa!=null)
+							TheAPI.broadcastMessage(JoinQuitEvents.replaceAll(fa+"",playerName));
+						}}else
+							if(!(""+o).isEmpty())
+								TheAPI.broadcastMessage(JoinQuitEvents.replaceAll(""+o, playerName));
+					}
+            	}
+            	if(value==false) {
+					Object o = Loader.events.get("onVanish.Disable.Broadcast");
+					if(o!=null) {
+						if(o instanceof Collection) {
+						for(Object fa : (Collection<?>)o) {
+							if(fa!=null)
+							TheAPI.broadcastMessage(JoinQuitEvents.replaceAll(fa+"",playerName));
+						}}else
+							if(!(""+o).isEmpty())
+								TheAPI.broadcastMessage(JoinQuitEvents.replaceAll(""+o, playerName));
+					}
+            	
+            		
+            	}
+            }
         }
     }
  
@@ -172,8 +203,9 @@ public class API {
     public static String getVanishPermission(String playerName) {
         return TheAPI.getUser(playerName).getString("vanish.perm");
     }
- 
-    public static boolean canSee(Player player, String target) {
+    
+    // Player can see target
+    public static boolean canSee(Player player, String target) { 
     	if(TheAPI.getPlayerOrNull(target)!=null && (hasVanish(target) ? player.hasPermission(getVanishPermission(target)) : true))return player.canSee(TheAPI.getPlayerOrNull(target));
         return hasVanish(target) ? player.hasPermission(getVanishPermission(target)) : true;
     }

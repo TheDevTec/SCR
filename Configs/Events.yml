@@ -63,3 +63,11 @@ onDropItem:
 onPickupItem:
   Rules:
   - "antiSwear_idiot"
+
+# When you enable vanish
+onVanish:
+  Enable:
+    # You can create here fake Join or leave message when you enable vanish
+    Broadcast: []
+  Disable:
+    Broadcast: []
