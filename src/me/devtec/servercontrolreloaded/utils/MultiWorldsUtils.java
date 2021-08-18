@@ -10,6 +10,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Difficulty;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
@@ -143,10 +144,12 @@ public class MultiWorldsUtils {
 				else gen="DEFAULT";
 		}
 		Object data = Ref.get(Ref.world(as),TheAPI.isNewerThan(16)?"x":"worldData");
+		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".GameMode", "SURVIVAL");
 		Object gm = Loader.mw.getString("WorldsSettings." + as.getName() + ".GameMode")!=null?
 				Ref.invokeStatic(getById,toId(Loader.mw.getString("WorldsSettings." + as.getName() + ".GameMode"))):
 					getGm(data);
 		gamemodesnms.put(as, gm);
+		gamemodes.put(as, GameMode.getByValue(toId(Loader.mw.getString("WorldsSettings." + as.getName() + ".GameMode"))));
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Seed", as.getSeed());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Difficulty", as.getDifficulty().name());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".KeepSpawnInMemory", as.getKeepSpawnInMemory());
@@ -377,6 +380,11 @@ public class MultiWorldsUtils {
 	}
 
 	static Map<World, Object> gamemodesnms = new HashMap<>();
+	static Map<World, GameMode> gamemodes = new HashMap<>();
+
+	public static GameMode getGamemode(World world) {
+		return gamemodes.get(world);
+	}
 
 	public static Object getGamemodeNMS(World world) {
 		return gamemodesnms.get(world);

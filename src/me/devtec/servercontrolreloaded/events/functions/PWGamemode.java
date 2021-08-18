@@ -61,9 +61,10 @@ public class PWGamemode implements Listener {
 		if(e.isCancelled())return;
 		if(e.getFrom().getWorld()!=e.getTo().getWorld()) { //prepare gamemode
 			SPlayer a = API.getSPlayer(e.getPlayer());
+			boolean f = a.hasFlyEnabled(true);
 			new Tasker() {
 				public void run() {
-					if (a.hasFlyEnabled(false))
+					if (f)
 						a.enableFly();
 					if (a.hasTempFlyEnabled())
 						a.enableTempFly();
@@ -71,14 +72,49 @@ public class PWGamemode implements Listener {
 						a.enableGod();
 				}
 			}.runLaterSync(1);
-			if(/*e.getPlayer().hasPermission("SCR.Other.Gamemode.Force") && */!e.getPlayer().hasPermission("SCR.Other.Gamemode.Force.Bypass"))
-				Ref.set(Ref.get(Ref.player(e.getPlayer()), TheAPI.isNewerThan(16)?"d":"playerInteractManager"), "b", MultiWorldsUtils.getGamemodeNMS(e.getTo().getWorld()));
+			if(/*e.getPlayer().hasPermission("SCR.Other.Gamemode.Force") && */!e.getPlayer().hasPermission("SCR.Other.Gamemode.Force.Bypass")) {
+				GameMode c = e.getPlayer().getGameMode();
+				GameMode gm = MultiWorldsUtils.getGamemode(e.getTo().getWorld());
+				if(c!=gm) {
+					if(c==GameMode.CREATIVE) {
+						new Tasker() {
+							public void run() {
+								e.getPlayer().setGameMode(gm);
+							}
+						}.runLaterSync(1);
+						return;
+					}else
+					if(TheAPI.isNewerThan(7))
+						if(gm==GameMode.SPECTATOR) {
+							new Tasker() {
+								public void run() {
+									e.getPlayer().setGameMode(gm);
+								}
+							}.runLaterSync(1);
+							return;
+						}
+					Ref.set(Ref.get(Ref.player(e.getPlayer()), TheAPI.isNewerThan(16)?"d":"playerInteractManager"), "b", MultiWorldsUtils.getGamemodeNMS(e.getTo().getWorld()));
+				}
+			}
 		}
 	}
 
 	@EventHandler
 	public void onSpawn(PlayerSpawnLocationEvent e) {
-		Ref.set(Ref.get(Ref.player(e.getPlayer()), TheAPI.isNewerThan(16)?"d":"playerInteractManager"), "b", MultiWorldsUtils.getGamemodeNMS(e.getSpawnLocation().getWorld()));
+		GameMode c = e.getPlayer().getGameMode();
+		GameMode gm = MultiWorldsUtils.getGamemode(e.getSpawnLocation().getWorld());
+		if(c!=gm) {
+			if(c==GameMode.CREATIVE) {
+				e.getPlayer().setGameMode(gm);
+				return;
+			}else
+			if(TheAPI.isNewerThan(7))
+				if(gm==GameMode.SPECTATOR) {
+					e.getPlayer().setGameMode(gm);
+					return;
+				}
+			Ref.set(Ref.get(Ref.player(e.getPlayer()), TheAPI.isNewerThan(16)?"d":"playerInteractManager"), "b", MultiWorldsUtils.getGamemodeNMS(e.getSpawnLocation().getWorld()));
+		}
 	}
 	
 	List<String> moving = new ArrayList<>();

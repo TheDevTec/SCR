@@ -1,30 +1,32 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
-import me.devtec.servercontrolreloaded.commands.CommandsManager;
-import me.devtec.servercontrolreloaded.scr.API;
-import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.scr.API.SeenType;
-import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import me.devtec.servercontrolreloaded.commands.CommandsManager;
+import me.devtec.servercontrolreloaded.scr.API;
+import me.devtec.servercontrolreloaded.scr.API.SeenType;
+import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.User;
 
 public class Seen implements CommandExecutor, TabCompleter {
 	List<String> getS(String a) {
-		if(a==null)return Lists.newArrayList();
-		List<String> l = Lists.newArrayList();
+		if(a==null)return new ArrayList<>();
+		List<String> l = new ArrayList<>();
 		for (UUID s : TheAPI.getUsers()) {
-			if (TheAPI.getUser(s).getName()!=null && TheAPI.getUser(s).getName().equalsIgnoreCase(a))
-				l.add(TheAPI.getUser(s).getName());
+			User d = TheAPI.getUser(s);
+			if (d!=null && d.getName()!=null && d.getName().equalsIgnoreCase(a))
+				l.add(d.getName());
 		}
 		return l;
 	}

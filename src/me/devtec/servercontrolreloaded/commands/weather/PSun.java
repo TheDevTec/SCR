@@ -21,7 +21,7 @@ public class PSun implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if (Loader.has(s, "PSun", "Weather")) {
+		if (Loader.has(s, "PlayerSun", "Weather")) {
 		if(!CommandsManager.canUse("Weather.PSun", s)) {
 			Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Weather.PSun", s))));
 			return true;
@@ -33,10 +33,10 @@ public class PSun implements CommandExecutor, TabCompleter {
 							.add("%player%", s.getName()).add("%player%", ((Player) s).getDisplayName()));
 					return true;
 				}
-			Loader.Help(s, "PSun", "Weather");
+			Loader.Help(s, "PlayerSun", "Weather");
 			return true;
 		}
-		if (Loader.has(s, "PSun", "Weather","Other")) {
+		if (Loader.has(s, "PlayerSun", "Weather","Other")) {
 			if (TheAPI.getPlayer(args[0]) != null) {
 				TheAPI.getPlayer(args[0]).setPlayerWeather(WeatherType.CLEAR);
 				Loader.sendMessages(s, "Weather.PSun", Placeholder.c()
@@ -47,10 +47,10 @@ public class PSun implements CommandExecutor, TabCompleter {
 			Loader.notOnline(s, args[0]);
 			return true;
 		}
-		Loader.noPerms(s, "PSun", "Weather","Other");
+		Loader.noPerms(s, "PlayerSun", "Weather","Other");
 		return true;
 	}
-	Loader.noPerms(s, "PSun", "Weather");
+	Loader.noPerms(s, "PlayerSun", "Weather");
 	return true;
 	}
 	

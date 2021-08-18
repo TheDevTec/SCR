@@ -231,9 +231,11 @@ public class SkinManager {
 						}
 					});
 			}else {
-				Ref.sendPacket(p, destroy);
-				Ref.sendPacket(p, spawn);
-				Ref.sendPacket(p, head);
+				if(p.getWorld()==player.getWorld()) {
+					Ref.sendPacket(p, destroy);
+					Ref.sendPacket(p, spawn);
+					Ref.sendPacket(p, head);
+				}
 			}
 		}
 	}

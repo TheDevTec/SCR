@@ -21,11 +21,11 @@ public class PRain implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
-		if(!CommandsManager.canUse("Weather.PRain", s)) {
+		if(!CommandsManager.canUse("Weather.PlayerRain", s)) {
 			Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Weather.PRain", s))));
 			return true;
 		}
-		if (Loader.has(s, "PRain", "Weather")) {
+		if (Loader.has(s, "PlayerRain", "Weather")) {
 		if (args.length == 0) {
 			if (s instanceof Player) {
 					((Player) s).setPlayerWeather(WeatherType.DOWNFALL);
@@ -33,10 +33,10 @@ public class PRain implements CommandExecutor, TabCompleter {
 							.add("%player%", s.getName()).add("%player%", ((Player) s).getDisplayName()));
 					return true;
 				}
-			Loader.Help(s, "PRain", "Weather");
+			Loader.Help(s, "PlayerRain", "Weather");
 			return true;
 		}
-		if (Loader.has(s, "PRain", "Weather","Other")) {
+		if (Loader.has(s, "PlayerRain", "Weather","Other")) {
 			if (TheAPI.getPlayer(args[0]) != null) {
 				TheAPI.getPlayer(args[0]).setPlayerWeather(WeatherType.DOWNFALL);
 				Loader.sendMessages(s, "Weather.PRain", Placeholder.c()
@@ -47,10 +47,10 @@ public class PRain implements CommandExecutor, TabCompleter {
 			Loader.notOnline(s, args[0]);
 			return true;
 		}
-		Loader.noPerms(s, "PRain", "Weather","Other");
+		Loader.noPerms(s, "PlayerRain", "Weather","Other");
 		return true;
 		}
-		Loader.noPerms(s, "PRain", "Weather");
+		Loader.noPerms(s, "PlayerRain", "Weather");
 		return true;
 	}
 	
