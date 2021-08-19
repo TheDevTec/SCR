@@ -220,34 +220,30 @@ public class Loader extends JavaPlugin implements Listener {
 					json = colorizeList((Collection<?>)o,(d)->placeholder(to,d,placeholders));
 				}else
 					json = colorizeMap((Map<String, Object>)o,(d)->placeholder(to,d,placeholders));
-				Object formatt = json;
-				if (formatt instanceof Map || formatt instanceof Collection) {
-					List<Map<String,Object>> oo = new ArrayList<>();
-					if(formatt instanceof Map) {
-						oo.add((Map<String, Object>) formatt);
-					}else {
-						for(Object w : ((Collection<Object>)formatt)) {
-							if(w instanceof String)w=Reader.read((String)w);
-							if(w instanceof Map) {
-								oo.add((Map<String, Object>) w);
-							}else {
-								Map<String, Object> g = new HashMap<>();
-								g.put("text", w+"");
-								oo.add(g);
-							}
+				List<Map<String,Object>> oo = new ArrayList<>();
+				if(json instanceof Map) {
+					oo.add((Map<String, Object>) json);
+				}else {
+					for(Object w : ((Collection<Object>)json)) {
+						if(w instanceof String)w=Reader.read((String)w);
+						if(w instanceof Map) {
+							oo.add((Map<String, Object>) w);
+						}else {
+							Map<String, Object> g = new HashMap<>();
+							g.put("text", w+"");
+							oo.add(g);
 						}
 					}
-					formatt=oo;
-					oo=ChatMessage.fixListMap(oo);
-					if(to instanceof Player) {
-						String jsons = Writer.write(oo);
-						jsons="[\"\","+jsons.substring(1);
-						Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
-					}else {
-						to.sendMessage(convertToLegacy(oo));
-					}
-					return;
 				}
+				oo=ChatMessage.fixListMap(oo);
+				if(to instanceof Player) {
+					String jsons = Writer.write(oo);
+					jsons="[\"\","+jsons.substring(1);
+					Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+				}else {
+					to.sendMessage(convertToLegacy(oo));
+				}
+				return;
 			}
 		}
 		if(o instanceof Collection) {
@@ -314,42 +310,36 @@ public class Loader extends JavaPlugin implements Listener {
 			String sf = getTranslationAsString(path);
 			if(sf!=null)
 				if(sf.startsWith("[") && sf.endsWith("]")||sf.startsWith("{") && sf.endsWith("}")) {
-					Object old = o;
 					o=getTranslationAsObject(path);
 					Object json;
 					if(o instanceof Collection) {
 						json = colorizeList((Collection<?>)o,(d)->placeholder(replace,d,placeholders));
 					}else
 						json = colorizeMap((Map<String, Object>)o,(d)->placeholder(replace,d,placeholders));
-					Object formatt = json;
-					if (formatt instanceof Map || formatt instanceof Collection) {
-						List<Map<String,Object>> oo = new ArrayList<>();
-						if(formatt instanceof Map) {
-							oo.add((Map<String, Object>) formatt);
-						}else {
-							for(Object w : ((Collection<Object>)formatt)) {
-								if(w instanceof String)w=Reader.read((String)w);
-								if(w instanceof Map) {
-									oo.add((Map<String, Object>) w);
-								}else {
-									Map<String, Object> g = new HashMap<>();
-									g.put("text", w+"");
-									oo.add(g);
-								}
+					List<Map<String,Object>> oo = new ArrayList<>();
+					if(json instanceof Map) {
+						oo.add((Map<String, Object>) json);
+					}else {
+						for(Object w : ((Collection<Object>)json)) {
+							if(w instanceof String)w=Reader.read((String)w);
+							if(w instanceof Map) {
+								oo.add((Map<String, Object>) w);
+							}else {
+								Map<String, Object> g = new HashMap<>();
+								g.put("text", w+"");
+								oo.add(g);
 							}
 						}
-						formatt=oo;
-						oo=ChatMessage.fixListMap(oo);
-						if(to instanceof Player) {
-							String jsons = Writer.write(oo);
-							jsons="[\"\","+jsons.substring(1);
-							Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
-						}else {
-							to.sendMessage(convertToLegacy(oo));
-						}
-						return;
 					}
-					o=old;
+					oo=ChatMessage.fixListMap(oo);
+					if(to instanceof Player) {
+						String jsons = Writer.write(oo);
+						jsons="[\"\","+jsons.substring(1);
+						Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+					}else {
+						to.sendMessage(convertToLegacy(oo));
+					}
+					return;
 				}
 		}
 		if(o instanceof Collection) {
@@ -369,39 +359,33 @@ public class Loader extends JavaPlugin implements Listener {
 			String sf = getTranslationAsString(path);
 			if(sf!=null)
 				if(sf.startsWith("[") && sf.endsWith("]")||sf.startsWith("{") && sf.endsWith("}")) {
-					Object old = o;
-					o=getTranslationAsObject(path);
+					o = getTranslationAsObject(path);
 					Object json;
-					if(o instanceof Collection) {
-						json = colorizeList((Collection<?>)o,(d)->placeholder(whoIsSelected,d,placeholders));
-					}else
-						json = colorizeMap((Map<String, Object>)o,(d)->placeholder(whoIsSelected,d,placeholders));
-					Object formatt = json;
-					if (formatt instanceof Map || formatt instanceof Collection) {
-						List<Map<String,Object>> oo = new ArrayList<>();
-						if(formatt instanceof Map) {
-							oo.add((Map<String, Object>) formatt);
-						}else {
-							for(Object w : ((Collection<Object>)formatt)) {
-								if(w instanceof String)w=Reader.read((String)w);
-								if(w instanceof Map) {
-									oo.add((Map<String, Object>) w);
-								}else {
-									Map<String, Object> g = new HashMap<>();
-									g.put("text", w+"");
-									oo.add(g);
-								}
+					if (o instanceof Collection) {
+						json = colorizeList((Collection<?>) o, (d) -> placeholder(whoIsSelected, d, placeholders));
+					} else
+						json = colorizeMap((Map<String, Object>) o, (d) -> placeholder(whoIsSelected, d, placeholders));
+					List<Map<String, Object>> oo = new ArrayList<>();
+					if (json instanceof Map) {
+						oo.add((Map<String, Object>) json);
+					} else {
+						for (Object w : ((Collection<Object>) json)) {
+							if (w instanceof String) w = Reader.read((String) w);
+							if (w instanceof Map) {
+								oo.add((Map<String, Object>) w);
+							} else {
+								Map<String, Object> g = new HashMap<>();
+								g.put("text", w + "");
+								oo.add(g);
 							}
 						}
-						formatt=oo;
-						oo=ChatMessage.fixListMap(oo);
-						String jsons = Writer.write(oo);
-						jsons="[\"\","+jsons.substring(1);
-						Ref.sendPacket(TheAPI.getOnlinePlayers(),NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
-						TheAPI.getConsole().sendMessage(convertToLegacy(oo));
-						return;
 					}
-					o=old;
+					oo = ChatMessage.fixListMap(oo);
+					String jsons = Writer.write(oo);
+					jsons = "[\"\"," + jsons.substring(1);
+					Ref.sendPacket(TheAPI.getOnlinePlayers(), NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+					TheAPI.getConsole().sendMessage(convertToLegacy(oo));
+					return;
 				}
 		}
 		if(o instanceof List) {
@@ -420,20 +404,17 @@ public class Loader extends JavaPlugin implements Listener {
 			String sf = getTranslationAsString(path);
 			if(sf!=null)
 				if(sf.startsWith("[") && sf.endsWith("]")||sf.startsWith("{") && sf.endsWith("}")) {
-					Object old = o;
 					o=getTranslationAsObject(path);
 					Object json;
 					if(o instanceof Collection) {
 						json = colorizeList((Collection<?>)o,(d)->placeholder(whoIsSelected,d,placeholders));
 					}else
 						json = colorizeMap((Map<String, Object>)o,(d)->placeholder(whoIsSelected,d,placeholders));
-					Object formatt = json;
-					if (formatt instanceof Map || formatt instanceof Collection) {
 						List<Map<String,Object>> oo = new ArrayList<>();
-						if(formatt instanceof Map) {
-							oo.add((Map<String, Object>) formatt);
+						if(json instanceof Map) {
+							oo.add((Map<String, Object>) json);
 						}else {
-							for(Object w : ((Collection<Object>)formatt)) {
+							for(Object w : ((Collection<Object>)json)) {
 								if(w instanceof String)w=Reader.read((String)w);
 								if(w instanceof Map) {
 									oo.add((Map<String, Object>) w);
@@ -444,7 +425,6 @@ public class Loader extends JavaPlugin implements Listener {
 								}
 							}
 						}
-						formatt=oo;
 						List<Player> p = TheAPI.getOnlinePlayers();
 						p.removeIf(player -> !player.hasPermission(perms));
 						oo=ChatMessage.fixListMap(oo);
@@ -455,8 +435,6 @@ public class Loader extends JavaPlugin implements Listener {
 							TheAPI.getConsole().sendMessage(convertToLegacy(oo));
 						return;
 					}
-					o=old;
-				}
 		}
 		
 		if(o instanceof List) {
@@ -465,9 +443,8 @@ public class Loader extends JavaPlugin implements Listener {
 		}else
 		TheAPI.bc(placeholder(whoIsSelected, o.toString(), placeholders), perms);
 	}
-	static Pattern colorPattern = Pattern.compile("[XxA-Fa-fUu0-9]");
 
-	public static interface Replacer {
+	public interface Replacer {
 		public String replace(String s);
 	}
 	
@@ -519,14 +496,14 @@ public class Loader extends JavaPlugin implements Listener {
 		try {
 			if(s instanceof Map) {
 				return colorizeMap((Map<String, Object>) s, c);
-			} //else continue in code below
+			}
 			if(s instanceof Collection) {
 				return colorizeList((Collection<Object>) s, c);
 			} //else continue in code below
 		}catch(Exception err) {}
 		String orig = s.toString();
-		orig=c.replace(s.toString());
-		if(orig!=null)s=orig;
+		orig=c.replace(orig);
+		if(orig!=null)return orig;
 		return s;
 	}
 	
@@ -755,8 +732,7 @@ public class Loader extends JavaPlugin implements Listener {
 		if (economyProvider != null) {
 			vault = economyProvider.getProvider();
 		}
-
-		return (vault != null);
+		return vault != null;
 	}
 
 
