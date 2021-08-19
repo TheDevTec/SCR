@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.bansystem;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -44,6 +45,6 @@ public class Accounts implements CommandExecutor, TabCompleter{
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(args.length==1 && Loader.has(s, "Accounts", "BanSystem"))
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

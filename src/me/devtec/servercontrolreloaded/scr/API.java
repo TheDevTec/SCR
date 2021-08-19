@@ -41,8 +41,8 @@ import me.devtec.theapi.utils.nms.NMSAPI;
 import net.luckperms.api.LuckPermsProvider;
 
 public class API {
-	protected static Loader plugin = Loader.getInstance;
-	private static Map<String, SPlayer> cache = new HashMap<>();
+	protected static final Loader plugin = Loader.getInstance;
+	private static final Map<String, SPlayer> cache = new HashMap<>();
 
 	public static SPlayer getSPlayer(Player p) {
 		if(!cache.containsKey(p.getName()))
@@ -69,13 +69,7 @@ public class API {
 	public static List<Player> getPlayers(CommandSender s) { // Players which can be seen by CommandSender
 		List<Player> p = TheAPI.getOnlinePlayers();
 		if(s instanceof Player) {
-			Iterator<Player> it = p.iterator();
-			while(it.hasNext()) {
-				Player pd = it.next();
-				if( pd!=s && !canSee(((Player)s), pd.getName())) {
-	           		it.remove();
-	           	}
-			}
+			p.removeIf(pd -> pd != s && !canSee(((Player) s), pd.getName()));
 		}
 		return p;
 	}
@@ -83,13 +77,7 @@ public class API {
 	public static List<Player> getPlayersThatCanSee(CommandSender s) { // Player which can see CommandSender
 		List<Player> p = TheAPI.getOnlinePlayers();
 		if(s instanceof Player) {
-			Iterator<Player> it = p.iterator();
-			while(it.hasNext()) {
-				Player pd = it.next();
-				if(pd!=s && !canSee(pd, s.getName())) {
-	           		it.remove();
-	           	}
-			}
+			p.removeIf(pd -> pd != s && !canSee(pd, s.getName()));
 		}
 		return p;
 	}
@@ -127,7 +115,7 @@ public class API {
             applyVanish(i,s, permission, value);
         else {
             if(value) {
-            	i.set("vanish", value);
+            	i.set("vanish", true);
             	i.set("vanish.perm", permission);
             }else {
             	i.remove("vanish");
@@ -142,7 +130,7 @@ public class API {
             s.save();
             
             if(Loader.events.exists("onVanish")) {
-            	if(value==true) {
+            	if(value) {
 					Object o = Loader.events.get("onVanish.Enable.Broadcast");
 					if(o!=null) {
 						if(o instanceof Collection) {
@@ -154,7 +142,7 @@ public class API {
 								TheAPI.broadcastMessage(JoinQuitEvents.replaceAll(""+o, playerName));
 					}
             	}
-            	if(value==false) {
+            	if(!value) {
 					Object o = Loader.events.get("onVanish.Disable.Broadcast");
 					if(o!=null) {
 						if(o instanceof Collection) {
@@ -174,7 +162,7 @@ public class API {
  
     private static void applyVanish(User i, Player s, String perm, boolean var) {
             if (var) {
-                i.set("vanish", var);
+                i.set("vanish", true);
                 i.set("vanish.perm", perm);
                 List<Player> l = TheAPI.getOnlinePlayers();
                 l.remove(s);
@@ -206,8 +194,8 @@ public class API {
     
     // Player can see target
     public static boolean canSee(Player player, String target) { 
-    	if(TheAPI.getPlayerOrNull(target)!=null && (hasVanish(target) ? player.hasPermission(getVanishPermission(target)) : true))return player.canSee(TheAPI.getPlayerOrNull(target));
-        return hasVanish(target) ? player.hasPermission(getVanishPermission(target)) : true;
+    	if(TheAPI.getPlayerOrNull(target)!=null && (!hasVanish(target) || player.hasPermission(getVanishPermission(target))))return player.canSee(TheAPI.getPlayerOrNull(target));
+        return !hasVanish(target) || player.hasPermission(getVanishPermission(target));
     }
 
 	public static List<SPlayer> getSPlayers() {
@@ -263,7 +251,7 @@ public class API {
 
 	}
 	
-	private static Pattern moneyPattern = Pattern.compile("([+-]*[0-9]+.*[0-9]*[E]*[0-9]*)([kmbt]|qu[ia]|se[px]|non|oct|dec|und|duo|tre|sed|nov)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern moneyPattern = Pattern.compile("([+-]*[0-9]+.*[0-9]*[E]*[0-9]*)([kmbt]|qu[ia]|se[px]|non|oct|dec|und|duo|tre|sed|nov)", Pattern.CASE_INSENSITIVE);
     public static double convertMoney(String s) {
 		double has = 0;
 		Matcher m = moneyPattern.matcher(s);
@@ -320,8 +308,8 @@ public class API {
 	/**
 	 * Hook addon to /Addons command
 	 */
-	public static enum SeenType {
-		Online, Offline;
+	public enum SeenType {
+		Online, Offline
 	}
 
 	public static String getSeen(String player, SeenType type) {
@@ -376,64 +364,64 @@ public class API {
 	      else
 	      a="∞";
 	    }else
-	    if (s.length >= 21 && s.length < 22)
+	    if (s.length >= 21)
 	      a= a("NOV").format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000000000000000"))); 
 	    else
-	    if (s.length >= 20 && s.length < 21)
+	    if (s.length >= 20)
 	    	a= (a("OCT")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000000000000"))); 
 	    	else
-	    if (s.length >= 19 && s.length < 20)
+	    if (s.length >= 19)
 	    	a= (a("SEP")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000000000"))); 
 		    else
-		if (s.length >= 18 && s.length < 19)
+		if (s.length >= 18)
 	    	a= (a("SED")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000000"))); 
 			else
-		if (s.length >= 17 && s.length < 18)
+		if (s.length >= 17)
 	    	a= (a("QUI")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000000"))); 
 			else
-		if (s.length >= 16 && s.length < 17)
+		if (s.length >= 16)
 	    	a= (a("QUA")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000000"))); 
 			else
-		if (s.length >= 15 && s.length < 16)
+		if (s.length >= 15)
 	    	a= (a("tre")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000000"))); 
 			else
-		if (s.length >= 14 && s.length < 15)
+		if (s.length >= 14)
 	    	a= (a("duo")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000000"))); 
 			else
-		if (s.length >= 13 && s.length < 14)
+		if (s.length >= 13)
 	    	a= (a("und")).format(money.divide(new BigDecimal("1000000000000000000000000000000000000"))); 
 			else
-		if (s.length >= 12 && s.length < 13)
+		if (s.length >= 12)
 	    	a= (a("dec")).format(money.divide(new BigDecimal("1000000000000000000000000000000000"))); 
 			else
-		if (s.length >= 11 && s.length < 12)
+		if (s.length >= 11)
 	    	a= (a("non")).format(money.divide(new BigDecimal("1000000000000000000000000000000"))); 
 			else
-		if (s.length >= 10 && s.length < 11)
+		if (s.length >= 10)
 	    	a= (a("oct")).format(money.divide(new BigDecimal("1000000000000000000000000000"))); 
 			else
-		if (s.length >= 9 && s.length < 10)
+		if (s.length >= 9)
 	    	a= (a("sep")).format(money.divide(new BigDecimal("1000000000000000000000000"))); 
 			else
-		if (s.length >= 8 && s.length < 9)
+		if (s.length >= 8)
 	    	a= (a("sex")).format(money.divide(new BigDecimal("1000000000000000000000"))); 
 			else
-		if (s.length >= 7 && s.length < 8)
+		if (s.length >= 7)
 	    	a= (a("qui")).format(money.divide(new BigDecimal(1000000000000000000L))); 
 			else
-		if (s.length >= 6 && s.length < 7)
+		if (s.length >= 6)
 	    	a= (a("qua")).format(money.divide(new BigDecimal(1000000000000000L))); 
 			else
-		if (s.length >= 5 && s.length < 6)
+		if (s.length >= 5)
 	    	a= (a("t")).format(money.divide(new BigDecimal(1000000000000L))); 
 			else
-		if (s.length >= 4 && s.length < 5) 
+		if (s.length >= 4)
 	    	a= (a("b")).format(money.divide(new BigDecimal(1000000000))); 
 			else
-		if (s.length >= 3 && s.length < 4)
+		if (s.length >= 3)
 	    	a= (a("m")).format(money.divide(new BigDecimal(1000000))); 
 			else
-		if (s.length >= 2 && s.length < 3)
+		if (s.length >= 2)
 	    	a= (a("k")).format(money.divide(new BigDecimal(1000))); 
 	    if(colorized) {
 	    	if(a.equals("0"))a="&e0";
@@ -475,21 +463,14 @@ public class API {
 			Loader.sendMessages(s, "TpSystem.NotSafe");
 			return;
 		}
-		new Thread(new Runnable() {
-			public void run() {
-				Position safe = findSafeLocation(air,location);
-				if(safe!=null) {
-					s.setNoDamageTicks(60);
-					NMSAPI.postToMainThread(new Runnable() {
-						@Override
-						public void run() {
-							teleport(s, safe);
-						}
-					});
-				}
-				else
-					Loader.sendMessages(s, "TpSystem.NotSafe");
+		new Thread(() -> {
+			Position safe = findSafeLocation(air,location);
+			if(safe!=null) {
+				s.setNoDamageTicks(60);
+				NMSAPI.postToMainThread(() -> teleport(s, safe));
 			}
+			else
+				Loader.sendMessages(s, "TpSystem.NotSafe");
 		}).start();
 	}
 	

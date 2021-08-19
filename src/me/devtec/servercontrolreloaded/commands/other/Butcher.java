@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.commands.other;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -47,35 +48,33 @@ public class Butcher implements CommandExecutor, TabCompleter {
 				return StringUtils.copyPartialMatches(args[1], names);
 			}
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 	public static int butcher(World a, Location w, int radius, EntityType type) {
+		int killed = 0;
 		if (radius == 0) {
-			int killed = 0;
 			for (Entity e : a.getEntities()) {
-				if (e instanceof Player == false) {
+				if (!(e instanceof Player)) {
 					if(type==null||e.getType()==type) {
 					++killed;
 					e.remove();
 				}
 				}
 			}
-			return killed;
 		} else {
-			int killed = 0;
 			if (radius > 256)
 				radius = 256;
 			for (Entity e : BlocksAPI.getNearbyEntities(w, radius)) {
-				if (e instanceof Player == false) {
+				if (!(e instanceof Player)) {
 					if(type==null||e.getType()==type) {
 					++killed;
 					e.remove();
 					}
 				}
 			}
-			return killed;
 		}
+		return killed;
 	}
 
 	@Override
@@ -90,7 +89,7 @@ public class Butcher implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args.length == 1) {
-				if (s instanceof Player == false) {
+				if (!(s instanceof Player)) {
 					World w = Bukkit.getWorld(args[0]);
 					if (w == null) {
 						Loader.sendMessages(s, "Missing.World", Placeholder.c().add("%world%", args[0]));
@@ -109,7 +108,7 @@ public class Butcher implements CommandExecutor, TabCompleter {
 						((Player) s).getLocation(), StringUtils.getInt(args[0]),null) + ""));
 				return true;
 			}
-			if (s instanceof Player == false) {
+			if (!(s instanceof Player)) {
 				World w = Bukkit.getWorld(args[0]);
 				if (w == null) {
 					Loader.sendMessages(s, "Missing.World", Placeholder.c().add("%world%", args[0]));

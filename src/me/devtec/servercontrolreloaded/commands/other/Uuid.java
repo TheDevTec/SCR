@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Uuid implements CommandExecutor, TabCompleter {
@@ -25,7 +26,7 @@ public class Uuid implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if(Loader.has(s, "Uuid", "Other") && args.length==1)
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -50,7 +51,7 @@ public class Uuid implements CommandExecutor, TabCompleter {
 						}
 						if(o instanceof Collection) {
 							for (String a : (Collection<String>)o) {
-								StringUtils.getHoverMessage(Loader.placeholder(s, (String)a, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString()))
+								StringUtils.getHoverMessage(Loader.placeholder(s, a, Placeholder.c().add("%player%", pl.getName()).replace("%uuid%", pl.getUniqueId().toString()))
 										).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, pl.getUniqueId().toString()).send((Player)s);
 							}						
 						}
@@ -67,7 +68,7 @@ public class Uuid implements CommandExecutor, TabCompleter {
 					}
 					if(o instanceof Collection) {
 						for (String a : (Collection<String>)o) {
-							StringUtils.getHoverMessage(Loader.placeholder(s, (String)a, Placeholder.c().add("%player%",name).replace("%uuid%", uuid))
+							StringUtils.getHoverMessage(Loader.placeholder(s, a, Placeholder.c().add("%player%",name).replace("%uuid%", uuid))
 									).setClickEvent(ClickAction.COPY_TO_CLIPBOARD, uuid).send((Player)s);
 						}						
 					}

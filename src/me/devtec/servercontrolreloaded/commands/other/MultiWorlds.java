@@ -1,10 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -172,7 +168,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("tp")||args[0].equalsIgnoreCase("teleport")) {
-			if(args.length < 2 || args.length==2 && s instanceof Player == false){
+			if(args.length < 2 || args.length==2 && !(s instanceof Player)){
 				Loader.advancedHelp(s,"MultiWorlds","Other","Teleport");
 				return true;
 			}
@@ -199,7 +195,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 		return true;
 	}
 	
-	public static Map<String, List<String>> flags = new HashMap<>();
+	public static final Map<String, List<String>> flags = new HashMap<>();
 	static {
 		List<String> bool = Arrays.asList("yes","no","true","false");
 		flags.put("DO_FALL_DAMAGE", bool);
@@ -265,7 +261,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			return StringUtils.copyPartialMatches(args[0], Arrays.asList("unload","load","delete","create","edit"));
 		}
 		if(args.length==2) {
-			if(args[0].equalsIgnoreCase("create")) {return Arrays.asList("?");}
+			if(args[0].equalsIgnoreCase("create")) {return Collections.singletonList("?");}
 			if(args[0].equalsIgnoreCase("load")){
 				return StringUtils.copyPartialMatches(args[0], Loader.mw.getStringList("Unloaded-Worlds"));
 			}
@@ -275,11 +271,10 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 		}
 		if(args.length==3){
 			if(args[0].equalsIgnoreCase("create")){
-				List<String> generators = new ArrayList<>();
-				generators.addAll(Arrays.asList("flat","void","end","nether","the_end","the_void","default"));
+				List<String> generators = new ArrayList<>(Arrays.asList("flat", "void", "end", "nether", "the_end", "the_void", "default"));
 				return StringUtils.copyPartialMatches(args[2],generators);
 			}
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

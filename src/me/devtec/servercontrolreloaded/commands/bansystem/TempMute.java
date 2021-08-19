@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.bansystem;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -24,7 +25,7 @@ public class TempMute implements CommandExecutor, TabCompleter {
 		if(Loader.has(s, "TempMute", "BanSystem")) {
 			if(args.length==2) {
 				try {
-					if(args[1].substring(args[1].length()-1, args[1].length()).matches("[0-9]"))
+					if(args[1].substring(args[1].length()-1).matches("[0-9]"))
 						return Arrays.asList(args[1]+"s",args[1]+"m",args[1]+"h",args[1]+"d",args[1]+"w",args[1]+"mo");
 				}catch(Exception e) {
 					return Arrays.asList("15m","2h","2h30m","6h","12h","7d");
@@ -32,7 +33,7 @@ public class TempMute implements CommandExecutor, TabCompleter {
 			}
 			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 	
 	@Override

@@ -27,16 +27,16 @@ public class FarmingSystemAccess {
 	}
     
     private static class WGAccess {
-    	private static Object[] block_break = new Object[] {Ref.getStatic(Ref.getClass("com.sk89q.worldguard.protection.flags.DefaultFlag")!=null?Ref.getClass("com.sk89q.worldguard.protection.flags.DefaultFlag"):Ref.getClass("com.sk89q.worldguard.protection.flags.Flags"), "BLOCK_BREAK")};
-    	private static Object inst = Ref.invokeStatic(Ref.getClass("com.sk89q.worldguard.bukkit.WorldGuardPlugin"), "inst");
-    	private static Method wrap = Ref.method(inst.getClass(), "warpPlayer", Player.class),
-    			test=Ref.findMethodByName(Ref.getClass("com.sk89q.worldguard.protection.ApplicableRegionSet"), "testState");
-    	private static Object region = Ref.invoke(Ref.invoke(Ref.invokeStatic(Ref.getClass("com.sk89q.worldguard.WorldGuard"), "getInstance"),"getPlatform"),"getRegionContainer");
-    	private static Method get = Ref.method(Ref.nms("com.sk89q.worldguard.protection.regions.RegionContainer"), "get", Ref.getClass("com.sk89q.worldedit.world.World"));
-    	private static Method applicable = Ref.method(Ref.nms("com.sk89q.worldguard.protection.managers.RegionManager"), "getApplicableRegions", Ref.nms("com.sk89q.worldedit.math.BlockVector3"));
+    	private static final Object[] block_break = new Object[] {Ref.getStatic(Ref.getClass("com.sk89q.worldguard.protection.flags.DefaultFlag")!=null?Ref.getClass("com.sk89q.worldguard.protection.flags.DefaultFlag"):Ref.getClass("com.sk89q.worldguard.protection.flags.Flags"), "BLOCK_BREAK")};
+    	private static final Object inst = Ref.invokeStatic(Ref.getClass("com.sk89q.worldguard.bukkit.WorldGuardPlugin"), "inst");
+    	private static final Method wrap = Ref.method(inst.getClass(), "warpPlayer", Player.class);
+        private static final Method test=Ref.findMethodByName(Ref.getClass("com.sk89q.worldguard.protection.ApplicableRegionSet"), "testState");
+    	private static final Object region = Ref.invoke(Ref.invoke(Ref.invokeStatic(Ref.getClass("com.sk89q.worldguard.WorldGuard"), "getInstance"),"getPlatform"),"getRegionContainer");
+    	private static final Method get = Ref.method(Ref.nms("com.sk89q.worldguard.protection.regions.RegionContainer"), "get", Ref.getClass("com.sk89q.worldedit.world.World"));
+    	private static final Method applicable = Ref.method(Ref.nms("com.sk89q.worldguard.protection.managers.RegionManager"), "getApplicableRegions", Ref.nms("com.sk89q.worldedit.math.BlockVector3"));
     	
     	public static boolean has(Player player, Location l) {
-    		Object r = null;
+    		Object r;
         	Object reg = Ref.invoke(inst, "getRegionContainer");
         	if(reg!=null)
         		r=Ref.invoke(Ref.invoke(reg, "get", l.getWorld()), "getApplicableRegions", l);
@@ -45,8 +45,8 @@ public class FarmingSystemAccess {
     		return (boolean) Ref.invoke(r, test, Ref.invoke(inst, wrap, player), block_break);
         }
     	
-    	private static Method at = Ref.method(Ref.nms("com.sk89q.worldedit.math.BlockVector3"), "at", double.class, double.class, double.class);
-    	private static Method adapt = Ref.method(Ref.nms("com.sk89q.worldedit.bukkit.BukkitAdapter"), "adapt", World.class);
+    	private static final Method at = Ref.method(Ref.nms("com.sk89q.worldedit.math.BlockVector3"), "at", double.class, double.class, double.class);
+    	private static final Method adapt = Ref.method(Ref.nms("com.sk89q.worldedit.bukkit.BukkitAdapter"), "adapt", World.class);
     	
     	static Object adapt(World w) {
     		return Ref.invokeStatic(adapt, w);

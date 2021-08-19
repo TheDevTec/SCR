@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class BossBar implements CommandExecutor, TabCompleter {
@@ -28,7 +29,7 @@ public class BossBar implements CommandExecutor, TabCompleter {
 			d.add("toggle");
 			return StringUtils.copyPartialMatches(args[0], d);
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 	@Override

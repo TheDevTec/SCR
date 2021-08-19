@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.warps;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -41,7 +42,6 @@ public class SetHome implements CommandExecutor, TabCompleter {
 					d.setAndSave("Homes." + args[0], new Position(p.getLocation()).toString());
 					Loader.sendMessages(s, "Home.Create", Placeholder.c()
 							.add("%home%", "home"));
-					return true;
 				} else {
 					if (args.length == 0) {
 						TheAPI.getUser(p).setAndSave("Homes.home",
@@ -59,8 +59,8 @@ public class SetHome implements CommandExecutor, TabCompleter {
 							new Position(p.getLocation()).toString());
 					Loader.sendMessages(s, "Home.Create", Placeholder.c()
 							.add("%home%", args[0]));
-					return true;
 				}
+				return true;
 			}
 			Loader.noPerms(s, "SetHome", "Warps");
 			return true;
@@ -79,6 +79,6 @@ public class SetHome implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if (Loader.has(s, "SetHome", "Warps") && args.length == 1)
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

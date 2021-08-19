@@ -16,7 +16,7 @@ import me.devtec.theapi.utils.reflections.Ref;
 public class BigTask {
 	public static int r = -1;
 
-	public static enum TaskType {
+	public enum TaskType {
 		STOP, RESTART, RELOAD
 	}
 
@@ -37,7 +37,7 @@ public class BigTask {
 				long f = h;
 				public void run() {
 					if (f <= 0) {
-						NMSAPI.postToMainThread(() ->end());
+						NMSAPI.postToMainThread(BigTask::end);
 						cancel();
 						return;
 					} else if (f == 60 || f == 45 || f == 30 || f == 15 || f <= 5) {
@@ -50,12 +50,11 @@ public class BigTask {
 					--f;
 				}
 			}.runRepeating(0, 20);
-			return true;
 		} else {
 			r=0;
 			end();
-			return true;
 		}
+		return true;
 	}
 
 	public static void cancel(boolean msg) {
@@ -80,39 +79,35 @@ public class BigTask {
 			for (String s : Loader.config.getStringList("Options.WarningSystem."
 					+ (s == TaskType.STOP ? "Stop.Commands" : (s == TaskType.RELOAD ? "Reload.Commands" : "Restart.Commands"))))
 				TheAPI.sudoConsole(s);
-			new Thread(new Runnable() {
-				public void run() {
-					try {
-						Thread.sleep(1000+TheAPI.getOnlinePlayers().size()*50);
-					} catch (Exception e1) {
-					}
-					NMSAPI.postToMainThread(new Runnable() {
-						public void run() {
-							switch (s) {
-							case RELOAD:
-								Bukkit.reload();
-								break;
-							case RESTART:
-								for(Player s : TheAPI.getOnlinePlayers())
-									s.kickPlayer(TabList.replace(Loader.config.getString("Options.WarningSystem.Restart.Kick"),s,true));
-								if (Ref.getClass("net.md_5.bungee.api.ChatColor")!=null)
-									try {
-										Bukkit.spigot().restart();
-									}catch(Exception | NoSuchMethodError e) {
-										Bukkit.shutdown();
-									}
-								else
-									Bukkit.shutdown();
-								break;
-							case STOP:
-								for(Player s : TheAPI.getOnlinePlayers())
-									s.kickPlayer(TabList.replace(Loader.config.getString("Options.WarningSystem.Stop.Kick"),s,true));
-								Bukkit.shutdown();
-								break;
-							}
-						}
-					});
+			new Thread(() -> {
+				try {
+					Thread.sleep(1000+TheAPI.getOnlinePlayers().size()*50);
+				} catch (Exception e1) {
 				}
+				NMSAPI.postToMainThread(() -> {
+					switch (s) {
+						case RELOAD:
+							Bukkit.reload();
+							break;
+						case RESTART:
+							for (Player s : TheAPI.getOnlinePlayers())
+								s.kickPlayer(TabList.replace(Loader.config.getString("Options.WarningSystem.Restart.Kick"), s, true));
+							if (Ref.getClass("net.md_5.bungee.api.ChatColor") != null)
+								try {
+									Bukkit.spigot().restart();
+								} catch (Exception | NoSuchMethodError e) {
+									Bukkit.shutdown();
+								}
+							else
+								Bukkit.shutdown();
+							break;
+						case STOP:
+							for (Player s : TheAPI.getOnlinePlayers())
+								s.kickPlayer(TabList.replace(Loader.config.getString("Options.WarningSystem.Stop.Kick"), s, true));
+							Bukkit.shutdown();
+							break;
+					}
+				});
 			}).start();
 		}
 	}

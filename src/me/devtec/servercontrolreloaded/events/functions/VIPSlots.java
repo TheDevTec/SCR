@@ -45,12 +45,10 @@ public class VIPSlots implements Listener {
 						if (setting.vip_join)
 							TheAPI.broadcastMessage(TabList.replace(Loader.config.getString("Options.VIPSlots.Text.BroadcastVIPJoin"), p, false));
 						e.allow();
-						return;
 					}
 				}
 			} else if (TheAPI.getOnlineCount() >= TheAPI.getMaxPlayers()) {
 				e.disallow(Result.KICK_FULL, TheAPI.colorize(f.getString("Options.VIPSlots.Text.Kick")));
-				return;
 			}
 		}
 	}

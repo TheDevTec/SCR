@@ -36,7 +36,7 @@ public class God implements CommandExecutor, TabCompleter {
 			Loader.Help(s, "God", "Other");
 			return true;
 		}
-		SPlayer target = null;
+		SPlayer target;
 		if (args.length == 1) {
 			if(s instanceof Player) {
 			if (args[0].equalsIgnoreCase("off") || args[0].equalsIgnoreCase("false")) {
@@ -136,8 +136,7 @@ public class God implements CommandExecutor, TabCompleter {
 		List<String> c = new ArrayList<>();
 		if(Loader.has(s, "God", "Other")) {
 			if(args.length==1) {
-				List<String> list = new ArrayList<>();
-				list.addAll(Arrays.asList("On","Off"));
+				List<String> list = new ArrayList<>(Arrays.asList("On", "Off"));
 				if(Loader.has(s, "God", "Other", "Other"))
 					list.addAll(API.getPlayerNames(s));
 				return StringUtils.copyPartialMatches(args[0], list);

@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.message;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -21,7 +22,7 @@ public class ClearChat implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
-		if (s instanceof Player == false) {
+		if (!(s instanceof Player)) {
 			if (args.length == 0) {
 				for (Player online : TheAPI.getOnlinePlayers())
 					if (!Loader.has(online, "ClearChat", "Message", "Bypass"))
@@ -29,7 +30,6 @@ public class ClearChat implements CommandExecutor, TabCompleter {
 							TheAPI.msg("", online);
 						}
 				Loader.sendBroadcasts(s, "ClearChat.Cleared.Console");
-				return true;
 			}
 			else {
 			Player target = TheAPI.getPlayer(args[0]);
@@ -47,8 +47,8 @@ public class ClearChat implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			Loader.sendMessages(s, "ClearChat.SpecificChatHaveBypass", Placeholder.c().add("%player%", target.getName()));
-			return true;
 			}
+			return true;
 		}
 		if (Loader.has(s, "ClearChat", "Message")) {
 			if(!CommandsManager.canUse("Message.ClearChat", s)) {
@@ -94,6 +94,6 @@ public class ClearChat implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(args.length==1 && Loader.has(s, "ClearChat", "Message"))
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

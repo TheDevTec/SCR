@@ -145,10 +145,8 @@ public class Eco implements Economy {
 		if (s == null)
 			return false;
 		double balance = TheAPI.getUser(s).getDouble(get(s));
-		if (balance >= v)
-			return true;
-		return false;
-	}
+        return balance >= v;
+    }
 
 	@Override
 	public boolean has(OfflinePlayer offlinePlayer, double v) {
@@ -160,10 +158,8 @@ public class Eco implements Economy {
 		if (s == null)
 			return false;
 		double balance = TheAPI.getUser(s).getDouble(get(s, world));
-		if (balance >= v)
-			return true;
-		return false;
-	}
+        return balance >= v;
+    }
 
 	@Override
 	public boolean has(OfflinePlayer offlinePlayer, String world, double v) {

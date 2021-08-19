@@ -55,7 +55,6 @@ public class BungeeListener implements PluginMessageListener {
 			}
 			TheAPI.broadcast(Loader.config.getString("Format.HelpOp").replace("%sender%", name)
 					.replace("%sendername%", dname).replace("%message%", msg), Loader.cmds.exists("Message.Helpop.SubPermissions.Receive")?Loader.cmds.getString("Message.Helpop.SubPermissions.Receive"):"SCR.Command.Helpop.Receive");
-			return;
 		}
 	}
 

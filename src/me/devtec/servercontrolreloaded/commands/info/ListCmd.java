@@ -1,10 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +29,7 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 		for(String f : stafff)
 			staff.add(f.toLowerCase());
 		for (Player a : TheAPI.getOnlinePlayers()) {
-			if(d instanceof Player == false ? false : !API.canSee((Player)d,a.getName()))continue;
+			if(d instanceof Player && !API.canSee((Player) d, a.getName()))continue;
 			String as = Staff.getGroup(a);
 			if(groups.contains("{staff}") && staff.contains(as.toLowerCase())||groups.contains(as.toLowerCase()))
 				++s;
@@ -48,15 +45,16 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 		for(String f : stafff)
 			staff.add(f.toLowerCase());
 		for (Player a : TheAPI.getOnlinePlayers()) {
-			if(d instanceof Player == false ? false : !API.canSee((Player)d,a.getName()))continue;
+			if(d instanceof Player && !API.canSee((Player) d, a.getName()))continue;
 			String as = Staff.getGroup(a);
 			if(groups.contains("{staff}") && staff.contains(as.toLowerCase())||groups.contains(as.toLowerCase()))
-				b.append(", "+a.getName());
+				b.append(", ").append(a.getName());
 		}
 		return b.length()>2?b.toString().substring(2):b.toString();
 	}
 	
-	private static Pattern a = Pattern.compile("\\%joiner\\{(.*?)\\}\\%"), b = Pattern.compile("\\%joiner-count\\{(.*?)\\}\\%");
+	private static final Pattern a = Pattern.compile("\\%joiner\\{(.*?)\\}\\%");
+	private static final Pattern b = Pattern.compile("\\%joiner-count\\{(.*?)\\}\\%");
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -102,6 +100,6 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] arg3) {
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

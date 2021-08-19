@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.commands.info;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -58,7 +59,7 @@ public class SCR implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		if (args.length==1 && Loader.has(s, "SCR", "Info"))
 			return StringUtils.copyPartialMatches(args[0], Arrays.asList("Version", "Info", "Reload"));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 }

@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 public class setting {
-	public static enum DeathTp {
+	public enum DeathTp {
 		HOME, BED, SPAWN
 	}
 

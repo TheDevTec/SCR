@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.bansystem;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -28,7 +29,7 @@ public class UnJail implements CommandExecutor, TabCompleter {
 			jail.addAll(BanList.getTempJailed());
 			return StringUtils.copyPartialMatches(args[0], jail);
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 	@Override

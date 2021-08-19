@@ -86,7 +86,7 @@ import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin implements Listener {
 	public static Config config, plac, sb, tab, mw, kit, trans, events, cmds, anim, ac, bb,guicreator,portals,customCmds, rewards;
-	public static List<Rule> rules = new ArrayList<>();
+	public static final List<Rule> rules = new ArrayList<>();
 	private int task;
 	public long time, rkick;
 	public static Object econ;
@@ -170,7 +170,7 @@ public class Loader extends JavaPlugin implements Listener {
 			}else {
 				return input.toString();
 			}
-		return input;
+		return null;
 	}
 	
 	public static String getTranslationAsString(String path) {
@@ -220,37 +220,34 @@ public class Loader extends JavaPlugin implements Listener {
 					json = colorizeList((Collection<?>)o,(d)->placeholder(to,d,placeholders));
 				}else
 					json = colorizeMap((Map<String, Object>)o,(d)->placeholder(to,d,placeholders));
-				if(json!=null) {
-					Object formatt = json;
-					if (formatt instanceof Map || formatt instanceof Collection) {
-						List<Map<String,Object>> oo = new ArrayList<>();
-						if(formatt instanceof Map) {
-							oo.add((Map<String, Object>) formatt);
-							formatt=oo;
-						}else {
-							for(Object w : ((Collection<Object>)formatt)) {
-								if(w instanceof String)w=Reader.read((String)w);
-								if(w instanceof Map) {
-									oo.add((Map<String, Object>) w);
-								}else {
-									Map<String, Object> g = new HashMap<>();
-									g.put("text", w+"");
-									oo.add(g);
-								}
+				Object formatt = json;
+				if (formatt instanceof Map || formatt instanceof Collection) {
+					List<Map<String,Object>> oo = new ArrayList<>();
+					if(formatt instanceof Map) {
+						oo.add((Map<String, Object>) formatt);
+					}else {
+						for(Object w : ((Collection<Object>)formatt)) {
+							if(w instanceof String)w=Reader.read((String)w);
+							if(w instanceof Map) {
+								oo.add((Map<String, Object>) w);
+							}else {
+								Map<String, Object> g = new HashMap<>();
+								g.put("text", w+"");
+								oo.add(g);
 							}
-							formatt=oo;
 						}
-						oo=ChatMessage.fixListMap(oo);
-						if(to instanceof Player) {
-							String jsons = Writer.write(oo);
-							jsons="[\"\","+jsons.substring(1);
-							Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
-						}else {
-							to.sendMessage(convertToLegacy(oo));
-						}
-						return;
 					}
-				} // fallback to default
+					formatt=oo;
+					oo=ChatMessage.fixListMap(oo);
+					if(to instanceof Player) {
+						String jsons = Writer.write(oo);
+						jsons="[\"\","+jsons.substring(1);
+						Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+					}else {
+						to.sendMessage(convertToLegacy(oo));
+					}
+					return;
+				}
 			}
 		}
 		if(o instanceof Collection) {
@@ -324,37 +321,34 @@ public class Loader extends JavaPlugin implements Listener {
 						json = colorizeList((Collection<?>)o,(d)->placeholder(replace,d,placeholders));
 					}else
 						json = colorizeMap((Map<String, Object>)o,(d)->placeholder(replace,d,placeholders));
-					if(json!=null) {
-						Object formatt = json;
-						if (formatt instanceof Map || formatt instanceof Collection) {
-							List<Map<String,Object>> oo = new ArrayList<>();
-							if(formatt instanceof Map) {
-								oo.add((Map<String, Object>) formatt);
-								formatt=oo;
-							}else {
-								for(Object w : ((Collection<Object>)formatt)) {
-									if(w instanceof String)w=Reader.read((String)w);
-									if(w instanceof Map) {
-										oo.add((Map<String, Object>) w);
-									}else {
-										Map<String, Object> g = new HashMap<>();
-										g.put("text", w+"");
-										oo.add(g);
-									}
+					Object formatt = json;
+					if (formatt instanceof Map || formatt instanceof Collection) {
+						List<Map<String,Object>> oo = new ArrayList<>();
+						if(formatt instanceof Map) {
+							oo.add((Map<String, Object>) formatt);
+						}else {
+							for(Object w : ((Collection<Object>)formatt)) {
+								if(w instanceof String)w=Reader.read((String)w);
+								if(w instanceof Map) {
+									oo.add((Map<String, Object>) w);
+								}else {
+									Map<String, Object> g = new HashMap<>();
+									g.put("text", w+"");
+									oo.add(g);
 								}
-								formatt=oo;
 							}
-							oo=ChatMessage.fixListMap(oo);
-							if(to instanceof Player) {
-								String jsons = Writer.write(oo);
-								jsons="[\"\","+jsons.substring(1);
-								Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
-							}else {
-								to.sendMessage(convertToLegacy(oo));
-							}
-							return;
 						}
-					} // fallback to default
+						formatt=oo;
+						oo=ChatMessage.fixListMap(oo);
+						if(to instanceof Player) {
+							String jsons = Writer.write(oo);
+							jsons="[\"\","+jsons.substring(1);
+							Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+						}else {
+							to.sendMessage(convertToLegacy(oo));
+						}
+						return;
+					}
 					o=old;
 				}
 		}
@@ -382,34 +376,31 @@ public class Loader extends JavaPlugin implements Listener {
 						json = colorizeList((Collection<?>)o,(d)->placeholder(whoIsSelected,d,placeholders));
 					}else
 						json = colorizeMap((Map<String, Object>)o,(d)->placeholder(whoIsSelected,d,placeholders));
-					if(json!=null) {
-						Object formatt = json;
-						if (formatt instanceof Map || formatt instanceof Collection) {
-							List<Map<String,Object>> oo = new ArrayList<>();
-							if(formatt instanceof Map) {
-								oo.add((Map<String, Object>) formatt);
-								formatt=oo;
-							}else {
-								for(Object w : ((Collection<Object>)formatt)) {
-									if(w instanceof String)w=Reader.read((String)w);
-									if(w instanceof Map) {
-										oo.add((Map<String, Object>) w);
-									}else {
-										Map<String, Object> g = new HashMap<>();
-										g.put("text", w+"");
-										oo.add(g);
-									}
+					Object formatt = json;
+					if (formatt instanceof Map || formatt instanceof Collection) {
+						List<Map<String,Object>> oo = new ArrayList<>();
+						if(formatt instanceof Map) {
+							oo.add((Map<String, Object>) formatt);
+						}else {
+							for(Object w : ((Collection<Object>)formatt)) {
+								if(w instanceof String)w=Reader.read((String)w);
+								if(w instanceof Map) {
+									oo.add((Map<String, Object>) w);
+								}else {
+									Map<String, Object> g = new HashMap<>();
+									g.put("text", w+"");
+									oo.add(g);
 								}
-								formatt=oo;
 							}
-							oo=ChatMessage.fixListMap(oo);
-							String jsons = Writer.write(oo);
-							jsons="[\"\","+jsons.substring(1);
-							Ref.sendPacket(TheAPI.getOnlinePlayers(),NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
-							TheAPI.getConsole().sendMessage(convertToLegacy(oo));
-							return;
 						}
-					} // fallback to default
+						formatt=oo;
+						oo=ChatMessage.fixListMap(oo);
+						String jsons = Writer.write(oo);
+						jsons="[\"\","+jsons.substring(1);
+						Ref.sendPacket(TheAPI.getOnlinePlayers(),NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+						TheAPI.getConsole().sendMessage(convertToLegacy(oo));
+						return;
+					}
 					o=old;
 				}
 		}
@@ -436,39 +427,34 @@ public class Loader extends JavaPlugin implements Listener {
 						json = colorizeList((Collection<?>)o,(d)->placeholder(whoIsSelected,d,placeholders));
 					}else
 						json = colorizeMap((Map<String, Object>)o,(d)->placeholder(whoIsSelected,d,placeholders));
-					if(json!=null) {
-						Object formatt = json;
-						if (formatt instanceof Map || formatt instanceof Collection) {
-							List<Map<String,Object>> oo = new ArrayList<>();
-							if(formatt instanceof Map) {
-								oo.add((Map<String, Object>) formatt);
-								formatt=oo;
-							}else {
-								for(Object w : ((Collection<Object>)formatt)) {
-									if(w instanceof String)w=Reader.read((String)w);
-									if(w instanceof Map) {
-										oo.add((Map<String, Object>) w);
-									}else {
-										Map<String, Object> g = new HashMap<>();
-										g.put("text", w+"");
-										oo.add(g);
-									}
+					Object formatt = json;
+					if (formatt instanceof Map || formatt instanceof Collection) {
+						List<Map<String,Object>> oo = new ArrayList<>();
+						if(formatt instanceof Map) {
+							oo.add((Map<String, Object>) formatt);
+						}else {
+							for(Object w : ((Collection<Object>)formatt)) {
+								if(w instanceof String)w=Reader.read((String)w);
+								if(w instanceof Map) {
+									oo.add((Map<String, Object>) w);
+								}else {
+									Map<String, Object> g = new HashMap<>();
+									g.put("text", w+"");
+									oo.add(g);
 								}
-								formatt=oo;
 							}
-							List<Player> p = TheAPI.getOnlinePlayers();
-							Iterator<Player> f = p.iterator();
-							while(f.hasNext())
-								if(!f.next().hasPermission(perms))f.remove();
-							oo=ChatMessage.fixListMap(oo);
-							String jsons = Writer.write(oo);
-							jsons="[\"\","+jsons.substring(1);
-							Ref.sendPacket(p,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
-							if(TheAPI.getConsole().hasPermission(perms))
-								TheAPI.getConsole().sendMessage(convertToLegacy(oo));
-							return;
 						}
-					} // fallback to default
+						formatt=oo;
+						List<Player> p = TheAPI.getOnlinePlayers();
+						p.removeIf(player -> !player.hasPermission(perms));
+						oo=ChatMessage.fixListMap(oo);
+						String jsons = Writer.write(oo);
+						jsons="[\"\","+jsons.substring(1);
+						Ref.sendPacket(p,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+						if(TheAPI.getConsole().hasPermission(perms))
+							TheAPI.getConsole().sendMessage(convertToLegacy(oo));
+						return;
+					}
 					o=old;
 				}
 		}
@@ -498,7 +484,7 @@ public class Loader extends JavaPlugin implements Listener {
 				continue;
 			}
 			if (e instanceof String) {
-				colorized.add(r((String)e,c));
+				colorized.add(r(e,c));
 				continue;
 			}
 			colorized.add(e);
@@ -519,7 +505,7 @@ public class Loader extends JavaPlugin implements Listener {
 				continue;
 			}
 			if (e.getValue() instanceof String && !e.getKey().equals("color")) {
-				json.put(e.getKey(), r((String) e.getValue(), c));
+				json.put(e.getKey(), r(e.getValue(), c));
 				continue;
 			}
 			json.put(e.getKey(), e.getValue());
@@ -529,22 +515,22 @@ public class Loader extends JavaPlugin implements Listener {
 
 	@SuppressWarnings("unchecked")
 	public static Object r(Object s, Replacer c) {
-		if((s+"").trim().isEmpty())return s;
+		if(s==null||s.toString().trim().isEmpty())return s;
 		try {
-			if(s instanceof Map && s!=null) {
+			if(s instanceof Map) {
 				return colorizeMap((Map<String, Object>) s, c);
 			} //else continue in code below
-			if(s instanceof Collection && s!=null) {
+			if(s instanceof Collection) {
 				return colorizeList((Collection<Object>) s, c);
 			} //else continue in code below
 		}catch(Exception err) {}
-		String orig = (String)s;
-		orig=c.replace((String)s);
+		String orig = s.toString();
+		orig=c.replace(s.toString());
 		if(orig!=null)s=orig;
 		return s;
 	}
 	
-	public static enum Item {
+	public enum Item {
 		PREFIX,
 		SUFFIX
 	}
@@ -582,9 +568,9 @@ public class Loader extends JavaPlugin implements Listener {
 		int s = TheAPI.getPlayerPing(p);
 		if (s >= 500)
 			return TheAPI.colorize("&c" + s);
-		if (s >= 200 && s < 500)
+		if (s >= 200)
 			return TheAPI.colorize("&e" + s);
-		if (s >= 0 && s < 200)
+		if (s >= 0)
 			return TheAPI.colorize("&a" + s);
 		return TheAPI.colorize("&4" + s);
 	}
@@ -903,7 +889,7 @@ public class Loader extends JavaPlugin implements Listener {
 		TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 	}
 
-	public Map<String, Location> moving = new HashMap<>();
+	public final Map<String, Location> moving = new HashMap<>();
 	public void starts() {
 		time = StringUtils.timeFromString(Loader.config.getString("Options.AFK.TimeToAFK"));
 		rkick = StringUtils.timeFromString(Loader.config.getString("Options.AFK.TimeToKick"));
@@ -918,7 +904,7 @@ public class Loader extends JavaPlugin implements Listener {
 						save(p);
 					}
 					SPlayer s = API.getSPlayer(p);
-					if (setting.afk_auto) {;
+					if (setting.afk_auto) {
 						if (getTime(s) <= 0) {
 							if (!s.bc) {
 								s.bc = true;
@@ -1006,7 +992,7 @@ public class Loader extends JavaPlugin implements Listener {
 		Bukkit.getPluginManager().registerEvents(l, getInstance);
 	}
 	
-	static List<org.bukkit.event.Listener> ev = new ArrayList<>();
+	static final List<org.bukkit.event.Listener> ev = new ArrayList<>();
 	public static void registerEvents() {
 		if(setting.disable_item)
 			regEvent(new DisableItems());
@@ -1054,7 +1040,7 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getLogger().severe("[BUG] Missing path: "+section+"."+cmd);
 			return false;
 		}
-		return cmds.getString(section+"."+cmd+".Permission").equals("")?true:s.hasPermission(cmds.getString(section+"."+cmd+".Permission"));
+		return cmds.getString(section + "." + cmd + ".Permission").equals("") || s.hasPermission(cmds.getString(section + "." + cmd + ".Permission"));
 	}
 
 	public static void noPerms(CommandSender s, String cmd, String section) {
@@ -1066,10 +1052,10 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static boolean has(CommandSender s, String cmd, String section, String subPerm) {
-		return cmds.exists(section+"."+cmd+".SubPermission."+subPerm)?cmds.getString(section+"."+cmd+".SubPermission."+subPerm).equals("")?true:s.hasPermission(cmds.getString(section+"."+cmd+".SubPermission."+subPerm)):true;
+		return !cmds.exists(section + "." + cmd + ".SubPermission." + subPerm) || cmds.getString(section + "." + cmd + ".SubPermission." + subPerm).equals("") || s.hasPermission(cmds.getString(section + "." + cmd + ".SubPermission." + subPerm));
 	}
 	public static boolean has(Player s, String cmd, String section, String subPerm) {
-		return cmds.exists(section+"."+cmd+".SubPermission."+subPerm)?cmds.getString(section+"."+cmd+".SubPermission."+subPerm).equals("")?true:s.hasPermission(cmds.getString(section+"."+cmd+".SubPermission."+subPerm)):true;
+		return !cmds.exists(section + "." + cmd + ".SubPermission." + subPerm) || cmds.getString(section + "." + cmd + ".SubPermission." + subPerm).equals("") || s.hasPermission(cmds.getString(section + "." + cmd + ".SubPermission." + subPerm));
 	}
 
 	public static String findKitName(String kitName) {
@@ -1079,7 +1065,7 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 
 	public static boolean hasKits(CommandSender p, String name) {
-		return kit.exists("Kits."+name+".permission")?p.hasPermission(kit.getString("Kits."+name+".permission")):true;
+		return !kit.exists("Kits." + name + ".permission") || p.hasPermission(kit.getString("Kits." + name + ".permission"));
 	}
 	public static String getPerm(String cmd, String section) {
 		return cmds.getString(section+"."+cmd+".Permission");

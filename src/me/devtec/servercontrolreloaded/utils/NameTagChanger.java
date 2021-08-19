@@ -10,8 +10,8 @@ import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.NameTagAPI;
 
 public class NameTagChanger {
-	static HashMap<Player, NameTagAPI> t = new HashMap<>();
-	static AnimationManager anim = new AnimationManager();
+	static final HashMap<Player, NameTagAPI> t = new HashMap<>();
+	static final AnimationManager anim = new AnimationManager();
 
 	public static void setNameTag(Player p, String prefix, String suffix) {
 		Tasks.regPlayer(p);

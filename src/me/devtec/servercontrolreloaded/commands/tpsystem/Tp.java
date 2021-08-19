@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.commands.tpsystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -31,7 +32,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 		if(args.length==1) {
 			List<String> c = new ArrayList<>();
 			if(Loader.has(s, "Tp","TpSystem","Location")) {
-			if(s instanceof ConsoleCommandSender == false) {
+			if(!(s instanceof ConsoleCommandSender)) {
 				Location d = s instanceof BlockCommandSender ? ((BlockCommandSender)s).getBlock().getLocation() : ((Player)s).getLocation();
 				c.add(StringUtils.fixedFormatDouble(d.getX())+" "+StringUtils.fixedFormatDouble(d.getY())+" "+StringUtils.fixedFormatDouble(d.getZ()));
 				c.add(StringUtils.fixedFormatDouble(d.getX())+" "+StringUtils.fixedFormatDouble(d.getY()));
@@ -50,7 +51,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 		}
 		if(args.length==2) {
 			List<String> c = new ArrayList<>();
-			if(s instanceof ConsoleCommandSender == false) {
+			if(!(s instanceof ConsoleCommandSender)) {
 				Location d = s instanceof BlockCommandSender ? ((BlockCommandSender)s).getBlock().getLocation() : ((Player)s).getLocation();
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null && API.getPlayers(s).contains(p)) {
@@ -88,7 +89,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 		}
 		if(args.length==3 && (Loader.has(s, "Tp","TpSystem","Location")||Loader.has(s, "Tp","TpSystem","LocationOther"))) {
 			List<String> c = new ArrayList<>();
-			if(s instanceof ConsoleCommandSender == false) {
+			if(!(s instanceof ConsoleCommandSender)) {
 				Location d = s instanceof BlockCommandSender ? ((BlockCommandSender)s).getBlock().getLocation() : ((Player)s).getLocation();
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null && API.getPlayers(s).contains(p)) {
@@ -113,7 +114,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 		}
 		if(args.length==4 && (Loader.has(s, "Tp","TpSystem","Location")||Loader.has(s, "Tp","TpSystem","LocationOther"))) {
 			List<String> c = new ArrayList<>();
-			if(s instanceof ConsoleCommandSender == false) {
+			if(!(s instanceof ConsoleCommandSender)) {
 				Location d = s instanceof BlockCommandSender ? ((BlockCommandSender)s).getBlock().getLocation() : ((Player)s).getLocation();
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null && API.getPlayers(s).contains(p)) {
@@ -138,7 +139,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 		}
 		if(args.length==5 && (Loader.has(s, "Tp","TpSystem","Location")||Loader.has(s, "Tp","TpSystem","LocationOther"))) {
 			List<String> c = new ArrayList<>();
-			if(s instanceof ConsoleCommandSender == false) {
+			if(!(s instanceof ConsoleCommandSender)) {
 				Location d = s instanceof BlockCommandSender ? ((BlockCommandSender)s).getBlock().getLocation() : ((Player)s).getLocation();
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null && API.getPlayers(s).contains(p)) {
@@ -163,7 +164,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 		}
 		if(args.length==6 && Loader.has(s, "Tp","TpSystem","LocationOther")) {
 			List<String> c = new ArrayList<>();
-			if(s instanceof ConsoleCommandSender == false) {
+			if(!(s instanceof ConsoleCommandSender)) {
 				Location d = s instanceof BlockCommandSender ? ((BlockCommandSender)s).getBlock().getLocation() : ((Player)s).getLocation();
 				Player p = TheAPI.getPlayer(args[0]);
 				if (p != null && API.getPlayers(s).contains(p)) {
@@ -179,7 +180,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 			return StringUtils.copyPartialMatches(args[5], c);
 		}
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 	
 	@Override
@@ -276,27 +277,26 @@ public class Tp implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args.length == 3) {
-				if (Loader.has(s, "Tp","TpSystem","Location") && s instanceof Player) {
-					Player p = (Player)s;
-						if (s instanceof Player) {
-							p=(Player)s;
-							double x=StringUtils.calculate(args[0].replace("~", p.getLocation().getX()+""))
-							, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getY()+"")), 
-							z=StringUtils.calculate(args[2].replace("~", p.getLocation().getZ()+""));
-						Loader.sendMessages(p, "TpSystem.Tp.Location.YouToLocation", Placeholder.c()
-								.replace("%x%", StringUtils.fixedFormatDouble(x))
-								.replace("%y%", StringUtils.fixedFormatDouble(y))
-								.replace("%z%", StringUtils.fixedFormatDouble(z))
-								.replace("%yaw%", "0").replace("%pitch%", "0"));
-						API.setBack(p);
-						if (setting.tp_safe)
-							API.safeTeleport(p,p.isFlying(),new Position(p.getWorld(), x, y, z, p.getLocation().getYaw(),p.getLocation().getPitch()));
-						else
-							API.teleport(p, new Location(p.getWorld(), x, y, z, p.getLocation().getYaw(),p.getLocation().getPitch()));
-						return true;
-						}
-						Loader.Help(s, "Tp", "TpSystem");
-						return true;
+				if (Loader.has(s, "Tp","TpSystem","Location")) {
+					if (s instanceof Player) {
+						Player p=(Player)s;
+						double x=StringUtils.calculate(args[0].replace("~", p.getLocation().getX()+""))
+						, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getY()+"")),
+						z=StringUtils.calculate(args[2].replace("~", p.getLocation().getZ()+""));
+					Loader.sendMessages(p, "TpSystem.Tp.Location.YouToLocation", Placeholder.c()
+							.replace("%x%", StringUtils.fixedFormatDouble(x))
+							.replace("%y%", StringUtils.fixedFormatDouble(y))
+							.replace("%z%", StringUtils.fixedFormatDouble(z))
+							.replace("%yaw%", "0").replace("%pitch%", "0"));
+					API.setBack(p);
+					if (setting.tp_safe)
+						API.safeTeleport(p,p.isFlying(),new Position(p.getWorld(), x, y, z, p.getLocation().getYaw(),p.getLocation().getPitch()));
+					else
+						API.teleport(p, new Location(p.getWorld(), x, y, z, p.getLocation().getYaw(),p.getLocation().getPitch()));
+					return true;
+					}
+					Loader.Help(s, "Tp", "TpSystem");
+					return true;
 				}
 				Loader.noPerms(s, "Tp", "TpSystem","Location");
 				return true;

@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.commands.warps;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -99,11 +100,11 @@ public class Warp implements CommandExecutor, TabCompleter {
 						}
 						if (Loader.config.getBoolean("Warps." + warp(args[0]) + ".NeedPermission")) {
 							if (s.hasPermission(Loader.getPerm("Warp", "Warps", "PerWarp").replace("%warp%", warp(args[0])))) {
-								API.setBack((Player) p);
+								API.setBack(p);
 								if (setting.tp_safe)
-									API.safeTeleport((Player)p,false, loc);
+									API.safeTeleport(p,false, loc);
 								else
-									API.teleport((Player)p, loc);
+									API.teleport(p, loc);
 								Loader.sendMessages(p, "Warp.Teleport.You", Placeholder.c()
 										.add("%warp%", warp(args[0])));
 								Loader.sendMessages(s, "Warp.Teleport.Other.Sender", Placeholder.c()
@@ -166,6 +167,6 @@ public class Warp implements CommandExecutor, TabCompleter {
 			if (args.length == 2 && Loader.has(s, "Warp", "Warps","Other"))
 				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

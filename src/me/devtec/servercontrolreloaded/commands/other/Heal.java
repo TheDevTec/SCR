@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Heal implements CommandExecutor, TabCompleter {
@@ -24,7 +25,7 @@ public class Heal implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if(Loader.has(s, "Heal", "Other") && args.length==1)
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {

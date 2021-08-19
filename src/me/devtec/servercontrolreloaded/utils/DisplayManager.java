@@ -21,9 +21,9 @@ import me.devtec.theapi.scoreboardapi.SimpleScore;
 import me.devtec.theapi.utils.StringUtils;
 
 public class DisplayManager {
-	private static Map<String, ScoreboardAPI> map = SimpleScore.scores;
+	private static final Map<String, ScoreboardAPI> map = SimpleScore.scores;
 	
-	public static enum DisplayType {
+	public enum DisplayType {
 		ACTIONBAR,
 		BOSSBAR,
 		SCOREBOARD
@@ -167,7 +167,7 @@ public class DisplayManager {
 									color="PerWorld."+s.getWorld().getName()+".Color";
 								}
 							}
-							BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), (double)StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage)))/100);
+							BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
 							if(Loader.bb.getString(color)!=null)
 								try {
 									if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
@@ -206,7 +206,7 @@ public class DisplayManager {
 									color="PerWorld."+s.getWorld().getName()+".Color";
 								}
 							}
-							BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), (double)StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage)))/100);
+							BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
 							if(Loader.bb.getString(color)!=null)
 								try {
 									if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
@@ -244,7 +244,7 @@ public class DisplayManager {
 							color="PerWorld."+s.getWorld().getName()+".Color";
 						}
 					}
-					BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), (double)StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage)))/100);
+					BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
 					if(Loader.bb.getString(color)!=null)
 						try {
 							if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
@@ -360,8 +360,10 @@ public class DisplayManager {
 		}
 	}
 	
-	private static SimpleScore score = new SimpleScore();
-	protected static AnimationManager ac = new AnimationManager(), bb= new AnimationManager(), sb=new AnimationManager();
+	private static final SimpleScore score = new SimpleScore();
+	protected static final AnimationManager ac = new AnimationManager();
+	protected static final AnimationManager bb= new AnimationManager();
+	protected static final AnimationManager sb=new AnimationManager();
 	
 	public static void hide(Player s, DisplayType type) {
 		TheAPI.getUser(s).setAndSave("SCR."+type.name(), true);
@@ -400,7 +402,7 @@ public class DisplayManager {
 	}
 	
 	public static boolean has(Player p, DisplayType type) {
-		return TheAPI.getUser(p).exists("SCR."+type.name())?TheAPI.getUser(p).getBoolean("SCR."+type.name()):true;
+		return !TheAPI.getUser(p).exists("SCR." + type.name()) || TheAPI.getUser(p).getBoolean("SCR." + type.name());
 	}
 
 	public static boolean isToggleable(Player s, DisplayType type) {
@@ -419,8 +421,9 @@ public class DisplayManager {
 		return TheAPI.getUser(s).getBoolean("SCR."+type.name());
 	}
 	
-	private static Set<Integer> tasks = new HashSet<>();
-	private static Map<DisplayType, Set<String>> ignore = new HashMap<>(), hide = new HashMap<>();
+	private static final Set<Integer> tasks = new HashSet<>();
+	private static final Map<DisplayType, Set<String>> ignore = new HashMap<>();
+	private static final Map<DisplayType, Set<String>> hide = new HashMap<>();
 	static {
 		for(DisplayType t : DisplayType.values()) {
 			ignore.put(t, new HashSet<>());
@@ -467,7 +470,6 @@ public class DisplayManager {
 							}
 							hide.get(DisplayType.ACTIONBAR).add(s.getName());
 							TheAPI.sendActionBar(s, ""); //remove
-							continue;
 						}else {
 							if(!isToggleable(s, DisplayType.ACTIONBAR)) {
 								hide.get(DisplayType.ACTIONBAR).remove(s.getName());
@@ -483,7 +485,6 @@ public class DisplayManager {
 								continue;
 							}
 							//already gone
-							continue;
 						}
 					}else {
 						hide.get(DisplayType.ACTIONBAR).remove(s.getName());
@@ -496,7 +497,6 @@ public class DisplayManager {
 							}
 						}
 						TheAPI.sendActionBar(s, ac.replace(s, Loader.ac.getString(text)));
-						continue;
 					}
 					}catch(Exception er) {}
 				}
@@ -544,7 +544,7 @@ public class DisplayManager {
 										color="PerWorld."+s.getWorld().getName()+".Color";
 									}
 								}
-								BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), (double)StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage)))/100);
+								BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
 								if(Loader.bb.getString(color)!=null)
 									try {
 										if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
@@ -560,7 +560,6 @@ public class DisplayManager {
 							}
 							hide.get(DisplayType.BOSSBAR).add(s.getName());
 							TheAPI.removeBossBar(s); //remove
-							continue;
 						}else {
 							if(!isToggleable(s, DisplayType.BOSSBAR)) {
 								hide.get(DisplayType.BOSSBAR).remove(s.getName());
@@ -581,7 +580,7 @@ public class DisplayManager {
 										color="PerWorld."+s.getWorld().getName()+".Color";
 									}
 								}
-								BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), (double)StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage)))/100);
+								BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
 								if(Loader.bb.getString(color)!=null)
 									try {
 										if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
@@ -596,7 +595,6 @@ public class DisplayManager {
 								continue;
 							}
 							//already gone
-							continue;
 						}
 					}else {
 						hide.get(DisplayType.BOSSBAR).remove(s.getName());
@@ -617,7 +615,7 @@ public class DisplayManager {
 								color="PerWorld."+s.getWorld().getName()+".Color";
 							}
 						}
-						BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), (double)StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage)))/100);
+						BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
 						if(Loader.bb.getString(color)!=null)
 							try {
 								if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
@@ -629,7 +627,6 @@ public class DisplayManager {
 							try {
 								b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
 							}catch(Exception | NoSuchFieldError e) {}
-						continue;
 					}
 					}catch(Exception er) {}
 				}
@@ -685,7 +682,6 @@ public class DisplayManager {
 							if(map.containsKey(s.getName())) {
 								map.remove(s.getName()).destroy();
 							}
-							continue;
 						}else {
 							if(!isToggleable(s, DisplayType.SCOREBOARD)) {
 								hide.get(DisplayType.SCOREBOARD).remove(s.getName());
@@ -706,7 +702,6 @@ public class DisplayManager {
 								continue;
 							}
 							//already gone
-							continue;
 						}
 					}else {
 						hide.get(DisplayType.SCOREBOARD).remove(s.getName());
@@ -724,7 +719,6 @@ public class DisplayManager {
 						sdd.replaceAll(a -> sb.replace(s, a));
 						score.addLines(sdd);
 						score.send(s);
-						continue;
 					}
 					}catch(Exception er) {}
 				}

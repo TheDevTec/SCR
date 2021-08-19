@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.commands.warps;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -55,6 +56,6 @@ public class DelHome implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		if (s instanceof Player && args.length == 1 && Loader.has(s, "DelHome", "Warps"))
 			return StringUtils.copyPartialMatches(args[0], TheAPI.getUser(s.getName()).getKeys("Homes"));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

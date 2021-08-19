@@ -87,7 +87,7 @@ public class SPlayer {
 			u.set("TempGamemode.Use",true);
 			u.save();
 			s.setGameMode(g);
-			if(t==false){
+			if(!t){
 				Loader.sendMessages(s, "GameMode.Temp.You", Placeholder.c().add("%time%", StringUtils.timeToString(time)).add("%gamemode%",g.toString().toLowerCase()));
 			}else{
 				Loader.sendMessages(s, "GameMode.Temp.Reciever", Placeholder.c().add("%time%", StringUtils.timeToString(time)).add("%gamemode%",g.toString().toLowerCase()));

@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.message;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -59,21 +60,18 @@ public class PrivateMessage implements CommandExecutor, TabCompleter {
 				Loader.Help(s, "PrivateMessage", "Message");
 				return true;
 			}
-			if (args.length >= 2) {
-				String msg = Colors.colorize(StringUtils.buildString(1, args), false, s);
-				CommandSender d = TheAPI.getPlayer(args[0]);
-				if(d==null) {
-					if(args[0].equalsIgnoreCase("console"))d=TheAPI.getConsole();
-					else {
-						Loader.notOnline(s, args[0]);
-						return true;
-					}
+			String msg = Colors.colorize(StringUtils.buildString(1, args), false, s);
+			CommandSender d = TheAPI.getPlayer(args[0]);
+			if(d==null) {
+				if(args[0].equalsIgnoreCase("console"))d=TheAPI.getConsole();
+				else {
+					Loader.notOnline(s, args[0]);
+					return true;
 				}
-				PrivateMessageManager.sendMessage(s, d, msg);
-				PrivateMessageManager.setReply(s, d.getName());
-				PrivateMessageManager.setReply(d, s.getName());
-				return true;
 			}
+			PrivateMessageManager.sendMessage(s, d, msg);
+			PrivateMessageManager.setReply(s, d.getName());
+			PrivateMessageManager.setReply(d, s.getName());
 			return true;
 		}
 		Loader.noPerms(s, "PrivateMessage", "Message");
@@ -85,6 +83,6 @@ public class PrivateMessage implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if(Loader.has(s, "PrivateMessage", "Message"))
 			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

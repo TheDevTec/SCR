@@ -43,7 +43,7 @@ public class Rule {
 	}
 	
 	public String apply(String text) {
-		if(text==null)return text;
+		if(text==null)return null;
 		switch(b.toUpperCase()) {
 		case "REGEX":
 			Matcher m = pattern.matcher(text);

@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.commands.economy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -209,48 +210,48 @@ public class Eco implements CommandExecutor, TabCompleter {
 		if (args.length == 1) {
 			List<String> c = new ArrayList<>();
 			if (Loader.has(s, "Economy", "Economy", "Pay"))
-				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Pay")));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Pay")));
 			if (Loader.has(s, "Economy", "Economy", "Take"))
-				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Take")));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Take")));
 			if (Loader.has(s, "Economy", "Economy", "Reset"))
-				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Reset")));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Reset")));
 			if (Loader.has(s, "Economy", "Economy", "Give"))
-				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Give")));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Give")));
 			if (Loader.has(s, "Economy", "Economy", "Set"))
-				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Set")));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Set")));
 			return c;
 		}
 		if (args[0].equalsIgnoreCase("Pay") && Loader.has(s, "Economy", "Economy", "Pay")) {
 			if (args.length == 2)
 				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
 			if (args.length == 3)
-				return StringUtils.copyPartialMatches(args[2], Arrays.asList("?"));
+				return StringUtils.copyPartialMatches(args[2], Collections.singletonList("?"));
 		}
 		if (args[0].equalsIgnoreCase("Take") && Loader.has(s, "Economy", "Economy", "Take")) {
 			if (args.length == 2)
 				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
 			if (args.length == 3)
-				return StringUtils.copyPartialMatches(args[2], Arrays.asList("?"));
+				return StringUtils.copyPartialMatches(args[2], Collections.singletonList("?"));
 		}
 		if (args[0].equalsIgnoreCase("Reset") && Loader.has(s, "Economy", "Economy", "Reset")) {
 			if (args.length == 2)
 				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
 			if (args.length == 3)
-				return StringUtils.copyPartialMatches(args[2], Arrays.asList("?"));
+				return StringUtils.copyPartialMatches(args[2], Collections.singletonList("?"));
 		}
 		if (args[0].equalsIgnoreCase("Set") && Loader.has(s, "Economy", "Economy", "Set")) {
 			if (args.length == 2)
 				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
 			if (args.length == 3)
-				return StringUtils.copyPartialMatches(args[2], Arrays.asList("?"));
+				return StringUtils.copyPartialMatches(args[2], Collections.singletonList("?"));
 		}
 		if (args[0].equalsIgnoreCase("Give") && Loader.has(s, "Economy", "Economy", "Give")) {
 			if (args.length == 2)
 				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
 			if (args.length == 3)
-				return StringUtils.copyPartialMatches(args[2], Arrays.asList("?"));
+				return StringUtils.copyPartialMatches(args[2], Collections.singletonList("?"));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 }

@@ -19,10 +19,10 @@ import me.devtec.theapi.utils.nms.NMSAPI;
 
 public class PlayRewards {
 
-	String name;
+	final String name;
 	PlayTimeType type;
-	boolean repeatable;
-	long time;
+	final boolean repeatable;
+	final long time;
 	
 	int task, checktas;
 	
@@ -59,9 +59,7 @@ public class PlayRewards {
 		if( !Loader.rewards.exists("PlayTime."+name+".World") || ( type!= PlayTimeType.WORLD &&type!= PlayTimeType.WORLDGAMEMODE ))
 			return null;
 		World w = Bukkit.getWorld( Loader.rewards.getString("PlayTime."+name+".World"));
-		if(w!=null)
-			return w;
-		return null;
+		return w;
 	}
 	public GameMode getGameMode() {
 		if( !Loader.rewards.exists("PlayTime."+name+".Gamemode") || ( type!= PlayTimeType.GAMEMODE && type!= PlayTimeType.WORLDGAMEMODE))
@@ -72,9 +70,7 @@ public class PlayRewards {
 		} catch (Exception e) {
 			return null;
 		}
-		if(mode!=null)
-			return mode;
-		return null;
+		return mode;
 	}
 
 	public boolean isEnabled() {
@@ -89,8 +85,7 @@ public class PlayRewards {
 				return false;
 		}
 		if(type== PlayTimeType.WORLD || type== PlayTimeType.WORLDGAMEMODE) {
-			if(!Loader.rewards.exists("PlayTime."+name+".World"))
-				return false;
+			return Loader.rewards.exists("PlayTime." + name + ".World");
 		}
 		return true;
 		
@@ -102,7 +97,7 @@ public class PlayRewards {
 		return 20;
 	}
 	
-	public HashMap<Player, Long> players = new HashMap<>();
+	public final HashMap<Player, Long> players = new HashMap<>();
 	
 	public void start() {
 		if(!isValid()) {
@@ -128,8 +123,7 @@ public class PlayRewards {
 								continue;
 						}
 						if(type== PlayTimeType.WORLD || type== PlayTimeType.WORLDGAMEMODE) {
-							World pworld = p.getWorld();
-							if(pworld!=getWorld())
+							if(p.getWorld()!=getWorld())
 								continue;
 						}
 						online=online+1;
@@ -137,13 +131,12 @@ public class PlayRewards {
 							process(p);
 							if(players.containsKey(p))
 								players.remove(p);
-							continue;
-						}
+                        }
 						else {
 							players.put(p, online);
-							continue;
-						}
-					}
+                        }
+                        continue;
+                    }
 					for(Player p : players.keySet()) {
 						if(TheAPI.getPlayerOrNull(p.getName())==null ) {
 							players.remove(p);
@@ -169,7 +162,6 @@ public class PlayRewards {
 							u.set("Statistics.Rewards."+getName()+".Finished", true);
 							u.set("Statistics.Rewards."+getName()+".When", System.currentTimeMillis());
 							u.save();
-							continue;
 						}
 					}
 					
@@ -191,11 +183,9 @@ public class PlayRewards {
 	}
 	
 	private void process(Player p) {
-		NMSAPI.postToMainThread(new Runnable() {
-			public void run() {
-				for(String cmd : Loader.rewards.getStringList("PlayTime."+name+".Commands"))
-					TheAPI.sudoConsole(cmd.replace("%player%", p.getName()));
-			}
+		NMSAPI.postToMainThread(() -> {
+			for(String cmd : Loader.rewards.getStringList("PlayTime."+name+".Commands"))
+				TheAPI.sudoConsole(cmd.replace("%player%", p.getName()));
 		});
 		for(String msg : Loader.rewards.getStringList("PlayTime."+name+".Messages"))
 			TheAPI.msg(msg.replace("%time%", getTimeFormated()).replace("%player%", p.getName()) , p);

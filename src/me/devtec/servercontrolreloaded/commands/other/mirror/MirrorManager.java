@@ -18,12 +18,12 @@ import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class MirrorManager {
-	protected static HashMap<Player, MirrorType> mirror = new HashMap<>();
-	protected static HashMap<Player, Position> location = new HashMap<>();
-	protected static HashMap<Player, List<Position>> signs = new HashMap<>();
+	protected static final HashMap<Player, MirrorType> mirror = new HashMap<>();
+	protected static final HashMap<Player, Position> location = new HashMap<>();
+	protected static final HashMap<Player, List<Position>> signs = new HashMap<>();
 	
 	public static void add(Player player, String t) {
-		MirrorType type = null;
+		MirrorType type;
 		try {
 			type = MirrorType.valueOf(t.toUpperCase());
 		}catch(Exception | NoSuchFieldError err) {
@@ -39,8 +39,7 @@ public class MirrorManager {
 	}
 	
 	public static boolean isMirroring(Player player) {
-		if(mirror.containsKey(player) && location.containsKey(player)) return true;
-		return false;
+		return mirror.containsKey(player) && location.containsKey(player);
 	}
 	
 	public static MirrorType getType(Player player) {

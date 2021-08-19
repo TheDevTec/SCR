@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -25,7 +26,7 @@ public class AFK implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if(Loader.has(s, "AFK", "Other"))
 			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -38,11 +39,7 @@ public class AFK implements CommandExecutor, TabCompleter {
 			if (args.length == 0) {
 				if (s instanceof Player) {
 					SPlayer p = API.getSPlayer((Player) s);
-					if (p.isAFK()) {
-						p.setAFK(false);
-					} else {
-						p.setAFK(true);
-					}
+                    p.setAFK(!p.isAFK());
 					return true;
 				}
 				Loader.Help(s, "AFK", "Other");

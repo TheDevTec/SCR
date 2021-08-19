@@ -14,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Chunks implements CommandExecutor, TabCompleter {
@@ -44,12 +45,12 @@ public class Chunks implements CommandExecutor, TabCompleter {
 		return true;
 	}
 
-	private static final List<String> Unload = Arrays.asList("Unload");
+	private static final List<String> Unload = Collections.singletonList("Unload");
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		if (args.length==1 && Loader.has(s, "Chunks", "Info"))
 			return StringUtils.copyPartialMatches(args[0], Unload);
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

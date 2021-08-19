@@ -12,7 +12,7 @@ import me.devtec.theapi.utils.Animation;
 import me.devtec.theapi.utils.StringUtils;
 
 public class AnimationManager {
-	Map<String, Animation> a = new HashMap<>();
+	final Map<String, Animation> a = new HashMap<>();
 	
 	public void reload() {
 		a.clear();

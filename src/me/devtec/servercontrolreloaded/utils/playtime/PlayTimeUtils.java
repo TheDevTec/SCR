@@ -19,8 +19,8 @@ import me.devtec.theapi.utils.StringUtils;
 
 public class PlayTimeUtils {
 	
-	public static HashMap<String, Integer> playtop = new HashMap<>(); //Player UUID || PlayTime
-	public static RankingAPI<String, Integer> ranks = new RankingAPI<>(playtop);
+	public static final HashMap<String, Integer> playtop = new HashMap<>(); //Player UUID || PlayTime
+	public static final RankingAPI<String, Integer> ranks = new RankingAPI<>(playtop);
 	
 	static Statistic st;
 	
@@ -37,8 +37,8 @@ public class PlayTimeUtils {
 		GLOBAL,
 		GAMEMODE,
 		WORLD,
-		WORLDGAMEMODE;
-	}
+		WORLDGAMEMODE
+    }
 	
 	public static long playtime(Player s) {
 		if(s==null)return -1;
@@ -156,7 +156,7 @@ public class PlayTimeUtils {
 				.replace("%playtime%", StringUtils.timeToString( playtime(player) ));
 	}
 
-	public static HashMap<String, PlayRewards> playrewards = new HashMap<>();
+	public static final HashMap<String, PlayRewards> playrewards = new HashMap<>();
 	public static void loadRewards() {
 		for(String reward : Loader.rewards.getKeys("PlayTime")) {
 			PlayRewards rew = new PlayRewards(reward);
@@ -171,7 +171,6 @@ public class PlayTimeUtils {
 			else {
 				TheAPI.getConsole().sendMessage("&4ERROR: Reward &c"+reward+" &6is not valid! Try and repair this reward in Rewards.yml");
 			}
-			continue;
 		}
 		if(playrewards.size()!=0) {
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());

@@ -40,7 +40,6 @@ public class MultiWorldsUtils {
 			Loader.mw.set("Unloaded-Worlds", ww);
 			Loader.mw.save();
 			Loader.sendMessages(sender, "MultiWorld.Unload", Placeholder.c().add("%world%", w));
-			return;
 		}
 	}
 
@@ -57,8 +56,8 @@ public class MultiWorldsUtils {
 		Loader.sendMessages(s, "Chunks.Unload", Placeholder.c().add("%chunks%", chunk+""));
 	}
 
-	public static enum Generator {
-		NORMAL, FLAT, NETHER, THE_END, THE_VOID;
+	public enum Generator {
+		NORMAL, FLAT, NETHER, THE_END, THE_VOID
 	}
 
 	private static boolean exists(String w) {
@@ -123,8 +122,8 @@ public class MultiWorldsUtils {
 			Loader.sendMessages(s, "MultiWorld.NotExists", Placeholder.c().add("%world%", w));
 	}
 	
-	private static Class<?> cc = Ref.nms("WorldSettings$EnumGamemode")==null?Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
-	protected static Method getById;
+	private static final Class<?> cc = Ref.nms("WorldSettings$EnumGamemode")==null?Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
+	protected static final Method getById;
 	static{
 		getById = Ref.method(cc, "getById", int.class);
 	}
@@ -167,7 +166,7 @@ public class MultiWorldsUtils {
 		for(String g : as.getGameRules())
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Gamerule."+g, as.getGameRuleValue(g));
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Spawn.World", as.getName());
-		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Generator", gen != null ? gen : "none");
+		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".Generator", gen);
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".MonstersSpawnLimit", as.getMonsterSpawnLimit());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".AnimalsSpawnLimit", as.getAnimalSpawnLimit());
 		Loader.mw.addDefault("WorldsSettings." + as.getName() + ".TicksPerAnimalSpawn", as.getTicksPerAnimalSpawns());
@@ -293,7 +292,6 @@ public class MultiWorldsUtils {
 		List<String> worlds = Loader.mw.getStringList("Worlds");
 		if (Bukkit.getWorld(s) != null) {
 			Loader.sendMessages(sender, "MultiWorld.Loaded", Placeholder.c().add("%world%", s).replace("%generator%", biome));
-			return;
 		}else {
 			long seed = Loader.mw.getLong("WorldsSettings." + s + ".Seed");
 			if(!Loader.mw.exists("WorldsSettings." + s + ".Seed"))seed=new Random().nextLong();
@@ -379,8 +377,8 @@ public class MultiWorldsUtils {
 				Loader.mw.set("WorldsSettings." + as.getName() + ".Gamerule."+g, value);
 	}
 
-	static Map<World, Object> gamemodesnms = new HashMap<>();
-	static Map<World, GameMode> gamemodes = new HashMap<>();
+	static final Map<World, Object> gamemodesnms = new HashMap<>();
+	static final Map<World, GameMode> gamemodes = new HashMap<>();
 
 	public static GameMode getGamemode(World world) {
 		return gamemodes.get(world);

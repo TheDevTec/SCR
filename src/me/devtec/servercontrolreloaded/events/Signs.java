@@ -12,10 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Signs implements Listener {
 	public Loader ps = Loader.getInstance;
@@ -45,7 +42,7 @@ public class Signs implements Listener {
 				e.setLine(0, TheAPI.colorize("&0[&9Warp&0]"));
 				e.setLine(1, TheAPI.colorize("&a" + warp(f)));
 				e.getBlock().getState().update();
-				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Warp " + warp(f)));
+				a.put(SignAction.PLAYER_COMMANDS, Collections.singletonList("Warp " + warp(f)));
 				SignAPI.setActions(new Position(e.getBlock()), a);
 			}
 		}
@@ -53,60 +50,60 @@ public class Signs implements Listener {
 			e.setLine(0, TheAPI.colorize("&0[&9Workbench&0]"));
 			e.getBlock().getState().update();
 
-			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Workbench"));
+			a.put(SignAction.PLAYER_COMMANDS, Collections.singletonList("Workbench"));
 			SignAPI.setActions(new Position(e.getBlock()), a);
 		}
 		if (l.equalsIgnoreCase("[Enderchest]") && p.hasPermission("SCR.Other.SignCreate.EnderChest")) {
 			e.setLine(0, TheAPI.colorize("&0[&9EnderChest&0]"));
 			e.getBlock().getState().update();
 
-			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Enderchest"));
+			a.put(SignAction.PLAYER_COMMANDS, Collections.singletonList("Enderchest"));
 			SignAPI.setActions(new Position(e.getBlock()), a);
 		}
 		if (l.equalsIgnoreCase("[Suicide]") && p.hasPermission("SCR.Other.SignCreate.Suicide")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Suicide&0]"));
 			e.getBlock().getState().update();
-			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Suicide"));
+			a.put(SignAction.PLAYER_COMMANDS, Collections.singletonList("Suicide"));
 			SignAPI.setActions(new Position(e.getBlock()), a);
 		}
 		if (l.equalsIgnoreCase("[repair]") && p.hasPermission("SCR.Other.SignCreate.Repair")) {
 			if (f == null) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.getBlock().getState().update();
-				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("repair Hand"));
+				a.put(SignAction.PLAYER_COMMANDS, Collections.singletonList("repair Hand"));
 				SignAPI.setActions(new Position(e.getBlock()), a);
 			}
 			if (f.equalsIgnoreCase("Hand")) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.setLine(1, TheAPI.colorize("&aHand"));
 				e.getBlock().getState().update();
-				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("repair Hand"));
+				a.put(SignAction.PLAYER_COMMANDS, Collections.singletonList("repair Hand"));
 				SignAPI.setActions(new Position(e.getBlock()), a);
 			}
 			if (f.equalsIgnoreCase("All")) {
 				e.setLine(0, TheAPI.colorize("&0[&9Repair&0]"));
 				e.setLine(1, TheAPI.colorize("&aAll"));
 				e.getBlock().getState().update();
-				a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("repair All"));
+				a.put(SignAction.PLAYER_COMMANDS, Collections.singletonList("repair All"));
 				SignAPI.setActions(new Position(e.getBlock()), a);
 			}
 		}
 		if (l.equalsIgnoreCase("[Feed]") && p.hasPermission("SCR.Other.SignCreate.Feed")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Feed&0]"));
 			e.getBlock().getState().update();
-			a.put(SignAction.CONSOLE_COMMANDS, Arrays.asList("Feed %player%"));
+			a.put(SignAction.CONSOLE_COMMANDS, Collections.singletonList("Feed %player%"));
 			SignAPI.setActions(new Position(e.getBlock()), a);
 		}
 		if (l.equalsIgnoreCase("[Trash]") && p.hasPermission("SCR.Other.SignCreate.Trash")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Trash&0]"));
 			e.getBlock().getState().update();
-			a.put(SignAction.PLAYER_COMMANDS, Arrays.asList("Trash"));
+			a.put(SignAction.PLAYER_COMMANDS, Collections.singletonList("Trash"));
 			SignAPI.setActions(new Position(e.getBlock()), a);
 		}
 		if (l.equalsIgnoreCase("[Heal]") && p.hasPermission("SCR.Other.SignCreate.Heal")) {
 			e.setLine(0, TheAPI.colorize("&0[&9Heal&0]"));
 			e.getBlock().getState().update();
-			a.put(SignAction.CONSOLE_COMMANDS, Arrays.asList("Heal %player%"));
+			a.put(SignAction.CONSOLE_COMMANDS, Collections.singletonList("Heal %player%"));
 			SignAPI.setActions(new Position(e.getBlock()), a);
 		}
 	}

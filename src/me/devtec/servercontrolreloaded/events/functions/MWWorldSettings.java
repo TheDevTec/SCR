@@ -19,7 +19,7 @@ public class MWWorldSettings implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onEntitySpawn(CreatureSpawnEvent e) {
 		if(e.isCancelled())return;
-		if(e instanceof Player == false)
+		if(!(e instanceof Player))
 		if (e.getSpawnReason() == SpawnReason.NATURAL || e.getSpawnReason() == SpawnReason.SPAWNER
 				|| e.getSpawnReason().name().startsWith("BUILD") || e.getSpawnReason() == SpawnReason.SILVERFISH_BLOCK
 				|| e.getSpawnReason() == SpawnReason.BREEDING)

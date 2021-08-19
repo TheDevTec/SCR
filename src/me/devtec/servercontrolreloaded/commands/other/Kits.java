@@ -1,11 +1,8 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,7 +25,7 @@ import me.devtec.theapi.utils.StringUtils;
 
 public class Kits implements CommandExecutor, TabCompleter {
 	public List<String> kits(CommandSender p) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		for (String name : getKits())
 			if (Loader.hasKits(p, name))
 				list.add(name);
@@ -52,8 +49,7 @@ public class Kits implements CommandExecutor, TabCompleter {
 						TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()));
 					for(String s : kit.getMessages())
 						TheAPI.msg(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()),p);
-					return;
-				} else {
+                } else {
 					if (EconomyAPI.has(p, kit.getCost())) {
 						if(kit.getItems()!=null)
 						TheAPI.giveItem(p, kit.getItems());
@@ -71,9 +67,9 @@ public class Kits implements CommandExecutor, TabCompleter {
 					}
 					if(messages)
 					Loader.sendMessages(p, "Economy.NotEnought");
-					return;
-				}
-			} else {
+                }
+                return;
+            } else {
 				if (economy) {
 					if (kit.getCost()==0||EconomyAPI.has(p, kit.getCost())) {
 						CooldownAPI a = TheAPI.getCooldownAPI(p);
@@ -99,8 +95,7 @@ public class Kits implements CommandExecutor, TabCompleter {
 					}
 					if(messages)
 					Loader.sendMessages(p, "Economy.NotEnought");
-					return;
-				} else {
+                } else {
 					CooldownAPI a = TheAPI.getCooldownAPI(p);
 					if (!a.expired("Kit." + kit.getName())) {
 						if(messages)
@@ -119,9 +114,9 @@ public class Kits implements CommandExecutor, TabCompleter {
 						TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()));
 					for(String s : kit.getMessages())
 						TheAPI.msg(PlaceholderAPI.setPlaceholders(p, s).replace("%player%", p.getName()),p);
-					return;
-				}
-			}
+                }
+                return;
+            }
 	}
 
 	public String kit(String[] args) {
@@ -216,7 +211,7 @@ public class Kits implements CommandExecutor, TabCompleter {
 					return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
 			}
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 }

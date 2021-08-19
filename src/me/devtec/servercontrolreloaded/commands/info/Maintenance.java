@@ -12,6 +12,7 @@ import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.utils.StringUtils;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Maintenance implements CommandExecutor, TabCompleter {
@@ -43,6 +44,6 @@ public class Maintenance implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] arg3) {
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

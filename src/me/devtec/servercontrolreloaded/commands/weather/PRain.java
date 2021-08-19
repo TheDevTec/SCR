@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.weather;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.WeatherType;
@@ -60,6 +61,6 @@ public class PRain implements CommandExecutor, TabCompleter {
 		if (args.length == 1)
 			if (Loader.has(s, "PlayerRain", "Weather", "Other"))
 				return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

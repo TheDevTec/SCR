@@ -31,17 +31,20 @@ import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Portal {
-	private Position a, b;
-	private Particle p;
+	private final Position a;
+    private final Position b;
+	private final Particle p;
 	private String perm;
-	private List<String> cmds = new ArrayList<>();
-	private String server,id;
-	private List<String> bcmds = new ArrayList<>();
-	private double cooldown;
-	private boolean perplayer, kickBack;
-	private List<Position> blocks = new ArrayList<>();
+	private List<String> cmds;
+	private final String server;
+    private final String id;
+	private List<String> bcmds;
+	private final double cooldown;
+	private final boolean perplayer;
+    private final boolean kickBack;
+	private final List<Position> blocks = new ArrayList<>();
 	private long lastEnter;
-	private String wait;
+	private final String wait;
 	
 	public Portal(String id, double cooldown, boolean perPlayer, boolean kickBack, Position a, Position b, Particle p, List<String> cmds, String s, List<String> bcmds, String permission, int wait) {
 		this.a=a;
@@ -72,8 +75,8 @@ public class Portal {
 		}
 	}
 	
-	private static Method getBlock = Ref.method(Ref.nmsOrOld("world.level.block.state.BlockBase$BlockData","BlockBase$BlockData"),"getBlock");
-	private static Object air = LoaderClass.air;
+	private static final Method getBlock = Ref.method(Ref.nmsOrOld("world.level.block.state.BlockBase$BlockData","BlockBase$BlockData"),"getBlock");
+	private static final Object air = LoaderClass.air;
 	
 	public String getPermission() {
 		return perm;
@@ -85,7 +88,7 @@ public class Portal {
 			ParticleAPI.spawnParticle(a.getWorld().getPlayers(), p, c);
 	}
 	
-	private static List<Player> processing = new ArrayList<>();
+	private static final List<Player> processing = new ArrayList<>();
 	
 	public void processCommands(Player target) {
 		for(String f : cmds)
@@ -135,7 +138,7 @@ public class Portal {
 		return false;
 	}
 	
-	static List<Portal> portals = new ArrayList<>();
+	static final List<Portal> portals = new ArrayList<>();
 	static int task, moveTask;
 	
 	public static void unload() {
@@ -150,13 +153,7 @@ public class Portal {
 
 	public static void unload(World w) {
 		if(w==null)return;
-		Iterator<Portal> s = portals.iterator();
-		while(s.hasNext()) {
-			Portal p = s.next();
-			if(p.a.getWorld().equals(w)) {
-				s.remove();
-			}
-		}
+		portals.removeIf(p -> p.a.getWorld().equals(w));
 	}
 	
 	public static void load(World w) {
@@ -207,7 +204,7 @@ public class Portal {
 				}
 			}.runRepeating(5, 10);
 			moveTask=new Tasker() {
-				HashMap<Player, Portal> inPortal = new HashMap<>();
+				final HashMap<Player, Portal> inPortal = new HashMap<>();
 				public void run() {
 					for(Portal a : portals) {
 						if(a.a.getWorld().getPlayers().isEmpty())continue;

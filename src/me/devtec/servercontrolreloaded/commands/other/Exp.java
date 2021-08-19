@@ -16,6 +16,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Exp implements CommandExecutor, TabCompleter {
@@ -49,7 +50,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 					}
 					p.giveExp(-p.getTotalExperience());
 					int add = StringUtils.getInt(args[2]);
-					p.giveExp(add > 0 ? add : 0);
+					p.giveExp(Math.max(add, 0));
 					Loader.sendMessages(s, "Experiences.Set",
 							Placeholder.c().replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 									.replace("%amount%", "" + add)
@@ -66,7 +67,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 				}
 				if (args[3].toLowerCase().contains("level")) {
 					int add = StringUtils.getInt(args[2]);
-					p.setLevel(add > 0 ? add : 0);
+					p.setLevel(Math.max(add, 0));
 					Loader.sendMessages(s, "Experiences.Set",
 							Placeholder.c().replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 									.replace("%amount%", "" + StringUtils.getFloat(args[2]))
@@ -75,7 +76,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 				} else {
 					p.giveExp(-p.getTotalExperience());
 					int add = StringUtils.getInt(args[2]);
-					p.giveExp(add>0?add:0);
+					p.giveExp(Math.max(add, 0));
 					Loader.sendMessages(s, "Experiences.Set",
 							Placeholder.c().replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 									.replace("%amount%", "" + add)
@@ -100,12 +101,12 @@ public class Exp implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(s, "Experiences.Balance",
 						Placeholder.c().replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 								.replace("%amount%",
-										"" + ((args.length >= 3 ? args[2].toLowerCase().contains("level") : false)
+										"" + ((args.length >= 3 && args[2].toLowerCase().contains("level"))
 												? p.getLevel()
 												: Ref.get(Ref.player(p),"expTotal")))
 								.replace("%type%",
 										Loader.getTranslation("Experiences.Words."
-												+ (((args.length >= 3 ? args[2].toLowerCase().contains("level") : false)
+												+ (((args.length >= 3 && args[2].toLowerCase().contains("level"))
 														? "Level"
 														: "Exp")))
 												.toString()));
@@ -131,7 +132,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					int add = StringUtils.getInt(args[2]);
-					p.giveExp(add > 0 ? add : 0);
+					p.giveExp(Math.max(add, 0));
 					Loader.sendMessages(s, "Experiences.Given",
 							Placeholder.c().replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 									.replace("%amount%", "" + StringUtils.getFloat(args[2]))
@@ -149,14 +150,14 @@ public class Exp implements CommandExecutor, TabCompleter {
 				}
 				if (args[3].toLowerCase().contains("level")) {
 					int add = p.getLevel() + StringUtils.getInt(args[2]);
-					p.setLevel(add > 0 ? add : 0);
+					p.setLevel(Math.max(add, 0));
 					Loader.sendMessages(s, "Experiences.Given",
 							Placeholder.c().replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 									.replace("%amount%", "" + StringUtils.getFloat(args[2]))
 									.replace("%type%", Loader.getTranslation("Experiences.Words.Level").toString()));
 				} else {
 					int add = StringUtils.getInt(args[2]);
-					p.giveExp(add > 0 ? add : 0);
+					p.giveExp(Math.max(add, 0));
 					Loader.sendMessages(s, "Experiences.Given",
 							Placeholder.c().replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 									.replace("%amount%", "" + StringUtils.getFloat(args[2]))
@@ -201,7 +202,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 				}
 				if (args[3].toLowerCase().contains("level")) {
 					int take = p.getLevel() - StringUtils.getInt(args[2]);
-					p.setLevel(take < 0 ? 0 : take);
+					p.setLevel(Math.max(take, 0));
 					Loader.sendMessages(s, "Experiences.Taken",
 							Placeholder.c().replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())
 									.replace("%amount%", "" + StringUtils.getFloat(args[2]))
@@ -237,7 +238,7 @@ public class Exp implements CommandExecutor, TabCompleter {
 			if (args.length == 3 && (args[2].equalsIgnoreCase("set")||args[2].equalsIgnoreCase("take")||args[2].equalsIgnoreCase("give")))
 				return StringUtils.copyPartialMatches(args[2], Arrays.asList("Level", "Exp"));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 	
 }

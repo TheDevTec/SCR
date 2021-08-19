@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.message;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -76,6 +77,6 @@ public class Helpop implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if(Loader.has(s, "Helpop", "Message"))
 			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

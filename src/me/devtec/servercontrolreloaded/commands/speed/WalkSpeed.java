@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.speed;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -22,7 +23,7 @@ public class WalkSpeed implements CommandExecutor, TabCompleter {
 		if (s instanceof Player) {
 			Loader.Help(s, "WalkSpeed", "Speed");
 		}
-		if (s instanceof Player == false) {
+		if (!(s instanceof Player)) {
 			Loader.Help(s, "WalkSpeed", "Speed");
 		}
 	}
@@ -39,9 +40,8 @@ public class WalkSpeed implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if (args.length == 1) {
-			if (s instanceof Player == false) {
+			if (!(s instanceof Player)) {
 				speed(s);
-				return true;
 			} else {
 				if (Loader.has(s, "WalkSpeed", "Speed")) {
 					double flightmodifier = StringUtils.getDouble(args[0]);
@@ -55,8 +55,8 @@ public class WalkSpeed implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				Loader.noPerms(s, "WalkSpeed", "Speed");
-				return true;
 			}
+			return true;
 		}
 			if (Loader.has(s, "WalkSpeed", "Speed", "Other")) {
 				Player target = TheAPI.getPlayer(args[0]);
@@ -93,6 +93,6 @@ public class WalkSpeed implements CommandExecutor, TabCompleter {
 			if (args.length == 2)
 				return StringUtils.copyPartialMatches(args[1], Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

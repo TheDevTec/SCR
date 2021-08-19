@@ -1,9 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.time;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -36,184 +33,182 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 			Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Info.Ping", s))));
 			return true;
 		}
-			if(args.length==0) {
-				Loader.sendMessages(s, "PlayTime.Time.Global", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( (Player) s) )));
+		if(args.length==0) {
+			Loader.sendMessages(s, "PlayTime.Time.Global", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( (Player) s) )));
+			return true;
+		}
+		if(args[0].equalsIgnoreCase("Help")) {
+			Loader.Help(s, "PlayTime", "Time");
+			return true;
+		}
+		if(args[0].equalsIgnoreCase("Top")) {
+			if(Loader.has(s, "PlayTime", "Time", "Top")) {
+				Loader.sendMessages(s, "PlayTime.PlayTop.Loading");
+				new Tasker() {
+					public void run() {
+						if ( (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr_playtop") || PlayTimeUtils.playtop == null || PlayTimeUtils.playtop.size()==0) && !PlayTimeUtils.task) {
+							TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr_playtop", 300*20);
+							for (UUID sa : TheAPI.getUsers()) {
+								String n = LoaderClass.cache.lookupNameById(sa);
+								if(n!=null) {
+									if(PlayTimeUtils.playtop.containsKey(n))continue;
+									int time = PlayTimeUtils.playtime(n);
+									if(time>0)
+										PlayTimeUtils.playtop.put(n, time);
+								}
+							}
+						}
+
+						int pages = (int) Math.ceil((double) PlayTimeUtils.playtop.size() / 10);
+						int page =args.length>1?StringUtils.getInt(args[1]):1;
+						if(page<=0)page=1;
+						if(pages<page)page=pages;
+						--page;
+						Loader.sendMessages(s, "PlayTime.PlayTop.Header", Placeholder.c().replace("%page%",(page+1)+"")
+								.replace("%pages%", pages+""));
+
+						RankingAPI<String, Integer> tops = new RankingAPI<>(PlayTimeUtils.playtop);
+
+						int min = page * 10;
+						int max = ((page * 10) + 10);
+
+						if (max > tops.size())
+							max = tops.size();
+						min+=1;
+						for (int i = min; i<=max; i++) {
+							String player = tops.getObject(i);
+							Loader.sendMessages(s, "PlayTime.PlayTop.Top", Placeholder.c().replace("%position%", (i+(10*(page+1))-10) + "")
+									.replace("%player%", player).replace("%playername%", player(s, player))
+									.replace("%playtime%", StringUtils.timeToString(PlayTimeUtils.playtime(player))) );
+						}
+
+						Loader.sendMessages(s, "PlayTime.PlayTop.Footer", Placeholder.c().replace("%page%",(page+1)+"")
+								.replace("%pages%", pages+""));
+				}}.runTask();
 				return true;
 			}
-			if(args.length>0) {
-				if(args[0].equalsIgnoreCase("Help")) {
-					Loader.Help(s, "PlayTime", "Time");
+			Loader.noPerms(s, "PlayTime", "Time", "Top");
+			return true;
+		}
+		/*
+		 * OTHER SUBCOMMANDS
+		 */
+
+		GameMode mode = null;
+		try {
+			mode = GameMode.valueOf(args[0].toUpperCase());
+		} catch (Exception e) {	}
+
+		if(mode!=null ) {
+			if(args.length==1) {
+				if(Loader.has(s, "PlayTime", "Time", "Gamemode")) {
+					Loader.sendMessages(s, "PlayTime.Time.Gamemode", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( (Player) s, PlayTimeType.GAMEMODE, mode, null) ))
+							.add("%player%", s.getName()).add("%gamemode%", mode.name()));
 					return true;
 				}
-				if(args[0].equalsIgnoreCase("Top")) {
-					if(Loader.has(s, "PlayTime", "Time", "Top")) {
-						Loader.sendMessages(s, "PlayTime.PlayTop.Loading");
-						new Tasker() {
-							public void run() {
-								if ( (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr_playtop") || PlayTimeUtils.playtop == null || PlayTimeUtils.playtop.size()==0) && PlayTimeUtils.task!=true) {
-									TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr_playtop", 300*20); 
-									for (UUID sa : TheAPI.getUsers()) {
-										String n = LoaderClass.cache.lookupNameById(sa);
-										if(n!=null) {
-											if(PlayTimeUtils.playtop.containsKey(n))continue;
-											int time = PlayTimeUtils.playtime(n);
-											if(time>0)
-												PlayTimeUtils.playtop.put(n, time);
-										}
-									}
-								}
+				Loader.noPerms(s, "PlayTime", "Time", "Gamemode");
+				return true;
+			}
+			if(args.length==2) {
+				World w = null;
+				try {
+					w = Bukkit.getWorld(args[1]);
+				} catch (Exception e) {	}
 
-								int pages = (int) Math.ceil((double) PlayTimeUtils.playtop.size() / 10);
-								int page =args.length>1?StringUtils.getInt(args[1]):1;
-								if(page<=0)page=1;
-								if(pages<page)page=pages;
-								--page;
-								Loader.sendMessages(s, "PlayTime.PlayTop.Header", Placeholder.c().replace("%page%",(page+1)+"")
-										.replace("%pages%", pages+""));
-								
-								RankingAPI<String, Integer> tops = new RankingAPI<>(PlayTimeUtils.playtop);
-								
-								int min = page * 10;
-								int max = ((page * 10) + 10);
-
-								if (max > tops.size())
-									max = tops.size();
-								min=+1;
-								for (int i = min; i<=max; i++) {
-									String player = tops.getObject(i);
-									Loader.sendMessages(s, "PlayTime.PlayTop.Top", Placeholder.c().replace("%position%", (i+(10*(page+1))-10) + "")
-											.replace("%player%", player).replace("%playername%", player(s, player))
-											.replace("%playtime%", StringUtils.timeToString(PlayTimeUtils.playtime(player))) );
-								}
-								
-								Loader.sendMessages(s, "PlayTime.PlayTop.Footer", Placeholder.c().replace("%page%",(page+1)+"")
-										.replace("%pages%", pages+""));
-						}}.runTask();
+				if(w!=null) {
+					if(Loader.has(s, "PlayTime", "Time", "WorldGamemode")) {
+						Loader.sendMessages(s, "PlayTime.Time.WorldGamemode", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( (Player) s, PlayTimeType.WORLDGAMEMODE, mode, w) ))
+								.add("%player%", s.getName()).add("%gamemode%", mode.name()).add("%world%", w.getName()));
 						return true;
 					}
-					Loader.noPerms(s, "PlayTime", "Time", "Top");
+					Loader.noPerms(s, "PlayTime", "Time", "WorldGamemode");
 					return true;
 				}
-				/*
-				 * OTHER SUBCOMMANDS
-				 */
-				
-				GameMode mode = null;
+				Loader.sendMessages(s, "Missing.World", Placeholder.c().add("%world%", args[1]));
+				return true;
+			}
+		}
+
+		World w = null;
+		try {
+			w = Bukkit.getWorld(args[0]);
+		} catch (Exception e) {	}
+
+		if(w!=null) {
+			if(Loader.has(s, "PlayTime", "Time", "World")) {
+				Loader.sendMessages(s, "PlayTime.Time.World", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( (Player) s, PlayTimeType.WORLD, null, w) ))
+						.add("%player%", s.getName()).add("%world%", w.getName()));
+				return true;
+			}
+			Loader.noPerms(s, "PlayTime", "Time", "World");
+			return true;
+		}
+
+
+		/*
+		 *  TARGET
+		 */
+		String player = args[0];
+		if(TheAPI.existsUser(player)) {
+			if(Loader.has(s, "PlayTime", "Time", "Other")) {
+				if(args.length==1) {
+					Loader.sendMessages(s, "PlayTime.Other.Global", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime(player) ))
+							.add("%player%", player).add("%target%", player));
+					return true;
+				}
+				GameMode m = null;
 				try {
-					mode = GameMode.valueOf(args[0].toUpperCase());
+					m = GameMode.valueOf(args[1].toUpperCase());
 				} catch (Exception e) {	}
-				
-				if(mode!=null ) {
-					if(args.length==1) {
+
+				if(m!=null) {
+					if(args.length==2) {
 						if(Loader.has(s, "PlayTime", "Time", "Gamemode")) {
-							Loader.sendMessages(s, "PlayTime.Time.Gamemode", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( (Player) s, PlayTimeType.GAMEMODE, mode, null) ))
-									.add("%player%", s.getName()).add("%gamemode%", mode.name()));
+							Loader.sendMessages(s, "PlayTime.Other.Gamemode", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( player, PlayTimeType.GAMEMODE, m, null) ))
+									.add("%player%", player).add("%target%", player).add("%gamemode%", m.name()));
 							return true;
 						}
 						Loader.noPerms(s, "PlayTime", "Time", "Gamemode");
 						return true;
 					}
-					if(args.length==2) {
-						World w = null;
-						try {
-							w = Bukkit.getWorld(args[1]);
-						} catch (Exception e) {	}
-						
-						if(w!=null) {
-							if(Loader.has(s, "PlayTime", "Time", "WorldGamemode")) {
-								Loader.sendMessages(s, "PlayTime.Time.WorldGamemode", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( (Player) s, PlayTimeType.WORLDGAMEMODE, mode, w) ))
-										.add("%player%", s.getName()).add("%gamemode%", mode.name()).add("%world%", w.getName()));
-								return true;
-							}
+					if(args.length==3) {
+						if(!Loader.has(s, "PlayTime", "Time", "WorldGamemode")) {
 							Loader.noPerms(s, "PlayTime", "Time", "WorldGamemode");
 							return true;
 						}
-						Loader.sendMessages(s, "Missing.World", Placeholder.c().add("%world%", args[1]));
-						return true;
-					}
-				}
-				
-				World w = null;
-				try {
-					w = Bukkit.getWorld(args[0]);
-				} catch (Exception e) {	}
-				
-				if(w!=null) {
-					if(Loader.has(s, "PlayTime", "Time", "World")) {
-						Loader.sendMessages(s, "PlayTime.Time.World", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( (Player) s, PlayTimeType.WORLD, null, w) ))
-								.add("%player%", s.getName()).add("%world%", w.getName()));
-						return true;
-					}
-					Loader.noPerms(s, "PlayTime", "Time", "World");
-					return true;
-				}
-				
-				
-				/*
-				 *  TARGET
-				 */
-				String player = args[0];
-				if(TheAPI.existsUser(player)) {
-					if(Loader.has(s, "PlayTime", "Time", "Other")) {
-						if(args.length==1) {
-							Loader.sendMessages(s, "PlayTime.Other.Global", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime(player) ))
-									.add("%player%", player).add("%target%", player));
-							return true;
-						}
-						GameMode m = null;
-						try {
-							m = GameMode.valueOf(args[1].toUpperCase());
-						} catch (Exception e) {	}
-						
-						if(m!=null) {
-							if(args.length==2) {
-								if(Loader.has(s, "PlayTime", "Time", "Gamemode")) {
-									Loader.sendMessages(s, "PlayTime.Other.Gamemode", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( player, PlayTimeType.GAMEMODE, m, null) ))
-											.add("%player%", player).add("%target%", player).add("%gamemode%", m.name()));
-									return true;
-								}
-								Loader.noPerms(s, "PlayTime", "Time", "Gamemode");
-								return true;
-							}
-							if(args.length==3) {
-								if(!Loader.has(s, "PlayTime", "Time", "WorldGamemode")) {
-									Loader.noPerms(s, "PlayTime", "Time", "WorldGamemode");
-									return true;
-								}
-								World ww = null;
-								try {
-									ww =  Bukkit.getWorld(args[2]);
-								} catch (Exception e) {	}
-								
-								if(ww!=null) {
-									Loader.sendMessages(s, "PlayTime.Other.WorldGamemode", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( player, PlayTimeType.WORLDGAMEMODE, m, ww) ))
-											.add("%player%", player).add("%target%", player).add("%gamemode%", m.name()).add("%world%", ww.getName()));
-									return true;
-								}
-								Loader.sendMessages(s, "Missing.World", Placeholder.c().add("%world%", args[2]));
-								return true;
-							}
-						}
 						World ww = null;
 						try {
-							ww =  Bukkit.getWorld(args[1]);
+							ww =  Bukkit.getWorld(args[2]);
 						} catch (Exception e) {	}
-						
+
 						if(ww!=null) {
-							Loader.sendMessages(s, "PlayTime.Other.World", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( player, PlayTimeType.WORLD, null, ww) ))
-									.add("%player%", player).add("%target%", player).add("%world%", ww.getName()));
+							Loader.sendMessages(s, "PlayTime.Other.WorldGamemode", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( player, PlayTimeType.WORLDGAMEMODE, m, ww) ))
+									.add("%player%", player).add("%target%", player).add("%gamemode%", m.name()).add("%world%", ww.getName()));
 							return true;
 						}
-						Loader.Help(s, "PlayTime", "Time");
+						Loader.sendMessages(s, "Missing.World", Placeholder.c().add("%world%", args[2]));
 						return true;
 					}
-					Loader.noPerms(s, "PlayTime", "Time", "Other");
+				}
+				World ww = null;
+				try {
+					ww =  Bukkit.getWorld(args[1]);
+				} catch (Exception e) {	}
+
+				if(ww!=null) {
+					Loader.sendMessages(s, "PlayTime.Other.World", Placeholder.c().add("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime( player, PlayTimeType.WORLD, null, ww) ))
+							.add("%player%", player).add("%target%", player).add("%world%", ww.getName()));
 					return true;
 				}
-				Loader.notExist(s, player);
+				Loader.Help(s, "PlayTime", "Time");
 				return true;
 			}
+			Loader.noPerms(s, "PlayTime", "Time", "Other");
+			return true;
 		}
+		Loader.notExist(s, player);
+		return true;
+	}
 		Loader.noPerms(s, "PlayTime", "Time");
 		return true;
 	}
@@ -228,9 +223,9 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String arg2, String[] args) {
 		if (Loader.has(s, "PlayTime", "Time")) {
 			if(args.length==1) {
-				if(args[0].isEmpty()) {
-					List<String> a = new ArrayList<>();
-					if(Loader.has(s, "PlayTime", "Time", "Other")) {
+                List<String> a = new ArrayList<>();
+                if(args[0].isEmpty()) {
+                    if(Loader.has(s, "PlayTime", "Time", "Other")) {
 						for(Player p : TheAPI.getOnlinePlayers())
 							a.add(p.getName());
 					}
@@ -238,11 +233,9 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 					if(Loader.has(s, "PlayTime", "Time", "Top")) a.add("Top");
 					if(Loader.has(s, "PlayTime", "Time", "Gamemode")) a.add("<GAMEMODE>");
 					if(Loader.has(s, "PlayTime", "Time", "World")) a.add("<world>");
-					
-					return StringUtils.copyPartialMatches(args[0], a);
-				}else {
-					List<String> a = new ArrayList<>();
-					for(GameMode m : GameMode.values()) {
+
+                }else {
+                    for(GameMode m : GameMode.values()) {
 						if(m.name().startsWith(args[0]) ||m.name().toLowerCase().startsWith(args[0]))
 							a.add(m.name());
 					}
@@ -258,9 +251,9 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 					if("Help".startsWith(args[0]) || "Help".toLowerCase().startsWith(args[0]) ) a.add("Help");
 					if(Loader.has(s, "PlayTime", "Time", "Top") && ("Top".startsWith(args[0]) || "Top".toLowerCase().startsWith(args[0]) )) a.add("Top");
 
-					return StringUtils.copyPartialMatches(args[0], a);
-				}
-			}
+                }
+                return StringUtils.copyPartialMatches(args[0], a);
+            }
 			/*
 			 *  /playtime <GAMEMODE> <world>
 			 *  /playtime <GAMEMODE>
@@ -292,8 +285,7 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 					if(args[1].isEmpty()) {
 						if(Loader.has(s, "PlayTime", "Time", "Gamemode")) a.add("<GAMEMODE>");
 						if(Loader.has(s, "PlayTime", "Time", "World")) a.add("<world>");
-						return StringUtils.copyPartialMatches(args[1], a);
-					}else {
+                    }else {
 						for(GameMode m : GameMode.values()) {
 							if(m.name().startsWith(args[1]) ||m.name().toLowerCase().startsWith(args[1]))
 								a.add(m.name());
@@ -302,9 +294,9 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 							if(w.getName().startsWith(args[1]) ||w.getName().toLowerCase().startsWith(args[1]))
 								a.add(w.getName());
 						}
-						return StringUtils.copyPartialMatches(args[1], a);
-					}
-				}
+                    }
+                    return StringUtils.copyPartialMatches(args[1], a);
+                }
 			}
 			if(args.length==3) {
 				List<String> a = new ArrayList<>();
@@ -326,7 +318,7 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 				}
 			}
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 	
 }

@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.commands.info;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -63,7 +64,7 @@ public class Staff implements CommandExecutor, TabCompleter {
 		for(String f : stafff)
 			staff.add(f.toLowerCase());
 		for (Player a : TheAPI.getOnlinePlayers()) {
-			if(d instanceof Player == false ? false : !API.canSee((Player)d,a.getName()))continue;
+			if(d instanceof Player && !API.canSee((Player) d, a.getName()))continue;
 			String as = Staff.getGroup(a);
 			if(staff.contains(as.toLowerCase()))
 				++s;
@@ -78,10 +79,10 @@ public class Staff implements CommandExecutor, TabCompleter {
 		for(String f : stafff)
 			staff.add(f.toLowerCase());
 		for (Player a : TheAPI.getOnlinePlayers()) {
-			if(d instanceof Player == false ? false : !API.canSee((Player)d,a.getName()))continue;
+			if(d instanceof Player && !API.canSee((Player) d, a.getName()))continue;
 			String as = Staff.getGroup(a);
 			if(staff.contains(as.toLowerCase()))
-				b.append(", "+a.getName());
+				b.append(", ").append(a.getName());
 		}
 		return b.length()>2?b.toString().substring(2):b.toString();
 	}
@@ -103,8 +104,7 @@ public class Staff implements CommandExecutor, TabCompleter {
 						return true;
 					}
 					return true;
-				}else if(!e || !setting.staff_hide)
-				Loader.sendMessages(s, "List.Staff", Placeholder.c()
+				}else Loader.sendMessages(s, "List.Staff", Placeholder.c()
 						.add("%staff_online%", joinercount(s)+"")
 						.add("%staff%", joiner(s)));
 				return true;
@@ -118,8 +118,7 @@ public class Staff implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				return true;
-			}else if(!isEmpty || !setting.staff_hide)
-			Loader.sendMessages(s, "List.Staff", Placeholder.c()
+			}else Loader.sendMessages(s, "List.Staff", Placeholder.c()
 					.add("%staff_online%", joinercount(s)+"")
 					.add("%staff%", joiner(s)));
 			return true;
@@ -131,6 +130,6 @@ public class Staff implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] arg3) {
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

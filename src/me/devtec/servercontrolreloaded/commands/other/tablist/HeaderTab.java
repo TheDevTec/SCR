@@ -18,27 +18,27 @@ public class HeaderTab {
 		}
 		if(type.equalsIgnoreCase("global")) {
 			if(args[2].equalsIgnoreCase("add")) {
-				List<String> lines = TabList.getHeader(null, type.equalsIgnoreCase("group")?2:0);
+				List<String> lines = TabList.getHeader(null, 0);
 				String val = StringUtils.buildString(3, args);
 				lines.add(val);
-				TabList.setHeader(null, type.equalsIgnoreCase("group")?2:0, lines);
+				TabList.setHeader(null, 0, lines);
 				Loader.sendMessages(s, "TabList.Add.Header.Global.Info", Placeholder.c().add("%value%", val));
 				return;
 			}
 			if(args[2].equalsIgnoreCase("remove")) {
-				List<String> lines = TabList.getHeader(null, type.equalsIgnoreCase("group")?2:0);
+				List<String> lines = TabList.getHeader(null, 0);
 				int set = StringUtils.getInt(args[3]);
 				if(lines.size() < set || set<0) {
 					Loader.sendMessages(s, "TabList.Error", Placeholder.c().add("%size%", lines.size()+"").add("%value%", set+""));
 					return;
 				}
 				String val = lines.remove(set);
-				TabList.setHeader(null, type.equalsIgnoreCase("group")?2:0, lines);
+				TabList.setHeader(null, 0, lines);
 				Loader.sendMessages(s, "TabList.Remove.Header.Global.Info", Placeholder.c().add("%position%", set+"").add("%value%", val+""));
 				return;
 			}
 			if(args[2].equalsIgnoreCase("set")) {
-				List<String> lines = TabList.getHeader(null, type.equalsIgnoreCase("group")?2:0);
+				List<String> lines = TabList.getHeader(null, 0);
 				int set = StringUtils.getInt(args[3]);
 				if(lines.size() < set || set<0) {
 					Loader.sendMessages(s, "TabList.Error", Placeholder.c().add("%size%", lines.size()+"").add("%value%", set+""));
@@ -46,7 +46,7 @@ public class HeaderTab {
 				}
 				String val = StringUtils.buildString(4, args);
 				lines.set(set, val);
-				TabList.setHeader(null, type.equalsIgnoreCase("group")?2:0, lines);
+				TabList.setHeader(null, 0, lines);
 				Loader.sendMessages(s, "TabList.Set.Header.Global.Info", Placeholder.c().add("%position%", set+"").add("%value%", val+""));
 				return;
 			}

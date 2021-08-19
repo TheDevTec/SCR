@@ -1,10 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -28,8 +25,8 @@ import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
 
 public class Item implements CommandExecutor, TabCompleter{
-	private static List<String> flags = new ArrayList<>();
-	private static List<String> f = new ArrayList<>();
+	private static final List<String> flags = new ArrayList<>();
+	private static final List<String> f = new ArrayList<>();
 	static {
 		if(TheAPI.isNewerThan(7))
 		try {
@@ -64,7 +61,7 @@ public class Item implements CommandExecutor, TabCompleter{
 				}
 				Player p = (Player)s;
 		        ItemStack item = p.getItemInHand();
-		        if(item==null||item.getType()==Material.AIR) {
+		        if(item.getType()==Material.AIR) {
 		        	Loader.sendMessages(s, "Item.NoItem");
 		        	return true;
 		        }
@@ -177,12 +174,10 @@ public class Item implements CommandExecutor, TabCompleter{
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("list")) {
-						String flags = "";
+						StringBuilder flags = new StringBuilder();
 						for (ItemFlag itf : m.getItemFlags())
-							flags+=", "+itf.name();
-						if(!flags.equals(""))
-						flags=flags.substring(2);
-						Loader.sendMessages(s, "Item.Flag.List", Placeholder.c().replace("%item%", item.getType().name()).replace("%flags%", flags));
+							flags.append(", ").append(itf.name());
+						Loader.sendMessages(s, "Item.Flag.List", Placeholder.c().replace("%item%", item.getType().name()).replace("%flags%", flags.length()!=0?flags.substring(2):""));
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("add")) {
@@ -287,7 +282,7 @@ public class Item implements CommandExecutor, TabCompleter{
 								return true;
 							}
 							Object o = Reader.read(val);
-							if(o instanceof Collection == false) {
+							if(!(o instanceof Collection)) {
 								Loader.sendMessages(s, "Item.Process.Cmd.List.Empty");
 								return true;
 							}
@@ -306,7 +301,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							}
 							NBTEdit e = new NBTEdit(item);
 							String val = e.getString("process."+target+".cmd");
-							Object o = null;
+							Object o;
 							Collection<String> text = val==null?new ArrayList<>():((o=Reader.read(val)) instanceof Collection?(Collection<String>)o:new ArrayList<>());
 							String i = StringUtils.buildString(4,args);
 							text.add(i);
@@ -324,7 +319,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							NBTEdit e = new NBTEdit(item);
 							String val = e.getString("process."+target+".cmd");
 							Object o = Reader.read(val);
-							if(o instanceof Collection == false) {
+							if(!(o instanceof Collection)) {
 								Loader.sendMessages(s, "Item.Process.Cmd.List.Empty");
 								return true;
 							}
@@ -335,14 +330,14 @@ public class Item implements CommandExecutor, TabCompleter{
 							}
 							String removed = "";
 							try {
-								if(text instanceof List == false) {
+								if(!(text instanceof List)) {
 									text=new ArrayList<>(text);
 								}
 								removed=((List<String>)text).remove(StringUtils.getInt(args[4]));
 							}catch(Exception outOfBoud) {}
 							if(text.isEmpty()) {
 								e.remove("process."+target+".cmd");
-								if(!!e.hasKey("process.msg") && !e.hasKey("process.console.cmd") && !e.hasKey("process.console.cmd")
+								if(e.hasKey("process.msg") && !e.hasKey("process.console.cmd") && !e.hasKey("process.console.cmd")
 										&& !e.hasKey("process.cooldown") && !e.hasKey("process.usage")) {
 									e.remove("process");
 									e.remove("process.uses");
@@ -369,7 +364,7 @@ public class Item implements CommandExecutor, TabCompleter{
 								return true;
 							}
 							Object o = Reader.read(val);
-							if(o instanceof Collection == false) {
+							if(!(o instanceof Collection)) {
 								Loader.sendMessages(s, "Item.Process.Msg.List.Empty");
 								return true;
 							}
@@ -388,7 +383,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							}
 							NBTEdit e = new NBTEdit(item);
 							String val = e.getString("process.msg");
-							Object o = null;
+							Object o;
 							Collection<String> text = val==null?new ArrayList<>():((o=Reader.read(val)) instanceof Collection?(Collection<String>)o:new ArrayList<>());
 							String i = StringUtils.buildString(3,args);
 							text.add(i);
@@ -406,7 +401,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							NBTEdit e = new NBTEdit(item);
 							String val = e.getString("process.msg");
 							Object o = Reader.read(val);
-							if(o instanceof Collection == false) {
+							if(!(o instanceof Collection)) {
 								Loader.sendMessages(s, "Item.Process.Msg.List.Empty");
 								return true;
 							}
@@ -417,7 +412,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							}
 							String removed = "";
 							try {
-								if(text instanceof List == false) {
+								if(!(text instanceof List)) {
 									text=new ArrayList<>(text);
 								}
 								removed=((List<String>)text).remove(StringUtils.getInt(args[3]));
@@ -544,14 +539,14 @@ public class Item implements CommandExecutor, TabCompleter{
 		if(Loader.has(s, "Item", "Other")) {
 		if (args.length==1) {	
 			List<String> c = new ArrayList<>();
-			if(Loader.has(s, "Item", "Other", "Name")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Name")));
-			if(Loader.has(s, "Item", "Other", "Lore")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Lore")));
-			if(Loader.has(s, "Item", "Other", "Flag") && TheAPI.isNewerThan(7)) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Flag")));	
-			if(Loader.has(s, "Item", "Other", "Nbt")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Nbt")));
-			if(Loader.has(s, "Item", "Other", "Durability"))c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Durability")));	
-			if(Loader.has(s, "Item", "Other", "Type")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Type")));
-			if(Loader.has(s, "Item", "Other", "Process")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Process")));
-			if(Loader.has(s, "Item", "Other", "Amount")) c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Amount")));
+			if(Loader.has(s, "Item", "Other", "Name")) c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Name")));
+			if(Loader.has(s, "Item", "Other", "Lore")) c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Lore")));
+			if(Loader.has(s, "Item", "Other", "Flag") && TheAPI.isNewerThan(7)) c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Flag")));
+			if(Loader.has(s, "Item", "Other", "Nbt")) c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Nbt")));
+			if(Loader.has(s, "Item", "Other", "Durability"))c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Durability")));
+			if(Loader.has(s, "Item", "Other", "Type")) c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Type")));
+			if(Loader.has(s, "Item", "Other", "Process")) c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Process")));
+			if(Loader.has(s, "Item", "Other", "Amount")) c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Amount")));
 			return c;
 		}
 		if(args[0].equalsIgnoreCase("process") && Loader.has(s, "Item", "Other", "Process")) {
@@ -563,7 +558,7 @@ public class Item implements CommandExecutor, TabCompleter{
 					return StringUtils.copyPartialMatches(args[2], Arrays.asList("Get","Set"));
 				if(args[1].equalsIgnoreCase("cmd")||args[1].equalsIgnoreCase("msg"))
 					return StringUtils.copyPartialMatches(args[2], Arrays.asList("Add","Remove","List"));
-				return Arrays.asList();
+				return Collections.emptyList();
 			}
 			if(args.length==4) {
 				if((args[1].equalsIgnoreCase("usage")||args[1].equalsIgnoreCase("cooldown")) && args[2].equalsIgnoreCase("set"))
@@ -575,26 +570,26 @@ public class Item implements CommandExecutor, TabCompleter{
 						return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
 					}
 					if(args[2].equalsIgnoreCase("remove")) {
-						return Arrays.asList("?");
+						return Collections.singletonList("?");
 					}
 				}
-				return Arrays.asList();
+				return Collections.emptyList();
 			}
 			if(args[1].equalsIgnoreCase("msg")) {
 				if(args[2].equalsIgnoreCase("add"))
 				return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
-				return Arrays.asList();
+				return Collections.emptyList();
 			}
-			if(!(args[3].equalsIgnoreCase("player")||args[3].equalsIgnoreCase("console")))return Arrays.asList();
+			if(!(args[3].equalsIgnoreCase("player")||args[3].equalsIgnoreCase("console")))return Collections.emptyList();
 			if(args[1].equalsIgnoreCase("cmd")) {
 				if(args[2].equalsIgnoreCase("add")) {
 					return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
 				}
 				if(args[2].equalsIgnoreCase("remove") && args.length==5) {
-					return Arrays.asList("?");
+					return Collections.singletonList("?");
 				}
 			}
-			return Arrays.asList();
+			return Collections.emptyList();
 		}
 		if(args[0].equalsIgnoreCase("name") && Loader.has(s, "Item", "Other", "Name"))
 			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
@@ -609,7 +604,7 @@ public class Item implements CommandExecutor, TabCompleter{
 					List<String> lines = new ArrayList<>();
 					Player p = (Player)s;
 			        ItemStack item = p.getItemInHand();
-			        if(item==null||item.getType()==Material.AIR)
+			        if(item.getType() == Material.AIR)
 			        	return lines;
 			        if(item.hasItemMeta() && item.getItemMeta().getLore()!=null)
 					for(int i = 0; i < item.getItemMeta().getLore().size(); ++i)
@@ -619,7 +614,7 @@ public class Item implements CommandExecutor, TabCompleter{
 			}
 			if(args[1].equalsIgnoreCase("Set"))
 				return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
-			return Arrays.asList();
+			return Collections.emptyList();
 		}
 		if(args[0].equalsIgnoreCase("flag") && TheAPI.isNewerThan(7) && Loader.has(s, "Item", "Other", "Flag")) {
 			if(args.length==2) {
@@ -633,7 +628,7 @@ public class Item implements CommandExecutor, TabCompleter{
 					List<String> lines = new ArrayList<>();
 					Player p = (Player)s;
 			        ItemStack item = p.getItemInHand();
-			        if(item==null||item.getType()==Material.AIR)
+			        if(item.getType() == Material.AIR)
 			        	return lines;
 			        if(item.hasItemMeta())
 					for(ItemFlag f : item.getItemMeta().getItemFlags())
@@ -641,7 +636,7 @@ public class Item implements CommandExecutor, TabCompleter{
 					return StringUtils.copyPartialMatches(args[2], lines);
 				}
 			}
-			return Arrays.asList();
+			return Collections.emptyList();
 		}
 		if(args[0].equalsIgnoreCase("nbt") && Loader.has(s, "Item", "Other", "Nbt") ||args[0].equalsIgnoreCase("amount") && Loader.has(s, "Item", "Other", "Amount") || args[0].equalsIgnoreCase("durability") && Loader.has(s, "Item", "Other", "Durability")||args[0].equalsIgnoreCase("type") && Loader.has(s, "Item", "Other", "Type")) {
 			if(args.length==2) {
@@ -649,6 +644,6 @@ public class Item implements CommandExecutor, TabCompleter{
 			}
 		}
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.inventory;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -24,7 +25,7 @@ public class Anvil implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if(args.length==1 && Loader.has(s, "Anvil", "Inventory"))
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 	@Override

@@ -1,10 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.inventory;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -25,21 +22,19 @@ import me.devtec.theapi.utils.datakeeper.User;
 
 public class ClearInv implements CommandExecutor, TabCompleter {
 
-	public HashMap<CommandSender, ItemStack[]> undo = new HashMap<CommandSender, ItemStack[]>();
+	public final HashMap<CommandSender, ItemStack[]> undo = new HashMap<>();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
-		if (s instanceof Player == false) {
+		if (!(s instanceof Player)) {
 			if (args.length == 0) {
 				Loader.Help(s, "ClearInventory", "Inventory");
 				return true;
 			}
 			if (args.length == 1) {
-				Player target = Bukkit.getServer().getPlayer(args[0]);
+				Player target = TheAPI.getPlayer(args[0]);
 				if (target == null) {
-					Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
-							.add("%player%", args[1])
-							.add("%playername%", args[1]));
+					Loader.notOnline(s, args[0]);
 					return true;
 				}
 				undo.put(target, target.getInventory().getContents());
@@ -52,7 +47,6 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 				target.getInventory().clear();
 				return true;
 			}
-			return true;
 		} else {
 			if (Loader.has(s, "ClearInventory", "Inventory")) {
 			if(!CommandsManager.canUse("Inventory.ClearInventory", s)) {
@@ -83,24 +77,20 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 						Loader.Help(s, "ClearInventory", "Inventory");
 						return true;
 					}
-					Player target = Bukkit.getServer().getPlayer(args[1]);
+					Player target = TheAPI.getPlayer(args[1]);
 					if (target == null) {
-						Loader.sendMessages(s, "Missing.Player.Offline", Placeholder.c()
-								.add("%player%", args[1])
-								.add("%playername%", args[1]));
+						Loader.notOnline(s, args[1]);
 						return true;
 					}
-					if (target != null) {
-						undo.put(target, target.getInventory().getContents());
-						Loader.sendMessages(s, "Inventory.ClearInventory.Other.Sender", Placeholder.c()
-								.add("%player%", s.getName())
-								.add("%playername%", s.getName()));
-						Loader.sendMessages(target, "Inventory.ClearInventory.Other.Receiver", Placeholder.c()
-								.add("%player%", s.getName())
-								.add("%playername%", s.getName()));
-						target.getInventory().clear();
-						return true;
-					}
+					undo.put(target, target.getInventory().getContents());
+					Loader.sendMessages(s, "Inventory.ClearInventory.Other.Sender", Placeholder.c()
+							.add("%player%", s.getName())
+							.add("%playername%", s.getName()));
+					Loader.sendMessages(target, "Inventory.ClearInventory.Other.Receiver", Placeholder.c()
+							.add("%player%", s.getName())
+							.add("%playername%", s.getName()));
+					target.getInventory().clear();
+					return true;
 				}
 				Loader.noPerms(s, "ClearInventory", "Inventory", "Other");
 				return true;
@@ -153,7 +143,7 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 							Loader.sendMessages(s, "Inventory.ClearInventory.Undo", Placeholder.c()
 									.add("%money%", "0"));
 							return true;
-						} else if (take != 0 && EconomyAPI.getEconomy() != null) {
+						} else if (EconomyAPI.getEconomy() != null) {
 							if (EconomyAPI.has(p, take)) {
 								for (ItemStack item : undo.get(p)) {
 									TheAPI.giveItem(p, item);
@@ -162,12 +152,11 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 								undo.remove(p);
 								Loader.sendMessages(s, "Inventory.ClearInventory.Undo", Placeholder.c()
 										.add("%money%", ""+take));
-								return true;
 							} else {
 								Loader.sendMessages(s, "Inventory.ClearInventory.NoMoney", Placeholder.c()
 										.add("%money%", ""+take));
-								return true;
 							}
+							return true;
 						}
 					} else if (!undo.containsKey(p)) {
 						Loader.sendMessages(s, "Inventory.ClearInventory.CantUndo");
@@ -180,8 +169,8 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 			return true;
 			}
 			Loader.noPerms(s, "ClearInventory", "Inventory");
-			return true;
 		}
+		return true;
 	}
 
 	@Override
@@ -191,19 +180,19 @@ public class ClearInv implements CommandExecutor, TabCompleter {
 			List<String> c = new ArrayList<>();
 			if (Loader.has(s, "ClearInventory", "Inventory", "Inventory")) {
 				if (!TheAPI.getUser(s.getName()).getBoolean("ClearInvConfirm"))
-					c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Confirm")));
-				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Clear")));
+					c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Confirm")));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Clear")));
 			}
 			if (Loader.has(s, "ClearInventory", "Inventory", "Undo")) {
-				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Undo")));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Undo")));
 			}
 			if (Loader.has(s, "ClearInventory", "Inventory", "Other"))
-				c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Other")));
+				c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Other")));
 			return c;
 		}
 		if (args.length == 2 && args[0].equalsIgnoreCase("other") && Loader.has(s, "ClearInventory", "Inventory", "Other"))
 			return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

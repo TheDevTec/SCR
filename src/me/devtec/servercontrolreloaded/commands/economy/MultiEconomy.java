@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.commands.economy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -213,7 +214,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 					Loader.notExist(s,args[1]);
 					return true;
 				}
-				if (p != null && args.length == 2) {
+				if (args.length == 2) {
 					Loader.Help(s, "MultiEconomy", "Economy");
 					return true;
 				}
@@ -257,7 +258,7 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 			}
 			if (args.length == 2) {
 				if (args[0].equalsIgnoreCase("Create")) {
-					return StringUtils.copyPartialMatches(args[1], Arrays.asList("?"));
+					return StringUtils.copyPartialMatches(args[1], Collections.singletonList("?"));
 				}
 				if (args[0].equalsIgnoreCase("Delete") || args[0].equalsIgnoreCase("Add")
 						|| args[0].equalsIgnoreCase("Remove") || args[0].equalsIgnoreCase("Worlds")) {
@@ -291,11 +292,11 @@ public class MultiEconomy implements CommandExecutor, TabCompleter {
 				}
 			}
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 	private List<String> worlds() {
-		ArrayList<String> worlds = new ArrayList<String>();
+		ArrayList<String> worlds = new ArrayList<>();
 		for (World s : Bukkit.getWorlds())
 			worlds.add(s.getName());
 		return worlds;

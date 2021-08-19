@@ -71,21 +71,11 @@ public class JoinQuitEvents implements Listener {
 		if(Loader.config.getBoolean("Options.Skins.onJoin")) {
 			if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
 				String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
-				SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
-					@Override
-					public void run(SkinData data) {
-						SkinManager.loadSkin(p, data);
-					}
-				}, false);
+				SkinManager.generateSkin(skin.replace("%player%", p.getName()), data -> SkinManager.loadSkin(p, data), false);
 			}else {
 				String skin = d.getString("skin");
 				if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
-				SkinManager.generateSkin(skin.replace("%player%", p.getName()), new SkinCallback() {
-					@Override
-					public void run(SkinData data) {
-						SkinManager.loadSkin(p, data);
-					}
-				}, false);
+				SkinManager.generateSkin(skin.replace("%player%", p.getName()), data -> SkinManager.loadSkin(p, data), false);
 			}
 		}
 	}

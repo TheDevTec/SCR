@@ -152,12 +152,12 @@ import me.devtec.theapi.utils.StringUtils;
 public class CommandsManager {
 	
 
-	private static Map<String, Map<String,Long>> cooldownMap = new HashMap<>();
-	private static Map<String, Long> cooldown = new HashMap<>();
+	private static final Map<String, Map<String,Long>> cooldownMap = new HashMap<>();
+	private static final Map<String, Long> cooldown = new HashMap<>();
 	
 	//global
-	private static Map<String, Long> waitingCooldown= new HashMap<>();
-	private static Map<String,Boolean> global= new HashMap<>();
+	private static final Map<String, Long> waitingCooldown= new HashMap<>();
+	private static final Map<String,Boolean> global= new HashMap<>();
 	
 	public static boolean canUse(String path, CommandSender s) {
 		if(!cooldown.containsKey(path))return true;
@@ -174,7 +174,7 @@ public class CommandsManager {
 		for(String d : Loader.cmds.getStringList(path+".CooldownCmds")) {
 			if(set.contains(d))continue;
 			boolean expire = canUse(set,d,s);
-			if(!expire)return expire;
+			if(!expire)return false;
 		}
 	if(global.getOrDefault(path,false)) {
 		if(waitingCooldown.getOrDefault(path, (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path)<= 0) {
@@ -184,9 +184,8 @@ public class CommandsManager {
 		return false;
 	}
 	Map<String, Long> waitingCooldown = cooldownMap.get(path);
-	if(waitingCooldown==null) {
+	if(waitingCooldown==null)
 		cooldownMap.put(path, waitingCooldown=new HashMap<>());
-	}
 	if(waitingCooldown.getOrDefault(s.getName(), (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path) <= 0) {
 		waitingCooldown.put(s.getName(), System.currentTimeMillis()/1000);
 		return true;
@@ -222,7 +221,7 @@ public class CommandsManager {
 		return waitingCooldown.getOrDefault(s.getName(), (long)0)-System.currentTimeMillis()/1000 + cooldown.get(path);
 	}
 	
-	private static Map<String, PluginCommand> commands = new HashMap<>();
+	private static final Map<String, PluginCommand> commands = new HashMap<>();
 	
 	public static boolean load(String section, String command, CommandExecutor cs) {
 		if(Loader.cmds.getBoolean(section+"."+command+".Enabled")) {

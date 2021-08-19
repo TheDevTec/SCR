@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.commands.enchantment;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -22,7 +23,7 @@ import me.devtec.theapi.apis.EnchantmentAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public class EnchantTable implements CommandExecutor, TabCompleter {
-	List<String> enchs = Lists.newArrayList();
+	final List<String> enchs = Lists.newArrayList();
 
 	public EnchantTable() {
 		for(EnchantmentAPI a : EnchantmentAPI.values())enchs.add(a.name());
@@ -76,19 +77,15 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 					.add("%enchant%", enechant)
 					.add("%level%", String.valueOf(level))
 					.add("%item%", hand.getType().name()));
-			return;
 		} catch (Exception error) {
 			Loader.sendMessages(s, "Missing.Enchant.NotExist", Placeholder.c()
 					.add("%enchant%", enechant));
-			return;
 		}
 	}
 
 	public boolean contains(String s, String[] args) {
-		if (args[0].equalsIgnoreCase(s))
-			return true;
-		return false;
-	}
+        return args[0].equalsIgnoreCase(s);
+    }
 	
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command a, String ea, String[] args) {
@@ -97,8 +94,8 @@ public class EnchantTable implements CommandExecutor, TabCompleter {
 				return StringUtils.copyPartialMatches(args[0], enchs);
 			if (args.length == 2)
 				if (EnchantmentAPI.byName(args[0]) != null)
-					return Arrays.asList(EnchantmentAPI.byName(args[0]).getEnchantment().getMaxLevel() + "");
+					return Collections.singletonList(EnchantmentAPI.byName(args[0]).getEnchantment().getMaxLevel() + "");
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

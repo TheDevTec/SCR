@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.commands.warps;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -105,6 +106,6 @@ public class HomeOther implements CommandExecutor, TabCompleter {
 			if(args.length == 3 && Loader.has(s, "HomeOther", "Warps", "Other"))
 				return StringUtils.copyPartialMatches(args[2], API.getPlayerNames(s));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

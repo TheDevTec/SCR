@@ -29,7 +29,7 @@ import me.devtec.theapi.utils.reflections.Ref;
 
 public class TabList {
 	// GROUP, PRIORITE
-	protected static HashMap<String, String> sorting = new HashMap<>();
+	protected static final HashMap<String, String> sorting = new HashMap<>();
 
 	public static void reload() {
 		sorting.clear();
@@ -244,7 +244,6 @@ public class TabList {
 					}
 					if(GameMode.valueOf(value.toUpperCase())!=null) {
 						mode = GameMode.valueOf(value.toUpperCase());
-					continue;
 					}
 				}
 				if( player!=null && !player.isEmpty() && TheAPI.existsUser(player)) {
@@ -274,7 +273,7 @@ public class TabList {
 		
 		if(header.contains("%ping%"))
 			header=header.replace("%ping%", Loader.getInstance.pingPlayer(p));
-		;if(header.contains("%world%"))
+			if(header.contains("%world%"))
 			header=header.replace("%world%", p.getWorld().getName())
 		;if(header.contains("%hp%"))
 			header=header.replace("%health%", StringUtils.fixedFormatDouble(((Damageable)p).getHealth()));
@@ -337,11 +336,11 @@ public class TabList {
 				header=header.replace("%online%", TheAPI.getOnlineCount()+"");
 		if(header.contains("%max_players%"))
 			header=header.replace("%max_players%", TheAPI.getMaxPlayers() + "");
-		;if(header.contains("%time%"))
+		if(header.contains("%time%"))
 			header=header.replace("%time%", new SimpleDateFormat(Loader.config.getString("Format.Time")).format(new Date()))
 		;if(header.contains("%date%"))
 			header=header.replace("%date%", new SimpleDateFormat(Loader.config.getString("Format.Date")).format(new Date()));
-		;if(header.contains("%tps%"))
+		if(header.contains("%tps%"))
 			header=header.replace("%tps%", TheAPI.getServerTPS() + "")
 		;if(header.contains("%ram_free%"))
 			header=header.replace("%ram_free%", MemoryAPI.getFreeMemory(false) + "")
@@ -361,7 +360,7 @@ public class TabList {
 		return header;
 	}
 	
-	public static AnimationManager aset = new AnimationManager();
+	public static final AnimationManager aset = new AnimationManager();
 	
 	public static void update() {
 		aset.update();
@@ -383,7 +382,7 @@ public class TabList {
 			p.setPlayerListName(getTabListName(p));
 	}
 	
-	public static Object empty = NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentText(""),NMSAPI.getIChatBaseComponentText(""));
+	public static final Object empty = NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentText(""),NMSAPI.getIChatBaseComponentText(""));
 	
 	static int test;
 	public static void removeTab() {

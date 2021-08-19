@@ -24,10 +24,10 @@ import me.devtec.theapi.utils.reflections.Ref;
 
 public class SinglePlayerSleep implements Listener {
 
-	Map<String, Integer> sleepTask = new HashMap<>();
-	Map<String, List<Player>> perWorldSleep = new HashMap<>();
-	Constructor<?> c = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutUpdateTime","PacketPlayOutUpdateTime"), long.class, long.class, boolean.class);
-	Method setTime = Ref.method(Ref.nmsOrOld("server.level.WorldServer","WorldServer"), "setDayTime", long.class);
+	final Map<String, Integer> sleepTask = new HashMap<>();
+	final Map<String, List<Player>> perWorldSleep = new HashMap<>();
+	final Constructor<?> c = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutUpdateTime","PacketPlayOutUpdateTime"), long.class, long.class, boolean.class);
+	final Method setTime = Ref.method(Ref.nmsOrOld("server.level.WorldServer","WorldServer"), "setDayTime", long.class);
 	
 	
 	@EventHandler(priority = EventPriority.LOWEST)

@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.commands.warps;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -62,7 +63,7 @@ public class Home implements CommandExecutor, TabCompleter {
 							return true;
 						}
 						Loader.sendMessages(s, "Home.NotExist", Placeholder.c()
-								.add("%home%", args[0]));
+								.add("%home%",home));
 						return true;
 					}
 					API.setBack(p);
@@ -97,6 +98,6 @@ public class Home implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		if (Loader.has(s, "Home", "Warps") && args.length == 1)
 			return StringUtils.copyPartialMatches(args[0], TheAPI.getUser(s.getName()).getKeys("Homes"));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

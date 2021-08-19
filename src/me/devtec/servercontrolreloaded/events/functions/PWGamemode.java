@@ -117,7 +117,7 @@ public class PWGamemode implements Listener {
 		}
 	}
 	
-	List<String> moving = new ArrayList<>();
+	final List<String> moving = new ArrayList<>();
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChangeGamamode(PlayerGameModeChangeEvent e) {
 		if(e.isCancelled())return;

@@ -13,6 +13,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Suicide implements CommandExecutor, TabCompleter {
@@ -64,6 +65,6 @@ public class Suicide implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if(args.length==1 && Loader.has(s, "Kill", "Kill"))
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

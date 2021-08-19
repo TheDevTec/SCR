@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class TPS implements CommandExecutor, TabCompleter {
@@ -39,6 +40,6 @@ public class TPS implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] arg3) {
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

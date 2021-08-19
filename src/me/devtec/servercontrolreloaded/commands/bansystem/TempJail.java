@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.bansystem;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -32,7 +33,7 @@ public class TempJail implements CommandExecutor, TabCompleter {
 			}
 			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 	
 	@Override

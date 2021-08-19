@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.warps;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -31,11 +32,10 @@ public class Spawn implements CommandExecutor, TabCompleter {
 					API.setBack((Player) s);
 					API.teleportPlayer((Player) s, TeleportLocation.SPAWN);
 					Loader.sendMessages(s, "Spawn.Teleport.You");
-					return true;
 				} else {
 					Loader.Help(s, "Spawn", "Warps");
-					return true;
 				}
+				return true;
 			}
 			Player p = TheAPI.getPlayer(args[0]);
 			if (p == null) {
@@ -68,6 +68,6 @@ public class Spawn implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if (Loader.has(s, "Spawn", "Warps", "Other") && args.length == 1)
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

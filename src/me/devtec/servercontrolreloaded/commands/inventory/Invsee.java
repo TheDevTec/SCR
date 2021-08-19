@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.inventory;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -83,6 +84,6 @@ public class Invsee implements CommandExecutor, TabCompleter {
 			if(args.length==2)
 				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

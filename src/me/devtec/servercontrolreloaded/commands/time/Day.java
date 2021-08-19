@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Day implements CommandExecutor, TabCompleter {
@@ -63,6 +64,6 @@ public class Day implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		if (Loader.has(s, "Day", "Time") && args.length == 1)
 			return StringUtils.copyPartialMatches(args[0], worlds());
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

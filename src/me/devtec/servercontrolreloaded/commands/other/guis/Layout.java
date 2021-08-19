@@ -25,7 +25,7 @@ import me.devtec.theapi.utils.theapiutils.Validator;
 
 public class Layout {
 	String s;
-	Map<Character, ItemBuilder> items = new HashMap<>(); 
+	final Map<Character, ItemBuilder> items = new HashMap<>();
 	public GUI paste(GUI g, Player p, List<String> map) {
 		int slot = 0;
 		for(String s : map)
@@ -207,14 +207,12 @@ public class Layout {
         } else if (a.startsWith("msg")){
             TheAPI.msg(PlaceholderAPI.setPlaceholders(p, a.substring(4).replace("%player%",p.getName())),p);
         } else if(a.startsWith("cmd")){
-            NMSAPI.postToMainThread(new Runnable() {
-				public void run() {
-					if(a.substring(4).startsWith("player")){
-		            	TheAPI.sudo(p,SudoType.COMMAND,PlaceholderAPI.setPlaceholders(p, a.substring(11).replace("%player%",p.getName())));
-		            } else if(a.substring(4).startsWith("console")){
-		                TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(p, a.substring(12).replace("%player%",p.getName())));
-		            }
-				}
+            NMSAPI.postToMainThread(() -> {
+				if(a.substring(4).startsWith("player")){
+TheAPI.sudo(p,SudoType.COMMAND,PlaceholderAPI.setPlaceholders(p, a.substring(11).replace("%player%",p.getName())));
+} else if(a.substring(4).startsWith("console")){
+TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(p, a.substring(12).replace("%player%",p.getName())));
+}
 			});
         } else if(a.startsWith("open")){
         	GUIMaker f = GUICreator.maker.get(PlaceholderAPI.setPlaceholders(p, a.substring(5).replace("%player%",p.getName())));

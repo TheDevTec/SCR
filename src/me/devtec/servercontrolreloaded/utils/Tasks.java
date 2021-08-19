@@ -34,16 +34,16 @@ import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Tasks {
 	
-	public static ArrayList<String> players = new ArrayList<>();
-	static ArrayList<Integer> tasks = new ArrayList<>();
-	static Map<String, String> sss = new HashMap<>();
+	public static final ArrayList<String> players = new ArrayList<>();
+	static final ArrayList<Integer> tasks = new ArrayList<>();
+	static final Map<String, String> sss = new HashMap<>();
 	static Loader a;
 	static int tests;
-	static Listener l = new Listener() {
+	static final Listener l = new Listener() {
 		@EventHandler
 		public void onTag(ServerListPingEvent e) {
 			if (setting.motd) {
-				e.setMotd(TheAPI.colorize(PlaceholderAPI.setPlaceholders(null,Loader.config.getString((!setting.lock_server || setting.lock_server && !setting.motd_maintenance)?"Options.ServerList.MOTD.Text.Normal":"Options.ServerList.MOTD.Text.Maintenance")
+				e.setMotd(TheAPI.colorize(PlaceholderAPI.setPlaceholders(null,Loader.config.getString(!setting.lock_server || !setting.motd_maintenance ?"Options.ServerList.MOTD.Text.Normal":"Options.ServerList.MOTD.Text.Maintenance")
 						.replace("%next%", "\n").replace("%line%", "\n"))));
 			}
 			Iterator<PlayerProfile> p = e.getPlayersText().iterator();
@@ -58,9 +58,9 @@ public class Tasks {
 			e.setMaxPlayers(TheAPI.getMaxPlayers());
 		}
 	};
-	static PacketListener sleepSkipMessage = new PacketListener() {
-		Class<?> chat = Ref.nmsOrOld("network.protocol.game.PacketPlayOutChat", "PacketPlayOutChat");
-		Class<?> chatmessage = Ref.nmsOrOld("network.chat.ChatMessage", "ChatMessage");
+	static final PacketListener sleepSkipMessage = new PacketListener() {
+		final Class<?> chat = Ref.nmsOrOld("network.protocol.game.PacketPlayOutChat", "PacketPlayOutChat");
+		final Class<?> chatmessage = Ref.nmsOrOld("network.chat.ChatMessage", "ChatMessage");
 		@Override
 		public boolean PacketPlayOut(String player, Object packet, Object channel) {
 			if(player==null)return false;
@@ -69,7 +69,7 @@ public class Tasks {
 				if(nms!=null)
 				if(nms.getClass()==chatmessage) {
 					String key = (String)Ref.invoke(nms, "getKey");
-					if(key.equals("sleep.skipping_night")||key.equals("sleep.players_sleeping"))return true;
+					return key.equals("sleep.skipping_night") || key.equals("sleep.players_sleeping");
 				}
 			}
 			return false;
@@ -205,7 +205,7 @@ public class Tasks {
 				}
 				++now;
 			}
-		}.runRepeatingSync(0, 20 * Loader.mw.getInt("SavingTask.Delay")));
+		}.runRepeatingSync(0, 20 * Loader.mw.getLong("SavingTask.Delay")));
 	}
 
 	public static void regPlayer(Player p) {
@@ -275,7 +275,7 @@ public class Tasks {
 		}.runRepeating(0, 200));
 	}
 
-	protected static AnimationManager aa = new AnimationManager();
+	protected static final AnimationManager aa = new AnimationManager();
 	
 	private static void automessage() {
 		tasks.add(new Tasker() {

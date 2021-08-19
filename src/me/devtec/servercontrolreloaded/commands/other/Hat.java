@@ -16,6 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Hat implements CommandExecutor, TabCompleter {
@@ -25,7 +26,7 @@ public class Hat implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if(Loader.has(s, "Hat", "Other") && args.length==1)
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -69,7 +70,6 @@ public class Hat implements CommandExecutor, TabCompleter {
 					Loader.notOnline(s,args[0]);
 					return true;
 				}
-				inv = t.getInventory();
 				if(!check) {
 					Loader.sendMessages(t, "Hat.Invfull.Other", Placeholder.c()
 							.add("%player%", t.getName())

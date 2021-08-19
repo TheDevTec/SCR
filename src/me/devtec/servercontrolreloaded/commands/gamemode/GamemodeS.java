@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.gamemode;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.GameMode;
@@ -64,6 +65,6 @@ public class GamemodeS implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if (Loader.has(s, "GameModeSurvival", "GameMode") && args.length==1)
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

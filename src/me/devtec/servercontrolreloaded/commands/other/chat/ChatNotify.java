@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.commands.other.chat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -28,7 +29,7 @@ public class ChatNotify implements CommandExecutor, TabCompleter {
 			d.add("toggle");
 			return StringUtils.copyPartialMatches(args[0], d);
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 	@Override

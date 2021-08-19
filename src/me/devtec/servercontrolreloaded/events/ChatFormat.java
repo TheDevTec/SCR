@@ -75,7 +75,7 @@ public class ChatFormat implements Listener {
 				continue;
 			}
 			if (e.getValue() instanceof String && !e.getKey().equals("color")) {
-				json.put(e.getKey(), r(p,(String) e.getValue(),msg, true,colors));
+				json.put(e.getKey(), r(p, e.getValue(),msg, true,colors));
 				continue;
 			}
 			json.put(e.getKey(), e.getValue());
@@ -85,13 +85,13 @@ public class ChatFormat implements Listener {
 
 	@SuppressWarnings("unchecked")
 	public static Object r(Player p, Object s, String msg, boolean usejson, boolean colors) {
-		if(s.toString().trim().isEmpty())return s;
+		if(s==null||s.toString().trim().isEmpty())return s;
 		if (usejson) {
 			try {
-				if(s instanceof Map && s!=null) {
+				if(s instanceof Map) {
 					return colorizeMap((Map<String, Object>) s,p,msg,colors);
 				} //else continue in code below
-				if(s instanceof Collection && s!=null) {
+				if(s instanceof Collection) {
 					return colorizeList((Collection<Object>) s,p,msg,colors);
 				} //else continue in code below
 			}catch(Exception err) {}
@@ -99,21 +99,20 @@ public class ChatFormat implements Listener {
 		if(colors) {
 		s=s.toString().replace("&u", "§[u]").replace("&U", "§[u]");
 		String orig = (String)s;
-		s=TabList.replace(s.toString(), p, colors);
+		s=TabList.replace(s.toString(), p, true);
 		if(s==null)s=orig;
 		if (msg != null && s.toString().contains("%message%"))
 			s=s.toString().replace("%message%", msg);
 		if(s.toString().contains("§[u]"))
 			s=rainbow(s.toString().replace("§[u]", "§u"));
-		return s;
 		}else {
 			String orig = (String)s;
-			s=TabList.replace(s.toString(), p, colors);
+			s=TabList.replace(s.toString(), p, false);
 			if(s==null)s=orig;
-			return s;
 		}
+		return s;
 	}
-	private static Pattern fixedSplit = Pattern.compile("(#[A-Fa-f0-9]{6}|§[Xx](§[A-Fa-f0-9]){6}|§[A-Fa-f0-9UuXx])");
+	private static final Pattern fixedSplit = Pattern.compile("(#[A-Fa-f0-9]{6}|§[Xx](§[A-Fa-f0-9]){6}|§[A-Fa-f0-9UuXx])");
 	
 	private static String rainbow(String b) {
 		StringBuilder d = new StringBuilder(b.length());
@@ -181,7 +180,7 @@ public class ChatFormat implements Listener {
 		return Character.isDigit(c)?6:Character.isAlphabetic(c)?2:4;
 	}
 
-	static Map<Player, String> old = new HashMap<>();
+	static final Map<Player, String> old = new HashMap<>();
 
 	private boolean isSim(Player p, String msg) {
 		if (Loader.config.getBoolean("SpamWords.SimiliarMessage")) {
@@ -300,8 +299,7 @@ public class ChatFormat implements Listener {
 				Loader.sendMessages(p, "ChatLock.IsLocked");
 				Loader.sendBroadcasts(p, "ChatLock.Message", Placeholder.c().add("%player%", p.getName())
 						.add("%playername%", p.getDisplayName()).add("%message%", msg), Loader.getPerm("ChatLock", "Other"));
-				if (msg != null)
-					e.setMessage(r(msg, p));
+				e.setMessage(r(msg, p));
 				return;
 			}
 			Iterator<Player> a = e.getRecipients().iterator();
@@ -327,10 +325,8 @@ public class ChatFormat implements Listener {
 						|| ty.equalsIgnoreCase("distance")) {
 					if (!p.getWorld().equals(s.getWorld())) {
 						a.remove();
-						continue;
 					} else if (p.getLocation().distance(s.getLocation()) > distance) {
 						a.remove();
-						continue;
 					}
 				}
 			}
@@ -370,7 +366,6 @@ public class ChatFormat implements Listener {
 						List<Map<String, Object>> o = new ArrayList<>();
 						if (formatt instanceof Map) {
 							o.add((Map<String, Object>) formatt);
-							formatt = o;
 						} else {
 							for (Object w : ((Collection<Object>) formatt)) {
 								if (w instanceof String) w = Reader.read((String) w);
@@ -382,8 +377,8 @@ public class ChatFormat implements Listener {
 									o.add(g);
 								}
 							}
-							formatt = o;
 						}
+						formatt = o;
 						List<Map<String, Object>> list = ChatMessage.fixListMap((List<Map<String, Object>>) formatt);
 						e.setFormat(convertToLegacy(list).replace("%", "%%"));
 						if (!e.isCancelled()) {
@@ -401,14 +396,14 @@ public class ChatFormat implements Listener {
 	String replacePlayer(String color, String format, String msg, String player, Player p) {
 		String c = StringUtils.colorize(color+player);
 		Pattern g = Pattern.compile(player, Pattern.CASE_INSENSITIVE);
-		StringBuffer buf = new StringBuffer(msg.length());
+		StringBuilder buf = new StringBuilder(msg.length());
 		String last = format;
 		int count = 1;
 		String[] split = g.split(msg);
 		for(String aa : split) {
 			last=getLastColors(last+aa);
 			if(count++<split.length)
-				buf.append(aa+c+((last.toLowerCase().contains("&u")||last.toLowerCase().contains("§u"))?last:StringUtils.colorize(last)));
+				buf.append(aa).append(c).append((last.toLowerCase().contains("&u") || last.toLowerCase().contains("§u")) ? last : StringUtils.colorize(last));
 			else
 				buf.append(aa);
 		}
@@ -467,7 +462,7 @@ public class ChatFormat implements Listener {
 					try {
 					if(((Map<String, Object>) o).containsKey("color") && ((Map<String, Object>) o).containsKey("text")) {
 						if((((Map<String, Object>) o).get("text")+"").contains("%message%")) {
-							return text=((Map<String, Object>) o).get("color").toString();
+							return ((Map<String, Object>) o).get("color").toString();
 						}
 						text=((Map<String, Object>) o).get("color").toString();
 					}else {
@@ -491,7 +486,7 @@ public class ChatFormat implements Listener {
 		if(text==null)return "";
 		return getLastColors(text);
 	}
-	private static Pattern getLast = Pattern.compile("(#[A-Fa-f0-9]{6}|[&§][Xx]([&§][A-Fa-f0-9]){6}|[&§][A-Fa-f0-9K-Ok-oUuXx])");
+	private static final Pattern getLast = Pattern.compile("(#[A-Fa-f0-9]{6}|[&§][Xx]([&§][A-Fa-f0-9]){6}|[&§][A-Fa-f0-9K-Ok-oUuXx])");
 
 	public static String getLastColors(String s) {
 		Matcher m = getLast.matcher(s);

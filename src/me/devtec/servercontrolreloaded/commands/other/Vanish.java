@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.commands.other;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,9 +26,10 @@ import me.devtec.theapi.utils.reflections.Ref;
 
 public class Vanish implements CommandExecutor, TabCompleter{
 
-	private static Class<?> cc = Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode")!=null?Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
-	private static Object surv = Ref.getNulled(cc, "SURVIVAL"), spec = Ref.getNulled(cc, "SPECTATOR");
-	private static Object up = Ref.getNulled(Ref.field(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), "UPDATE_GAME_MODE"));
+	private static final Class<?> cc = Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode")!=null?Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
+	private static final Object surv = Ref.getNulled(cc, "SURVIVAL");
+	private static final Object spec = Ref.getNulled(cc, "SPECTATOR");
+	private static final Object up = Ref.getNulled(Ref.field(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), "UPDATE_GAME_MODE"));
 
 	public static void moveInTab(Player player, int game, boolean vanish) {
 		Object array = Array.newInstance(Ref.nmsOrOld("server.level.EntityPlayer","EntityPlayer"), 1);
@@ -64,9 +66,9 @@ public class Vanish implements CommandExecutor, TabCompleter{
 			String arg2, String[] args) {
 		if(Loader.has(s, "Vanish", "Other") && args.length==1)
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
-	public static HashMap<String, Integer> task = new HashMap<>();
+	public static final HashMap<String, Integer> task = new HashMap<>();
 	
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {

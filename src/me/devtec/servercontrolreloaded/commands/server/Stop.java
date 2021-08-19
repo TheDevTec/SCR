@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.commands.server;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -48,7 +49,7 @@ public class Stop implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Stop", "Server") && args.length == 1)
 			return StringUtils.copyPartialMatches(args[0], Arrays.asList("15s", "30s", "now", "cancel"));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 }

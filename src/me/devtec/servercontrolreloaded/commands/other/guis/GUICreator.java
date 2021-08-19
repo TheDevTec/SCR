@@ -19,12 +19,12 @@ import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 
 public class GUICreator implements CommandExecutor {
-	public static Map<String, GUIMaker> maker = new HashMap<>();
+	public static final Map<String, GUIMaker> maker = new HashMap<>();
 	private static boolean inicialized;
     
 	public static class GUIMaker {
-		private String gui;
-		private Layout l = new Layout();
+		private final String gui;
+		private final Layout l = new Layout();
 		private List<String> ly;
 	    private List<GUI> guis;
 	    private GUI g;
@@ -123,10 +123,12 @@ public class GUICreator implements CommandExecutor {
 
 	}
 	
-    private String gui, cmd;
-    private Map<String, Long> cooldownMap = new HashMap<>();
-    private long cooldown, waitingCooldown;
-    private boolean global;
+    private final String gui;
+    private final String cmd;
+    private final Map<String, Long> cooldownMap = new HashMap<>();
+    private final long cooldown;
+    private long waitingCooldown;
+    private final boolean global;
 	
 	private boolean canUseSimple(CommandSender s) {
 		if(cooldown<=0)return true;

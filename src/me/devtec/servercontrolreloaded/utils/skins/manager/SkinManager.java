@@ -5,13 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 import org.bukkit.Bukkit;
@@ -34,8 +28,8 @@ import me.devtec.theapi.utils.reflections.Ref;
 public class SkinManager {
 	private static final String URL_FORMAT = "https://api.mineskin.org/generate/url?url=%s&%s",
 			USER_FORMAT="https://api.ashcon.app/mojang/v2/user/%s";
-	private static HashMap<String, SkinData> playerSkins = new HashMap<>();
-	private static HashMap<String, SkinData> generator = new HashMap<>();
+	private static final HashMap<String, SkinData> playerSkins = new HashMap<>();
+	private static final HashMap<String, SkinData> generator = new HashMap<>();
 	@SuppressWarnings("unchecked")
 	public static synchronized void generateSkin(String urlOrName, SkinCallback onFinish, boolean override) {
 		if(urlOrName==null)return;
@@ -95,8 +89,12 @@ public class SkinManager {
 	
 	private static Object remove, add;
 	private static Method oldRemove, oldAdd;
-	private static Class<?> cc = Ref.nms("WorldSettings$EnumGamemode")==null?Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
-	private static Constructor<?> infoC, headC,handC,respawnC, posC;
+	private static final Class<?> cc = Ref.nms("WorldSettings$EnumGamemode")==null?Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
+	private static Constructor<?> infoC;
+    private static final Constructor<?> headC;
+    private static final Constructor<?> handC;
+    private static Constructor<?> respawnC;
+    private static Constructor<?> posC;
 	static {
 		headC = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutEntityHeadRotation","PacketPlayOutEntityHeadRotation"), Ref.nmsOrOld("world.entity.Entity","Entity"), byte.class);
 		handC = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutHeldItemSlot","PacketPlayOutHeldItemSlot"), int.class);
@@ -134,10 +132,10 @@ public class SkinManager {
 			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),int.class, Ref.nms("EnumDifficulty"), Ref.nms("WorldType"), cc);
 	}
 	
-	private static Set<?> sset = new HashSet<>();
+	private static final Set<?> sset = new HashSet<>();
 
 	private static Method set = Ref.method(Ref.getClass("com.google.common.collect.ForwardingMultimap"), "put", Object.class, Object.class);
-	private static Method cf = Ref.method(Ref.nmsOrOld("world.level.biome.BiomeManager","BiomeManager"), "a", long.class);
+	private static final Method cf = Ref.method(Ref.nmsOrOld("world.level.biome.BiomeManager","BiomeManager"), "a", long.class);
 	static {
 		if(set==null)
 			set = Ref.method(Ref.getClass("net.minecraft.util.com.google.common.collect.ForwardingMultimap"), "put", Object.class, Object.class);
@@ -154,17 +152,17 @@ public class SkinManager {
 		Ref.invoke(prop, "clear");
 		Ref.invoke(prop, set, "textures", Ref.createProperty("textures", data.value, data.signature));
 		Object destroy = NMSAPI.getPacketPlayOutEntityDestroy(player.getEntityId());
-		Object remove = null, add = null;
+		Object remove, add;
 		if(TheAPI.isOlderThan(8)) {
 			remove=Ref.invokeNulled(oldRemove, s);
 			add=Ref.invokeNulled(oldAdd, s);
 		}else {
 			if(TheAPI.isNewerThan(16)) {
-				Collection<?> iterable = Arrays.asList(s);
+				Collection<?> iterable = Collections.singletonList(s);
 				remove=Ref.newInstance(infoC, SkinManager.remove, iterable);
 				add = Ref.newInstance(infoC, SkinManager.add, iterable);
 			}else {
-				Iterable<?> iterable = Arrays.asList(s);
+				Iterable<?> iterable = Collections.singletonList(s);
 				remove=Ref.newInstance(infoC, SkinManager.remove, iterable);
 				add = Ref.newInstance(infoC, SkinManager.add, iterable);
 			}
@@ -178,7 +176,7 @@ public class SkinManager {
 			if(p == player) {
 				Object w = Ref.world(p.getWorld());
 				Location a = p.getLocation();
-				Object re = null;
+				Object re;
 				if(TheAPI.isNewerThan(16)) { //1.17+
 					if(res==null)
 					for(Field f : Ref.getDeclaredFields(w.getClass().getSuperclass()))
@@ -205,7 +203,7 @@ public class SkinManager {
 					re=Ref.newInstance(respawnC, player.getWorld().getEnvironment().getId(), Ref.invoke(w, "getDifficulty"), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
 				Ref.sendPacket(p, re);
 				Ref.invoke(p, "updateAbilities");
-				Object pos = null;
+				Object pos;
 				if(TheAPI.isOlderThan(8)) { //1.7
 					pos=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), false);
 				}else if(TheAPI.isOlderThan(9)) { //1.8

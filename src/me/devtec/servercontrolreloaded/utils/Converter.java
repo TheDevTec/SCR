@@ -28,7 +28,6 @@ public class Converter {
 							float pitch = (float)me.getLong("Players."+playername+".Homes."+home+".Pitch");
 							user.set("Homes."+home, new Position(me.getString("Players."+playername+".Homes."+home+".World"), x, y, z, yaw, pitch).toString());
 						}
-					continue;
 					}else
 					user.set(s, me.get("Players."+playername+"."+s));
 				}

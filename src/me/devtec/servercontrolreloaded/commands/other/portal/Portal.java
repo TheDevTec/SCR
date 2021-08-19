@@ -1,10 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.other.portal;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -35,7 +31,7 @@ public class Portal implements CommandExecutor, TabCompleter {
 			}
 			if(args[0].equalsIgnoreCase("create")) {
 				if(!Loader.portals.exists(args[1])) {
-					Loader.portals.addDefault(args[1]+".cmds", Arrays.asList());
+					Loader.portals.addDefault(args[1]+".cmds", Collections.emptyList());
 					Loader.portals.save();
 					Loader.sendMessages(s, "Portals.Create", Placeholder.c().add("%name%", args[1]));
 					return true;
@@ -167,7 +163,7 @@ public class Portal implements CommandExecutor, TabCompleter {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private Set<String> part = ((Map<String,Object>)Ref.getNulled(Ref.field(Particle.class, "identifier"))).keySet();
+	private final Set<String> part = ((Map<String,Object>)Ref.getNulled(Ref.field(Particle.class, "identifier"))).keySet();
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -177,7 +173,7 @@ public class Portal implements CommandExecutor, TabCompleter {
 			}
 			if(args.length==2) {
 				if(args[0].equalsIgnoreCase("create"))
-					return Arrays.asList("?");
+					return Collections.singletonList("?");
 				if(args[0].equalsIgnoreCase("delete")||args[0].equalsIgnoreCase("server"))
 				return StringUtils.copyPartialMatches(args[1], Loader.portals.getKeys());
 				if(args[0].equalsIgnoreCase("cmds")||args[0].equalsIgnoreCase("bcmds"))
@@ -187,7 +183,7 @@ public class Portal implements CommandExecutor, TabCompleter {
 			}
 			if(args.length==3) {
 				if(args[0].equalsIgnoreCase("server"))
-					return Arrays.asList("?");
+					return Collections.singletonList("?");
 				if(args[0].equalsIgnoreCase("cmds")||args[0].equalsIgnoreCase("bcmds"))
 					return StringUtils.copyPartialMatches(args[2], Loader.portals.getKeys());
 				if(args[0].equalsIgnoreCase("set")) {
@@ -198,7 +194,7 @@ public class Portal implements CommandExecutor, TabCompleter {
 			if(args.length==4) {
 				if(args[0].equalsIgnoreCase("cmds")||args[0].equalsIgnoreCase("bcmds")) {
 					if(args[1].equalsIgnoreCase("add"))
-						return Arrays.asList("?");
+						return Collections.singletonList("?");
 					if(args[1].equalsIgnoreCase("remove")) {
 						List<String> c = new ArrayList<>();
 						for(int i = 0; i < Loader.portals.getStringList(args[2]+"."+args[0].toLowerCase()).size(); ++i)
@@ -212,7 +208,7 @@ public class Portal implements CommandExecutor, TabCompleter {
 				}
 			}
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 }

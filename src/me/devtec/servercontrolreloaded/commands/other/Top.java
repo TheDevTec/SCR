@@ -17,7 +17,7 @@ public class Top implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(Loader.has(s, "Top", "Other")) {
-			if(s instanceof Player==false)return true;
+			if(!(s instanceof Player))return true;
 			if(!CommandsManager.canUse("Other.Top", s)) {
 				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Other.Top", s))));
 				return true;

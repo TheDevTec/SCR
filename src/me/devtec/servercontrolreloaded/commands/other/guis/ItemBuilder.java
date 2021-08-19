@@ -20,11 +20,14 @@ import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public class ItemBuilder {
-	String name, head;
-	List<String> lore;
+	final String name;
+    String head;
+	final List<String> lore;
 	List<ItemFlag> itemflags;
 	Map<Enchantment, Integer> enchants;
-	String model, amount,data;
+	String model;
+    final String amount;
+    String data;
 	Material type;
 	
 	final String path;
@@ -78,7 +81,7 @@ public class ItemBuilder {
 				String text = PlaceholderAPI.setPlaceholders(owner, head);
 				if(text==null||text.trim().isEmpty())text=head;
 				if(text.toLowerCase().startsWith("hdb:")) {
-					ItemStack stack = HDBSupport.parse(text==null?null:PlaceholderAPI.setPlaceholders(owner, text));
+					ItemStack stack = HDBSupport.parse(PlaceholderAPI.setPlaceholders(owner, text));
 					ItemMeta meta = stack.getItemMeta();
 					if(name!=null)
 					meta.setDisplayName(PlaceholderAPI.setPlaceholders(owner, StringUtils.colorize(name)));

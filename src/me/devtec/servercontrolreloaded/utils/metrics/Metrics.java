@@ -38,7 +38,7 @@ public class Metrics {
     private static final String URL = "https://bStats.org/submitData/bukkit";
 
     // Is bStats enabled on this server?
-    private boolean enabled;
+    private final boolean enabled;
 
     // Should failed requests be logged?
     private static boolean logFailedRequests;
@@ -151,7 +151,7 @@ public class Metrics {
                     try {
                         Object plugin = provider.getService().getMethod("getPluginData").invoke(provider.getProvider());
                         if (plugin instanceof JSONObject) {
-                            pluginData.add((JSONObject) plugin);
+                            pluginData.add(plugin);
                         } else {
                             try {
                             	JSONObject object = (JSONObject) new JSONParser().parse(plugin.toString());

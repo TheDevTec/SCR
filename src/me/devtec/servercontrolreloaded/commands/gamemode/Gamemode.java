@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.gamemode;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.GameMode;
@@ -29,7 +30,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 			Loader.noPerms(s, "GameMode", "GameMode");
 			return true;
 		}
-		String gamemode = null;
+		String gamemode;
 		if (args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0"))
 			gamemode = "Survival";
 		else
@@ -113,6 +114,6 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 			if(args.length==2 && Loader.has(s, "GameMode" + args[0], "GameMode","Other"))
 				return StringUtils.copyPartialMatches(args[1], API.getPlayerNames(s));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

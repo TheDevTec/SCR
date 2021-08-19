@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.time;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -57,6 +58,6 @@ public class PDay implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if (Loader.has(s, "PlayerDay", "Time", "Other") && args.length == 1)
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

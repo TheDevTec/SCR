@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -33,7 +34,7 @@ public class TempFly implements CommandExecutor, TabCompleter {
 					return Arrays.asList("15m","2h","2h30m","6h","12h","7d");
 				}
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 	@Override

@@ -75,7 +75,7 @@ public class Kit {
 					Bukkit.getLogger().warning("Error when preparing (kit:" + name + ", id:"+id+" of material, section:add) " + mat + ", material is invalid");
 					continue;
 				}
-				ItemCreatorAPI a = new ItemCreatorAPI(Material.AIR);
+				ItemCreatorAPI a;
 				if(Loader.kit.exists("Kits." + name + ".items.add." + id + ".head")) {
 					String head = PlaceholderAPI.setPlaceholders(p, Loader.kit.getString("Kits." + name + ".items.add." + id + ".head"));
 					if(head.toLowerCase().startsWith("hdb:"))
@@ -136,7 +136,7 @@ public class Kit {
 					Bukkit.getLogger().warning("Error when preparing (kit:" + name + ", id:"+id+", section:set) of material " + mat + ", material is invalid");
 					continue;
 				}
-				ItemCreatorAPI a = new ItemCreatorAPI(Material.AIR);
+				ItemCreatorAPI a;
 				if(Loader.kit.exists("Kits." + name + ".items.set." + id + ".head")) {
 					String head = PlaceholderAPI.setPlaceholders(p, Loader.kit.getString("Kits." + name + ".items.set." + id + ".head"));
 					

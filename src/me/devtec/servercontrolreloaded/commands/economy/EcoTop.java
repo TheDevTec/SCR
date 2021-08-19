@@ -1,13 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.economy;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -28,7 +22,7 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class EcoTop implements CommandExecutor, TabCompleter {
-	private HashMap<String, TreeMap<Double, String>> h = new HashMap<>();
+	private final HashMap<String, TreeMap<Double, String>> h = new HashMap<>();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -49,11 +43,7 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 				TreeMap<Double, String> m = h.get(world);
 				if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
 					TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300*20); 
-					TreeMap<Double, String> money = new TreeMap<>(new Comparator<Double>() {
-						public int compare(Double var1, Double var2) {
-							return var2.compareTo(var1);
-						}
-					});
+					TreeMap<Double, String> money = new TreeMap<>((var1, var2) -> var2.compareTo(var1));
 					for (UUID sa : TheAPI.getUsers()) {
 						String n = LoaderClass.cache.lookupNameById(sa);
 						if(n!=null) {
@@ -81,18 +71,16 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 				
 				int slot=0;
 				int i = 0;
-				Iterator<Entry<Double, String>> es = m.entrySet().iterator();
-				while(es.hasNext()) {
-					Entry<Double, String> sf = es.next();
-					if(slot<max && slot >= min) {
-						String key = sf.getValue();
-						++i;
-						TheAPI.msg(Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", (i+(10*(page+1))-10) + "")
-								.replace("%player%", key).replace("%playername%", player(s,key))
-								.replace("%money%", API.setMoneyFormat(sf.getKey(),true)), s);
+					for (Entry<Double, String> sf : m.entrySet()) {
+						if (slot < max && slot >= min) {
+							String key = sf.getValue();
+							++i;
+							TheAPI.msg(Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", (i + (10 * (page + 1)) - 10) + "")
+									.replace("%player%", key).replace("%playername%", player(s, key))
+									.replace("%money%", API.setMoneyFormat(sf.getKey(), true)), s);
+						}
+						++slot;
 					}
-					++slot;
-				}
 				Loader.sendMessages(s, "Economy.BalanceTop.Footer", Placeholder.c().replace("%page%",(page+1)+"")
 						.replace("%pages%", pages+""));
 			}}.runTask();
@@ -110,6 +98,6 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] arg3) {
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

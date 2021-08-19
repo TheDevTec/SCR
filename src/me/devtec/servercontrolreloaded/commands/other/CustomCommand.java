@@ -16,7 +16,7 @@ import me.devtec.theapi.utils.StringUtils;
 
 public class CustomCommand implements CommandExecutor {
 	
-	String d;
+	final String d;
 	public CustomCommand(String c) {
 		d=c;
 	}

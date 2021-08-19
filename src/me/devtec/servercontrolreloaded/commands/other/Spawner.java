@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.commands.other;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.block.Block;
@@ -24,7 +25,7 @@ import me.devtec.theapi.utils.StringUtils;
 public class Spawner implements CommandExecutor, TabCompleter {
 
 	public static List<String> list() {
-		ArrayList<String> w = new ArrayList<String>();
+		ArrayList<String> w = new ArrayList<>();
 		String[] d = { "FISHING_HOOK", "DROPPED_ITEM", "LEASH_HITCH", "LIGHTNING", "PLAYER", "MINECART_MOB_SPAWNER",
 				"UKNOWN", "FIREWORK", "PRIMED_TNT", "AREA_EFFECT_CLOUD", "ENDER_SIGNAL", "UNKNOWN" };
 		for (EntityType t : EntityType.values())
@@ -147,12 +148,12 @@ public class Spawner implements CommandExecutor, TabCompleter {
 
 				if (TheAPI.isNewVersion()) {
 					if (args[0].equalsIgnoreCase("setRangePlayer") || args[0].equalsIgnoreCase("setAmount"))
-						return StringUtils.copyPartialMatches(args[1], Arrays.asList("?"));
+						return StringUtils.copyPartialMatches(args[1], Collections.singletonList("?"));
 				}
 				if (args[0].equalsIgnoreCase("setTime"))
-					return StringUtils.copyPartialMatches(args[1], Arrays.asList("?"));
+					return StringUtils.copyPartialMatches(args[1], Collections.singletonList("?"));
 			}
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

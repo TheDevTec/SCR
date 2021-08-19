@@ -1,10 +1,7 @@
 package me.devtec.servercontrolreloaded.utils;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
@@ -49,8 +46,23 @@ public class MultiWorldsGUI {
 		return ItemCreatorAPI.create(TheAPI.isNewVersion()?Material.matchMaterial("REDSTONE_TORCH"):Material.matchMaterial("REDSTONE_TORCH_ON"),1,name,lore);
 	}
 	
-	private static ItemGUI create, delete, load, unload, setspawn, list, teleport, set, backMain
-	, setGenNormal, setGenNether, setGenEnd, setGenFlat, setGenVoid, backCreate, backMainFromCreate,backSet;
+	private static final ItemGUI create;
+	private static final ItemGUI delete;
+	private static final ItemGUI load;
+	private static final ItemGUI unload;
+	private static final ItemGUI setspawn;
+	private static final ItemGUI list;
+	private static final ItemGUI teleport;
+	private static final ItemGUI set;
+	private static final ItemGUI backMain;
+	private static final ItemGUI setGenNormal;
+	private static final ItemGUI setGenNether;
+	private static final ItemGUI setGenEnd;
+	private static final ItemGUI setGenFlat;
+	private static final ItemGUI setGenVoid;
+	private static final ItemGUI backCreate;
+	private static final ItemGUI backMainFromCreate;
+	private static final ItemGUI backSet;
 	static {
 		backMain=new ItemGUI(createItem("&cBack", XMaterial.BARRIER, Lists.newArrayList())) {
 			@Override
@@ -80,35 +92,35 @@ public class MultiWorldsGUI {
 				openInvCreate(s);
 			}
 		};
-		setGenNormal=new ItemGUI(createItem("&2Normal", XMaterial.GRASS_BLOCK, Arrays.asList("&7Default generator"))) {
+		setGenNormal=new ItemGUI(createItem("&2Normal", XMaterial.GRASS_BLOCK, Collections.singletonList("&7Default generator"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				TheAPI.getUser(s).setAndSave("MultiWorlds-Generator", "NORMAL");
 				openInvCreate(s);
 			}
 		};
-		setGenNether=new ItemGUI(createItem("&cNether", XMaterial.NETHERRACK, Arrays.asList("&7Nether generator"))) {
+		setGenNether=new ItemGUI(createItem("&cNether", XMaterial.NETHERRACK, Collections.singletonList("&7Nether generator"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				TheAPI.getUser(s).setAndSave("MultiWorlds-Generator", "NETHER");
 				openInvCreate(s);
 			}
 		};
-		setGenEnd=new ItemGUI(createItem("&8The End", XMaterial.END_STONE, Arrays.asList("&7The End generator"))) {
+		setGenEnd=new ItemGUI(createItem("&8The End", XMaterial.END_STONE, Collections.singletonList("&7The End generator"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				TheAPI.getUser(s).setAndSave("MultiWorlds-Generator", "THE_END");
 				openInvCreate(s);
 			}
 		};
-		setGenFlat=new ItemGUI(createItem("&aFlat", XMaterial.GRASS_BLOCK, Arrays.asList("&7Flat generator"))) {
+		setGenFlat=new ItemGUI(createItem("&aFlat", XMaterial.GRASS_BLOCK, Collections.singletonList("&7Flat generator"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				TheAPI.getUser(s).setAndSave("MultiWorlds-Generator", "FLAT");
 				openInvCreate(s);
 			}
 		};
-		setGenVoid=new ItemGUI(createItem("&7Void", XMaterial.GLASS, Arrays.asList("&7Void generator"))) {
+		setGenVoid=new ItemGUI(createItem("&7Void", XMaterial.GLASS, Collections.singletonList("&7Void generator"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				TheAPI.getUser(s).setAndSave("MultiWorlds-Generator", "THE_VOID");
@@ -116,7 +128,7 @@ public class MultiWorldsGUI {
 			}
 		};
 		create=new ItemGUI(createItem("&aCreate", XMaterial.GREEN_WOOL,
-				Arrays.asList("&7Click to &acreate &7new world"))) {
+				Collections.singletonList("&7Click to &acreate &7new world"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				if (Loader.has(s,"MultiWorlds","Other"))
@@ -124,7 +136,7 @@ public class MultiWorldsGUI {
 			}
 		};
 		delete=new ItemGUI(createItem("&cDelete", XMaterial.RED_WOOL,
-				Arrays.asList("&7Click to &cdelete &7existing world"))) {
+				Collections.singletonList("&7Click to &cdelete &7existing world"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				if (Loader.has(s,"MultiWorlds","Other"))
@@ -132,7 +144,7 @@ public class MultiWorldsGUI {
 			}
 		};
 		load=new ItemGUI(createItem("&bLoad", XMaterial.LIGHT_BLUE_WOOL,
-				Arrays.asList("&7Click to &bload &7unloaded world"))) {
+				Collections.singletonList("&7Click to &bload &7unloaded world"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				if (Loader.has(s,"MultiWorlds","Other"))
@@ -140,7 +152,7 @@ public class MultiWorldsGUI {
 			}
 		};
 		unload=new ItemGUI(createItem("&eUnload", XMaterial.YELLOW_WOOL,
-				Arrays.asList("&7Click to &eunload &7loaded world"))) {
+				Collections.singletonList("&7Click to &eunload &7loaded world"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				if (Loader.has(s,"MultiWorlds","Other"))
@@ -148,7 +160,7 @@ public class MultiWorldsGUI {
 			}
 		};
 		teleport=new ItemGUI(createItem("&5Teleport", XMaterial.ENDER_PEARL,
-			  Arrays.asList("&7Click to &5teleport &7to another world"))) {
+				Collections.singletonList("&7Click to &5teleport &7to another world"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				if (Loader.has(s,"MultiWorlds","Other"))
@@ -156,15 +168,15 @@ public class MultiWorldsGUI {
 			}
 		};
 		list=new ItemGUI(createItem("&eList of Worlds", XMaterial.BOOK,
-				Arrays.asList("&7Click to open &elist &7of worlds"))) {
+				Collections.singletonList("&7Click to open &elist &7of worlds"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				if (Loader.has(s,"MultiWorlds","Other"))
 					openInvList(s);
 			}
 		};
-		set=new ItemGUI(createItem("&2World settings", 
-				Arrays.asList("&7Click to open &2world settings"))) {
+		set=new ItemGUI(createItem("&2World settings",
+				Collections.singletonList("&7Click to open &2world settings"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				if (Loader.has(s,"MultiWorlds","Other"))
@@ -172,7 +184,7 @@ public class MultiWorldsGUI {
 			}
 		};
 		setspawn=new ItemGUI(createItem("&eSetSpawn", XMaterial.COMPASS,
-				Arrays.asList("&7Click to &eset spawn &7of world at your location"))) {
+				Collections.singletonList("&7Click to &eset spawn &7of world at your location"))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				if (Loader.has(s,"MultiWorlds","Other")) {
@@ -264,9 +276,7 @@ public class MultiWorldsGUI {
 			if(TheAPI.isNewerThan(16)) {
 				Iterable<?> t = (Iterable<?>) Ref.invoke(Ref.invoke(Ref.get(Ref.world(w), "G"),"d"),"a");
 				int i = 0;
-				Iterator<?> tt = t.iterator();
-				while(tt.hasNext()) {
-					tt.next();
+				for (Object o : t) {
 					++i;
 				}
 				lore.add("&7 - Entities: " + i);
@@ -379,7 +389,7 @@ public class MultiWorldsGUI {
 		prepareInv(a);
 		for (World w : Bukkit.getWorlds()) {
 				a.addItem(new ItemGUI(createItem(w.getName(), w.getEnvironment() == Environment.NORMAL?XMaterial.GRASS_BLOCK:
-					(w.getEnvironment() == Environment.NETHER?XMaterial.NETHERRACK:XMaterial.END_STONE), Arrays.asList("&7Click to delete world"))) {
+					(w.getEnvironment() == Environment.NETHER?XMaterial.NETHERRACK:XMaterial.END_STONE), Collections.singletonList("&7Click to delete world"))) {
 					@Override
 					public void onClick(Player s, HolderGUI g, ClickType c) {
 						openInvDelete(s);
@@ -403,7 +413,7 @@ public class MultiWorldsGUI {
 		prepareInv(a);
 		for (World w : Bukkit.getWorlds()) {
 			a.addItem(new ItemGUI(createItem(w.getName(), w.getEnvironment() == Environment.NORMAL?XMaterial.GRASS_BLOCK:
-				(w.getEnvironment() == Environment.NETHER?XMaterial.NETHERRACK:XMaterial.END_STONE), Arrays.asList("&7Click to load world"))) {
+				(w.getEnvironment() == Environment.NETHER?XMaterial.NETHERRACK:XMaterial.END_STONE), Collections.singletonList("&7Click to load world"))) {
 				@Override
 				public void onClick(Player s, HolderGUI g, ClickType c) {
 					openInvUnload(s);
@@ -419,7 +429,7 @@ public class MultiWorldsGUI {
 		prepareInv(a);
 		for (World w : Bukkit.getWorlds()) {
 			a.addItem(new ItemGUI(createItem(w.getName(), w.getEnvironment() == Environment.NORMAL?XMaterial.GRASS_BLOCK:
-				(w.getEnvironment() == Environment.NETHER?XMaterial.NETHERRACK:XMaterial.END_STONE), Arrays.asList("&7Click to teleport to world '"+w.getName()+"'"))) {
+				(w.getEnvironment() == Environment.NETHER?XMaterial.NETHERRACK:XMaterial.END_STONE), Collections.singletonList("&7Click to teleport to world '" + w.getName() + "'"))) {
 				@Override
 				public void onClick(Player s, HolderGUI g, ClickType c) {
 					g.close(s);
@@ -431,11 +441,7 @@ public class MultiWorldsGUI {
 					Location loc = new Location(w, x,y, z, x_head, z_head);
 					API.setBack(s);
 					s.setNoDamageTicks(20);
-					NMSAPI.postToMainThread(new Runnable() {
-						public void run() {
-							API.teleport(s, loc);
-						}
-					});
+					NMSAPI.postToMainThread(() -> API.teleport(s, loc));
 					Loader.sendMessages(s, "MultiWorld.Teleport.You", Placeholder.c().add("%world%", w.getName()));
 				}
 			});
@@ -448,7 +454,7 @@ public class MultiWorldsGUI {
 		prepareInv(a);
 		for (World w : Bukkit.getWorlds()) {
 			a.addItem(new ItemGUI(createItem(w.getName(), w.getEnvironment() == Environment.NORMAL?XMaterial.GRASS_BLOCK:
-				(w.getEnvironment() == Environment.NETHER?XMaterial.NETHERRACK:XMaterial.END_STONE), Arrays.asList("&7Click to open setting of world '"+w.getName()+"'"))) {
+				(w.getEnvironment() == Environment.NETHER?XMaterial.NETHERRACK:XMaterial.END_STONE), Collections.singletonList("&7Click to open setting of world '" + w.getName() + "'"))) {
 					@Override
 				public void onClick(Player s, HolderGUI g, ClickType c) {
 						openInvSetWorld(s, w);
@@ -462,7 +468,7 @@ public class MultiWorldsGUI {
 		GUI a = new GUI("&6World setting - " + w.getName(),54,p);
 		smallInv(a);
 		a.setItem(49, backSet);
-		a.setItem(0,new ItemGUI(createItem("&6Difficulty", XMaterial.FEATHER, Arrays.asList(w.getDifficulty().name()))) {
+		a.setItem(0,new ItemGUI(createItem("&6Difficulty", XMaterial.FEATHER, Collections.singletonList(w.getDifficulty().name()))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				String dif = w.getDifficulty().name();
@@ -480,7 +486,7 @@ public class MultiWorldsGUI {
 					Loader.mw.set("WorldsSettings." + w.getName() + ".Difficulty", dif);
 					Loader.mw.save();
 					w.setDifficulty(Difficulty.valueOf(dif));
-					this.setItem(createItem("&6Difficulty", XMaterial.FEATHER, Arrays.asList(dif)));
+					this.setItem(createItem("&6Difficulty", XMaterial.FEATHER, Collections.singletonList(dif)));
 					g.setItem(0, this);
 					break;
 				case RIGHT_PICKUP:
@@ -496,7 +502,7 @@ public class MultiWorldsGUI {
 					Loader.mw.set("WorldsSettings." + w.getName() + ".Difficulty", dif);
 					Loader.mw.save();
 					w.setDifficulty(Difficulty.valueOf(dif));
-					this.setItem(createItem("&6Difficulty", XMaterial.FEATHER, Arrays.asList(dif)));
+					this.setItem(createItem("&6Difficulty", XMaterial.FEATHER, Collections.singletonList(dif)));
 					g.setItem(0, this);
 					break;
 				default:
@@ -504,7 +510,7 @@ public class MultiWorldsGUI {
 				}
 			}
 		});
-		a.setItem(1,new ItemGUI(createItem("&6GameMode", XMaterial.BRICKS, Arrays.asList(Loader.mw.exists("WorldsSettings." + w.getName() + ".GameMode")?Loader.mw.getString("WorldsSettings." + w.getName() + ".GameMode"):"SURVIVAL"))) {
+		a.setItem(1,new ItemGUI(createItem("&6GameMode", XMaterial.BRICKS, Collections.singletonList(Loader.mw.exists("WorldsSettings." + w.getName() + ".GameMode") ? Loader.mw.getString("WorldsSettings." + w.getName() + ".GameMode") : "SURVIVAL"))) {
 			@Override
 			public void onClick(Player s, HolderGUI gui, ClickType c) {
 				String g = Loader.mw.exists("WorldsSettings." + w.getName() + ".GameMode")?Loader.mw.getString("WorldsSettings." + w.getName() + ".GameMode"):"SURVIVAL";
@@ -528,7 +534,7 @@ public class MultiWorldsGUI {
 						for (Player p : TheAPI.getOnlinePlayers())
 							if (p.getWorld() == w)p.setGameMode(gg);
 					});
-					this.setItem(createItem("&6GameMode", XMaterial.BRICKS, Arrays.asList(g)));
+					this.setItem(createItem("&6GameMode", XMaterial.BRICKS, Collections.singletonList(g)));
 					gui.setItem(1, this);
 					break;
 				case RIGHT_PICKUP:
@@ -550,7 +556,7 @@ public class MultiWorldsGUI {
 						for (Player p : TheAPI.getOnlinePlayers())
 							if (p.getWorld() == w)p.setGameMode(gg);
 					});
-					this.setItem(createItem("&6GameMode", XMaterial.BRICKS, Arrays.asList(g)));
+					this.setItem(createItem("&6GameMode", XMaterial.BRICKS, Collections.singletonList(g)));
 					gui.setItem(1, this);
 					break;
 				default:
@@ -558,7 +564,7 @@ public class MultiWorldsGUI {
 				}
 			}
 		});
-		a.setItem(2,new ItemGUI(createItem("&6Keep Spawn In Memory", XMaterial.MAP, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".KeepSpawnInMemory") + ""))) {
+		a.setItem(2,new ItemGUI(createItem("&6Keep Spawn In Memory", XMaterial.MAP, Collections.singletonList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".KeepSpawnInMemory") + ""))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				boolean sf = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".KeepSpawnInMemory");
@@ -566,12 +572,12 @@ public class MultiWorldsGUI {
 				Loader.mw.set("WorldsSettings." + w.getName() + ".KeepSpawnInMemory", sf);
 				Loader.mw.save();
 				w.setKeepSpawnInMemory(sf);
-				this.setItem(createItem("&6Keep Spawn In Memory", XMaterial.MAP, Arrays.asList(sf + "")));
+				this.setItem(createItem("&6Keep Spawn In Memory", XMaterial.MAP, Collections.singletonList(sf + "")));
 				g.setItem(2, this);
 			}
 		});
 
-		a.setItem(3,new ItemGUI(createItem("&6Auto Save", XMaterial.EMERALD_BLOCK, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".AutoSave") + ""))) {
+		a.setItem(3,new ItemGUI(createItem("&6Auto Save", XMaterial.EMERALD_BLOCK, Collections.singletonList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".AutoSave") + ""))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				boolean sa = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".AutoSave");
@@ -579,12 +585,12 @@ public class MultiWorldsGUI {
 				Loader.mw.set("WorldsSettings." + w.getName() + ".AutoSave", sa);
 				Loader.mw.save();
 				w.setAutoSave(sa);
-				this.setItem(createItem("&6Auto Save", XMaterial.EMERALD_BLOCK, Arrays.asList(sa + "")));
+				this.setItem(createItem("&6Auto Save", XMaterial.EMERALD_BLOCK, Collections.singletonList(sa + "")));
 				g.setItem(3, this);
 			}
 		});
 
-		a.setItem(4,new ItemGUI(createItem("&6PvP", XMaterial.DIAMOND_SWORD, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".PvP") + ""))) {
+		a.setItem(4,new ItemGUI(createItem("&6PvP", XMaterial.DIAMOND_SWORD, Collections.singletonList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".PvP") + ""))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				boolean sas = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".PvP");
@@ -592,77 +598,77 @@ public class MultiWorldsGUI {
 				Loader.mw.set("WorldsSettings." + w.getName() + ".PvP", sas);
 				Loader.mw.save();
 				w.setPVP(sas);
-				this.setItem(createItem("&6PvP", XMaterial.DIAMOND_SWORD, Arrays.asList(sas + "")));
+				this.setItem(createItem("&6PvP", XMaterial.DIAMOND_SWORD, Collections.singletonList(sas + "")));
 				g.setItem(4, this);
 			}
 		});
-		a.setItem(5,new ItemGUI(createItem("&6Can be portal created in this world", XMaterial.OBSIDIAN, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".CreatePortal") + ""))) {
+		a.setItem(5,new ItemGUI(createItem("&6Can be portal created in this world", XMaterial.OBSIDIAN, Collections.singletonList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".CreatePortal") + ""))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				boolean sass = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".CreatePortal");
 				sass=!sass;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".CreatePortal", sass);
 				Loader.mw.save();
-				this.setItem(createItem("&6Can be portal created in this world", XMaterial.OBSIDIAN, Arrays.asList(sass + "")));
+				this.setItem(createItem("&6Can be portal created in this world", XMaterial.OBSIDIAN, Collections.singletonList(sass + "")));
 				g.setItem(5, this);
 			}
 		});
-		a.setItem(6,new ItemGUI(createItem("&6Can be portal used in this world", XMaterial.ENDER_PEARL, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".PortalTeleport") + ""))) {
+		a.setItem(6,new ItemGUI(createItem("&6Can be portal used in this world", XMaterial.ENDER_PEARL, Collections.singletonList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".PortalTeleport") + ""))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				boolean sasss = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".PortalTeleport");
 				sasss=!sasss;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".PortalTeleport", sasss);
 				Loader.mw.save();
-				this.setItem(createItem("&6Can be portal used in this world", XMaterial.ENDER_PEARL, Arrays.asList(sasss + "")));
+				this.setItem(createItem("&6Can be portal used in this world", XMaterial.ENDER_PEARL, Collections.singletonList(sasss + "")));
 				g.setItem(6, this);
 			}
 		});
-		a.setItem(7,new ItemGUI(createItem("&6No mobs", XMaterial.CREEPER_HEAD, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".NoMobs") + ""))) {
+		a.setItem(7,new ItemGUI(createItem("&6No mobs", XMaterial.CREEPER_HEAD, Collections.singletonList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".NoMobs") + ""))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				boolean sassw = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".NoMobs");
 				sassw=!sassw;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".NoMobs", sassw);
 				Loader.mw.save();
-				this.setItem(createItem("&6No mobs", XMaterial.CREEPER_HEAD, Arrays.asList(sassw + "")));
+				this.setItem(createItem("&6No mobs", XMaterial.CREEPER_HEAD, Collections.singletonList(sassw + "")));
 				g.setItem(7, this);
 			}
 		});
-		a.setItem(8,new ItemGUI(createItem("&6Do Fire Damage", XMaterial.FLINT_AND_STEEL, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".DoFireDamage") + ""))) {
+		a.setItem(8,new ItemGUI(createItem("&6Do Fire Damage", XMaterial.FLINT_AND_STEEL, Collections.singletonList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".DoFireDamage") + ""))) {
 			boolean fire = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".DoFireDamage");
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				fire=!fire;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".DoFireDamage", fire);
 				Loader.mw.save();
-				this.setItem(createItem("&6Do Fire Damage", XMaterial.FLINT_AND_STEEL, Arrays.asList(fire + "")));
+				this.setItem(createItem("&6Do Fire Damage", XMaterial.FLINT_AND_STEEL, Collections.singletonList(fire + "")));
 				g.setItem(8, this);
 			}
 		});
-		a.setItem(9,new ItemGUI(createItem("&6Do Drowning Damage", XMaterial.WATER_BUCKET, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".DoDrownDamage") + ""))) {
+		a.setItem(9,new ItemGUI(createItem("&6Do Drowning Damage", XMaterial.WATER_BUCKET, Collections.singletonList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".DoDrownDamage") + ""))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				boolean dfire = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".DoDrownDamage");
 				dfire=!dfire;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".DoDrownDamage", dfire);
 				Loader.mw.save();
-				this.setItem(createItem("&6Do Drowning Damage", XMaterial.WATER_BUCKET, Arrays.asList(dfire + "")));
+				this.setItem(createItem("&6Do Drowning Damage", XMaterial.WATER_BUCKET, Collections.singletonList(dfire + "")));
 				g.setItem(9, this);
 			}
 		});
-		a.setItem(10,new ItemGUI(createItem("&6Do Fall Damage", XMaterial.IRON_BOOTS, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".DoFallDamage") + ""))) {
+		a.setItem(10,new ItemGUI(createItem("&6Do Fall Damage", XMaterial.IRON_BOOTS, Collections.singletonList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".DoFallDamage") + ""))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				boolean ddfire = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".DoFallDamage");
 				ddfire=!ddfire;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".DoFallDamage", ddfire);
 				Loader.mw.save();
-				this.setItem(createItem("&6Do Fall Damage", XMaterial.IRON_BOOTS, Arrays.asList(ddfire + "")));
+				this.setItem(createItem("&6Do Fall Damage", XMaterial.IRON_BOOTS, Collections.singletonList(ddfire + "")));
 				g.setItem(10, this);
 			}
 		});
-		a.setItem(11,new ItemGUI(createItem("&6Hardcore", XMaterial.REDSTONE, Arrays.asList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".Hardcore") + ""))) {
+		a.setItem(11,new ItemGUI(createItem("&6Hardcore", XMaterial.REDSTONE, Collections.singletonList(Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".Hardcore") + ""))) {
 			@Override
 			public void onClick(Player s, HolderGUI g, ClickType c) {
 				boolean ddfire = Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".Hardcore");
@@ -670,7 +676,7 @@ public class MultiWorldsGUI {
 				Loader.mw.set("WorldsSettings." + w.getName() + ".Hardcore", ddfire);
 				Loader.mw.save();
 				w.setHardcore(ddfire);
-				this.setItem(createItem("&6Hardcore", XMaterial.REDSTONE, Arrays.asList(ddfire + "")));
+				this.setItem(createItem("&6Hardcore", XMaterial.REDSTONE, Collections.singletonList(ddfire + "")));
 				g.setItem(11, this);
 			}
 		});
@@ -816,7 +822,7 @@ public class MultiWorldsGUI {
 			}
 			XMaterial d = x;
 			String name = WordUtils.capitalize(ds.replace("_", " "));
-			a.setItem(slot, new ItemGUI(createItem("&6" + name, d ,Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds)==null?"":Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds)))) {
+			a.setItem(slot, new ItemGUI(createItem("&6" + name, d , Collections.singletonList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds) == null ? "" : Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds)))) {
 				
 				@Override
 				public void onClick(Player p, HolderGUI g, ClickType c) {
@@ -832,7 +838,7 @@ public class MultiWorldsGUI {
 							Loader.mw.save();
 							NMSAPI.postToMainThread(() -> w.setGameRuleValue(ds,
 									"" + (Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) + 1)));
-							this.setItem(createItem("&6"+name, d, Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
+							this.setItem(createItem("&6"+name, d, Collections.singletonList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
 							g.setItem(slot, this);
 							break;
 						case RIGHT_PICKUP:
@@ -843,7 +849,7 @@ public class MultiWorldsGUI {
 							Loader.mw.save();
 							NMSAPI.postToMainThread(() -> w.setGameRuleValue(ds,
 									"" + (Loader.mw.getInt("WorldsSettings." + w.getName() + ".Gamerule." + ds) - 1)));
-							this.setItem(createItem("&6"+name, d, Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
+							this.setItem(createItem("&6"+name, d, Collections.singletonList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
 							g.setItem(slot, this);
 							break;
 						default:
@@ -854,7 +860,7 @@ public class MultiWorldsGUI {
 						Loader.mw.save();
 						NMSAPI.postToMainThread(() -> w.setGameRuleValue(ds,
 								 "" + (!Loader.mw.getBoolean("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
-						this.setItem(createItem("&6"+name, d, Arrays.asList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
+						this.setItem(createItem("&6"+name, d, Collections.singletonList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds))));
 						g.setItem(slot, this);
 					}
 				}});
@@ -867,7 +873,8 @@ public class MultiWorldsGUI {
 		return gameRules;
 	}
 
-	public static ItemGUI empty=new ItemGUI(createItem(" ", XMaterial.BLACK_STAINED_GLASS_PANE, null)) {public void onClick(Player s, HolderGUI g, ClickType c) {};};
+	public static final ItemGUI empty=new ItemGUI(createItem(" ", XMaterial.BLACK_STAINED_GLASS_PANE, null)) {public void onClick(Player s, HolderGUI g, ClickType c) {}
+	};
 
 	public static void smallInv(GUI a) {
 		for (int i = 45; i < 54; ++i)

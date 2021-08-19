@@ -58,7 +58,6 @@ public class RequestMap {
 		List<String> aw = TheAPI.getUser(sender).getStringList("tpcancel");
 		if(aw.isEmpty()) {
 			Loader.sendMessages(sender, "TpSystem.NoRequest");
-			return;
 		}else {
 			String first = aw.get(0);
 			int type = TheAPI.getUser(sender.getName()).getInt("teleport."+first+".a");

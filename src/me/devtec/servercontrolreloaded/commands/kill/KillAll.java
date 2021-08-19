@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class KillAll implements CommandExecutor, TabCompleter {
@@ -26,7 +27,7 @@ public class KillAll implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Kill.KillAll", s))));
 				return true;
 			}
-			List<String> pl = new ArrayList<String>();
+			List<String> pl = new ArrayList<>();
 			for (Player p : TheAPI.getOnlinePlayers()) {
 				boolean i = p.isDead() || p.getHealth()==0;
 				p.setHealth(0);
@@ -48,6 +49,6 @@ public class KillAll implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if(args.length==1 && Loader.has(s, "KillAll", "Kill"))
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

@@ -15,13 +15,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Fly implements CommandExecutor, TabCompleter {
-	public static HashMap<SPlayer, Integer> task = new HashMap<SPlayer, Integer>();
+	public static final HashMap<SPlayer, Integer> task = new HashMap<>();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -41,7 +38,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 					Loader.Help(s, "Fly", "Other");
 					return true;
 			}
-			SPlayer target = null;
+			SPlayer target;
 			if (args.length == 1) {
 				if(s instanceof Player) {
 				if (args[0].equalsIgnoreCase("off") || args[0].equalsIgnoreCase("false")) {
@@ -156,8 +153,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command arg1, String a, String[] args) {
 		if(Loader.has(s, "Fly", "Other")) {
 			if(args.length==1) {
-				List<String> list = new ArrayList<>();
-				list.addAll(Arrays.asList("On","Off"));
+				List<String> list = new ArrayList<>(Arrays.asList("On", "Off"));
 				if(Loader.has(s, "Fly", "Other", "Other"))
 					list.addAll(API.getPlayerNames(s));
 				return StringUtils.copyPartialMatches(args[0], list);
@@ -165,6 +161,6 @@ public class Fly implements CommandExecutor, TabCompleter {
 			if(args.length==2 && Loader.has(s, "Fly", "Other", "Other"))
 				return StringUtils.copyPartialMatches(args[1], Arrays.asList("On","Off"));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

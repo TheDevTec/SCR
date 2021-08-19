@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.warps;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -86,8 +87,8 @@ public class SetWarp implements CommandExecutor, TabCompleter {
 			if (args.length == 1)
 				return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
 			if (args.length == 2)
-				return StringUtils.copyPartialMatches(args[1], Arrays.asList("yes"));
+				return StringUtils.copyPartialMatches(args[1], Collections.singletonList("yes"));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

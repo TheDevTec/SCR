@@ -2,6 +2,7 @@
 package me.devtec.servercontrolreloaded.commands.bansystem;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -81,6 +82,6 @@ public class Jail implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(Loader.has(s, "Jail", "BanSystem"))
 			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

@@ -103,14 +103,13 @@ public class FarmingSystem implements Listener {
 						int random = TheAPI.generateRandomInt(4);
 						if (random != 0)
 						TheAPI.giveItem(e.getPlayer(), new ItemStack(XMaterial.CARROT.getMaterial(), random));
-						return;
 					}
 				} catch (Exception | NoSuchFieldError es) {
 				}
 			}
 	}
 
-	private static Constructor<?> packet = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutAnimation","PacketPlayOutAnimation"), Ref.nmsOrOld("world.entity.Entity","Entity"), int.class);
+	private static final Constructor<?> packet = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutAnimation","PacketPlayOutAnimation"), Ref.nmsOrOld("world.entity.Entity","Entity"), int.class);
 	
 	private void callHand(Player player) {
 		Ref.sendPacket(player.getWorld().getPlayers(), Ref.newInstance(packet, NMSAPI.getEntity(player), 0));

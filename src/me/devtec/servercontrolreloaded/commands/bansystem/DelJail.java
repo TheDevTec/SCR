@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.bansystem;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -45,6 +46,6 @@ public class DelJail implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(args.length==1 && Loader.has(s, "DelJail", "BanSystem"))
 			return StringUtils.copyPartialMatches(args[0], PunishmentAPI.getjails());
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

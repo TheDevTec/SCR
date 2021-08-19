@@ -29,24 +29,18 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.nms.NMSAPI;
 
 public class Give implements CommandExecutor, TabCompleter {
-	List<String> list = new ArrayList<String>();
+	final List<String> list = new ArrayList<>();
 	
 	public boolean isAir(Material a) {
-		if (!(a.name().equals("AIR") || a.name().equals("VOID_AIR") || a.name().equals("CAVE_AIR")
-				|| a.name().equals("STRUCTURE_VOID"))) {
-			return false;
-		}
-		return true;
+		return a.name().equals("AIR") || a.name().equals("VOID_AIR") || a.name().equals("CAVE_AIR")
+				|| a.name().equals("STRUCTURE_VOID");
 	}
 
 	public boolean isItem(Material a, boolean canBeLegacy) {
 		String s = a.name();
-		if ((s.contains("WALL_") || isAir(a) || s.contains("_STEM") || s.contains("POTTED_")
-				|| !canBeLegacy && s.contains("LEGACY_") || s.equals("END_PORTAL") || s.equals("END_GATEWAY")
-				|| s.equals("NETHER_PORTAL")) && !(a.isBlock() && a.isOccluding())) {
-			return false;
-		}
-		return true;
+		return (!s.contains("WALL_") && !isAir(a) && !s.contains("_STEM") && !s.contains("POTTED_")
+				&& (canBeLegacy || !s.contains("LEGACY_")) && !s.equals("END_PORTAL") && !s.equals("END_GATEWAY")
+				&& !s.equals("NETHER_PORTAL")) || a.isBlock() && a.isOccluding();
 	}
 	
 	public Give() {
@@ -133,7 +127,6 @@ public class Give implements CommandExecutor, TabCompleter {
 		boolean multi = false;
 		HashMap<PotionEffectType, String> a = new HashMap<>();
 		if (s.toUpperCase().startsWith("POTION_OF_")) {
-			args1 = XMaterial.POTION.getMaterial();
 			args2 = s.toUpperCase().replaceFirst("POTION_OF_", "").replaceAll("[0-9]", "");
 			args3 = StringUtils.getInt(s);
 		}

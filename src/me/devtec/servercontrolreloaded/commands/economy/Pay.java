@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.economy;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -77,6 +78,6 @@ public class Pay implements CommandExecutor, TabCompleter {
 			if(args.length==2)
 				return StringUtils.copyPartialMatches(args[1], Arrays.asList("250","500","1k","2.5k","5k"));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.commands.warps;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -55,6 +56,6 @@ public class DelWarp implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		if (Loader.has(s, "DelWarp", "Warps") && args.length == 1)
 			return StringUtils.copyPartialMatches(args[0], Loader.config.getKeys("Warps"));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

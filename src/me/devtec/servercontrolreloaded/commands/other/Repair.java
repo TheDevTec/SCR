@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.commands.other;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -133,7 +134,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 		||name.equals("CROSSBOW")||name.equals("SHIELD")||name.equals("FISHING_ROD");
 	}
 
-	List<String> sd = Arrays.asList("Hand", "All");
+	final List<String> sd = Arrays.asList("Hand", "All");
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(Loader.has(s,"Repair","Other")) {
@@ -142,7 +143,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 		if(args.length==2)
 			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 }

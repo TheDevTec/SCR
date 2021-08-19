@@ -1,10 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -29,7 +26,7 @@ import me.devtec.theapi.utils.json.Reader;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 
-	private static HashMap<String, Object> empty = new HashMap<>();
+	private static final HashMap<String, Object> empty = new HashMap<>();
 	
 	@SuppressWarnings("unchecked")
 	public static Map<String, Object> getCountry(String a) {
@@ -67,7 +64,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 					Map<String, Object> country = getCountry(ip);
 					boolean d = false;
 					String afk = "false";
-					String seen = null;
+					String seen;
 					if (TheAPI.getPlayerOrNull(a[0]) != null) {
 						seen = API.getSeen(a[0], SeenType.Online);
 						if (API.isAFK(TheAPI.getPlayerOrNull(a[0])))
@@ -76,8 +73,8 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 					}else seen = API.getSeen(a[0], SeenType.Offline);
 					SPlayer c = API.getSPlayer(a[0]);
 					Loader.sendMessages(s, "WhoIs."+(d?"Online":"Offline"), Placeholder.c().add("%player%", c.getName()).add("%playername%", c.getName()).add("%customname%", c.getCustomName()).add("%ip%", ip)
-							.add("%country%", (String)country.getOrDefault("country", "Uknown")).add("%region%", (String)country.getOrDefault("regionName", "Uknown"))
-							.add("%city%", (String)country.getOrDefault("city", "Uknown"))
+							.add("%country%", country.getOrDefault("country", "Uknown")).add("%region%", country.getOrDefault("regionName", "Uknown"))
+							.add("%city%", country.getOrDefault("city", "Uknown"))
 							.add("%afk%", afk).add("%seen%", seen).add("%fly%", c.hasFlyEnabled(true)+"").add("%god%", c.hasGodEnabled()+"").add("%tempfly%", c.hasTempFlyEnabled()+"")
 							.add("%op%", Bukkit.getOperators().contains(Bukkit.getOfflinePlayer(a[0]))+"").add("%uuid%", Bukkit.getOfflinePlayer(a[0]).getUniqueId().toString())
 							.add("%vanish%", API.hasVanish(c.getName())+"").add("%firstjoin%", c.getUser().getString("FirstJoin")+"").add("%group%", Staff.getGroup(a[0]))
@@ -109,7 +106,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if(args.length==1 && Loader.has(s, "WhoIs", "Info"))
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 
 }

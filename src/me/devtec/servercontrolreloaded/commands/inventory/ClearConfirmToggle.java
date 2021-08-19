@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.inventory;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -26,7 +27,7 @@ public class ClearConfirmToggle implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args.length == 0) {
-				if (s instanceof Player == false)
+				if (!(s instanceof Player))
 					return true;
 				User d = TheAPI.getUser(s.getName());
 				if (d.getBoolean("ClearInvConfirm")) {
@@ -59,6 +60,6 @@ public class ClearConfirmToggle implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] arg3) {
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

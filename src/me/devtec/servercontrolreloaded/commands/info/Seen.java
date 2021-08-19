@@ -1,9 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -77,6 +74,6 @@ public class Seen implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if(args.length==1 && Loader.has(s, "Seen", "Info"))
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

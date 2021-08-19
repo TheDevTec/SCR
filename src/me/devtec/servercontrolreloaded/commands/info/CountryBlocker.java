@@ -35,7 +35,7 @@ public class CountryBlocker implements CommandExecutor, TabCompleter {
             }
             if(args.length==2){
                 if(args[0].equalsIgnoreCase("add")){
-                    List<String> list=new ArrayList<>();
+                    List<String> list;
                     list=Loader.config.getStringList("CountryBlocker.Whitelist");
                     list.add(args[1]);
                     Loader.config.set("CountryBlocker.Whitelist",list);
@@ -44,18 +44,17 @@ public class CountryBlocker implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 if(args[0].equalsIgnoreCase("remove")){
-                    List<String> list=new ArrayList<>();
+                    List<String> list;
                     list=Loader.config.getStringList("CountryBlocker.Whitelist");
                     if(list.contains(args[1])){
                         list.remove(args[1]);
                         Loader.config.set("CountryBlocker.Whitelist",list);
                         Loader.config.save();
                         Loader.sendMessages(s,"CountryBlocker.Remove", Loader.Placeholder.c().add("%player%",args[1]));
-                        return true;
                     }else{
                         Loader.sendMessages(s,"CountryBlocker.NotWhitelisted", Loader.Placeholder.c().add("%player%",args[1]));
-                        return true;
                     }
+                    return true;
                 }
             }
         }

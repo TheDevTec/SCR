@@ -19,8 +19,8 @@ public class Colors {
 		return string;
 	}
 	
-	private static boolean neww = TheAPI.isNewerThan(15);
-	private static Pattern fixedSplit = Pattern.compile("(#[A-Fa-f0-9]{6}|[&§][Xx]([&§][A-Fa-f0-9]){6}|[&§][A-Fa-f0-9UuXx])");
+	private static final boolean neww = TheAPI.isNewerThan(15);
+	private static final Pattern fixedSplit = Pattern.compile("(#[A-Fa-f0-9]{6}|[&§][Xx]([&§][A-Fa-f0-9]){6}|[&§][A-Fa-f0-9UuXx])");
 	
 	public static String colorize(String b, boolean sign, CommandSender dr) {
 		String p = sign?"Sign":"Chat";
@@ -55,8 +55,7 @@ public class Colors {
 		                String color = match.group();
 		                StringBuilder magic = new StringBuilder("§x");
 		                char[] c = color.substring(1).toCharArray();
-		                for(int i = 0; i < c.length; ++i)
-		                    magic.append("§"+Character.toLowerCase(c[i]));
+						for (char value : c) magic.append("§" + Character.toLowerCase(value));
 		                b = b.replace(color, magic.toString());
 		            }
 				}

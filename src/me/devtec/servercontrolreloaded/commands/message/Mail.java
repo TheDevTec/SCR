@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.commands.message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -72,6 +73,7 @@ public class Mail implements CommandExecutor, TabCompleter {
 					.replace("%playername%", s instanceof Player ? ((Player)s).getDisplayName() : s.getName())
 					.replace("%customname%", s instanceof Player ? ((Player)s).getCustomName() : s.getName())
 					.replace("%message%", msg), args[1]);
+			if(s instanceof Player)
 			TheAPI.sendActionBar((Player) s, Loader.getTranslation("Mail.Sent").toString()
 					.replace("%player%", args[1])
 					.replace("%prefix%", Loader.getTranslation("prefix")+""));
@@ -106,13 +108,12 @@ public class Mail implements CommandExecutor, TabCompleter {
 				if(Loader.has(s, "Mail", "Message", "Read"))
 					c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Read", "Clear")));
 				if(Loader.has(s, "Mail", "Message", "Send"))
-					c.addAll(StringUtils.copyPartialMatches(args[0], Arrays.asList("Send")));
+					c.addAll(StringUtils.copyPartialMatches(args[0], Collections.singletonList("Send")));
 				return c;
 			}
 			if(args[0].equalsIgnoreCase("Send") && Loader.has(s, "Mail", "Message", "Send"))
-				if(args.length>1)
-					return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
+				return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
 		}
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.commands.weather;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -69,6 +70,6 @@ public class Rain implements CommandExecutor, TabCompleter {
 		if (args.length == 1)
 			if (Loader.has(s, "Rain", "Weather"))
 				return StringUtils.copyPartialMatches(args[0], worlds());
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

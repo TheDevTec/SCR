@@ -61,7 +61,7 @@ public class Configs {
 			    		if(cc==null || cc.isEmpty()) {
 			    			if(c.getHeader()!=null && !c.getHeader().isEmpty() && ((List<String>)s.getValue()[1]).containsAll(c.getHeader())
 		        					|| c.getFooter()!=null && !c.getFooter().isEmpty() && ((List<String>) s.getValue()[1]).containsAll(c.getFooter()))continue;
-		        			o[1]=(List<String>)s.getValue()[1];
+		        			o[1]= s.getValue()[1];
 			    			change = true;
 			    		}
 					}
@@ -81,7 +81,7 @@ public class Configs {
 		NameTagChanger.anim.reload();
 	}
 	
-	static List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Placeholders.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml","GUICreator.yml", "Rewards.yml");
+	static final List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Placeholders.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml","GUICreator.yml", "Rewards.yml");
 	
 	private static void copyDefauts() {
 		Data data = new Data();

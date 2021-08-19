@@ -23,7 +23,7 @@ import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
 
 public class ItemProcessUse implements Listener {
-	public static int COLLECTION = 1;
+	public static final int COLLECTION = 1;
 
 	@SuppressWarnings("unchecked")
 	@EventHandler
@@ -66,7 +66,7 @@ public class ItemProcessUse implements Listener {
     			if(invclick==null || invclick.toString().trim().isEmpty())
     				return;
     			Object movable = getActions(e.getCurrentItem(), "process.movable", 0);
-    			if(movable!=null && !movable.toString().trim().isEmpty() && StringUtils.getBoolean(movable.toString())==false )
+    			if(movable!=null && !movable.toString().trim().isEmpty() && !StringUtils.getBoolean(movable.toString()))
     				e.setCancelled(true);
     			Player player = Bukkit.getPlayer(e.getWhoClicked().getName());
     			if(player==null) return;
@@ -90,11 +90,11 @@ public class ItemProcessUse implements Listener {
 	}
 	@EventHandler
 	public void onInventoryClick(PlayerDropItemEvent e) {
-		if(e.getItemDrop()!=null && e.getItemDrop().getItemStack().getType()!=Material.AIR) {
+		if(e.getItemDrop().getItemStack().getType() != Material.AIR) {
 			Object has = getActions(e.getItemDrop().getItemStack(), "process", 0);
 			if(has==null||has.toString().trim().isEmpty())return;
 			Object movable = getActions(e.getItemDrop().getItemStack(), "process.movable", 0);
-			if(movable!=null && !movable.toString().trim().isEmpty() && StringUtils.getBoolean(movable.toString())==false )
+			if(movable!=null && !movable.toString().trim().isEmpty() && !StringUtils.getBoolean(movable.toString()))
 				e.setCancelled(true);
 		}
 		

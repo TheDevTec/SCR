@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.commands.enchantment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -20,10 +21,10 @@ import me.devtec.theapi.apis.EnchantmentAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public class EnchantTableRemove implements CommandExecutor, TabCompleter {
-	List<String> enchs = new ArrayList<String>();
+	final List<String> enchs = new ArrayList<>();
 
 	public EnchantTableRemove() {
-		for (String sd : Arrays.asList("ARROW_DAMAGE", "POWER", "ARROW_FIRE", "FIRE", "ARROW_INFINITE", "INFINITY",
+		enchs.addAll(Arrays.asList("ARROW_DAMAGE", "POWER", "ARROW_FIRE", "FIRE", "ARROW_INFINITE", "INFINITY",
 				"ARROW_KNOCKBACK", "PUNCH", "BINDING_CURSE", "CURSE_OF_BINDING", "DAMAGE_ALL", "SHARPNESS",
 				"DAMAGE_ARTHROPODS", "BANE_OF_ARTHROPODS", "DAMAGE_UNDEAD", "SMITE", "DEPTH_STRIDER",
 				"BANEOFARTHROPODS", "DAMAGE_ARTHROPODS", "DIG_SPEED", "EFFICIENCY", "DURABILITY", "UNBREAKING",
@@ -32,12 +33,10 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 				"PROTECTION_ENVIRONMENTAL", "PROTECTION", "PROTECTION_EXPLOSIONS", "BLAST_PROTECTION", "ALLDAMAGE",
 				"ALL_DAMAGE", "DAMAGEALL", "PROTECTION_FALL", "FEATHER_FALLING", "PROTECTION_FIRE", "FIRE_PROTECTION",
 				"PROTECTION_PROJECTILE", "PROJECTILE_PROTECTION", "SILK_TOUCH", "SWEEPING_EDGE", "THORNS",
-				"VANISHING_CURSE", "CURSE_OF_VANISHING", "WATER_WORKER", "AQUA_AFFINITY"))
-			enchs.add(sd);
+				"VANISHING_CURSE", "CURSE_OF_VANISHING", "WATER_WORKER", "AQUA_AFFINITY"));
 		if (TheAPI.isNewVersion())
-			for (String sd : Arrays.asList("LOYALTY", "PIERCING", "IMPALING", "MULTISHOT", "QUICK_CHARGE", "RIPTIDE",
-					"CHANNELING"))
-				enchs.add(sd);
+			enchs.addAll(Arrays.asList("LOYALTY", "PIERCING", "IMPALING", "MULTISHOT", "QUICK_CHARGE", "RIPTIDE",
+					"CHANNELING"));
 	}
 
 	@Override
@@ -78,15 +77,13 @@ public class EnchantTableRemove implements CommandExecutor, TabCompleter {
 	}
 	
 	public boolean contains(String s, String[] args) {
-		if (args[0].equalsIgnoreCase(s))
-			return true;
-		return false;
-	}
+        return args[0].equalsIgnoreCase(s);
+    }
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command a, String ea, String[] args) {
 		if (Loader.has(s, "EnchantRemove", "Enchantment") && s instanceof Player && args.length==1)
 			return StringUtils.copyPartialMatches(args[0], enchs);
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }

@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.warps;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -68,6 +69,6 @@ public class Homes implements CommandExecutor, TabCompleter {
 			String arg2, String[] args) {
 		if (Loader.has(s, "Homes", "Warps", "Other") && args.length == 1)
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
-		return Arrays.asList();
+		return Collections.emptyList();
 	}
 }
