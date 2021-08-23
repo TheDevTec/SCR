@@ -73,8 +73,7 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.VersionChecker;
 import me.devtec.theapi.utils.datakeeper.Data;
 import me.devtec.theapi.utils.datakeeper.DataType;
-import me.devtec.theapi.utils.json.JsonReader;
-import me.devtec.theapi.utils.json.JsonWriter;
+import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.listener.Listener;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
@@ -223,7 +222,7 @@ public class Loader extends JavaPlugin implements Listener {
 					oo.add((Map<String, Object>) json);
 				}else {
 					for(Object w : ((Collection<Object>)json)) {
-						if(w instanceof String)w= JsonReader.read((String)w);
+						if(w instanceof String)w= Json.reader().simpleRead((String)w);
 						if(w instanceof Map) {
 							oo.add((Map<String, Object>) w);
 						}else {
@@ -235,7 +234,7 @@ public class Loader extends JavaPlugin implements Listener {
 				}
 				oo=ChatMessage.fixListMap(oo);
 				if(to instanceof Player) {
-					String jsons = JsonWriter.write(oo);
+					String jsons = Json.writer().simpleWrite(oo);
 					jsons="[\"\","+jsons.substring(1);
 					Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
 				}else {
@@ -319,7 +318,7 @@ public class Loader extends JavaPlugin implements Listener {
 						oo.add((Map<String, Object>) json);
 					}else {
 						for(Object w : ((Collection<Object>)json)) {
-							if(w instanceof String)w=JsonReader.read((String)w);
+							if(w instanceof String)w=Json.reader().simpleRead((String)w);
 							if(w instanceof Map) {
 								oo.add((Map<String, Object>) w);
 							}else {
@@ -331,7 +330,7 @@ public class Loader extends JavaPlugin implements Listener {
 					}
 					oo=ChatMessage.fixListMap(oo);
 					if(to instanceof Player) {
-						String jsons = JsonWriter.write(oo);
+						String jsons = Json.writer().simpleWrite(oo);
 						jsons="[\"\","+jsons.substring(1);
 						Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
 					}else {
@@ -368,7 +367,7 @@ public class Loader extends JavaPlugin implements Listener {
 						oo.add((Map<String, Object>) json);
 					} else {
 						for (Object w : ((Collection<Object>) json)) {
-							if (w instanceof String) w = JsonReader.read((String) w);
+							if (w instanceof String) w = Json.reader().simpleRead((String) w);
 							if (w instanceof Map) {
 								oo.add((Map<String, Object>) w);
 							} else {
@@ -379,7 +378,7 @@ public class Loader extends JavaPlugin implements Listener {
 						}
 					}
 					oo = ChatMessage.fixListMap(oo);
-					String jsons = JsonWriter.write(oo);
+					String jsons = Json.writer().simpleWrite(oo);
 					jsons = "[\"\"," + jsons.substring(1);
 					Ref.sendPacket(TheAPI.getOnlinePlayers(), NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
 					TheAPI.getConsole().sendMessage(convertToLegacy(oo));
@@ -413,7 +412,7 @@ public class Loader extends JavaPlugin implements Listener {
 							oo.add((Map<String, Object>) json);
 						}else {
 							for(Object w : ((Collection<Object>)json)) {
-								if(w instanceof String)w=JsonReader.read((String)w);
+								if(w instanceof String)w=Json.reader().simpleRead((String)w);
 								if(w instanceof Map) {
 									oo.add((Map<String, Object>) w);
 								}else {
@@ -426,7 +425,7 @@ public class Loader extends JavaPlugin implements Listener {
 						List<Player> p = TheAPI.getOnlinePlayers();
 						p.removeIf(player -> !player.hasPermission(perms));
 						oo=ChatMessage.fixListMap(oo);
-						String jsons = JsonWriter.write(oo);
+						String jsons = Json.writer().simpleWrite(oo);
 						jsons="[\"\","+jsons.substring(1);
 						Ref.sendPacket(p,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
 						if(TheAPI.getConsole().hasPermission(perms))

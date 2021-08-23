@@ -5,10 +5,15 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 
-import me.devtec.theapi.utils.json.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.WorldType;
@@ -22,6 +27,7 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
+import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 
@@ -49,7 +55,7 @@ public class SkinManager {
 						conn.setConnectTimeout(20000);
 						conn.setReadTimeout(20000);
 						conn.connect();
-						Map<String, Object> text = (Map<String, Object>) JsonReader.read(StreamUtils.fromStream(new GZIPInputStream(conn.getInputStream())));
+						Map<String, Object> text = (Map<String, Object>) Json.reader().simpleRead(StreamUtils.fromStream(new GZIPInputStream(conn.getInputStream())));
 						SkinData data = new SkinData();
 						if(!text.containsKey("error")) {
 							data.signature=(String) ((Map<String, Object>)((Map<String, Object>)text.get("data")).get("texture")).get("signature");
@@ -71,7 +77,7 @@ public class SkinManager {
 					conn.setConnectTimeout(20000);
 					conn.setReadTimeout(20000);
 					conn.connect();
-					Map<String, Object> text = (Map<String, Object>) JsonReader.read(StreamUtils.fromStream(conn.getInputStream()));
+					Map<String, Object> text = (Map<String, Object>) Json.reader().simpleRead(StreamUtils.fromStream(conn.getInputStream()));
 					SkinData data = new SkinData();
 					if(!text.containsKey("error")) {
 						data.signature=(String) ((Map<String, Object>)((Map<String, Object>)text.get("textures")).get("raw")).get("signature");

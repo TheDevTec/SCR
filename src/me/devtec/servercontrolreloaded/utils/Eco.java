@@ -85,11 +85,14 @@ public class Eco implements Economy {
 	}
 
 	private boolean existPath(String player) {
-		return TheAPI.getUser(player).exist(get(player, getEconomyGroup(player)));
+		return TheAPI.getUser(player).exists(getPaths(player));
 	}
 
 	private boolean existPath(String player, String world) {
-		return TheAPI.getUser(player).exist(get(player, getEconomyGroupByWorld(world)));
+		String path = "Money";
+		if (Loader.config.getBoolean("Options.Economy.MultiEconomy.Use"))
+			path=path + "." + getEconomyGroupByWorld(world);
+		return TheAPI.getUser(player).exists(path);
 	}
 
 	@Override

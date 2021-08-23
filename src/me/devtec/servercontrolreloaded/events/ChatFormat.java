@@ -10,8 +10,6 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import me.devtec.theapi.utils.json.JsonReader;
-import me.devtec.theapi.utils.json.JsonWriter;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -34,6 +32,7 @@ import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.ChatMessage;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
+import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 
@@ -368,7 +367,7 @@ public class ChatFormat implements Listener {
 							o.add((Map<String, Object>) formatt);
 						} else {
 							for (Object w : ((Collection<Object>) formatt)) {
-								if (w instanceof String) w = JsonReader.read((String) w);
+								if (w instanceof String) w = Json.reader().simpleRead((String) w);
 								if (w instanceof Map) {
 									o.add((Map<String, Object>) w);
 								} else {
@@ -382,7 +381,7 @@ public class ChatFormat implements Listener {
 						List<Map<String, Object>> list = ChatMessage.fixListMap((List<Map<String, Object>>) formatt);
 						e.setFormat(convertToLegacy(list).replace("%", "%%"));
 						if (!e.isCancelled()) {
-							String jsons = JsonWriter.write(list);
+							String jsons = Json.writer().simpleWrite(list);
 							jsons="[\"\","+jsons.substring(1);
 							Ref.sendPacket(e.getRecipients(),NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
 						}

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import me.devtec.theapi.utils.json.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -21,6 +20,7 @@ import me.devtec.theapi.apis.EnchantmentAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
 
@@ -192,7 +192,7 @@ public class Kit {
 		if(string!=null && string.startsWith("{") && string.endsWith("}")) {
 			NBTEdit e = new NBTEdit(create);
 			@SuppressWarnings("unchecked")
-			Map<String, Object> vals = (Map<String, Object>) JsonReader.read(string);
+			Map<String, Object> vals = (Map<String, Object>) Json.reader().simpleRead(string);
 			for(Entry<String, Object> a : vals.entrySet()) {
 				if(a.getValue() instanceof String)
 				e.setString(a.getKey(), (String) a.getValue());

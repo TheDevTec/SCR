@@ -3,7 +3,7 @@ package me.devtec.servercontrolreloaded.utils.skins.manager;
 import java.util.HashMap;
 import java.util.UUID;
 
-import me.devtec.theapi.utils.json.JsonWriter;
+import me.devtec.theapi.utils.json.Json;
 
 public class SkinData {
 	public UUID uuid; //Nullable
@@ -23,6 +23,6 @@ public class SkinData {
 		data.put("texture.signature", signature);
 		data.put("texture.url", url);
 		data.put("texture.slim", slim+"");
-		return JsonWriter.write(data);
+		return Json.writer().simpleWrite(data);
 	}
 }

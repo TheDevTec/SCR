@@ -2,7 +2,6 @@ package me.devtec.servercontrolreloaded.events.functions;
 
 import java.util.Collection;
 
-import me.devtec.theapi.utils.json.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,6 +18,7 @@ import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.TheAPI.SudoType;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
 
@@ -132,7 +132,7 @@ public class ItemProcessUse implements Listener {
 	public static Object getActions(ItemStack item, String path, int type) {
 		String val = new NBTEdit(item).getString(path);
 		if(val==null)return null;
-		Object o = JsonReader.read(val);
+		Object o = Json.reader().read(val);
 		if(type==1 && !(o instanceof Collection))return null;
 		return o;
 	}

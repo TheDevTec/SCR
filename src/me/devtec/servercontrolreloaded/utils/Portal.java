@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import me.devtec.theapi.utils.json.JsonWriter;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -25,6 +24,7 @@ import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.utils.theapiutils.LoaderClass;
@@ -98,7 +98,7 @@ public class Portal {
 			d.writeUTF(target.getName());
 			d.writeUTF(server);
 			d.writeUTF(wait);
-			String a = JsonWriter.write(bcmds);
+			String a = Json.writer().simpleWrite(bcmds);
 			while(a.length()>35000) {
 				d.writeUTF(a.substring(0, 35000));
 				a=a.substring(35000);

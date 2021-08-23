@@ -1,7 +1,11 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -19,8 +23,7 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.json.JsonReader;
-import me.devtec.theapi.utils.json.JsonWriter;
+import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
 
@@ -281,7 +284,7 @@ public class Item implements CommandExecutor, TabCompleter{
 								Loader.sendMessages(s, "Item.Process.Cmd.List.Empty");
 								return true;
 							}
-							Object o = JsonReader.read(val);
+							Object o = Json.reader().simpleRead(val);
 							if(!(o instanceof Collection)) {
 								Loader.sendMessages(s, "Item.Process.Cmd.List.Empty");
 								return true;
@@ -302,11 +305,11 @@ public class Item implements CommandExecutor, TabCompleter{
 							NBTEdit e = new NBTEdit(item);
 							String val = e.getString("process."+target+".cmd");
 							Object o;
-							Collection<String> text = val==null?new ArrayList<>():((o=JsonReader.read(val)) instanceof Collection?(Collection<String>)o:new ArrayList<>());
+							Collection<String> text = val==null?new ArrayList<>():((o=Json.reader().simpleRead(val)) instanceof Collection?(Collection<String>)o:new ArrayList<>());
 							String i = StringUtils.buildString(4,args);
 							text.add(i);
 							e.setString("process", "0");
-							e.setString("process."+target+".cmd", JsonWriter.write(text));
+							e.setString("process."+target+".cmd", Json.writer().simpleWrite(text));
 							NMSAPI.setNBT(item, e);
 							Loader.sendMessages(s, "Item.Process.Cmd.Add", Placeholder.c().add("%value%", i).add("%position%", text.size()-1));
 							return true;
@@ -318,7 +321,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							}
 							NBTEdit e = new NBTEdit(item);
 							String val = e.getString("process."+target+".cmd");
-							Object o = JsonReader.read(val);
+							Object o = Json.reader().simpleRead(val);
 							if(!(o instanceof Collection)) {
 								Loader.sendMessages(s, "Item.Process.Cmd.List.Empty");
 								return true;
@@ -345,7 +348,7 @@ public class Item implements CommandExecutor, TabCompleter{
 								}
 							}else {
 								e.setString("process", "0");
-								e.setString("process."+target+".cmd", JsonWriter.write(text));
+								e.setString("process."+target+".cmd", Json.writer().simpleWrite(text));
 							}
 							NMSAPI.setNBT(item, e);
 							Loader.sendMessages(s, "Item.Process.Cmd.Remove", Placeholder.c().add("%value%", removed).add("%position%", StringUtils.getInt(args[4])));
@@ -363,7 +366,7 @@ public class Item implements CommandExecutor, TabCompleter{
 								Loader.sendMessages(s, "Item.Process.Msg.List.Empty");
 								return true;
 							}
-							Object o = JsonReader.read(val);
+							Object o = Json.reader().simpleRead(val);
 							if(!(o instanceof Collection)) {
 								Loader.sendMessages(s, "Item.Process.Msg.List.Empty");
 								return true;
@@ -384,11 +387,11 @@ public class Item implements CommandExecutor, TabCompleter{
 							NBTEdit e = new NBTEdit(item);
 							String val = e.getString("process.msg");
 							Object o;
-							Collection<String> text = val==null?new ArrayList<>():((o=JsonReader.read(val)) instanceof Collection?(Collection<String>)o:new ArrayList<>());
+							Collection<String> text = val==null?new ArrayList<>():((o=Json.reader().simpleRead(val)) instanceof Collection?(Collection<String>)o:new ArrayList<>());
 							String i = StringUtils.buildString(3,args);
 							text.add(i);
 							e.setString("process", "0");
-							e.setString("process.msg", JsonWriter.write(text));
+							e.setString("process.msg", Json.writer().simpleWrite(text));
 							NMSAPI.setNBT(item, e);
 							Loader.sendMessages(s, "Item.Process.Msg.Add", Placeholder.c().add("%value%", i).add("%position%", text.size()-1));
 							return true;
@@ -400,7 +403,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							}
 							NBTEdit e = new NBTEdit(item);
 							String val = e.getString("process.msg");
-							Object o = JsonReader.read(val);
+							Object o = Json.reader().simpleRead(val);
 							if(!(o instanceof Collection)) {
 								Loader.sendMessages(s, "Item.Process.Msg.List.Empty");
 								return true;
@@ -427,7 +430,7 @@ public class Item implements CommandExecutor, TabCompleter{
 								}
 							}else {
 								e.setString("process", "0");
-								e.setString("process.msg", JsonWriter.write(text));
+								e.setString("process.msg", Json.writer().simpleWrite(text));
 							}
 							NMSAPI.setNBT(item, e);
 							Loader.sendMessages(s, "Item.Process.Msg.Remove", Placeholder.c().add("%value%", removed).add("%position%", StringUtils.getInt(args[3])));
