@@ -1,6 +1,5 @@
 package me.devtec.servercontrolreloaded.commands.nickname;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package me.devtec.servercontrolreloaded.commands.warps;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,8 +11,8 @@ import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
-import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.API.TeleportLocation;
+import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;

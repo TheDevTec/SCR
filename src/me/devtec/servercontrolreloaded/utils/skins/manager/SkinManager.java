@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
 
+import me.devtec.theapi.utils.json.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.WorldType;
@@ -21,7 +22,6 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
-import me.devtec.theapi.utils.json.Reader;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 
@@ -49,7 +49,7 @@ public class SkinManager {
 						conn.setConnectTimeout(20000);
 						conn.setReadTimeout(20000);
 						conn.connect();
-						Map<String, Object> text = (Map<String, Object>) Reader.read(StreamUtils.fromStream(new GZIPInputStream(conn.getInputStream())));
+						Map<String, Object> text = (Map<String, Object>) JsonReader.read(StreamUtils.fromStream(new GZIPInputStream(conn.getInputStream())));
 						SkinData data = new SkinData();
 						if(!text.containsKey("error")) {
 							data.signature=(String) ((Map<String, Object>)((Map<String, Object>)text.get("data")).get("texture")).get("signature");
@@ -71,7 +71,7 @@ public class SkinManager {
 					conn.setConnectTimeout(20000);
 					conn.setReadTimeout(20000);
 					conn.connect();
-					Map<String, Object> text = (Map<String, Object>) Reader.read(StreamUtils.fromStream(conn.getInputStream()));
+					Map<String, Object> text = (Map<String, Object>) JsonReader.read(StreamUtils.fromStream(conn.getInputStream()));
 					SkinData data = new SkinData();
 					if(!text.containsKey("error")) {
 						data.signature=(String) ((Map<String, Object>)((Map<String, Object>)text.get("textures")).get("raw")).get("signature");

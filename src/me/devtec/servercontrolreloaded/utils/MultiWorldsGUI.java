@@ -1,7 +1,11 @@
 package me.devtec.servercontrolreloaded.utils;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
@@ -22,6 +26,7 @@ import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.cooldownapi.CooldownAPI;
+import me.devtec.theapi.guiapi.EmptyItemGUI;
 import me.devtec.theapi.guiapi.GUI;
 import me.devtec.theapi.guiapi.GUI.ClickType;
 import me.devtec.theapi.guiapi.HolderGUI;
@@ -274,19 +279,15 @@ public class MultiWorldsGUI {
 			lore.add("&7 - GameMode: " + gm);
 			lore.add("&7 - Loaded Chunks: " + w.getLoadedChunks().length);
 			if(TheAPI.isNewerThan(16)) {
-				Iterable<?> t = (Iterable<?>) Ref.invoke(Ref.invoke(Ref.get(Ref.world(w), "G"),"d"),"a");
 				int i = 0;
-				for (Object o : t) {
+				Iterator<?> tt = ((Iterable<?>) Ref.invoke(Ref.get(Ref.get(Ref.world(w), Ref.field(Ref.nmsOrOld("server.level.WorldServer","WorldServer"),"G")),"g"),"a")).iterator();
+				for (; tt.hasNext(); tt.next())
 					++i;
-				}
 				lore.add("&7 - Entities: " + i);
 			}else
-			lore.add("&7 - Entities: " + w.getEntities().size());
+				lore.add("&7 - Entities: " + w.getEntities().size());
 			lore.add("&7 - Players: " + w.getPlayers().size());
-			a.addItem(new ItemGUI(createItem(start + w.getName(), XMaterial.valueOf(m), lore)) {
-				@Override
-				public void onClick(Player s, HolderGUI g, ClickType c) {}
-			});
+			a.addItem(new EmptyItemGUI(createItem(start + w.getName(), XMaterial.valueOf(m), lore)));
 		}
 		a.setItem(49,backMain);
 	}
@@ -571,7 +572,8 @@ public class MultiWorldsGUI {
 				sf=!sf;
 				Loader.mw.set("WorldsSettings." + w.getName() + ".KeepSpawnInMemory", sf);
 				Loader.mw.save();
-				w.setKeepSpawnInMemory(sf);
+				boolean state = sf;
+				NMSAPI.postToMainThread(() -> w.setKeepSpawnInMemory(state));
 				this.setItem(createItem("&6Keep Spawn In Memory", XMaterial.MAP, Collections.singletonList(sf + "")));
 				g.setItem(2, this);
 			}
@@ -821,6 +823,7 @@ public class MultiWorldsGUI {
 				break;
 			}
 			XMaterial d = x;
+			if(d==null)continue;
 			String name = WordUtils.capitalize(ds.replace("_", " "));
 			a.setItem(slot, new ItemGUI(createItem("&6" + name, d , Collections.singletonList(Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds) == null ? "" : Loader.mw.getString("WorldsSettings." + w.getName() + ".Gamerule." + ds)))) {
 				

@@ -1,6 +1,5 @@
 package me.devtec.servercontrolreloaded.commands.tpsystem;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

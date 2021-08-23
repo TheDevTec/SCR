@@ -1,19 +1,19 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.TheAPI.TPSType;
 import me.devtec.theapi.utils.StringUtils;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class TPS implements CommandExecutor, TabCompleter {
 

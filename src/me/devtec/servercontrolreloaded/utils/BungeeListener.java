@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.utils;
 
 import java.util.Collection;
 
+import me.devtec.theapi.utils.json.JsonReader;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
@@ -12,7 +13,6 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.json.Reader;
 
 public class BungeeListener implements PluginMessageListener {
 
@@ -33,7 +33,7 @@ public class BungeeListener implements PluginMessageListener {
 					msg+=d.readUTF();
 				}catch(Exception e) {break;}
 			}
-			Collection<String> cmds = (Collection<String>)Reader.read(msg.replaceFirst(msg.split("\\[")[0], ""));
+			Collection<String> cmds = (Collection<String>) JsonReader.read(msg.replaceFirst(msg.split("\\[")[0], ""));
 			new Tasker() {
 				public void run() {
 					Player p = TheAPI.getPlayerOrNull(name);

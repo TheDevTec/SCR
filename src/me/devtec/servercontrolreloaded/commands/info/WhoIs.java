@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.commands.info;
 import java.net.URL;
 import java.util.*;
 
+import me.devtec.theapi.utils.json.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,7 +23,6 @@ import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.json.Reader;
 
 public class WhoIs implements CommandExecutor, TabCompleter {
 
@@ -32,7 +32,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 	public static Map<String, Object> getCountry(String a) {
 		try {
 			URL url = new URL("http://ip-api.com/json/" + a.replace("_", "."));
-			return (Map<String,Object>)Reader.read(StreamUtils.fromStream(url.openStream()));
+			return (Map<String,Object>) JsonReader.read(StreamUtils.fromStream(url.openStream()));
 		} catch (Exception e) {
 			return empty;
 		}

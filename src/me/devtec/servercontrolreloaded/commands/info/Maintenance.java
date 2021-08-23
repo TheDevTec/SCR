@@ -1,5 +1,8 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,10 +13,6 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.utils.StringUtils;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class Maintenance implements CommandExecutor, TabCompleter {
 
