@@ -15,6 +15,7 @@ import me.devtec.servercontrolreloaded.utils.Tasks;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.sortedmap.RankingAPI;
+import me.devtec.theapi.sortedmap.SortedMap.ComparableObject;
 import me.devtec.theapi.utils.StringUtils;
 
 public class PlayTimeUtils {
@@ -146,14 +147,12 @@ public class PlayTimeUtils {
 		if(playtop == null || playtop.size()==0) {
 			Tasks.playTime();
 		}
-		if(ranks.getObject(pos)==null)
-			return "-";
-		String player = ranks.getObject(pos);
+		ComparableObject<String, Integer> player = ranks.get(pos);
 		if(player==null)
 			return "-";
 		return Loader.trans.getString("PlayTime.PlayTop.Top").replace("%position%", pos+ "")
-				.replace("%player%", player).replace("%playername%", player)
-				.replace("%playtime%", StringUtils.timeToString( playtime(player) ));
+				.replace("%player%", player.getKey()).replace("%playername%", player.getKey())
+				.replace("%playtime%", StringUtils.timeToString(player.getValue()));
 	}
 
 	public static final HashMap<String, PlayRewards> playrewards = new HashMap<>();

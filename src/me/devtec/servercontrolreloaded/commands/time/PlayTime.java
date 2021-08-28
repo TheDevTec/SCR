@@ -20,6 +20,7 @@ import me.devtec.servercontrolreloaded.utils.playtime.PlayTimeUtils.PlayTimeType
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.sortedmap.RankingAPI;
+import me.devtec.theapi.sortedmap.SortedMap.ComparableObject;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
@@ -70,18 +71,17 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 						RankingAPI<String, Integer> tops = new RankingAPI<>(PlayTimeUtils.playtop);
 
 						int min = page * 10;
-						int max = ((page * 10) + 10);
+						int max = (min + 10);
 
 						if (max > tops.size())
 							max = tops.size();
 						min+=1;
-						for (int i = min; i<=max; i++) {
-							String player = tops.getObject(i);
-							Loader.sendMessages(s, "PlayTime.PlayTop.Top", Placeholder.c().replace("%position%", (i+(10*(page+1))-10) + "")
-									.replace("%player%", player).replace("%playername%", player(s, player))
-									.replace("%playtime%", StringUtils.timeToString(PlayTimeUtils.playtime(player))) );
+						for (int i = min; i<max; ++i) {
+							ComparableObject<String, Integer> player = tops.get(i);
+							Loader.sendMessages(s, "PlayTime.PlayTop.Top", Placeholder.c().replace("%position%", i+"")
+									.replace("%player%", player).replace("%playername%", player(s, player.getKey()))
+									.replace("%playtime%", StringUtils.timeToString(player.getValue())));
 						}
-
 						Loader.sendMessages(s, "PlayTime.PlayTop.Footer", Placeholder.c().replace("%page%",(page+1)+"")
 								.replace("%pages%", pages+""));
 				}}.runTask();

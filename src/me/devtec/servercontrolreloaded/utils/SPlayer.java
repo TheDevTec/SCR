@@ -405,10 +405,7 @@ public class SPlayer {
 	}
 
 	public int getPlayTime(String path) {
-		if(getUser().exist("Statistics."+path))
-			return getUser().getInt("Statistics."+path);
-		else
-			return 0;
+		return getUser().getInt("Statistics."+path);
 	}
 	
 	

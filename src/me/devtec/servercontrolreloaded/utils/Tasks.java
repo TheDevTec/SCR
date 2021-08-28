@@ -327,7 +327,7 @@ public class Tasks {
 							PlayTimeUtils.playtop.put(n, time);
 					}
 				}
-				PlayTimeUtils.ranks.setMap(PlayTimeUtils.playtop);
+				PlayTimeUtils.ranks.load(PlayTimeUtils.playtop);
 			}
 		}.runRepeating(1, 300*20)
 		);

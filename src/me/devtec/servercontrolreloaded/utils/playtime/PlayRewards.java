@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.utils.playtime;
 
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -106,9 +107,7 @@ public class PlayRewards {
 		}
 		if(isRepeatable()) { //Repeatable 
 			task = new Tasker() {
-				@Override
 				public void run() {
-					
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(API.isAFK(p) && !Loader.config.getBoolean("Options.PlayTime.UseAfkTime") )
 							continue;
@@ -137,10 +136,9 @@ public class PlayRewards {
                         }
                         continue;
                     }
-					for(Player p : players.keySet()) {
-						if(TheAPI.getPlayerOrNull(p.getName())==null ) {
+					for(Player p : Collections.unmodifiableSet(players.keySet())) {
+						if(p==null||!p.isOnline())
 							players.remove(p);
-						}
 					}
 					
 				}
@@ -148,8 +146,6 @@ public class PlayRewards {
 
 		}else { //NotRepeatable
 			task = new Tasker() {
-				
-				@Override
 				public void run() {
 					
 					for(Player p : TheAPI.getOnlinePlayers()) {						
@@ -164,7 +160,6 @@ public class PlayRewards {
 							u.save();
 						}
 					}
-					
 				}
 			}.runRepeating(0, getPeriod());
 			
