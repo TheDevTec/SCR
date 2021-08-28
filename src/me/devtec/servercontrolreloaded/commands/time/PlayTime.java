@@ -75,7 +75,6 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 
 						if (max > tops.size())
 							max = tops.size();
-						min+=1;
 						for (int i = min; i<max; ++i) {
 							ComparableObject<String, Integer> player = tops.get(i);
 							Loader.sendMessages(s, "PlayTime.PlayTop.Top", Placeholder.c().replace("%position%", i+"")

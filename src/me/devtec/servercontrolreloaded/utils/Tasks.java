@@ -77,7 +77,6 @@ public class Tasks {
 
 		@Override
 		public boolean PacketPlayIn(String player, Object packet, Object channel) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 		
@@ -329,26 +328,23 @@ public class Tasks {
 				}
 				PlayTimeUtils.ranks.load(PlayTimeUtils.playtop);
 			}
-		}.runRepeating(1, 300*20)
-		);
+		}.runRepeating(1, 300*20));
 		PlayTimeUtils.task=true;
 		
 		/*
 		 * Custom PlayTime task
 		 */
-
+		if(Loader.config.getBoolean("Options.PlayTime.UseAfkTime"))
 		tasks.add(new Tasker() {
 			public void run() {
-				
 				for(Player p : TheAPI.getOnlinePlayers()) {
-					if(!API.isAFK(p) || Loader.config.getBoolean("Options.PlayTime.UseAfkTime") ) {
+					if(!API.isAFK(p)) {
 						SPlayer player = API.getSPlayer(p);
 						player.addPlayTime(1);
 					}
 				}
 				
 			}
-		}.runRepeating(20, 20)
-		);
+		}.runRepeating(20, 20));
 	}
 }

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.utils.TabList;
 import me.devtec.servercontrolreloaded.utils.playtime.PlayTimeUtils.PlayTimeType;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Scheduler;
@@ -31,7 +32,7 @@ public class PlayRewards {
 		this.name=reward;
 		
 		try {
-			type = PlayTimeType.valueOf(Loader.rewards.getString("PlayTime."+reward+".Type") );
+			type = PlayTimeType.valueOf(Loader.rewards.getString("PlayTime."+reward+".Type").toUpperCase());
 		} catch (Exception e) {
 			type=null;
 		}
@@ -57,9 +58,9 @@ public class PlayRewards {
 	}
 	
 	public World getWorld() {
-		if( !Loader.rewards.exists("PlayTime."+name+".World") || ( type!= PlayTimeType.WORLD &&type!= PlayTimeType.WORLDGAMEMODE ))
+		if(!Loader.rewards.exists("PlayTime."+name+".World") || ( type!= PlayTimeType.WORLD &&type!= PlayTimeType.WORLDGAMEMODE ))
 			return null;
-		World w = Bukkit.getWorld( Loader.rewards.getString("PlayTime."+name+".World"));
+		World w = Bukkit.getWorld(Loader.rewards.getString("PlayTime."+name+".World"));
 		return w;
 	}
 	public GameMode getGameMode() {
@@ -67,7 +68,7 @@ public class PlayRewards {
 			return null;
 		GameMode mode;
 		try {
-			mode = GameMode.valueOf( Loader.rewards.getString("PlayTime."+name+".Gamemode"));
+			mode = GameMode.valueOf(Loader.rewards.getString("PlayTime."+name+".Gamemode").toUpperCase());
 		} catch (Exception e) {
 			return null;
 		}
@@ -143,7 +144,6 @@ public class PlayRewards {
 					
 				}
 			}.runRepeating(0, getPeriod());
-
 		}else { //NotRepeatable
 			task = new Tasker() {
 				public void run() {
@@ -180,16 +180,14 @@ public class PlayRewards {
 	private void process(Player p) {
 		NMSAPI.postToMainThread(() -> {
 			for(String cmd : Loader.rewards.getStringList("PlayTime."+name+".Commands"))
-				TheAPI.sudoConsole(cmd.replace("%player%", p.getName()));
+				TheAPI.sudoConsole(TabList.replace(cmd.replace("%player%", p.getName()), p, true));
 		});
 		for(String msg : Loader.rewards.getStringList("PlayTime."+name+".Messages"))
-			TheAPI.msg(msg.replace("%time%", getTimeFormated()).replace("%player%", p.getName()) , p);
+			TheAPI.msg(TabList.replace(msg.replace("%time%", getTimeFormated()).replace("%player%", p.getName()), p, true), p);
 	}
 	
 	public boolean hasFinished(Player p) {
 		User u = TheAPI.getUser(p);
-		if(u.exist("Statistics.Rewards."+getName()+".Finished"))
-			return u.getBoolean("Statistics.Rewards."+getName()+".Finished");
-		return false;
+		return u.getBoolean("Statistics.Rewards."+getName()+".Finished");
 	}
 }

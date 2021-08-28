@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -190,7 +192,12 @@ public class TabList {
 			return replace(Loader.tab.getString("Groups." + g + ".Format"), p, true);
 		return "%tab_prefix% "+p.getName()+" %tab_suffix%";
 	}
-	
+	static Pattern playtimetop = Pattern.compile("\\%playtime_top_([0-9]+)\\%")
+			, playtime_player = Pattern.compile("\\%playtime_[_A-Za-z0-9]+\\%")
+					, playtime_worldOrGm = Pattern.compile("\\%playtime_([_A-Za-z0-9]+)_(.+?)\\%")
+					, playtime_world_gm = Pattern.compile("\\%playtime_([_A-Za-z0-9]+)_(.+?)_(SURVIVAL|CREATIVE|ADVENTURE|SPECTATOR)\\%", Pattern.CASE_INSENSITIVE)
+					, playtime_worldOrGmMe = Pattern.compile("\\%playtime_(.+?)\\%")
+					, playtime_world_gmMe = Pattern.compile("\\%playtime_(.+?)_(SURVIVAL|CREATIVE|ADVENTURE|SPECTATOR)\\%", Pattern.CASE_INSENSITIVE);
 	public static String replace(String header, Player p, boolean color) {
 		if(p!=null) {
 		if(header.contains("%money%"))
@@ -217,56 +224,74 @@ public class TabList {
 		 *  
 		 */
 		if(header.contains("%playtime%")) {
-			header=header.replace("%playtime%", StringUtils.timeToString( PlayTimeUtils.playtime(p)));
+			header=header.replace("%playtime%", StringUtils.timeToString(PlayTimeUtils.playtime(p)));
 		}
 		if(header.contains("%playtime_")) {
-			String s = header;
 			if(header.contains("%playtime_top_")) {
-				for(String a : s.split(" ")) {
-					if(a.startsWith("%playtime_top_")) {
-						int pos = StringUtils.getInt(s.replace("%playtime_top_", "").replace("%", ""));
-						header=header.replace(a, PlayTimeUtils.getTop(pos));
-					}
-				}
+				Matcher m = playtimetop.matcher(header);
+				while(m.find())
+					header=header.replace(m.group(), PlayTimeUtils.getTop(StringUtils.getInt(m.group(1))));
 			}else {
-				String str = s.replace("playtime_", "").replace("%", "");
 				String player = null;
 				GameMode mode = null;
 				World world = null;
-				for(String value : str.split("[_]")) {
-					if(TheAPI.existsUser(value)) {
-						player = value;
-					continue;
-					}
-					if(Bukkit.getWorld(value)!=null) {
-						world = Bukkit.getWorld(value);
-					continue;
-					}
-					if(GameMode.valueOf(value.toUpperCase())!=null) {
-						mode = GameMode.valueOf(value.toUpperCase());
-					}
+				//%playtime_<player>_<world>_<GAMEMODE>%
+				Matcher m = playtime_world_gm.matcher(header);
+				while(m.find()) {
+					if(TheAPI.existsUser(m.group(1))) {
+						player = m.group(1);
+					}else continue;
+					if(Bukkit.getWorld(m.group(2))!=null) {
+						world = Bukkit.getWorld(m.group(2));
+					}else continue;
+					if(GameMode.valueOf(m.group(3).toUpperCase())!=null) {
+						mode = GameMode.valueOf(m.group(3).toUpperCase());
+					}else continue;
+					header=header.replace(m.group(), StringUtils.timeToString(PlayTimeUtils.playtime(player, mode, world)));
 				}
-				if( player!=null && !player.isEmpty() && TheAPI.existsUser(player)) {
-					if(mode!=null && world!=null)
-						header = header.replace("%playtime_"+player+"_"+world.getName()+"_"+mode.toString().toLowerCase()+"%", StringUtils.timeToString(PlayTimeUtils.playtime(player, mode, world)));
-					if(mode!=null)
-						header = header.replace("%playtime_"+player+"_"+mode.toString().toLowerCase()+"%", StringUtils.timeToString(PlayTimeUtils.playtime(player, mode, null)));
-					if(world!=null)
-						header = header.replace("%playtime_"+player+"_"+world.getName()+"%", StringUtils.timeToString(PlayTimeUtils.playtime(player, null, world)));
-					if(world==null && mode==null)
-						header = header.replace("%playtime_"+player+"%", StringUtils.timeToString(  PlayTimeUtils.playtime(player) ));
-				}
-				if(player==null) {
-					if(TheAPI.existsUser(p)) {
-						if(mode!=null && world!=null)
-							header = header.replace("%playtime_"+world.getName()+"_"+mode.toString().toLowerCase()+"%", StringUtils.timeToString(PlayTimeUtils.playtime(p, mode, world)));
-						if(mode!=null)
-							header = header.replace("%playtime_"+mode.toString().toLowerCase()+"%", StringUtils.timeToString(PlayTimeUtils.playtime(p, mode, null)));
-						if(world!=null)
-							header = header.replace("%playtime_"+world.getName()+"%", StringUtils.timeToString(PlayTimeUtils.playtime(p, null, world)));
-						if(world==null && mode==null)
-							header = header.replace("%playtime%", StringUtils.timeToString(  PlayTimeUtils.playtime(p) ));
+				//%playtime_<player>_<world/GAMEMODE>%
+				m = playtime_worldOrGm.matcher(header);
+				while(m.find()) {
+					if(TheAPI.existsUser(m.group(1))) {
+						player = m.group(1);
+					}else continue;
+					if(Bukkit.getWorld(m.group(2))!=null) {
+						world = Bukkit.getWorld(m.group(2));
 					}
+					if(GameMode.valueOf(m.group(3).toUpperCase())!=null) {
+						mode = GameMode.valueOf(m.group(3).toUpperCase());
+					}
+					if(world ==null && mode == null)continue;
+					header=header.replace(m.group(), StringUtils.timeToString(PlayTimeUtils.playtime(player, mode, world)));
+				}
+				//%playtime_<world>_<GAMEMODE>%
+				m = playtime_world_gmMe.matcher(header);
+				while(m.find()) {
+					if(TheAPI.existsUser(m.group(1))) {
+						player = m.group(1);
+					}else continue;
+					if(Bukkit.getWorld(m.group(2))!=null) {
+						world = Bukkit.getWorld(m.group(2));
+					}else continue;
+					if(GameMode.valueOf(m.group(3).toUpperCase())!=null) {
+						mode = GameMode.valueOf(m.group(3).toUpperCase());
+					}else continue;
+					header=header.replace(m.group(), StringUtils.timeToString(PlayTimeUtils.playtime(p, mode, world)));
+				}
+				//%playtime_<world/GAMEMODE>%
+				m = playtime_worldOrGmMe.matcher(header);
+				while(m.find()) {
+					if(TheAPI.existsUser(m.group(1))) {
+						player = m.group(1);
+					}else continue;
+					if(Bukkit.getWorld(m.group(2))!=null) {
+						world = Bukkit.getWorld(m.group(2));
+					}
+					if(GameMode.valueOf(m.group(3).toUpperCase())!=null) {
+						mode = GameMode.valueOf(m.group(3).toUpperCase());
+					}
+					if(world ==null && mode == null)continue;
+					header=header.replace(m.group(), StringUtils.timeToString(PlayTimeUtils.playtime(p, mode, world)));
 				}
 			}
 		}

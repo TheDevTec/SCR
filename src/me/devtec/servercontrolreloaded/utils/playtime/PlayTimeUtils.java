@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.utils.Tasks;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.sortedmap.RankingAPI;
@@ -51,7 +50,7 @@ public class PlayTimeUtils {
 	public static int playtime(String player) {
 		OfflinePlayer s = Bukkit.getOfflinePlayer(player);
 		if(s==null)return -1;
-		if( !Loader.config.getBoolean("Options.PlayTime.UseCustomPlayTime"))
+		if(!Loader.config.getBoolean("Options.PlayTime.UseCustomPlayTime"))
 			return s.getStatistic(st)/20;
 		else
 			return API.getSPlayer(s).getPlayTime("PlayTime");
@@ -144,9 +143,8 @@ public class PlayTimeUtils {
 	public static boolean task = false;
 	
 	public static String getTop(int pos) {
-		if(playtop == null || playtop.size()==0) {
-			Tasks.playTime();
-		}
+		if(ranks == null || ranks.isEmpty())
+			return "-";
 		ComparableObject<String, Integer> player = ranks.get(pos);
 		if(player==null)
 			return "-";
@@ -167,11 +165,9 @@ public class PlayTimeUtils {
 				playrewards.put(reward, rew);
 				continue;
 			}
-			else {
-				TheAPI.getConsole().sendMessage("&4ERROR: Reward &c"+reward+" &6is not valid! Try and repair this reward in Rewards.yml");
-			}
+			TheAPI.getConsole().sendMessage("&4ERROR: Playtime reward &c"+reward+" &6is not valid! Fix this playtime reward in Rewards.yml");
 		}
-		if(playrewards.size()!=0) {
+		if(!playrewards.isEmpty()) {
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &fLoaded &6"+playrewards.size()+" &fPlayTime Rewards", TheAPI.getConsole());
 		}
