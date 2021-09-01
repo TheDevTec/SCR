@@ -49,7 +49,7 @@ public class Colors {
 				b = StringUtils.gradient(b);
 			if (b.contains("#") || b.contains("&x")) {
 				if ((Loader.config.getString("Options.Colors." + p + ".Permission.HEX")!=null && !Loader.config.getString("Options.Colors." + p + ".Permission.HEX").equals("")) && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.HEX"))) {
-					b = b.replace("&x", "§x").replace("&X", "§x");
+					b = b.replaceAll("&[xX]", "§x");
 					Matcher match = pattern.matcher(b);
 		            while (match.find()) {
 		                String color = match.group();
@@ -64,10 +64,10 @@ public class Colors {
 		if ((Loader.config.getString("Options.Colors." + p + ".Permission.Color")!=null && !Loader.config.getString("Options.Colors." + p + ".Permission.Color").equals("")) && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
 				for (int i = 0; i < 10; ++i)
 				b = b.replace("&" + i, "§" + i);
-			b = b.replace("&([aAbBcCdDeEfF])", "§$1");
+			b = b.replaceAll("&([aAbBcCdDeEfF])", "§$1");
 		}
 		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Format"))) {
-			b = b.replace("&([oOlLmMnNrR])", "§$1");
+			b = b.replaceAll("&([oOlLmMnNrR])", "§$1");
 		}
 		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Magic"))) {
 			b = b.replaceAll("&[kK]", "§k");
