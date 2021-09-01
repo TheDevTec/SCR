@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="D:/EclipseUtils/Residence.jar"/>
 	<classpathentry kind="lib" path="D:/EclipseUtils/HeadDatabase.jar"/>
 	<classpathentry kind="lib" path="D:/Build/TheAPI.jar"/>
+	<classpathentry kind="lib" path="D:/EclipseUtils/Dynmap-3.2-beta-3-spigot.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

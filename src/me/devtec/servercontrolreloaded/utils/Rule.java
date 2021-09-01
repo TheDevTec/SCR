@@ -1,25 +1,30 @@
 package me.devtec.servercontrolreloaded.utils;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Rule {
-	private final String a, b, e, f;
-	private final int patternFlags;
-	private final Pattern pattern;
-	private final boolean d;
-	public Rule(String name, String value, String type, boolean replacement, String replaceValue, int patternFlags) {
-		a=value;
-		f=name;
-		b=type;
-		d=replacement;
-		e=replaceValue;
+	private List<String> whitelist;
+	private String value, type, replaceValue, name;
+	private int patternFlags;
+	private Pattern pattern;
+	private boolean doReplace, bypassable;
+	
+	public Rule(String name, String value, String type, boolean replacement, String replaceValue, int patternFlags, List<String> wl, boolean bypassable) {
+		whitelist=wl;
+		this.bypassable=bypassable;
+		this.value=value;
+		this.name=name;
+		this.type=type.toUpperCase();
+		doReplace=replacement;
+		this.replaceValue=replaceValue;
 		this.patternFlags=patternFlags;
-		pattern=patternFlags==0?Pattern.compile(a):Pattern.compile(a, patternFlags);
+		pattern=patternFlags==0?Pattern.compile(value):Pattern.compile(value, patternFlags);
 	}
 	
 	public String getValue() {
-		return a;
+		return value;
 	}
 	
 	public int getPatternFlags() {
@@ -27,61 +32,75 @@ public class Rule {
 	}
 	
 	public String getType() {
-		return b;
+		return type;
 	}
 	
 	public String getReplaceValue() {
-		return e;
+		return replaceValue;
 	}
 	
 	public String getName() {
-		return f;
+		return name;
 	}
 	
 	public boolean isReplacing() {
-		return d;
+		return doReplace;
 	}
 	
 	public String apply(String text) {
 		if(text==null)return null;
-		switch(b.toUpperCase()) {
+		switch(type) {
 		case "REGEX":
 			Matcher m = pattern.matcher(text);
 			if(m.find()) {
-				if(d) {
-					text = pattern.matcher(text).replaceAll(e);
-				}else return null;
+				if (whitelist.contains(m.group().toLowerCase()))
+					return text;
+				if(doReplace)
+					text = m.replaceAll(replaceValue);
+				else return null;
 			}
 			break;
 		case "CONTAINS":
-			if(text.contains(a)) {
-				if(d)
-					text=text.replace(a, e);
+			if(text.contains(value)) {
+				if (whitelist.contains(text.toLowerCase()))
+					return text;
+				if(doReplace)
+					text=text.replace(value, replaceValue);
 				else return null;
 			}
 			break;
 		case "STARTS_WITH":
-			if(text.startsWith(a)) {
-				if(d)
-					text=text.replace(a, e);
+			if(text.startsWith(value)) {
+				if (whitelist.contains(text.toLowerCase()))
+					return text;
+				if(doReplace)
+					text=text.replace(value, replaceValue);
 				else return null;
 			}
 			break;
 		case "ENDS_WITH":
-			if(text.endsWith(a)) {
-				if(d)
-					text=text.replace(a, e);
+			if(text.endsWith(value)) {
+				if (whitelist.contains(text.toLowerCase()))
+					return text;
+				if(doReplace)
+					text=text.replace(value, replaceValue);
 				else return null;
 			}
 			break;
 		case "EQUALS":
-			if(text.equals(a)) {
-				if(d)
-					text=text.replace(a, e);
+			if(text.equalsIgnoreCase(value)) {
+				if (whitelist.contains(text.toLowerCase()))
+					return text;
+				if(doReplace)
+					text=text.replace(value, replaceValue);
 				else return null;
 			}
 			break;
 		}
 		return text;
+	}
+
+	public boolean isBypassable() {
+		return bypassable;
 	}
 }

@@ -23,10 +23,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.commands.other.Trash;
 import me.devtec.servercontrolreloaded.commands.other.mirror.MirrorEvents;
-import me.devtec.servercontrolreloaded.events.ChatFormat;
 import me.devtec.servercontrolreloaded.events.SecurityListenerV4;
 import me.devtec.servercontrolreloaded.events.Signs;
 import me.devtec.servercontrolreloaded.events.functions.AFKEvents;
+import me.devtec.servercontrolreloaded.events.functions.ChatFormat;
 import me.devtec.servercontrolreloaded.events.functions.Codes;
 import me.devtec.servercontrolreloaded.events.functions.DeathEvents;
 import me.devtec.servercontrolreloaded.events.functions.DisableItems;
@@ -43,6 +43,7 @@ import me.devtec.servercontrolreloaded.utils.BungeeListener;
 import me.devtec.servercontrolreloaded.utils.Configs;
 import me.devtec.servercontrolreloaded.utils.Converter;
 import me.devtec.servercontrolreloaded.utils.DisplayManager;
+import me.devtec.servercontrolreloaded.utils.DynmapSupport;
 import me.devtec.servercontrolreloaded.utils.Eco;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
 import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
@@ -606,6 +607,9 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
+		if(config.getBoolean("Options.Skins.DynmapSupport") && PluginManagerAPI.isEnabledPlugin("dynmap")) {
+			DynmapSupport.init();
+		}
 		//LOAD PLACEHOLDERS
 		if(PluginManagerAPI.isEnabledPlugin("PlaceholderAPI")) {
 			reg=new PlaceholderRegister("scr", "DevTec", getDescription().getVersion()) {
@@ -839,7 +843,7 @@ public class Loader extends JavaPlugin implements Listener {
 				flags|=(int)Ref.getNulled(java.util.regex.Pattern.class,d.toUpperCase());
 				}catch(Exception err) {}
 			}
-			rules.add(new Rule(s, config.getString("Rules."+s+".Text"), config.getString("Rules."+s+".Type"), config.getBoolean("Rules."+s+".Replacement.Use"), config.getString("Rules."+s+".Replacement.Text"),flags));
+			rules.add(new Rule(s, config.getString("Rules."+s+".Text"), config.getString("Rules."+s+".Type"), config.getBoolean("Rules."+s+".Replacement.Use"), config.getString("Rules."+s+".Replacement.Text"),flags, config.getStringList("Rules."+s+".WhiteList"), config.getBoolean("Rules."+s+".Bypassable")));
 		}
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			SPlayer s = API.getSPlayer(p);

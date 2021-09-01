@@ -24,7 +24,9 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.utils.DynmapSupport;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.json.Json;
@@ -149,6 +151,9 @@ public class SkinManager {
 	static Field res;
 	public static synchronized void loadSkin(Player player, SkinData data) {
 		if(player==null || data==null || !data.isFinite())return;
+		if(Loader.config.getBoolean("Options.Skins.DynmapSupport") && PluginManagerAPI.isEnabledPlugin("dynmap")) {
+			DynmapSupport.sendHeadUpdate(player, data.url);
+		}
 		playerSkins.put(player.getName(), data);
 		if(Loader.hasBungee)
 			sendBungee(player,data);
@@ -177,9 +182,9 @@ public class SkinManager {
 		Object head = Ref.newInstance(headC, s, (byte)((float)(Ref.get(s, TheAPI.isNewerThan(16)?"aZ":"yaw"))*256F/360F));
 		boolean has = player.isFlying() && player.getAllowFlight();
 		for(Player p : TheAPI.getPlayers()) {
-			Ref.sendPacket(p, remove);
-			Ref.sendPacket(p, add);
 			if(p == player) {
+				Ref.sendPacket(p, remove);
+				Ref.sendPacket(p, add);
 				Object w = Ref.world(p.getWorld());
 				Location a = p.getLocation();
 				Object re;
@@ -233,9 +238,12 @@ public class SkinManager {
 							player.setAllowFlight(true);
 		                    player.setFlying(true);
 						}
+						player.setTotalExperience(player.getTotalExperience());
 					});
 			}else {
 				if(p.getWorld()==player.getWorld()) {
+					Ref.sendPacket(p, remove);
+					Ref.sendPacket(p, add);
 					Ref.sendPacket(p, destroy);
 					Ref.sendPacket(p, spawn);
 					Ref.sendPacket(p, head);

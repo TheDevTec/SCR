@@ -19,7 +19,7 @@ public class setting {
 			afk_auto, afk_kick, code, sb, am, am_random, timezone, save, tab_header, tab_footer, tab_nametag,
 			tab_sort, tab, eco, eco_other, eco_log, eco_multi, ad_book, ad_chat, ad_cmd, ad_sign, ad_anvil, ad_itemdrop,
 			ad_itempick, cool_cmd, cool_chat, cool_percmd, color_chat_perm,
-			color_sign_perm, tp_safe, tp_onreqloc, ram, spam_double, caps_chat, caps_cmd, deathspawnbol
+			color_sign_perm, tp_safe, tp_onreqloc, ram, deathspawnbol
 			,list, staff_hide, staff_replace, farming, tab_vanish, tab_move, vanish_action,
 			pm, helpop,tab_name;
 	public static String prefix;
@@ -66,9 +66,6 @@ public class setting {
 		cool_cmd = f.getBoolean("Options.Cooldowns.Commands.Use");
 		cool_percmd = f.getBoolean("Options.Cooldowns.Commands.PerCommand.Use");
 		cool_chat = f.getBoolean("Options.Cooldowns.Chat.Use");
-		spam_double = f.getBoolean("SpamWords.DoubledLetters.Use");
-		caps_chat = f.getBoolean("Options.Security.AntiCaps.Chat");
-		caps_cmd = f.getBoolean("Options.Security.AntiCaps.Commands");
 		ad_book = f.getBoolean("Options.Security.AntiAD.Book");
 		ad_chat = f.getBoolean("Options.Security.AntiAD.Chat");
 		ad_cmd = f.getBoolean("Options.Security.AntiAD.Commands");

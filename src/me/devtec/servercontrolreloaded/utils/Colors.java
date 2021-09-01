@@ -1,13 +1,13 @@
 package me.devtec.servercontrolreloaded.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.bukkit.command.CommandSender;
+
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class Colors {
@@ -15,7 +15,7 @@ public class Colors {
 	
 	public static String remove(String string) {
 		if (string != null)
-			string = ChatColor.stripColor(string);
+			string = string.replace("§", "&");
 		return string;
 	}
 	
@@ -62,24 +62,15 @@ public class Colors {
 			}
 		}
 		if ((Loader.config.getString("Options.Colors." + p + ".Permission.Color")!=null && !Loader.config.getString("Options.Colors." + p + ".Permission.Color").equals("")) && dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Color"))) {
-			for (int i = 0; i < 10; ++i)
-				b = b.replace("&" + i, "§"+i);
-			b = b.replace("&a", "§a");
-			b = b.replace("&b", "§b");
-			b = b.replace("&c", "§c");
-			b = b.replace("&d", "§d");
-			b = b.replace("&e", "§e");
-			b = b.replace("&f", "§f");
+				for (int i = 0; i < 10; ++i)
+				b = b.replace("&" + i, "§" + i);
+			b = b.replace("&([aAbBcCdDeEfF])", "§$1");
 		}
 		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Format"))) {
-			b = b.replace("&l", ChatColor.getByChar("l")+"");
-			b = b.replace("&o", ChatColor.getByChar("o")+"");
-			b = b.replace("&m", ChatColor.getByChar("m")+"");
-			b = b.replace("&n", ChatColor.getByChar("n")+"");
-			b = b.replace("&r", ChatColor.getByChar("r")+"");
+			b = b.replace("&([oOlLmMnNrR])", "§$1");
 		}
 		if (dr.hasPermission(Loader.config.getString("Options.Colors." + p + ".Permission.Magic"))) {
-			b = b.replace("&k", ChatColor.getByChar("k")+"");
+			b = b.replaceAll("&[kK]", "§k");
 		}
 		return b;
 	}

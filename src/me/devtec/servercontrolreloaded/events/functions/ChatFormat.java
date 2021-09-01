@@ -1,4 +1,4 @@
-package me.devtec.servercontrolreloaded.events;
+package me.devtec.servercontrolreloaded.events.functions;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +29,7 @@ import me.devtec.servercontrolreloaded.utils.Rule;
 import me.devtec.servercontrolreloaded.utils.TabList;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.cooldownapi.CooldownAPI;
 import me.devtec.theapi.utils.ChatMessage;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
@@ -36,13 +37,23 @@ import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 
-//TODO REWORK
+//TODO Add options to disable AntiFlood & AntiCaps
+//Options.AntiSpam.Flood
+//Options.AntiSpam.Caps.Chat
 
+/**
+ * 1.9. 2021
+ * 
+ * @author StraikerinaCZ
+ *
+ */
 public class ChatFormat implements Listener {
+	private static final Pattern fixedSplit = Pattern.compile("(#[A-Fa-f0-9]{6}|§[Xx](§[A-Fa-f0-9]){6}|§[A-Fa-f0-9UuXx])");
+	private static Pattern getLast = Pattern.compile("(#[A-Fa-f0-9]{6}|[&§][Xx]([&§][A-Fa-f0-9]){6}|[&§][A-Fa-f0-9K-Ok-oUuXx])");
 
 	@SuppressWarnings("unchecked")
-	public static Collection<?> colorizeList(Collection<?> json, Player p, String msg,boolean colors) {
-		ArrayList<Object> colorized = new ArrayList<>(json.size());
+	public static Collection<?> colorizeList(Collection<?> json, Player p, String msg, boolean colors) {
+		List<Object> colorized = new ArrayList<>(json.size());
 		for (Object e : json) {
 			if (e instanceof Collection) {
 				colorized.add(colorizeList((Collection<?>) e,p,msg,colors));
@@ -62,24 +73,22 @@ public class ChatFormat implements Listener {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> colorizeMap(Map<String, Object> jj, Player p, String msg,boolean colors) {
-		HashMap<String, Object> json = new HashMap<>(jj.size());
+	public static Map<String, Object> colorizeMap(Map<String, Object> jj, Player p, String msg, boolean colors) {
 		for (Entry<String, Object> e : jj.entrySet()) {
 			if (e.getValue() instanceof Collection) {
-				json.put(e.getKey(), colorizeList((Collection<?>) e.getValue(), p, msg,colors));
+				e.setValue(colorizeList((Collection<?>) e.getValue(), p, msg,colors));
 				continue;
 			}
 			if (e.getValue() instanceof Map) {
-				json.put(e.getKey(), colorizeMap((Map<String, Object>) e.getValue(), p, msg,colors));
+				e.setValue(colorizeMap((Map<String, Object>) e.getValue(), p, msg,colors));
 				continue;
 			}
 			if (e.getValue() instanceof String && !e.getKey().equals("color")) {
-				json.put(e.getKey(), r(p, e.getValue(),msg, true,colors));
+				e.setValue(r(p, e.getValue(),msg, true,colors));
 				continue;
 			}
-			json.put(e.getKey(), e.getValue());
 		}
-		return json;
+		return jj;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -111,7 +120,6 @@ public class ChatFormat implements Listener {
 		}
 		return s;
 	}
-	private static final Pattern fixedSplit = Pattern.compile("(#[A-Fa-f0-9]{6}|§[Xx](§[A-Fa-f0-9]){6}|§[A-Fa-f0-9UuXx])");
 	
 	private static String rainbow(String b) {
 		StringBuilder d = new StringBuilder(b.length());
@@ -141,53 +149,55 @@ public class ChatFormat implements Listener {
 			return msg;
 	}
 
-	private boolean is(String s) {
-		for (Player p : TheAPI.getOnlinePlayers()) {
-			if (s.equalsIgnoreCase(p.getName()))
-				return true;
-
+	public static String getLastColors(String s) {
+		Matcher m = getLast.matcher(s);
+		String colors = "";
+		while (m.find()) {
+			String last = m.group(1);
+			if (last.matches("[&§][A-Fa-f0-9Uu]|#[A-Fa-f0-9]{6}|[&§][Xx]([§&][A-Fa-f0-9]){6}"))
+				colors = last;
+			else
+				colors += last;
 		}
-		return false;
+		return colors;
 	}
 
-	private int count(String string) {
-		int upperCaseCount = 0;
-		for (char c : string.toCharArray())
-			if (Character.isAlphabetic(c) && Character.isUpperCase(c))
-				++upperCaseCount;
-		return upperCaseCount;
-	}
-
-	private String removeDoubled(String s) {
-		char prevchar = 0;
-		int count = 0;
-		StringBuilder sb = new StringBuilder();
-		for (char c : s.toCharArray()) {
-			if (prevchar != c) {
-				sb.append(c);
-				count = 0;
-			}else {
-				prevchar = c;
-				if(++count>=count(c))continue;
-				sb.append(c);
-			}
+	String replacePlayer(String color, String format, String msg, String player, Player p) {
+		String c = StringUtils.colorize(color + player);
+		Pattern g = Pattern.compile(player, Pattern.CASE_INSENSITIVE);
+		StringBuilder buf = new StringBuilder(msg.length());
+		String last = format;
+		int count = 1;
+		String[] split = g.split(msg);
+		for (String aa : split) {
+			last = getLastColors(last + aa);
+			buf.append(aa);
+			if (count++ < split.length)
+				buf.append(c).append(((last.toLowerCase().contains("&u") || last.toLowerCase().contains("§u")) ? last : StringUtils.colorize(last)));
 		}
-		return sb.toString();
-	}
-	
-	private int count(char c) {
-		return Character.isDigit(c)?6:Character.isAlphabetic(c)?2:4;
+		if (msg.equalsIgnoreCase(player))
+			buf.append(c);
+		else if (msg.toLowerCase().endsWith(player.toLowerCase()))
+			buf.append(c);
+		return buf.toString();
 	}
 
-	static final Map<Player, String> old = new HashMap<>();
+	private static String replace(String format, Player player) {
+		return StringUtils.colorize(
+				format.replace("%player%", player.getName()).replace("%playername%", player.getDisplayName()));
+	}
 
-	private boolean isSim(Player p, String msg) {
-		if (Loader.config.getBoolean("SpamWords.SimiliarMessage")) {
-			String o = old.put(p, msg);
-			if (o!=null && o.length() >= 5 && msg.length() >= o.length())
-				return msg.contains(o.substring(1, o.length() - 1));
-		}
-		return false;
+	public static String r(Player p, String s, String msg) {
+		s = s.replace("&u", "§[u]").replace("&U", "§[u]");
+		String orig = s;
+		s = replace(s, p);
+		if (s == null)
+			s = orig;
+		if (msg != null && s.contains("%message%"))
+			s = s.replace("%message%", msg);
+		if (s.contains("§[u]"))
+			s = rainbow(s.replace("§[u]", "§u"));
+		return s;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -196,89 +206,28 @@ public class ChatFormat implements Listener {
 		if (e.isCancelled()) return;
 		Player p = e.getPlayer();
 		ChatFormatter.setupName(p);
-		if (TheAPI.getCooldownAPI(p.getName()).getTimeToExpire("world-create") != -1) {
+		CooldownAPI cool = TheAPI.getCooldownAPI(p);
+		if (cool.getTimeToExpire("world-create") != -1) {
 			e.setCancelled(true);
 			if (e.getMessage().equalsIgnoreCase("cancel")) {
 				User d = TheAPI.getUser(p);
-				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
+				cool.removeCooldown("world-create");
 				d.remove("MultiWorlds-Create");
 				d.remove("MultiWorlds-Generator");
 				d.save();
 				TheAPI.sendTitle(p, "", "&6Cancelled");
-			} else if (TheAPI.getCooldownAPI(p.getName()).expired("world-create")) {
-				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
+			} else if (cool.expired("world-create")) {
+				cool.removeCooldown("world-create");
 				MultiWorldsGUI.openInvCreate(p);
 			} else {
-				TheAPI.getCooldownAPI(p.getName()).removeCooldown("world-create");
+				cool.removeCooldown("world-create");
 				TheAPI.getUser(p).setAndSave("MultiWorlds-Create", Colors.remove(e.getMessage()));
 				MultiWorldsGUI.openInvCreate(p);
 			}
 			return;
 		}
+		String msg = e.getMessage();
 		if(Loader.config.getBoolean("ChatFormat.enabled")) {
-			String msg = e.getMessage();
-			if (!p.hasPermission("SCR.Other.Admin")) {
-				if (!p.hasPermission("SCR.Other.RulesBypass")) {
-					for (Rule rule : Loader.rules) {
-						if (!Loader.events.getStringList("onChat.Rules").contains(rule.getName())) continue;
-						msg = rule.apply(msg);
-						if (msg == null) break;
-					}
-					if (msg == null) {
-						e.setCancelled(true);
-						return;
-					}
-				}
-				String message = msg;
-				String d = ""; // anti doubled letters
-				int up = 0; // anti caps
-				if (setting.spam_double) {
-					if (message.split(" ").length == 0) {
-						if (!is(message)) {
-							up = up + count(message);
-							String removed = removeDoubled(message);
-							d += " " + (message.length() - removed.length() >= 5 ? removed : message);
-						} else
-							d += " " + message;
-					} else
-						for (String s : message.split(" ")) {
-							if (!is(s)) {
-								up = up + count(s);
-								String removed = removeDoubled(message);
-								d = d + " " + (message.length() - removed.length() >= 5 ? removed : s);
-							} else
-								d = d + " " + s;
-						}
-					d = d.replaceFirst(" ", "");
-				} else
-					d = message;
-				String build = d;
-				if (setting.caps_chat && !p.hasPermission("SCR.Other.Caps")) {
-					if (up != 0 && up / ((double) d.length() / 100) >= 60 && d.length() > 5) {
-						build = "";
-						if (d.split(" ").length == 0) {
-							if (!is(d)) {
-								build = build + " " + d.toLowerCase();
-							} else
-								build = build + " " + d;
-						} else
-							for (String s : d.split(" ")) {
-								if (!is(s)) {
-									build = build + " " + s.toLowerCase();
-								} else
-									build = build + " " + s;
-							}
-						build = build.replaceFirst(" ", "");
-					}
-				}
-				message = build;
-				if (Loader.config.getBoolean("SpamWords.SimiliarMessage") && !p.hasPermission("SCR.Other.SimiliarMessage"))
-					if (isSim(p, message)) {
-						e.setCancelled(true);
-						return;
-					}
-				msg = message;
-			}
 			if (PrivateMessageManager.hasChatLock(p)) {
 				if (PrivateMessageManager.getLockType(p).equalsIgnoreCase("msg")) {
 					PrivateMessageManager.reply(p, msg);
@@ -329,6 +278,14 @@ public class ChatFormat implements Listener {
 					}
 				}
 			}
+			List<String> ps = new ArrayList<>();
+			for (Player s : e.getRecipients())
+				ps.add(s.getName());
+			msg = chat(p.hasPermission("scr.other.chat.bypass"), e.getMessage(), ps);
+			if (msg == null) {
+				e.setCancelled(true);
+				return;
+			}
 
 			if (Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
 				Object[] format = ChatFormatter.getChatFormat(p, 1);
@@ -347,7 +304,7 @@ public class ChatFormat implements Listener {
 						if (ChatFormatter.getNotify(s)) {
 							if (sound != null)
 								s.playSound(s.getLocation(), sound, 1, 1);
-							if (!(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
+							if (title[0] != null && title[1] != null && !(title[0].trim().isEmpty() && title[1].trim().isEmpty()))
 								TheAPI.sendTitle(s, title[0].trim().isEmpty() ? "" : TabList.replace(title[0], s, true), title[1].trim().isEmpty() ? "" : TabList.replace(title[1], s, true));
 							if (!actionbar.trim().isEmpty())
 								TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
@@ -379,7 +336,7 @@ public class ChatFormat implements Listener {
 						}
 						formatt = o;
 						List<Map<String, Object>> list = ChatMessage.fixListMap((List<Map<String, Object>>) formatt);
-						e.setFormat(convertToLegacy(list).replace("%", "%%"));
+						e.setFormat(ChatMessage.toLegacy((List<Object>)(List<?>)list).replace("%", "%%"));
 						if (!e.isCancelled()) {
 							String jsons = Json.writer().simpleWrite(list);
 							jsons="[\"\","+jsons.substring(1);
@@ -391,44 +348,127 @@ public class ChatFormat implements Listener {
 			} else e.setCancelled(true);
 		}
 	}
-	
-	String replacePlayer(String color, String format, String msg, String player, Player p) {
-		String c = StringUtils.colorize(color+player);
-		Pattern g = Pattern.compile(player, Pattern.CASE_INSENSITIVE);
-		StringBuilder buf = new StringBuilder(msg.length());
-		String last = format;
-		int count = 1;
-		String[] split = g.split(msg);
-		for(String aa : split) {
-			last=getLastColors(last+aa);
-			if(count++<split.length)
-				buf.append(aa).append(c).append((last.toLowerCase().contains("&u") || last.toLowerCase().contains("§u")) ? last : StringUtils.colorize(last));
-			else
-				buf.append(aa);
+
+	private static String chat(boolean bypass, String string, List<String> players) {
+		if(Loader.config.getBoolean("Options.AntiSpam.Caps"))
+		if (string.length() > 4) {
+			boolean startWithCaps = Character.isUpperCase(string.charAt(0));
+			// CAPS LOCK
+			boolean turningDown=false;
+			
+			StringBuilder caps = new StringBuilder(string.length());
+			for (String s : string.split(" ")) {
+				caps.append(' ');
+				StringBuilder add = new StringBuilder(caps.capacity());
+				int upper = 0;
+				for (char a : s.toCharArray()) {
+					if (Character.isUpperCase(a))
+						++upper;
+					add.append(a);
+				}
+				if (turningDown||upper > 3 && ((double) caps.length() / 100) * 30 <= upper) {
+					turningDown=true;
+					boolean added = false;
+					for (String player : players) {
+						if (!add.toString().contains(player)) {
+							continue;
+						}
+						String[] split = add.toString().split(player);
+						if (split.length == 0) {
+							added = true;
+							caps.append(player);
+							continue;
+						}
+						added = true;
+						caps.append(split[0].toLowerCase());
+						caps.append(player);
+						if (split.length > 1)
+							caps.append(split[1].toLowerCase());
+					}
+					if (!added)
+						caps.append(add.toString().toLowerCase());
+				} else
+					caps.append(add.toString());
+			}
+			caps.delete(0, 1);
+			if (startWithCaps && !Character.isUpperCase(caps.charAt(0)))
+				caps.setCharAt(0, Character.toUpperCase(caps.charAt(0)));
+			string = caps.toString();
+
+			caps.delete(0, caps.length());
+			for (String s : string.split(" ")) {
+				caps.append(' ');
+				StringBuilder add = new StringBuilder(caps.capacity());
+				int upper = 0;
+				for (char a : s.toCharArray()) {
+					if (Character.isUpperCase((char) a))
+						++upper;
+					add.append((char) a);
+				}
+				if (upper > 3 && ((double) caps.length() / 100) * 30 <= upper) {
+					boolean added = false;
+					for (String player : players) {
+						if (!add.toString().contains(player)) {
+							continue;
+						}
+						String[] split = add.toString().split(player);
+						if (split.length == 0) {
+							added = true;
+							caps.append(player);
+							continue;
+						}
+						added = true;
+						caps.append(split[0].toLowerCase());
+						caps.append(player);
+						if (split.length > 1)
+							caps.append(split[1].toLowerCase());
+					}
+					if (!added)
+						caps.append(add.toString().toLowerCase());
+				} else
+					caps.append(add.toString());
+			}
+			caps.delete(0, 1);
+			if (startWithCaps && !Character.isUpperCase(caps.charAt(0)))
+				caps.setCharAt(0, Character.toUpperCase(caps.charAt(0)));
+			string = caps.toString();
 		}
-		if(msg.equalsIgnoreCase(player))
-			buf.append(c);
-		else
-		if(msg.toLowerCase().endsWith(player.toLowerCase()))
-			buf.append(c);
-		return buf.toString();
-	}
-	
-	private String convertToLegacy(List<Map<String, Object>> list) {
-		StringBuilder b = new StringBuilder();
-		for(Map<String, Object> text : list)
-			b.append(StringUtils.colorize(getColor(""+text.getOrDefault("color",""))+getStats(text)+text.get("text")));
-		return b.toString();
-	}
-	
-	private static String getStats(Map<String, Object> text) {
-		String s = "";
-		if(text.containsKey("bold") && (boolean)text.get("bold"))s+="&l";
-		if(text.containsKey("italic") && (boolean)text.get("italic"))s+="&o";
-		if(text.containsKey("strikethrough") && (boolean)text.get("strikethrough"))s+="&m";
-		if(text.containsKey("underlined") && (boolean)text.get("underlined"))s+="&n";
-		if(text.containsKey("obfuscated") && (boolean)text.get("obfuscated"))s+="&k";
-		return s;
+		Map<Integer, String> pId = new HashMap<>();
+		int i = 0;
+		for (String p : players) {
+			pId.put(i, p);
+			string = string.replace(p, "§§" + i + "§h");
+			++i;
+		}
+
+		// FLOOD
+		if(Loader.config.getBoolean("Options.AntiSpam.Flood") && !bypass) {
+			StringBuilder add = new StringBuilder(string.length());
+			int cPrev = 0;
+			char prev = 0;
+			for (char a : string.toCharArray()) {
+				char low = Character.toLowerCase(a);
+				if(prev == low) {
+					if(++cPrev >= 3) {
+						continue;
+					}
+				}else {
+					cPrev=0;
+				}
+				prev=low;
+				add.append(a);
+			}
+			string=add.toString();
+		}
+		for (Rule r : Loader.rules)
+			if(!bypass || !r.isBypassable())
+				string = r.apply(string);
+		if (string == null)
+			return null;
+		for (Entry<Integer, String> p : pId.entrySet()) {
+			string = string.replace("§§" + p.getKey() + "§h", p.getValue());
+		}
+		return string;
 	}
 	
 	String getColor(String color) {
@@ -484,19 +524,5 @@ public class ChatFormat implements Listener {
 			}catch(Exception er) {}
 		if(text==null)return "";
 		return getLastColors(text);
-	}
-	private static final Pattern getLast = Pattern.compile("(#[A-Fa-f0-9]{6}|[&§][Xx]([&§][A-Fa-f0-9]){6}|[&§][A-Fa-f0-9K-Ok-oUuXx])");
-
-	public static String getLastColors(String s) {
-		Matcher m = getLast.matcher(s);
-		String colors = "";
-		while(m.find()) {
-			String last = m.group(1);
-			if(last.matches("[&§][A-Fa-f0-9Uu]|#[A-Fa-f0-9]{6}|[&§][Xx]([§&][A-Fa-f0-9]){6}"))
-				colors=last;
-			else
-				colors+=last;
-		}
-		return colors;
 	}
 }

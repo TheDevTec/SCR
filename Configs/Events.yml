@@ -28,6 +28,8 @@ onDeath:
 # On player quit
 onQuit:
   Text: "%prefix% Player &e%player% &7left the game"
+  Messages: []
+  Commands: []
 
 # On player chat event
 onChat:
@@ -36,38 +38,31 @@ onChat:
 
 # On player send command event
 onCommand:
-  Rules:
-  - "antiSwear_idiot"
+  Rules: []
 
 # On anvil rename item event
 onAnvil:
-  Rules:
-  - "antiSwear_idiot"
+  Rules: []
 
 # On sign change event
 onSign:
-  Rules:
-  - "antiSwear_idiot"
+  Rules: []
 
 # On book edit event
 onBook:
-  Rules:
-  - "antiSwear_idiot"
+  Rules: []
 
 # On drop item event
 onDropItem:
-  Rules:
-  - "antiSwear_idiot"
+  Rules: []
 
 # On pickup item event
 onPickupItem:
-  Rules:
-  - "antiSwear_idiot"
+  Rules: []
 
-# When you enable vanish
+# When you enable/disable vanish
 onVanish:
   Enable:
-    # You can create here fake Join or leave message when you enable vanish
     Broadcast: []
   Disable:
     Broadcast: []

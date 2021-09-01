@@ -59,8 +59,7 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 								}
 							}
 						}
-
-						int pages = (int) Math.ceil((double) PlayTimeUtils.playtop.size() / 10);
+						int pages = (int) PlayTimeUtils.playtop.size() / 10;
 						int page =args.length>1?StringUtils.getInt(args[1]):1;
 						if(page<=0)page=1;
 						if(pages<page)page=pages;
@@ -75,11 +74,12 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 
 						if (max > tops.size())
 							max = tops.size();
-						for (int i = min; i<max; ++i) {
-							ComparableObject<String, Integer> player = tops.get(i);
+						int i = min;
+						for (ComparableObject<String, Integer> player : tops.getTop(min, max)) {
 							Loader.sendMessages(s, "PlayTime.PlayTop.Top", Placeholder.c().replace("%position%", i+"")
 									.replace("%player%", player).replace("%playername%", player(s, player.getKey()))
 									.replace("%playtime%", StringUtils.timeToString(player.getValue())));
+							++i;
 						}
 						Loader.sendMessages(s, "PlayTime.PlayTop.Footer", Placeholder.c().replace("%page%",(page+1)+"")
 								.replace("%pages%", pages+""));

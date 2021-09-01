@@ -3,13 +3,20 @@ package me.devtec.servercontrolreloaded.utils.skins.manager;
 import java.util.HashMap;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import me.devtec.theapi.utils.json.Json;
 
 public class SkinData {
-	public UUID uuid; //Nullable
+	@Nullable
+	public UUID uuid;
+	@Nonnull
 	public String value;
+	@Nonnull
 	public String signature;
-	public String url; //Nullable
+	@Nullable
+	public String url;
 	public boolean slim;
 	
 	public boolean isFinite() {

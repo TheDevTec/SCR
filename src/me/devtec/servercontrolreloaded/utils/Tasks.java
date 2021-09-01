@@ -334,17 +334,30 @@ public class Tasks {
 		/*
 		 * Custom PlayTime task
 		 */
-		if(Loader.config.getBoolean("Options.PlayTime.UseAfkTime"))
-		tasks.add(new Tasker() {
-			public void run() {
-				for(Player p : TheAPI.getOnlinePlayers()) {
-					if(!API.isAFK(p)) {
-						SPlayer player = API.getSPlayer(p);
-						player.addPlayTime(1);
+		if(Loader.config.getBoolean("Options.PlayTime.UseCustomPlayTime")) {
+			if(Loader.config.getBoolean("Options.PlayTime.UseAfkTime")) {
+				tasks.add(new Tasker() {
+					public void run() {
+						for(Player p : TheAPI.getOnlinePlayers()) {
+							SPlayer player = API.getSPlayer(p);
+							player.addPlayTime(1);
+						}
+						
 					}
-				}
-				
+				}.runRepeating(20, 20));
+			}else {
+				tasks.add(new Tasker() {
+					public void run() {
+						for(Player p : TheAPI.getOnlinePlayers()) {
+							if(!API.isAFK(p)) {
+								SPlayer player = API.getSPlayer(p);
+								player.addPlayTime(1);
+							}
+						}
+						
+					}
+				}.runRepeating(20, 20));
 			}
-		}.runRepeating(20, 20));
+		}
 	}
 }

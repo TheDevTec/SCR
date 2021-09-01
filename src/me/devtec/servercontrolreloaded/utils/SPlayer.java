@@ -387,10 +387,10 @@ public class SPlayer {
 	public void addPlayTime(int seconds) {
 		User u = getUser();
 		GameMode g = player.getGameMode();
-		u.set("Statistics.PlayTime", (getUser().getInt("Statistics.PlayTime")+seconds) );
-		u.set("Statistics."+g.name()+".PlayTime", (getUser().getInt("Statistics."+g.name()+".PlayTime")+seconds));
-		u.set("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime", (getUser().getInt("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime")+seconds));
-		u.set("Statistics."+player.getWorld().getName()+".PlayTime", (getUser().getInt("Statistics."+player.getWorld().getName()+".PlayTime")+seconds));
+		u.set("Statistics.PlayTime", (u.getInt("Statistics.PlayTime")+seconds) );
+		u.set("Statistics."+g.name()+".PlayTime", (u.getInt("Statistics."+g.name()+".PlayTime")+seconds));
+		u.set("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime", (u.getInt("Statistics."+g.name()+"."+player.getWorld().getName()+".PlayTime")+seconds));
+		u.set("Statistics."+player.getWorld().getName()+".PlayTime", (u.getInt("Statistics."+player.getWorld().getName()+".PlayTime")+seconds));
 		u.save();
 		/*
 		 * Statistics:
