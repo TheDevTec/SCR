@@ -20,10 +20,11 @@ public class VIPSlots implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void login(PlayerLoginEvent e) {
-		if(e.getResult()!=Result.ALLOWED)return;
 		Player p = e.getPlayer();
 		if(Loader.config.getBoolean("ChatFormat.enabled"))
 			ChatFormatter.setupName(p);
+		if(e.getResult()==Result.ALLOWED)
+			return;
 		if (setting.lock_server && !Loader.has(p, "Maintenance", "Info", "Bypass")) {
 			e.disallow(Result.KICK_OTHER, TheAPI.colorize(StringUtils.join(Loader.config.getStringList("Options.Maintenance.KickMessages"), "\n").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())));
 			return;

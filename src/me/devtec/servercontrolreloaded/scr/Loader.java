@@ -33,7 +33,8 @@ import me.devtec.servercontrolreloaded.events.functions.DisableItems;
 import me.devtec.servercontrolreloaded.events.functions.FarmingSystem;
 import me.devtec.servercontrolreloaded.events.functions.ItemProcessUse;
 import me.devtec.servercontrolreloaded.events.functions.JoinQuitEvents;
-import me.devtec.servercontrolreloaded.events.functions.MWWorldSettings;
+import me.devtec.servercontrolreloaded.events.functions.MWSettings;
+import me.devtec.servercontrolreloaded.events.functions.MWSettingsLegacy;
 import me.devtec.servercontrolreloaded.events.functions.PWGamemode;
 import me.devtec.servercontrolreloaded.events.functions.SinglePlayerSleep;
 import me.devtec.servercontrolreloaded.events.functions.VIPSlots;
@@ -43,10 +44,7 @@ import me.devtec.servercontrolreloaded.utils.BungeeListener;
 import me.devtec.servercontrolreloaded.utils.Configs;
 import me.devtec.servercontrolreloaded.utils.Converter;
 import me.devtec.servercontrolreloaded.utils.DisplayManager;
-import me.devtec.servercontrolreloaded.utils.DynmapSupport;
 import me.devtec.servercontrolreloaded.utils.Eco;
-import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
-import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
 import me.devtec.servercontrolreloaded.utils.NameTagChanger;
 import me.devtec.servercontrolreloaded.utils.Portal;
 import me.devtec.servercontrolreloaded.utils.Rule;
@@ -56,6 +54,9 @@ import me.devtec.servercontrolreloaded.utils.Tasks;
 import me.devtec.servercontrolreloaded.utils.XMaterial;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.servercontrolreloaded.utils.metrics.Metrics;
+import me.devtec.servercontrolreloaded.utils.multiworlds.MWAPI;
+import me.devtec.servercontrolreloaded.utils.multiworlds.MWGUI;
+import me.devtec.servercontrolreloaded.utils.skins.DynmapSupport;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.apis.PluginManagerAPI;
@@ -636,7 +637,7 @@ public class Loader extends JavaPlugin implements Listener {
 			((ThePlaceholder)reg).register();
 		}
 		
-		MultiWorldsUtils.loadWorlds();
+		MWAPI.loadWorlds();
 		if(Ref.getClass("net.md_5.bungee.api.ChatColor")!=null) {
 			if(new Data("spigot.yml").getBoolean("settings.bungeecord")) {
 				hasBungee=true;
@@ -828,7 +829,7 @@ public class Loader extends JavaPlugin implements Listener {
 			};
 			GUI sa = new GUI(""+Loader.getTranslation("Trash.Name"), 54);
 			sa.setInsertable(true);
-			MultiWorldsGUI.smallInv(sa);
+			MWGUI.smallInv(sa);
 			sa.setItem(49, clear);
 			Trash.s=sa;
 		for(String s : config.getKeys("Rules")) {
@@ -982,7 +983,9 @@ public class Loader extends JavaPlugin implements Listener {
 		regEvent(new DeathEvents());
 		regEvent(new AFKEvents());
 		regEvent(new PWGamemode());
-		regEvent(new MWWorldSettings());
+		regEvent(new MWSettings());
+		if(TheAPI.isOlderThan(13)) //Gamerules: drowDamage, fireDamage & fallDamage
+			regEvent(new MWSettingsLegacy());
 		regEvent(new Signs());
 		if(setting.farming)
 			regEvent(new FarmingSystem());

@@ -24,10 +24,10 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.ChatFormatter;
 import me.devtec.servercontrolreloaded.utils.Colors;
-import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
 import me.devtec.servercontrolreloaded.utils.Rule;
 import me.devtec.servercontrolreloaded.utils.TabList;
 import me.devtec.servercontrolreloaded.utils.setting;
+import me.devtec.servercontrolreloaded.utils.multiworlds.MWGUI;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.cooldownapi.CooldownAPI;
 import me.devtec.theapi.utils.ChatMessage;
@@ -218,11 +218,11 @@ public class ChatFormat implements Listener {
 				TheAPI.sendTitle(p, "", "&6Cancelled");
 			} else if (cool.expired("world-create")) {
 				cool.removeCooldown("world-create");
-				MultiWorldsGUI.openInvCreate(p);
+				MWGUI.openInvCreate(p);
 			} else {
 				cool.removeCooldown("world-create");
 				TheAPI.getUser(p).setAndSave("MultiWorlds-Create", Colors.remove(e.getMessage()));
-				MultiWorldsGUI.openInvCreate(p);
+				MWGUI.openInvCreate(p);
 			}
 			return;
 		}

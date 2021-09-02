@@ -1,6 +1,11 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -14,8 +19,8 @@ import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.servercontrolreloaded.utils.MultiWorldsGUI;
-import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
+import me.devtec.servercontrolreloaded.utils.multiworlds.MWAPI;
+import me.devtec.servercontrolreloaded.utils.multiworlds.MWGUI;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.worldsapi.WorldsAPI;
@@ -35,7 +40,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 		if (args.length == 0) {
 			if (s instanceof Player) {
 				if(Loader.has(s,"MultiWorlds","Other")){
-					MultiWorldsGUI.openInv((Player) s);
+					MWGUI.openInv((Player) s);
 					return true;
 				}
 				return true;
@@ -58,7 +63,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 					||args[2].equalsIgnoreCase("default")){
 				Loader.mw.set("WorldsSettings." + args[1] + ".Generator",args[2].toUpperCase());
 				Loader.mw.save();
-				MultiWorldsUtils.createWorld(args[1], s);
+				MWAPI.createWorld(args[1], s);
 				return true;
 			}
 			Loader.sendMessages(s,"Missing.Generator", Loader.Placeholder.c().add("%generator%",args[2]));
@@ -94,7 +99,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 			if(Loader.mw.exists("Unloaded-Worlds")){
 				for(String w : Loader.mw.getStringList("Unloaded-Worlds")){
 					if(w.equalsIgnoreCase(args[1])){
-						MultiWorldsUtils.loadWorld(w, s);
+						MWAPI.loadWorld(w, s);
 						return true;
 					}
 				}
@@ -116,7 +121,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if(args.length < 4){ //-get
-				Loader.sendMessages(s,"MultiWorld.Flag.Get", Loader.Placeholder.c().add("%flag%",args[2]).add("%value%",MultiWorldsUtils.getFlag(Bukkit.getWorld(args[1]),args[2])));
+				Loader.sendMessages(s,"MultiWorld.Flag.Get", Loader.Placeholder.c().add("%flag%",args[2]).add("%value%",MWAPI.getFlag(Bukkit.getWorld(args[1]),args[2])));
 				return true;
 			}
 			List<String> g = flags.get(args[2].toUpperCase());
@@ -164,7 +169,7 @@ public class MultiWorlds implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(s,"Missing.World", Loader.Placeholder.c().add("%world%",args[1]));
 				return true;
 			}
-			MultiWorldsUtils.unloadWorld(args[1],s);
+			MWAPI.unloadWorld(args[1],s);
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("tp")||args[0].equalsIgnoreCase("teleport")) {

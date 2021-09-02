@@ -49,7 +49,8 @@ public class Tasks {
 			Iterator<PlayerProfile> p = e.getPlayersText().iterator();
 			int vanis=0;
 			while(p.hasNext()) {
-				if(Bukkit.getPlayer(p.next().getUUID())!=null && API.hasVanish(Bukkit.getPlayer(p.next().getUUID()))) {
+				PlayerProfile player = p.next();
+				if(Bukkit.getPlayer(player.getUUID())!=null && API.hasVanish(Bukkit.getPlayer(player.getUUID()))) {
 					p.remove();
 					++vanis;
 				}
@@ -79,7 +80,6 @@ public class Tasks {
 		public boolean PacketPlayIn(String player, Object packet, Object channel) {
 			return false;
 		}
-		
 	};
 
 	public static void unload() {

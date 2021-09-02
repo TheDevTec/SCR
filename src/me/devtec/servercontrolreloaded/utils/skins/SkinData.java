@@ -1,4 +1,4 @@
-package me.devtec.servercontrolreloaded.utils.skins.manager;
+package me.devtec.servercontrolreloaded.utils.skins;
 
 import java.util.HashMap;
 import java.util.UUID;

@@ -18,9 +18,9 @@ import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 import me.devtec.servercontrolreloaded.commands.other.Vanish;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
 import me.devtec.servercontrolreloaded.utils.Portal;
 import me.devtec.servercontrolreloaded.utils.SPlayer;
+import me.devtec.servercontrolreloaded.utils.multiworlds.MWAPI;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.reflections.Ref;
@@ -51,7 +51,7 @@ public class PWGamemode implements Listener {
 					gen="FLAT";
 				else gen="DEFAULT";
 		}
-		MultiWorldsUtils.defaultSet(e.getWorld(), gen);
+		MWAPI.defaultSet(e.getWorld(), gen);
 		//LOAD PORTALS
 		Portal.load(e.getWorld());
 	}
@@ -61,20 +61,19 @@ public class PWGamemode implements Listener {
 		if(e.isCancelled())return;
 		if(e.getFrom().getWorld()!=e.getTo().getWorld()) { //prepare gamemode
 			SPlayer a = API.getSPlayer(e.getPlayer());
-			boolean f = a.hasFlyEnabled(true);
+			boolean flying = e.getPlayer().isFlying();
+			boolean allowedFly = e.getPlayer().getAllowFlight();
 			new Tasker() {
 				public void run() {
-					if (f)
-						a.enableFly();
-					if (a.hasTempFlyEnabled())
-						a.enableTempFly();
+					e.getPlayer().setAllowFlight(allowedFly);
+					e.getPlayer().setFlying(flying);
 					if (a.hasGodEnabled())
-						a.enableGod();
+						a.heal();
 				}
 			}.runLaterSync(1);
-			if(/*e.getPlayer().hasPermission("SCR.Other.Gamemode.Force") && */!e.getPlayer().hasPermission("SCR.Other.Gamemode.Force.Bypass")) {
+			if(!e.getPlayer().hasPermission("SCR.Other.Gamemode.Force.Bypass")) {
 				GameMode c = e.getPlayer().getGameMode();
-				GameMode gm = MultiWorldsUtils.getGamemode(e.getTo().getWorld());
+				GameMode gm = MWAPI.getGamemode(e.getTo().getWorld());
 				if(c!=gm) {
 					if(c==GameMode.CREATIVE) {
 						new Tasker() {
@@ -93,7 +92,7 @@ public class PWGamemode implements Listener {
 							}.runLaterSync(1);
 							return;
 						}
-					Ref.set(Ref.get(Ref.player(e.getPlayer()), TheAPI.isNewerThan(16)?"d":"playerInteractManager"), "b", MultiWorldsUtils.getGamemodeNMS(e.getTo().getWorld()));
+					Ref.set(Ref.get(Ref.player(e.getPlayer()), TheAPI.isNewerThan(16)?"d":"playerInteractManager"), "b", MWAPI.getGamemodeNMS(e.getTo().getWorld()));
 				}
 			}
 		}
@@ -102,7 +101,7 @@ public class PWGamemode implements Listener {
 	@EventHandler
 	public void onSpawn(PlayerSpawnLocationEvent e) {
 		GameMode c = e.getPlayer().getGameMode();
-		GameMode gm = MultiWorldsUtils.getGamemode(e.getSpawnLocation().getWorld());
+		GameMode gm = MWAPI.getGamemode(e.getSpawnLocation().getWorld());
 		if(c!=gm) {
 			if(c==GameMode.CREATIVE) {
 				e.getPlayer().setGameMode(gm);
@@ -113,7 +112,7 @@ public class PWGamemode implements Listener {
 					e.getPlayer().setGameMode(gm);
 					return;
 				}
-			Ref.set(Ref.get(Ref.player(e.getPlayer()), TheAPI.isNewerThan(16)?"d":"playerInteractManager"), "b", MultiWorldsUtils.getGamemodeNMS(e.getSpawnLocation().getWorld()));
+			Ref.set(Ref.get(Ref.player(e.getPlayer()), TheAPI.isNewerThan(16)?"d":"playerInteractManager"), "b", MWAPI.getGamemodeNMS(e.getSpawnLocation().getWorld()));
 		}
 	}
 	

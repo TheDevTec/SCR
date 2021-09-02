@@ -14,7 +14,7 @@ import org.bukkit.command.TabCompleter;
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.servercontrolreloaded.utils.MultiWorldsUtils;
+import me.devtec.servercontrolreloaded.utils.multiworlds.MWAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public class Chunks implements CommandExecutor, TabCompleter {
@@ -38,7 +38,7 @@ public class Chunks implements CommandExecutor, TabCompleter {
 						.add("%chunks%", String.valueOf(chunks)));
 				return true;
 			}
-			MultiWorldsUtils.unloadWorlds(s);
+			MWAPI.unloadWorlds(s);
 			return true;
 		}
 		Loader.noPerms(s, "Chunks", "Info");

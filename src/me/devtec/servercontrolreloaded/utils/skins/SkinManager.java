@@ -1,4 +1,4 @@
-package me.devtec.servercontrolreloaded.utils.skins.manager;
+package me.devtec.servercontrolreloaded.utils.skins;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -24,7 +24,6 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
 import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.utils.DynmapSupport;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.scheduler.Tasker;

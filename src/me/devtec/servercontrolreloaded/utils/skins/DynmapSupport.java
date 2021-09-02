@@ -1,4 +1,4 @@
-package me.devtec.servercontrolreloaded.utils;
+package me.devtec.servercontrolreloaded.utils.skins;
 
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -10,7 +10,6 @@ import org.dynmap.SkinUrlProvider;
 import org.dynmap.bukkit.DynmapPlugin;
 import org.dynmap.common.DynmapPlayer;
 
-import me.devtec.servercontrolreloaded.utils.skins.manager.SkinManager;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class DynmapSupport {

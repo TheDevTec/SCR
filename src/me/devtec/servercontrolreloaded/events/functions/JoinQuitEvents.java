@@ -27,7 +27,7 @@ import me.devtec.servercontrolreloaded.utils.SPlayer;
 import me.devtec.servercontrolreloaded.utils.TabList;
 import me.devtec.servercontrolreloaded.utils.Tasks;
 import me.devtec.servercontrolreloaded.utils.setting;
-import me.devtec.servercontrolreloaded.utils.skins.manager.SkinManager;
+import me.devtec.servercontrolreloaded.utils.skins.SkinManager;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.SoundAPI;
 import me.devtec.theapi.configapi.Config;

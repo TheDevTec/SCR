@@ -14,7 +14,7 @@ import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.servercontrolreloaded.utils.skins.manager.SkinManager;
+import me.devtec.servercontrolreloaded.utils.skins.SkinManager;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
 
