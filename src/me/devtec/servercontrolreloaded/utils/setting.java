@@ -15,7 +15,7 @@ public class setting {
 
 	public static SimpleDateFormat format_date_time, format_time, format_date;
 	public static boolean warn_reload, warn_stop, warn_restart, singeplayersleep, color_chat, color_sign, sound,
-			cmdblock, disable_item, vip, vip_kick, vip_add, vip_join, motd, motd_maintenance, lock_chat, lock_server,
+			cmdblock, disable_item, vip, vip_kick, vip_add, vip_join, lock_chat, lock_server,
 			afk_auto, afk_kick, code, sb, am, am_random, timezone, save, tab_header, tab_footer, tab_nametag,
 			tab_sort, tab, eco, eco_other, eco_log, eco_multi, ad_book, ad_chat, ad_cmd, ad_sign, ad_anvil, ad_itemdrop,
 			ad_itempick, cool_cmd, cool_chat, cool_percmd, color_chat_perm,
@@ -103,8 +103,6 @@ public class setting {
 		vip_add = f.getBoolean("Options.VIPSlots.AddSlots");
 		vip_kick = f.getBoolean("Options.VIPSlots.KickWhenFullServer");
 		vip_join = f.getBoolean("Options.VIPSlots.VIPJoinBroadcast");
-		motd = f.getBoolean("Options.ServerList.MOTD.Use");
-		motd_maintenance = f.getBoolean("Options.ServerList.MOTD.Maintenance");
 		afk_auto = f.getBoolean("Options.AFK.AutoAFK");
 		afk_kick = f.getBoolean("Options.AFK.AutoKick");
 		lock_chat = f.getBoolean("Options.ChatLock");

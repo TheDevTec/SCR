@@ -133,15 +133,6 @@ Options:
     - "&0[&e&lINFO&0] &7Online players &e%online%&7/&e%max_players%"
     - "&0[&e&lINFO&0] &7You found a bug ? Report it to https://github.com/TheDevTec/ServerControlReloaded"
     - "&0[&e&lINFO&0] &7Do you like our plugin? Write a comment on the https://www.spigotmc.org/resources/71147"
-    
-  ServerList:
-    MOTD:
-      Use: true
-      # If is enabled maintenance mode, change motd to Maintenance motd
-      Maintenance: false
-      Text:
-        Normal: "&7&l====» &eMinecraft Server%line%&7&lOnline players: &e%server_online%/%server_max_online%"
-        Maintenance: "&7&l====» &eMinecraft Server%line%&eServer is under maintenance mode"
         
   VIPSlots:
     Use: true
@@ -305,6 +296,67 @@ Options:
       - "Bedrock"
       world_the_end:
       - "Bedrock"
+  serverlist:
+    # Modify ServerListPingEvent
+    enabled: true
+    # selection: example
+    selection: normal
+
+    normal:
+      motd: 
+        0: "&7This is normal motd"
+        1: "&7Created via &eSCR &7plugin"
+      icon: "server-icon.png"
+      players:
+        # list: []
+        hide-vanished: true
+        # Fake online players count
+        online: "%online%"
+        # Fake max players
+        max: "%max_players%"
+      # Leave empty (serverversion: "") for default
+      serverversion: ""
+      # Leave -1 for current protocol
+      protocol: -1
+    example:
+      motd: 
+        0: "&7This is example motd 2"
+        1: "&7Created via &eSCR &7plugin"
+      icon: "server-icon.png"
+      players:
+        hide-vanished: false
+        list:
+        - "&6Online players: &e%online%"
+        - "&6Online staff: &e%staff%"
+        # Fake online players count
+        online: "%online%"
+        # Fake max players
+        max: "%math{%online%+1}%"
+      # Leave empty (serverversion: "") for default
+      serverversion: "&aJOIN TO US --->                      "
+      # Leave -1 for current protocol
+      protocol: 0
+    maintenance:
+      # If is enabled maintenance mode & this option, motd, players text & serverversion will be automatically changed to this settings
+      use: true
+      motd: 
+        0: ""
+        1: "&cServer is under maintenance"
+      # Icon: "maintenance-icon.png"
+      icon: "server-icon.png"
+      players:
+        hide-vanished: false
+        list:
+        - "&cServer is under maintenance,"
+        - "&cTry again later.."
+        # Fake online players count
+        online: 0
+        # Fake max players
+        max: 0
+      # Leave empty (serverversion: "") for default
+      serverversion: "&4MAINTENANCE"
+      # Leave -1 for current protocol
+      protocol: 0
 
 Homes:
   #GroupName: amount
