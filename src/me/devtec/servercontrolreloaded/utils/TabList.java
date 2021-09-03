@@ -1,9 +1,9 @@
 package me.devtec.servercontrolreloaded.utils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -200,43 +200,17 @@ public class TabList {
 					, playtime_worldOrGm = Pattern.compile("\\%playtime_([_A-Za-z0-9]+)_(.+?)\\%")
 					, playtime_world_gm = Pattern.compile("\\%playtime_([_A-Za-z0-9]+)_(.+?)_(SURVIVAL|CREATIVE|ADVENTURE|SPECTATOR)\\%", Pattern.CASE_INSENSITIVE)
 					, playtime_worldOrGmMe = Pattern.compile("\\%playtime_(.+?)\\%")
-					, playtime_world_gmMe = Pattern.compile("\\%playtime_(.+?)_(SURVIVAL|CREATIVE|ADVENTURE|SPECTATOR)\\%", Pattern.CASE_INSENSITIVE);
+					, playtime_world_gmMe = Pattern.compile("\\%playtime_(.+?)_(SURVIVAL|CREATIVE|ADVENTURE|SPECTATOR)\\%", Pattern.CASE_INSENSITIVE)
+					, balancetop = Pattern.compile("\\%balancetop_([0-9]+)_(name|money|format_money|formatted_money)\\%", Pattern.CASE_INSENSITIVE);
 	
 	public static String replace(String header, Player p, boolean color) {
 		if(p!=null) {
 		if(header.contains("%money%"))
 				header=header.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), false));
-		if(header.contains("%colored_money%"))
-			header=header.replace("%colored_money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true));
 		if(header.contains("%formatted_money%"))
 			header=header.replace("%formatted_money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true));
-		
-		if(header.contains("%money_top_")) {
-			String s = header;
-			int pos = StringUtils.getInt(s.replace("%money_top_", "").replace("%", "").replace("_name", ""));
-			String world = Eco.getEconomyGroupByWorld(Bukkit.getWorlds().get(0).getName());
-			if (p instanceof Player)
-				world = Eco.getEconomyGroupByWorld((p).getWorld().getName());
-			if(EcoTop.h==null || EcoTop.h.isEmpty())
-				EcoTop.reload(p);
-			
-			List<Entry<Double, String>> list = new ArrayList<Entry<Double,String>>( EcoTop.h.get(world).entrySet());
-			Entry<Double, String> user = list.get(pos);
-
-
-			if(header.endsWith("_name%")) {
-				header=header.replace("%money_top_"+pos+"_name%" ,user.getValue());
-			}
-			if(header.endsWith("_money%")) {
-				header=header.replace("%money_top_"+pos+"_money%" , API.setMoneyFormat(user.getKey(), true));
-			}
-			if(!header.endsWith("_name%") && !header.endsWith("_money%")) {
-			header=header.replace("%money_top_"+pos+"%", Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", (pos+1)+ "")
-					.replace("%player%", user.getValue()).replace("%playername%", EcoTop.player(p, user.getValue()))
-					.replace("%money%", API.setMoneyFormat(user.getKey(), true)) );
-			}
-		}
-		
+		if(header.contains("%format_money%"))
+			header=header.replace("%format_money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true));
 		if(header.contains("%online%")) {
 			int seen = 0;
 			for(Player s : TheAPI.getPlayers())
@@ -257,12 +231,147 @@ public class TabList {
 		if(header.contains("%playtime%")) {
 			header=header.replace("%playtime%", StringUtils.timeToString(PlayTimeUtils.playtime(p)));
 		}
+		if(header.contains("%raw_playtime%")) {
+			header=header.replace("%raw_playtime%", PlayTimeUtils.playtime(p)+"");
+		}
 		if(header.contains("%playtime_")) {
 			if(header.contains("%playtime_top_")) {
 				Matcher m = playtimetop.matcher(header);
 				while(m.find())
 					header=header.replace(m.group(), PlayTimeUtils.getTop(StringUtils.getInt(m.group(1))));
-			}else {
+			}
+			String player = null;
+			GameMode mode = null;
+			World world = null;
+			//%playtime_<player>_<world>_<GAMEMODE>%
+			Matcher m = playtime_world_gm.matcher(header);
+			while(m.find()) {
+				if(TheAPI.existsUser(m.group(1))) {
+					player = m.group(1);
+				}else continue;
+				if(Bukkit.getWorld(m.group(2))!=null) {
+					world = Bukkit.getWorld(m.group(2));
+				}else continue;
+				if(GameMode.valueOf(m.group(3).toUpperCase())!=null) {
+					mode = GameMode.valueOf(m.group(3).toUpperCase());
+				}else continue;
+				header=header.replace(m.group(), StringUtils.timeToString(PlayTimeUtils.playtime(player, mode, world)));
+			}
+			//%playtime_<player>_<world/GAMEMODE>%
+			m = playtime_worldOrGm.matcher(header);
+			while(m.find()) {
+				if(TheAPI.existsUser(m.group(1))) {
+					player = m.group(1);
+				}else continue;
+				if(Bukkit.getWorld(m.group(2))!=null) {
+					world = Bukkit.getWorld(m.group(2));
+				}
+				if(GameMode.valueOf(m.group(3).toUpperCase())!=null) {
+					mode = GameMode.valueOf(m.group(3).toUpperCase());
+				}
+				if(world ==null && mode == null)continue;
+				header=header.replace(m.group(), StringUtils.timeToString(PlayTimeUtils.playtime(player, mode, world)));
+			}
+			//%playtime_<world>_<GAMEMODE>%
+			m = playtime_world_gmMe.matcher(header);
+			while(m.find()) {
+				if(TheAPI.existsUser(m.group(1))) {
+					player = m.group(1);
+				}else continue;
+				if(Bukkit.getWorld(m.group(2))!=null) {
+					world = Bukkit.getWorld(m.group(2));
+				}else continue;
+				if(GameMode.valueOf(m.group(3).toUpperCase())!=null) {
+					mode = GameMode.valueOf(m.group(3).toUpperCase());
+				}else continue;
+				header=header.replace(m.group(), StringUtils.timeToString(PlayTimeUtils.playtime(p, mode, world)));
+			}
+			//%playtime_<world/GAMEMODE>%
+			m = playtime_worldOrGmMe.matcher(header);
+			while(m.find()) {
+				if(TheAPI.existsUser(m.group(1))) {
+					player = m.group(1);
+				}else continue;
+				if(Bukkit.getWorld(m.group(2))!=null) {
+					world = Bukkit.getWorld(m.group(2));
+				}
+				if(GameMode.valueOf(m.group(3).toUpperCase())!=null) {
+					mode = GameMode.valueOf(m.group(3).toUpperCase());
+				}
+				if(world ==null && mode == null)continue;
+				header=header.replace(m.group(), StringUtils.timeToString(PlayTimeUtils.playtime(p, mode, world)));
+			}
+		}
+		
+		if(header.contains("%ping%"))
+			header=header.replace("%ping%", Loader.getInstance.pingPlayer(p));
+		if(header.contains("%world%"))
+			header=header.replace("%world%", p.getWorld().getName());
+		if(header.contains("%hp%"))
+			header=header.replace("%hp%", StringUtils.fixedFormatDouble(((Damageable)p).getHealth()));
+		if(header.contains("%health%"))
+			header=header.replace("%health%", StringUtils.fixedFormatDouble(((Damageable)p).getHealth()));
+		if(header.contains("%food%"))
+			header=header.replace("%food%", p.getFoodLevel() + "");
+		if(header.contains("%x%"))
+			header=header.replace("%x%", StringUtils.fixedFormatDouble(p.getLocation().getX()));
+		if(header.contains("%y%"))
+			header=header.replace("%y%", StringUtils.fixedFormatDouble(p.getLocation().getY()));
+		if(header.contains("%z%"))
+			header=header.replace("%z%", StringUtils.fixedFormatDouble(p.getLocation().getZ()));
+		if(header.contains("%vault_group%"))
+			header=header.replace("%vault_group%", API.getGroup(p));
+		if(header.contains("%vault_prefix%"))
+			header=header.replace("%vault_prefix%", ""+TheAPI.colorize(Loader.getChatFormat(p, Item.PREFIX)));
+		if(header.contains("%vault_suffix%"))
+			header=header.replace("%vault_suffix%", ""+TheAPI.colorize(Loader.getChatFormat(p, Item.SUFFIX)));
+		if(header.contains("%group%"))
+			header=header.replace("%group%", Staff.getGroup(p));
+		if(header.contains("%kills%"))
+			header=header.replace("%kills%", "" + p.getStatistic(Statistic.PLAYER_KILLS));
+		if(header.contains("%deaths%"))
+			header=header.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS));
+		if(header.contains("%deaths%"))
+			header=header.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS));
+		if(header.contains("%player%"))
+			header=header.replace("%player%", p.getName());
+		if(header.contains("%xp%"))
+			header=header.replace("%xp%", p.getTotalExperience()+"");
+		if(header.contains("%level%"))
+			header=header.replace("%level%", p.getLevel()+"");
+		if(header.contains("%exp%"))
+			header=header.replace("%exp%", p.getTotalExperience()+"");
+		if(header.contains("%playername%")) {
+			String displayname = p.getName();
+			if (p.getDisplayName() != null)
+				displayname = p.getDisplayName();
+			header=header.replace("%playername%", StringUtils.colorize(displayname));
+		}
+		if(header.contains("%customname%")) {
+			String customname = p.getName();
+		if (p.getCustomName() != null)
+			customname = p.getCustomName();
+		if(TheAPI.getUser(p).exists("DisplayName"))
+			customname = TheAPI.getUser(p).getString("DisplayName");
+			header=header.replace("%customname%", StringUtils.colorize(customname));
+		}
+		if(header.contains("%afk%"))
+			header=header.replace("%afk%", Loader.getAFK(p));
+		if(header.contains("%vanish%"))
+			header=header.replace("%vanish%", Loader.getElse("Vanish", API.hasVanish(p)));
+		if(header.contains("%fly%"))
+			header=header.replace("%fly%", Loader.getElse("Fly", API.getSPlayer(p).hasFlyEnabled(true)||API.getSPlayer(p).hasTempFlyEnabled()));
+		if(header.contains("%god%"))
+			header=header.replace("%god%", Loader.getElse("God", API.getSPlayer(p).hasGodEnabled()));
+		}else {
+			if(header.contains("%online%"))
+				header=header.replace("%online%", TheAPI.getOnlineCount()+"");
+			if(header.contains("%playtime_")) {
+				if(header.contains("%playtime_top_")) {
+					Matcher m = playtimetop.matcher(header);
+					while(m.find())
+						header=header.replace(m.group(), PlayTimeUtils.getTop(StringUtils.getInt(m.group(1))));
+				}
 				String player = null;
 				GameMode mode = null;
 				World world = null;
@@ -295,101 +404,40 @@ public class TabList {
 					if(world ==null && mode == null)continue;
 					header=header.replace(m.group(), StringUtils.timeToString(PlayTimeUtils.playtime(player, mode, world)));
 				}
-				//%playtime_<world>_<GAMEMODE>%
-				m = playtime_world_gmMe.matcher(header);
-				while(m.find()) {
-					if(TheAPI.existsUser(m.group(1))) {
-						player = m.group(1);
-					}else continue;
-					if(Bukkit.getWorld(m.group(2))!=null) {
-						world = Bukkit.getWorld(m.group(2));
-					}else continue;
-					if(GameMode.valueOf(m.group(3).toUpperCase())!=null) {
-						mode = GameMode.valueOf(m.group(3).toUpperCase());
-					}else continue;
-					header=header.replace(m.group(), StringUtils.timeToString(PlayTimeUtils.playtime(p, mode, world)));
+			}
+		}
+		if(header.contains("%balancetop_")) {
+			Matcher m = balancetop.matcher(header);
+			while(m.find()) {
+				int pos = StringUtils.getInt(m.group(1));
+				String world = Eco.getEconomyGroupByWorld(Bukkit.getWorlds().get(0).getName());
+				if(p!=null && p instanceof Player)
+					world = Eco.getEconomyGroupByWorld((p).getWorld().getName());
+				if(EcoTop.h==null || EcoTop.h.isEmpty())
+					EcoTop.reload(p);
+				
+				int i = 0; 
+				Entry<Double, String> user = null;
+				Iterator<Entry<Double, String>> it = EcoTop.h.get(world).entrySet().iterator();
+				while(it.hasNext()) {
+					Entry<Double, String> next = it.next();
+					if(++i==pos) {
+						user=next;
+						break;
+					}
 				}
-				//%playtime_<world/GAMEMODE>%
-				m = playtime_worldOrGmMe.matcher(header);
-				while(m.find()) {
-					if(TheAPI.existsUser(m.group(1))) {
-						player = m.group(1);
-					}else continue;
-					if(Bukkit.getWorld(m.group(2))!=null) {
-						world = Bukkit.getWorld(m.group(2));
-					}
-					if(GameMode.valueOf(m.group(3).toUpperCase())!=null) {
-						mode = GameMode.valueOf(m.group(3).toUpperCase());
-					}
-					if(world ==null && mode == null)continue;
-					header=header.replace(m.group(), StringUtils.timeToString(PlayTimeUtils.playtime(p, mode, world)));
+				if(user==null)return null;
+				switch(m.group(2).toLowerCase()) {
+				case "format_money":
+				case "formatted_money":
+					return API.setMoneyFormat(user.getKey(), true);
+				case "money":
+					return user.getKey()+"";
+				case "name":
+					return user.getValue();
 				}
 			}
 		}
-		
-		if(header.contains("%ping%"))
-			header=header.replace("%ping%", Loader.getInstance.pingPlayer(p));
-			if(header.contains("%world%"))
-			header=header.replace("%world%", p.getWorld().getName())
-		;if(header.contains("%hp%"))
-			header=header.replace("%health%", StringUtils.fixedFormatDouble(((Damageable)p).getHealth()));
-		if(header.contains("%health%"))
-			header=header.replace("%health%", StringUtils.fixedFormatDouble(((Damageable)p).getHealth()));
-		if(header.contains("%food%"))
-			header=header.replace("%food%", p.getFoodLevel() + "")
-		;if(header.contains("%x%"))
-			header=header.replace("%x%", StringUtils.fixedFormatDouble(p.getLocation().getX()));
-		if(header.contains("%y%"))header=header.replace("%y%", StringUtils.fixedFormatDouble(p.getLocation().getY()))
-		;if(header.contains("%z%"))
-			header=header.replace("%z%", StringUtils.fixedFormatDouble(p.getLocation().getZ()));
-		if(header.contains("%vault_group%")) {
-			header=header.replace("%vault_group%", API.getGroup(p));
-		}
-		if(header.contains("%vault_prefix%"))
-			header=header.replace("%vault_prefix%", ""+TheAPI.colorize(Loader.getChatFormat(p, Item.PREFIX)))
-		;if(header.contains("%vault_suffix%"))
-			header=header.replace("%vault_suffix%", ""+TheAPI.colorize(Loader.getChatFormat(p, Item.SUFFIX)))
-		;if(header.contains("%group%"))
-			header=header.replace("%group%", Staff.getGroup(p));
-		if(header.contains("%kills%"))
-			header=header.replace("%kills%", "" + p.getStatistic(Statistic.PLAYER_KILLS));
-		if(header.contains("%deaths%"))
-			header=header.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS));
-		if(header.contains("%deaths%"))
-			header=header.replace("%deaths%", "" + p.getStatistic(Statistic.DEATHS));
-		if(header.contains("%player%"))
-			header=header.replace("%player%", p.getName())
-		;if(header.contains("%xp%"))
-			header=header.replace("%xp%", p.getTotalExperience()+"");
-		if(header.contains("%level%"))
-			header=header.replace("%level%", p.getLevel()+"");
-		if(header.contains("%exp%"))
-			header=header.replace("%exp%", p.getTotalExperience()+"")
-		;if(header.contains("%playername%")) {
-			String displayname = p.getName();
-			if (p.getDisplayName() != null)
-				displayname = p.getDisplayName();
-			header=header.replace("%playername%", StringUtils.colorize(displayname));
-		}
-		if(header.contains("%customname%")) {
-			String customname = p.getName();
-		if (p.getCustomName() != null)
-			customname = p.getCustomName();
-		if(TheAPI.getUser(p).exists("DisplayName"))
-			customname = TheAPI.getUser(p).getString("DisplayName");
-			header=header.replace("%customname%", StringUtils.colorize(customname));
-		}
-		if(header.contains("%afk%"))
-			header=header.replace("%afk%", Loader.getAFK(p));
-		if(header.contains("%vanish%"))
-			header=header.replace("%vanish%", Loader.getElse("Vanish", API.hasVanish(p)));
-		if(header.contains("%fly%"))
-			header=header.replace("%fly%", Loader.getElse("Fly", API.getSPlayer(p).hasFlyEnabled(true)||API.getSPlayer(p).hasTempFlyEnabled()));
-		if(header.contains("%god%"))
-			header=header.replace("%god%", Loader.getElse("God", API.getSPlayer(p).hasGodEnabled()));
-		}else
-			if(header.contains("%online%"))
-				header=header.replace("%online%", TheAPI.getOnlineCount()+"");
 		if(header.contains("%max_players%"))
 			header=header.replace("%max_players%", TheAPI.getMaxPlayers() + "");
 		if(header.contains("%time%"))
@@ -408,9 +456,7 @@ public class TabList {
 			header=header.replace("%ram_usage_percentage%", MemoryAPI.getUsedMemory(true) + "%")
 		;if(header.contains("%ram_max%"))
 			header=header.replace("%ram_max%", MemoryAPI.getMaxMemory() + "").replace("%ram_max_percentage%", "100%");
-		String orig = header;
 		header = PlaceholderAPI.setPlaceholders(p, header);
-		if(header==null)header=orig;
 		if(color)
 			header=TheAPI.colorize(header);
 		return header;
