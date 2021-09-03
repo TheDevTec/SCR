@@ -151,7 +151,11 @@ public class SkinManager {
 	public static synchronized void loadSkin(Player player, SkinData data) {
 		if(player==null || data==null || !data.isFinite())return;
 		if(Loader.config.getBoolean("Options.Skins.DynmapSupport") && PluginManagerAPI.isEnabledPlugin("dynmap")) {
-			DynmapSupport.sendHeadUpdate(player, data.url);
+			new Tasker() {
+				public void run() {
+					DynmapSupport.sendHeadUpdate(player, data.url);
+				}
+			}.runTask();
 		}
 		playerSkins.put(player.getName(), data);
 		if(Loader.hasBungee)
