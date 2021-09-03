@@ -22,7 +22,7 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class EcoTop implements CommandExecutor, TabCompleter {
-	private final HashMap<String, TreeMap<Double, String>> h = new HashMap<>();
+	public static HashMap<String, TreeMap<Double, String>> h = new HashMap<>();
 
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
@@ -32,8 +32,10 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 		if (Loader.has(s, "BalanceTop", "Economy")) {
 			if(!CommandsManager.canUse("Economy.BalanceTop", s)) {
 				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire("Economy.BalanceTop", s))));
+				
 				return true;
-			} 
+			
+			}
 			Loader.sendMessages(s, "Economy.BalanceTop.Loading");
 			new Tasker() {
 				public void run() {
@@ -90,11 +92,29 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 		return true;
 	}
 
-	public String player(CommandSender d, String s) {
+	public static String player(CommandSender d, String s) {
 		if (TheAPI.getPlayerOrNull(s) != null)
 			return API.getPlayers(d).contains(TheAPI.getPlayerOrNull(s)) ? TheAPI.getPlayerOrNull(s).getDisplayName() : s;
 		return s;
 	}
+	public static void reload(Player p) {
+		String world = Eco.getEconomyGroupByWorld(Bukkit.getWorlds().get(0).getName());
+		if (p!=null &&p instanceof Player )
+			world = Eco.getEconomyGroupByWorld(p.getWorld().getName());
+		
+		TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300*20); 
+		TreeMap<Double, String> money = new TreeMap<>((var1, var2) -> var2.compareTo(var1));
+		for (UUID sa : TheAPI.getUsers()) {
+			String n = LoaderClass.cache.lookupNameById(sa);
+			if(n!=null) {
+				double bal = EconomyAPI.getBalance(n, world);
+				if(bal>0)
+					money.put(bal,n);
+			}
+		}
+		h.put(world, money);
+	}
+	
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] arg3) {
