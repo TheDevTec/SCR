@@ -29,7 +29,7 @@ public class MirrorEvents implements Listener {
 		MirrorType type = MirrorManager.getType(p);
 		Position loc = MirrorManager.getLocation(p);
 		Block block = e.getBlock();
-		new Position(block).setTypeAndUpdate(Material.AIR);
+		block.setType(Material.AIR);
 		e.setCancelled(true);
 		if(type==MirrorType.AXISX || type==MirrorType.AXISZ) {
 			int axis, bl, v;
@@ -48,7 +48,7 @@ public class MirrorEvents implements Listener {
 				n = new Position(loc.getWorld(), block.getX(), block.getY(), v);
 			else
 				n = new Position(loc.getWorld(), v, block.getY(), block.getZ());
-			n.setTypeAndUpdate(Material.AIR);
+			n.getBlock().setType(Material.AIR);
 		}
 		if(type==MirrorType.CENTER) {
 			int axisX, axisZ; // Souřadnice os X a Z
@@ -63,9 +63,9 @@ public class MirrorEvents implements Listener {
 			loc2 = new Position( loc.getWorld(), block.getX(), block.getY(), axisZ+vZ );
 			loc3 = new Position( loc.getWorld(), axisX+vX , block.getY(), axisZ+vZ );
 
-			loc1.setTypeAndUpdate(Material.AIR);
-			loc2.setTypeAndUpdate(Material.AIR);
-			loc3.setTypeAndUpdate(Material.AIR);
+			loc1.getBlock().setType(Material.AIR);
+			loc2.getBlock().setType(Material.AIR);
+			loc3.getBlock().setType(Material.AIR);
 		}
 	}
 	@EventHandler

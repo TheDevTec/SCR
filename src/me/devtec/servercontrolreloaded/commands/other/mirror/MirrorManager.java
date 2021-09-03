@@ -13,7 +13,6 @@ import org.bukkit.material.Directional;
 import org.bukkit.material.MaterialData;
 
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.blocksapi.schematic.construct.SerializedBlock;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.reflections.Ref;
 
@@ -68,13 +67,17 @@ public class MirrorManager {
 				n = new Position(loc.getWorld(), block.getX(), block.getY(), v);
 			else
 				n = new Position(loc.getWorld(), v, block.getY(), block.getZ());
-			n.setTypeAndUpdate(block.getType());
-			BlockState st = n.getBlock().getState();
-			st.setData(block.getState().getData());
-			st.update(true, true);
+			n.getBlock().setType(block.getType());
+			Block b = n.getBlock();
 			if(TheAPI.isNewerThan(12))
-				n.setBlockDataAndUpdate(block.getBlockData());
-			rotate(n.getBlock(), block, type);
+				b.setBlockData(block.getBlockData());
+			BlockState st = b.getState();
+			for(Field f : Ref.getAllFields(st.getClass())) {
+				if(!f.getName().equals("world") && !f.getName().equals("position") && !f.getName().equals("x") && !f.getName().equals("y") && !f.getName().equals("z") && !f.getName().equals("chunk"))
+					Ref.set(st, f, Ref.get(block.getState(), f));
+			}
+			st.update(true, true);
+			rotate(b, block, type);
 			
 			
 			if(block.getType().name().contains("_SIGN")) {
@@ -103,16 +106,6 @@ public class MirrorManager {
 	public static void rotate(Block block, Block old,  MirrorType type) {
         if (block == null)
             return;
-        // Clone BlockState
-        Position o = new Position(old);
-        Object ed = SerializedBlock.getState(o);
-        if(ed!=null) { //for banners, heads...
-            Object sec = SerializedBlock.getState(new Position(block));
-        	for(Field f : Ref.getDeclaredFields(ed.getClass())) {
-        		Ref.set(sec, f, Ref.get(ed, f));
-        	}
-        	Ref.sendPacket(TheAPI.getOnlinePlayers(), Ref.invoke(ed, "getUpdatePacket"));
-        }
         try {
         	if(TheAPI.isNewerThan(12)) {
         	org.bukkit.block.data.BlockData state = block.getBlockData(); //1.13+
@@ -121,6 +114,7 @@ public class MirrorManager {
 		            BlockFace f =dir.getFacing();
 		            f = getFace(f, type);
 		            dir.setFacing(f);
+		            state=dir;
 		            block.setBlockData(dir);
 		        }
 		        if(state instanceof org.bukkit.block.data.Rotatable) {
@@ -128,6 +122,7 @@ public class MirrorManager {
 		            BlockFace f =dir.getRotation();
 		            f = getFace(f, type);
 		            dir.setRotation(f);
+		            state=dir;
 		            block.setBlockData(dir);
 		        }
 		        if(state instanceof org.bukkit.block.data.type.Stairs) {
@@ -135,6 +130,7 @@ public class MirrorManager {
 		        	org.bukkit.block.data.type.Stairs.Shape f = dir.getShape();
 		            f = (org.bukkit.block.data.type.Stairs.Shape) getShape(f, type);
 		            dir.setShape(f);
+		            state=dir;
 		            block.setBlockData(dir);
 		        }
 		        /*
