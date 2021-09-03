@@ -438,6 +438,12 @@ public class TabList {
 				}
 			}
 		}
+		if(header.contains("%players_max%"))
+			header=header.replace("%players_max%", TheAPI.getMaxPlayers() + "");
+		if(header.contains("%online_max%"))
+			header=header.replace("%online_max%", TheAPI.getMaxPlayers() + "");
+		if(header.contains("%max_online%"))
+			header=header.replace("%max_online%", TheAPI.getMaxPlayers() + "");
 		if(header.contains("%max_players%"))
 			header=header.replace("%max_players%", TheAPI.getMaxPlayers() + "");
 		if(header.contains("%time%"))
