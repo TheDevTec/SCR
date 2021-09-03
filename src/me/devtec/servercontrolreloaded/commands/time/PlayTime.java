@@ -76,7 +76,7 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 							max = tops.size();
 						int i = min;
 						for (ComparableObject<String, Integer> player : tops.getTop(min, max)) {
-							Loader.sendMessages(s, "PlayTime.PlayTop.Top", Placeholder.c().replace("%position%", i+"")
+							Loader.sendMessages(s, "PlayTime.PlayTop.Top", Placeholder.c().replace("%position%", (i+1)+"")
 									.replace("%player%", player).replace("%playername%", player(s, player.getKey()))
 									.replace("%playtime%", StringUtils.timeToString(player.getValue())));
 							++i;

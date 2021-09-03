@@ -1,10 +1,12 @@
 package me.devtec.servercontrolreloaded.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +17,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.economy.EcoTop;
 import me.devtec.servercontrolreloaded.commands.info.Staff;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
@@ -198,6 +201,7 @@ public class TabList {
 					, playtime_world_gm = Pattern.compile("\\%playtime_([_A-Za-z0-9]+)_(.+?)_(SURVIVAL|CREATIVE|ADVENTURE|SPECTATOR)\\%", Pattern.CASE_INSENSITIVE)
 					, playtime_worldOrGmMe = Pattern.compile("\\%playtime_(.+?)\\%")
 					, playtime_world_gmMe = Pattern.compile("\\%playtime_(.+?)_(SURVIVAL|CREATIVE|ADVENTURE|SPECTATOR)\\%", Pattern.CASE_INSENSITIVE);
+	
 	public static String replace(String header, Player p, boolean color) {
 		if(p!=null) {
 		if(header.contains("%money%"))
@@ -206,6 +210,33 @@ public class TabList {
 			header=header.replace("%colored_money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true));
 		if(header.contains("%formatted_money%"))
 			header=header.replace("%formatted_money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), true));
+		
+		if(header.contains("%money_top_")) {
+			String s = header;
+			int pos = StringUtils.getInt(s.replace("%money_top_", "").replace("%", "").replace("_name", ""));
+			String world = Eco.getEconomyGroupByWorld(Bukkit.getWorlds().get(0).getName());
+			if (p instanceof Player)
+				world = Eco.getEconomyGroupByWorld((p).getWorld().getName());
+			if(EcoTop.h==null || EcoTop.h.isEmpty())
+				EcoTop.reload(p);
+			
+			List<Entry<Double, String>> list = new ArrayList<Entry<Double,String>>( EcoTop.h.get(world).entrySet());
+			Entry<Double, String> user = list.get(pos);
+
+
+			if(header.endsWith("_name%")) {
+				header=header.replace("%money_top_"+pos+"_name%" ,user.getValue());
+			}
+			if(header.endsWith("_money%")) {
+				header=header.replace("%money_top_"+pos+"_money%" , API.setMoneyFormat(user.getKey(), true));
+			}
+			if(!header.endsWith("_name%") && !header.endsWith("_money%")) {
+			header=header.replace("%money_top_"+pos+"%", Loader.config.getString("Options.Economy.BalanceTop").replace("%position%", (pos+1)+ "")
+					.replace("%player%", user.getValue()).replace("%playername%", EcoTop.player(p, user.getValue()))
+					.replace("%money%", API.setMoneyFormat(user.getKey(), true)) );
+			}
+		}
+		
 		if(header.contains("%online%")) {
 			int seen = 0;
 			for(Player s : TheAPI.getPlayers())

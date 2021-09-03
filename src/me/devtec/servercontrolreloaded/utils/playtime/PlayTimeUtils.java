@@ -148,7 +148,7 @@ public class PlayTimeUtils {
 		ComparableObject<String, Integer> player = ranks.get(pos);
 		if(player==null)
 			return "-";
-		return Loader.trans.getString("PlayTime.PlayTop.Top").replace("%position%", pos+ "")
+		return Loader.trans.getString("PlayTime.PlayTop.Top").replace("%position%", (pos+1)+ "")
 				.replace("%player%", player.getKey()).replace("%playername%", player.getKey())
 				.replace("%playtime%", StringUtils.timeToString(player.getValue()));
 	}
