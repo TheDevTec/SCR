@@ -16,7 +16,7 @@ import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
 
-public class TpaBlock implements CommandExecutor, TabCompleter {
+public class TpToggle implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1,
@@ -42,7 +42,7 @@ public class TpaBlock implements CommandExecutor, TabCompleter {
 				}
 				if (args.length == 1) {
 					if (TheAPI.existsUser(args[0])) {
-						if (s.getName().equals(args[0])) {
+						if (!s.getName().equalsIgnoreCase(args[0])) {
 							boolean state = TheAPI.getUser((Player)s).getBoolean("TpBlock." + args[0]);
 							Loader.sendMessages(s, "TpSystem.Block."+(state?"Remove":"Add"));
 							TheAPI.getUser((Player)s).setAndSave("TpBlock." + args[0], !state);

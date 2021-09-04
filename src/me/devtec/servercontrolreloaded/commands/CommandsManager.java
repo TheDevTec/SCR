@@ -119,8 +119,8 @@ import me.devtec.servercontrolreloaded.commands.time.PDay;
 import me.devtec.servercontrolreloaded.commands.time.PNight;
 import me.devtec.servercontrolreloaded.commands.time.PlayTime;
 import me.devtec.servercontrolreloaded.commands.tpsystem.Tp;
+import me.devtec.servercontrolreloaded.commands.tpsystem.TpToggle;
 import me.devtec.servercontrolreloaded.commands.tpsystem.Tpa;
-import me.devtec.servercontrolreloaded.commands.tpsystem.TpaBlock;
 import me.devtec.servercontrolreloaded.commands.tpsystem.Tpaall;
 import me.devtec.servercontrolreloaded.commands.tpsystem.Tpaccept;
 import me.devtec.servercontrolreloaded.commands.tpsystem.Tpadeny;
@@ -380,7 +380,7 @@ public class CommandsManager {
 		load("TpSystem", "Tpa", new Tpa());
 		load("TpSystem", "TpaHere", new Tpahere());
 		load("TpSystem", "TpHere", new Tphere());
-		load("TpSystem", "TpToggle", new TpaBlock());
+		load("TpSystem", "TpToggle", new TpToggle());
 		load("TpSystem", "TpaAll", new Tpaall());
 		load("TpSystem", "TpAll", new Tpall());
 		load("TpSystem", "TpaAccept", new Tpaccept());
