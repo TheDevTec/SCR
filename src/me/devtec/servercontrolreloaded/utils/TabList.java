@@ -28,6 +28,7 @@ import me.devtec.theapi.apis.MemoryAPI;
 import me.devtec.theapi.apis.TabListAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.sortedmap.SortedMap.ComparableObject;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
@@ -195,15 +196,33 @@ public class TabList {
 			return replace(Loader.tab.getString("Groups." + g + ".Format"), p, true);
 		return "%tab_prefix% "+p.getName()+" %tab_suffix%";
 	}
-	static Pattern playtimetop = Pattern.compile("\\%playtime_top_([0-9]+)\\%")
-			, playtime_player = Pattern.compile("\\%playtime_[_A-Za-z0-9]+\\%")
-					, playtime_worldOrGm = Pattern.compile("\\%playtime_([_A-Za-z0-9]+)_(.+?)\\%")
+	static Pattern playtimetop = Pattern.compile("\\%playtimetop_([0-9]+)_(name|time|formatted_time|format_time)\\%", Pattern.CASE_INSENSITIVE)
+			, playtime_player = Pattern.compile("\\%playtime_[_A-Za-z0-9]+\\%", Pattern.CASE_INSENSITIVE)
+					, playtime_worldOrGm = Pattern.compile("\\%playtime_([_A-Za-z0-9]+)_(.+?)\\%", Pattern.CASE_INSENSITIVE)
 					, playtime_world_gm = Pattern.compile("\\%playtime_([_A-Za-z0-9]+)_(.+?)_(SURVIVAL|CREATIVE|ADVENTURE|SPECTATOR)\\%", Pattern.CASE_INSENSITIVE)
-					, playtime_worldOrGmMe = Pattern.compile("\\%playtime_(.+?)\\%")
+					, playtime_worldOrGmMe = Pattern.compile("\\%playtime_(.+?)\\%", Pattern.CASE_INSENSITIVE)
 					, playtime_world_gmMe = Pattern.compile("\\%playtime_(.+?)_(SURVIVAL|CREATIVE|ADVENTURE|SPECTATOR)\\%", Pattern.CASE_INSENSITIVE)
 					, balancetop = Pattern.compile("\\%balancetop_([0-9]+)_(name|money|format_money|formatted_money)\\%", Pattern.CASE_INSENSITIVE);
 	
 	public static String replace(String header, Player p, boolean color) {
+		if(header.contains("%playtimetop_")) {
+			Matcher m = playtimetop.matcher(header);
+			while(m.find()) {
+				ComparableObject<String, Integer> player = PlayTimeUtils.getTop(StringUtils.getInt(m.group(1)));
+				switch(m.group(2).toLowerCase()) {
+				case "name":
+					header=header.replace(m.group(), player.getKey());
+					break;
+				case "time":
+					header=header.replace(m.group(), player.getValue()+"");
+					break;
+				case "format_time":
+				case "formatted_time":
+					header=header.replace(m.group(), StringUtils.timeToString(player.getValue()));
+					break;
+				}
+			}
+		}
 		if(p!=null) {
 		if(header.contains("%money%"))
 				header=header.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(p.getName()), false));
@@ -225,7 +244,11 @@ public class TabList {
 		 *  %scr_playtime_<player>_<world>%
 		 *  %scr_playtime_<player_<world>_<GAMEMODE>%
 		 *  %scr_playtime_<player>_<GAMEMODE>
-		 *  %scr_playtime_top_<position>%
+		 *  
+		 *  %scr_playtimetop_<position>_name%
+		 *  %scr_playtimetop_<position>_time%
+		 *  %scr_playtimetop_<position>_format_time%
+		 *  %scr_playtimetop_<position>_formatted_time%
 		 *  
 		 */
 		if(header.contains("%playtime%")) {
@@ -235,11 +258,6 @@ public class TabList {
 			header=header.replace("%raw_playtime%", PlayTimeUtils.playtime(p)+"");
 		}
 		if(header.contains("%playtime_")) {
-			if(header.contains("%playtime_top_")) {
-				Matcher m = playtimetop.matcher(header);
-				while(m.find())
-					header=header.replace(m.group(), PlayTimeUtils.getTop(StringUtils.getInt(m.group(1))));
-			}
 			String player = null;
 			GameMode mode = null;
 			World world = null;
@@ -367,11 +385,6 @@ public class TabList {
 			if(header.contains("%online%"))
 				header=header.replace("%online%", TheAPI.getOnlineCount()+"");
 			if(header.contains("%playtime_")) {
-				if(header.contains("%playtime_top_")) {
-					Matcher m = playtimetop.matcher(header);
-					while(m.find())
-						header=header.replace(m.group(), PlayTimeUtils.getTop(StringUtils.getInt(m.group(1))));
-				}
 				String player = null;
 				GameMode mode = null;
 				World world = null;
