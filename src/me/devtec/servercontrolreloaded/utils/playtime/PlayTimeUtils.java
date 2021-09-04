@@ -92,7 +92,7 @@ public class PlayTimeUtils {
 	public static long playtime(String player, PlayTimeType type, GameMode mode, World world) {
 		OfflinePlayer s = Bukkit.getOfflinePlayer(player);
 		if(s==null)return -1;
-		if( !Loader.config.getBoolean("Options.PlayTime.UseCustomPlayTime"))
+		if(!Loader.config.getBoolean("Options.PlayTime.UseCustomPlayTime"))
 			return s.getStatistic(st)/20;
 		else{
 			switch (type) {
