@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.events.functions;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -60,12 +61,6 @@ public class JoinQuitEvents implements Listener {
 		Player p = e.getPlayer();
 		Tasks.regPlayer(p);
 		User d = TheAPI.getUser(p);
-        if(d.exists("vanish"))
-        API.setVanish(d, Loader.getPerm("Vanish","Other"), d.getBoolean("vanish"));
-        for (Player s : TheAPI.getOnlinePlayers())
-            if(p!=s)
-            if (!API.canSee(p, s.getName()))
-                p.hidePlayer(s);
 		if(Loader.config.getBoolean("Options.Skins.onJoin")) {
 			if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
 				String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
@@ -83,8 +78,19 @@ public class JoinQuitEvents implements Listener {
 		e.setJoinMessage("");
 		Player p = e.getPlayer();
 		User d = TheAPI.getUser(p);
+        List<Player> l = TheAPI.getOnlinePlayers();
+        l.remove(p);
+        String perm = d.getString("vanish.perm");
+        boolean v = d.getBoolean("vanish");
+        for(Player dd : l) {
+        	if(v && !dd.hasPermission(perm))dd.hidePlayer(p);
+        	User uu = TheAPI.getUser(dd);
+        	if(uu.getBoolean("vanish") && !p.hasPermission(uu.getString("vanish.perm")+""))p.hidePlayer(dd);
+        }
 		new Tasker() {
 			public void run() {
+		        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
+		    		Vanish.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
 				try {
 			    	DisplayManager.initializePlayer(p);
 				boolean fly = d.getBoolean("FlyOnQuit");
@@ -105,8 +111,6 @@ public class JoinQuitEvents implements Listener {
 					s.setFire();
 				}
 				User d = TheAPI.getUser(p);
-		        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
-		    		Vanish.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
 				Config f = Loader.config;
 				if(API.hasVanish(p.getName())) {
 					if(setting.vanish_action) {

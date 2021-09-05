@@ -57,8 +57,15 @@ Options:
     ReplaceWith:
     - "%prefix% Anyone from staff is online"
     
-  # Remove line from list broadcast, if joiner is empty
-  List-RemoveEmptyLine: true
+    PlayerName-Format: "%customname%"
+    Splitter: "&7, "
+    
+  List:
+    # Remove line from list broadcast, if joiner is empty
+    RemoveEmptyLine: true
+    
+    PlayerName-Format: "%customname%"
+    Splitter: "&7, "
   
   FarmingSystem:
     Use: true
@@ -310,6 +317,7 @@ Options:
       players:
         # list: []
         hide-vanished: true
+        playername-format: "%customname%"
         # Fake online players count
         online: "%online%"
         # Fake max players
@@ -325,6 +333,7 @@ Options:
       icon: "server-icon.png"
       players:
         hide-vanished: false
+        playername-format: "%customname%"
         list:
         - "&6Online players: &e%online%"
         - "&6Online staff: &e%staff%"
@@ -346,6 +355,7 @@ Options:
       icon: "server-icon.png"
       players:
         hide-vanished: false
+        playername-format: "%customname%"
         list:
         - "&cServer is under maintenance,"
         - "&cTry again later.."

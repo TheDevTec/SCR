@@ -16,6 +16,7 @@ import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.servercontrolreloaded.utils.TabList;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.PluginManagerAPI;
@@ -81,11 +82,15 @@ public class Staff implements CommandExecutor, TabCompleter {
 			if(d instanceof Player && !API.canSee((Player) d, a.getName()))continue;
 			String as = Staff.getGroup(a);
 			if(staff.contains(as.toLowerCase()))
-				b.append(", ").append(a.getName());
+				b.append(Loader.config.getString("Options.Staff.Splitter")).append(playerNameFormatter(Loader.config.getString("Options.Staff.PlayerName-Format"), a));
 		}
 		return b.length()>2?b.toString().substring(2):b.toString();
 	}
 	
+	protected static Object playerNameFormatter(String string, Player a) {
+		return TabList.replace(string, a, false);
+	}
+
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if (Loader.has(s, "Staff", "Info")) {

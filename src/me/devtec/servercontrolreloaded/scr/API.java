@@ -190,6 +190,10 @@ public class API {
     public static String getVanishPermission(String playerName) {
         return TheAPI.getUser(playerName).getString("vanish.perm");
     }
+ 
+    public static String getVanishPermission(Player playerName) {
+        return TheAPI.getUser(playerName).getString("vanish.perm");
+    }
     
     // Player can see target
     public static boolean canSee(Player player, String target) { 

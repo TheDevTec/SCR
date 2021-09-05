@@ -18,7 +18,6 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.playtime.PlayTimeUtils;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
@@ -52,22 +51,23 @@ public class Tasks {
 					if(player!=null && API.hasVanish(player)) {
 						p.remove();
 						++vv;
-					}
+					}else
+						profile.setName(TabList.replace(Loader.config.getString(path+"players.playername-format"), Bukkit.getPlayer(profile.getUUID()), true));
 				}
 			}
 			int vanished = vv;
 			int rOnline = TheAPI.getOnlineCount(), online = rOnline-vanished;
 			
 			if(Loader.config.exists(path+"protocol") && Loader.config.getInt(path+"protocol")!=-1)
-				e.setProtocol(StringUtils.getInt(PlaceholderAPI.setPlaceholders(null,Loader.config.getString(path+"protocol"))));
+				e.setProtocol(StringUtils.getInt(TabList.replace(Loader.config.getString(path+"protocol"), null, false)));
 			if(Loader.config.exists(path+"players")) {
 				if(Loader.config.exists(path+"players.online"))
-					e.setOnlinePlayers(StringUtils.getInt(PlaceholderAPI.setPlaceholders(null,Loader.config.getString(path+"players.online").replace("%real_online%", online+"").replace("%online%", online+"").replace("%vanished%", vanished+"").replace("%max_players%", TheAPI.getMaxPlayers()+""))));
+					e.setOnlinePlayers(StringUtils.getInt(TabList.replace(Loader.config.getString(path+"players.online").replace("%real_online%", online+"").replace("%online%", online+"").replace("%vanished%", vanished+"").replace("%max_players%", TheAPI.getMaxPlayers()+""), null, true)));
 				if(Loader.config.exists(path+"players.max"))
-					e.setMaxPlayers(StringUtils.getInt(PlaceholderAPI.setPlaceholders(null,Loader.config.getString(path+"players.max").replace("%real_online%", online+"").replace("%online%", online+"").replace("%vanished%", vanished+"").replace("%max_players%", TheAPI.getMaxPlayers()+""))));
+					e.setMaxPlayers(StringUtils.getInt(TabList.replace(Loader.config.getString(path+"players.max").replace("%real_online%", online+"").replace("%online%", online+"").replace("%vanished%", vanished+"").replace("%max_players%", TheAPI.getMaxPlayers()+""), null, true)));
 				List<String> list = Loader.config.getStringList(path+"players.list");
 				if(!list.isEmpty()) {
-					list.replaceAll(a -> PlaceholderAPI.setPlaceholders(null,a.replace("%real_online%", online+"").replace("%online%", online+"").replace("%vanished%", vanished+"").replace("%max_players%", TheAPI.getMaxPlayers()+"")));
+					list.replaceAll(a -> TabList.replace(a.replace("%real_online%", online+"").replace("%online%", online+"").replace("%vanished%", vanished+"").replace("%max_players%", TheAPI.getMaxPlayers()+""), null, true));
 					List<PlayerProfile> profiles = new ArrayList<>(list.size());
 					for(String s : list)
 						profiles.add(new PlayerProfile(s));
@@ -77,12 +77,12 @@ public class Tasks {
 			if(Loader.config.exists(path+"motd")) {
 				if(Loader.config.getString(path+"motd.0")!=null || Loader.config.getString(path+"motd.1")!=null)
 				if(!(Loader.config.getString(path+"motd.0")+"").isEmpty() && !(Loader.config.getString(path+"motd.1")+"").isEmpty())
-					e.setMotd(TheAPI.colorize(PlaceholderAPI.setPlaceholders(null,((Loader.config.getString(path+"motd.0")==null?"":Loader.config.getString(path+"motd.0"))+"\n"+(Loader.config.getString(path+"motd.1")==null?"":Loader.config.getString(path+"motd.1"))).replace("%real_online%", online+"").replace("%online%", online+"").replace("%vanished%", vanished+"").replace("%max_players%", TheAPI.getMaxPlayers()+""))));
+					e.setMotd(TabList.replace(((Loader.config.getString(path+"motd.0")==null?"":Loader.config.getString(path+"motd.0"))+"\n"+(Loader.config.getString(path+"motd.1")==null?"":Loader.config.getString(path+"motd.1"))).replace("%real_online%", online+"").replace("%online%", online+"").replace("%vanished%", vanished+"").replace("%max_players%", TheAPI.getMaxPlayers()+""), null, true));
 			}
 			if(Loader.config.exists(path+"icon") && !Loader.config.getString(path+"icon").isEmpty())
-				e.setFalvicon(PlaceholderAPI.setPlaceholders(null,Loader.config.getString(path+"icon").replace("%real_online%", online+"").replace("%online%", online+"").replace("%vanished%", vanished+"").replace("%max_players%", TheAPI.getMaxPlayers()+"")));
+				e.setFalvicon(TabList.replace(Loader.config.getString(path+"icon").replace("%real_online%", online+"").replace("%online%", online+"").replace("%vanished%", vanished+"").replace("%max_players%", TheAPI.getMaxPlayers()+""), null, true));
 			if(Loader.config.exists(path+"serverversion") && !Loader.config.getString(path+"serverversion").isEmpty())
-				e.setVersion(PlaceholderAPI.setPlaceholders(null,Loader.config.getString(path+"serverversion").replace("%real_online%", online+"").replace("%online%", online+"").replace("%vanished%", vanished+"").replace("%max_players%", TheAPI.getMaxPlayers()+"")));
+				e.setVersion(TabList.replace(Loader.config.getString(path+"serverversion").replace("%real_online%", online+"").replace("%online%", online+"").replace("%vanished%", vanished+"").replace("%max_players%", TheAPI.getMaxPlayers()+""), null, true));
 		}
 	};
 	static final PacketListener sleepSkipMessage = new PacketListener() {

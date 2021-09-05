@@ -48,7 +48,7 @@ public class ListCmd implements CommandExecutor, TabCompleter {
 			if(d instanceof Player && !API.canSee((Player) d, a.getName()))continue;
 			String as = Staff.getGroup(a);
 			if(groups.contains("{staff}") && staff.contains(as.toLowerCase())||groups.contains(as.toLowerCase()))
-				b.append(", ").append(a.getName());
+				b.append(Loader.config.getString("Options.Staff.Splitter")).append(Staff.playerNameFormatter(Loader.config.getString("Options.Staff.PlayerName-Format"), a));
 		}
 		return b.length()>2?b.toString().substring(2):b.toString();
 	}

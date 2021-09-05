@@ -23,6 +23,7 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
+import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.PluginManagerAPI;
@@ -184,7 +185,9 @@ public class SkinManager {
 		Object spawn = NMSAPI.getPacketPlayOutNamedEntitySpawn(s);
 		Object head = Ref.newInstance(headC, s, (byte)((float)(Ref.get(s, TheAPI.isNewerThan(16)?"aZ":"yaw"))*256F/360F));
 		boolean has = player.isFlying() && player.getAllowFlight();
-		for(Player p : TheAPI.getPlayers()) {
+		for(Player p : API.getPlayersThatCanSee(player)) {
+			Ref.sendPacket(p, remove);
+			Ref.sendPacket(p, add);
 			if(p == player) {
 				Ref.sendPacket(p, remove);
 				Ref.sendPacket(p, add);
@@ -230,6 +233,9 @@ public class SkinManager {
 				Ref.sendPacket(p, pos);
 				Ref.sendPacket(p, Ref.newInstance(handC, p.getInventory().getHeldItemSlot()));
 				p.updateInventory();
+				Ref.invoke(s, "updateSize");
+				Ref.invoke(s, "updateEquipment");
+				Ref.invoke(s, "updateAbilities");
 				Ref.invoke(s, "updateScaledHealth");
 				Ref.invoke(p, "triggerHealthUpdate");
 				NMSAPI.postToMainThread(() -> {
@@ -245,8 +251,6 @@ public class SkinManager {
 					});
 			}else {
 				if(p.getWorld()==player.getWorld()) {
-					Ref.sendPacket(p, remove);
-					Ref.sendPacket(p, add);
 					Ref.sendPacket(p, destroy);
 					Ref.sendPacket(p, spawn);
 					Ref.sendPacket(p, head);

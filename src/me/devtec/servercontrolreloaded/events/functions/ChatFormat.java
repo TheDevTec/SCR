@@ -20,6 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.devtec.servercontrolreloaded.commands.message.PrivateMessageManager;
+import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.ChatFormatter;
@@ -299,7 +300,7 @@ public class ChatFormat implements Listener {
 				} catch (Exception | NoSuchFieldError err) {
 				}
 				for (Player s : e.getRecipients())
-					if (p.canSee(s) && p != s && msg.contains(s.getName())) {
+					if (!API.hasVanish(s) && p != s && msg.contains(s.getName())) {
 						msg = replacePlayer(color, colorOfFormat, msg, s.getName(), p);
 						if (ChatFormatter.getNotify(s)) {
 							if (sound != null)
