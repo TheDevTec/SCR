@@ -84,7 +84,7 @@ public class Staff implements CommandExecutor, TabCompleter {
 			if(staff.contains(as.toLowerCase()))
 				b.append(Loader.config.getString("Options.Staff.Splitter")).append(playerNameFormatter(Loader.config.getString("Options.Staff.PlayerName-Format"), a));
 		}
-		return b.length()>2?b.toString().substring(2):b.toString();
+		return b.length()>Loader.config.getString("Options.Staff.Splitter").length()?b.toString().substring(Loader.config.getString("Options.Staff.Splitter").length()):b.toString();
 	}
 	
 	protected static Object playerNameFormatter(String string, Player a) {
