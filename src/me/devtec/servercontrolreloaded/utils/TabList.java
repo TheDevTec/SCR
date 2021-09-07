@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.commands.economy.EcoTop;
 import me.devtec.servercontrolreloaded.commands.info.Staff;
+import me.devtec.servercontrolreloaded.commands.time.PlayTime;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Item;
@@ -196,7 +197,7 @@ public class TabList {
 			return replace(Loader.tab.getString("Groups." + g + ".Format"), p, true);
 		return "%tab_prefix% "+p.getName()+" %tab_suffix%";
 	}
-	static Pattern playtimetop = Pattern.compile("\\%playtimetop_([0-9]+)_(name|time|formatted_time|format_time)\\%", Pattern.CASE_INSENSITIVE)
+	static Pattern playtimetop = Pattern.compile("\\%playtimetop_([0-9]+)_(name|time|formatted_time|format_time|format)\\%", Pattern.CASE_INSENSITIVE)
 			, playtime_player = Pattern.compile("\\%playtime_[_A-Za-z0-9]+\\%", Pattern.CASE_INSENSITIVE)
 					, playtime_worldOrGm = Pattern.compile("\\%playtime_([_A-Za-z0-9]+)_(.+?)\\%", Pattern.CASE_INSENSITIVE)
 					, playtime_world_gm = Pattern.compile("\\%playtime_([_A-Za-z0-9]+)_(.+?)_(SURVIVAL|CREATIVE|ADVENTURE|SPECTATOR)\\%", Pattern.CASE_INSENSITIVE)
@@ -219,6 +220,11 @@ public class TabList {
 				case "format_time":
 				case "formatted_time":
 					header=header.replace(m.group(), StringUtils.timeToString(player.getValue()));
+					break;
+				case "format":
+					header=header.replace(m.group(), Loader.trans.getString("PlayTime.PlayTop.Top").replace("%position%", StringUtils.getInt(m.group(1))+"")
+							.replace("%player%", player.getKey()).replace("%playername%", PlayTime.player(p, player.getKey()))
+							.replace("%playtime%", StringUtils.timeToString(player.getValue())));
 					break;
 				}
 			}
@@ -443,7 +449,7 @@ public class TabList {
 				switch(m.group(2).toLowerCase()) {
 				case "format_money":
 				case "formatted_money":
-					return API.setMoneyFormat(user.getKey(), true);
+					return API.setMoneyFormat(user.getKey(), false);
 				case "money":
 					return user.getKey()+"";
 				case "name":

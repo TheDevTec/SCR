@@ -47,20 +47,26 @@ public class Anvil implements CommandExecutor, TabCompleter {
 				}
 				return true;
 			}
-			Player t = TheAPI.getPlayer(args[0]);
-			if (t == null) {
-				Loader.notOnline(s, args[0]);
+			if(args.length==1) {
+				if(Loader.has(s, "Anvil", "Inventory", "Other")) {
+					Player t = TheAPI.getPlayer(args[0]);
+					if (t == null) {
+						Loader.notOnline(s, args[0]);
+						return true;
+					}
+					Loader.sendMessages(s, "Inventory.Anvil.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
+					Loader.sendMessages(t, "Inventory.Anvil.Other.Target", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
+					new AnvilGUI("&7Anvil", t) {
+						public void onPreClose(Player player) {
+							for(int i = 0; i < 2; ++i)
+							TheAPI.giveItem(player, getItem(player, i));
+						}
+					}.setInsertable(true);
+					return true;
+				}
+				Loader.noPerms(s, "Anvil", "Inventory", "Other");
 				return true;
 			}
-			Loader.sendMessages(s, "Inventory.Anvil.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
-			Loader.sendMessages(t, "Inventory.Anvil.Other.Target", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
-			new AnvilGUI("&7Anvil", t) {
-				public void onPreClose(Player player) {
-					for(int i = 0; i < 2; ++i)
-					TheAPI.giveItem(player, getItem(player, i));
-				}
-			}.setInsertable(true);
-			return true;
 		}
 		Loader.noPerms(s, "Anvil", "Inventory");
 		return true;

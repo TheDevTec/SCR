@@ -42,14 +42,18 @@ public class Craft implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args.length == 1) {
-				Player t = TheAPI.getPlayer(args[0]);
-				if (t == null) {
-					Loader.notOnline(s, args[0]);
+				if(Loader.has(s, "Workbench", "Inventory", "Other")) {
+					Player t = TheAPI.getPlayer(args[0]);
+					if (t == null) {
+						Loader.notOnline(s, args[0]);
+						return true;
+					}
+					Loader.sendMessages(s, "Inventory.Workbench.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
+					Loader.sendMessages(t, "Inventory.Workbench.Other.Target", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
+					t.openWorkbench(t.getLocation(), true);
 					return true;
 				}
-				Loader.sendMessages(s, "Inventory.Workbench.Other.Sender", Placeholder.c().add("%player%", t.getName()).add("%playername%", t.getDisplayName()));
-				Loader.sendMessages(t, "Inventory.Workbench.Other.Target", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()));
-				t.openWorkbench(t.getLocation(), true);
+				Loader.noPerms(s, "Workbench", "Inventory", "Other");
 				return true;
 			}
 			return true;

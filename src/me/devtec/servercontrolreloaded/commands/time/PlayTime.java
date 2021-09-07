@@ -212,7 +212,7 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 		return true;
 	}
 	
-	public String player(CommandSender d, String s) {
+	public static String player(CommandSender d, String s) {
 		if (TheAPI.getPlayerOrNull(s) != null)
 			return API.getPlayers(d).contains(TheAPI.getPlayerOrNull(s)) ? TheAPI.getPlayerOrNull(s).getDisplayName() : s;
 		return s;

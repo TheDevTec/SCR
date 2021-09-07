@@ -359,6 +359,9 @@ Inventory:
     - "ec"
     - "echest"
     Permission: "SCR.Command.EnderChest"
+    SubPermission:
+      Other: "SCR.Command.EnderChest.Other"
+      OpenOther: "SCR.Command.EnderChest.OpenOther"
     Help: "/EnderChest <player> - Open player's enderchest"
     Enabled: true
   Invsee:
@@ -377,11 +380,15 @@ Inventory:
     - "crafting"
     - "craftingtable"
     Permission: "SCR.Command.Workbench"
+    SubPermission:
+      Other: "SCR.Command.Workbench.Other"
     Help: "/Workbench <player> - Opens player virtual crafting table"
     Enabled: true
   Anvil:
     Name: "anvil"
     Permission: "SCR.Command.Anvil"
+    SubPermission:
+      Other: "SCR.Command.Workbench.Other"
     Help: "/Anvil <player> - Opens player virtual anvil"
     Enabled: true
     
