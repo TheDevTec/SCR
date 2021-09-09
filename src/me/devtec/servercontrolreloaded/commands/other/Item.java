@@ -116,10 +116,11 @@ public class Item implements CommandExecutor, TabCompleter{
 			                	Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", "Out of bound: "+r+"/"+lore.size()));
 				            	  return true;
 			                }
+			                String text = lore.get(r);
 			                lore.remove(r);
 			                m.setLore(lore);
 			                item.setItemMeta(m);
-			                Loader.sendMessages(s, "Item.Lore.Removed", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", r+""));
+			                Loader.sendMessages(s, "Item.Lore.Removed", Placeholder.c().replace("%item%", item.getType().name()).replace("%line%", r+"").replace("%text%", text));
 			                return true;
 			              } catch (Exception e) {
 			            	  Loader.sendMessages(s, "Item.Lore.Error", Placeholder.c().replace("%error%", e.getMessage().trim()));
