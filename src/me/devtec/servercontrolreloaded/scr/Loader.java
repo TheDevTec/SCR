@@ -12,7 +12,6 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -721,10 +720,8 @@ public class Loader extends JavaPlugin implements Listener {
 			p.setDisplayName(null);
 			p.setCustomName(null);
 		}
-		for (World w : Bukkit.getWorlds())
-			w.save();
 		if(reg instanceof ThePlaceholder)((ThePlaceholder)reg).unregister();
-		else
+			else
 		if(reg instanceof PlaceholderRegister)((PlaceholderRegister)reg).doUnregister();
 	}
 

@@ -66,7 +66,7 @@ public class Layout {
     			//math
     			if(con.startsWith("> ")) {
     				con=con.substring(2);
-    				double cc = StringUtils.getDouble(con);
+    				double cc = StringUtils.getDouble(con.replace("_", "."));
     				if(cc<StringUtils.getDouble(c)) {
     					string+=".conditions.> "+con;
     					break;
@@ -74,7 +74,7 @@ public class Layout {
     			}
     			if(con.startsWith("< ")) {
     				con=con.substring(2);
-    				double cc = StringUtils.getDouble(con);
+    				double cc = StringUtils.getDouble(con.replace("_", "."));
     				if(cc>StringUtils.getDouble(c)) {
     					string+=".conditions.< "+con;
     					break;
@@ -82,7 +82,7 @@ public class Layout {
     			}
     			if(con.startsWith("= ")) {
     				con=con.substring(2);
-    				double cc = StringUtils.getDouble(con);
+    				double cc = StringUtils.getDouble(con.replace("_", "."));
     				if(cc==StringUtils.getDouble(c)) {
     					string+=".conditions.= "+con;
     					break;

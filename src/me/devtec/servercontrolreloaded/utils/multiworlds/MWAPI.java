@@ -255,7 +255,6 @@ public class MWAPI {
 	public static void loadWorld(String s, CommandSender sender) {
 		if (Bukkit.getWorld(s) != null)
 			return;
-		List<String> worlds = Loader.mw.getStringList("worlds");
 		String biome = Loader.mw.getString("settings." + s + ".generator");
 		if(biome==null)biome="NORMAL";
 		long seed = Loader.mw.getLong("settings." + s + ".seed");
@@ -277,6 +276,7 @@ public class MWAPI {
 		}else
 			WorldsAPI.create(s, Environment.NORMAL, WorldType.NORMAL, true, seed);
 		if(Bukkit.getWorld(s)==null)return;
+		List<String> worlds = Loader.mw.getStringList("worlds");
 		if(!worlds.contains(s))
 			worlds.add(s);
 		Loader.mw.set("worlds", worlds);

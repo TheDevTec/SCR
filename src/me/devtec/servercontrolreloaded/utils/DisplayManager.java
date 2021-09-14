@@ -470,6 +470,7 @@ public class DisplayManager {
 							}
 							hide.get(DisplayType.ACTIONBAR).add(s.getName());
 							TheAPI.sendActionBar(s, ""); //remove
+							continue;
 						}else {
 							if(!isToggleable(s, DisplayType.ACTIONBAR)) {
 								hide.get(DisplayType.ACTIONBAR).remove(s.getName());
@@ -560,6 +561,7 @@ public class DisplayManager {
 							}
 							hide.get(DisplayType.BOSSBAR).add(s.getName());
 							TheAPI.removeBossBar(s); //remove
+							continue;
 						}else {
 							if(!isToggleable(s, DisplayType.BOSSBAR)) {
 								hide.get(DisplayType.BOSSBAR).remove(s.getName());
@@ -655,7 +657,6 @@ public class DisplayManager {
 							if(map.containsKey(s.getName())) {
 								map.remove(s.getName()).destroy();
 							}
-							continue;
 						}
 						continue;
 					}
@@ -679,9 +680,9 @@ public class DisplayManager {
 								continue;
 							}
 							hide.get(DisplayType.SCOREBOARD).add(s.getName());
-							if(map.containsKey(s.getName())) {
+							if(map.containsKey(s.getName()))
 								map.remove(s.getName()).destroy();
-							}
+							continue;
 						}else {
 							if(!isToggleable(s, DisplayType.SCOREBOARD)) {
 								hide.get(DisplayType.SCOREBOARD).remove(s.getName());

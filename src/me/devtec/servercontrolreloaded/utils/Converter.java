@@ -52,10 +52,10 @@ public class Converter {
 			Loader.config.save();
 		}
 		boolean saveMw = false;
-		if(Loader.mw.exists("Worlds")) { //old format
+		if(Loader.mw.get("Worlds")!=null) { //old format
 			saveMw = true;
 			Loader.mw.set("worlds", Loader.mw.getStringList("Worlds"));
-			Loader.mw.remove("Worlds");
+			Loader.mw.set("Worlds", null);
 		}
 		if(Loader.mw.exists("Deleted-Worlds")) { //old format
 			saveMw = true;

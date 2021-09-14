@@ -33,7 +33,7 @@ public class setting {
 		format_date_time = new SimpleDateFormat(f.getString("Format.DateWithTime"));
 		format_time = new SimpleDateFormat(f.getString("Format.Time"));
 		format_date = new SimpleDateFormat(f.getString("Format.Date"));
-		list=f.getBoolean("Options.List-RemoveEmptyLine");
+		list=f.getBoolean("Options.List.RemoveEmptyLine");
 		staff_hide=f.getBoolean("Options.Staff.HideAllLines");
 		staff_replace=f.getBoolean("Options.Staff.UseReplace");
 		helpop=f.getBoolean("Options.LockChat.Helpop");
