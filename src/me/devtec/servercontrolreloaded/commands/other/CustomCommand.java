@@ -47,6 +47,15 @@ public class CustomCommand implements CommandExecutor {
 				if(!(o+"").isEmpty())
 			TheAPI.sudoConsole(TabList.replace(o+"", (Player)s, true));
 			}
+			o = Loader.customCmds.get(d+".PlayerCommands");
+			if(o!=null) {
+			if(o instanceof Collection) {
+				for(Object d : (Collection<?>)o)
+					TheAPI.sudoConsole(TabList.replace(d+"", (Player)s, true));
+			}else
+				if(!(o+"").isEmpty())
+			TheAPI.sudoConsole(TabList.replace(o+"", (Player)s, true));
+			}
 			return true;
 			}
 			if(s.hasPermission("scr.customcommand.other")) {
@@ -65,6 +74,15 @@ public class CustomCommand implements CommandExecutor {
 				TheAPI.msg(TabList.replace(o+"", target, false), s);
 				}
 				o = Loader.customCmds.get(d+".Commands");
+				if(o!=null) {
+				if(o instanceof Collection) {
+					for(Object d : (Collection<?>)o)
+						TheAPI.sudoConsole(TabList.replace(d+"", target, true));
+				}else
+					if(!(o+"").isEmpty())
+				TheAPI.sudoConsole(TabList.replace(o+"", target, true));
+				}
+				o = Loader.customCmds.get(d+".PlayerCommands");
 				if(o!=null) {
 				if(o instanceof Collection) {
 					for(Object d : (Collection<?>)o)
