@@ -673,7 +673,6 @@ Thor:
 Cooldowns:
   Messages: "%prefix% Zadržte, Počkejte &e%time% &7před odesláním další zprávy"
   Commands: "%prefix% Zadržte, Počkejte &e%time% &7před odesláním příkazu"
-  Kits: "%prefix% Musíte počkat &e%time% &7před použítím kitu"
   
 # Translations for kits commands
 Kits:
