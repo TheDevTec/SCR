@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.commands;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import me.devtec.servercontrolreloaded.commands.bansystem.Accounts;
 import me.devtec.servercontrolreloaded.commands.bansystem.Ban;
@@ -148,6 +150,8 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.PluginManagerAPI;
+import me.devtec.theapi.apis.PluginManagerAPI.SearchType;
+import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 public class CommandsManager {
 	
@@ -223,7 +227,7 @@ public class CommandsManager {
 	
 	private static final Map<String, PluginCommand> commands = new HashMap<>();
 	
-	public static boolean load(String section, String command, CommandExecutor cs) {
+	public static boolean load2(String section, String command, CommandExecutor cs) { // OLD Loading
 		if(Loader.cmds.getBoolean(section+"."+command+".Enabled")) {
 			long time = StringUtils.timeFromString(Loader.cmds.getString(section+"."+command+".Cooldown"));
 			if(time>0) {
@@ -246,6 +250,61 @@ public class CommandsManager {
 		}else {
 			if(commands.containsKey(section.toLowerCase()+":"+command.toLowerCase()))
 				unload(section,command);
+		}
+		return false;
+	}
+	
+	public static boolean load(String section, String command, CommandExecutor cs) { // NEW Loading!
+		if(Loader.cmds.getBoolean(section+"."+command+".Enabled")) {
+			
+			boolean AllPluginsEnabled = true; //If all required plugins are enabled
+			if(Loader.cmds.exists(section+"."+command+".loadAfterPlugins")) { //If command require some plugins to be enabled
+				List<String> plug = Loader.cmds.getStringList(section+"."+command+".loadAfterPlugins"); //Getting plugins
+				if(plug!=null && !plug.isEmpty()) { 
+					for(String plugin_name : plug) { //Checking if plugin exist (file) and if is loaded
+						Plugin plugin = PluginManagerAPI.getPlugin(plugin_name);
+						File plugin_file = PluginManagerAPI.getPluginFile(plugin_name, SearchType.PLUGIN_NAME);
+						if(plugin_file!=null && plugin_file.exists() && plugin!=null) {
+							if(plugin.isEnabled()) { 
+								AllPluginsEnabled = true; //Plugin is loaded
+							}
+							else AllPluginsEnabled = false; //Plugin is not loaded
+						}
+					}
+				}
+			}
+			if(AllPluginsEnabled==false) { //If all required plugins aren't loaded, plugin will wait 15 sec and try to load commands again
+				new Tasker() {
+					@Override
+					public void run() {
+						load(section, command, cs);
+					}
+				}.runLaterSync(15*20);
+			}
+			else { //If ALL plugins are loaded (or if command donť require plugins to be loaded)
+				// Command loading
+				long time = StringUtils.timeFromString(Loader.cmds.getString(section+"."+command+".Cooldown"));
+				if(time>0) {
+					global.put(section+'.'+command, Loader.cmds.getBoolean(section+"."+command+".CooldownGlobal"));
+					cooldown.put(section+'.'+command, time);
+				}
+				PluginCommand c = TheAPI.createCommand(Loader.cmds.getString(section+"."+command+".Name"), Loader.getInstance);
+				List<String> aliases = new ArrayList<>();
+				if(Loader.cmds.exists(section+"."+command+".Aliases")) {
+				if(Loader.cmds.get(section+"."+command+".Aliases") instanceof Collection)
+					aliases=Loader.cmds.getStringList(section+"."+command+".Aliases");
+					else aliases.add(Loader.cmds.getString(section+"."+command+".Aliases"));
+				}
+				c.setAliases(aliases);
+				c.setExecutor(cs);
+				c.setPermission(Loader.cmds.getString(section+"."+command+".Permission"));
+				TheAPI.registerCommand(c);
+				commands.put(section.toLowerCase()+":"+command.toLowerCase(), c);
+				return true;
+			}
+		}else { 
+			if(commands.containsKey(section.toLowerCase()+":"+command.toLowerCase()))
+				unload(section,command); //Unloading command (if is not Enabled)
 		}
 		return false;
 	}

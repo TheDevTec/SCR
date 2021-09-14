@@ -142,7 +142,7 @@ Item:
   NoItem: "&cNedržíte žiadny predmet v ruke"
   Lore:
     Added: "%prefix% Pridaný nový riadok lore do predmetu vo vašej ruke &r%line%"
-    Removed: "%prefix% Odobraný riadok lore &e%lore%&7 z predmetu vo vašej ruke"
+    Removed: "%prefix% Odobraný riadok lore &e%line%&7 z predmetu vo vašej ruke"
     Error: "%prefix% Nastala chyba. Chyba: %error%"
     ListItem: "%prefix% &6Zoznam lore riadkov na predmete vo vašej ruke:"
     ListLore: "%prefix% &6%position%. riadok: &5%lore%"

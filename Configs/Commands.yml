@@ -446,7 +446,7 @@ GameMode:
     Permission: "SCR.Command.GameModeSpectator"
     SubPermission:
       Other: "SCR.Command.GameModeSpectator.Other"
-    Help: "/GameModeCreative <player> - Change player's gamemode to spectator"
+    Help: "/GameModeSpectator <player> - Change player's gamemode to spectator"
     Enabled: true
   
 Weather:

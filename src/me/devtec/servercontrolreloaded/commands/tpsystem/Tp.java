@@ -301,7 +301,7 @@ public class Tp implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args.length == 4) {
-				if(Loader.has(s, "Tp", "TpSystem","Location") && s instanceof Player) {
+			/*	if(Loader.has(s, "Tp", "TpSystem","Location") && s instanceof Player) {
 					Player p = (Player)s;
 					double x=StringUtils.calculate(args[0].replace("~", p.getLocation().getX()+""))
 					, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getY()+"")), 
@@ -351,6 +351,63 @@ public class Tp implements CommandExecutor, TabCompleter {
 				}				
 				Loader.noPerms(s, "Tp", "TpSystem","LocationOther");
 				return true;				
+			*/
+
+				Player target = TheAPI.getPlayer(args[0]);
+				if (target != null && API.getPlayers(s).contains(target)) {
+					if (Loader.has(s, "Tp","TpSystem","LocationOther")) {
+						Player pp = TheAPI.getPlayer(args[0]);
+						if (pp != null && API.getPlayers(s).contains(target)) {
+							double x=StringUtils.calculate(args[1].replace("~", target.getLocation().getX()+""))
+									, y=StringUtils.calculate(args[2].replace("~", target.getLocation().getY()+"")), 
+									z=StringUtils.calculate(args[3].replace("~", target.getLocation().getZ()+""));
+								Loader.sendMessages(s, "TpSystem.Tp.Location.PlayerToLocation", Placeholder.c().add("%player%", target.getName()).replace("%playername%", target.getDisplayName())
+										.replace("%x%", StringUtils.fixedFormatDouble(x))
+										.replace("%y%", StringUtils.fixedFormatDouble(y))
+										.replace("%z%", StringUtils.fixedFormatDouble(z))
+										.add("%yaw%", "0")
+										.add("%pitch%", "0"));
+								Loader.sendMessages(target, "TpSystem.Tp.Location.YouToLocation", Placeholder.c()
+										.replace("%x%", StringUtils.fixedFormatDouble(x))
+										.replace("%y%", StringUtils.fixedFormatDouble(y))
+										.replace("%z%", StringUtils.fixedFormatDouble(z))
+										.add("%yaw%", "0")
+										.add("%pitch%", "0"));
+								API.setBack(target);
+								if (setting.tp_safe)
+									API.safeTeleport(target,target.isFlying(),new Position(target.getWorld(), x, y, z, target.getLocation().getYaw(),target.getLocation().getPitch()));
+								else
+								API.teleport(target, new Location(target.getWorld(), x, y, z, 0, 0));
+								return true;
+						}
+						Loader.Help(s, "Tp", "TpSystem");
+						return true;
+					}				
+					Loader.noPerms(s, "Tp", "TpSystem","LocationOther");
+					return true;
+				}
+				if(Loader.has(s, "Tp", "TpSystem","Location") && s instanceof Player) {
+					Player p = (Player)s;
+					double x=StringUtils.calculate(args[0].replace("~", p.getLocation().getX()+""))
+					, y=StringUtils.calculate(args[1].replace("~", p.getLocation().getY()+"")), 
+					z=StringUtils.calculate(args[2].replace("~", p.getLocation().getZ()+""));
+					float yaw = (float) StringUtils.calculate(args[3].replace("~", p.getLocation().getYaw()+""));
+					Loader.sendMessages(s, "TpSystem.Tp.Location.YouToLocation", Placeholder.c().add("%player%", s.getName())
+							.replace("%x%", StringUtils.fixedFormatDouble(x))
+							.replace("%y%", StringUtils.fixedFormatDouble(y))
+							.replace("%z%", StringUtils.fixedFormatDouble(z))
+							.replace("%yaw%", StringUtils.fixedFormatDouble(yaw))
+							.replace("%pitch%", "0"));
+					
+					API.setBack((Player) s);
+					if(setting.tp_safe)						
+						API.safeTeleport((Player)s,((Player)s).isFlying(), new Position(p.getWorld(), x, y, z, yaw, ((Player)s).getLocation().getPitch())); 
+					else
+						API.teleport(p, new Location(p.getWorld(), x, y, z, yaw, 0));
+					return true;
+				}
+				Loader.noPerms(s, "Tp", "TpSystem","Location");
+				return true;
 			}
 			if (args.length == 5) {
 				if(Loader.has(s, "Tp", "TpSystem","Location") && s instanceof Player) {

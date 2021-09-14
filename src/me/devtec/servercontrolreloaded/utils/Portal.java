@@ -199,9 +199,16 @@ public class Portal {
 		if(!portals.isEmpty()) {
 			task=new Tasker() {
 				public void run() {
-					for(Portal a : portals)if(a.a.getWorld()!=null && !a.a.getWorld().getPlayers().isEmpty())a.spawnParticles();
+					for(Portal a : portals) {
+						if(a.a.getWorld()!=null && !a.a.getWorld().getPlayers().isEmpty())
+							try {
+								a.spawnParticles();
+							} catch (Exception e) {
+							}
+					}
 				}
 			}.runRepeating(5, 10);
+			
 			moveTask=new Tasker() {
 				final HashMap<Player, Portal> inPortal = new HashMap<>();
 				public void run() {

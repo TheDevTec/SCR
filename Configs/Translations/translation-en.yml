@@ -682,7 +682,6 @@ Thor:
 Cooldowns:
   Messages: "%prefix% Slow down, Wait for &e%time% &7before sending message"
   Commands: "%prefix% Slow down, Wait for &e%time% &7before sending command"
-  Kits: "%prefix% You must wait &e%time% &7before using this kit"
   
 # Translations for kits commands
 Kits:

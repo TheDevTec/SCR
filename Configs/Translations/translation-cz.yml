@@ -142,7 +142,7 @@ Item:
   NoItem: "&cNedržíte žádný předmět v ruce"
   Lore:
     Added: "%prefix% Přidán nový řádek lore do předmětu ve vaší ruce &r%line%"
-    Removed: "%prefix% Odebrán řádek lore &e%lore%&7 z předmětu ve vaší ruce"
+    Removed: "%prefix% Odebrán řádek lore &e%line%&7 z předmětu ve vaší ruce"
     Error: "%prefix% Nastavila chyba. Chyba: %error%"
     ListItem: "%prefix% &6Seznam lore řádků na předmětu ve vaší ruce:"
     ListLore: "%prefix% &6%position%. řádek: &5%lore%"
@@ -673,7 +673,6 @@ Thor:
 Cooldowns:
   Messages: "%prefix% Zadržte, Počkejte &e%time% &7před odesláním další zprávy"
   Commands: "%prefix% Zadržte, Počkejte &e%time% &7před odesláním příkazu"
-  Kits: "%prefix% Musíte počkat &e%time% &7před použítím kitu"
   
 # Translations for kits commands
 Kits:
