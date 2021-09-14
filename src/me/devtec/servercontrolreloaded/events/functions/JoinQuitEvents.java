@@ -230,8 +230,11 @@ public class JoinQuitEvents implements Listener {
 								TheAPI.bcMsg(replaceAll(""+o, p));
 					}
 				}
-				if (!EconomyAPI.hasAccount(p))
+				if (!EconomyAPI.hasAccount(p)) {
 					EconomyAPI.createAccount(p);
+					if(Loader.config.getDouble("Options.Economy.Money")!=0)
+						EconomyAPI.depositPlayer(p, Loader.config.getDouble("Options.Economy.Money"));
+				}
 				if(setting.tab) {
 					if(setting.tab_footer || setting.tab_header)
 				TabList.setFooterHeader(p);
