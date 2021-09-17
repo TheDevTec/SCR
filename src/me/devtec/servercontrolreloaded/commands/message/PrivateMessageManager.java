@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.utils.bungeecord.BungeeListener;
 import me.devtec.theapi.TheAPI;
 
 public class PrivateMessageManager {
@@ -73,8 +74,12 @@ public class PrivateMessageManager {
 		Player to = TheAPI.getPlayerOrNull(tot);
 		if(to!=null || tot.equalsIgnoreCase("console"))
 			sendMessage(who, to==null?Bukkit.getConsoleSender():to, message);
-		else
+		else {
+			if(who instanceof Player && Loader.hasBungee && BungeeListener.isOnline(tot)) {
+				BungeeListener.sendPm((Player)who, tot, message);
+			}
 			Loader.notOnline(who, tot);
+		}
 	}
 	
 	public static void ignore(CommandSender who, String target) {
@@ -118,5 +123,38 @@ public class PrivateMessageManager {
 
 	public static String getLockType(Player s) {
 		return API.getSPlayer(s).type;
+	}
+	
+	//BUNGEECORD EXTENSION
+	public static void sendMessage(String who, String whoDisplay, Player to, String message) {
+		if(!Loader.hasBungee)return;
+		
+		if(!who.equals("CONSOLE")) {
+				TheAPI.msg(Loader.config.getString("Format.SocialSpy")
+				.replace("%player%", who).replace("%playername%", whoDisplay+"")
+				.replace("%customname%", whoDisplay+"")
+				.replace("%target%", to.getName()).replace("%targetname%", to.getDisplayName()+"")
+				.replace("%targetcustomname%", to.getCustomName()+"").replace("%message%", message), TheAPI.getConsole());
+				for(Player ps : TheAPI.getOnlinePlayers())
+					if(ps!=to && TheAPI.getUser(ps).getBoolean("socialspy"))
+						TheAPI.msg(Loader.config.getString("Format.SocialSpy")
+						.replace("%player%", who).replace("%playername%", whoDisplay)
+						.replace("%customname%", whoDisplay)
+						.replace("%target%", to.getName()).replace("%targetname%", to.getDisplayName())
+						.replace("%message%", message), ps);
+		}else {
+				if(!who.equals("CONSOLE"))
+				for(Player ps : TheAPI.getOnlinePlayers())
+					if(ps!=to && TheAPI.getUser(ps).getBoolean("socialspy"))
+						TheAPI.msg(Loader.config.getString("Format.SocialSpy")
+						.replace("%player%", to.getName()).replace("%playername%", who)
+						.replace("%customname%", who)
+						.replace("%target%", to.getName()).replace("%targetname%", to.getDisplayName()+"")
+						.replace("%targetcustomname%", to.getCustomName()+"").replace("%message%", message), ps);
+		}
+		BungeeListener.sendText(to, Loader.config.getString("Format.PrivateMessageTo")
+				.replace("%from%", who).replace("%to%", to.getName()).replace("%message%", message));
+		TheAPI.msg(Loader.config.getString("Format.PrivateMessageFrom")
+				.replace("%from%", who).replace("%to%", to.getName()).replace("%message%", message),to);
 	}
 }

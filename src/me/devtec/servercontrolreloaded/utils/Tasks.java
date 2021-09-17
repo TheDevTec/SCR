@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.servercontrolreloaded.utils.bungeecord.BungeeListener;
 import me.devtec.servercontrolreloaded.utils.playtime.PlayTimeUtils;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Scheduler;
@@ -123,6 +124,8 @@ public class Tasks {
 		sss.clear();
 		if(TheAPI.isNewerThan(16) && setting.singeplayersleep)
 			sleepSkipMessage.register();
+		if(Loader.hasBungee)
+			bungeecordPlayers();
 		players.clear();
 		if(Loader.config.getBoolean("Options.serverlist.enabled"))
 			l.register();
@@ -144,6 +147,14 @@ public class Tasks {
 		tempGamemode();
 		playTime();
 		PlayTimeUtils.loadRewards();
+	}
+
+	private static void bungeecordPlayers() {
+		tasks.add(new Tasker() {
+			public void run() {
+				BungeeListener.requestOnlinePlayers();
+			}
+		}.runRepeating(0, 100));
 	}
 
 	public static void reload() {

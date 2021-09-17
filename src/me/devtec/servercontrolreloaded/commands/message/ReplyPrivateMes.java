@@ -12,6 +12,7 @@ import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.servercontrolreloaded.utils.bungeecord.BungeeListener;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
 
@@ -42,7 +43,7 @@ public class ReplyPrivateMes implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] args) {
 		if(Loader.has(s, "Reply", "Message"))
-			return StringUtils.copyPartialMatches(args[args.length-1], API.getPlayerNames(s));
+			return StringUtils.copyPartialMatches(args[args.length-1], Loader.hasBungee?BungeeListener.getOnline():API.getPlayerNames(s));
 		return Collections.emptyList();
 	}
 }
