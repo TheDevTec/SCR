@@ -7,16 +7,20 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.API.TeleportLocation;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.servercontrolreloaded.scr.events.BanlistUnjailEvent;
+import me.devtec.servercontrolreloaded.utils.setting;
+import me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI;
+import me.devtec.servercontrolreloaded.utils.setting.DeathTp;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.punishmentapi.BanList;
-import me.devtec.theapi.punishmentapi.PlayerBanList;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
+import me.devtec.theapi.punishmentapi.Punishment;
+import me.devtec.theapi.punishmentapi.Punishment.PunishmentType;
 import me.devtec.theapi.utils.StringUtils;
 
 public class UnJail implements CommandExecutor, TabCompleter {
@@ -24,9 +28,7 @@ public class UnJail implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] args) {
 		if(args.length==1 && Loader.has(s, "UnJail", "BanSystem")) {
-			List<String> jail = BanList.getJailed();
-			jail.addAll(BanList.getTempJailed());
-			return StringUtils.copyPartialMatches(args[0], jail);
+			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
 		}
 		return Collections.emptyList();
 	}
@@ -42,9 +44,53 @@ public class UnJail implements CommandExecutor, TabCompleter {
 				Loader.Help(s, "UnJail", "BanSystem");
 				return true;
 			}
-			PlayerBanList p = PunishmentAPI.getBanList(args[0]);
-			if (p.isJailed() || p.isTempJailed()) {
-				PunishmentAPI.unjail(args[0]);
+			Punishment push = TheAPI.getPunishmentAPI().getPunishments(args[0]).stream().filter(a -> a.getType()==PunishmentType.JAIL).findFirst().orElse(TheAPI.getPunishmentAPI().getPunishmentsIP(args[0]).stream().filter(a -> a.getType()==PunishmentType.JAIL).findFirst().orElse(null));
+			if (push!=null) {
+				//teleport to player's "spawn"
+				if(push.isIP()) {
+					for(String nick : Accounts.findPlayersOnIP(push.getUser())) {
+						Player p = TheAPI.getPlayerOrNull(nick);
+						if(p!=null) {
+							if (setting.deathspawnbol) {
+								if (setting.deathspawn == DeathTp.HOME)
+									API.teleport(p, API.getTeleportLocation(p, TeleportLocation.HOME));
+								else if (setting.deathspawn == DeathTp.BED)
+									API.teleport(p, API.getTeleportLocation(p, TeleportLocation.BED));
+								else if (setting.deathspawn == DeathTp.SPAWN) {
+									API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+									Loader.sendMessages(p, "Spawn.Teleport.You");
+								}
+							}else
+								API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+						}else {
+							List<String> home = SPunishmentAPI.data.getStringList("tp-home");
+							home.add(nick);
+							SPunishmentAPI.data.set("tp-home", home);
+							SPunishmentAPI.data.save();
+						}
+					}
+				}
+				Player p = TheAPI.getPlayerOrNull(push.getUser());
+				if(p!=null) {
+					if (setting.deathspawnbol) {
+						if (setting.deathspawn == DeathTp.HOME)
+							API.teleport(p, API.getTeleportLocation(p, TeleportLocation.HOME));
+						else if (setting.deathspawn == DeathTp.BED)
+							API.teleport(p, API.getTeleportLocation(p, TeleportLocation.BED));
+						else if (setting.deathspawn == DeathTp.SPAWN) {
+							API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+							Loader.sendMessages(p, "Spawn.Teleport.You");
+						}
+					}else
+						API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+				}else {
+					List<String> home = SPunishmentAPI.data.getStringList("tp-home");
+					SPunishmentAPI.data.set("tp-home", home);
+					home.add(push.getUser());
+					SPunishmentAPI.data.save();
+				}
+				TheAPI.callEvent(new BanlistUnjailEvent(push));
+				push.remove();
 				if (TheAPI.getPlayer(args[0]) != null)
 					API.teleportPlayer(TheAPI.getPlayer(args[0]), TeleportLocation.SPAWN);
 				else TheAPI.getUser(args[0]).setAndSave("request-spawn", 1);

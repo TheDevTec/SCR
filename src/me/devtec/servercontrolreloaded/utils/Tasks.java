@@ -13,15 +13,24 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import me.devtec.servercontrolreloaded.commands.bansystem.Accounts;
 import me.devtec.servercontrolreloaded.scr.API;
+import me.devtec.servercontrolreloaded.scr.API.TeleportLocation;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
+import me.devtec.servercontrolreloaded.scr.events.BanlistUnbanEvent;
+import me.devtec.servercontrolreloaded.scr.events.BanlistUnjailEvent;
+import me.devtec.servercontrolreloaded.scr.events.BanlistUnmuteEvent;
+import me.devtec.servercontrolreloaded.utils.setting.DeathTp;
 import me.devtec.servercontrolreloaded.utils.bungeecord.BungeeListener;
 import me.devtec.servercontrolreloaded.utils.playtime.PlayTimeUtils;
+import me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.punishmentapi.Punishment;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.listener.Event;
 import me.devtec.theapi.utils.listener.EventHandler;
 import me.devtec.theapi.utils.listener.Listener;
 import me.devtec.theapi.utils.listener.events.ServerListPingEvent;
@@ -147,6 +156,102 @@ public class Tasks {
 		tempGamemode();
 		playTime();
 		PlayTimeUtils.loadRewards();
+		punishmentApi();
+	}
+
+	private static void punishmentApi() {
+		tasks.add(new Tasker() {
+			public void run() {
+				for(String user : me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI.data.getKeys("u.")) {
+					for(Punishment push : TheAPI.getPunishmentAPI().getPunishments(user)) {
+						if(push.getExpire()<=0 && push.getDuration()!=0) {
+							Event event =  null;
+							switch(push.getType()) {
+							case BAN:
+								event=new BanlistUnbanEvent(push);
+								break;
+							case JAIL:
+								event=new BanlistUnjailEvent(push);
+								//teleport to player's "spawn"
+								if(push.isIP()) {
+									for(String nick : Accounts.findPlayersOnIP(push.getUser())) {
+										Player p = TheAPI.getPlayerOrNull(nick);
+										if(p!=null) {
+											if (setting.deathspawnbol) {
+												if (setting.deathspawn == DeathTp.HOME)
+													API.teleport(p, API.getTeleportLocation(p, TeleportLocation.HOME));
+												else if (setting.deathspawn == DeathTp.BED)
+													API.teleport(p, API.getTeleportLocation(p, TeleportLocation.BED));
+												else if (setting.deathspawn == DeathTp.SPAWN) {
+													API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+													Loader.sendMessages(p, "Spawn.Teleport.You");
+												}
+											}else
+												API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+										}else {
+											List<String> home = SPunishmentAPI.data.getStringList("tp-home");
+											home.add(nick);
+											SPunishmentAPI.data.set("tp-home", home);
+											SPunishmentAPI.data.save();
+										}
+									}
+									break;
+								}
+								Player p = TheAPI.getPlayerOrNull(push.getUser());
+								if(p!=null) {
+									if (setting.deathspawnbol) {
+										if (setting.deathspawn == DeathTp.HOME)
+											API.teleport(p, API.getTeleportLocation(p, TeleportLocation.HOME));
+										else if (setting.deathspawn == DeathTp.BED)
+											API.teleport(p, API.getTeleportLocation(p, TeleportLocation.BED));
+										else if (setting.deathspawn == DeathTp.SPAWN) {
+											API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+											Loader.sendMessages(p, "Spawn.Teleport.You");
+										}
+									}else
+										API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+								}else {
+									List<String> home = SPunishmentAPI.data.getStringList("tp-home");
+									SPunishmentAPI.data.set("tp-home", home);
+									home.add(push.getUser());
+									SPunishmentAPI.data.save();
+								}
+								break;
+							case MUTE:
+								event=new BanlistUnmuteEvent(push);
+								break;
+								default:
+									break;
+							}
+							if(event!=null)TheAPI.callEvent(event);
+							push.remove();
+						}
+					}
+				}
+				for(String ip : me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI.data.getKeys("i.")) {
+					for(Punishment push : TheAPI.getPunishmentAPI().getPunishmentsIP(ip)) {
+						if(push.getExpire()<=0 && push.getDuration()!=0) {
+							Event event =  null;
+							switch(push.getType()) {
+							case BAN:
+								event=new BanlistUnbanEvent(push);
+								break;
+							case JAIL:
+								event=new BanlistUnjailEvent(push);
+								break;
+							case MUTE:
+								event=new BanlistUnmuteEvent(push);
+								break;
+								default:
+									break;
+							}
+							if(event!=null)TheAPI.callEvent(event);
+							push.remove();
+						}
+					}
+				}
+			}
+		}.runRepeating(0, 40)); //every 2s update
 	}
 
 	private static void bungeecordPlayers() {

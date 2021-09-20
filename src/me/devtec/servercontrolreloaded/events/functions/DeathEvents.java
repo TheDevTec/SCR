@@ -2,7 +2,6 @@ package me.devtec.servercontrolreloaded.events.functions;
 
 import java.util.Collection;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,9 +15,10 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.servercontrolreloaded.utils.setting.DeathTp;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.punishmentapi.PlayerBanList;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
+import me.devtec.theapi.punishmentapi.Punishment;
+import me.devtec.theapi.punishmentapi.Punishment.PunishmentType;
 import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.datakeeper.User;
 
 public class DeathEvents implements Listener {
@@ -82,9 +82,9 @@ public class DeathEvents implements Listener {
 	public void Respawn(PlayerRespawnEvent e) {
 		Player p = e.getPlayer();
 		try {
-			PlayerBanList banlist = PunishmentAPI.getBanList(p.getName());
-			if (banlist.isJailed() || banlist.isTempJailed())
-				e.setRespawnLocation((Location) Loader.config.get("Jails." + TheAPI.getUser(p).getString("Jail.Location")));
+			Punishment banlist = TheAPI.getPunishmentAPI().getPunishments(p.getName()).stream().filter(a -> a.getType()==PunishmentType.JAIL).findFirst().orElse(null);
+			if (banlist!=null)
+				e.setRespawnLocation(Position.fromString(banlist.getValue("position").toString()).toLocation());
 			else if (setting.deathspawnbol) {
 				if (setting.deathspawn == DeathTp.HOME)
 					e.setRespawnLocation(API.getTeleportLocation(p, TeleportLocation.HOME));

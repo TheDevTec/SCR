@@ -14,7 +14,6 @@ import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public class Ban implements CommandExecutor, TabCompleter {
@@ -36,7 +35,7 @@ public class Ban implements CommandExecutor, TabCompleter {
 					Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 					return true;
 				}
-				PunishmentAPI.ban(args[0], Loader.config.getString("BanSystem.Ban.Text").replace("%reason%",
+				TheAPI.getPunishmentAPI().ban(args[0],0, Loader.config.getString("BanSystem.Ban.Text").replace("%reason%",
 						Loader.config.getString("BanSystem.Ban.Reason")));
 				Loader.sendMessages(s, "BanSystem.Ban.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.Ban.Reason")));
@@ -52,14 +51,14 @@ public class Ban implements CommandExecutor, TabCompleter {
 			String msg = StringUtils.buildString(1, args);
 			if(msg.endsWith("-s")||msg.endsWith("- s")) {
 				msg = msg.endsWith("- s")?msg.substring(0, msg.length()-3):msg.substring(0, msg.length()-2);
-				PunishmentAPI.ban(args[0], Loader.config.getString("BanSystem.Ban.Text").replace("%reason%",msg));
+				TheAPI.getPunishmentAPI().ban(args[0],0, Loader.config.getString("BanSystem.Ban.Text").replace("%reason%",msg));
 				Loader.sendMessages(s, "BanSystem.Ban.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"));
 				Loader.sendBroadcasts(s, "BanSystem.Ban.Admins", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"), "scr.silent");
 				return true;
 			}
-			PunishmentAPI.ban(args[0], Loader.config.getString("BanSystem.Ban.Text").replace("%reason%",msg));
+			TheAPI.getPunishmentAPI().ban(args[0],0, Loader.config.getString("BanSystem.Ban.Text").replace("%reason%",msg));
 			Loader.sendMessages(s, "BanSystem.Ban.Sender", Placeholder.c().replace("%operator%", s.getName())
 					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg));
 			Loader.sendBroadcasts(s, "BanSystem.Ban.Admins", Placeholder.c().replace("%operator%", s.getName())

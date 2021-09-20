@@ -111,19 +111,19 @@ public class TempGamemode implements CommandExecutor, TabCompleter {
         switch (args) {
             case "c":
             case "creative":
-                API.getSPlayer(TheAPI.getPlayer(p.getName())).enableTempGameMode(StringUtils.getTimeFromString(time), GameMode.CREATIVE, t);
+                API.getSPlayer((Player)p).enableTempGameMode(StringUtils.getTimeFromString(time), GameMode.CREATIVE, t);
                 break;
             case "s":
             case "survival":
-                API.getSPlayer(TheAPI.getPlayer(p.getName())).enableTempGameMode(StringUtils.getTimeFromString(time), GameMode.SURVIVAL, t);
+                API.getSPlayer((Player)p).enableTempGameMode(StringUtils.getTimeFromString(time), GameMode.SURVIVAL, t);
                 break;
             case "a":
             case "adventure":
-                API.getSPlayer(TheAPI.getPlayer(p.getName())).enableTempGameMode(StringUtils.getTimeFromString(time), GameMode.ADVENTURE, t);
+                API.getSPlayer((Player)p).enableTempGameMode(StringUtils.getTimeFromString(time), GameMode.ADVENTURE, t);
                 break;
             case "sp":
             case "spectator":
-                API.getSPlayer(TheAPI.getPlayer(p.getName())).enableTempGameMode(StringUtils.getTimeFromString(time), GameMode.SPECTATOR, t);
+                API.getSPlayer((Player)p).enableTempGameMode(StringUtils.getTimeFromString(time), GameMode.SPECTATOR, t);
                 break;
             default:
                 Loader.Help(p, "TempGamemode", "GameMode");

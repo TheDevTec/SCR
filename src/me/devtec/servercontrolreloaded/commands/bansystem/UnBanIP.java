@@ -9,11 +9,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
+import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.theapi.punishmentapi.BanList;
-import me.devtec.theapi.punishmentapi.PlayerBanList;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
+import me.devtec.servercontrolreloaded.scr.events.BanlistUnbanEvent;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.punishmentapi.Punishment;
+import me.devtec.theapi.punishmentapi.Punishment.PunishmentType;
 import me.devtec.theapi.utils.StringUtils;
 
 public class UnBanIP implements CommandExecutor, TabCompleter {
@@ -21,9 +23,7 @@ public class UnBanIP implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(args.length==1 && Loader.has(s, "UnBanIP", "BanSystem")) {
-			List<String> jail = BanList.getIPBanned();
-			jail.addAll(BanList.getTempIPBanned());
-			return StringUtils.copyPartialMatches(args[0], jail);
+			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
 		}
 		return Collections.emptyList();
 	}
@@ -39,9 +39,10 @@ public class UnBanIP implements CommandExecutor, TabCompleter {
 				Loader.Help(s, "UnBanIP", "BanSystem");
 				return true;
 			}
-			PlayerBanList p = PunishmentAPI.getBanList(args[0]);
-			if (p.isIPBanned() || p.isTempIPBanned()) {
-				PunishmentAPI.unbanIP(args[0]);
+			Punishment p = TheAPI.getPunishmentAPI().getPunishmentsIP(args[0].contains(".")?args[0]:TheAPI.getPunishmentAPI().getIp(args[0])).stream().filter(a -> a.getType()==PunishmentType.BAN).findFirst().orElse(null);
+			if (p!=null) {
+				TheAPI.callEvent(new BanlistUnbanEvent(p));
+				p.remove();
 				Loader.sendMessages(s, "BanSystem.UnBanIP.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%ip%", args[0]));
 				Loader.sendBroadcasts(s, "BanSystem.UnBanIP.Admins", Placeholder.c().replace("%operator%", s.getName())

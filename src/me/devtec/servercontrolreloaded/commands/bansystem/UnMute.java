@@ -9,11 +9,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
+import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.theapi.punishmentapi.BanList;
-import me.devtec.theapi.punishmentapi.PlayerBanList;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
+import me.devtec.servercontrolreloaded.scr.events.BanlistUnmuteEvent;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.punishmentapi.Punishment;
+import me.devtec.theapi.punishmentapi.Punishment.PunishmentType;
 import me.devtec.theapi.utils.StringUtils;
 
 public class UnMute implements CommandExecutor, TabCompleter {
@@ -21,9 +23,7 @@ public class UnMute implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command arg1,
 			String arg2, String[] args) {
 		if(args.length==1 && Loader.has(s, "UnMute", "BanSystem")) {
-			List<String> jail = BanList.getMuted();
-			jail.addAll(BanList.getTempMuted());
-			return StringUtils.copyPartialMatches(args[0], jail);
+			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
 		}
 		return Collections.emptyList();
 	}
@@ -39,9 +39,10 @@ public class UnMute implements CommandExecutor, TabCompleter {
 				Loader.Help(s, "UnMute", "BanSystem");
 				return true;
 			}
-			PlayerBanList p = PunishmentAPI.getBanList(args[0]);
-			if (p.isMuted() || p.isTempMuted()) {
-				PunishmentAPI.unmute(args[0]);
+			Punishment p = TheAPI.getPunishmentAPI().getPunishments(args[0]).stream().filter(a -> a.getType()==PunishmentType.MUTE).findFirst().orElse(TheAPI.getPunishmentAPI().getPunishmentsIP(args[0]).stream().filter(a -> a.getType()==PunishmentType.MUTE).findFirst().orElse(null));
+			if (p!=null) {
+				TheAPI.callEvent(new BanlistUnmuteEvent(p));
+				p.remove();
 				Loader.sendMessages(s, "BanSystem.UnMute.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]));
 				Loader.sendBroadcasts(s, "BanSystem.UnMute.Admins", Placeholder.c().replace("%operator%", s.getName())

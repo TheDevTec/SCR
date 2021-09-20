@@ -13,18 +13,12 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.theapi.punishmentapi.PlayerBanList;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
 
 public class AFKEvents implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onBreakBlock(PlayerInteractEvent e) {
 		Loader.getInstance.save(e.getPlayer());
-		if(e.isCancelled())return;
-		PlayerBanList d= PunishmentAPI.getBanList(e.getPlayer().getName());
-		if (d.isJailed() || d.isTempJailed() || d.isTempIPJailed() || d.isIPJailed())
-			e.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)

@@ -8,13 +8,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public class Kick implements CommandExecutor, TabCompleter {
@@ -43,8 +43,9 @@ public class Kick implements CommandExecutor, TabCompleter {
 					Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 					return true;
 				}
-				PunishmentAPI.kick(args[0], Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",
-						Loader.config.getString("BanSystem.Kick.Reason")));
+				Player target = TheAPI.getPlayer(args[0]);
+				if(target!=null)target.kickPlayer(TheAPI.colorize(Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",
+						Loader.config.getString("BanSystem.Kick.Reason"))));
 				Loader.sendMessages(s, "BanSystem.Kick.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.Kick.Reason")));
 				Loader.sendBroadcasts(s, "BanSystem.Kick.Admins", Placeholder.c().replace("%operator%", s.getName())
@@ -59,14 +60,16 @@ public class Kick implements CommandExecutor, TabCompleter {
 			String msg = StringUtils.buildString(1, args);
 			if(msg.endsWith("-s")||msg.endsWith("- s")) {
 				msg = msg.endsWith("- s")?msg.substring(0, msg.length()-3):msg.substring(0, msg.length()-2);
-				PunishmentAPI.kick(args[0], Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",msg));
+				Player target = TheAPI.getPlayer(args[0]);
+				if(target!=null)target.kickPlayer(TheAPI.colorize(Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",msg)));
 				Loader.sendMessages(s, "BanSystem.Kick.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"));
 				Loader.sendBroadcasts(s, "BanSystem.Kick.Admins", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"), "scr.silent");
 				return true;
 			}
-			PunishmentAPI.kick(args[0], Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",msg));
+			Player target = TheAPI.getPlayer(args[0]);
+			if(target!=null)target.kickPlayer(TheAPI.colorize(Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",msg)));
 			Loader.sendMessages(s, "BanSystem.Kick.Sender", Placeholder.c().replace("%operator%", s.getName())
 					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg));
 			Loader.sendBroadcasts(s, "BanSystem.Kick.Admins", Placeholder.c().replace("%operator%", s.getName())

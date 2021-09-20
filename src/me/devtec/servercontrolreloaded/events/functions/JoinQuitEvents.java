@@ -28,15 +28,18 @@ import me.devtec.servercontrolreloaded.utils.SPlayer;
 import me.devtec.servercontrolreloaded.utils.TabList;
 import me.devtec.servercontrolreloaded.utils.Tasks;
 import me.devtec.servercontrolreloaded.utils.setting;
+import me.devtec.servercontrolreloaded.utils.setting.DeathTp;
+import me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI;
 import me.devtec.servercontrolreloaded.utils.skins.SkinManager;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.SoundAPI;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
-import me.devtec.theapi.punishmentapi.PlayerBanList;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
+import me.devtec.theapi.punishmentapi.Punishment;
+import me.devtec.theapi.punishmentapi.Punishment.PunishmentType;
 import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.reflections.Ref;
@@ -77,6 +80,23 @@ public class JoinQuitEvents implements Listener {
 	public void playerJoin(PlayerJoinEvent e) {
 		e.setJoinMessage("");
 		Player p = e.getPlayer();
+		List<String> home = SPunishmentAPI.data.getStringList("tp-home");
+		if(home.contains(p.getName())) {
+			home.remove(p.getName());
+			SPunishmentAPI.data.set("tp-home", home);
+			SPunishmentAPI.data.save();
+			if (setting.deathspawnbol) {
+				if (setting.deathspawn == DeathTp.HOME)
+					API.teleport(p, API.getTeleportLocation(p, TeleportLocation.HOME));
+				else if (setting.deathspawn == DeathTp.BED)
+					API.teleport(p, API.getTeleportLocation(p, TeleportLocation.BED));
+				else if (setting.deathspawn == DeathTp.SPAWN) {
+					API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+					Loader.sendMessages(p, "Spawn.Teleport.You");
+				}
+			}else
+				API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+		}
 		User d = TheAPI.getUser(p);
         List<Player> l = TheAPI.getOnlinePlayers();
         l.remove(p);
@@ -89,6 +109,7 @@ public class JoinQuitEvents implements Listener {
         }
 		new Tasker() {
 			public void run() {
+				me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI.sendWarnings(p);
 		        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
 		    		Vanish.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
 				try {
@@ -157,11 +178,16 @@ public class JoinQuitEvents implements Listener {
 							if(!(""+o).isEmpty())
 								TheAPI.msg(replaceAll(""+o, p),p);
 					}
-					PlayerBanList fac = PunishmentAPI.getBanList(p.getName());
+					Punishment banlist = TheAPI.getPunishmentAPI().getPunishments(p.getName()).stream().filter(a -> a.getType()==PunishmentType.JAIL).findFirst().orElse(null);
+					if(banlist==null)
+						banlist = TheAPI.getPunishmentAPI().getPunishmentsIP(TheAPI.getPunishmentAPI().getIp(e.getPlayer().getName())).stream().filter(a -> a.getType()==PunishmentType.MUTE).findFirst().orElse(null);
+					Punishment result = banlist;
 					new Tasker() {
 						public void run() {
-							if(!fac.isJailed() && !fac.isIPJailed() && !fac.isTempJailed() && !fac.isTempIPJailed())
-							API.teleportPlayer(p, TeleportLocation.SPAWN);
+							if(result==null)
+								API.teleportPlayer(p, TeleportLocation.SPAWN);
+							else
+								API.teleport(p, Position.fromString(result.getValue("position").toString()));
 							Object o = Loader.events.get("onJoin.First.Commands");
 							if(o!=null) {
 							if(o instanceof Collection) {

@@ -15,7 +15,6 @@ import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public class TempJail implements CommandExecutor, TabCompleter {
@@ -53,8 +52,8 @@ public class TempJail implements CommandExecutor, TabCompleter {
 					Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 					return true;
 				}
-				PunishmentAPI.tempjail(args[0], Loader.config.getString("BanSystem.TempJail.Text").replace("%reason%",
-						Loader.config.getString("BanSystem.TempJail.Reason")), StringUtils.getTimeFromString(Loader.config.getString("BanSystem.TempJail.Time")));
+				TheAPI.getPunishmentAPI().jail(args[0], StringUtils.getTimeFromString(Loader.config.getString("BanSystem.TempJail.Time")), Loader.config.getString("BanSystem.TempJail.Text").replace("%reason%",
+								Loader.config.getString("BanSystem.TempJail.Reason")));
 				Loader.sendMessages(s, "BanSystem.TempJail.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.TempJail.Reason")).replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(Loader.config.getString("BanSystem.TempJail.Time")))));
 				Loader.sendBroadcasts(s, "BanSystem.TempJail.Admins", Placeholder.c().replace("%operator%", s.getName())
@@ -67,8 +66,8 @@ public class TempJail implements CommandExecutor, TabCompleter {
 					Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 					return true;
 				}
-				PunishmentAPI.tempjail(args[0], Loader.config.getString("BanSystem.TempJail.Text").replace("%reason%",
-						Loader.config.getString("BanSystem.TempJail.Reason")), StringUtils.getTimeFromString(args[1]));
+				TheAPI.getPunishmentAPI().jail(args[0], StringUtils.getTimeFromString(args[1]), Loader.config.getString("BanSystem.TempJail.Text").replace("%reason%",
+								Loader.config.getString("BanSystem.TempJail.Reason")));
 				Loader.sendMessages(s, "BanSystem.TempJail.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.TempJail.Reason")).replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[1]))));
 				Loader.sendBroadcasts(s, "BanSystem.TempJail.Admins", Placeholder.c().replace("%operator%", s.getName())
@@ -83,14 +82,14 @@ public class TempJail implements CommandExecutor, TabCompleter {
 			String msg = StringUtils.buildString(2, args);
 			if(msg.endsWith("-s")||msg.endsWith("- s")) {
 				msg = msg.endsWith("- s")?msg.substring(0, msg.length()-3):msg.substring(0, msg.length()-2);
-				PunishmentAPI.tempjail(args[0], Loader.config.getString("BanSystem.TempJail.Text").replace("%reason%",msg), StringUtils.timeFromString(args[1]));
+				TheAPI.getPunishmentAPI().jail(args[0], StringUtils.timeFromString(args[1]), Loader.config.getString("BanSystem.TempJail.Text").replace("%reason%",msg));
 				Loader.sendMessages(s, "BanSystem.TempJail.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]").replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[1]))));
 				Loader.sendBroadcasts(s, "BanSystem.TempJail.Admins", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]").replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[1]))), "servercontrol.silent");
 				return true;
 			}
-			PunishmentAPI.tempjail(args[0], Loader.config.getString("BanSystem.TempJail.Text").replace("%reason%",msg), StringUtils.timeFromString(args[1]));
+			TheAPI.getPunishmentAPI().jail(args[0], StringUtils.timeFromString(args[1]), Loader.config.getString("BanSystem.TempJail.Text").replace("%reason%",msg));
 			Loader.sendMessages(s, "BanSystem.TempJail.Sender", Placeholder.c().replace("%operator%", s.getName())
 					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg).replace("%time%", StringUtils.timeToString(StringUtils.timeFromString(args[1]))));
 			Loader.sendBroadcasts(s, "BanSystem.TempJail.Admins", Placeholder.c().replace("%operator%", s.getName())

@@ -13,7 +13,7 @@ import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
+import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 
 public class SetJail implements CommandExecutor, TabCompleter {
@@ -38,12 +38,12 @@ public class SetJail implements CommandExecutor, TabCompleter {
 					return true;
 				}
 				if (args.length == 1) {
-					if (PunishmentAPI.getjails().contains(args[0])) {
+					if (me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI.jails().contains(args[0])) {
 						Loader.sendMessages(s, "Jail.Exists", Placeholder.c().replace("%jail%", args[0]));
 						return true;
 					}
 					Player p = (Player) s;
-					PunishmentAPI.setjail(p.getLocation(), args[0]);
+					me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI.setJail(args[0], new Position(p.getLocation()));
 					Loader.sendMessages(s, "Jail.Create", Placeholder.c().replace("%jail%", args[0]));
 					return true;
 				}

@@ -21,7 +21,6 @@ import me.devtec.servercontrolreloaded.utils.SPlayer;
 import me.devtec.servercontrolreloaded.utils.playtime.PlayTimeUtils;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.StringUtils;
@@ -60,7 +59,7 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 			Loader.sendMessages(s, "WhoIs.Loading", Placeholder.c().add("%player%", a[0]));
 			new Tasker() {
 				public void run() {
-					String ip = PunishmentAPI.getIP(a[0]);
+					String ip = TheAPI.getPunishmentAPI().getIp(a[0]);
 					if (ip == null)
 						ip = "Unknown";
 					else ip=ip.replace("_", ".");
@@ -84,19 +83,13 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 							.add("%money%", EconomyAPI.format(EconomyAPI.getBalance(a[0])))
 							.add("%health%", c.getPlayer()!=null ? c.getPlayer().getHealthScale()+"":"-1").add("%food%", c.getPlayer()!=null ? c.getPlayer().getFoodLevel()+"":"-1")
 							.add("%xp%", c.getPlayer()!=null ? c.getPlayer().getTotalExperience()+"":"-1").add("%level%", c.getPlayer()!=null ? c.getPlayer().getLevel()+"":"-1")
-							.add("%banned%", PunishmentAPI.getBanList(c.getName()).isBanned()+"")
-							.add("%arrested%", PunishmentAPI.getBanList(c.getName()).isJailed()+"")
-							.add("%ip-arrested%", PunishmentAPI.getBanList(c.getName()).isIPJailed()+"")
-							.add("%ip-muted%", PunishmentAPI.getBanList(c.getName()).isIPMuted()+"")
-							.add("%muted%", PunishmentAPI.getBanList(c.getName()).isMuted()+"")
 							.add("%playtime%", d?StringUtils.timeToString(PlayTimeUtils.playtime(c.getPlayer())):"-1s")
 							.add("%x%", d?StringUtils.fixedFormatDouble(c.getPlayer().getLocation().getX()):"-1")
 							.add("%y%", d?StringUtils.fixedFormatDouble(c.getPlayer().getLocation().getY()):"-1")
 							.add("%z%", d?StringUtils.fixedFormatDouble(c.getPlayer().getLocation().getZ()):"-1")
 							.add("%yaw%", d?StringUtils.fixedFormatDouble(c.getPlayer().getLocation().getYaw()):"-1")
 							.add("%pitch%", d?StringUtils.fixedFormatDouble(c.getPlayer().getLocation().getPitch()):"-1")
-							.add("%world%", d?c.getPlayer().getWorld().getName():"Uknown")
-							.add("%ip-banned%", PunishmentAPI.getBanList(c.getName()).isIPBanned()+""));
+							.add("%world%", d?c.getPlayer().getWorld().getName():"Uknown"));
 				}}.runTask();
 			return true;
 		}

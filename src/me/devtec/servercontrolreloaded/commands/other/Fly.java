@@ -28,15 +28,15 @@ public class Fly implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args.length == 0) {
-					if (s instanceof Player) {
-						SPlayer p = API.getSPlayer((Player) s);
-						if (task.get(p) != null)
-							Scheduler.cancelTask(task.remove(p));
-						p.toggleFly(null);
-						return true;
-					}
-					Loader.Help(s, "Fly", "Other");
+				if (s instanceof Player) {
+					SPlayer p = API.getSPlayer((Player) s);
+					if (task.get(p) != null)
+						Scheduler.cancelTask(task.remove(p));
+					p.toggleFly(null);
 					return true;
+				}
+				Loader.Help(s, "Fly", "Other");
+				return true;
 			}
 			SPlayer target;
 			if (args.length == 1) {
@@ -69,7 +69,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 					Loader.notOnline(s, args[0]);
 					return true;
 				}
-				target = API.getSPlayer(TheAPI.getPlayer(args[0]));
+				target = API.getSPlayer(args[0]);
 				if (target.getPlayer() == s) {
 					if (Loader.has(s, "Fly", "Other")) {
 						if (task.get(target) != null)
@@ -94,7 +94,7 @@ public class Fly implements CommandExecutor, TabCompleter {
 				Loader.notOnline(s, args[0]);
 				return true;
 			}
-			target = API.getSPlayer(TheAPI.getPlayer(args[0]));
+			target = API.getSPlayer(args[0]);
 			if (target.getPlayer() != s) {
 				if (Loader.has(s, "Fly", "Other", "Other")) {
 					if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {

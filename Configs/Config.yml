@@ -303,6 +303,7 @@ Options:
       - "Bedrock"
       world_the_end:
       - "Bedrock"
+      
   serverlist:
     # Modify ServerListPingEvent
     enabled: true
@@ -484,9 +485,19 @@ BanSystem:
     Text: "&7You are temp-muted for &e%reason%&7 on &e%time%"
     Time: "1h"
     Reason: "None"
+    ForbiddenCommands:
+    - "msg "
+    - "pm "
+    - "tell "
+    - "w "
   Mute:
     Text: "&7You are muted for &e%reason%"
     Reason: "None"
+    ForbiddenCommands:
+    - "msg "
+    - "pm "
+    - "tell "
+    - "w "
   Ban:
     Text: "&7You are banned for &e%reason%\n&7www.example.com"
     Reason: "None"
@@ -508,9 +519,19 @@ BanSystem:
     Text: "&7You are temp-arrested for &e%reason%&7 on &e%time%"
     Time: "1h"
     Reason: "None"
+    ForbiddenCommands:
+    - "spawn"
+    - "home"
+    - "warp"
+    - "tp"
   Jail:
     Text: "&7You are arrested for &e%reason%"
     Reason: "None"
+    ForbiddenCommands:
+    - "spawn"
+    - "home"
+    - "warp"
+    - "tp"
   Warn:
     Text: "&7You are warned for &e%reason%"
     Reason: "None"

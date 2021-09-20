@@ -287,7 +287,7 @@ public class SPlayer {
 	public void toggleFly(CommandSender toggler) {
 		Player s = getPlayer();
 		if(s==null) {
-			if (hasGodEnabled()) {
+			if (hasFlyEnabled(false)) {
 				if (toggler != null)
 					Loader.sendMessages(toggler, "Fly.Disabled.Other.Sender", Placeholder.c().add("%player%", getName()).add("%playername%", getDisplayName()).add("%customname%", getCustomName()));
 				disableFly();

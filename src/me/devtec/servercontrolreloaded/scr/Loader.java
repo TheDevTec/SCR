@@ -25,6 +25,7 @@ import me.devtec.servercontrolreloaded.commands.other.mirror.MirrorEvents;
 import me.devtec.servercontrolreloaded.events.SecurityListenerV4;
 import me.devtec.servercontrolreloaded.events.Signs;
 import me.devtec.servercontrolreloaded.events.functions.AFKEvents;
+import me.devtec.servercontrolreloaded.events.functions.BanListEvents;
 import me.devtec.servercontrolreloaded.events.functions.ChatFormat;
 import me.devtec.servercontrolreloaded.events.functions.Codes;
 import me.devtec.servercontrolreloaded.events.functions.DeathEvents;
@@ -560,7 +561,7 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onLoad() {
-		if(VersionChecker.getVersion(PluginManagerAPI.getVersion("TheAPI"), "6.9")==VersionChecker.Version.NEW) {
+		if(VersionChecker.getVersion(PluginManagerAPI.getVersion("TheAPI"), "6.9.7")==VersionChecker.Version.NEW) {
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4SECURITY: &cYou are running on outdated version of plugin TheAPI", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4SECURITY: &cPlease update plugin TheAPI to latest version.", TheAPI.getConsole());
@@ -570,6 +571,10 @@ public class Loader extends JavaPlugin implements Listener {
 			return;
 		}
 		XMaterial.matchXMaterial("STONE"); //intialize ids on load
+		//LOAD CUSTOM PUNISHMENTAPI
+		
+		loadPunishmentAPI();
+		
         boolean save = false;
         Data c = new Data("plugins/bStats/config.yml");
         if(c.setIfAbsent("enabled", true))save=true;
@@ -595,6 +600,10 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 	}
 	
+	private void loadPunishmentAPI() {
+		TheAPI.setPunishmentAPI(new me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI());
+	}
+
 	private static long loading;
 	public static boolean hasBungee;
 
@@ -995,6 +1004,7 @@ public class Loader extends JavaPlugin implements Listener {
 		regEvent(new SecurityListenerV4());
 		regEvent(new JoinQuitEvents());
 		regEvent(new ChatFormat());
+		regEvent(new BanListEvents());
 	}
 	
 	public static void unregisterEvents() {

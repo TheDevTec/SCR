@@ -63,7 +63,7 @@ public class God implements CommandExecutor, TabCompleter {
 				Loader.notOnline(s, args[0]);
 				return true;
 			}
-			target = API.getSPlayer(TheAPI.getPlayer(args[0]));
+			target = API.getSPlayer(args[0]);
 			if (target.getPlayer() == s) {
 				if (Loader.has(s, "God", "Other")) {
 					target.toggleGod(null);
@@ -84,7 +84,7 @@ public class God implements CommandExecutor, TabCompleter {
 			Loader.notOnline(s, args[0]);
 			return true;
 		}
-		target = API.getSPlayer(TheAPI.getPlayer(args[0]));
+		target = API.getSPlayer(args[0]);
 		if (target.getPlayer() != s) {
 			if (Loader.has(s, "God", "Other", "Other")) {
 				if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {

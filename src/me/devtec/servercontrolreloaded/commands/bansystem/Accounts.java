@@ -13,8 +13,8 @@ import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 
 public class Accounts implements CommandExecutor, TabCompleter{
@@ -33,11 +33,15 @@ public class Accounts implements CommandExecutor, TabCompleter{
 				Loader.sendMessages(cs, "Accounts.NoAccounts", Placeholder.c().add("%player%", args[0]));
 			else
 				Loader.sendMessages(cs, "Accounts.Users", Placeholder.c().add("%player%", args[0])
-					.add("%players%", StringUtils.join(PunishmentAPI.getPlayersOnIP(TheAPI.getUser(args[0]).getString("ip").replace('_', '.')), ", ")));
+					.add("%players%", StringUtils.join(findPlayersOnIP(TheAPI.getUser(args[0]).getString("ip").replace('.', '_')), ", ")));
 			return true;
 		}
 		Loader.noPerms(cs, "Accounts", "BanSystem");
 		return true;
+	}
+
+	public static List<String> findPlayersOnIP(String ip) {
+		return LoaderClass.data.getStringList("data."+ip);
 	}
 
 	@Override

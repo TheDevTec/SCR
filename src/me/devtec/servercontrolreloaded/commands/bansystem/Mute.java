@@ -14,7 +14,6 @@ import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public class Mute implements CommandExecutor, TabCompleter {
@@ -43,7 +42,7 @@ public class Mute implements CommandExecutor, TabCompleter {
 					Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 					return true;
 				}
-				PunishmentAPI.mute(args[0], Loader.config.getString("BanSystem.Mute.Text").replace("%reason%",
+				TheAPI.getPunishmentAPI().mute(args[0], 0, Loader.config.getString("BanSystem.Mute.Text").replace("%reason%",
 						Loader.config.getString("BanSystem.Mute.Reason")));
 				Loader.sendMessages(s, "BanSystem.Mute.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.Mute.Reason")));
@@ -59,14 +58,14 @@ public class Mute implements CommandExecutor, TabCompleter {
 			String msg = StringUtils.buildString(1, args);
 			if(msg.endsWith("-s")||msg.endsWith("- s")) {
 				msg = msg.endsWith("- s")?msg.substring(0, msg.length()-3):msg.substring(0, msg.length()-2);
-				PunishmentAPI.mute(args[0], Loader.config.getString("BanSystem.Mute.Text").replace("%reason%",msg));
+				TheAPI.getPunishmentAPI().mute(args[0], 0, Loader.config.getString("BanSystem.Mute.Text").replace("%reason%",msg));
 				Loader.sendMessages(s, "BanSystem.Mute.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"));
 				Loader.sendBroadcasts(s, "BanSystem.Mute.Admins", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"), "scr.silent");
 				return true;
 			}
-			PunishmentAPI.mute(args[0], Loader.config.getString("BanSystem.Mute.Text").replace("%reason%",msg));
+			TheAPI.getPunishmentAPI().mute(args[0], 0, Loader.config.getString("BanSystem.Mute.Text").replace("%reason%",msg));
 			Loader.sendMessages(s, "BanSystem.Mute.Sender", Placeholder.c().replace("%operator%", s.getName())
 					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg));
 			Loader.sendBroadcasts(s, "BanSystem.Mute.Admins", Placeholder.c().replace("%operator%", s.getName())
