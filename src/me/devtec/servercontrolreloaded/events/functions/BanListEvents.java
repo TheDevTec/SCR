@@ -21,10 +21,10 @@ import me.devtec.theapi.utils.StringUtils;
 
 public class BanListEvents implements Listener {
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void banlistLogin(AsyncPlayerPreLoginEvent e) {
 		if(e.getLoginResult()!=Result.ALLOWED)return;
-		Punishment banlist = TheAPI.getPunishmentAPI().getPunishments(e.getName()).stream().filter(a -> a.getType()==PunishmentType.BAN).findFirst().orElse(TheAPI.getPunishmentAPI().getPunishmentsIP(TheAPI.getPunishmentAPI().getIp(e.getName())).stream().filter(a -> a.getType()==PunishmentType.BAN).findFirst().orElse(null));
+		Punishment banlist = TheAPI.getPunishmentAPI().getPunishments(e.getName()).stream().filter(a -> a.getType()==PunishmentType.BAN).findFirst().orElse(TheAPI.getPunishmentAPI().getPunishmentsIP(e.getAddress().toString().replaceAll("[^0-9.]+", "")).stream().filter(a -> a.getType()==PunishmentType.BAN).findFirst().orElse(null));
 		if(banlist!=null) {
 			e.setLoginResult(Result.KICK_BANNED);
 			e.setKickMessage(banlist.getDuration()!=0?TabList.replace(banlist.getReason().replace("%player%", e.getName()), null, true):

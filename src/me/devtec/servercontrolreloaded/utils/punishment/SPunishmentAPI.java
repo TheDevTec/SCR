@@ -45,6 +45,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 		}
 		reason=e.getReason()+"";
 
+		if(duration!=0)
 		data.set("u."+user.toLowerCase()+"."+type+".duration", duration);
 		data.set("u."+user.toLowerCase()+"."+type+".reason", reason);
 		data.set("u."+user.toLowerCase()+"."+type+".start", System.currentTimeMillis()/1000);
@@ -73,7 +74,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 		reason=e.getReason()+"";
 		
 		String type = duration == 0 ? "muteip" : "tempmuteip";
-
+		if(duration!=0)
 		data.set("i."+ip.replace(".", "_")+"."+type+".duration", duration);
 		data.set("i."+ip.replace(".", "_")+"."+type+".reason", reason);
 		data.set("i."+ip.replace(".", "_")+"."+type+".start", System.currentTimeMillis()/1000);
@@ -101,6 +102,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 		}
 		reason=e.getReason()+"";
 
+		if(duration!=0)
 		data.set("u."+user.toLowerCase()+"."+type+".duration", duration);
 		data.set("u."+user.toLowerCase()+"."+type+".reason", reason);
 		data.set("u."+user.toLowerCase()+"."+type+".start", System.currentTimeMillis()/1000);
@@ -130,6 +132,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 		
 		String type = duration == 0 ? "banip" : "tempbanip";
 
+		if(duration!=0)
 		data.set("i."+ip.replace(".", "_")+"."+type+".duration", duration);
 		data.set("i."+ip.replace(".", "_")+"."+type+".reason", reason);
 		data.set("i."+ip.replace(".", "_")+"."+type+".start", System.currentTimeMillis()/1000);
@@ -161,7 +164,8 @@ public class SPunishmentAPI implements PunishmentAPI {
 			if(duration<0)duration=0;
 		}
 		reason=e.getReason()+"";
-		
+
+		if(duration!=0)
 		data.set("u."+user.toLowerCase()+"."+type+".duration", duration);
 		data.set("u."+user.toLowerCase()+"."+type+".reason", reason);
 		data.set("u."+user.toLowerCase()+"."+type+".start", System.currentTimeMillis()/1000);
@@ -196,6 +200,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 		
 		String type = duration == 0 ? "jailip" : "tempjailip";
 
+		if(duration!=0)
 		data.set("i."+ip.replace(".", "_")+"."+type+".duration", duration);
 		data.set("i."+ip.replace(".", "_")+"."+type+".reason", reason);
 		data.set("i."+ip.replace(".", "_")+"."+type+".start", System.currentTimeMillis()/1000);
@@ -255,14 +260,14 @@ public class SPunishmentAPI implements PunishmentAPI {
 				for(Player p : TheAPI.getOnlinePlayers()) {
 					if(getIp(p.getName()).equals(punish.getUser())) {
 						TheAPI.msg(punish.getReason(), p);
-						me.devtec.servercontrolreloaded.scr.API.teleport(p, Position.fromString(punish.getValue("location").toString()));
+						me.devtec.servercontrolreloaded.scr.API.teleport(p, Position.fromString(punish.getValue("position").toString()));
 					}
 				}
 			}else {
 				Player p = TheAPI.getPlayerOrNull(punish.getUser());
 				if(p==null)break;
 				TheAPI.msg(punish.getReason(), p);
-				me.devtec.servercontrolreloaded.scr.API.teleport(p, Position.fromString(punish.getValue("location").toString()));
+				me.devtec.servercontrolreloaded.scr.API.teleport(p, Position.fromString(punish.getValue("position").toString()));
 			}
 			break;
 		case MUTE:
@@ -311,7 +316,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 	//GETTERS
 	public List<Punishment> getPunishments(String user) {
 		List<Punishment> list = new ArrayList<>();
-		for(String key : data.getKeys(user)) {
+		for(String key : data.getKeys("u."+user)) {
 			list.add(new SPunishment(data,user,findType(key),key));
 		}
 		return list;
@@ -319,7 +324,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 
 	public List<Punishment> getPunishmentsIP(String ip) {
 		List<Punishment> list = new ArrayList<>();
-		for(String key : data.getKeys(ip.replace(".", "_"))) {
+		for(String key : data.getKeys("i."+ip.replace(".", "_"))) {
 			list.add(new SPunishment(data,ip,findType(key),key));
 		}
 		return list;

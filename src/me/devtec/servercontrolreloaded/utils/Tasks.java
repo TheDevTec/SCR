@@ -162,7 +162,7 @@ public class Tasks {
 	private static void punishmentApi() {
 		tasks.add(new Tasker() {
 			public void run() {
-				for(String user : me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI.data.getKeys("u.")) {
+				for(String user : me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI.data.getKeys("u")) {
 					for(Punishment push : TheAPI.getPunishmentAPI().getPunishments(user)) {
 						if(push.getExpire()<=0 && push.getDuration()!=0) {
 							Event event =  null;
@@ -228,7 +228,7 @@ public class Tasks {
 						}
 					}
 				}
-				for(String ip : me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI.data.getKeys("i.")) {
+				for(String ip : me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI.data.getKeys("i")) {
 					for(Punishment push : TheAPI.getPunishmentAPI().getPunishmentsIP(ip)) {
 						if(push.getExpire()<=0 && push.getDuration()!=0) {
 							Event event =  null;
@@ -238,6 +238,50 @@ public class Tasks {
 								break;
 							case JAIL:
 								event=new BanlistUnjailEvent(push);
+								//teleport to player's "spawn"
+								if(push.isIP()) {
+									for(String nick : Accounts.findPlayersOnIP(push.getUser())) {
+										Player p = TheAPI.getPlayerOrNull(nick);
+										if(p!=null) {
+											if (setting.deathspawnbol) {
+												if (setting.deathspawn == DeathTp.HOME)
+													API.teleport(p, API.getTeleportLocation(p, TeleportLocation.HOME));
+												else if (setting.deathspawn == DeathTp.BED)
+													API.teleport(p, API.getTeleportLocation(p, TeleportLocation.BED));
+												else if (setting.deathspawn == DeathTp.SPAWN) {
+													API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+													Loader.sendMessages(p, "Spawn.Teleport.You");
+												}
+											}else
+												API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+										}else {
+											List<String> home = SPunishmentAPI.data.getStringList("tp-home");
+											home.add(nick);
+											SPunishmentAPI.data.set("tp-home", home);
+											SPunishmentAPI.data.save();
+										}
+									}
+									break;
+								}
+								Player p = TheAPI.getPlayerOrNull(push.getUser());
+								if(p!=null) {
+									if (setting.deathspawnbol) {
+										if (setting.deathspawn == DeathTp.HOME)
+											API.teleport(p, API.getTeleportLocation(p, TeleportLocation.HOME));
+										else if (setting.deathspawn == DeathTp.BED)
+											API.teleport(p, API.getTeleportLocation(p, TeleportLocation.BED));
+										else if (setting.deathspawn == DeathTp.SPAWN) {
+											API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+											Loader.sendMessages(p, "Spawn.Teleport.You");
+										}
+									}else
+										API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
+								}else {
+									List<String> home = SPunishmentAPI.data.getStringList("tp-home");
+									SPunishmentAPI.data.set("tp-home", home);
+									home.add(push.getUser());
+									SPunishmentAPI.data.save();
+								}
 								break;
 							case MUTE:
 								event=new BanlistUnmuteEvent(push);
