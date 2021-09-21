@@ -13,11 +13,13 @@ import me.devtec.servercontrolreloaded.scr.events.BanlistMuteEvent;
 import me.devtec.servercontrolreloaded.scr.events.BanlistTempBanEvent;
 import me.devtec.servercontrolreloaded.scr.events.BanlistTempJailEvent;
 import me.devtec.servercontrolreloaded.scr.events.BanlistTempMuteEvent;
+import me.devtec.servercontrolreloaded.utils.TabList;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.punishmentapi.Punishment;
 import me.devtec.theapi.punishmentapi.Punishment.PunishmentType;
 import me.devtec.theapi.punishmentapi.PunishmentAPI;
 import me.devtec.theapi.utils.Position;
+import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.Data;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.listener.Cancellable;
@@ -243,15 +245,21 @@ public class SPunishmentAPI implements PunishmentAPI {
 			if(punish.getTypeName().endsWith("ip")) {
 				for(Player p : TheAPI.getOnlinePlayers()) {
 					if(getIp(p.getName()).equals(punish.getUser())) {
-						TheAPI.msg(punish.getReason(), p);
-						p.kickPlayer(TheAPI.colorize(punish.getReason()));
+						String reason = punish.getReason().replace("%player%", p.getName());
+						if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
+						reason=TabList.replace(reason, p, true);
+						TheAPI.msg(reason, p);
+						p.kickPlayer(reason.replace("\\n", "\n"));
 					}
 				}
 			}else {
 				Player p = TheAPI.getPlayerOrNull(punish.getUser());
 				if(p==null)break;
-				TheAPI.msg(punish.getReason(), p);
-				p.kickPlayer(TheAPI.colorize(punish.getReason()));
+				String reason = punish.getReason().replace("%player%", p.getName());
+				if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
+				reason=TabList.replace(reason, p, true);
+				TheAPI.msg(reason, p);
+				p.kickPlayer(reason.replace("\\n", "\n"));
 			}
 			break;
 		case JAIL:
@@ -259,14 +267,20 @@ public class SPunishmentAPI implements PunishmentAPI {
 			if(punish.getTypeName().endsWith("ip")) {
 				for(Player p : TheAPI.getOnlinePlayers()) {
 					if(getIp(p.getName()).equals(punish.getUser())) {
-						TheAPI.msg(punish.getReason(), p);
+						String reason = punish.getReason().replace("%player%", p.getName());
+						if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
+						reason=TabList.replace(reason, p, true);
+						TheAPI.msg(reason, p);
 						me.devtec.servercontrolreloaded.scr.API.teleport(p, Position.fromString(punish.getValue("position").toString()));
 					}
 				}
 			}else {
 				Player p = TheAPI.getPlayerOrNull(punish.getUser());
 				if(p==null)break;
-				TheAPI.msg(punish.getReason(), p);
+				String reason = punish.getReason().replace("%player%", p.getName());
+				if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
+				reason=TabList.replace(reason, p, true);
+				TheAPI.msg(reason, p);
 				me.devtec.servercontrolreloaded.scr.API.teleport(p, Position.fromString(punish.getValue("position").toString()));
 			}
 			break;
@@ -275,13 +289,19 @@ public class SPunishmentAPI implements PunishmentAPI {
 			if(punish.getTypeName().endsWith("ip")) {
 				for(Player p : TheAPI.getOnlinePlayers()) {
 					if(getIp(p.getName()).equals(punish.getUser())) {
-						TheAPI.msg(punish.getReason(), p);
+						String reason = punish.getReason().replace("%player%", p.getName());
+						if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
+						reason=TabList.replace(reason, p, true);
+						TheAPI.msg(reason, p);
 					}
 				}
 			}else {
 				Player p = TheAPI.getPlayerOrNull(punish.getUser());
 				if(p==null)break;
-				TheAPI.msg(punish.getReason(), p);
+				String reason = punish.getReason().replace("%player%", p.getName());
+				if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
+				reason=TabList.replace(reason, p, true);
+				TheAPI.msg(reason, p);
 			}
 			break;
 		case CUSTOM:

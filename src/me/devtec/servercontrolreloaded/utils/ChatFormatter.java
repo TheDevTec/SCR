@@ -18,8 +18,8 @@ public class ChatFormatter {
 	public static String displayName(Player p) {
 		Object[] format = getChatFormat(p, 0);
 		if (format!=null)
-			return Colors.colorize(ChatFormat.r(p, PlaceholderAPI.setPlaceholders(p, format[0].toString()), null, false, true).toString(), false, p);
-		return Loader.getChatFormat(p, Item.PREFIX) + p.getName() + Loader.getChatFormat(p, Item.SUFFIX);
+			return TheAPI.colorize(ChatFormat.r(p, PlaceholderAPI.setPlaceholders(p, format[0].toString()), null, false, true).toString());
+		return TheAPI.colorize(Loader.getChatFormat(p, Item.PREFIX) + p.getName() + Loader.getChatFormat(p, Item.SUFFIX));
 	}
 	
 	public static String customName(Player p) {

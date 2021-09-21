@@ -399,9 +399,8 @@ public class Tasks {
 			String uuid = p.getUniqueId().toString();
 			uuid = uuid.substring(0, 5);
 			String pname = p.getName();
-			if (pname.length() > 5) {
+			if (pname.length() > 5)
 				pname = pname.substring(0, 5);
-			}
 			sss.put(p.getName(), uuid + pname);
 		}
 	}

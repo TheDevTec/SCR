@@ -14,6 +14,7 @@ import com.google.common.io.ByteStreams;
 import me.devtec.servercontrolreloaded.commands.message.PrivateMessageManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.utils.TabList;
+import me.devtec.servercontrolreloaded.utils.skins.SkinData;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
@@ -124,6 +125,15 @@ public class BungeeListener implements PluginMessageListener {
 	
 	public static List<String> getOnline(){
 		return players;
+	}
+	
+	public static void requestSkinUpdate(Player player, SkinData data) {
+		ByteArrayDataOutput d = ByteStreams.newDataOutput();
+		d.writeUTF("skin");
+		d.writeUTF(player.getName());
+		d.writeUTF(data.value);
+		d.writeUTF(data.signature);
+		player.sendPluginMessage(Loader.getInstance, "scr:community", d.toByteArray());
 	}
 	
 	public static void requestOnlinePlayers() {

@@ -19,6 +19,8 @@ public class SkinData {
 	public String url;
 	public boolean slim;
 	
+	public long lastUpdate = System.currentTimeMillis()/1000;
+	
 	public boolean isFinite() {
 		return value != null && signature != null;
 	}

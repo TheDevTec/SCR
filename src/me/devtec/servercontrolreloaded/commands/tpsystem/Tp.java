@@ -203,15 +203,15 @@ public class Tp implements CommandExecutor, TabCompleter {
 						}
 						if(Loader.has(s, "Tp","TpSystem", "ToOfflinePlayer")) {
 							User u = TheAPI.getUser(args[0]);
-							if(u==null || !u.exist("LastLeavePosition")) {
+							if(u==null || !u.exist("QuitPosition")) {
 								Loader.Help(s, "Tp", "TpSystem");
 								return true;
 							}
 							if(Loader.has(s, "TpToggle", "TpSystem", "Bypass") || !Loader.has(s, "TpToggle", "TpSystem", "Bypass") && !RequestMap.isBlocking(s.getName(), args[0])) {
-								Location loc = StringUtils.getLocationFromString(u.getString("LastLeavePosition"));
+								Position loc = Position.fromString(u.getString("QuitPosition"));
 								API.setBack(((Player) s));
 								if (setting.tp_safe)
-									API.safeTeleport((Player) s,((Player) s).isFlying(),new Position(loc));
+									API.safeTeleport((Player) s,((Player) s).isFlying(), loc);
 								else
 									API.teleport((Player)s, loc);
 								Loader.sendMessages(s, "TpSystem.Tp.Player.YouToPlayer", Placeholder.c().replace("%player%", u.getName() ));

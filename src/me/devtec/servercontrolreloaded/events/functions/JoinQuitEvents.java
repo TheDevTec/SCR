@@ -40,7 +40,6 @@ import me.devtec.theapi.punishmentapi.Punishment;
 import me.devtec.theapi.punishmentapi.Punishment.PunishmentType;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.Position;
-import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.reflections.Ref;
 
@@ -62,18 +61,22 @@ public class JoinQuitEvents implements Listener {
 	public void onLogin(PlayerLoginEvent e) {
 		if(e.getResult()!=Result.ALLOWED)return;
 		Player p = e.getPlayer();
-		Tasks.regPlayer(p);
-		User d = TheAPI.getUser(p);
-		if(Loader.config.getBoolean("Options.Skins.onJoin")) {
-			if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
-				String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
-				SkinManager.generateSkin(skin.replace("%player%", p.getName()), data -> SkinManager.loadSkin(p, data), false);
-			}else {
-				String skin = d.getString("skin");
-				if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
-				SkinManager.generateSkin(skin.replace("%player%", p.getName()), data -> SkinManager.loadSkin(p, data), false);
+		new Tasker() {
+			public void run() {
+				Tasks.regPlayer(p);
+				User d = TheAPI.getUser(p);
+				if(Loader.config.getBoolean("Options.Skins.onJoin")) {
+					if(Loader.config.getBoolean("Options.Skins.Custom.setOwnToAll.set")) {
+						String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
+						SkinManager.generateSkin(skin.replace("%player%", p.getName()), data -> SkinManager.loadSkin(p, data), false);
+					}else {
+						String skin = d.getString("skin");
+						if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
+						SkinManager.generateSkin(skin.replace("%player%", p.getName()), data -> SkinManager.loadSkin(p, data), false);
+					}
+				}
 			}
-		}
+		}.runTask();
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -291,7 +294,7 @@ public class JoinQuitEvents implements Listener {
 		p.setAllowFlight(false);
 		try {
 			Vanish.task.remove(p.getName());
-			if (!API.hasVanish(p.getName())) {
+			if (!API.hasVanish(p)) {
 					Object o = Loader.events.get("onQuit.Text");
 					if(o!=null) {
 						if(o instanceof Collection) {
@@ -333,13 +336,11 @@ public class JoinQuitEvents implements Listener {
 							TheAPI.bcMsg(replaceAll(""+o, p));
 			}
 			d.set("LastLeave", setting.format_date_time.format(new Date()));
-			d.set("LastLeavePosition", StringUtils.getLocationAsString(p.getLocation()));
+			d.set("QuitPosition", new Position(p.getLocation()));
 			if(fly)
 				d.set("FlyOnQuit", true);
 			else
 				d.remove("FlyOnQuit");
-			d.set("DisconnectWorld", p.getWorld().getName());
-			//d.save(); - Latest build of TheAPI automatically save user file
 		}catch(Exception | NoSuchFieldError | NoSuchMethodError err) {}
 		API.removeSPlayer(p);
 	}

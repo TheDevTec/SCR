@@ -20,13 +20,13 @@ public class VIPSlots implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void login(PlayerLoginEvent e) {
-		Player p = e.getPlayer();
-		if(Loader.config.getBoolean("ChatFormat.enabled"))
-			ChatFormatter.setupName(p);
 		if(e.getResult()==Result.ALLOWED)
 			return;
+		Player p = e.getPlayer();
 		if (setting.lock_server && !Loader.has(p, "Maintenance", "Info", "Bypass")) {
-			e.disallow(Result.KICK_OTHER, TheAPI.colorize(StringUtils.join(Loader.config.getStringList("Options.Maintenance.KickMessages"), "\n").replace("%player%", p.getName()).replace("%playername%", p.getDisplayName())));
+			if(Loader.config.getBoolean("ChatFormat.enabled"))
+			ChatFormatter.setupName(p);
+			e.disallow(Result.KICK_WHITELIST, TabList.replace(StringUtils.join(Loader.config.getStringList("Options.Maintenance.KickMessages"), "\n"), p, true));
 			return;
 		}
 		if (setting.vip && TheAPI.getMaxPlayers() <= TheAPI.getOnlineCount()-1) {
@@ -36,6 +36,7 @@ public class VIPSlots implements Listener {
 			Player randomPlayer = Tasks.players.isEmpty() ? null : TheAPI.getRandomPlayer();
 			if (has) {
 				if (TheAPI.getMaxPlayers() > max && randomPlayer == null) {
+					ChatFormatter.setupName(p);
 					e.disallow(Result.KICK_FULL, TheAPI.colorize(f.getString("Options.VIPSlots.FullServer")));
 					return;
 				}
@@ -43,8 +44,11 @@ public class VIPSlots implements Listener {
 					if (TheAPI.getMaxPlayers() > max && randomPlayer != null) {
 						Tasks.players.remove(randomPlayer.getName());
 						randomPlayer.kickPlayer(TheAPI.colorize(f.getString("Options.VIPSlots.Text.Kick")));
-						if (setting.vip_join)
+						if (setting.vip_join) {
+							if(Loader.config.getBoolean("ChatFormat.enabled"))
+							ChatFormatter.setupName(p);
 							TheAPI.broadcastMessage(TabList.replace(Loader.config.getString("Options.VIPSlots.Text.BroadcastVIPJoin"), p, false));
+						}
 						e.allow();
 					}
 				}

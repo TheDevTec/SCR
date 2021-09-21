@@ -44,10 +44,6 @@ public class DisplayManager {
 			hide.get(t).remove(p.getName());
 		}
 		TheAPI.sendActionBar(p, "");
-		if(TheAPI.getBossBar(p)!=null)
-		TheAPI.removeBossBar(p);
-		if(map.containsKey(p.getName()))
-		map.remove(p.getName()).destroy();
 	}
 	
 	static int cc = 0;

@@ -9,17 +9,20 @@ import org.bukkit.entity.Player;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.utils.Position;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class Eco implements Economy {
 	public static String getEconomyGroup(String p) {
-		String world = TheAPI.getUser(p).getString("DisconnectWorld");
+		String world = null;
 		Player online = TheAPI.getPlayer(p);
 		if (online != null)
 			world = online.getWorld().getName();
-		if (world == null)
-			world = Bukkit.getWorlds().get(0).getName();
+		else {
+			world = Position.fromString(TheAPI.getUser(p).getString("QuitPosition")).getWorldName();
+			if (world == null)world = Bukkit.getWorlds().get(0).getName();
+		}
 		return getEconomyGroupByWorld(world);
 	}
 
