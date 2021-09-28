@@ -20,6 +20,7 @@ import me.devtec.servercontrolreloaded.utils.Repeat;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.utils.StringUtils;
+import net.milkbowl.vault.economy.Economy;
 
 public class Eco implements CommandExecutor, TabCompleter {
 
@@ -45,8 +46,19 @@ public class Eco implements CommandExecutor, TabCompleter {
 		if (TheAPI.existsUser(args[0])) {
 			if (Loader.has(s, "Economy", "Economy", "BalanceOther")) {
 				String world = s instanceof Player ? ((Player) s).getWorld().getName() :Bukkit.getWorlds().get(0).getName();
+				Economy eco = EconomyAPI.getEconomy();
+				if(eco instanceof me.devtec.servercontrolreloaded.utils.Eco) {
+					double bal = ((me.devtec.servercontrolreloaded.utils.Eco)eco).getBalanceWithoutCache(args[0], world);
+					Loader.sendMessages(s, "Economy.Balance.Other", Placeholder.c()
+							.replace("%money%", API.setMoneyFormat(bal, true))
+							.replace("%currently%",API.setMoneyFormat(bal, true))
+							.replace("%player%", args[0]).replace("%playername%", args[0]));
+					return true;
+				}
+				double bal = eco.getBalance(args[0], world);
 				Loader.sendMessages(s, "Economy.Balance.Other", Placeholder.c()
-						.replace("%money%", API.setMoneyFormat(EconomyAPI.getBalance(args[0], world), true))
+						.replace("%money%", API.setMoneyFormat(bal, true))
+						.replace("%currently%",API.setMoneyFormat(bal, true))
 						.replace("%player%", args[0]).replace("%playername%", args[0]));
 				return true;
 			}

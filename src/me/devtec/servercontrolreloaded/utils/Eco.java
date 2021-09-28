@@ -10,6 +10,7 @@ import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.Position;
+import me.devtec.theapi.utils.datakeeper.Data;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -132,6 +133,12 @@ public class Eco implements Economy {
 	@Override
 	public double getBalance(OfflinePlayer offlinePlayer) {
 		return getBalance(offlinePlayer.getName());
+	}
+
+	public double getBalanceWithoutCache(String s, String world) {
+		if (s == null||world==null)
+			return 0.0;
+		return new Data("plugins/TheAPI/User/"+TheAPI.getCache().lookupId(s)+".yml").getDouble(get(s, world));
 	}
 
 	@Override

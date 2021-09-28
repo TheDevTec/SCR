@@ -249,7 +249,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 						if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
 						reason=TabList.replace(reason, p, true);
 						TheAPI.msg(reason, p);
-						p.kickPlayer(reason.replace("\\n", "\n"));
+						p.kickPlayer(reason);
 					}
 				}
 			}else {
@@ -259,7 +259,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 				if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
 				reason=TabList.replace(reason, p, true);
 				TheAPI.msg(reason, p);
-				p.kickPlayer(reason.replace("\\n", "\n"));
+				p.kickPlayer(reason);
 			}
 			break;
 		case JAIL:
@@ -336,7 +336,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 	//GETTERS
 	public List<Punishment> getPunishments(String user) {
 		List<Punishment> list = new ArrayList<>();
-		for(String key : data.getKeys("u."+user)) {
+		for(String key : data.getKeys("u."+user.toLowerCase())) {
 			list.add(new SPunishment(data,user,findType(key),key));
 		}
 		return list;

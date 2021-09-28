@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -39,7 +38,6 @@ import me.devtec.theapi.utils.nms.NMSAPI.ChatType;
 import me.devtec.theapi.utils.packetlistenerapi.PacketListener;
 import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.utils.serverlist.PlayerProfile;
-import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Tasks {
 	
@@ -418,6 +416,13 @@ public class Tasks {
 	}
 
 	private static void tab() {
+		if(setting.tab_sort)
+		tasks.add(new Tasker() {
+			public void run() {
+				for (Player p : TheAPI.getOnlinePlayers())
+					TabList.sortPlayer(p, API.getGroup(p));
+			}
+		}.runRepeating(0, 40));
 		int r = Loader.tab.getInt("Options.RefleshTick.NameTag");
 		if (r <= 0)
 			r = 1;
@@ -496,26 +501,6 @@ public class Tasks {
 	}
 	
 	public static void playTime() {
-		
-		/*
-		 * PlayTop task
-		 */
-		tasks.add(new Tasker() {
-			public void run() {
-				PlayTimeUtils.playtop.clear();
-				for (UUID sa : TheAPI.getUsers()) {
-					String n = LoaderClass.cache.lookupNameById(sa);
-					if(n!=null) {
-						if(PlayTimeUtils.playtop.containsKey(n))continue;
-						int time = PlayTimeUtils.playtime(n);
-						if(time>0)
-							PlayTimeUtils.playtop.put(n, time);
-					}
-				}
-				PlayTimeUtils.ranks.load(PlayTimeUtils.playtop);
-			}
-		}.runRepeating(1, 300*20));
-		PlayTimeUtils.task=true;
 		
 		/*
 		 * Custom PlayTime task

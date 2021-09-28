@@ -1,6 +1,8 @@
 package me.devtec.servercontrolreloaded.commands.time;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -22,7 +24,6 @@ import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.sortedmap.RankingAPI;
 import me.devtec.theapi.sortedmap.SortedMap.ComparableObject;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class PlayTime implements CommandExecutor, TabCompleter {
 
@@ -47,18 +48,7 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 				Loader.sendMessages(s, "PlayTime.PlayTop.Loading");
 				new Tasker() {
 					public void run() {
-						if ( (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr_playtop") || PlayTimeUtils.playtop == null || PlayTimeUtils.playtop.size()==0) && !PlayTimeUtils.task) {
-							TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr_playtop", 300*20);
-							for (UUID sa : TheAPI.getUsers()) {
-								String n = LoaderClass.cache.lookupNameById(sa);
-								if(n!=null) {
-									if(PlayTimeUtils.playtop.containsKey(n))continue;
-									int time = PlayTimeUtils.playtime(n);
-									if(time>0)
-										PlayTimeUtils.playtop.put(n, time);
-								}
-							}
-						}
+						PlayTimeUtils.req();
 						int pages = (int) PlayTimeUtils.playtop.size() / 10;
 						int page =args.length>1?StringUtils.getInt(args[1]):1;
 						if(page<=0)page=1;
@@ -66,8 +56,7 @@ public class PlayTime implements CommandExecutor, TabCompleter {
 						--page;
 						Loader.sendMessages(s, "PlayTime.PlayTop.Header", Placeholder.c().replace("%page%",(page+1)+"")
 								.replace("%pages%", pages+""));
-
-						RankingAPI<String, Integer> tops = new RankingAPI<>(PlayTimeUtils.playtop);
+						RankingAPI<String, Integer> tops = PlayTimeUtils.ranks;
 
 						int min = page * 10;
 						int max = (min + 10);

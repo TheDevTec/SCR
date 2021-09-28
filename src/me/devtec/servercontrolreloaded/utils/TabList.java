@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,6 +17,7 @@ import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
 import me.devtec.servercontrolreloaded.commands.economy.EcoTop;
 import me.devtec.servercontrolreloaded.commands.info.Staff;
@@ -48,18 +50,37 @@ public class TabList {
 		
 	}
 	
-	//limit 1000 groups
 	private static List<String> generate(int size) {
 		List<String> a = new LinkedList<>();
+		int length = (""+size).length()+1;
 		for(int i = 0; i < size; ++i) {
 			String s = "";
-			int limit = 4-(i+"").length();
+			int limit = length-(i+"").length();
 			for(int d = 0; d < limit; ++d)
 				s+="0";
 			s+=i;
 			a.add(s);
 		}
 		return a;
+	}
+	
+	public static void sortPlayer(Player player, String group) {
+		Tasks.regPlayer(player);
+		String sort = TabList.sorting.get(group)+Tasks.sss.get(player.getName());
+		Set<Team> teams = player.getScoreboard().getTeams();
+		Team yourTeam = player.getScoreboard().getTeam(sort);
+		if(yourTeam==null)yourTeam=player.getScoreboard().registerNewTeam(sort);
+		teams.remove(yourTeam);
+		for(Team t : teams)
+			if(t.hasPlayer(player))t.removePlayer(player);
+		if(!yourTeam.hasPlayer(player))
+			yourTeam.addPlayer(player);
+		for(Player other : TheAPI.getOnlinePlayers()) {
+			Team yTeam = other.getScoreboard().getTeam(sort);
+			if(yTeam==null)yTeam=other.getScoreboard().registerNewTeam(sort);
+			if(!yTeam.hasPlayer(player))
+				yTeam.addPlayer(player);
+		}
 	}
 
 	/**

@@ -1,7 +1,11 @@
 package me.devtec.servercontrolreloaded.commands.economy;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.TreeMap;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -39,20 +43,36 @@ public class EcoTop implements CommandExecutor, TabCompleter {
 			Loader.sendMessages(s, "Economy.BalanceTop.Loading");
 			new Tasker() {
 				public void run() {
-				String world = Eco.getEconomyGroupByWorld(Bukkit.getWorlds().get(0).getName());
-				if (s instanceof Player)
-					world = Eco.getEconomyGroupByWorld(((Player) s).getWorld().getName());
+				String world = "none";
+				if(EconomyAPI.getEconomy() instanceof Eco) {
+					world=Eco.getEconomyGroupByWorld(Bukkit.getWorlds().get(0).getName());
+					if (s instanceof Player)
+						world = Eco.getEconomyGroupByWorld(((Player) s).getWorld().getName());
+				}
 				TreeMap<Double, String> m = h.get(world);
 				if (TheAPI.getCooldownAPI("ServerControlReloaded").expired("scr") || m == null) {
-					TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300*20); 
+					TheAPI.getCooldownAPI("ServerControlReloaded").createCooldown("scr", 300*20);
 					TreeMap<Double, String> money = new TreeMap<>((var1, var2) -> var2.compareTo(var1));
-					for (UUID sa : TheAPI.getUsers()) {
-						String n = LoaderClass.cache.lookupNameById(sa);
-						if(n!=null) {
-							double bal = EconomyAPI.getBalance(n, world);
-							if(bal>0)
-								money.put(bal,n);
+					if(EconomyAPI.getEconomy() instanceof Eco) {
+						for (UUID sa : TheAPI.getUsers()) {
+							String n = TheAPI.getCache().lookupNameById(sa);
+							if(n!=null) {
+							if(n.equals("ServerControlReloaded"))continue;
+								double bal = ((Eco)EconomyAPI.getEconomy()).getBalanceWithoutCache(n, world);
+								if(bal>0)
+									money.put(bal,n);
+							}
 						}
+					}else {
+						for (UUID sa : TheAPI.getUsers()) {
+							String name = TheAPI.getCache().lookupNameById(sa);
+							if(name!=null) {
+							if(name.equals("ServerControlReloaded"))continue;
+							if(Bukkit.getOfflinePlayer(name)==null)continue;
+							double bal = EconomyAPI.getEconomy().getBalance(Bukkit.getOfflinePlayer(name));
+							if(bal>0)
+								money.put(bal, name);
+						}}
 					}
 					h.put(world, m=money);
 				}

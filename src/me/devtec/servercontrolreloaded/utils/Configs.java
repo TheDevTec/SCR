@@ -79,6 +79,13 @@ public class Configs {
 		DisplayManager.ac.reload();
 		DisplayManager.bb.reload();
 		NameTagChanger.anim.reload();
+		File file = new File("plugins/ServerControlReloaded/Guis");
+		if(file.exists() && !file.isDirectory())file.delete();
+		if(!file.exists()) {
+			file.mkdirs();
+			Config.loadConfig(Loader.getInstance, "Configs/Guis/shop.yml", "Guis/shop.yml");
+			Config.loadConfig(Loader.getInstance, "Configs/Guis/item-buy.yml", "Guis/item-buy.yml");
+		}
 	}
 	
 	static final List<String> datas = Arrays.asList("Config.yml","Scoreboard.yml","Placeholders.yml","Tablist.yml","BossBar.yml","ActionBar.yml", "Animations.yml","Kits.yml","MultiWorlds.yml","Events.yml","Commands.yml","Translations/translation-en.yml","Translations/translation-cz.yml","Translations/translation-sk.yml","GUICreator.yml", "Rewards.yml");
@@ -112,9 +119,6 @@ public class Configs {
 	    		break;
 	    	case "ActionBar.yml":
 	    		c=Loader.ac;
-	    		break;
-	    	case "GUICreator.yml":
-	    		c=Loader.guicreator;
 	    		break;
 	    	case "Events.yml":
 	    		c=Loader.events;
@@ -180,9 +184,6 @@ public class Configs {
 	    	case "Rewards.yml":
 	    		Loader.rewards=c;
 	    		break;
-			case "GUICreator.yml":
-				Loader.guicreator=c;
-				break;
 	    	case "Translations/translation-en.yml":
 	    		Loader.english=c;
 	    		break;

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -106,7 +107,6 @@ import me.devtec.servercontrolreloaded.commands.other.Trash;
 import me.devtec.servercontrolreloaded.commands.other.Uuid;
 import me.devtec.servercontrolreloaded.commands.other.Vanish;
 import me.devtec.servercontrolreloaded.commands.other.chat.ChatNotify;
-import me.devtec.servercontrolreloaded.commands.other.guis.GUICreator;
 import me.devtec.servercontrolreloaded.commands.other.mirror.MirrorCommand;
 import me.devtec.servercontrolreloaded.commands.other.portal.Portal;
 import me.devtec.servercontrolreloaded.commands.other.tablist.Tab;
@@ -148,11 +148,14 @@ import me.devtec.servercontrolreloaded.commands.weather.Sun;
 import me.devtec.servercontrolreloaded.commands.weather.Thunder;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.utils.setting;
+import me.devtec.servercontrolreloaded.utils.guis.GUIMaker;
+import me.devtec.servercontrolreloaded.utils.guis.GUIManager;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.apis.PluginManagerAPI.SearchType;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.datakeeper.Data;
 public class CommandsManager {
 	
 
@@ -486,15 +489,29 @@ public class CommandsManager {
 		load("Other", "Spawner", new Spawner());
 		load("Other", "Uuid", new Uuid());
 		//Utility
-		if(Loader.guicreator.exists("Commands")){
-			for(String a : Loader.guicreator.getKeys("Commands")){
-				if(commands.containsKey(a))return;
-				PluginCommand c = TheAPI.createCommand(a,Loader.getInstance);
-				c.setExecutor(new GUICreator(StringUtils.timeFromString(Loader.guicreator.getString("Commands."+a+".cooldown")), Loader.guicreator.getBoolean("Commands."+a+".cooldownGlobal"),a,Loader.guicreator.getString("Commands."+a+".gui")));
-				c.setAliases(Loader.guicreator.getStringList("Commands."+a+".aliases"));
-				c.setPermission(Loader.guicreator.getString("Commands."+a+".permission"));
-				commands.put("other:"+a,c);
-				TheAPI.registerCommand(c);
+		File file = new File("plugins/ServerControlReloaded/Guis");
+		if(file.exists() && file.isDirectory()) {
+			for(File f : file.listFiles()) {
+				Data data = new Data(f);
+				GUIMaker maker = new GUIMaker(data);
+				GUIManager.makers.put(f.getName().substring(0, f.getName().length()-4), maker);
+				List<String> cmds = data.getStringList("commands");
+				if(!cmds.isEmpty()) {
+					PluginCommand c = TheAPI.createCommand(cmds.remove(0),Loader.getInstance);
+					c.setExecutor(new CommandExecutor() {
+						public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
+							if(data.getString("permission")==null || s.hasPermission(data.getString("permission"))){
+								maker.open((Player)s);
+							}
+							return true;
+						}
+					});
+					c.setAliases(cmds);
+					if(data.getString("permission")!=null)
+						c.setPermission(data.getString("permission"));
+					commands.put("gui:"+f.getName().substring(0, f.getName().length()-4),c);
+					TheAPI.registerCommand(c);
+				}
 			}
 		}
 		//Nickname
