@@ -259,6 +259,7 @@ public class Layout {
 			for(String con : positive) {
 				con=PlaceholderAPI.setPlaceholders(p, con);
 				//NUMBERS
+				try {
 				if(con.startsWith("=>")||con.startsWith(">=")) {
 					con=con.substring(2);
 					return StringUtils.getNumber(con).floatValue() <= StringUtils.getNumber(result).floatValue();
@@ -282,6 +283,8 @@ public class Layout {
 				if(con.startsWith("=!")||con.startsWith("!=")) {
 					con=con.substring(2);
 					return StringUtils.getNumber(con).floatValue() != StringUtils.getNumber(result).floatValue();
+				}
+				}catch(Exception err) {
 				}
 				if(result.equals(con))return true;
 			}
