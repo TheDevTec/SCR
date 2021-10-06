@@ -59,7 +59,6 @@ import me.devtec.servercontrolreloaded.utils.multiworlds.MWGUI;
 import me.devtec.servercontrolreloaded.utils.skins.DynmapSupport;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
-import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.guiapi.GUI;
@@ -513,7 +512,7 @@ public class Loader extends JavaPlugin implements Listener {
 	public static String getChatFormat(Player p, Item type) {
 		switch(type) {
 		case PREFIX:
-			if(PluginManagerAPI.isEnabledPlugin("LuckPerms"))
+			if(Bukkit.getPluginManager().getPlugin("LuckPerms")!=null)
 				return LuckPermsProvider.get().getUserManager().getUser(p.getUniqueId()).getCachedData().getMetaData().getPrefix();
 			if (vault != null) {
 				String prefix = vault.getPlayerPrefix(p);
@@ -523,7 +522,7 @@ public class Loader extends JavaPlugin implements Listener {
 			}
 			return "";
 		case SUFFIX:
-			if(PluginManagerAPI.isEnabledPlugin("LuckPerms"))
+			if(Bukkit.getPluginManager().getPlugin("LuckPerms")!=null)
 				return LuckPermsProvider.get().getUserManager().getUser(p.getUniqueId()).getCachedData().getMetaData().getSuffix();
 			if (vault != null) {
 				String prefix = vault.getPlayerSuffix(p);
@@ -561,7 +560,7 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onLoad() {
-		if(VersionChecker.getVersion(PluginManagerAPI.getVersion("TheAPI"), "6.9.7")==VersionChecker.Version.NEW) {
+		if(VersionChecker.getVersion(Bukkit.getPluginManager().getPlugin("TheAPI").getDescription().getVersion(), "6.9.7")==VersionChecker.Version.NEW) {
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4SECURITY: &cYou are running on outdated version of plugin TheAPI", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4SECURITY: &cPlease update plugin TheAPI to latest version.", TheAPI.getConsole());
@@ -591,7 +590,7 @@ public class Loader extends JavaPlugin implements Listener {
         c.save(DataType.YAML);
 		getInstance = this;
 		Configs.load(false);
-		if (PluginManagerAPI.getPlugin("Vault")!=null) {
+		if(Bukkit.getPluginManager().getPlugin("Vault")!=null) {
 			setupEco();
 		} else {
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
@@ -616,11 +615,11 @@ public class Loader extends JavaPlugin implements Listener {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
-		if(config.getBoolean("Options.Skins.DynmapSupport") && PluginManagerAPI.isEnabledPlugin("dynmap")) {
+		if(config.getBoolean("Options.Skins.DynmapSupport") && Bukkit.getPluginManager().getPlugin("dynmap")!=null) {
 			DynmapSupport.init();
 		}
 		//LOAD PLACEHOLDERS
-		if(PluginManagerAPI.isEnabledPlugin("PlaceholderAPI")) {
+		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI")!=null) {
 			reg=new PlaceholderRegister("scr", "DevTec", getDescription().getVersion()) {
 				
 				@Override
@@ -811,7 +810,7 @@ public class Loader extends JavaPlugin implements Listener {
 		}else {
 			DisplayManager.load();
 			getInstance.starts();
-			if (PluginManagerAPI.getPlugin("Vault") != null) {
+			if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
 				setupVault();
 				setupPermisions();
 				if (vault == null) {

@@ -31,7 +31,6 @@ import me.devtec.servercontrolreloaded.events.functions.JoinQuitEvents;
 import me.devtec.servercontrolreloaded.utils.SPlayer;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.blocksapi.BlockIterator;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
@@ -89,7 +88,7 @@ public class API {
 	}
 	
 	public static String getGroup(String player) {
-		if(PluginManagerAPI.isEnabledPlugin("LuckPerms"))
+		if(Bukkit.getPluginManager().getPlugin("LuckPerms")!=null)
 			return LuckPermsProvider.get().getUserManager().getUser(player).getPrimaryGroup();
 		if(Loader.perms!=null)
 			return Loader.perms.getPrimaryGroup("world", player);
@@ -99,7 +98,7 @@ public class API {
 	}
 	
 	public static String getGroup(Player player) {
-		if(PluginManagerAPI.isEnabledPlugin("LuckPerms"))
+		if(Bukkit.getPluginManager().getPlugin("LuckPerms")!=null)
 			return LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId()).getPrimaryGroup();
 		if(Loader.perms!=null && Loader.perms.hasGroupSupport())
 			return Loader.perms.getPrimaryGroup(player);

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -151,8 +152,6 @@ import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.servercontrolreloaded.utils.guis.GUIMaker;
 import me.devtec.servercontrolreloaded.utils.guis.GUIManager;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.PluginManagerAPI;
-import me.devtec.theapi.apis.PluginManagerAPI.SearchType;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.Data;
@@ -265,9 +264,8 @@ public class CommandsManager {
 				List<String> plug = Loader.cmds.getStringList(section+"."+command+".loadAfterPlugins"); //Getting plugins
 				if(plug!=null && !plug.isEmpty()) { 
 					for(String plugin_name : plug) { //Checking if plugin exist (file) and if is loaded
-						Plugin plugin = PluginManagerAPI.getPlugin(plugin_name);
-						File plugin_file = PluginManagerAPI.getPluginFile(plugin_name, SearchType.PLUGIN_NAME);
-						if(plugin_file!=null && plugin_file.exists() && plugin!=null) {
+						Plugin plugin = Bukkit.getPluginManager().getPlugin(plugin_name);
+						if(plugin!=null) {
 							if(plugin.isEnabled()) { 
 								AllPluginsEnabled = true; //Plugin is loaded
 							}
@@ -359,7 +357,7 @@ public class CommandsManager {
 		load("Warps", "Back", new Back());
 		
 		//Economy
-		if(PluginManagerAPI.getPlugin("Vault")!=null) {
+		if(Bukkit.getPluginManager().getPlugin("Vault")!=null) {
 			load("Economy", "BalanceTop", new EcoTop());
 			load("Economy", "Balance", new Balance());
 			load("Economy", "Economy", new Eco());

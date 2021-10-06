@@ -14,7 +14,6 @@ import org.bukkit.command.TabCompleter;
 import me.devtec.servercontrolreloaded.commands.CommandsManager;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.utils.StringUtils;
 
 public class SCR implements CommandExecutor, TabCompleter {
@@ -39,7 +38,7 @@ public class SCR implements CommandExecutor, TabCompleter {
 			
 			if (args[0].equalsIgnoreCase("Version") || args[0].equalsIgnoreCase("info")) {
 				Loader.sendMessages(s, "SCR.Info", Placeholder.c()
-						.add("%version%", PluginManagerAPI.getVersion("ServerControlReloaded"))
+						.add("%version%", Loader.getInstance.getDescription().getVersion())
 						.add("%server%", Bukkit.getServer().getBukkitVersion()));
 					return true;
 			}

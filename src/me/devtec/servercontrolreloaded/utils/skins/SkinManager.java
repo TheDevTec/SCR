@@ -29,7 +29,6 @@ import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.utils.bungeecord.BungeeListener;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.json.Json;
@@ -166,7 +165,7 @@ public class SkinManager {
 	static Field res;
 	public static synchronized void loadSkin(Player player, SkinData data) {
 		if(player==null || data==null || !data.isFinite())return;
-		if(Loader.config.getBoolean("Options.Skins.DynmapSupport") && PluginManagerAPI.isEnabledPlugin("dynmap")) {
+		if(Loader.config.getBoolean("Options.Skins.DynmapSupport") && Bukkit.getPluginManager().getPlugin("dynmap")!=null) {
 			new Tasker() {
 				public void run() {
 					DynmapSupport.sendHeadUpdate(player, data.url);

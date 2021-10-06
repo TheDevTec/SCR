@@ -12,8 +12,8 @@ import org.bukkit.Chunk;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.World;
-import org.bukkit.WorldType;
 import org.bukkit.World.Environment;
+import org.bukkit.WorldType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
@@ -21,7 +21,6 @@ import org.bukkit.plugin.Plugin;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.worldsapi.WorldsAPI;
@@ -103,7 +102,7 @@ public class MWAPI {
 				if(!create) {
 					ChunkGenerator g = null;
 					if(type.contains(":")) {
-						g=PluginManagerAPI.getPlugin(type.split(":")[0]).getDefaultWorldGenerator(w, type.split(":")[1]);
+						g=Bukkit.getPluginManager().getPlugin(type.split(":")[0]).getDefaultWorldGenerator(w, type.split(":")[1]);
 					}else
 						for(Plugin p : Bukkit.getPluginManager().getPlugins())
 							g=p.getDefaultWorldGenerator(w, type);

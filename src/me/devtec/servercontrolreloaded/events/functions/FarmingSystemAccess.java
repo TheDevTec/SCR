@@ -1,21 +1,23 @@
 package me.devtec.servercontrolreloaded.events.functions;
 
-import com.bekvon.bukkit.residence.containers.Flags;
-import com.bekvon.bukkit.residence.protection.ClaimedResidence;
-import me.devtec.theapi.apis.PluginManagerAPI;
-import me.devtec.theapi.utils.reflections.Ref;
+import java.lang.reflect.Method;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Method;
+import com.bekvon.bukkit.residence.containers.Flags;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
+
+import me.devtec.theapi.utils.reflections.Ref;
 
 public class FarmingSystemAccess {
 	public static boolean hasAccess(Player player, Location loc) {
 		boolean has = true;
-		if(PluginManagerAPI.isEnabledPlugin("Residence"))
+		if(Bukkit.getPluginManager().getPlugin("Residence")!=null)
 		 has = has(player, loc);
-		if(PluginManagerAPI.isEnabledPlugin("WorldGuard") && PluginManagerAPI.isEnabledPlugin("WorldEdit"))
+		if(Bukkit.getPluginManager().getPlugin("WorldGuard")!=null && Bukkit.getPluginManager().getPlugin("WorldEdit")!=null)
 			has=WGAccess.has(player,loc);
 		return has;
 	}

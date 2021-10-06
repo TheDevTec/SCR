@@ -2,6 +2,7 @@ package me.devtec.servercontrolreloaded.utils;
 
 import java.lang.reflect.Method;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -13,7 +14,6 @@ import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
@@ -162,8 +162,8 @@ public class SPlayer {
 	public boolean isAFK() {
 		try {
 			if(ess!=null) {
-			Object user = Ref.invoke(Ref.cast(ess, PluginManagerAPI.getPlugin("Essentials")), getUser, s);
-			if (PluginManagerAPI.isEnabledPlugin("Essentials") && user!=null&& (boolean)Ref.invoke(user, "isAfk"))
+			Object user = Ref.invoke(Ref.cast(ess, Bukkit.getPluginManager().getPlugin("Essentials")), getUser, s);
+			if (user!=null&& (boolean)Ref.invoke(user, "isAfk"))
 				return true;
 			}
 		} catch (Exception er) {

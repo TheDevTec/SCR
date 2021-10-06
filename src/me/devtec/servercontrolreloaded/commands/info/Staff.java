@@ -19,14 +19,13 @@ import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.TabList;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.PluginManagerAPI;
 import me.devtec.theapi.utils.StringUtils;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 
 public class Staff implements CommandExecutor, TabCompleter {
 	public static String getGroup(Player p) {
-		if(PluginManagerAPI.isEnabledPlugin("LuckPerms"))
+		if(Bukkit.getPluginManager().getPlugin("LuckPerms")!=null)
 			return LuckPermsProvider.get().getUserManager().getUser(p.getUniqueId()).getPrimaryGroup();
 		if (Loader.vault != null) {
 			return Loader.vault.getPrimaryGroup(p);
@@ -38,7 +37,7 @@ public class Staff implements CommandExecutor, TabCompleter {
 	}
 	
 	public static String getGroup(String p) {
-		if(PluginManagerAPI.isEnabledPlugin("LuckPerms")) {
+		if(Bukkit.getPluginManager().getPlugin("LuckPerms")!=null) {
 			User u = LuckPermsProvider.get().getUserManager().getUser(p);
 			if(u==null)
 				try {
