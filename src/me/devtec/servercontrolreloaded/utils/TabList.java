@@ -70,7 +70,6 @@ public class TabList {
 		Set<Team> teams = player.getScoreboard().getTeams();
 		Team yourTeam = player.getScoreboard().getTeam(sort);
 		if(yourTeam==null)yourTeam=player.getScoreboard().registerNewTeam(sort);
-		teams.remove(yourTeam);
 		for(Team t : teams)
 			if(t!=yourTeam && t.hasPlayer(player))t.removePlayer(player);
 		if(!yourTeam.hasPlayer(player))
