@@ -72,7 +72,7 @@ public class TabList {
 		if(yourTeam==null)yourTeam=player.getScoreboard().registerNewTeam(sort);
 		teams.remove(yourTeam);
 		for(Team t : teams)
-			if(t.hasPlayer(player))t.removePlayer(player);
+			if(t!=yourTeam && t.hasPlayer(player))t.removePlayer(player);
 		if(!yourTeam.hasPlayer(player))
 			yourTeam.addPlayer(player);
 		for(Player other : TheAPI.getOnlinePlayers()) {
