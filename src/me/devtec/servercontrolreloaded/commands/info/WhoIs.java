@@ -1,6 +1,7 @@
 package me.devtec.servercontrolreloaded.commands.info;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import me.devtec.servercontrolreloaded.utils.SPlayer;
 import me.devtec.servercontrolreloaded.utils.playtime.PlayTimeUtils;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
+import me.devtec.theapi.punishmentapi.Punishment;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.StringUtils;
@@ -74,7 +76,76 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 						d=true;
 					}else seen = API.getSeen(a[0], SeenType.Offline);
 					SPlayer c = API.getSPlayer(a[0]);
-					Loader.sendMessages(s, "WhoIs."+(d?"Online":"Offline"), Placeholder.c().add("%player%", c.getName()).add("%playername%", c.getName()).add("%customname%", c.getCustomName()).add("%ip%", ip)
+					List<Punishment> t = TheAPI.getPunishmentAPI().getPunishments(c.getName());
+					Placeholder aa = Placeholder.c();
+					List<String> done = new ArrayList<>();
+					done.add("tempban");
+					done.add("ban");
+					done.add("tempjail");
+					done.add("jail");
+					done.add("tempmute");
+					done.add("mute");
+					done.add("tempother");
+					done.add("other");
+					for(Punishment ttt : t) {
+						switch(ttt.getType()) {
+						case BAN:
+							if(ttt.getDuration()!=0) {
+								done.remove("tempban");
+								aa.add("%banlist_tempban_time%", StringUtils.timeToString(ttt.getExpire()));
+								aa.add("%banlist_tempban_start%", ttt.getStart());
+								aa.add("%banlist_tempban_reason%", ttt.getReason());
+							}else {
+								done.remove("ban");
+								aa.add("%banlist_ban_start%", ttt.getStart());
+								aa.add("%banlist_ban_reason%", ttt.getReason());
+							}
+							break;
+						case JAIL:
+							if(ttt.getDuration()!=0) {
+								done.remove("tempjail");
+								aa.add("%banlist_tempjail_time%", StringUtils.timeToString(ttt.getExpire()));
+								aa.add("%banlist_tempjail_start%", ttt.getStart());
+								aa.add("%banlist_tempjail_reason%", ttt.getReason());
+							}else {
+								done.remove("jail");
+								aa.add("%banlist_jail_start%", ttt.getStart());
+								aa.add("%banlist_jail_reason%", ttt.getReason());
+							}
+							break;
+						case MUTE:
+							if(ttt.getDuration()!=0) {
+								done.remove("tempmute");
+								aa.add("%banlist_tempmute_time%", StringUtils.timeToString(ttt.getExpire()));
+								aa.add("%banlist_tempmute_start%", ttt.getStart());
+								aa.add("%banlist_tempmute_reason%", ttt.getReason());
+							}else {
+								done.remove("mute");
+								aa.add("%banlist_mute_start%", ttt.getStart());
+								aa.add("%banlist_mute_reason%", ttt.getReason());
+							}
+							break;
+						case CUSTOM:
+							if(ttt.getDuration()!=0) {
+								done.remove("tempother");
+								aa.add("%banlist_tempother_time%", StringUtils.timeToString(ttt.getExpire()));
+								aa.add("%banlist_tempother_start%", ttt.getStart());
+								aa.add("%banlist_tempother_reason%", ttt.getReason());
+							}else {
+								done.remove("other");
+								aa.add("%banlist_other_start%", ttt.getStart());
+								aa.add("%banlist_other_reason%", ttt.getReason());
+							}
+							break;
+						}
+					}
+					for(String tf : done) {
+						aa.add("%banlist_"+tf+"_start%", "0");
+						aa.add("%banlist_"+tf+"_reason%", "");
+						if(tf.startsWith("temp"))
+							aa.add("%banlist_"+tf+"_time%", "0");
+					}
+					Loader.sendMessages(s, "WhoIs."+(d?"Online":"Offline"), aa.add("%player%", c.getName()).add("%playername%", c.getName()).add("%customname%", c.getCustomName()).add("%ip%", ip)
 							.add("%country%", country.getOrDefault("country", "Uknown")).add("%region%", country.getOrDefault("regionName", "Uknown"))
 							.add("%city%", country.getOrDefault("city", "Uknown"))
 							.add("%afk%", afk).add("%seen%", seen).add("%fly%", c.hasFlyEnabled(true)+"").add("%god%", c.hasGodEnabled()+"").add("%tempfly%", c.hasTempFlyEnabled()+"")
@@ -89,7 +160,9 @@ public class WhoIs implements CommandExecutor, TabCompleter {
 							.add("%z%", d?StringUtils.fixedFormatDouble(c.getPlayer().getLocation().getZ()):"-1")
 							.add("%yaw%", d?StringUtils.fixedFormatDouble(c.getPlayer().getLocation().getYaw()):"-1")
 							.add("%pitch%", d?StringUtils.fixedFormatDouble(c.getPlayer().getLocation().getPitch()):"-1")
-							.add("%world%", d?c.getPlayer().getWorld().getName():"Uknown"));
+							.add("%world%", d?c.getPlayer().getWorld().getName():"Uknown")
+							//BANLIST
+							);
 				}}.runTask();
 			return true;
 		}

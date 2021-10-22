@@ -1,0 +1,867 @@
+# Links:
+#  Github: https://github.com/TheDevTec/ServerControlReloaded
+#  Discord: https://discord.io/spigotdevtec
+#  Spigot: https://www.spigotmc.org/resources/71147/
+
+# Text for %prefix% placeholder
+Prefix: "&6&lS&f&lerver &8&l»&7"
+# Translation for no perms message
+NoPerms: "%prefix% ليس لديك أذونات للقيام بذلك (&e%permission%&7)"
+# Translations for /Portal command
+Portals:
+  NotExist: "%prefix% البوابة%name% &7 غير موجودة"
+  Exists: "%prefix% البوابة%name% &7 موجود بالفعل"
+  Delete: "%prefix% بوابة &E%name% &7حذفت"
+  PosSet: "%prefix% موضع &e%position%# &7من بوابة &e%name% &7المحددة في coords &e%x%&7, &e%y%&7, &e%z%"
+  Particle: "%prefix% تعيين جسيمات &e%value% &7 للبوابة &e%name%"
+  Server: "%prefix% تعيين الخادم &e%server% &7 للبوابة &e%name%"
+  Create:
+    - "%prefix% بوابة &ص%name% &7 تم إنشاؤها"
+    - "%prefix% إعداد البوابة عن طريق الأمر '/Poral Set"
+  List:
+    - "%prefix% قائمة البوابات:"
+    - "&e%list%"
+  Cmds:
+    Add: "%prefix% أضاف الأمر '&e%value%&7' إلى بوابة &e%name%"
+    Remove: "%prefix% حذف الأمر على الموقع &e%position% &7 من بوابة &e%name%"
+    List:
+      - "%prefix% قائمة أوامر بوابة &e%name%&7:"
+      - "&e%list%"
+# Translations for /ChatNotify command
+Notify:
+  Enable: "تم تمكين الإشعارات في المحادثة %prefix%"
+  Disable: "%prefix% التنبيهات في المحادثة معطلة"
+  EnableOther: "%prefix% إشعارات في الدردشة ل &e%player% &7مفعلة"
+  DisableOther: "%prefix% إشعارات في دردشة &e%player% &7معطّلة"
+# Translations for /Give and /Skull commands
+Give:
+  Skull:
+    You: "%prefix% تم منحك جمجمة &e%head%"
+    Other:
+      Sender: "%prefix% تم منحك جمجمة &e%head%&7 ل &e%player%"
+      Receiver: "%prefix% حصلت على جمجمة &e%head%"
+  Item:
+    You: "%prefix% أضاف &e%aمبلغ%x %item%"
+    Other:
+      Sender: "%prefix% أضاف &e%aالمبلغ%x %item% &7إلى &e%player%"
+      Receiver: "%prefix% حصلت على%aكمية%x %item%"
+# Translation for /Send command
+Send: "%prefix% إرسال &e%player%&7 إلى الخادم &e%server%"
+# Translations for /Seen command
+Seen:
+  Online: "%prefix% &e%player%&7 هو &aعلى الإنترنت &7ل &a%online%"
+  Offline: "%prefix% &e%player%&7 هو &&خط &7ل &ك%offline%"
+  Similiar: "%prefix% هل تعني: &e%names%"
+# Translations for /SocialSpy command
+SocialSpy:
+  On: "%prefix% لقد قمت بتشغيل &eon &7وضع التجسس &الاجتماعي الخاص بك &7"
+  Off: "%prefix% لقد قمت بإيقاف &eoff &7وضع التجسس &الاجتماعي الخاص بك"
+# Translatios for /Ping command
+Ping:
+  You: "%prefix% بطنك الخاص هو &%ping%"
+  Other: "%prefix% &e%player%&7 هو &e%ping%"
+# Translations for /List and /Staff commands
+List:
+  Staff:
+    - "%prefix% »=== &e%staff_online% &7====«"
+    - "%prefix% الموظفين: &%staff%"
+  Normal:
+    - "%prefix% »=== &e%joiner-count{{STAFF}، الافتراضي ، supervip ، vip}% &8/ &e%server_maxonline% &7==' '"
+    - "%prefix% الموظفين: &%joداخلي{{STAFF}}%"
+    - "%prefix% VIPs: &e%joiner{supervip, vip}%"
+    - "%prefix% الافتراضي: &e%joداخلي{default}%"
+PmIgnore:
+  NoLonger: "%prefix% لم تعد تتجاهل الرسائل من &e%player%"
+  Ignoring: "%prefix% أنت الآن تتجاهل الرسائل في المحادثة والمسافة من &e%player%"
+# Translations for /Kill and /Suicide commands
+Kill:
+  Killed: "%prefix% قتل &e%player%"
+  KilledMore: "%prefix% قتل &%amount% &7لاعبين"
+  Suicide: "%prefix% &e%player% &7 قام بالانتحار. عالم الوداع القاسي!"
+# Translations for 'missing' things
+Missing:
+  World: "%prefix% العالم &&%world% &7 غير موجود"
+  Player:
+    Offline: "%prefix% اللاعب &e%player% &7 غير متصل"
+    NotExist: "%prefix% المستخدم%player% &7 غير موجود"
+  HandEmpty: "%prefix% يدك فارغة"
+  TargetHandEmpty: "%prefix% &e%player%&7 يد فارغة"
+  Entity: "%prefix% الكيان &الكيان%entity% &7 غير موجود"
+  GameMode: "%prefix% وضع الالعاب%gamemode% &7 غير موجود"
+  Material: "%prefix% المواد &D%material% &7 غير موجودة"
+  Flag: "%prefix% عنصر العلم%flag% &7 غير موجود"
+  Generator: "%prefix% مولد%generator% &7 غير موجود"
+  MaterialM: "%prefix% المواد المفقودة (نوع: {BLOCK}) في GUICreator.yml!"
+  HeadURL: "%prefix% عنوان URL مفقود (العنوان: {URL}) في GUICreator.yml!"
+  Enchant:
+    NotExist: "%prefix% تعزيز &e%enchant% &7 غير موجود"
+    NoEnchant: "%prefix% ليس لديك مشغل على العنصر"
+    DontContains: "%prefix% العنصر الخاص بك لا يحتوي على &e%enchant%"
+# Translations for /Butcher command
+Butcher:
+  Killed: "قتل %prefix% &%amount% &7 كيانات"
+  KilledSpecified: "قتل %prefix% &%amount% &7 كيانات من نوع &e%type%"
+# Translations for /Memory command
+Memory:
+  Info:
+    - "%prefix% Free MEM: &e%free_ram% &7MB"
+    - "%prefix% Used MEM: &e%used_ram% &7MB"
+    - "%prefix% Max MEM: &e%max_ram% &7MB"
+  Clear: "%prefix% مسح الذاكرة، الرجاء الانتظار.."
+  AlreadyClearing: "تم مسح الذاكرة %prefix% بالفعل، الرجاء الانتظار.."
+  Cleared: "تم مسح الذاكرة %prefix% (&e%amount% &7MB)"
+# Translations for /Exp command
+Experiences:
+  Words:
+    Exp: "خواص"
+    Level: "المستويات"
+  Balance: "%prefix% &e%player% &7 لديه &e%amount% &7 من %type%"
+  Given: "%prefix% أضاف &%amount% &7%type% إلى &e%player%"
+  Taken: "حذف %prefix% &%amount% &7%type% من &e%player%"
+  Set: "%prefix% &e%player%&7 %type% تم تعيينها إلى &e%amount%"
+# Translations for /Item command
+Item:
+  Name: "%prefix% تم تغيير اسم العرض للعنصر في يدك إلى &r%name%"
+  NoItem: "&cأنت لا تحمل أي عنصر في متناول اليد."
+  Lore:
+    Added: "%prefix% أضاف سطر جديد إلى العنصر في يدك &r%line%"
+    Removed: "%prefix% أزال سطر اللوحات من العنصر في يدك &r%line%"
+    Error: "%prefix% حدث خطأ. خطأ: %error%"
+    ListItem: "%prefix% &6 قائمة بخطوط اللوحة على العنصر في يديك:"
+    ListLore: "%prefix% &6%position%الخط: &5%lore%"
+    Set: "%prefix% تم تغيير سطر &e%line%&7 في يدك إلى &r%lore%"
+  Flag:
+    Added: "%prefix% تم إضافة علم المنتج &e%flag%&7 إلى العنصر في يدك"
+    Removed: "%prefix% تم إزالة علم &e%flag% &7 من المنتج في يدك"
+    List: "%prefix% أعلام العنصر على العنصر في يدك: &e%flags%"
+  Nbt:
+    Get: "%prefix% العلامات nbt من العنصر في يدك هي &e%nbt%"
+    Set: "%prefix% تم تغيير علامة nbt من العنصر في يدك إلى &e%nbt%"
+  Type:
+    Get: "%prefix% نوع العنصر في يدك هو &e%type%"
+    Set: "%prefix% تم تغيير نوع العنصر في يدك إلى &e%type%"
+  Amount:
+    Get: "%prefix% كمية العنصر في يدك هو &e%amount%"
+    Set: "%prefix% تم تغيير كمية العنصر في يدك إلى &e%amount%"
+  Durability:
+    Get: "%prefix% متانة العنصر في يدك هي &e%durability%"
+    Set: "%prefix% تم تغيير متانة العنصر في يدك إلى &e%durability%"
+  Process:
+    Cmd:
+      List:
+        Above: "%prefix% قائمة الأوامر (%total%):"
+        Item: "%prefix% - &%position% &f%value%"
+        Empty: "قائمة الأوامر %prefix% فارغة"
+      InvalidTarget: "%prefix% الهدف المحدد غير صالح، الأهداف الصحيحة: &eCONSOLE، اللعب"
+      Add: "أضاف %prefix% الأمر &e%value%&7 إلى قائمة الأوامر"
+      Remove: "أزال %prefix% الأمر &e%value%&7 (%position%) من قائمة الأوامر"
+    Msg:
+      List:
+        Above: "%prefix% قائمة الرسائل (%total%):"
+        Item: "%prefix% - &%position% &f%value%"
+        Empty: "قائمة الرسائل %prefix% فارغة"
+      Add: "أضاف %prefix% رسالة &e%value%&7 إلى قائمة الرسائل"
+      Remove: "حذف %prefix% رسالة &e%value%&7 (%position%) من قائمة الرسائل"
+    Usage:
+      Set: "%prefix% مقدار استخدام العنصر المحدد ل &e%value%"
+      Get: "تم تعيين مبلغ استخدام العنصر %prefix% إلى &e%value%"
+    Cooldown:
+      Set: "تم تعيين تبريد استخدام العنصر %prefix% إلى &e%value%"
+      Get: "تم تعيين تبريد استخدام العنصر %prefix% إلى &e%value%"
+# Translations for /Hat command
+Hat:
+  InvFull:
+    You: "%prefix% مخزونك ممتلئ. مسح بعض العناصر لتعيين العناصر على الرأس"
+    Other: "مخزون %prefix% %player%ممتلئ. لا يمكنك تعيين العنصر."
+  Equipped:
+    You: "%prefix% عنصر من يدك تم تجهيزه برأسك"
+    Other:
+      Sender: "%prefix% قمت بتجهيز العنصر &%item%&7 إلى &e%player%&7 رأس"
+      Receiver: "%prefix% &e%player%&7 عنصر &e%item%&7 مجهز إلى رأسك"
+SCR:
+  Info:
+    - "الإصدار %prefix% من السيرفر التحكم المحمول: &eV%version%"
+    - "الإصدار %prefix% للخادم: &e%server%"
+    - "%prefix% رابط ديسكورد: &ehttps://discord.io/spigotdevtec"
+    - "%prefix% اللغة: &eEN"
+# Translations for economy commands
+Economy:
+  # Translation for /BalanceTop command
+  NoEconomyAccount: "%prefix% لا يوجد حساب إقتصادي"
+  NotEnought: "%prefix% لديك ما يكفي من المال"
+  BalanceTop:
+    Loading: "%prefix% حساب ثروة جميع اللاعبين من فضلك، احتفظ ب..."
+    Header: "%prefix% &7=====» &cBalanceTop &e%page%/%pages% &7«======"
+    Footer: ""
+  Reset:
+    Sender: "%prefix% تم إعادة تعيين حساب اقتصاد &e%player% &7"
+    Receiver: "%prefix% تم إعادة تعيين حساب الاقتصاد الخاص بك"
+  Give:
+    Sender: "%prefix% Gaven &e$%money% &7إلى حساب الاقتصاد من &e%player%"
+    Receiver: "%prefix% Gaven &e$%money% &7إلى حسابك"
+  Take:
+    Sender: "%prefix% أخِذت &e$%money% &7من حساب الإقتصاد ل &e%player%"
+    Receiver: "%prefix% تم أخذه &e$%money% &7من حسابك"
+  Set:
+    Sender: "%prefix% تعيين رصيد الاقتصاد من &%player% &7إلى &e$%money%"
+    Receiver: "%prefix% تم تعيين رصيد اقتصادك إلى &e$%money%"
+  Balance:
+    Your: "%prefix% لديك &e$%money%"
+    Other: "%prefix% &e%player% &7have &e$%money%"
+  Pay:
+    Sender: "%prefix% قمت بدفع &e$%money% &7ل &e%player%"
+    Receiver: "%prefix% &e%player% &7دفعك &e$%money%"
+  Multi:
+    Exists: "%prefix% مجموعة الاقتصاد &%economy-group% &7موجود بالفعل"
+    NotExist: "%prefix% مجموعة الاقتصاد &%economy-group% &7 غير موجودة"
+    Create: "%prefix% مجموعة الاقتصاد &%economy-group% &7 تم إنشاؤها"
+    Delete: "%prefix% مجموعة الاقتصاد &%economy-group% &7تم حذفها"
+    Groups: "%prefix% مجموعات اقتصادية: &%groups%"
+    Worlds:
+      List: "عالم %prefix% في مجموعة الاقتصاد &%economy-group%&7: &e%worlds%"
+      AlreadyInGroup: "%prefix% العالم &ذو%world% &7 موجود بالفعل في مجموعة الاقتصاد &في%economy-group%"
+      NotInGroup: "%prefix% العالم &e%world% &7 غير مضاف في مجموعة الاقتصاد &e%economy-group%"
+      Added: "%prefix% العالم &ا&و%world% &7 أضيف إلى مجموعة الاقتصاد &e%economy-group%"
+      Removed: "%prefix% العالم &&%world% &7 تم إزالته من مجموعة &E الإقتصاد%economy-group%"
+    Money: "%prefix% &e%player% &7 لديه &e$%money% &7 في مجموعة الاقتصاد &e%economy-group%"
+    Transfer: "%prefix% نقل الإقتصاد من &%player% &7 من مجموعة الإقتصاد%from% &7إلى مجموعة الإقتصاد &e%to%"
+# Translations for /Nickname and /NicknameReset commands
+Nickname:
+  Change: "%prefix% تم تغيير اسمك المستعار إلى &r%nickname%"
+  Reset: "%prefix% إعادة تعيين اسمك المستعار إلى &r%player%"
+  Get: "%prefix% &e%player%&7 الاسم المستعار هو &r%nickname%"
+# Translations for /AFK command and AutoAFK messages
+AFK:
+  Start: "%playername%&7 هو AFK"
+  Start_WithReason: "%playername%&7 هو AFK &7(&e%reason%&7)"
+  End: "%playername%&7 لم يعد AFK"
+  Command:
+    Start: ""
+    End: ""
+    Other:
+      Start: "%prefix% قمت بتعيين &%player% &7AFK"
+      End: "%prefix% قمت بتعيين &%player% &7لم يعد AFK"
+# Translations for /Reply command
+NoReply: "%prefix% ليس لديك أحد للرد عليه"
+BanSystem:
+  #Mutes
+  TempMuteIP:
+    Sender: "%prefix% لديك تلقائي-كتم &ip%ip% &7ل &r%reason%&7 لـ &e%time%"
+    Admins: "%prefix% &e%operator% &7Au-muted-ip &e%ip% &7ل &r%reason%&7 ل &e%time%"
+  TempMute:
+    Sender: "%prefix% لديك تلقائيًا كتم &e%player% &7ل &r%reason%&7 لـ &e%time%"
+    Admins: "%prefix% &e%operator% &7تم كتم &e%player% &7ل &r%reason%&7 لـ &e%time%"
+  MuteIP:
+    Sender: "%prefix% تم كتم ال&صامت-ip%ip% &7 ل &r%reason%"
+    Admins: "%prefix% &e%operator% &7كتم &ip%ip% &7ل &r%reason%"
+  Mute:
+    Sender: "%prefix% لقد كتم &e%player% &7 ل &r%reason%"
+    Admins: "%prefix% &e%operator% &7كتم &e%player% &7ل &r%reason%"
+  Kick:
+    Sender: "%prefix% لقد طردت &e%player% &7ل &r%reason%"
+    Admins: "%prefix% &e%operator% &7طرد &e%player% &7ل &r%reason%"
+  UnMute:
+    Sender: "%prefix% لقد قمت بإلغاء كتم &e%player%"
+    Admins: "%prefix% &e%operator% &7إلغاء كتم &e%player%"
+  UnMuteIP:
+    Sender: "%prefix% لديك إلغاء كتم ال&ip%ip%"
+    Admins: "%prefix% &e%operator% &7إلغاء كتم &ip%ip%"
+  #Bans
+  TempBanIP:
+    Sender: "%prefix% لديك حظر تلقائي على &e%ip% &7 لـ &r%reason%&7 لـ &e%time%"
+    Admins: "%prefix% &e%operator% &7حظر&ip &e%ip% &7ل &r%reason%&7 ل &e%time%"
+  TempBan:
+    Sender: "%prefix% قمت بحظر &e%player% &7 لـ &r%reason%&7 لـ &e%time%"
+    Admins: "%prefix% &e%operator% &7حظرت &e%player% &7ل &r%reason%&7 لـ &e%time%"
+  BanIP:
+    Sender: "%prefix% لقد قمت بحظر &e%ip% &7ل &r%reason%"
+    Admins: "%prefix% &e%operator% &7 حظر &ip%ip% &7ل &r%reason%"
+  Ban:
+    Sender: "%prefix% لقد قمت بحظر &e%player% &7ل &r%reason%"
+    Admins: "%prefix% &e%operator% &7حظر &e%player% &7ل &r%reason%"
+  UnBanIP:
+    Sender: "%prefix% لديك إلغاء حظر على ال&ie%ip%"
+    Admins: "%prefix% &e%operator% &7غير محظور ip &e%ip%"
+  UnBan:
+    Sender: "%prefix% قمت بإلغاء حظر &e%player%"
+    Admins: "%prefix% &e%operator% &7غير محظور &e%player%"
+  #Jails
+  TempJailIP:
+    Sender: "%prefix% لديك توقيف تلقائي-آي &ي%ip% &7 ل &r%reason%&7 ل &e%time%"
+    Admins: "%prefix% &e%operator% &7قبض بإستخدام &e%ip% &7ل &r%reason%&7 لـ &e%time%"
+  TempJail:
+    Sender: "%prefix% لديك &إيقاف تلقائي%player% &7 لـ &r%reason%&7 لـ &e%time%"
+    Admins: "%prefix% &e%operator% &7اعتقل &e%player% &7 لـ &r%reason%&7 لـ &e%time%"
+  JailIP:
+    Sender: "%prefix% قمت باعتقال &e%ip% &7 لـ &r%reason%"
+    Admins: "%prefix% &e%operator% &7اعتقل -ip &e%ip% &7ل &r%reason%"
+  Jail:
+    Sender: "%prefix% قمت باعتقال &e%player% &7 لـ &r%reason%"
+    Admins: "%prefix% &e%operator% &7اعتقل &e%player% &7 لـ &r%reason%"
+  UnJailIP:
+    Sender: "%prefix% لقد قمت بفك السجون &e%ip%"
+    Admins: "%prefix% &e%operator% &7غير مسجون &ي%ip%"
+  UnJail:
+    Sender: "%prefix% لقد قمت بفك السجون &e%player%"
+    Admins: "%prefix% &e%operator% &7غير مسجون%player%"
+  #Warns
+  Warn:
+    Sender: "%prefix% قمت بتنبيه &%player% &7ل &r%reason%"
+    Admins: "%prefix% &e%operator% &7حذر &e%player% &7لـ &r%reason%"
+  #Other
+  Not:
+    Banned: "%prefix% &e%player% &7 غير محظور"
+    IPBanned: "%prefix% عنوان IP &e%ip% &7 غير محظور"
+    Muted: "%prefix% &e%player% &7 لم يتم كتم"
+    Arrested: "%prefix% &e%player% &7 لم يتم توقيفه"
+# Translations for /Jail command
+Jail:
+  Create: "%prefix% سجون &ي%jail% &7 تم إنشاؤها"
+  Delete: "%prefix% تم حذف ال&حجب%jail% &7"
+  Exists: "%prefix% السجن &في%jail% &7موجود بالفعل"
+  NotExist: "%prefix% السجن &e%jail% &7 غير موجود"
+  List: "%prefix% سجون: &%jails%"
+  Empty: "%prefix% لا يوجد سجن"
+# Translations for /ClearInventory command
+ClearInventory:
+  Cleared:
+    Your: "%prefix% تم مسح مخزونك"
+    Other: "%prefix% &e%player%&7 تم مسح مخزون"
+  NoMoney: "%prefix% ليس لديك ما يكفي من المال. تحتاج &إلى%money%"
+  MissingEco: "%prefix% البرنامج المساعد الاقتصادي المفقود، الرجاء تثبيت البرنامج المساعد Vauly & Economy"
+  NoRetrive: "%prefix% ليس لديك مخزون لاسترجاعه"
+  Retrive: "%prefix% تم استرداد مخزونك المسحوب ل &e$%money%"
+  NoConfirm: "%prefix% ليس لديك طلب تأكيد"
+  Confirm:
+    Request: "%prefix% الرجاء تأكيد طلبك لمسح المخزون الخاص بك"
+    Enabled: "طلبات %prefix% لمسح المخزون مطلوبة"
+    Disabled: "%prefix% طلبات مسح المخزون لم تعد مطلوبة"
+# Translations for /Helpop
+Helpop:
+  ChatLock:
+    true: "تم قفل الدردشة %prefix% ، اكتب النص للمحادثة لإرسال رسالة إلى موقع المساعد"
+    false: "تم فتح الدردشة %prefix%"
+# Translations for /Home and /Homes commands
+Home:
+  EmptyList: "%prefix% ليس لديك منزل"
+  List: "%prefix% البيت: &%homes%"
+  Teleporting: "%prefix% الانتقال إلى المنزل &e%home%"
+  WrongLocation: "%prefix% الصفحة الرئيسية &e%home% &7 لها موقع خاطئ"
+  NotExist: "%prefix% الصفحة الرئيسية &%home% &7 غير موجودة"
+  Exists: "%prefix% الصفحة الرئيسية &%home% &7 موجودة بالفعل"
+  Create: "%prefix% الصفحة الرئيسية &%home% &7 تم إنشاؤها"
+  Delete: "%prefix% الصفحة الرئيسية &%home% &7حذف"
+  Limit: "%prefix% لقد وصلت إلى الحد الأقصى من المنازل"
+  TpSpawn: "%prefix% ليس لديك منزل ، نقل لتوليد"
+  Other:
+    NotExist: "%prefix% &&%player%&في &7المنزل%home% &7غير موجود"
+    Teleporting: "%prefix% الانتقال إلى المنزل &e%home% &7 من &e%player%"
+    List: "%prefix% &e%player%&7 &7homes: &e%homes%"
+    EmptyList: "%prefix% &e%player% &7 لا يملك أي منزل"
+# Translations for /Chunk command
+Chunks:
+  Load: "%prefix% &e%world%&7: &e%chunks% &7أجزاء"
+  Unload: "%prefix% تم إلغاء تحميل &e%chunks% &7أجزاء"
+  TotalLoad: "%prefix% تم تحميل &e%chunks% &7أجزاء"
+#CountryBlocker translations
+CountryBlocker:
+  ListMess: "%prefix% قائمة اللاعبين في القائمة البيضاء:"
+  List: "%prefix% » &e%player%"
+  Add: "%prefix% اللاعب &e%player% &7 أضيف في القائمة البيضاء"
+  Remove: "%prefix% تم إزالة &لاعب%player% &7من القائمة البيضاء"
+  NotWhitelisted: "%prefix% اللاعب &e%player% &7 ليس على القائمة البيضاء!"
+# Translations for gamemode commands
+GameMode:
+  Temp:
+    Remove: "%prefix% تمت إزالة Temp-Gamemode"
+    EndIn: "%prefix% كود Temp-Gamemode ينتهي في &e%time%"
+    End: "%prefix% انتهت صلاحية Temp-Gamemode"
+    You: "%prefix% تم تعيين وضع الألعاب المؤقت الخاص بك إلى &c%gamemode%&7 ل &e%time%"
+    Other:
+      Remove: "%prefix% تمت إزالة وضع الألعاب المؤقت الخاص بك"
+      Sender: "%prefix% تم تعيين وضع الألعاب المؤقتة &ك%gamemode% &7 لـ &e%time% &7للاعب &a%player%"
+      Reciever: "%prefix% تم تعيين وضع الألعاب المؤقت الخاص بك إلى &c%gamemode%&7 ل &e%time%"
+  Your:
+    Survival: "%prefix% تم تعيين وضع الألعاب الخاص بك إلى &eSurvival"
+    Creative: "%prefix% تم تعيين وضع الألعاب الخاص بك إلى &eCreative"
+    Adventure: "%prefix% تم تعيين وضع الألعاب الخاص بك إلى &eAdventure"
+    Spectator: "%prefix% تم تعيين وضع الألعاب الخاص بك إلى &eSpectator"
+  Other:
+    Survival:
+      Sender: "%prefix% تم تعيين شفرة الالعاب من%player% &7 إلى &eSurvival"
+      Receiver: "%prefix% تم تعيين وضع الألعاب الخاص بك إلى &eSurvival"
+    Creative:
+      Sender: "%prefix% تم تعيين شفرة الالعاب من%player% &7 إلى &eالإبداع"
+      Receiver: "%prefix% تم تعيين وضع الألعاب الخاص بك إلى &eCreative"
+    Adventure:
+      Sender: "%prefix% تم تعيين شفرة الالعاب من &%player% &7 إلى &eAdventure"
+      Receiver: "%prefix% تم تعيين وضع الألعاب الخاص بك إلى &eAdventure"
+    Spectator:
+      Sender: "%prefix% تم تعيين شفرة الالعاب من%player% &7 إلى &eSpectator"
+      Receiver: "%prefix% تم تعيين وضع الألعاب الخاص بك إلى &eSpectator"
+# Translations for TPS command
+TPS:
+  - "%prefix% TPS: &%tps%"
+  - "%prefix% TPS من 1دقيقة: &e%tps-from-1%"
+  - "%prefix% TPS من 5دقيقة: &%tps-from-5%"
+  - "%prefix% TPS من 15 دقيقة: &%tps-from-15%"
+# Translations for /Enchant and /EnchantRemove commands
+Enchant:
+  Add: "%prefix% العنصر الموجود في يدك قد تم تحسينه مع المشغل &e%enchant% %level%"
+  Remove:
+    One: "%prefix% حذف التعزيز &e%enchant% &7 من العنصر في يدك"
+    All: "%prefix% أزال جميع التعديلات من العنصر في يدك"
+# Translations for tp commands
+TpSystem:
+  NoRequest: "%prefix% ليس لديك أي طلب"
+  NotSafe: "%prefix% لا يمكن العثور على موقع آمن"
+  SendRequestToSelf: "%prefix% لا يمكنك إرسال الطلب لنفسه"
+  HaveRequest: "%prefix% &e%player% &7 لديه بالفعل طلب انتقال منك"
+  Tpa:
+    Send:
+      Sender: "%prefix% قمت بإرسال طلب نقل إلى &%player%"
+      Receiver: "%prefix% &e%player% &7 يريد الانتقال إليك"
+    Accept:
+      Sender:
+        - "%prefix% لقد قبلت طلب الانتقال من &e%player%"
+        - "%prefix% نقل &E%player% &7 إليك"
+      Receiver:
+        - "%prefix% &e%player% &7قبل طلب الانتقال الخاص بك"
+        - "%prefix% انتقل إلى &%player%"
+    Reject:
+      Sender: "%prefix% لقد رفضت طلب الانتقال من &e%player%"
+      Receiver: "%prefix% &e%player% &7رفض طلب الانتقال الخاص بك"
+    Cancel:
+      Sender: "%prefix% قمت بإلغاء طلب نقل من &e%player%"
+      Receiver: ""
+  Tpahere:
+    Send:
+      Sender: "%prefix% قمت بإرسال طلب نقل إلى &%player%"
+      Receiver: "%prefix% &e%player% &7 يريد نقلك إليه"
+    Accept:
+      Sender:
+        - "%prefix% &e%player% &7قبل طلب الانتقال الخاص بك"
+        - "%prefix% انتقل إلى موقع &e%player%"
+      Receiver:
+        - "%prefix% &e%player% &7قبل طلب الانتقال الخاص بك"
+        - "%prefix% نقل &e%player% &7 إلى موقعك"
+    Reject:
+      Sender: "%prefix% لقد رفضت طلب الانتقال من &e%player%"
+      Receiver: "%prefix% &e%player% &7رفض طلب الانتقال الخاص بك"
+    Cancel:
+      Sender: "%prefix% قمت بإلغاء طلب الانتقال ل &e%player%"
+      Receiver: ""
+  TpHere:
+    Sender: "%prefix% نقل &E%player% &7 إليك"
+    Receiver: "%prefix% انتقل إلى &%player%"
+  Tp:
+    Player:
+      YouToPlayer: "%prefix% انتقل إلى &%player%"
+      PlayerToYou: "%prefix% نقل &E%player% &7 إليك"
+      PlayerToNextPlayer: "%prefix% نقل &e%player% &7إلى &e%next-player%"
+    Location:
+      YouToLocation: "%prefix% ينقلك إلى &%x%&7, &e%y%&7, &e%z%, &e%yaw%&e%pitch%"
+      PlayerToLocation: "%prefix% نقل &e%player% &7إلى &e%x%&7, &e%y%&7, &e%z%"
+  TpaAll: "%prefix% أرسل طلب إلى &%amount% &7اللاعبين للانتقال إلى موقعك"
+  TpAll: "انتقل %prefix% إلى موقعك &e%amount% &7لاعبين"
+  Block:
+    IsBlocked:
+      Teleport: "%prefix% تم إلغاء النقل ، اللاعب يقوم بحظر عمليات النقل منك"
+      Request: "%prefix% تم إلغاء طلب الإنتقال، اللاعب يقوم بحظر الإنتقال منك"
+    List: "قائمة %prefix% المحظورة: &e%blocked%"
+    Add: "%prefix% أنت الآن تقوم بحظر النقل من &%player%"
+    Remove: "%prefix% أنت الآن تقبل النقل من &%player%"
+    Global:
+      On: "%prefix% أنت تقوم بحظر النقل من الجميع"
+      Off: "%prefix% أنت الآن تقبل النقل من الجميع"
+# Translations for /Sudo command
+Sudo:
+  Message: ""
+  Command: "%prefix% قمت بإرسال الأمر &e%command%&7 ك&e%player%"
+# Translations for /Repair command
+Repair:
+  Hand:
+    You: "%prefix% قمت بإصلاح العنصر في يدك"
+    Other:
+      Sender: "%prefix% قمت بإصلاح العنصر في &e%player%&7"
+      Receiver: "%prefix% عنصر في يدك تم إصلاحه"
+  All:
+    You: "%prefix% قمت بإصلاح جميع العناصر في المخزون الخاص بك"
+    Other:
+      Sender: "%prefix% قمت بإصلاح جميع العناصر في &e%player%&7 المخزون"
+      Receiver: "%prefix% تم إصلاح جميع العناصر في المخزون الخاص بك"
+# Translations for time commands
+Time:
+  Day: "%prefix% قمت بتعيين &تحرير &7 في العالم &e%world%"
+  Night: "%prefix% يمكنك تعيين &ارتفاع &7 في العالم &e%world%"
+  PDay: "%prefix% قمت بتعيين &تحرير &7 ل &e%player%"
+  PNight: "%prefix% يمكنك تعيين &ارتفاع &7 لـ &e%player%"
+# Translations for weather commands
+Weather:
+  Sun: "%prefix% قمت بتعيين &esunny &7الطقس في العالم &e%world%"
+  Rain: "%prefix% يمكنك تعيين &erainy &7الطقس في العالم &e%world%"
+  PSun: "%prefix% يمكنك تعيين &esunny &7الطقس لـ &e%player%"
+  PRain: "%prefix% يمكنك تعيين &erainy &7الطقس لـ &e%player%"
+  Thunder: "%prefix% يمكنك تعيين &erainy &7weather مع &ethunder &7في العالم &e%world%"
+# Translations for MultiWorld command
+MultiWorld:
+  Import: "%prefix% العالم &%world% &7المستوردة (المولد: &e%generator%&7)"
+  Creating: "%prefix% إنشاء العالم &%world% &7 (المولد: &e%generator%&7)"
+  Create: "%prefix% العالم &%world% &7 تم إنشاؤه (المولد: &e%generator%&7)"
+  Delete: "%prefix% تم حذف &العالمي%world% &7"
+  Unload: "%prefix% العالم &e%world% &7تفريغ"
+  Load: "%prefix% العالم &e%world% &7تحميل"
+  Loaded: "%prefix% العالم &e%world% &7تم تحميله بالفعل"
+  Exists: "%prefix% العالم &%world% &7 موجود بالفعل"
+  NotLoaded: "%prefix% العالم &e%world% &7 لم يتم تحميله"
+  List: "قائمة %prefix% بالعالم: &%worlds%"
+  CannotLoad: "%prefix% لا يمكن تحميل العالم &%world%"
+  Teleport:
+    You: "%prefix% انتقل إلى العالم و%world%"
+    Other:
+      Sender: "%prefix% نقل &e%player% &7 إلى العالم &e%world%"
+      Receiver: "%prefix% انتقل إلى العالم و%world%"
+  Spawn:
+    Set: "%prefix% اضبط العالم على &e%x%&7, &e%y%&7, &e%z%"
+    Get: "%prefix% توالد في العالم%world% &7 تم تعيينه عند &e%x%&7, &e%y%&7, &e%z%"
+  Flag:
+    Set: "%prefix% علم &%flag%&7 من العالم &e%world%&7 المحدد إلى &e%value%"
+    Get: "%prefix% تم تعيين علامة &e%flag%&7 من العالم &e%world%&7 إلى &e%value%"
+    Wrong: "%prefix% قيمة علم%flag%&7 يمكن أن تكون فقط &e%value%"
+# Translations for /Mail command
+Mail:
+  Received: "%prefix% لديك &%amount% &7رسائل"
+  Empty: "%prefix% ليس لديك بريد"
+  Clear: "%prefix% تم مسح الرسائل"
+  Sent: "%prefix% قمت بإرسال بريد إلى &e%player%"
+  Notification: "%prefix% لديك &%amount% &7رسائل"
+# Translations for WalkSpeed, FlySpeed and Speed commands
+Speed:
+  Walk:
+    You: "%prefix% تم تعيين سرعة المشي الخاصة بك إلى &e%speed%"
+    Other:
+      Sender: "تم تعيين سرعة المشي %prefix% &e%player%&7 إلى &e%speed%"
+      Receiver: "%prefix% تم تعيين سرعة المشي الخاصة بك إلى &e%speed%"
+  Fly:
+    You: "%prefix% تم تعيين سرعة الطيران الخاصة بك إلى &e%speed%"
+    Other:
+      Sender: "تم تعيين سرعة طيران %prefix% &e%player%&7 إلى &e%speed%"
+      Receiver: "%prefix% تم تعيين سرعة الطيران الخاصة بك إلى &e%speed%"
+# Translations for fly commands
+Fly:
+  Temp:
+    EndIn: "%prefix% تنتهي صلاحية Temp-Fly في &e%time%"
+    End: "%prefix% انتهت صلاحية ذبابة Temp-ight"
+    Enabled:
+      You: "%prefix% تم تمكين Temp-Fly ل &e%time%"
+      Other:
+        Sender: "تم تمكين %prefix% &e%player%&7 الذبابة السرية لـ &e%time%"
+        Receiver: "%prefix% تم تمكين Temp-Fly ل &e%time%"
+    Disabled:
+      You: "%prefix% تم تعطيل Temp-Fly"
+      Other:
+        Sender: "%prefix% &e%player%&7 تم تعطيله"
+        Receiver: "%prefix% تم تعطيل Temp-Fly"
+  Enabled:
+    You: "تم تمكين الطائرة %prefix%"
+    Other:
+      Sender: "تم تمكين رحلة %prefix% &e%player%&7"
+      Receiver: "تم تمكين الطائرة %prefix%"
+  Disabled:
+    You: "تم تعطيل الطائرة %prefix%"
+    Other:
+      Sender: "تم تعطيل رحلة %prefix% &e%player%&7"
+      Receiver: "تم تعطيل الطائرة %prefix%"
+# Translations for god commands
+God:
+  Enabled:
+    You: "%prefix% تم تمكين الله"
+    Other:
+      Sender: "%prefix% &e%player%&7 تم تمكينه"
+      Receiver: "%prefix% تم تمكين الله"
+  Disabled:
+    You: "%prefix% تم تعطيل الله"
+    Other:
+      Sender: "%prefix% &e%player%&7 تم تعطيله"
+      Receiver: "%prefix% تم تعطيل الله"
+# Translations for warps commands
+Warp:
+  Created:
+    WithPerms: "%prefix% إنذار &e%warp% &7 تم إنشاؤه (مطلوب إذن &e%permission%&7)"
+    Normal: "%prefix% إنذار &e%warp% &7 تم إنشاؤها"
+  Deleted: "%prefix% حذف ال&شرار%warp% &7حذف"
+  Teleport:
+    You: "%prefix% تحذير لحذف &e%warp%"
+    Other:
+      Sender: "%prefix% تحذير &e%player% &7 لحذف &e%warp%"
+      Receiver: "%prefix% تحذير لحذف &e%warp%"
+  List: "قائمة التنبيهات %prefix% : &e%warps%"
+  Empty: "%prefix% لا يوجد حبل"
+  WrongLocation: "%prefix% إنذار &e%warp% &7 له موقع خاطئ"
+  Exists: "%prefix% إنذار &e%warp% &7 موجود بالفعل"
+  NotExist: "%prefix% إنذار &e%warp% &7 غير موجود"
+# Translations for /Spawn command
+Spawn:
+  Teleport:
+    You: "%prefix% نقل لتوليد"
+    Other:
+      Sender: "%prefix% نقل &e%player% &7 لتوليد"
+      Receiver: "%prefix% نقل لتوليد"
+  Set: "%prefix% تم تعيين الخادم عند &e%x%&7, &e%y%&7, &e%z%"
+# Translations for /Maintenance command
+Maintenance:
+  Enabled: "وضع الصيانة %prefix% تم تشغيله &eon"
+  Disabled: "وضع الصيانة %prefix% تم إيقاف &eoff"
+# Translations for /Vanish command
+Vanish:
+  Join: "%prefix% &a&لازلت &c&اختفت"
+  Active: "&cمفقود"
+  Enabled:
+    You: "%prefix% فانش تم تمكينه"
+    Other:
+      Sender: "%prefix% فانوس من &e%player% &7 تم تمكينه &e"
+      Receiver: "%prefix% فانش تم تمكينه"
+  Disabled:
+    You: "%prefix% الفانش تم تحريره"
+    Other:
+      Sender: "%prefix% فانوس من &e%player% &7قد تم تمكين &تحرير"
+      Receiver: "%prefix% الفانش تم تحريره"
+# Translations for /Thor command
+Thor:
+  Player: "%prefix% &e%player% &7ضرب"
+  Block: "%prefix% صاعق البرق المستعار"
+# Translations for cooldowns
+Cooldowns:
+  Messages: "%prefix% بطيء، انتظر &e%time% &7 قبل إرسال الرسالة"
+  Commands: "%prefix% بطيء، انتظر &e%time% &7 قبل إرسال الأمر"
+# Translations for kits commands
+Kits:
+  List: "قائمة %prefix% من المجموعات: &e%kits%"
+  Empty: "%prefix% لا توجد عدة"
+  Used: "%prefix% لقد استخدمت &e%kit% &7Kit"
+  NotExist: "%prefix% مجموعة &%kit% &7 غير موجودة"
+  Cooldown: "%prefix% يجب أن تنتظر &%time% &7لاستخدام مجموعة &e%kit%"
+  Give:
+    Sender: "%prefix% قمت بإعطاء &e%kit% &7عدة ل &e%player%"
+    Receiver: "%prefix% لقد تلقيت &e%kit% &7عدة"
+# Translations for /Spawner command
+Spawner:
+  Set:
+    Entity: "%prefix% تم تعيين كيان مالك إلى &e%entity%"
+    Amount: "%prefix% تم تعيين الحد الأقصى لمبلغ تفريخ المالك ل &e%amount%"
+    Range: "%prefix% تم تعيين نطاق تفريخ المالك إلى &e%range%"
+    SpawnTime: "%prefix% تم تعيين وقت تفريغ مالك إلى &e%time%"
+  BlockNotSpawner: "%prefix% كتلة كنت تبحث عنها يجب أن يكون مالك &espawner"
+# Translations for /Heal command
+Heal:
+  You: "%prefix% تم شفائك"
+  Other:
+    Sender: "تم شفاء %prefix% &e%player% &7"
+    Receiver: "%prefix% تم شفائك"
+# Translations for /Feed command
+Feed:
+  You: "%prefix% تم إطعامك"
+  Other:
+    Sender: "تم تغذية %prefix% &e%player% &7"
+    Receiver: "%prefix% تم إطعامك"
+# Translations for /ChatLock command
+ChatLock:
+  Lock: "%prefix% الدردشة مربوطة"
+  Unlock: "%prefix% المحادثة غير مقفلة"
+  IsLocked: "%prefix% آسف، المحادثة مقفلة، الرجاء المحاولة مرة أخرى لاحقاً."
+  Message: "%prefix% &dChatLock &e%player% &7كتب &e%message%"
+# Translations for /Pm <player>
+PrivateMessage:
+  NoReply: "%prefix% ليس لديك احد للرد"
+  ChatLock:
+    true: "%prefix% المحادثة مقفلة، اكتب النص للمحادثة للرد على اللاعب"
+    false: "تم فتح الدردشة %prefix%"
+# Translations for /ClearChat command
+ClearChat:
+  Cleared:
+    Console: "تم مسح الدردشة %prefix% بواسطة &eConsole"
+    Player: "تم مسح الدردشة %prefix% بواسطة &e%player%"
+  Specific: "تم مسح دردشة %prefix% من &e%player% &7"
+  SpecificChatHaveBypass: "%prefix% &e%player% &7لديه أذونات متجاوزة!"
+  NoClearOwnChat: "%prefix% لا يمكنك مسح المحادثة الخاصة بك"
+# Translations for /Back command
+Back:
+  WrongLocation: "موقع الإرجاع %prefix% خاطئ"
+  NoLocation: "%prefix% لا يوجد موقع للانتقال إلى"
+  Teleport:
+    You: "نقل %prefix% إلى الموقع السابق"
+    Other:
+      Sender: "%prefix% نقل &e%player% &7العودة إلى الموقع السابق"
+      Receiver: "نقل %prefix% إلى الموقع السابق"
+Immune:
+  Enabled:
+    You: "%prefix% تم تمكين مناعتك &eتمكين"
+    Other:
+      Sender: "تم تمكين مناعة %prefix% &e%player%&7"
+      Receiver: "%prefix% تم تمكين مناعتك &eتمكين"
+  Disabled:
+    You: "%prefix% تم تمكين مناعتك"
+    Other:
+      Sender: "تم تمكين مناعة %prefix% &e%player%&7"
+      Receiver: "%prefix% تم تمكين مناعتك"
+  NoPunish: "%prefix% &e%player% &7 لديه مناعة."
+Tablist:
+  Prefix:
+    Get:
+      NameTag: "بادئة %prefix% للمجموعة &e%group% &7 من علامة الاسم هي &r%value%"
+      TabList: "بادئة %prefix% من المجموعة &e%group% &7من الطاولة هي &r%value%"
+    Set:
+      NameTag: "%prefix% بادئة للمجموعة &e%group% &7 من علامة الاسم المحددة إلى &r%value%"
+      TabList: "بادئة %prefix% للمجموعة &e%group% &7 من الطاولة المجموعة إلى &r%value%"
+  Suffix:
+    Get:
+      NameTag: "%prefix% اللاحق للمجموعة%group% &7 من علامة الاسم هو &r%value%"
+      TabList: "%prefix% اللاحق للمجموعة%group% &7 من الطاولة هو &r%value%"
+    Set:
+      NameTag: "%prefix% اللاحق للمجموعة%group% &7 من علامة الاسم المحدد إلى &r%value%"
+      TabList: "%prefix% اللاحق للمجموعة%group% &7 من الطاولة المحددة ل &r%value%"
+    Priorite:
+      Get: "%prefix% الأولوية للمجموعة &e%group% &7في الجدول هو &e%value%"
+      Set: "%prefix% أولوية المجموعة &e%group% &7في الجدول المحدد إلى &e%value%"
+    Exists: "%prefix% مجموعة &%group% &7 موجود بالفعل"
+    NotExist: "%prefix% مجموعة &%group% &7 غير موجودة"
+    Create: "%prefix% مجموعة &%group% &7 تم إنشاؤها"
+    Delete: "%prefix% مجموعة &%group% &7حذف"
+WhoIs:
+  Loading: "%prefix% تحميل البيانات من &%player%&7.."
+  Online:
+    - "%prefix% لاعب: &e%player%"
+    - "%prefix% UUID: &e%uuid%"
+    - "%prefix% الصحة: &%health%"
+    - "%prefix% الطعام: &%food%"
+    - "%prefix% على الإنترنت: &e%seen%"
+    - "%prefix% IP: &e%ip%"
+    - "%prefix% AFK: &e%afk%"
+    - "%prefix% الرب: &%god%"
+    - "%prefix% فاعل: &%fly%"
+    - "%prefix% OP: &e%op%"
+    - "%prefix% معلومات أخرى:"
+    - "%prefix%   FirstJoin: &e%firstjoin%"
+    - "%prefix%   البلد: &%country%"
+    - "مجموعة %prefix%   : &e%group%"
+    - "%prefix%   النقود: &%money%"
+    - "%prefix% محظور: %banned%"
+    - "%prefix% IP-ممنوعة: %ip-banned%"
+    - "%prefix% IP-ممنوعة: %ip-banned%"
+  Offline:
+    - "%prefix% لاعب: &e%player%"
+    - "%prefix% UUID: &e%uuid%"
+    - "%prefix% دون اتصال: &e%seen%"
+    - "%prefix% IP: &e%ip%"
+    - "%prefix% AFK: &e%afk%"
+    - "%prefix% الرب: &%god%"
+    - "%prefix% فاعل: &%fly%"
+    - "%prefix% OP: &e%op%"
+    - "%prefix% معلومات أخرى:"
+    - "%prefix%   FirstJoin: &e%firstjoin%"
+    - "%prefix%   البلد: &%country%"
+    - "مجموعة %prefix%   : &e%group%"
+    - "%prefix%   النقود: &%money%"
+    - "%prefix% محظور: %banned%"
+    - "%prefix% IP-ممنوعة: %ip-banned%"
+Inventory:
+  ClearConfirmToggle:
+    Enabled: "%prefix% تم تعطيل الطلب لتأكيد مسح المخزون"
+    Disabled: "%prefix% تمكين طلب لتأكيد مسح المخزون"
+  ClearInventory:
+    ClearConfirm: "%prefix% الرجاء تأكيد طلبك لمسح المخزون"
+    You: "%prefix% لقد قمت بمسح المخزون الخاص بك"
+    Other:
+      Sender: "%prefix% قمت بإزالة &e%player%&7 من المخزون"
+      Receiver: "%prefix% تم مسح مخزونك بواسطة &e%player%"
+    Undo: "%prefix% لقد استردت المخزون الخاص بك"
+    CantUndo: "%prefix% لا يمكن استرداد المخزون الخاص بك"
+    NoMoney: "%prefix% لم تقم بشراء المال، تحتاج إلى &%money%"
+  CloseInventory:
+    You: "%prefix% إغلاق المخزون المفتوح الخاص بك"
+    Other:
+      Sender: "%prefix% إغلاق المخزون المفتوح ل &e%player%"
+      Receiver: "%prefix% إغلاق المخزون المفتوح الخاص بك"
+  EnderChest:
+    You: "%prefix% فتح صندوق الموارد"
+    Other:
+      Sender: "%prefix% فتح صندوق الموارد ل &e%player%"
+      Receiver: "%prefix% فتح صندوق الموارد"
+  EnderSee:
+    Sender: "%prefix% فتح صندوق الموارد ل &e%player%"
+    Receiver: ""
+  Invsee:
+    You: "%prefix% فتح المخزون ل &e%player%"
+    Other:
+      Sender: "%prefix% فتح &e%player%&7 مخزون ل &e%target%"
+      Receiver: "%prefix% فتح المخزون ل &e%player%"
+  Workbench:
+    You: "%prefix% افتتاح طاولة العمل"
+    Other:
+      Sender: "%prefix% فتح طاولة العمل ل &e%player%"
+      Receiver: "%prefix% افتتاح طاولة العمل"
+  Anvil:
+    You: "%prefix% فتح الشرير"
+    Other:
+      Sender: "%prefix% فتح الشرير ل &e%player%"
+      Receiver: "%prefix% فتح الشرير"
+DisplayManager:
+  Scoreboard:
+    Show: "%prefix% تم عرض لوحة النتائج الخاصة بك"
+    Hide: "%prefix% تم إخفاء لوحة النتائج الخاصة بك"
+  ActionBar:
+    Show: "%prefix% تم عرض شريط العمل الخاص بك"
+    Hide: "%prefix% تم إخفاء شريط العمل الخاص بك"
+  BossBar:
+    Show: "%prefix% تم عرض شريط الرئيس الخاص بك"
+    Hide: "%prefix% تم إخفاء شريط الرئيس الخاص بك"
+Scoreboard:
+  Show: "%prefix% تم عرض سجل نقاط &e%player% &7"
+  Hide: "%prefix% تم إخفاء سجل &e%player% &7"
+ActionBar:
+  Show: "%prefix% شريط الإجراءات ل &e%player% &7 تم عرضه"
+  Hide: "%prefix% شريط الإجراءات ل &e%player% &7 مخفي"
+BossBar:
+  Show: "%prefix% شريط بوست من &%player% &7 قد تم عرضه"
+  Hide: "تم إخفاء %prefix% شريط بوست من &%player% &7"
+Skin:
+  Set:
+    You: "%prefix% تم تعيين جلدك إلى &e%skin%"
+    Other:
+      Sender: "%prefix% &e%player%&7 جلد المجموعة إلى &e%skin%"
+      Receiver: "%prefix% تم تعيين جلدك إلى &e%skin%"
+  Reset:
+    You: "%prefix% إعادة تعيين جلدك"
+    Other:
+      Sender: "%prefix% &e%player%&7 إعادة ضبط الجلد"
+      Receiver: "%prefix% إعادة تعيين جلدك"
+Accounts:
+  Users: "%prefix% الحسابات على IP يضيف اللاعب &e%player%&7: &e%players%"
+  NoAccounts: "%prefix% لم يتم تأسيس حسابات"
+Uuid:
+  Message: "%prefix% لاعب &e%player% &7 هو &a%uuid%"
+Trash:
+  Name: "&7 سلة المهملات"
+  Clear: "&eإفراغ سلة المشتريات"
+Mirror:
+  Types: "%prefix% &7 أنواع المرآت: &e%types%"
+  Enabled: "%prefix% &7 قمت بتشغيل مرآتك على نوع المرآة: &e%type%"
+  Disabled: "%prefix% &7 قمت بتعطيل مرآتك."
+# Translations for PlayTime commands
+PlayTime:
+  Time:
+    Global: "%prefix% &7 وقت تشغيلك هو &%playtime%"
+    Gamemode: "%prefix% &7 وقت اللعب الخاص بك مع وضع الالعاب &e%gamemode% &7 هو &e%playtime%"
+    World: "%prefix% &7 وقت لعبك في العالم &e%world% &7 هو &e%playtime%"
+    WorldGamemode: "%prefix% &7 وقت لعبك في العالم &e%world% &7 مع وضع الألعاب &e%gamemode% &7هو &e%playtime%"
+  Other:
+    Global: "%prefix% &7اللاعبين &%player% &7الوقت اللعب هو%playtime%"
+    Gamemode: "%prefix% &7اللاعب &لاعب%player% &7وقت اللعب مع وضع الألعاب &e%gamemode% &7هو &e%playtime%"
+    World: "%prefix% &7اللاعبين &%player% &7وقت اللعب في العالم &e%world% &7هو &e%playtime%"
+    WorldGamemode: "%prefix% &7اللاعبين &%player% &7وقت اللعب في العالم%world% &7 مع وضع الألعاب &e%gamemode% &7هو &e%playtime%"
+  PlayTop:
+    Loading: "%prefix% عد جميع اللاعبين ، يرجى الاستمرار في .."
+    Header: "%prefix% &7=====» &cPlayTop &e%page%/%pages% &7«======"
+    Top: "&e%position%. &7%playername% &7(&e%playtime%&7)"
+    Footer: ""
+Config: "تم إعادة تحميل الإعدادات والمهام %prefix%"

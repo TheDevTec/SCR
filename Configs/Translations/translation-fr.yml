@@ -1,0 +1,867 @@
+# Links:
+#  Github: https://github.com/TheDevTec/ServerControlReloaded
+#  Discord: https://discord.io/spigotdevtec
+#  Spigot: https://www.spigotmc.org/resources/71147/
+
+# Text for %prefix% placeholder
+Prefix: "&6&lS&f&lerver &8&l»&7"
+# Translation for no perms message
+NoPerms: "%prefix% Vous n'avez pas assez de permissions pour faire cela (&e%permission%&7)"
+# Translations for /Portal command
+Portals:
+  NotExist: "Le portail %prefix% &e%name% &7n'existe pas"
+  Exists: "Le portail %prefix% &e%name% &7existe déjà"
+  Delete: "Portail %prefix% &e%name% &7supprimé"
+  PosSet: "Position %prefix% &e%position%# &7du portail &e%name% &7définie dans les coords &e%x%&7, &e%y%&7, &e%z%"
+  Particle: "%prefix% a défini la particule &e%value% &7pour le portail &e%name%"
+  Server: "%prefix% a défini le serveur avant &e%server% &7pour le portail &e%name%"
+  Create:
+    - "Portail %prefix% &e%name% &7créé"
+    - "%prefix% Configuration du portail via la commande '/portal set'"
+  List:
+    - "%prefix% Liste des portails:"
+    - "&e%list%"
+  Cmds:
+    Add: "%prefix% a ajouté la commande '&e%value%&7'au portail &e%name%"
+    Remove: "%prefix% a supprimé la commande à la position &e%position% &7du portail &e%name%"
+    List:
+      - "%prefix% Liste des commandes du portail &e%name%&7:"
+      - "&e%list%"
+# Translations for /ChatNotify command
+Notify:
+  Enable: "%prefix% Notifications dans le chat activées"
+  Disable: "%prefix% Notifications dans le chat désactivées"
+  EnableOther: "%prefix% Notifications dans le chat de &e%player% &7activées"
+  DisableOther: "%prefix% Notifications dans le chat de &e%player% &7désactivées"
+# Translations for /Give and /Skull commands
+Give:
+  Skull:
+    You: "%prefix% Vous avez reçu le crâne de &e%head%"
+    Other:
+      Sender: "%prefix% Vous avez reçu le crâne de &e%head%&7 à &e%player%"
+      Receiver: "%prefix% Vous avez reçu le crâne de &e%head%"
+  Item:
+    You: "%prefix% a ajouté &e%amontage%x %item%"
+    Other:
+      Sender: "%prefix% a ajouté &e%amontage%x %item% &7à &e%player%"
+      Receiver: "%prefix% Vous avez &e%amonture%x %item%"
+# Translation for /Send command
+Send: "%prefix% Envoi &e%player%&7 au serveur &e%server%"
+# Translations for /Seen command
+Seen:
+  Online: "%prefix% &e%player%&7 est &aen ligne &7pour &a%online%"
+  Offline: "%prefix% &e%player%&7 est &coffline &7pour &c%offline%"
+  Similiar: "%prefix% Vous voulez dire pseudo : &e%names%"
+# Translations for /SocialSpy command
+SocialSpy:
+  On: "%prefix% Vous avez activé &e&7votre mode d'espionnage &7esocial"
+  Off: "%prefix% Vous avez désactivé &e&7votre mode d'espionnage &7"
+# Translatios for /Ping command
+Ping:
+  You: "%prefix% Votre ping est &e%ping%"
+  Other: "Le ping de %prefix% &e%player%&7 est &e%ping%"
+# Translations for /List and /Staff commands
+List:
+  Staff:
+    - "%prefix% »=== &e%staff_online% &7===«"
+    - "Personnel de %prefix% : &e%staff%"
+  Normal:
+    - "%prefix% »=== &e%joiner-count{{STAFF}, par défaut, supervip, vip}% &8/ &e%server_maxonline% &7===«"
+    - "%prefix% Personnel: &e%joiner{{STAFF}}%"
+    - "%prefix% VIPs: &e%joiner{supervip, vip}%"
+    - "%prefix% Par défaut: &e%joiner{default}%"
+PmIgnore:
+  NoLonger: "%prefix% Vous n'ignorez plus les messages de &e%player%"
+  Ignoring: "%prefix% Vous ignorez maintenant les messages dans le chat & pm de &e%player%"
+# Translations for /Kill and /Suicide commands
+Kill:
+  Killed: "%prefix% a tué &e%player%"
+  KilledMore: "%prefix% a tué &e%amount% &7joueurs"
+  Suicide: "%prefix% &e%player% &7s'est suicidé. Adieu le monde cruel!"
+# Translations for 'missing' things
+Missing:
+  World: "Le monde %prefix% &e%world% &7n'existe pas"
+  Player:
+    Offline: "%prefix% Joueur &e%player% &7est hors ligne"
+    NotExist: "%prefix% L'utilisateur &e%player% &7n'existe pas"
+  HandEmpty: "%prefix% Votre main est vide"
+  TargetHandEmpty: "La main de %prefix% &e%player%&7 est vide"
+  Entity: "L'entité %prefix% &e%entity% &7n'existe pas"
+  GameMode: "%prefix% Mode de jeu &e%gamemode% &7n'existe pas"
+  Material: "%prefix% Matériel &e%material% &7n'existe pas"
+  Flag: "%prefix% ItemFlag &e%flag% &7n'existe pas"
+  Generator: "Le générateur %prefix% &e%generator% &7n'existe pas"
+  MaterialM: "%prefix% &cMatériel manquant (type: {BLOCK}) dans GUICreator.yml !"
+  HeadURL: "%prefix% &cURL HeadURL manquante (headURL: {URL}) dans GUICreator.yml!"
+  Enchant:
+    NotExist: "%prefix% Enchantement &e%enchant% &7n'existe pas"
+    NoEnchant: "%prefix% Vous n'avez pas d'enchantement sur l'objet"
+    DontContains: "%prefix% Votre objet ne contient pas d'enchantement &e%enchant%"
+# Translations for /Butcher command
+Butcher:
+  Killed: "%prefix% a tué &e%amount% &7entités"
+  KilledSpecified: "%prefix% a tué &e%amount% &7entités de type &e%type%"
+# Translations for /Memory command
+Memory:
+  Info:
+    - "%prefix% Free MEM: &e%free_ram% &7MB"
+    - "%prefix% Used MEM: &e%used_ram% &7MB"
+    - "%prefix% Max MEM: &e%max_ram% &7MB"
+  Clear: "%prefix% Effacement de la mémoire, veuillez patienter.."
+  AlreadyClearing: "%prefix% La mémoire est déjà effacée, veuillez patienter..."
+  Cleared: "Mémoire %prefix% effacée (&e%amount% &7MB)"
+# Translations for /Exp command
+Experiences:
+  Words:
+    Exp: "exps"
+    Level: "Niveaux"
+  Balance: "%prefix% &e%player% &7a &e%amount% &7sur %type%"
+  Given: "%prefix% a ajouté &e%amount% &7%type% à &e%player%"
+  Taken: "%prefix% a supprimé &e%amount% &7%type% de &e%player%"
+  Set: "%prefix% &e%player%&7's %type% ont été mis à &e%amount%"
+# Translations for /Item command
+Item:
+  Name: "%prefix% Le nom d'affichage de l'objet dans votre main a été changé en &r%name%"
+  NoItem: "&cVous ne tenez aucun objet en main."
+  Lore:
+    Added: "%prefix% a ajouté une nouvelle ligne de Connaissance à l'objet dans votre main &r%line%"
+    Removed: "%prefix% a supprimé la ligne de la mélodie de l'objet dans votre main &r%line%"
+    Error: "%prefix% Il y a eu une erreur. Erreur: %error%"
+    ListItem: "%prefix% &6Liste des lignes de Connaissance sur l'objet de votre main:"
+    ListLore: "%prefix% &6%position%. ligne : &5%lore%"
+    Set: "%prefix% La ligne de seigle &e%line%&7 dans votre main a été changée en &r%lore%"
+  Flag:
+    Added: "%prefix% L'indicateur d'objet &e%flag%&7 a été ajouté à l'objet de votre main"
+    Removed: "%prefix% L'indicateur &e%flag% &7item a été retiré de l'objet de votre main"
+    List: "%prefix% L'objet signale sur l'objet de votre main: &e%flags%"
+  Nbt:
+    Get: "%prefix% Les marqueurs nbt de l'objet dans votre main sont &e%nbt%"
+    Set: "%prefix% Les étiquettes nbt de l'objet dans votre main ont été changées en &e%nbt%"
+  Type:
+    Get: "%prefix% Le type d'objet dans votre main est &e%type%"
+    Set: "%prefix% Le type d'objet dans votre main a été changé en &e%type%"
+  Amount:
+    Get: "%prefix% Le montant de l'objet dans votre main est &e%amount%"
+    Set: "%prefix% Le montant de l'objet dans votre main a été changé en &e%amount%"
+  Durability:
+    Get: "%prefix% La durabilité de l'objet dans votre main est &e%durability%"
+    Set: "%prefix% La durabilité de l'objet dans votre main a été changée en &e%durability%"
+  Process:
+    Cmd:
+      List:
+        Above: "%prefix% Liste des commandes (%total% ) :"
+        Item: "%prefix% - &e%position% &f%value%"
+        Empty: "%prefix% La liste des commandes est vide"
+      InvalidTarget: "%prefix% la cible sélectionnée est invalide, cibles valides : &eCONSOLE, JOUEUR"
+      Add: "%prefix% a ajouté la commande &e%value%&7 à la liste des commandes"
+      Remove: "%prefix% a supprimé la commande &e%value%&7 (%position%) de la liste des commandes"
+    Msg:
+      List:
+        Above: "%prefix% Liste des messages (%total% ) :"
+        Item: "%prefix% - &e%position% &f%value%"
+        Empty: "%prefix% La liste des messages est vide"
+      Add: "%prefix% a ajouté le message &e%value%&7 à la liste des messages"
+      Remove: "%prefix% a supprimé le message &e%value%&7 (%position%) de la liste des messages"
+    Usage:
+      Set: "Le montant d'utilisation de l'article %prefix% est défini à &e%value%"
+      Get: "Le montant d'utilisation de l'article %prefix% est défini à &e%value%"
+    Cooldown:
+      Set: "Délai d'utilisation de l'objet %prefix% défini à &e%value%"
+      Get: "Le temps de recharge de l'objet %prefix% est défini à &e%value%"
+# Translations for /Hat command
+Hat:
+  InvFull:
+    You: "%prefix% Votre inventaire est plein. Supprimez certains objets pour définir des objets sur la tête"
+    Other: "L'inventaire de %prefix% %player%est plein. Vous ne pouvez pas définir d'objet."
+  Equipped:
+    You: "%prefix% Objet de votre main a été équipé à votre tête"
+    Other:
+      Sender: "%prefix% Vous avez équipé l'objet &e%item%&7 à la tête de &e%player%&7"
+      Receiver: "%prefix% &e%player%&7 objet équipé &e%item%&7 à votre tête"
+SCR:
+  Info:
+    - "%prefix% Version de ServerControlReloaded: &eV%version%"
+    - "Version %prefix% du serveur: &e%server%"
+    - "Lien Discord %prefix% : &ehttps://discord.io/spigotdevtec"
+    - "Langue %prefix% : &eFR"
+# Translations for economy commands
+Economy:
+  # Translation for /BalanceTop command
+  NoEconomyAccount: "%prefix% Il n'y a pas de compte d'économie"
+  NotEnought: "%prefix% Vous avez assez d'argent"
+  BalanceTop:
+    Loading: "%prefix% Compte la richesse de tous les joueurs, veuillez patienter..."
+    Header: "%prefix% &7=====» &cBalanceTop &e%page%/%pages% &7«====="
+    Footer: ""
+  Reset:
+    Sender: "Le compte d'économie %prefix% de &e%player% &7a été réinitialisé"
+    Receiver: "%prefix% Votre compte d'économie a été réinitialisé"
+  Give:
+    Sender: "%prefix% Gaven &e$%money% &7à l'économie compte &e%player%"
+    Receiver: "%prefix% Gaven &e$%money% &7$ à votre compte"
+  Take:
+    Sender: "%prefix% a pris &e$%money% &7du compte économique de &e%player%"
+    Receiver: "%prefix% a pris &e$%money% &7de votre compte"
+  Set:
+    Sender: "%prefix% Définit le solde économique de &e%player% &7à &e$%money%"
+    Receiver: "%prefix% Votre solde économique a été défini à &e$%money%"
+  Balance:
+    Your: "%prefix% Vous avez &e$%money%"
+    Other: "%prefix% &e%player% &7have &e$%money%"
+  Pay:
+    Sender: "%prefix% Vous avez payé &e$%money% &7à &e%player%"
+    Receiver: "%prefix% &e%player% &7vous a payé &e$%money%"
+  Multi:
+    Exists: "Le groupe d'économie &e %prefix% &e%economy-group% &7existe déjà"
+    NotExist: "%prefix% Le groupe d'économie &e%economy-group% &7n'existe pas"
+    Create: "Groupe d'économie &e %prefix% &e%economy-group% &7créé"
+    Delete: "%prefix% Groupe d'Économie &e%economy-group% &7supprimé"
+    Groups: "%prefix% Groupes d'Économie : &e%groups%"
+    Worlds:
+      List: "%prefix% Mondes dans le groupe économique &e%economy-group%&7: &e%worlds%"
+      AlreadyInGroup: "Le monde %prefix% &e%world% &7est déjà dans le groupe d'économie &e%economy-group%"
+      NotInGroup: "Le monde %prefix% &e%world% &7n'est pas ajouté au groupe économique &e%economy-group%"
+      Added: "%prefix% Monde &e%world% &7ajouté au groupe économique &e%economy-group%"
+      Removed: "Monde %prefix% &e%world% &7retiré du groupe économique &e%economy-group%"
+    Money: "%prefix% &e%player% &7a &e$%money% &7dans le groupe économique &e%economy-group%"
+    Transfer: "%prefix% Économie transférée de &e%player% &7du groupe d'économie &e%from% &7au groupe d'économie &e%to%"
+# Translations for /Nickname and /NicknameReset commands
+Nickname:
+  Change: "%prefix% Votre pseudo a changé en &r%nickname%"
+  Reset: "%prefix% Votre pseudo a été réinitialisé à &r%player%"
+  Get: "Le surnom de %prefix% &e%player%&7 est &r%nickname%"
+# Translations for /AFK command and AutoAFK messages
+AFK:
+  Start: "%playername%&7 est AFK"
+  Start_WithReason: "%playername%&7 est AFK &7(&e%reason%&7)"
+  End: "%playername%&7 n'est plus AFK"
+  Command:
+    Start: ""
+    End: ""
+    Other:
+      Start: "%prefix% Vous avez défini &e%player% &7AFK"
+      End: "%prefix% Vous avez défini &e%player% &7n'est plus AFK"
+# Translations for /Reply command
+NoReply: "%prefix% Vous n'avez personne à répondre à"
+BanSystem:
+  #Mutes
+  TempMuteIP:
+    Sender: "%prefix% Vous avez l'ip temporairement muet &e%ip% &7pour &r%reason%&7 pour &e%time%"
+    Admins: "%prefix% &e%operator% &7temp-muet &e%ip% &7pour &r%reason%&7 pour &e%time%"
+  TempMute:
+    Sender: "%prefix% vous avez rendu muet &e%player% &7pour &r%reason%&7 pour &e%time%"
+    Admins: "%prefix% &e%operator% &7rendu muet &e%player% &7pour &r%reason%&7 pour &e%time%"
+  MuteIP:
+    Sender: "%prefix% Vous avez rendu muet &e%ip% &7pour &r%reason%"
+    Admins: "%prefix% &e%operator% &7rendu muet &e%ip% &7pour &r%reason%"
+  Mute:
+    Sender: "%prefix% vous avez rendu muet &e%player% &7pour &r%reason%"
+    Admins: "%prefix% &e%operator% &7a rendu muet &e%player% &7pour &r%reason%"
+  Kick:
+    Sender: "%prefix% Vous avez éjecté &e%player% &7pour &r%reason%"
+    Admins: "%prefix% &e%operator% &7a expulsé &e%player% &7pour &r%reason%"
+  UnMute:
+    Sender: "%prefix% Vous avez réactivé &e%player%"
+    Admins: "%prefix% &e%operator% &7a rendu muet &e%player%"
+  UnMuteIP:
+    Sender: "%prefix% Vous avez réactivé l'IP &e%ip%"
+    Admins: "%prefix% &e%operator% &7a réactivée-ip &e%ip%"
+  #Bans
+  TempBanIP:
+    Sender: "%prefix% Vous avez banni temporairement &e%ip% &7pour &r%reason%&7 pour &e%time%"
+    Admins: "%prefix% &e%operator% &7banni temporaire &e%ip% &7pour &r%reason%&7 pour &e%time%"
+  TempBan:
+    Sender: "%prefix% Vous avez banni &e%player% &7pour &r%reason%&7 pour &e%time%"
+    Admins: "%prefix% &e%operator% &7banni temporaire &e%player% &7pour &r%reason%&7 pour &e%time%"
+  BanIP:
+    Sender: "%prefix% Vous avez banni &e%ip% &7pour &r%reason%"
+    Admins: "%prefix% &e%operator% &7banni &e%ip% &7pour &r%reason%"
+  Ban:
+    Sender: "%prefix% Vous avez banni &e%player% &7pour &r%reason%"
+    Admins: "%prefix% &e%operator% &7banni &e%player% &7pour &r%reason%"
+  UnBanIP:
+    Sender: "%prefix% Vous avez débanni l'ip &e%ip%"
+    Admins: "%prefix% &e%operator% &7a dé-banni &e%ip%"
+  UnBan:
+    Sender: "%prefix% Vous avez débanni &e%player%"
+    Admins: "%prefix% &e%operator% &7dé-banni &e%player%"
+  #Jails
+  TempJailIP:
+    Sender: "%prefix% Vous avez une imposition temporaire &e%ip% &7pour &r%reason%&7 pour &e%time%"
+    Admins: "%prefix% &e%operator% &7temp-arrested-ip &e%ip% &7pour &r%reason%&7 pour &e%time%"
+  TempJail:
+    Sender: "%prefix% vous avez arrêté &e%player% &7pour &r%reason%&7 pour &e%time%"
+    Admins: "%prefix% &e%operator% &7temps-arrêtés &e%player% &7pour &r%reason%&7 pour &e%time%"
+  JailIP:
+    Sender: "%prefix% Vous avez arrêté-ip &e%ip% &7pour &r%reason%"
+    Admins: "%prefix% &e%operator% &7arrêtée-ip &e%ip% &7pour &r%reason%"
+  Jail:
+    Sender: "%prefix% Vous avez arrêté &e%player% &7pour &r%reason%"
+    Admins: "%prefix% &e%operator% &7arrêté &e%player% &7pour &r%reason%"
+  UnJailIP:
+    Sender: "%prefix% Vous avez déjailed-ip &e%ip%"
+    Admins: "%prefix% &e%operator% &7unjailed-ip &e%ip%"
+  UnJail:
+    Sender: "%prefix% Vous avez déemprisonné &e%player%"
+    Admins: "&e %prefix% &e%operator% &7non emprisonné &e%player%"
+  #Warns
+  Warn:
+    Sender: "%prefix% Vous avez averti &e%player% &7pour &r%reason%"
+    Admins: "%prefix% &e%operator% &7averti &e%player% &7pour &r%reason%"
+  #Other
+  Not:
+    Banned: "%prefix% &e%player% &7n'est pas banni"
+    IPBanned: "L'adresse IP %prefix% &e%ip% &7n'est pas bannie"
+    Muted: "%prefix% &e%player% &7n'est pas muet"
+    Arrested: "%prefix% &e%player% &7n'est pas arrêté"
+# Translations for /Jail command
+Jail:
+  Create: "%prefix% prison &e%jail% &7créée"
+  Delete: "%prefix% prison &e%jail% &7supprimée"
+  Exists: "La prison %prefix% &e%jail% &7existe déjà"
+  NotExist: "%prefix% prison &e%jail% &7n'existe pas"
+  List: "%prefix% prisons: &e%jails%"
+  Empty: "%prefix% Il n'y a pas de prison"
+# Translations for /ClearInventory command
+ClearInventory:
+  Cleared:
+    Your: "%prefix% Votre inventaire a été vidé"
+    Other: "L'inventaire de %prefix% &e%player%&7 a été effacé"
+  NoMoney: "%prefix% Vous n'avez pas assez d'argent. Vous avez besoin de &e%money%"
+  MissingEco: "%prefix% plugin d'économie manquant, veuillez installer le plugin Vault & Economy"
+  NoRetrive: "%prefix% Vous n'avez pas d'inventaire à récupérer"
+  Retrive: "%prefix% Votre inventaire a été récupéré pour &e$%money%"
+  NoConfirm: "%prefix% Vous n'avez pas de demande de confirmation"
+  Confirm:
+    Request: "%prefix% Veuillez confirmer votre demande pour effacer votre inventaire"
+    Enabled: "%prefix% Requêtes pour effacer l'inventaire sont requises"
+    Disabled: "%prefix% Les demandes pour vider l'inventaire ne sont plus requises"
+# Translations for /Helpop
+Helpop:
+  ChatLock:
+    true: "Le chat %prefix% est verrouillé, tapez le texte pour envoyer un message à helpop"
+    false: "Le chat %prefix% est déverrouillé"
+# Translations for /Home and /Homes commands
+Home:
+  EmptyList: "%prefix% Vous n'avez pas de maison"
+  List: "%prefix% Maisons : &e%homes%"
+  Teleporting: "%prefix% Téléportation à la maison &e%home%"
+  WrongLocation: "La maison %prefix% &e%home% &7a un mauvais emplacement"
+  NotExist: "L'accueil %prefix% &e%home% &7n'existe pas"
+  Exists: "L'accueil &e %prefix%%home% &7existe déjà"
+  Create: "Accueil %prefix% &e%home% &7créé"
+  Delete: "Accueil %prefix% &e%home% &7supprimé"
+  Limit: "%prefix% Vous avez atteint la limite des maisons"
+  TpSpawn: "%prefix% Vous n'avez pas de maison, vous vous téléporter pour apparaître"
+  Other:
+    NotExist: "%prefix% Le &e%player%&7home &e%home% &7n'existe pas"
+    Teleporting: "%prefix% Téléportation à la maison &e%home% &7de &e%player%"
+    List: "%prefix% &e%player%&7habitations &7: &e%homes%"
+    EmptyList: "%prefix% &e%player% &7n'a pas de maison"
+# Translations for /Chunk command
+Chunks:
+  Load: "%prefix% &e%world%&7: &e%chunks% &7chunks"
+  Unload: "%prefix% a déchargé &e%chunks% &7chunks"
+  TotalLoad: "%prefix% Total est chargé &e%chunks% &7chunks"
+#CountryBlocker translations
+CountryBlocker:
+  ListMess: "%prefix% Liste des joueurs sur la liste blanche:"
+  List: "%prefix% » &e%player%"
+  Add: "%prefix% Joueur &e%player% &7ajouté à la liste blanche"
+  Remove: "%prefix% Joueur &e%player% &7retiré de la liste blanche"
+  NotWhitelisted: "%prefix% Joueur &e%player% &7n'est pas sur la liste blanche!"
+# Translations for gamemode commands
+GameMode:
+  Temp:
+    Remove: "%prefix% Mode jeu tempo supprimé"
+    EndIn: "Le mode de jeu tempo de %prefix% expire dans &e%time%"
+    End: "Le mode Temp-Gamemode %prefix% a expiré"
+    You: "%prefix% Votre mode de jeu temporaire a été réglé sur &c%gamemode%&7 pour &e%time%"
+    Other:
+      Remove: "%prefix% Votre mode de jeu temporaire a été supprimé"
+      Sender: "%prefix% Mode de jeu temporaire &c%gamemode% &7a été réglé pour &e%time% &7à joueur &a%player%"
+      Reciever: "%prefix% Votre mode de jeu temporaire a été réglé sur &c%gamemode%&7 pour &e%time%"
+  Your:
+    Survival: "%prefix% Votre mode de jeu a été réglé sur &eSurvival"
+    Creative: "%prefix% Votre mode de jeu a été réglé sur &eCréatif"
+    Adventure: "%prefix% Votre mode de jeu a été réglé sur &eAventure"
+    Spectator: "%prefix% Votre mode de jeu a été réglé sur &eSpectateur"
+  Other:
+    Survival:
+      Sender: "Le mode de jeu %prefix% de &e%player% &7a été mis à &eSurvival"
+      Receiver: "%prefix% Votre mode de jeu a été réglé sur &eSurvival"
+    Creative:
+      Sender: "Le mode de jeu %prefix% de &e%player% &7a été mis à &eCréatif"
+      Receiver: "%prefix% Votre mode de jeu a été réglé sur &eCréatif"
+    Adventure:
+      Sender: "Le mode de jeu %prefix% de &e%player% &7a été réglé sur &eAventure"
+      Receiver: "%prefix% Votre mode de jeu a été réglé sur &eAventure"
+    Spectator:
+      Sender: "Le mode de jeu %prefix% de &e%player% &7a été réglé sur &eSpectator"
+      Receiver: "%prefix% Votre mode de jeu a été réglé sur &eSpectateur"
+# Translations for TPS command
+TPS:
+  - "%prefix% TPS actuels: &e%tps%"
+  - "%prefix% TPS à partir de 1min : &e%tps-from-1%"
+  - "%prefix% TPS à partir de 5min: &e%tps-from-5%"
+  - "%prefix% TPS à partir de 15min : &e%tps-from-15%"
+# Translations for /Enchant and /EnchantRemove commands
+Enchant:
+  Add: "%prefix% objet dans votre main a été enchanté par l'enchantement &e%enchant% %level%"
+  Remove:
+    One: "%prefix% Enchantement enlevé &e%enchant% &7de l'objet dans votre main"
+    All: "%prefix% Tous les enchantements de l'objet dans votre main ont été retirés"
+# Translations for tp commands
+TpSystem:
+  NoRequest: "%prefix% Vous n'avez aucune demande"
+  NotSafe: "%prefix% Impossible de trouver un endroit sûr"
+  SendRequestToSelf: "%prefix% Vous ne pouvez pas vous envoyer de demande à vous-même"
+  HaveRequest: "%prefix% &e%player% &7ont déjà une demande de téléportation de votre part"
+  Tpa:
+    Send:
+      Sender: "%prefix% Vous avez envoyé une demande de téléportation à &e%player%"
+      Receiver: "%prefix% &e%player% &7veut vous téléporter"
+    Accept:
+      Sender:
+        - "%prefix% Vous avez accepté la demande de téléportation de &e%player%"
+        - "%prefix% Téléportation &e%player% &7vers vous"
+      Receiver:
+        - "%prefix% &e%player% &7a accepté votre demande de téléportation"
+        - "%prefix% Téléportation vers &e%player%"
+    Reject:
+      Sender: "%prefix% Vous avez rejeté la demande de téléportation de &e%player%"
+      Receiver: "%prefix% &e%player% &7a rejeté votre demande de téléportation"
+    Cancel:
+      Sender: "%prefix% Vous avez annulé la demande de téléportation de &e%player%"
+      Receiver: ""
+  Tpahere:
+    Send:
+      Sender: "%prefix% Vous avez envoyé une demande de téléportation à &e%player%"
+      Receiver: "%prefix% &e%player% &7veut vous téléporter à lui"
+    Accept:
+      Sender:
+        - "%prefix% &e%player% &7a accepté votre demande de téléportation"
+        - "%prefix% Téléportation vers l'emplacement de &e%player%"
+      Receiver:
+        - "%prefix% &e%player% &7a accepté votre demande de téléportation"
+        - "%prefix% Téléportation &e%player% &7à votre position"
+    Reject:
+      Sender: "%prefix% Vous avez rejeté la demande de téléportation de &e%player%"
+      Receiver: "%prefix% &e%player% &7a rejeté votre demande de téléportation"
+    Cancel:
+      Sender: "%prefix% Vous avez annulé la demande de téléportation à &e%player%"
+      Receiver: ""
+  TpHere:
+    Sender: "%prefix% Téléportation &e%player% &7vers vous"
+    Receiver: "%prefix% Téléportation vers &e%player%"
+  Tp:
+    Player:
+      YouToPlayer: "%prefix% Téléportation vers &e%player%"
+      PlayerToYou: "%prefix% Téléportation &e%player% &7vers vous"
+      PlayerToNextPlayer: "%prefix% Téléportation &e%player% &7vers &e%next-player%"
+    Location:
+      YouToLocation: "%prefix% Vous Téléportation vers &e%x%&7, &e%y%&7, &e%z%, &e%yaw%, &e%pitch%"
+      PlayerToLocation: "%prefix% Téléportation &e%player% &7vers &e%x%&7, &e%y%&7, &e%z%"
+  TpaAll: "%prefix% a envoyé une demande à &e%amount% &7joueurs pour se téléporter à votre position"
+  TpAll: "%prefix% Téléportation à votre position &e%amount% &7joueurs"
+  Block:
+    IsBlocked:
+      Teleport: "%prefix% Téléportation a été annulée, le joueur bloque les téléportations de vous"
+      Request: "%prefix% La demande de téléportation a été annulée, le joueur bloque les téléportations de vous"
+    List: "Liste de %prefix% bloquée : &e%blocked%"
+    Add: "%prefix% Vous bloquez maintenant la téléportation de &e%player%"
+    Remove: "%prefix% Vous acceptez maintenant la téléportation depuis &e%player%"
+    Global:
+      On: "%prefix% Vous bloquez la téléportation de tout le monde"
+      Off: "%prefix% Vous acceptez maintenant la téléportation de tout le monde"
+# Translations for /Sudo command
+Sudo:
+  Message: ""
+  Command: "%prefix% Vous avez envoyé la commande &e%command%&7 en tant que &e%player%"
+# Translations for /Repair command
+Repair:
+  Hand:
+    You: "%prefix% Vous avez réparé l'objet dans votre main"
+    Other:
+      Sender: "%prefix% Vous avez réparé l'objet dans la main de &e%player%&7"
+      Receiver: "%prefix% objets dans votre main ont été réparés"
+  All:
+    You: "%prefix% Vous avez réparé tous les objets de votre inventaire"
+    Other:
+      Sender: "%prefix% Vous avez réparé tous les objets dans l'inventaire de &e%player%&7"
+      Receiver: "%prefix% Tous les objets de votre inventaire ont été réparés"
+# Translations for time commands
+Time:
+  Day: "%prefix% Vous avez défini &eday &7dans le monde &e%world%"
+  Night: "%prefix% Vous avez défini &enight &7dans le monde &e%world%"
+  PDay: "%prefix% Vous avez défini &eday &7pour &e%player%"
+  PNight: "%prefix% Vous avez réglé &7pour &e%player%"
+# Translations for weather commands
+Weather:
+  Sun: "%prefix% Vous avez défini &esunny &7météo dans le monde &e%world%"
+  Rain: "%prefix% Vous avez défini &erainy &7météo dans le monde &e%world%"
+  PSun: "%prefix% Vous avez défini &esunny &7météo pour &e%player%"
+  PRain: "%prefix% Vous avez réglé &erainy &7météo pour &e%player%"
+  Thunder: "%prefix% Vous avez réglé &erainy &7météo avec &ethunder &7dans le monde &e%world%"
+# Translations for MultiWorld command
+MultiWorld:
+  Import: "Monde %prefix% &e%world% &7importé (Générateur: &e%generator%&7)"
+  Creating: "%prefix% Création du monde &e%world% &7(Générateur : &e%generator%&7)"
+  Create: "Monde %prefix% &e%world% &7créé (Générateur: &e%generator%&7)"
+  Delete: "Monde %prefix% &e%world% &7supprimé"
+  Unload: "Monde %prefix% &e%world% &7déchargé"
+  Load: "Monde %prefix% &e%world% &7chargé"
+  Loaded: "Monde %prefix% &e%world% &7déjà chargé"
+  Exists: "Le monde %prefix% &e%world% &7existe déjà"
+  NotLoaded: "Le monde %prefix% &e%world% &7n'est pas chargé"
+  List: "%prefix% Liste des mondes: &e%worlds%"
+  CannotLoad: "%prefix% ne peut pas charger le monde &e%world%"
+  Teleport:
+    You: "%prefix% Téléportation vers le monde &e%world%"
+    Other:
+      Sender: "%prefix% Téléportation &e%player% &7vers le monde &e%world%"
+      Receiver: "%prefix% Téléportation vers le monde &e%world%"
+  Spawn:
+    Set: "%prefix% a défini l'apparition du monde à &e%x%&7, &e%y%&7, &e%z%"
+    Get: "%prefix% Spawn dans le monde &e%world% &7est défini à &e%x%&7, &e%y%&7, &e%z%"
+  Flag:
+    Set: "%prefix% Drapeau &e%flag%&7 du monde &e%world%&7 réglé à &e%value%"
+    Get: "Le drapeau %prefix% &e%flag%&7 du monde &e%world%&7 est défini à &e%value%"
+    Wrong: "%prefix% La valeur du drapeau &e%flag%&7 ne peut être que &e%value%"
+# Translations for /Mail command
+Mail:
+  Received: "%prefix% Vous avez &e%amount% &7mails"
+  Empty: "%prefix% Vous n'avez pas de mail"
+  Clear: "%prefix% e-mails effacés"
+  Sent: "%prefix% Vous avez envoyé un mail à &e%player%"
+  Notification: "%prefix% Vous avez &e%amount% &7mails"
+# Translations for WalkSpeed, FlySpeed and Speed commands
+Speed:
+  Walk:
+    You: "%prefix% Votre vitesse de marche a été définie à &e%speed%"
+    Other:
+      Sender: "%prefix% &e la vitesse de marche du &e%player%&7 a été définie à &e%speed%"
+      Receiver: "%prefix% Votre vitesse de marche a été définie à &e%speed%"
+  Fly:
+    You: "%prefix% Votre vitesse de vol a été définie à &e%speed%"
+    Other:
+      Sender: "La vitesse de vol de %prefix% &e%player%&7 a été définie à &e%speed%"
+      Receiver: "%prefix% Votre vitesse de vol a été définie à &e%speed%"
+# Translations for fly commands
+Fly:
+  Temp:
+    EndIn: "%prefix% Le Temp-Fly expire dans &e%time%"
+    End: "%prefix% Le vol tempo a expiré"
+    Enabled:
+      You: "%prefix% Temp-Fly a été activé pour &e%time%"
+      Other:
+        Sender: "%prefix% &e%player%&7 a été activé pour &e%time%"
+        Receiver: "%prefix% Temp-Fly a été activé pour &e%time%"
+    Disabled:
+      You: "%prefix% Temp-Fly a été désactivé"
+      Other:
+        Sender: "%prefix% &e%player%&e a été désactivé"
+        Receiver: "%prefix% Temp-Fly a été désactivé"
+  Enabled:
+    You: "%prefix% Vol activé"
+    Other:
+      Sender: "La mouche de %prefix% &e%player%&7 a été activée"
+      Receiver: "%prefix% Vol activé"
+  Disabled:
+    You: "%prefix% Vol a été désactivé"
+    Other:
+      Sender: "La mouche de %prefix% &e%player%&7 a été désactivée"
+      Receiver: "%prefix% Vol a été désactivé"
+# Translations for god commands
+God:
+  Enabled:
+    You: "%prefix% Dieu a été activé"
+    Other:
+      Sender: "Le dieu de %prefix% &e%player%&7 a été activé"
+      Receiver: "%prefix% Dieu a été activé"
+  Disabled:
+    You: "%prefix% Dieu a été désactivé"
+    Other:
+      Sender: "%prefix% &e le dieu de%player%&7 a été désactivé"
+      Receiver: "%prefix% Dieu a été désactivé"
+# Translations for warps commands
+Warp:
+  Created:
+    WithPerms: "Téléportation %prefix% &e%warp% &7créée (Autorisation requise &e%permission%&7)"
+    Normal: "%prefix% Téléportation &e%warp% &7créée"
+  Deleted: "%prefix% Téléportation &e%warp% &7supprimée"
+  Teleport:
+    You: "%prefix% Téléportation vers la &e%warp%"
+    Other:
+      Sender: "%prefix% Téléportation &e%player% &7pour déformer &e%warp%"
+      Receiver: "%prefix% Téléportation vers la &e%warp%"
+  List: "%prefix% Liste des warps: &e%warps%"
+  Empty: "%prefix% Il n'y a pas de chaîne"
+  WrongLocation: "%prefix% Téléportation &e%warp% &7a un mauvais emplacement"
+  Exists: "%prefix% Téléportation &e%warp% &7existe déjà"
+  NotExist: "%prefix% Téléportation &e%warp% &7n'existe pas"
+# Translations for /Spawn command
+Spawn:
+  Teleport:
+    You: "%prefix% Téléportation vers le spawn"
+    Other:
+      Sender: "%prefix% Téléportation &e%player% &7au point d'apparition"
+      Receiver: "%prefix% Téléportation vers le spawn"
+  Set: "%prefix% Serveur spawn défini à &e%x%&7, &e%y%&7, &e%z%"
+# Translations for /Maintenance command
+Maintenance:
+  Enabled: "Le mode de maintenance de %prefix% a été &activé"
+  Disabled: "%prefix% Le mode Maintenance a été &désactivé"
+# Translations for /Vanish command
+Vanish:
+  Join: "%prefix% &a&lYou est encore &c&lvanisé"
+  Active: "&cSupprimé"
+  Enabled:
+    You: "%prefix% a été &eactivé"
+    Other:
+      Sender: "%prefix% La disparition de &e%player% &7a été &eactivée"
+      Receiver: "%prefix% a été &eactivé"
+  Disabled:
+    You: "La disparition de %prefix% a été &edisabled"
+    Other:
+      Sender: "%prefix% La disparition de &e%player% &7a été &edisabled"
+      Receiver: "La disparition de %prefix% a été &edisabled"
+# Translations for /Thor command
+Thor:
+  Player: "%prefix% &e%player% &7frappée"
+  Block: "%prefix% éclair invoqué"
+# Translations for cooldowns
+Cooldowns:
+  Messages: "%prefix% Ralentissement, attendez &e%time% &7avant d'envoyer le message"
+  Commands: "%prefix% Ralentissement, attendez &e%time% &7avant d'envoyer la commande"
+# Translations for kits commands
+Kits:
+  List: "%prefix% Liste des kits : &e%kits%"
+  Empty: "%prefix% Il n'y a pas de kit"
+  Used: "%prefix% Vous avez utilisé le kit &e%kit% &7"
+  NotExist: "Kit %prefix% &e%kit% &7n'existe pas"
+  Cooldown: "%prefix% Vous devez attendre &e%time% &7pour utiliser le kit &e%kit%"
+  Give:
+    Sender: "%prefix% Vous avez donné le kit &e%kit% &7à &e%player%"
+    Receiver: "%prefix% Vous avez reçu le kit &e%kit% &7"
+# Translations for /Spawner command
+Spawner:
+  Set:
+    Entity: "%prefix% Entité spawner définie à &e%entity%"
+    Amount: "Limite d'apparition de %prefix% définie à &e%amount%"
+    Range: "%prefix% Plage d'apparition définie à &e%range%"
+    SpawnTime: "%prefix% Temps d'apparition défini à &e%time%"
+  BlockNotSpawner: "%prefix% Le bloc que vous regardez doit être un &spawner"
+# Translations for /Heal command
+Heal:
+  You: "%prefix% Vous avez été soigné"
+  Other:
+    Sender: "%prefix% &e%player% &7a été soigné"
+    Receiver: "%prefix% Vous avez été soigné"
+# Translations for /Feed command
+Feed:
+  You: "%prefix% Vous avez été nourri"
+  Other:
+    Sender: "%prefix% &e%player% &7a été nourri"
+    Receiver: "%prefix% Vous avez été nourri"
+# Translations for /ChatLock command
+ChatLock:
+  Lock: "%prefix% Chat est &elocked"
+  Unlock: "Le chat %prefix% est &edéverrouillé"
+  IsLocked: "%prefix% Désolé, le chat est verrouillé, veuillez réessayer plus tard."
+  Message: "%prefix% &dVerrouillage de chat &e%player% &7a écrit &e%message%"
+# Translations for /Pm <player>
+PrivateMessage:
+  NoReply: "%prefix% Vous n'avez personne pour répondre"
+  ChatLock:
+    true: "Le chat %prefix% est verrouillé, tapez le texte pour répondre au joueur"
+    false: "Le chat %prefix% est déverrouillé"
+# Translations for /ClearChat command
+ClearChat:
+  Cleared:
+    Console: "Le chat %prefix% a été effacé par &eConsole"
+    Player: "Le chat %prefix% a été effacé par &e%player%"
+  Specific: "Le chat %prefix% de &e%player% &7a été effacé"
+  SpecificChatHaveBypass: "%prefix% &e%player% &7ont la permission de contournement !"
+  NoClearOwnChat: "%prefix% Vous ne pouvez pas effacer votre propre chat"
+# Translations for /Back command
+Back:
+  WrongLocation: "%prefix% L'emplacement de retour est incorrect"
+  NoLocation: "%prefix% Il n'y a pas d'emplacement vers lequel se téléporter"
+  Teleport:
+    You: "%prefix% Téléportation vers l'emplacement précédent"
+    Other:
+      Sender: "%prefix% Téléportation &e%player% &7Retour à l'emplacement précédent"
+      Receiver: "%prefix% Téléportation vers l'emplacement précédent"
+Immune:
+  Enabled:
+    You: "%prefix% Votre immunité a été &eactivée"
+    Other:
+      Sender: "L'immunité de %prefix% &e%player%&7 a été &eactivée"
+      Receiver: "%prefix% Votre immunité a été &eactivée"
+  Disabled:
+    You: "%prefix% Votre immunité a été &édité"
+    Other:
+      Sender: "L'immunité de %prefix% &e%player%&7 a été &edisabled"
+      Receiver: "%prefix% Votre immunité a été &édité"
+  NoPunish: "%prefix% &e%player% &7a l'immunité."
+Tablist:
+  Prefix:
+    Get:
+      NameTag: "Le préfixe %prefix% du groupe &e%group% &7du nametag est &r%value%"
+      TabList: "Le préfixe %prefix% du groupe &e%group% &7of tablist est &r%value%"
+    Set:
+      NameTag: "Préfixe %prefix% du groupe &e%group% &7du nametag défini à &r%value%"
+      TabList: "Préfixe %prefix% du groupe &e%group% &7of tablist défini à &r%value%"
+  Suffix:
+    Get:
+      NameTag: "%prefix% Suffixe du groupe &e%group% &7du nametag est &r%value%"
+      TabList: "%prefix% Suffixe du groupe &e%group% &7of tablist est &r%value%"
+    Set:
+      NameTag: "%prefix% Suffixe du groupe &e%group% &7du nametag défini à &r%value%"
+      TabList: "%prefix% Suffixe du groupe &e%group% &7of tablist défini à &r%value%"
+    Priorite:
+      Get: "La priorité %prefix% du groupe &e%group% &7dans tablist est &e%value%"
+      Set: "Priorité de %prefix% du groupe &e%group% &7dans tablist définie à &e%value%"
+    Exists: "Groupe %prefix% &e%group% &7existe déjà"
+    NotExist: "Groupe %prefix% &e%group% &7n'existe pas"
+    Create: "Groupe %prefix% &e%group% &7créé"
+    Delete: "Groupe %prefix% &e%group% &7supprimé"
+WhoIs:
+  Loading: "%prefix% Chargement des données de &e%player%&7.."
+  Online:
+    - "%prefix% Joueur: &e%player%"
+    - "UUID de %prefix% : &e%uuid%"
+    - "Santé de %prefix% : &e%health%"
+    - "Aliment %prefix% : &e%food%"
+    - "%prefix% en ligne pour: &e%seen%"
+    - "IP de %prefix% : &e%ip%"
+    - "%prefix% AFK: &e%afk%"
+    - "%prefix% Dieu: &e%god%"
+    - "%prefix% Vol : &e%fly%"
+    - "%prefix% OP: &e%op%"
+    - "%prefix% Autres informations :"
+    - "%prefix%   FirstJoin: &e%firstjoin%"
+    - "%prefix%   Pays: &e%country%"
+    - "Groupe %prefix%   : &e%group%"
+    - "Argent %prefix%   : &e%money%"
+    - "%prefix% Banni : %banned%"
+    - "%prefix% banni IP: %ip-banned%"
+    - "%prefix% banni IP: %ip-banned%"
+  Offline:
+    - "%prefix% Joueur: &e%player%"
+    - "UUID de %prefix% : &e%uuid%"
+    - "%prefix% Hors ligne pour: &e%seen%"
+    - "IP de %prefix% : &e%ip%"
+    - "%prefix% AFK: &e%afk%"
+    - "%prefix% Dieu: &e%god%"
+    - "%prefix% Vol : &e%fly%"
+    - "%prefix% OP: &e%op%"
+    - "%prefix% Autres informations :"
+    - "%prefix%   FirstJoin: &e%firstjoin%"
+    - "%prefix%   Pays: &e%country%"
+    - "Groupe %prefix%   : &e%group%"
+    - "Argent %prefix%   : &e%money%"
+    - "%prefix% Banni : %banned%"
+    - "%prefix% banni IP: %ip-banned%"
+Inventory:
+  ClearConfirmToggle:
+    Enabled: "%prefix% Désactivé pour confirmer l'inventaire de nettoyage"
+    Disabled: "%prefix% Nécessité activée pour confirmer l'inventaire"
+  ClearInventory:
+    ClearConfirm: "%prefix% Veuillez confirmer votre demande de vider l'inventaire"
+    You: "%prefix% Vous avez effacé votre inventaire"
+    Other:
+      Sender: "%prefix% Vous avez effacé l'inventaire de &e%player%&7"
+      Receiver: "%prefix% Votre inventaire a été vidé par &e%player%"
+    Undo: "%prefix% Vous avez récupéré votre inventaire"
+    CantUndo: "%prefix% Impossible de récupérer votre inventaire"
+    NoMoney: "%prefix% Vous n'avez pas assez d'argent, vous avez besoin &e%money%"
+  CloseInventory:
+    You: "%prefix% Fermeture de votre inventaire ouvert"
+    Other:
+      Sender: "%prefix% Fermeture de l'inventaire ouvert de &e%player%"
+      Receiver: "%prefix% Fermeture de votre inventaire ouvert"
+  EnderChest:
+    You: "%prefix% EnderChest Ouverture"
+    Other:
+      Sender: "%prefix% EnderChest Ouverture de &e%player%"
+      Receiver: "%prefix% EnderChest Ouverture"
+  EnderSee:
+    Sender: "%prefix% EnderChest Ouverture de &e%player%"
+    Receiver: ""
+  Invsee:
+    You: "%prefix% Ouverture de l'inventaire de &e%player%"
+    Other:
+      Sender: "%prefix% Ouverture de l'inventaire de &e%player%&7 pour &e%target%"
+      Receiver: "%prefix% Ouverture de l'inventaire de &e%player%"
+  Workbench:
+    You: "Établi d'ouverture de %prefix%"
+    Other:
+      Sender: "Établi d'ouverture de %prefix% pour &e%player%"
+      Receiver: "Établi d'ouverture de %prefix%"
+  Anvil:
+    You: "Enclume ouverte %prefix%"
+    Other:
+      Sender: "%prefix% Enclume d'ouverture pour &e%player%"
+      Receiver: "Enclume ouverte %prefix%"
+DisplayManager:
+  Scoreboard:
+    Show: "%prefix% Votre tableau de bord a été affiché"
+    Hide: "%prefix% Votre tableau de bord a été masqué"
+  ActionBar:
+    Show: "%prefix% Votre barre d'action a été affichée"
+    Hide: "%prefix% Votre barre d'action a été masquée"
+  BossBar:
+    Show: "%prefix% Votre bossbar a été affiché"
+    Hide: "%prefix% Votre bossbar a été masqué"
+Scoreboard:
+  Show: "Le tableau de score %prefix% de &e%player% &7a été affiché"
+  Hide: "Le tableau de score %prefix% de &e%player% &7a été masqué"
+ActionBar:
+  Show: "%prefix% Barre d'action de &e%player% &7a été affichée"
+  Hide: "%prefix% Barre d'action de &e%player% &7a été masquée"
+BossBar:
+  Show: "%prefix% Barre Bossde &e%player% &7a été affichée"
+  Hide: "%prefix% Barre Bossde &e%player% &7a été cachée"
+Skin:
+  Set:
+    You: "%prefix% Votre skin a été mis à &e%skin%"
+    Other:
+      Sender: "%prefix% &e l'apparence de%player%&7 a été définie à &e%skin%"
+      Receiver: "%prefix% Votre skin a été mis à &e%skin%"
+  Reset:
+    You: "%prefix% Réinitialisation de votre skin"
+    Other:
+      Sender: "%prefix% &e%player%&7 réinitialisation du skin"
+      Receiver: "%prefix% Réinitialisation de votre skin"
+Accounts:
+  Users: "%prefix% Comptes sur les adresses IP du joueur &e%player%&7: &e%players%"
+  NoAccounts: "%prefix% Aucun compte n'a été créé"
+Uuid:
+  Message: "%prefix% Uuid du joueur &e%player% &7est &a%uuid%"
+Trash:
+  Name: "&7Corbeille"
+  Clear: "&eVider la corbeille"
+Mirror:
+  Types: "%prefix% &7Types de miroir: &e%types%"
+  Enabled: "%prefix% &7Vous avez activé votre miroir. Type de miroir: &e%type%"
+  Disabled: "%prefix% &7Vous avez désactivé votre miroir."
+# Translations for PlayTime commands
+PlayTime:
+  Time:
+    Global: "%prefix% &7Votre temps de jeu est &e%playtime%"
+    Gamemode: "%prefix% &7Votre temps de jeu avec le mode de jeu &e%gamemode% &7est &e%playtime%"
+    World: "%prefix% &7Votre temps de jeu dans le monde &e%world% &7est &e%playtime%"
+    WorldGamemode: "%prefix% &7Votre temps de jeu dans le monde &e%world% &7avec le mode de jeu &e%gamemode% &7est &e%playtime%"
+  Other:
+    Global: "%prefix% &7Le joueur &e%player% &7le temps de jeu est &e%playtime%"
+    Gamemode: "%prefix% &7Joueur &e%player% &7Temps joué avec le mode de jeu &e%gamemode% &7est &e%playtime%"
+    World: "%prefix% &7Joueur &e%player% &7Temps joué dans le monde &e%world% &7est &e%playtime%"
+    WorldGamemode: "%prefix% &7Joueur &e%player% &7Temps joué dans le monde &e%world% &7avec le mode de jeu &e%gamemode% &7est &e%playtime%"
+  PlayTop:
+    Loading: "%prefix% Comptant tous les joueurs, veuillez patienter.."
+    Header: "%prefix% &7=====» &cTop de jeu &e%page%/%pages% &7«====="
+    Top: "&e%position%. &7%playername% &7(&e%playtime%&7)"
+    Footer: ""
+Config: "%prefix% Configurations et tâches rechargées"

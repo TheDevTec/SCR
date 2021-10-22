@@ -26,17 +26,17 @@ public class SPunishment implements Punishment {
 	
 	@Override
 	public long getDuration() {
-		return data.getLong(prefix+user.toLowerCase()+"."+punishName+".duration");
+		return data.getLong(prefix+user.toLowerCase().replace(".", "_")+"."+punishName+".duration");
 	}
 
 	@Override
 	public String getReason() {
-		return data.getString(prefix+user.toLowerCase()+"."+punishName+".reason").replace("\\n", "\n");
+		return data.getString(prefix+user.toLowerCase().replace(".", "_")+"."+punishName+".reason").replace("\\n", "\n");
 	}
 
 	@Override
 	public long getStart() {
-		return data.getLong(prefix+user.toLowerCase()+"."+punishName+".start");
+		return data.getLong(prefix+user.toLowerCase().replace(".", "_")+"."+punishName+".start");
 	}
 
 	@Override
@@ -55,13 +55,13 @@ public class SPunishment implements Punishment {
 	}
 	
 	public void remove() {
-		data.remove(prefix+user.toLowerCase()+"."+punishName);
+		data.remove(prefix+user.toLowerCase().replace(".", "_")+"."+punishName);
 		data.save();
 	}
 
 	@Override
 	public Object getValue(String path) {
-		return data.get(prefix+user.toLowerCase()+"."+punishName+"."+path);
+		return data.get(prefix+user.toLowerCase().replace(".", "_")+"."+punishName+"."+path);
 	}
 	
 	public String toString() {

@@ -1,0 +1,867 @@
+# Links:
+#  Github: https://github.com/TheDevTec/ServerControlReloaded
+#  Discord: https://discord.io/spigotdevtec
+#  Spigot: https://www.spigotmc.org/resources/71147/
+
+# Text for %prefix% placeholder
+Prefix: "&6&lS&f&lerver &8&l»&7"
+# Translation for no perms message
+NoPerms: "%prefix% Du har inte behörighet att göra det (&e%permission%&7)"
+# Translations for /Portal command
+Portals:
+  NotExist: "%prefix% Portal &e%name% &7finns inte"
+  Exists: "%prefix% Portal &e%name% &7finns redan"
+  Delete: "%prefix% Portal &e%name% &7raderad"
+  PosSet: "%prefix% Position &e%position%# &7of portal &e%name% &7set på koderna &e%x%&7, &e%y%&7, &e%z%"
+  Particle: "%prefix% Set particle &e%value% &7for portal &e%name%"
+  Server: "%prefix% Set foward server &e%server% &7for portal &e%name%"
+  Create:
+    - "%prefix% Portal &e%name% &7skapad"
+    - "%prefix% Setup portal via /portal set' kommando"
+  List:
+    - "%prefix% Lista över portaler:"
+    - "&e%list%"
+  Cmds:
+    Add: "%prefix% Lade till kommandot '&e%value%&7'to portal &e%name%"
+    Remove: "%prefix% Tog bort kommandot på position &e%position% &7av portalen &e%name%"
+    List:
+      - "%prefix% Lista över kommandon för portalen &e%name%&7:"
+      - "&e%list%"
+# Translations for /ChatNotify command
+Notify:
+  Enable: "%prefix% notifieringar i chatten aktiverade"
+  Disable: "%prefix% aviseringar i chatten inaktiverad"
+  EnableOther: "%prefix% Aviseringar i chatten på &e%player% &7enabled"
+  DisableOther: "%prefix% Aviseringar i chatten på &e%player% &7inaktiverade"
+# Translations for /Give and /Skull commands
+Give:
+  Skull:
+    You: "%prefix% Du har fått skallen av &e%head%"
+    Other:
+      Sender: "%prefix% Du har fått skallen av &e%head%&7 till &e%player%"
+      Receiver: "%prefix% Du har fått skallen av &e%head%"
+  Item:
+    You: "%prefix% Lade till &e%amount%x %item%"
+    Other:
+      Sender: "%prefix% Lade till &e%amount%x %item% &7to &e%player%"
+      Receiver: "%prefix% Du fick &e%afäste%x %item%"
+# Translation for /Send command
+Send: "%prefix% Skickar &e%player%&7 till servern &e%server%"
+# Translations for /Seen command
+Seen:
+  Online: "%prefix% &e%player%&7 är &aonline &7för &a%online%"
+  Offline: "%prefix% &e%player%&7 är &coffline &7för &c%offline%"
+  Similiar: "%prefix% Menar du nick: &e%names%"
+# Translations for /SocialSpy command
+SocialSpy:
+  On: "%prefix% Du har aktiverat &eon &7din &esocial spion &7mode"
+  Off: "%prefix% Du har stängt &eoff &7din &esocial spion &7mode"
+# Translatios for /Ping command
+Ping:
+  You: "%prefix% Din ping är &e%ping%"
+  Other: "%prefix% &e%player%&7's ping är &e%ping%"
+# Translations for /List and /Staff commands
+List:
+  Staff:
+    - "%prefix% »===%staff_online% &7===«"
+    - "%prefix% Personal: &e%staff%"
+  Normal:
+    - "%prefix% »=== &e%joiner-count{{STAFF}, default, supervip, vip}% &8/ &e%server_maxonline% &7===«"
+    - "%prefix% Personal: &e%joiner{{STAFF}}%"
+    - "%prefix% VIPs: &e%joiner{supervip, vip}%"
+    - "%prefix% Standard: &e%joiner{default}%"
+PmIgnore:
+  NoLonger: "%prefix% Du ignorerar inte längre meddelanden från &e%player%"
+  Ignoring: "%prefix% Du ignorerar nu meddelanden i chatt & pm från &e%player%"
+# Translations for /Kill and /Suicide commands
+Kill:
+  Killed: "%prefix% dödade &e%player%"
+  KilledMore: "%prefix% dödade &e%amount% &7players"
+  Suicide: "%prefix% &e%player% &7har begått självmord. Farväl grym värld!"
+# Translations for 'missing' things
+Missing:
+  World: "%prefix% Världen &e%world% &7finns inte"
+  Player:
+    Offline: "%prefix% Spelare &e%player% &7är offline"
+    NotExist: "%prefix% Användare &e%player% &7finns inte"
+  HandEmpty: "%prefix% Din hand är tom"
+  TargetHandEmpty: "%prefix% &e%player%&7 handen är tom"
+  Entity: "%prefix% Enhet &e%entity% &7finns inte"
+  GameMode: "%prefix% Spelläge &e%gamemode% &7finns inte"
+  Material: "%prefix% Material &e%material% &7finns inte"
+  Flag: "%prefix% Föremålsflagga &e%flag% &7finns inte"
+  Generator: "%prefix% Generator &e%generator% &7finns inte"
+  MaterialM: "%prefix% &cSaknad material (typ: {BLOCK}) i GUICreator.yml!"
+  HeadURL: "%prefix% &cMissing HeadURL (headURL: {URL}) i GUICreator.yml!"
+  Enchant:
+    NotExist: "%prefix% Förtrollning &e%enchant% &7finns inte"
+    NoEnchant: "%prefix% Du har ingen förtrollning på objektet"
+    DontContains: "%prefix% Ditt objekt innehåller inte förtrollande &e%enchant%"
+# Translations for /Butcher command
+Butcher:
+  Killed: "%prefix% dödade &e%amount% &7enheter"
+  KilledSpecified: "%prefix% dödade &e%amount% &7enheter av typen &e%type%"
+# Translations for /Memory command
+Memory:
+  Info:
+    - "%prefix% Free MEM: &e%free_ram% &7MB"
+    - "%prefix% Used MEM: &e%used_ram% &7MB"
+    - "%prefix% Max MEM: &e%max_ram% &7MB"
+  Clear: "%prefix% Rensar minne, vänligen vänta.."
+  AlreadyClearing: "%prefix% Minnet rensas redan, vänligen vänta.."
+  Cleared: "%prefix% Minne rensat (&e%amount% &7MB)"
+# Translations for /Exp command
+Experiences:
+  Words:
+    Exp: "exps"
+    Level: "nivåer"
+  Balance: "%prefix% &e%player% &7has &e%amount% &7av %type%"
+  Given: "%prefix% Lade &e%amount% &7%type% till &e%player%"
+  Taken: "%prefix% Tog &e%amount% &7%type% från &e%player%"
+  Set: "%prefix% &e%player%&7 %type% har ändrats till &e%amount%"
+# Translations for /Item command
+Item:
+  Name: "%prefix% Visningsnamnet för objektet i din hand har ändrats till &r%name%"
+  NoItem: "&cDu håller inte något föremål i handen."
+  Lore:
+    Added: "%prefix% Lade till ny lore rad i din hand &r%line%"
+    Removed: "%prefix% Tog bort rad från föremålet i din hand &r%line%"
+    Error: "%prefix% Ett fel uppstod. Fel: %error%"
+    ListItem: "%prefix% &6Lista över lore rader på objektet i din hand:"
+    ListLore: "%prefix% &6%position%. rad: &5%lore%"
+    Set: "%prefix% Linjen &e%line%&7 i din hand har ändrats till &r%lore%"
+  Flag:
+    Added: "%prefix% &e%flag%&7 artikelflaggan har lagts till i objektet i din hand"
+    Removed: "%prefix% &e%flag% &7item flaggan har tagits bort från föremålet i din hand"
+    List: "%prefix% Objektflaggorna på föremålet i handen: &e%flags%"
+  Nbt:
+    Get: "%prefix% Nbt-taggar för föremål i din hand är &e%nbt%"
+    Set: "%prefix% Nbt-taggarna för föremål i din hand har ändrats till &e%nbt%"
+  Type:
+    Get: "%prefix% Typ av föremål i din hand är &e%type%"
+    Set: "%prefix% Typen av objekt i din hand har ändrats till &e%type%"
+  Amount:
+    Get: "%prefix% Antalet föremål i din hand är &e%amount%"
+    Set: "%prefix% Antalet föremål i din hand har ändrats till &e%amount%"
+  Durability:
+    Get: "%prefix% Varans hållbarhet i din hand är &e%durability%"
+    Set: "%prefix% Varans hållbarhet i din hand har ändrats till &e%durability%"
+  Process:
+    Cmd:
+      List:
+        Above: "%prefix% Lista över kommandon (%total%):"
+        Item: "%prefix% - &e%position% &f%value%"
+        Empty: "%prefix% Lista över kommandon är tom"
+      InvalidTarget: "%prefix% Valda mål är ogiltiga, giltiga mål: &eCONSOLE, SPELARE"
+      Add: "%prefix% Lade till &e%value%&7-kommandot i listan över kommandon"
+      Remove: "%prefix% Tog bort &e%value%&7 kommandot (%position%) från listan över kommandon"
+    Msg:
+      List:
+        Above: "%prefix% Lista över meddelanden (%total%):"
+        Item: "%prefix% - &e%position% &f%value%"
+        Empty: "%prefix% Lista över meddelanden är tom"
+      Add: "%prefix% Lade till &e%value%&7-meddelandet i listan över meddelanden"
+      Remove: "%prefix% Tog bort &e%value%&7 meddelande (%position%) från listan över meddelanden"
+    Usage:
+      Set: "%prefix% Föremålets användningsbelopp satt till &e%value%"
+      Get: "%prefix% Objektets användningsbelopp är satt till &e%value%"
+    Cooldown:
+      Set: "%prefix% Föremålsanvändning cooldown inställd på &e%value%"
+      Get: "%prefix% Föremålsanvändning cooldown är satt till &e%value%"
+# Translations for /Hat command
+Hat:
+  InvFull:
+    You: "%prefix% Ditt förråd är fullt. Rensa vissa objekt för att ställa in objekt i huvudet"
+    Other: "%prefix% %player%'s inventory is full. You cannot set item. (Automatic Copy)"
+  Equipped:
+    You: "%prefix% Föremål från din hand har utrustats till ditt huvud"
+    Other:
+      Sender: "%prefix% Du har utrustat objektet &e%item%&7 till &e%player%&7's huvud"
+      Receiver: "%prefix% &e%player%&7 utrustat objekt &e%item%&7 till ditt huvud"
+SCR:
+  Info:
+    - "%prefix% Version av ServerControlReloaded: &eV%version%"
+    - "%prefix% Version av servern: &e%server%"
+    - "%prefix% Discord-länk: &ehttps://discord.io/spigotdevtec"
+    - "%prefix% Språk: &eEN"
+# Translations for economy commands
+Economy:
+  # Translation for /BalanceTop command
+  NoEconomyAccount: "%prefix% Det finns inget ekonomikonto"
+  NotEnought: "%prefix% Du har tillräckligt med pengar"
+  BalanceTop:
+    Loading: "%prefix% Räknar alla spelares förmögenhet, var snäll och håll i dig.."
+    Header: "%prefix% &7=====» &cBalanceTop &e%page%/%pages% &7«====="
+    Footer: ""
+  Reset:
+    Sender: "%prefix% Ekonomikonto för &e%player% &7har återställts"
+    Receiver: "%prefix% Ditt ekonomikonto har återställts"
+  Give:
+    Sender: "%prefix% Gaven &e$%money% &7to ekonomikonto för &e%player%"
+    Receiver: "%prefix% Gaven &e$%money% &7till ditt konto"
+  Take:
+    Sender: "%prefix% Tog &e$%money% &7från ekonomikonto för &e%player%"
+    Receiver: "%prefix% Tog &e$%money% &7från ditt konto"
+  Set:
+    Sender: "%prefix% Ställ in balansen i &e%player% &7to &e$%money%"
+    Receiver: "%prefix% Ditt ekonomiska saldo har satts till &e$%money%"
+  Balance:
+    Your: "%prefix% Dina &e$%money%"
+    Other: "%prefix% &e%player% &7have &e$%money%"
+  Pay:
+    Sender: "%prefix% Du betalade &e$%money% &7till &e%player%"
+    Receiver: "%prefix% &e%player% &7betalade dig &e$%money%"
+  Multi:
+    Exists: "%prefix% Ekonomigruppen &e%economy-group% &7finns redan"
+    NotExist: "%prefix% Ekonomigruppen &e%economy-group% &7finns inte"
+    Create: "%prefix% Ekonomigrupp &e%economy-group% &7skapad"
+    Delete: "%prefix% Ekonomigrupp &e%economy-group% &7raderad"
+    Groups: "%prefix% Ekonomigrupper: &e%groups%"
+    Worlds:
+      List: "%prefix% världar i ekonomigruppen &e%economy-group%&7: &e%worlds%"
+      AlreadyInGroup: "%prefix% Världen &e%world% &7är redan i ekonomigruppen &e%economy-group%"
+      NotInGroup: "%prefix% Världen &e%world% &7läggs inte till i ekonomigruppen &e%economy-group%"
+      Added: "%prefix% Världen &e%world% &7tillagd till ekonomigruppen &e%economy-group%"
+      Removed: "%prefix% Världen &e%world% &7borttagen från ekonomigruppen &e%economy-group%"
+    Money: "%prefix% &e%player% &7has &e$%money% &7in economy group &e%economy-group%"
+    Transfer: "%prefix% Överfört ekonomi av &e%player% &7av ekonomigrupp &e%from% &7to ekonomigrupp &e%to%"
+# Translations for /Nickname and /NicknameReset commands
+Nickname:
+  Change: "%prefix% Ditt smeknamn ändrat till &r%nickname%"
+  Reset: "%prefix% Ditt smeknamn återställs till &r%player%"
+  Get: "%prefix% &e%player%&7's smeknamn är &r%nickname%"
+# Translations for /AFK command and AutoAFK messages
+AFK:
+  Start: "%playername%&7 är AFK"
+  Start_WithReason: "%playername%&7 är AFK &7(&e%reason%&7)"
+  End: "%playername%&7 är inte längre AFK"
+  Command:
+    Start: ""
+    End: ""
+    Other:
+      Start: "%prefix% Du satte &%player% &7AFK"
+      End: "%prefix% Du satte &%player% &7inte längre AFK"
+# Translations for /Reply command
+NoReply: "%prefix% Du har ingen att svara på"
+BanSystem:
+  #Mutes
+  TempMuteIP:
+    Sender: "%prefix% Du har temp-muted-ip &e%ip% &7för &r%reason%&7 för &e%time%"
+    Admins: "%prefix% &e%operator% &7temp-muted-ip &e%ip% &7for &r%reason%&7 för &e%time%"
+  TempMute:
+    Sender: "%prefix% Du har temp-tystat &e%player% &7för &r%reason%&7 för &e%time%"
+    Admins: "%prefix% &e%operator% &7temp-tystad &e%player% &7for &r%reason%&7 för &e%time%"
+  MuteIP:
+    Sender: "%prefix% Du har tystat-ip &e%ip% &7för &r%reason%"
+    Admins: "%prefix% &e%operator% &7tyd-ip &e%ip% &7for &r%reason%"
+  Mute:
+    Sender: "%prefix% Du har tystat &e%player% &7för &r%reason%"
+    Admins: "%prefix% &e%operator% &7tystad &e%player% &7for &r%reason%"
+  Kick:
+    Sender: "%prefix% Du har sparkat &e%player% &7för &r%reason%"
+    Admins: "%prefix% &e%operator% &7sparkade &e%player% &7for &r%reason%"
+  UnMute:
+    Sender: "%prefix% Du har avtystat &e%player%"
+    Admins: "%prefix% &e%operator% &7untyed &e%player%"
+  UnMuteIP:
+    Sender: "%prefix% Du har untyed-ip &e%ip%"
+    Admins: "%prefix% &e%operator% &7untyed-ip &e%ip%"
+  #Bans
+  TempBanIP:
+    Sender: "%prefix% Du har temp-banned-ip &e%ip% &7för &r%reason%&7 för &e%time%"
+    Admins: "%prefix% &e%operator% &7temp-banned-ip &e%ip% &7for &r%reason%&7 för &e%time%"
+  TempBan:
+    Sender: "%prefix% Du har temp-bannlyst &e%player% &7för &r%reason%&7 för &e%time%"
+    Admins: "%prefix% &e%operator% &7temp-bannlyst &e%player% &7for &r%reason%&7 för &e%time%"
+  BanIP:
+    Sender: "%prefix% Du har bannlyst &e%ip% &7för &r%reason%"
+    Admins: "%prefix% &e%operator% &7banned-ip &e%ip% &7for &r%reason%"
+  Ban:
+    Sender: "%prefix% Du har bannlyst &e%player% &7för &r%reason%"
+    Admins: "%prefix% &e%operator% &7bannade &e%player% &7for &r%reason%"
+  UnBanIP:
+    Sender: "%prefix% Du har bannlyst &e%ip%"
+    Admins: "%prefix% &e%operator% &7unbanned-ip &e%ip%"
+  UnBan:
+    Sender: "%prefix% Du har bannlyst &e%player%"
+    Admins: "%prefix% &e%operator% &7bannade &e%player%"
+  #Jails
+  TempJailIP:
+    Sender: "%prefix% Du har temp-arrested-ip &e%ip% &7för &r%reason%&7 för &e%time%"
+    Admins: "%prefix% &e%operator% &7temp-arrested-ip &e%ip% &7for &r%reason%&7 för &e%time%"
+  TempJail:
+    Sender: "%prefix% Du har temp-arresterat &e%player% &7för &r%reason%&7 för &e%time%"
+    Admins: "%prefix% &e%operator% &7temp-arrested &e%player% &7for &r%reason%&7 för &e%time%"
+  JailIP:
+    Sender: "%prefix% Du har gripit &ip%ip% &7för &r%reason%"
+    Admins: "%prefix% &e%operator% &7arrested-ip &e%ip% &7for &r%reason%"
+  Jail:
+    Sender: "%prefix% Du har gripit &e%player% &7för &r%reason%"
+    Admins: "%prefix% &e%operator% &7arrested &e%player% &7for &r%reason%"
+  UnJailIP:
+    Sender: "%prefix% Du har frihetsberövat &e%ip%"
+    Admins: "%prefix% &e%operator% &7unjailed-ip &e%ip%"
+  UnJail:
+    Sender: "%prefix% Du har fängslat &e%player%"
+    Admins: "%prefix% &e%operator% &7 fångade &e%player%"
+  #Warns
+  Warn:
+    Sender: "%prefix% Du varnar &%player% &7för &r%reason%"
+    Admins: "%prefix% &e%operator% &7varnade &e%player% &7for &r%reason%"
+  #Other
+  Not:
+    Banned: "%prefix% &e%player% &7är inte bannlyst"
+    IPBanned: "%prefix% IP-adress &e%ip% &7är inte bannlyst"
+    Muted: "%prefix% &e%player% &7är inte tystad"
+    Arrested: "%prefix% &e%player% &7är inte arresterad"
+# Translations for /Jail command
+Jail:
+  Create: "%prefix% Jail &e%jail% &7created"
+  Delete: "%prefix% Fängelse &e%jail% &7raderad"
+  Exists: "%prefix% Jail &e%jail% &7finns redan"
+  NotExist: "%prefix% Jail &e%jail% &7finns inte"
+  List: "%prefix% Fängelser: &e%jails%"
+  Empty: "%prefix% Det finns ingen fängelse"
+# Translations for /ClearInventory command
+ClearInventory:
+  Cleared:
+    Your: "%prefix% Ditt förråd har rensats"
+    Other: "%prefix% &e%player%&7's inventory har rensats"
+  NoMoney: "%prefix% Du har inte tillräckligt med pengar. Du behöver &e%money%"
+  MissingEco: "%prefix% Insticksmodul för saknad ekonomi, installera pluginen Vault & Economy"
+  NoRetrive: "%prefix% Du har inte inventory att hämta"
+  Retrive: "%prefix% Ditt rensade förråd har återkommits för &e$%money%"
+  NoConfirm: "%prefix% Du har ingen bekräftelsebegäran"
+  Confirm:
+    Request: "%prefix% Vänligen bekräfta din begäran om att rensa ditt förråd"
+    Enabled: "%prefix% förfrågningar för att rensa inventory krävs"
+    Disabled: "%prefix% förfrågningar om att rensa inventory krävs inte längre"
+# Translations for /Helpop
+Helpop:
+  ChatLock:
+    true: "%prefix% Chatt är låst, skriv text till chatt för att skicka meddelande till helpop"
+    false: "%prefix% Chatten är upplåst"
+# Translations for /Home and /Homes commands
+Home:
+  EmptyList: "%prefix% Du har inget hem"
+  List: "%prefix% Hem: &e%homes%"
+  Teleporting: "%prefix% Teleporterar till hem &e%home%"
+  WrongLocation: "%prefix% Hem &e%home% &7har fel plats"
+  NotExist: "%prefix% Hem &e%home% &7finns inte"
+  Exists: "%prefix% Hem &e%home% &7finns redan"
+  Create: "%prefix% Hem &e%home% &7created"
+  Delete: "%prefix% Hem &e%home% &7raderad"
+  Limit: "%prefix% Du har nått gränsen för bostäder"
+  TpSpawn: "%prefix% Du har inget hem, teleporterar för att spawna"
+  Other:
+    NotExist: "%prefix% &e%player%s &7home &e%home% &7finns inte"
+    Teleporting: "%prefix% Teleporterar till hemmet &e%home% &7av &e%player%"
+    List: "%prefix% &e%player%&7's &7homes: &e%homes%"
+    EmptyList: "%prefix% &e%player% &7inte har något hem"
+# Translations for /Chunk command
+Chunks:
+  Load: "%prefix% &e%world%&7: &e%chunks% &7chunks"
+  Unload: "%prefix% avladdade &e%chunks% &7chunks"
+  TotalLoad: "%prefix% Totalt är laddat &e%chunks% &7chunks"
+#CountryBlocker translations
+CountryBlocker:
+  ListMess: "%prefix% Lista över spelare på vitlista:"
+  List: "%prefix% » &e%player%"
+  Add: "%prefix% Spelare &e%player% &7tillagd på vitlistan"
+  Remove: "%prefix% Spelare &e%player% &7borttagen från vitlistan"
+  NotWhitelisted: "%prefix% Spelare &e%player% &7finns inte på vitlista!"
+# Translations for gamemode commands
+GameMode:
+  Temp:
+    Remove: "%prefix% Temp-Gamemode borttagen"
+    EndIn: "%prefix% Frest-Gamemode löper ut om &e%time%"
+    End: "%prefix% Frest-spelläge löpte ut"
+    You: "%prefix% Ditt tillfälliga spelläge sattes till &c%gamemode%&7 för &e%time%"
+    Other:
+      Remove: "%prefix% Ditt tillfälliga spelläge togs bort"
+      Sender: "%prefix% Tillfälligt spelläge &c%gamemode% &7var satt till &e%time% &7to spelare &a%player%"
+      Reciever: "%prefix% Ditt tillfälliga spelläge sattes till &c%gamemode%&7 för &e%time%"
+  Your:
+    Survival: "%prefix% Ditt spelläge har satts till &eSurvival"
+    Creative: "%prefix% Ditt spelläge har ändrats till &eCreative"
+    Adventure: "%prefix% Ditt spelläge har satts till &eAdventure"
+    Spectator: "%prefix% Ditt spelläge har satts till &eSpectator"
+  Other:
+    Survival:
+      Sender: "%prefix% Spelläge av &e%player% &7har satts till &eSurvival"
+      Receiver: "%prefix% Ditt spelläge har satts till &eSurvival"
+    Creative:
+      Sender: "%prefix% Spelläge av &e%player% &7har satts till &eCreative"
+      Receiver: "%prefix% Ditt spelläge har ändrats till &eCreative"
+    Adventure:
+      Sender: "%prefix% Spelläge av &e%player% &7har satts till &eAdventure"
+      Receiver: "%prefix% Ditt spelläge har satts till &eAdventure"
+    Spectator:
+      Sender: "%prefix% Spelläge av &e%player% &7har satts till &eSpectator"
+      Receiver: "%prefix% Ditt spelläge har satts till &eSpectator"
+# Translations for TPS command
+TPS:
+  - "%prefix% Nuvarande TPS: &e%tps%"
+  - "%prefix% TPS från 1min: &e%tps-from-1%"
+  - "%prefix% TPS från 5min: &e%tps-from-5%"
+  - "%prefix% TPS från 15min: &e%tps-from-15%"
+# Translations for /Enchant and /EnchantRemove commands
+Enchant:
+  Add: "%prefix% Föremålet i din hand har förtrollats med förtrollning &e%enchant% %level%"
+  Remove:
+    One: "%prefix% Tog bort förtrollning &e%enchant% &7från föremål i din hand"
+    All: "%prefix% Tog bort alla förtrollningar från föremål i din hand"
+# Translations for tp commands
+TpSystem:
+  NoRequest: "%prefix% Du har ingen begäran"
+  NotSafe: "%prefix% Kan inte hitta säker plats"
+  SendRequestToSelf: "%prefix% Du kan inte skicka förfrågan till dig själv"
+  HaveRequest: "%prefix% &e%player% &7har redan teleporteringsbegäran från dig"
+  Tpa:
+    Send:
+      Sender: "%prefix% Du skickade teleporteringsbegäran till &e%player%"
+      Receiver: "%prefix% &e%player% &7vill teleportera till dig"
+    Accept:
+      Sender:
+        - "%prefix% Du har accepterat teleporteringsbegäran från &e%player%"
+        - "%prefix% Teleporterar &e%player% &7till dig"
+      Receiver:
+        - "%prefix% &e%player% &7accepterade din teleportationsbegäran"
+        - "%prefix% Teleporterar till &e%player%"
+    Reject:
+      Sender: "%prefix% Du har avböjt teleporteringsbegäran från &e%player%"
+      Receiver: "%prefix% &e%player% &7avvisade din teleportationsbegäran"
+    Cancel:
+      Sender: "%prefix% Du har avbrutit teleporteringsbegäran för &e%player%"
+      Receiver: ""
+  Tpahere:
+    Send:
+      Sender: "%prefix% Du skickade teleporteringsbegäran till &e%player%"
+      Receiver: "%prefix% &e%player% &7vill teleportera dig till honom"
+    Accept:
+      Sender:
+        - "%prefix% &e%player% &7accepterade din teleportationsbegäran"
+        - "%prefix% Teleporterar till &e%player%"
+      Receiver:
+        - "%prefix% &e%player% &7accepterade din teleportationsbegäran"
+        - "%prefix% Teleporterar &e%player% &7till din plats"
+    Reject:
+      Sender: "%prefix% Du har avböjt teleporteringsbegäran från &e%player%"
+      Receiver: "%prefix% &e%player% &7avvisade din teleportationsbegäran"
+    Cancel:
+      Sender: "%prefix% Du har avbrutit teleporteringsbegäran till &e%player%"
+      Receiver: ""
+  TpHere:
+    Sender: "%prefix% Teleporterar &e%player% &7till dig"
+    Receiver: "%prefix% Teleporterar till &e%player%"
+  Tp:
+    Player:
+      YouToPlayer: "%prefix% Teleporterar till &e%player%"
+      PlayerToYou: "%prefix% Teleporterar &e%player% &7till dig"
+      PlayerToNextPlayer: "%prefix% Teleporterar &e%player% &7to &e%next-player%"
+    Location:
+      YouToLocation: "%prefix% Teleporterar dig till &e%x%&7, &e%y%&7, &e%z%, &e%yaw%, &e%pitch%"
+      PlayerToLocation: "%prefix% Teleporterar &%player% &7to &e%x%&7, &e%y%&7, &e%z%"
+  TpaAll: "%prefix% Skickade förfrågan till &e%amount% &7players att teleportera till din position"
+  TpAll: "%prefix% Teleportera till din position &e%amount% &7players"
+  Block:
+    IsBlocked:
+      Teleport: "%prefix% Teleporteringen avbröts, spelaren blockerar teleporterna från dig"
+      Request: "%prefix% Teleportationsbegäran avbröts, spelaren blockerar teleporter från dig"
+    List: "%prefix% Lista över blockerade: &e%blocked%"
+    Add: "%prefix% Du blockerar nu teleporteringen från &e%player%"
+    Remove: "%prefix% Du accepterar nu teleportering från &e%player%"
+    Global:
+      On: "%prefix% Du blockerar teleportering från alla"
+      Off: "%prefix% Du accepterar nu teleportering från alla"
+# Translations for /Sudo command
+Sudo:
+  Message: ""
+  Command: "%prefix% Du skickade kommandot &e%command%&7 som &e%player%"
+# Translations for /Repair command
+Repair:
+  Hand:
+    You: "%prefix% Du reparerade föremål i din hand"
+    Other:
+      Sender: "%prefix% Du reparerade varan i &e%player%&7:s hand"
+      Receiver: "%prefix% Föremål i din hand har reparerats"
+  All:
+    You: "%prefix% Du reparerade alla föremål i ditt förråd"
+    Other:
+      Sender: "%prefix% Du reparerade alla objekt i &e%player%&7:s lager"
+      Receiver: "%prefix% Alla artiklar i ditt förråd har reparerats"
+# Translations for time commands
+Time:
+  Day: "%prefix% Du satte &eday &7in världen &e%world%"
+  Night: "%prefix% Du satte &enight &7in world &e%world%"
+  PDay: "%prefix% Du satte &&7för &e%player%"
+  PNight: "%prefix% Du satte &enight &7for &e%player%"
+# Translations for weather commands
+Weather:
+  Sun: "%prefix% Du satte &esunny &7väder i världen &e%world%"
+  Rain: "%prefix% Du satte &erainy &7väder i världen &e%world%"
+  PSun: "%prefix% Du satte &esunny &7väder för &e%player%"
+  PRain: "%prefix% Du satte &erainy &7weather för &e%player%"
+  Thunder: "%prefix% Du satte &erainy &7weather med &ethunder &7in world &e%world%"
+# Translations for MultiWorld command
+MultiWorld:
+  Import: "%prefix% Världen &e%world% &7importerad (Generator: &e%generator%&7)"
+  Creating: "%prefix% Skapar värld &e%world% &7(Generator: &e%generator%&7)"
+  Create: "%prefix% Världen &e%world% &7created (Generator: &e%generator%&7)"
+  Delete: "%prefix% Världen &e%world% &7raderad"
+  Unload: "%prefix% Världen &e%world% &7unloaded"
+  Load: "%prefix% Världen &e%world% &7loaded"
+  Loaded: "%prefix% Världen &e%world% &7redan laddad"
+  Exists: "%prefix% Världen &e%world% &7finns redan"
+  NotLoaded: "%prefix% Världen &e%world% &7är inte laddad"
+  List: "%prefix% Lista över världar: &e%worlds%"
+  CannotLoad: "%prefix% Kan inte ladda värld &e%world%"
+  Teleport:
+    You: "%prefix% Teleporterar till världen &e%world%"
+    Other:
+      Sender: "%prefix% Teleporterar &e%player% &7to world &e%world%"
+      Receiver: "%prefix% Teleporterar till världen &e%world%"
+  Spawn:
+    Set: "%prefix% satte världspawn på &e%x%&7, &e%y%&7, &e%z%"
+    Get: "%prefix% Spawna i världen &e%world% &7is satt till &e%x%&7, &e%y%&7, &e%z%"
+  Flag:
+    Set: "%prefix% Flagga &e%flag%&7 av världen &e%world%&7 satt till &e%value%"
+    Get: "%prefix% Flagga &e%flag%&7 av världen &e%world%&7 är satt till &e%value%"
+    Wrong: "%prefix% Värdet av flaggan &e%flag%&7 kan bara vara &e%value%"
+# Translations for /Mail command
+Mail:
+  Received: "%prefix% Du har &e%amount% &7mail"
+  Empty: "%prefix% Du har ingen e-post"
+  Clear: "%prefix% mejl rensade"
+  Sent: "%prefix% Du skickade e-post till &e%player%"
+  Notification: "%prefix% Du har &e%amount% &7mail"
+# Translations for WalkSpeed, FlySpeed and Speed commands
+Speed:
+  Walk:
+    You: "%prefix% Din gånghastighet har ändrats till &e%speed%"
+    Other:
+      Sender: "%prefix% &e%player%&7's walkspeed har ändrats till &e%speed%"
+      Receiver: "%prefix% Din gånghastighet har ändrats till &e%speed%"
+  Fly:
+    You: "%prefix% Din flyspeed har ändrats till &e%speed%"
+    Other:
+      Sender: "%prefix% &e%player%&7's flyspeed har ändrats till &e%speed%"
+      Receiver: "%prefix% Din flyspeed har ändrats till &e%speed%"
+# Translations for fly commands
+Fly:
+  Temp:
+    EndIn: "%prefix% Temp-Fly löper ut om &e%time%"
+    End: "%prefix% Temp-fly har löpt ut"
+    Enabled:
+      You: "%prefix% Temp-Fly har aktiverats för &e%time%"
+      Other:
+        Sender: "%prefix% &e%player%&7's temp-fly har aktiverats för &e%time%"
+        Receiver: "%prefix% Temp-Fly har aktiverats för &e%time%"
+    Disabled:
+      You: "%prefix% Temp-Fly har inaktiverats"
+      Other:
+        Sender: "%prefix% &e%player%&7's temp-fly har inaktiverats"
+        Receiver: "%prefix% Temp-Fly har inaktiverats"
+  Enabled:
+    You: "%prefix% Flyga har aktiverats"
+    Other:
+      Sender: "%prefix% &e%player%&7:s fluga har aktiverats"
+      Receiver: "%prefix% Flyga har aktiverats"
+  Disabled:
+    You: "%prefix% Flyga har inaktiverats"
+    Other:
+      Sender: "%prefix% &e%player%&7:s fluga har inaktiverats"
+      Receiver: "%prefix% Flyga har inaktiverats"
+# Translations for god commands
+God:
+  Enabled:
+    You: "%prefix% Gud har aktiverats"
+    Other:
+      Sender: "%prefix% &e%player%&7's gud har aktiverats"
+      Receiver: "%prefix% Gud har aktiverats"
+  Disabled:
+    You: "%prefix% Gud har inaktiverats"
+    Other:
+      Sender: "%prefix% &e%player%&7's gud har inaktiverats"
+      Receiver: "%prefix% Gud har inaktiverats"
+# Translations for warps commands
+Warp:
+  Created:
+    WithPerms: "%prefix% Warp &e%warp% &7created (Behörighet &e%permission%&7)"
+    Normal: "%prefix% Varp &e%warp% &7skapad"
+  Deleted: "%prefix% Varp &e%warp% &7borttagen"
+  Teleport:
+    You: "%prefix% Warping to warp &e%warp%"
+    Other:
+      Sender: "%prefix% Warping &e%player% &7to warp &e%warp%"
+      Receiver: "%prefix% Warping to warp &e%warp%"
+  List: "%prefix% Lista med varpar: &e%warps%"
+  Empty: "%prefix% Det finns ingen warp"
+  WrongLocation: "%prefix% Warp &e%warp% &7har fel plats"
+  Exists: "%prefix% Varp &e%warp% &7finns redan"
+  NotExist: "%prefix% Varp &e%warp% &7finns inte"
+# Translations for /Spawn command
+Spawn:
+  Teleport:
+    You: "%prefix% Teleporterar för att skapa"
+    Other:
+      Sender: "%prefix% Teleporterar &e%player% &7för att spawna"
+      Receiver: "%prefix% Teleporterar för att skapa"
+  Set: "%prefix% Server spawn satt till &e%x%&7, &e%y%&7, &e%z%"
+# Translations for /Maintenance command
+Maintenance:
+  Enabled: "%prefix% underhållsläge aktiverat &eon"
+  Disabled: "%prefix% underhållsläge avstängt &eoff"
+# Translations for /Vanish command
+Vanish:
+  Join: "%prefix% &a&lDu är fortfarande &c&försvunna"
+  Active: "&cförsvunnen"
+  Enabled:
+    You: "%prefix% försvinna har &aktiverats"
+    Other:
+      Sender: "%prefix% försvann av &e%player% &7har &aktiverats"
+      Receiver: "%prefix% försvinna har &aktiverats"
+  Disabled:
+    You: "%prefix% försvinna har &aktiverats"
+    Other:
+      Sender: "%prefix% försvann av &e%player% &7has blivit &redigerad"
+      Receiver: "%prefix% försvinna har &aktiverats"
+# Translations for /Thor command
+Thor:
+  Player: "%prefix% &e%player% &7striked"
+  Block: "%prefix% Uppmanad blixt"
+# Translations for cooldowns
+Cooldowns:
+  Messages: "%prefix% Långsamt ner, vänta på &e%time% &7innan du skickar meddelande"
+  Commands: "%prefix% Långsamt ner, vänta på &e%time% &7innan du skickar kommandot"
+# Translations for kits commands
+Kits:
+  List: "%prefix% Lista över kitar: &e%kits%"
+  Empty: "%prefix% Det finns inget kit"
+  Used: "%prefix% Du använde &e%kit% &7kit"
+  NotExist: "%prefix% Kit &e%kit% &7finns inte"
+  Cooldown: "%prefix% Du måste vänta &e%time% &7för att använda kit &e%kit%"
+  Give:
+    Sender: "%prefix% Du gav &e%kit% &7kit till &e%player%"
+    Receiver: "%prefix% Du tog emot &e%kit% &7kit"
+# Translations for /Spawner command
+Spawner:
+  Set:
+    Entity: "%prefix% Spawner-enhet satt till &e%entity%"
+    Amount: "%prefix% Spawner spawnande beloppsgräns satt till &e%amount%"
+    Range: "%prefix% Spawner spawning range satt till &e%range%"
+    SpawnTime: "%prefix% Spawner spawnar tid satt till &e%time%"
+  BlockNotSpawner: "%prefix% Block du tittar på måste vara en &espawner"
+# Translations for /Heal command
+Heal:
+  You: "%prefix% Du blev helad"
+  Other:
+    Sender: "%prefix% &e%player% &7blev läkt"
+    Receiver: "%prefix% Du blev helad"
+# Translations for /Feed command
+Feed:
+  You: "%prefix% Du har matats med"
+  Other:
+    Sender: "%prefix% &e%player% &7has matats med"
+    Receiver: "%prefix% Du har matats med"
+# Translations for /ChatLock command
+ChatLock:
+  Lock: "%prefix% Chatten är &elockad"
+  Unlock: "%prefix% Chatt är &upplåst"
+  IsLocked: "%prefix% Tyvärr, chatten är låst, försök igen senare."
+  Message: "%prefix% &dChatLock &e%player% &7skrev &e%message%"
+# Translations for /Pm <player>
+PrivateMessage:
+  NoReply: "%prefix% Du har ingen att svara"
+  ChatLock:
+    true: "%prefix% Chatt är låst, skriv text till chatten för att svara spelaren"
+    false: "%prefix% Chatten är upplåst"
+# Translations for /ClearChat command
+ClearChat:
+  Cleared:
+    Console: "%prefix% Chatten har rensats av &eConsole"
+    Player: "%prefix% Chatten har rensats av &e%player%"
+  Specific: "%prefix% Chatt i &e%player% &7has rensats"
+  SpecificChatHaveBypass: "%prefix% &e%player% &7har kringgå behörighet!"
+  NoClearOwnChat: "%prefix% Du kan inte rensa egen chatt"
+# Translations for /Back command
+Back:
+  WrongLocation: "%prefix% Returpositionen är fel"
+  NoLocation: "%prefix% Det finns ingen plats att teleportera till"
+  Teleport:
+    You: "%prefix% Teleporterar tillbaka till föregående plats"
+    Other:
+      Sender: "%prefix% Teleporterar &e%player% &7tillbaka till föregående plats"
+      Receiver: "%prefix% Teleporterar tillbaka till föregående plats"
+Immune:
+  Enabled:
+    You: "%prefix% Din immunitet har &aktiverats"
+    Other:
+      Sender: "%prefix% &e%player%&7:s immunitet har &aktiverats"
+      Receiver: "%prefix% Din immunitet har &aktiverats"
+  Disabled:
+    You: "%prefix% Din immunitet har &aktiverats"
+    Other:
+      Sender: "%prefix% &e%player%&7:s immunitet har &aktiverats"
+      Receiver: "%prefix% Din immunitet har &aktiverats"
+  NoPunish: "%prefix% &e%player% &7har immunitet."
+Tablist:
+  Prefix:
+    Get:
+      NameTag: "%prefix% Prefix för gruppen &e%group% &7of nametag är &r%value%"
+      TabList: "%prefix% Prefix för gruppen &e%group% &7of tablist är &r%value%"
+    Set:
+      NameTag: "%prefix% Prefix för gruppen &e%group% &7of nametag satt till &r%value%"
+      TabList: "%prefix% Prefix för gruppen &e%group% &7of fliklistan satt till &r%value%"
+  Suffix:
+    Get:
+      NameTag: "%prefix% Suffix i gruppen &e%group% &7of nametag är &r%value%"
+      TabList: "%prefix% Suffix i gruppen &e%group% &7of tablist är &r%value%"
+    Set:
+      NameTag: "%prefix% Suffix för gruppen &e%group% &7of nametag satt till &r%value%"
+      TabList: "%prefix% Suffix för gruppen &e%group% &7of tablist satt till &r%value%"
+    Priorite:
+      Get: "%prefix% Prioritet av gruppen &e%group% &7in fliklistan är &e%value%"
+      Set: "%prefix% Prioritet för gruppen &e%group% &7in fliklistan satt till &e%value%"
+    Exists: "%prefix% Grupp &e%group% &7finns redan"
+    NotExist: "%prefix% Grupp &e%group% &7finns inte"
+    Create: "%prefix% Grupp &e%group% &7skapad"
+    Delete: "%prefix% Grupp &e%group% &7raderad"
+WhoIs:
+  Loading: "%prefix% Laddar data för &e%player%&7.."
+  Online:
+    - "%prefix% Spelare: &e%player%"
+    - "%prefix% UUID: &e%uuid%"
+    - "%prefix% Hälsa: &e%health%"
+    - "%prefix% Mat: &e%food%"
+    - "%prefix% Online för: &e%seen%"
+    - "%prefix% IP: &e%ip%"
+    - "%prefix% AFK: &e%afk%"
+    - "%prefix% Gud: &e%god%"
+    - "%prefix% Fly: &e%fly%"
+    - "%prefix% OP: &e%op%"
+    - "%prefix% Övriga uppgifter:"
+    - "%prefix%   FirstJoin: &e%firstjoin%"
+    - "%prefix%   Land: &e%country%"
+    - "%prefix%   Grupp: &e%group%"
+    - "%prefix%   Pengar: &e%money%"
+    - "%prefix% Bannlyst: %banned%"
+    - "%prefix% IP-bannad: %ip-banned%"
+    - "%prefix% IP-bannad: %ip-banned%"
+  Offline:
+    - "%prefix% Spelare: &e%player%"
+    - "%prefix% UUID: &e%uuid%"
+    - "%prefix% Offline för: &e%seen%"
+    - "%prefix% IP: &e%ip%"
+    - "%prefix% AFK: &e%afk%"
+    - "%prefix% Gud: &e%god%"
+    - "%prefix% Fly: &e%fly%"
+    - "%prefix% OP: &e%op%"
+    - "%prefix% Övriga uppgifter:"
+    - "%prefix%   FirstJoin: &e%firstjoin%"
+    - "%prefix%   Land: &e%country%"
+    - "%prefix%   Grupp: &e%group%"
+    - "%prefix%   Pengar: &e%money%"
+    - "%prefix% Bannlyst: %banned%"
+    - "%prefix% IP-bannad: %ip-banned%"
+Inventory:
+  ClearConfirmToggle:
+    Enabled: "%prefix% Inaktiverad kräver för att bekräfta att förrådet är klart"
+    Disabled: "%prefix% Aktiverad kräver för att bekräfta att förrådet är klart"
+  ClearInventory:
+    ClearConfirm: "%prefix% Vänligen bekräfta din förfrågan om att rensa förrådet"
+    You: "%prefix% Du har rensat ditt förråd"
+    Other:
+      Sender: "%prefix% Du har rensat &e%player%&7 inventory"
+      Receiver: "%prefix% Ditt förråd har rensats av &e%player%"
+    Undo: "%prefix% Du har hämtat ditt förråd"
+    CantUndo: "%prefix% Kan inte hämta ditt förråd"
+    NoMoney: "%prefix% Du har inte köpt pengar, du behöver &e%money%"
+  CloseInventory:
+    You: "%prefix% Stänger ditt öppna lager"
+    Other:
+      Sender: "%prefix% Avslutar öppet förråd av &e%player%"
+      Receiver: "%prefix% Stänger ditt öppna lager"
+  EnderChest:
+    You: "%prefix% Öppnar EnderChest"
+    Other:
+      Sender: "%prefix% Öppnande enderkista av &e%player%"
+      Receiver: "%prefix% Öppnar EnderChest"
+  EnderSee:
+    Sender: "%prefix% Öppnande enderkista av &e%player%"
+    Receiver: ""
+  Invsee:
+    You: "%prefix% Öppningsförvaring av &e%player%"
+    Other:
+      Sender: "%prefix% Öppnar &e%player%&7's inventory för &e%target%"
+      Receiver: "%prefix% Öppningsförvaring av &e%player%"
+  Workbench:
+    You: "%prefix% Öppnar arbetsbänk"
+    Other:
+      Sender: "%prefix% Öppnar arbetsbänk för &e%player%"
+      Receiver: "%prefix% Öppnar arbetsbänk"
+  Anvil:
+    You: "%prefix% Öppnar städ"
+    Other:
+      Sender: "%prefix% Öppnar städ för &e%player%"
+      Receiver: "%prefix% Öppnar städ"
+DisplayManager:
+  Scoreboard:
+    Show: "%prefix% Din resultattavla har visats"
+    Hide: "%prefix% Din resultattavla har blivit dold"
+  ActionBar:
+    Show: "%prefix% Din actionbar har visats"
+    Hide: "%prefix% Din actionbar har blivit dold"
+  BossBar:
+    Show: "%prefix% Din bossbar har visats"
+    Hide: "%prefix% Din bossbar har blivit dold"
+Scoreboard:
+  Show: "%prefix% resultattavla för &e%player% &7har visats"
+  Hide: "%prefix% Resultattavla av &e%player% &7har gömts"
+ActionBar:
+  Show: "%prefix% Åtgärdsfält för &e%player% &7har visats"
+  Hide: "%prefix% Åtgärdsfält för &e%player% &7har gömts"
+BossBar:
+  Show: "%prefix% BossBar av &e%player% &7har visats"
+  Hide: "%prefix% BossBar av &e%player% &7har gömts"
+Skin:
+  Set:
+    You: "%prefix% Ditt skin satt till &e%skin%"
+    Other:
+      Sender: "%prefix% &e%player%&7's skin set till &e%skin%"
+      Receiver: "%prefix% Ditt skin satt till &e%skin%"
+  Reset:
+    You: "%prefix% Din hudåterställning"
+    Other:
+      Sender: "%prefix% &e%player%&7's skin reset"
+      Receiver: "%prefix% Din hudåterställning"
+Accounts:
+  Users: "%prefix% Konton på IP-tillägg till spelare &e%player%&7: &e%players%"
+  NoAccounts: "%prefix% Inga konton grundades"
+Uuid:
+  Message: "%prefix% Uuid av spelare &e%player% &7is &a%uuid%"
+Trash:
+  Name: "&7Papperskorg"
+  Clear: "&Töm bin"
+Mirror:
+  Types: "%prefix% &7Spegeltyper: &e%types%"
+  Enabled: "%prefix% &7Du satte på din spegel. Spegeltyp: &e%type%"
+  Disabled: "%prefix% &7Du inaktiverade din spegel."
+# Translations for PlayTime commands
+PlayTime:
+  Time:
+    Global: "%prefix% &7Din speltid är &e%playtime%"
+    Gamemode: "%prefix% &7Din speltid med spelläge &e%gamemode% &7is &e%playtime%"
+    World: "%prefix% &7Din speltid i världen &e%world% &7is &e%playtime%"
+    WorldGamemode: "%prefix% &7Din speltid i världen &e%world% &7med spelläge &e%gamemode% &7is &e%playtime%"
+  Other:
+    Global: "%prefix% &7Player &e%player% &7played time is &e%playtime%"
+    Gamemode: "%prefix% &7Player &e%player% &7played time with gamemode &e%gamemode% &7is &e%playtime%"
+    World: "%prefix% &7Player &e%player% &7played time in world &e%world% &7is &e%playtime%"
+    WorldGamemode: "%prefix% &7Player &e%player% &7played time in world &e%world% &7with gamemode &e%gamemode% &7is &e%playtime%"
+  PlayTop:
+    Loading: "%prefix% Räknar alla spelare, vänligen håll på.."
+    Header: "%prefix% &7=====» &cPlayTop &e%page%/%pages% &7«====="
+    Top: "&e%position%. &7%playername% &7(&e%playtime%&7)"
+    Footer: ""
+Config: "%prefix% Konfigurationer och uppgifter laddade om"
