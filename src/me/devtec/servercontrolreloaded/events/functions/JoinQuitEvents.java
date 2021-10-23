@@ -30,6 +30,7 @@ import me.devtec.servercontrolreloaded.utils.Tasks;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.servercontrolreloaded.utils.setting.DeathTp;
 import me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI;
+import me.devtec.servercontrolreloaded.utils.skins.SkinData;
 import me.devtec.servercontrolreloaded.utils.skins.SkinManager;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.SoundAPI;
@@ -70,9 +71,17 @@ public class JoinQuitEvents implements Listener {
 						String skin = Loader.config.getString("Options.Skins.Custom.setOwnToAll.value");
 						SkinManager.generateSkin(skin.replace("%player%", p.getName()), data -> SkinManager.loadSkin(p, data), false);
 					}else {
-						String skin = d.getString("skin");
-						if(skin==null)skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
-						SkinManager.generateSkin(skin.replace("%player%", p.getName()), data -> SkinManager.loadSkin(p, data), false);
+						String skin = d.getString("skin.value");
+						if(skin==null) {
+							skin=Loader.config.getString("Options.Skins.Custom.default"); //non null
+							SkinManager.generateSkin(skin.replace("%player%", p.getName()), data -> SkinManager.loadSkin(p, data), false);
+						}else {
+							SkinData data = new SkinData();
+							data.value=skin;
+							data.skinName=d.getString("skin.name");
+							data.signature=d.getString("skin.signature");
+							SkinManager.loadSkin(p, data);
+						}
 					}
 				}
 			}

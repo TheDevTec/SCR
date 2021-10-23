@@ -25,25 +25,26 @@ import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
 
 public class Kit {
-	private List<ItemStack> a;
-	private List<String> b, c;
-	private HashMap<Integer, ItemStack> s;
+	private List<ItemStack> items;
+	private List<String> commands, messages;
+	private Map<Integer, ItemStack> setItems;
 	private double cost;
 	private long delay;
+	
 	public List<ItemStack> getItems() {
-		return a;
+		return items;
 	}
 
 	public List<String> getCommands() {
-		return b;
+		return commands;
 	}
 
 	public List<String> getMessages() {
-		return c;
+		return messages;
 	}
 	
-	public HashMap<Integer, ItemStack> getItemsWithSlots() {
-		return s;
+	public Map<Integer, ItemStack> getItemsWithSlots() {
+		return setItems;
 	}
 	
 	public double getCost() {
@@ -61,10 +62,10 @@ public class Kit {
 			kit.cost=API.convertMoney(PlaceholderAPI.setPlaceholders(p, Loader.kit.getString("Kits." + name + ".cost")));
 		if(Loader.kit.exists("Kits." + name + ".delay"))
 			kit.delay=StringUtils.timeFromString(PlaceholderAPI.setPlaceholders(p, Loader.kit.getString("Kits." + name + ".delay")));
-		kit.b=PlaceholderAPI.setPlaceholders(p, Loader.kit.getStringList("Kits." + name + ".commands"));
-		kit.c=PlaceholderAPI.setPlaceholders(p, Loader.kit.getStringList("Kits." + name + ".messages"));
+		kit.commands=PlaceholderAPI.setPlaceholders(p, Loader.kit.getStringList("Kits." + name + ".commands"));
+		kit.messages=PlaceholderAPI.setPlaceholders(p, Loader.kit.getStringList("Kits." + name + ".messages"));
 		if(Loader.kit.exists("Kits." + name + ".items.add")) {
-			kit.a = new ArrayList<>();
+			kit.items = new ArrayList<>();
 			for (String id : Loader.kit.getKeys("Kits." + name + ".items.add")) {
 				Material m = null;
 				String mat = PlaceholderAPI.setPlaceholders(p, Loader.kit.getString("Kits." + name + ".items.add." + id + ".type"));
@@ -82,14 +83,14 @@ public class Kit {
 						a = new ItemCreatorAPI( HDBSupport.parse(head));
 					else
 					if(head.startsWith("https://")||head.startsWith("http://"))
-						a =  new ItemCreatorAPI( ItemCreatorAPI.createHeadByWeb(1, "&7Head from website", head) );
+						a = new ItemCreatorAPI(ItemCreatorAPI.createHeadByWeb(1, "&7Head from website", head));
 					else
 					if(head.length()>16) {
-						a=  new ItemCreatorAPI( ItemCreatorAPI.createHeadByValues(1, "&7Head from values", head) );
+						a= new ItemCreatorAPI(ItemCreatorAPI.createHeadByValues(1, "&7Head from values", head));
 						a.setOwnerFromValues(head);
 					}
 					else
-						a=  new ItemCreatorAPI( ItemCreatorAPI.createHead(1, "&7" + head + "'s Head", head));
+						a= new ItemCreatorAPI(ItemCreatorAPI.createHead(1, "&7" + head + "'s Head", head));
 				}else
 					a = new ItemCreatorAPI(m);
 				
@@ -121,11 +122,11 @@ public class Kit {
 					else
 						a.addEnchantment(nonum, StringUtils.getInt(enchs.replaceAll("[^+0-9]+", ""))<=0?1:StringUtils.getInt(enchs.replaceAll("[^+0-9]+", "")));
 				}
-				kit.a.add(setNbt(a.create(),PlaceholderAPI.setPlaceholders(p, Loader.kit.getString("Kits." + name + ".items.add." + id + ".nbt"))));
+				kit.items.add(setNbt(a.create(),PlaceholderAPI.setPlaceholders(p, Loader.kit.getString("Kits." + name + ".items.add." + id + ".nbt"))));
 			}
 		}
 		if(Loader.kit.exists("Kits." + name + ".items.set")) {
-			kit.s = new HashMap<>();
+			kit.setItems = new HashMap<>();
 			for (String id : Loader.kit.getKeys("Kits." + name + ".items.set")) {
 				Material m = null;
 				String mat = PlaceholderAPI.setPlaceholders(p, Loader.kit.getString("Kits." + name + ".items.set." + id + ".type"));
@@ -182,7 +183,7 @@ public class Kit {
 					else
 						a.addEnchantment(nonum, StringUtils.getInt(enchs.replaceAll("[^+0-9]+", ""))<=0?1:StringUtils.getInt(enchs.replaceAll("[^+0-9]+", "")));
 				}
-				kit.s.put(StringUtils.getInt(id), setNbt(a.create(),PlaceholderAPI.setPlaceholders(p, Loader.kit.getString("Kits." + name + ".items.set." + id + ".nbt"))));
+				kit.setItems.put(StringUtils.getInt(id), setNbt(a.create(),PlaceholderAPI.setPlaceholders(p, Loader.kit.getString("Kits." + name + ".items.set." + id + ".nbt"))));
 			}
 		}
 		return kit;

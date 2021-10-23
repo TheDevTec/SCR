@@ -9,6 +9,8 @@ import javax.annotation.Nullable;
 import me.devtec.theapi.utils.json.Json;
 
 public class SkinData {
+	
+	public String skinName;
 	@Nullable
 	public UUID uuid;
 	@Nonnull
@@ -28,10 +30,12 @@ public class SkinData {
 	public String toString() {
 		HashMap<String, String> data = new HashMap<>();
 		data.put("uuid", uuid.toString());
+		data.put("texture.name", skinName);
 		data.put("texture.value", value);
 		data.put("texture.signature", signature);
 		data.put("texture.url", url);
 		data.put("texture.slim", slim+"");
+		data.put("texture.lastUpdate", lastUpdate+"");
 		return Json.writer().simpleWrite(data);
 	}
 }

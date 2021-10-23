@@ -53,7 +53,6 @@ import me.devtec.servercontrolreloaded.utils.Tasks;
 import me.devtec.servercontrolreloaded.utils.XMaterial;
 import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.servercontrolreloaded.utils.bungeecord.BungeeListener;
-import me.devtec.servercontrolreloaded.utils.metrics.Metrics;
 import me.devtec.servercontrolreloaded.utils.multiworlds.MWAPI;
 import me.devtec.servercontrolreloaded.utils.multiworlds.MWGUI;
 import me.devtec.servercontrolreloaded.utils.skins.DynmapSupport;
@@ -78,6 +77,7 @@ import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.listener.Listener;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.utils.theapiutils.metrics.Metrics;
 import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
@@ -560,7 +560,7 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onLoad() {
-		if(VersionChecker.getVersion(Bukkit.getPluginManager().getPlugin("TheAPI").getDescription().getVersion(), "6.9.7")==VersionChecker.Version.NEW) {
+		if(VersionChecker.getVersion(Bukkit.getPluginManager().getPlugin("TheAPI").getDescription().getVersion(), "7.0")==VersionChecker.Version.NEW) {
 			TheAPI.msg(setting.prefix + " &8*********************************************", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4SECURITY: &cYou are running on outdated version of plugin TheAPI", TheAPI.getConsole());
 			TheAPI.msg(setting.prefix + " &4SECURITY: &cPlease update plugin TheAPI to latest version.", TheAPI.getConsole());
@@ -570,8 +570,8 @@ public class Loader extends JavaPlugin implements Listener {
 			return;
 		}
 		XMaterial.matchXMaterial("STONE"); //intialize ids on load
-		//LOAD CUSTOM PUNISHMENTAPI
 		
+		//LOAD CUSTOM PUNISHMENTAPI
 		loadPunishmentAPI();
 		
         boolean save = false;
@@ -607,7 +607,6 @@ public class Loader extends JavaPlugin implements Listener {
 	public static boolean hasBungee;
 
 	private Object reg;
-	private Metrics met;
 
 	@Override
 	public void onEnable() {
@@ -673,7 +672,7 @@ public class Loader extends JavaPlugin implements Listener {
 		default:
 			break;
 		}
-		met = new Metrics(this, 10560);
+		new Metrics(this, 10560);
 		if(updater!=null)
 		new Tasker() {
 			public void run() {
@@ -711,8 +710,6 @@ public class Loader extends JavaPlugin implements Listener {
 		
 	@Override
 	public void onDisable() {
-		if(met!=null)
-		met.stop();
 		Tasks.unload();
 		Portal.unload();
 		stop();

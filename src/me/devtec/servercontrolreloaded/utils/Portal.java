@@ -51,18 +51,16 @@ public class Portal {
 		this.kickBack=kickBack;
 		this.id=id;
 		perm=permission;
-		if(permission!=null) {
-			if(permission.trim().equals(""))perm=null;
-		}
+		if(permission!=null && permission.trim().isEmpty())perm=null;
 		this.cooldown=cooldown;
 		this.b=b;
 		this.p=p;
 		this.cmds=cmds;
 		server=s;
-		if(wait==0||wait==-1)
+		if(wait==0||wait==-1) //default
 			this.wait="5";
 		else
-			this.wait=""+wait;
+			this.wait=""+wait; //custom
 		
 		this.bcmds=bcmds;
 		if(p==null||p.getParticle()==null)return;
@@ -82,7 +80,7 @@ public class Portal {
 	}
 	
 	public void spawnParticles() {
-		if(p==null||p.getParticle()==null)return;
+		if(p==null||p.getParticle()==null||a.getWorld().getPlayers().isEmpty())return;
 		for(Position c : blocks)
 			ParticleAPI.spawnParticle(a.getWorld().getPlayers(), p, c);
 	}

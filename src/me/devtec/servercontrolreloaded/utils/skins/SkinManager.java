@@ -31,6 +31,7 @@ import me.devtec.servercontrolreloaded.utils.bungeecord.BungeeListener;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
+import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
@@ -83,6 +84,7 @@ public class SkinManager {
 							data.uuid=UUID.randomUUID();
 							data.slim=text.get("model").equals("alex");
 						}
+						data.skinName=urlOrName;
 						generator.put(urlOrName, data);
 						if(onFinish!=null)
 						onFinish.run(data);
@@ -105,6 +107,7 @@ public class SkinManager {
 						data.slim=(boolean)((Map<String, Object>)text.get("textures")).get("slim");
 						data.uuid=Bukkit.getOfflinePlayer(urlOrName).getUniqueId();
 					}
+					data.skinName=urlOrName;
 					generator.put(urlOrName, data);
 					if(onFinish!=null)
 					onFinish.run(data);
@@ -115,11 +118,7 @@ public class SkinManager {
 	private static Object remove, add;
 	private static Method oldRemove, oldAdd;
 	private static final Class<?> cc = Ref.nms("WorldSettings$EnumGamemode")==null?Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
-	private static Constructor<?> infoC;
-    private static final Constructor<?> headC;
-    private static final Constructor<?> handC;
-    private static Constructor<?> respawnC;
-    private static Constructor<?> posC;
+	private static Constructor<?> infoC, headC, handC, respawnC, posC, expC;
 	static {
 		headC = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutEntityHeadRotation","PacketPlayOutEntityHeadRotation"), Ref.nmsOrOld("world.entity.Entity","Entity"), byte.class);
 		handC = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutHeldItemSlot","PacketPlayOutHeldItemSlot"), int.class);
@@ -131,6 +130,8 @@ public class SkinManager {
 			oldRemove=Ref.method(Ref.nms("PacketPlayOutPlayerInfo"), "removePlayer", Ref.nms("EntityPlayer"));
 			oldAdd=Ref.method(Ref.nms("PacketPlayOutPlayerInfo"), "addPlayer", Ref.nms("EntityPlayer"));
 		}
+		//EXP PACKET
+		expC =Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutExperience","PacketPlayOutExperience"), float.class, int.class, int.class);
 		//POSITION PACKET
 		if(TheAPI.isOlderThan(8)) { //1.7
 			posC=Ref.constructor(Ref.nms("PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, boolean.class);
@@ -165,6 +166,10 @@ public class SkinManager {
 	static Field res;
 	public static synchronized void loadSkin(Player player, SkinData data) {
 		if(player==null || data==null || !data.isFinite())return;
+		User user = TheAPI.getUser(player);
+		user.set("skin.name", data.skinName);
+		user.set("skin.value", data.value);
+		user.setAndSave("skin.signature", data.signature);
 		if(Loader.config.getBoolean("Options.Skins.DynmapSupport") && Bukkit.getPluginManager().getPlugin("dynmap")!=null) {
 			new Tasker() {
 				public void run() {
@@ -214,7 +219,7 @@ public class SkinManager {
 				Object w = Ref.world(p.getWorld());
 				Location a = p.getLocation();
 				
-				Object packetMetadata = NMSAPI.getPacketPlayOutEntityMetadata(s), packetRespawn, packetPosition, packetHeldSlot = Ref.newInstance(handC, p.getInventory().getHeldItemSlot());
+				Object packetMetadata = NMSAPI.getPacketPlayOutEntityMetadata(s), packetRespawn, packetPosition, packetExp, packetHeldSlot = Ref.newInstance(handC, p.getInventory().getHeldItemSlot());
 				
 				//RESPAWN PACKET
 				if(TheAPI.isNewerThan(16)) { //1.17+
@@ -253,26 +258,23 @@ public class SkinManager {
 					else
 						packetPosition=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), sset, 0);
 				
+				//EXPERIENCE PACKET
+				packetExp=Ref.newInstance(expC, p.getExp(), p.getTotalExperience(), p.getExpToLevel());
+				
 				//SEND PACKETS
 				Ref.sendPacket(p, packetRespawn);
 				Ref.sendPacket(p, packetPosition);
 				Ref.sendPacket(p, packetHeldSlot);
 				Ref.sendPacket(p, packetMetadata);
+				if(packetExp!=null)
+					Ref.sendPacket(p, packetExp);
 				
 				//TRIGGER UPDATES
 				p.updateInventory();
-				NMSAPI.postToMainThread(() -> {
-						if (player.isOp()) {
-		                    player.setOp(false);
-		                    player.setOp(true);
-						}
-					});
 			}else {
-				if(p.getWorld()==player.getWorld()) {
-					Ref.sendPacket(p, destroy);
-					Ref.sendPacket(p, spawn);
-					Ref.sendPacket(p, head);
-				}
+				Ref.sendPacket(p, destroy);
+				Ref.sendPacket(p, spawn);
+				Ref.sendPacket(p, head);
 			}
 		}
 	}

@@ -38,7 +38,8 @@ public class Colors {
 			}
 			//colors
 			for (String ff : split) {
-				if (ff.toLowerCase().contains("§u")||ff.toLowerCase().contains("&u"))
+				String lower = ff.toLowerCase();
+				if (lower.contains("§u")||lower.contains("&u"))
 					ff = StringUtils.color.colorize(ff.replaceAll("[§&][Uu]",""));
 				d.append(ff);
 			}

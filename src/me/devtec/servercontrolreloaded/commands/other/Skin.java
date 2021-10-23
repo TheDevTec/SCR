@@ -48,12 +48,10 @@ public class Skin implements CommandExecutor, TabCompleter {
 		if(args.length==1) {
 			if(s instanceof Player) {
 			if(args[0].equalsIgnoreCase("reset")) {
-				TheAPI.getUser((Player)s).setAndSave("skin", null);
 				SkinManager.generateSkin(s.getName(), data -> SkinManager.loadSkin((Player)s, data), false);
 				Loader.sendMessages(s, "Skin.Reset.You");
 				return true;
 			}
-			TheAPI.getUser((Player)s).setAndSave("skin", args[0]);
 			SkinManager.generateSkin(args[0], data -> SkinManager.loadSkin((Player)s, data), false);
 			Loader.sendMessages(s, "Skin.Set.You", Placeholder.c().add("%skin%", args[0]));
 			return true;
@@ -67,13 +65,11 @@ public class Skin implements CommandExecutor, TabCompleter {
 			return true;
 		}
 		if(args[0].equalsIgnoreCase("reset")) {
-			TheAPI.getUser(a).setAndSave("skin", null);
 			SkinManager.generateSkin(a.getName(), data -> SkinManager.loadSkin(a, data), false);
 			Loader.sendMessages(s, "Skin.Reset.Other.Sender", Placeholder.c().add("%player%", a.getName()).add("%playername%", a.getDisplayName()).add("%skin%", args[0]));
 			Loader.sendMessages(a, "Skin.Reset.Other.Receiver", Placeholder.c().add("%player%", s.getName()).add("%playername%", s.getName()).add("%skin%", args[0]));
 			return true;
 		}
-		TheAPI.getUser(a).setAndSave("skin", args[0]);
 		SkinManager.generateSkin(args[0], data -> SkinManager.loadSkin(a, data), false);
 		Loader.sendMessages(s, "Skin.Set.Other.Sender", Placeholder.c().add("%skin%", args[0]).add("%player%", a.getName()).add("%playername%", a.getDisplayName()).add("%skin%", args[0]));
 		Loader.sendMessages(a, "Skin.Set.Other.Receiver", Placeholder.c().add("%skin%", args[0]).add("%player%", s.getName()).add("%playername%", s.getName()).add("%skin%", args[0]));
