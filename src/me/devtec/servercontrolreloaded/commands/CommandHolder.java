@@ -22,7 +22,7 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 	
 	public boolean check(CommandSender s) {
 		if (Loader.has(s, name, section)) {
-			if(!CommandsManager.canUse(section+"."+name, s)) {
+			if(!CommandsManager.canUse(section+"."+name, s)) { //Cooldown
 				Loader.sendMessages(s, "Cooldowns.Commands", Placeholder.c().add("%time%", StringUtils.timeToString(CommandsManager.expire(section+"."+name, s))));
 				return false;
 			}
@@ -43,8 +43,7 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		if (Loader.has(s, name, section)) {
 			List<String> tab = tabCompleter(s, args);
-			if(tab==null)return API.getPlayerNames(s);
-			return tab;
+			return tab==null?API.getPlayerNames(s):tab;
 		}
 		return Collections.emptyList();
 	}
