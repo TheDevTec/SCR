@@ -31,8 +31,7 @@ public class BigTask {
 			for (String s : Loader.config.getStringList("Options.WarningSystem."
 					+ (t == TaskType.STOP ? "Stop" : (t == TaskType.RELOAD ? "Reload" : "Restart"))
 					+ ".Messages"))
-				TheAPI.broadcastMessage(
-						s.replace("%time%", "" + StringUtils.setTimeToString(h)));
+				TheAPI.bcMsg(s.replace("%time%", "" + StringUtils.setTimeToString(h)));
 				r = new Tasker() {
 				long f = h;
 				public void run() {
@@ -44,8 +43,7 @@ public class BigTask {
 						for (String s : Loader.config.getStringList("Options.WarningSystem."
 								+ (t == TaskType.STOP ? "Stop" : (t == TaskType.RELOAD ? "Reload" : "Restart"))
 								+ ".Messages"))
-							TheAPI.broadcastMessage(
-									s.replace("%time%", "" + StringUtils.setTimeToString(f)));
+							TheAPI.bcMsg(s.replace("%time%", "" + StringUtils.setTimeToString(f)));
 					}
 					--f;
 				}
@@ -62,20 +60,19 @@ public class BigTask {
 			Scheduler.cancelTask(r);
 			r = -1;
 			if(msg)
-				for (String s : Loader.config.getStringList("Options.WarningSystem."
-						+ (s == TaskType.STOP ? "Stop.Cancelled" : (s == TaskType.RELOAD ? "Reload.Cancelled" : "Restart.Cancelled"))))
-					TheAPI.broadcastMessage(s);
+				for (String s : Loader.config.getStringList("Options.WarningSystem."+ (s == TaskType.STOP ? "Stop.Cancelled" : (s == TaskType.RELOAD ? "Reload.Cancelled" : "Restart.Cancelled"))))
+					TheAPI.bcMsg(s);
 		}
 	}
 
 	public static void end() {
 		if (r != -1) {
 			if(r!=0)
-			Scheduler.cancelTask(r);
+				Scheduler.cancelTask(r);
 			r = -1;
 			for (String s : Loader.config.getStringList("Options.WarningSystem."
 					+ (s == TaskType.STOP ? "Stop.Process" : (s == TaskType.RELOAD ? "Reload.Process" : "Restart.Process"))))
-				TheAPI.broadcastMessage(s);
+				TheAPI.bcMsg(s);
 			for (String s : Loader.config.getStringList("Options.WarningSystem."
 					+ (s == TaskType.STOP ? "Stop.Commands" : (s == TaskType.RELOAD ? "Reload.Commands" : "Restart.Commands"))))
 				TheAPI.sudoConsole(s);

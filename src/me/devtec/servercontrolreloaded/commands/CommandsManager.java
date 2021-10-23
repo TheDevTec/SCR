@@ -142,8 +142,8 @@ import me.devtec.servercontrolreloaded.commands.warps.SetSpawn;
 import me.devtec.servercontrolreloaded.commands.warps.SetWarp;
 import me.devtec.servercontrolreloaded.commands.warps.Spawn;
 import me.devtec.servercontrolreloaded.commands.warps.Warp;
-import me.devtec.servercontrolreloaded.commands.weather.PRain;
-import me.devtec.servercontrolreloaded.commands.weather.PSun;
+import me.devtec.servercontrolreloaded.commands.weather.PlayerRain;
+import me.devtec.servercontrolreloaded.commands.weather.PlayerSun;
 import me.devtec.servercontrolreloaded.commands.weather.Rain;
 import me.devtec.servercontrolreloaded.commands.weather.Sun;
 import me.devtec.servercontrolreloaded.commands.weather.Thunder;
@@ -315,11 +315,19 @@ public class CommandsManager {
 	}
 	
 	public static void load() {
-		//Server
-		load("Server", "Stop" , new Stop());
-		load("Server", "Reload", new Reload());
-		load("Server", "Restart", new Restart());
+		//Weather
+		load("Weather", "Sun", new Sun("Weather", "Sun"));
+		load("Weather", "Thunder", new Thunder("Weather", "Thunder"));
+		load("Weather", "Rain", new Rain("Weather", "Rain"));
+		load("Weather", "PlayerSun", new PlayerSun("Weather", "PlayerSun"));
+		load("Weather", "PlayerRain", new PlayerRain("Weather", "PlayerRain"));
 		
+		//Server
+		load("Server", "Stop" , new Stop("Server", "Stop"));
+		load("Server", "Reload", new Reload("Server", "Reload"));
+		load("Server", "Restart", new Restart("Server", "Restart"));
+
+		//TODO rework
 		//Kill
 		load("Kill", "Kill", new Kill());
 		load("Kill", "KillAll", new KillAll());
@@ -365,13 +373,6 @@ public class CommandsManager {
 			if(setting.eco_multi)
 			load("Economy", "MultiEconomy", new MultiEconomy());
 		}
-		
-		//Weather
-		load("Weather", "Sun", new Sun());
-		load("Weather", "Thunder", new Thunder());
-		load("Weather", "Rain", new Rain());
-		load("Weather", "PlayerSun", new PSun());
-		load("Weather", "PlayerRain", new PRain());
 		
 		//Time
 		load("Time", "Day", new Day());

@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.utils.StringUtils;
@@ -40,12 +41,19 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		if (Loader.has(s, name, section))
-			return tabCompleter(s, args);
+		if (Loader.has(s, name, section)) {
+			List<String> tab = tabCompleter(s, args);
+			if(tab==null)return API.getPlayerNames(s);
+			return tab;
+		}
 		return Collections.emptyList();
+	}
+	
+	public void help(CommandSender s) {
+		Loader.Help(s, section, name);
 	}
 	
 	public abstract List<String> tabCompleter(CommandSender s, String[] args);
 
-	protected abstract void command(CommandSender s, String[] args);
+	public abstract void command(CommandSender s, String[] args);
 }

@@ -63,6 +63,13 @@ public class API {
 	public static SPlayer removeSPlayer(String p) {
 		return cache.remove(p);
 	}
+
+	public static List<String> worldNames() {
+		List<String> list = new ArrayList<>(Bukkit.getWorlds().size());
+		for (World p2 : Bukkit.getWorlds())
+			list.add(p2.getName());
+		return list;
+	}
 	
 	public static List<Player> getPlayers(CommandSender s) { // Players which can be seen by CommandSender
 		List<Player> p = TheAPI.getOnlinePlayers();

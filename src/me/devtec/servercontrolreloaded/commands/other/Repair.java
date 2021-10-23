@@ -41,7 +41,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 							NBTEdit edit = new NBTEdit(p.getItemInHand());
 							edit.remove("Damage");
 							edit.remove("damage");
-							NMSAPI.setNBT(p.getItemInHand(), edit);
+							p.setItemInHand(NMSAPI.setNBT(p.getItemInHand(), edit));
 						}
 					Loader.sendMessages(s, "Repair.Hand.You");
 					return true;
@@ -53,29 +53,30 @@ public class Repair implements CommandExecutor, TabCompleter {
 					ItemStack[] items = p.getInventory().getContents();
 					for (ItemStack t : items) {
 						if (t != null && t.getType()!=Material.AIR)
-							if(isTool(p.getItemInHand().getType().name())) {
+							if(isTool(t.getType().name())) {
 								NBTEdit edit = new NBTEdit(t);
 								edit.remove("Damage");
 								edit.remove("damage");
-								NMSAPI.setNBT(t, edit);
+								t=NMSAPI.setNBT(t, edit);
 							}
 					}
+					p.getInventory().setContents(items);
 					Loader.sendMessages(s, "Repair.All.You");
 					return true;
 				}
-					Material hand = p.getItemInHand().getType();
-					if (hand != Material.AIR) {
-						if(isTool(p.getItemInHand().getType().name())) {
-							NBTEdit edit = new NBTEdit(p.getItemInHand());
-							edit.remove("Damage");
-							edit.remove("damage");
-							NMSAPI.setNBT(p.getItemInHand(), edit);
-						}
-					Loader.sendMessages(s, "Repair.Hand.You");
-					return true;
+				Material hand = p.getItemInHand().getType();
+				if (hand != Material.AIR) {
+					if(isTool(p.getItemInHand().getType().name())) {
+						NBTEdit edit = new NBTEdit(p.getItemInHand());
+						edit.remove("Damage");
+						edit.remove("damage");
+						p.setItemInHand(NMSAPI.setNBT(p.getItemInHand(), edit));
 					}
-					Loader.sendMessages(s, "Missing.HandEmpty");
-					return true;
+				Loader.sendMessages(s, "Repair.Hand.You");
+				return true;
+				}
+				Loader.sendMessages(s, "Missing.HandEmpty");
+				return true;
 			}
 		Loader.Help(s, "Repair", "Other");
 		return true;
@@ -94,7 +95,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 							NBTEdit edit = new NBTEdit(t);
 							edit.remove("Damage");
 							edit.remove("damage");
-							NMSAPI.setNBT(t, edit);
+							p.setItemInHand(NMSAPI.setNBT(t, edit));
 						}
 				}
 				Loader.sendMessages(s, "Repair.All.Other.Sender");
@@ -108,7 +109,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 					NBTEdit edit = new NBTEdit(p.getItemInHand());
 					edit.remove("Damage");
 					edit.remove("damage");
-					NMSAPI.setNBT(p.getItemInHand(), edit);
+					p.setItemInHand(NMSAPI.setNBT(p.getItemInHand(), edit));
 				}
 				Loader.sendMessages(s, "Repair.Hand.Other.Sender");
 				Loader.sendMessages(p, "Repair.Hand.Other.Receiver", Placeholder.c().replace("%player%", s.getName())
