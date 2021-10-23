@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.commands.weather;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -48,10 +49,12 @@ public class Sun extends CommandHolder {
 		Loader.sendMessages(s, "Missing.World", Placeholder.c().add("%world%", args[0]));
 	}
 	
+	static Random random = new Random();
+	
 	public static void apply(World world) {
 		world.setStorm(false);
 		world.setThundering(false);
-		world.setWeatherDuration(100000000);
+		world.setWeatherDuration((300+random.nextInt(600)) * 50);
 	}
 
 	@Override
