@@ -29,7 +29,7 @@ public class Sun extends CommandHolder {
 	}
 
 	@Override
-	public void command(CommandSender s, String[] args) {
+	public void command(CommandSender s, String[] args, boolean loop) {
 		if (args.length == 0) {
 			if (s instanceof Player) {
 				apply(((Player) s).getWorld());
@@ -52,5 +52,10 @@ public class Sun extends CommandHolder {
 		world.setStorm(false);
 		world.setThundering(false);
 		world.setWeatherDuration(100000000);
+	}
+
+	@Override
+	public int[] playerPlaceholders(CommandSender s, String[] args) {
+		return null;
 	}
 }

@@ -27,24 +27,31 @@ public class PlayerRain extends CommandHolder {
 	}
 
 	@Override
-	public void command(CommandSender s, String[] args) {
+	public void command(CommandSender s, String[] args, boolean loop) {
 		if (args.length == 0) {
 			if (s instanceof Player) {
 				apply((Player) s);
-				Loader.sendMessages(s, "Weather.PRain", Placeholder.c().add("%player%", ((Player)s).getName()).add("%playername%", ((Player)s).getDisplayName()));
+				Loader.sendMessages(s, "Weather.PRain", Placeholder.c().add("%player%", s.getName()).add("%playername%", ((Player)s).getDisplayName()));
 				return;
 			}
 			help(s);
 			return;
 		}
 		if (Loader.has(s, "PlayerRain", "Weather","Other")) {
-			Player player = TheAPI.getPlayer(args[0]);
-			if (player != null) {
-				apply(player);
-				Loader.sendMessages(s, "Weather.PRain", Placeholder.c().add("%player%", player.getName()).add("%playername%", player.getDisplayName()));
-				return;
+			if(loop) {
+				for(Player player : TheAPI.getOnlinePlayers()) {
+					apply(player);
+					Loader.sendMessages(s, "Weather.PRain", Placeholder.c().add("%player%", player.getName()).add("%playername%", player.getDisplayName()));
+				}
+			}else {
+				Player player = TheAPI.getPlayer(args[0]);
+				if (player != null) {
+					apply(player);
+					Loader.sendMessages(s, "Weather.PRain", Placeholder.c().add("%player%", player.getName()).add("%playername%", player.getDisplayName()));
+					return;
+				}
+				Loader.notOnline(s, args[0]);
 			}
-			Loader.notOnline(s, args[0]);
 			return;
 		}
 		Loader.noPerms(s, "PlayerRain", "Weather","Other");
@@ -52,5 +59,10 @@ public class PlayerRain extends CommandHolder {
 	
 	public static void apply(Player player) {
 		player.setPlayerWeather(WeatherType.DOWNFALL);
+	}
+
+	@Override
+	public int[] playerPlaceholders(CommandSender s, String[] args) {
+		return args.length>=1?new int[]{1}:null;
 	}
 }

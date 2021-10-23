@@ -26,7 +26,7 @@ public class Restart extends CommandHolder {
 	}
 
 	@Override
-	public void command(CommandSender s, String[] args) {
+	public void command(CommandSender s, String[] args, boolean loop) {
 		if (args.length == 0) {
 			apply(StringUtils.getTimeFromString(Loader.config.getString("Options.WarningSystem.Restart.PauseTime")));
 			return;
@@ -45,5 +45,10 @@ public class Restart extends CommandHolder {
 		if (BigTask.r == -1) {
 			BigTask.start(TaskType.RESTART, time);
 		}
+	}
+
+	@Override
+	public int[] playerPlaceholders(CommandSender s, String[] args) {
+		return null;
 	}
 }
