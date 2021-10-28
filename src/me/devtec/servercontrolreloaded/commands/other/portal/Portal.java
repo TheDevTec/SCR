@@ -106,6 +106,8 @@ public class Portal implements CommandExecutor, TabCompleter {
 					Loader.sendMessages(s, "Portals.NotExist", Placeholder.c().add("%name%", args[1]));
 					return true;
 				}
+				Loader.portals.set(args[1]+".server", args[2]);
+				Loader.portals.save();
 				Loader.sendMessages(s, "Portals.Server", Placeholder.c().add("%name%", args[1]).add("%server%", args[2]));
 				return true;
 			}

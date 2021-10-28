@@ -39,12 +39,11 @@ public class Reload extends CommandHolder {
 	}
 	
 	public static void apply(long time) {
-		if(time<=0)
+		if(time<=0) {
+			BigTask.s=TaskType.RELOAD;
 			BigTask.end();
-		else
-		if (BigTask.r == -1) {
+		}else if (BigTask.r == -1)
 			BigTask.start(TaskType.RELOAD, time);
-		}
 	}
 
 	@Override

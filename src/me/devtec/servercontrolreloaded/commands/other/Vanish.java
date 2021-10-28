@@ -1,9 +1,11 @@
 package me.devtec.servercontrolreloaded.commands.other;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -24,16 +26,18 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.reflections.Ref;
 
 public class Vanish implements CommandExecutor, TabCompleter{
-
+	private static final Constructor<?> onc = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo","PacketPlayOutPlayerInfo"), 
+			Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), Array.newInstance(Ref.nmsOrOld("server.level.EntityPlayer","EntityPlayer"), 1).getClass());
 	private static final Class<?> cc = Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode")!=null?Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
-	private static final Object surv = Ref.getNulled(cc, "SURVIVAL");
-	private static final Object spec = Ref.getNulled(cc, "SPECTATOR");
+	private static final Object surv = Ref.getNulled(cc, TheAPI.isNewerThan(16)?"a":"SURVIVAL");
+	private static final Object spec = Ref.getNulled(cc, TheAPI.isNewerThan(16)?"d":"SPECTATOR");
 	private static final Object up = Ref.getNulled(Ref.field(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), "UPDATE_GAME_MODE"));
 
 	public static void moveInTab(Player player, int game, boolean vanish) {
+		if(!TheAPI.isNewerThan(7)||spec==null)return;
 		Object array = Array.newInstance(Ref.nmsOrOld("server.level.EntityPlayer","EntityPlayer"), 1);
 		Array.set(array, 0, Ref.player(player));
-		Object b = Ref.newInstance(Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo","PacketPlayOutPlayerInfo"), Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), array.getClass()), up, array);
+		Object b = Ref.newInstance(onc, up, array);
 		@SuppressWarnings("unchecked")
 		List<Object> bList = (List<Object>) Ref.get(b, "b");
 		int c = 0;
@@ -49,7 +53,10 @@ public class Vanish implements CommandExecutor, TabCompleter{
 					gmResult=1;
 				}else
 					if(setting.tab_move && player.getGameMode()==GameMode.SPECTATOR)gmResult=1;
-					else gmResult=0;
+					else {
+						c++;
+						continue;
+					}
 			}
 			Ref.set(o, "c", gmResult==0?surv:spec); //edit
 			bList.set(c++, o);
@@ -67,7 +74,8 @@ public class Vanish implements CommandExecutor, TabCompleter{
 			return StringUtils.copyPartialMatches(args[0], API.getPlayerNames(s));
 		return Collections.emptyList();
 	}
-	public static final HashMap<String, Integer> task = new HashMap<>();
+	
+	public static final Map<String, Integer> task = new HashMap<>();
 	
 	@Override
 	public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {

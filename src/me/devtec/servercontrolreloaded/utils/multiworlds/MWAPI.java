@@ -110,6 +110,7 @@ public class MWAPI {
 						WorldsAPI.create(w, Environment.NORMAL, WorldType.NORMAL, g, true, 0);
 					}
 				}
+				if(!worlds.contains(w))
 				worlds.add(w);
 				Loader.mw.set("worlds", worlds);
 				Loader.mw.save();

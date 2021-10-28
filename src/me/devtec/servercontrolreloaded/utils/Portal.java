@@ -30,20 +30,20 @@ import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Portal {
-	private final Position a;
-    private final Position b;
-	private final Particle p;
-	private String perm;
-	private List<String> cmds;
-	private final String server;
-    private final String id;
-	private List<String> bcmds;
-	private final double cooldown;
-	private final boolean perplayer;
-    private final boolean kickBack;
-	private final List<Position> blocks = new ArrayList<>();
-	private long lastEnter;
-	private final String wait;
+	public final Position a;
+	public final Position b;
+    public Particle p;
+	public String perm;
+	public List<String> cmds;
+	public String server;
+	public final String id;
+	public List<String> bcmds;
+	public double cooldown;
+	public boolean perplayer;
+	public boolean kickBack;
+	public List<Position> blocks = new ArrayList<>();
+	public long lastEnter;
+	public String wait;
 	
 	public Portal(String id, double cooldown, boolean perPlayer, boolean kickBack, Position a, Position b, Particle p, List<String> cmds, String s, List<String> bcmds, String permission, int wait) {
 		this.a=a;
@@ -88,23 +88,9 @@ public class Portal {
 	private static final List<Player> processing = new ArrayList<>();
 	
 	public void processCommands(Player target) {
+		if(cmds!=null)
 		for(String f : cmds)
 			TheAPI.sudoConsole(TabList.replace(f, target, true));
-		if(server!=null && Loader.hasBungee) {
-			ByteArrayDataOutput d = ByteStreams.newDataOutput();
-			d.writeUTF("portal");
-			d.writeUTF(target.getName());
-			d.writeUTF(server);
-			d.writeUTF(wait);
-			String a = Json.writer().simpleWrite(bcmds);
-			while(a.length()>35000) {
-				d.writeUTF(a.substring(0, 35000));
-				a=a.substring(35000);
-			}
-			if(!a.equals(""))
-			d.writeUTF(a);
-			target.sendPluginMessage(Loader.getInstance, "scr:community", d.toByteArray());
-		}
 		processing.remove(target);
 	}
 	
@@ -211,7 +197,6 @@ public class Portal {
 				final HashMap<Player, Portal> inPortal = new HashMap<>();
 				public void run() {
 					for(Portal a : portals) {
-						if(a.a.getWorld().getPlayers().isEmpty())continue;
 						for(Player p : a.a.getWorld().getPlayers()) {
 							if(processing.contains(p))continue;
 							boolean is = isInside(p.getLocation(), a.a, a.b);
@@ -220,6 +205,21 @@ public class Portal {
 								if(f==null || !f.equals(a)) {
 									if(a.canEnter(p)) {
 										processing.add(p);
+										if(a.server!=null && Loader.hasBungee) {
+											ByteArrayDataOutput d = ByteStreams.newDataOutput();
+											d.writeUTF("portal");
+											d.writeUTF(p.getName());
+											d.writeUTF(a.server);
+											d.writeUTF(a.wait);
+											String ac = Json.writer().simpleWrite(a.bcmds);
+											while(ac.length()>35000) {
+												d.writeUTF(ac.substring(0, 35000));
+												ac=ac.substring(35000);
+											}
+											if(!ac.equals(""))
+												d.writeUTF(ac);
+											p.sendPluginMessage(Loader.getInstance, "scr:community", d.toByteArray());
+										}
 										NMSAPI.postToMainThread(() -> a.processCommands(p));
 									}else if(a.kickBack)a.kickBack(p);
 								}else

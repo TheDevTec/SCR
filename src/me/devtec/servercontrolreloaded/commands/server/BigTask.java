@@ -20,7 +20,7 @@ public class BigTask {
 		STOP, RESTART, RELOAD
 	}
 
-	private static TaskType s;
+	protected static TaskType s;
 
 	public static boolean start(TaskType t, long h) {
 		if (r != -1)cancel(false);
