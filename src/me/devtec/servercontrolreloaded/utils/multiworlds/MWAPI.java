@@ -151,14 +151,18 @@ public class MWAPI {
 		Loader.mw.addDefault(path + "spawnLimits.ambient", as.getAmbientSpawnLimit());
 		Loader.mw.addDefault(path + "spawnLimits.animal", as.getAnimalSpawnLimit());
 		Loader.mw.addDefault(path + "spawnLimits.monster", as.getMonsterSpawnLimit());
+		if(TheAPI.isNewVersion())
 		Loader.mw.addDefault(path + "spawnLimits.waterAmbient", as.getWaterAmbientSpawnLimit());
 		Loader.mw.addDefault(path + "spawnLimits.waterAnimal", as.getWaterAnimalSpawnLimit());
 		Loader.mw.addDefault(path + "spawnTicks.modify", false);
+		if(TheAPI.isNewVersion())
 		Loader.mw.addDefault(path + "spawnTicks.ambient", as.getTicksPerAmbientSpawns());
 		Loader.mw.addDefault(path + "spawnTicks.animal", as.getTicksPerAnimalSpawns());
 		Loader.mw.addDefault(path + "spawnTicks.monster", as.getTicksPerMonsterSpawns());
-		Loader.mw.addDefault(path + "spawnTicks.waterAmbient", as.getTicksPerWaterAmbientSpawns());
-		Loader.mw.addDefault(path + "spawnTicks.waterAnimal", as.getTicksPerWaterSpawns());
+		if(TheAPI.isNewVersion()) {
+			Loader.mw.addDefault(path + "spawnTicks.waterAmbient", as.getTicksPerWaterAmbientSpawns());
+			Loader.mw.addDefault(path + "spawnTicks.waterAnimal", as.getTicksPerWaterSpawns());
+		}
 		Loader.mw.addDefault(path + "allow.monsters", as.getAllowMonsters());
 		Loader.mw.addDefault(path + "allow.animals", as.getAllowAnimals());
 		for(String rule : as.getGameRules())
@@ -203,17 +207,22 @@ public class MWAPI {
 			as.setAmbientSpawnLimit(Loader.mw.getInt(path + "spawnLimits.ambient"));
 			as.setAnimalSpawnLimit(Loader.mw.getInt(path + "spawnLimits.animal"));
 			as.setMonsterSpawnLimit(Loader.mw.getInt(path + "spawnLimits.monster"));
+			if(TheAPI.isNewVersion())
 			as.setWaterAmbientSpawnLimit(Loader.mw.getInt(path + "spawnLimits.waterAmbient"));
 			as.setWaterAnimalSpawnLimit(Loader.mw.getInt(path + "spawnLimits.waterAnimal"));
 		}
 		if(Loader.mw.getBoolean(path + "spawnTicks.modify")) {
+			if(TheAPI.isNewVersion())
 			as.setTicksPerAmbientSpawns(Loader.mw.getInt(path + "spawnTicks.ambient"));
 			as.setTicksPerAnimalSpawns(Loader.mw.getInt(path + "spawnTicks.animal"));
 			as.setTicksPerMonsterSpawns(Loader.mw.getInt(path + "spawnTicks.monster"));
+			if(TheAPI.isNewVersion()) {
 			as.setTicksPerWaterAmbientSpawns(Loader.mw.getInt(path + "spawnTicks.waterAmbient"));
 			as.setTicksPerWaterSpawns(Loader.mw.getInt(path + "spawnTicks.waterAnimal"));
+			}
 		}
-		
+
+		if(TheAPI.isNewVersion())
 		try {
 			as.setHardcore(Loader.mw.getBoolean(path + "hardCore"));
 		}catch(NoSuchMethodError e) {}

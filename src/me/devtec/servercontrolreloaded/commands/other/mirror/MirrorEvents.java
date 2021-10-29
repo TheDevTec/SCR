@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.commands.other.mirror;
 
+import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.Position;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,23 +12,23 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 
 public class MirrorEvents implements Listener {
-
+	static MirrorManager mirror = TheAPI.isNewVersion()?new MirrorManagerModern():new MirrorManagerLegacy();
 	@EventHandler
 	public void onPlace(BlockPlaceEvent e) {
 		Player p = e.getPlayer();
-		if(!MirrorManager.isMirroring(p)) return;
-		MirrorType type = MirrorManager.getType(p);
+		if(!mirror.isMirroring(p)) return;
+		MirrorType type = mirror.getType(p);
 		Block block = e.getBlock();
-		MirrorManager.mirrorPlace(p, type, block);
+		mirror.mirrorPlace(p, type, block);
 		
 	}
 	
 	@EventHandler
 	public void onBreak(BlockBreakEvent e) {
 		Player p = e.getPlayer();
-		if(!MirrorManager.isMirroring(p)) return;
-		MirrorType type = MirrorManager.getType(p);
-		Position loc = MirrorManager.getLocation(p);
+		if(!mirror.isMirroring(p)) return;
+		MirrorType type = mirror.getType(p);
+		Position loc = mirror.getLocation(p);
 		Block block = e.getBlock();
 		block.setType(Material.AIR);
 		e.setCancelled(true);

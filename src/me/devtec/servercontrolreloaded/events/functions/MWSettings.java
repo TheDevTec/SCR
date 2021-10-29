@@ -8,15 +8,16 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityDropItemEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityPortalEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.world.PortalCreateEvent;
 
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.theapi.TheAPI;
 
 public class MWSettings implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -41,16 +42,16 @@ public class MWSettings implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onItemPickup(EntityPickupItemEvent e) {
+	public void onItemPickup(PlayerPickupItemEvent e) {
 		if(e.isCancelled())return;
-		if (!Loader.mw.getBoolean("settings." + e.getEntity().getWorld().getName() + ".modifyWorld.pickupItem"))
+		if (!Loader.mw.getBoolean("settings." + e.getPlayer().getWorld().getName() + ".modifyWorld.pickupItem"))
 			e.setCancelled(true);
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onItemDrop(EntityDropItemEvent e) {
+	public void onItemDrop(PlayerDropItemEvent e) {
 		if(e.isCancelled())return;
-		if (!Loader.mw.getBoolean("settings." + e.getEntity().getWorld().getName() + ".modifyWorld.dropItem"))
+		if (!Loader.mw.getBoolean("settings." + e.getPlayer().getWorld().getName() + ".modifyWorld.dropItem"))
 			e.setCancelled(true);
 	}
 	
@@ -72,7 +73,10 @@ public class MWSettings implements Listener {
 	public void onBreakBlock(BlockBreakEvent e) {
 		if(e.isCancelled())return;
 		if (Loader.mw.getBoolean("settings." + e.getBlock().getWorld().getName() + ".disableDrops.blocks")) {
-			e.setDropItems(false);
+			if(TheAPI.isNewerThan(11))
+				e.setDropItems(false);
+			else
+				e.getBlock().getDrops().clear();
 			e.setExpToDrop(0);
 		}
 		if (!Loader.mw.getBoolean("settings." + e.getBlock().getWorld().getName() + ".modifyWorld.breakBlock"))

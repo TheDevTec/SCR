@@ -122,7 +122,8 @@ public class JoinQuitEvents implements Listener {
 		new Tasker() {
 			public void run() {
 				me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI.sendWarnings(p);
-		        if(API.hasVanish(p) || TheAPI.isNewerThan(7) && p.getGameMode()==GameMode.SPECTATOR)
+				if(TheAPI.isNewerThan(7))
+		        if(API.hasVanish(p) || p.getGameMode()==GameMode.SPECTATOR)
 		    		Vanish.moveInTab(p, API.hasVanish(p)?0:1, API.hasVanish(p));
 				try {
 			    	DisplayManager.initializePlayer(p);

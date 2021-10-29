@@ -30,11 +30,11 @@ public class MirrorCommand implements CommandExecutor, TabCompleter {
 			}
 			if(args.length==1) {
 				if(args[0].equalsIgnoreCase("none")) {
-					MirrorManager.remove( ((Player)s) );
+					MirrorEvents.mirror.remove(((Player)s));
 					Loader.sendMessages(s, "Mirror.Disabled");
 					return true;
 				}
-				MirrorManager.add( ((Player)s), args[0]);
+				MirrorEvents.mirror.add(((Player)s), args[0]);
 	
 				Loader.sendMessages(s, "Mirror.Enabled", Placeholder.c().add("%type%", args[0]) );
 				return true;
