@@ -108,8 +108,15 @@ public class SPlayer {
 			u.set("TempFly.Use", true);
 			u.save();
 			if(s==null)return;
-			s.setAllowFlight(true);
-			s.setFlying(true);
+			if(Bukkit.isPrimaryThread()) {
+				s.setAllowFlight(true);
+				s.setFlying(true);
+			}else {
+				NMSAPI.postToMainThread(() -> {
+					s.setAllowFlight(true);
+					s.setFlying(true);
+				});
+			}
 			Loader.sendMessages(s, "Fly.Temp.Enabled.You", Placeholder.c().add("%time%", StringUtils.setTimeToString(stop)));
 			return;
 		}
@@ -122,8 +129,15 @@ public class SPlayer {
 		Player s = getPlayer();
 		if(s==null)return;
 		if (hasTempFlyEnabled()) {
-			s.setAllowFlight(true);
-			s.setFlying(true);
+			if(Bukkit.isPrimaryThread()) {
+				s.setAllowFlight(true);
+				s.setFlying(true);
+			}else {
+				NMSAPI.postToMainThread(() -> {
+					s.setAllowFlight(true);
+					s.setFlying(true);
+				});
+			}
 		}
 	}
 
@@ -141,8 +155,15 @@ public class SPlayer {
 		if(save)u.save();
 		Player s = getPlayer();
 		if(s==null)return;
-		s.setAllowFlight(true);
-		s.setFlying(true);
+		if(Bukkit.isPrimaryThread()) {
+			s.setAllowFlight(true);
+			s.setFlying(true);
+		}else {
+			NMSAPI.postToMainThread(() -> {
+				s.setAllowFlight(true);
+				s.setFlying(true);
+			});
+		}
 	}
 
 	public void disableFly() {
@@ -152,8 +173,15 @@ public class SPlayer {
 		u.save();
 		Player s = getPlayer();
 		if(s==null)return;
-		s.setFlying(false);
-		s.setAllowFlight(false);
+		if(Bukkit.isPrimaryThread()) {
+			s.setFlying(false);
+			s.setAllowFlight(false);
+		}else {
+			NMSAPI.postToMainThread(() -> {
+				s.setFlying(false);
+				s.setAllowFlight(false);
+			});
+		}
 	}
 
 	private static final Class<?> ess = Ref.getClass("com.earth2me.essentials.Essentials");

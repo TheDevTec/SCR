@@ -1,5 +1,6 @@
 package me.devtec.servercontrolreloaded.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,13 +29,17 @@ public class DisplayManager {
 		BOSSBAR,
 		SCOREBOARD
 	}
+	
+	static List<Player> init = new ArrayList<>();
 
 	public static void initializePlayer(Player p) {
 		for(DisplayType t : DisplayType.values()) {
 			if(TheAPI.getUser(p).getBoolean("SCR."+t.name()) && !ignore.get(t).contains(p.getName()))
 				ignore.get(t).add(p.getName());
-			if(!ignore.get(t).contains(p.getName()) && (t==DisplayType.ACTIONBAR?Loader.ac.getBoolean("Enabled"):(t==DisplayType.BOSSBAR?Loader.bb.getBoolean("Enabled"):setting.sb)))
+			if(!ignore.get(t).contains(p.getName()) && (t==DisplayType.ACTIONBAR?Loader.ac.getBoolean("Enabled"):(t==DisplayType.BOSSBAR?Loader.bb.getBoolean("Enabled"):setting.sb))) {
 				show(p, t, false);
+				init.add(p);
+			}
 		}
 	}
 
@@ -43,6 +48,7 @@ public class DisplayManager {
 			ignore.get(t).remove(p.getName());
 			hide.get(t).remove(p.getName());
 		}
+		init.remove(p);
 		TheAPI.sendActionBar(p, "");
 	}
 	
@@ -637,6 +643,7 @@ public class DisplayManager {
 		tasks.add(new Tasker() {
 			public void run() {
 				for(Player s : TheAPI.getOnlinePlayers()) {
+					if(!init.contains(s))continue;
 					try {
 					if(!s.hasPermission(Loader.sb.getString("Options.Permission"))) {
 						if(!hide.get(DisplayType.SCOREBOARD).contains(s.getName())) {

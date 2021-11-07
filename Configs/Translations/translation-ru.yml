@@ -5,863 +5,843 @@
 
 # Text for %prefix% placeholder
 Prefix: "&6&lS&f&lerver &8&l»&7"
+
 # Translation for no perms message
-NoPerms: "%prefix% У вас нет прав для этого (&e%permission%&7)"
-# Translations for /Portal command
+NoPerms: "%prefix% У вас недостаточно прав"
 Portals:
-  NotExist: "Портал %prefix% &e%name% &7не существует"
-  Exists: "Портал %prefix% &e%name% &7уже существует"
-  Delete: "Портал %prefix% &e%name% &7удален"
-  PosSet: "Позиция %prefix% &e%position%# &7портала &e%name% &7задана в треках &e%x%&7, &e%y%&7, &e%z%"
-  Particle: "%prefix% Установить частицу &e%value% &7для портала &e%name%"
-  Server: "%prefix% Установить foward сервер &e%server% &7для портала &e%name%"
+  NotExist: "%prefix% Портал &e%name% &7не существует"
+  Exists: "%prefix% Портал &e%name% &7уже существует"
+  Delete: "%prefix% Портал &e%name% &7удален"
+  PosSet: "%prefix% Позиция &e%position%# &8| &7Портал &e%name% &8| &7Координаты: &e%x%&7, &e%y%&7, &e%z%"
+  Particle: "%prefix% Частица &e%value% &7установлена для портала &e%name%"
+  Server: "%prefix% Установить прокси сервера &e%server% &7для портала &e%name%"
   Create:
-    - "Портал %prefix% &e%name% &7создан"
-    - "%prefix% Настройка портала через команду '/portal set'"
+  - "%prefix% Портал &e%name% &7создан"
+  - "%prefix% Портал настройки через команду &e/portal set"
   List:
-    - "Список порталов %prefix%:"
-    - "&e%list%"
+  - "%prefix% Список порталов:"
+  - "&e%list%"
   Cmds:
-    Add: "%prefix% Добавлена команда '&e%value%&7'на портал &e%name%"
-    Remove: "%prefix% удалена команда на позиции &e%position% &7портала &e%name%"
+    Add: "%prefix% Добавлена комманда '&e%value%&7' для портала &e%name%"
+    Remove: "%prefix% Удалена команда на позиции &e%position% &7портала &e%name%"
+    
+    # Translations for /ChatNotify command
     List:
-      - "%prefix% Список команд портала &e%name%&7:"
-      - "&e%list%"
-# Translations for /ChatNotify command
+    - "%prefix% Список команд для портала &e%name%&7:"
+    - "&e%list%"
 Notify:
-  Enable: "Включено %prefix% уведомлений в чате"
-  Disable: "%prefix% Уведомления в чате отключены"
-  EnableOther: "Уведомления %prefix% в чате &e%player% &7включены"
-  DisableOther: "%prefix% Уведомления в чате &e%player% &7отключены"
-# Translations for /Give and /Skull commands
+  Enable: "%prefix% Уведомления в чате включены"
+  Disable: "%prefix% Уведомления в чате выключены"
+  EnableOther: "%prefix% Уведомления в чате для игрока &e%player% &7включены"
+  DisableOther: "%prefix% Уведомления в чате для игрока &e%player% &7выключены"
 Give:
   Skull:
-    You: "%prefix% Вы получили череп &e%head%"
+    You: "%prefix% Вам была выдана голова &e%head%"
     Other:
-      Sender: "%prefix% Вы получили череп &e%head%&7 в &e%player%"
+      Sender: "%prefix% Вы выдали голову &e%head%&7 игроку &e%player%"
       Receiver: "%prefix% Вы получили череп &e%head%"
   Item:
     You: "%prefix% Добавлено &e%amount%x %item%"
     Other:
-      Sender: "%prefix% Добавлено &e%aмонтирование%x %item% &7к &e%player%"
-      Receiver: "%prefix% Вы получили &e%aмаунт%x %item%"
+      Sender: "%prefix% Добавлено &e%amount%x %item% &7игроку &e%player%"
+      Receiver: "%prefix% Ты получил &e%amount%x %item%"
+
 # Translation for /Send command
-Send: "%prefix% Отправка &e%player%&7 на сервер &e%server%"
-# Translations for /Seen command
+Send: "%prefix% Перенаправление игрока &e%player%&7 на сервер &e%server%"
 Seen:
-  Online: "%prefix% &e%player%&7 &aонлайн &7для &a%online%"
-  Offline: "%prefix% &e%player%&7 это &coffline &7для &c%offline%"
-  Similiar: "%prefix% Вы имеете в виду ник: &e%names%"
-# Translations for /SocialSpy command
+  Online: "%prefix% &e%player%&7 в сети"
+  Offline: "%prefix% &e%player%&7 не в сети"
+  Similiar: "%prefix% Возможно вы имели в виду: &e%names%"
 SocialSpy:
-  On: "%prefix% Вы включили &eon &7ваш &esocial spy &7"
-  Off: "%prefix% Вы отключили &eoff &7ваш &esocial spy &7"
-# Translatios for /Ping command
+  On: "%prefix% Вы включили режим шпиона"
+  Off: "%prefix% Вы выключили режим шпиона"
 Ping:
-  You: "%prefix% Ваш пинг: &e%ping%"
-  Other: "%prefix% &e%player%&7's пинг &e%ping%"
-# Translations for /List and /Staff commands
+  You: "%prefix% Ваш пинг &e%ping%"
+  Other: "%prefix% Пинг игрока &e%player%&7:  &e%ping%"
 List:
+  
   Staff:
-    - "%prefix% »=== &e%staff_online% &7===«"
-    - "%prefix% Персонал: &e%staff%"
+  - "»=== &e%staff_online% &7===«"
+  - "Админ: &e%staff%"
+  
   Normal:
-    - "%prefix% »=== &e%joiner-count{{STAFF}, default, supervip, vip}% &8/ &e%server_maxonline% &7===«"
-    - "%prefix% Персонал: &e%joинер{{STAFF}}%"
-    - "%prefix% VIPs: &e%joiner{supervip, vip}%"
-    - "%prefix% По умолчанию: &e%joинер{default}%"
+  - "%prefix% »=== &e%joiner-count{{STAFF}, default, supervip, vip}% &8/ &e%server_maxonline% &7===«"
+  - "%prefix% Админ: &e%joiner{{STAFF}}%"
+  - "%prefix% Вип: &e%joiner{supervip, vip}%"
+  - "%prefix% Игрок: &e%joiner{default}%"
 PmIgnore:
-  NoLonger: "%prefix% Вы больше не игнорируете сообщения от &e%player%"
-  Ignoring: "%prefix% Теперь вы игнорируете сообщения в чате и чате от &e%player%"
-# Translations for /Kill and /Suicide commands
+  NoLonger: "%prefix% Вы больше не игнорируете сообщения от игрока &e%player%"
+  Ignoring: "%prefix% Теперь вы игнорируете сообщения от игрока &e%player%"
 Kill:
-  Killed: "%prefix% убито &e%player%"
-  KilledMore: "%prefix% Убито &e%amount% &7игроков"
-  Suicide: "%prefix% &e%player% &7закомментировал самоубийство. Прощай жестокий мир!"
-# Translations for 'missing' things
+  Killed: "%prefix% Вы убили &e%player%"
+  KilledMore: "%prefix% Вы убили &e%amount% &7игроков"
+  Suicide: "%prefix% &e%player% &7покончил жизнь самоубийством. Прощай жестокий мир!"
 Missing:
-  World: "%prefix% Мир &e%world% &7не существует"
+  World: "%prefix% Мира &e%world% &7не существует"
   Player:
     Offline: "%prefix% Игрок &e%player% &7не в сети"
-    NotExist: "%prefix% Пользователь &e%player% &7не существует"
+    NotExist: "%prefix% Игрока &e%player% &7не существует"
   HandEmpty: "%prefix% Ваша рука пуста"
-  TargetHandEmpty: "%prefix% &e рука%player%&7 пуста"
-  Entity: "%prefix% сущность &e%entity% &7не существует"
-  GameMode: "Режим %prefix% &e%gamemode% &7не существует"
-  Material: "%prefix% Материал &e%material% &7не существует"
-  Flag: "%prefix% Флаг Предмета &e%flag% &7не существует"
-  Generator: "Генератор %prefix% &e%generator% &7не существует"
-  MaterialM: "%prefix% &cОтсутствует материал (тип: {BLOCK}) в GUICreator.yml!"
-  HeadURL: "%prefix% &cОтсутствует HeadURL (headURL: {URL}) в GUICreator.yml!"
+  TargetHandEmpty: "%prefix% Рука игрока &e%player%&7 пуста"
+  Entity: "%prefix% Сущность &e%entity% &7не найдена"
+  GameMode: "%prefix% Режим игры &e%gamemode% &7не найден"
+  Material: "%prefix% Материал &e%material% &7не найден"
+  Flag: "%prefix% ItemFlag &e%flag% &7не найден"
+  Generator: "%prefix% Генератор &e%generator% &7не найден"
+  MaterialM: "%prefix% &cМатериал не найден (тип: {BLOCK}) GUICreator.yml!"
+  HeadURL: "%prefix% &cURL головы не найден (URL головы: {URL}) GUICreator.yml!"
   Enchant:
-    NotExist: "%prefix% Зачарует%enchant% &7не существует"
-    NoEnchant: "%prefix% У вас нет зачарований на предмет"
-    DontContains: "%prefix% Ваш предмет не содержит зачарования &e%enchant%"
-# Translations for /Butcher command
+    NotExist: "%prefix% Зачарование &e%enchant% &7не существует"
+    NoEnchant: "%prefix% Нельзя наложить чары на этот предмет"
+    DontContains: "%prefix% На вашем предмете отсутствуют чары &e%enchant%"
 Butcher:
-  Killed: "%prefix% Убито &e%amount% &7сущностей"
-  KilledSpecified: "%prefix% убил &e%amount% &7сущностей типа &e%type%"
-# Translations for /Memory command
+  Killed: "%prefix% Было удалено &e%amount% &7сущностей"
+  KilledSpecified: "%prefix% Удалено &e%amount% &7сущностей типа: &e%type%"
 Memory:
   Info:
-    - "%prefix% Free MEM: &e%free_ram% &7MB"
-    - "%prefix% Used MEM: &e%used_ram% &7MB"
-    - "%prefix% Max MEM: &e%max_ram% &7MB"
-  Clear: "%prefix% Очистка памяти, пожалуйста, подождите.."
-  AlreadyClearing: "Память %prefix% уже очищается, пожалуйста, подождите.."
+  - "%prefix% Доступно MEM: &e%free_ram% &7MB"
+  - "%prefix% Использовано MEM: &e%used_ram% &7MB"
+  - "%prefix% Макс. MEM: &e%max_ram% &7MB"
+  Clear: "%prefix% Очистка памяти, подождите.."
+  AlreadyClearing: "%prefix% Память уже очищается, пожалуйста подождите..."
   Cleared: "%prefix% Память очищена (&e%amount% &7MB)"
-# Translations for /Exp command
 Experiences:
   Words:
-    Exp: "эксз"
-    Level: "уровни"
-  Balance: "%prefix% &e%player% &7имеет &e%amount% &7из %type%"
-  Given: "%prefix% Добавлено &e%amount% &7%type% в &e%player%"
-  Taken: "%prefix% удалено из &e%amount% &7%type% из &e%player%"
-  Set: "%prefix% &e%player%&7's %type% был установлен в &e%amount%"
-# Translations for /Item command
+    Exp: "опыта"
+    Level: "уровень"
+  Balance: "%prefix% Игрок &e%player% &7имеет &e%amount% %type%"
+  Given: "%prefix% Вы выдали &e%amount% &7%type% игроку &e%player%"
+  Taken: "%prefix% Вы удалили &e%amount% &7%type% игроку &e%player%"
+  Set: "%prefix% Опыт игрока &e%player%&7 был установлен на &e%amount%"
 Item:
-  Name: "%prefix% Название предмета изменено на - &r%name%"
-  NoItem: "&cВы не имеете ни одного элемента в руке."
+  Name: "%prefix% Отображаемое название предмета в вашей руке было изменено на &r%name%"
+  NoItem: "&cВаша рука пуста"
   Lore:
-    Added: "%prefix% Добавлена новая линия в вашей руке &r%line%"
-    Removed: "%prefix% удалил линию из предмета в вашей руке &r%line%"
-    Error: "%prefix% Произошла ошибка. Ошибка: %error%"
-    ListItem: "%prefix% &6Список линий в вашей руке:"
+    Added: "%prefix% Добавлена новое описание к предмету в вашей руке. &r%line%"
+    Removed: "%prefix% Описание предмета было удалено &r%line%"
+    Error: "%prefix% Была допущена ошибка. Ошибка: %error%"
+    ListItem: "%prefix% &6Список описаний предмета в вашей руке:"
     ListLore: "%prefix% &6%position%. строка: &5%lore%"
-    Set: "%prefix% Лента &e%line%&7 в вашей руке была изменена на &r%lore%"
+    Set: "%prefix% Описание предмета было изменено на &r%lore%"
   Flag:
-    Added: "%prefix% В вашу руку добавлен предмет &e%flag%&7"
-    Removed: "%prefix% Флаг &e%flag% &7элемента был удален из предмета в вашей руке"
-    List: "%prefix% Флаги предмета в вашей руке: &e%flags%"
+    Added: "%prefix% Флаг &e%flag%&7 был успешно добавлен"
+    Removed: "%prefix% Флаг &e%flag%&7 был успешно удален"
+    List: "%prefix% Флаги предмета: &e%flags%"
   Nbt:
-    Get: "%prefix% тэги nbt предмета в вашей руке &e%nbt%"
-    Set: "%prefix% тэги nbt предмета в вашей руке были изменены на &e%nbt%"
+    Get: "%prefix% Теги nbt предмета в вашей руке: &e%nbt%"
+    Set: "%prefix% Теги nbt предмета в вашей руке были изменены на &e%nbt%"
   Type:
-    Get: "%prefix% Тип предмета в вашей руке: &e%type%"
-    Set: "%prefix% Тип предмета в вашей руке был изменен на &e%type%"
+    Get: "%prefix% Тип предмета в вашей руке &e%type%"
+    Set: "%prefix% Тип предмета в руке был изменен на &e%type%"
   Amount:
-    Get: "%prefix% Количество предметов в вашей руке: &e%amount%"
-    Set: "%prefix% Количество предметов в вашей руке было изменено на &e%amount%"
+    Get: "%prefix% Количество предмета в вашей руке &e%amount%"
+    Set: "%prefix% Количество предмета в руке было изменено на &e%amount%"
   Durability:
-    Get: "%prefix% Прочность предмета в вашей руке &e%durability%"
-    Set: "%prefix% Прочность предмета в вашей руке изменена на &e%durability%"
+    Get: "%prefix% Прочность предмета в руке составляет &e%durability%"
+    Set: "%prefix% Прочность предмета в руке изменена на &e%durability%"
   Process:
     Cmd:
       List:
-        Above: "Список команд %prefix% (%total%):"
+        Above: "&d&lСписок команд &8(&7%total%&8)&f:"
         Item: "%prefix% - &e%position% &f%value%"
-        Empty: "Список команд %prefix% пуст"
-      InvalidTarget: "%prefix% Выбранная цель недействительна, допустимые цели: &eCONSOLE, ИГРОКА"
-      Add: "%prefix% Добавлена команда &e%value%&7 в список команд"
-      Remove: "%prefix% удалил &e%value%&7 команду (%position%) из списка команд"
+        Empty: "%prefix% Список команд пуст"
+      InvalidTarget: "%prefix% Аргумен недействителен, доступные аргументы: &eCONSOLE, PLAYER"
+      Add: "%prefix% Команда &e%value%&7 была успешно добавлена в список"
+      Remove: "%prefix% Команда &e%value%&7 была успешно удалена"
     Msg:
       List:
         Above: "%prefix% Список сообщений (%total%):"
         Item: "%prefix% - &e%position% &f%value%"
         Empty: "%prefix% Список сообщений пуст"
-      Add: "%prefix% Добавил сообщение &e%value%&7 в список сообщений"
-      Remove: "%prefix% удалил &e%value%&7 сообщение (%position%) из списка сообщений"
+      Add: "%prefix% Сообщение &e%value%&7 было успешно добавлено в список"
+      Remove: "%prefix% Сообщение &e%value%&7 было успешно удалено"
     Usage:
-      Set: "Сумма использования предмета %prefix% установлена в &e%value%"
-      Get: "Сумма использования элемента %prefix% установлена в &e%value%"
+      Set: "%prefix% Кол-во использование было установлено на &e%value%"
+      Get: "%prefix% Сумма использований было установлена на &e%value%"
     Cooldown:
-      Set: "Перезарядка использования %prefix% на &e%value%"
-      Get: "Перезарядка использования элемента %prefix% равна &e%value%"
-# Translations for /Hat command
+      Set: "%prefix% Задержка на использование было установлена на &e%value%"
+      Get: "%prefix% Задержка на использование было установлена на &e%value%"
 Hat:
   InvFull:
-    You: "%prefix% Ваш инвентарь полон. Очистите некоторые вещи, чтобы установить предметы на голову"
-    Other: "%prefix% %player%инвентарь полон. Вы не можете установить предмет."
+    You: "%prefix% Ваш инвентарь полон."
+    Other: "%prefix% Инвентарь игрока &a%player%&f полон."
   Equipped:
-    You: "%prefix% предметов из вашей руки было экипировано на вашу голову"
+    You: "%prefix% Вы одели предмет на голову"
     Other:
-      Sender: "%prefix% Вы экипировали предмет &e%item%&7 до &e%player%&7"
-      Receiver: "%prefix% &e%player%&7 экипированный предмет &e%item%&7 к вашей голове"
+      Sender: "%prefix% Вы надели предмет &e%item%&7 на голову игрока &e%player%"
+      Receiver: "%prefix% Игрок &e%player%&7 надел на вашу голову предмет &e%item%"
 SCR:
+  
+  # Translations for economy commands
   Info:
-    - "Версия %prefix% для управления сервером: &eV%version%"
-    - "Версия сервера %prefix% : &e%server%"
-    - "%prefix% ссылка Discord: &ehttps://discord.io/spigotdevtec"
-    - "Язык %prefix% : &eEN"
-# Translations for economy commands
+  - "%prefix% Версия ServerControlReloaded: &eV%version%"
+  - "%prefix% Версия плагина: &e%server%"
+  - "%prefix% Discord: &ehttps://discord.io/spigotdevtec"
+  - "%prefix% Язык: &eRU"
 Economy:
-  # Translation for /BalanceTop command
-  NoEconomyAccount: "%prefix% Нет экономического аккаунта"
-  NotEnought: "%prefix% У Вас достаточно денег"
+  NoEconomyAccount: "%prefix% У вас не установлена экономика"
+  NotEnought: "%prefix% Недостаточно средств"
   BalanceTop:
-    Loading: "%prefix% Подсчитывает богатства всех игроков, пожалуйста, держитесь.."
-    Header: "%prefix% &7=====» &cТоп &e%page%/%pages% &7«====="
+    Loading: "%prefix% Считаю богатство всех игроков, пожалуйста, подожди..."
+    Header: "&7=====» &cТоп богачей &e%page%/%pages% &7«====="
     Footer: ""
   Reset:
-    Sender: "Аккаунт %prefix% для экономики &e%player% &7был сброшен"
-    Receiver: "%prefix% Ваша учётная запись была сброшена"
+    Sender: "%prefix% Вы успешно аннулировали счёт у игрока &e%player%"
+    Receiver: "%prefix% Мы аннулировали ваш счёт"
   Give:
-    Sender: "%prefix% &e$%money% &7в счет экономики &e%player%"
-    Receiver: "%prefix% Gaven &e$%money% &7на ваш аккаунт"
+    Sender: "%prefix% Игроку &e%player% &7было выдано &e%money%⛂"
+    Receiver: "%prefix% На ваш аккаунт было зачислено &e%money%⛂"
   Take:
-    Sender: "%prefix% Снято &e$%money% &7со счета экономики &e%player%"
-    Receiver: "%prefix% Снято &e$%money% &7с вашего аккаунта"
+    Sender: "%prefix% Вы успешно сняли у игрока &e%player% &e%money%⛂"
+    Receiver: "%prefix% С вашего аккаунта было снято &e%money%⛂"
   Set:
-    Sender: "%prefix% Установить экономический баланс по &e%player% &7по &e$%money%"
-    Receiver: "%prefix% Ваш экономический баланс был установлен на &e$%money%"
+    Sender: "%prefix% Баланс игрока &e%player% &7был установлен на &e%money%⛂"
+    Receiver: "%prefix% Ваш баланс был установлен на &e%money%⛂"
   Balance:
-    Your: "%prefix% Ваш баланс &e$%money%"
-    Other: "%prefix% &e%player% &7have &e$%money%"
+    Your: "%prefix% На вашем счету &e%money%⛂"
+    Other: "%prefix% У игрока &e%player% &7имеется &e%money%⛂"
   Pay:
-    Sender: "%prefix% Вы заплатили &e$%money% &7к &e%player%"
-    Receiver: "%prefix% &e%player% &7оплатил вас &e$%money%"
+    Sender: "%prefix% Вы переволи &e%money%⛂ &7игроку &e%player%"
+    Receiver: "%prefix% Игрок &e%player% &7перевёл вам &e%money%⛂"
   Multi:
-    Exists: "%prefix% Группа экономики &e%economy-group% &7уже существует"
-    NotExist: "%prefix% Группа экономики &e%economy-group% &7не существует"
-    Create: "%prefix% Группа экономики &e%economy-group% &7создана"
-    Delete: "%prefix% Группа экономики &e%economy-group% &7удалена"
-    Groups: "%prefix% группы экономики: &e%groups%"
+    Exists: "%prefix% Экономическая группа &e%economy-group% &7уже существует"
+    NotExist: "%prefix% Экономическая группа &e%economy-group% &7не существует"
+    Create: "%prefix% Экономическая группа &e%economy-group% &7создана"
+    Delete: "%prefix% Экономическая группа &e%economy-group% &7удалена"
+    Groups: "%prefix% Список экономических групп: &e%groups%"
     Worlds:
-      List: "%prefix% Миры в группе экономики &e%economy-group%&7: &e%worlds%"
-      AlreadyInGroup: "%prefix% Мир &e%world% &7уже в группе экономики &e%economy-group%"
-      NotInGroup: "Мир %prefix% &e%world% &7не добавлен в группу экономики &e%economy-group%"
-      Added: "%prefix% Мир &e%world% &7добавлен в группу экономики &e%economy-group%"
-      Removed: "%prefix% Мир &e%world% &7удален из группы экономики &e%economy-group%"
-    Money: "%prefix% &e%player% &7имеет &e$%money% &7в группе экономики &e%economy-group%"
-    Transfer: "%prefix% Переведена экономика &e%player% &7группы экономики &e%from% &7в группу экономики &e%to%"
-# Translations for /Nickname and /NicknameReset commands
+      List: "%prefix% Миры в экономической группе &e%economy-group%&7: &e%worlds%"
+      AlreadyInGroup: "%prefix% Мир &e%world% &7уже в экономической группе &e%economy-group%"
+      NotInGroup: "%prefix% Мир &e%world% &7не добавлен в экономическую группу &e%economy-group%"
+      Added: "%prefix% Мир &e%world% &7добавлен в экономическую группу &e%economy-group%"
+      Removed: "%prefix% Мир &e%world% &7удален из экономической группы &e%economy-group%"
+    Money: "%prefix% &e%player% &7имеет &e%money%⛂ &7в экономической группе &e%economy-group%"
+    Transfer: "%prefix% Переданная экономика игрока &e%player% &7переход из &e%from% &7в &e%to% экономическую группу"
 Nickname:
   Change: "%prefix% Ваш ник изменен на &r%nickname%"
-  Reset: "%prefix% сброшен на &r%player%"
-  Get: "%prefix% &e%player%&7 псевдоним &r%nickname%"
-# Translations for /AFK command and AutoAFK messages
+  Reset: "%prefix% Ваш ник сброшен на &r%player%"
+  Get: "%prefix% Вы установили ник игроку &e%player% &7- &r%nickname%"
 AFK:
-  Start: "%playername%&7 AFK"
-  Start_WithReason: "%playername%&7 AFK &7(&e%reason%&7)"
+  Start: "%playername%&7 теперь AFK"
+  Start_WithReason: "%playername%&7 теперь AFK &7(&e%reason%&7)"
   End: "%playername%&7 больше не AFK"
   Command:
     Start: ""
     End: ""
     Other:
-      Start: "%prefix% Вы установили &e%player% &7AFK"
-      End: "%prefix% Вы установили &e%player% &7не AFK"
+      Start: "%prefix% Теперь игрок &e%player% &7AFK"
+      End: "%prefix% Теперь игрок &e%player% &7не AFK"
+
 # Translations for /Reply command
-NoReply: "%prefix% У вас нет ответа на"
+NoReply: "%prefix% Вам еще никто не писал"
 BanSystem:
-  #Mutes
   TempMuteIP:
-    Sender: "%prefix% Вы временно заглушены &e%ip% &7для &r%reason%&7 для &e%time%"
-    Admins: "%prefix% &e%operator% &7temp-ip &e%ip% &7для &r%reason%&7 для &e%time%"
+    Sender: "%prefix% Вы временно замутили игрока по IP: &e%ip% &8| &7Причина: &r%reason%&7 &8| Время: &e%time%"
+    Admins: "%prefix% &e%operator% &7временно замутил игрока по IP: &e%ip% &8| &7Причина: &r%reason%&7 &8| Время: &e%time%"
   TempMute:
-    Sender: "%prefix% Вы заглушили &e%player% &7для &r%reason%&7 для &e%time%"
-    Admins: "%prefix% &e%operator% &7temp-muted &e%player% &7for &r%reason%&7 for &e%time%"
+    Sender: "%prefix% Вы временно замутили игрока &e%player% &8| &7Причина: &r%reason%&7 &8| Время: &e%time%"
+    Admins: "%prefix% &e%operator% &7временно замутил игрока &e%player% &8| &7Причина: &r%reason%&7 &8| Время: &e%time%"
   MuteIP:
-    Sender: "%prefix% Вы заглушили ip &e%ip% &7для &r%reason%"
-    Admins: "%prefix% &e%operator% &7заглушен-ip &e%ip% &7для &r%reason%"
+    Sender: "%prefix% Вы замутили игрока по IP &e%ip% &8| &7Причина: &r%reason%"
+    Admins: "%prefix% &e%operator% &7замутил игрока по IP: &e%ip% &8| &7Причина: &r%reason%"
   Mute:
-    Sender: "%prefix% Вы заглушили &e%player% &7за &r%reason%"
-    Admins: "%prefix% &e%operator% &7заглушено &e%player% &7для &r%reason%"
+    Sender: "%prefix% Вы замутили игрока &e%player% &8| &7Причина: &r%reason%"
+    Admins: "%prefix% &e%operator% &7замутил игрока &e%player% &8| &7Причина: &r%reason%"
   Kick:
-    Sender: "%prefix% Вы кикнули &e%player% &7для &r%reason%"
-    Admins: "%prefix% &e%operator% &7кикнул &e%player% &7для &r%reason%"
+    Sender: "%prefix% Вы кикнули игрока &e%player% &8| &7Причина: &r%reason%"
+    Admins: "%prefix% &e%operator% &7кикнул игрока &e%player% &8| &7Причина: &r%reason%"
   UnMute:
-    Sender: "%prefix% Вы включили звук &e%player%"
-    Admins: "%prefix% &e%operator% &7включено &e%player%"
+    Sender: "%prefix% Вы размутили игрока &e%player%"
+    Admins: "%prefix% &e%operator% &7размутил игрока &e%player%"
   UnMuteIP:
-    Sender: "%prefix% Вы включили микрофон &e%ip%"
-    Admins: "%prefix% &e%operator% &7размутировать-ip &e%ip%"
-  #Bans
+    Sender: "%prefix% Вы размутили игрока на IP: &e%ip%"
+    Admins: "%prefix% &e%operator% &7размутил игрока по IP: &e%ip%"
   TempBanIP:
-    Sender: "%prefix% Вы забанились &e%ip% &7для &r%reason%&7 для &e%time%"
-    Admins: "%prefix% &e%operator% &7temp-ip &e%ip% &7для &r%reason%&7 для &e%time%"
+    Sender: "%prefix% Вы временно забанили игрока по IP: &e%ip% &8| &7Причина: &r%reason%&7 &8| Время: &e%time%"
+    Admins: "%prefix% &e%operator% &7временно забанил игрока по IP: &e%ip% &8| &7Причина: &r%reason%&7 &8| Время: &e%time%"
   TempBan:
-    Sender: "%prefix% Вы забанили &e%player% &7для &r%reason%&7 для &e%time%"
-    Admins: "%prefix% &e%operator% &7temp-baned &e%player% &7for &r%reason%&7 for &e%time%"
+    Sender: "%prefix% Вы временно забанили игрока &e%player% &8| &7Причина: &r%reason%&7 &8| Время: &e%time%"
+    Admins: "%prefix% &e%operator% &7временно забанил игрока &e%player% &8| &7Причина: &r%reason%&7 &8| Время: &e%time%"
   BanIP:
-    Sender: "%prefix% Вы забанили ip &e%ip% &7для &r%reason%"
-    Admins: "%prefix% &e%operator% &7забанил &e%ip% &7для &r%reason%"
+    Sender: "%prefix% Вы забанили игрока по IP: &e%ip% &8| &7Причина: &r%reason%"
+    Admins: "%prefix% &e%operator% &7забанил игрока по IP: &e%ip% &8| &7Причина: &r%reason%"
   Ban:
-    Sender: "%prefix% Вы забанили &e%player% &7за &r%reason%"
-    Admins: "%prefix% &e%operator% &7забанил &e%player% &7для &r%reason%"
+    Sender: "%prefix% Вы забанили игрока &e%player% &8| &7Причина: &r%reason%"
+    Admins: "%prefix% &e%operator% &7забанил игрока &e%player% &8| &7Причина: &r%reason%"
   UnBanIP:
-    Sender: "%prefix% Вы разбанили ip &e%ip%"
-    Admins: "%prefix% &e%operator% &7разбанил ip &e%ip%"
+    Sender: "%prefix% Вы разбанили игрока по IP: &e%ip%"
+    Admins: "%prefix% &e%operator% &7разбанил игрока по IP: &e%ip%"
   UnBan:
-    Sender: "%prefix% Вы разбанили &e%player%"
-    Admins: "%prefix% &e%operator% &7разбанил &e%player%"
-  #Jails
+    Sender: "%prefix% Вы разбанили игрока &e%player%"
+    Admins: "%prefix% &e%operator% &7разбанил игрока &e%player%"
   TempJailIP:
-    Sender: "%prefix% Вы временно арестованы &e%ip% &7для &r%reason%&7 для &e%time%"
-    Admins: "%prefix% &e%operator% &7Временно арестован-ip &e%ip% &7для &r%reason%&7 для &e%time%"
+    Sender: "%prefix% Вы временно посадили игрока в тюрьму по IP: &e%ip% &8| &7Причина: &r%reason%&7 &8| Время: &e%time%"
+    Admins: "%prefix% &e%operator% &7временно посадил игрока в тюрьму по IP: &e%ip% &8| &7Причина: &r%reason%&7 &8| Время: &e%time%"
   TempJail:
-    Sender: "%prefix% Вы арестовали &e%player% &7за &r%reason%&7 для &e%time%"
-    Admins: "%prefix% &e%operator% &7Арест &e%player% &7для &r%reason%&7 для &e%time%"
+    Sender: "%prefix% Вы временно посадили игрока &e%player%&7 в тюрьму &8| &7Причина: &r%reason%&7 &8| Время: &e%time%"
+    Admins: "%prefix% &e%operator% &7временно посадили игрока &e%player% в тюрьму &8| &7Причина: &r%reason%&7 &8| Время: &e%time%"
   JailIP:
-    Sender: "%prefix% Вы арестовали -ip &e%ip% &7для &r%reason%"
-    Admins: "%prefix% &e%operator% &7арестован-ip &e%ip% &7для &r%reason%"
+    Sender: "%prefix% Вы посадили игрока в тюрьму по IP &e%ip% &7Причина: &r%reason%"
+    Admins: "%prefix% &e%operator% &7посадили игрока в тюрьму по IP: &e%ip% &8| &7Причина: &r%reason%"
   Jail:
-    Sender: "%prefix% Вы арестовали &e%player% &7за &r%reason%"
-    Admins: "%prefix% &e%operator% &7Арестован &e%player% &7за &r%reason%"
+    Sender: "%prefix% Вы посадили игрока &e%player%&7 в тюрьму &8| &7Причина: &r%reason%"
+    Admins: "%prefix% &e%operator% &7посадил игрока &e%player% в тюрьму &8| &7Причина: &r%reason%"
   UnJailIP:
-    Sender: "%prefix% У вас есть отрезанный ip &e%ip%"
-    Admins: "%prefix% &e%operator% &7снятый в тюрьме ip &e%ip%"
+    Sender: "%prefix% Вы освободили игрока из тюрьмы по IP: &e%ip%"
+    Admins: "%prefix% &e%operator% &7освободил игрока из тюрьмы по IP: &e%ip%"
   UnJail:
-    Sender: "%prefix% Вы сняли с тюрьмы &e%player%"
-    Admins: "%prefix% &e%operator% &7снято с тюрьмы &e%player%"
-  #Warns
+    Sender: "%prefix% Вы освободили игрока &e%player% &7из тюрьмы"
+    Admins: "%prefix% &e%operator% &7освободил игрока &e%player% из тюрьмы"
   Warn:
-    Sender: "%prefix% Вы предупреждаете &e%player% &7для &r%reason%"
-    Admins: "%prefix% &e%operator% &7предупреждено &e%player% &7для &r%reason%"
-  #Other
+    Sender: "%prefix% Вы выдали предупреждение игроку &e%player% &8| &7Причина: &r%reason%"
+    Admins: "%prefix% &e%operator% &7выдал предупреждение игроку &e%player% &8| &7Причина: &r%reason%"
   Not:
     Banned: "%prefix% &e%player% &7не забанен"
-    IPBanned: "%prefix% IP адрес &e%ip% &7не забанен"
-    Muted: "%prefix% &e%player% &7не заглушен"
+    IPBanned: "%prefix% IP-адресс &e%ip% &7не забанен"
+    Muted: "%prefix% &e%player% &7не замучен"
     Arrested: "%prefix% &e%player% &7не арестован"
-# Translations for /Jail command
 Jail:
-  Create: "%prefix% &e%jail% &7создано"
-  Delete: "%prefix% &e%jail% &7удалено"
+  Create: "%prefix% Тюрьма &e%jail% &7создана"
+  Delete: "%prefix% Тюрьма &e%jail% &7удалена"
   Exists: "%prefix% Тюрьма &e%jail% &7уже существует"
-  NotExist: "%prefix% Тюрьмы &e%jail% &7не существует"
-  List: "%prefix% Тюрьмы: &e%jails%"
-  Empty: "%prefix% Тюрьмы нет"
-# Translations for /ClearInventory command
+  NotExist: "%prefix% Тюрьма &e%jail% &7не найдена"
+  List: "%prefix% Список тюрьм: &e%jails%"
+  Empty: "%prefix% Такой тюрьмы не существует"
 ClearInventory:
   Cleared:
-    Your: "%prefix% Ваш инвентарь очищен"
-    Other: "%prefix% &e инвентарь%player%&7 очищен"
-  NoMoney: "%prefix% у вас недостаточно денег. Вам нужно &e%money%"
-  MissingEco: "%prefix% Отсутствует плагин на экономику, пожалуйста установите Vault и плагин на Экономику"
-  NoRetrive: "%prefix% У вас нет инвентаря для извлечения"
-  Retrive: "%prefix% Ваш инвентарь был извлечен для &e$%money%"
-  NoConfirm: "%prefix% Вы не подтвердили запрос"
+    Your: "%prefix% Ваш инвентарь был очищен"
+    Other: "%prefix% Инвентарь игрока &e%player%&7 был очищен"
+  NoMoney: "%prefix% Недостаточно средств! Тебе ещё нужно &e%money%⛂"
+  MissingEco: "%prefix% Отсутствует плагин экономии, установите плагин Vault & Economy."
+  NoRetrive: "%prefix% У вас нет инвентаря для получения"
+  Retrive: "%prefix% Вы очистили свой инвентарь за &e%money%⛂"
+  NoConfirm: "%prefix% У вас нет запроса на подтверждение"
   Confirm:
-    Request: "%prefix% Пожалуйста, подтвердите ваш запрос на очистку инвентаря"
-    Enabled: "Требуется %prefix% запросов на расчистку инвентаря"
-    Disabled: "%prefix% запросы на расчистку инвентаря больше не требуются"
-# Translations for /Helpop
+    Request: "%prefix% Подтвердите запрос на очистку инвентаря"
+    Enabled: "%prefix% Требуются запросы на очистку инвентаря"
+    Disabled: "%prefix% Запросы на очистку инвентаря больше не требуются"
 Helpop:
   ChatLock:
-    true: "Чат %prefix% заблокирован, введите текст для отправки сообщения в helpop"
+    true: "%prefix% Чат заблокирован. Введите текст в чат, чтобы отправить сообщение администратору"
     false: "%prefix% Чат разблокирован"
-# Translations for /Home and /Homes commands
 Home:
-  EmptyList: "%prefix% У вас нет дома"
-  List: "Дома %prefix% : &e%homes%"
-  Teleporting: "%prefix% телепортируется домой &e%home%"
-  WrongLocation: "Дом %prefix% &e%home% &7имеет неправильное местоположение"
-  NotExist: "Дом %prefix% &e%home% &7не существует"
-  Exists: "Дом %prefix% &e%home% &7уже существует"
-  Create: "Дом %prefix% &e%home% &7создан"
-  Delete: "Дом %prefix% &e%home% &7удален"
-  Limit: "%prefix% Вы достигли предела дома"
-  TpSpawn: "%prefix% У вас нет дома, телепортируясь к спавну"
+  EmptyList: "%prefix% У вас нет точек дома"
+  List: "%prefix% Доступные дома: &e%homes%"
+  Teleporting: "%prefix% Телепортация домой"
+  WrongLocation: "%prefix% Дом &e%home% &7установлен не правильно"
+  NotExist: "%prefix% Дома &e%home% &7не существует"
+  Exists: "%prefix% Дом &e%home% &7уже существует"
+  Create: "%prefix% Дом &e%home% &7успешно создан"
+  Delete: "%prefix% Дом &e%home% &7успешно удален"
+  Limit: "%prefix% Вы достигли лимита точек домов"
+  TpSpawn: "%prefix% У вас нет дома"
   Other:
-    NotExist: "%prefix% &e &7дом%player%&e%home% &7не существует"
-    Teleporting: "%prefix% телепортируется домой &e%home% &7из &e%player%"
-    List: "%prefix% &e%player%&7дома &7: &e%homes%"
-    EmptyList: "%prefix% &e%player% &7не имеет дома"
-# Translations for /Chunk command
+    NotExist: "%prefix% У игрока &e%player% &7дома &e%home%&7 не существует"
+    Teleporting: "%prefix% Телепортация в дом &e%home% &7игрока &e%player%"
+    List: "%prefix% Дома игрока &e%player%&7: &e%homes%"
+    EmptyList: "%prefix% У игрока &e%player% &7нету домов"
 Chunks:
   Load: "%prefix% &e%world%&7: &e%chunks% &7чанков"
   Unload: "%prefix% Выгружено &e%chunks% &7чанков"
   TotalLoad: "%prefix% Всего загружено &e%chunks% &7чанков"
-#CountryBlocker translations
 CountryBlocker:
-  ListMess: "%prefix% список игроков в белом списке:"
+  ListMess: "%prefix% Список игроков в белом списке:"
   List: "%prefix% » &e%player%"
-  Add: "%prefix% Игрок &e%player% &7добавлен в белый список"
-  Remove: "%prefix% Игрок &e%player% &7удален из белого списка"
-  NotWhitelisted: "%prefix% Игрок &e%player% &7не в белом списке!"
-# Translations for gamemode commands
+  Add: "%prefix% Игрок &e%player% &7добавлен в whitelist"
+  Remove: "%prefix% Игрок &e%player% &7удален из whitelist"
+  NotWhitelisted: "%prefix% Игрока &e%player% &7нету в whitelist!"
 GameMode:
   Temp:
-    Remove: "%prefix% Игровой режим удален"
-    EndIn: "%prefix% Истекает игровой режим через &e%time%"
-    End: "Истек срок действия игрового режима %prefix%"
-    You: "%prefix% Ваш временный режим игры установлен в &c%gamemode%&7 для &e%time%"
+    Remove: "%prefix% Временный режим игры удален."
+    EndIn: "%prefix% Режим игры истекает через &e%time%"
+    End: "%prefix% Срок действия игрового режима истек"
+    You: "%prefix% Вам выдали режим &c%gamemode%&7 отключение через &e%time%"
     Other:
-      Remove: "%prefix% Ваш временный режим игры был удален"
-      Sender: "Временный режим %prefix% &c%gamemode% &7был установлен для игрока &e%time% &7для игрока &a%player%"
-      Reciever: "%prefix% Ваш временный режим игры установлен в &c%gamemode%&7 для &e%time%"
+      Remove: "%prefix% Упс... У вас закончилось время"
+      Sender: "%prefix% Установлен временный режим игры &c%gamemode% &7срок действия режима &e%time% &7для игрока &a%player%"
+      Reciever: "%prefix% Вам выдали временный игровой режим &c%gamemode%&7, срок действия &e%time%"
   Your:
-    Survival: "%prefix% Ваш игровой режим был установлен в &eSurvival"
-    Creative: "%prefix% Ваш игровой режим был изменен на &eCreative"
-    Adventure: "%prefix% Ваш игровой режим был установлен в &eAdventure"
-    Spectator: "%prefix% Ваш игровой режим был установлен на &eSpectator"
+    Survival: "%prefix% Ваш режим игры был установлен на &eSurvival"
+    Creative: "%prefix% Ваш режим игры был установлен на &eCreative"
+    Adventure: "%prefix% Ваш режим игры был установлен на &eAdventure"
+    Spectator: "%prefix% Ваш режим игры был установлен на &eSpectator"
   Other:
     Survival:
-      Sender: "%prefix% Режим игры &e%player%&7 установлен на &2Выживание"
-      Receiver: "%prefix% Ваш игровой режим был установлен в &eSurvival"
+      Sender: "%prefix% Игровой режим игрока &e%player% &7был установен на &eSurvival"
+      Receiver: "%prefix% Вам установили игровой режим &eSurvival"
     Creative:
-      Sender: "%prefix% Режим игры &e%player%&7 установлен на &2Креатив"
-      Receiver: "%prefix% Ваш игровой режим был изменен на &eCreative"
+      Sender: "%prefix% Игровой режим игрока &e%player% &7был установен на &eCreative"
+      Receiver: "%prefix% Вам установили игровой режим &eCreative"
     Adventure:
-      Sender: "%prefix% Режим игры &e%player%&7 установлен на &2Приключение"
-      Receiver: "%prefix% Ваш игровой режим был установлен в &eAdventure"
+      Sender: "%prefix% Игровой режим игрока &e%player% &7был установен на &eAdventure"
+      Receiver: "%prefix% Вам установили игровой режим &eAdventure"
     Spectator:
-      Sender: "Режим игры %prefix% для &e%player% &7установлен на &eSpectator"
-      Receiver: "%prefix% Ваш игровой режим был установлен на &eSpectator"
+      Sender: "%prefix% Игровой режим игрока &e%player% &7был установен на &eSpectator"
+      Receiver: "%prefix% Вам установили игровой режим &eSpectator"
+
 # Translations for TPS command
-TPS:
-  - "%prefix% текущий TPS: &e%tps%"
-  - "%prefix% TPS от 1мин: &e%tps-from-1%"
-  - "%prefix% TPS от 5 мин: &e%tps-from-5%"
-  - "%prefix% ТС от 15 мин: &e%tps-from-15%"
+
 # Translations for /Enchant and /EnchantRemove commands
+TPS:
+- ""
+- "%prefix% Текущий TPS: &e%tps%"
+- "%prefix% 1мин: &e%tps-from-1%"
+- "%prefix% 5мин: &e%tps-from-5%"
+- "%prefix% 15мин: &e%tps-from-15%"
+- ""
 Enchant:
-  Add: "%prefix% Предмет в вашей руке зачарован зачарованием&e%enchant% %level%"
+  Add: "%prefix% Предмет в вашей руке был зачарован на &e%enchant% %level%"
   Remove:
-    One: "%prefix% Удалены чары &e%enchant% &7из предмета в вашей руке"
-    All: "%prefix% удалил все чары из предмета в вашей руке"
-# Translations for tp commands
+    One: "%prefix% Зачарование &e%enchant% &7было успешно убрано с предмета"
+    All: "%prefix% С предмета были сняты все чары"
 TpSystem:
-  NoRequest: "%prefix% У вас нет ни одного запроса"
-  NotSafe: "%prefix% не может найти безопасное местоположение"
+  NoRequest: "%prefix% У вас нет запросов"
+  NotSafe: "%prefix% Не могу найти безопасное место"
   SendRequestToSelf: "%prefix% Вы не можете отправить запрос самому себе"
-  HaveRequest: "У %prefix% &e%player% &7уже есть запрос на телепортацию от вас"
+  HaveRequest: "%prefix% &e%player% &7У вас уже есть активный запрос на телепортацию"
   Tpa:
     Send:
-      Sender: "%prefix% Вы отправили запрос на телепортацию в &e%player%"
+      Sender: "%prefix% Вы отправили запрос на телепортацию игроку &e%player%"
       Receiver: "%prefix% &e%player% &7хочет телепортироваться к вам"
     Accept:
       Sender:
-        - "%prefix% Вы приняли запрос на телепортацию от &e%player%"
-        - "%prefix% телепортируется &e%player% &7к вам"
+      - "%prefix% Вы приняли запрос на телепорт от игрока &e%player%"
+      - "%prefix% Телепортируем игрока &e%player%"
       Receiver:
-        - "%prefix% &e%player% &7принял ваш запрос на телепортацию"
-        - "%prefix% телепортируется в &e%player%"
+      - "%prefix% &e%player% &7принял ваш запрос на телепортацию"
+      - "%prefix% Телепортация к игроку &e%player%"
     Reject:
-      Sender: "%prefix% Вы отклонили запрос на телепортацию от &e%player%"
-      Receiver: "%prefix% &e%player% &7отклонил запрос на телепортацию"
+      Sender: "%prefix% Вы отклонили запрос на телепорт от игрока &e%player%"
+      Receiver: "%prefix% &e%player% &7отклонил ваш запрос на телепортацию"
     Cancel:
-      Sender: "%prefix% Вы отменили запрос на телепортацию в &e%player%"
+      Sender: "%prefix% Вы отменили запрос на телепортацию для игрока &e%player%"
       Receiver: ""
   Tpahere:
     Send:
-      Sender: "%prefix% Вы отправили запрос на телепортацию в &e%player%"
-      Receiver: "%prefix% &e%player% &7хочет телепортировать вас к нему"
+      Sender: "%prefix% Вы отправили запрос на телепортацию игроку &e%player%"
+      Receiver: "%prefix% &e%player% &7хочет телепортировать тебя к вам"
     Accept:
       Sender:
-        - "%prefix% &e%player% &7принял ваш запрос на телепортацию"
-        - "%prefix% телепортируется в место &e%player%"
+      - "%prefix% &e%player% &7Принял ваш запрос на телепортацию"
+      - "%prefix% Телепортация к игроку &e%player%"
       Receiver:
-        - "%prefix% &e%player% &7принял ваш запрос на телепортацию"
-        - "%prefix% телепортирует &e%player% &7на ваше местоположение"
+      - "%prefix% &e%player% &7принял ваш запрос на телепортацию"
+      - "%prefix% Телепортируем игрока &e%player%"
     Reject:
-      Sender: "%prefix% Вы отклонили запрос на телепортацию от &e%player%"
-      Receiver: "%prefix% &e%player% &7отклонил запрос на телепортацию"
+      Sender: "%prefix% Вы отклонили запрос на телепорт от игрока &e%player%"
+      Receiver: "%prefix% &e%player% &7отклонил ваш запрос на телепортацию"
     Cancel:
-      Sender: "%prefix% Вы отменили запрос на телепортацию в &e%player%"
+      Sender: "%prefix% Вы отклонили запрос на телепортацию от игрока &e%player%"
       Receiver: ""
   TpHere:
-    Sender: "%prefix% телепортируется &e%player% &7к вам"
-    Receiver: "%prefix% телепортируется в &e%player%"
+    Sender: "%prefix% Телепортируем игрока &e%player% &7к вам"
+    Receiver: "%prefix% Телепортация к игроку &e%player%"
   Tp:
     Player:
-      YouToPlayer: "%prefix% телепортируется в &e%player%"
-      PlayerToYou: "%prefix% телепортируется &e%player% &7к вам"
-      PlayerToNextPlayer: "%prefix% телепортируется &e%player% &7в &e%next-player%"
+      YouToPlayer: "%prefix% Телепортация к игроку &e%player%"
+      PlayerToYou: "%prefix% Вы телепортировали игрока &e%player% &7к себе"
+      PlayerToNextPlayer: "%prefix% Телепортация игрока &e%player% &7к &e%next-player%"
     Location:
-      YouToLocation: "%prefix% Телепортирует вас в &e%x%&7, &e%y%&7, &e%z%, &e%yaw%, &e%pitch%"
-      PlayerToLocation: "%prefix% телепортируется &e%player% &7в &e%x%&7, &e%y%&7, &e%z%"
-  TpaAll: "%prefix% Отправил запрос на &e%amount% &7игроков для телепортации на вашу позицию"
-  TpAll: "%prefix% телепортируется на вашу позицию &e%amount% &7игроков"
+      YouToLocation: "%prefix% Телепортирую вас на координаты &e%x%&7, &e%y%&7, &e%z%, &e%yaw%, &e%pitch%"
+      PlayerToLocation: "%prefix% Телепортация игрока &e%player% &7на координаты &e%x%&7, &e%y%&7, &e%z%"
+  TpaAll: "%prefix% Запрос на телепортацию был отправлен &e%amount% &7игрокам"
+  TpAll: "%prefix% Телепортирование к себе &e%amount% &7игроков"
   Block:
     IsBlocked:
-      Teleport: "Телепортация %prefix% отменена, игрок блокирует телепортацию от вас"
-      Request: "Запрос на телепортацию %prefix% отменён, игрок блокирует телепортацию от вас"
-    List: "%prefix% Список заблокирован: &e%blocked%"
-    Add: "%prefix% Теперь вы блокируете телепортацию с &e%player%"
-    Remove: "%prefix% Вы принимаете телепортацию от &e%player%"
+      Teleport: "%prefix% Телепортация была отменена"
+      Request: "%prefix% Запрос на телепортацию был отменен"
+    List: "%prefix% Список заблокированных: &e%blocked%"
+    Add: "%prefix% Игрок &e%player%&f больше не сможет телепортироваться к вам"
+    Remove: "%prefix% Теперь вы принимаете телепортацию от игрока &e%player%"
     Global:
-      On: "%prefix% Вы блокируете телепортацию от всех"
-      Off: "%prefix% Вы принимаете телепортацию от всех"
-# Translations for /Sudo command
+      On: "%prefix% Теперь вы блокируете запросы телепортацию"
+      Off: "%prefix% Теперь вы принимаете запросы телепортацию"
 Sudo:
   Message: ""
-  Command: "%prefix% Вы отправили команду &e%command%&7 как &e%player%"
-# Translations for /Repair command
+  Command: "%prefix% Вы отправили команду &e%command%&7 игроку &e%player%"
 Repair:
   Hand:
-    You: "%prefix% Вы отремонтировали предмет в вашей руке"
+    You: "%prefix% Вы отремонтировали предмет в руке"
     Other:
-      Sender: "%prefix% Вы отремонтировали предмет в руке &e%player%&7"
-      Receiver: "%prefix% Предмет в вашей руке был отремонтирован"
+      Sender: "%prefix% Вы отремонтировали предмет игроку &e%player%"
+      Receiver: "%prefix% Предмет в вашей руке отремонтирован"
   All:
-    You: "%prefix% Вы отремонтировали все предметы в вашем инвентаре"
+    You: "%prefix% Вы отремонтировали все предметы в своем инвентаре"
     Other:
-      Sender: "%prefix% Вы отремонтировали все предметы в инвентаре &e%player%&7"
-      Receiver: "%prefix% Все предметы в вашем инвентаре были отремонтированы"
-# Translations for time commands
+      Sender: "%prefix% Вы отремонтировали все предмету у игрока &e%player%"
+      Receiver: "%prefix% Все предметы в вашем инвентаре отремонтированы"
 Time:
-  Day: "%prefix% Вы установили &eday &7в мире &e%world%"
-  Night: "%prefix% Вы установили &enight &7в мире &e%world%"
-  PDay: "%prefix% Вы установили &7для &e%player%"
-  PNight: "%prefix% Вы установили &enight &7для &e%player%"
-# Translations for weather commands
+  Day: "%prefix% Вы установили &eдень &7в мире &e%world%"
+  Night: "%prefix% Вы установили &eночь &7в мире &e%world%"
+  PDay: "%prefix% Вы установили &eдень &7у игрока &e%player%"
+  PNight: "%prefix% Вы установили &eночь &7у игрока &e%player%"
 Weather:
-  Sun: "%prefix% Вы установили &esunny &7weather в мире &e%world%"
-  Rain: "%prefix% Вы установили &серию &7погоды в мире &e%world%"
-  PSun: "%prefix% Вы установили &esunny &7weather для &e%player%"
-  PRain: "%prefix% Вы установили &erainy &7weather для &e%player%"
-  Thunder: "%prefix% Вы установили &7погоду с &ethunder &7в мире &e%world%"
-# Translations for MultiWorld command
+  Sun: "%prefix% Вы установили &eсолнечную &7погоду в мире &e%world%"
+  Rain: "%prefix% Вы установили &eдождливую &7погоду в мире &e%world%"
+  PSun: "%prefix% Вы установили &eсолнечную &7погоду у игрока &e%player%"
+  PRain: "%prefix% Вы установили &eдождливую &7погоду у игрока &e%player%"
+  Thunder: "%prefix% Вы установили &eдождливую &7погоду с &eгромом &7в мире &e%world%"
 MultiWorld:
-  Import: "Мир %prefix% &e%world% &7импортированный (генератор: &e%generator%&7)"
-  Creating: "%prefix% Создание мира &e%world% &7(Генераторы: &e%generator%&7)"
-  Create: "%prefix% Мир &e%world% &7создан (генератор: &e%generator%&7)"
+  Import: "%prefix% Мир &e%world% &7импортирован (Генерация: &e%generator%&7)"
+  Creating: "%prefix% Создание мира &e%world% &7(Генерация: &e%generator%&7)"
+  Create: "%prefix% Мир &e%world% &7создан (Генерация: &e%generator%&7)"
   Delete: "%prefix% Мир &e%world% &7удален"
-  Unload: "%prefix% мир &e%world% &7выгружен"
+  Unload: "%prefix% Мир &e%world% &7выгружен"
   Load: "%prefix% Мир &e%world% &7загружен"
   Loaded: "%prefix% Мир &e%world% &7уже загружен"
   Exists: "%prefix% Мир &e%world% &7уже существует"
-  NotLoaded: "Мир %prefix% &e%world% &7не загружен"
+  NotLoaded: "%prefix% Мир &e%world% &7не загружен"
   List: "%prefix% Список миров: &e%worlds%"
-  CannotLoad: "%prefix% Не удается загрузить мир &e%world%"
+  CannotLoad: "%prefix% Не могу загрузить мир &e%world%"
   Teleport:
-    You: "%prefix% телепортируется в мир &e%world%"
+    You: "%prefix% Телепортирование в мир &e%world%"
     Other:
-      Sender: "%prefix% телепортируется &e%player% &7в мир &e%world%"
-      Receiver: "%prefix% телепортируется в мир &e%world%"
+      Sender: "%prefix% Телепортирование игрока &e%player% &7в мир &e%world%"
+      Receiver: "%prefix% Телепортация в мир &e%world%"
   Spawn:
-    Set: "%prefix% Установить спавн мира на &e%x%&7, &e%y%&7, &e%z%"
-    Get: "%prefix% Спаун мира &e%world% &7задано в &e%x%&7, &e%y%&7, &e%z%"
+    Set: "%prefix% Спавн мира был установлен на координатах &e%x%&7, &e%y%&7, &e%z%"
+    Get: "%prefix% Спавн мира &e%world% был установлен на координатах &7is set at &e%x%&7, &e%y%&7, &e%z%"
   Flag:
-    Set: "Флаг %prefix% &e%flag%&7 мира &e%world%&7 установлено в &e%value%"
-    Get: "Флаг %prefix% &e%flag%&7 мира &e%world%&7 установлен в &e%value%"
-    Wrong: "Значение флага %prefix% &e%flag%&7 может быть только &e%value%"
-# Translations for /Mail command
+    Set: "%prefix% Флаг &e%flag%&7 мира &e%world%&7 установлен на &e%value%"
+    Get: "%prefix% Флаг &e%flag%&7 мира &e%world%&7 установлен на &e%value%"
+    Wrong: "%prefix% Значение флага &e%flag%&7 может быть только &e%value%"
 Mail:
-  Received: "%prefix% У вас есть%amount% &7писем"
-  Empty: "%prefix% You have no mail"
-  Clear: "%prefix% писем очищено"
-  Sent: "%prefix% Вы отправили письмо на &e%player%"
-  Notification: "%prefix% У вас есть%amount% &7писем"
-# Translations for WalkSpeed, FlySpeed and Speed commands
+  Received: "%prefix% У вас есть &e%amount% &7непрочитанных писем"
+  Empty: "%prefix% У тебя нет почты"
+  Clear: "%prefix% Почта очищена"
+  Sent: "%prefix% Вы отправили письмо игроку &e%player%"
+  Notification: "%prefix% У вас есть &e%amount% &7непрочитанных писем"
 Speed:
   Walk:
-    You: "%prefix% Ваша скорость прогулки была установлена в &e%speed%"
+    You: "%prefix% Ваша скорость ходьбы была установлена на &e%speed%"
     Other:
-      Sender: "Скорость прохождения %prefix% &e%player%&7 установлена в &e%speed%"
-      Receiver: "%prefix% Ваша скорость прогулки была установлена в &e%speed%"
+      Sender: "%prefix% Скорость хотьбы была установлена на &e%speed% для игрока &e%player%"
+      Receiver: "%prefix% Ваша скорость ходьбы была установлена на &e%speed%"
   Fly:
-    You: "%prefix% Ваш летающий аппарат был установлен в &e%speed%"
+    You: "%prefix% Ваша скорость полета установлена на &e%speed%"
     Other:
-      Sender: "%prefix% &e%player%&7 был установлен в &e%speed%"
-      Receiver: "%prefix% Ваш летающий аппарат был установлен в &e%speed%"
-# Translations for fly commands
+      Sender: "%prefix% Скорость полета была установлена на &e%speed% для игрока &e%player%"
+      Receiver: "%prefix% Ваша скорость полета установлена на &e%speed%"
 Fly:
   Temp:
-    EndIn: "%prefix% Истекает через &e%time%"
-    End: "%prefix% Истек срок полета"
+    EndIn: "%prefix% Режим полета будет отключен через &e%time%"
+    End: "%prefix% Извините, но время полета вышло"
     Enabled:
-      You: "%prefix% Включено для &e%time%"
+      You: "%prefix% Вам установлен временный режим полета, отключение через &e%time%"
       Other:
-        Sender: "%prefix% &e%player%&7 был включен для &e%time%"
-        Receiver: "%prefix% Включено для &e%time%"
+        Sender: "%prefix% Временный режим полета был включен для игрока &e%player%"
+        Receiver: "%prefix% Вам установлен временный режим полета, отключение через &e%time%"
     Disabled:
-      You: "%prefix% Летание было отключено"
+      You: "%prefix% Извините, но время полета вышло"
       Other:
-        Sender: "%prefix% &e%player%&7 был отключён"
-        Receiver: "%prefix% Летание было отключено"
+        Sender: "%prefix% Временный режим полета был выключен для игрока &e%player%"
+        Receiver: "%prefix% Извините, но время полета вышло"
   Enabled:
-    You: "Летка %prefix% была включена"
+    You: "%prefix% Вы включили режим полета"
     Other:
-      Sender: "%prefix% &e%player%&7 леты включены"
-      Receiver: "Летка %prefix% была включена"
+      Sender: "%prefix% Режим полета был включен для игрока &e%player%"
+      Receiver: "%prefix% Режим полета включен"
   Disabled:
-    You: "%prefix% летал отключен"
+    You: "%prefix% Вы выключили режим полета"
     Other:
-      Sender: "%prefix% &e%player%&7 был отключен"
-      Receiver: "%prefix% летал отключен"
-# Translations for god commands
+      Sender: "%prefix% Режим полета был выключен для игрока &e%player%"
+      Receiver: "%prefix% Режим полета выключен"
 God:
   Enabled:
-    You: "%prefix% Бог был включен"
+    You: "%prefix% Вы включили режим бога"
     Other:
-      Sender: "Бог %prefix% &e%player%&7 был включен"
-      Receiver: "%prefix% Бог был включен"
+      Sender: "%prefix% Режим бога был включен для игрока &e%player%"
+      Receiver: "%prefix% Режим бога включен"
   Disabled:
-    You: "%prefix% Бог был отключен"
+    You: "%prefix% Вы выключили режим бога"
     Other:
-      Sender: "Бог %prefix% &e%player%&7 был отключен"
-      Receiver: "%prefix% Бог был отключен"
-# Translations for warps commands
+      Sender: "%prefix% Режим бога был выключен для игрока &e%player%"
+      Receiver: "%prefix% Режим бога выключен"
 Warp:
   Created:
-    WithPerms: "%prefix% Варп &e%warp% &7создано (Требуется разрешение &e%permission%&7)"
-    Normal: "%prefix% Варп &e%warp% &7создано"
-  Deleted: "%prefix% Варп &e%warp% &7удалено"
+    WithPerms: "%prefix% Варп &e%warp% &7успешно создан (Требуется разрешение: &e%permission%&7)"
+    Normal: "%prefix% Варп &e%warp% &7успешно создан"
+  Deleted: "%prefix% Варп &e%warp% &7успешно удален"
   Teleport:
-    You: "%prefix% Перевод к варпу &e%warp%"
+    You: "%prefix% Телепортация на варп &e%warp%"
     Other:
-      Sender: "%prefix% Перемещение &e%player% &7варп &e%warp%"
-      Receiver: "%prefix% Перевод к варпу &e%warp%"
-  List: "Список %prefix% варпов: &e%warps%"
-  Empty: "%prefix% Нет варпа"
-  WrongLocation: "%prefix% Warp &e%warp% &7имеет неправильное местоположение"
-  Exists: "%prefix% Warp &e%warp% &7уже существует"
-  NotExist: "%prefix% Warp &e%warp% &7не существует"
-# Translations for /Spawn command
+      Sender: "%prefix% Телепортирование игрока &e%player% &7на варп &e%warp%"
+      Receiver: "%prefix% Телепортация на варп &e%warp%"
+  List: "%prefix% Список варпов: &e%warps%"
+  Empty: "%prefix% варпов не существует"
+  WrongLocation: "%prefix% Варп &e%warp% &7имеет неправильное местоположение"
+  Exists: "%prefix% Варп &e%warp% &7уже существует"
+  NotExist: "%prefix% Варп &e%warp% &7не существует"
 Spawn:
   Teleport:
-    You: "%prefix% телепортируется в спавн"
+    You: "%prefix% Телепортация на спавн"
     Other:
-      Sender: "%prefix% телепортируется &e%player% &7для появления"
-      Receiver: "%prefix% телепортируется в спавн"
-  Set: "%prefix% Спаун сервера задан в &e%x%&7, &e%y%&7, &e%z%"
-# Translations for /Maintenance command
+      Sender: "%prefix% Вы телепортировали игрока &e%player% &7на спавн"
+      Receiver: "%prefix% Телепортация на спавн"
+  Set: "%prefix% Спавн установлен на координатах &e%x%&7, &e%y%&7, &e%z%"
 Maintenance:
-  Enabled: "Режим техобслуживания %prefix% включен &eon"
-  Disabled: "Режим обслуживания %prefix% выключен &eoff"
-# Translations for /Vanish command
+  Enabled: "%prefix% Режим обслуживания &eвключен"
+  Disabled: "%prefix% Режим обслуживания &eвыключен"
 Vanish:
-  Join: "%prefix% &a&вы до сих пор исчезли &c&"
-  Active: "&cИсправлено"
+  Join: "%prefix% Ты все еще невидим"
+  Active: "&aВы сейчас невидимы"
   Enabled:
-    You: "%prefix% Исчезло было &eвключено"
+    You: "%prefix% Вы стали невидимы"
     Other:
-      Sender: "%prefix% Исчезает &e%player% &7было &eвключено"
-      Receiver: "%prefix% Исчезло было &eвключено"
+      Sender: "%prefix% Игрок &e%player% &7теперь невидим"
+      Receiver: "%prefix% Вы стали невидимы"
   Disabled:
-    You: "%prefix% Исчезло было &редактировано"
+    You: "%prefix% Вы стали видимы"
     Other:
-      Sender: "%prefix% Исчезает &e%player% &7было &редактировано"
-      Receiver: "%prefix% Исчезло было &редактировано"
-# Translations for /Thor command
+      Sender: "%prefix% Игрок &e%player% &7теперь видим"
+      Receiver: "%prefix% Вы стали видимы"
 Thor:
-  Player: "%prefix% &e%player% &7забастовано"
-  Block: "%prefix% вызвал молнию"
-# Translations for cooldowns
+  Player: "%prefix% &7Молния ударила игрока &e%player%"
+  Block: "%prefix% Вы успешно вызвали молнию"
 Cooldowns:
-  Messages: "%prefix% Медленно, подождите &e%time% &7перед отправкой сообщения"
-  Commands: "%prefix% Медленно, подождите &e%time% &7перед отправкой команды"
-# Translations for kits commands
+  Messages: "%prefix% Подождите ещё &e%time% &7перед отправкой сообщения"
+  Commands: "%prefix% Подождите ещё &e%time% &7перед отправкой команды"
 Kits:
-  List: "Список наборов %prefix% : &e%kits%"
-  Empty: "%prefix% Нет набора"
-  Used: "%prefix% Вы использовали набор &e%kit% &7"
-  NotExist: "Набор %prefix% &e%kit% &7не существует"
-  Cooldown: "%prefix% Вы должны подождать &e%time% &7для использования набора &e%kit%"
+  List: "%prefix% Список наборов: &e%kits%"
+  Empty: "%prefix% У вас нету доступных наборов"
+  Used: "%prefix% Вы используете набор &e%kit%"
+  NotExist: "%prefix% Набора &e%kit% &7не существует"
+  Cooldown: "%prefix% Подождите &e%time% &7чтобы получить набор &e%kit%"
   Give:
-    Sender: "%prefix% Вы передали &e%kit% &7комплект &e%player%"
-    Receiver: "%prefix% Вы получили набор &e%kit% &7"
-# Translations for /Spawner command
+    Sender: "%prefix% Вы выдали набор &e%kit% &7игроку &e%player%"
+    Receiver: "%prefix% Вы получили набор &e%kit%"
 Spawner:
   Set:
-    Entity: "%prefix% сущность спаунера установлена на &e%entity%"
-    Amount: "%prefix% Лимит спавна %prefix% установлен на &e%amount%"
-    Range: "Диапазон спавна %prefix% установлен на &e%range%"
-    SpawnTime: "Время появления %prefix% установлено в &e%time%"
-  BlockNotSpawner: "%prefix% Блок который вы смотрите должен быть &espawner"
-# Translations for /Heal command
+    Entity: "%prefix% Спавнер &e%entity%&f был успешно установлен"
+    Amount: "%prefix% Установлено ограничение на пояление мобов из спавнера &e%amount%"
+    Range: "%prefix% Диапозон появления мобов из спавнера был установлен &e%range%"
+    SpawnTime: "%prefix% Время появления мобов из спавнера было установлено на &e%time%"
+  BlockNotSpawner: "%prefix% Блок на который вы смотрите не является спавнером мобов"
 Heal:
-  You: "%prefix% Вы были исцелены"
+  You: "%prefix% Вы были вылечены"
   Other:
-    Sender: "%prefix% &e%player% &7исцелен"
-    Receiver: "%prefix% Вы были исцелены"
-# Translations for /Feed command
+    Sender: "%prefix% &e%player% &7был вылечен"
+    Receiver: "%prefix% Вы были вылечены"
 Feed:
   You: "%prefix% Вы были накормлены"
   Other:
-    Sender: "%prefix% &e%player% &7было подано"
+    Sender: "%prefix% &e%player% &7был накормлен"
     Receiver: "%prefix% Вы были накормлены"
-# Translations for /ChatLock command
 ChatLock:
-  Lock: "Чат %prefix% &убран"
-  Unlock: "%prefix% Чат &eразблокирован"
+  Lock: "%prefix% Чат заблокирован"
+  Unlock: "%prefix% Чат разблокирован"
   IsLocked: "%prefix% Извините, чат заблокирован, повторите попытку позже."
-  Message: "%prefix% &dChatLock &e%player% &7написано &e%message%"
-# Translations for /Pm <player>
+  Message: "%prefix% &dChatLock &e%player% &7написал &e%message%"
 PrivateMessage:
-  NoReply: "%prefix% У вас нет ответа"
+  NoReply: "%prefix% Тебе некому ответить"
   ChatLock:
-    true: "Чат %prefix% заблокирован, введите текст для ответа на игрока"
+    true: "%prefix% Чат заблокирован, введите текст в чат, чтобы ответить игроку"
     false: "%prefix% Чат разблокирован"
-# Translations for /ClearChat command
 ClearChat:
   Cleared:
-    Console: "Чат %prefix% был очищен &eConsole"
-    Player: "Чат %prefix% был очищен &e%player%"
-  Specific: "Чат %prefix% для &e%player% &7был очищен"
-  SpecificChatHaveBypass: "%prefix% &e%player% &7имеют разрешение на обход системы!"
+    Console: "%prefix% Чат был очищен консолью"
+    Player: "%prefix% Чат был очищен игроком &e%player%"
+  Specific: "%prefix% Чат для игрока &e%player% &7был очищен"
+  SpecificChatHaveBypass: "%prefix% &e%player% &7иметь разрешение на обход!"
   NoClearOwnChat: "%prefix% Вы не можете очистить собственный чат"
-# Translations for /Back command
 Back:
-  WrongLocation: "%prefix% Расположение возврата неверно"
-  NoLocation: "%prefix% Нет местоположения для телепортации"
+  WrongLocation: "%prefix% Телепортация на предыдущую локацию невозможна"
+  NoLocation: "%prefix% Нет места для телепортации"
   Teleport:
-    You: "%prefix% телепортируется обратно в предыдущее местоположение"
+    You: "%prefix% Телепортация в предыдущую локацию"
     Other:
-      Sender: "%prefix% телепортирует &e%player% &7назад в предыдущее место"
-      Receiver: "%prefix% телепортируется обратно в предыдущее местоположение"
+      Sender: "%prefix% Телепортирование игрока &e%player% &7на предыдущую локацию"
+      Receiver: "%prefix% Телепортация в предыдущую локацию"
 Immune:
   Enabled:
-    You: "Ваш иммунитет %prefix% был &eвключен"
+    You: "%prefix% Ваш иммунитет был включен"
     Other:
-      Sender: "Иммунитет %prefix% &e%player%&7 был включен"
-      Receiver: "Ваш иммунитет %prefix% был &eвключен"
+      Sender: "%prefix% Имунитет для игрока &e%player%&7 был успешно включен"
+      Receiver: "%prefix% Ваш имунитет был вкючен"
   Disabled:
-    You: "%prefix% Ваш иммунитет был &отредактирован"
+    You: "%prefix% Ваш имунитет был &eвыключен"
     Other:
-      Sender: "Иммунитет %prefix% &e%player%&7 был отредактирован"
-      Receiver: "%prefix% Ваш иммунитет был &отредактирован"
-  NoPunish: "%prefix% &e%player% &7имеет иммунитет."
+      Sender: "%prefix% Вы выключили имунитет у игрока &e%player%&7"
+      Receiver: "%prefix% Имунитет был &eвыключен"
+  NoPunish: "%prefix% У игрока &e%player% есть имунитет от наказаний&7."
 Tablist:
   Prefix:
     Get:
-      NameTag: "%prefix% Префикс группы &e%group% &7из тэга имён &r%value%"
-      TabList: "%prefix% Префикс группы &e%group% &7 из таблицы &r%value%"
+      NameTag: "%prefix% Префикс группы &e%group% &7в nametag имеет: &r%value%"
+      TabList: "%prefix% Префикс группы &e%group% &7в tablist имеет: &r%value%"
     Set:
-      NameTag: "%prefix% Префикс группы &e%group% &7из тега имён установлен в &r%value%"
-      TabList: "%prefix% Префикс группы &e%group% &7 таблицы установлен на &r%value%"
+      NameTag: "%prefix% Префикс группы &e%group% &7в nametag был установлен: &r%value%"
+      TabList: "%prefix% Префикс группы &e%group% &7в tablist был установлен: &r%value%"
   Suffix:
     Get:
-      NameTag: "%prefix% суффикс группы &e%group% &7из тега имён &r%value%"
-      TabList: "%prefix% суффикс группы &e%group% &7из таблицы &r%value%"
+      NameTag: "%prefix% Суффикс группы &e%group% &7в nametag имеет: &r%value%"
+      TabList: "%prefix% Суффикс группы &e%group% &7в tablist имеет: &r%value%"
     Set:
-      NameTag: "%prefix% суффикс группы &e%group% &7из тега имён установлен в &r%value%"
-      TabList: "%prefix% суффикс группы &e%group% &7из таблицы установлен на &r%value%"
+      NameTag: "%prefix% Суффикс группы &e%group% &7в nametag был установлен: &r%value%"
+      TabList: "%prefix% Суффикс группы &e%group% &7в tablist был установлен: &r%value%"
     Priorite:
-      Get: "%prefix% Приоритет группы &e%group% &7в таблице &e%value%"
-      Set: "Приоритет группы %prefix% &e%group% &7в таблице установлен на &e%value%"
-    Exists: "Группа %prefix% &e%group% &7уже существует"
-    NotExist: "Группа %prefix% &e%group% &7не существует"
-    Create: "Группа %prefix% &e%group% &7создана"
-    Delete: "Группа %prefix% &e%group% &7удалена"
+      Get: "%prefix% Приоритет грыппы &e%group% &7в tablist: &e%value%"
+      Set: "%prefix% Приоритет грыппы &e%group% &7в tablist установлен на: &e%value%"
+    Exists: "%prefix% Группа &e%group% &7уже существует"
+    NotExist: "%prefix% Группы &e%group% &7не существует"
+    Create: "%prefix% Группа &e%group% &7создана"
+    Delete: "%prefix% Группа &e%group% &7удалена"
 WhoIs:
-  Loading: "%prefix% Загрузка данных для &e%player%&7.."
+  Loading: "%prefix% Загрузка данных игрока &e%player%&7.."
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   Online:
-    - "%prefix% игрок: &e%player%"
-    - "%prefix% UUID: &e%uuid%"
-    - "%prefix% Здоровье: &e%health%"
-    - "%prefix% еда: &e%food%"
-    - "%prefix% онлайн для: &e%seen%"
-    - "%prefix% IP: &e%ip%"
-    - "%prefix% AFK: &e%afk%"
-    - "%prefix% Божий: &e%god%"
-    - "%prefix% летает: &e%fly%"
-    - "%prefix% OP: &e%op%"
-    - "%prefix% Другая информация:"
-    - "%prefix%   FirstJoin: &e%firstjoin%"
-    - "%prefix%   Страна: &e%country%"
-    - "%prefix%   Группа: &e%group%"
-    - "%prefix%   Деньги: &e%money%"
-    - "%prefix% забанен: %banned%"
-    - "%prefix% IP-банен: %ip-banned%"
-    - "%prefix% IP-банен: %ip-banned%"
+  - "%prefix% Игрок: &e%player%"
+  - "%prefix% UUID: &e%uuid%"
+  - "%prefix% Здоровье: &e%health%"
+  - "%prefix% Голод: &e%food%"
+  - "%prefix% Онлайн: &e%seen%"
+  - "%prefix% IP: &e%ip%"
+  - "%prefix% AFK: &e%afk%"
+  - "%prefix% God: &e%god%"
+  - "%prefix% Fly: &e%fly%"
+  - "%prefix% OP: &e%op%"
+  - "%prefix% Другая информация:"
+  - "%prefix% Последний заход: &e%firstjoin%"
+  - "%prefix% Страна: &e%country%"
+  - "%prefix% Привилегия: &e%group%"
+  - "%prefix% Монет: &e%money%"
+  
   Offline:
-    - "%prefix% игрок: &e%player%"
-    - "%prefix% UUID: &e%uuid%"
-    - "%prefix% оффлайн для: &e%seen%"
-    - "%prefix% IP: &e%ip%"
-    - "%prefix% AFK: &e%afk%"
-    - "%prefix% Божий: &e%god%"
-    - "%prefix% летает: &e%fly%"
-    - "%prefix% OP: &e%op%"
-    - "%prefix% Другая информация:"
-    - "%prefix%   FirstJoin: &e%firstjoin%"
-    - "%prefix%   Страна: &e%country%"
-    - "%prefix%   Группа: &e%group%"
-    - "%prefix%   Деньги: &e%money%"
-    - "%prefix% забанен: %banned%"
-    - "%prefix% IP-банен: %ip-banned%"
+  - "%prefix% Игрок: &e%player%"
+  - "%prefix% UUID: &e%uuid%"
+  - "%prefix% Оффлайн: &e%seen%"
+  - "%prefix% IP: &e%ip%"
+  - "%prefix% AFK: &e%afk%"
+  - "%prefix% God: &e%god%"
+  - "%prefix% Fly: &e%fly%"
+  - "%prefix% OP: &e%op%"
+  - "%prefix% Другая информация:"
+  - "%prefix% Последний заход: &e%firstjoin%"
+  - "%prefix% Страна: &e%country%"
+  - "%prefix% Привилегия: &e%group%"
+  - "%prefix% Монет: &e%money%"
 Inventory:
   ClearConfirmToggle:
-    Enabled: "%prefix% отключено для подтверждения расчистки инвентаря"
-    Disabled: "%prefix% Требуется подтверждение наличия запасов"
+    Enabled: "%prefix% Выключено подтверждение очистки инвентаря"
+    Disabled: "%prefix% Включено подтверждение очистки инвентаря"
   ClearInventory:
-    ClearConfirm: "%prefix% Пожалуйста, подтвердите ваш запрос на очистку инвентаря"
-    You: "%prefix% Вы очистили ваш инвентарь"
+    ClearConfirm: "%prefix% Подтвердите запрос на очистку инвентаря"
+    You: "%prefix% Вы очистили свой инвентарь"
     Other:
-      Sender: "%prefix% Вы очистили инвентарь &e%player%&7"
-      Receiver: "%prefix% Ваш инвентарь был очищен от &e%player%"
-    Undo: "%prefix% Вы получили ваш инвентарь"
-    CantUndo: "%prefix% Не удается получить ваш инвентарь"
-    NoMoney: "%prefix% Вам не хватает денег, вам нужно &e%money%"
+      Sender: "%prefix% Вы очистили инвентарь игрока &e%player%"
+      Receiver: "%prefix% Ваш инвентарь был очищен игроком &e%player%"
+    Undo: "%prefix% Вы открыли свой инвентарь"
+    CantUndo: "%prefix% Не могу открыть ваш инвентарь"
+    NoMoney: "%prefix% Недостаточно средств, вам нужно &e%money%⛂"
   CloseInventory:
-    You: "%prefix% Закрывает открытый инвентарь"
+    You: "%prefix% Закрытие инвентаря"
     Other:
-      Sender: "%prefix% Закрытие открытого инвентаря для &e%player%"
-      Receiver: "%prefix% Закрывает открытый инвентарь"
+      Sender: "%prefix% Закрытие инвентаря игрока &e%player%"
+      Receiver: "%prefix% Закрытие инвентаря"
   EnderChest:
-    You: "%prefix% Открытие сундука края"
+    You: "%prefix% Открытие Эндер-сундука"
     Other:
-      Sender: "%prefix% Открытие сундука края &e%player%"
-      Receiver: "%prefix% Открытие сундука края"
+      Sender: "%prefix% Открытие Эндер-сундука для игрока &e%player%"
+      Receiver: "%prefix% Открытие Эндер-сундука"
   EnderSee:
-    Sender: "%prefix% Открытие сундука края &e%player%"
+    Sender: "%prefix% Открытие Эндер-сундука для игрока &e%player%"
     Receiver: ""
   Invsee:
-    You: "%prefix% Открытие инвентаря &e%player%"
+    You: "%prefix% Открытие инвентаря игрока &e%player%"
     Other:
-      Sender: "%prefix% Открыл инвентарь &e%player%&7 для &e%target%"
-      Receiver: "%prefix% Открытие инвентаря &e%player%"
+      Sender: "%prefix% Opening &e%player%&7's inventory for &e%target%"
+      Receiver: "%prefix% Открытие инвентраля игрока &e%player%"
   Workbench:
-    You: "%prefix% Открытие рабочего стола"
+    You: "%prefix% Открытие верстака"
     Other:
-      Sender: "%prefix% Открытие рабочего стола для &e%player%"
-      Receiver: "%prefix% Открытие рабочего стола"
+      Sender: "%prefix% Верстак был открыт для игрока &e%player%"
+      Receiver: "%prefix% Открытие верстака"
   Anvil:
     You: "%prefix% Открытие наковальни"
     Other:
-      Sender: "%prefix% Открытие наковальни для &e%player%"
+      Sender: "%prefix% Наковальня была открыта для игрока &e%player%"
       Receiver: "%prefix% Открытие наковальни"
 DisplayManager:
   Scoreboard:
-    Show: "%prefix% Ваша оценочная таблица была отображена"
-    Hide: "%prefix% Ваша таблица оценок была скрыта"
+    Show: "%prefix% Табло успешно включено"
+    Hide: "%prefix% Табло успешно выключено"
   ActionBar:
-    Show: "%prefix% Ваша панель действий была отображена"
-    Hide: "%prefix% Ваша панель действий была скрыта"
+    Show: "%prefix% Actionbar успешно включен"
+    Hide: "%prefix% Actionbar успешно выключен"
   BossBar:
-    Show: "%prefix% Ваш боссбар был отображен"
-    Hide: "%prefix% Ваш боссбар был скрыт"
+    Show: "%prefix% Bossbar успешно включен"
+    Hide: "%prefix% Bossbar успешно выключен"
 Scoreboard:
-  Show: "Показана таблица показателей %prefix% из &e%player% &7"
-  Hide: "%prefix% Панель показателей &e%player% &7скрыта"
+  Show: "%prefix% Табло включено для игрока &e%player%"
+  Hide: "%prefix% Табло выключено для игрока &e%player%"
 ActionBar:
-  Show: "Показана панель %prefix% из &e%player% &7"
-  Hide: "%prefix% Панель для &e%player% &7была скрыта"
+  Show: "%prefix% ActionBar of &e%player% &7has been displayed"
+  Hide: "%prefix% ActionBar of &e%player% &7has been hidden"
 BossBar:
-  Show: "Было показано босбар %prefix% из &e%player% &7"
-  Hide: "%prefix% Босбар из &e%player% &7был скрыт"
+  Show: "%prefix% BossBar включен для игрока &e%player%"
+  Hide: "%prefix% BossBar выключен для игрока &e%player%"
 Skin:
   Set:
-    You: "%prefix% Ваш скин изменен на &e%skin%"
+    You: "%prefix% Вы установили скин &e%skin%"
     Other:
-      Sender: "Скин %prefix% &e%player%&7 изменен на &e%skin%"
-      Receiver: "%prefix% Ваш скин изменен на &e%skin%"
+      Sender: "%prefix% &e%player%&7's установил скин &e%skin%"
+      Receiver: "%prefix% Вы установили скин &e%skin%"
   Reset:
-    You: "Сброс скина %prefix%"
+    You: "%prefix% Вы сбросили свой скин"
     Other:
-      Sender: "Скин %prefix% &e%player%&7"
-      Receiver: "Сброс скина %prefix%"
+      Sender: "%prefix% &e%player%&7 скин сброшен"
+      Receiver: "%prefix% Вы успешно сбросили свой скин"
 Accounts:
-  Users: "%prefix% Аккаунты на IP адресах игрока &e%player%&7: &e%players%"
-  NoAccounts: "%prefix% No accounts were founded"
+  Users: "%prefix% Все аккануты игрока &e%player%&7: &e%players%"
+  NoAccounts: "%prefix% Акаунт не существует"
 Uuid:
-  Message: "%prefix% Uuid игрока &e%player% &7равно &a%uuid%"
+  Message: "%prefix% Uuid игрока &e%player%&7: &a%uuid%"
 Trash:
-  Name: "&7Корзина"
-  Clear: "&eОчистить корзину"
+  Name: "&d&lКорзина"
+  Clear: "&aОчистить корзину"
 Mirror:
-  Types: "%prefix% &7Типы зеркал: &e%types%"
-  Enabled: "%prefix% &7Вы включили ваше зеркало. Тип зеркала: &e%type%"
-  Disabled: "%prefix% &7Вы отключили ваше зеркало."
-# Translations for PlayTime commands
+  Types: "%prefix% &7Mirror types: &e%types%"
+  Enabled: "%prefix% &7You turned your mirror on. Mirror type: &e%type%"
+  Disabled: "%prefix% &7You disabled your mirror."
 PlayTime:
   Time:
-    Global: "%prefix% &7Ваше время игры &e%playtime%"
-    Gamemode: "%prefix% &7Ваше время игры с игровым режимом &e%gamemode% &7равно &e%playtime%"
-    World: "%prefix% &7Ваше время игры в мире &e%world% &7is &e%playtime%"
-    WorldGamemode: "%prefix% &7Ваше время игры в мире &e%world% &7с игровым режимом &e%gamemode% &7is &e%playtime%"
+    Global: "%prefix% &7Ваше игровое время &e%playtime%"
+    Gamemode: "%prefix% &7Вы играете в режиме &e%gamemode% &7уже &e%playtime%"
+    World: "%prefix% &7Вы играете в мире &e%world% &7уже &e%playtime%"
+    WorldGamemode: "%prefix% &7Вы играете в мире &e%world% &7в режиме &e%gamemode% &7уже &e%playtime%"
   Other:
-    Global: "%prefix% &7Игрок &e%player% &7воспроизводилось время &e%playtime%"
-    Gamemode: "%prefix% &7Игрок &e%player% &7Играл время в режиме игры &e%gamemode% &7is &e%playtime%"
-    World: "%prefix% &7Игрок &e%player% &7сыграно время в мире &e%world% &7равно &e%playtime%"
-    WorldGamemode: "%prefix% &7Игрок &e%player% &7сыграл время в мире &e%world% &7с игровым режимом &e%gamemode% &7is &e%playtime%"
+    Global: "%prefix% &7Игрок &e%player% &7играет на сервере &e%playtime%"
+    Gamemode: "%prefix% &7Игрок &e%player% &7играет на серевере %playtime% с игровым режимом &e%gamemode%"
+    World: "%prefix% &7Игрок &e%player% &7играет в мире &e%world% &7уже &e%playtime%"
+    WorldGamemode: "%prefix% &7Игрок &e%player% &7играет в мире &e%world% &7с режимом игры &e%gamemode% &7уже &e%playtime%"
   PlayTop:
-    Loading: "%prefix% Подсчет всех игроков, пожалуйста, подождите .."
-    Header: "%prefix% &7=====» &cPlayTop &e%page%/%pages% &7«====="
+    Loading: "%prefix% Подсчет всех игроков, пожалуйста подождите .."
+    Header: "&7=====» &cТоп игроков &e%page%/%pages% &7«====="
     Top: "&e%position%. &7%playername% &7(&e%playtime%&7)"
     Footer: ""
-Config: "Конфигурации и задачи %prefix% перезагружены"
+
+Config: "%prefix% Перезагрузка плагина"

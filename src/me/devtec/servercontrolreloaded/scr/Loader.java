@@ -510,6 +510,7 @@ public class Loader extends JavaPlugin implements Listener {
 		SUFFIX
 	}
 	public static String getChatFormat(Player p, Item type) {
+		try {
 		switch(type) {
 		case PREFIX:
 			if(Bukkit.getPluginManager().getPlugin("LuckPerms")!=null)
@@ -532,6 +533,7 @@ public class Loader extends JavaPlugin implements Listener {
 			}
 			return "";
 		}
+		}catch(Exception | NoClassDefFoundError err) {}
 		return null;
 	}
 	

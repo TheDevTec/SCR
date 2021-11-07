@@ -50,6 +50,7 @@ public class BungeeListener implements PluginMessageListener {
 					msg+=d.readUTF();
 				}catch(Exception e) {break;}
 			}
+			try {
 			Collection<String> cmds = (Collection<String>) Json.reader().simpleRead(msg.replaceFirst(msg.split("\\[")[0], ""));
 			new Tasker() {
 				public void run() {
@@ -59,6 +60,7 @@ public class BungeeListener implements PluginMessageListener {
 						TheAPI.sudoConsole(TabList.replace(s, p, true));
 				}
 			}.runLaterSync(StringUtils.getInt(wait));
+			}catch(Exception err) {}
 			return;
 		}
 		case "helpop": {

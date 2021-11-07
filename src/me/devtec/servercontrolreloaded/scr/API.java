@@ -433,10 +433,10 @@ public class API {
 		if (s.length >= 2)
 	    	a= (a("k")).format(money.divide(new BigDecimal(1000))); 
 	    if(colorized) {
-	    	if(a.equals("0"))a="&e0";
+	    	if(a.equals("0"))a=Loader.config.getString("Options.Colors.Economy.Zero")+a;
 	    	else {
-	    	if(a.startsWith("-"))a="&c"+a;
-	    	else a="&a"+a;
+	    	if(a.startsWith("-"))a=Loader.config.getString("Options.Colors.Economy.Minus")+a;
+	    	else a=Loader.config.getString("Options.Colors.Economy.Plus")+a;
 	    }}
 	    return a;
 	}

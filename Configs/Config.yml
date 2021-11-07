@@ -13,7 +13,7 @@
 Options:
   # cz, sk, en
   Language: "en"
-  
+
   Skins:
     # Hook dynmap support for web heads?
     DynmapSupport: true
@@ -26,17 +26,17 @@ Options:
         set: false
         # Skin name or url
         value: "StraikerinaCZ"
-        
+
   PacketLimiter:
     Use: true
     Limit: 2
-  
+
   Chat:
     # Types: GLOBAL, PER_WORLD, DISTANCE
     Type: "GLOBAL"
     # 50 blocks - only for chat type "distance"
     Distance: 50
-  
+
   ChatNotification:
     Enabled: true
     Color: "&c"
@@ -44,11 +44,11 @@ Options:
     Title: "&eSomeone tagged you in a chat"
     SubTitle: ""
     ActionBar: "&eSomeone tagged you in a chat"
-    
+
   LockChat:
     Helpop: false
     PrivateMessage: false
-  
+
   Staff:
     # if staff is empty
     HideAllLines: true
@@ -56,51 +56,51 @@ Options:
     UseReplace: true
     ReplaceWith:
     - "%prefix% Anyone from staff is online"
-    
+
     PlayerName-Format: "%customname%"
     Splitter: "&7, "
-    
+
   List:
     # Remove line from list broadcast, if joiner is empty
     RemoveEmptyLine: true
-    
+
     PlayerName-Format: "%customname%"
     Splitter: "&7, "
-  
+
   FarmingSystem:
     Use: true
     ForbiddenWorlds:
     - "spawn"
-    
+
   SinglePlayerSleep: true
-  
+
   # ActionBar when you have enabled vanish
   Vanish-ActionBar: true
-  
+
   RAM-Percentage: false
-  
+
   AntiSpam:
     Flood: true
     Caps: true
-  
+
   # SPAWN, HOME, BED
   RespawnTeleport: "HOME"
   Use-RespawnTeleport: true
-  
+
   TimeZone:
     Use: false
     # https://greenwichmeantime.com/time-zone
     Zone: "Europe/Prague"
-    
+
   Sounds:
     Use: false
     Sound: "ENTITY_PLAYER_LEVELUP"
-    
+
   Teleport:
     RequestTime: "1min"
     CommandSendLocation: false
     SafeLocation: true
-    
+
   AFK:
     AutoAFK: true
     AutoKick: true
@@ -112,7 +112,7 @@ Options:
       onStopAFK: []
       onKickAFK:
       - "kick %player% &7You were kicked for &eAFK &7longer than 15 minutes"
-    
+
   Economy:
     Money: 100.0
     DisablePluginEconomy: false
@@ -126,7 +126,7 @@ Options:
         - "world"
         - "world_nether"
         - "world_the_end"
-      
+
   AutoMessage:
     Use: true
     MinimalPlayers: 1
@@ -140,7 +140,7 @@ Options:
     - "&0[&e&lINFO&0] &7Online players &e%online%&7/&e%max_players%"
     - "&0[&e&lINFO&0] &7You found a bug ? Report it to https://github.com/TheDevTec/ServerControlReloaded"
     - "&0[&e&lINFO&0] &7Do you like our plugin? Write a comment on the https://www.spigotmc.org/resources/71147"
-        
+
   VIPSlots:
     Use: true
     AddSlots: false
@@ -151,7 +151,7 @@ Options:
       Kick: "&7Buy &eVIP &7on our website and get access to this &ereserved slot"
       BroadcastVIPJoin: "&eVIP player joined to the server"
       FullServer: "&7We are sorry, but all &eVIP Slots &7are in use"
-      
+
   Cooldowns:
     Chat:
       Use: false
@@ -165,7 +165,7 @@ Options:
         List:
         - "Heal:300"
         - "Feed:150"
-        
+
   CommandsBlocker:
     Use: false
     PerWorld:
@@ -177,14 +177,18 @@ Options:
     - "version"
     - "ihasbukkit"
     - "spigot"
-    
+
   StaffList:
   - "owner"
   - "admin"
   - "helper"
   - "builder"
-  
+
   Colors:
+    Economy:
+      Plus: "&a"
+      Minus: "&c"
+      Zero: "&e"
     Sign:
       Use: true
       Required-Permission: true
@@ -205,7 +209,7 @@ Options:
         Magic: "SCR.Other.Chat.Magic"
         Rainbow: "SCR.Other.Chat.Rainbow"
         HEX: "SCR.Other.Chat.HEX"
-        
+
   WarningSystem:
     Reload:
       Use: true
@@ -258,7 +262,7 @@ Options:
       Commands:
       - "send * lobby"
       Kick: "&cServer closed"
-        
+
   Maintenance:
     Enabled: false
     KickMessages:
@@ -266,7 +270,7 @@ Options:
     - "&7We are sorry &e%player%&7, the server is currently under maintenance mode"
     - "&7Website: &ewww.example.com"
     - "&7Discord: &ediscord.link"
-    
+
   Codes:
     Use: false
     Message: "%prefix% &7Congratulation, you found secret code: &e%code%"
@@ -283,13 +287,13 @@ Options:
     - "xp give %player% 150"
     Commands:
     - "eco give %player% 25"
-  
+
   PlayTime:
     # if you dont't want to count AF time as play time (also apply for PlayTime rewards)
     UseAfkTime: false
     # If you want to use default minecraft palytime statistics turn this off
     UseCustomPlayTime: true
-  
+
   Disallowed-Items:
     Use: false
     Worlds:
@@ -303,7 +307,7 @@ Options:
       - "Bedrock"
       world_the_end:
       - "Bedrock"
-      
+
   serverlist:
     # Modify ServerListPingEvent
     enabled: true
@@ -385,7 +389,7 @@ Format:
   PrivateMessageTo: "&8(&7You -> &e%to%&8)&7: &e%message%"
   PrivateMessageFrom: "&8(&e%from% -> &7You&8)&7: &e%message%"
   HelpOp: "&0[&4HelpOp&0] &7%sender%&7: &c%message%"
-    
+
 ChatFormat:
   enabled: true
   global:
@@ -479,7 +483,7 @@ Rules:
  #   Replacement:
  #     Use: false
  #     Text: "ANTIAD"
-      
+
 BanSystem:
   TempMute:
     Text: "&7You are temp-muted for &e%reason%&7 on &e%time%"

@@ -404,10 +404,9 @@ public class Layout {
 			case SHIFT_RIGHT_DROP:
 			case SHIFT_RIGHT_PICKUP:
 				return "shift_right";
-			case MIDDLE_PICKUP:
+			default:
 				return "middle";
 			}
-			return "any";
 		}
 
 		public void startAnimation(String name) {

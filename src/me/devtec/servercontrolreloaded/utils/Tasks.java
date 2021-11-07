@@ -476,8 +476,12 @@ public class Tasks {
 				if (setting.am_random) {
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
+							try {
 							String json = StringUtils.colorizeJson(aa.replaceWithoutColors(p,TheAPI.getRandomFromList(l)));
 							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentFromCraftBukkit(json)));
+							}catch(Exception err) {
+								TheAPI.msg(aa.replace(p,TheAPI.getRandomFromList(l)), p);
+							}
 						}else {
 							TheAPI.msg(aa.replace(p,TheAPI.getRandomFromList(l)), p);
 						}

@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.commands.CommandHolder;
 import me.devtec.servercontrolreloaded.scr.Loader;
-import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 
 public class PlayerRain extends CommandHolder {
@@ -31,7 +30,7 @@ public class PlayerRain extends CommandHolder {
 		if (args.length == 0) {
 			if (s instanceof Player) {
 				apply((Player) s);
-				Loader.sendMessages(s, "Weather.PRain", Placeholder.c().add("%player%", s.getName()).add("%playername%", ((Player)s).getDisplayName()));
+				Loader.sendMessages(s, "Weather.PRain");
 				return;
 			}
 			help(s);
@@ -41,13 +40,13 @@ public class PlayerRain extends CommandHolder {
 			if(loop) {
 				for(Player player : TheAPI.getOnlinePlayers()) {
 					apply(player);
-					Loader.sendMessages(s, "Weather.PRain", Placeholder.c().add("%player%", player.getName()).add("%playername%", player.getDisplayName()));
+					Loader.sendMessages(s, player, "Weather.PRain");
 				}
 			}else {
 				Player player = TheAPI.getPlayer(args[0]);
 				if (player != null) {
 					apply(player);
-					Loader.sendMessages(s, "Weather.PRain", Placeholder.c().add("%player%", player.getName()).add("%playername%", player.getDisplayName()));
+					Loader.sendMessages(s, player, "Weather.PRain");
 					return;
 				}
 				Loader.notOnline(s, args[0]);
