@@ -67,16 +67,17 @@ import me.devtec.theapi.placeholderapi.PlaceholderRegister;
 import me.devtec.theapi.placeholderapi.ThePlaceholder;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
-import me.devtec.theapi.utils.ChatMessage;
 import me.devtec.theapi.utils.SpigotUpdateChecker;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.VersionChecker;
+import me.devtec.theapi.utils.components.ComponentAPI;
 import me.devtec.theapi.utils.datakeeper.Data;
 import me.devtec.theapi.utils.datakeeper.DataType;
 import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.listener.Listener;
-import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.nms.NmsProvider.ChatType;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 import me.devtec.theapi.utils.theapiutils.metrics.Metrics;
 import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.chat.Chat;
@@ -233,11 +234,11 @@ public class Loader extends JavaPlugin implements Listener {
 						}
 					}
 				}
-				oo=ChatMessage.fixListMap(oo);
+				oo=ComponentAPI.fixJsonList(oo);
 				if(to instanceof Player) {
 					String jsons = Json.writer().simpleWrite(oo);
 					jsons="[\"\","+jsons.substring(1);
-					Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+					Ref.sendPacket((Player)to,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
 				}else {
 					to.sendMessage(convertToLegacy(oo));
 				}
@@ -329,11 +330,11 @@ public class Loader extends JavaPlugin implements Listener {
 							}
 						}
 					}
-					oo=ChatMessage.fixListMap(oo);
+					oo=ComponentAPI.fixJsonList(oo);
 					if(to instanceof Player) {
 						String jsons = Json.writer().simpleWrite(oo);
 						jsons="[\"\","+jsons.substring(1);
-						Ref.sendPacket((Player)to,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+						Ref.sendPacket((Player)to,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
 					}else {
 						to.sendMessage(convertToLegacy(oo));
 					}
@@ -378,10 +379,10 @@ public class Loader extends JavaPlugin implements Listener {
 							}
 						}
 					}
-					oo = ChatMessage.fixListMap(oo);
+					oo = ComponentAPI.fixJsonList(oo);
 					String jsons = Json.writer().simpleWrite(oo);
 					jsons = "[\"\"," + jsons.substring(1);
-					Ref.sendPacket(TheAPI.getOnlinePlayers(), NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+					Ref.sendPacket(TheAPI.getOnlinePlayers(),LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
 					TheAPI.getConsole().sendMessage(convertToLegacy(oo));
 					return;
 				}
@@ -425,10 +426,10 @@ public class Loader extends JavaPlugin implements Listener {
 						}
 						List<Player> p = TheAPI.getOnlinePlayers();
 						p.removeIf(player -> !player.hasPermission(perms));
-						oo=ChatMessage.fixListMap(oo);
+						oo=ComponentAPI.fixJsonList(oo);
 						String jsons = Json.writer().simpleWrite(oo);
 						jsons="[\"\","+jsons.substring(1);
-						Ref.sendPacket(p,NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+						Ref.sendPacket(p,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
 						if(TheAPI.getConsole().hasPermission(perms))
 							TheAPI.getConsole().sendMessage(convertToLegacy(oo));
 						return;
@@ -892,7 +893,7 @@ public class Loader extends JavaPlugin implements Listener {
 								s.bc = true;
 								for(Player canSee : API.getPlayersThatCanSee(p))
 									Loader.sendMessages(canSee, p, "AFK.Start");
-								NMSAPI.postToMainThread(() -> {
+								LoaderClass.nmsProvider.postToMainThread(() -> {
 									for(String ds : Loader.config.getStringList("Options.AFK.Action.onStartAFK"))
 										TheAPI.sudoConsole(TabList.replace(ds,p,true));
 								});
@@ -900,7 +901,7 @@ public class Loader extends JavaPlugin implements Listener {
 							if (setting.afk_kick) {
 								if (s.kick >= rkick) {
 									if (!p.hasPermission(getPerm("AFK", "Other", "Bypass"))) {
-										NMSAPI.postToMainThread(() -> {
+										LoaderClass.nmsProvider.postToMainThread(() -> {
 											for(String ds : Loader.config.getStringList("Options.AFK.Action.onKickAFK"))
 												TheAPI.sudoConsole(TabList.replace(ds,p,true));
 										});
@@ -946,7 +947,7 @@ public class Loader extends JavaPlugin implements Listener {
 		if(isAFK(s) || isManualAfk(s)) {
 			for(Player canSee : API.getPlayersThatCanSee(d))
 				Loader.sendMessages(canSee, d, "AFK.End");
-			NMSAPI.postToMainThread(() -> {
+			LoaderClass.nmsProvider.postToMainThread(() -> {
 				for(String ds : Loader.config.getStringList("Options.AFK.Action.onStopAFK"))
 					TheAPI.sudoConsole(TabList.replace(ds,d,true));
 			});

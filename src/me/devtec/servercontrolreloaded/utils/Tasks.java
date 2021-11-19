@@ -33,11 +33,11 @@ import me.devtec.theapi.utils.listener.Event;
 import me.devtec.theapi.utils.listener.EventHandler;
 import me.devtec.theapi.utils.listener.Listener;
 import me.devtec.theapi.utils.listener.events.ServerListPingEvent;
-import me.devtec.theapi.utils.nms.NMSAPI;
-import me.devtec.theapi.utils.nms.NMSAPI.ChatType;
+import me.devtec.theapi.utils.nms.NmsProvider.ChatType;
 import me.devtec.theapi.utils.packetlistenerapi.PacketListener;
 import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.utils.serverlist.PlayerProfile;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Tasks {
 	
@@ -477,8 +477,8 @@ public class Tasks {
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
 							try {
-							String json = StringUtils.colorizeJson(aa.replaceWithoutColors(p,TheAPI.getRandomFromList(l)));
-							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentFromCraftBukkit(json)));
+								String json = StringUtils.colorizeJson(aa.replaceWithoutColors(p,TheAPI.getRandomFromList(l)));
+								Ref.sendPacket(p, LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(json)));
 							}catch(Exception err) {
 								TheAPI.msg(aa.replace(p,TheAPI.getRandomFromList(l)), p);
 							}
@@ -491,7 +491,7 @@ public class Tasks {
 						tests = 0;
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
-							Ref.sendPacket(p, NMSAPI.getPacketPlayOutChat(ChatType.SYSTEM, NMSAPI.getIChatBaseComponentFromCraftBukkit(StringUtils.colorizeJson(aa.replaceWithoutColors(p,l.get(tests))))));
+							Ref.sendPacket(p, LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(StringUtils.colorizeJson(aa.replaceWithoutColors(p,l.get(tests))))));
 						}else {
 							TheAPI.msg(aa.replace(p,l.get(tests)), p);
 						}

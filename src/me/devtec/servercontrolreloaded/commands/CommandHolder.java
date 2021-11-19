@@ -3,8 +3,6 @@ package me.devtec.servercontrolreloaded.commands;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
@@ -61,7 +59,7 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 
 	public abstract void command(CommandSender s, String[] args, boolean loop);
 
-	@Nullable
+	
 	public abstract int[] playerPlaceholders(CommandSender s, String[] args);
 	
 	private boolean replace(CommandSender s, String[] args, int... arg) {

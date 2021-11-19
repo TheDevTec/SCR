@@ -10,8 +10,8 @@ import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class BigTask {
 	public static int r = -1;
@@ -36,7 +36,7 @@ public class BigTask {
 				long f = h;
 				public void run() {
 					if (f <= 0) {
-						NMSAPI.postToMainThread(BigTask::end);
+						LoaderClass.nmsProvider.postToMainThread(BigTask::end);
 						cancel();
 						return;
 					} else if (f == 60 || f == 45 || f == 30 || f == 15 || f <= 5) {
@@ -81,7 +81,7 @@ public class BigTask {
 					Thread.sleep(1000+TheAPI.getOnlinePlayers().size()*50);
 				} catch (Exception e1) {
 				}
-				NMSAPI.postToMainThread(() -> {
+				LoaderClass.nmsProvider.postToMainThread(() -> {
 					switch (s) {
 						case RELOAD:
 							Bukkit.reload();

@@ -4,20 +4,19 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import me.devtec.theapi.utils.json.Json;
 
 public class SkinData {
 	
 	public String skinName;
-	@Nullable
+	
 	public UUID uuid;
 	@Nonnull
 	public String value;
 	@Nonnull
 	public String signature;
-	@Nullable
+	
 	public String url;
 	public boolean slim;
 	

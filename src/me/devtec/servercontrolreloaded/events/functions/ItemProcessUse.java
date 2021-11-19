@@ -19,8 +19,8 @@ import me.devtec.theapi.TheAPI.SudoType;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.json.Json;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class ItemProcessUse implements Listener {
 	public static final int COLLECTION = 1;
@@ -107,7 +107,7 @@ public class ItemProcessUse implements Listener {
 		long last = e.getLong("process.last");
 		if(last+val - System.currentTimeMillis()/1000 <= 0) {
 			e.setLong("process.last", System.currentTimeMillis()/1000);
-			NMSAPI.setNBT(item, e);
+			LoaderClass.nmsProvider.setNBT(item, e);
 			return true;
 		}
 		return false;
@@ -126,7 +126,7 @@ public class ItemProcessUse implements Listener {
 			}else
 				e.setLong("process.uses", 0);
 		}else e.setLong("process.uses", uses);
-		NMSAPI.setNBT(item, e);
+		LoaderClass.nmsProvider.setNBT(item, e);
 	}
 
 	public static Object getActions(ItemStack item, String path, int type) {

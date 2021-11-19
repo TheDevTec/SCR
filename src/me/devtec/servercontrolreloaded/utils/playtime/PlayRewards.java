@@ -17,7 +17,7 @@ import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class PlayRewards {
 
@@ -178,7 +178,7 @@ public class PlayRewards {
 	}
 	
 	private void process(Player p) {
-		NMSAPI.postToMainThread(() -> {
+		LoaderClass.nmsProvider.postToMainThread(() -> {
 			for(String cmd : Loader.rewards.getStringList("PlayTime."+name+".Commands"))
 				TheAPI.sudoConsole(TabList.replace(cmd.replace("%player%", p.getName()), p, true));
 		});

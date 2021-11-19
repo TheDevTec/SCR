@@ -20,8 +20,8 @@ import org.bukkit.material.NetherWarts;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.utils.XMaterial;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 
 public class FarmingSystem implements Listener {
@@ -112,6 +112,6 @@ public class FarmingSystem implements Listener {
 	private static final Constructor<?> packet = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutAnimation","PacketPlayOutAnimation"), Ref.nmsOrOld("world.entity.Entity","Entity"), int.class);
 	
 	private void callHand(Player player) {
-		Ref.sendPacket(player.getWorld().getPlayers(), Ref.newInstance(packet, NMSAPI.getEntity(player), 0));
+		Ref.sendPacket(player.getWorld().getPlayers(), Ref.newInstance(packet, LoaderClass.nmsProvider.getEntity(player), 0));
 	}
 }

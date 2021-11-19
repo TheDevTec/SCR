@@ -1,14 +1,19 @@
 package me.devtec.servercontrolreloaded.utils.guis;
 
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
+
+import javax.imageio.ImageIO;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -23,19 +28,25 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.utils.HDBSupport;
 import me.devtec.servercontrolreloaded.utils.TabList;
 import me.devtec.servercontrolreloaded.utils.XMaterial;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.EnchantmentAPI;
+import me.devtec.theapi.apis.ItemCreatorAPI.SkinData;
 import me.devtec.theapi.guiapi.GUI.ClickType;
 import me.devtec.theapi.guiapi.HolderGUI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.Data;
-import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Layout {
 	List<String> lines;
@@ -154,44 +165,51 @@ public class Layout {
 					if(t.toLowerCase().startsWith("hdb:")) {
 						stack = HDBSupport.parse(t);
 						if(extraNbt!=null)
-							stack=NMSAPI.setNBT(stack, extraNbt);
+							stack=LoaderClass.nmsProvider.setNBT(stack, extraNbt);
 					}else {
 					stack = new ItemStack(XMaterial.PLAYER_HEAD.getMaterial());
+					if(extraNbt!=null)
+						stack=LoaderClass.nmsProvider.setNBT(stack, extraNbt);
 					if(t.startsWith("http://")||t.startsWith("https://")) {
-						if(extraNbt!=null)
-							stack=NMSAPI.setNBT(stack, extraNbt);
 						SkullMeta m = (SkullMeta) stack.getItemMeta();
-						try {
-							Object profile = Ref.createGameProfile(null, "TheAPI");
-							byte[] encodedData = null;
-							try {
-								encodedData = Base64.getEncoder().encode(("{textures:{SKIN:{url:\"" + t + "\"}}}").getBytes());
-							} catch (Exception err) {
+						if(TheAPI.isOlderThan(8)) {
+							Object profile = Ref.createGameProfile(null, "SpigotDevTec");
+							SkinData data = generateSkin(t);
+							Ref.invoke(Ref.invoke(profile, "getProperties"), set, "textures", Ref.createProperty("textures", data.value, data.signature));
+							Ref.set(m, "profile", profile);
+						}else {
+							GameProfile profile = new GameProfile(UUID.randomUUID(), "SpigotDevTec");
+							SkinData data = generateSkin(t);
+							profile.getProperties().put("textures", new Property("textures", data.value, data.signature));
+							Ref.set(m, "profile", profile);
+							if(TheAPI.isNewerThan(15))
+								Ref.invoke(m, setProfile, profile);
+						}
+						stack.setItemMeta(m);
+					}else {
+						if(t.length()<=16) {
+							if(!t.matches("^[A-Za-z0-9_]") && !t.contains("%")) {
+								SkullMeta m = (SkullMeta) stack.getItemMeta();
+								m.setOwner(t);
+								stack.setItemMeta(m);
 							}
-							Ref.invoke(Ref.invoke(profile, "getProperties"), set,
-									"textures", Ref.createProperty("textures", new String(encodedData)));
-							Ref.set(m, "profile", profile);
-						} catch (Exception | NoSuchMethodError e) {
+						}else {
+							if(!t.contains("%")) {
+								SkullMeta m = (SkullMeta) stack.getItemMeta();
+								if(TheAPI.isOlderThan(8)) {
+									Object profile = Ref.createGameProfile(null, "SpigotDevTec");
+									Ref.invoke(Ref.invoke(profile, "getProperties"), set, "textures", Ref.createProperty("textures", t));
+									Ref.set(m, "profile", profile);
+								}else {
+									GameProfile profile = new GameProfile(UUID.randomUUID(), "SpigotDevTec");
+									profile.getProperties().put("textures", new Property("textures", t));
+									Ref.set(m, "profile", profile);
+									if(TheAPI.isNewerThan(15))
+										Ref.invoke(m, setProfile, profile);
+								}
+								stack.setItemMeta(m);
+							}
 						}
-						stack.setItemMeta(m);
-					}else {
-						if(extraNbt!=null)
-							stack=NMSAPI.setNBT(stack, extraNbt);
-					if(t.length()<=16) {
-						SkullMeta m = (SkullMeta) stack.getItemMeta();
-						m.setOwner(t);
-						stack.setItemMeta(m);
-					}else {
-						SkullMeta m = (SkullMeta) stack.getItemMeta();
-						try {
-							Object profile = Ref.createGameProfile(null, "TheAPI");
-							Ref.invoke(Ref.invoke(profile, "getProperties"), set,
-									"textures", Ref.createProperty("textures", t));
-							Ref.set(m, "profile", profile);
-						} catch (Exception | NoSuchMethodError e) {
-						}
-						stack.setItemMeta(m);
-					}
 					}}
 				}else
 					stack = mat.parseItem();
@@ -294,12 +312,12 @@ public class Layout {
 		public void process(Player player, HolderGUI gui, ClickType click) {
 			Object get = file.get(path+".actions");
 			if(get instanceof Collection) {
-				NMSAPI.postToMainThread(() -> {
+				LoaderClass.nmsProvider.postToMainThread(() -> {
 				for(String key : file.getStringList(path+".actions"))
 					if(processAction(player, gui, click, key, false))break;
 				});
 			}
-			NMSAPI.postToMainThread(() -> {
+			LoaderClass.nmsProvider.postToMainThread(() -> {
 			for(String key : file.getStringList(path+".actions.default")) {
 				if(processAction(player, gui, click, key, true))break;
 			}
@@ -414,4 +432,62 @@ public class Layout {
 			//layout
 		}
 	}
+	
+	
+	
+
+	private static final String URL_FORMAT = "https://api.mineskin.org/generate/url?url=%s&%s",
+			USER_FORMAT="https://api.ashcon.app/mojang/v2/user/%s";
+	private static String getSkinType(java.awt.image.BufferedImage image) {
+		final byte[] pixels = ((java.awt.image.DataBufferByte) image.getRaster().getDataBuffer()).getData();
+		int argb = ((int) pixels[4002] & 0xff);
+		argb += (((int) pixels[4003] & 0xff) << 8);
+		argb += (((int) pixels[4004] & 0xff) << 16);
+		return argb==2631720?"steve":"alex";
+    }
+	
+	@SuppressWarnings("unchecked")
+	public static synchronized SkinData generateSkin(String urlOrName) {
+		if(urlOrName==null)return null;
+		if(urlOrName.toLowerCase().startsWith("https://")||urlOrName.toLowerCase().startsWith("http://")) {
+			try {
+				java.net.URLConnection connection = new URL(urlOrName).openConnection();
+				connection.setRequestProperty("User-Agent", "ServerControlReloaded-JavaClient");
+				HttpURLConnection conn = (HttpURLConnection)new URL(String.format(URL_FORMAT, urlOrName, "name=DevTec&model="+getSkinType(ImageIO.read(connection.getInputStream()))+"&visibility=1")).openConnection();
+				conn.setRequestProperty("User-Agent", "TheAPI-JavaClient");
+				conn.setRequestProperty("Accept-Encoding", "gzip");
+				conn.setRequestMethod("POST");
+				conn.setConnectTimeout(1000);
+				conn.setReadTimeout(1000);
+				conn.connect();
+				Map<String, Object> text = (Map<String, Object>) Json.reader().simpleRead(StreamUtils.fromStream(new GZIPInputStream(conn.getInputStream())));
+				SkinData data = new SkinData();
+				if(!text.containsKey("error")) {
+					data.signature=(String) ((Map<String, Object>)((Map<String, Object>)text.get("data")).get("texture")).get("signature");
+					data.value=(String) ((Map<String, Object>)((Map<String, Object>)text.get("data")).get("texture")).get("value");
+				}
+				return data;
+			}catch(Exception err) {}
+		}
+		try {
+			HttpURLConnection conn = (HttpURLConnection)new URL(String.format(USER_FORMAT, urlOrName)).openConnection();
+			conn.setRequestProperty("User-Agent", "TheAPI-JavaClient");
+			conn.setRequestMethod("GET");
+			conn.setConnectTimeout(1000);
+			conn.setReadTimeout(1000);
+			conn.connect();
+			Map<String, Object> text = (Map<String, Object>) Json.reader().simpleRead(StreamUtils.fromStream(conn.getInputStream()));
+			SkinData data = new SkinData();
+			if(!text.containsKey("error")) {
+				data.signature=(String) ((Map<String, Object>)((Map<String, Object>)text.get("textures")).get("raw")).get("signature");
+				data.value=(String) ((Map<String, Object>)((Map<String, Object>)text.get("textures")).get("raw")).get("value");
+			}
+			return data;
+		}catch(Exception err) {}
+		return null;
+	}
+	
+	static Method setProfile = Ref.method(Ref.craft("inventory.CraftMetaSkull"), "setProfile", Ref.getClass("com.mojang.authlib.GameProfile") != null
+			? Ref.getClass("com.mojang.authlib.GameProfile")
+			: Ref.getClass("net.minecraft.util.com.mojang.authlib.GameProfile"));
 }

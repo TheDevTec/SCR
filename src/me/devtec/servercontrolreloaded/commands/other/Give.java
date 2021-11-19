@@ -26,7 +26,7 @@ import me.devtec.servercontrolreloaded.utils.XMaterial;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Give implements CommandExecutor, TabCompleter {
 	final List<String> list = new ArrayList<>();
@@ -444,7 +444,7 @@ public class Give implements CommandExecutor, TabCompleter {
 			return;
 		}
 		if(nbt!=null && nbt.startsWith("{") && nbt.endsWith("}")) {
-			stack=NMSAPI.setNBT(stack, NMSAPI.parseNBT(nbt));
+			stack=LoaderClass.nmsProvider.setNBT(stack, LoaderClass.nmsProvider.parseNBT(nbt));
 		}
 		TheAPI.giveItem(target, stack);
 		if(target==null||sender==target)

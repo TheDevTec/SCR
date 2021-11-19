@@ -14,7 +14,7 @@ import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.TheAPI.SudoType;
 import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Codes implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -28,7 +28,7 @@ public class Codes implements Listener {
 		for (String g : only) {
 			if (e.getMessage().toLowerCase().contains(g.toLowerCase())) {
 				TheAPI.msg(Loader.placeholder(p, Loader.config.getString("Options.Codes.Message"), Placeholder.c().add("%code%", g)),p);
-				NMSAPI.postToMainThread(() -> {
+				LoaderClass.nmsProvider.postToMainThread(() -> {
 					for (String cmds : Loader.config.getStringList("Options.Codes.Commands"))
 						TheAPI.sudoConsole(SudoType.COMMAND, TheAPI.colorize(Loader.placeholder(p, cmds, Placeholder.c().add("%code%", g))));
 					String random = TheAPI.getRandomFromList(Loader.config.getStringList("Options.Codes.Random-Command"));

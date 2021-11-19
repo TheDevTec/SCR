@@ -31,12 +31,13 @@ import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.servercontrolreloaded.utils.multiworlds.MWGUI;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.cooldownapi.CooldownAPI;
-import me.devtec.theapi.utils.ChatMessage;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.components.ComponentAPI;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.json.Json;
-import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.nms.NmsProvider.ChatType;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 //TODO Add options to disable AntiFlood & AntiCaps
 //Options.AntiSpam.Flood
@@ -44,6 +45,8 @@ import me.devtec.theapi.utils.reflections.Ref;
 
 /**
  * 1.9. 2021
+ * 
+ * Update: 19.11. 2021
  * 
  * @author StraikerinaCZ
  *
@@ -336,12 +339,12 @@ public class ChatFormat implements Listener {
 							}
 						}
 						formatt = o;
-						List<Map<String, Object>> list = ChatMessage.fixListMap((List<Map<String, Object>>) formatt);
-						e.setFormat(ChatMessage.toLegacy((List<Object>)(List<?>)list).replace("%", "%%"));
+						List<Map<String, Object>> list = ComponentAPI.fixJsonList((List<Map<String, Object>>) formatt);
+						e.setFormat(ComponentAPI.toStringJson((List<Object>)(List<?>)list).replace("%", "%%"));
 						if (!e.isCancelled()) {
 							String jsons = Json.writer().simpleWrite(list);
 							jsons="[\"\","+jsons.substring(1);
-							Ref.sendPacket(e.getRecipients(),NMSAPI.getPacketPlayOutChat(NMSAPI.ChatType.SYSTEM, NMSAPI.getIChatBaseComponentJson(jsons)));
+							Ref.sendPacket(e.getRecipients(),LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons), e.getPlayer().getUniqueId()));
 						}
 						e.getRecipients().clear(); //for our custom chat
 					}

@@ -33,8 +33,8 @@ import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.sortedmap.SortedMap.ComparableObject;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class TabList {
 	// GROUP, PRIORITE
@@ -529,7 +529,7 @@ public class TabList {
 			p.setPlayerListName(getTabListName(p));
 	}
 	
-	public static final Object empty = NMSAPI.getPacketPlayOutPlayerListHeaderFooter(NMSAPI.getIChatBaseComponentText(""),NMSAPI.getIChatBaseComponentText(""));
+	public static final Object empty = LoaderClass.nmsProvider.packetPlayerListHeaderFooter("","");
 	
 	static int test;
 	public static void removeTab() {

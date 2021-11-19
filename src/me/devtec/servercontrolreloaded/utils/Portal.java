@@ -25,7 +25,6 @@ import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.json.Json;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
@@ -220,7 +219,7 @@ public class Portal {
 												d.writeUTF(ac);
 											p.sendPluginMessage(Loader.getInstance, "scr:community", d.toByteArray());
 										}
-										NMSAPI.postToMainThread(() -> a.processCommands(p));
+										LoaderClass.nmsProvider.postToMainThread(() -> a.processCommands(p));
 									}else if(a.kickBack)a.kickBack(p);
 								}else
 									if(a.equals(inPortal.get(p)))

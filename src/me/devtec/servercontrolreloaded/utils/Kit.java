@@ -21,8 +21,8 @@ import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.json.Json;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Kit {
 	private List<ItemStack> items;
@@ -224,7 +224,7 @@ public class Kit {
 				else
 				e.set(a.getKey(), a.getValue());
 			}
-			create=NMSAPI.setNBT(create,e);
+			create=LoaderClass.nmsProvider.setNBT(create,e);
 		}
 		return create;
 	}

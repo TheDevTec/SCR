@@ -19,8 +19,8 @@ import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Repair implements CommandExecutor, TabCompleter {
 
@@ -41,7 +41,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 							NBTEdit edit = new NBTEdit(p.getItemInHand());
 							edit.remove("Damage");
 							edit.remove("damage");
-							p.setItemInHand(NMSAPI.setNBT(p.getItemInHand(), edit));
+							p.setItemInHand(LoaderClass.nmsProvider.setNBT(p.getItemInHand(), edit));
 						}
 					Loader.sendMessages(s, "Repair.Hand.You");
 					return true;
@@ -57,7 +57,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 								NBTEdit edit = new NBTEdit(t);
 								edit.remove("Damage");
 								edit.remove("damage");
-								t=NMSAPI.setNBT(t, edit);
+								t=LoaderClass.nmsProvider.setNBT(t, edit);
 							}
 					}
 					p.getInventory().setContents(items);
@@ -70,7 +70,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 						NBTEdit edit = new NBTEdit(p.getItemInHand());
 						edit.remove("Damage");
 						edit.remove("damage");
-						p.setItemInHand(NMSAPI.setNBT(p.getItemInHand(), edit));
+						p.setItemInHand(LoaderClass.nmsProvider.setNBT(p.getItemInHand(), edit));
 					}
 				Loader.sendMessages(s, "Repair.Hand.You");
 				return true;
@@ -95,7 +95,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 							NBTEdit edit = new NBTEdit(t);
 							edit.remove("Damage");
 							edit.remove("damage");
-							p.setItemInHand(NMSAPI.setNBT(t, edit));
+							p.setItemInHand(LoaderClass.nmsProvider.setNBT(t, edit));
 						}
 				}
 				Loader.sendMessages(s, "Repair.All.Other.Sender");
@@ -109,7 +109,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 					NBTEdit edit = new NBTEdit(p.getItemInHand());
 					edit.remove("Damage");
 					edit.remove("damage");
-					p.setItemInHand(NMSAPI.setNBT(p.getItemInHand(), edit));
+					p.setItemInHand(LoaderClass.nmsProvider.setNBT(p.getItemInHand(), edit));
 				}
 				Loader.sendMessages(s, "Repair.Hand.Other.Sender");
 				Loader.sendMessages(p, "Repair.Hand.Other.Receiver", Placeholder.c().replace("%player%", s.getName())

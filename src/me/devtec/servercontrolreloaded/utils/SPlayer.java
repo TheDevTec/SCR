@@ -17,8 +17,8 @@ import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class SPlayer {
 	public boolean lock;
@@ -112,7 +112,7 @@ public class SPlayer {
 				s.setAllowFlight(true);
 				s.setFlying(true);
 			}else {
-				NMSAPI.postToMainThread(() -> {
+				LoaderClass.nmsProvider.postToMainThread(() -> {
 					s.setAllowFlight(true);
 					s.setFlying(true);
 				});
@@ -133,7 +133,7 @@ public class SPlayer {
 				s.setAllowFlight(true);
 				s.setFlying(true);
 			}else {
-				NMSAPI.postToMainThread(() -> {
+				LoaderClass.nmsProvider.postToMainThread(() -> {
 					s.setAllowFlight(true);
 					s.setFlying(true);
 				});
@@ -159,7 +159,7 @@ public class SPlayer {
 			s.setAllowFlight(true);
 			s.setFlying(true);
 		}else {
-			NMSAPI.postToMainThread(() -> {
+			LoaderClass.nmsProvider.postToMainThread(() -> {
 				s.setAllowFlight(true);
 				s.setFlying(true);
 			});
@@ -177,7 +177,7 @@ public class SPlayer {
 			s.setFlying(false);
 			s.setAllowFlight(false);
 		}else {
-			NMSAPI.postToMainThread(() -> {
+			LoaderClass.nmsProvider.postToMainThread(() -> {
 				s.setFlying(false);
 				s.setAllowFlight(false);
 			});
@@ -209,7 +209,7 @@ public class SPlayer {
 			if(isAFK()) {
 				for(Player canSee : API.getPlayersThatCanSee(s))
 					Loader.sendMessages(canSee, s, "AFK.End");
-				NMSAPI.postToMainThread(() -> {
+				LoaderClass.nmsProvider.postToMainThread(() -> {
 					for(String ds : Loader.config.getStringList("Options.AFK.Action.onStopAFK"))
 						TheAPI.sudoConsole(TabList.replace(ds,s,true));
 				});
@@ -232,7 +232,7 @@ public class SPlayer {
 			if(isAFK()) {
 				for(Player canSee : API.getPlayersThatCanSee(s))
 					Loader.sendMessages(canSee, s, "AFK.End");
-				NMSAPI.postToMainThread(() -> {
+				LoaderClass.nmsProvider.postToMainThread(() -> {
 					for(String ds : Loader.config.getStringList("Options.AFK.Action.onStopAFK"))
 						TheAPI.sudoConsole(TabList.replace(ds,s,true));
 				});

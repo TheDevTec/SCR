@@ -36,8 +36,8 @@ import me.devtec.theapi.guiapi.ItemGUI;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 import me.devtec.theapi.worldsapi.WorldsAPI;
 
 public class MWGUI {
@@ -323,7 +323,7 @@ public class MWGUI {
 							String name = TheAPI.getUser(p).getString("MultiWorlds-Create");
 							Loader.mw.set("settings." + name + ".generator", TheAPI.getUser(p).getString("MultiWorlds-Generator"));
 							Loader.mw.save();
-							NMSAPI.postToMainThread(() -> MWAPI.createWorld(name, p));
+							LoaderClass.nmsProvider.postToMainThread(() -> MWAPI.createWorld(name, p));
 							TheAPI.getUser(p).remove("MultiWorlds-Generator");
 							TheAPI.getUser(p).remove("MultiWorlds-Create");
 							TheAPI.getUser(p).save();
@@ -385,7 +385,7 @@ public class MWGUI {
 					Position loc = Position.fromString(Loader.mw.getString("settings." + w.getName() + ".spawn"));
 					API.setBack(s);
 					s.setNoDamageTicks(20);
-					NMSAPI.postToMainThread(() -> API.teleport(s, loc));
+					LoaderClass.nmsProvider.postToMainThread(() -> API.teleport(s, loc));
 					Loader.sendMessages(s, "MultiWorld.Teleport.You", Placeholder.c().add("%world%", w.getName()));
 				}
 			});
@@ -472,7 +472,7 @@ public class MWGUI {
 					GameMode gg = GameMode.valueOf(g);
 					Object gm = Ref.invokeStatic(MWAPI.getById,MWAPI.toId(g));
 					MWAPI.gamemodesnms.put(w, gm);
-					NMSAPI.postToMainThread(() -> {
+					LoaderClass.nmsProvider.postToMainThread(() -> {
 						for (Player p : p.getWorld().getPlayers())p.setGameMode(gg);
 					});
 					this.setItem(createItem("&6GameMode", XMaterial.RED_CONCRETE, Collections.singletonList(g)));
@@ -493,7 +493,7 @@ public class MWGUI {
 					gg = GameMode.valueOf(g);
 					gm = Ref.invokeStatic(MWAPI.getById,MWAPI.toId(g));
 					MWAPI.gamemodesnms.put(w, gm);
-					NMSAPI.postToMainThread(() -> {
+					LoaderClass.nmsProvider.postToMainThread(() -> {
 						for (Player p : p.getWorld().getPlayers())p.setGameMode(gg);
 					});
 					this.setItem(createItem("&6GameMode", XMaterial.RED_CONCRETE, Collections.singletonList(g)));
@@ -512,7 +512,7 @@ public class MWGUI {
 				Loader.mw.set("settings." + w.getName() + ".keepSpawnInMemory", sf);
 				Loader.mw.save();
 				boolean state = sf;
-				NMSAPI.postToMainThread(() -> w.setKeepSpawnInMemory(state));
+				LoaderClass.nmsProvider.postToMainThread(() -> w.setKeepSpawnInMemory(state));
 				this.setItem(createItem("&6Keep Spawn In Memory", XMaterial.BLUE_CONCRETE, Collections.singletonList(sf + "")));
 				g.setItem(items.get(this), this);
 			}
@@ -682,7 +682,7 @@ public class MWGUI {
 						case SHIFT_LEFT_PICKUP:
 							Loader.mw.set("settings." + w.getName() + ".gamerule." + ds,Loader.mw.getInt("settings." + w.getName() + ".gamerule." + ds) + 1);
 							Loader.mw.save();
-							NMSAPI.postToMainThread(() -> w.setGameRuleValue(ds,"" + (Loader.mw.getInt("settings." + w.getName() + ".gamerule." + ds) + 1)));
+							LoaderClass.nmsProvider.postToMainThread(() -> w.setGameRuleValue(ds,"" + (Loader.mw.getInt("settings." + w.getName() + ".gamerule." + ds) + 1)));
 							this.setItem(createItem("&6"+name, d, Collections.singletonList(Loader.mw.getString("settings." + w.getName() + ".gamerule." + ds))));
 							g.setItem(items.get(this), this);
 							break;
@@ -692,7 +692,7 @@ public class MWGUI {
 							Loader.mw.set("settings." + w.getName() + ".gamerule." + ds,
 									Loader.mw.getInt("settings." + w.getName() + ".gamerule." + ds) - 1);
 							Loader.mw.save();
-							NMSAPI.postToMainThread(() -> w.setGameRuleValue(ds,"" + (Loader.mw.getInt("settings." + w.getName() + ".gamerule." + ds) - 1)));
+							LoaderClass.nmsProvider.postToMainThread(() -> w.setGameRuleValue(ds,"" + (Loader.mw.getInt("settings." + w.getName() + ".gamerule." + ds) - 1)));
 							this.setItem(createItem("&6"+name, d, Collections.singletonList(Loader.mw.getString("settings." + w.getName() + ".gamerule." + ds))));
 							g.setItem(items.get(this), this);
 							break;
@@ -702,7 +702,7 @@ public class MWGUI {
 					}else {
 						Loader.mw.set("settings." + w.getName() + ".gamerule." + ds, !Loader.mw.getBoolean("settings." + w.getName() + ".gamerule." + ds));
 						Loader.mw.save();
-						NMSAPI.postToMainThread(() -> w.setGameRuleValue(ds, "" + (!Loader.mw.getBoolean("settings." + w.getName() + ".gamerule." + ds))));
+						LoaderClass.nmsProvider.postToMainThread(() -> w.setGameRuleValue(ds, "" + (!Loader.mw.getBoolean("settings." + w.getName() + ".gamerule." + ds))));
 						this.setItem(createItem("&6"+name, d, Collections.singletonList(Loader.mw.getString("settings." + w.getName() + ".gamerule." + ds))));
 						g.setItem(items.get(this), this);
 					}

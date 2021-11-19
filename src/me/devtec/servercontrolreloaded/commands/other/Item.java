@@ -24,8 +24,8 @@ import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.json.Json;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.nms.nbt.NBTEdit;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class Item implements CommandExecutor, TabCompleter{
 	private static final List<String> flags = new ArrayList<>();
@@ -249,7 +249,7 @@ public class Item implements CommandExecutor, TabCompleter{
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("get")) {
-						Loader.sendMessages(s,"Item.Nbt.Get",Placeholder.c().add("%nbt%", NMSAPI.getNBT(item)+""));
+						Loader.sendMessages(s,"Item.Nbt.Get",Placeholder.c().add("%nbt%", LoaderClass.nmsProvider.getNBT(item)+""));
 						return true;
 					}
 					if(args[1].equalsIgnoreCase("set")) {
@@ -257,7 +257,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							Loader.advancedHelp(s, "Item", "Other", "Nbt", "Set");
 							return true;
 						}
-						item=NMSAPI.setNBT(item, StringUtils.buildString(2,args));
+						item=LoaderClass.nmsProvider.setNBT(item, StringUtils.buildString(2,args));
 						((Player)s).setItemInHand(item);
 						Loader.sendMessages(s,"Item.Nbt.Set",Placeholder.c().add("%nbt%", StringUtils.buildString(2,args)));
 						return true;
@@ -311,7 +311,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							text.add(i);
 							e.setString("process", "0");
 							e.setString("process."+target+".cmd", Json.writer().simpleWrite(text));
-							NMSAPI.setNBT(item, e);
+							LoaderClass.nmsProvider.setNBT(item, e);
 							Loader.sendMessages(s, "Item.Process.Cmd.Add", Placeholder.c().add("%value%", i).add("%position%", text.size()-1));
 							return true;
 						}
@@ -351,7 +351,7 @@ public class Item implements CommandExecutor, TabCompleter{
 								e.setString("process", "0");
 								e.setString("process."+target+".cmd", Json.writer().simpleWrite(text));
 							}
-							NMSAPI.setNBT(item, e);
+							LoaderClass.nmsProvider.setNBT(item, e);
 							Loader.sendMessages(s, "Item.Process.Cmd.Remove", Placeholder.c().add("%value%", removed).add("%position%", StringUtils.getInt(args[4])));
 							return true;
 						}
@@ -393,7 +393,7 @@ public class Item implements CommandExecutor, TabCompleter{
 							text.add(i);
 							e.setString("process", "0");
 							e.setString("process.msg", Json.writer().simpleWrite(text));
-							NMSAPI.setNBT(item, e);
+							LoaderClass.nmsProvider.setNBT(item, e);
 							Loader.sendMessages(s, "Item.Process.Msg.Add", Placeholder.c().add("%value%", i).add("%position%", text.size()-1));
 							return true;
 						}
@@ -433,7 +433,7 @@ public class Item implements CommandExecutor, TabCompleter{
 								e.setString("process", "0");
 								e.setString("process.msg", Json.writer().simpleWrite(text));
 							}
-							NMSAPI.setNBT(item, e);
+							LoaderClass.nmsProvider.setNBT(item, e);
 							Loader.sendMessages(s, "Item.Process.Msg.Remove", Placeholder.c().add("%value%", removed).add("%position%", StringUtils.getInt(args[3])));
 							return true;
 						}
@@ -471,7 +471,7 @@ public class Item implements CommandExecutor, TabCompleter{
 								e.setString("process", "0");
 								e.setLong("process."+path.toLowerCase(), args[1].equalsIgnoreCase("cooldown")?StringUtils.timeFromString(args[3]):StringUtils.getInt(args[3]));
 							}
-							NMSAPI.setNBT(item, e);
+							LoaderClass.nmsProvider.setNBT(item, e);
 							Loader.sendMessages(s, "Item.Process."+path+".Set", Placeholder.c().add("%value%", args[1].equalsIgnoreCase("cooldown")?StringUtils.timeFromString(args[3])+"":StringUtils.getInt(args[3])));
 							return true;
 						}

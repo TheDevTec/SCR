@@ -33,8 +33,8 @@ import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.json.Json;
-import me.devtec.theapi.utils.nms.NMSAPI;
 import me.devtec.theapi.utils.reflections.Ref;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class SkinManager {
 	private static final String URL_FORMAT = "https://api.mineskin.org/generate/url?url=%s&%s",
@@ -192,7 +192,7 @@ public class SkinManager {
 			e.clear();
 			e.put("textures", new Property("textures", data.value, data.signature));
 		}
-		Object destroy = NMSAPI.getPacketPlayOutEntityDestroy(player.getEntityId());
+		Object destroy = LoaderClass.nmsProvider.packetEntityDestroy(player.getEntityId());
 		Object remove, add;
 		if(TheAPI.isOlderThan(8)) {
 			remove=Ref.invokeNulled(oldRemove, s);
@@ -208,7 +208,7 @@ public class SkinManager {
 				add = Ref.newInstance(infoC, SkinManager.add, iterable);
 			}
 		}
-		Object spawn = NMSAPI.getPacketPlayOutNamedEntitySpawn(s);
+		Object spawn = LoaderClass.nmsProvider.packetNamedEntitySpawn(s);
 		Object head = Ref.newInstance(headC, s, (byte)((float)(Ref.get(s, TheAPI.isNewerThan(16)?"aZ":"yaw"))*256F/360F));
 		for(Player p : API.getPlayersThatCanSee(player)) {
 			Ref.sendPacket(p, remove);
@@ -219,7 +219,7 @@ public class SkinManager {
 				Object w = Ref.world(p.getWorld());
 				Location a = p.getLocation();
 				
-				Object packetMetadata = NMSAPI.getPacketPlayOutEntityMetadata(s), packetRespawn, packetPosition, packetExp, packetHeldSlot = Ref.newInstance(handC, p.getInventory().getHeldItemSlot());
+				Object packetMetadata = LoaderClass.nmsProvider.packetEntityMetadata(player), packetRespawn, packetPosition, packetExp, packetHeldSlot = Ref.newInstance(handC, p.getInventory().getHeldItemSlot());
 				
 				//RESPAWN PACKET
 				if(TheAPI.isNewerThan(16)) { //1.17+

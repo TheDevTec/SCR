@@ -35,7 +35,7 @@ import me.devtec.theapi.blocksapi.BlockIterator;
 import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.nms.NMSAPI;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
 import net.luckperms.api.LuckPermsProvider;
 
 public class API {
@@ -476,7 +476,7 @@ public class API {
 			Position safe = findSafeLocation(air,location);
 			if(safe!=null) {
 				s.setNoDamageTicks(60);
-				NMSAPI.postToMainThread(() -> teleport(s, safe));
+				LoaderClass.nmsProvider.postToMainThread(() -> teleport(s, safe));
 			}
 			else
 				Loader.sendMessages(s, "TpSystem.NotSafe");
