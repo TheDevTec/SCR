@@ -8,6 +8,6 @@
 	<classpathentry kind="lib" path="C:/EclipseUtils/LP/LuckPerms-Bukkit-5.3.74.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Dynmap.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/spigot-1.17.1.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/TheAPI"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DevTec - TheAPI (Main)"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
