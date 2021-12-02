@@ -24,7 +24,6 @@ import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.HDBSupport;
 import me.devtec.servercontrolreloaded.utils.XMaterial;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.ItemCreatorAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
@@ -45,7 +44,7 @@ public class Give implements CommandExecutor, TabCompleter {
 	
 	public Give() {
 		for (XMaterial ss : XMaterial.values())
-			if (new ItemCreatorAPI(ss.getMaterial()).isItem(false))
+			if (ss.isSupported() && isItem(ss.getMaterial(),false))
 				list.add(ss.name());
 		for (String add : Arrays.asList("POTION_OF_", "SPLASH_POTION_OF_", "LINGERING_POTION_OF_")) {
 			list.add(add + "MINING_FATIQUE");

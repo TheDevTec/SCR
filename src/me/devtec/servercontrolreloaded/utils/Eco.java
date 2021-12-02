@@ -76,11 +76,7 @@ public class Eco implements Economy {
 			return path + "." + getEconomyGroup(player);
 		return path;
 	}
-
-	private String get(String player) {
-		return getPaths(player);
-	}
-
+	
 	private String get(String player, String world) {
 		String path = "Money";
 		if (Loader.config.getBoolean("Options.Economy.MultiEconomy.Use"))
@@ -103,7 +99,7 @@ public class Eco implements Economy {
 	public boolean hasAccount(String s) {
 		if (s == null)
 			return false;
-		return !existPath(s);
+		return existPath(s);
 	}
 
 	@Override
@@ -127,7 +123,7 @@ public class Eco implements Economy {
 	public double getBalance(String s) {
 		if (s == null)
 			return 0.0;
-		return TheAPI.getUser(s).getDouble(get(s));
+		return TheAPI.getUser(s).getDouble(getPaths(s));
 	}
 
 	@Override
@@ -157,7 +153,7 @@ public class Eco implements Economy {
 	public boolean has(String s, double v) {
 		if (s == null)
 			return false;
-		double balance = TheAPI.getUser(s).getDouble(get(s));
+		double balance = TheAPI.getUser(s).getDouble(getPaths(s));
         return balance >= v;
     }
 
@@ -189,7 +185,7 @@ public class Eco implements Economy {
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
 					"Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 		} else {
-			TheAPI.getUser(s).setAndSave(get(s), getBalance(s) - v);
+			TheAPI.getUser(s).setAndSave(getPaths(s), getBalance(s) - v);
 			
 			Loader.EconomyLog("Succefully withdrawed $" + v + " from player " + s);
 			
@@ -235,7 +231,7 @@ public class Eco implements Economy {
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.FAILURE,
 					"Failed withdrawed $" + v + " from player " + s + ", you can't withdraw negative amount");
 		} else {
-			TheAPI.getUser(s).setAndSave(get(s), getBalance(s) + v);
+			TheAPI.getUser(s).setAndSave(getPaths(s), getBalance(s) + v);
 			Loader.EconomyLog("Succefully deposited $" + v + " from player " + s);
 			return new EconomyResponse(v, v, EconomyResponse.ResponseType.SUCCESS,
 					"Succefully deposited $" + v + " to player " + s);
@@ -333,7 +329,7 @@ public class Eco implements Economy {
 		if (s == null)
 			return false;
 		if (!existPath(s)) {
-			TheAPI.getUser(s).setAndSave(get(s), Loader.config.getDouble("Options.Economy.Money"));
+			TheAPI.getUser(s).setAndSave(getPaths(s), Loader.config.getDouble("Options.Economy.Money"));
 			Loader.EconomyLog("Creating economy account for player " + s);
 			return true;
 		}

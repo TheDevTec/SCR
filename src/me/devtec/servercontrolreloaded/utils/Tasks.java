@@ -103,7 +103,7 @@ public class Tasks {
 				Object nms = Ref.get(packet, "a");
 				if(nms!=null)
 				if(nms.getClass()==chatmessage) {
-					String key = (String)Ref.invoke(nms, "getKey");
+					String key = (String)Ref.invoke(nms, TheAPI.isNewerThan(17)?"i":"getKey");
 					return key.equals("sleep.skipping_night") || key.equals("sleep.players_sleeping");
 				}
 			}
