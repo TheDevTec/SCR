@@ -42,8 +42,7 @@ public class Home implements CommandExecutor, TabCompleter {
 								API.safeTeleport((Player)s,false,loc);
 							else
 								API.teleport((Player)s, loc);
-							Loader.sendMessages(s, "Home.Teleporting", Placeholder.c()
-									.add("%home%", "home"));
+							Loader.sendMessages(s, "Home.Teleporting", Placeholder.c().add("%home%", "home"));
 							return true;
 						}
 						return true;

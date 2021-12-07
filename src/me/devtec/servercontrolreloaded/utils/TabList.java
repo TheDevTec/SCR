@@ -81,14 +81,19 @@ public class TabList {
 				yTeam.addPlayer(player);
 		}
 	}
-
-	/**
-	 * 
-	 * @param path Name
-	 * @param type 0 - player, 1 - world, 2 - group
-	 */
-	public static String getPrefix(String path, boolean nametag, int type) {
-		return Loader.tab.getString((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups."))  +path+ "."+(nametag?"NameTag":"TabList")+".Prefix");
+	
+	public enum FormatType {
+		PER_PLAYER("PerPlayer"),
+		PER_WORLD("PerWorld"),
+		GROUP("Groups");
+		private String ph;
+		FormatType(String string) {
+			ph=string;
+		}
+		
+		public String getPath() {
+			return ph;
+		}
 	}
 
 	/**
@@ -96,8 +101,8 @@ public class TabList {
 	 * @param path Name
 	 * @param type 0 - player, 1 - world, 2 - group
 	 */
-	public static String getSuffix(String path, boolean nametag, int type) {
-		return Loader.tab.getString((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) + path+"."+(nametag?"NameTag":"TabList")+".Suffix");
+	public static String getPrefix(String path, boolean nametag, FormatType type) {
+		return Loader.tab.getString(type.getPath()  +path+ "."+(nametag?"NameTag":"TabList")+".Prefix");
 	}
 
 	/**
@@ -105,8 +110,17 @@ public class TabList {
 	 * @param path Name
 	 * @param type 0 - player, 1 - world, 2 - group
 	 */
-	public static String getNameFormat(String path, int type) {
-		return Loader.tab.getString((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) +path+ ".Format");
+	public static String getSuffix(String path, boolean nametag, FormatType type) {
+		return Loader.tab.getString(type.getPath() + path+"."+(nametag?"NameTag":"TabList")+".Suffix");
+	}
+
+	/**
+	 * 
+	 * @param path Name
+	 * @param type 0 - player, 1 - world, 2 - group
+	 */
+	public static String getNameFormat(String path, FormatType type) {
+		return Loader.tab.getString(type.getPath() +path+ ".Format");
 	}
 
 	/**
@@ -115,8 +129,8 @@ public class TabList {
 	 * @param type 0 - player, 1 - world, 2 - group
 	 * @param value New prefix
 	 */
-	public static void setPrefix(String path, boolean nametag, int type, String value) {
-		Loader.tab.set((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups."))  +path+ "."+(nametag?"NameTag":"TabList")+".Prefix", value);
+	public static void setPrefix(String path, boolean nametag, FormatType type, String value) {
+		Loader.tab.set(type.getPath()  +path+ "."+(nametag?"NameTag":"TabList")+".Prefix", value);
 		Loader.tab.save();
 	}
 
@@ -126,8 +140,8 @@ public class TabList {
 	 * @param type 0 - player, 1 - world, 2 - group
 	 * @param value New prefix
 	 */
-	public static void setSuffix(String path, boolean nametag, int type, String value) {
-		Loader.tab.set((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) + path+"."+(nametag?"NameTag":"TabList")+".Suffix", value);
+	public static void setSuffix(String path, boolean nametag, FormatType type, String value) {
+		Loader.tab.set(type.getPath() + path+"."+(nametag?"NameTag":"TabList")+".Suffix", value);
 		Loader.tab.save();
 	}
 
@@ -137,8 +151,8 @@ public class TabList {
 	 * @param type 0 - player, 1 - world, 2 - group
 	 * @param value New header
 	 */
-	public static void setHeader(String path, int type, List<String> value) {
-		Loader.tab.set(path==null?"Header":(type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) + path+".Header", value);
+	public static void setHeader(String path, FormatType type, List<String> value) {
+		Loader.tab.set(path==null?"Header":type.getPath() + path+".Header", value);
 		Loader.tab.save();
 	}
 
@@ -148,8 +162,8 @@ public class TabList {
 	 * @param type 0 - player, 1 - world, 2 - group
 	 * @param value New header
 	 */
-	public static void setFooter(String path, int type, List<String> value) {
-		Loader.tab.set(path==null?"Footer":(type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) + path+".Footer", value);
+	public static void setFooter(String path, FormatType type, List<String> value) {
+		Loader.tab.set(path==null?"Footer":type.getPath() + path+".Footer", value);
 		Loader.tab.save();
 	}
 
@@ -158,8 +172,8 @@ public class TabList {
 	 * @param path Name
 	 * @param type 0 - player, 1 - world, 2 - group
 	 */
-	public static List<String> getHeader(String path, int type) {
-		return Loader.tab.getStringList(path==null?"Header":(type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) + path+".Header");
+	public static List<String> getHeader(String path, FormatType type) {
+		return Loader.tab.getStringList(path==null?"Header":type.getPath() + path+".Header");
 	}
 
 	/**
@@ -167,8 +181,8 @@ public class TabList {
 	 * @param path Name
 	 * @param type 0 - player, 1 - world, 2 - group
 	 */
-	public static List<String> getFooter(String path, int type) {
-		return Loader.tab.getStringList(path==null?"Footer":(type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) + path+".Footer");
+	public static List<String> getFooter(String path, FormatType type) {
+		return Loader.tab.getStringList(path==null?"Footer":type.getPath() + path+".Footer");
 	}
 
 	/**
@@ -177,44 +191,50 @@ public class TabList {
 	 * @param type 0 - player, 1 - world, 2 - group
 	 * @param value New prefix
 	 */
-	public static void setNameFormat(String path, int type, String value) {
-		Loader.tab.set((type==0?"PerPlayer.":(type==1?"PerWorld.":"Groups.")) +path+ ".Format", value);
+	public static void setNameFormat(String path, FormatType type, String value) {
+		Loader.tab.set(type.getPath() +path+ ".Format", value);
 		Loader.tab.save();
 	}
 
 	public static String getPrefix(Player p, boolean nametag) {
-		if(Loader.tab==null)return null;
-		if (Loader.tab.exists("PerPlayer." + p.getName() + "."+(nametag?"NameTag":"TabList")+".Prefix"))
-			return replace(Loader.tab.getString("PerPlayer." + p.getName() + "."+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
-		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + "."+(nametag?"NameTag":"TabList")+".Prefix"))
-			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + "."+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
+		if(Loader.tab==null||p==null)return null;
+		String end = "."+(nametag?"NameTag":"TabList")+".Prefix";
+		
+		if (Loader.tab.get("PerPlayer." + p.getName() + end)!=null)
+			return replace(Loader.tab.getString("PerPlayer." + p.getName() + end), p, true);
+		if (Loader.tab.get("PerWorld." + p.getWorld().getName() + end)!=null)
+			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + end), p, true);
 		String g = Staff.getGroup(p);
-		if (Loader.tab.exists("Groups." + g + "."+(nametag?"NameTag":"TabList")+".Prefix"))
-			return replace(Loader.tab.getString("Groups." + g + "."+(nametag?"NameTag":"TabList")+".Prefix"), p, true);
+		if (Loader.tab.get("Groups." + g + end)!=null)
+			return replace(Loader.tab.getString("Groups." + g + end), p, true);
 		return null;
 	}
 
 	public static String getSuffix(Player p, boolean nametag) {
-		if(Loader.tab==null)return null;
-		if (Loader.tab.exists("PerPlayer." + p.getName() + "."+(nametag?"NameTag":"TabList")+".Suffix"))
-			return replace(Loader.tab.getString("PerPlayer." + p.getName() + "."+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
-		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + "."+(nametag?"NameTag":"TabList")+".Suffix"))
-			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + "."+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
+		if(Loader.tab==null||p==null)return null;
+		String end = "."+(nametag?"NameTag":"TabList")+".Suffix";
+
+		if (Loader.tab.get("PerPlayer." + p.getName() + end)!=null)
+			return replace(Loader.tab.getString("PerPlayer." + p.getName() + end), p, true);
+		if (Loader.tab.get("PerWorld." + p.getWorld().getName() + end)!=null)
+			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + end), p, true);
 		String g = Staff.getGroup(p);
-		if (Loader.tab.exists("Groups." + g + "."+(nametag?"NameTag":"TabList")+".Suffix"))
-			return replace(Loader.tab.getString("Groups." + g + "."+(nametag?"NameTag":"TabList")+".Suffix"), p, true);
+		if (Loader.tab.get("Groups." + g + end)!=null)
+			return replace(Loader.tab.getString("Groups." + g + end), p, true);
 		return null;
 	}
 
 	public static String getNameFormat(Player p) {
-		if(Loader.tab==null)return p.getName();
-		if (Loader.tab.exists("PerPlayer." + p.getName() + ".Format"))
-			return replace(Loader.tab.getString("PerPlayer." + p.getName() + ".Format"), p, true);
-		if (Loader.tab.exists("PerWorld." + p.getWorld().getName() + ".Format"))
-			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + ".Format"), p, true);
+		if(Loader.tab==null||p==null)return p.getName();
+		String end = ".Format";
+
+		if (Loader.tab.get("PerPlayer." + p.getName() + end)!=null)
+			return replace(Loader.tab.getString("PerPlayer." + p.getName() + end), p, true);
+		if (Loader.tab.get("PerWorld." + p.getWorld().getName() + end)!=null)
+			return replace(Loader.tab.getString("PerWorld." + p.getWorld().getName() + end), p, true);
 		String g = Staff.getGroup(p);
-		if (Loader.tab.exists("Groups." + g + ".Format"))
-			return replace(Loader.tab.getString("Groups." + g + ".Format"), p, true);
+		if (Loader.tab.get("Groups." + g + end)!=null)
+			return replace(Loader.tab.getString("Groups." + g + end), p, true);
 		return "%tab_prefix% "+p.getName()+" %tab_suffix%";
 	}
 	static Pattern playtimetop = Pattern.compile("\\%playtimetop_([0-9]+)_(name|time|formatted_time|format_time|format)\\%", Pattern.CASE_INSENSITIVE)

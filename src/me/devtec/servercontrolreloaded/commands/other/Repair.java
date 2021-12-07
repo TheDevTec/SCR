@@ -51,6 +51,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 				}
 				if (args[0].equalsIgnoreCase("all")) {
 					ItemStack[] items = p.getInventory().getContents();
+					int pos = 0;
 					for (ItemStack t : items) {
 						if (t != null && t.getType()!=Material.AIR)
 							if(isTool(t.getType().name())) {
@@ -59,6 +60,7 @@ public class Repair implements CommandExecutor, TabCompleter {
 								edit.remove("damage");
 								t=LoaderClass.nmsProvider.setNBT(t, edit);
 							}
+						items[pos++]=t;
 					}
 					p.getInventory().setContents(items);
 					Loader.sendMessages(s, "Repair.All.You");
@@ -88,15 +90,17 @@ public class Repair implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("all")) {
+				int pos = 0;
 				ItemStack[] items = p.getInventory().getContents();
 				for (ItemStack t : items) {
 					if (t != null && t.getType()!=Material.AIR)
-						if(isTool(p.getItemInHand().getType().name())) {
+						if(isTool(t.getType().name())) {
 							NBTEdit edit = new NBTEdit(t);
 							edit.remove("Damage");
 							edit.remove("damage");
-							p.setItemInHand(LoaderClass.nmsProvider.setNBT(t, edit));
+							t=LoaderClass.nmsProvider.setNBT(t, edit);
 						}
+					items[pos++]=t;
 				}
 				Loader.sendMessages(s, "Repair.All.Other.Sender");
 				Loader.sendMessages(p, "Repair.All.Other.Receiver", Placeholder.c().replace("%player%", s.getName())

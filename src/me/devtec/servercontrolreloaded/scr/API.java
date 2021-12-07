@@ -17,12 +17,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.block.data.Ageable;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
-import org.bukkit.material.Openable;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -543,24 +540,19 @@ public class API {
 		Material a = loc.getBukkitType();
 		String c = a.name();
 		if(c.contains("LAVA"))return 2;
-		if(!TheAPI.isNewVersion()) {
-			MaterialData d = loc.getType().toItemStack().getData();
-			try {
-				if(d instanceof org.bukkit.material.Crops)return 1;
-			}catch(Exception | NoClassDefFoundError e) {}
-			try {
-				if(d instanceof org.bukkit.material.Sapling)return 1;
-			}catch(Exception | NoClassDefFoundError e) {}
-			try {
-				if(d instanceof org.bukkit.material.NetherWarts)return 1;
-			}catch(Exception | NoClassDefFoundError e) {}
-		}else {
-			BlockData d = loc.getBlock().getBlockData();
-			if(d instanceof Ageable)return 1;
-		}
+		MaterialData d = new MaterialData(a);
+		try {
+			if(d instanceof org.bukkit.material.Crops)return 1;
+		}catch(Exception | NoClassDefFoundError e) {}
+		try {
+			if(d instanceof org.bukkit.material.Sapling)return 1;
+		}catch(Exception | NoClassDefFoundError e) {}
+		try {
+			if(d instanceof org.bukkit.material.NetherWarts)return 1;
+		}catch(Exception | NoClassDefFoundError e) {}
 		return (c.equals("AIR")||c.equals("CAVE_AIR")||c.equals("STRUCTURE_AIR")||c.contains("WATER")||c.contains("BANNER")||c.equals("SEAGRASS") || c.equals("LONG_GRASS") || c.equals("FLOWER")
 				|| c.equals("CARPET") || c.contains("BUTTON") || c.contains("DOOR") || c.contains("SIGN")
-                || c.contains("TORCH") || isFlower(c) ||c.contains("RED_MUSHROOM") || c.contains("BROWN_MUSHROOM")|| c.contains("PLATE")|| c.contains("GATE") && isOpen(loc))?0:1;
+                || c.contains("TORCH") || isFlower(c) ||c.contains("RED_MUSHROOM") || c.contains("BROWN_MUSHROOM")|| c.contains("PLATE"))?0:1;
 	}
 	
 	private static boolean isFlower(String c) {
@@ -573,10 +565,6 @@ public class API {
 				||c.equals("SUGAR_CANE")||c.equals("DOUBLE_PLANT")||c.contains("YELLOW_FLOWER")||c.equals("RED_ROSE")
 				||c.contains("CORAL") && !c.contains("BLOCK")||c.equals("LILAC")||c.equals("ROSE_BUSH");
 		return false;
-	}
-
-	private static boolean isOpen(Position loc) {
-		return TheAPI.isNewerThan(14)?((org.bukkit.block.data.Openable)loc.getBlock().getBlockData()).isOpen():((Openable)loc.getBukkitType().getNewData((byte)loc.getData())).isOpen();
 	}
 
 	public static void send(Player p, String server) {

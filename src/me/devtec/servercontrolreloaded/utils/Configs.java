@@ -4,16 +4,13 @@ import java.io.File;
 import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map.Entry;
 
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.datakeeper.Data;
-import me.devtec.theapi.utils.datakeeper.loader.YamlLoader;
 
 public class Configs {
-	@SuppressWarnings("unchecked")
 	public static void load(boolean settingMessage) {
 		Loader.portals= new Config("ServerControlReloaded/Portals.yml");
 		if(!new File("plugins/ServerControlReloaded/CustomCommands.yml").exists()) {
@@ -29,47 +26,9 @@ public class Configs {
 			Loader.trans=null;
 		}else {
 			Config c = new Config("ServerControlReloaded/Translations/translation-"+lang+".yml");
-    		YamlLoader data = new YamlLoader();
-    		try {
-    		data.load(new File("plugins/ServerControlReloaded/Translations/translation-"+lang+".yml"));
-    		}catch(Exception e) {}
-	    	boolean change = false;
-				try {
-					if(c.getHeader()==null || c.getHeader()!=null && !c.getHeader().isEmpty() && (data.getHeader().isEmpty()||!c.getHeader().containsAll(data.getHeader()))) {
-						c.getHeader().clear();
-						c.getHeader().addAll(data.getHeader());
-						change = true;
-					}
-					if(c.getFooter()==null || c.getFooter()!=null && !c.getFooter().isEmpty() && (data.getFooter().isEmpty()||!c.getFooter().containsAll(data.getFooter()))) {
-						c.getFooter().clear();
-						c.getFooter().addAll(data.getFooter());
-						change = true;
-					}
-				}catch(Exception nope) {}
-				try {
-				for(Entry<String, Object[]> s : c.getData().getDataLoader().get().entrySet()) {
-					Object[] o = c.getData().getOrCreateData(s.getKey());
-					if(o[0]==null && s.getValue()[0]!=null) {
-						o[0]=s.getValue()[0];
-						try {
-						o[2]=s.getValue()[2];
-						}catch(Exception outOfBoud) {}
-						change = true;
-					}
-					if(s.getValue()[1]!=null && !((List<String>) s.getValue()[1]).isEmpty()) {
-						List<String> cc = (List<String>)o[1];
-			    		if(cc==null || cc.isEmpty()) {
-			    			if(c.getHeader()!=null && !c.getHeader().isEmpty() && ((List<String>)s.getValue()[1]).containsAll(c.getHeader())
-		        					|| c.getFooter()!=null && !c.getFooter().isEmpty() && ((List<String>) s.getValue()[1]).containsAll(c.getFooter()))continue;
-		        			o[1]= s.getValue()[1];
-			    			change = true;
-			    		}
-					}
-				}
-				}catch(Exception err) {}
-		    	data.reset();
-				if(change)
-			    	c.save();
+    		Data dd = new Data();
+    		dd.reload(new File("plugins/ServerControlReloaded/Translations/translation-"+lang+".yml"));
+	    	if(c.getData().merge(dd, true, true))c.save();
 	    	Loader.trans=c;
 		}
 		setting.load(settingMessage);
@@ -83,8 +42,8 @@ public class Configs {
 		if(file.exists() && !file.isDirectory())file.delete();
 		if(!file.exists()) {
 			file.mkdirs();
-			Config.loadConfig(Loader.getInstance, "Configs/Guis/shop.yml", "Guis/shop.yml");
-			Config.loadConfig(Loader.getInstance, "Configs/Guis/item-buy.yml", "Guis/item-buy.yml");
+			Config.loadConfig(Loader.getInstance, "Configs/Guis/shop.yml", "ServerControlReloaded/Guis/shop.yml");
+			Config.loadConfig(Loader.getInstance, "Configs/Guis/item-buy.yml", "ServerControlReloaded/Guis/item-buy.yml");
 		}
 	}
 	

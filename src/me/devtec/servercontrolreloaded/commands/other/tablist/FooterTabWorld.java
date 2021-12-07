@@ -3,6 +3,7 @@ package me.devtec.servercontrolreloaded.commands.other.tablist;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
 import me.devtec.servercontrolreloaded.utils.TabList;
+import me.devtec.servercontrolreloaded.utils.TabList.FormatType;
 import me.devtec.theapi.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 
@@ -12,27 +13,27 @@ public class FooterTabWorld {
 
 	public FooterTabWorld(CommandSender s, String[] args) {
 		if(args[2].equalsIgnoreCase("add")) {
-			List<String> lines = TabList.getHeader(args[1], 1);
+			List<String> lines = TabList.getHeader(args[1], FormatType.PER_WORLD);
 			String val = StringUtils.buildString(3, args);
 			lines.add(val);
-			TabList.setHeader(args[1], 1, lines);
+			TabList.setHeader(args[1], FormatType.PER_WORLD, lines);
 			Loader.sendMessages(s, "TabList.Add.Footer.World.Info", Placeholder.c().add("%value%", val));
 			return;
 		}
 		if(args[2].equalsIgnoreCase("remove")) {
-			List<String> lines = TabList.getHeader(args[1], 1);
+			List<String> lines = TabList.getHeader(args[1], FormatType.PER_WORLD);
 			int set = StringUtils.getInt(args[3]);
 			if(lines.size() < set || set<0) {
 				Loader.sendMessages(s, "TabList.Error", Placeholder.c().add("%size%", lines.size()+"").add("%value%", set+""));
 				return;
 			}
 			String val = lines.remove(set);
-			TabList.setHeader(null, 1, lines);
+			TabList.setHeader(null, FormatType.PER_WORLD, lines);
 			Loader.sendMessages(s, "TabList.Remove.Footer.World.Info", Placeholder.c().add("%position%", set+"").add("%value%", val+""));
 			return;
 		}
 		if(args[2].equalsIgnoreCase("set")) {
-			List<String> lines = TabList.getHeader(args[1], 1);
+			List<String> lines = TabList.getHeader(args[1], FormatType.PER_WORLD);
 			int set = StringUtils.getInt(args[3]);
 			if(lines.size() < set || set<0) {
 				Loader.sendMessages(s, "TabList.Error", Placeholder.c().add("%size%", lines.size()+"").add("%value%", set+""));
@@ -40,7 +41,7 @@ public class FooterTabWorld {
 			}
 			String val = StringUtils.buildString(4, args);
 			lines.set(set, val);
-			TabList.setHeader(args[1], 1, lines);
+			TabList.setHeader(args[1], FormatType.PER_WORLD, lines);
 			Loader.sendMessages(s, "TabList.Set.Footer.World.Info");
 			return;
 		}
