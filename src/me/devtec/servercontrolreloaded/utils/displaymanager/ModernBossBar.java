@@ -15,6 +15,7 @@ public class ModernBossBar implements SBossBar {
 	public ModernBossBar(Player player, String title) {
 		this.player=player;
 		bar = Bukkit.createBossBar(title, BarColor.PURPLE, BarStyle.SEGMENTED_20);
+		bar.addPlayer(player);
 	}
 	
 	@Override
@@ -29,7 +30,28 @@ public class ModernBossBar implements SBossBar {
 
 	@Override
 	public void setStyle(String styleName) {
-		bar.setStyle(BarStyle.valueOf(styleName));
+		try {
+			bar.setStyle(BarStyle.valueOf(styleName));
+		}catch(NoSuchFieldError er) {
+			try {
+				bar.setStyle(BarStyle.valueOf(fromLegacy(styleName)));
+			}catch(NoSuchFieldError err) {}
+		}
+	}
+	private String fromLegacy(String styleName) {
+		switch(styleName) {
+		case "PROGRESS":
+			return "SOLID";
+		case "NOTCHED_6":
+			return "SEGMENTED_6";
+		case "NOTCHED_10":
+			return "SEGMENTED_10";
+		case "NOTCHED_12":
+			return "SEGMENTED_12";
+		case "NOTCHED_20":
+			return "SEGMENTED_20";
+		}
+		return null;
 	}
 
 	@Override

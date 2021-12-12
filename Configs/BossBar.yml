@@ -30,10 +30,10 @@ RefleshTick: 20
 # BossBar stage (Can be used %math{}% !}
 Stage: '100.0'
 
-# BossBar type (Types: NOTCHED_10, NOTCHED_12, NOTCHED_20, NOTCHED_6, PROGRESS)
+# BossBar type (Types: SOLID, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20)
 Type: "PROGRESS"
 
-# BossBar color (Colors: RANDOM, GREEN, BLUE, PINK, PURPLE, RED, WHITE, YELLOW)
+# BossBar color (Colors: RANDOM, PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE)
 Color: "RANDOM"
 
 # BossBar text

@@ -360,8 +360,10 @@ public class DisplayManager {
 	}
 	
 	private static SBossBar sendBossBar(Player s, String replace, double d) {
-		// TODO Auto-generated method stub
-		return null;
+		SBossBar get = BossBarManager.getOrCreate(s);
+		get.setTitle(replace);
+		get.setProgress(d);
+		return get;
 	}
 
 	private static final SimpleScore score = new SimpleScore();

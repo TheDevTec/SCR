@@ -129,7 +129,7 @@ public class SkinManager {
 		if(Loader.hasBungee)
 			BungeeListener.requestSkinUpdate(player,data);
 		Object s = Ref.player(player);
-		Object prop = Ref.invoke(Ref.invoke(s, "getProfile"),"getProperties");
+		Object prop = Ref.invoke(Ref.invoke(s, TheAPI.isNewerThan(17)?"fp":"getProfile"),"getProperties");
 		if(prop==null)return;
 		if(TheAPI.isOlderThan(8)) {
 			Ref.invoke(prop, "clear");
