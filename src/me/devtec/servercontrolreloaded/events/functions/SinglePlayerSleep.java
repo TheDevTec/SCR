@@ -28,9 +28,13 @@ public class SinglePlayerSleep implements Listener {
 	final Map<String, Integer> sleepTask = new HashMap<>();
 	final Map<String, List<Player>> perWorldSleep = new HashMap<>();
 	final Constructor<?> c = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutUpdateTime","PacketPlayOutUpdateTime"), long.class, long.class, boolean.class);
-	final Method setTime = Ref.method(Ref.nmsOrOld("server.level.WorldServer","WorldServer"), TheAPI.isNewerThan(17)?"b":"setDayTime", long.class);
+	static Method setTime = Ref.method(Ref.nmsOrOld("server.level.WorldServer","WorldServer"), "setDayTime", long.class);
 	final Field sleepTicks = Ref.field(Ref.nmsOrOld("world.entity.player.EntityHuman", "EntityHuman"), TheAPI.isNewerThan(17)?"cq":TheAPI.isNewerThan(16)?"cp":"sleepTicks");
-	
+	static {
+		if(setTime==null)
+			setTime=Ref.method(Ref.nmsOrOld("server.level.WorldDataServer","WorldDataServer"),"f",int.class);
+	}
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onSleep(PlayerBedEnterEvent e) {
 		if(e.isCancelled())return;
@@ -67,7 +71,11 @@ public class SinglePlayerSleep implements Listener {
 							w.setWeatherDuration(0);
 							cancel();
 						}
-						Ref.invoke(f,setTime, (long)Ref.invoke(f,TheAPI.isNewerThan(17)?"f":"getDayTime")+ (start - (long)Ref.invoke(f,TheAPI.isNewerThan(17)?"f":"getDayTime")));
+						if(TheAPI.isNewerThan(17)) {
+							Object data = Ref.get(f,"N");
+							Ref.invoke(data,setTime, (int)((long)Ref.get(data,"m")+ (start - (long)Ref.get(data,"m"))));
+						}else
+						Ref.invoke(f,setTime, (long)Ref.invoke(f,"getDayTime")+ (start - (long)Ref.invoke(f,"getDayTime")));
 						for (Player p : w.getPlayers())
 							Ref.sendPacket(p, Ref.newInstance(c, w.getTime(), p.getPlayerTime(), time));
 						start+=50;

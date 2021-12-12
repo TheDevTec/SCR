@@ -10,10 +10,9 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 import me.devtec.servercontrolreloaded.scr.Loader;
+import me.devtec.servercontrolreloaded.utils.displaymanager.BossBarManager;
+import me.devtec.servercontrolreloaded.utils.displaymanager.SBossBar;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.bossbar.BarColor;
-import me.devtec.theapi.bossbar.BarStyle;
-import me.devtec.theapi.bossbar.BossBar;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
@@ -51,8 +50,6 @@ public class DisplayManager {
 		init.remove(p);
 		TheAPI.sendActionBar(p, "");
 	}
-	
-	static int cc = 0;
 	
 	public static void show(Player s, DisplayType type, boolean msg) {
 		TheAPI.getUser(s).setAndSave("SCR."+type.name(), false);
@@ -137,14 +134,14 @@ public class DisplayManager {
 				if(!s.hasPermission(Loader.bb.getString("Permission"))) {
 					if(!hide.get(DisplayType.BOSSBAR).contains(s.getName())) {
 						hide.get(DisplayType.BOSSBAR).add(s.getName());
-						TheAPI.removeBossBar(s);
+						BossBarManager.remove(s);
 					}
 					return;
 				}	
 				if(Loader.bb.getStringList("ForbiddenWorlds").contains(s.getWorld().getName())) {
 					if(!hide.get(DisplayType.BOSSBAR).contains(s.getName())) {
 						hide.get(DisplayType.BOSSBAR).add(s.getName());
-						TheAPI.removeBossBar(s);
+						BossBarManager.remove(s);
 						return;
 					}
 					return;
@@ -169,24 +166,24 @@ public class DisplayManager {
 									color="PerWorld."+s.getWorld().getName()+".Color";
 								}
 							}
-							BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
+							SBossBar b = sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
 							if(Loader.bb.getString(color)!=null)
 								try {
 									if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
-										b.setColor(BarColor.values()[cc]);
+										b.setRandomColor();
 									}else
-									b.setColor(BarColor.valueOf(Loader.bb.getString(color).toUpperCase()));
+									b.setColor(Loader.bb.getString(color).toUpperCase());
 								}catch(Exception | NoSuchFieldError e) {}
 							if(Loader.bb.getString(style)!=null)
 								try {
-									b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
+									b.setStyle(Loader.bb.getString(style).toUpperCase());
 								}catch(Exception | NoSuchFieldError e) {}
 							if(msg)
 							Loader.sendMessages(s, "DisplayManager.BossBar.Show");
 							return;
 						}
 						hide.get(DisplayType.BOSSBAR).add(s.getName());
-						TheAPI.removeBossBar(s); //remove
+						BossBarManager.remove(s); //remove
 						return;
 					}else {
 						if(!isToggleable(s, DisplayType.BOSSBAR)) {
@@ -208,17 +205,17 @@ public class DisplayManager {
 									color="PerWorld."+s.getWorld().getName()+".Color";
 								}
 							}
-							BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
+							SBossBar b = sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
 							if(Loader.bb.getString(color)!=null)
 								try {
 									if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
-										b.setColor(BarColor.values()[cc]);
+										b.setRandomColor();
 									}else
-									b.setColor(BarColor.valueOf(Loader.bb.getString(color).toUpperCase()));
+									b.setColor(Loader.bb.getString(color).toUpperCase());
 								}catch(Exception | NoSuchFieldError e) {}
 							if(Loader.bb.getString(style)!=null)
 								try {
-									b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
+									b.setStyle(Loader.bb.getString(style).toUpperCase());
 								}catch(Exception | NoSuchFieldError e) {}
 							if(msg)
 							Loader.sendMessages(s, "DisplayManager.BossBar.Show");
@@ -246,17 +243,17 @@ public class DisplayManager {
 							color="PerWorld."+s.getWorld().getName()+".Color";
 						}
 					}
-					BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
+					SBossBar b = sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
 					if(Loader.bb.getString(color)!=null)
 						try {
 							if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
-								b.setColor(BarColor.values()[cc]);
+								b.setRandomColor();
 							}else
-							b.setColor(BarColor.valueOf(Loader.bb.getString(color).toUpperCase()));
+							b.setColor(Loader.bb.getString(color).toUpperCase());
 						}catch(Exception | NoSuchFieldError e) {}
 					if(Loader.bb.getString(style)!=null)
 						try {
-							b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
+							b.setStyle(Loader.bb.getString(style).toUpperCase());
 						}catch(Exception | NoSuchFieldError e) {}
 					if(msg)
 					Loader.sendMessages(s, "DisplayManager.BossBar.Show");
@@ -362,6 +359,11 @@ public class DisplayManager {
 		}
 	}
 	
+	private static SBossBar sendBossBar(Player s, String replace, double d) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private static final SimpleScore score = new SimpleScore();
 	protected static final AnimationManager ac = new AnimationManager();
 	protected static final AnimationManager bb= new AnimationManager();
@@ -387,7 +389,7 @@ public class DisplayManager {
 					return;
 				}
 				hide.get(DisplayType.BOSSBAR).add(s.getName());
-				TheAPI.removeBossBar(s); //remove
+				BossBarManager.remove(s); //remove
 			}
 			break;
 			case SCOREBOARD:{
@@ -515,14 +517,14 @@ public class DisplayManager {
 					if(!s.hasPermission(Loader.bb.getString("Permission"))) {
 						if(!hide.get(DisplayType.BOSSBAR).contains(s.getName())) {
 							hide.get(DisplayType.BOSSBAR).add(s.getName());
-							TheAPI.removeBossBar(s);
+							BossBarManager.remove(s);
 						}
 						continue;
 					}	
 					if(Loader.bb.getStringList("ForbiddenWorlds").contains(s.getWorld().getName())) {
 						if(!hide.get(DisplayType.BOSSBAR).contains(s.getName())) {
 							hide.get(DisplayType.BOSSBAR).add(s.getName());
-							TheAPI.removeBossBar(s);
+							BossBarManager.remove(s);
 							continue;
 						}
 						continue;
@@ -547,22 +549,22 @@ public class DisplayManager {
 										color="PerWorld."+s.getWorld().getName()+".Color";
 									}
 								}
-								BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
+								SBossBar b = sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
 								if(Loader.bb.getString(color)!=null)
 									try {
 										if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
-											b.setColor(BarColor.values()[cc]);
+											b.setRandomColor();
 										}else
-										b.setColor(BarColor.valueOf(Loader.bb.getString(color).toUpperCase()));
+										b.setColor(Loader.bb.getString(color).toUpperCase());
 									}catch(Exception | NoSuchFieldError e) {}
 								if(Loader.bb.getString(style)!=null)
 									try {
-										b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
+										b.setStyle(Loader.bb.getString(style).toUpperCase());
 									}catch(Exception | NoSuchFieldError e) {}
 								continue;
 							}
 							hide.get(DisplayType.BOSSBAR).add(s.getName());
-							TheAPI.removeBossBar(s); //remove
+							BossBarManager.remove(s); //remove
 							continue;
 						}else {
 							if(!isToggleable(s, DisplayType.BOSSBAR)) {
@@ -584,17 +586,17 @@ public class DisplayManager {
 										color="PerWorld."+s.getWorld().getName()+".Color";
 									}
 								}
-								BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
+								SBossBar b = sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
 								if(Loader.bb.getString(color)!=null)
 									try {
 										if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
-											b.setColor(BarColor.values()[cc]);
+											b.setRandomColor();
 										}else
-										b.setColor(BarColor.valueOf(Loader.bb.getString(color).toUpperCase()));
+										b.setColor(Loader.bb.getString(color).toUpperCase());
 									}catch(Exception | NoSuchFieldError e) {}
 								if(Loader.bb.getString(style)!=null)
 									try {
-										b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
+										b.setStyle(Loader.bb.getString(style).toUpperCase());
 									}catch(Exception | NoSuchFieldError e) {}
 								continue;
 							}
@@ -619,23 +621,21 @@ public class DisplayManager {
 								color="PerWorld."+s.getWorld().getName()+".Color";
 							}
 						}
-						BossBar b = TheAPI.sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
+						SBossBar b = sendBossBar(s, bb.replace(s, Loader.bb.getString(text)), StringUtils.calculate(PlaceholderAPI.setPlaceholders(s, Loader.bb.getString(stage))) /100);
 						if(Loader.bb.getString(color)!=null)
 							try {
 								if(Loader.bb.getString(color).toUpperCase().equals("RANDOM")) {
-									b.setColor(BarColor.values()[cc]);
+									b.setRandomColor();
 								}else
-								b.setColor(BarColor.valueOf(Loader.bb.getString(color).toUpperCase()));
+								b.setColor(Loader.bb.getString(color).toUpperCase());
 							}catch(Exception | NoSuchFieldError e) {}
 						if(Loader.bb.getString(style)!=null)
 							try {
-								b.setStyle(BarStyle.valueOf(Loader.bb.getString(style).toUpperCase()));
+								b.setStyle(Loader.bb.getString(style).toUpperCase());
 							}catch(Exception | NoSuchFieldError e) {}
 					}
 					}catch(Exception er) {}
 				}
-				if(cc==6)cc=0;
-				else ++cc;
 				bb.update();
 			}
 		}.runRepeating(0, (long) StringUtils.calculate(Loader.bb.getString("RefleshTick"))));
@@ -742,8 +742,8 @@ public class DisplayManager {
 		}
 		for(Player s : TheAPI.getOnlinePlayers()) {
 			TheAPI.sendActionBar(s, "");
-			if(TheAPI.getBossBar(s)!=null)
-			TheAPI.removeBossBar(s);
+			if(BossBarManager.get(s)!=null)
+			BossBarManager.remove(s);
 			if(map.containsKey(s.getName()))
 				map.remove(s.getName()).destroy();
 		}

@@ -1,16 +1,11 @@
 package me.devtec.servercontrolreloaded.utils.skins;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 
@@ -18,11 +13,9 @@ import javax.imageio.ImageIO;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.ForwardingMultimap;
-import com.google.common.hash.Hashing;
 import com.mojang.authlib.properties.Property;
 
 import me.devtec.servercontrolreloaded.scr.API;
@@ -33,6 +26,7 @@ import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StreamUtils;
 import me.devtec.theapi.utils.datakeeper.User;
 import me.devtec.theapi.utils.json.Json;
+import me.devtec.theapi.utils.nms.NmsProvider.PlayerInfoType;
 import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
@@ -115,53 +109,7 @@ public class SkinManager {
 		}}.runTask();
 	}
 	
-	private static Object remove, add;
-	private static Method oldRemove, oldAdd;
-	private static final Class<?> cc = Ref.nms("WorldSettings$EnumGamemode")==null?Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
-	private static Constructor<?> infoC, headC, handC, respawnC, posC, expC;
-	static {
-		headC = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutEntityHeadRotation","PacketPlayOutEntityHeadRotation"), Ref.nmsOrOld("world.entity.Entity","Entity"), byte.class);
-		handC = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutHeldItemSlot","PacketPlayOutHeldItemSlot"), int.class);
-		if(TheAPI.isNewerThan(7)) {
-			remove=Ref.getNulled(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),TheAPI.isNewerThan(16)?"b":"REMOVE_PLAYER");
-			add=Ref.getNulled(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),TheAPI.isNewerThan(16)?"a":"ADD_PLAYER");
-			infoC = Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo","PacketPlayOutPlayerInfo"), Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"),TheAPI.isNewerThan(16)?Collection.class:Iterable.class);
-		}else {
-			oldRemove=Ref.method(Ref.nms("PacketPlayOutPlayerInfo"), "removePlayer", Ref.nms("EntityPlayer"));
-			oldAdd=Ref.method(Ref.nms("PacketPlayOutPlayerInfo"), "addPlayer", Ref.nms("EntityPlayer"));
-		}
-		//EXP PACKET
-		expC =Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutExperience","PacketPlayOutExperience"), float.class, int.class, int.class);
-		//POSITION PACKET
-		if(TheAPI.isOlderThan(8)) { //1.7
-			posC=Ref.constructor(Ref.nms("PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, boolean.class);
-		}else if(TheAPI.isOlderThan(9)) { //1.8
-			posC=Ref.constructor(Ref.nms("PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class);
-		}else //1.9+
-			posC=Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPosition","PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class, int.class);
-		if(posC==null)//1.17+
-			posC=Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPosition","PacketPlayOutPosition"), double.class, double.class, double.class, float.class, float.class, Set.class, int.class,boolean.class);
-		//RESPAWN PACKET
-		if(TheAPI.isNewerThan(16)) { //1.17+
-			respawnC=Ref.constructor(Ref.nmsOrOld("network.protocol.game.PacketPlayOutRespawn","PacketPlayOutRespawn"),Ref.nmsOrOld("world.level.dimension.DimensionManager","DimensionManager"), Ref.nmsOrOld("resources.ResourceKey","ResourceKey"), long.class, cc, cc, boolean.class, boolean.class, boolean.class);
-		}else
-		if(TheAPI.isNewerThan(15)) { //1.16
-			if(TheAPI.getServerVersion().split("_")[2].equals("R1"))
-			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("ResourceKey"), Ref.nms("ResourceKey"), long.class, cc, cc, boolean.class, boolean.class, boolean.class);
-			else
-				respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("ResourceKey"), long.class, cc, cc, boolean.class, boolean.class, boolean.class);
-		}else if(TheAPI.isNewerThan(14)) { //1.15
-			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), long.class, Ref.nms("WorldType"), cc);
-		}else if(TheAPI.isNewerThan(13)) { //1.14
-			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),Ref.nms("DimensionManager"), Ref.nms("WorldType"), cc);
-		}else //1.7-1.13
-			respawnC=Ref.constructor(Ref.nms("PacketPlayOutRespawn"),int.class, Ref.nms("EnumDifficulty"), Ref.nms("WorldType"), cc);
-	}
-	
-	private static final Set<?> sset = new HashSet<>();
-
 	private static Method set = Ref.method(Ref.getClass("net.minecraft.util.com.google.common.collect.ForwardingMultimap"), "put", Object.class, Object.class);
-	private static final Method cf = Ref.method(Ref.nmsOrOld("world.level.biome.BiomeManager","BiomeManager"), "a", long.class);
 
 	static Field res;
 	public static synchronized void loadSkin(Player player, SkinData data) {
@@ -192,76 +140,25 @@ public class SkinManager {
 			e.clear();
 			e.put("textures", new Property("textures", data.value, data.signature));
 		}
+		//SETUP PACKETS
 		Object destroy = LoaderClass.nmsProvider.packetEntityDestroy(player.getEntityId());
-		Object remove, add;
-		if(TheAPI.isOlderThan(8)) {
-			remove=Ref.invokeNulled(oldRemove, s);
-			add=Ref.invokeNulled(oldAdd, s);
-		}else {
-			if(TheAPI.isNewerThan(16)) {
-				Collection<?> iterable = Collections.singletonList(s);
-				remove=Ref.newInstance(infoC, SkinManager.remove, iterable);
-				add = Ref.newInstance(infoC, SkinManager.add, iterable);
-			}else {
-				Iterable<?> iterable = Collections.singletonList(s);
-				remove=Ref.newInstance(infoC, SkinManager.remove, iterable);
-				add = Ref.newInstance(infoC, SkinManager.add, iterable);
-			}
-		}
+		Object remove = LoaderClass.nmsProvider.packetPlayerInfo(PlayerInfoType.REMOVE_PLAYER, player), add = LoaderClass.nmsProvider.packetPlayerInfo(PlayerInfoType.ADD_PLAYER, player);
 		Object spawn = LoaderClass.nmsProvider.packetNamedEntitySpawn(s);
-		Object head = Ref.newInstance(headC, s, (byte)((float)(Ref.get(s, TheAPI.isNewerThan(16)?"aZ":"yaw"))*256F/360F));
+		Object head = LoaderClass.nmsProvider.packetEntityHeadRotation(player);
+		
 		for(Player p : API.getPlayersThatCanSee(player)) {
 			Ref.sendPacket(p, remove);
 			Ref.sendPacket(p, add);
 			if(p == player) {
+				//SETUP PACKETS
+				Location a = p.getLocation();
+				Object packetMetadata = LoaderClass.nmsProvider.packetEntityMetadata(player), packetRespawn = LoaderClass.nmsProvider.packetRespawn(player), 
+						packetPosition = LoaderClass.nmsProvider.packetPosition(a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch()), 
+						packetExp = LoaderClass.nmsProvider.packetExp(p.getExp(), p.getTotalExperience(), p.getExpToLevel()), 
+						packetHeldSlot = LoaderClass.nmsProvider.packetHeldItemSlot(p.getInventory().getHeldItemSlot());
+				//SEND PACKETS
 				Ref.sendPacket(p, remove);
 				Ref.sendPacket(p, add);
-				Object w = Ref.world(p.getWorld());
-				Location a = p.getLocation();
-				
-				Object packetMetadata = LoaderClass.nmsProvider.packetEntityMetadata(player), packetRespawn, packetPosition, packetExp, packetHeldSlot = Ref.newInstance(handC, p.getInventory().getHeldItemSlot());
-				
-				//RESPAWN PACKET
-				if(TheAPI.isNewerThan(16)) { //1.17+
-					if(res==null)
-					for(Field f : Ref.getDeclaredFields(w.getClass().getSuperclass()))
-						if(f.getType()==Ref.nmsOrOld("resources.ResourceKey","ResourceKey"))
-							if(f.getName().equals("G"))res=f;
-					packetRespawn=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), Ref.invoke(w, "getDimensionKey")==null?Ref.get(w, res):Ref.invoke(w, "getDimensionKey"), 
-							Ref.invokeNulled(cf, a.getWorld().getSeed()), 
-							Ref.invoke(Ref.get(s, "d"),"getGameMode"), Ref.invoke(Ref.get(s, "d"),"c"), 
-							false, a.getWorld().getWorldType()==WorldType.FLAT, true);
-				}else
-				if(TheAPI.isNewerThan(15)) { //1.16
-					Object key = Ref.invoke(w, "getDimensionKey");
-					if(key==null)key=Ref.get(w, "dimensionKey");
-					if(TheAPI.getServerVersion().split("_")[2].equals("R1"))
-						packetRespawn=Ref.newInstance(respawnC, Ref.invoke(w, "getTypeKey"), key, Ref.invokeNulled(cf, a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);	
-					else {
-						packetRespawn=Ref.newInstance(respawnC, Ref.invoke(w, "getDimensionManager"), key, Ref.invokeNulled(cf, a.getWorld().getSeed()), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"), Ref.invoke(Ref.get(s, "playerInteractManager"),"c"), false, a.getWorld().getWorldType()==WorldType.FLAT, true);
-					}
-				}else if(TheAPI.isNewerThan(14)) { //1.15
-					packetRespawn=Ref.newInstance(respawnC, Ref.invoke(Ref.invoke(Ref.get(w,"worldProvider"), "getDimensionManager"),"getType"), Hashing.sha256().hashLong(a.getWorld().getSeed()).asLong(), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
-				}else if(TheAPI.isNewerThan(13)) { //1.14
-					packetRespawn=Ref.newInstance(respawnC, Ref.get(w, "dimension"), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
-				}else //1.7 - 1.13
-					packetRespawn=Ref.newInstance(respawnC, player.getWorld().getEnvironment().getId(), Ref.invoke(w, "getDifficulty"), Ref.invoke(Ref.invoke(w, "getWorldData"),"getType"), Ref.invoke(Ref.get(s, "playerInteractManager"),"getGameMode"));
-				
-				//POSITION PACKET
-				if(TheAPI.isOlderThan(8)) { //1.7
-					packetPosition=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), false);
-				}else if(TheAPI.isOlderThan(9)) { //1.8
-					packetPosition=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), sset);
-				}else //1.9+
-					if(TheAPI.isNewerThan(16))
-						packetPosition=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), sset, 0, false);
-					else
-						packetPosition=Ref.newInstance(posC, a.getX(), a.getY(), a.getZ(), a.getYaw(), a.getPitch(), sset, 0);
-				
-				//EXPERIENCE PACKET
-				packetExp=Ref.newInstance(expC, p.getExp(), p.getTotalExperience(), p.getExpToLevel());
-				
-				//SEND PACKETS
 				Ref.sendPacket(p, packetRespawn);
 				Ref.sendPacket(p, packetPosition);
 				Ref.sendPacket(p, packetHeldSlot);
