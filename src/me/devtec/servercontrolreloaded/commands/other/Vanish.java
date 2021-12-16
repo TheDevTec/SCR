@@ -31,7 +31,7 @@ public class Vanish implements CommandExecutor, TabCompleter{
 	private static final Class<?> cc = Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode")!=null?Ref.nmsOrOld("world.level.EnumGamemode","EnumGamemode"):Ref.nms("WorldSettings$EnumGamemode");
 	private static final Object surv = Ref.getNulled(cc, TheAPI.isNewerThan(16)?"a":"SURVIVAL");
 	private static final Object spec = Ref.getNulled(cc, TheAPI.isNewerThan(16)?"d":"SPECTATOR");
-	private static final Object up = Ref.getNulled(Ref.field(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), TheAPI.isNewerThan(17)?"b":"UPDATE_GAME_MODE"));
+	private static final Object up = Ref.getNulled(Ref.field(Ref.nmsOrOld("network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction","PacketPlayOutPlayerInfo$EnumPlayerInfoAction"), TheAPI.isNewerThan(16)?"b":"UPDATE_GAME_MODE"));
 
 	public static void moveInTab(Player player, int game, boolean vanish) {
 		if(!TheAPI.isNewerThan(7)||spec==null)return;
@@ -61,6 +61,7 @@ public class Vanish implements CommandExecutor, TabCompleter{
 			Ref.set(o, TheAPI.isNewerThan(16)?"b":"c", gmResult==0?surv:spec); //edit
 			bList.set(c++, o);
 		}
+		Ref.set(b, "b", bList);
 		List<Player> f = API.getPlayersThatCanSee(player);
 		f.remove(player);
 		Ref.sendPacket(f, b);
