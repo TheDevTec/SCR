@@ -58,10 +58,9 @@ public class Vanish implements CommandExecutor, TabCompleter{
 						continue;
 					}
 			}
-			Ref.set(o, "c", gmResult==0?surv:spec); //edit
+			Ref.set(o, TheAPI.isNewerThan(16)?"b":"c", gmResult==0?surv:spec); //edit
 			bList.set(c++, o);
 		}
-		Ref.set(b, "b", bList);
 		List<Player> f = API.getPlayersThatCanSee(player);
 		f.remove(player);
 		Ref.sendPacket(f, b);
