@@ -44,6 +44,10 @@ Options:
     Title: "&eSomeone tagged you in a chat"
     SubTitle: ""
     ActionBar: "&eSomeone tagged you in a chat"
+    # Placeholder: %pinged%
+    Commands: []
+    # Placeholder: %pinged%
+    Messages: []
 
   LockChat:
     Helpop: false

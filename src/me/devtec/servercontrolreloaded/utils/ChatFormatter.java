@@ -1,7 +1,11 @@
 package me.devtec.servercontrolreloaded.utils;
 
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.entity.Player;
 
@@ -45,32 +49,56 @@ public class ChatFormatter {
 		//1. PerWorld -> PerUser
 		if(!getStatus(player, 1, "enabled"))return null;
 		if(Loader.config.exists("ChatFormat.world."+player.getWorld().getName()+".user."+player.getName()+t)) {
-			return new Object[] {Json.reader().simpleRead(Loader.config.getString("ChatFormat.world."+player.getWorld().getName()+".user."+player.getName()+t)),1};
+			return new Object[] {parse(Loader.config.get("ChatFormat.world."+player.getWorld().getName()+".user."+player.getName()+t)),1};
 		}
 		//2. PerWorld -> PerGroup
 		if(!getStatus(player, 2, "enabled"))return null;
 		if(Loader.config.exists("ChatFormat.world."+player.getWorld().getName()+".group."+g+t)) {
-			return new Object[] {Json.reader().simpleRead(Loader.config.getString("ChatFormat.world."+player.getWorld().getName()+".group."+g+t)),2};
+			return new Object[] {parse(Loader.config.get("ChatFormat.world."+player.getWorld().getName()+".group."+g+t)),2};
 		}
 		//3. PerWorld
 		if(!getStatus(player, 3, "enabled"))return null;
 		if(Loader.config.exists("ChatFormat.world."+player.getWorld().getName()+".global"+t)) {
-			return new Object[] {Json.reader().simpleRead(Loader.config.getString("ChatFormat.world."+player.getWorld().getName()+".global"+t)),3};
+			return new Object[] {parse(Loader.config.get("ChatFormat.world."+player.getWorld().getName()+".global"+t)),3};
 		}
 		//4. PerUser
 		if(!getStatus(player, 4, "enabled"))return null;
 		if(Loader.config.exists("ChatFormat.user."+player.getName()+t)) {
-			return new Object[] {Json.reader().simpleRead(Loader.config.getString("ChatFormat.user."+player.getName()+t)),4};
+			return new Object[] {parse(Loader.config.get("ChatFormat.user."+player.getName()+t)),4};
 		}
 		//5. PerGroup
 		if(!getStatus(player, 5, "enabled"))return null;
 		if(Loader.config.exists("ChatFormat.group."+g+t)) {
-			return new Object[] {Json.reader().simpleRead(Loader.config.getString("ChatFormat.group."+g+t)),5};
+			return new Object[] {parse(Loader.config.get("ChatFormat.group."+g+t)),5};
 		}
 		//6. Global
-		return getStatus(player, 6, "enabled") ? new Object[] {Json.reader().simpleRead(Loader.config.getString("ChatFormat.global"+t)),6} : null;
+		return getStatus(player, 6, "enabled") ? new Object[] {parse(Loader.config.get("ChatFormat.global"+t)),6} : null;
 	}
 	
+	private static Object parse(Object string) {
+		if(string instanceof String == false)return string instanceof Collection?cloneCollection((Collection<?>)string) : string instanceof Map ? cloneMap((Map<?,?>)string):string;
+		string=new String((String)string);
+		Object result = Json.reader().simpleRead((String)string);
+		if(result instanceof String)result=Json.reader().read((String)string);
+		return result;
+	}
+
+	private static Object cloneMap(Map<?, ?> string) {
+		Map<Object,Object> o = new LinkedHashMap<>();
+		for(Entry<?, ?> entry : string.entrySet()) {
+			Object a = entry.getValue();
+			o.put(entry.getKey(), a instanceof Collection ? cloneCollection((Collection<?>)a) : a instanceof Map ? cloneMap((Map<?,?>)a) : a);
+		}return o;
+		
+	}
+
+	private static Object cloneCollection(Collection<?> string) {
+		LinkedList<Object> o = new LinkedList<>();
+		for(Object a : string)
+			o.add(a instanceof Collection ? cloneCollection((Collection<?>)a) : a instanceof Map ? cloneMap((Map<?,?>)a) : a);
+		return o;
+	}
+
 	public static boolean getStatus(Player player, int subType, String name) {
 		String t = ".options."+name;
 		switch(subType) {

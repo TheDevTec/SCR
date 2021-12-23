@@ -36,7 +36,6 @@ public class DisplayManager {
 			if(TheAPI.getUser(p).getBoolean("SCR."+t.name()) && !ignore.get(t).contains(p.getName()))
 				ignore.get(t).add(p.getName());
 			if(!ignore.get(t).contains(p.getName()) && (t==DisplayType.ACTIONBAR?Loader.ac.getBoolean("Enabled"):(t==DisplayType.BOSSBAR?Loader.bb.getBoolean("Enabled"):setting.sb))) {
-				show(p, t, false);
 				init.add(p);
 			}
 		}

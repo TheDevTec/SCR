@@ -31,6 +31,7 @@ import me.devtec.servercontrolreloaded.utils.setting;
 import me.devtec.servercontrolreloaded.utils.multiworlds.MWGUI;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.cooldownapi.CooldownAPI;
+import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.components.ComponentAPI;
 import me.devtec.theapi.utils.datakeeper.User;
@@ -294,10 +295,12 @@ public class ChatFormat implements Listener {
 			if (Loader.config.getBoolean("Options.ChatNotification.Enabled")) {
 				Object[] format = ChatFormatter.getChatFormat(p, 1);
 				String colorOfFormat = getColorOf(ChatFormat.r(p, format[0], msg, (format[0] instanceof Map || format[0] instanceof List) && ChatFormatter.getStatus(p, (int) format[1], "json"), false));
-				Sound sound = Sound.ENTITY_PLAYER_LEVELUP;
+				Sound sound = null;
 				String[] title = {Loader.config.getString("Options.ChatNotification.Title"), Loader.config.getString("Options.ChatNotification.SubTitle")};
 				String actionbar = Loader.config.getString("Options.ChatNotification.ActionBar").replace("%target%", p.getName()).replace("%targetname%", ChatFormatter.displayName(p)).replace("%targetcustomname%", ChatFormatter.customName(p));
 				String color = Loader.config.getString("Options.ChatNotification.Color");
+				List<String> cmds = Loader.config.getStringList("Options.ChatNotification.Commands");
+				List<String> msgs = Loader.config.getStringList("Options.ChatNotification.Messages");
 				try {
 					sound = Sound.valueOf(Loader.config.getString("Options.ChatNotification.Sound").toUpperCase());
 				} catch (Exception | NoSuchFieldError err) {
@@ -313,6 +316,16 @@ public class ChatFormat implements Listener {
 							if (!actionbar.trim().isEmpty())
 								TheAPI.sendActionBar(s, TabList.replace(actionbar, s, true));
 						}
+						if(!cmds.isEmpty()) {
+							TheAPI.getNmsProvider().postToMainThread(() -> {
+								for(String cmd : cmds) {
+									TheAPI.sudoConsole(PlaceholderAPI.setPlaceholders(s, cmd).replace("%pinged%", p.getName()));
+								}
+							});
+						}
+						for(String cmd : msgs) {
+							TheAPI.msg(PlaceholderAPI.setPlaceholders(s, cmd).replace("%pinged%", p.getName()),s);
+						}
 					}
 			}
 			if (msg != null) {
@@ -327,7 +340,7 @@ public class ChatFormat implements Listener {
 						if (formatt instanceof Map) {
 							o.add((Map<String, Object>) formatt);
 						} else {
-							for (Object w : ((Collection<Object>) formatt)) {
+							for (Object w : ((Collection<?>) formatt)) {
 								if (w instanceof String) w = Json.reader().simpleRead((String) w);
 								if (w instanceof Map) {
 									o.add((Map<String, Object>) w);

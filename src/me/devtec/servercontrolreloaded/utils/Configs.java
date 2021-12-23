@@ -28,7 +28,7 @@ public class Configs {
 			Config c = new Config("ServerControlReloaded/Translations/translation-"+lang+".yml");
     		Data dd = new Data();
     		dd.reload(new File("plugins/ServerControlReloaded/Translations/translation-"+lang+".yml"));
-	    	if(c.getData().merge(dd, true, true))c.save();
+	    	if(c.getData().merge(dd, false, false))c.save();
 	    	Loader.trans=c;
 		}
 		setting.load(settingMessage);
@@ -104,7 +104,7 @@ public class Configs {
     		u.setUseCaches(false);
     		data.reload(StreamUtils.fromStream(u.getInputStream()));
     		}catch(Exception e) {}
-	    	if(c.getData().merge(data, true, true))
+	    	if(c.getData().merge(data, false, false))
 	    		c.save();
 	    	switch(s) {
 	    	case "Kits.yml":

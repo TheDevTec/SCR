@@ -188,7 +188,7 @@ public class Tasks {
 												API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
 										}else {
 											List<String> home = SPunishmentAPI.data.getStringList("tp-home");
-											home.add(nick);
+											home.add(nick.toLowerCase());
 											SPunishmentAPI.data.set("tp-home", home);
 											SPunishmentAPI.data.save();
 										}
@@ -254,7 +254,7 @@ public class Tasks {
 												API.teleport(p, API.getTeleportLocation(p, TeleportLocation.SPAWN));
 										}else {
 											List<String> home = SPunishmentAPI.data.getStringList("tp-home");
-											home.add(nick);
+											home.add(nick.toLowerCase());
 											SPunishmentAPI.data.set("tp-home", home);
 											SPunishmentAPI.data.save();
 										}
@@ -277,7 +277,7 @@ public class Tasks {
 								}else {
 									List<String> home = SPunishmentAPI.data.getStringList("tp-home");
 									SPunishmentAPI.data.set("tp-home", home);
-									home.add(push.getUser());
+									home.add(push.getUser().toLowerCase());
 									SPunishmentAPI.data.save();
 								}
 								break;

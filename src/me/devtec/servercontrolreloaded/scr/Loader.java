@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -182,8 +184,8 @@ public class Loader extends JavaPlugin implements Listener {
 	public static Object getTranslationAsObject(String path) {
 		Object input = trans==null?null:trans.get(path);
 		if(input==null)
-			return english.get(path);
-		return input;
+			return parse(english.get(path));
+		return parse(input);
 	}
 	
 	public static boolean existsTranslation(String path) {
@@ -202,6 +204,30 @@ public class Loader extends JavaPlugin implements Listener {
 		sendBroadcasts(whoIsSelected, path, null);
 	}
 	
+	private static Object parse(Object string) {
+		if(string instanceof String == false)return string instanceof Collection?cloneCollection((Collection<?>)string) : string instanceof Map ? cloneMap((Map<?,?>)string):string;
+		string=new String((String)string);
+		Object result = Json.reader().simpleRead((String)string);
+		if(result instanceof String)result=Json.reader().read((String)string);
+		return result;
+	}
+
+	private static Object cloneMap(Map<?, ?> string) {
+		Map<Object,Object> o = new LinkedHashMap<>();
+		for(Entry<?, ?> entry : string.entrySet()) {
+			Object a = entry.getValue();
+			o.put(entry.getKey(), a instanceof Collection ? cloneCollection((Collection<?>)a) : a instanceof Map ? cloneMap((Map<?,?>)a) : a);
+		}return o;
+		
+	}
+
+	private static Object cloneCollection(Collection<?> string) {
+		LinkedList<Object> o = new LinkedList<>();
+		for(Object a : string)
+			o.add(a instanceof Collection ? cloneCollection((Collection<?>)a) : a instanceof Map ? cloneMap((Map<?,?>)a) : a);
+		return o;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static void sendMessages(CommandSender to, String path, Placeholder placeholders) {
 		Object o = getTranslationAsObject(path);
@@ -212,38 +238,37 @@ public class Loader extends JavaPlugin implements Listener {
 			return;
 		}
 		if(o instanceof String && o.toString().trim().isEmpty())return;
-		if(o instanceof Collection || o instanceof Map) { //json?
-			if(isIBase(o)) {
-				Object json;
-				if(o instanceof Collection) {
-					json = colorizeList((Collection<?>)o,(d)->placeholder(to,d,placeholders));
-				}else
-					json = colorizeMap((Map<String, Object>)o,(d)->placeholder(to,d,placeholders));
-				List<Map<String,Object>> oo = new ArrayList<>();
-				if(json instanceof Map) {
-					oo.add((Map<String, Object>) json);
-				}else {
-					for(Object w : ((Collection<Object>)json)) {
-						if(w instanceof String)w= Json.reader().simpleRead((String)w);
-						if(w instanceof Map) {
-							oo.add((Map<String, Object>) w);
-						}else {
-							Map<String, Object> g = new HashMap<>();
-							g.put("text", w+"");
-							oo.add(g);
-						}
+		String asString = getTranslationAsString(path);
+		if(o instanceof LinkedHashMap && asString.startsWith("{") || o instanceof LinkedList && asString.startsWith("[")) { //json?
+			Object json;
+			if(o instanceof Collection) {
+				json = colorizeList((Collection<?>)o,(d)->placeholder(to,d,placeholders));
+			}else
+				json = colorizeMap((Map<String, Object>)o,(d)->placeholder(to,d,placeholders));
+			List<Map<String,Object>> oo = new ArrayList<>();
+			if(json instanceof Map) {
+				oo.add((Map<String, Object>) json);
+			}else {
+				for(Object w : ((Collection<Object>)json)) {
+					if(w instanceof String)w= Json.reader().simpleRead((String)w);
+					if(w instanceof Map) {
+						oo.add((Map<String, Object>) w);
+					}else {
+						Map<String, Object> g = new HashMap<>();
+						g.put("text", w+"");
+						oo.add(g);
 					}
 				}
-				oo=ComponentAPI.fixJsonList(oo);
-				if(to instanceof Player) {
-					String jsons = Json.writer().simpleWrite(oo);
-					jsons="[\"\","+jsons.substring(1);
-					Ref.sendPacket((Player)to,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
-				}else {
-					to.sendMessage(convertToLegacy(oo));
-				}
-				return;
 			}
+			oo=ComponentAPI.fixJsonList(oo);
+			if(to instanceof Player) {
+				String jsons = Json.writer().simpleWrite(oo);
+				jsons="[\"\","+jsons.substring(1);
+				Ref.sendPacket((Player)to,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
+			}else {
+				to.sendMessage(convertToLegacy(oo));
+			}
+			return;
 		}
 		if(o instanceof Collection) {
 			for(Object d : (Collection<?>)o)
@@ -252,22 +277,6 @@ public class Loader extends JavaPlugin implements Listener {
 			TheAPI.msg(placeholder(to, o+"", placeholders), to);
 	}
 	
-	private static boolean isIBase(Object o) {
-		if(o instanceof Collection) {
-			for(Object a : (Collection<?>)o) {
-				if(a instanceof Map) {
-					return true;
-				}
-			}
-		}else {
-			for(Entry<?,?> a : ((Map<?,?>)o).entrySet()) {
-				if(a.getKey() instanceof String) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 	private static String convertToLegacy(List<Map<String, Object>> list) {
 		StringBuilder b = new StringBuilder();
 		for(Map<String, Object> text : list)
@@ -297,7 +306,7 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@SuppressWarnings("unchecked")
 	public static void sendMessages(CommandSender to, CommandSender replace, String path, Placeholder placeholders) {
-		Object o = getTranslation(path);
+		Object o = getTranslationAsObject(path);
 		if(o==null) {
 			Bukkit.getLogger().severe("[BUG] Missing configuration path [Translations]!");
 			Bukkit.getLogger().severe("[BUG] Report this to the DevTec discord to channel #scr-bugs:");
@@ -305,41 +314,37 @@ public class Loader extends JavaPlugin implements Listener {
 			return;
 		}
 		if(o instanceof String && o.toString().equals(""))return;
-		if(o instanceof Collection || o instanceof Map) { //json?
-			String sf = getTranslationAsString(path);
-			if(sf!=null)
-				if(sf.startsWith("[") && sf.endsWith("]")||sf.startsWith("{") && sf.endsWith("}")) {
-					o=getTranslationAsObject(path);
-					Object json;
-					if(o instanceof Collection) {
-						json = colorizeList((Collection<?>)o,(d)->placeholder(replace,d,placeholders));
-					}else
-						json = colorizeMap((Map<String, Object>)o,(d)->placeholder(replace,d,placeholders));
-					List<Map<String,Object>> oo = new ArrayList<>();
-					if(json instanceof Map) {
-						oo.add((Map<String, Object>) json);
+		String asString = getTranslationAsString(path);
+		if(o instanceof LinkedHashMap && asString.startsWith("{") || o instanceof LinkedList && asString.startsWith("[")) { //json?
+			Object json;
+			if(o instanceof Collection) {
+				json = colorizeList((Collection<?>)o,(d)->placeholder(replace,d,placeholders));
+			}else
+				json = colorizeMap((Map<String, Object>)o,(d)->placeholder(replace,d,placeholders));
+			List<Map<String,Object>> oo = new ArrayList<>();
+			if(json instanceof Map) {
+				oo.add((Map<String, Object>) json);
+			}else {
+				for(Object w : ((Collection<Object>)json)) {
+					if(w instanceof String)w=Json.reader().simpleRead((String)w);
+					if(w instanceof Map) {
+						oo.add((Map<String, Object>) w);
 					}else {
-						for(Object w : ((Collection<Object>)json)) {
-							if(w instanceof String)w=Json.reader().simpleRead((String)w);
-							if(w instanceof Map) {
-								oo.add((Map<String, Object>) w);
-							}else {
-								Map<String, Object> g = new HashMap<>();
-								g.put("text", w+"");
-								oo.add(g);
-							}
-						}
+						Map<String, Object> g = new HashMap<>();
+						g.put("text", w+"");
+						oo.add(g);
 					}
-					oo=ComponentAPI.fixJsonList(oo);
-					if(to instanceof Player) {
-						String jsons = Json.writer().simpleWrite(oo);
-						jsons="[\"\","+jsons.substring(1);
-						Ref.sendPacket((Player)to,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
-					}else {
-						to.sendMessage(convertToLegacy(oo));
-					}
-					return;
 				}
+			}
+			oo=ComponentAPI.fixJsonList(oo);
+			if(to instanceof Player) {
+				String jsons = Json.writer().simpleWrite(oo);
+				jsons="[\"\","+jsons.substring(1);
+				Ref.sendPacket((Player)to,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
+			}else {
+				to.sendMessage(convertToLegacy(oo));
+			}
+			return;
 		}
 		if(o instanceof Collection) {
 			for(Object d : (Collection<?>)o)
@@ -351,41 +356,37 @@ public class Loader extends JavaPlugin implements Listener {
 	
 	@SuppressWarnings("unchecked")
 	public static void sendBroadcasts(CommandSender whoIsSelected, String path, Placeholder placeholders) {
-		Object o = getTranslation(path);
+		Object o = getTranslationAsObject(path);
 		if(o==null)return;
 		if(o instanceof String && o.toString().equals(""))return;
-		if(o instanceof Collection || o instanceof Map) { //json?
-			String sf = getTranslationAsString(path);
-			if(sf!=null)
-				if(sf.startsWith("[") && sf.endsWith("]")||sf.startsWith("{") && sf.endsWith("}")) {
-					o = getTranslationAsObject(path);
-					Object json;
-					if (o instanceof Collection) {
-						json = colorizeList((Collection<?>) o, (d) -> placeholder(whoIsSelected, d, placeholders));
-					} else
-						json = colorizeMap((Map<String, Object>) o, (d) -> placeholder(whoIsSelected, d, placeholders));
-					List<Map<String, Object>> oo = new ArrayList<>();
-					if (json instanceof Map) {
-						oo.add((Map<String, Object>) json);
+		String asString = getTranslationAsString(path);
+		if(o instanceof LinkedHashMap && asString.startsWith("{") || o instanceof LinkedList && asString.startsWith("[")) { //json?
+			Object json;
+			if (o instanceof Collection) {
+				json = colorizeList((Collection<?>) o, (d) -> placeholder(whoIsSelected, d, placeholders));
+			} else
+				json = colorizeMap((Map<String, Object>) o, (d) -> placeholder(whoIsSelected, d, placeholders));
+			List<Map<String, Object>> oo = new ArrayList<>();
+			if (json instanceof Map) {
+				oo.add((Map<String, Object>) json);
+			} else {
+				for (Object w : ((Collection<Object>) json)) {
+					if (w instanceof String) w = Json.reader().simpleRead((String) w);
+					if (w instanceof Map) {
+						oo.add((Map<String, Object>) w);
 					} else {
-						for (Object w : ((Collection<Object>) json)) {
-							if (w instanceof String) w = Json.reader().simpleRead((String) w);
-							if (w instanceof Map) {
-								oo.add((Map<String, Object>) w);
-							} else {
-								Map<String, Object> g = new HashMap<>();
-								g.put("text", w + "");
-								oo.add(g);
-							}
-						}
+						Map<String, Object> g = new HashMap<>();
+						g.put("text", w + "");
+						oo.add(g);
 					}
-					oo = ComponentAPI.fixJsonList(oo);
-					String jsons = Json.writer().simpleWrite(oo);
-					jsons = "[\"\"," + jsons.substring(1);
-					Ref.sendPacket(TheAPI.getOnlinePlayers(),LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
-					TheAPI.getConsole().sendMessage(convertToLegacy(oo));
-					return;
 				}
+			}
+			oo = ComponentAPI.fixJsonList(oo);
+			String jsons = Json.writer().simpleWrite(oo);
+			jsons = "[\"\"," + jsons.substring(1);
+			Ref.sendPacket(TheAPI.getOnlinePlayers(),LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
+			TheAPI.getConsole().sendMessage(convertToLegacy(oo));
+			return;
 		}
 		if(o instanceof List) {
 			for(String s : (List<String>)o)
@@ -399,41 +400,37 @@ public class Loader extends JavaPlugin implements Listener {
 		Object o = getTranslation(path);
 		if(o==null)return;
 		if(o instanceof String && o.toString().equals(""))return;
-		if(o instanceof Collection || o instanceof Map) { //json?
-			String sf = getTranslationAsString(path);
-			if(sf!=null)
-				if(sf.startsWith("[") && sf.endsWith("]")||sf.startsWith("{") && sf.endsWith("}")) {
-					o=getTranslationAsObject(path);
-					Object json;
-					if(o instanceof Collection) {
-						json = colorizeList((Collection<?>)o,(d)->placeholder(whoIsSelected,d,placeholders));
-					}else
-						json = colorizeMap((Map<String, Object>)o,(d)->placeholder(whoIsSelected,d,placeholders));
-						List<Map<String,Object>> oo = new ArrayList<>();
-						if(json instanceof Map) {
-							oo.add((Map<String, Object>) json);
+		String asString = getTranslationAsString(path);
+		if(o instanceof LinkedHashMap && asString.startsWith("{") || o instanceof LinkedList && asString.startsWith("[")) { //json?
+			Object json;
+			if(o instanceof Collection) {
+				json = colorizeList((Collection<?>)o,(d)->placeholder(whoIsSelected,d,placeholders));
+			}else
+				json = colorizeMap((Map<String, Object>)o,(d)->placeholder(whoIsSelected,d,placeholders));
+				List<Map<String,Object>> oo = new ArrayList<>();
+				if(json instanceof Map) {
+					oo.add((Map<String, Object>) json);
+				}else {
+					for(Object w : ((Collection<Object>)json)) {
+						if(w instanceof String)w=Json.reader().simpleRead((String)w);
+						if(w instanceof Map) {
+							oo.add((Map<String, Object>) w);
 						}else {
-							for(Object w : ((Collection<Object>)json)) {
-								if(w instanceof String)w=Json.reader().simpleRead((String)w);
-								if(w instanceof Map) {
-									oo.add((Map<String, Object>) w);
-								}else {
-									Map<String, Object> g = new HashMap<>();
-									g.put("text", w+"");
-									oo.add(g);
-								}
-							}
+							Map<String, Object> g = new HashMap<>();
+							g.put("text", w+"");
+							oo.add(g);
 						}
-						List<Player> p = TheAPI.getOnlinePlayers();
-						p.removeIf(player -> !player.hasPermission(perms));
-						oo=ComponentAPI.fixJsonList(oo);
-						String jsons = Json.writer().simpleWrite(oo);
-						jsons="[\"\","+jsons.substring(1);
-						Ref.sendPacket(p,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
-						if(TheAPI.getConsole().hasPermission(perms))
-							TheAPI.getConsole().sendMessage(convertToLegacy(oo));
-						return;
 					}
+				}
+				List<Player> p = TheAPI.getOnlinePlayers();
+				p.removeIf(player -> !player.hasPermission(perms));
+				oo=ComponentAPI.fixJsonList(oo);
+				String jsons = Json.writer().simpleWrite(oo);
+				jsons="[\"\","+jsons.substring(1);
+				Ref.sendPacket(p,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
+				if(TheAPI.getConsole().hasPermission(perms))
+					TheAPI.getConsole().sendMessage(convertToLegacy(oo));
+				return;
 		}
 		
 		if(o instanceof List) {

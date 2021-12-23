@@ -93,8 +93,8 @@ public class JoinQuitEvents implements Listener {
 		e.setJoinMessage("");
 		Player p = e.getPlayer();
 		List<String> home = SPunishmentAPI.data.getStringList("tp-home");
-		if(home.contains(p.getName())) {
-			home.remove(p.getName());
+		if(home.contains(p.getName().toLowerCase())) {
+			home.remove(p.getName().toLowerCase());
 			SPunishmentAPI.data.set("tp-home", home);
 			SPunishmentAPI.data.save();
 			if (setting.deathspawnbol) {
@@ -276,10 +276,10 @@ public class JoinQuitEvents implements Listener {
 				}
 				if(setting.tab) {
 					if(setting.tab_footer || setting.tab_header)
-				TabList.setFooterHeader(p);
-				if(setting.tab_nametag)
-				TabList.setNameTag(p);
-				TabList.update();
+						TabList.setFooterHeader(p);
+					if(setting.tab_nametag)
+						TabList.setNameTag(p);
+					TabList.update();
 				}
 				d.set("Joins", d.getInt("Joins")+1);
 				}catch(Exception | NoSuchFieldError | NoSuchMethodError e) {}

@@ -18,6 +18,12 @@ import me.devtec.theapi.utils.reflections.Ref;
 
 public class Portal implements CommandExecutor, TabCompleter {
 	
+	@SuppressWarnings("unchecked")
+	public Portal() {
+		new Particle("HEART");
+		part = ((Map<String,Object>)Ref.getNulled(Ref.field(Particle.class, "identifier"))).keySet();
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender s, Command arg1, String arg2, String[] args) {
 		if(Loader.has(s, "Portal","Other")) {
@@ -164,8 +170,7 @@ public class Portal implements CommandExecutor, TabCompleter {
 		return true;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private final Set<String> part = ((Map<String,Object>)Ref.getNulled(Ref.field(Particle.class, "identifier"))).keySet();
+	private final Set<String> part;
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
