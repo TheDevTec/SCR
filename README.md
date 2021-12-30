@@ -24,6 +24,7 @@ Above all, we focus on performance in all aspects. We also focus on multi-versio
 But we are also not afraid to add anything new that the discord community requests or votes for.
 
 ## Requirements:
+* TheAPI - https://www.spigotmc.org/resources/theapi.72679
 * Server version **1.7.10** or newer
 * Java **1.8** or newer
 
@@ -34,5 +35,4 @@ But we are also not afraid to add anything new that the discord community reques
 
 [![Spigot Downloads](https://img.shields.io/badge/dynamic/json.svg?url=https://api.spiget.org/v2/resources/71147&label=Spigot-Downloads&query=$.downloads&colorB=ee8a18&style=flat-square&maxAge=3600)](https://www.spigotmc.org/resources/71147/)
 [![Spigot Rating](https://img.shields.io/badge/dynamic/json.svg?url=https://api.spiget.org/v2/resources/71147&label=Rating&query=$.rating.average&colorB=00AB66&style=flat-square&maxAge=3600)](https://www.spigotmc.org/resources/71147/)
-
-[![](https://discordapp.com/api/guilds/579029317561090078/widget.png?style=banner2)](https://discord.gg/8YtfC234dA)
+[![](https://discordapp.com/api/guilds/579029317561090078/widget.png)](https://discord.gg/8YtfC234dA)
