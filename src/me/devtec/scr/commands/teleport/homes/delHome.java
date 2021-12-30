@@ -17,9 +17,9 @@ public class delHome extends CommandHolder {
 	}
 	
 	public static String getCorrectName(String player, String home){
-		for(String foundHome : Home.getHomes(player))
-			if(foundHome.equalsIgnoreCase(home)) {
-				return foundHome;
+		for(String found : Home.getHomes(player))
+			if(found.equalsIgnoreCase(home)) {
+				return found;
 			}
 		return null;
 	}
