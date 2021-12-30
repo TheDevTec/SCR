@@ -1,0 +1,39 @@
+list:
+- "heal"
+perm: "scr.command.heal"
+
+command:
+  '0': "self"
+  '1': "target"
+  
+tabcompleter:
+  '1':
+  - "{online-players}"
+
+actions:
+  self:
+  - "cmd sethealth %player% max"
+  - "cmd sethunger %player% 20"
+  - "cmd setair %player% max"
+  - "cmd setfireticks %player% -1"
+  - "cmd effects %player% clear"
+  - "msg You've been healed."
+  target:
+  - "reqPerm:scr.command.heal.other self"
+  - "con:reqOnline notOnline"
+  - "cmd sethealth {1} max"
+  - "cmd sethunger {1} 20"
+  - "cmd setair {1} max"
+  - "cmd setfireticks {1} -1"
+  - "cmd effects {1} clear"
+  - "msg Player {1} was healed."
+  notOnline:
+  - "msg Player {1} isn't online."
+
+conditions:
+  reqOnline:
+    # value: PLACEHOLDER
+    value: "isOnline:{1}"
+    # list of values that determine whether the condition is "true"
+    positive:
+    - "true"

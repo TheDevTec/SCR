@@ -1,0 +1,38 @@
+spawn: "world,x,y,z,yaw,pitch"
+
+warp:
+  name:
+    cost: 'double'
+    permission: boolean
+    loc: "world,x,y,z,yaw,pitch"
+    
+maintenance:
+  time: "time in string"
+  start: 'long'
+  status: boolean
+
+bansystem:
+  ban:
+    user-name: "ADMIN TIME REASON"
+  ip-ban:
+    user-ip: "ADMIN TIME REASON"
+  mute:
+    user-name: "ADMIN TIME REASON"
+  ip-mute:
+    user-ip: "ADMIN TIME REASON"
+  jail:
+    user-name: "ADMIN TIME REASON"
+  ip-jail:
+    user-ip: "ADMIN TIME REASON"
+  warns:
+    user-name:
+    - "ADMIN TIME REASON"
+  # after jail
+  tp-spawn:
+  - "user-name"
+  
+skins-cache:
+  skin-name:
+    values: "looong text"
+    signatura: "shorter text"
+    alex: boolean
