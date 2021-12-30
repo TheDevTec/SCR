@@ -27,6 +27,7 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 	
 	protected String command;
 	int startArg;
+	
 	public CommandHolder(String command, int startArg) {
 		this.command=command;
 		this.startArg=startArg;
@@ -45,15 +46,21 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 	}
 	
 	public void noPerms(CommandSender s) {
-		
+		Loader.send(s, "missing.perms", PlaceholderBuilder.make(s, "sender"));
 	}
 
 	private boolean canUse() {
-		return false;
+		return true;
 	}
 
 	public Player requireOnline(CommandSender s, String playerName) {
-		Player player = TheAPI.getPlayer(playerName);
+		Player player = null;
+		for(Player online : Loader.onlinePlayers(s)) {
+			if(online.getName().equalsIgnoreCase(playerName)) {
+				player=online;
+				break;
+			}
+		}
 		if(player==null)
 			Loader.send(s, "missing.player", PlaceholderBuilder.make(s, "sender").add("player", playerName));
 		return player;
@@ -81,8 +88,8 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
 		if (hasPerms(s, null)) {
 			List<String> tab = new ArrayList<>();
-			//TODO - builder
-			return tab==null?Loader.onlinePlayerNames(s):tab;
+			
+			return tab;
 		}
 		return Collections.emptyList();
 	}
