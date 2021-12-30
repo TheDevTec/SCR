@@ -14,8 +14,7 @@ import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.configapi.Config;
 
 public class Loader extends JavaPlugin {
-	public static Config config; //main config
-	protected static Config translation;
+	public static Config config, translation;
 	
 	public void onLoad() {
 		ConfigManager.load();
