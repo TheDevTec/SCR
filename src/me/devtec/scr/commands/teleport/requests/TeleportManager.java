@@ -51,7 +51,7 @@ public class TeleportManager {
 	
 	public static void request(Player sender, Player target, TeleportType type) {
 		User user = TheAPI.getUser(sender);
-		if((user.getBoolean("tp-block-global")||user.getStringList("tp-block").contains(target.getName())) && true /** TODO - permission to bypass **/) {
+		if((user.getBoolean("tp-block-global")||user.getStringList("tp-block").contains(target.getName())) && !sender.hasPermission("scr.bypass.tpa")) {
 			Loader.send(sender, "teleport."+type.name().toLowerCase()+".blocked", PlaceholderBuilder.make(sender, "sender").player(target, "target"));
 			return;
 		}

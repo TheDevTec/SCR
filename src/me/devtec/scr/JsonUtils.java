@@ -26,6 +26,7 @@ public class JsonUtils {
 	
 	@SuppressWarnings("unchecked")
 	public static void msgRaw(Object value, PlaceholderBuilder builder, CommandSender... players) {
+		if(value==null)return;
 		if(value instanceof Collection || value instanceof Map) {
 			for(CommandSender sender : players) {
 				value=parse(value);

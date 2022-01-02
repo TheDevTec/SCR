@@ -1,2 +1,14 @@
-# Built-in translations: cz (Czechia), sk (Slovakia), en (English), ru (Russia)
+# Built-in translations: en (English), ru (Russia), cz (Czechia)
 translation: en
+
+positive:
+- "yes"
+- "true"
+- "on"
+- "allow"
+
+negative:
+- "no"
+- "false"
+- "off"
+- "disallow"

@@ -11,4 +11,25 @@ setHealth:
     sender: "%prefix% You set %target_name%'s health to %value%"
     # To disable this message, set message to ""
     target: "%prefix% Your health set to %value%"
-  self: ""
+  self: "%prefix% Your health set to %value%"
+  
+setHunger:
+  other:
+    sender: "%prefix% You set %target_name%'s hunger level to %value%"
+    # To disable this message, set message to ""
+    target: "%prefix% Your hunger level set to %value%"
+  self: "%prefix% Your hunger level set to %value%"
+  
+setAir:
+  other:
+    sender: "%prefix% You set %target_name%'s remaining air to %value%"
+    # To disable this message, set message to ""
+    target: "%prefix% Your remaining airset to %value%"
+  self: "%prefix% Your remaining air set to %value%"
+  
+setFireTicks:
+  other:
+    sender: "%prefix% You set %target_name%'s fire ticks to %value%"
+    # To disable this message, set message to ""
+    target: "%prefix% Your fire ticks set to %value%"
+  self: "%prefix% Your fire ticks set to %value%"

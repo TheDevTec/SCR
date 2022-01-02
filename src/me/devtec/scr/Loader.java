@@ -15,8 +15,11 @@ import me.devtec.theapi.configapi.Config;
 
 public class Loader extends JavaPlugin {
 	public static Config config, translation;
+	public static List<String> positive = new ArrayList<>(), negative = new ArrayList<>();
+	public static Loader plugin;
 	
 	public void onLoad() {
+		plugin=this;
 		ConfigManager.load();
 	}
 	

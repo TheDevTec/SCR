@@ -3,7 +3,9 @@ package me.devtec.scr.commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
@@ -18,6 +20,7 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.PlaceholderBuilder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
+import me.devtec.theapi.utils.StringUtils;
 
 public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 
@@ -26,11 +29,14 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 	public static int[] placeholder_FIRST_TWO = new int[]{1,2};
 	
 	protected String command;
-	int startArg;
+	protected Map<Integer, List<String>> tabbing = new HashMap<>();
+	protected int startArg;
 	
 	public CommandHolder(String command, int startArg) {
 		this.command=command;
 		this.startArg=startArg;
+		for(String id : ConfigManager.commands.getKeys(command+".tab-completer"))
+			tabbing.put(StringUtils.getInt(id), ConfigManager.commands.getStringList(command+".tab-completer."+id));
 	}
 	
 	public boolean check(CommandSender s) {
@@ -54,16 +60,13 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 	}
 
 	public Player requireOnline(CommandSender s, String playerName) {
-		Player player = null;
 		for(Player online : Loader.onlinePlayers(s)) {
 			if(online.getName().equalsIgnoreCase(playerName)) {
-				player=online;
-				break;
+				return online;
 			}
 		}
-		if(player==null)
-			Loader.send(s, "missing.player", PlaceholderBuilder.make(s, "sender").add("player", playerName));
-		return player;
+		Loader.send(s, "missing.player", PlaceholderBuilder.make(s, "sender").add("player", playerName));
+		return null;
 	}
 	
 	public boolean hasPerms(CommandSender s, String section) {
@@ -86,11 +89,32 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command cmd, String alias, String[] args) {
-		if (hasPerms(s, null)) {
-			List<String> tab = new ArrayList<>();
-			
-			return tab;
+		if (!tabbing.isEmpty() && hasPerms(s, null)) {
+			return tab(s,args);
 		}
+		return Collections.emptyList();
+	}
+	
+	private List<String> tab(CommandSender sender, String[] args){
+		List<String> s = new ArrayList<>();
+		List<String> tab = tabbing.get(args.length);
+		if(tab==null)
+			tab=tabbing.get(tabbing.size());
+		for(String value : tab) {
+			if(value.matches("\\{[0-9]+\\}")) {
+				s.add(args[Integer.parseInt(value.substring(1,value.length()-1))]);
+				continue;
+			}
+			if(value.equals("{online-players}")) {
+				s.addAll(Loader.onlinePlayerNames(sender));
+				continue;
+			}
+			s.add(value);
+		}
+		return s;
+	}
+	
+	public List<String> tabValues(CommandSender sender, String[] args, String value){
 		return Collections.emptyList();
 	}
 	
