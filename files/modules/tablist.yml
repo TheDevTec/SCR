@@ -1,0 +1,79 @@
+settings:
+  modify:
+    nametags: true
+    tablist-name: true
+    yellow-number: true
+    header-footer: true
+    
+  # time is in ticks (20 = 1s) and must be higher than 0
+  reflesh:
+    nametags: 40
+    tablist-name: 20
+    yellow-number: 20
+    # Set to 1 if you have animations in the tablist
+    header-footer: 3
+    
+  # list of worlds in which you want to disable whole tab modification
+  disabledWorlds:
+  - "disabledWorld"
+
+# Global & default header in the tablist
+header:
+- ""
+
+# Global & default footer in the tablist
+footer:
+- ""
+
+yellow-number: "%ping%"
+
+# Vault groups (You have to have installed Vault & Permission plugin (For example LuckPerms)
+sorting:
+- "owner"
+- "admin"
+- "developer"
+- "builder"
+- "helper"
+- "vip"
+- "default"
+
+# Vault groups
+groups:
+  owner:
+    tab-prefix: "&3Owner &f"
+    tag-prefix: "&3Owner &f"
+  default:
+    tab-prefix: "&7"
+    tag-prefix: "&7"
+
+# Per player tablist settings
+players:
+  StraikerinaCZ:
+    tab-prefix: "&4SCR Creator &f"
+    tag-prefix: "&4SCR Creator &f"
+    header:
+    - ""
+    footer:
+    - ""
+    yellow-number: "%ping%"
+
+# Per world (- player/group) tablist settings
+worlds:
+  inputWorldName:
+    header:
+    - ""
+    footer:
+    - ""
+    groups:
+      test:
+        tab-prefix: "&4Test &f"
+        tag-prefix: "&3Test &f"
+        yellow-number: "%hp%"
+    players:
+      player1:
+        tab-prefix: "&4SCR Tester &f"
+        tag-prefix: "&4SCR Tester &f"
+        header:
+        - "Hey man, you are SCR tester!"
+        footer:
+        - "https://www.spigotmc.org/resources/71147/"

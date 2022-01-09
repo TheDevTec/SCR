@@ -12,3 +12,15 @@ negative:
 - "false"
 - "off"
 - "disallow"
+
+modules:
+  actionbar: false
+  bossbar: false
+  scoreboard: true
+  tablist: true
+  scr-economy: true
+  playtime-rewards: false
+  voting: false
+  chat: true
+  # for other modules open listeners.yml in the modules folder.
+  # to disable commands open commands.yml
