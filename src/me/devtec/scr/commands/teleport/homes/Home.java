@@ -1,5 +1,7 @@
 package me.devtec.scr.commands.teleport.homes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -41,9 +43,9 @@ public class Home extends CommandHolder {
 				home=homes.iterator().next();
 			}
 			if(home==null) {
+				((Player)sender).teleport(Spawn.spawn);
 				if(!silent)
 					Loader.send(sender, "teleport.home.not-exist-tp-spawn", PlaceholderBuilder.make(sender, "sender").add("%home%", "main"));
-				((Player)sender).teleport(Spawn.spawn);
 				return;
 			}
 			((Player)sender).teleport(getHome(sender.getName(), home));
@@ -65,6 +67,14 @@ public class Home extends CommandHolder {
 	@Override
 	public int[] playerPlaceholders(CommandSender s, String[] args) {
 		return null;
+	}
+	
+	@Override
+	public List<String> tabValues(CommandSender sender, String[] args, String value) {
+		if(value.equalsIgnoreCase("{homes}")) {
+			return new ArrayList<>(Home.getHomes(sender.getName()));
+		}
+		return super.tabValues(sender, args, value);
 	}
 	
 }

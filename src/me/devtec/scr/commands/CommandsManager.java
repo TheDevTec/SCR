@@ -15,12 +15,12 @@ public class CommandsManager {
 	
 	public static void load() {
 		WarpManager.load();
-		Spawn.spawn=ConfigManager.data.getString("spawn")==null?Bukkit.getWorlds().get(0).getSpawnLocation():Formatters.locFromString(ConfigManager.data.getString("spawn"));
+		Spawn.spawn=(ConfigManager.data.getString("spawn")==null||ConfigManager.data.getString("spawn").trim().isEmpty())?Bukkit.getWorlds().get(0).getSpawnLocation():Formatters.locFromString(ConfigManager.data.getString("spawn"));
 	}
 	
 	public static void unload() {
 		WarpManager.unload();
-		ConfigManager.data.set("spawn",Formatters.locToString(Spawn.spawn));
+		ConfigManager.data.set("spawn", Formatters.locToString(Spawn.spawn));
 		ConfigManager.data.save();
 	}
 }

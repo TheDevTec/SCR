@@ -1,5 +1,8 @@
 package me.devtec.scr.commands.teleport.homes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -44,4 +47,11 @@ public class otherHome extends CommandHolder {
 		return args.length>=1?placeholder_FIRST:null;
 	}
 	
+	@Override
+	public List<String> tabValues(CommandSender sender, String[] args, String value) {
+		if(value.equalsIgnoreCase("{homes}") && args.length>1) {
+			return new ArrayList<>(Home.getHomes(args[0]));
+		}
+		return super.tabValues(sender, args, value);
+	}
 }

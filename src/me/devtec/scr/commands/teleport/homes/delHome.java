@@ -1,5 +1,8 @@
 package me.devtec.scr.commands.teleport.homes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.CommandSender;
 
 import me.devtec.scr.Loader;
@@ -44,6 +47,14 @@ public class delHome extends CommandHolder {
 	@Override
 	public int[] playerPlaceholders(CommandSender s, String[] args) {
 		return null;
+	}
+	
+	@Override
+	public List<String> tabValues(CommandSender sender, String[] args, String value) {
+		if(value.equalsIgnoreCase("{homes}")) {
+			return new ArrayList<>(Home.getHomes(sender.getName()));
+		}
+		return super.tabValues(sender, args, value);
 	}
 	
 }
