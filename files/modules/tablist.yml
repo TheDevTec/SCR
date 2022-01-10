@@ -25,7 +25,10 @@ header:
 footer:
 - ""
 
-yellow-number: "%ping%"
+yellow-number: 
+  value: "%ping%"
+  # integer or hearts
+  show_type: integer
 
 # Vault groups (You have to have installed Vault & Permission plugin (For example LuckPerms)
 sorting:
@@ -40,22 +43,25 @@ sorting:
 # Vault groups
 groups:
   owner:
-    tab-prefix: "&3Owner &f"
     tag-prefix: "&3Owner &f"
+    tab-name: "&3Owner &f%player_name%"
   default:
-    tab-prefix: "&7"
     tag-prefix: "&7"
+    tab-name: "&7%player_name%"
 
 # Per player tablist settings
 players:
   StraikerinaCZ:
-    tab-prefix: "&4SCR Creator &f"
     tag-prefix: "&4SCR Creator &f"
+    tab-name: "&4SCR Creator &f%player_name%"
     header:
     - ""
     footer:
     - ""
-    yellow-number: "%ping%"
+    yellow-number:
+      value: "%ping%"
+      # integer or hearts
+      show_type: integer
 
 # Per world (- player/group) tablist settings
 worlds:
@@ -66,13 +72,16 @@ worlds:
     - ""
     groups:
       test:
-        tab-prefix: "&4Test &f"
-        tag-prefix: "&3Test &f"
-        yellow-number: "%hp%"
+        tag-prefix: "&4Test &f"
+        tab-name: "&4Test &f%player_name%"
+        yellow-number:
+          value: "%hp%"
+          # integer or hearts
+          show_type: hearts
     players:
       player1:
-        tab-prefix: "&4SCR Tester &f"
-        tag-prefix: "&4SCR Tester &f"
+        tag-prefix: "&4SCR Test &f"
+        tab-name: "&4SCR Test &f%player_name%"
         header:
         - "Hey man, you are SCR tester!"
         footer:

@@ -36,7 +36,7 @@ public class Loader extends JavaPlugin {
 	
 	public void onEnable() {
 		//CommandsManager.load();
-		Tablist.load(ConfigManager.tablist.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.header-footer"))
+		Tablist.load(ConfigManager.tablist.getStringList("sorting"), ConfigManager.tablist.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.header-footer"))
 				, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.tablist-name"))
 				, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.nametag"))
 				, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.yellow-number")));
@@ -51,7 +51,7 @@ public class Loader extends JavaPlugin {
 			public void run() {
 				if (getVaultPerms()) {
 					TheAPI.msg("&5The&dAPI&7: &8********************", TheAPI.getConsole());
-					TheAPI.msg("&5The&dAPI&7: &eFound Vault Permission plugin", TheAPI.getConsole());
+					TheAPI.msg("&5The&dAPI&7: &eFound Vault Permission plugin ("+perms.getName()+")", TheAPI.getConsole());
 					TheAPI.msg("&5The&dAPI&7: &8********************", TheAPI.getConsole());
 					cancel();
 				}
@@ -129,7 +129,8 @@ public class Loader extends JavaPlugin {
 		return playerNames;
 	}
 
+	//TPA & TPAHERE
 	public static long getRequestTime() {
-		return 0;
+		return 15;
 	}
 }

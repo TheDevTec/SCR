@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -26,25 +27,50 @@ import me.devtec.theapi.utils.theapiutils.LoaderClass;
 public class Tablist {
 	public static boolean isLoaded;
 	private static int task, task2, task3, task4;
-	public static Map<Player, NameTagAPI> nameTags = new HashMap<>();
-	public static List<Player> applied = new ArrayList<>();
-	private static DisplayType displayType;
+	public static List<String> disabledWorlds;
+	public static Map<UUID, NameTagAPI> nameTags = new HashMap<>();
+	public static Map<UUID, DisplayType> dType = new HashMap<>();
 	
-	public static void load(List<String> disabledWorlds, long headerFooter, long name, long nametag, long yellownumber) {
+	// Map<groupName, sortingValue>
+	public static Map<String, String> sorting = new HashMap<>();
+	
+	public static List<UUID> 
+	        appliedHF = new ArrayList<>(), //header footer
+	    	appliedTN = new ArrayList<>(), //tab name
+			appliedNT = new ArrayList<>(), //name tag
+			appliedYN = new ArrayList<>(); //yellow number
+	
+	private static void generate(List<String> value, int size) {
+		int current = 0;
+		
+		int length = (""+size).length()+1;
+		for(int i = 0; i < size; ++i) {
+			String s = "";
+			int limit = length-(i+"").length();
+			for(int d = 0; d < limit; ++d)
+				s+="0";
+			s+=i;
+			Tablist.sorting.put(value.get(current++), s);
+		}
+	}
+	
+	public static void load(List<String> sorting, List<String> dWorlds, long headerFooter, long name, long nametag, long yellownumber) {
 		if(isLoaded)return;
 		isLoaded=true;
+		disabledWorlds=dWorlds;
+		generate(sorting, sorting.size());
 		//headerFooter
 		if(headerFooter>0)
 		task = new Tasker() {
 			public void run() {
 				for(Player player : TheAPI.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
-						if(applied.contains(player))
-							disable(player);
+						if(appliedHF.contains(player.getUniqueId()))
+							disable(player, dType.remove(player.getUniqueId()));
 						continue;
 					}
-					if(!applied.contains(player))
-						applied.add(player);
+					if(!appliedHF.contains(player.getUniqueId()))
+						appliedHF.add(player.getUniqueId());
 					TabListAPI.setHeaderFooter(player, header(player), footer(player));
 				}
 			}
@@ -55,12 +81,12 @@ public class Tablist {
 			public void run() {
 				for(Player player : TheAPI.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
-						if(applied.contains(player))
-							disable(player);
+						if(appliedTN.contains(player.getUniqueId()))
+							disable(player, dType.remove(player.getUniqueId()));
 						continue;
 					}
-					if(!applied.contains(player))
-						applied.add(player);
+					if(!appliedTN.contains(player.getUniqueId()))
+						appliedTN.add(player.getUniqueId());
 					Object obj = TheAPI.getNmsProvider().packetPlayerInfo(PlayerInfoType.UPDATE_DISPLAY_NAME, player);
 					Ref.set(((List<?>)Ref.get(obj,"b")).get(0), "d", ComponentAPI.toIChatBaseComponent(ComponentAPI.toComponent(StringUtils.colorize(playerListName(player)), true)));
 					Ref.sendPacket(player, obj);
@@ -73,16 +99,16 @@ public class Tablist {
 			public void run() {
 				for(Player player : TheAPI.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
-						if(applied.contains(player))
-							disable(player);
+						if(appliedNT.contains(player.getUniqueId()))
+							disable(player, dType.remove(player.getUniqueId()));
 						continue;
 					}
-					if(!applied.contains(player)) {
-						applied.add(player);
+					if(!appliedNT.contains(player.getUniqueId())) {
+						appliedNT.add(player.getUniqueId());
 					}
 					NameTagAPI tag;
 					String sort = sorting(player);
-					nameTags.put(player, tag = new NameTagAPI(player, sort));
+					nameTags.put(player.getUniqueId(), tag = new NameTagAPI(player, sort));
 					if(!tag.name.equals(sort))
 						tag.setName(sort);
 					String prefix = nameTagPrefix(player);
@@ -102,18 +128,32 @@ public class Tablist {
 			public void run() {
 				for(Player player : TheAPI.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
-						if(applied.contains(player))
-							disable(player);
+						if(appliedYN.contains(player.getUniqueId())) {
+							disable(player, dType.remove(player.getUniqueId()));
+						}
 						continue;
 					}
 					int number = yellowNumber(player);
-					if(!applied.contains(player)) {
-						applied.add(player);
+					DisplayType displayType = yellowNumberDisplay(player);
+					DisplayType previous = dType.get(player.getUniqueId());
+					if(!appliedYN.contains(player.getUniqueId())) {
+						appliedYN.add(player.getUniqueId());
 						Ref.sendPacket(player, createObjectivePacket(0,"ping",displayType));
 						Ref.sendPacket(player, createObjectivePacket(0,player.getName(),displayType));
 						Object packet = LoaderClass.nmsProvider.packetScoreboardDisplayObjective(0, null);
 						Ref.set(packet, "b", "ping");
 						Ref.sendPacket(player, packet);
+					}else {
+						if(previous!=displayType) {
+							dType.put(player.getUniqueId(), displayType);
+							Ref.sendPacket(player, createObjectivePacket(2,"ping",previous));
+							Ref.sendPacket(player, createObjectivePacket(2,player.getName(),previous));
+							Ref.sendPacket(player, createObjectivePacket(0,"ping",displayType));
+							Ref.sendPacket(player, createObjectivePacket(0,player.getName(),displayType));
+							Object packet = LoaderClass.nmsProvider.packetScoreboardDisplayObjective(0, null);
+							Ref.set(packet, "b", "ping");
+							Ref.sendPacket(player, packet);
+						}
 					}
 					Ref.sendPacket(player, LoaderClass.nmsProvider.packetScoreboardScore(Action.CHANGE, "ping", player.getName(), number));
 				}
@@ -131,7 +171,7 @@ public class Tablist {
 	 * 3) groups
 	 * 4) global
 	 */
-	
+
 	protected static int yellowNumber(Player player) {
 		String path = "worlds."+player.getWorld().getName();
 		String group = Loader.perms.getPrimaryGroup(player);
@@ -144,16 +184,16 @@ public class Tablist {
 		if(ConfigManager.tablist.exists(path)) {
 			//players
 			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".yellow-number");
+				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".yellow-number.value");
 				if(get!=null)return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, get));
 			}
 			//groups
 			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".yellow-number");
+				String get = ConfigManager.tablist.getString(path+".groups."+group+".yellow-number.value");
 				if(get!=null)return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, get));
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".yellow-number");
+			String get = ConfigManager.tablist.getString(path+".yellow-number.value");
 			if(get!=null)return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
@@ -161,7 +201,7 @@ public class Tablist {
 		 */
 		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".yellow-number");
+			String get = ConfigManager.tablist.getString(path+".yellow-number.value");
 			if(get!=null)return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
@@ -169,44 +209,310 @@ public class Tablist {
 		 */
 		if(ConfigManager.tablist.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".yellow-number");
+			String get = ConfigManager.tablist.getString(path+".yellow-number.value");
 			if(get!=null)return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 4) global
 		 */
-		return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("yellow-number")));
+		return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("yellow-number.value")));
+	}
+
+	protected static DisplayType yellowNumberDisplay(Player player) {
+		String path = "worlds."+player.getWorld().getName();
+		String group = Loader.perms.getPrimaryGroup(player);
+		/*
+		 * 1) worlds
+		 *   1) players
+		 *   2) groups
+		 *   3) global - world
+		 */
+		if(ConfigManager.tablist.exists(path)) {
+			//players
+			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".yellow-number.show_type");
+				if(get!=null)return showType(get);
+			}
+			//groups
+			if(ConfigManager.tablist.exists(path+".groups."+group)) {
+				String get = ConfigManager.tablist.getString(path+".groups."+group+".yellow-number.show_type");
+				if(get!=null)return showType(get);
+			}
+			//global
+			String get = ConfigManager.tablist.getString(path+".yellow-number.show_type");
+			if(get!=null)return showType(get);
+		}
+		/*
+		 * 2) players
+		 */
+		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+			//global
+			String get = ConfigManager.tablist.getString(path+".yellow-number.show_type");
+			if(get!=null)return showType(get);
+		}
+		/*
+		 * 3) groups
+		 */
+		if(ConfigManager.tablist.exists(path="groups."+group)) {
+			//global
+			String get = ConfigManager.tablist.getString(path+".yellow-number.show_type");
+			if(get!=null)return showType(get);
+		}
+		/*
+		 * 4) global
+		 */
+		return showType(ConfigManager.tablist.getString("yellow-number.show_type"));
+	}
+	
+	private static DisplayType showType(String showType) {
+		return showType.equalsIgnoreCase("heart")||showType.equalsIgnoreCase("hearts")||showType.equalsIgnoreCase("hp")?DisplayType.HEARTS:DisplayType.INTEGER;
 	}
 
 	protected static String footer(Player player) {
-		return "VEEERRYYY LOONG FOOTER";
+		String path = "worlds."+player.getWorld().getName();
+		String group = Loader.perms.getPrimaryGroup(player);
+		/*
+		 * 1) worlds
+		 *   1) players
+		 *   2) groups
+		 *   3) global - world
+		 */
+		if(ConfigManager.tablist.exists(path)) {
+			//players
+			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
+				List<String> get = ConfigManager.tablist.getStringList(path+".players."+player.getName()+".footer");
+				if(!get.isEmpty())return StringUtils.join(PlaceholderAPI.setPlaceholders(player, get), "\n");
+			}
+			//groups
+			if(ConfigManager.tablist.exists(path+".groups."+group)) {
+				List<String> get = ConfigManager.tablist.getStringList(path+".groups."+group+".footer");
+				if(!get.isEmpty())return StringUtils.join(PlaceholderAPI.setPlaceholders(player, get), "\n");
+			}
+			//global
+			List<String> get = ConfigManager.tablist.getStringList(path+".footer");
+			if(!get.isEmpty())return StringUtils.join(PlaceholderAPI.setPlaceholders(player, get), "\n");
+		}
+		/*
+		 * 2) players
+		 */
+		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+			//global
+			List<String> get = ConfigManager.tablist.getStringList(path+".footer");
+			if(!get.isEmpty())return StringUtils.join(PlaceholderAPI.setPlaceholders(player, get), "\n");
+		}
+		/*
+		 * 3) groups
+		 */
+		if(ConfigManager.tablist.exists(path="groups."+group)) {
+			//global
+			List<String> get = ConfigManager.tablist.getStringList(path+".footer");
+			if(!get.isEmpty())return StringUtils.join(PlaceholderAPI.setPlaceholders(player, get), "\n");
+		}
+		/*
+		 * 4) global
+		 */
+		return StringUtils.join(PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getStringList("footer")), "\n");
 	}
 
 	protected static String header(Player player) {
-		return "VEEERRYYY LOONG HEADER";
+		String path = "worlds."+player.getWorld().getName();
+		String group = Loader.perms.getPrimaryGroup(player);
+		/*
+		 * 1) worlds
+		 *   1) players
+		 *   2) groups
+		 *   3) global - world
+		 */
+		if(ConfigManager.tablist.exists(path)) {
+			//players
+			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
+				List<String> get = ConfigManager.tablist.getStringList(path+".players."+player.getName()+".header");
+				if(!get.isEmpty())return StringUtils.join(PlaceholderAPI.setPlaceholders(player, get), "\n");
+			}
+			//groups
+			if(ConfigManager.tablist.exists(path+".groups."+group)) {
+				List<String> get = ConfigManager.tablist.getStringList(path+".groups."+group+".header");
+				if(!get.isEmpty())return StringUtils.join(PlaceholderAPI.setPlaceholders(player, get), "\n");
+			}
+			//global
+			List<String> get = ConfigManager.tablist.getStringList(path+".header");
+			if(!get.isEmpty())return StringUtils.join(PlaceholderAPI.setPlaceholders(player, get), "\n");
+		}
+		/*
+		 * 2) players
+		 */
+		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+			//global
+			List<String> get = ConfigManager.tablist.getStringList(path+".header");
+			if(!get.isEmpty())return StringUtils.join(PlaceholderAPI.setPlaceholders(player, get), "\n");
+		}
+		/*
+		 * 3) groups
+		 */
+		if(ConfigManager.tablist.exists(path="groups."+group)) {
+			//global
+			List<String> get = ConfigManager.tablist.getStringList(path+".header");
+			if(!get.isEmpty())return StringUtils.join(PlaceholderAPI.setPlaceholders(player, get), "\n");
+		}
+		/*
+		 * 4) global
+		 */
+		return StringUtils.join(PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getStringList("header")), "\n");
 	}
 
 	protected static String playerListName(Player player) {
-		return player.getName();
+		String path = "worlds."+player.getWorld().getName();
+		String group = Loader.perms.getPrimaryGroup(player);
+		/*
+		 * 1) worlds
+		 *   1) players
+		 *   2) groups
+		 *   3) global - world
+		 */
+		if(ConfigManager.tablist.exists(path)) {
+			//players
+			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".tab-name");
+				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+			}
+			//groups
+			if(ConfigManager.tablist.exists(path+".groups."+group)) {
+				String get = ConfigManager.tablist.getString(path+".groups."+group+".tab-name");
+				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+			}
+			//global
+			String get = ConfigManager.tablist.getString(path+".tab-name");
+			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+		}
+		/*
+		 * 2) players
+		 */
+		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+			//global
+			String get = ConfigManager.tablist.getString(path+".tab-name");
+			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+		}
+		/*
+		 * 3) groups
+		 */
+		if(ConfigManager.tablist.exists(path="groups."+group)) {
+			//global
+			String get = ConfigManager.tablist.getString(path+".tab-name");
+			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+		}
+		/*
+		 * 4) global
+		 */
+		return PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("tab-name"));
 	}
 
 	protected static String nameTagPrefix(Player player) {
-		return "§cVEEERRYYY LOONG PREFIX";
+		String path = "worlds."+player.getWorld().getName();
+		String group = Loader.perms.getPrimaryGroup(player);
+		/*
+		 * 1) worlds
+		 *   1) players
+		 *   2) groups
+		 *   3) global - world
+		 */
+		if(ConfigManager.tablist.exists(path)) {
+			//players
+			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".tag-prefix");
+				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+			}
+			//groups
+			if(ConfigManager.tablist.exists(path+".groups."+group)) {
+				String get = ConfigManager.tablist.getString(path+".groups."+group+".tag-prefix");
+				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+			}
+			//global
+			String get = ConfigManager.tablist.getString(path+".tag-prefix");
+			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+		}
+		/*
+		 * 2) players
+		 */
+		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+			//global
+			String get = ConfigManager.tablist.getString(path+".tag-prefix");
+			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+		}
+		/*
+		 * 3) groups
+		 */
+		if(ConfigManager.tablist.exists(path="groups."+group)) {
+			//global
+			String get = ConfigManager.tablist.getString(path+".tag-prefix");
+			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+		}
+		/*
+		 * 4) global
+		 */
+		return PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("tag-prefix"));
 	}
 
 	protected static String nameTagSuffix(Player player) {
-		return "VEEERRYYY LOONG SUUUFIX";
+		String path = "worlds."+player.getWorld().getName();
+		String group = Loader.perms.getPrimaryGroup(player);
+		/*
+		 * 1) worlds
+		 *   1) players
+		 *   2) groups
+		 *   3) global - world
+		 */
+		if(ConfigManager.tablist.exists(path)) {
+			//players
+			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".tag-suffix");
+				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+			}
+			//groups
+			if(ConfigManager.tablist.exists(path+".groups."+group)) {
+				String get = ConfigManager.tablist.getString(path+".groups."+group+".tag-suffix");
+				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+			}
+			//global
+			String get = ConfigManager.tablist.getString(path+".tag-suffix");
+			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+		}
+		/*
+		 * 2) players
+		 */
+		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+			//global
+			String get = ConfigManager.tablist.getString(path+".tag-suffix");
+			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+		}
+		/*
+		 * 3) groups
+		 */
+		if(ConfigManager.tablist.exists(path="groups."+group)) {
+			//global
+			String get = ConfigManager.tablist.getString(path+".tag-suffix");
+			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
+		}
+		/*
+		 * 4) global
+		 */
+		return PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("tag-suffix"));
 	}
 
 	protected static String sorting(Player player) {
-		return player.getName().startsWith("S")?"x":"a";
+		String def = Loader.perms!=null?sorting.get(Loader.perms.getPrimaryGroup(player)):player.getName();
+		return def==null?player.getName():def;
 	}
 
-	public static void disable(Player player) {
+	public static void disable(Player player, DisplayType displayType) {
 		TabListAPI.setHeaderFooter(player, "", "");
 		player.setPlayerListName(null);
-		nameTags.remove(player).reset();
-		applied.remove(player);
+		NameTagAPI tag = nameTags.remove(player.getUniqueId());
+		if(tag!=null)tag.reset();
+		appliedHF.remove(player.getUniqueId());
+		appliedNT.remove(player.getUniqueId());
+		appliedTN.remove(player.getUniqueId());
+		appliedYN.remove(player.getUniqueId());
+		if(displayType!=null)
 		Ref.sendPacket(player, createObjectivePacket(1, TheAPI.isNewVersion()?null:"", displayType));
 	}
 	
@@ -232,12 +538,13 @@ public class Tablist {
 	public static void unload() {
 		if(!isLoaded)return;
 		isLoaded=false;
-		for(Player player : applied)
-			disable(player);
-		applied.clear();
 		Scheduler.cancelTask(task);
 		Scheduler.cancelTask(task2);
 		Scheduler.cancelTask(task3);
 		Scheduler.cancelTask(task4);
+		sorting.clear();
+		for(Player player : TheAPI.getOnlinePlayers())
+			if(!disabledWorlds.contains(player.getWorld().getName()))
+				disable(player, dType.remove(player.getUniqueId()));
 	}
 }
