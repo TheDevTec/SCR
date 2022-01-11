@@ -22,5 +22,166 @@ modules:
   playtime-rewards: false
   voting: false
   chat: true
-  # for other modules open listeners.yml in the modules folder.
-  # to disable commands open commands.yml
+  # For other modules, open the listeners.yml file in the modules folder.
+  # You can disable or modify the commands in commands.yml
+
+# SCR Economy
+economy:
+  start-money: 300
+  per-world:
+    enabled: false
+    # Economy groups
+    default:
+    - "world"
+    - "world_nether"
+    - "world_the_end"
+    minigames:
+    - "pb1"
+    - "pb2"
+    - "minigames_lobby"
+
+actions:
+  afk:
+    start:
+      commands: []
+      broadcast:
+      - "%player_displayname% &7is AFK"
+    process:
+      30min:
+        commands:
+        - "kick %player_name% Afking isn't allowed!"
+        broadcast:
+        - "%player_displayname% &7kicked for afking"
+      # 15min:
+      #   repeatable: true
+      #   commands:
+      #   - "eco take %player_name% 100 -s"
+      #   messages:
+      #   - "&c-100$ &7has been withdrawn from your account for afking"
+    stop:
+      commands: []
+      broadcast:
+      - "%player_displayname% &7is no longer AFK"
+
+control-panel:
+  restart:
+    default-time: 5s
+    start:
+      commands: []
+      broadcast:
+      - "Restart of server in %time%"
+    process:
+      30:
+        commands: []
+        broadcast:
+        - "Restart of server in 30s"
+      15:
+        commands: []
+        broadcast:
+        - "Restart of server in 15s"
+      5:
+        commands: []
+        broadcast:
+        - "Restart of server in 5s"
+      3:
+        commands: []
+        broadcast:
+        - "Restart of server in 3s"
+      2:
+        commands: []
+        broadcast:
+        - "Restart of server in 2s"
+      1:
+        commands: []
+        broadcast:
+        - "Restart of server in 1s"
+    end:
+      wait: 3s
+      commands:
+      - "send * lobby"
+      broadcast: []
+    cancel:
+      commands: []
+      broadcast:
+      - "Server restart cancelled!"
+      
+  stop:
+    default-time: 5s
+    start:
+      commands: []
+      broadcast:
+      - "Shutdown of server in %time%"
+    process:
+      30:
+        commands: []
+        broadcast:
+        - "Shutdown of server in 30s"
+      15:
+        commands: []
+        broadcast:
+        - "Shutdown of server in 15s"
+      5:
+        commands: []
+        broadcast:
+        - "Shutdown of server in 5s"
+      3:
+        commands: []
+        broadcast:
+        - "Shutdown of server in 3s"
+      2:
+        commands: []
+        broadcast:
+        - "Shutdown of server in 2s"
+      1:
+        commands: []
+        broadcast:
+        - "Shutdown of server in 1s"
+    end:
+      wait: 3s
+      commands:
+      - "send * lobby"
+      broadcast: []
+    cancel:
+      commands: []
+      broadcast:
+      - "Server shutdown cancelled!"
+      
+  reload:
+    default-time: 5s
+    start:
+      commands: []
+      broadcast:
+      - "Reload of server in %time%"
+    process:
+      30:
+        commands: []
+        broadcast:
+        - "Reload of server in 30s"
+      15:
+        commands: []
+        broadcast:
+        - "Reload of server in 15s"
+      5:
+        commands: []
+        broadcast:
+        - "Reload of server in 5s"
+      3:
+        commands: []
+        broadcast:
+        - "Reload of server in 3s"
+      2:
+        commands: []
+        broadcast:
+        - "Reload of server in 2s"
+      1:
+        commands: []
+        broadcast:
+        - "Reload of server in 1s"
+    end:
+      commands: []
+      broadcast:
+      - "Reloading the server, please wait..."
+    cancel:
+      commands: []
+      broadcast:
+      - "Server reload has been cancelled"

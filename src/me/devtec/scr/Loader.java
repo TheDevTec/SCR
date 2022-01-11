@@ -8,33 +8,61 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.devtec.scr.modules.ActionBar;
 import me.devtec.scr.modules.BossBar;
+import me.devtec.scr.modules.SEconomy;
 import me.devtec.scr.modules.Scoreboard;
 import me.devtec.scr.modules.Tablist;
+import me.devtec.scr.punishment.SPunishmentAPI;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
+import me.devtec.theapi.utils.VersionChecker;
+import me.devtec.theapi.utils.theapiutils.LoaderClass;
+import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin {
 	public static Config config, defaultTranslation, translation;
 	public static List<String> positive = new ArrayList<>(), negative = new ArrayList<>();
 	public static Loader plugin;
 	public static Permission perms;
+	public static SEconomy economy;
 	
 	public void onLoad() {
+		//Latest TheAPI only.
+		if(VersionChecker.getVersion(LoaderClass.plugin.getDescription().getVersion(), "8.1")==VersionChecker.Version.NEW) {
+			TheAPI.msg("&8*********************************************", TheAPI.getConsole());
+			TheAPI.msg("&4SECURITY: &cYou are running on outdated version of plugin TheAPI", TheAPI.getConsole());
+			TheAPI.msg("&4SECURITY: &cPlease update plugin TheAPI to latest version.", TheAPI.getConsole());
+			TheAPI.msg("      &6https://www.spigotmc.org/resources/72679/", TheAPI.getConsole());
+			TheAPI.msg("&8*********************************************", TheAPI.getConsole());
+			setNaggable(true);
+			return;
+		}
 		plugin=this;
 		ConfigManager.load();
-		if(Bukkit.getPluginManager().getPlugin("Vault")!=null)
+		if(Bukkit.getPluginManager().getPlugin("Vault")!=null) {
+			economy = new SEconomy();
+			Bukkit.getServicesManager().register(net.milkbowl.vault.economy.Economy.class, economy, this, ServicePriority.Normal);
 			vaultHooking();
+			
+		}
+		TheAPI.setPunishmentAPI(new SPunishmentAPI());
 	}
 	
+	/**
+	 * TODO
+	 * - onJoin, save "position"
+	 */
+	
 	public void onEnable() {
+		if(isNaggable())
+			return;
 		//CommandsManager.load();
 		Tablist.load(ConfigManager.tablist.getStringList("sorting"), ConfigManager.tablist.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.header-footer"))
 				, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.tablist-name"))
@@ -42,6 +70,7 @@ public class Loader extends JavaPlugin {
 				, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.yellow-number")));
 
 	}
+	
 	public void vaultHooking() {
 		TheAPI.msg("&5The&dAPI&7: &8********************", TheAPI.getConsole());
 		TheAPI.msg("&5The&dAPI&7: &eAction: &fLooking for Vault Permission plugin..", TheAPI.getConsole());
@@ -76,6 +105,10 @@ public class Loader extends JavaPlugin {
 		Scoreboard.unload();
 		BossBar.unload();
 		ActionBar.unload();
+		if (economy != null) {
+			Bukkit.getServicesManager().unregister(net.milkbowl.vault.economy.Economy.class, economy);
+			economy=null;
+		}
 		//CommandsManager.unload();
 	}
 	
