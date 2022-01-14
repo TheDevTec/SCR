@@ -86,41 +86,41 @@ public class ActionBar {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.actionbar.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".fadeIn");
+			if(ConfigManager.actionbar.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.actionbar.getString(path+".players."+player.getName()+".fadeIn");
 				if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".fadeIn");
+			if(ConfigManager.actionbar.exists(path+".groups."+group)) {
+				String get = ConfigManager.actionbar.getString(path+".groups."+group+".fadeIn");
 				if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".fadeIn");
+			String get = ConfigManager.actionbar.getString(path+".fadeIn");
 			if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.actionbar.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".fadeIn");
+			String get = ConfigManager.actionbar.getString(path+".fadeIn");
 			if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.actionbar.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".fadeIn");
+			String get = ConfigManager.actionbar.getString(path+".fadeIn");
 			if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 4) global
 		 */
-		return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("fadeIn")));
+		return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, ConfigManager.actionbar.getString("fadeIn")));
 	}
 	
 	protected static int fadeOut(Player player) {
@@ -132,41 +132,41 @@ public class ActionBar {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.actionbar.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".fadeOut");
+			if(ConfigManager.actionbar.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.actionbar.getString(path+".players."+player.getName()+".fadeOut");
 				if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".fadeOut");
+			if(ConfigManager.actionbar.exists(path+".groups."+group)) {
+				String get = ConfigManager.actionbar.getString(path+".groups."+group+".fadeOut");
 				if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".fadeOut");
+			String get = ConfigManager.actionbar.getString(path+".fadeOut");
 			if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.actionbar.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".fadeOut");
+			String get = ConfigManager.actionbar.getString(path+".fadeOut");
 			if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.actionbar.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".fadeOut");
+			String get = ConfigManager.actionbar.getString(path+".fadeOut");
 			if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 4) global
 		 */
-		return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("fadeOut")));
+		return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, ConfigManager.actionbar.getString("fadeOut")));
 	}
 	
 	protected static int stay(Player player) {
@@ -178,41 +178,41 @@ public class ActionBar {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.actionbar.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".stay");
+			if(ConfigManager.actionbar.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.actionbar.getString(path+".players."+player.getName()+".stay");
 				if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".stay");
+			if(ConfigManager.actionbar.exists(path+".groups."+group)) {
+				String get = ConfigManager.actionbar.getString(path+".groups."+group+".stay");
 				if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".stay");
+			String get = ConfigManager.actionbar.getString(path+".stay");
 			if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.actionbar.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".stay");
+			String get = ConfigManager.actionbar.getString(path+".stay");
 			if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.actionbar.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".stay");
+			String get = ConfigManager.actionbar.getString(path+".stay");
 			if(get!=null)return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 4) global
 		 */
-		return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("fadeOut")));
+		return (int)StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, ConfigManager.actionbar.getString("fadeOut")));
 	}
 	
 	protected static String text(Player player) {
@@ -224,41 +224,41 @@ public class ActionBar {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.actionbar.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".text");
+			if(ConfigManager.actionbar.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.actionbar.getString(path+".players."+player.getName()+".text");
 				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".text");
+			if(ConfigManager.actionbar.exists(path+".groups."+group)) {
+				String get = ConfigManager.actionbar.getString(path+".groups."+group+".text");
 				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".text");
+			String get = ConfigManager.actionbar.getString(path+".text");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.actionbar.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".text");
+			String get = ConfigManager.actionbar.getString(path+".text");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.actionbar.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".text");
+			String get = ConfigManager.actionbar.getString(path+".text");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 4) global
 		 */
-		return PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("text"));
+		return PlaceholderAPI.setPlaceholders(player, ConfigManager.actionbar.getString("text"));
 	}
 	
 	public static boolean toggled(Player player) {
@@ -278,41 +278,41 @@ public class ActionBar {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.actionbar.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".toggleable");
+			if(ConfigManager.actionbar.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.actionbar.getString(path+".players."+player.getName()+".toggleable");
 				if(get!=null)return StringUtils.getBoolean(get);
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".toggleable");
+			if(ConfigManager.actionbar.exists(path+".groups."+group)) {
+				String get = ConfigManager.actionbar.getString(path+".groups."+group+".toggleable");
 				if(get!=null)return StringUtils.getBoolean(get);
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".toggleable");
+			String get = ConfigManager.actionbar.getString(path+".toggleable");
 			if(get!=null)return StringUtils.getBoolean(get);
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.actionbar.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".toggleable");
+			String get = ConfigManager.actionbar.getString(path+".toggleable");
 			if(get!=null)return StringUtils.getBoolean(get);
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.actionbar.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".toggleable");
+			String get = ConfigManager.actionbar.getString(path+".toggleable");
 			if(get!=null)return StringUtils.getBoolean(get);
 		}
 		/*
 		 * 4) global
 		 */
-		return ConfigManager.tablist.getBoolean("toggleable");
+		return ConfigManager.actionbar.getBoolean("toggleable");
 	}
 	
 	public static void disable(Player player) {

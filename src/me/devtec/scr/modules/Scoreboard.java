@@ -81,41 +81,41 @@ public class Scoreboard {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.scoreboard.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				List<String> get = ConfigManager.tablist.getStringList(path+".players."+player.getName()+".lines");
+			if(ConfigManager.scoreboard.exists(path+".players."+player.getName())) {
+				List<String> get = ConfigManager.scoreboard.getStringList(path+".players."+player.getName()+".lines");
 				if(!get.isEmpty())return PlaceholderAPI.setPlaceholders(player, get);
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				List<String> get = ConfigManager.tablist.getStringList(path+".groups."+group+".lines");
+			if(ConfigManager.scoreboard.exists(path+".groups."+group)) {
+				List<String> get = ConfigManager.scoreboard.getStringList(path+".groups."+group+".lines");
 				if(!get.isEmpty())return PlaceholderAPI.setPlaceholders(player, get);
 			}
 			//global
-			List<String> get = ConfigManager.tablist.getStringList(path+".lines");
+			List<String> get = ConfigManager.scoreboard.getStringList(path+".lines");
 			if(!get.isEmpty())return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.scoreboard.exists(path="players."+player.getName())) {
 			//global
-			List<String> get = ConfigManager.tablist.getStringList(path+".lines");
+			List<String> get = ConfigManager.scoreboard.getStringList(path+".lines");
 			if(!get.isEmpty())return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.scoreboard.exists(path="groups."+group)) {
 			//global
-			List<String> get = ConfigManager.tablist.getStringList(path+".lines");
+			List<String> get = ConfigManager.scoreboard.getStringList(path+".lines");
 			if(!get.isEmpty())return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 4) global
 		 */
-		return PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getStringList("lines"));
+		return PlaceholderAPI.setPlaceholders(player, ConfigManager.scoreboard.getStringList("lines"));
 	}
 	protected static String title(Player player) {
 		String path = "worlds."+player.getWorld().getName();
@@ -126,41 +126,41 @@ public class Scoreboard {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.scoreboard.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".title");
+			if(ConfigManager.scoreboard.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.scoreboard.getString(path+".players."+player.getName()+".title");
 				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".title");
+			if(ConfigManager.scoreboard.exists(path+".groups."+group)) {
+				String get = ConfigManager.scoreboard.getString(path+".groups."+group+".title");
 				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".title");
+			String get = ConfigManager.scoreboard.getString(path+".title");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.scoreboard.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".title");
+			String get = ConfigManager.scoreboard.getString(path+".title");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.scoreboard.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".title");
+			String get = ConfigManager.scoreboard.getString(path+".title");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 4) global
 		 */
-		return PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("title"));
+		return PlaceholderAPI.setPlaceholders(player, ConfigManager.scoreboard.getString("title"));
 	}
 	
 	public static boolean toggled(Player player) {
@@ -180,41 +180,41 @@ public class Scoreboard {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.scoreboard.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".toggleable");
+			if(ConfigManager.scoreboard.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.scoreboard.getString(path+".players."+player.getName()+".toggleable");
 				if(get!=null)return StringUtils.getBoolean(get);
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".toggleable");
+			if(ConfigManager.scoreboard.exists(path+".groups."+group)) {
+				String get = ConfigManager.scoreboard.getString(path+".groups."+group+".toggleable");
 				if(get!=null)return StringUtils.getBoolean(get);
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".toggleable");
+			String get = ConfigManager.scoreboard.getString(path+".toggleable");
 			if(get!=null)return StringUtils.getBoolean(get);
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.scoreboard.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".toggleable");
+			String get = ConfigManager.scoreboard.getString(path+".toggleable");
 			if(get!=null)return StringUtils.getBoolean(get);
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.scoreboard.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".toggleable");
+			String get = ConfigManager.scoreboard.getString(path+".toggleable");
 			if(get!=null)return StringUtils.getBoolean(get);
 		}
 		/*
 		 * 4) global
 		 */
-		return ConfigManager.tablist.getBoolean("toggleable");
+		return ConfigManager.scoreboard.getBoolean("toggleable");
 	}
 	
 	public static void disable(Player player) {

@@ -83,41 +83,41 @@ public class BossBar {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.bossbar.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".title");
+			if(ConfigManager.bossbar.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.bossbar.getString(path+".players."+player.getName()+".title");
 				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".title");
+			if(ConfigManager.bossbar.exists(path+".groups."+group)) {
+				String get = ConfigManager.bossbar.getString(path+".groups."+group+".title");
 				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".title");
+			String get = ConfigManager.bossbar.getString(path+".title");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.bossbar.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".title");
+			String get = ConfigManager.bossbar.getString(path+".title");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.bossbar.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".title");
+			String get = ConfigManager.bossbar.getString(path+".title");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 4) global
 		 */
-		return PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("title"));
+		return PlaceholderAPI.setPlaceholders(player, ConfigManager.bossbar.getString("title"));
 	}
 	
 	protected static String color(Player player) {
@@ -129,41 +129,41 @@ public class BossBar {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.bossbar.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".color");
+			if(ConfigManager.bossbar.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.bossbar.getString(path+".players."+player.getName()+".color");
 				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".color");
+			if(ConfigManager.bossbar.exists(path+".groups."+group)) {
+				String get = ConfigManager.bossbar.getString(path+".groups."+group+".color");
 				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".color");
+			String get = ConfigManager.bossbar.getString(path+".color");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.bossbar.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".color");
+			String get = ConfigManager.bossbar.getString(path+".color");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.bossbar.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".color");
+			String get = ConfigManager.bossbar.getString(path+".color");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 4) global
 		 */
-		return PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("color"));
+		return PlaceholderAPI.setPlaceholders(player, ConfigManager.bossbar.getString("color"));
 	}
 	
 	protected static String style(Player player) {
@@ -175,41 +175,41 @@ public class BossBar {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.bossbar.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".style");
+			if(ConfigManager.bossbar.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.bossbar.getString(path+".players."+player.getName()+".style");
 				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".style");
+			if(ConfigManager.bossbar.exists(path+".groups."+group)) {
+				String get = ConfigManager.bossbar.getString(path+".groups."+group+".style");
 				if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".style");
+			String get = ConfigManager.bossbar.getString(path+".style");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.bossbar.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".style");
+			String get = ConfigManager.bossbar.getString(path+".style");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.bossbar.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".style");
+			String get = ConfigManager.bossbar.getString(path+".style");
 			if(get!=null)return PlaceholderAPI.setPlaceholders(player, get);
 		}
 		/*
 		 * 4) global
 		 */
-		return PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("style"));
+		return PlaceholderAPI.setPlaceholders(player, ConfigManager.bossbar.getString("style"));
 	}
 	
 	protected static double progress(Player player) {
@@ -221,41 +221,41 @@ public class BossBar {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.bossbar.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".progress");
+			if(ConfigManager.bossbar.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.bossbar.getString(path+".players."+player.getName()+".progress");
 				if(get!=null)return StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".progress");
+			if(ConfigManager.bossbar.exists(path+".groups."+group)) {
+				String get = ConfigManager.bossbar.getString(path+".groups."+group+".progress");
 				if(get!=null)return StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".progress");
+			String get = ConfigManager.bossbar.getString(path+".progress");
 			if(get!=null)return StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.bossbar.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".progress");
+			String get = ConfigManager.bossbar.getString(path+".progress");
 			if(get!=null)return StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.bossbar.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".progress");
+			String get = ConfigManager.bossbar.getString(path+".progress");
 			if(get!=null)return StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, get));
 		}
 		/*
 		 * 4) global
 		 */
-		return StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("progress")));
+		return StringUtils.calculate(PlaceholderAPI.setPlaceholders(player, ConfigManager.bossbar.getString("progress")));
 	}
 	
 	public static boolean toggled(Player player) {
@@ -275,41 +275,41 @@ public class BossBar {
 		 *   2) groups
 		 *   3) global - world
 		 */
-		if(ConfigManager.tablist.exists(path)) {
+		if(ConfigManager.bossbar.exists(path)) {
 			//players
-			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
-				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".toggleable");
+			if(ConfigManager.bossbar.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.bossbar.getString(path+".players."+player.getName()+".toggleable");
 				if(get!=null)return StringUtils.getBoolean(get);
 			}
 			//groups
-			if(ConfigManager.tablist.exists(path+".groups."+group)) {
-				String get = ConfigManager.tablist.getString(path+".groups."+group+".toggleable");
+			if(ConfigManager.bossbar.exists(path+".groups."+group)) {
+				String get = ConfigManager.bossbar.getString(path+".groups."+group+".toggleable");
 				if(get!=null)return StringUtils.getBoolean(get);
 			}
 			//global
-			String get = ConfigManager.tablist.getString(path+".toggleable");
+			String get = ConfigManager.bossbar.getString(path+".toggleable");
 			if(get!=null)return StringUtils.getBoolean(get);
 		}
 		/*
 		 * 2) players
 		 */
-		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+		if(ConfigManager.bossbar.exists(path="players."+player.getName())) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".toggleable");
+			String get = ConfigManager.bossbar.getString(path+".toggleable");
 			if(get!=null)return StringUtils.getBoolean(get);
 		}
 		/*
 		 * 3) groups
 		 */
-		if(ConfigManager.tablist.exists(path="groups."+group)) {
+		if(ConfigManager.bossbar.exists(path="groups."+group)) {
 			//global
-			String get = ConfigManager.tablist.getString(path+".toggleable");
+			String get = ConfigManager.bossbar.getString(path+".toggleable");
 			if(get!=null)return StringUtils.getBoolean(get);
 		}
 		/*
 		 * 4) global
 		 */
-		return ConfigManager.tablist.getBoolean("toggleable");
+		return ConfigManager.bossbar.getBoolean("toggleable");
 	}
 	
 	public static void disable(Player player) {

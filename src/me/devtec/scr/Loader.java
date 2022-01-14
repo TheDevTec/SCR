@@ -64,11 +64,20 @@ public class Loader extends JavaPlugin {
 		if(isNaggable())
 			return;
 		//CommandsManager.load();
-		Tablist.load(ConfigManager.tablist.getStringList("sorting"), ConfigManager.tablist.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.header-footer"))
-				, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.tablist-name"))
-				, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.nametag"))
-				, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.yellow-number")));
-
+		
+		//LOADING OF MODULES
+		if(config.getBoolean("modules.tablist"))
+			Tablist.load(ConfigManager.tablist.getStringList("sorting"), ConfigManager.tablist.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.header-footer"))
+					, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.tablist-name"))
+					, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.nametag"))
+					, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.yellow-number")));
+		if(config.getBoolean("modules.scoreboard"))
+			Scoreboard.load(ConfigManager.scoreboard.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.scoreboard.getString("settings.reflesh")));
+		if(config.getBoolean("modules.bossbar"))
+			BossBar.load(ConfigManager.bossbar.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.bossbar.getString("settings.reflesh")));
+		if(config.getBoolean("modules.actionbar"))
+			ActionBar.load(ConfigManager.actionbar.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.actionbar.getString("settings.reflesh")));
+		
 	}
 	
 	public void vaultHooking() {
