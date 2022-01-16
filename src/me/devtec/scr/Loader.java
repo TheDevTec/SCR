@@ -12,11 +12,13 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.devtec.scr.commands.CommandsManager;
 import me.devtec.scr.modules.ActionBar;
 import me.devtec.scr.modules.BossBar;
 import me.devtec.scr.modules.SEconomy;
 import me.devtec.scr.modules.Scoreboard;
 import me.devtec.scr.modules.Tablist;
+import me.devtec.scr.modules.events.Listeners;
 import me.devtec.scr.punishment.SPunishmentAPI;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.configapi.Config;
@@ -63,7 +65,8 @@ public class Loader extends JavaPlugin {
 	public void onEnable() {
 		if(isNaggable())
 			return;
-		//CommandsManager.load();
+		CommandsManager.load();
+		Listeners.load();
 		
 		//LOADING OF MODULES
 		if(config.getBoolean("modules.tablist"))
@@ -109,7 +112,9 @@ public class Loader extends JavaPlugin {
 	}
 
 	public void onDisable() {
-		ConfigManager.unload();
+		CommandsManager.unload();
+		Listeners.unload();
+	
 		Tablist.unload();
 		Scoreboard.unload();
 		BossBar.unload();
@@ -118,17 +123,15 @@ public class Loader extends JavaPlugin {
 			Bukkit.getServicesManager().unregister(net.milkbowl.vault.economy.Economy.class, economy);
 			economy=null;
 		}
-		//CommandsManager.unload();
+		ConfigManager.unload();
 	}
 	
 	public static boolean isPositive(String value) {
-		//TODO config
-		return value.equalsIgnoreCase("on")||value.equalsIgnoreCase("true")||value.equalsIgnoreCase("yes")||value.equalsIgnoreCase("allow");
+		return positive.contains(value.toLowerCase());
 	}
 	
 	public static boolean isNegative(String value) {
-		//TODO config
-		return value.equalsIgnoreCase("off")||value.equalsIgnoreCase("false")||value.equalsIgnoreCase("no")||value.equalsIgnoreCase("disallow");
+		return negative.contains(value.toLowerCase());
 	}
 	
 	public static boolean isArmor(Material item) {

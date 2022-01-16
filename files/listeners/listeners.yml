@@ -1,0 +1,4 @@
+chat:
+  enabled: true
+  # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
+  priority: LOWEST

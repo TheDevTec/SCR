@@ -63,6 +63,14 @@ public class Repair extends CommandHolder {
 				}
 				return;
 			}
+			if(!silent) {
+				if(player==s) {
+					Loader.send(s, "Repair.repaired.hand.self", PlaceholderBuilder.make(s, "sender"));
+				}else {
+					Loader.send(s, "Repair.repaired.hand.other.sender", PlaceholderBuilder.make(s, "sender").player(player, "target"));
+					Loader.send(player, "Repair.repaired.hand.other.target", PlaceholderBuilder.make(s, "sender").player(player, "target"));
+				}
+			}
 			item.setDurability((short)0);
 			player.setItemInHand(item);
 			return;

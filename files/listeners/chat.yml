@@ -1,0 +1,103 @@
+settings:
+  # RADIUS, PER-WORLD, GLOBAL
+  chat-type: GLOBAL
+  prevent:
+    flood: true
+    same-msg: true
+    caps: true
+  
+radius:
+  distance: 20
+  per-group:
+    default: 20
+    vip: 35
+    # radius chat not affected to admins
+    admin: -1
+  per-player:
+     InsertPlayerName: 50
+     
+# Usable placeholders:
+# - default placeholders (built-in & PlaceholderAPI placeholders)
+# - %tagger_XXX%
+notifications:
+  replace: "&b@{NICK}"
+  title:
+    main: ""
+    sub: ""
+    actionbar: ""
+    settings:
+      fadeIn: 10
+      stay: 20
+      fadeOut: 10
+  bossbar:
+    delay: "2s"
+    progress: "%delay%"
+    color: "RED"
+    style: "SEGMENTED_20"
+    # Change value to "" to disable bossbar
+    text: "&cSomeone tagged you in chat"
+  
+  # messages:
+  # - "&6CHAT: &e%tagger_displayname% &ftagged you in chat"
+  messages: []
+  commands: []
+    
+  # 1.18+ https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+  # 1.16.5 https://helpch.at/docs/1.16.5/org/bukkit/Sound.html
+  # 1.12.2 https://helpch.at/docs/1.12.2/org/bukkit/Sound.html
+  # 1.8.8 https://helpch.at/docs/1.8.8/org/bukkit/Sound.html
+  sound: "ENTITY_PLAYER_LEVELUP"
+     
+per-world:
+  default:
+  - "world"
+  - "world_nether"
+  - "world_the_end"
+  minigames:
+  - "pb1"
+  - "pb2"
+  - "pb_lobby"
+
+# Types: REGEX, CONTAINS, EQUALS, STARTS_WITH, ENDS_WITH
+# Regex flags: CASE_INSENSITIVE, COMMENTS, CANON_EQ, DOTALL, LITERAL, MULTILINE, UNICODE_CASE, UNICODE_CHARACTER_CLASS, UNIX_LINES
+rules:
+  antiAd-ip:
+    enabled: true
+    # Bypass via permission - scr.bypass.rules
+    bypassable: true
+    type: "REGEX"
+    text: "[0-9 ]+[.:_ ][0-9 ]+[ .:_][0-9 ]+[.:_ ][0-9 ]+(:[0-9 ]+)*"
+    replacement:
+      # If you set to "false", sending of message will be cancelled.
+      use: false
+      text: "ANTI-AD"
+      
+formats:
+  per-group:
+    owner:
+      chat: "%player_displayname% &8&l» &3%mesage%"
+      name: "&3Owner &f%player_name%"
+    admin:
+      chat: "%player_displayname% &8&l» &6%mesage%"
+      name: "&4Owner &3%player_name%"
+    vip:
+      chat: "%player_displayname% &8&l» &a%mesage%"
+      name: "&aVIP &e%player_name%"
+    default:
+      chat: "%player_displayname% &8&l» &f%mesage%"
+      name: "&7%player_name%"
+  per-player:
+    InsertPlayerName2:
+      # Are you looking for json?
+      chat: '{"text":"%player_displayname% &8&l» &f%mesage%","hoverEvent":{"action":"show_text","value":"&6Sent time: &e%server_time%\n&6Money: &e%player_balance%"}}'
+      name: "&7%player_name%"
+  per-world:
+    exampleWorld:
+      per-group:
+        owner:
+          chat: "%player_displayname% &8&l» &c%mesage%"
+          name: "&eOwner &4%player_name%"
+      per-player:
+        InsertPlayerName:
+          chat: "%player_displayname% &8&l» &c%mesage%"
+          name: "&u%player_name%"
