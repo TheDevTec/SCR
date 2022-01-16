@@ -1,0 +1,19 @@
+# SCR Economy
+economy:
+  start-money: 300
+  per-world:
+    enabled: false
+    # Economy groups
+    default:
+      # If you do not set start-money, the plugin will use the default start-money listed above.
+      # start-money: 300
+      list:
+      - "world"
+      - "world_nether"
+      - "world_the_end"
+    minigames:
+      start-money: 0
+      list:
+      - "pb1"
+      - "pb2"
+      - "minigames_lobby"

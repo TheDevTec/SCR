@@ -1,0 +1,9 @@
+antiAd-ip:
+  # Bypass via permission - scr.bypass.rules
+  bypassable: true
+  type: "REGEX"
+  text: "[0-9 ]+[.:_ ][0-9 ]+[ .:_][0-9 ]+[.:_ ][0-9 ]+(:[0-9 ]+)*"
+  replacement:
+    # If you set to "false", sending of message will be cancelled.
+    use: false
+    text: "ANTI-AD"

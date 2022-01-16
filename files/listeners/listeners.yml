@@ -2,3 +2,33 @@ chat:
   enabled: true
   # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
   priority: LOWEST
+  rules:
+  - "antiAd-ip"
+
+anvil:
+  enabled: true
+  # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
+  priority: LOWEST
+  rules:
+  - "antiAd-ip"
+
+book:
+  enabled: true
+  # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
+  priority: LOWEST
+  rules:
+  - "antiAd-ip"
+
+item-pickup:
+  enabled: false
+  # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
+  priority: LOWEST
+  rules:
+  - "antiAd-ip"
+
+item-drop:
+  enabled: false
+  # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
+  priority: LOWEST
+  rules:
+  - "antiAd-ip"

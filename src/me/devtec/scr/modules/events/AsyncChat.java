@@ -17,8 +17,10 @@ public class AsyncChat implements Listener {
 	
 	/**
 	 * TODO
+	 * - Cooldown
 	 * - Radius & per-world chat
-	 * - Chat rules (own anti-ad, anti-swear....)
+	 * - Chat prevention settings
+	 * - Chat rules
 	 * - Chat format
 	 * 
 	 **/

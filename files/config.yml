@@ -25,21 +25,6 @@ modules:
   # For other modules, open the listeners.yml file in the modules folder.
   # You can disable or modify the commands in commands.yml
 
-# SCR Economy
-economy:
-  start-money: 300
-  per-world:
-    enabled: false
-    # Economy groups
-    default:
-    - "world"
-    - "world_nether"
-    - "world_the_end"
-    minigames:
-    - "pb1"
-    - "pb2"
-    - "minigames_lobby"
-
 actions:
   afk:
     start:

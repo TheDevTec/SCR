@@ -1,6 +1,25 @@
 settings:
   # RADIUS, PER-WORLD, GLOBAL
   chat-type: GLOBAL
+  cooldowns:
+    enabled: true
+    per-group:
+      default: 4s
+      vip: 2s
+      # chat cooldown isn't affected to admins
+      admin: 0s
+      owner: 0s
+    per-player:
+      InsertPlayerName: 1s
+    per-world:
+      examleWorld:
+        per-group:
+          default: 2s
+          vip: 0s
+          admin: 0s
+          owner: 0s
+        per-player:
+          InsertPlayerName: 0s
   prevent:
     flood: true
     same-msg: true
@@ -11,8 +30,9 @@ radius:
   per-group:
     default: 20
     vip: 35
-    # radius chat not affected to admins
+    #  chat radius isn't affected to admins
     admin: -1
+    owner: -1
   per-player:
      InsertPlayerName: 50
      
@@ -58,20 +78,6 @@ per-world:
   - "pb2"
   - "pb_lobby"
 
-# Types: REGEX, CONTAINS, EQUALS, STARTS_WITH, ENDS_WITH
-# Regex flags: CASE_INSENSITIVE, COMMENTS, CANON_EQ, DOTALL, LITERAL, MULTILINE, UNICODE_CASE, UNICODE_CHARACTER_CLASS, UNIX_LINES
-rules:
-  antiAd-ip:
-    enabled: true
-    # Bypass via permission - scr.bypass.rules
-    bypassable: true
-    type: "REGEX"
-    text: "[0-9 ]+[.:_ ][0-9 ]+[ .:_][0-9 ]+[.:_ ][0-9 ]+(:[0-9 ]+)*"
-    replacement:
-      # If you set to "false", sending of message will be cancelled.
-      use: false
-      text: "ANTI-AD"
-      
 formats:
   per-group:
     owner:
