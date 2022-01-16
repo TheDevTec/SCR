@@ -12,6 +12,13 @@ anvil:
   rules:
   - "antiAd-ip"
 
+sign:
+  enabled: true
+  # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
+  priority: LOWEST
+  rules:
+  - "antiAd-ip"
+
 book:
   enabled: true
   # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
@@ -19,6 +26,8 @@ book:
   rules:
   - "antiAd-ip"
 
+# If you don't need this, don't turn it on!
+# It may affect performance
 item-pickup:
   enabled: false
   # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR
@@ -26,6 +35,8 @@ item-pickup:
   rules:
   - "antiAd-ip"
 
+# If you don't need this, don't turn it on!
+# It may affect performance
 item-drop:
   enabled: false
   # LOWEST, LOW, NORMAL, HIGH, HIGHEST, MONITOR

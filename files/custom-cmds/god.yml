@@ -1,3 +1,4 @@
+enabled: true
 list:
 - "god"
 perm: "scr.command.god"

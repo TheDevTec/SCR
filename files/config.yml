@@ -1,6 +1,17 @@
 # Built-in translations: en (English), ru (Russia), cz (Czechia)
 translation: en
 
+# Do you want to log to the file processing of things below?
+loggers:
+  # Beware! Jobs plugin or similiar jobs plugins can spam this log.
+  economy: false
+  # Log only if rule result is true
+  rules: false
+  # Logger of joins & quits of players
+  join-quit: false
+  # Logger of processing SCR commands
+  process-cmds: false
+
 positive:
 - "yes"
 - "true"
@@ -19,20 +30,44 @@ modules:
   scoreboard: true
   tablist: true
   scr-economy: true
-  playtime-rewards: false
-  voting: false
   chat: true
-  # For other modules, open the listeners.yml file in the modules folder.
-  # You can disable or modify the commands in commands.yml
+  # If you want to disable whole loader of custom commands, set value to false
+  custom-cmds: true
+  # If you want to disable whole loader of custom guis (with commands), set value to false
+  custom-guis: true
+  # For other modules, open the listeners.yml file in the listeners folder.
+  # You can disable or modify the commands in commands.yml and custom-cmds folder
 
 actions:
+  vanish:
+    onJoin:
+      commands: []
+      broadcast: []
+      messages:
+      - "Vanish is still enabled"
+    onQuit:
+      commands: []
+      messages: []
+      broadcast: []
+    start:
+      commands: []
+      messages: []
+      broadcast:
+      - "%player_displayname% &7left the game"
+    stop:
+      commands: []
+      messages: []
+      broadcast:
+      - "%player_displayname% &7joined to the game"
   afk:
     start:
       commands: []
+      messages: []
       broadcast:
       - "%player_displayname% &7is AFK"
     process:
       30min:
+        messages: []
         commands:
         - "kick %player_name% Afking isn't allowed!"
         broadcast:
@@ -45,6 +80,7 @@ actions:
       #   - "&c-100$ &7has been withdrawn from your account for afking"
     stop:
       commands: []
+      messages: []
       broadcast:
       - "%player_displayname% &7is no longer AFK"
 

@@ -3,6 +3,8 @@ package me.devtec.scr;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -178,4 +180,60 @@ public class Loader extends JavaPlugin {
 	public static long getRequestTime() {
 		return 15;
 	}
+	
+	private static final Pattern moneyPattern = Pattern.compile("([+-]*[0-9]+.*[0-9]*[E]*[0-9]*)([kmbt]|qu[ia]|se[px]|non|oct|dec|und|duo|tre|sed|nov)", Pattern.CASE_INSENSITIVE);
+    public static double moneyFromString(String s) {
+		double has = 0;
+		Matcher m = moneyPattern.matcher(s);
+		while(m.find())
+			has+=StringUtils.getDouble(m.group(1))*getMultiply(m.group(2));
+		if(has==0)has=StringUtils.getDouble(s);
+		return has;
+	}
+    
+    private static double getMultiply(String name) {
+    	switch(name) {
+    	case "k":
+    		return 1000;
+    	case "m":
+    		return 1000000;
+    	case "b":
+    		return 1.0E9;
+    	case "t":
+    		return 1.0E12;
+    	case "qua":
+    		return 1.0E15;
+    	case "qui":
+    		return 1.0E18;
+    	case "sex": //No, it's not "sex"...
+    		return 1.0E21;
+    	case "sep":
+    		return 1.0E24;
+    	case "oct":
+    		return 1.0E27;
+    	case "non":
+    		return 1.0E30;
+    	case "dec":
+    		return 1.0E33;
+    	case "und":
+    		return 1.0E36;
+    	case "duo":
+    		return 1.0E39;
+    	case "tre":
+    		return 1.0E42;
+    	case "QUA":
+    		return 1.0E45;
+    	case "QUI":
+    		return 1.0E48;
+    	case "SED":
+    		return 1.0E51;
+    	case "SEP":
+    		return 1.0E54;
+    	case "OCT":
+    		return 1.0E57;
+    	case "NOV":
+    		return 1.0E60;
+    	}
+    	return 1;
+    }
 }

@@ -33,7 +33,7 @@ public class SEconomy implements Economy {
 
 	public static String getEconomyGroupByWorld(String world) {
 		for (String f : Loader.config.getKeys("economy.per-world")) {
-			if(Loader.config.getStringList("economy.per-world."+f).contains(world))
+			if(Loader.config.getStringList("economy.per-world."+f+".list").contains(world))
 				return f;
 		}
 		return "default";

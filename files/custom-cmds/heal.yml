@@ -1,3 +1,4 @@
+enabled: true
 list:
 - "heal"
 perm: "scr.command.heal"

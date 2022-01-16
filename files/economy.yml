@@ -1,6 +1,7 @@
 # SCR Economy
 economy:
   start-money: 300
+  
   per-world:
     enabled: false
     # Economy groups
@@ -17,3 +18,23 @@ economy:
       - "pb1"
       - "pb2"
       - "minigames_lobby"
+
+# Fees for paying via command
+# /pay [PLAYER] [MONEY]
+payment:
+  minimum-payment: 20.0
+  # Do you want to control payments?
+  # Set value to "-1" to no limit
+  maximum-payment: -1
+  
+  fees:
+    # Fee for every payment - calculator
+    calculator: "(%fee% / 365) * %money%"
+    per-group:
+      default: 3.9
+      vip: 2.5
+      # no fee.
+      admin: 365
+      owner: 365
+    per-player:
+      InsertPlayerName: 365
