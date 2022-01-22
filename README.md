@@ -36,3 +36,4 @@ But we are also not afraid to add anything new that the discord community reques
 [![](https://img.shields.io/badge/dynamic/json.svg?url=https://api.spiget.org/v2/resources/71147&label=Spigot-Downloads&query=$.downloads&colorB=ee8a18&style=flat-square&maxAge=3600)](https://www.spigotmc.org/resources/71147/)
 [![](https://img.shields.io/badge/dynamic/json.svg?url=https://api.spiget.org/v2/resources/71147&label=Spigot-Rating&query=$.rating.average&colorB=00AB66&style=flat-square&maxAge=3600)](https://www.spigotmc.org/resources/71147/)
 [![](https://discordapp.com/api/guilds/579029317561090078/widget.png)](https://discord.gg/8YtfC234dA)
+[![](https://bstats.org/signatures/bukkit/ServerControlReloaded.svg)](https://bstats.org/plugin/bukkit/ServerControlReloaded/10560)
