@@ -1,5 +1,8 @@
 package me.devtec.scr.modules.events;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class AnvilPrepare implements Listener {
+	
+	public static List<Rule> rules = new ArrayList<>();
 
 	private static ItemStack empty = new ItemStack(Material.AIR);
 	
@@ -19,7 +24,10 @@ public class AnvilPrepare implements Listener {
 		ItemStack item = event.getResult();
 		ItemMeta meta = item.getItemMeta();
 		String text = meta.getDisplayName();
-		//TODO rules
+		for(Rule rule : rules) {
+			text=rule.apply(text, s);
+			if(text==null)break;
+		}
 		if(text==null) {
 			event.setResult(empty);
 			return;

@@ -1,5 +1,8 @@
 package me.devtec.scr.modules.events;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -8,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemPickup implements Listener {
+	
+	public static List<Rule> rules = new ArrayList<>();
 
 	@EventHandler
 	public void onPickup(PlayerPickupItemEvent event) {
@@ -16,7 +21,10 @@ public class ItemPickup implements Listener {
 		ItemStack item = event.getItem().getItemStack();
 		ItemMeta meta = item.getItemMeta();
 		String text = meta.getDisplayName();
-		//TODO rules
+		for(Rule rule : rules) {
+			text=rule.apply(text, s);
+			if(text==null)break;
+		}
 		if(text==null) {
 			event.setCancelled(true);
 			return;

@@ -24,9 +24,74 @@ import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
 public class JsonUtils {
 	
+	public static String getChatFormatColorOf(Object value) {
+		if(value instanceof Map) {
+			if(((Map<?,?>)value).containsKey("text")) {
+				if(((Map<?,?>)value).get("text").toString().contains("%message%")) {
+					String[] split = ((Map<?,?>)value).get("text").toString().split("\\%message\\%");
+					String result = StringUtils.getLastColors(StringUtils.colorize(split[0].replace("&u", "§u")));
+					if(result.isEmpty())result=((Map<?,?>)value).get("color")+"";
+					return result.equals("null")?"":null;
+				}
+			}
+			if(((Map<?,?>)value).containsKey("extra")) {
+				return getChatFormatColorOf(((Map<?,?>)value).get("extra"));
+			}
+		}
+		if(value instanceof Collection) {
+			for(Object o : (Collection<?>)value) {
+				String result = getChatFormatColorOf(o);
+				if(result.isEmpty())continue;
+				return result;
+			}
+		}
+		return "";
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static String msgRaw(Object value, PlaceholderBuilder builder, Player sender, Player... targets) {
+		if(value==null||sender==null||targets==null||targets.length==0)return value+"";
+		if(value instanceof Collection || value instanceof Map) {
+			value=parse(value);
+			Object json;
+			if(value instanceof Collection) {
+				json = colorizeList((Collection<?>)value,builder);
+			}else
+				json = colorizeMap((Map<String, Object>)value,builder);
+			List<Map<String,Object>> oo = new ArrayList<>();
+			if(json instanceof Map) {
+				oo.add((Map<String, Object>) json);
+			}else {
+				for(Object w : ((Collection<Object>)json)) {
+					if(w instanceof String)w= Json.reader().simpleRead((String)w);
+					if(w instanceof Map) {
+						oo.add((Map<String, Object>) w);
+					}else {
+						Map<String, Object> g = new HashMap<>();
+						g.put("text", w+"");
+						oo.add(g);
+					}
+				}
+			}
+			oo=ComponentAPI.fixJsonList(oo);
+			String jsons = Json.writer().simpleWrite(oo);
+			jsons="[\"\","+jsons.substring(1);
+			Ref.sendPacket(targets,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
+			return convertToLegacy(oo);
+		}
+		if(value instanceof Collection) {
+			for(Object d : (Collection<?>)value)
+				for(Player target : targets)
+					TheAPI.msg(PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender:null,d+""), target);
+		}else
+			for(Player target : targets)
+				TheAPI.msg(PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender:null,value+""), target);
+		return value+"";
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static void msgRaw(Object value, PlaceholderBuilder builder, CommandSender... players) {
-		if(value==null)return;
+		if(value==null||players==null||players.length==0)return;
 		if(value instanceof Collection || value instanceof Map) {
 			for(CommandSender sender : players) {
 				value=parse(value);

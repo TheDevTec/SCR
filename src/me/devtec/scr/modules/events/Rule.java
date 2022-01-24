@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.entity.Player;
+
 public class Rule {
 	private List<String> whitelist;
 	private String value, type, replaceValue, name;
@@ -47,7 +49,8 @@ public class Rule {
 		return doReplace;
 	}
 	
-	public String apply(String text) {
+	public String apply(String text, Player s) {
+		if(bypassable && s.hasPermission("scr.bypass.rules"))return text;
 		if(text==null)return null;
 		switch(type) {
 		case "REGEX":
