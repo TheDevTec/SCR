@@ -12,7 +12,7 @@ import me.devtec.theapi.utils.theapiutils.Cache.Query;
 
 /**
  * @author StraikerinaCZ
- * 16.1 2022
+ * 25.1 2022
  **/
 public class Balance extends CommandHolder {
 	
@@ -22,33 +22,20 @@ public class Balance extends CommandHolder {
 
 	@Override
 	public void command(CommandSender s, String[] args, boolean loop, boolean silent) {
-		if(args[1].startsWith("-")||args[1].equals("0")) { //fast skip
-			Loader.send(s, "economy.pay.negative", PlaceholderBuilder.make(s, "sender"));
+		if(args.length==0) {
+			if(!(s instanceof Player)) {
+				help(s, 0);
+				return;
+			}
+			Loader.send(s, "economy.balance.self", PlaceholderBuilder.make(s, "sender"));
 			return;
 		}
-		double money = Loader.moneyFromString(args[1]);
-		if(money<=0) { //just.. check
-			Loader.send(s, "economy.pay.negative", PlaceholderBuilder.make(s, "sender"));
+		Query find = TheAPI.getCache().lookupQuery(args[0]);
+		if(find==null) {
+			Loader.send(s, "missing.user", PlaceholderBuilder.make(s, "sender").add("name", args[0]));
 			return;
 		}
-		if(!EconomyAPI.has((Player)s, money)) {
-			Loader.send(s, "economy.pay.enought", PlaceholderBuilder.make(s, "sender").add("value", money));
-			return;
-		}
-		Player target = TheAPI.getPlayer(args[0]);
-		if(target!=null) {
-			EconomyAPI.depositPlayer(target, money);
-			Loader.send(s, "economy.pay.sender", PlaceholderBuilder.make(s, "sender").player(target, "target").add("value", money));
-			Loader.send(target, "economy.pay.target", PlaceholderBuilder.make(s, "sender").player(target, "target").add("value", money));
-			return;
-		}
-		Query query = TheAPI.getCache().lookupQuery(args[0]);
-		if(query==null) {
-			Loader.send(s, "missing.user", PlaceholderBuilder.make(s, "sender").add("value", args[0]));
-			return;
-		}
-		EconomyAPI.depositPlayer(query.getName(), money);
-		Loader.send(s, "economy.pay.sender", PlaceholderBuilder.make(s, "sender").player(target, "target").add("value", money));
+		Loader.send(s, "economy.balance.other", PlaceholderBuilder.make(s, "sender").add("name", find.getName()).add("uuid", find.getUUID().toString()).add("balance", EconomyAPI.getBalance(find.getName())));
 	}
 	
 	@Override

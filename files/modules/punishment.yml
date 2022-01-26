@@ -1,0 +1,157 @@
+ban:
+  reason: "The Ban Hammer has spoken"
+  
+  # Placeholders:
+  # {reason}
+  # {admin}
+  # {time}
+  format:
+    temp:
+    - "------ [ BAN ] ------"
+    - ""
+    - " Ban expel after {time}"
+    - ""
+    - "Admin: {admin}"
+    - "Reason: {reason}"
+    - ""
+    - "Website: www.myweb.com"
+    - "Discord: discord.gg/mydc"
+    - ""
+    - "---------------------"
+    perm:
+    - "------ [ BAN ] ------"
+    - ""
+    - " This ban is pernament"
+    - ""
+    - "Admin: {admin}"
+    - "Reason: {reason}"
+    - ""
+    - "Website: www.myweb.com"
+    - "Discord: discord.gg/mydc"
+    - ""
+    - "---------------------"
+ban-ip:
+  reason: "The Ban Hammer has spoken"
+  
+  # Placeholders:
+  # {reason}
+  # {admin}
+  # {time}
+  format:
+    temp:
+    - "------ [ IP-BAN ] ------"
+    - ""
+    - " IP-Ban expel after {time}"
+    - ""
+    - "Admin: {admin}"
+    - "Reason: {reason}"
+    - ""
+    - "Website: www.myweb.com"
+    - "Discord: discord.gg/mydc"
+    - ""
+    - "------------------------"
+    perm:
+    - "------ [ IP-BAN ] ------"
+    - ""
+    - " This ip-ban is pernament"
+    - ""
+    - "Admin: {admin}"
+    - "Reason: {reason}"
+    - ""
+    - "Website: www.myweb.com"
+    - "Discord: discord.gg/mydc"
+    - ""
+    - "------------------------"
+
+mute:
+  reason: "Uknown"
+  delay: 5min
+  
+  # Placeholders:
+  # {reason}
+  # {admin}
+  # {time}
+  format:
+    temp:
+    - "------ [ MUTE ] ------"
+    - ""
+    - " Mute expel after {time}"
+    - ""
+    - "Admin: {admin}"
+    - "Reason: {reason}"
+    - ""
+    - "Website: www.myweb.com"
+    - "Discord: discord.gg/mydc"
+    - ""
+    - "----------------------"
+    perm:
+    - "------ [ MUTE ] ------"
+    - ""
+    - " This mute is pernament"
+    - ""
+    - "Admin: {admin}"
+    - "Reason: {reason}"
+    - ""
+    - "Website: www.myweb.com"
+    - "Discord: discord.gg/mydc"
+    - ""
+    - "----------------------"
+mute-ip:
+  reason: "Uknown"
+  delay: 5min
+  
+  # Placeholders:
+  # {reason}
+  # {admin}
+  # {time}
+  format:
+    temp:
+    - "------ [ IP-MUTE ] ------"
+    - ""
+    - " IP-Mute expel after {time}"
+    - ""
+    - "Admin: {admin}"
+    - "Reason: {reason}"
+    - ""
+    - "Website: www.myweb.com"
+    - "Discord: discord.gg/mydc"
+    - ""
+    - "-------------------------"
+    perm:
+    - "------ [ IP-MUTE ] ------"
+    - ""
+    - " This ip-mute is pernament"
+    - ""
+    - "Admin: {admin}"
+    - "Reason: {reason}"
+    - ""
+    - "Website: www.myweb.com"
+    - "Discord: discord.gg/mydc"
+    - ""
+    - "-------------------------"
+
+warn:
+  reason: "Uknown"
+  
+  # Placeholders:
+  # {reason}
+  # {admin}
+  format:
+  - "------ [ WARNING ] ------"
+  - ""
+  - "Reason: {reason}"
+  - ""
+  - "-------------------------"
+
+kick:
+  reason: "Uknown"
+  
+  # Placeholders:
+  # {reason}
+  # {admin}
+  format:
+  - "------ [ WARNING ] ------"
+  - ""
+  - "Reason: {reason}"
+  - ""
+  - "-------------------------"

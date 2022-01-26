@@ -7,12 +7,8 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.api.events.BanlistBanEvent;
-import me.devtec.scr.api.events.BanlistEvent;
 import me.devtec.scr.api.events.BanlistJailEvent;
 import me.devtec.scr.api.events.BanlistMuteEvent;
-import me.devtec.scr.api.events.BanlistTempBanEvent;
-import me.devtec.scr.api.events.BanlistTempJailEvent;
-import me.devtec.scr.api.events.BanlistTempMuteEvent;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.punishmentapi.Punishment;
@@ -22,7 +18,6 @@ import me.devtec.theapi.utils.Position;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.datakeeper.Data;
 import me.devtec.theapi.utils.datakeeper.User;
-import me.devtec.theapi.utils.listener.Cancellable;
 
 public class SPunishmentAPI implements PunishmentAPI {
 
@@ -33,22 +28,12 @@ public class SPunishmentAPI implements PunishmentAPI {
 	public Punishment mute(String user, long duration, String reason) {
 		String type = duration == 0 ? "mute" : "tempmute";
 		if(duration<0)duration=0;
-		BanlistEvent e;
-		if(duration!=0) {
-			e = new BanlistTempMuteEvent(user, reason, duration);
-		}else
-			e = new BanlistMuteEvent(user, reason);
+		BanlistMuteEvent e = new BanlistMuteEvent(user, reason, duration);
 		TheAPI.callEvent(e);
-		if(((Cancellable) e).isCancelled())return null;
+		if(e.isCancelled())return null;
 		reason=e.getReason()+"";
-		if(e instanceof BanlistTempMuteEvent) {
-			duration=((BanlistTempMuteEvent)e).getDuration();
-			if(duration<0)duration=0;
-		}
-		reason=e.getReason()+"";
-
-		if(duration!=0)
-		data.set("u."+user.toLowerCase()+"."+type+".duration", duration);
+		duration=e.getDuration();
+		data.set("u."+user.toLowerCase()+"."+type+".duration", duration!=0?duration:null);
 		data.set("u."+user.toLowerCase()+"."+type+".reason", reason);
 		data.set("u."+user.toLowerCase()+"."+type+".start", System.currentTimeMillis()/1000);
 		data.save();
@@ -62,22 +47,13 @@ public class SPunishmentAPI implements PunishmentAPI {
 		if(!ip.contains("."))
 			ip=getIp(ip);
 		if(duration<0)duration=0;
-		BanlistEvent e;
-		if(duration!=0) {
-			e = new BanlistTempMuteEvent(ip, reason, duration);
-		}else
-			e = new BanlistMuteEvent(ip, reason);
+		BanlistMuteEvent e = new BanlistMuteEvent(ip, reason, duration);
 		TheAPI.callEvent(e);
-		if(((Cancellable) e).isCancelled())return null;
-		if(e instanceof BanlistTempMuteEvent) {
-			duration=((BanlistTempMuteEvent)e).getDuration();
-			if(duration<0)duration=0;
-		}
+		if(e.isCancelled())return null;
 		reason=e.getReason()+"";
-		
+		duration=e.getDuration();
 		String type = duration == 0 ? "muteip" : "tempmuteip";
-		if(duration!=0)
-		data.set("i."+ip.replace(".", "_")+"."+type+".duration", duration);
+		data.set("i."+ip.replace(".", "_")+"."+type+".duration", duration!=0?duration:null);
 		data.set("i."+ip.replace(".", "_")+"."+type+".reason", reason);
 		data.set("i."+ip.replace(".", "_")+"."+type+".start", System.currentTimeMillis()/1000);
 		data.save();
@@ -91,21 +67,12 @@ public class SPunishmentAPI implements PunishmentAPI {
 	public Punishment ban(String user, long duration, String reason) {
 		String type = duration == 0 ? "ban" : "tempban";
 		if(duration<0)duration=0;
-		BanlistEvent e;
-		if(duration!=0) {
-			e = new BanlistTempBanEvent(user, reason, duration);
-		}else
-			e = new BanlistBanEvent(user, reason);
+		BanlistBanEvent e = new BanlistBanEvent(user, reason, duration);
 		TheAPI.callEvent(e);
-		if(((Cancellable) e).isCancelled())return null;
-		if(e instanceof BanlistTempBanEvent) {
-			duration=((BanlistTempBanEvent)e).getDuration();
-			if(duration<0)duration=0;
-		}
+		if(e.isCancelled())return null;
 		reason=e.getReason()+"";
-
-		if(duration!=0)
-		data.set("u."+user.toLowerCase()+"."+type+".duration", duration);
+		duration=e.getDuration();
+		data.set("u."+user.toLowerCase()+"."+type+".duration", duration!=0?duration:null);
 		data.set("u."+user.toLowerCase()+"."+type+".reason", reason);
 		data.set("u."+user.toLowerCase()+"."+type+".start", System.currentTimeMillis()/1000);
 		data.save();
@@ -119,23 +86,13 @@ public class SPunishmentAPI implements PunishmentAPI {
 		if(!ip.contains("."))
 			ip=getIp(ip);
 		if(duration<0)duration=0;
-		BanlistEvent e;
-		if(duration!=0) {
-			e = new BanlistTempBanEvent(ip, reason, duration);
-		}else
-			e = new BanlistBanEvent(ip, reason);
+		BanlistBanEvent e = new BanlistBanEvent(ip, reason, duration);
 		TheAPI.callEvent(e);
-		if(((Cancellable) e).isCancelled())return null;
-		if(e instanceof BanlistTempBanEvent) {
-			duration=((BanlistTempBanEvent)e).getDuration();
-			if(duration<0)duration=0;
-		}
+		if(e.isCancelled())return null;
 		reason=e.getReason()+"";
-		
+		duration=e.getDuration();
 		String type = duration == 0 ? "banip" : "tempbanip";
-
-		if(duration!=0)
-		data.set("i."+ip.replace(".", "_")+"."+type+".duration", duration);
+		data.set("i."+ip.replace(".", "_")+"."+type+".duration", duration!=0?duration:null);
 		data.set("i."+ip.replace(".", "_")+"."+type+".reason", reason);
 		data.set("i."+ip.replace(".", "_")+"."+type+".start", System.currentTimeMillis()/1000);
 		data.save();
@@ -152,23 +109,14 @@ public class SPunishmentAPI implements PunishmentAPI {
 		String jailId = findAnyJail();
 
 		if(duration<0)duration=0;
-		BanlistEvent e;
-		if(duration!=0) {
-			e = new BanlistTempJailEvent(user, reason, jailId, duration);
-		}else
-			e = new BanlistJailEvent(user, reason, jailId);
+		BanlistJailEvent e = new BanlistJailEvent(user, reason, duration, jailId);
 		TheAPI.callEvent(e);
-		if(((Cancellable) e).isCancelled())return null;
-		jailId=((BanlistJailEvent)e).getJailId();
+		if(e.isCancelled())return null;
+		jailId=e.getJailId();
 		if(jailId==null||getJail(jailId)==null)return null;
-		if(e instanceof BanlistTempJailEvent) {
-			duration=((BanlistTempJailEvent)e).getDuration();
-			if(duration<0)duration=0;
-		}
 		reason=e.getReason()+"";
-
-		if(duration!=0)
-		data.set("u."+user.toLowerCase()+"."+type+".duration", duration);
+		duration=e.getDuration();
+		data.set("u."+user.toLowerCase()+"."+type+".duration", duration!=0?duration:null);
 		data.set("u."+user.toLowerCase()+"."+type+".reason", reason);
 		data.set("u."+user.toLowerCase()+"."+type+".start", System.currentTimeMillis()/1000);
 		data.set("u."+user.toLowerCase()+"."+type+".position", getJail(jailId).toString());
@@ -185,25 +133,18 @@ public class SPunishmentAPI implements PunishmentAPI {
 		String jailId = findAnyJail();
 
 		if(duration<0)duration=0;
-		BanlistEvent e;
-		if(duration!=0) {
-			e = new BanlistTempJailEvent(ip, reason, jailId, duration);
-		}else
-			e = new BanlistJailEvent(ip, reason, jailId);
+		BanlistJailEvent e = new BanlistJailEvent(ip, reason, duration, jailId);
 		TheAPI.callEvent(e);
-		if(((Cancellable) e).isCancelled())return null;
-		jailId=((BanlistJailEvent)e).getJailId();
+		if(e.isCancelled())return null;
+		jailId=e.getJailId();
 		if(jailId==null||getJail(jailId)==null)return null;
-		if(e instanceof BanlistTempJailEvent) {
-			duration=((BanlistTempJailEvent)e).getDuration();
-			if(duration<0)duration=0;
-		}
 		reason=e.getReason()+"";
+		duration=e.getDuration();
 		
 		String type = duration == 0 ? "jailip" : "tempjailip";
 
 		if(duration!=0)
-		data.set("i."+ip.replace(".", "_")+"."+type+".duration", duration);
+		data.set("i."+ip.replace(".", "_")+"."+type+".duration", duration!=0?duration:null);
 		data.set("i."+ip.replace(".", "_")+"."+type+".reason", reason);
 		data.set("i."+ip.replace(".", "_")+"."+type+".start", System.currentTimeMillis()/1000);
 		data.set("i."+ip.replace(".", "_")+"."+type+".position", getJail(jailId).toString());
