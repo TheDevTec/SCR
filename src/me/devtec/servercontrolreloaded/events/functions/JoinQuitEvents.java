@@ -346,6 +346,7 @@ public class JoinQuitEvents implements Listener {
 							TheAPI.bcMsg(replaceAll(""+o, p));
 			}
 			d.set("LastLeave", setting.format_date_time.format(new Date()));
+			d.set("LastLeaveTime", System.currentTimeMillis() / 1000);
 			d.set("QuitPosition", new Position(p.getLocation()));
 			if(fly)
 				d.set("FlyOnQuit", true);

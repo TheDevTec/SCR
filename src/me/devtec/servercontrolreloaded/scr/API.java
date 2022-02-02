@@ -327,7 +327,8 @@ public class API {
 				a = StringUtils.setTimeToString(System.currentTimeMillis() / 1000 - s.getLong("JoinTime"));
 			break;
 		case Offline:
-			a = StringUtils.setTimeToString(System.currentTimeMillis() / 1000 - Bukkit.getOfflinePlayer(s.getName()).getLastPlayed() / 1000);
+			if (s.exist("LastLeaveTime"))
+				a = StringUtils.setTimeToString(System.currentTimeMillis() / 1000 - s.getLong("LastLeaveTime"));
 			break;
 		}
 		return a;
