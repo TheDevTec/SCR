@@ -112,7 +112,7 @@ public class setting {
 		am_random = f.getBoolean("Options.AutoMessage.Random");
 		if(message)
 		//if (sound && !SoundAPI.existSound(Loader.config.getString("Options.Sounds.Sound")))
-		if (sound && Sound.valueOf(Loader.config.getString("Options.Sounds.Sound"))!=null )
+		if (sound && Sound.valueOf(Loader.config.getString("Options.Sounds.Sound"))==null)
 			TheAPI.msg(prefix + " &4ERROR: &7Sound &e"+Loader.config.getString("Options.Sounds.Sound")+" &7doesn't exist", TheAPI.getConsole());
 		try {
 			if (timezone)
