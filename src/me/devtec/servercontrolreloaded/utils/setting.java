@@ -2,11 +2,12 @@ package me.devtec.servercontrolreloaded.utils;
 
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.SoundAPI;
 import me.devtec.theapi.configapi.Config;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
+
+import org.bukkit.Sound;
 
 public class setting {
 	public enum DeathTp {
@@ -110,7 +111,8 @@ public class setting {
 		am = f.getBoolean("Options.AutoMessage.Use");
 		am_random = f.getBoolean("Options.AutoMessage.Random");
 		if(message)
-		if (sound && !SoundAPI.existSound(Loader.config.getString("Options.Sounds.Sound")))
+		//if (sound && !SoundAPI.existSound(Loader.config.getString("Options.Sounds.Sound")))
+		if (sound && Sound.valueOf(Loader.config.getString("Options.Sounds.Sound"))!=null )
 			TheAPI.msg(prefix + " &4ERROR: &7Sound &e"+Loader.config.getString("Options.Sounds.Sound")+" &7doesn't exist", TheAPI.getConsole());
 		try {
 			if (timezone)

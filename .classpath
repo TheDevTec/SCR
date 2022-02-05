@@ -12,7 +12,7 @@
 	<classpathentry kind="lib" path="C:/EclipseUtils/Vault.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/PlaceholderAPI-2.10.9.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Residence5.0.1.0.jar"/>
-	<classpathentry kind="lib" path="C:/EclipseUtils/TheAPI.jar" sourcepath="/TheAPI"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/HeadDatabase-4.14.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ADAMB/Downloads/TheAPI(3).jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

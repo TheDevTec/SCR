@@ -187,6 +187,12 @@ public class Loader extends JavaPlugin implements Listener {
 			return parse(english.get(path));
 		return parse(input);
 	}
+	public static boolean TranslationIsJson(String path) {
+		Object input = trans==null?null:trans.get(path);
+		if(input==null)
+			return english.isJson(path);
+		return trans.isJson(path);
+	}
 	
 	public static boolean existsTranslation(String path) {
 		return trans==null || !trans.exists(path)?english.exists(path):trans.exists(path);
@@ -229,7 +235,7 @@ public class Loader extends JavaPlugin implements Listener {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static void sendMessages(CommandSender to, String path, Placeholder placeholders) {
+	public static void sendMessagesold(CommandSender to, String path, Placeholder placeholders) {
 		Object o = getTranslationAsObject(path);
 		if(o==null) {
 			Bukkit.getLogger().severe("[BUG] Missing configuration path [Translations]!");
@@ -277,6 +283,67 @@ public class Loader extends JavaPlugin implements Listener {
 			TheAPI.msg(placeholder(to, o+"", placeholders), to);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static void sendMessages(CommandSender to, String path, Placeholder placeholders) { //NEW
+		Object value = getTranslationAsObject(path);
+		if(value==null) {
+			Bukkit.getLogger().severe("[BUG] Missing configuration path [Translations]!");
+			Bukkit.getLogger().severe("[BUG] Report this to the DevTec discord:");
+			Bukkit.getLogger().severe("[BUG] Missing path: "+path);
+			return;
+		} //TODO
+		//Bukkit.broadcastMessage(value.toString());
+
+		String asString = getTranslationAsString(path);
+		//Bukkit.broadcastMessage(asString);
+		if(TranslationIsJson(path)) {
+			//Bukkit.broadcastMessage("ISJSON: "+asString);
+		if(value instanceof LinkedHashMap && asString.startsWith("{") || value instanceof LinkedList && asString.startsWith("[")) { //json?
+			
+			if(value instanceof Collection || value instanceof Map) {
+				value=parse(value);
+				Object json;
+				if(value instanceof Collection) {
+					json = colorizeList((Collection<?>)value,(d)->placeholder(to,d,placeholders));
+				}else
+					json = colorizeMap((Map<String, Object>)value,(d)->placeholder(to,d,placeholders));
+				List<Map<String,Object>> oo = new ArrayList<>();
+				if(json instanceof Map) {
+					oo.add((Map<String, Object>) json);
+				}else {
+					for(Object w : ((Collection<Object>)json)) {
+						if(w instanceof String)w= Json.reader().simpleRead((String)w);
+						if(w instanceof Map) {
+							oo.add((Map<String, Object>) w);
+						}else {
+							Map<String, Object> g = new HashMap<>();
+							g.put("text", w+"");
+							oo.add(g);
+						}
+					}
+				}
+				oo=ComponentAPI.fixJsonList(oo);
+				if(to instanceof Player) {
+					String jsons = Json.writer().simpleWrite(oo);
+					jsons="[\"\","+jsons.substring(1);
+					Ref.sendPacket((Player)to,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
+				}else {
+					to.sendMessage(convertToLegacy(oo));
+				}
+				return;
+			}
+		}
+		return;
+		}
+		//Bukkit.broadcastMessage("ISNOTJSON: "+asString);
+		if(value instanceof Collection) {
+			for(Object d : (Collection<?>)value)
+				TheAPI.msg(placeholder(to, d+"", placeholders), to);
+		}else
+			TheAPI.msg(placeholder(to, value+"", placeholders), to);
+	
+	}
+	
 	private static String convertToLegacy(List<Map<String, Object>> list) {
 		StringBuilder b = new StringBuilder();
 		for(Map<String, Object> text : list)
@@ -315,6 +382,8 @@ public class Loader extends JavaPlugin implements Listener {
 		}
 		if(o instanceof String && o.toString().equals(""))return;
 		String asString = getTranslationAsString(path);
+
+		if(TranslationIsJson(path)) {
 		if(o instanceof LinkedHashMap && asString.startsWith("{") || o instanceof LinkedList && asString.startsWith("[")) { //json?
 			Object json;
 			if(o instanceof Collection) {
@@ -346,6 +415,7 @@ public class Loader extends JavaPlugin implements Listener {
 			}
 			return;
 		}
+		}
 		if(o instanceof Collection) {
 			for(Object d : (Collection<?>)o)
 				TheAPI.msg(placeholder(replace, d+"", placeholders), to);
@@ -360,6 +430,8 @@ public class Loader extends JavaPlugin implements Listener {
 		if(o==null)return;
 		if(o instanceof String && o.toString().equals(""))return;
 		String asString = getTranslationAsString(path);
+
+		if(TranslationIsJson(path)) {
 		if(o instanceof LinkedHashMap && asString.startsWith("{") || o instanceof LinkedList && asString.startsWith("[")) { //json?
 			Object json;
 			if (o instanceof Collection) {
@@ -388,6 +460,7 @@ public class Loader extends JavaPlugin implements Listener {
 			TheAPI.getConsole().sendMessage(convertToLegacy(oo));
 			return;
 		}
+		}
 		if(o instanceof List) {
 			for(String s : (List<String>)o)
 				TheAPI.broadcastMessage(placeholder(whoIsSelected, s, placeholders));
@@ -401,6 +474,7 @@ public class Loader extends JavaPlugin implements Listener {
 		if(o==null)return;
 		if(o instanceof String && o.toString().equals(""))return;
 		String asString = getTranslationAsString(path);
+		if(TranslationIsJson(path)) {
 		if(o instanceof LinkedHashMap && asString.startsWith("{") || o instanceof LinkedList && asString.startsWith("[")) { //json?
 			Object json;
 			if(o instanceof Collection) {
@@ -432,7 +506,7 @@ public class Loader extends JavaPlugin implements Listener {
 					TheAPI.getConsole().sendMessage(convertToLegacy(oo));
 				return;
 		}
-		
+		}
 		if(o instanceof List) {
 			for(String s : (List<String>)o)
 				TheAPI.broadcast(placeholder(whoIsSelected, s, placeholders), perms);

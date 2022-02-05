@@ -477,7 +477,7 @@ public class Tasks {
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
 							try {
-								String json = StringUtils.colorizeJson(aa.replaceWithoutColors(p,TheAPI.getRandomFromList(l)));
+								String json = StringUtils.colorize(aa.replaceWithoutColors(p,TheAPI.getRandomFromList(l)));//TODO - colorizeJson
 								Ref.sendPacket(p, LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(json)));
 							}catch(Exception err) {
 								TheAPI.msg(aa.replace(p,TheAPI.getRandomFromList(l)), p);
@@ -491,7 +491,8 @@ public class Tasks {
 						tests = 0;
 					for(Player p : TheAPI.getOnlinePlayers()) {
 						if(Loader.config.getBoolean("Options.AutoMessage.UseJson")) {
-							Ref.sendPacket(p, LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(StringUtils.colorizeJson(aa.replaceWithoutColors(p,l.get(tests))))));
+							Ref.sendPacket(p, LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(
+									StringUtils.colorize(aa.replaceWithoutColors(p,l.get(tests)))))); //TODO - colorizeJson
 						}else {
 							TheAPI.msg(aa.replace(p,l.get(tests)), p);
 						}

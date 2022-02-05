@@ -33,7 +33,6 @@ import me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI;
 import me.devtec.servercontrolreloaded.utils.skins.SkinData;
 import me.devtec.servercontrolreloaded.utils.skins.SkinManager;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.apis.SoundAPI;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
@@ -163,8 +162,13 @@ public class JoinQuitEvents implements Listener {
 				}
 				if (!Mail.getMails(p.getName()).isEmpty())
 					Loader.sendMessages(p,"Mail.Notification", Placeholder.c().add("%amount%", "" + d.getStringList("Mails").size()));
-				if (setting.sound)
-					SoundAPI.playSound(p, f.getString("Options.Sounds.Sound"));
+				if (setting.sound) {
+					//SoundAPI.playSound(p, f.getString("Options.Sounds.Sound"));
+					try {
+						p.playSound(p.getLocation(), f.getString("Options.Sounds.Sound"), 1, 1);
+					} catch (Exception e2) { }
+				}
+				
 				d.set("JoinTime", System.currentTimeMillis() / 1000);
 				if (!d.exist("FirstJoin"))
 					d.set("FirstJoin", setting.format_date_time.format(new Date()));

@@ -45,7 +45,7 @@ public class Kick implements CommandExecutor, TabCompleter {
 				}
 				Player target = TheAPI.getPlayer(args[0]);
 				if(target!=null)target.kickPlayer(TheAPI.colorize(Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",
-						Loader.config.getString("BanSystem.Kick.Reason"))));
+						Loader.config.getString("BanSystem.Kick.Reason")) ).replace("\\n", "\n") );
 				Loader.sendMessages(s, "BanSystem.Kick.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.Kick.Reason")));
 				Loader.sendBroadcasts(s, "BanSystem.Kick.Admins", Placeholder.c().replace("%operator%", s.getName())
@@ -61,7 +61,7 @@ public class Kick implements CommandExecutor, TabCompleter {
 			if(msg.endsWith("-s")||msg.endsWith("- s")) {
 				msg = msg.endsWith("- s")?msg.substring(0, msg.length()-3):msg.substring(0, msg.length()-2);
 				Player target = TheAPI.getPlayer(args[0]);
-				if(target!=null)target.kickPlayer(TheAPI.colorize(Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",msg)));
+				if(target!=null)target.kickPlayer(TheAPI.colorize(Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",msg)).replace("\\n", "\n") );
 				Loader.sendMessages(s, "BanSystem.Kick.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"));
 				Loader.sendBroadcasts(s, "BanSystem.Kick.Admins", Placeholder.c().replace("%operator%", s.getName())
@@ -69,7 +69,7 @@ public class Kick implements CommandExecutor, TabCompleter {
 				return true;
 			}
 			Player target = TheAPI.getPlayer(args[0]);
-			if(target!=null)target.kickPlayer(TheAPI.colorize(Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",msg)));
+			if(target!=null)target.kickPlayer(TheAPI.colorize(Loader.config.getString("BanSystem.Kick.Text").replace("%reason%",msg)).replace("\\n", "\n"));
 			Loader.sendMessages(s, "BanSystem.Kick.Sender", Placeholder.c().replace("%operator%", s.getName())
 					.replace("%playername%", args[0]).replace("%player%", args[0]).replace("%reason%", msg));
 			Loader.sendBroadcasts(s, "BanSystem.Kick.Admins", Placeholder.c().replace("%operator%", s.getName())

@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
 import me.devtec.servercontrolreloaded.scr.API;
-import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.NameTagAPI;
 
 public class NameTagChanger {
@@ -20,26 +19,33 @@ public class NameTagChanger {
 			if (setting.tab_nametag) {
 				NameTagAPI n = t.get(p);
 				if (n==null)
-					t.put(p, n=TheAPI.getNameTagAPI(p, anim.replace(p,prefix), anim.replace(p,suffix)));
-				n.setPrefix(anim.replace(p,prefix));
+					t.put(p, n = new NameTagAPI(p, sortGroup));
+					//t.put(p, n = TheAPI.getNameTagAPI(p, anim.replace(p,prefix), anim.replace(p,suffix)));
+				/*n.setPrefix(anim.replace(p,prefix));
 				n.setSuffix(anim.replace(p,suffix));
-				n.setNameTag(sortGroup);
+				n.setNameTag(sortGroup);*/
+				n.set(null, anim.replace(p,prefix), anim.replace(p,suffix));
 			} else {
 				NameTagAPI n = t.get(p);
 				if (n==null)
-					t.put(p, n=TheAPI.getNameTagAPI(p, null, null));
+					t.put(p, n = new NameTagAPI(p, sortGroup));
+				/*	t.put(p, n=TheAPI.getNameTagAPI(p, null, null));
 				n.setPrefix(null);
 				n.setSuffix(null);
-				n.setNameTag(sortGroup);
+				n.setNameTag(sortGroup);*/
+				n.set(null, null, null);
 			}
 		} else {
 			if (setting.tab_nametag) {
 				NameTagAPI n = t.get(p);
 				if (n==null)
-					t.put(p, n=TheAPI.getNameTagAPI(p, anim.replace(p,prefix), anim.replace(p,suffix)));
+					t.put(p, n = new NameTagAPI(p, null));
+				n.set(null, anim.replace(p,prefix), anim.replace(p,suffix));
+				n.setName(Tasks.sss.get(p.getName()));
+				/*	t.put(p, n=TheAPI.getNameTagAPI(p, anim.replace(p,prefix), anim.replace(p,suffix)));
 				n.setPrefix(anim.replace(p,prefix));
 				n.setSuffix(anim.replace(p,suffix));
-				n.setNameTag(Tasks.sss.get(p.getName()));
+				n.setNameTag(Tasks.sss.get(p.getName()));*/
 			}
 		}
 	}
@@ -52,6 +58,7 @@ public class NameTagChanger {
 		if(p==null || p.getScoreboard()==null)return;
 		for(Team t : p.getScoreboard().getTeams())t.unregister();
 		NameTagAPI a = t.remove(p);
-		if(a!=null)a.resetNameTag();
+		//if(a!=null)a.resetNameTag();
+		if(a!=null)a.reset();
 	}
 }
