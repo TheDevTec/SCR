@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import me.devtec.scr.ConfigManager;
 import me.devtec.scr.Loader;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.NameTagAPI;
 import me.devtec.theapi.apis.TabListAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Scheduler;
@@ -109,7 +110,7 @@ public class Tablist {
 					NameTagAPI tag;
 					String sort = sorting(player);
 					nameTags.put(player.getUniqueId(), tag = new NameTagAPI(player, sort));
-					if(!tag.name.equals(sort))
+					if(!tag.getTeamName().equals(sort))
 						tag.setName(sort);
 					String prefix = nameTagPrefix(player);
 					tag.set(getColor(StringUtils.getLastColors(prefix)), prefix, nameTagSuffix(player));
