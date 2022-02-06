@@ -3,8 +3,6 @@ package me.devtec.scr.commands.economy;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.ImmutableMap;
-
 import me.devtec.scr.ConfigManager;
 import me.devtec.scr.Loader;
 import me.devtec.scr.PlaceholderBuilder;
@@ -45,8 +43,8 @@ public class Pay extends CommandHolder {
 			EconomyAPI.withdrawPlayer((Player)s, money);
 			EconomyAPI.depositPlayer(target, money-calculateFee(s, money));
 			if(!silent) {
-				Loader.send(s, "economy.pay.online.sender", PlaceholderBuilder.make(s, "sender").player(target, "target").add("value", money));
-				Loader.send(target, "economy.pay.online.target", PlaceholderBuilder.make(s, "sender").player(target, "target").add("value", money));
+				Loader.send(s, "economy.pay.online.sender", PlaceholderBuilder.make(s, "sender").player(target, "target").add("value", money).add("fee", calculateFee(s, money)));
+				Loader.send(target, "economy.pay.online.target", PlaceholderBuilder.make(s, "sender").player(target, "target").add("value", money).add("fee", calculateFee(s, money)));
 			}
 			return;
 		}
@@ -55,12 +53,10 @@ public class Pay extends CommandHolder {
 			Loader.send(s, "missing.user", PlaceholderBuilder.make(s, "sender").add("value", args[0]));
 			return;
 		}
-		ImmutableMap.builder().put("a", "b").put("c", "d").put("e","f").build();
 		EconomyAPI.withdrawPlayer((Player)s, money);
-		EconomyAPI.depositPlayer(query.getName(), money);
-		if(!silent) {
-			Loader.send(s, "economy.pay.offline.sender", PlaceholderBuilder.make(s, "sender").add("target_name", query.getName()).add("value", money));
-		}
+		EconomyAPI.depositPlayer(query.getName(), money-calculateFee(s, money));
+		if(!silent)
+			Loader.send(s, "economy.pay.offline.sender", PlaceholderBuilder.make(s, "sender").add("target_name", query.getName()).add("value", money).add("fee", calculateFee(s, money)));
 	}
 	
 	public static double calculateFee(CommandSender to, double money) {
