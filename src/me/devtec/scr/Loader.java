@@ -67,8 +67,7 @@ public class Loader extends JavaPlugin {
 				Bukkit.getServicesManager().register(net.milkbowl.vault.economy.Economy.class, economy, this, ServicePriority.Normal);
 			}
 			if(!usingLuckPerms)
-				vaultHooking(); //Permission plugin
-			
+				vaultHooking(); //Permission plugi
 		}
 		TheAPI.setPunishmentAPI(new SPunishmentAPI());
 	}
@@ -150,7 +149,7 @@ public class Loader extends JavaPlugin {
 	public static List<String> onlinePlayerNames(CommandSender sender){
 		List<Player> players = onlinePlayers(sender);
 		List<String> playerNames = new ArrayList<>(players.size());
-		for(Player player : players)playerNames.add(player.getName());
+		players.forEach(player -> playerNames.add(player.getName()));
 		return playerNames;
 	}
 

@@ -19,6 +19,7 @@ import me.devtec.scr.ConfigManager;
 import me.devtec.scr.Loader;
 import me.devtec.scr.utils.PlaceholderBuilder;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.cooldownapi.CooldownAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.utils.StringUtils;
 
@@ -43,7 +44,7 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 	public final boolean check(CommandSender s) {
 		if (hasPerms(s, null)) {
 			if(!canUse()) { //Cooldown
-				//Cooldown msg
+				Loader.send(s, "cooldown", PlaceholderBuilder.make(s, "sender").add("cooldown", getCooldown(s)));
 				return false;
 			}
 			return true;
@@ -54,6 +55,10 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 	
 	public final void noPerms(CommandSender s) {
 		Loader.send(s, "missing.perms", PlaceholderBuilder.make(s, "sender"));
+	}
+	
+	public final double getCooldown(CommandSender s) {
+		return new CooldownAPI(s.getName()).getCooldown("scr-cmd."+command);
 	}
 
 	private final boolean canUse() {
