@@ -33,6 +33,7 @@ import me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI;
 import me.devtec.servercontrolreloaded.utils.skins.SkinData;
 import me.devtec.servercontrolreloaded.utils.skins.SkinManager;
 import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.TabListAPI;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.placeholderapi.PlaceholderAPI;
@@ -87,6 +88,7 @@ public class JoinQuitEvents implements Listener {
 		}.runTask();
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerJoin(PlayerJoinEvent e) {
 		e.setJoinMessage("");
@@ -281,9 +283,12 @@ public class JoinQuitEvents implements Listener {
 				if(setting.tab) {
 					if(setting.tab_footer || setting.tab_header)
 						TabList.setFooterHeader(p);
-					if(setting.tab_nametag)
+					if(setting.tab_nametag) {
 						TabList.setNameTag(p);
+						NameTagChanger.updateVisibility(p);
+					}
 					TabList.update();
+					
 				}
 				d.set("Joins", d.getInt("Joins")+1);
 				}catch(Exception | NoSuchFieldError | NoSuchMethodError e) {}
@@ -299,7 +304,8 @@ public class JoinQuitEvents implements Listener {
 		NameTagChanger.remove(p);
 		if(Loader.hasBungee)
 			Ref.sendPacket(p,TabList.empty);
-		p.setPlayerListName(p.getName());
+		TabListAPI.setTabListName(p, null);
+		NameTagChanger.removeVisibility(p);
 		p.setDisplayName(null);
 		p.setCustomName(null);
 		User d = TheAPI.getUser(p);

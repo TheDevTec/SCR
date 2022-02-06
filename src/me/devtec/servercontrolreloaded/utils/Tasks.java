@@ -395,10 +395,10 @@ public class Tasks {
 	public static void regPlayer(Player p) {
 		if (!sss.containsKey(p.getName())) {
 			String uuid = p.getUniqueId().toString();
-			uuid = uuid.substring(0, 5);
+			uuid = uuid.substring(0, 3);
 			String pname = p.getName();
-			if (pname.length() > 5)
-				pname = pname.substring(0, 5);
+			if (pname.length() > 2)
+				pname = pname.substring(0, 2);
 			sss.put(p.getName(), uuid + pname);
 		}
 	}
@@ -416,13 +416,6 @@ public class Tasks {
 	}
 
 	private static void tab() {
-		if(setting.tab_sort)
-		tasks.add(new Tasker() {
-			public void run() {
-				for (Player p : TheAPI.getOnlinePlayers())
-					TabList.sortPlayer(p, API.getGroup(p));
-			}
-		}.runRepeating(0, 40));
 		int r = Loader.tab.getInt("Options.RefleshTick.NameTag");
 		if (r <= 0)
 			r = 1;
@@ -439,7 +432,8 @@ public class Tasks {
 			public void run() {
 				for (Player p : TheAPI.getOnlinePlayers()) {
 					TabList.setTabName(p);
-					TabList.setNameTag(p);
+					TabList.setNameTag(p); 
+					
 				}
 				TabList.update();
 			}

@@ -60,6 +60,7 @@ import me.devtec.servercontrolreloaded.utils.multiworlds.MWGUI;
 import me.devtec.servercontrolreloaded.utils.skins.DynmapSupport;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.apis.ItemCreatorAPI;
+import me.devtec.theapi.apis.TabListAPI;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.guiapi.GUI;
@@ -795,7 +796,7 @@ public class Loader extends JavaPlugin implements Listener {
 			DisplayManager.removeCache(p);
 			NameTagChanger.remove(p);
 			Ref.sendPacket(p,TabList.empty);
-			p.setPlayerListName(p.getName());
+			TabListAPI.setTabListName(p, null);
 			p.setDisplayName(null);
 			p.setCustomName(null);
 		}

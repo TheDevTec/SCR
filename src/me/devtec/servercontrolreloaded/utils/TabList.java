@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +16,6 @@ import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Team;
 
 import me.devtec.servercontrolreloaded.commands.economy.EcoTop;
 import me.devtec.servercontrolreloaded.commands.info.Staff;
@@ -63,25 +61,6 @@ public class TabList {
 		}
 		return a;
 	}
-	
-	public static void sortPlayer(Player player, String group) {
-		Tasks.regPlayer(player);
-		String sort = TabList.sorting.get(group)+Tasks.sss.get(player.getName());
-		Set<Team> teams = player.getScoreboard().getTeams();
-		Team yourTeam = player.getScoreboard().getTeam(sort);
-		if(yourTeam==null)yourTeam=player.getScoreboard().registerNewTeam(sort);
-		for(Team t : teams)
-			if(t!=yourTeam && t.hasPlayer(player))t.removePlayer(player);
-		if(!yourTeam.hasPlayer(player))
-			yourTeam.addPlayer(player);
-		for(Player other : TheAPI.getOnlinePlayers()) {
-			Team yTeam = other.getScoreboard().getTeam(sort);
-			if(yTeam==null)yTeam=other.getScoreboard().registerNewTeam(sort);
-			if(!yTeam.hasPlayer(player))
-				yTeam.addPlayer(player);
-		}
-	}
-	
 	public enum FormatType {
 		PER_PLAYER("PerPlayer"),
 		PER_WORLD("PerWorld"),
@@ -545,8 +524,8 @@ public class TabList {
 	}
 	
 	public static void setTabName(Player p) {
-		if(setting.tab_name)
-			p.setPlayerListName(getTabListName(p));
+		if(setting.tab_name) //TODO
+			TabListAPI.setTabListName(p, getTabListName(p));
 	}
 	
 	public static final Object empty = LoaderClass.nmsProvider.packetPlayerListHeaderFooter("","");
@@ -555,7 +534,7 @@ public class TabList {
 	public static void removeTab() {
 		for (Player p : TheAPI.getOnlinePlayers()) {
 			NameTagChanger.remove(p);
-			p.setPlayerListName(p.getName());
+			TabListAPI.setTabListName(p, null);
 			Ref.sendPacket(p, empty);
 		}
 	}
