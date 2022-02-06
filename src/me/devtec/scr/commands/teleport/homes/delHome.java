@@ -6,8 +6,8 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 import me.devtec.scr.Loader;
-import me.devtec.scr.PlaceholderBuilder;
 import me.devtec.scr.commands.CommandHolder;
+import me.devtec.scr.utils.PlaceholderBuilder;
 import me.devtec.theapi.TheAPI;
 
 /**

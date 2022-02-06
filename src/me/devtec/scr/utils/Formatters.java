@@ -1,4 +1,4 @@
-package me.devtec.scr;
+package me.devtec.scr.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

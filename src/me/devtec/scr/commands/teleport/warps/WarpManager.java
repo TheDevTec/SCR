@@ -8,7 +8,7 @@ import java.util.Set;
 import org.bukkit.Location;
 
 import me.devtec.scr.ConfigManager;
-import me.devtec.scr.Formatters;
+import me.devtec.scr.utils.Formatters;
 
 public class WarpManager {
 	public static class Instance {

@@ -16,8 +16,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import me.devtec.scr.JsonUtils;
-import me.devtec.scr.PlaceholderBuilder;
+import me.devtec.scr.utils.JsonUtils;
+import me.devtec.scr.utils.PlaceholderBuilder;
 import me.devtec.theapi.cooldownapi.CooldownAPI;
 import me.devtec.theapi.utils.StringUtils;
 

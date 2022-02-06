@@ -4,11 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import me.devtec.scr.ConfigManager;
-import me.devtec.scr.Formatters;
 import me.devtec.scr.Loader;
 import me.devtec.scr.commands.teleport.spawn.Spawn;
 import me.devtec.scr.commands.teleport.warps.WarpManager;
 import me.devtec.scr.modules.Module;
+import me.devtec.scr.utils.Formatters;
 import me.devtec.theapi.configapi.Config;
 
 public class CommandsManager implements Module {

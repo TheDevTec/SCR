@@ -6,5 +6,5 @@ api-version: 1.13
 description: Fully customizable plugin with many features!
 depend: [TheAPI]
 loadbefore: [Paintball,WorldGuard,Residence,MobArena,SpecializedCrates,ExcellentCrates,GoldenCrates,RevoltCrates,AdvancedMonthlyCrates,CrazyCrates,CrateReloaded]
-softdepend: [HeadDatabase,Essentials,WorldEdit,LuckPerms,dynmap]
+softdepend: [HeadDatabase,LuckPerms,dynmap]
 website: https://www.spigotmc.org/resources/71147/

@@ -10,10 +10,10 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.devtec.scr.Formatters;
 import me.devtec.scr.Loader;
-import me.devtec.scr.PlaceholderBuilder;
 import me.devtec.scr.commands.CommandHolder;
+import me.devtec.scr.utils.Formatters;
+import me.devtec.scr.utils.PlaceholderBuilder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.utils.StringUtils;
 

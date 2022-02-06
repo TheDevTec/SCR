@@ -23,6 +23,8 @@ import me.devtec.scr.modules.Scoreboard;
 import me.devtec.scr.modules.Tablist;
 import me.devtec.scr.modules.events.Listeners;
 import me.devtec.scr.punishment.SPunishmentAPI;
+import me.devtec.scr.utils.JsonUtils;
+import me.devtec.scr.utils.PlaceholderBuilder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.scheduler.Tasker;
@@ -37,6 +39,7 @@ public class Loader extends JavaPlugin {
 	public static List<Module> modules = new ArrayList<>();
 	public static Loader plugin;
 	public static Permission perms;
+	public static boolean usingLuckPerms;
 	public static SEconomy economy;
 	
 	public void onLoad() {
@@ -52,10 +55,19 @@ public class Loader extends JavaPlugin {
 		}
 		plugin=this;
 		ConfigManager.load();
+		if(Bukkit.getPluginManager().getPlugin("LuckPerms")!=null) {
+			usingLuckPerms=true;
+			TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
+			TheAPI.msg("&4SCR&7: &eFound Vault Permission plugin (LuckPerms)", TheAPI.getConsole());
+			TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
+		}
 		if(Bukkit.getPluginManager().getPlugin("Vault")!=null) {
-			economy = new SEconomy();
-			Bukkit.getServicesManager().register(net.milkbowl.vault.economy.Economy.class, economy, this, ServicePriority.Normal);
-			vaultHooking();
+			if(config.getBoolean("modules.scr-economy")) {
+				economy = new SEconomy();
+				Bukkit.getServicesManager().register(net.milkbowl.vault.economy.Economy.class, economy, this, ServicePriority.Normal);
+			}
+			if(!usingLuckPerms)
+				vaultHooking(); //Permission plugin
 			
 		}
 		TheAPI.setPunishmentAPI(new SPunishmentAPI());
@@ -79,34 +91,6 @@ public class Loader extends JavaPlugin {
 		if(config.getBoolean("modules.actionbar"))
 			modules.add(new ActionBar().load());
 		
-	}
-	
-	public void vaultHooking() {
-		TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
-		TheAPI.msg("&4SCR&7: &eAction: &fLooking for Vault Permission plugin..", TheAPI.getConsole());
-		TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
-		new Tasker() {
-			@Override
-			public void run() {
-				if (getVaultPerms()) {
-					TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
-					TheAPI.msg("&4SCR&7: &eFound Vault Permission plugin ("+perms.getName()+")", TheAPI.getConsole());
-					TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
-					cancel();
-				}
-			}
-		}.runTimer(0, 20, 15);
-	}
-
-	private boolean getVaultPerms() {
-		try {
-			RegisteredServiceProvider<Permission> provider = Bukkit.getServicesManager().getRegistration(Permission.class);
-			if (provider != null)
-				perms = provider.getProvider();
-			return perms != null;
-		} catch (Exception e) {
-			return false;
-		}
 	}
 
 	public void onDisable() {
@@ -173,6 +157,34 @@ public class Loader extends JavaPlugin {
 	//TPA & TPAHERE
 	public static long getRequestTime() {
 		return 15;
+	}
+	
+	public void vaultHooking() {
+		TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
+		TheAPI.msg("&4SCR&7: &eAction: &fLooking for Vault Permission plugin..", TheAPI.getConsole());
+		TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
+		new Tasker() {
+			@Override
+			public void run() {
+				if (getVaultPerms()) {
+					TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
+					TheAPI.msg("&4SCR&7: &eFound Vault Permission plugin ("+perms.getName()+")", TheAPI.getConsole());
+					TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
+					cancel();
+				}
+			}
+		}.runTimer(0, 20, 15);
+	}
+
+	private boolean getVaultPerms() {
+		try {
+			RegisteredServiceProvider<Permission> provider = Bukkit.getServicesManager().getRegistration(Permission.class);
+			if (provider != null)
+				perms = provider.getProvider();
+			return perms != null;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 	
 	private static final Pattern moneyPattern = Pattern.compile("([+-]*[0-9]+.*[0-9]*[E]*[0-9]*)([kmbt]|qu[ia]|se[px]|non|oct|dec|und|duo|tre|sed|nov)", Pattern.CASE_INSENSITIVE);

@@ -4,9 +4,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
-import me.devtec.scr.PlaceholderBuilder;
 import me.devtec.scr.commands.CommandHolder;
 import me.devtec.scr.commands.teleport.warps.WarpManager.Instance;
+import me.devtec.scr.utils.PlaceholderBuilder;
 
 /**
  * @author StraikerinaCZ

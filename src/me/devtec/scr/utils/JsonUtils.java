@@ -1,4 +1,4 @@
-package me.devtec.scr;
+package me.devtec.scr.utils;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -3,8 +3,8 @@ package me.devtec.scr.commands.economy;
 import org.bukkit.command.CommandSender;
 
 import me.devtec.scr.Loader;
-import me.devtec.scr.PlaceholderBuilder;
 import me.devtec.scr.commands.CommandHolder;
+import me.devtec.scr.utils.PlaceholderBuilder;
 import me.devtec.theapi.TheAPI;
 import me.devtec.theapi.economyapi.EconomyAPI;
 import me.devtec.theapi.utils.theapiutils.Cache.Query;
