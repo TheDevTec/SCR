@@ -1,16 +1,12 @@
 settings:
-  modify:
-    nametags: true
-    tablist-name: true
-    yellow-number: true
-    header-footer: true
-    
   # time is in ticks (20 = 1s) and must be higher than 0
+  # if you want to disable this function, set time to 0
   reflesh:
     nametags: 40
     tablist-name: 20
     yellow-number: 20
-    # Set to 1 if you have animations in the tablist
+    below-name: 20
+    # Set to 1 or 2 if you have animations in the tablist
     header-footer: 3
     
   # list of worlds in which you want to disable whole tab modification
@@ -24,6 +20,10 @@ header:
 # Global & default footer in the tablist
 footer:
 - ""
+
+below-name:
+  value: "%hp%"
+  show_type: hearts
 
 yellow-number: 
   value: "%ping%"

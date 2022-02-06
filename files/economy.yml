@@ -6,7 +6,7 @@ economy:
     enabled: false
     # Economy groups
     default:
-      # If you do not set start-money, the plugin will use the default start-money listed above.
+      # If you do not set start-money, plugin will use the default start-money listed above.
       # start-money: 300
       list:
       - "world"
@@ -28,13 +28,14 @@ payment:
   maximum-payment: -1
   
   fees:
+    enabled: false
     # Fee for every payment - calculator
     calculator: "(%fee% / 365) * %money%"
     per-group:
       default: 3.9
       vip: 2.5
       # no fee.
-      admin: 365
-      owner: 365
+      admin: 0
+      owner: 0
     per-player:
-      InsertPlayerName: 365
+      InsertPlayerName: 0

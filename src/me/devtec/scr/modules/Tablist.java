@@ -18,30 +18,29 @@ import me.devtec.theapi.placeholderapi.PlaceholderAPI;
 import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.components.ComponentAPI;
 import me.devtec.theapi.utils.nms.NmsProvider.Action;
 import me.devtec.theapi.utils.nms.NmsProvider.DisplayType;
-import me.devtec.theapi.utils.nms.NmsProvider.PlayerInfoType;
 import me.devtec.theapi.utils.reflections.Ref;
 import me.devtec.theapi.utils.theapiutils.LoaderClass;
 
-public class Tablist {
-	public static boolean isLoaded;
-	private static int task, task2, task3, task4;
-	public static List<String> disabledWorlds;
-	public static Map<UUID, NameTagAPI> nameTags = new HashMap<>();
-	public static Map<UUID, DisplayType> dType = new HashMap<>();
+public class Tablist implements Module {
+	private boolean isLoaded;
+	private List<Integer> tasks = new ArrayList<>();
+	public List<String> disabledWorlds;
+	public Map<UUID, NameTagAPI> nameTags = new HashMap<>();
+	public Map<UUID, DisplayType> dType = new HashMap<>(), bType = new HashMap<>();
 	
 	// Map<groupName, sortingValue>
-	public static Map<String, String> sorting = new HashMap<>();
+	public Map<String, String> sorting = new HashMap<>();
 	
-	public static List<UUID> 
+	public List<UUID> 
 	        appliedHF = new ArrayList<>(), //header footer
 	    	appliedTN = new ArrayList<>(), //tab name
 			appliedNT = new ArrayList<>(), //name tag
+			appliedBN = new ArrayList<>(), //below name
 			appliedYN = new ArrayList<>(); //yellow number
 	
-	private static void generate(List<String> value, int size) {
+	private void generate(List<String> value, int size) {
 		int current = 0;
 		
 		int length = (""+size).length()+1;
@@ -51,23 +50,32 @@ public class Tablist {
 			for(int d = 0; d < limit; ++d)
 				s+="0";
 			s+=i;
-			Tablist.sorting.put(value.get(current++), s);
+			sorting.put(value.get(current++), s);
 		}
 	}
 	
-	public static void load(List<String> sorting, List<String> dWorlds, long headerFooter, long name, long nametag, long yellownumber) {
+	public Module load() {
+		load(ConfigManager.tablist.getStringList("sorting"), ConfigManager.tablist.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.header-footer"))
+					, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.tablist-name"))
+					, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.nametag"))
+					, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.yellow-number"))
+					, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.below-name")));
+		return this;
+	}
+	
+	public void load(List<String> sorting, List<String> dWorlds, long headerFooter, long name, long nametag, long yellownumber, long belowname) {
 		if(isLoaded)return;
 		isLoaded=true;
 		disabledWorlds=dWorlds;
 		generate(sorting, sorting.size());
 		//headerFooter
 		if(headerFooter>0)
-		task = new Tasker() {
+			tasks.add(new Tasker() {
 			public void run() {
 				for(Player player : TheAPI.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedHF.contains(player.getUniqueId()))
-							disable(player, dType.remove(player.getUniqueId()));
+							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
 						continue;
 					}
 					if(!appliedHF.contains(player.getUniqueId()))
@@ -75,33 +83,31 @@ public class Tablist {
 					TabListAPI.setHeaderFooter(player, header(player), footer(player));
 				}
 			}
-		}.runRepeating(10, headerFooter);
+		}.runRepeating(10, headerFooter));
 		//playerName
 		if(name>0)
-		task2 = new Tasker() {
+			tasks.add(new Tasker() {
 			public void run() {
 				for(Player player : TheAPI.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedTN.contains(player.getUniqueId()))
-							disable(player, dType.remove(player.getUniqueId()));
+							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
 						continue;
 					}
 					if(!appliedTN.contains(player.getUniqueId()))
 						appliedTN.add(player.getUniqueId());
-					Object obj = TheAPI.getNmsProvider().packetPlayerInfo(PlayerInfoType.UPDATE_DISPLAY_NAME, player);
-					Ref.set(((List<?>)Ref.get(obj,"b")).get(0), "d", ComponentAPI.toIChatBaseComponent(ComponentAPI.toComponent(StringUtils.colorize(playerListName(player)), true)));
-					Ref.sendPacket(player, obj);
+					TabListAPI.setTabListName(player, StringUtils.colorize(playerListName(player)));
 				}
 			}
-		}.runRepeating(15, name);
+		}.runRepeating(15, name));
 		//nametag
 		if(nametag>0)
-		task3 = new Tasker() {
+			tasks.add(new Tasker() {
 			public void run() {
 				for(Player player : TheAPI.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedNT.contains(player.getUniqueId()))
-							disable(player, dType.remove(player.getUniqueId()));
+							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
 						continue;
 					}
 					if(!appliedNT.contains(player.getUniqueId())) {
@@ -114,7 +120,7 @@ public class Tablist {
 						tag.setName(sort);
 					String prefix = nameTagPrefix(player);
 					tag.set(getColor(StringUtils.getLastColors(prefix)), prefix, nameTagSuffix(player));
-					tag.send();
+					tag.send(Loader.onlinePlayers(player).toArray(new Player[0]));
 				}
 			}
 
@@ -122,15 +128,15 @@ public class Tablist {
 				if(lastColors.isEmpty())return null;
 				return ChatColor.getByChar(lastColors.charAt(1));
 			}
-		}.runRepeating(20, nametag);
+		}.runRepeating(20, nametag));
 		//yellownumber
 		if(yellownumber>0)
-		task4 = new Tasker() {
+			tasks.add(new Tasker() {
 			public void run() {
 				for(Player player : TheAPI.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedYN.contains(player.getUniqueId())) {
-							disable(player, dType.remove(player.getUniqueId()));
+							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
 						}
 						continue;
 					}
@@ -139,18 +145,18 @@ public class Tablist {
 					DisplayType previous = dType.get(player.getUniqueId());
 					if(!appliedYN.contains(player.getUniqueId())) {
 						appliedYN.add(player.getUniqueId());
-						Ref.sendPacket(player, createObjectivePacket(0,"ping",displayType));
-						Ref.sendPacket(player, createObjectivePacket(0,player.getName(),displayType));
+						Ref.sendPacket(player, createObjectivePacket(0, "ping","ping",displayType));
+						Ref.sendPacket(player, createObjectivePacket(0, "ping",player.getName(),displayType));
 						Object packet = LoaderClass.nmsProvider.packetScoreboardDisplayObjective(0, null);
 						Ref.set(packet, "b", "ping");
 						Ref.sendPacket(player, packet);
 					}else {
 						if(previous!=displayType) {
 							dType.put(player.getUniqueId(), displayType);
-							Ref.sendPacket(player, createObjectivePacket(2,"ping",previous));
-							Ref.sendPacket(player, createObjectivePacket(2,player.getName(),previous));
-							Ref.sendPacket(player, createObjectivePacket(0,"ping",displayType));
-							Ref.sendPacket(player, createObjectivePacket(0,player.getName(),displayType));
+							Ref.sendPacket(player, createObjectivePacket(2, "ping","ping",previous));
+							Ref.sendPacket(player, createObjectivePacket(2, "ping",player.getName(),previous));
+							Ref.sendPacket(player, createObjectivePacket(0, "ping","ping",displayType));
+							Ref.sendPacket(player, createObjectivePacket(0, "ping",player.getName(),displayType));
 							Object packet = LoaderClass.nmsProvider.packetScoreboardDisplayObjective(0, null);
 							Ref.set(packet, "b", "ping");
 							Ref.sendPacket(player, packet);
@@ -159,7 +165,44 @@ public class Tablist {
 					Ref.sendPacket(player, LoaderClass.nmsProvider.packetScoreboardScore(Action.CHANGE, "ping", player.getName(), number));
 				}
 			}
-		}.runRepeating(20, yellownumber);
+		}.runRepeating(20, yellownumber));
+		//belowname
+		if(belowname>0)
+			tasks.add(new Tasker() {
+			public void run() {
+				for(Player player : TheAPI.getOnlinePlayers()) {
+					if(disabledWorlds.contains(player.getWorld().getName())) {
+						if(appliedBN.contains(player.getUniqueId())) {
+							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
+						}
+						continue;
+					}
+					int number = belowName(player);
+					DisplayType displayType = belowNameDisplay(player);
+					DisplayType previous = bType.get(player.getUniqueId());
+					if(!appliedBN.contains(player.getUniqueId())) {
+						appliedBN.add(player.getUniqueId());
+						Ref.sendPacket(player, createObjectivePacket(0,"below","below",displayType));
+						Ref.sendPacket(player, createObjectivePacket(0,"below",player.getName(),displayType));
+						Object packet = LoaderClass.nmsProvider.packetScoreboardDisplayObjective(1, null);
+						Ref.set(packet, "b", "below");
+						Ref.sendPacket(player, packet);
+					}else {
+						if(previous!=displayType) {
+							bType.put(player.getUniqueId(), displayType);
+							Ref.sendPacket(player, createObjectivePacket(2,"below","below",previous));
+							Ref.sendPacket(player, createObjectivePacket(2,"below",player.getName(),previous));
+							Ref.sendPacket(player, createObjectivePacket(0,"below","below",displayType));
+							Ref.sendPacket(player, createObjectivePacket(0,"below",player.getName(),displayType));
+							Object packet = LoaderClass.nmsProvider.packetScoreboardDisplayObjective(1, null);
+							Ref.set(packet, "b", "below");
+							Ref.sendPacket(player, packet);
+						}
+					}
+					Ref.sendPacket(player, LoaderClass.nmsProvider.packetScoreboardScore(Action.CHANGE, "below", player.getName(), number));
+				}
+			}
+		}.runRepeating(20, belowname));
 	}
 	
 	/*
@@ -173,9 +216,101 @@ public class Tablist {
 	 * 4) global
 	 */
 
+	protected static int belowName(Player player) {
+		String path = "worlds."+player.getWorld().getName();
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
+		/*
+		 * 1) worlds
+		 *   1) players
+		 *   2) groups
+		 *   3) global - world
+		 */
+		if(ConfigManager.tablist.exists(path)) {
+			//players
+			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".below-name.value");
+				if(get!=null)return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, get));
+			}
+			//groups
+			if(ConfigManager.tablist.exists(path+".groups."+group)) {
+				String get = ConfigManager.tablist.getString(path+".groups."+group+".below-name.value");
+				if(get!=null)return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, get));
+			}
+			//global
+			String get = ConfigManager.tablist.getString(path+".below-name.value");
+			if(get!=null)return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, get));
+		}
+		/*
+		 * 2) players
+		 */
+		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+			//global
+			String get = ConfigManager.tablist.getString(path+".below-name.value");
+			if(get!=null)return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, get));
+		}
+		/*
+		 * 3) groups
+		 */
+		if(ConfigManager.tablist.exists(path="groups."+group)) {
+			//global
+			String get = ConfigManager.tablist.getString(path+".below-name.value");
+			if(get!=null)return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, get));
+		}
+		/*
+		 * 4) global
+		 */
+		return StringUtils.getInt(PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("below-name.value")));
+	}
+
+	protected static DisplayType belowNameDisplay(Player player) {
+		String path = "worlds."+player.getWorld().getName();
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
+		/*
+		 * 1) worlds
+		 *   1) players
+		 *   2) groups
+		 *   3) global - world
+		 */
+		if(ConfigManager.tablist.exists(path)) {
+			//players
+			if(ConfigManager.tablist.exists(path+".players."+player.getName())) {
+				String get = ConfigManager.tablist.getString(path+".players."+player.getName()+".below-name.show_type");
+				if(get!=null)return showType(get);
+			}
+			//groups
+			if(ConfigManager.tablist.exists(path+".groups."+group)) {
+				String get = ConfigManager.tablist.getString(path+".groups."+group+".below-name.show_type");
+				if(get!=null)return showType(get);
+			}
+			//global
+			String get = ConfigManager.tablist.getString(path+".below-name.show_type");
+			if(get!=null)return showType(get);
+		}
+		/*
+		 * 2) players
+		 */
+		if(ConfigManager.tablist.exists(path="players."+player.getName())) {
+			//global
+			String get = ConfigManager.tablist.getString(path+".below-name.show_type");
+			if(get!=null)return showType(get);
+		}
+		/*
+		 * 3) groups
+		 */
+		if(ConfigManager.tablist.exists(path="groups."+group)) {
+			//global
+			String get = ConfigManager.tablist.getString(path+".below-name.show_type");
+			if(get!=null)return showType(get);
+		}
+		/*
+		 * 4) global
+		 */
+		return showType(ConfigManager.tablist.getString("below-name.show_type"));
+	}
+	
 	protected static int yellowNumber(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -221,7 +356,7 @@ public class Tablist {
 
 	protected static DisplayType yellowNumberDisplay(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -271,7 +406,7 @@ public class Tablist {
 
 	protected static String footer(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -317,7 +452,7 @@ public class Tablist {
 
 	protected static String header(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -363,7 +498,7 @@ public class Tablist {
 
 	protected static String playerListName(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -409,7 +544,7 @@ public class Tablist {
 
 	protected static String nameTagPrefix(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -455,7 +590,7 @@ public class Tablist {
 
 	protected static String nameTagSuffix(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -499,33 +634,36 @@ public class Tablist {
 		return PlaceholderAPI.setPlaceholders(player, ConfigManager.tablist.getString("tag-suffix"));
 	}
 
-	protected static String sorting(Player player) {
+	protected String sorting(Player player) {
 		String def = Loader.perms!=null?sorting.get(Loader.perms.getPrimaryGroup(player)):player.getName();
 		return def==null?player.getName():def;
 	}
 
-	public static void disable(Player player, DisplayType displayType) {
+	public void disable(Player player, DisplayType displayType, DisplayType displayTypeBelow) {
 		TabListAPI.setHeaderFooter(player, "", "");
 		player.setPlayerListName(null);
 		NameTagAPI tag = nameTags.remove(player.getUniqueId());
-		if(tag!=null)tag.reset();
+		if(tag!=null)tag.reset(Loader.onlinePlayers(player).toArray(new Player[0]));
 		appliedHF.remove(player.getUniqueId());
 		appliedNT.remove(player.getUniqueId());
 		appliedTN.remove(player.getUniqueId());
 		appliedYN.remove(player.getUniqueId());
+		appliedBN.remove(player.getUniqueId());
 		if(displayType!=null)
-		Ref.sendPacket(player, createObjectivePacket(1, TheAPI.isNewVersion()?null:"", displayType));
+		Ref.sendPacket(player, createObjectivePacket(1, "ping", TheAPI.isNewVersion()?null:"", displayType));
+		if(displayTypeBelow!=null)
+		Ref.sendPacket(player, createObjectivePacket(1, "below", TheAPI.isNewVersion()?null:"", displayTypeBelow));
 	}
 	
-	private static Object createObjectivePacket(int mode, String displayName, DisplayType type) {
+	private static Object createObjectivePacket(int mode, String name, String displayName, DisplayType type) {
 		Object packet = LoaderClass.nmsProvider.packetScoreboardObjective();
 		if(TheAPI.isNewerThan(16)) {
-			Ref.set(packet, "d", "ping");
+			Ref.set(packet, "d", name);
 			Ref.set(packet, "e", Ref.IChatBaseComponentJson("{\"text\":\""+displayName+"\"}"));
 			Ref.set(packet, "f", LoaderClass.nmsProvider.getEnumScoreboardHealthDisplay(type));
 			Ref.set(packet, "g", mode);
 		}else {
-			Ref.set(packet, "a", "ping");
+			Ref.set(packet, "a", name);
 			Ref.set(packet, "b", Ref.IChatBaseComponentJson("{\"text\":\""+displayName+"\"}"));
 			if(TheAPI.isNewerThan(7)) {
 				Ref.set(packet, "c", LoaderClass.nmsProvider.getEnumScoreboardHealthDisplay(type));
@@ -536,16 +674,19 @@ public class Tablist {
 		return packet;
 	}
 
-	public static void unload() {
-		if(!isLoaded)return;
+	public Module unload() {
+		if(!isLoaded)return this;
 		isLoaded=false;
-		Scheduler.cancelTask(task);
-		Scheduler.cancelTask(task2);
-		Scheduler.cancelTask(task3);
-		Scheduler.cancelTask(task4);
+		tasks.forEach(task -> Scheduler.cancelTask(task));
+		tasks.clear();
 		sorting.clear();
 		for(Player player : TheAPI.getOnlinePlayers())
 			if(!disabledWorlds.contains(player.getWorld().getName()))
-				disable(player, dType.remove(player.getUniqueId()));
+				disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
+		return this;
+	}
+	
+	public boolean isLoaded() {
+		return isLoaded;
 	}
 }

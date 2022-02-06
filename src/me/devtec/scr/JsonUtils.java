@@ -90,9 +90,9 @@ public class JsonUtils {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static void msgRaw(Object value, PlaceholderBuilder builder, CommandSender... players) {
+	public static void msgRaw(Object value, boolean isJson, PlaceholderBuilder builder, CommandSender... players) {
 		if(value==null||players==null||players.length==0)return;
-		if(value instanceof Collection || value instanceof Map) {
+		if(isJson) {
 			for(CommandSender sender : players) {
 				value=parse(value);
 				Object json;
@@ -100,6 +100,7 @@ public class JsonUtils {
 					json = colorizeList((Collection<?>)value,builder);
 				}else
 					json = colorizeMap((Map<String, Object>)value,builder);
+				
 				List<Map<String,Object>> oo = new ArrayList<>();
 				if(json instanceof Map) {
 					oo.add((Map<String, Object>) json);

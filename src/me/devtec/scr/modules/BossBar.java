@@ -18,14 +18,19 @@ import me.devtec.theapi.scheduler.Scheduler;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 
-public class BossBar {
-	public static boolean isLoaded;
-	private static int task;
-	public static List<String> disabledWorlds;
-	public static Map<UUID, SBossBar> scores = new HashMap<>();
-	public static List<UUID> disabledToggle = new ArrayList<>();
+public class BossBar implements Module {
+	private boolean isLoaded;
+	private int task;
+	public List<String> disabledWorlds;
+	public Map<UUID, SBossBar> scores = new HashMap<>();
+	public List<UUID> disabledToggle = new ArrayList<>();
 	
-	public static void load(List<String> dWorlds, long time) {
+	public Module load() {
+		load(ConfigManager.bossbar.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.bossbar.getString("settings.reflesh")));
+		return this;
+	}
+	
+	public void load(List<String> dWorlds, long time) {
 		if(isLoaded)return;
 		isLoaded=true;
 		disabledWorlds=dWorlds;
@@ -76,7 +81,7 @@ public class BossBar {
 	
 	protected static String title(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -122,7 +127,7 @@ public class BossBar {
 	
 	protected static String color(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -168,7 +173,7 @@ public class BossBar {
 	
 	protected static String style(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -214,7 +219,7 @@ public class BossBar {
 	
 	protected static double progress(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -268,7 +273,7 @@ public class BossBar {
 	
 	protected static boolean canToggle(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -312,18 +317,23 @@ public class BossBar {
 		return ConfigManager.bossbar.getBoolean("toggleable");
 	}
 	
-	public static void disable(Player player) {
+	public void disable(Player player) {
 		SBossBar bar = scores.remove(player.getUniqueId());
 		if(bar!=null)
 			bar.remove();
 	}
 
-	public static void unload() {
-		if(!isLoaded)return;
+	public Module unload() {
+		if(!isLoaded)return this;
 		isLoaded=false;
 		for(SBossBar bar : scores.values())
 			bar.remove();
 		scores.clear();
 		Scheduler.cancelTask(task);
+		return this;
+	}
+	
+	public boolean isLoaded() {
+		return isLoaded;
 	}
 }

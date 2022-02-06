@@ -18,14 +18,19 @@ import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.scoreboardapi.SimpleScore;
 import me.devtec.theapi.utils.StringUtils;
 
-public class Scoreboard {
-	public static boolean isLoaded;
-	private static int task;
-	public static List<String> disabledWorlds;
-	public static Map<UUID, SimpleScore> scores = new HashMap<>();
-	public static List<UUID> disabledToggle = new ArrayList<>();
+public class Scoreboard implements Module {
+	private boolean isLoaded;
+	private int task;
+	public List<String> disabledWorlds;
+	public Map<UUID, SimpleScore> scores = new HashMap<>();
+	public List<UUID> disabledToggle = new ArrayList<>();
 	
-	public static void load(List<String> dWorlds, long time) {
+	public Module load() {
+		load(ConfigManager.scoreboard.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.scoreboard.getString("settings.reflesh")));
+		return this;
+	}
+	
+	public void load(List<String> dWorlds, long time) {
 		if(isLoaded)return;
 		isLoaded=true;
 		disabledWorlds=dWorlds;
@@ -74,7 +79,7 @@ public class Scoreboard {
 
 	protected static List<String> lines(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -119,7 +124,7 @@ public class Scoreboard {
 	}
 	protected static String title(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -173,7 +178,7 @@ public class Scoreboard {
 	
 	protected static boolean canToggle(Player player) {
 		String path = "worlds."+player.getWorld().getName();
-		String group = Loader.perms.getPrimaryGroup(player);
+		String group = Loader.perms!=null?Loader.perms.getPrimaryGroup(player):"default";
 		/*
 		 * 1) worlds
 		 *   1) players
@@ -217,18 +222,23 @@ public class Scoreboard {
 		return ConfigManager.scoreboard.getBoolean("toggleable");
 	}
 	
-	public static void disable(Player player) {
+	public void disable(Player player) {
 		if(scores.remove(player.getUniqueId())!=null)
 			SimpleScore.scores.remove(player.getName()).destroy();
 	}
 
-	public static void unload() {
-		if(!isLoaded)return;
+	public Module unload() {
+		if(!isLoaded)return this;
 		isLoaded=false;
 		for(UUID uuid : scores.keySet()) {
 			SimpleScore.scores.remove(Bukkit.getPlayer(uuid).getName()).destroy();
 		}
 		scores.clear();
 		Scheduler.cancelTask(task);
+		return this;
+	}
+	
+	public boolean isLoaded() {
+		return isLoaded;
 	}
 }

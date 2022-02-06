@@ -17,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.devtec.scr.commands.CommandsManager;
 import me.devtec.scr.modules.ActionBar;
 import me.devtec.scr.modules.BossBar;
+import me.devtec.scr.modules.Module;
 import me.devtec.scr.modules.SEconomy;
 import me.devtec.scr.modules.Scoreboard;
 import me.devtec.scr.modules.Tablist;
@@ -33,13 +34,14 @@ import net.milkbowl.vault.permission.Permission;
 public class Loader extends JavaPlugin {
 	public static Config config, defaultTranslation, translation;
 	public static List<String> positive = new ArrayList<>(), negative = new ArrayList<>();
+	public static List<Module> modules = new ArrayList<>();
 	public static Loader plugin;
 	public static Permission perms;
 	public static SEconomy economy;
 	
 	public void onLoad() {
 		//Latest TheAPI only.
-		if(VersionChecker.getVersion(LoaderClass.plugin.getDescription().getVersion(), "8.1")==VersionChecker.Version.NEW) {
+		if(VersionChecker.getVersion(LoaderClass.plugin.getDescription().getVersion(), "8.2")==VersionChecker.Version.NEW) {
 			TheAPI.msg("&8*********************************************", TheAPI.getConsole());
 			TheAPI.msg("&4SECURITY: &cYou are running on outdated version of plugin TheAPI", TheAPI.getConsole());
 			TheAPI.msg("&4SECURITY: &cPlease update plugin TheAPI to latest version.", TheAPI.getConsole());
@@ -59,43 +61,37 @@ public class Loader extends JavaPlugin {
 		TheAPI.setPunishmentAPI(new SPunishmentAPI());
 	}
 	
-	/**
-	 * TODO
-	 * - onJoin, save "position"
-	 */
-	
 	public void onEnable() {
 		if(isNaggable())
 			return;
-		CommandsManager.load();
-		Listeners.load();
+		if(config.getBoolean("modules.commands"))
+			modules.add(new CommandsManager().load());
+		if(config.getBoolean("modules.listeners"))
+			modules.add(new Listeners().load());
 		
 		//LOADING OF MODULES
 		if(config.getBoolean("modules.tablist"))
-			Tablist.load(ConfigManager.tablist.getStringList("sorting"), ConfigManager.tablist.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.header-footer"))
-					, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.tablist-name"))
-					, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.nametag"))
-					, (long)StringUtils.calculate(ConfigManager.tablist.getString("settings.reflesh.yellow-number")));
+			modules.add(new Tablist().load());
 		if(config.getBoolean("modules.scoreboard"))
-			Scoreboard.load(ConfigManager.scoreboard.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.scoreboard.getString("settings.reflesh")));
+			modules.add(new Scoreboard().load());
 		if(config.getBoolean("modules.bossbar"))
-			BossBar.load(ConfigManager.bossbar.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.bossbar.getString("settings.reflesh")));
+			modules.add(new BossBar().load());
 		if(config.getBoolean("modules.actionbar"))
-			ActionBar.load(ConfigManager.actionbar.getStringList("settings.disabledWorlds"), (long)StringUtils.calculate(ConfigManager.actionbar.getString("settings.reflesh")));
+			modules.add(new ActionBar().load());
 		
 	}
 	
 	public void vaultHooking() {
-		TheAPI.msg("&5The&dAPI&7: &8********************", TheAPI.getConsole());
-		TheAPI.msg("&5The&dAPI&7: &eAction: &fLooking for Vault Permission plugin..", TheAPI.getConsole());
-		TheAPI.msg("&5The&dAPI&7: &8********************", TheAPI.getConsole());
+		TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
+		TheAPI.msg("&4SCR&7: &eAction: &fLooking for Vault Permission plugin..", TheAPI.getConsole());
+		TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
 		new Tasker() {
 			@Override
 			public void run() {
 				if (getVaultPerms()) {
-					TheAPI.msg("&5The&dAPI&7: &8********************", TheAPI.getConsole());
-					TheAPI.msg("&5The&dAPI&7: &eFound Vault Permission plugin ("+perms.getName()+")", TheAPI.getConsole());
-					TheAPI.msg("&5The&dAPI&7: &8********************", TheAPI.getConsole());
+					TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
+					TheAPI.msg("&4SCR&7: &eFound Vault Permission plugin ("+perms.getName()+")", TheAPI.getConsole());
+					TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
 					cancel();
 				}
 			}
@@ -114,13 +110,11 @@ public class Loader extends JavaPlugin {
 	}
 
 	public void onDisable() {
-		CommandsManager.unload();
-		Listeners.unload();
-	
-		Tablist.unload();
-		Scoreboard.unload();
-		BossBar.unload();
-		ActionBar.unload();
+		if(isNaggable())
+			return;
+		modules.forEach(module -> module.unload());
+		modules.clear();
+		perms=null;
 		if (economy != null) {
 			Bukkit.getServicesManager().unregister(net.milkbowl.vault.economy.Economy.class, economy);
 			economy=null;
@@ -152,7 +146,7 @@ public class Loader extends JavaPlugin {
 	
 	public static void send(CommandSender sender, String transPath, PlaceholderBuilder builder) {
 		Object trans = translation.get(transPath);
-		JsonUtils.msgRaw(trans==null?defaultTranslation.get(transPath):trans, builder, sender);
+		JsonUtils.msgRaw(trans==null?defaultTranslation.get(transPath):trans, trans==null?defaultTranslation.isJson(transPath):translation.isJson(transPath), builder, sender);
 	}
 
 	public static List<Player> onlinePlayers(CommandSender sender){
