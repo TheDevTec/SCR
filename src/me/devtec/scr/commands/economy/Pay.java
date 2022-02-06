@@ -60,7 +60,7 @@ public class Pay extends CommandHolder {
 	}
 	
 	public static double calculateFee(CommandSender to, double money) {
-		if(to==null||money<=0||!ConfigManager.economy.getBoolean("pament.fees.enabled"))return 0;
+		if(to==null||money<=0||!ConfigManager.economy.getBoolean("payment.fees.enabled"))return 0;
 		double fee = getFee(to);
 		if(fee<=0)return 0;
 		return StringUtils.calculate(ConfigManager.economy.getString("payment.fees.calculator").replace("%fee%", fee+"").replace("%money%", money+""));
