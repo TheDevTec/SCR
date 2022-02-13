@@ -11,6 +11,8 @@ import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.devtec.scr.utils.Rule;
+
 public class AnvilPrepare implements Listener {
 	
 	public static List<Rule> rules = new ArrayList<>();

@@ -10,6 +10,8 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.devtec.scr.utils.Rule;
+
 public class ItemPickup implements Listener {
 	
 	public static List<Rule> rules = new ArrayList<>();

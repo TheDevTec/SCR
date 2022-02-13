@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
+import me.devtec.scr.utils.Rule;
+
 public class SignEdit implements Listener {
 	
 	public static List<Rule> rules = new ArrayList<>();

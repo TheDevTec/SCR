@@ -9,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerEditBookEvent;
 import org.bukkit.inventory.meta.BookMeta;
 
+import me.devtec.scr.utils.Rule;
+
 public class BookEdit implements Listener {
 	
 	public static List<Rule> rules = new ArrayList<>();

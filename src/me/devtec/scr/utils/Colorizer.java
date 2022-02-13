@@ -1,4 +1,4 @@
-package me.devtec.scr.modules.events;
+package me.devtec.scr.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
