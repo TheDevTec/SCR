@@ -76,49 +76,60 @@ public class CommandsManager implements Module {
 		for(String val : Loader.config.getStringList("negative"))
 			Loader.negative.add(val.toLowerCase());
 		//LOAD COMMANDS
+		
+		//ECONOMY
 		if(EconomyAPI.getEconomy()!=null) {
 			if(isEnabled("balance"))create(new Balance("balance"));
 			if(isEnabled("economy"))create(new Economy("economy"));
 			if(isEnabled("pay"))create(new Pay("pay"));
 		}
-		if(isEnabled("thor"))create(new Thor("thor"));
+		//SET
 		if(isEnabled("setAir"))create(new setAir("setAir"));
 		if(isEnabled("setCustomName"))create(new setCustomName("setCustomName"));
 		if(isEnabled("setDisplayName"))create(new setDisplayName("setDisplayName"));
 		if(isEnabled("setFireTicks"))create(new setFireTicks("setFireTicks"));
 		if(isEnabled("setHunger"))create(new setHunger("setHunger"));
-		if(isEnabled("reload"))create(new Reload("reload"));
-		if(isEnabled("restart"))create(new Restart("restart"));
-		if(isEnabled("stop"))create(new Stop("stop"));
 		if(isEnabled("setFlySpeed"))create(new setFlySpeed("setFlySpeed"));
 		if(isEnabled("setWalkSpeed"))create(new setWalkSpeed("setWalkSpeed"));
 		if(isEnabled("setSpeed"))create(new setSpeed("setSpeed"));
-		if(isEnabled("repair"))create(new Repair("repair"));
 		if(isEnabled("setFly"))create(new setFly("setFly"));
-		if(isEnabled("uuid"))create(new Uuid("uuid"));
+		//BAN SYSTEM
 		if(isEnabled("ban"))create(new Ban("ban"));
 		if(isEnabled("banip"))create(new BanIP("banip"));
 		if(isEnabled("kick"))create(new Kick("kick"));
 		if(isEnabled("mute"))create(new Mute("mute"));
 		if(isEnabled("muteip"))create(new MuteIP("muteip"));
 		if(isEnabled("warn"))create(new Warn("warn"));
+		//HOMES
 		if(isEnabled("delHome"))create(new delHome("delHome"));
 		if(isEnabled("setHome"))create(new setHome("setHome"));
 		if(isEnabled("otherHome"))create(new otherHome("otherHome"));
-		if(isEnabled("Home"))create(new Home("Home"));
+		if(isEnabled("home"))create(new Home("home"));
 		if(isEnabled("listHomes"))create(new listHomes("listHomes"));
+		//TELEPORT
 		if(isEnabled("tpa"))create(new Tpa("tpa"));
 		if(isEnabled("tpahere"))create(new Tpahere("tpahere"));
 		if(isEnabled("tpaccept"))create(new Tpaccept("tpaccept"));
 		if(isEnabled("tpdeny"))create(new Tpdeny("tpdeny"));
 		if(isEnabled("tpcancel"))create(new Tpcancel("tpcancel"));
+		if(isEnabled("teleport"))create(new Teleport("teleport"));
+		//SPAWN
 		if(isEnabled("setSpawn"))create(new setSpawn("setSpawn"));
 		if(isEnabled("spawn"))create(new Spawn("spawn"));
+		//WARP
 		if(isEnabled("delWarp"))create(new delWarp("delWarp"));
 		if(isEnabled("setWarp"))create(new setWarp("setWarp"));
 		if(isEnabled("warp"))create(new Warp("warp"));
 		if(isEnabled("warpEditor"))create(new WarpEditor("warpEditor"));
-		if(isEnabled("teleport"))create(new Teleport("teleport"));
+		//INFO
+		if(isEnabled("uuid"))create(new Uuid("uuid"));
+		//SERVER
+		if(isEnabled("reload"))create(new Reload("reload"));
+		if(isEnabled("restart"))create(new Restart("restart"));
+		if(isEnabled("stop"))create(new Stop("stop"));
+		//OTHER
+		if(isEnabled("repair"))create(new Repair("repair"));
+		if(isEnabled("thor"))create(new Thor("thor"));
 		return this;
 	}
 	
