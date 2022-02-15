@@ -44,7 +44,7 @@ public class Loader extends JavaPlugin {
 	
 	public void onLoad() {
 		//Latest TheAPI only.
-		if(VersionChecker.getVersion(LoaderClass.plugin.getDescription().getVersion(), "8.2")==VersionChecker.Version.NEW) {
+		if(VersionChecker.getVersion(LoaderClass.plugin.getDescription().getVersion(), "8.3")==VersionChecker.Version.NEW) {
 			TheAPI.msg("&8*********************************************", TheAPI.getConsole());
 			TheAPI.msg("&4SECURITY: &cYou are running on outdated version of plugin TheAPI", TheAPI.getConsole());
 			TheAPI.msg("&4SECURITY: &cPlease update plugin TheAPI to latest version.", TheAPI.getConsole());
@@ -67,7 +67,7 @@ public class Loader extends JavaPlugin {
 				Bukkit.getServicesManager().register(net.milkbowl.vault.economy.Economy.class, economy, this, ServicePriority.Normal);
 			}
 			if(!usingLuckPerms)
-				vaultHooking(); //Permission plugi
+				vaultHooking(); //Permission plugin
 		}
 		TheAPI.setPunishmentAPI(new SPunishmentAPI());
 	}
