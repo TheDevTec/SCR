@@ -30,7 +30,7 @@ import me.devtec.theapi.configapi.Config;
 import me.devtec.theapi.scheduler.Tasker;
 import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.VersionChecker;
-import me.devtec.theapi.utils.theapiutils.LoaderClass;
+import me.devtec.theapi.utils.theapiutils.BukkitLoader;
 import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin {
@@ -44,7 +44,7 @@ public class Loader extends JavaPlugin {
 	
 	public void onLoad() {
 		//Latest TheAPI only.
-		if(VersionChecker.getVersion(LoaderClass.plugin.getDescription().getVersion(), "8.3")==VersionChecker.Version.NEW) {
+		if(VersionChecker.getVersion(BukkitLoader.plugin.getDescription().getVersion(), "8.3")==VersionChecker.Version.NEW) {
 			TheAPI.msg("&8*********************************************", TheAPI.getConsole());
 			TheAPI.msg("&4SECURITY: &cYou are running on outdated version of plugin TheAPI", TheAPI.getConsole());
 			TheAPI.msg("&4SECURITY: &cPlease update plugin TheAPI to latest version.", TheAPI.getConsole());
@@ -133,7 +133,7 @@ public class Loader extends JavaPlugin {
 	}
 
 	public static List<Player> onlinePlayers(CommandSender sender){
-		List<Player> players = TheAPI.getOnlinePlayers();
+		List<Player> players = Bukkit.getOnlinePlayers();
 		if(sender instanceof Player) {
 			Iterator<Player> iter = players.iterator();
 			while(iter.hasNext()) {

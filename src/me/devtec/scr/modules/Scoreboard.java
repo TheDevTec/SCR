@@ -37,7 +37,7 @@ public class Scoreboard implements Module {
 		if(time>0)
 		task = new Tasker() {
 			public void run() {
-				for(Player player : TheAPI.getOnlinePlayers()) {
+				for(Player player : Bukkit.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(scores.containsKey(player.getUniqueId()))
 							disable(player);

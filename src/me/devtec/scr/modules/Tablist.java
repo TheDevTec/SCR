@@ -21,7 +21,7 @@ import me.devtec.theapi.utils.StringUtils;
 import me.devtec.theapi.utils.nms.NmsProvider.Action;
 import me.devtec.theapi.utils.nms.NmsProvider.DisplayType;
 import me.devtec.theapi.utils.reflections.Ref;
-import me.devtec.theapi.utils.theapiutils.LoaderClass;
+import me.devtec.theapi.utils.theapiutils.BukkitLoader;
 
 public class Tablist implements Module {
 	private boolean isLoaded;
@@ -72,7 +72,7 @@ public class Tablist implements Module {
 		if(headerFooter>0)
 			tasks.add(new Tasker() {
 			public void run() {
-				for(Player player : TheAPI.getOnlinePlayers()) {
+				for(Player player : Bukkit.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedHF.contains(player.getUniqueId()))
 							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
@@ -88,7 +88,7 @@ public class Tablist implements Module {
 		if(name>0)
 			tasks.add(new Tasker() {
 			public void run() {
-				for(Player player : TheAPI.getOnlinePlayers()) {
+				for(Player player : Bukkit.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedTN.contains(player.getUniqueId()))
 							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
@@ -104,7 +104,7 @@ public class Tablist implements Module {
 		if(nametag>0)
 			tasks.add(new Tasker() {
 			public void run() {
-				for(Player player : TheAPI.getOnlinePlayers()) {
+				for(Player player : Bukkit.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedNT.contains(player.getUniqueId()))
 							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
@@ -133,7 +133,7 @@ public class Tablist implements Module {
 		if(yellownumber>0)
 			tasks.add(new Tasker() {
 			public void run() {
-				for(Player player : TheAPI.getOnlinePlayers()) {
+				for(Player player : Bukkit.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedYN.contains(player.getUniqueId())) {
 							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
@@ -145,24 +145,24 @@ public class Tablist implements Module {
 					DisplayType previous = dType.get(player.getUniqueId());
 					if(!appliedYN.contains(player.getUniqueId())) {
 						appliedYN.add(player.getUniqueId());
-						Ref.sendPacket(player, createObjectivePacket(0, "ping","ping",displayType));
-						Ref.sendPacket(player, createObjectivePacket(0, "ping",player.getName(),displayType));
-						Object packet = LoaderClass.nmsProvider.packetScoreboardDisplayObjective(0, null);
+						BukkitLoader.getPacketHandler().send(player, createObjectivePacket(0, "ping","ping",displayType));
+						BukkitLoader.getPacketHandler().send(player, createObjectivePacket(0, "ping",player.getName(),displayType));
+						Object packet = BukkitLoader.getNmsProvider().packetScoreboardDisplayObjective(0, null);
 						Ref.set(packet, "b", "ping");
-						Ref.sendPacket(player, packet);
+						BukkitLoader.getPacketHandler().send(player, packet);
 					}else {
 						if(previous!=displayType) {
 							dType.put(player.getUniqueId(), displayType);
-							Ref.sendPacket(player, createObjectivePacket(2, "ping","ping",previous));
-							Ref.sendPacket(player, createObjectivePacket(2, "ping",player.getName(),previous));
-							Ref.sendPacket(player, createObjectivePacket(0, "ping","ping",displayType));
-							Ref.sendPacket(player, createObjectivePacket(0, "ping",player.getName(),displayType));
-							Object packet = LoaderClass.nmsProvider.packetScoreboardDisplayObjective(0, null);
+							BukkitLoader.getPacketHandler().send(player, createObjectivePacket(2, "ping","ping",previous));
+							BukkitLoader.getPacketHandler().send(player, createObjectivePacket(2, "ping",player.getName(),previous));
+							BukkitLoader.getPacketHandler().send(player, createObjectivePacket(0, "ping","ping",displayType));
+							BukkitLoader.getPacketHandler().send(player, createObjectivePacket(0, "ping",player.getName(),displayType));
+							Object packet = BukkitLoader.getNmsProvider().packetScoreboardDisplayObjective(0, null);
 							Ref.set(packet, "b", "ping");
-							Ref.sendPacket(player, packet);
+							BukkitLoader.getPacketHandler().send(player, packet);
 						}
 					}
-					Ref.sendPacket(player, LoaderClass.nmsProvider.packetScoreboardScore(Action.CHANGE, "ping", player.getName(), number));
+					BukkitLoader.getPacketHandler().send(player, BukkitLoader.getNmsProvider().packetScoreboardScore(Action.CHANGE, "ping", player.getName(), number));
 				}
 			}
 		}.runRepeating(20, yellownumber));
@@ -170,7 +170,7 @@ public class Tablist implements Module {
 		if(belowname>0)
 			tasks.add(new Tasker() {
 			public void run() {
-				for(Player player : TheAPI.getOnlinePlayers()) {
+				for(Player player : Bukkit.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedBN.contains(player.getUniqueId())) {
 							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
@@ -182,24 +182,24 @@ public class Tablist implements Module {
 					DisplayType previous = bType.get(player.getUniqueId());
 					if(!appliedBN.contains(player.getUniqueId())) {
 						appliedBN.add(player.getUniqueId());
-						Ref.sendPacket(player, createObjectivePacket(0,"below","below",displayType));
-						Ref.sendPacket(player, createObjectivePacket(0,"below",player.getName(),displayType));
-						Object packet = LoaderClass.nmsProvider.packetScoreboardDisplayObjective(1, null);
+						BukkitLoader.getPacketHandler().send(player, createObjectivePacket(0,"below","below",displayType));
+						BukkitLoader.getPacketHandler().send(player, createObjectivePacket(0,"below",player.getName(),displayType));
+						Object packet = BukkitLoader.getNmsProvider().packetScoreboardDisplayObjective(1, null);
 						Ref.set(packet, "b", "below");
-						Ref.sendPacket(player, packet);
+						BukkitLoader.getPacketHandler().send(player, packet);
 					}else {
 						if(previous!=displayType) {
 							bType.put(player.getUniqueId(), displayType);
-							Ref.sendPacket(player, createObjectivePacket(2,"below","below",previous));
-							Ref.sendPacket(player, createObjectivePacket(2,"below",player.getName(),previous));
-							Ref.sendPacket(player, createObjectivePacket(0,"below","below",displayType));
-							Ref.sendPacket(player, createObjectivePacket(0,"below",player.getName(),displayType));
-							Object packet = LoaderClass.nmsProvider.packetScoreboardDisplayObjective(1, null);
+							BukkitLoader.getPacketHandler().send(player, createObjectivePacket(2,"below","below",previous));
+							BukkitLoader.getPacketHandler().send(player, createObjectivePacket(2,"below",player.getName(),previous));
+							BukkitLoader.getPacketHandler().send(player, createObjectivePacket(0,"below","below",displayType));
+							BukkitLoader.getPacketHandler().send(player, createObjectivePacket(0,"below",player.getName(),displayType));
+							Object packet = BukkitLoader.getNmsProvider().packetScoreboardDisplayObjective(1, null);
 							Ref.set(packet, "b", "below");
-							Ref.sendPacket(player, packet);
+							BukkitLoader.getPacketHandler().send(player, packet);
 						}
 					}
-					Ref.sendPacket(player, LoaderClass.nmsProvider.packetScoreboardScore(Action.CHANGE, "below", player.getName(), number));
+					BukkitLoader.getPacketHandler().send(player, BukkitLoader.getNmsProvider().packetScoreboardScore(Action.CHANGE, "below", player.getName(), number));
 				}
 			}
 		}.runRepeating(20, belowname));
@@ -650,23 +650,23 @@ public class Tablist implements Module {
 		appliedYN.remove(player.getUniqueId());
 		appliedBN.remove(player.getUniqueId());
 		if(displayType!=null)
-		Ref.sendPacket(player, createObjectivePacket(1, "ping", TheAPI.isNewVersion()?null:"", displayType));
+		BukkitLoader.getPacketHandler().send(player, createObjectivePacket(1, "ping", TheAPI.isNewVersion()?null:"", displayType));
 		if(displayTypeBelow!=null)
-		Ref.sendPacket(player, createObjectivePacket(1, "below", TheAPI.isNewVersion()?null:"", displayTypeBelow));
+		BukkitLoader.getPacketHandler().send(player, createObjectivePacket(1, "below", TheAPI.isNewVersion()?null:"", displayTypeBelow));
 	}
 	
 	private static Object createObjectivePacket(int mode, String name, String displayName, DisplayType type) {
-		Object packet = LoaderClass.nmsProvider.packetScoreboardObjective();
+		Object packet = BukkitLoader.getNmsProvider().packetScoreboardObjective();
 		if(TheAPI.isNewerThan(16)) {
 			Ref.set(packet, "d", name);
 			Ref.set(packet, "e", Ref.IChatBaseComponentJson("{\"text\":\""+displayName+"\"}"));
-			Ref.set(packet, "f", LoaderClass.nmsProvider.getEnumScoreboardHealthDisplay(type));
+			Ref.set(packet, "f", BukkitLoader.getNmsProvider().getEnumScoreboardHealthDisplay(type));
 			Ref.set(packet, "g", mode);
 		}else {
 			Ref.set(packet, "a", name);
 			Ref.set(packet, "b", Ref.IChatBaseComponentJson("{\"text\":\""+displayName+"\"}"));
 			if(TheAPI.isNewerThan(7)) {
-				Ref.set(packet, "c", LoaderClass.nmsProvider.getEnumScoreboardHealthDisplay(type));
+				Ref.set(packet, "c", BukkitLoader.getNmsProvider().getEnumScoreboardHealthDisplay(type));
 				Ref.set(packet, "d", mode);
 			}else
 				Ref.set(packet, "c", mode);
@@ -680,7 +680,7 @@ public class Tablist implements Module {
 		tasks.forEach(task -> Scheduler.cancelTask(task));
 		tasks.clear();
 		sorting.clear();
-		for(Player player : TheAPI.getOnlinePlayers())
+		for(Player player : Bukkit.getOnlinePlayers())
 			if(!disabledWorlds.contains(player.getWorld().getName()))
 				disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
 		return this;

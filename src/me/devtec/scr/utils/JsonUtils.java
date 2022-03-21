@@ -20,7 +20,7 @@ import me.devtec.theapi.utils.components.ComponentAPI;
 import me.devtec.theapi.utils.json.Json;
 import me.devtec.theapi.utils.nms.NmsProvider.ChatType;
 import me.devtec.theapi.utils.reflections.Ref;
-import me.devtec.theapi.utils.theapiutils.LoaderClass;
+import me.devtec.theapi.utils.theapiutils.BukkitLoader;
 
 public class JsonUtils {
 	
@@ -76,7 +76,7 @@ public class JsonUtils {
 			oo=ComponentAPI.fixJsonList(oo);
 			String jsons = Json.writer().simpleWrite(oo);
 			jsons="[\"\","+jsons.substring(1);
-			Ref.sendPacket(targets,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
+			BukkitLoader.getPacketHandler().send(targets,BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, BukkitLoader.getNmsProvider().chatBase(jsons)));
 			return convertToLegacy(oo);
 		}
 		if(value instanceof Collection) {
@@ -120,7 +120,7 @@ public class JsonUtils {
 				if(sender instanceof Player) {
 					String jsons = Json.writer().simpleWrite(oo);
 					jsons="[\"\","+jsons.substring(1);
-					Ref.sendPacket((Player)sender,LoaderClass.nmsProvider.packetChat(ChatType.SYSTEM, LoaderClass.nmsProvider.chatBase(jsons)));
+					BukkitLoader.getPacketHandler().send((Player)sender,BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, BukkitLoader.getNmsProvider().chatBase(jsons)));
 				}else {
 					sender.sendMessage(convertToLegacy(oo));
 				}

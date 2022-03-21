@@ -117,7 +117,7 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 			}
 			if(value.equals("{all-players}")) {
 				List<String> players = new ArrayList<>();
-				for(Player player : TheAPI.getOnlinePlayers())players.add(player.getName());
+				for(Player player : Bukkit.getOnlinePlayers())players.add(player.getName());
 				s.addAll(players);
 				continue;
 			}

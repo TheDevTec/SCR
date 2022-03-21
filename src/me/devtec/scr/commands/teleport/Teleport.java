@@ -44,7 +44,7 @@ public class Teleport extends CommandHolder {
 		case 2:
 			if((target2=requireOnline(sender, args[1]))==null)return;
 			if(loop) {
-				for(Player player : TheAPI.getOnlinePlayers()) {
+				for(Player player : Bukkit.getOnlinePlayers()) {
 					if(player==target2)continue;
 					player.teleport(target2);
 					if(!silent) {
@@ -91,7 +91,7 @@ public class Teleport extends CommandHolder {
 			target=TheAPI.getPlayer(args[0]);
 			if(target==null) {
 				if(loop) {
-					for(Player player : TheAPI.getOnlinePlayers()) {
+					for(Player player : Bukkit.getOnlinePlayers()) {
 						yaw=player.getLocation().getYaw();
 						pitch=player.getLocation().getPitch();
 						x=StringUtils.calculate(args[1].replace("~", (sender instanceof Player ? ((Player)sender).getLocation().getX() : 0)+""));
@@ -154,7 +154,7 @@ public class Teleport extends CommandHolder {
 			target=TheAPI.getPlayer(args[0]);
 			if(target==null) {
 				if(loop) {
-					for(Player player : TheAPI.getOnlinePlayers()) {
+					for(Player player : Bukkit.getOnlinePlayers()) {
 						pitch=player.getLocation().getPitch();
 						x=StringUtils.calculate(args[1].replace("~", (sender instanceof Player ? ((Player)sender).getLocation().getX() : 0)+""));
 						y=StringUtils.calculate(args[2].replace("~", (sender instanceof Player ? ((Player)sender).getLocation().getY() : 0)+""));
@@ -225,7 +225,7 @@ public class Teleport extends CommandHolder {
 			target=TheAPI.getPlayer(args[0]);
 			if(target==null) {
 				if(loop) {
-					for(Player player : TheAPI.getOnlinePlayers()) {
+					for(Player player : Bukkit.getOnlinePlayers()) {
 						x=StringUtils.calculate(args[1].replace("~", (sender instanceof Player ? ((Player)sender).getLocation().getX() : 0)+""));
 						y=StringUtils.calculate(args[2].replace("~", (sender instanceof Player ? ((Player)sender).getLocation().getY() : 0)+""));
 						z=StringUtils.calculate(args[3].replace("~", (sender instanceof Player ? ((Player)sender).getLocation().getZ() : 0)+""));
@@ -300,7 +300,7 @@ public class Teleport extends CommandHolder {
 				yaw=StringUtils.calculate(args[4].replace("~", (sender instanceof Player ? ((Player)sender).getLocation().getYaw() : 0)+""));
 				pitch=StringUtils.calculate(args[5].replace("~", (sender instanceof Player ? ((Player)sender).getLocation().getPitch() : 0)+""));
 				if(loop) {
-					for(Player player : TheAPI.getOnlinePlayers()) {
+					for(Player player : Bukkit.getOnlinePlayers()) {
 						player.teleport(new Location(world,x,y,z,(float)yaw,(float)pitch));
 						if(!silent) {
 							if(player==sender) {

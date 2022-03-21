@@ -29,7 +29,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 		String type = duration == 0 ? "mute" : "tempmute";
 		if(duration<0)duration=0;
 		BanlistMuteEvent e = new BanlistMuteEvent(user, reason, duration);
-		TheAPI.callEvent(e);
+		HandlerList.callEvent(e);
 		if(e.isCancelled())return null;
 		reason=e.getReason()+"";
 		duration=e.getDuration();
@@ -48,7 +48,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 			ip=getIp(ip);
 		if(duration<0)duration=0;
 		BanlistMuteEvent e = new BanlistMuteEvent(ip, reason, duration);
-		TheAPI.callEvent(e);
+		HandlerList.callEvent(e);
 		if(e.isCancelled())return null;
 		reason=e.getReason()+"";
 		duration=e.getDuration();
@@ -68,7 +68,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 		String type = duration == 0 ? "ban" : "tempban";
 		if(duration<0)duration=0;
 		BanlistBanEvent e = new BanlistBanEvent(user, reason, duration);
-		TheAPI.callEvent(e);
+		HandlerList.callEvent(e);
 		if(e.isCancelled())return null;
 		reason=e.getReason()+"";
 		duration=e.getDuration();
@@ -87,7 +87,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 			ip=getIp(ip);
 		if(duration<0)duration=0;
 		BanlistBanEvent e = new BanlistBanEvent(ip, reason, duration);
-		TheAPI.callEvent(e);
+		HandlerList.callEvent(e);
 		if(e.isCancelled())return null;
 		reason=e.getReason()+"";
 		duration=e.getDuration();
@@ -110,7 +110,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 
 		if(duration<0)duration=0;
 		BanlistJailEvent e = new BanlistJailEvent(user, reason, duration, jailId);
-		TheAPI.callEvent(e);
+		HandlerList.callEvent(e);
 		if(e.isCancelled())return null;
 		jailId=e.getJailId();
 		if(jailId==null||getJail(jailId)==null)return null;
@@ -134,7 +134,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 
 		if(duration<0)duration=0;
 		BanlistJailEvent e = new BanlistJailEvent(ip, reason, duration, jailId);
-		TheAPI.callEvent(e);
+		HandlerList.callEvent(e);
 		if(e.isCancelled())return null;
 		jailId=e.getJailId();
 		if(jailId==null||getJail(jailId)==null)return null;
@@ -184,7 +184,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 		case BAN:
 			//message (just log to %appdata%/.minecraft/logs/latest.log ?) & kick
 			if(punish.getTypeName().endsWith("ip")) {
-				for(Player p : TheAPI.getOnlinePlayers()) {
+				for(Player p : Bukkit.getOnlinePlayers()) {
 					if(getIp(p.getName()).equals(punish.getUser())) {
 						String reason = punish.getReason().replace("%player%", p.getName());
 						if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
@@ -206,7 +206,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 		case JAIL:
 			//teleport & message
 			if(punish.getTypeName().endsWith("ip")) {
-				for(Player p : TheAPI.getOnlinePlayers()) {
+				for(Player p : Bukkit.getOnlinePlayers()) {
 					if(getIp(p.getName()).equals(punish.getUser())) {
 						String reason = punish.getReason().replace("%player%", p.getName());
 						if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
@@ -228,7 +228,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 		case MUTE:
 			//message
 			if(punish.getTypeName().endsWith("ip")) {
-				for(Player p : TheAPI.getOnlinePlayers()) {
+				for(Player p : Bukkit.getOnlinePlayers()) {
 					if(getIp(p.getName()).equals(punish.getUser())) {
 						String reason = punish.getReason().replace("%player%", p.getName());
 						if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
