@@ -72,7 +72,7 @@ public class Tablist implements Module {
 		if(headerFooter>0)
 			tasks.add(new Tasker() {
 			public void run() {
-				for(Player player : Bukkit.getOnlinePlayers()) {
+				for(Player player : BukkitLoader.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedHF.contains(player.getUniqueId()))
 							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
@@ -88,7 +88,7 @@ public class Tablist implements Module {
 		if(name>0)
 			tasks.add(new Tasker() {
 			public void run() {
-				for(Player player : Bukkit.getOnlinePlayers()) {
+				for(Player player : BukkitLoader.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedTN.contains(player.getUniqueId()))
 							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
@@ -104,7 +104,7 @@ public class Tablist implements Module {
 		if(nametag>0)
 			tasks.add(new Tasker() {
 			public void run() {
-				for(Player player : Bukkit.getOnlinePlayers()) {
+				for(Player player : BukkitLoader.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedNT.contains(player.getUniqueId()))
 							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
@@ -133,7 +133,7 @@ public class Tablist implements Module {
 		if(yellownumber>0)
 			tasks.add(new Tasker() {
 			public void run() {
-				for(Player player : Bukkit.getOnlinePlayers()) {
+				for(Player player : BukkitLoader.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedYN.contains(player.getUniqueId())) {
 							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
@@ -170,7 +170,7 @@ public class Tablist implements Module {
 		if(belowname>0)
 			tasks.add(new Tasker() {
 			public void run() {
-				for(Player player : Bukkit.getOnlinePlayers()) {
+				for(Player player : BukkitLoader.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(appliedBN.contains(player.getUniqueId())) {
 							disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
@@ -680,7 +680,7 @@ public class Tablist implements Module {
 		tasks.forEach(task -> Scheduler.cancelTask(task));
 		tasks.clear();
 		sorting.clear();
-		for(Player player : Bukkit.getOnlinePlayers())
+		for(Player player : BukkitLoader.getOnlinePlayers())
 			if(!disabledWorlds.contains(player.getWorld().getName()))
 				disable(player, dType.remove(player.getUniqueId()), bType.remove(player.getUniqueId()));
 		return this;

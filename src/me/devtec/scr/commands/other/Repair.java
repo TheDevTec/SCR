@@ -40,7 +40,7 @@ public class Repair extends CommandHolder {
 			break;
 		default:
 			if(loop) {
-				for(Player player : Bukkit.getOnlinePlayers())
+				for(Player player : BukkitLoader.getOnlinePlayers())
 					apply(s, player, args[0].equalsIgnoreCase("hand")||args[0].equalsIgnoreCase("hold"), silent);
 			}else {
 				Player player;

@@ -1,6 +1,7 @@
 package me.devtec.scr.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -13,14 +14,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.devtec.shared.components.ComponentAPI;
+import me.devtec.shared.json.Json;
+import me.devtec.shared.placeholders.PlaceholderAPI;
+import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.placeholderapi.PlaceholderAPI;
-import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.components.ComponentAPI;
-import me.devtec.theapi.utils.json.Json;
-import me.devtec.theapi.utils.nms.NmsProvider.ChatType;
-import me.devtec.theapi.utils.reflections.Ref;
-import me.devtec.theapi.utils.theapiutils.BukkitLoader;
+import me.devtec.theapi.bukkit.BukkitLoader;
+import me.devtec.theapi.bukkit.nms.NmsProvider.ChatType;
 
 public class JsonUtils {
 	
@@ -73,19 +73,20 @@ public class JsonUtils {
 					}
 				}
 			}
+			if(oo.isEmpty())return "";
 			oo=ComponentAPI.fixJsonList(oo);
 			String jsons = Json.writer().simpleWrite(oo);
 			jsons="[\"\","+jsons.substring(1);
-			BukkitLoader.getPacketHandler().send(targets,BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, BukkitLoader.getNmsProvider().chatBase(jsons)));
+			BukkitLoader.getPacketHandler().send(Arrays.asList(targets),BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, BukkitLoader.getNmsProvider().chatBase(jsons)));
 			return convertToLegacy(oo);
 		}
 		if(value instanceof Collection) {
 			for(Object d : (Collection<?>)value)
 				for(Player target : targets)
-					TheAPI.msg(PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender:null,d+""), target);
+					Loader.msg(PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender:null,d+""), target);
 		}else
 			for(Player target : targets)
-				TheAPI.msg(PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender:null,value+""), target);
+				Loader.msg(PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender:null,value+""), target);
 		return value+"";
 	}
 	
@@ -116,6 +117,7 @@ public class JsonUtils {
 						}
 					}
 				}
+				if(oo.isEmpty())return;
 				oo=ComponentAPI.fixJsonList(oo);
 				if(sender instanceof Player) {
 					String jsons = Json.writer().simpleWrite(oo);
@@ -130,9 +132,9 @@ public class JsonUtils {
 		for(CommandSender sender : players) {
 			if(value instanceof Collection) {
 				for(Object d : (Collection<?>)value)
-					TheAPI.msg(PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender:null,d+""), sender);
+					Loader.msg(PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender:null,d+""), sender);
 			}else
-				TheAPI.msg(PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender:null,value+""), sender);
+				Loader.msg(PlaceholderAPI.setPlaceholders(sender instanceof Player ? (Player)sender:null,value+""), sender);
 		}
 	}
 	

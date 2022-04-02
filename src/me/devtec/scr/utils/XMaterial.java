@@ -26,8 +26,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.utils.StringUtils;
+import me.devtec.shared.Ref;
+import me.devtec.shared.utility.StringUtils;
 
 public enum XMaterial {
     ACACIA_BOAT("BOAT_ACACIA"),
@@ -1367,7 +1367,7 @@ public enum XMaterial {
         this.data = data;
         int i = -1;
         Material mat = null;
-        if(TheAPI.isNewVersion()) {
+        if(Ref.isNewerThan(12)) {
     	try {
     		mat=Material.matchMaterial(name());
     	}catch(Exception er) {}
@@ -1510,6 +1510,6 @@ public enum XMaterial {
     }
     
     public static boolean supports(int version) {
-        return TheAPI.isNewerThan(version);
+        return Ref.isNewerThan(version);
     }
 }

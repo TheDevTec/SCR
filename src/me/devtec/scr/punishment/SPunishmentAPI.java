@@ -184,12 +184,12 @@ public class SPunishmentAPI implements PunishmentAPI {
 		case BAN:
 			//message (just log to %appdata%/.minecraft/logs/latest.log ?) & kick
 			if(punish.getTypeName().endsWith("ip")) {
-				for(Player p : Bukkit.getOnlinePlayers()) {
+				for(Player p : BukkitLoader.getOnlinePlayers()) {
 					if(getIp(p.getName()).equals(punish.getUser())) {
 						String reason = punish.getReason().replace("%player%", p.getName());
 						if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
 						reason=PlaceholderAPI.setPlaceholders(p, reason);
-						TheAPI.msg(reason, p);
+						Loader.msg(reason, p);
 						p.kickPlayer(TheAPI.colorize(reason));
 					}
 				}
@@ -199,19 +199,19 @@ public class SPunishmentAPI implements PunishmentAPI {
 				String reason = punish.getReason().replace("%player%", p.getName());
 				if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
 				reason=PlaceholderAPI.setPlaceholders(p, reason);
-				TheAPI.msg(reason, p);
+				Loader.msg(reason, p);
 				p.kickPlayer(TheAPI.colorize(reason));
 			}
 			break;
 		case JAIL:
 			//teleport & message
 			if(punish.getTypeName().endsWith("ip")) {
-				for(Player p : Bukkit.getOnlinePlayers()) {
+				for(Player p : BukkitLoader.getOnlinePlayers()) {
 					if(getIp(p.getName()).equals(punish.getUser())) {
 						String reason = punish.getReason().replace("%player%", p.getName());
 						if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
 						reason=PlaceholderAPI.setPlaceholders(p, reason);
-						TheAPI.msg(reason, p);
+						Loader.msg(reason, p);
 						p.teleport(Position.fromString(punish.getValue("position").toString()).toLocation());
 					}
 				}
@@ -221,19 +221,19 @@ public class SPunishmentAPI implements PunishmentAPI {
 				String reason = punish.getReason().replace("%player%", p.getName());
 				if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
 				reason=PlaceholderAPI.setPlaceholders(p, reason);
-				TheAPI.msg(reason, p);
+				Loader.msg(reason, p);
 				p.teleport(Position.fromString(punish.getValue("position").toString()).toLocation());
 			}
 			break;
 		case MUTE:
 			//message
 			if(punish.getTypeName().endsWith("ip")) {
-				for(Player p : Bukkit.getOnlinePlayers()) {
+				for(Player p : BukkitLoader.getOnlinePlayers()) {
 					if(getIp(p.getName()).equals(punish.getUser())) {
 						String reason = punish.getReason().replace("%player%", p.getName());
 						if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
 						reason=PlaceholderAPI.setPlaceholders(p, reason);
-						TheAPI.msg(reason, p);
+						Loader.msg(reason, p);
 					}
 				}
 			}else {
@@ -242,7 +242,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 				String reason = punish.getReason().replace("%player%", p.getName());
 				if(punish.getDuration()!=0)reason=reason.replace("%time%", StringUtils.timeToString(punish.getExpire()));
 				reason=PlaceholderAPI.setPlaceholders(p, reason);
-				TheAPI.msg(reason, p);
+				Loader.msg(reason, p);
 			}
 			break;
 		case CUSTOM:
@@ -255,7 +255,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 	public void warn(String user, String reason) {
 		Player s = TheAPI.getPlayerOrNull(user);
 		if(s!=null) {
-			TheAPI.msg(reason, s);
+			Loader.msg(reason, s);
 			return;
 		}
 		User d = TheAPI.getUser(user);
@@ -268,7 +268,7 @@ public class SPunishmentAPI implements PunishmentAPI {
 	public static void sendWarnings(Player s) {
 		User d = TheAPI.getUser(s);
 		for(String f : d.getStringList("warnings")) {
-			TheAPI.msg(f, s);
+			Loader.msg(f, s);
 		}
 		d.remove("warnings");
 		d.save();

@@ -117,7 +117,7 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 			}
 			if(value.equals("{all-players}")) {
 				List<String> players = new ArrayList<>();
-				for(Player player : Bukkit.getOnlinePlayers())players.add(player.getName());
+				for(Player player : BukkitLoader.getOnlinePlayers())players.add(player.getName());
 				s.addAll(players);
 				continue;
 			}
@@ -132,7 +132,7 @@ public abstract class CommandHolder implements CommandExecutor, TabCompleter {
 	
 	public final void help(CommandSender s, int length) {
 		for(String msg : ConfigManager.commands.getStringList(command+".help."+length))
-			TheAPI.msg(PlaceholderAPI.setPlaceholders(s instanceof Player ? (Player)s:null, msg), s);
+			Loader.msg(PlaceholderAPI.setPlaceholders(s instanceof Player ? (Player)s:null, msg), s);
 	}
 	
 	public abstract void command(CommandSender s, String[] args, boolean loop, boolean silent);

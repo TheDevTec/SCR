@@ -37,7 +37,7 @@ public class ActionBar implements Module {
 		if(time>0)
 		task = new Tasker() {
 			public void run() {
-				for(Player player : Bukkit.getOnlinePlayers()) {
+				for(Player player : BukkitLoader.getOnlinePlayers()) {
 					if(disabledWorlds.contains(player.getWorld().getName())) {
 						if(affected.getOrDefault(player.getUniqueId(), 0L)-System.currentTimeMillis()/1000 > 0)
 							disable(player);

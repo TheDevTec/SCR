@@ -1,6 +1,7 @@
 package me.devtec.scr;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -25,15 +26,17 @@ import me.devtec.scr.modules.events.Listeners;
 import me.devtec.scr.punishment.SPunishmentAPI;
 import me.devtec.scr.utils.JsonUtils;
 import me.devtec.scr.utils.PlaceholderBuilder;
+import me.devtec.shared.dataholder.Config;
+import me.devtec.shared.scheduler.Tasker;
+import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.versioning.VersionUtils;
 import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.configapi.Config;
-import me.devtec.theapi.scheduler.Tasker;
-import me.devtec.theapi.utils.StringUtils;
-import me.devtec.theapi.utils.VersionChecker;
-import me.devtec.theapi.utils.theapiutils.BukkitLoader;
+import me.devtec.theapi.bukkit.BukkitLoader;
 import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin {
+	private static final Pattern moneyPattern = Pattern.compile("([+-]*[0-9]+.*[0-9]*[E]*[0-9]*)([kmbt]|qu[ia]|se[px]|non|oct|dec|und|duo|tre|sed|nov)", Pattern.CASE_INSENSITIVE);
+    
 	public static Config config, defaultTranslation, translation;
 	public static List<String> positive = new ArrayList<>(), negative = new ArrayList<>();
 	public static List<Module> modules = new ArrayList<>();
@@ -44,12 +47,12 @@ public class Loader extends JavaPlugin {
 	
 	public void onLoad() {
 		//Latest TheAPI only.
-		if(VersionChecker.getVersion(BukkitLoader.plugin.getDescription().getVersion(), "8.3")==VersionChecker.Version.NEW) {
-			TheAPI.msg("&8*********************************************", TheAPI.getConsole());
-			TheAPI.msg("&4SECURITY: &cYou are running on outdated version of plugin TheAPI", TheAPI.getConsole());
-			TheAPI.msg("&4SECURITY: &cPlease update plugin TheAPI to latest version.", TheAPI.getConsole());
-			TheAPI.msg("      &6https://www.spigotmc.org/resources/72679/", TheAPI.getConsole());
-			TheAPI.msg("&8*********************************************", TheAPI.getConsole());
+		if(VersionUtils.getVersion(BukkitLoader.getPlugin(BukkitLoader.class).getDescription().getVersion(), "9.6")==VersionUtils.Version.NEWER_VERSION) {
+			Loader.msg("&8*********************************************", Bukkit.getConsoleSender());
+			Loader.msg("&4SECURITY: &cYou are running on outdated version of plugin TheAPI", Bukkit.getConsoleSender());
+			Loader.msg("&4SECURITY: &cPlease update plugin TheAPI to latest version.", Bukkit.getConsoleSender());
+			Loader.msg("      &6https://www.spigotmc.org/resources/72679/", Bukkit.getConsoleSender());
+			Loader.msg("&8*********************************************", Bukkit.getConsoleSender());
 			setNaggable(true);
 			return;
 		}
@@ -57,9 +60,9 @@ public class Loader extends JavaPlugin {
 		ConfigManager.load();
 		if(Bukkit.getPluginManager().getPlugin("LuckPerms")!=null) {
 			usingLuckPerms=true;
-			TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
-			TheAPI.msg("&4SCR&7: &eFound Vault Permission plugin (LuckPerms)", TheAPI.getConsole());
-			TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
+			Loader.msg("&4SCR&7: &8********************", Bukkit.getConsoleSender());
+			Loader.msg("&4SCR&7: &eFound Vault Permission plugin (LuckPerms)", Bukkit.getConsoleSender());
+			Loader.msg("&4SCR&7: &8********************", Bukkit.getConsoleSender());
 		}
 		if(Bukkit.getPluginManager().getPlugin("Vault")!=null) {
 			if(config.getBoolean("modules.scr-economy")) {
@@ -70,6 +73,10 @@ public class Loader extends JavaPlugin {
 				vaultHooking(); //Permission plugin
 		}
 		TheAPI.setPunishmentAPI(new SPunishmentAPI());
+	}
+	
+	public static void msg(String text, CommandSender to) {
+		to.sendMessage(StringUtils.colorize(text));
 	}
 	
 	public void onEnable() {
@@ -132,10 +139,10 @@ public class Loader extends JavaPlugin {
 		JsonUtils.msgRaw(trans==null?defaultTranslation.get(transPath):trans, trans==null?defaultTranslation.isJson(transPath):translation.isJson(transPath), builder, sender);
 	}
 
-	public static List<Player> onlinePlayers(CommandSender sender){
-		List<Player> players = Bukkit.getOnlinePlayers();
+	public static Collection<? extends Player> onlinePlayers(CommandSender sender){
+		Collection<? extends Player> players = BukkitLoader.getOnlinePlayers();
 		if(sender instanceof Player) {
-			Iterator<Player> iter = players.iterator();
+			Iterator<? extends Player> iter = players.iterator();
 			while(iter.hasNext()) {
 				Player player = iter.next();
 				if(sender==player)continue;
@@ -147,7 +154,7 @@ public class Loader extends JavaPlugin {
 	}
 	
 	public static List<String> onlinePlayerNames(CommandSender sender){
-		List<Player> players = onlinePlayers(sender);
+		Collection<? extends Player> players = onlinePlayers(sender);
 		List<String> playerNames = new ArrayList<>(players.size());
 		players.forEach(player -> playerNames.add(player.getName()));
 		return playerNames;
@@ -159,16 +166,16 @@ public class Loader extends JavaPlugin {
 	}
 	
 	public void vaultHooking() {
-		TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
-		TheAPI.msg("&4SCR&7: &eAction: &fLooking for Vault Permission plugin..", TheAPI.getConsole());
-		TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
+		Loader.msg("&4SCR&7: &8********************", Bukkit.getConsoleSender());
+		Loader.msg("&4SCR&7: &eAction: &fLooking for Vault Permission plugin..", Bukkit.getConsoleSender());
+		Loader.msg("&4SCR&7: &8********************", Bukkit.getConsoleSender());
 		new Tasker() {
 			@Override
 			public void run() {
 				if (getVaultPerms()) {
-					TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
-					TheAPI.msg("&4SCR&7: &eFound Vault Permission plugin ("+perms.getName()+")", TheAPI.getConsole());
-					TheAPI.msg("&4SCR&7: &8********************", TheAPI.getConsole());
+					Loader.msg("&4SCR&7: &8********************", Bukkit.getConsoleSender());
+					Loader.msg("&4SCR&7: &eFound Vault Permission plugin ("+perms.getName()+")", Bukkit.getConsoleSender());
+					Loader.msg("&4SCR&7: &8********************", Bukkit.getConsoleSender());
 					cancel();
 				}
 			}
@@ -186,8 +193,7 @@ public class Loader extends JavaPlugin {
 		}
 	}
 	
-	private static final Pattern moneyPattern = Pattern.compile("([+-]*[0-9]+.*[0-9]*[E]*[0-9]*)([kmbt]|qu[ia]|se[px]|non|oct|dec|und|duo|tre|sed|nov)", Pattern.CASE_INSENSITIVE);
-    public static double moneyFromString(String s) {
+	public static double moneyFromString(String s) {
 		double has = 0;
 		Matcher m = moneyPattern.matcher(s);
 		while(m.find())

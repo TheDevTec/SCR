@@ -7,4 +7,5 @@ description: Fully customizable plugin with many features!
 depend: [TheAPI]
 loadbefore: [Paintball,WorldGuard,Residence,MobArena,SpecializedCrates,ExcellentCrates,GoldenCrates,RevoltCrates,AdvancedMonthlyCrates,CrazyCrates,CrateReloaded]
 softdepend: [HeadDatabase,LuckPerms,dynmap]
+spigot-id: 71147
 website: https://www.spigotmc.org/resources/71147/

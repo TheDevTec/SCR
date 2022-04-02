@@ -2,7 +2,7 @@ package me.devtec.scr;
 
 import java.io.File;
 
-import me.devtec.theapi.configapi.Config;
+import me.devtec.shared.dataholder.Config;
 
 public class ConfigManager {
 	public static Config commands = new Config("plugins/SCR/commands.yml"), data = new Config("plugins/SCR/data.yml"), 
