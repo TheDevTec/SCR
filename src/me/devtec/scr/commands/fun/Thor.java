@@ -28,25 +28,28 @@ public class Thor implements ScrCommand {
 			}
 		}).fallback((s, structure, args) -> {
 			msgConfig(s, "offlinePlayer", args[0]);
-		}).permission("scr.thor").argument("-s", (s, structure, args) -> { // cmd -s
-			if(s instanceof Player) {
-				Player p = (Player)s;
-				Location loc = getLookingBlock(p, 30).getLocation();
-				loc.getWorld().strikeLightningEffect(loc);
-			}else {
-				help(s, 0);
-			}
-		}).parent()
-		.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
-			for(Player p : playerSelectors(s, args[0])) {
-				p.getWorld().strikeLightning(p.getLocation());
-				msgConfig(s, configSection()+".player", p.getName());
-			}
-		}).permission("scr.thor.player").argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
-			for(Player p : playerSelectors(s, args[0])) {
-				p.getWorld().strikeLightning(p.getLocation());
-			}
-		}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
+		}).permission("scr."+configSection())
+			.argument("-s", (s, structure, args) -> { // cmd -s
+				if(s instanceof Player) {
+					Player p = (Player)s;
+					Location loc = getLookingBlock(p, 30).getLocation();
+					loc.getWorld().strikeLightningEffect(loc);
+				}else {
+					help(s, 0);
+				}
+			})
+			.parent() // cmd
+			.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
+				for(Player p : playerSelectors(s, args[0])) {
+					p.getWorld().strikeLightning(p.getLocation());
+					msgConfig(s, configSection()+".player", p.getName());
+				}
+			}).permission("scr."+configSection()+".player")
+				.argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
+					for(Player p : playerSelectors(s, args[0])) {
+						p.getWorld().strikeLightning(p.getLocation());
+					}
+				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 	
 	public static Block getLookingBlock(Player player, int range) {

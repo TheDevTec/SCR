@@ -43,90 +43,96 @@ public class God implements ScrCommand {
 			}
 		}).fallback((s, structure, args) -> {
 			msgConfig(s, "offlinePlayer", args[0]);
-		}).permission("scr.god")
-		.argument("-s", (s, structure, args) -> { // cmd -s
-			if(s instanceof Player) {
-				Player p = (Player)s;
-				if(legacy) {
-					applyLegacy(p, isInvulnerable(p));
+			}).permission("scr."+configSection())
+			.argument("-s", (s, structure, args) -> { // cmd -s
+				if(s instanceof Player) {
+					Player p = (Player)s;
+					if(legacy) {
+						applyLegacy(p, isInvulnerable(p));
+					}else {
+						applyModern(p, isInvulnerable(p));
+					}
 				}else {
-					applyModern(p, isInvulnerable(p));
+					help(s, 0);
 				}
-			}else {
+			})
+			.parent() // cmd 
+			.selector(Selector.BOOLEAN, (s, structure, args) -> { // cmd [boolean]
+				if(s instanceof Player) {
+					Player p = (Player)s;
+					if(legacy) {
+						applyLegacy(p, !Boolean.parseBoolean(args[0]));
+					}else {
+						applyModern(p, !Boolean.parseBoolean(args[0]));
+					}
+					
+					String status = Boolean.parseBoolean(args[0]) ? "enabled" : "disabled";
+					msgConfig(s, configSection()+"."+status);
+				}else {
+					help(s, 0);
+				}
+				})
+				.argument("-s", (s, structure, args) -> { // cmd [boolean] -s
+					if(s instanceof Player) {
+						Player p = (Player)s;
+						if(legacy) {
+							applyLegacy(p, !Boolean.parseBoolean(args[0]));
+						}else {
+							applyModern(p, !Boolean.parseBoolean(args[0]));
+						}
+					}else {
+						help(s, 0);
+					}
+				})
+				.parent() // cmd [boolean]
+			.parent() // cmd
+			.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
+				for(Player p : playerSelectors(s, args[0])) {
+					if(legacy) {
+						applyLegacy(p, isInvulnerable(p));
+					}else {
+						applyModern(p, isInvulnerable(p));
+					}
+					
+					String status = isInvulnerable(p) ? "enabled" : "disabled";
+					msgConfig(s, configSection()+".other."+status+".sender", p.getName());
+					msgConfig(p, configSection()+".other."+status+".target", p.getName());
+				}
+			}).permission("scr."+configSection()+".other").fallback((s, structure, args) -> {
 				help(s, 0);
-			}
-		}).parent()
-		.selector(Selector.BOOLEAN, (s, structure, args) -> { // cmd [boolean]
-			if(s instanceof Player) {
-				Player p = (Player)s;
-				if(legacy) {
-					applyLegacy(p, !Boolean.parseBoolean(args[0]));
-				}else {
-					applyModern(p, !Boolean.parseBoolean(args[0]));
-				}
-				
-				String status = Boolean.parseBoolean(args[0]) ? "enabled" : "disabled";
-				msgConfig(s, configSection()+"."+status);
-			}else {
-				help(s, 0);
-			}
-		}).argument("-s", (s, structure, args) -> { // cmd [boolean] -s
-			if(s instanceof Player) {
-				Player p = (Player)s;
-				if(legacy) {
-					applyLegacy(p, !Boolean.parseBoolean(args[0]));
-				}else {
-					applyModern(p, !Boolean.parseBoolean(args[0]));
-				}
-			}else {
-				help(s, 0);
-			}
-		}).parent()
-		.parent()
-		.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
-			for(Player p : playerSelectors(s, args[0])) {
-				if(legacy) {
-					applyLegacy(p, isInvulnerable(p));
-				}else {
-					applyModern(p, isInvulnerable(p));
-				}
-				
-				String status = isInvulnerable(p) ? "enabled" : "disabled";
-				msgConfig(s, configSection()+".other."+status+".sender", p.getName());
-				msgConfig(p, configSection()+".other."+status+".target", p.getName());
-			}
-		}).permission("scr.god.other").fallback((s, structure, args) -> {
-			help(s, 0);
-		}).argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
-			for(Player p : playerSelectors(s, args[0])) {
-				if(legacy) {
-					applyLegacy(p, isInvulnerable(p));
-				}else {
-					applyModern(p, isInvulnerable(p));
-				}
-			}
-		}).parent()
-		.selector(Selector.BOOLEAN, (s, structure, args) -> { // cmd [entity_selector] [boolean]
-			for(Player p : playerSelectors(s, args[0])) {
-				if(legacy) {
-					applyLegacy(p, !Boolean.parseBoolean(args[1]));
-				}else {
-					applyModern(p, !Boolean.parseBoolean(args[1]));
-				}
-				
-				String status = Boolean.parseBoolean(args[1]) ? "enabled" : "disabled";
-				msgConfig(s, configSection()+".other."+status+".sender", p.getName());
-				msgConfig(p, configSection()+".other."+status+".target", p.getName());
-			}
-		}).argument("-s", (s, structure, args) -> { // cmd [entity_selector] [boolean] -s
-			for(Player p : playerSelectors(s, args[0])) {
-				if(legacy) {
-					applyLegacy(p, !Boolean.parseBoolean(args[1]));
-				}else {
-					applyModern(p, !Boolean.parseBoolean(args[1]));
-				}
-			}
-		}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
+				})
+				.argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
+					for(Player p : playerSelectors(s, args[0])) {
+						if(legacy) {
+							applyLegacy(p, isInvulnerable(p));
+						}else {
+							applyModern(p, isInvulnerable(p));
+						}
+					}
+				})
+				.parent() // cmd [entity_selector]
+				.selector(Selector.BOOLEAN, (s, structure, args) -> { // cmd [entity_selector] [boolean]
+					for(Player p : playerSelectors(s, args[0])) {
+						if(legacy) {
+							applyLegacy(p, !Boolean.parseBoolean(args[1]));
+						}else {
+							applyModern(p, !Boolean.parseBoolean(args[1]));
+						}
+						
+						String status = Boolean.parseBoolean(args[1]) ? "enabled" : "disabled";
+						msgConfig(s, configSection()+".other."+status+".sender", p.getName());
+						msgConfig(p, configSection()+".other."+status+".target", p.getName());
+					}
+					})
+					.argument("-s", (s, structure, args) -> { // cmd [entity_selector] [boolean] -s
+						for(Player p : playerSelectors(s, args[0])) {
+							if(legacy) {
+								applyLegacy(p, !Boolean.parseBoolean(args[1]));
+							}else {
+								applyModern(p, !Boolean.parseBoolean(args[1]));
+							}
+						}
+					}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 	
 	public boolean isInvulnerable(Player p) {

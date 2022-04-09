@@ -23,77 +23,83 @@ public class Warp implements ScrCommand {
 				warpNames.append(warp.name());
 			}
 			msgConfig(s, configSection()+".list", warpNames);
-		}).argument(null, (s, structure, args) -> { // cmd [any string]
-			if(!(s instanceof Player)) { //must be player
-				help(s, 0);
-				return;
-			}
-			
-			WarpHolder warp = WarpManager.find(args[0]);
-			if(warp == null) {
-				msgConfig(s, "warp.notFound", args[0]);
-				return;
-			}
-			int teleportResult;
-			if((teleportResult=warp.canTeleport((Player)s)) != 0) {
-				String reason = teleportResult == 1 ? "perms" : "money";
-				msgConfig(s, "warp.cannot_teleport."+reason, args[0]);
-				return;
-			}
-			((Player)s).teleport(warp.location());
-			msgConfig(s, configSection()+".warp.self", warp.name());
-		}).argument("-s", (s, structure, args) -> { // cmd [any string] -s
-			if(!(s instanceof Player)) { //must be player
-				help(s, 0);
-				return;
-			}
-			
-			WarpHolder warp = WarpManager.find(args[0]);
-			if(warp == null) {
-				msgConfig(s, "warp.notFound", args[0]);
-				return;
-			}
-			int teleportResult;
-			if((teleportResult=warp.canTeleport((Player)s)) != 0) {
-				String reason = teleportResult == 1 ? "perms" : "money";
-				msgConfig(s, "warp.cannot_teleport."+reason, args[0]);
-				return;
-			}
-			((Player)s).teleport(warp.location());
-		}).parent()
-		.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [any string] [entity_selector]
-			WarpHolder warp = WarpManager.find(args[0]);
-			if(warp == null) {
-				msgConfig(s, "warp.notFound", args[0]);
-				return;
-			}
-			for(Player p : playerSelectors(s, args[0])) {
+		}).permission("scr."+configSection())
+			.argument(null, (s, structure, args) -> { // cmd [any string]
+				if(!(s instanceof Player)) { //must be player
+					help(s, 0);
+					return;
+				}
+				
+				WarpHolder warp = WarpManager.find(args[0]);
+				if(warp == null) {
+					msgConfig(s, "warp.notFound", args[0]);
+					return;
+				}
 				int teleportResult;
-				if((teleportResult=warp.canTeleport(p)) != 0) {
+				if((teleportResult=warp.canTeleport((Player)s)) != 0) {
 					String reason = teleportResult == 1 ? "perms" : "money";
 					msgConfig(s, "warp.cannot_teleport."+reason, args[0]);
 					return;
 				}
-				p.teleport(warp.location());
-				msgConfig(s, configSection()+".warp.other.sender", warp.name(), p.getName());
-				msgConfig(p, configSection()+".warp.other.target", warp.name(), p.getName());
-			}
-		}).argument("-s", (s, structure, args) -> { // cmd [any string] [entity_selector] -s
-			WarpHolder warp = WarpManager.find(args[0]);
-			if(warp == null) {
-				msgConfig(s, "warp.notFound", args[0]);
-				return;
-			}
-			for(Player p : playerSelectors(s, args[0])) {
-				int teleportResult;
-				if((teleportResult=warp.canTeleport(p)) != 0) {
-					String reason = teleportResult == 1 ? "perms" : "money";
-					msgConfig(s, "warp.cannot_teleport."+reason, args[0]);
+				((Player)s).teleport(warp.location());
+				msgConfig(s, configSection()+".warp.self", warp.name());
+				})
+				.argument("-s", (s, structure, args) -> { // cmd [any string] -s
+					if(!(s instanceof Player)) { //must be player
+						help(s, 0);
+						return;
+					}
+					
+					WarpHolder warp = WarpManager.find(args[0]);
+					if(warp == null) {
+						msgConfig(s, "warp.notFound", args[0]);
+						return;
+					}
+					int teleportResult;
+					if((teleportResult=warp.canTeleport((Player)s)) != 0) {
+						String reason = teleportResult == 1 ? "perms" : "money";
+						msgConfig(s, "warp.cannot_teleport."+reason, args[0]);
+						return;
+					}
+					((Player)s).teleport(warp.location());
+				})
+				.parent() //cmd [any string]
+			.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [any string] [entity_selector]
+				WarpHolder warp = WarpManager.find(args[0]);
+				if(warp == null) {
+					msgConfig(s, "warp.notFound", args[0]);
 					return;
 				}
-				p.teleport(warp.location());
-			}
-		}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
+				for(Player p : playerSelectors(s, args[1])) {
+					int teleportResult;
+					if((teleportResult=warp.canTeleport(p)) != 0) {
+						String reason = teleportResult == 1 ? "perms" : "money";
+						msgConfig(s, "warp.cannot_teleport."+reason, args[0]);
+						return;
+					}
+					p.teleport(warp.location());
+					msgConfig(s, configSection()+".warp.other.sender", warp.name(), p.getName());
+					msgConfig(p, configSection()+".warp.other.target", warp.name(), p.getName());
+				}
+				}).permission("scr."+configSection()+".other").fallback((s, structure, args) -> {
+					msgConfig(s, "offlinePlayer", args[1]);
+				})
+				.argument("-s", (s, structure, args) -> { // cmd [any string] [entity_selector] -s
+					WarpHolder warp = WarpManager.find(args[0]);
+					if(warp == null) {
+						msgConfig(s, "warp.notFound", args[0]);
+						return;
+					}
+					for(Player p : playerSelectors(s, args[0])) {
+						int teleportResult;
+						if((teleportResult=warp.canTeleport(p)) != 0) {
+							String reason = teleportResult == 1 ? "perms" : "money";
+							msgConfig(s, "warp.cannot_teleport."+reason, args[0]);
+							return;
+						}
+						p.teleport(warp.location());
+					}
+				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
 	@Override

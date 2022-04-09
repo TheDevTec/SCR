@@ -35,66 +35,72 @@ public class Fly implements ScrCommand {
 			}else {
 				help(s, 0);
 			}
-		}).permission("scr.fly").fallback((s, structure, args) -> {
+		}).permission("scr."+configSection()).fallback((s, structure, args) -> {
 			msgConfig(s, "offlinePlayer", args[0]);
-		})
-		.selector(Selector.BOOLEAN, (s, structure, args) -> { // cmd [boolean]
-			if(s instanceof Player) {
-				Player p = (Player)s;
-				apply(p, !Boolean.parseBoolean(args[0]));
-				
-				String status = Boolean.parseBoolean(args[0]) ? "enabled" : "disabled";
-				msgConfig(s, configSection()+"."+status);
-			}else {
+			})
+			.selector(Selector.BOOLEAN, (s, structure, args) -> { // cmd [boolean]
+				if(s instanceof Player) {
+					Player p = (Player)s;
+					apply(p, !Boolean.parseBoolean(args[0]));
+					
+					String status = Boolean.parseBoolean(args[0]) ? "enabled" : "disabled";
+					msgConfig(s, configSection()+"."+status);
+				}else {
+					help(s, 0);
+				}
+				})
+				.argument("-s", (s, structure, args) -> { // cmd [boolean] -s
+					if(s instanceof Player) {
+						Player p = (Player)s;
+						apply(p, !Boolean.parseBoolean(args[0]));
+						
+						String status = Boolean.parseBoolean(args[0]) ? "enabled" : "disabled";
+						msgConfig(s, configSection()+"."+status);
+					}else {
+						help(s, 0);
+					}
+				})
+				.parent() // cmd [boolean]
+			.parent() // cmd
+			.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
+				for(Player p : playerSelectors(s, args[0])) {
+					apply(p, p.getAllowFlight());
+					
+					String status = p.getAllowFlight() ? "enabled" : "disabled";
+					msgConfig(s, configSection()+".other."+status+".sender", p.getName());
+					msgConfig(p, configSection()+".other."+status+".target", p.getName());
+				}
+			}).permission("scr."+configSection()+".other").fallback((s, structure, args) -> {
 				help(s, 0);
-			}
-		}).argument("-s", (s, structure, args) -> { // cmd [boolean] -s
-			if(s instanceof Player) {
-				Player p = (Player)s;
-				apply(p, !Boolean.parseBoolean(args[0]));
-				
-				String status = Boolean.parseBoolean(args[0]) ? "enabled" : "disabled";
-				msgConfig(s, configSection()+"."+status);
-			}else {
-				help(s, 0);
-			}
-		}).parent()
-		.parent()
-		.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
-			for(Player p : playerSelectors(s, args[0])) {
-				apply(p, p.getAllowFlight());
-				
-				String status = p.getAllowFlight() ? "enabled" : "disabled";
-				msgConfig(s, configSection()+".other."+status+".sender", p.getName());
-				msgConfig(p, configSection()+".other."+status+".target", p.getName());
-			}
-		}).permission("scr.fly.other").fallback((s, structure, args) -> {
-			help(s, 0);
-		}).argument("-s", (s, structure, args) -> { // cmd [boolean] -s
-			for(Player p : playerSelectors(s, args[0])) {
-				apply(p, p.getAllowFlight());
-				
-				String status = p.getAllowFlight() ? "enabled" : "disabled";
-				msgConfig(s, configSection()+".other."+status+".sender", p.getName());
-				msgConfig(p, configSection()+".other."+status+".target", p.getName());
-			}
-		}).parent().selector(Selector.BOOLEAN, (s, structure, args) -> { // cmd [entity_selector] [boolean]
-			for(Player p : playerSelectors(s, args[0])) {
-				apply(p, !Boolean.parseBoolean(args[1]));
-				
-				String status = Boolean.parseBoolean(args[1]) ? "enabled" : "disabled";
-				msgConfig(s, configSection()+".other."+status+".sender", p.getName());
-				msgConfig(p, configSection()+".other."+status+".target", p.getName());
-			}
-		}).argument("-s", (s, structure, args) -> { // cmd [boolean] -s
-			for(Player p : playerSelectors(s, args[0])) {
-				apply(p, !Boolean.parseBoolean(args[1]));
-				
-				String status = Boolean.parseBoolean(args[1]) ? "enabled" : "disabled";
-				msgConfig(s, configSection()+".other."+status+".sender", p.getName());
-				msgConfig(p, configSection()+".other."+status+".target", p.getName());
-			}
-		}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
+				})
+				.argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
+					for(Player p : playerSelectors(s, args[0])) {
+						apply(p, p.getAllowFlight());
+						
+						String status = p.getAllowFlight() ? "enabled" : "disabled";
+						msgConfig(s, configSection()+".other."+status+".sender", p.getName());
+						msgConfig(p, configSection()+".other."+status+".target", p.getName());
+					}
+				})
+				.parent() // cmd [entity_selector]
+				.selector(Selector.BOOLEAN, (s, structure, args) -> { // cmd [entity_selector] [boolean]
+					for(Player p : playerSelectors(s, args[0])) {
+						apply(p, !Boolean.parseBoolean(args[1]));
+						
+						String status = Boolean.parseBoolean(args[1]) ? "enabled" : "disabled";
+						msgConfig(s, configSection()+".other."+status+".sender", p.getName());
+						msgConfig(p, configSection()+".other."+status+".target", p.getName());
+					}
+				})
+					.argument("-s", (s, structure, args) -> { // cmd [boolean] -s
+						for(Player p : playerSelectors(s, args[0])) {
+							apply(p, !Boolean.parseBoolean(args[1]));
+							
+							String status = Boolean.parseBoolean(args[1]) ? "enabled" : "disabled";
+							msgConfig(s, configSection()+".other."+status+".sender", p.getName());
+							msgConfig(p, configSection()+".other."+status+".target", p.getName());
+						}
+					}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 	
 	public void apply(Player p, boolean status) {
