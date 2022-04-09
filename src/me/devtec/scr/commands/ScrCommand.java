@@ -1,5 +1,6 @@
 package me.devtec.scr.commands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
+import me.devtec.scr.listeners.commands.PluginEnable;
 import me.devtec.shared.commands.manager.PermissionChecker;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
@@ -67,6 +69,23 @@ public interface ScrCommand {
 				msg(sender, list);
 		}else
 			msg(sender, Loader.commands.getString(configSection()+".help."+arg));
+	}
+	
+	// Do not overide this - onLoad
+	@SuppressWarnings("unchecked")
+	public default void initFirst(List<String> cmds) {
+		List<String> loadAfter = Loader.commands.getStringList(configSection()+".loadAfter");
+		if(!loadAfter.isEmpty()) {
+			List<String> registered = new ArrayList<>();
+			for(String pluginName : loadAfter) {
+				if(Bukkit.getPluginManager().getPlugin(pluginName)!=null)registered.add(pluginName);
+			}
+			if(!registered.isEmpty()) {
+				PluginEnable.waiting.put(this, new List[] {registered, cmds});
+				return;
+			}
+		}
+		init(cmds);
 	}
 	
 	public void init(List<String> cmds);

@@ -4,7 +4,8 @@ fly:
   - "fly"
   - "flight"
   help:
-    '0': "/fly [player] [true/false]"
+    # This is for console & command block
+    '0': "/fly [player] {true/false}"
     
 god:
   enabled: true
@@ -12,7 +13,8 @@ god:
   - "god"
   - "invulnerable"
   help:
-    '0': "/god [player] [true/false]"
+    # This is for console & command block
+    '0': "/god [player] {true/false}"
     
 thor:
   enabled: true
@@ -20,6 +22,7 @@ thor:
   - "thor"
   - "strike"
   help:
+    # This is for console & command block
     '0': "/thor [player]"
     
 warp:
@@ -27,4 +30,5 @@ warp:
   cmds:
   - "warp"
   help:
+    # This is for console & command block
     '0': "/warp [warp] [player]"

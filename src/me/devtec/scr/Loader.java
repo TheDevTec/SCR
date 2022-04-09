@@ -73,7 +73,7 @@ public class Loader extends JavaPlugin {
 					++total;
 					if(commands.getBoolean(scrCmd.configSection()+".enabled")) {
 						++count;
-						scrCmd.init(commands.getStringList(scrCmd.configSection()+".cmds"));
+						scrCmd.initFirst(commands.getStringList(scrCmd.configSection()+".cmds"));
 					}
 				}
 			}
