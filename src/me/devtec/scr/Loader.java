@@ -23,12 +23,12 @@ public class Loader extends JavaPlugin {
 	public static Config config;
 	public static Config commands;
 	public static Config translations;
-
 	public static Economy economy;
 	
 	public void onLoad() {
 		plugin=this;
 		loadConfigs();
+		//TODO Vault hooking
 	}
 	
 	public void onEnable() {
@@ -48,21 +48,21 @@ public class Loader extends JavaPlugin {
 		try {
 			File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
 			JarFile jar = new JarFile(file);
-	        Enumeration<JarEntry> entries = jar.entries();
-	       	while(entries.hasMoreElements()) {
-	        	JarEntry entry = entries.nextElement();
-	        	if(!entry.getName().endsWith(".class") || !entry.getName().startsWith("me/devtec/scr/commands/") || entry.getName().equals("me/devtec/scr/commands/ScrCommand.class"))continue;
-	        	Class<?> cls = Class.forName(entry.getName().substring(0, entry.getName().length()-6).replace("/", "."));
-	        	if (ScrCommand.class.isAssignableFrom(cls)) {
-			    	ScrCommand scrCmd = (ScrCommand) cls.newInstance();
-			    	++total;
-			    	if(commands.getBoolean(scrCmd.configSection()+".enabled")) {
-			    		++count;
-			    		scrCmd.init(commands.getStringList(scrCmd.configSection()+".cmds"));
-			    	}
-			    }
-	        }
-	        jar.close();
+			Enumeration<JarEntry> entries = jar.entries();
+			while(entries.hasMoreElements()) {
+				JarEntry entry = entries.nextElement();
+				if(!entry.getName().endsWith(".class") || !entry.getName().startsWith("me/devtec/scr/commands/") || entry.getName().equals("me/devtec/scr/commands/ScrCommand.class"))continue;
+				Class<?> cls = Class.forName(entry.getName().substring(0, entry.getName().length()-6).replace("/", "."));
+				if (ScrCommand.class.isAssignableFrom(cls)) {
+					ScrCommand scrCmd = (ScrCommand) cls.newInstance();
+					++total;
+					if(commands.getBoolean(scrCmd.configSection()+".enabled")) {
+						++count;
+						scrCmd.init(commands.getStringList(scrCmd.configSection()+".cmds"));
+					}
+				}
+			}
+			jar.close();
 		} catch (Exception e) {
 			getLogger().log(Level.SEVERE, "An issue occurred while loading commands, please report the error to discord https://discord.gg/5kCSrtkKGF", e);
 			return;
