@@ -1,0 +1,41 @@
+# Symbol of currency
+currencySymbol: "€"
+currencyName: "euro"
+
+# {0} is currency symbol
+# {1} is raw balance (1102100.540000614)
+# {2} is formatted raw balance (1102100.54)
+# {3} is formatted balance v1 (1,102,100.54)
+# {4} is formatted balance v2 (1.1M)
+format: "{3}{0}"
+
+# Per world economies - Can be incompatible with some plugins
+perWorldEconomy:
+  enabled: false
+  groups:
+    default:
+    - "world"
+    - "world_nether"
+    - "world_the_end"
+    minigames:
+    - "minigame_world"
+
+startingMoney:
+  default: 250.0
+  # Enabled only if is "perWorldEconomy" function enabled - Using groups
+  perWorld:
+    minigames: 0.0
+
+# Fees for /pay [player] [money] command
+# Fees are in percents from 0 to 100. 0 mean no fee
+paymentFees:
+  # Set this to "false" if you don't like this function
+  enabled: true
+  # Enabled only if is "perWorldEconomy" function enabled - Using groups
+  perWorld:
+    # No fees in economy group minigames
+    minigames: 0
+  perGroups:
+    default: 5
+    vip: 2
+    owner: 0

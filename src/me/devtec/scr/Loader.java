@@ -8,11 +8,16 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.devtec.scr.api.ScrEconomy;
 import me.devtec.scr.commands.ScrCommand;
+import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.DataType;
+import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.utility.StreamUtils;
 import net.milkbowl.vault.economy.Economy;
 
@@ -25,10 +30,20 @@ public class Loader extends JavaPlugin {
 	public static Config translations;
 	public static Economy economy;
 	
+	private Config economyConfig;
+	
 	public void onLoad() {
 		plugin=this;
 		loadConfigs();
-		//TODO Vault hooking
+		if(Bukkit.getPluginManager().getPlugin("Vault") != null && Ref.getClass("net.milkbowl.vault.economy.Economy") != null) {
+			if(economyConfig.getBoolean("useVaultEconomy"))
+				vaultHooking();
+			else {
+				getLogger().info("[Economy] Registering ScrEconomy and using as Vault economy.");
+				economy = new ScrEconomy(economyConfig);
+				Bukkit.getServicesManager().register(Economy.class, economy, this, ServicePriority.Normal);
+			}
+		}
 	}
 	
 	public void onEnable() {
@@ -89,9 +104,40 @@ public class Loader extends JavaPlugin {
 		translations=new Config("plugins/SCR/translations.yml");
 		if(translations.merge(data, true, true))
 			translations.save(DataType.YAML);
+		
+		data.reload(StreamUtils.fromStream(getResource("files/economy.yml")));
+		
+		economyConfig=new Config("plugins/SCR/economy.yml");
+		if(economyConfig.merge(data, true, true))
+			economyConfig.save(DataType.YAML);
 	}
 
 	public static void registerListener(Listener listener) {
 		Bukkit.getPluginManager().registerEvents(listener, plugin);
+	}
+	
+	//VAULT HOOKING
+	private void vaultHooking() {
+		getLogger().info("[Economy] Looking for Vault economy service..");
+		new Tasker() {
+			@Override
+			public void run() {
+				if (getVaultEconomy()) {
+					getLogger().info("[Economy] Found Vault economy service. "+economy.getName());
+					cancel();
+				}
+			}
+		}.runTimer(0, 20, 15);
+	}
+	
+	private boolean getVaultEconomy() {
+		try {
+			RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
+			if (economyProvider != null)
+				economy = economyProvider.getProvider();
+			return economy != null;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }
