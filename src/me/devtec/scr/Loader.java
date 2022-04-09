@@ -1,250 +1,98 @@
 package me.devtec.scr;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.File;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicePriority;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.devtec.scr.commands.CommandsManager;
-import me.devtec.scr.modules.ActionBar;
-import me.devtec.scr.modules.BossBar;
-import me.devtec.scr.modules.Module;
-import me.devtec.scr.modules.SEconomy;
-import me.devtec.scr.modules.Scoreboard;
-import me.devtec.scr.modules.Tablist;
-import me.devtec.scr.modules.events.Listeners;
-import me.devtec.scr.punishment.SPunishmentAPI;
-import me.devtec.scr.utils.JsonUtils;
-import me.devtec.scr.utils.PlaceholderBuilder;
+import me.devtec.scr.commands.ScrCommand;
 import me.devtec.shared.dataholder.Config;
-import me.devtec.shared.scheduler.Tasker;
-import me.devtec.shared.utility.StringUtils;
-import me.devtec.shared.versioning.VersionUtils;
-import me.devtec.theapi.TheAPI;
-import me.devtec.theapi.bukkit.BukkitLoader;
-import net.milkbowl.vault.permission.Permission;
+import me.devtec.shared.dataholder.DataType;
+import me.devtec.shared.utility.StreamUtils;
+import net.milkbowl.vault.economy.Economy;
 
 public class Loader extends JavaPlugin {
-	private static final Pattern moneyPattern = Pattern.compile("([+-]*[0-9]+.*[0-9]*[E]*[0-9]*)([kmbt]|qu[ia]|se[px]|non|oct|dec|und|duo|tre|sed|nov)", Pattern.CASE_INSENSITIVE);
-    
-	public static Config config, defaultTranslation, translation;
-	public static List<String> positive = new ArrayList<>(), negative = new ArrayList<>();
-	public static List<Module> modules = new ArrayList<>();
+	
 	public static Loader plugin;
-	public static Permission perms;
-	public static boolean usingLuckPerms;
-	public static SEconomy economy;
+	
+	public static Config config;
+	public static Config commands;
+	public static Config translations;
+
+	public static Economy economy;
 	
 	public void onLoad() {
-		//Latest TheAPI only.
-		if(VersionUtils.getVersion(BukkitLoader.getPlugin(BukkitLoader.class).getDescription().getVersion(), "9.6")==VersionUtils.Version.NEWER_VERSION) {
-			Loader.msg("&8*********************************************", Bukkit.getConsoleSender());
-			Loader.msg("&4SECURITY: &cYou are running on outdated version of plugin TheAPI", Bukkit.getConsoleSender());
-			Loader.msg("&4SECURITY: &cPlease update plugin TheAPI to latest version.", Bukkit.getConsoleSender());
-			Loader.msg("      &6https://www.spigotmc.org/resources/72679/", Bukkit.getConsoleSender());
-			Loader.msg("&8*********************************************", Bukkit.getConsoleSender());
-			setNaggable(true);
-			return;
-		}
 		plugin=this;
-		ConfigManager.load();
-		if(Bukkit.getPluginManager().getPlugin("LuckPerms")!=null) {
-			usingLuckPerms=true;
-			Loader.msg("&4SCR&7: &8********************", Bukkit.getConsoleSender());
-			Loader.msg("&4SCR&7: &eFound Vault Permission plugin (LuckPerms)", Bukkit.getConsoleSender());
-			Loader.msg("&4SCR&7: &8********************", Bukkit.getConsoleSender());
-		}
-		if(Bukkit.getPluginManager().getPlugin("Vault")!=null) {
-			if(config.getBoolean("modules.scr-economy")) {
-				economy = new SEconomy();
-				Bukkit.getServicesManager().register(net.milkbowl.vault.economy.Economy.class, economy, this, ServicePriority.Normal);
-			}
-			if(!usingLuckPerms)
-				vaultHooking(); //Permission plugin
-		}
-		TheAPI.setPunishmentAPI(new SPunishmentAPI());
-	}
-	
-	public static void msg(String text, CommandSender to) {
-		to.sendMessage(StringUtils.colorize(text));
+		loadConfigs();
 	}
 	
 	public void onEnable() {
-		if(isNaggable())
-			return;
-		if(config.getBoolean("modules.commands"))
-			modules.add(new CommandsManager().load());
-		if(config.getBoolean("modules.listeners"))
-			modules.add(new Listeners().load());
-		
-		//LOADING OF MODULES
-		if(config.getBoolean("modules.tablist"))
-			modules.add(new Tablist().load());
-		if(config.getBoolean("modules.scoreboard"))
-			modules.add(new Scoreboard().load());
-		if(config.getBoolean("modules.bossbar"))
-			modules.add(new BossBar().load());
-		if(config.getBoolean("modules.actionbar"))
-			modules.add(new ActionBar().load());
+		loadListeners();
+		loadCommands();
+	}
+
+	private void loadListeners() {
 		
 	}
-
-	public void onDisable() {
-		if(isNaggable())
-			return;
-		modules.forEach(module -> module.unload());
-		modules.clear();
-		perms=null;
-		if (economy != null) {
-			Bukkit.getServicesManager().unregister(net.milkbowl.vault.economy.Economy.class, economy);
-			economy=null;
-		}
-		ConfigManager.unload();
-	}
 	
-	public static boolean isPositive(String value) {
-		return positive.contains(value.toLowerCase());
-	}
-	
-	public static boolean isNegative(String value) {
-		return negative.contains(value.toLowerCase());
-	}
-	
-	public static boolean isArmor(Material item) {
-		String name = item.name();
-		return name.endsWith("_HELMET")||name.endsWith("_BOOTS")||
-		name.endsWith("_LEGGINGS")||name.endsWith("_CHESTPLATE")||name.equals("ELYTRA");
-	}
-	
-	public static boolean isTool(Material item) {
-		String name = item.name();
-		return name.endsWith("_PICKAXE")||name.endsWith("_AXE")||name.endsWith("_SPADE")||name.endsWith("_SHOVEL")
-				||name.endsWith("_HOE")||name.endsWith("_ON_A_STICK")||name.endsWith("_SWORD")||name.equals("BOW")
-		||name.equals("SHEARS")||name.equals("FLINT_AND_STEEL")||name.equals("TRIDENT")
-		||name.equals("CROSSBOW")||name.equals("SHIELD")||name.equals("FISHING_ROD");
-	}
-	
-	public static void send(CommandSender sender, String transPath, PlaceholderBuilder builder) {
-		Object trans = translation.get(transPath);
-		JsonUtils.msgRaw(trans==null?defaultTranslation.get(transPath):trans, trans==null?defaultTranslation.isJson(transPath):translation.isJson(transPath), builder, sender);
-	}
-
-	public static Collection<? extends Player> onlinePlayers(CommandSender sender){
-		Collection<? extends Player> players = BukkitLoader.getOnlinePlayers();
-		if(sender instanceof Player) {
-			Iterator<? extends Player> iter = players.iterator();
-			while(iter.hasNext()) {
-				Player player = iter.next();
-				if(sender==player)continue;
-				if(!((Player)sender).canSee(player))
-					iter.remove();
-			}
-		}
-		return players;
-	}
-	
-	public static List<String> onlinePlayerNames(CommandSender sender){
-		Collection<? extends Player> players = onlinePlayers(sender);
-		List<String> playerNames = new ArrayList<>(players.size());
-		players.forEach(player -> playerNames.add(player.getName()));
-		return playerNames;
-	}
-
-	//TPA & TPAHERE
-	public static long getRequestTime() {
-		return 15;
-	}
-	
-	public void vaultHooking() {
-		Loader.msg("&4SCR&7: &8********************", Bukkit.getConsoleSender());
-		Loader.msg("&4SCR&7: &eAction: &fLooking for Vault Permission plugin..", Bukkit.getConsoleSender());
-		Loader.msg("&4SCR&7: &8********************", Bukkit.getConsoleSender());
-		new Tasker() {
-			@Override
-			public void run() {
-				if (getVaultPerms()) {
-					Loader.msg("&4SCR&7: &8********************", Bukkit.getConsoleSender());
-					Loader.msg("&4SCR&7: &eFound Vault Permission plugin ("+perms.getName()+")", Bukkit.getConsoleSender());
-					Loader.msg("&4SCR&7: &8********************", Bukkit.getConsoleSender());
-					cancel();
-				}
-			}
-		}.runTimer(0, 20, 15);
-	}
-
-	private boolean getVaultPerms() {
+	private void loadCommands() {
+		int count = 0;
+		int total = 0;
+		
+        getLogger().info("Loading commands..");
 		try {
-			RegisteredServiceProvider<Permission> provider = Bukkit.getServicesManager().getRegistration(Permission.class);
-			if (provider != null)
-				perms = provider.getProvider();
-			return perms != null;
+			File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
+			
+	        JarFile jar = new JarFile(file);
+	        Enumeration<JarEntry> entries = jar.entries();
+	        while(entries.hasMoreElements()) {
+	        	JarEntry entry = entries.nextElement();
+	        	if(!entry.getName().endsWith(".class") || !entry.getName().startsWith("me/devtec/scr/commands/") || entry.getName().equals("me/devtec/scr/commands/ScrCommand.class"))continue;
+	        	Class<?> cls = Class.forName(entry.getName().substring(0, entry.getName().length()-6).replace("/", "."));
+			    if (ScrCommand.class.isAssignableFrom(cls)) {
+			    	ScrCommand scrCmd = (ScrCommand) cls.newInstance();
+			    	++total;
+			    	if(commands.getBoolean(scrCmd.configSection()+".enabled")) {
+			    		++count;
+		    			scrCmd.init(commands.getStringList(scrCmd.configSection()+".cmds"));
+			    	}
+			    }
+	        }
+	        jar.close();
 		} catch (Exception e) {
-			return false;
+	        getLogger().log(Level.SEVERE, "An issue occurred while loading commands, please report the error to discord https://discord.gg/5kCSrtkKGF", e);
+			return;
 		}
+        getLogger().info("Commands successfully loaded. ("+count+"/"+total+")");
 	}
-	
-	public static double moneyFromString(String s) {
-		double has = 0;
-		Matcher m = moneyPattern.matcher(s);
-		while(m.find())
-			has+=StringUtils.getDouble(m.group(1))*getMultiply(m.group(2));
-		if(has==0)has=StringUtils.getDouble(s);
-		return has;
+
+	private void loadConfigs() {
+		Config data = new Config();
+		
+		data.reload(StreamUtils.fromStream(getResource("files/config.yml")));
+		config=new Config("plugins/SCR/config.yml");
+		if(config.merge(data, true, true))
+			config.save(DataType.YAML);
+		
+		data.reload(StreamUtils.fromStream(getResource("files/commands.yml")));
+		
+		commands=new Config("plugins/SCR/commands.yml");
+		if(commands.merge(data, true, true))
+			commands.save(DataType.YAML);
+		
+		data.reload(StreamUtils.fromStream(getResource("files/translations.yml")));
+		
+		translations=new Config("plugins/SCR/translations.yml");
+		if(translations.merge(data, true, true))
+			translations.save(DataType.YAML);
 	}
-    
-    private static double getMultiply(String name) {
-    	switch(name) {
-    	case "k":
-    		return 1000;
-    	case "m":
-    		return 1000000;
-    	case "b":
-    		return 1.0E9;
-    	case "t":
-    		return 1.0E12;
-    	case "qua":
-    		return 1.0E15;
-    	case "qui":
-    		return 1.0E18;
-    	case "sex": //No, it's not "sex"...
-    		return 1.0E21;
-    	case "sep":
-    		return 1.0E24;
-    	case "oct":
-    		return 1.0E27;
-    	case "non":
-    		return 1.0E30;
-    	case "dec":
-    		return 1.0E33;
-    	case "und":
-    		return 1.0E36;
-    	case "duo":
-    		return 1.0E39;
-    	case "tre":
-    		return 1.0E42;
-    	case "QUA":
-    		return 1.0E45;
-    	case "QUI":
-    		return 1.0E48;
-    	case "SED":
-    		return 1.0E51;
-    	case "SEP":
-    		return 1.0E54;
-    	case "OCT":
-    		return 1.0E57;
-    	case "NOV":
-    		return 1.0E60;
-    	}
-    	return 1;
-    }
+
+	public static void registerListener(Listener listener) {
+		Bukkit.getPluginManager().registerEvents(listener, plugin);
+	}
 }

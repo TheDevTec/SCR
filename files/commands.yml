@@ -1,201 +1,30 @@
-#
-# commandName:
-#   list:
-#   - commandNameInGame
-#   - commandNameInGame2
-#   cooldown:
-#     cmds:
-#     - sectionName
-#     - anotherCmdSectionName
-#     time: 15s
 fly:
-  list:
+  enabled: true
+  cmds:
   - "fly"
-  perm: "scr.command.fly"
+  - "flight"
   help:
-    # Console
-    '0':
-    - "/fly [player]"
-  tab-completer:
-    '1':
-    - "{online-players}"
+    '0': "/fly [player] [true/false]"
     
-flyspeed:
-  list:
-  - "flyspeed"
-  - "fspeed"
-  perm: "scr.command.flyspeed"
+god:
+  enabled: true
+  cmds:
+  - "god"
+  - "invulnerable"
   help:
-    # Console & player
-    '0':
-    - "/flySpeed [speed] {player}"
-    # Console
-    '1':
-    - "/flySpeed [speed] [player]"
-  tab-completer:
-    '1':
-    - "0"
-    - "1"
-    - "2"
-    - "3"
-    - "4"
-    - "5"
-    - "6"
-    - "7"
-    - "8"
-    - "9"
-    - "10"
-    '2':
-    - "{online-players}"
+    '0': "/god [player] [true/false]"
     
-walkspeed:
-  list:
-  - "walkspeed"
-  - "wspeed"
-  perm: "scr.command.walkspeed"
+thor:
+  enabled: true
+  cmds:
+  - "thor"
+  - "strike"
   help:
-    # Console & player
-    '0':
-    - "/walkSpeed [speed] {player}"
-    # Console
-    '1':
-    - "/walkSpeed [speed] [player]"
-  tab-completer:
-    '1':
-    - "0"
-    - "1"
-    - "2"
-    - "3"
-    - "4"
-    - "5"
-    - "6"
-    - "7"
-    - "8"
-    - "9"
-    - "10"
-    '2':
-    - "{online-players}"
+    '0': "/thor [player]"
     
-speed:
-  list:
-  - "speed"
-  perm: "scr.command.speed"
+warp:
+  enabled: true
+  cmds:
+  - "warp"
   help:
-    # Console & player
-    '0':
-    - "/speed [speed] {player}"
-    # Console
-    '1':
-    - "/speed [speed] [player]"
-  tab-completer:
-    '1':
-    - "0"
-    - "1"
-    - "2"
-    - "3"
-    - "4"
-    - "5"
-    - "6"
-    - "7"
-    - "8"
-    - "9"
-    - "10"
-    '2':
-    - "{online-players}"
-    
-setair:
-  list:
-  - "setair"
-  perm: "scr.command.setair"
-  help:
-    # Console
-    '0':
-    - "/setAir [player] [amount/max]"
-  tab-completer:
-    '1':
-    - "{online-players}"
-    '2':
-    - "100"
-    - "200"
-    - "max"
-    
-sethunger:
-  list:
-  - "sethunger"
-  perm: "scr.command.sethunger"
-  help:
-    # Console
-    '0':
-    - "/setHunger [player] [amount/max]"
-  tab-completer:
-    '1':
-    - "{online-players}"
-    '2':
-    - "5"
-    - "10"
-    - "15"
-    - "20"
-    - "max"
-  
-sethealth:
-  list:
-  - "sethealth"
-  - "sethp"
-  perm: "scr.command.sethealth"
-  help:
-    # Console
-    '0':
-    - "/setHealth [player] [amount/max]"
-  tab-completer:
-    '1':
-    - "{online-players}"
-    '2':
-    - "5"
-    - "10"
-    - "15"
-    - "20"
-    - "max"
-  
-setdisplayname:
-  list:
-  - "setdisplayname"
-  - "setnick"
-  - "setname"
-  perm: "scr.command.setdisplayname"
-  help:
-    # Console
-    '0':
-    - "/setDisplayName [player] [newName/reset]"
-    '1':
-    - "{online-players}"
-    '2':
-    - "reset"
-    - "new-name"
-    
-setcustomname:
-  list:
-  - "setcustomname"
-  perm: "scr.command.setcustomname"
-  help:
-    # Console
-    '0':
-    - "/setCustomName [player] [newName/reset]"
-    '1':
-    - "{online-players}"
-    '2':
-    - "reset"
-    - "new-name"
-    
-repair:
-  list:
-  - "repair"
-  - "fix"
-  perm: "scr.command.repair"
-  help:
-    # Console
-    '0':
-    - "/repair [hand/all] {player}"
-    # Console
-    '1':
-    - "/repair [hand/all] {player}"
-  
+    '0': "/warp [warp] [player]"

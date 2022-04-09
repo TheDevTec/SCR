@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Vault.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/MC/spigot-1.17.1.jar"/>
-	<classpathentry kind="lib" path="C:/EclipseUtils/LuckPerms-5.3.64.jar"/>
 	<classpathentry kind="lib" path="D:/Build/TheAPI.jar" sourcepath="/TheAPI"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

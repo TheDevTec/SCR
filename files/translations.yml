@@ -1,0 +1,32 @@
+offlinePlayer: "Player {0} isn't online"
+
+fly:
+  enabled: "Fly enabled!"
+  disabled: "Fly disabled!"
+  other:
+    enabled:
+      sender: "{0}'s fly enabled!"
+      target: "Fly enabled!"
+    disabled:
+      sender: "{0}'s fly disabled!"
+      target: "Fly disabled!"
+      
+god:
+  enabled: "God enabled!"
+  disabled: "God disabled!"
+  other:
+    enabled:
+      sender: "{0}'s god enabled!"
+      target: "God enabled!"
+    disabled:
+      sender: "{0}'s god disabled!"
+      target: "God disabled!"
+      
+thor:
+  loc: "Striked position in the world {0} at {1}, {2}, {3}"
+  player: "Striked {0}!"
+      
+warp:
+  list: "List of available warps: &e{0}"
+  list_split: "&7, &e"
+  notFound: "Warp named {0} doesn't exist"
