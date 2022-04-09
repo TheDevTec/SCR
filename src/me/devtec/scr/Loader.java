@@ -37,38 +37,37 @@ public class Loader extends JavaPlugin {
 	}
 
 	private void loadListeners() {
-		
+		//TODO listeners
 	}
 	
 	private void loadCommands() {
 		int count = 0;
 		int total = 0;
 		
-        getLogger().info("Loading commands..");
+		getLogger().info("Loading commands..");
 		try {
 			File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
-			
-	        JarFile jar = new JarFile(file);
+			JarFile jar = new JarFile(file);
 	        Enumeration<JarEntry> entries = jar.entries();
-	        while(entries.hasMoreElements()) {
+	       	while(entries.hasMoreElements()) {
 	        	JarEntry entry = entries.nextElement();
 	        	if(!entry.getName().endsWith(".class") || !entry.getName().startsWith("me/devtec/scr/commands/") || entry.getName().equals("me/devtec/scr/commands/ScrCommand.class"))continue;
 	        	Class<?> cls = Class.forName(entry.getName().substring(0, entry.getName().length()-6).replace("/", "."));
-			    if (ScrCommand.class.isAssignableFrom(cls)) {
+	        	if (ScrCommand.class.isAssignableFrom(cls)) {
 			    	ScrCommand scrCmd = (ScrCommand) cls.newInstance();
 			    	++total;
 			    	if(commands.getBoolean(scrCmd.configSection()+".enabled")) {
 			    		++count;
-		    			scrCmd.init(commands.getStringList(scrCmd.configSection()+".cmds"));
+			    		scrCmd.init(commands.getStringList(scrCmd.configSection()+".cmds"));
 			    	}
 			    }
 	        }
 	        jar.close();
 		} catch (Exception e) {
-	        getLogger().log(Level.SEVERE, "An issue occurred while loading commands, please report the error to discord https://discord.gg/5kCSrtkKGF", e);
+			getLogger().log(Level.SEVERE, "An issue occurred while loading commands, please report the error to discord https://discord.gg/5kCSrtkKGF", e);
 			return;
 		}
-        getLogger().info("Commands successfully loaded. ("+count+"/"+total+")");
+		getLogger().info("Commands successfully loaded. ("+count+"/"+total+")");
 	}
 
 	private void loadConfigs() {
