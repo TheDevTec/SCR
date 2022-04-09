@@ -22,6 +22,12 @@ public class MessageUtils {
 
 	public static void msgConfig(CommandSender s, String path, Object... placeholders) {
 		Object text = Loader.translations.get(path);
+		
+		if(text == null) {
+			Loader.plugin.getLogger().info("Translation "+path+" not found, report this bug to the DevTec discord.");
+			return;
+		}
+		
 		if(text instanceof Collection) {
 			if(Loader.translations.isJson(path)) {
 				String line = Loader.translations.getString(path);

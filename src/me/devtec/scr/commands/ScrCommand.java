@@ -20,6 +20,7 @@ import me.devtec.theapi.bukkit.BukkitLoader;
 
 public interface ScrCommand {
 	public static final PermissionChecker<CommandSender> PERMS_CHECKER = (sender, perm, tablist) -> {return sender.hasPermission(perm);};
+	public static final PermissionChecker<Player> PLAYER_PERMS_CHECKER = (sender, perm, tablist) -> {return sender.hasPermission(perm);};
 	
 	public default void msgConfig(CommandSender sender, String path, Object... placeholders) {
 		MessageUtils.msgConfig(sender, path, placeholders);
@@ -81,14 +82,19 @@ public interface ScrCommand {
 				if(Bukkit.getPluginManager().getPlugin(pluginName)!=null)registered.add(pluginName);
 			}
 			if(!registered.isEmpty()) {
+				PluginEnable.init();
 				PluginEnable.waiting.put(this, new List[] {registered, cmds});
 				return;
 			}
 		}
+		String firstUp = Character.toUpperCase(configSection().charAt(0)) + configSection().substring(1);
+		Loader.plugin.getLogger().info("["+firstUp+"] Registering command.");
 		init(cmds);
 	}
 	
 	public void init(List<String> cmds);
+	
+	public default void disabling() {}
 	
 	public String configSection();
 }

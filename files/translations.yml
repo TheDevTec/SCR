@@ -30,3 +30,23 @@ warp:
   list: "List of available warps: &e{0}"
   list_split: "&7, &e"
   notFound: "Warp named {0} doesn't exist"
+  self: "Warping to {0}.."
+  other:
+    sender: "Warping player {0} to {1}.."
+    target: "Warping to {0}.."
+    
+setwarp:
+  created: "Created warp {0}"
+  already_exists: "Warp {0} already exists"
+
+delwarp:
+  deleted: "Deleted warp {0}"
+  not_exists: "Warp {0} doesn't exist"
+  
+spawn:
+  self: "Teleporting to spawn"
+  other:
+    sender: "Teleporting {0} to spawn"
+    target: "Teleporting to spawn"
+    
+setspawn: "Set spawn on position in the world {0} at {1}, {2}, {3}"

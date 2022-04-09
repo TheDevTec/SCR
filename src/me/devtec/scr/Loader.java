@@ -1,7 +1,9 @@
 package me.devtec.scr;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -28,7 +30,8 @@ public class Loader extends JavaPlugin {
 	public static Config config;
 	public static Config commands;
 	public static Config translations;
-	public static Economy economy;
+	public static Object economy;
+	public List<ScrCommand> registered_commands = new ArrayList<>();
 	
 	private Config economyConfig;
 	
@@ -41,7 +44,7 @@ public class Loader extends JavaPlugin {
 			else {
 				getLogger().info("[Economy] Registering ScrEconomy and using as Vault economy.");
 				economy = new ScrEconomy(economyConfig);
-				Bukkit.getServicesManager().register(Economy.class, economy, this, ServicePriority.Normal);
+				Bukkit.getServicesManager().register(Economy.class, (ScrEconomy)economy, this, ServicePriority.Normal);
 			}
 		}
 	}
@@ -51,6 +54,11 @@ public class Loader extends JavaPlugin {
 		loadCommands();
 	}
 
+	public void onDisable() {
+		for(ScrCommand cmd : registered_commands)cmd.disabling();
+		registered_commands.clear();
+	}
+	
 	private void loadListeners() {
 		//TODO listeners
 	}
@@ -74,6 +82,7 @@ public class Loader extends JavaPlugin {
 					if(commands.getBoolean(scrCmd.configSection()+".enabled")) {
 						++count;
 						scrCmd.initFirst(commands.getStringList(scrCmd.configSection()+".cmds"));
+						registered_commands.add(scrCmd);
 					}
 				}
 			}
@@ -123,7 +132,7 @@ public class Loader extends JavaPlugin {
 			@Override
 			public void run() {
 				if (getVaultEconomy()) {
-					getLogger().info("[Economy] Found Vault economy service. "+economy.getName());
+					getLogger().info("[Economy] Found Vault economy service. "+((Economy)economy).getName());
 					cancel();
 				}
 			}

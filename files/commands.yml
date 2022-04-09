@@ -32,3 +32,31 @@ warp:
   help:
     # This is for console & command block
     '0': "/warp [warp] [player]"
+    
+setwarp:
+  enabled: true
+  cmds:
+  - "setwarp"
+  - "createwarp"
+  help:
+    '0': "/setWarp [name]"
+    
+delwarp:
+  enabled: true
+  cmds:
+  - "delwarp"
+  - "deletewarp"
+  help:
+    '0': "/delWarp [warp]"
+    
+spawn:
+  enabled: true
+  cmds:
+  - "spawn"
+  help:
+    '0': "/spawn [player]"
+    
+setspawn:
+  enabled: true
+  cmds:
+  - "setspawn"

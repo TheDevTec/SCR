@@ -6,12 +6,14 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.devtec.theapi.bukkit.game.Position;
+
 public class WarpManager {
-	static List<WarpHolder> registered_warps = new ArrayList<>();
+	protected static List<WarpHolder> registered_warps = new ArrayList<>();
 	
 	public static List<WarpHolder> availableWarps(CommandSender s) {
 		if(s instanceof Player) {
@@ -25,6 +27,15 @@ public class WarpManager {
 		return registered_warps;
 	}
 	
+	public static List<String> availableWarpNames(CommandSender s) {
+		List<String> warps = new ArrayList<>();
+		for(WarpHolder warp : registered_warps) {
+			if(!(s instanceof Player) || s instanceof Player && warp.canTeleport((Player)s) == 0)
+				warps.add(warp.name());
+		}
+		return warps;
+	}
+	
 	public static List<WarpHolder> warpsOf(UUID owner) {
 		List<WarpHolder> warps = new ArrayList<>();
 		for(WarpHolder warp : registered_warps) {
@@ -34,8 +45,8 @@ public class WarpManager {
 		return warps;
 	}
 	
-	public static WarpHolder create(@Nullable UUID owner, String name, Location location, @Nullable String permission, double cost) {
-		WarpHolder warp = new WarpHolder(owner, name, location, permission, cost);
+	public static WarpHolder create(@Nullable UUID owner, String name, Position location, Material icon, @Nullable String permission, double cost) {
+		WarpHolder warp = new WarpHolder(owner, name, location, icon, permission, cost);
 		registered_warps.add(warp);
 		return warp;
 	}
@@ -48,7 +59,7 @@ public class WarpManager {
 
 	public static WarpHolder find(String name) {
 		for(WarpHolder holder : registered_warps) {
-			if(holder.name().equals(name)) {
+			if(holder.name().equalsIgnoreCase(name)) {
 				return holder;
 			}
 		}
