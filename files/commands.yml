@@ -85,3 +85,20 @@ anvil:
   enabled: true
   cmds:
   - "anvil"
+  
+craftingtable:
+  enabled: true
+  cmds:
+  - "workbench"
+  - "craft"
+  - "wb"
+  - "crafting"
+  - "craftingtable"
+  
+enchanting:
+  enabled: true
+  cmds:
+  - "enchanting"
+  - "enchantingtable"
+  - "enchtable"
+  - "enchanttable"
