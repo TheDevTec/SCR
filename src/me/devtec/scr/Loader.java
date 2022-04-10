@@ -16,6 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.devtec.scr.api.ScrEconomy;
 import me.devtec.scr.commands.ScrCommand;
+import me.devtec.scr.listeners.additional.PlayerJoin;
+import me.devtec.scr.listeners.additional.PlayerQuit;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.DataType;
@@ -60,7 +62,10 @@ public class Loader extends JavaPlugin {
 	}
 	
 	private void loadListeners() {
-		//TODO listeners
+		getLogger().info("[Listener] Registering PlayerJoin listener.");
+		registerListener(new PlayerJoin());
+		getLogger().info("[Listener] Registering PlayerQuit listener.");
+		registerListener(new PlayerQuit());
 	}
 	
 	private void loadCommands() {
