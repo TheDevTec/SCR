@@ -16,7 +16,7 @@ public class DeleteWarp implements ScrCommand {
 		}).permission("scr."+configSection()).fallback((s, structure, args) -> {
 			msgConfig(s, configSection()+".not_exists", args[0]);
 			})
-			.callableArgument((s) -> {return WarpManager.availableWarpNames(s);}, (s, structure, args) -> { // cmd [warp]
+			.callableArgument((s, structure, args) -> {return WarpManager.availableWarpNames(s);}, (s, structure, args) -> { // cmd [warp]
 				WarpHolder warp = WarpManager.find(args[0]);
 				WarpManager.delete(warp.name());
 				msgConfig(s, configSection()+".deleted", warp.name());

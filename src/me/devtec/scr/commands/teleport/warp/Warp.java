@@ -23,7 +23,7 @@ public class Warp implements ScrCommand {
 		int count = 0;
 		for(String key : storedWarps.getKeys("warp")) {
 			++count;
-			WarpManager.create(storedWarps.getAs("warp."+key+".owner", UUID.class), "warp."+key, storedWarps.getAs("warp."+key+".location", Position.class), storedWarps.getAs("warp."+key+".icon", Material.class), storedWarps.getString("warp."+key+".permission"), storedWarps.getDouble("warp."+key+".cost"));
+			WarpManager.create(storedWarps.getAs("warp."+key+".owner", UUID.class), key, storedWarps.getAs("warp."+key+".location", Position.class), storedWarps.getAs("warp."+key+".icon", Material.class), storedWarps.getString("warp."+key+".permission"), storedWarps.getDouble("warp."+key+".cost"));
 		}
 		Loader.plugin.getLogger().info("[Warp] Registered "+count+" warp"+(count != 1 ? "s" : ""));
 		
@@ -39,7 +39,7 @@ public class Warp implements ScrCommand {
 			.fallback((s, structure, args) -> {
 				msgConfig(s, configSection()+".notFound", args[0]);
 			})
-			.callableArgument((s) -> {
+			.callableArgument((s, structure, args) -> {
 				return WarpManager.availableWarpNames(s);
 				}, (s, structure, args) -> { // cmd [warp]
 				if(!(s instanceof Player)) { //must be player

@@ -79,7 +79,7 @@ public interface ScrCommand {
 		if(!loadAfter.isEmpty()) {
 			List<String> registered = new ArrayList<>();
 			for(String pluginName : loadAfter) {
-				if(Bukkit.getPluginManager().getPlugin(pluginName)!=null)registered.add(pluginName);
+				if(Bukkit.getPluginManager().getPlugin(pluginName)!=null && !Bukkit.getPluginManager().getPlugin(pluginName).isEnabled())registered.add(pluginName);
 			}
 			if(!registered.isEmpty()) {
 				PluginEnable.init();
