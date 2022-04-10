@@ -63,7 +63,13 @@ public class Home implements ScrCommand {
 				msgConfig(s, "offlinePlayer", args[0]);
 			})
 			.selector(Selector.PLAYER, (s, structure, args) -> { // cmd [player]
-				help(s, 0);
+				StringBuilder homeNames = new StringBuilder();
+				for(String home : HomeManager.homesOf(Bukkit.getPlayer(args[0]).getUniqueId())) {
+					if(homeNames.length()!=0)
+						homeNames.append(Loader.translations.getString(configSection()+".list_split"));
+					homeNames.append(home);
+				}
+				msgConfig(s, configSection()+".listOther", homeNames, Bukkit.getPlayer(args[0]).getName());
 				}).permission("scr."+configSection()+".other")
 			.callableArgument((s, structure, args) -> {
 				return new ArrayList<>(HomeManager.homesOf(Bukkit.getPlayer(args[0]).getUniqueId()));
@@ -91,7 +97,13 @@ public class Home implements ScrCommand {
 				.parent() // cmd
 
 				.argument(null, (s, structure, args) -> { // cmd [playerName/uuid]
-					help(s, 0);
+					StringBuilder homeNames = new StringBuilder();
+					for(String home : API.getUser(args[0]).getKeys("home")) {
+						if(homeNames.length()!=0)
+							homeNames.append(Loader.translations.getString(configSection()+".list_split"));
+						homeNames.append(home);
+					}
+					msgConfig(s, configSection()+".listOther", homeNames, args[0]);
 					}).fallback((s, structure, args) -> {
 						msgConfig(s, "offlinePlayer", args[0]);
 					})

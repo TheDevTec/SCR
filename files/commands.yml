@@ -60,3 +60,28 @@ setspawn:
   enabled: true
   cmds:
   - "setspawn"
+    
+sethome:
+  enabled: true
+  cmds:
+  - "sethome"
+    
+delhome:
+  enabled: true
+  cmds:
+  - "delhome"
+    
+home:
+  enabled: true
+  cmds:
+  - "home"
+    
+homes:
+  enabled: true
+  cmds:
+  - "homes"
+    
+anvil:
+  enabled: true
+  cmds:
+  - "anvil"
