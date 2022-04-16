@@ -55,7 +55,7 @@ public class MessageUtils {
 					jsonList.add((Map<String, Object>)val);
 				}else {
 					if(val.toString().isEmpty())continue; //You are trying to fix json by yourself?
-					jsonList.addAll(ComponentAPI.toJsonList(ComponentAPI.toComponent(val.toString(), false)));
+					jsonList.addAll(ComponentAPI.toJsonList(ComponentAPI.fromString(val.toString())));
 				}
 			}
 		}else {
