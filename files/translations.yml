@@ -1,31 +1,33 @@
 offlinePlayer: "Player {0} isn't online"
 
+# Fun
 fly:
-  enabled: "Fly enabled!"
-  disabled: "Fly disabled!"
+  enabled: "Fly enabled"
+  disabled: "Fly disabled"
   other:
     enabled:
-      sender: "{0}'s fly enabled!"
-      target: "Fly enabled!"
+      sender: "Enabled fly for player {0}"
+      target: "Fly enabled"
     disabled:
-      sender: "{0}'s fly disabled!"
-      target: "Fly disabled!"
+      sender: "Disabled fly for player {0}"
+      target: "Fly disabled"
       
 god:
-  enabled: "God enabled!"
-  disabled: "God disabled!"
+  enabled: "God enabled"
+  disabled: "God disabled"
   other:
     enabled:
-      sender: "{0}'s god enabled!"
-      target: "God enabled!"
+      sender: "Enabled god mode for player {0}"
+      target: "God enabled"
     disabled:
-      sender: "{0}'s god disabled!"
-      target: "God disabled!"
+      sender: "Disabled god mode for player {0}"
+      target: "God disabled"
       
 thor:
   loc: "Striked position in the world {0} at {1}, {2}, {3}"
   player: "Striked {0}!"
-      
+
+# Teleport
 warp:
   list: "List of available warps: &e{0}"
   list_split: "&7, &e"
@@ -50,3 +52,65 @@ spawn:
     target: "Teleporting to spawn"
     
 setspawn: "Set spawn on position in the world {0} at {1}, {2}, {3}"
+
+sethome:
+  created: "Created home {0}"
+  already_exists: "Home {0} already exists"
+
+delhome:
+  deleted: "Deleted home {0}"
+  not_exists: "Home named {0} doesn't exist"
+
+home:
+  list: "&7Your homes({1}): &e{0}"
+  listOther: "&7{0}'s homes({2}): &e{1}"
+  list_split: "&7, &e"
+  notFound: "{0}"
+  self: "Teleporting to the home {0}"
+  self-otherHouse: "Teleporting to the home {0} of player {1}"
+  other-otherHouse:
+    sender: "Teleporting player {0} the home {1} of player {2}"
+    target: "Teleporting to the home {1} of player {2}"
+
+# Inventory
+anvil:
+  self: "Opening anvil"
+  other:
+    sender: "Opening anvil to player {0}"
+    target: "Opening anvil"
+    
+cartohraphy:
+  self: "Opening cartohraphy table"
+  other:
+    sender: "Opening cartohraphy table to player {0}"
+    target: "Opening cartohraphy table"
+    
+craftingtable:
+  self: "Opening craftingtable"
+  other:
+    sender: "Opening craftingtable to player {0}"
+    target: "Opening craftingtable"
+    
+enderchest:
+  self: "Opening enderchest"
+  other:
+    sender: "Opening enderchest to player {0}"
+    target: "Opening enderchest"
+    
+enchanting:
+  self: "Opening enchanting"
+  other:
+    sender: "Opening enchanting to player {0}"
+    target: "Opening enchanting"
+    
+grindstone:
+  self: "Opening grindstone"
+  other:
+    sender: "Opening grindstone to player {0}"
+    target: "Opening grindstone"
+    
+loom:
+  self: "Opening loom"
+  other:
+    sender: "Opening loom to player {0}"
+    target: "Opening loom"
