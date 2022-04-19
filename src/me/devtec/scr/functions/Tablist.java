@@ -2,6 +2,7 @@ package me.devtec.scr.functions;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -76,7 +77,22 @@ public class Tablist {
 			global.yellowNumberDisplay=config.getString("perGroup."+world+".yellowNumber.display");
 			perGroup.put(world, global);
 		}
-
+		
+		if(config.getString("sortingBy").equalsIgnoreCase("group") && Loader.vault!=null) {
+			List<String> groups = config.getStringList("sorting");
+			int length = (""+groups.size()).length()+1;
+			for(int i = 0; i < groups.size(); ++i) {
+				String s = "";
+				int limit = length-(i+"").length();
+				for(int d = 0; d < limit; ++d)
+					s+="0";
+				s+=i;
+				TabSettings tab = perGroup.get(groups.get(i));
+				if(tab==null)continue;
+				tab.sorting=s+"{0}";
+			}
+		}
+		
 		for(String world : config.getKeys("perPlayer")) {
 			TabSettings global=new TabSettings();
 			global.header=StringUtils.join(config.getStringList("perPlayer."+world+".header"), "\n");
