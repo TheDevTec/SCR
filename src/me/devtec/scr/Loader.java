@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.devtec.scr.api.ScrEconomy;
 import me.devtec.scr.commands.ScrCommand;
+import me.devtec.scr.functions.Tablist;
 import me.devtec.scr.listeners.additional.PlayerJoin;
 import me.devtec.scr.listeners.additional.PlayerQuit;
 import me.devtec.shared.Ref;
@@ -24,6 +25,7 @@ import me.devtec.shared.dataholder.DataType;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.utility.StreamUtils;
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin {
 
@@ -34,19 +36,26 @@ public class Loader extends JavaPlugin {
 	public static Config config;
 	public static Config commands;
 	public static Config translations;
+	
+	//VAULT plugin
 	public static Object economy;
+	public static Object vault;
+
 	public List<ScrCommand> registered_commands = new ArrayList<>();
 	
 	private Config economyConfig;
 	private Config joinListenerConfig;
 	private Config quitListenerConfig;
+	private Config tablistConfig;
+	public Tablist tablist;
 	
 	public void onLoad() {
 		plugin=this;
 		loadConfigs();
 		if(Bukkit.getPluginManager().getPlugin("Vault") != null && Ref.getClass("net.milkbowl.vault.economy.Economy") != null) {
+			vaultPermissionHooking();
 			if(economyConfig.getBoolean("useVaultEconomy")) {
-				vaultHooking();
+				vaultEconomyHooking();
 				economyConfig.clear();
 				economyConfig = null;
 			}else {
@@ -60,11 +69,14 @@ public class Loader extends JavaPlugin {
 	public void onEnable() {
 		loadListeners();
 		loadCommands();
+		tablist=new Tablist();
+		tablist.loadTasks(tablistConfig);
 	}
 
 	public void onDisable() {
 		for(ScrCommand cmd : registered_commands)cmd.disabling();
 		registered_commands.clear();
+		tablist.unloadTasks();
 	}
 	
 	private void loadListeners() {
@@ -122,6 +134,7 @@ public class Loader extends JavaPlugin {
 		economyConfig = loadAndMerge("economy.yml", "economy.yml");
 		joinListenerConfig = loadAndMerge("events/join-listener.yml", "events/join-listener.yml");
 		quitListenerConfig = loadAndMerge("events/quit-listener.yml", "events/quit-listener.yml");
+		tablistConfig = loadAndMerge("tablist.yml", "tablist.yml");
 		data.clear();
 		data = null; //clear cache
 	}
@@ -140,7 +153,7 @@ public class Loader extends JavaPlugin {
 	}
 	
 	//VAULT HOOKING
-	private void vaultHooking() {
+	private void vaultEconomyHooking() {
 		getLogger().info("[Economy] Looking for Vault economy service..");
 		new Tasker() {
 			@Override
@@ -159,6 +172,30 @@ public class Loader extends JavaPlugin {
 			if (economyProvider != null)
 				economy = economyProvider.getProvider();
 			return economy != null;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	private void vaultPermissionHooking() {
+		getLogger().info("[Permission] Looking for Vault permission service..");
+		new Tasker() {
+			@Override
+			public void run() {
+				if (getVaultPermission()) {
+					getLogger().info("[Permission] Found Vault permission service. "+((Permission)vault).getName());
+					cancel();
+				}
+			}
+		}.runTimer(0, 20, 15);
+	}
+	
+	private boolean getVaultPermission() {
+		try {
+			RegisteredServiceProvider<Permission> economyProvider = Bukkit.getServicesManager().getRegistration(Permission.class);
+			if (economyProvider != null)
+				vault = economyProvider.getProvider();
+			return vault != null;
 		} catch (Exception e) {
 			return false;
 		}

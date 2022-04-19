@@ -1,0 +1,63 @@
+enabled: true
+
+# Settings of tablist
+settings:
+  # Time is in ticks (20 = 1s)
+  reflesh: 10
+  
+  # Enable if you have to sync with server for placeholders
+  syncPlaceholders: false
+  
+# Global header
+header:
+- "Tablist header [global]"
+
+# Global footer
+footer:
+- "Tablist footer [global]"
+
+yellowNumber:
+  value: "%ping%"
+  # Display type of showing yellow numbers - integer or hearts
+  display: "integer"
+
+# Sorting types: GROUP (Vault), NAME (Vanilla)
+sortingBy: GROUP
+
+# Sorting by Vault groups
+sorting:
+- "owner"
+- "admin"
+- "helper"
+- "builder"
+- "vip"
+- "default"
+
+# Per group settings
+perGroup:
+  default:
+    # header: []
+    # footer: []
+    
+    nametag:
+      prefix: "&7Default &f"
+    #   suffix: ""
+      
+    tabname: "&7Default &f{0}"
+    
+    # yellowNumber:
+    #   value: "%ping%"
+    #   display: "integer"
+
+# Per world settings
+perWorld:
+  pvpArenaMap:
+    yellowNumber:
+      value: "%health%"
+      display: "hearts"
+
+# Per player settings
+perPlayer:
+  StraikerinaCZ:
+    tabname: "&4DevTec &e{0}"
+    
