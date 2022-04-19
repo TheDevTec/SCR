@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import me.devtec.scr.MessageUtils;
 import me.devtec.shared.dataholder.Config;
+import me.devtec.shared.scheduler.Tasker;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class PlayerJoin implements Listener {
@@ -20,13 +21,21 @@ public class PlayerJoin implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		event.setJoinMessage(null);
 		if(!event.getPlayer().hasPlayedBefore()) {
-			MessageUtils.msgConfig(event.getPlayer(), config, "firstTime.broadcast", new Object[] {event.getPlayer().getName()}, BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
 			for(String command : config.getStringList("firstTime.commands"))Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("{0}", event.getPlayer().getName()));
-			MessageUtils.msgConfig(event.getPlayer(), config, "firstTime.messages", new Object[] {event.getPlayer().getName()}, new Player[] {event.getPlayer()});
+			new Tasker() {
+				public void run() {
+					MessageUtils.msgConfig(event.getPlayer(), config, "firstTime.broadcast", new Object[] {event.getPlayer().getName()}, BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
+					MessageUtils.msgConfig(event.getPlayer(), config, "firstTime.messages", new Object[] {event.getPlayer().getName()}, new Player[] {event.getPlayer()});
+				}
+			}.runTask();
 		}else {
-			MessageUtils.msgConfig(event.getPlayer(), config, "broadcast", new Object[] {event.getPlayer().getName()}, BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
 			for(String command : config.getStringList("commands"))Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("{0}", event.getPlayer().getName()));
-			MessageUtils.msgConfig(event.getPlayer(), config, "messages", new Object[] {event.getPlayer().getName()}, new Player[] {event.getPlayer()});
+			new Tasker() {
+				public void run() {
+					MessageUtils.msgConfig(event.getPlayer(), config, "broadcast", new Object[] {event.getPlayer().getName()}, BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
+					MessageUtils.msgConfig(event.getPlayer(), config, "messages", new Object[] {event.getPlayer().getName()}, new Player[] {event.getPlayer()});
+				}
+			}.runTask();
 		}
 	}
 }
