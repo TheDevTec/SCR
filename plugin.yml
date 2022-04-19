@@ -1,7 +1,7 @@
 name: SCR
 main: me.devtec.scr.Loader
 author: DevTec, StraikerinaCZ
-version: 1.0
+version: 1.0-Alpha
 api-version: 1.13
 description: Fully customizable plugin with many features!
 depend: [TheAPI]
