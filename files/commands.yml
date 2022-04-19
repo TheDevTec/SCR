@@ -70,21 +70,39 @@ delhome:
   enabled: true
   cmds:
   - "delhome"
-    
+
 home:
   enabled: true
   cmds:
   - "home"
-    
-homes:
-  enabled: true
-  cmds:
   - "homes"
-    
+  
 anvil:
   enabled: true
   cmds:
   - "anvil"
+  
+loom:
+  enabled: true
+  cmds:
+  - "loom"
+  
+cartography:
+  enabled: true
+  cmds:
+  - "cartography"
+  
+enderchest:
+  enabled: true
+  cmds:
+  - "enderchest"
+  - "echest"
+  - "ec"
+  
+grindstone:
+  enabled: true
+  cmds:
+  - "grindstone"
   
 craftingtable:
   enabled: true

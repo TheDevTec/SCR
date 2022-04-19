@@ -47,7 +47,7 @@ public class CartographyTable implements ScrCommand {
 
 	@Override
 	public String configSection() {
-		return "cartohraphy";
+		return "cartography";
 	}
 
 }

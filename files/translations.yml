@@ -79,11 +79,11 @@ anvil:
     sender: "Opening anvil to player {0}"
     target: "Opening anvil"
     
-cartohraphy:
-  self: "Opening cartohraphy table"
+cartography:
+  self: "Opening cartography table"
   other:
-    sender: "Opening cartohraphy table to player {0}"
-    target: "Opening cartohraphy table"
+    sender: "Opening cartography table to player {0}"
+    target: "Opening cartography table"
     
 craftingtable:
   self: "Opening craftingtable"
