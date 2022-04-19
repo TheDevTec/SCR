@@ -26,6 +26,8 @@ import me.devtec.shared.utility.StreamUtils;
 import net.milkbowl.vault.economy.Economy;
 
 public class Loader extends JavaPlugin {
+
+	private Config data = new Config();
 	
 	public static Loader plugin;
 	
@@ -36,14 +38,18 @@ public class Loader extends JavaPlugin {
 	public List<ScrCommand> registered_commands = new ArrayList<>();
 	
 	private Config economyConfig;
+	private Config joinListenerConfig;
+	private Config quitListenerConfig;
 	
 	public void onLoad() {
 		plugin=this;
 		loadConfigs();
 		if(Bukkit.getPluginManager().getPlugin("Vault") != null && Ref.getClass("net.milkbowl.vault.economy.Economy") != null) {
-			if(economyConfig.getBoolean("useVaultEconomy"))
+			if(economyConfig.getBoolean("useVaultEconomy")) {
 				vaultHooking();
-			else {
+				economyConfig.clear();
+				economyConfig = null;
+			}else {
 				getLogger().info("[Economy] Registering ScrEconomy and using as Vault economy.");
 				economy = new ScrEconomy(economyConfig);
 				Bukkit.getServicesManager().register(Economy.class, (ScrEconomy)economy, this, ServicePriority.Normal);
@@ -62,10 +68,20 @@ public class Loader extends JavaPlugin {
 	}
 	
 	private void loadListeners() {
-		getLogger().info("[Listener] Registering PlayerJoin listener.");
-		registerListener(new PlayerJoin());
-		getLogger().info("[Listener] Registering PlayerQuit listener.");
-		registerListener(new PlayerQuit());
+		if(joinListenerConfig.getBoolean("enabled")) {
+			getLogger().info("[Listener] Registering PlayerJoin listener.");
+			registerListener(new PlayerJoin(joinListenerConfig));
+		}else {
+			joinListenerConfig.clear();
+			joinListenerConfig = null;
+		}
+		if(quitListenerConfig.getBoolean("enabled")) {
+			getLogger().info("[Listener] Registering PlayerQuit listener.");
+			registerListener(new PlayerQuit(quitListenerConfig));
+		}else {
+			quitListenerConfig.clear();
+			quitListenerConfig = null;
+		}
 	}
 	
 	private void loadCommands() {
@@ -100,30 +116,23 @@ public class Loader extends JavaPlugin {
 	}
 
 	private void loadConfigs() {
-		Config data = new Config();
+		config = loadAndMerge("config.yml", "config.yml");
+		commands = loadAndMerge("commands.yml", "commands.yml");
+		translations = loadAndMerge("translations.yml", "translations.yml");
+		economyConfig = loadAndMerge("economy.yml", "economy.yml");
+		joinListenerConfig = loadAndMerge("events/join-listener.yml", "events/join-listener.yml");
+		quitListenerConfig = loadAndMerge("events/quit-listener.yml", "events/quit-listener.yml");
+		data.clear();
+		data = null; //clear cache
+	}
+	
+	private Config loadAndMerge(String sourcePath, String filePath) {
+		data.reload(StreamUtils.fromStream(getResource("files/"+sourcePath)));
 		
-		data.reload(StreamUtils.fromStream(getResource("files/config.yml")));
-		config=new Config("plugins/SCR/config.yml");
-		if(config.merge(data, true, true))
-			config.save(DataType.YAML);
-		
-		data.reload(StreamUtils.fromStream(getResource("files/commands.yml")));
-		
-		commands=new Config("plugins/SCR/commands.yml");
-		if(commands.merge(data, true, true))
-			commands.save(DataType.YAML);
-		
-		data.reload(StreamUtils.fromStream(getResource("files/translations.yml")));
-		
-		translations=new Config("plugins/SCR/translations.yml");
-		if(translations.merge(data, true, true))
-			translations.save(DataType.YAML);
-		
-		data.reload(StreamUtils.fromStream(getResource("files/economy.yml")));
-		
-		economyConfig=new Config("plugins/SCR/economy.yml");
-		if(economyConfig.merge(data, true, true))
-			economyConfig.save(DataType.YAML);
+		Config result=new Config("plugins/SCR/"+filePath);
+		if(result.merge(data, true, true))
+			result.save(DataType.YAML);
+		return result;
 	}
 
 	public static void registerListener(Listener listener) {

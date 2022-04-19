@@ -7,46 +7,49 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.devtec.shared.components.ComponentAPI;
+import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.json.Json;
 import me.devtec.shared.placeholders.PlaceholderAPI;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
-import me.devtec.theapi.bukkit.nms.NmsProvider.ChatType;
 
 public class MessageUtils {
 
-	public static void msgConfig(CommandSender s, String path, Object... placeholders) {
-		Object text = Loader.translations.get(path);
+	public static void msgConfig(CommandSender s, String path, Object[] placeholders, CommandSender[] targets) {
+		msgConfig(s, Loader.translations, path, placeholders, targets);
+	}
+
+	public static void msgConfig(CommandSender s, Config config, String path, Object[] placeholders, CommandSender[] targets) {
+		Object text = config.get(path);
 		
 		if(text == null) {
-			Loader.plugin.getLogger().info("Translation "+path+" not found, report this bug to the DevTec discord.");
+			Loader.plugin.getLogger().info("Path "+path+" not found in config "+config.getFile().getName()+", report this bug to the DevTec discord.");
 			return;
 		}
 		
 		if(text instanceof Collection) {
-			if(Loader.translations.isJson(path)) {
-				String line = Loader.translations.getString(path);
+			if(config.isJson(path)) {
+				String line = config.getString(path);
 				String trimmed = line.trim();
 				if(trimmed.equals("[]") || trimmed.equals("{}"))return; //Do not send empty json
-				msgJson(s, line, placeholders);
+				msgJson(s, line, placeholders, targets);
 				return;
 			}
-			for(String line : Loader.translations.getStringList(path))
-				msg(s, line, placeholders);
+			for(String line : config.getStringList(path))
+				msg(s, line, placeholders, targets);
 			return;
 		}
-		String line = Loader.translations.getString(path);
+		String line = config.getString(path);
 		if(line.isEmpty())return; //Do not send empty strings
-		msg(s, line, placeholders);
+		msg(s, line, placeholders, targets);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void msgJson(CommandSender s, String original, Object[] placeholders) {
+	public static void msgJson(CommandSender s, String original, Object[] placeholders, CommandSender[] targets) {
 		Object json = Json.reader().simpleRead(original);
 		List<Map<String, Object>> jsonList = new ArrayList<>();
 		if(json instanceof Collection) {
@@ -69,14 +72,14 @@ public class MessageUtils {
 			replaceJson(s, map, placeholders);
 
 		jsonList = ComponentAPI.fixJsonList(jsonList);
+		Object packet = BukkitLoader.getNmsProvider().chatBase(Json.writer().simpleWrite(jsonList));
 		
-		if(s instanceof Player) {
-			String jsonText = Json.writer().simpleWrite(jsonList);
-			Bukkit.broadcastMessage(jsonText);
-			Object text = BukkitLoader.getNmsProvider().chatBase(jsonText);
-			BukkitLoader.getPacketHandler().send((Player)s, BukkitLoader.getNmsProvider().packetChat(ChatType.CHAT, text));
-		}else {
-			s.sendMessage(ComponentAPI.listToString(jsonList));
+		for(CommandSender target : targets) {
+			if(target instanceof Player) {
+				BukkitLoader.getPacketHandler().send((Player)target, packet);
+			}else {
+				target.sendMessage(ComponentAPI.listToString(jsonList));
+			}
 		}
 	}
 	
@@ -132,12 +135,13 @@ public class MessageUtils {
 		}
 	}
 
-	public static void msg(CommandSender s, String original, Object[] placeholders) {
+	public static void msg(CommandSender s, String original, Object[] placeholders, CommandSender[] targets) {
 		String text = original;
 		int pos = 0;
 		for(Object placeholder : placeholders) {
 			text = text.replace("{"+(pos++)+"}", placeholder.toString());
 		}
-		s.sendMessage(StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player)s).getUniqueId() : null)));
+		for(CommandSender target : targets)
+			target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player)s).getUniqueId() : null)));
 	}
 }

@@ -23,11 +23,11 @@ public interface ScrCommand {
 	public static final PermissionChecker<Player> PLAYER_PERMS_CHECKER = (sender, perm, tablist) -> {return sender.hasPermission(perm);};
 	
 	public default void msgConfig(CommandSender sender, String path, Object... placeholders) {
-		MessageUtils.msgConfig(sender, path, placeholders);
+		MessageUtils.msgConfig(sender, path, placeholders, new CommandSender[] {sender});
 	}
 	
 	public default void msg(CommandSender sender, String path, Object... placeholders) {
-		MessageUtils.msg(sender, path, placeholders);
+		MessageUtils.msg(sender, path, placeholders, new CommandSender[] {sender});
 	}
 	
 	public default Collection<? extends Player> playerSelectors(CommandSender sender, String selector) {

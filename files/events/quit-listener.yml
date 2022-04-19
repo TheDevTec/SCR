@@ -1,0 +1,6 @@
+enabled: true
+
+broadcast:
+- '&ePlayer {0} disconnected from the game'
+commands: []
+messages: []
