@@ -39,7 +39,6 @@ public class Tablist {
 
 	public void loadTasks(Config config) {
 		Loader.plugin.getLogger().info("[Tablist] Registering Join & Quit listener.");
-		Loader.registerListener(new TablistJoinQuit(this));
 		
 		sync = config.getBoolean("settings.syncPlaceholders");
 		
@@ -66,19 +65,18 @@ public class Tablist {
 			perWorld.put(world, global);
 		}
 
-		for(String world : config.getKeys("perGroup")) {
-			TabSettings global=new TabSettings();
-			global.header=StringUtils.join(config.getStringList("perGroup."+world+".header"), "\n");
-			global.footer=StringUtils.join(config.getStringList("perGroup."+world+".footer"), "\n");
-			global.nametag_prefix=config.getString("perGroup."+world+".nametag.prefix");
-			global.nametag_suffix=config.getString("perGroup."+world+".nametag.suffix");
-			global.tabname=config.getString("perGroup."+world+".tabname");
-			global.yellowNumber=config.getString("perGroup."+world+".yellowNumber.value");
-			global.yellowNumberDisplay=config.getString("perGroup."+world+".yellowNumber.display");
-			perGroup.put(world, global);
-		}
-		
 		if(config.getString("sortingBy").equalsIgnoreCase("group") && Loader.vault!=null) {
+			for(String world : config.getKeys("perGroup")) {
+				TabSettings global=new TabSettings();
+				global.header=StringUtils.join(config.getStringList("perGroup."+world+".header"), "\n");
+				global.footer=StringUtils.join(config.getStringList("perGroup."+world+".footer"), "\n");
+				global.nametag_prefix=config.getString("perGroup."+world+".nametag.prefix");
+				global.nametag_suffix=config.getString("perGroup."+world+".nametag.suffix");
+				global.tabname=config.getString("perGroup."+world+".tabname");
+				global.yellowNumber=config.getString("perGroup."+world+".yellowNumber.value");
+				global.yellowNumberDisplay=config.getString("perGroup."+world+".yellowNumber.display");
+				perGroup.put(world, global);
+			}
 			List<String> groups = config.getStringList("sorting");
 			int length = (""+groups.size()).length()+1;
 			for(int i = 0; i < groups.size(); ++i) {
@@ -104,6 +102,8 @@ public class Tablist {
 			global.yellowNumberDisplay=config.getString("perPlayer."+world+".yellowNumber.display");
 			perPlayer.put(world, global);
 		}
+		
+		Loader.registerListener(new TablistJoinQuit(this));
 		
 		task = new Tasker() {
 			public void run() {
@@ -141,10 +141,7 @@ public class Tablist {
 		for(NameTagAPI a : tags.values())
 			a.reset(p);
 		dType.remove(p.getUniqueId());
-		Object packet = BukkitLoader.getNmsProvider().packetScoreboardDisplayObjective(1, null);
-		Ref.set(packet, "b", "ping");
-		BukkitLoader.getPacketHandler().send(p, packet);
-		BukkitLoader.getPacketHandler().send(BukkitLoader.getOnlinePlayers(), createObjectivePacket(2, "ping", p.getName(), showType(players.remove(p.getUniqueId()).yellowNumberDisplay)));
+		BukkitLoader.getPacketHandler().send(BukkitLoader.getOnlinePlayers(), BukkitLoader.getNmsProvider().packetScoreboardScore(Action.REMOVE, "ping", p.getName(), 0));
 		TabAPI.setHeaderFooter(p, "", "");
 		TabAPI.setTabListName(p, p.getName());
 	}
@@ -173,7 +170,7 @@ public class Tablist {
 	}
 	
 	public static DisplayType showType(String showType) {
-		return showType.equalsIgnoreCase("heart")||showType.equalsIgnoreCase("hearts")||showType.equalsIgnoreCase("hp")?DisplayType.HEARTS:DisplayType.INTEGER;
+		return showType != null && (showType.equalsIgnoreCase("heart")||showType.equalsIgnoreCase("hearts")||showType.equalsIgnoreCase("hp"))?DisplayType.HEARTS:DisplayType.INTEGER;
 	}
 	
 	public TabSettings getSettingsOf(Player player) {
@@ -184,44 +181,22 @@ public class Tablist {
 		TabSettings settings = perPlayer.get(player.getName());
 		if(settings!=null) {
 			generated.copySettings(settings);
-			return scroll(player, settings, generated);
 		}
 		settings = perWorld.get(player.getWorld().getName());
 		if(settings!=null) {
 			generated.copySettings(settings);
-			return scroll(player, settings, generated);
 		}
 		settings = perGroup.get(getVaultGroup(player));
 		if(settings!=null) {
 			generated.copySettings(settings);
-			return scroll(player, settings, generated);
 		}
-		
 		return generated;
-	}
-	
-	public TabSettings scroll(Player player, TabSettings settings, TabSettings copyTo) {
-		if(settings.perWorld!=null) {
-			TabSettings set = settings.perWorld.get(player.getWorld().getName());
-			if(set!=null) {
-				copyTo.copySettings(set);
-				return scroll(player, set, copyTo);
-			}
-		}
-		if(settings.perGroup!=null) {
-			TabSettings set = settings.perGroup.get(getVaultGroup(player));
-			if(set!=null) {
-				copyTo.copySettings(set);
-				return scroll(player, set, copyTo);
-			}
-		}
-		return settings;
 	}
 	
 	private String getVaultGroup(Player player) {
 		if(Loader.vault != null)
 			return ((Permission)Loader.vault).getPrimaryGroup(player);
-		return "default";
+		return null;
 	}
 	
 	private static ChatColor getColor(String lastColors) {
@@ -251,39 +226,39 @@ public class Tablist {
 	}
 
 	public static class TabSettings {
-		//Sub settings
-		public Map<String, TabSettings> perGroup, perWorld;
-		
 		public String header, footer, sorting, yellowNumber, yellowNumberDisplay, nametag_prefix, nametag_suffix, tabname;
 
 		public void copySettings(TabSettings global) {
-			if(global.yellowNumberDisplay!=null)
+			if(yellowNumberDisplay == null && global.yellowNumberDisplay!=null)
 				yellowNumberDisplay=global.yellowNumberDisplay;
-			if(global.tabname!=null)
+			if(tabname == null && global.tabname!=null)
 				tabname=global.tabname;
-			if(global.header!=null)
+			if(header == null && global.header!=null)
 				header=global.header;
-			if(global.footer!=null)
+			if(footer == null && global.footer!=null)
 				footer=global.footer;
-			if(global.nametag_prefix!=null)
+			if(nametag_prefix == null && global.nametag_prefix!=null)
 				nametag_prefix=global.nametag_prefix;
-			if(global.nametag_suffix!=null)
+			if(nametag_suffix == null && global.nametag_suffix!=null)
 				nametag_suffix=global.nametag_suffix;
-			if(global.sorting!=null)
+			if(sorting == null && global.sorting!=null)
 				sorting=global.sorting;
-			if(global.yellowNumber!=null)
+			if(yellowNumber == null && global.yellowNumber!=null)
 				yellowNumber=global.yellowNumber;
 		}
 
 		public void replace(Player player) {
-			yellowNumberDisplay=PlaceholderAPI.apply(yellowNumberDisplay.replace("{0}", player.getName()), player.getUniqueId());
+			if(yellowNumberDisplay!=null)
+				yellowNumberDisplay=PlaceholderAPI.apply(yellowNumberDisplay.replace("{0}", player.getName()), player.getUniqueId());
 			tabname=PlaceholderAPI.apply(tabname.replace("{0}", player.getName()), player.getUniqueId());
 			header=PlaceholderAPI.apply(header.replace("{0}", player.getName()), player.getUniqueId());
 			footer=PlaceholderAPI.apply(footer.replace("{0}", player.getName()), player.getUniqueId());
 			nametag_prefix=PlaceholderAPI.apply(nametag_prefix.replace("{0}", player.getName()), player.getUniqueId());
 			nametag_suffix=PlaceholderAPI.apply(nametag_suffix.replace("{0}", player.getName()), player.getUniqueId());
-			sorting=PlaceholderAPI.apply(sorting.replace("{0}", player.getName()), player.getUniqueId());
-			yellowNumber=PlaceholderAPI.apply(yellowNumber.replace("{0}", player.getName()), player.getUniqueId());
+			if(sorting!=null)
+				sorting=PlaceholderAPI.apply(sorting.replace("{0}", player.getName()), player.getUniqueId());
+			if(yellowNumber!=null)
+				yellowNumber=PlaceholderAPI.apply(yellowNumber.replace("{0}", player.getName()), player.getUniqueId());
 		}
 
 		public void colorize() {
