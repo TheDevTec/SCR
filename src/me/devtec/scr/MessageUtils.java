@@ -76,7 +76,7 @@ public class MessageUtils {
 			Object text = BukkitLoader.getNmsProvider().chatBase(jsonText);
 			BukkitLoader.getPacketHandler().send((Player)s, BukkitLoader.getNmsProvider().packetChat(ChatType.CHAT, text));
 		}else {
-			s.sendMessage(ComponentAPI.toStringJson(jsonList));
+			s.sendMessage(ComponentAPI.listToString(jsonList));
 		}
 	}
 	
