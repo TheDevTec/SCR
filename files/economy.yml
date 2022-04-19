@@ -2,6 +2,9 @@
 currencySymbol: "€"
 currencyName: "euro"
 
+# Enable to disable this economy (ScrEconomy)
+useVaultEconomy: false
+
 # {0} is currency symbol
 # {1} is raw balance (1102100.540000614)
 # {2} is formatted raw balance (1102100.54)
