@@ -19,8 +19,8 @@ import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public interface ScrCommand {
-	public static final PermissionChecker<CommandSender> PERMS_CHECKER = (sender, perm, tablist) -> {return sender.hasPermission(perm);};
-	public static final PermissionChecker<Player> PLAYER_PERMS_CHECKER = (sender, perm, tablist) -> {return sender.hasPermission(perm);};
+	public static final PermissionChecker<CommandSender> PERMS_CHECKER = (sender, perm, tablist) -> sender.hasPermission(perm);
+	public static final PermissionChecker<Player> PLAYER_PERMS_CHECKER = (sender, perm, tablist) -> sender.hasPermission(perm);
 	
 	public default void msgConfig(CommandSender sender, String path, Object... placeholders) {
 		MessageUtils.msgConfig(sender, path, placeholders, new CommandSender[] {sender});
@@ -63,7 +63,7 @@ public interface ScrCommand {
 		return Arrays.asList(Bukkit.getPlayer(selector));
 	}
 	
-	public default void help(CommandSender sender, int arg) {
+	public default void help(CommandSender sender, Object arg) {
 		Object val = Loader.commands.get(configSection()+".help."+arg);
 		if(val instanceof Collection) {
 			for(String list : Loader.commands.getStringList(configSection()+".help."+arg))
