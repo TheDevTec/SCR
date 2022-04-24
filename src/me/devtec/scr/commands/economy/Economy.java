@@ -93,11 +93,7 @@ public class Economy implements ScrCommand {
 									((net.milkbowl.vault.economy.Economy)Loader.economy).withdrawPlayer(p, ((net.milkbowl.vault.economy.Economy)Loader.economy).getBalance(p));
 									((net.milkbowl.vault.economy.Economy)Loader.economy).depositPlayer(p, money);
 								}
-							})
-							.parent() //any string
-						.parent() //entity selector
-					.parent() //set
-					.build().register(cmds.remove(0), cmds.toArray(new String[0]));
+							}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
 	@Override
