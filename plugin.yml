@@ -1,10 +1,11 @@
-name: ServerControlReloaded
-main: me.devtec.servercontrolreloaded.scr.Loader
-version: 8.5
-website: https://www.spigotmc.org/resources/71147/
-description: Fully customizable plugin with many features!
+name: SCR
+main: me.devtec.scr.scr.Loader
 author: DevTec
+version: 0.1-Alpha
+api-version: 1.13
+description: Fully customizable plugin with many features!
 depend: [TheAPI]
 loadbefore: [Paintball,WorldGuard,Residence,MobArena,SpecializedCrates,GoldenCrates,RevoltCrates,AdvancedMonthlyCrates,CrazyCrates,CrateReloaded]
 softdepend: [HeadDatabase,Essentials,WorldEdit,LuckPerms,dynmap]
-api-version: 1.13
+spigot-id: 71147
+website: https://www.spigotmc.org/resources/71147/
