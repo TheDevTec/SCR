@@ -36,7 +36,12 @@ public class Jail implements CommandExecutor, TabCompleter {
 						Loader.sendMessages(s, "Immune.NoPunish", Placeholder.c().add("%player%", args[0]));
 						return true;
 					}
-					TheAPI.getPunishmentAPI().jail(args[0], 0, Loader.config.getString("BanSystem.Jail.Text").replace("%reason%", Loader.config.getString("BanSystem.Jail.Reason")));
+					TheAPI.getPunishmentAPI().jail(args[0], 0, Loader.config.getString("BanSystem.Jail.Text")
+							.replace("%reason%", Loader.config.getString("BanSystem.Jail.Reason")));
+					/*new me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI().jail(args[0], 0, 
+							Loader.config.getString("BanSystem.Jail.Text")
+							.replace("%reason%", Loader.config.getString("BanSystem.Jail.Reason")));*/
+					
 					Loader.sendMessages(s, "BanSystem.Jail.Sender", Placeholder.c().replace("%operator%", s.getName())
 							.replace("%player%", args[0]).replace("%reason%", Loader.config.getString("BanSystem.Jail.Reason")));
 					Loader.sendBroadcasts(s, "BanSystem.Jail.Admins", Placeholder.c().replace("%operator%", s.getName())
@@ -55,14 +60,22 @@ public class Jail implements CommandExecutor, TabCompleter {
 				String msg = StringUtils.buildString(1, args);
 				if(msg.endsWith("-s")||msg.endsWith("- s")) {
 					msg = msg.endsWith("- s")?msg.substring(0, msg.length()-3):msg.substring(0, msg.length()-2);
+					
 					TheAPI.getPunishmentAPI().jail(args[0],0, Loader.config.getString("BanSystem.Jail.Text").replace("%reason%", msg));
+					
+					/*new me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI().jail(args[0], 0, 
+							Loader.config.getString("BanSystem.Jail.Text").replace("%reason%", msg));*/
+					
 					Loader.sendMessages(s, "BanSystem.Jail.Sender", Placeholder.c().replace("%operator%", s.getName())
 							.replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"));
 					Loader.sendBroadcasts(s, "BanSystem.Jail.Admins", Placeholder.c().replace("%operator%", s.getName())
 							.replace("%player%", args[0]).replace("%reason%", msg+" &f[Silent]"));
 					return true;
 				}
-				TheAPI.getPunishmentAPI().jail(args[0],0, Loader.config.getString("BanSystem.Jail.Text").replace("%reason%", msg));
+				//TheAPI.getPunishmentAPI().jail(args[0],0, Loader.config.getString("BanSystem.Jail.Text").replace("%reason%", msg));
+				new me.devtec.servercontrolreloaded.utils.punishment.SPunishmentAPI().jail(args[0], 0, 
+						Loader.config.getString("BanSystem.Jail.Text").replace("%reason%", msg));
+				
 				Loader.sendMessages(s, "BanSystem.Jail.Sender", Placeholder.c().replace("%operator%", s.getName())
 						.replace("%player%", args[0]).replace("%reason%", msg));
 				Loader.sendBroadcasts(s, "BanSystem.Jail.Admins", Placeholder.c().replace("%operator%", s.getName())

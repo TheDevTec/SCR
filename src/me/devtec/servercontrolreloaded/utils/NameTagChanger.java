@@ -48,7 +48,9 @@ public class NameTagChanger {
 	
 	public static void removeVisibility(Player to) {
 		for(Entry<Player, NameTagAPI> e : t.entrySet()) {
-			e.getValue().reset(to);
+			if(e.getKey()!=to) {
+				e.getValue().reset(to);
+			}
 		}
 	}
 	

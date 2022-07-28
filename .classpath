@@ -7,12 +7,13 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Dynmap.jar"/>
-	<classpathentry kind="lib" path="C:/EclipseUtils/MC/spigot-1.17.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/LP/LuckPerms-Bukkit-5.3.87.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Vault.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/PlaceholderAPI-2.10.9.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Residence5.0.1.0.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/HeadDatabase-4.14.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ADAMB/Downloads/TheAPI(4).jar"/>
+	<classpathentry kind="lib" path="C:/EclipseUtils/TheAPI.jar" sourcepath="/TheAPI"/>
+	<classpathentry kind="lib" path="C:/EclipseUtils/MC/spigot-1.18.1.jar"/>
+	<classpathentry kind="lib" path="C:/EclipseUtils/MC/spigot-1.17.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

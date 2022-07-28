@@ -114,7 +114,10 @@ public class Layout {
 			// 31
 			amount=file.getString(path+".display.amount");
 			// 16
-			durability=file.getString(path+".display.durability");
+			if(file.exists(path+".display.durability"))
+				durability=file.getString(path+".display.durability");
+			else
+				durability="1";
 			// {"myNbt":[{"ofc":1,"notWorking :)":2}]}
 			extraNbt=file.getString(path+".display.nbt");
 			// 34154
@@ -153,10 +156,12 @@ public class Layout {
 				conditions.add(new ItemBuilder(file, path+".conditions."+con));
 		}
 		
+		@SuppressWarnings("deprecation")
 		public ItemStack build(Player p) {
 			if(material==null)return none;
 			try {
-				XMaterial mat = XMaterial.matchXMaterial(PlaceholderAPI.setPlaceholders(p, material).toUpperCase());
+				//XMaterial mat = XMaterial.matchXMaterial(PlaceholderAPI.setPlaceholders(p, material).toUpperCase());
+				Material mat = Material.valueOf(PlaceholderAPI.setPlaceholders(p, material).toUpperCase());
 				if(mat==null)return none;
 				ItemStack stack;
 				
@@ -212,7 +217,8 @@ public class Layout {
 						}
 					}}
 				}else
-					stack = mat.parseItem();
+					stack = new ItemStack(mat).clone();
+					//stack = mat.parseItem();
 				stack.setDurability((short)StringUtils.getInt(PlaceholderAPI.setPlaceholders(p, durability)));
 				stack.setAmount(StringUtils.getInt(PlaceholderAPI.setPlaceholders(p, amount)));
 				if(stack.getAmount()<=0)stack.setAmount(1);
@@ -225,7 +231,8 @@ public class Layout {
 				
 				ItemMeta meta = stack.getItemMeta();
 				
-				if(mat == XMaterial.WRITTEN_BOOK) {
+				//if(mat == XMaterial.WRITTEN_BOOK) {
+				if(mat == Material.WRITTEN_BOOK) {
 					BookMeta book = (BookMeta) meta;
 					if(bookOwner!=null)
 					book.setAuthor(TheAPI.colorize(PlaceholderAPI.setPlaceholders(p, bookOwner)));
