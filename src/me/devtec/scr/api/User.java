@@ -22,6 +22,8 @@ public class User implements ISuser {
 	}
 	public User(String player) {
 		name = player;
+		if(player.equalsIgnoreCase("console"))
+			this.player=null;
 		this.player= Bukkit.getPlayer(player)!=null ? Bukkit.getPlayer(player) : null;
 	}
 
@@ -29,11 +31,17 @@ public class User implements ISuser {
 	public Player player;
 	public String name;
 	
-	
+
+	@Override
+	public boolean isConsole() {
+		if(name.equalsIgnoreCase("console"))
+			return true;
+		return false;
+	}
 	
 	@Override
 	public boolean checkPerm(String permission) {
-		if(player.hasPermission(permission))
+		if(player.hasPermission(permission) || isConsole())
 			return true;
 		else {
 			Messages.noPerm(player, permission);
@@ -44,7 +52,7 @@ public class User implements ISuser {
 	
 	@Override
 	public boolean isAutorized(String permission) {
-		if(player.hasPermission(permission))
+		if(player.hasPermission(permission) || isConsole())
 			return true;
 		else
 			return false;

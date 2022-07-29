@@ -3,6 +3,7 @@ package me.devtec.scr.commands;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,7 +25,7 @@ public abstract class SCommand implements CommandExecutor, TabCompleter {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
-		if(canUseCommand(API.getUser(sender)))
+		if(canUseCommand(API.getUser(sender)) || API.getUser(sender).isConsole())
 			command(API.getUser(sender), cmd, args);
 		return true;
 	}
@@ -46,7 +47,7 @@ public abstract class SCommand implements CommandExecutor, TabCompleter {
 	
 	public boolean canUseCommand(User user) {
 		if(user.isAutorized(getPerm())) {
-			if(!CommandsManager.cooldownExpired(user, name)) {//Cooldown check
+			if(!CommandsManager.cooldownExpired(user, name)) { //Cooldown check
 				Messages.message(user.player, "Cooldowns.Commands",
 						Placeholder.c().replace("%time%", StringUtils.timeToString( CommandsManager.expires(user, name) ) )
 						.replace("%time_sec%", CommandsManager.expires(user, name) ));
@@ -57,10 +58,31 @@ public abstract class SCommand implements CommandExecutor, TabCompleter {
 		Messages.noPerm(user.player, getPerm());
 		return false;
 	}
-	public String getPerm() {
+	
+	//Permissions
+	public String getPerm() { //Default permission
 		return Loader.commands.getString(name+".permission.default");
 	}
-	public String getPerm(String subcommand) {
+	public String getPerm(String subcommand) { //SubPermissions
 		return Loader.commands.getString(name+".permission."+subcommand);
+	}
+	
+	//Help messages
+	public void help(User user) { //Default help
+		if(user.isConsole())
+			Messages.msgConfig(Bukkit.getConsoleSender(), name+".help.default", Loader.commands, null);
+		else
+			Messages.msgConfig(user.player, name+".help.default", Loader.commands, null);
+	}
+	public void help(User user, String subcommand) { //SubCommand message
+		if(user.isConsole())
+			Messages.msgConfig(Bukkit.getConsoleSender(), name+".help."+subcommand, Loader.commands, null);
+		else
+			Messages.msgConfig(user.player, name+".help."+subcommand, Loader.commands, null);
+	}
+	
+	//Messages
+	public void msg(User user, String path, Placeholder placeholders) {
+		Messages.message(user.player, path, placeholders);
 	}
 }

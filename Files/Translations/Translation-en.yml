@@ -7,3 +7,18 @@ NoPermission: "&e&lS&f&lerver &8&l» &7"
 Cooldowns:
   Messages: "%prefix% Wait &e%time% &7before sending the message"
   Commands: "%prefix% Wait &e%time% &7before sending the command again"
+
+# Translations for weather commands
+Weather:
+  Sun: "%prefix% You set &esunny &7weather in world &e%world%"
+  Rain: "%prefix% You set &erainy &7weather in world &e%world%"
+  # PSun: "%prefix% You set &esunny &7weather for &e%player%" ??
+  # PRain: "%prefix% You set &erainy &7weather for &e%player%" ??
+  Thunder: "%prefix% You set &erainy &7weather with &ethunder &7in world &e%world%"
+
+# Translations for 'missing' things
+Missing:
+  World: "%prefix% World &e%world% &7doesn't exist"
+  Player:
+    Offline: "%prefix% Player &e%player% &7is offline"
+    NotExist: "%prefix% User &e%player% &7doesn't exist"

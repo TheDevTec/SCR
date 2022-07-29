@@ -15,6 +15,9 @@ public interface ISuser {
 	
 	void newCooldown(String cooldownpath);
 	
+	
+	boolean isConsole();
+	
 	Config getUserConfig();
 
 }

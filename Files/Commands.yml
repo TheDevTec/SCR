@@ -11,3 +11,12 @@
 #    subcommand1: "/command <něco> <něco dalšího XD>"
 #  cooldown: 0
 #
+Sun:
+  enabled: true
+  permission:
+    default: "SCR.Command.sun"
+    different_world: "SCR.Command.sun.worlds"
+  help:
+    default: "/sun"
+    different_world: "/sun <world>"
+  cooldown: 5

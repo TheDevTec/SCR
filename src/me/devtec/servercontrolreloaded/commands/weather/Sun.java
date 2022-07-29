@@ -1,6 +1,5 @@
 package me.devtec.servercontrolreloaded.commands.weather;
 
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -14,7 +13,7 @@ import me.devtec.servercontrolreloaded.commands.CommandHolder;
 import me.devtec.servercontrolreloaded.scr.API;
 import me.devtec.servercontrolreloaded.scr.Loader;
 import me.devtec.servercontrolreloaded.scr.Loader.Placeholder;
-import me.devtec.theapi.utils.StringUtils;
+import me.devtec.shared.utility.StreamUtils;
 
 public class Sun extends CommandHolder {
 
@@ -25,7 +24,7 @@ public class Sun extends CommandHolder {
 	@Override
 	public List<String> tabCompleter(CommandSender s, String[] args) {
 		if (args.length == 1)
-			return StringUtils.copyPartialMatches(args[0], API.worldNames());
+			return StreamUtils.copyPartialMatches(args[0], API.worldNames());
 		return Collections.emptyList();
 	}
 

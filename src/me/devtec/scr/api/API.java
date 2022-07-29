@@ -27,7 +27,7 @@ public class API {
 				usercache.put(commandsender.getName(), new User(commandsender));
 			return usercache.get(commandsender.getName());
 			
-		}
-		return null;
+		}else
+		return new User("console");
 	}
 }

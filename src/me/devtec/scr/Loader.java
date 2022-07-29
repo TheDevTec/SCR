@@ -1,5 +1,7 @@
 package me.devtec.scr;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
@@ -23,6 +25,8 @@ public class Loader extends JavaPlugin {
 	public static Object economy, vault;
 	
 	public String prefix;
+	
+	public static Random random = new Random();
 	
 	public void onLoad() {
 		
