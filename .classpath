@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/EclipseUtils/Vault.jar"/>
-	<classpathentry kind="lib" path="D:/Build/TheAPI.jar" sourcepath="/TheAPI"/>
-	<classpathentry kind="lib" path="C:/EclipseUtils/spigot-1.17.1.jar"/>
+	<classpathentry kind="lib" path="D:/jars/depends/Vault-1.7.3.jar"/>
+	<classpathentry kind="lib" path="D:/build/TheAPI.jar" sourcepath="/TheAPI"/>
+	<classpathentry kind="lib" path="D:/jars/mc/spigot-1.17.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

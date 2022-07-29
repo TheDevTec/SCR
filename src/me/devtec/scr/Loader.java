@@ -30,91 +30,96 @@ import net.milkbowl.vault.permission.Permission;
 public class Loader extends JavaPlugin {
 
 	private Config data = new Config();
-	
+
 	public static Loader plugin;
-	
+
 	public static Config config;
 	public static Config commands;
 	public static Config translations;
-	
-	//VAULT plugin
+
+	// VAULT plugin
 	public static Object economy;
 	public static Object vault;
 
 	public List<ScrCommand> registered_commands = new ArrayList<>();
-	
+
 	private Config economyConfig;
 	private Config joinListenerConfig;
 	private Config quitListenerConfig;
 	private Config tablistConfig;
 	public Tablist tablist;
-	
+
+	@Override
 	public void onLoad() {
-		plugin=this;
+		plugin = this;
 		loadConfigs();
-		if(Bukkit.getPluginManager().getPlugin("Vault") != null && Ref.getClass("net.milkbowl.vault.economy.Economy") != null) {
+		if (Bukkit.getPluginManager().getPlugin("Vault") != null && Ref.getClass("net.milkbowl.vault.economy.Economy") != null) {
 			vaultPermissionHooking();
-			if(economyConfig.getBoolean("useVaultEconomy")) {
+			if (economyConfig.getBoolean("useVaultEconomy")) {
 				vaultEconomyHooking();
 				economyConfig.clear();
 				economyConfig = null;
-			}else {
+			} else {
 				getLogger().info("[Economy] Registering ScrEconomy and using as Vault economy.");
 				economy = new ScrEconomy(economyConfig);
-				Bukkit.getServicesManager().register(Economy.class, (ScrEconomy)economy, this, ServicePriority.Normal);
+				Bukkit.getServicesManager().register(Economy.class, (ScrEconomy) economy, this, ServicePriority.Normal);
 			}
 		}
 	}
-	
+
+	@Override
 	public void onEnable() {
 		loadListeners();
 		loadCommands();
-		tablist=new Tablist();
+		tablist = new Tablist();
 		tablist.loadTasks(tablistConfig);
 	}
 
+	@Override
 	public void onDisable() {
-		for(ScrCommand cmd : registered_commands)cmd.disabling();
+		for (ScrCommand cmd : registered_commands)
+			cmd.disabling();
 		registered_commands.clear();
 		tablist.unloadTasks();
 	}
-	
+
 	private void loadListeners() {
-		if(joinListenerConfig.getBoolean("enabled")) {
+		if (joinListenerConfig.getBoolean("enabled")) {
 			getLogger().info("[Listener] Registering PlayerJoin listener.");
 			registerListener(new PlayerJoin(joinListenerConfig));
-		}else {
+		} else {
 			joinListenerConfig.clear();
 			joinListenerConfig = null;
 		}
-		if(quitListenerConfig.getBoolean("enabled")) {
+		if (quitListenerConfig.getBoolean("enabled")) {
 			getLogger().info("[Listener] Registering PlayerQuit listener.");
 			registerListener(new PlayerQuit(quitListenerConfig));
-		}else {
+		} else {
 			quitListenerConfig.clear();
 			quitListenerConfig = null;
 		}
 	}
-	
+
 	private void loadCommands() {
 		int count = 0;
 		int total = 0;
-		
+
 		getLogger().info("Loading commands..");
 		try {
 			File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
 			JarFile jar = new JarFile(file);
 			Enumeration<JarEntry> entries = jar.entries();
-			while(entries.hasMoreElements()) {
+			while (entries.hasMoreElements()) {
 				JarEntry entry = entries.nextElement();
-				if(!entry.getName().endsWith(".class") || !entry.getName().startsWith("me/devtec/scr/commands/") || entry.getName().equals("me/devtec/scr/commands/ScrCommand.class"))continue;
-				Class<?> cls = Class.forName(entry.getName().substring(0, entry.getName().length()-6).replace("/", "."));
+				if (!entry.getName().endsWith(".class") || !entry.getName().startsWith("me/devtec/scr/commands/") || entry.getName().equals("me/devtec/scr/commands/ScrCommand.class"))
+					continue;
+				Class<?> cls = Class.forName(entry.getName().substring(0, entry.getName().length() - 6).replace("/", "."));
 				if (ScrCommand.class.isAssignableFrom(cls)) {
 					ScrCommand scrCmd = (ScrCommand) cls.newInstance();
 					++total;
-					if(commands.getBoolean(scrCmd.configSection()+".enabled")) {
+					if (commands.getBoolean(scrCmd.configSection() + ".enabled")) {
 						++count;
-						scrCmd.initFirst(commands.getStringList(scrCmd.configSection()+".cmds"));
+						scrCmd.initFirst(commands.getStringList(scrCmd.configSection() + ".cmds"));
 						registered_commands.add(scrCmd);
 					}
 				}
@@ -124,7 +129,7 @@ public class Loader extends JavaPlugin {
 			getLogger().log(Level.SEVERE, "An issue occurred while loading commands, please report the error to discord https://discord.gg/5kCSrtkKGF", e);
 			return;
 		}
-		getLogger().info("Commands successfully loaded. ("+count+"/"+total+")");
+		getLogger().info("Commands successfully loaded. (" + count + "/" + total + ")");
 	}
 
 	private void loadConfigs() {
@@ -136,14 +141,14 @@ public class Loader extends JavaPlugin {
 		quitListenerConfig = loadAndMerge("events/quit-listener.yml", "events/quit-listener.yml");
 		tablistConfig = loadAndMerge("tablist.yml", "tablist.yml");
 		data.clear();
-		data = null; //clear cache
+		data = null; // clear cache
 	}
-	
+
 	private Config loadAndMerge(String sourcePath, String filePath) {
-		data.reload(StreamUtils.fromStream(getResource("files/"+sourcePath)));
-		
-		Config result=new Config("plugins/SCR/"+filePath);
-		if(result.merge(data, true, true))
+		data.reload(StreamUtils.fromStream(getResource("files/" + sourcePath)));
+
+		Config result = new Config("plugins/SCR/" + filePath);
+		if (result.merge(data))
 			result.save(DataType.YAML);
 		return result;
 	}
@@ -151,21 +156,21 @@ public class Loader extends JavaPlugin {
 	public static void registerListener(Listener listener) {
 		Bukkit.getPluginManager().registerEvents(listener, plugin);
 	}
-	
-	//VAULT HOOKING
+
+	// VAULT HOOKING
 	private void vaultEconomyHooking() {
 		getLogger().info("[Economy] Looking for Vault economy service..");
 		new Tasker() {
 			@Override
 			public void run() {
 				if (getVaultEconomy()) {
-					getLogger().info("[Economy] Found Vault economy service. "+((Economy)economy).getName());
+					getLogger().info("[Economy] Found Vault economy service. " + ((Economy) economy).getName());
 					cancel();
 				}
 			}
 		}.runTimer(0, 20, 15);
 	}
-	
+
 	private boolean getVaultEconomy() {
 		try {
 			RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
@@ -176,20 +181,20 @@ public class Loader extends JavaPlugin {
 			return false;
 		}
 	}
-	
+
 	private void vaultPermissionHooking() {
 		getLogger().info("[Permission] Looking for Vault permission service..");
 		new Tasker() {
 			@Override
 			public void run() {
 				if (getVaultPermission()) {
-					getLogger().info("[Permission] Found Vault permission service. "+((Permission)vault).getName());
+					getLogger().info("[Permission] Found Vault permission service. " + ((Permission) vault).getName());
 					cancel();
 				}
 			}
 		}.runTimer(0, 20, 15);
 	}
-	
+
 	private boolean getVaultPermission() {
 		try {
 			RegisteredServiceProvider<Permission> economyProvider = Bukkit.getServicesManager().getRegistration(Permission.class);
