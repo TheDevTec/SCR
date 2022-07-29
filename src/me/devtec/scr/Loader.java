@@ -78,10 +78,6 @@ public class Loader extends JavaPlugin {
 	
 	
 	
-	
-	
-	
-	
 	//VAULT HOOKING
 	private void setupVault() {
 		vaultPermissionHooking();

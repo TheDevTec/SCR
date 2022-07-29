@@ -1,5 +1,5 @@
 name: SCR
-main: me.devtec.scr.scr.Loader
+main: me.devtec.scr.Loader
 author: DevTec
 version: 0.1-Alpha
 api-version: 1.13
