@@ -15,3 +15,6 @@ Options:
   Language: "en"
   
   Prefix: "&6&lS&f&lerver &8&l»&7"
+
+CommandCooldowns:
+  jobs: "5"

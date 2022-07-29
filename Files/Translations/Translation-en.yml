@@ -1,0 +1,9 @@
+NoPermission: "&e&lS&f&lerver &8&l» &7"
+
+
+# Translations for cooldowns
+# %time% - time formatted (10min5s)
+# %time_sec% - just number in seconds
+Cooldowns:
+  Messages: "%prefix% Wait &e%time% &7before sending the message"
+  Commands: "%prefix% Wait &e%time% &7before sending the command again"

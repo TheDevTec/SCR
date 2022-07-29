@@ -6,10 +6,10 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.devtec.scr.api.ScrEconomy;
+import me.devtec.scr.utils.Messages;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.scheduler.Tasker;
-import me.devtec.theapi.bukkit.BukkitLoader;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -35,9 +35,9 @@ public class Loader extends JavaPlugin {
 		if(Bukkit.getPluginManager().getPlugin("Vault")!=null && Ref.getClass("net.milkbowl.vault.economy.Economy") != null) {
 			setupVault();
 		} else {
-			BukkitLoader.msg(prefix + " &8*********************************************", BukkitLoader.getConsole());
-			BukkitLoader.msg(prefix + " &eINFO: &7Missing Vault plugin for Economy.", BukkitLoader.getConsole());
-			BukkitLoader.msg(prefix + " &8*********************************************", BukkitLoader.getConsole());
+			Messages.msgConsole("%prefix%  &8*********************************************");
+			Messages.msgConsole("%prefix%  &eINFO: &7Missing Vault plugin for Economy.");
+			Messages.msgConsole("%prefix%  &8*********************************************");
 		}
 		
 		

@@ -1,0 +1,13 @@
+#command:
+#  enabled: true/false
+#  aliases:
+#  - "alias1"
+#  - "alias2"
+#  permission:
+#    default: "SCR.Command.command"
+#    subcommand1: "SCR.Command.command.subcommand1"
+#  help:
+#    default: "/command <něco>"
+#    subcommand1: "/command <něco> <něco dalšího XD>"
+#  cooldown: 0
+#
