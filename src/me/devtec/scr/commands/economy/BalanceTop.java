@@ -35,11 +35,11 @@ public class BalanceTop implements ScrCommand {
 
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			listBaltop(s, 0);
-		}).permission("scr." + configSection()).fallback((s, structure, args) -> {
-			msgConfig(s, configSection() + ".invalidPage", args[0]);
+		}).permission(permission("cmd")).fallback((s, structure, args) -> {
+			msgSec(s, "invalidPage", args[0]);
 		}).selector(Selector.INTEGER, (s, structure, args) -> { // cmd [integer]
 			if (StringUtils.getInt(args[0]) - 1 < 0) {
-				msgConfig(s, configSection() + ".invalidPage", args[0]);
+				msgSec(s, "invalidPage", args[0]);
 				return;
 			}
 			listBaltop(s, StringUtils.getInt(args[0]) - 1);

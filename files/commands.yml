@@ -1,3 +1,237 @@
+# # # # # # # # # # # #
+# # # # WEATHER # # # #
+# # # # # # # # # # # #
+
+# Set world's weather to sunny
+sun:
+  enabled: true
+  cmds:
+  - "sun"
+  help:
+    usage: "/sun [world]"
+  permission:
+    cmd: "scr.command.sun"
+    other: "scr.command.sun.other"
+
+# Set world's weather to rainy
+rain:
+  enabled: true
+  cmds:
+  - "rain"
+  help:
+    usage: "/rain [world]"
+  permission:
+    cmd: "scr.command.rain"
+    other: "scr.command.rain.other"
+
+# Set world's weather to thunder
+thunder:
+  enabled: true
+  cmds:
+  - "thunder"
+  - "storm"
+  help:
+    usage: "/thunder [world]"
+  permission:
+    cmd: "scr.command.thunder"
+    other: "scr.command.thunder.other"
+
+# Set player's weather to sunny
+psun:
+  enabled: true
+  cmds:
+  - "psun"
+  - "playersun"
+  help:
+    usage: "/psun [player]"
+  permission:
+    cmd: "scr.command.psun"
+    other: "scr.command.psun.other"
+
+# Set player's weather to rainy
+prain:
+  enabled: true
+  cmds:
+  - "prain"
+  - "playerain"
+  help:
+    usage: "/prain [player]"
+  permission:
+    cmd: "scr.command.prain"
+    other: "scr.command.prain.other"
+    
+# # # # # # # # # # #
+# # # # Warps # # # #
+# # # # # # # # # # #
+
+warp:
+  enabled: true
+  cmds:
+  - "warp"
+  help:
+    usage: "/warp [warp] [player]"
+  permission:
+    cmd: "scr.command.warp"
+    other: "scr.command.warp.other"
+    
+setwarp:
+  enabled: true
+  cmds:
+  - "setwarp"
+  - "createwarp"
+  help:
+    usage: "/setwarp [warp]"
+  permission:
+    cmd: "scr.command.setwarp"
+    
+delwarp:
+  enabled: true
+  cmds:
+  - "delwarp"
+  - "deletewarp"
+  help:
+    usage: "/delwarp [warp]"
+  permission:
+    cmd: "scr.command.delwarp"
+    
+spawn:
+  enabled: true
+  cmds:
+  - "spawn"
+  help:
+    usage: "/spawn [player]"
+  permission:
+    cmd: "scr.command.spawn"
+    
+setspawn:
+  enabled: true
+  cmds:
+  - "setspawn"
+  help:
+    usage: "/setspawn [player]"
+  permission:
+    cmd: "scr.command.setspawn"   
+ 
+# # # # # # # # # # #
+# # # # Homes # # # #
+# # # # # # # # # # #
+
+sethome:
+  enabled: true
+  cmds:
+  - "sethome"
+  help:
+    usage: "/sethome [name]"
+  permission:
+    cmd: "scr.command.sethome" 
+    
+delhome:
+  enabled: true
+  cmds:
+  - "delhome"
+  help:
+    usage: "/delhome [name]"
+  permission:
+    cmd: "scr.command.delhome" 
+
+home:
+  enabled: true
+  cmds:
+  - "home"
+  - "homes"
+  help:
+    player_usage: "/home [name]"
+    admin_usage: "/home [name/player] [name] {player}"
+  permission:
+    cmd: "scr.command.home"
+    # /home [player] [name]
+    admin: "scr.command.admin"
+    # /home [player] [name] {player}
+    tp_other: "scr.command.tp_other"
+
+# # # # # # # # # # # # # # # #
+# # # # Inventory staff # # # #
+# # # # # # # # # # # # # # # #
+
+anvil:
+  enabled: true
+  cmds:
+  - "anvil"
+  help:
+    usage: "/anvil [player]"
+  permission:
+    cmd: "scr.command.anvil"
+    other: "scr.command.anvil"
+  
+loom:
+  enabled: true
+  cmds:
+  - "loom"
+  help:
+    usage: "/loom [player]"
+  permission:
+    cmd: "scr.command.loom"
+    other: "scr.command.loom"
+  
+cartography:
+  enabled: true
+  cmds:
+  - "cartography"
+  help:
+    usage: "/cartography [player]"
+  permission:
+    cmd: "scr.command.cartography"
+    other: "scr.command.cartography"
+  
+enderchest:
+  enabled: true
+  cmds:
+  - "enderchest"
+  - "echest"
+  - "ec"
+  help:
+    usage: "/enderchest [player]"
+  permission:
+    cmd: "scr.command.enderchest"
+    other: "scr.command.enderchest"
+  
+grindstone:
+  enabled: true
+  cmds:
+  - "grindstone"
+  help:
+    usage: "/grindstone [player]"
+  permission:
+    cmd: "scr.command.grindstone"
+    other: "scr.command.grindstone"
+  
+craftingtable:
+  enabled: true
+  cmds:
+  - "workbench"
+  - "craft"
+  - "wb"
+  - "crafting"
+  - "craftingtable"
+  help:
+    usage: "/craftingtable [player]"
+  permission:
+    cmd: "scr.command.craftingtable"
+    other: "scr.command.craftingtable"
+  
+enchanting:
+  enabled: true
+  cmds:
+  - "enchanting"
+  - "enchantingtable"
+  - "enchtable"
+  - "enchanttable"
+  help:
+    usage: "/enchanting [player]"
+  permission:
+    cmd: "scr.command.enchanting"
+    other: "scr.command.enchanting"
+
 fly:
   enabled: true
   cmds:
@@ -24,99 +258,4 @@ thor:
   help:
     # This is for console & command block
     '0': "/thor [player]"
-    
-warp:
-  enabled: true
-  cmds:
-  - "warp"
-  help:
-    # This is for console & command block
-    '0': "/warp [warp] [player]"
-    
-setwarp:
-  enabled: true
-  cmds:
-  - "setwarp"
-  - "createwarp"
-  help:
-    '0': "/setWarp [name]"
-    
-delwarp:
-  enabled: true
-  cmds:
-  - "delwarp"
-  - "deletewarp"
-  help:
-    '0': "/delWarp [warp]"
-    
-spawn:
-  enabled: true
-  cmds:
-  - "spawn"
-  help:
-    '0': "/spawn [player]"
-    
-setspawn:
-  enabled: true
-  cmds:
-  - "setspawn"
-    
-sethome:
-  enabled: true
-  cmds:
-  - "sethome"
-    
-delhome:
-  enabled: true
-  cmds:
-  - "delhome"
-
-home:
-  enabled: true
-  cmds:
-  - "home"
-  - "homes"
   
-anvil:
-  enabled: true
-  cmds:
-  - "anvil"
-  
-loom:
-  enabled: true
-  cmds:
-  - "loom"
-  
-cartography:
-  enabled: true
-  cmds:
-  - "cartography"
-  
-enderchest:
-  enabled: true
-  cmds:
-  - "enderchest"
-  - "echest"
-  - "ec"
-  
-grindstone:
-  enabled: true
-  cmds:
-  - "grindstone"
-  
-craftingtable:
-  enabled: true
-  cmds:
-  - "workbench"
-  - "craft"
-  - "wb"
-  - "crafting"
-  - "craftingtable"
-  
-enchanting:
-  enabled: true
-  cmds:
-  - "enchanting"
-  - "enchantingtable"
-  - "enchtable"
-  - "enchanttable"

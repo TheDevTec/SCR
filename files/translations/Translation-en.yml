@@ -1,0 +1,142 @@
+offlinePlayer: "Player {0} isn't online"
+noPerms: "You don't have enought permissions (%permission%)"
+
+# Translations for cooldowns
+# %time% - time formatted (10min5s)
+# %time_sec% - just number in seconds
+cooldowns:
+  messages: "%prefix% Wait &e%time% &7before sending the message"
+  commands: "%prefix% Wait &e%time% &7before sending the command again"
+
+# Translations for weather commands
+Weather:
+  sun: "%prefix% You set &esunny &7weather in world &e%world%"
+  rain: "%prefix% You set &erainy &7weather in world &e%world%"
+  thunder: "%prefix% You set &erainy &7weather with &ethunder &7in world &e%world%"
+  pSun:
+    self: "%prefix% You set &esunny &7weather to yourself."
+    sender: "%prefix% You set &esunny &7weather for &e%target%"
+    target: "%prefix% Player &e%player% &7set your weather to &esunny"
+  pRain:
+    self: "%prefix% You set &erainy &7weather to yourself."
+    sender: "%prefix% You set &erainy &7weather for &e%target%"
+    target: "%prefix% Player &e%player% &7set your weather to &erainy"
+
+# Fun
+fly:
+  enabled: "%prefix% Fly enabled"
+  disabled: "%prefix% Fly disabled"
+  other:
+    enabled:
+      sender: "%prefix% Enabled fly for player {0}"
+      target: "%prefix% Fly enabled"
+    disabled:
+      sender: "%prefix% Disabled fly for player {0}"
+      target: "%prefix% Fly disabled"
+      
+god:
+  enabled: "%prefix% God enabled"
+  disabled: "%prefix% God disabled"
+  other:
+    enabled:
+      sender: "%prefix% Enabled god mode for player {0}"
+      target: "%prefix% God enabled"
+    disabled:
+      sender: "%prefix% Disabled god mode for player {0}"
+      target: "%prefix% God disabled"
+      
+thor:
+  loc: "%prefix% Striked position in the world {0} at {1}, {2}, {3}"
+  player: "%prefix% Striked {0}!"
+
+# Teleport
+warp:
+  list: "%prefix% List of available warps: &e%warp%"
+  list_split: "&7, &e"
+  notFound: "%prefix% Warp named &e%warp% &7doesn't exist"
+  self: "%prefix% Warping to &e%warp%.."
+  cannot_teleport:
+    perm: "%prefix% You cannot teleport on warp &e%warp% &7, missing permission.."
+    money: "%prefix% You do not have enough money to teleport on warp &e%warp%"
+  other:
+    sender: "%prefix% Warping player %target% to %warp%.."
+    target: "%prefix% Warping to %warp%.."
+    
+setwarp:
+  created: "%prefix% Created warp &e%warp%"
+  already_exists: "%prefix% Warp &e%warp% &7already exists"
+
+delwarp:
+  deleted: "%prefix% Deleted warp &e%warp%"
+  not_exists: "%prefix% Warp &e%warp% &7doesn't exist"
+  
+spawn:
+  self: "%prefix% Teleporting to spawn"
+  other:
+    sender: "%prefix% Teleporting %player% to spawn"
+    target: "%prefix% Teleporting to spawn"
+    
+setspawn: "%prefix% Set spawn on position in the world %world% at %x%, %y%, %z%, %yaw%, %pitch%"
+
+# HOMES
+sethome:
+  created: "%prefix% Created home &e%home%"
+  already_exists: "%prefix% Home &%ehome% &7already exists"
+
+delhome:
+  deleted: "%prefix% Deleted home &e%home%"
+  not_exists: "%prefix% Home named &e%home% &7doesn't exist"
+
+home:
+  list: "%prefix% &7Your homes(%amount%): &e%homes%"
+  listOther: "&7%player%'s homes(%amount%): &e%homes%"
+  list_split: "&7, &e"
+  notFound: "%prefix% Home &e%home% &7doesn't exist"
+  self: "%prefix% Teleporting to home &e%home%"
+  self-otherHouse: "%prefix% Teleporting to the home &e%home% &7of player %player%"
+  other-otherHouse:
+    sender: "%prefix% Teleporting player &e%player% &7to the home &e%home% &7of player &e%target%"
+    target: "%prefix% Teleporting to the home &e%home% &7of player &e%target%"
+
+# INVENTORY
+anvil:
+  self: "%prefix% Opening anvil"
+  other:
+    sender: "%prefix% Opening anvil to player &e%target%"
+    target: "%prefix% Opening anvil"
+    
+cartography:
+  self: "%prefix% Opening cartography table"
+  other:
+    sender: "%prefix% Opening cartography table to player &e%target%"
+    target: "%prefix% Opening cartography table"
+    
+craftingtable:
+  self: "%prefix% Opening craftingtable"
+  other:
+    sender: "%prefix% Opening craftingtable to player &e%target%"
+    target: "%prefix% Opening craftingtable"
+    
+enderchest:
+  self: "%prefix% Opening enderchest"
+  other:
+    sender: "%prefix% Opening enderchest to player &e%target%"
+    target: "%prefix% Opening enderchest"
+    
+enchanting:
+  self: "%prefix% Opening enchanting"
+  other:
+    sender: "%prefix% Opening enchanting to player &e%target%"
+    target: "%prefix% Opening enchanting"
+    
+grindstone:
+  self: "%prefix% Opening grindstone"
+  other:
+    sender: "%prefix% Opening grindstone to player &e%target%"
+    target: "%prefix% Opening grindstone"
+    
+loom:
+  self: "%prefix% Opening loom"
+  other:
+    sender: "%prefix% Opening loom to player &e%target%"
+    target: "%prefix% Opening loom"

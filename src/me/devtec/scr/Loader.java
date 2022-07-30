@@ -117,7 +117,7 @@ public class Loader extends JavaPlugin {
 				if (ScrCommand.class.isAssignableFrom(cls)) {
 					ScrCommand scrCmd = (ScrCommand) cls.newInstance();
 					++total;
-					if (commands.getBoolean(scrCmd.configSection() + ".enabled")) {
+					if (commands.getBoolean(scrCmd.configSection() + ".enabled", true)) {
 						++count;
 						scrCmd.initFirst(commands.getStringList(scrCmd.configSection() + ".cmds"));
 						registered_commands.add(scrCmd);

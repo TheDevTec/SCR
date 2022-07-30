@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.commands.teleport.warp.Warp;
 import me.devtec.shared.commands.selectors.Selector;
@@ -16,41 +17,38 @@ import me.devtec.theapi.bukkit.game.Position;
 
 public class Spawn implements ScrCommand {
 	protected static Position spawn;
-	
+
 	@Override
-	public void init(List<String> cmds) {
+	public void init(int cd, List<String> cmds) {
 		spawn = Warp.storedWarps.getAs("spawn", Position.class);
-		if(spawn == null)spawn = new Position(Bukkit.getWorlds().get(0).getSpawnLocation());
-		
-		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
-			if(s instanceof Player) {
-				((Player)s).teleport(spawn.toLocation());
-				msgConfig(s, configSection()+".self");
-			}else
-				help(s, 0);
-		}).permission("scr."+configSection())
-			.argument("-s", (s, structure, args) -> { // cmd -s
-				if(s instanceof Player) {
-					((Player)s).teleport(spawn.toLocation());
-				}else
-					help(s, 0);
-			}).parent()
-			.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
-				Location loc = spawn.toLocation();
-				for(Player p : playerSelectors(s, args[0])) {
-					p.teleport(loc);
-					msgConfig(s, configSection()+".other.sender", p.getName());
-					msgConfig(p, configSection()+".other.target", p.getName());
-				}
-				}).permission("scr."+configSection()+".other")
-					.argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
-						Location loc = spawn.toLocation();
-						for(Player p : playerSelectors(s, args[0])) {
-							p.teleport(loc);
-						}
-					}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
+		if (spawn == null)
+			spawn = new Position(Bukkit.getWorlds().get(0).getSpawnLocation());
+
+		cooldownMap.put(CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
+			if (s instanceof Player) {
+				((Player) s).teleport(spawn.toLocation());
+				msgSec(s, configSection() + ".self");
+			} else
+				help(s, "usage");
+		}).permission(permission("cmd")).argument("-s", (s, structure, args) -> { // cmd -s
+			if (s instanceof Player)
+				((Player) s).teleport(spawn.toLocation());
+			else
+				help(s, "usage");
+		}).parent().selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
+			Location loc = spawn.toLocation();
+			for (Player p : playerSelectors(s, args[0])) {
+				p.teleport(loc);
+				msgSec(s, configSection() + ".other.sender", Placeholders.c().add("target", p.getName()));
+				msgSec(p, configSection() + ".other.target", Placeholders.c().add("target", s.getName()));
+			}
+		}).permission(permission("other")).argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
+			Location loc = spawn.toLocation();
+			for (Player p : playerSelectors(s, args[0]))
+				p.teleport(loc);
+		}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure(), new CooldownHolder(this, cd));
 	}
-	
+
 	@Override
 	public void disabling() {
 		Warp.storedWarps.set("spawn", spawn);
@@ -61,5 +59,5 @@ public class Spawn implements ScrCommand {
 	public String configSection() {
 		return "spawn";
 	}
-	
+
 }

@@ -17,37 +17,37 @@ import me.devtec.shared.scheduler.Tasker;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class PluginEnable implements Listener {
-	
+
 	public static Map<ScrCommand, List<String>[]> waiting = new ConcurrentHashMap<>();
+
 	public static void init() {
-		//Register listener only if is need to be registered
-		if(waiting == null) {
+		// Register listener only if is need to be registered
+		if (waiting == null) {
 			waiting = new ConcurrentHashMap<>();
 			Loader.plugin.getLogger().info("[Commands Loader] Registering PluginEnable listener for \"loadAfter\" function..");
 			Loader.registerListener(new PluginEnable());
 		}
 	}
-	
+
 	@EventHandler
 	public void onPluginEnable(PluginEnableEvent event) {
 		List<ScrCommand> remove = new ArrayList<>();
-		for(Entry<ScrCommand, List<String>[]> entry : waiting.entrySet()) {
-			if(entry.getValue()[0].contains(event.getPlugin().getName())) {
+		for (Entry<ScrCommand, List<String>[]> entry : waiting.entrySet()) {
+			if (entry.getValue()[0].contains(event.getPlugin().getName()))
 				entry.getValue()[0].remove(event.getPlugin().getName());
-			}
-			if(entry.getValue()[0].isEmpty()) {
+			if (entry.getValue()[0].isEmpty())
 				remove.add(entry.getKey());
-			}
 		}
-		for(ScrCommand cmd : remove) {
+		for (ScrCommand cmd : remove)
 			new Tasker() {
+				@Override
 				public void run() {
 					BukkitLoader.getNmsProvider().postToMainThread(() -> {
 						String firstUp = Character.toUpperCase(cmd.configSection().charAt(0)) + cmd.configSection().substring(1);
-						Loader.plugin.getLogger().info("["+firstUp+"] Registering command.");
-						cmd.init(waiting.remove(cmd)[1]);
-						if(waiting.isEmpty()) {
-							//Unregister listener
+						Loader.plugin.getLogger().info("[" + firstUp + "] Registering command.");
+						cmd.init(Loader.commands.getInt(cmd.configSection() + ".cooldown"), waiting.remove(cmd)[1]);
+						if (waiting.isEmpty()) {
+							// Unregister listener
 							Loader.plugin.getLogger().info("[Commands Loader] Unregistering PluginEnable listener..");
 							waiting = null;
 							HandlerList.unregisterAll(PluginEnable.this);
@@ -55,6 +55,5 @@ public class PluginEnable implements Listener {
 					});
 				}
 			}.runTask();
-		}
 	}
 }

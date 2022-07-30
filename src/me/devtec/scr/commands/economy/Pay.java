@@ -20,7 +20,7 @@ public class Pay implements ScrCommand {
 		CommandStructure.create(Player.class, PLAYER_PERMS_CHECKER, (s, structure, args) -> { // cmd
 			help(s, 0);
 		}).permission("scr."+configSection()).fallback((s, structure, args) -> {
-			msgConfig(s, "offlinePlayer", args[0]);
+			offlinePlayer(s, args[0]);
 			})
 			.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
 				help(s, 0);
@@ -33,8 +33,8 @@ public class Pay implements ScrCommand {
 					for(Player p : playerSelectors(s, args[0])) {
 						pay(s, p, money);
 						
-						msgConfig(s, configSection()+".sender", p.getName(), bal);
-						msgConfig(p, configSection()+".target", p.getName(), bal);
+						msgSec(s, "sender", p.getName(), bal);
+						msgSec(p, "target", p.getName(), bal);
 					}
 					})
 					.argument("-s", (s, structure, args) -> { // cmd [entity_selector] [any string] -s

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,27 +16,69 @@ import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
+import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.listeners.commands.PluginEnable;
 import me.devtec.shared.commands.manager.PermissionChecker;
+import me.devtec.shared.commands.structures.CommandStructure;
+import me.devtec.shared.commands.structures.CommandStructure.CooldownDetection;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public interface ScrCommand {
+
+	public class CooldownHolder {
+		public CooldownHolder(ScrCommand cmd, int cooldownTime) {
+			this.cmd = cmd;
+			this.cooldownTime = cooldownTime;
+		}
+
+		public ScrCommand cmd;
+		public Map<UUID, Long> cooldownMap = new ConcurrentHashMap<>();
+		public int cooldownTime;
+	}
+
+	public static final Map<CommandStructure<?>, CooldownHolder> cooldownMap = new ConcurrentHashMap<>();
+
 	public static final PermissionChecker<CommandSender> PERMS_CHECKER = (sender, perm, tablist) -> sender.hasPermission(perm);
 	public static final PermissionChecker<Player> PLAYER_PERMS_CHECKER = (sender, perm, tablist) -> sender.hasPermission(perm);
-	
-	public default void msgConfig(CommandSender sender, String path, Object... placeholders) {
-		MessageUtils.msgConfig(sender, path, placeholders, new CommandSender[] {sender});
+	public static final CooldownDetection<CommandSender> COOLDOWN = (sender, structure, args) -> {
+		CooldownHolder holder = cooldownMap.get(structure.first());
+		if (!(sender instanceof Player) || sender.hasPermission("scr.bypass.commands") || sender.hasPermission(holder.cmd.permission("cd-bypass")))
+			return false;
+		long cd = holder.cooldownMap.getOrDefault(((Player) sender).getUniqueId(), 0L);
+		int expireIn = (int) (cd - System.currentTimeMillis() / 1000 + holder.cooldownTime);
+		if (expireIn <= 0) {
+			holder.cooldownMap.put(((Player) sender).getUniqueId(), System.currentTimeMillis() / 1000);
+			return false;
+		}
+		MessageUtils.message(sender, "cooldowns.commands", Placeholders.c().add("expire", StringUtils.timeToString(expireIn)));
+		return true;
+	};
+
+	public default void msg(CommandSender sender, String path) {
+		MessageUtils.message(sender, path, null);
 	}
-	
-	public default void msg(CommandSender sender, String path, Object... placeholders) {
-		MessageUtils.msg(sender, path, placeholders, new CommandSender[] {sender});
+
+	public default void msg(CommandSender sender, String path, Placeholders placeholders) {
+		MessageUtils.message(sender, path, placeholders);
 	}
-	
+
+	public default void msgSec(CommandSender sender, String path) {
+		MessageUtils.message(sender, configSection() + "." + path, null);
+	}
+
+	public default void msgSec(CommandSender sender, String path, Placeholders placeholders) {
+		MessageUtils.message(sender, configSection() + "." + path, placeholders);
+	}
+
+	public default void offlinePlayer(CommandSender sender, String player) {
+		MessageUtils.message(sender, "offlinePlayer", Placeholders.c().add("player", player));
+	}
+
 	public default Collection<? extends Player> playerSelectors(CommandSender sender, String selector) {
-		char lowerCase = selector.equals("*")?'*':Character.toLowerCase(selector.charAt(1));
-		if(lowerCase=='*' || selector.charAt(0)=='@') {
-			switch(lowerCase) {
+		char lowerCase = selector.equals("*") ? '*' : Character.toLowerCase(selector.charAt(1));
+		if (lowerCase == '*' || selector.charAt(0) == '@')
+			switch (lowerCase) {
 			case 'a':
 			case 'e':
 			case '*':
@@ -43,58 +88,63 @@ public interface ScrCommand {
 			case 's':
 			case 'p':
 				Location pos = null;
-				if(sender instanceof Player) {
+				if (sender instanceof Player)
 					pos = ((Player) sender).getLocation();
-				}else
-				if(sender instanceof BlockCommandSender) {
+				else if (sender instanceof BlockCommandSender)
 					pos = ((BlockCommandSender) sender).getBlock().getLocation();
-				}else pos = new Location(Bukkit.getWorlds().get(0), 0, 0 , 0);
+				else
+					pos = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
 				double distance = -1;
 				Player nearestPlayer = null;
-				for(Player sameWorld : pos.getWorld().getPlayers()) {
-					if(distance == -1 || distance < sameWorld.getLocation().distance(pos)) {
-						distance=sameWorld.getLocation().distance(pos);
-						nearestPlayer=sameWorld;
+				for (Player sameWorld : pos.getWorld().getPlayers())
+					if (distance == -1 || distance < sameWorld.getLocation().distance(pos)) {
+						distance = sameWorld.getLocation().distance(pos);
+						nearestPlayer = sameWorld;
 					}
-				}
 				return Arrays.asList(nearestPlayer == null ? BukkitLoader.getOnlinePlayers().iterator().next() : nearestPlayer);
 			}
-		}
 		return Arrays.asList(Bukkit.getPlayer(selector));
 	}
-	
-	public default void help(CommandSender sender, Object arg) {
-		Object val = Loader.commands.get(configSection()+".help."+arg);
-		if(val instanceof Collection) {
-			for(String list : Loader.commands.getStringList(configSection()+".help."+arg))
-				msg(sender, list);
-		}else
-			msg(sender, Loader.commands.getString(configSection()+".help."+arg));
+
+	public default void help(CommandSender sender, String arg) {
+		Object val = Loader.commands.get(configSection() + ".help." + arg);
+		if (val instanceof Collection)
+			for (String list : Loader.commands.getStringList(configSection() + ".help." + arg))
+				msg(sender, list, null);
+		else
+			msg(sender, Loader.commands.getString(configSection() + ".help." + arg), null);
 	}
-	
+
 	// Do not overide this - onLoad
 	@SuppressWarnings("unchecked")
 	public default void initFirst(List<String> cmds) {
-		List<String> loadAfter = Loader.commands.getStringList(configSection()+".loadAfter");
-		if(!loadAfter.isEmpty()) {
+		List<String> loadAfter = Loader.commands.getStringList(configSection() + ".loadAfter");
+		if (!loadAfter.isEmpty()) {
 			List<String> registered = new ArrayList<>();
-			for(String pluginName : loadAfter) {
-				if(Bukkit.getPluginManager().getPlugin(pluginName)!=null && !Bukkit.getPluginManager().getPlugin(pluginName).isEnabled())registered.add(pluginName);
-			}
-			if(!registered.isEmpty()) {
+			for (String pluginName : loadAfter)
+				if (Bukkit.getPluginManager().getPlugin(pluginName) != null && !Bukkit.getPluginManager().getPlugin(pluginName).isEnabled())
+					registered.add(pluginName);
+			if (!registered.isEmpty()) {
 				PluginEnable.init();
-				PluginEnable.waiting.put(this, new List[] {registered, cmds});
+				PluginEnable.waiting.put(this, new List[] { registered, cmds });
 				return;
 			}
 		}
 		String firstUp = Character.toUpperCase(configSection().charAt(0)) + configSection().substring(1);
-		Loader.plugin.getLogger().info("["+firstUp+"] Registering command.");
-		init(cmds);
+		Loader.plugin.getLogger().info("[" + firstUp + "] Registering command.");
+		init(Loader.commands.getInt(configSection() + ".cooldown"), cmds);
 	}
-	
-	public void init(List<String> cmds);
-	
-	public default void disabling() {}
-	
+
+	// Permission
+	public default String permission(String path) {
+		return Loader.commands.getString(configSection() + ".permission." + path);
+	}
+
+	public void init(int cd, List<String> cmds);
+
+	public default void disabling() {
+	}
+
 	public String configSection();
+
 }

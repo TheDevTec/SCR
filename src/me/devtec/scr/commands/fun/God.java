@@ -37,12 +37,12 @@ public class God implements ScrCommand {
 				}
 				
 				String status = isInvulnerable(p) ? "enabled" : "disabled";
-				msgConfig(s, configSection()+"."+status);
+				msgSec(s, ""+status);
 			}else {
 				help(s, 0);
 			}
 		}).fallback((s, structure, args) -> {
-			msgConfig(s, "offlinePlayer", args[0]);
+			offlinePlayer(s, args[0]);
 			}).permission("scr."+configSection())
 			.argument("-s", (s, structure, args) -> { // cmd -s
 				if(s instanceof Player) {
@@ -67,7 +67,7 @@ public class God implements ScrCommand {
 					}
 					
 					String status = Boolean.parseBoolean(args[0]) ? "enabled" : "disabled";
-					msgConfig(s, configSection()+"."+status);
+					msgSec(s, ""+status);
 				}else {
 					help(s, 0);
 				}
@@ -95,8 +95,8 @@ public class God implements ScrCommand {
 					}
 					
 					String status = isInvulnerable(p) ? "enabled" : "disabled";
-					msgConfig(s, configSection()+".other."+status+".sender", p.getName());
-					msgConfig(p, configSection()+".other."+status+".target", p.getName());
+					msgSec(s, "other."+status+".sender", p.getName());
+					msgSec(p, "other."+status+".target", p.getName());
 				}
 			}).permission("scr."+configSection()+".other").fallback((s, structure, args) -> {
 				help(s, 0);
@@ -120,8 +120,8 @@ public class God implements ScrCommand {
 						}
 						
 						String status = Boolean.parseBoolean(args[1]) ? "enabled" : "disabled";
-						msgConfig(s, configSection()+".other."+status+".sender", p.getName());
-						msgConfig(p, configSection()+".other."+status+".target", p.getName());
+						msgSec(s, "other."+status+".sender", p.getName());
+						msgSec(p, "other."+status+".target", p.getName());
 					}
 					})
 					.argument("-s", (s, structure, args) -> { // cmd [entity_selector] [boolean] -s

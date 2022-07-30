@@ -31,12 +31,12 @@ public class Fly implements ScrCommand {
 				apply(p, p.getAllowFlight());
 				
 				String status = p.getAllowFlight() ? "enabled" : "disabled";
-				msgConfig(s, configSection()+"."+status);
+				msgSec(s, ""+status);
 			}else {
 				help(s, 0);
 			}
 		}).permission("scr."+configSection()).fallback((s, structure, args) -> {
-			msgConfig(s, "offlinePlayer", args[0]);
+			offlinePlayer(s, args[0]);
 			})
 			.argument("-s", (s, structure, args) -> { // cmd [boolean] -s
 				if(s instanceof Player) {
@@ -53,7 +53,7 @@ public class Fly implements ScrCommand {
 					apply(p, !Boolean.parseBoolean(args[0]));
 					
 					String status = Boolean.parseBoolean(args[0]) ? "enabled" : "disabled";
-					msgConfig(s, configSection()+"."+status);
+					msgSec(s, ""+status);
 				}else {
 					help(s, 0);
 				}
@@ -73,8 +73,8 @@ public class Fly implements ScrCommand {
 					apply(p, p.getAllowFlight());
 					
 					String status = p.getAllowFlight() ? "enabled" : "disabled";
-					msgConfig(s, configSection()+".other."+status+".sender", p.getName());
-					msgConfig(p, configSection()+".other."+status+".target", p.getName());
+					msgSec(s, "other."+status+".sender", p.getName());
+					msgSec(p, "other."+status+".target", p.getName());
 				}
 			}).permission("scr."+configSection()+".other").fallback((s, structure, args) -> {
 				help(s, 0);
@@ -90,8 +90,8 @@ public class Fly implements ScrCommand {
 						apply(p, !Boolean.parseBoolean(args[1]));
 						
 						String status = Boolean.parseBoolean(args[1]) ? "enabled" : "disabled";
-						msgConfig(s, configSection()+".other."+status+".sender", p.getName());
-						msgConfig(p, configSection()+".other."+status+".target", p.getName());
+						msgSec(s, "other."+status+".sender", p.getName());
+						msgSec(p, "other."+status+".target", p.getName());
 					}
 				})
 					.argument("-s", (s, structure, args) -> { // cmd [boolean] -s
