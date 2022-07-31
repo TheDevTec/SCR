@@ -12,7 +12,6 @@
 	<classpathentry kind="lib" path="C:/EclipseUtils/PlaceholderAPI-2.10.9.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/Residence5.0.1.0.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/HeadDatabase-4.14.3.jar"/>
-	<classpathentry kind="lib" path="C:/EclipseUtils/TheAPI 10.0.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/MC/1.19_R1/authlib-3.3.39.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/MC/1.19_R1/brigadier-1.0.18.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/MC/1.19_R1/datafixerupper-4.1.27.jar"/>
@@ -25,5 +24,6 @@
 	<classpathentry kind="lib" path="C:/EclipseUtils/MC/1.19_R1/slf4j-api-1.8.0-beta4.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/MC/1.19_R1/spigot-1.19-R0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseUtils/MC/1.19_R1/spigot-api-1.19-R0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ADAMB/Downloads/TheAPI(12).jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

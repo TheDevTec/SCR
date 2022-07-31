@@ -11,7 +11,7 @@
 #  Spigot: https://www.spigotmc.org/resources/71147/
 
 Options:
-  # cz, sk, en
+  # en, cz
   Language: "en"
   
   Prefix: "&6&lS&f&lerver &8&l»&7"

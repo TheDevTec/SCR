@@ -2,7 +2,7 @@ package me.devtec.scr.utils;
 
 import me.devtec.shared.dataholder.Config;
 
-public interface ISuser {
+public interface sUser {
 	
 	boolean isAutorized(String permission); // true/false
 	

@@ -85,4 +85,5 @@ public abstract class SCommand implements CommandExecutor, TabCompleter {
 	public void msg(User user, String path, Placeholder placeholders) {
 		Messages.message(user.player, path, placeholders);
 	}
+
 }

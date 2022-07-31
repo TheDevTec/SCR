@@ -29,7 +29,7 @@ public class Loader extends JavaPlugin {
 	public static Random random = new Random();
 	
 	public void onLoad() {
-		
+		plugin = this;
 		//check nové verze
 	
 		//1 řádková zpráva o loadu
@@ -44,7 +44,7 @@ public class Loader extends JavaPlugin {
 			Messages.msgConsole("%prefix%  &8*********************************************");
 		}
 		
-		
+		plugin = this;
 	}
 	
 	public void onEnable() {

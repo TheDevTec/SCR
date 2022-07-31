@@ -37,7 +37,7 @@ public class Configs {
 		data.reload(StreamUtils.fromStream(Loader.plugin.getResource("Files/"+sourcePath)));
 		
 		Config result = new Config("plugins/SCR/"+filePath);
-		if(result.merge(data, true, true))
+		if(result.merge(data))
 			result.save(DataType.YAML);
 		return result;
 	}
