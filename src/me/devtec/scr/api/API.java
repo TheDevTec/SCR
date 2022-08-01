@@ -31,4 +31,7 @@ public class API {
 		return usercache.get(commandsender.getName());
 	}
 
+	public static String getPlayerName(Player player) {
+		return getUser(player).getName();
+	}
 }

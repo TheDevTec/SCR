@@ -14,22 +14,34 @@ public class User implements ISuser {
 
 	public User(Player player) {
 		this.player=player;
-		name = player.getName();
+		if(haveNickname())
+			name = getName();
+		else
+			name = player.getName();
 	}
 	public User(CommandSender player) {
 		this.player=Bukkit.getPlayer(player.getName());
-		name = player.getName();
+		if(haveNickname())
+			name = getName();
+		else
+			name = player.getName();
 	}
 	public User(String player) {
-		name = player;
+		//nicknames:
+		//  <nickname>: real_player_name
+		if(me.devtec.shared.API.getUser("SCR").exists("nicknames."+player))
+			name = me.devtec.shared.API.getUser("SCR").getString("nicknames."+player);
+		else
+			name = player;
 		if(player.equalsIgnoreCase("console"))
 			this.player=null;
-		this.player= Bukkit.getPlayer(player)!=null ? Bukkit.getPlayer(player) : null;
+		else
+			this.player= Bukkit.getPlayer(name)!=null ? Bukkit.getPlayer(name) : null;
 	}
 
 	
-	public Player player;
-	public String name;
+	public Player player; //Always real player
+	private String name; //Can be Nickname -> use getName()
 	
 
 	@Override
@@ -105,12 +117,17 @@ public class User implements ISuser {
 	public boolean haveNickname() {
 		return getUserConfig().exists("nickname");
 	}
+	//nicknames:
+	//  <nickname>: real_player_name
 	@Override
 	public void resetNickname() {
 		Config c = getUserConfig();
 		if(haveNickname()) {
 			c.remove("nickname");
 			c.save();
+			Config scr = me.devtec.shared.API.getUser("SCR");
+			scr.remove("nicknames."+getName());
+			scr.save();
 		}
 	}
 	@Override
@@ -118,6 +135,9 @@ public class User implements ISuser {
 		Config c = getUserConfig();
 		c.set("nickname", nick);
 		c.save();
+		Config scr = me.devtec.shared.API.getUser("SCR");
+		scr.set("nicknames."+nick, player.getName());
+		scr.save();
 	}
 	
 
