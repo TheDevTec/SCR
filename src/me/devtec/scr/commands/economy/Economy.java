@@ -23,11 +23,14 @@ public class Economy implements ScrCommand {
 			help(s, "usage");
 		}).permission(permission("cmd"))
 		.fallback((s, structure, args) -> {
-			offlinePlayer(s, args[0]);
+			help(s, "usage");
 			})
 			.argument("add", (s, structure, args) -> { // cmd add
 				help(s, "add");
 				})
+				.fallback((s, structure, args) -> {
+					offlinePlayer(s, args[1]);
+					})
 				.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd add [entity_selector]
 					help(s, "add");
 					})
@@ -53,6 +56,9 @@ public class Economy implements ScrCommand {
 			.argument("remove", (s, structure, args) -> { // cmd remove
 				help(s, "remove");
 				})
+				.fallback((s, structure, args) -> {
+					offlinePlayer(s, args[1]);
+					})
 				.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd remove [entity_selector]
 					help(s, "remove");
 					})
@@ -78,6 +84,9 @@ public class Economy implements ScrCommand {
 			.argument("set", (s, structure, args) -> { // cmd set
 				help(s, "set");
 				})
+				.fallback((s, structure, args) -> {
+					offlinePlayer(s, args[1]);
+					})
 				.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd set [entity_selector]
 					help(s, "set");
 					})

@@ -111,6 +111,7 @@ public class ScrEconomy extends AbstractEconomy {
 		Config user = API.getUser(name);
 		double playerBal = user.getDouble("scr.economy") - balance;
 		user.set("scr.economy", playerBal);
+		user.save();
 		return new EconomyResponse(balance, getBalance(name), ResponseType.SUCCESS, "");
 	}
 
@@ -123,6 +124,7 @@ public class ScrEconomy extends AbstractEconomy {
 		String group = economyGroup(world);
 		double playerBal = user.getDouble("scr.economy."+group) - balance;
 		user.set("scr.economy."+group, playerBal);
+		user.save();
 		return new EconomyResponse(balance, getBalance(name), ResponseType.SUCCESS, "");
 	}
 
@@ -134,6 +136,7 @@ public class ScrEconomy extends AbstractEconomy {
 		Config user = API.getUser(name);
 		double playerBal = user.getDouble("scr.economy") + balance;
 		user.set("scr.economy", playerBal);
+		user.save();
 		return new EconomyResponse(balance, getBalance(name), ResponseType.SUCCESS, "");
 	}
 
@@ -146,6 +149,7 @@ public class ScrEconomy extends AbstractEconomy {
 		String group = economyGroup(world);
 		double playerBal = user.getDouble("scr.economy."+group) + balance;
 		user.set("scr.economy."+group, playerBal);
+		user.save();
 		return new EconomyResponse(balance, playerBal, ResponseType.SUCCESS, "");
 	}
 
@@ -201,6 +205,7 @@ public class ScrEconomy extends AbstractEconomy {
 			return false;
 		}
 		user.set("scr.economy", startingMoney(name, null));
+		user.save();
 		return true;
 	}
 
@@ -212,6 +217,7 @@ public class ScrEconomy extends AbstractEconomy {
 			return false;
 		}
 		user.set("scr.economy."+world, startingMoney(name, world));
+		user.save();
 		return true;
 	}
 

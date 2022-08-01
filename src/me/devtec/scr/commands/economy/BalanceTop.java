@@ -60,15 +60,15 @@ public class BalanceTop implements ScrCommand {
 
 	public void listBaltop(CommandSender s, int page) {
 		int rank = page + 1;
-		msgSec(s, "balancetop.header", Placeholders.c().replace("page", page).replace("pages", ranking.length) );
+		msgSec(s, "header", Placeholders.c().replace("page", page).replace("pages", ranking.length) );
 		for (int i = page * 10; i < (page + 1) * 10 && i < ranking.length; ++i) {
 			ComparableObject<UUID, Double> comp = ranking[i];
 			//msgSec(s, "balancetop.format", rank++, API.offlineCache().lookupNameById(comp.getKey()), ((net.milkbowl.vault.economy.Economy) Loader.economy).format(comp.getValue()));
-			msgSec(s, "balancetop.format", Placeholders.c().replace("position", rank++)
+			msgSec(s, "format", Placeholders.c().replace("position", rank++)
 					.replace("playername", API.offlineCache().lookupNameById(comp.getKey()))
 					.replace("money", ((net.milkbowl.vault.economy.Economy) Loader.economy).format(comp.getValue())) );
 			}
-		msgSec(s, "balancetop.footer", Placeholders.c().replace("page", page).replace("pages", ranking.length) );
+		msgSec(s, "footer", Placeholders.c().replace("page", page).replace("pages", ranking.length) );
 	}
 
 	@Override
