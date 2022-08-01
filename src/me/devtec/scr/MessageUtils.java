@@ -47,7 +47,7 @@ public class MessageUtils {
 			string = string.replace("%prefix%", getPrefix());
 		if (placeholders != null)
 			for (Entry<String, String> placeholder : placeholders.set.entrySet())
-				string = string.replace(placeholder.getKey() + "", placeholder.getValue() + "");
+				string = string.replace("%"+placeholder.getKey() + "%", placeholder.getValue() + "");
 		return string;
 	}
 
@@ -78,7 +78,7 @@ public class MessageUtils {
 		Object text = config.get(path);
 
 		if (text == null) {
-			Loader.plugin.getLogger().info("Path " + path + " not found in config " + config.getFile().getName() + ", report this bug to the DevTec discord.");
+			Loader.plugin.getLogger().warning("Path " + path + " not found in config " + config.getFile().getName() + ", report this bug to the DevTec discord.");
 			return;
 		}
 
@@ -206,6 +206,6 @@ public class MessageUtils {
 	}
 
 	public static void noPerm(CommandSender player, String permission) {
-		message(player, "noPerms", Placeholders.c().replace("%permission%", permission));
+		message(player, "noPerms", Placeholders.c().replace("permission", permission));
 	}
 }

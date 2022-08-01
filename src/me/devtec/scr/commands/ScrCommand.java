@@ -41,9 +41,15 @@ public interface ScrCommand {
 	public static final Map<CommandStructure<?>, CooldownHolder> cooldownMap = new ConcurrentHashMap<>();
 
 	public static final PermissionChecker<CommandSender> PERMS_CHECKER = (sender, perm, tablist) -> {
-		return API.getUser(sender).checkPerm(perm); //also noperm message if needed
+		if(tablist)
+			return API.getUser(sender).isAutorized(perm);
+		else
+			return API.getUser(sender).checkPerm(perm); //also noperm message if needed
 	};
 	public static final PermissionChecker<Player> PLAYER_PERMS_CHECKER = (sender, perm, tablist) -> {
+		if(tablist)
+			return API.getUser(sender).isAutorized(perm);
+		else
 		return API.getUser(sender).checkPerm(perm); //also noperm message if needed
 	};
 	public static final CooldownDetection<CommandSender> COOLDOWN = (sender, structure, args) -> {
@@ -145,7 +151,7 @@ public interface ScrCommand {
 		if(Loader.commands.exists(configSection() + ".permission." + path))
 			return Loader.commands.getString(configSection() + ".permission." + path);
 		else {
-			Loader.plugin.getLogger().warning(MessageUtils.getPrefix()+" &4Missing permission in commands.yml: &e("+path+")");
+			Loader.plugin.getLogger().warning(MessageUtils.getPrefix()+" &4Missing permission in commands.yml: &e("+configSection()+".permission."+path+")");
 			return null;
 		}
 	}

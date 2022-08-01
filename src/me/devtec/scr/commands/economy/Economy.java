@@ -14,11 +14,11 @@ import me.devtec.shared.commands.structures.CommandStructure;
 public class Economy implements ScrCommand {
 	
 	@Override
-	public void init(List<String> cmds) {
+	public void init(int cd, List<String> cmds) {
 		if(Loader.economy == null)return;
 		
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
-			help(s, 0);
+			help(s, "usage");
 		}).permission("scr."+configSection()).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
 			})
@@ -33,8 +33,8 @@ public class Economy implements ScrCommand {
 						String bal = ((net.milkbowl.vault.economy.Economy)Loader.economy).format(money);
 						for(Player p : playerSelectors(s, args[1])) {
 							((net.milkbowl.vault.economy.Economy)Loader.economy).depositPlayer(p, money);
-							msgSec(s, "add.sender", p.getName(), bal);
-							msgSec(p, "add.target", p.getName(), bal);
+							/*msgSec(s, "add.sender", p.getName(), bal);
+							msgSec(p, "add.target", p.getName(), bal);*/
 						}
 						})
 						.argument("-s", (s, structure, args) -> { // cmd add [entity_selector] [any string] -s
@@ -58,8 +58,8 @@ public class Economy implements ScrCommand {
 						String bal = ((net.milkbowl.vault.economy.Economy)Loader.economy).format(money);
 						for(Player p : playerSelectors(s, args[1])) {
 							((net.milkbowl.vault.economy.Economy)Loader.economy).withdrawPlayer(p, money);
-							msgSec(s, "remove.sender", p.getName(), bal);
-							msgSec(p, "remove.target", p.getName(), bal);
+							/*msgSec(s, "remove.sender", p.getName(), bal);
+							msgSec(p, "remove.target", p.getName(), bal);*/
 						}
 						})
 						.argument("-s", (s, structure, args) -> { // cmd remove [entity_selector] [any string] -s
@@ -83,8 +83,8 @@ public class Economy implements ScrCommand {
 							for(Player p : playerSelectors(s, args[1])) {
 								((net.milkbowl.vault.economy.Economy)Loader.economy).withdrawPlayer(p, ((net.milkbowl.vault.economy.Economy)Loader.economy).getBalance(p));
 								((net.milkbowl.vault.economy.Economy)Loader.economy).depositPlayer(p, money);
-								msgSec(s, "set.sender", p.getName(), bal);
-								msgSec(p, "set.target", p.getName(), bal);
+								/*msgSec(s, "set.sender", p.getName(), bal);
+								msgSec(p, "set.target", p.getName(), bal);*/
 							}
 							})
 							.argument("-s", (s, structure, args) -> { // cmd set [entity_selector] [any string] -s

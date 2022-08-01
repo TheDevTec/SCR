@@ -112,6 +112,7 @@ spawn:
     usage: "/spawn [player]"
   permission:
     cmd: "scr.command.spawn"
+    other: "scr.command.other"
     
 setspawn:
   enabled: true
@@ -280,4 +281,37 @@ thor:
   permission:
     cmd: "scr.command.thor"
     other: "scr.command.thor.other"
-  
+
+# # # # # # # # # # # #
+# # # # Economy # # # #
+# # # # # # # # # # # #
+
+balance:
+  enabled: true
+  cmds:
+  - "balance"
+  - "bal"
+  help:
+    usage: "/balance [player]"
+  permission:
+    cmd: "scr.command.balance"
+    other: "scr.command.balance.other"
+
+pay:
+  enabled: true
+  cmds:
+  - "pay"
+  help:
+    usage: "/pay [player] [amount]"
+  permission:
+    cmd: "scr.command.pay"
+
+balancetop:
+  enabled: true
+  cmds:
+  - "balancetop"
+  - "baltop"
+  help:
+    usage: "/balancetop [page]"
+  permission:
+    cmd: "scr.command.balancetop"

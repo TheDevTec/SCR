@@ -1,5 +1,5 @@
-offlinePlayer: "Player {0} isn't online"
-noPerms: "You don't have enought permissions (%permission%)"
+offlinePlayer: "%prefix% Player %player% isn't online"
+noPerms: "%prefix% &cYou don't have enought permissions (&4%permission%&c)"
 
 # Translations for cooldowns
 # %time% - time formatted (10min5s)
@@ -9,7 +9,7 @@ cooldowns:
   commands: "%prefix% Wait &e%time% &7before sending the command again"
 
 # Translations for weather commands
-Weather:
+weather:
   sun: "%prefix% You set &esunny &7weather in world &e%world%"
   rain: "%prefix% You set &erainy &7weather in world &e%world%"
   thunder: "%prefix% You set &erainy &7weather with &ethunder &7in world &e%world%"
@@ -140,3 +140,21 @@ loom:
   other:
     sender: "%prefix% Opening loom to player &e%target%"
     target: "%prefix% Opening loom"
+
+# # # # # # # # # # # #
+# # # # Economy # # # #
+# # # # # # # # # # # #
+
+balance:
+  balance: "%prefix% You have &e%money%"
+  other: "%prefix% &e%target% &7have &e%money%"
+
+pay:
+  sender: "%prefix% You paid &e%money% &7to &e%target%"
+  target: "%prefix% &e%player% &7paid you &e%money%"
+
+balancetop:
+  invalidPage: "%prefix% Page &e%page% &7is invalid"
+  header: "&7=====» &eBalanceTop &e%page%/%pages% &7«====="
+  format: "&e%position%. &7%playername% &7(&e%money%&7)"
+  footer: ""

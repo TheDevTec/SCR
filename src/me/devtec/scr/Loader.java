@@ -117,7 +117,8 @@ public class Loader extends JavaPlugin {
 				if (ScrCommand.class.isAssignableFrom(cls)) {
 					ScrCommand scrCmd = (ScrCommand) cls.newInstance();
 					++total;
-					if (commands.getBoolean(scrCmd.configSection() + ".enabled", true)) {
+					if (commands.exists(scrCmd.configSection() + ".enabled") //TODO - Warn message that command is missing in commands.yml?
+							&& commands.getBoolean(scrCmd.configSection() + ".enabled", true)) {
 						++count;
 						scrCmd.initFirst(commands.getStringList(scrCmd.configSection() + ".cmds"));
 						registered_commands.add(scrCmd);
@@ -135,11 +136,20 @@ public class Loader extends JavaPlugin {
 	private void loadConfigs() {
 		config = loadAndMerge("config.yml", "config.yml");
 		commands = loadAndMerge("commands.yml", "commands.yml");
-		translations = loadAndMerge("translations.yml", "translations.yml");
 		economyConfig = loadAndMerge("economy.yml", "economy.yml");
 		joinListenerConfig = loadAndMerge("events/join-listener.yml", "events/join-listener.yml");
 		quitListenerConfig = loadAndMerge("events/quit-listener.yml", "events/quit-listener.yml");
 		tablistConfig = loadAndMerge("tablist.yml", "tablist.yml");
+		
+		loadAndMerge("translations/Translation-en.yml", "translations/Translation-en.yml");
+		loadAndMerge("translations/Translation-cz.yml", "translations/Translation-cz.yml");
+		String type = "en";
+		if(Loader.config.exists("Options.Language"))
+			type = Loader.config.getString("Options.Language");
+		if(!new File("plugins/SCR/translations/Translation-"+type+".yml").exists())
+			type = "en";
+		translations = loadAndMerge("translations/Translation-"+type+".yml", "translations/Translation-"+type+".yml");
+		
 		data.clear();
 		data = null; // clear cache
 	}

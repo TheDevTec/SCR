@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.bukkit.command.CommandSender;
 
 import me.devtec.scr.Loader;
+import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.shared.API;
 import me.devtec.shared.commands.selectors.Selector;
@@ -22,7 +23,7 @@ public class BalanceTop implements ScrCommand {
 	static ComparableObject<UUID, Double>[] ranking;
 
 	@Override
-	public void init(List<String> cmds) {
+	public void init(int cd, List<String> cmds) {
 		if (Loader.economy == null)
 			return;
 
@@ -31,15 +32,15 @@ public class BalanceTop implements ScrCommand {
 			public void run() {
 				refleshBaltop();
 			}
-		}.runRepeating(0, 20 * 60);
+		}.runRepeating(0, 20 * 60); //TODO - too quick?
 
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			listBaltop(s, 0);
 		}).permission(permission("cmd")).fallback((s, structure, args) -> {
-			msgSec(s, "invalidPage", args[0]);
+			msgSec(s, "invalidPage", Placeholders.c().replace("page", args[0]));
 		}).selector(Selector.INTEGER, (s, structure, args) -> { // cmd [integer]
 			if (StringUtils.getInt(args[0]) - 1 < 0) {
-				msgSec(s, "invalidPage", args[0]);
+				msgSec(s, "invalidPage", Placeholders.c().replace("page", args[0]));
 				return;
 			}
 			listBaltop(s, StringUtils.getInt(args[0]) - 1);
@@ -59,12 +60,15 @@ public class BalanceTop implements ScrCommand {
 
 	public void listBaltop(CommandSender s, int page) {
 		int rank = page + 1;
-		msgConfig(s, "balancetop.header", page);
+		msgSec(s, "balancetop.header", Placeholders.c().replace("page", page).replace("pages", ranking.length) );
 		for (int i = page * 10; i < (page + 1) * 10 && i < ranking.length; ++i) {
 			ComparableObject<UUID, Double> comp = ranking[i];
-			msgConfig(s, "balancetop.format", rank++, API.offlineCache().lookupNameById(comp.getKey()), ((net.milkbowl.vault.economy.Economy) Loader.economy).format(comp.getValue()));
-		}
-		msgConfig(s, "balancetop.footer", page);
+			//msgSec(s, "balancetop.format", rank++, API.offlineCache().lookupNameById(comp.getKey()), ((net.milkbowl.vault.economy.Economy) Loader.economy).format(comp.getValue()));
+			msgSec(s, "balancetop.format", Placeholders.c().replace("position", rank++)
+					.replace("playername", API.offlineCache().lookupNameById(comp.getKey()))
+					.replace("money", ((net.milkbowl.vault.economy.Economy) Loader.economy).format(comp.getValue())) );
+			}
+		msgSec(s, "balancetop.footer", Placeholders.c().replace("page", page).replace("pages", ranking.length) );
 	}
 
 	@Override

@@ -66,7 +66,7 @@ public class Home implements ScrCommand {
 						homeNames.append(home);
 					}
 					msgSec(s, "listOther", Placeholders.c().add("player", Bukkit.getPlayer(args[0]).getName()).add("homes", homeNames).add("amount", homes.size()));
-				}).permission(permission("tp")).callableArgument((s, structure, args) -> new ArrayList<>(HomeManager.homesOf(Bukkit.getPlayer(args[0]).getUniqueId())), (s, structure, args) -> { // cmd
+				}).permission(permission("admin")).callableArgument((s, structure, args) -> new ArrayList<>(HomeManager.homesOf(Bukkit.getPlayer(args[0]).getUniqueId())), (s, structure, args) -> { // cmd
 																																																	// [player]
 																																																	// [home]
 					if (!(s instanceof Player)) {

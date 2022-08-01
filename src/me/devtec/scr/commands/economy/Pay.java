@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
+import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.ScrEconomy;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.shared.commands.selectors.Selector;
@@ -14,18 +15,18 @@ import net.milkbowl.vault.economy.Economy;
 public class Pay implements ScrCommand {
 	
 	@Override
-	public void init(List<String> cmds) {
+	public void init(int cd, List<String> cmds) {
 		if(Loader.economy == null)return;
-		
+		// /pay [player] [amount]
 		CommandStructure.create(Player.class, PLAYER_PERMS_CHECKER, (s, structure, args) -> { // cmd
-			help(s, 0);
-		}).permission("scr."+configSection()).fallback((s, structure, args) -> {
+			help(s, "usage");
+		}).permission(permission("cmd")).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
 			})
 			.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
-				help(s, 0);
+				help(s, "usage");
 			}).fallback((s, structure, args) -> {
-				help(s, 0);
+				help(s, "usage");
 				})
 				.argument(null, (s, structure, args) -> { // cmd [entity_selector] [any string]
 					double money = ScrEconomy.balanceFromString(args[1]);
@@ -33,8 +34,8 @@ public class Pay implements ScrCommand {
 					for(Player p : playerSelectors(s, args[0])) {
 						pay(s, p, money);
 						
-						msgSec(s, "sender", p.getName(), bal);
-						msgSec(p, "target", p.getName(), bal);
+						msgSec(s, "sender", Placeholders.c().replace("target", p.getName()).replace("money", bal));
+						msgSec(p, "target", Placeholders.c().replace("player", s.getName()).replace("money", bal));
 					}
 					})
 					.argument("-s", (s, structure, args) -> { // cmd [entity_selector] [any string] -s
