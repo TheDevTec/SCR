@@ -23,7 +23,7 @@ public class Thor implements ScrCommand {
 				Player p = (Player)s;
 				Location loc = getLookingBlock(p, 30).getLocation();
 				loc.getWorld().strikeLightningEffect(loc);
-				msgSec(s, "loc", Placeholders.c().replace("world", loc.getWorld()).replace("x", loc.getBlockX())
+				msgSec(s, "loc", Placeholders.c().replace("world", loc.getWorld().getName()).replace("x", loc.getBlockX())
 						.replace("y", loc.getBlockY()).replace("z", loc.getBlockZ()) );
 			}else {
 				help(s, "usage");
