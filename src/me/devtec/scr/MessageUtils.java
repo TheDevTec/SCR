@@ -45,9 +45,12 @@ public class MessageUtils {
 	public static String placeholder(CommandSender sender, String string, Placeholders placeholders) {
 		if (getPrefix() != null)
 			string = string.replace("%prefix%", getPrefix());
-		if (placeholders != null)
+		if (placeholders != null) {
+			if(!placeholders.set.containsKey("player"))
+				string = string.replace("%player%", sender.getName());
 			for (Entry<String, String> placeholder : placeholders.set.entrySet())
 				string = string.replace("%"+placeholder.getKey() + "%", placeholder.getValue() + "");
+		}
 		return string;
 	}
 

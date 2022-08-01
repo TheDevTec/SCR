@@ -25,15 +25,15 @@ public class Balance implements ScrCommand {
 			msgSec(s, "balance", Placeholders.c()
 					.replace("money", ((Economy)Loader.economy).format(((Economy)Loader.economy).getBalance((Player)s))) );
 			else help(s, "usage");
-		}).permission("scr."+configSection()).fallback((s, structure, args) -> {
+		}).permission(permission("cmd")).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
 			})
 			.selector(Selector.PLAYER, (s, structure, args) -> { // cmd [player]
 				Player p = Bukkit.getPlayer(args[0]);
 				//msgSec(s, "balance-other", p.getName(), ((Economy)Loader.economy).format(((Economy)Loader.economy).getBalance(p)));
-				msgSec(s, "balance-other", Placeholders.c()
+				msgSec(s, "other", Placeholders.c()
 						.replace("target", p.getName()).replace("money", ((Economy)Loader.economy).format(((Economy)Loader.economy).getBalance(p))) );
-			}).permission("scr."+configSection()+".other").build().register(cmds.remove(0), cmds.toArray(new String[0]));
+			}).permission(permission("other")).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
 	@Override

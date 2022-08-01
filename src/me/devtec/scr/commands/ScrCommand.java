@@ -118,12 +118,14 @@ public interface ScrCommand {
 	}
 
 	public default void help(CommandSender sender, String arg) {
-		Object val = Loader.commands.get(configSection() + ".help." + arg);
+		MessageUtils.msgConfig(sender, configSection()+".help."+arg, Loader.commands, null);
+		/*Object val = Loader.commands.get(configSection() + ".help." + arg);
 		if (val instanceof Collection)
 			for (String list : Loader.commands.getStringList(configSection() + ".help." + arg))
 				msg(sender, list, null);
 		else
-			msg(sender, Loader.commands.getString(configSection() + ".help." + arg), null);
+			MessageUtils.msgConfig(sender, configSection()+".help."+arg, Loader.commands, null);
+			//msg(sender, Loader.commands.getString(configSection() + ".help." + arg), null);*/
 	}
 
 	// Do not overide this - onLoad
