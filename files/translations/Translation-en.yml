@@ -51,7 +51,7 @@ thor:
 
 # Teleport
 warp:
-  list: "%prefix% List of available warps: &e%warp%"
+  list: "%prefix% List of available warps: &e%warps%"
   list_split: "&7, &e"
   notFound: "%prefix% Warp named &e%warp% &7doesn't exist"
   self: "%prefix% Warping to &e%warp%.."

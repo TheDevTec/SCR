@@ -84,9 +84,10 @@ public class Warp implements ScrCommand {
 						msgSec(s, "other.sender", Placeholders.c().add("warp", warp.name()).add("target", p.getName()));
 						msgSec(p, "other.target", Placeholders.c().add("warp", warp.name()).add("target", s.getName()));
 					}
-				}).permission(permission("other")).argument("-s", (s, structure, args) -> { // cmd [warp] [entity_selector] -s
+				}).permission(permission("other"))
+				.argument("-s", (s, structure, args) -> { // cmd [warp] [entity_selector] -s
 					WarpHolder warp = WarpManager.find(args[0]);
-					for (Player p : playerSelectors(s, args[0])) {
+					for (Player p : playerSelectors(s, args[1])) {
 						int teleportResult;
 						if ((teleportResult = warp.canTeleport(p)) != 0) {
 							String reason = teleportResult == 1 ? "perms" : "money";
