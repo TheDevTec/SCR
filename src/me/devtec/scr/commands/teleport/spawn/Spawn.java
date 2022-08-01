@@ -27,7 +27,7 @@ public class Spawn implements ScrCommand {
 		cooldownMap.put(CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			if (s instanceof Player) {
 				((Player) s).teleport(spawn.toLocation());
-				msgSec(s, configSection() + ".self");
+				msgSec(s, "self");
 			} else
 				help(s, "usage");
 		}).permission(permission("cmd")).argument("-s", (s, structure, args) -> { // cmd -s
@@ -39,8 +39,8 @@ public class Spawn implements ScrCommand {
 			Location loc = spawn.toLocation();
 			for (Player p : playerSelectors(s, args[0])) {
 				p.teleport(loc);
-				msgSec(s, configSection() + ".other.sender", Placeholders.c().add("target", p.getName()));
-				msgSec(p, configSection() + ".other.target", Placeholders.c().add("target", s.getName()));
+				msgSec(s, "other.sender", Placeholders.c().add("target", p.getName()));
+				msgSec(p, "other.target", Placeholders.c().add("target", s.getName()));
 			}
 		}).permission(permission("other")).argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
 			Location loc = spawn.toLocation();
