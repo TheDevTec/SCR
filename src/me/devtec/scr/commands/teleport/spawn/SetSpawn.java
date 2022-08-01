@@ -17,7 +17,7 @@ public class SetSpawn implements ScrCommand {
 	public void init(int cd, List<String> cmds) {
 		cooldownMap.put(CommandStructure.create(Player.class, PLAYER_PERMS_CHECKER, (s, structure, args) -> { // cmd
 			Spawn.spawn = new Position(s);
-			msgSec(s, "",
+			msg(s, configSection(),
 					Placeholders.c().add("world", Spawn.spawn.getWorldName()).add("x", StringUtils.formatDouble(FormatType.NORMAL, Spawn.spawn.getX()))
 							.add("y", StringUtils.formatDouble(FormatType.NORMAL, Spawn.spawn.getY())).add("z", StringUtils.formatDouble(FormatType.NORMAL, Spawn.spawn.getZ()))
 							.add("yaw", StringUtils.formatDouble(FormatType.NORMAL, Spawn.spawn.getYaw())).add("pitch", StringUtils.formatDouble(FormatType.NORMAL, Spawn.spawn.getPitch())));
