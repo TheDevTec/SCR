@@ -41,7 +41,7 @@ public class User implements ISuser {
 	
 	@Override
 	public boolean checkPerm(String permission) {
-		if(player.hasPermission(permission) || isConsole())
+		if(player.hasPermission(permission) || isConsole() || permission==null) //If permission==null -> missing perm in config probably
 			return true;
 		else {
 			MessageUtils.noPerm(player, permission);
@@ -52,7 +52,7 @@ public class User implements ISuser {
 	
 	@Override
 	public boolean isAutorized(String permission) {
-		if(player.hasPermission(permission) || isConsole())
+		if(player.hasPermission(permission) || isConsole() || permission==null)
 			return true;
 		else
 			return false;

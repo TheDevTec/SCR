@@ -18,7 +18,6 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
-import me.devtec.scr.api.User;
 import me.devtec.scr.listeners.commands.PluginEnable;
 import me.devtec.shared.commands.manager.PermissionChecker;
 import me.devtec.shared.commands.structures.CommandStructure;
@@ -143,10 +142,15 @@ public interface ScrCommand {
 
 	// Permission
 	public default String permission(String path) {
-		return Loader.commands.getString(configSection() + ".permission." + path);
+		if(Loader.commands.exists(configSection() + ".permission." + path))
+			return Loader.commands.getString(configSection() + ".permission." + path);
+		else {
+			Loader.plugin.getLogger().warning(MessageUtils.getPrefix()+" &4Missing permission in commands.yml: &e("+path+")");
+			return null;
+		}
 	}
 	public default Boolean hasPermission(CommandSender s, String path) {
-		return API.getUser(s).isAutorized(Loader.commands.getString(configSection() + ".permission." + path));
+		return API.getUser(s).isAutorized(permission(path));
 	}
 
 	public void init(int cd, List<String> cmds);

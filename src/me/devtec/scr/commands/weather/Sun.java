@@ -15,7 +15,7 @@ import me.devtec.shared.commands.structures.CommandStructure;
 public class Sun implements ScrCommand {
 
 	@Override
-	public void init(int cd, List<String> cmds) {
+	public void init(int cooldown, List<String> cmds) {
 		cooldownMap.put(CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
 			if (!(s instanceof Player)) {
 				help(s, "usage");
@@ -46,7 +46,7 @@ public class Sun implements ScrCommand {
 				.argument("-s", (s, structure, args) -> {
 					World world = Bukkit.getWorld(args[0]);
 					apply(world);
-				}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure(), new CooldownHolder(this, cd));
+				}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure(), new CooldownHolder(this, cooldown));
 	}
 
 	public void apply(World world) {

@@ -1,3 +1,13 @@
+#example:
+#  enabled: true
+#  cmds:
+#  - "example"
+#  cooldown: 5
+#  help:
+#    usage: "/example [player]"
+#  permission:
+#    cmd: "scr.command.example"
+ 
 # # # # # # # # # # # #
 # # # # WEATHER # # # #
 # # # # # # # # # # # #
