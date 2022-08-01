@@ -20,4 +20,9 @@ public interface ISuser {
 	
 	Economy getEconomy();
 
+	//NICKNAME
+	String getName();
+	boolean haveNickname();
+	void resetNickname();
+	void setNickname(String nick);
 }

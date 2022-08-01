@@ -92,5 +92,33 @@ public class User implements ISuser {
 	public Economy getEconomy() {
 		return Bukkit.getServicesManager().getRegistration(Economy.class).getProvider();
 	}
+	
+	//NICKNAME
+	@Override
+	public String getName() {
+		if(haveNickname()) {
+			return getUserConfig().getString("nickname");
+		}
+		return this.name;
+	}
+	@Override
+	public boolean haveNickname() {
+		return getUserConfig().exists("nickname");
+	}
+	@Override
+	public void resetNickname() {
+		Config c = getUserConfig();
+		if(haveNickname()) {
+			c.remove("nickname");
+			c.save();
+		}
+	}
+	@Override
+	public void setNickname(String nick) {
+		Config c = getUserConfig();
+		c.set("nickname", nick);
+		c.save();
+	}
+	
 
 }

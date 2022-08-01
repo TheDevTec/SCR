@@ -1,12 +1,12 @@
 enabled: true
 
 broadcast:
-- '&ePlayer {0} joined to the game'
+- '&ePlayer %player% joined to the game'
 commands: []
 messages: []
 
 firstTime:
   broadcast:
-  - '&eWelcome {0} on server'
+  - '&eWelcome %player% on server'
   commands: []
   messages: []
