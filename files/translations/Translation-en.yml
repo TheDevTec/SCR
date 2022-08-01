@@ -88,8 +88,8 @@ delhome:
   not_exists: "%prefix% Home named &e%home% &7doesn't exist"
 
 home:
-  list: "%prefix% &7Your homes(%amount%): &e%homes%"
-  listOther: "&7%player%'s homes(%amount%): &e%homes%"
+  list: "%prefix% &7Your homes (%amount%): &e%homes%"
+  listOther: "&7%player%'s homes (%amount%): &e%homes%"
   list_split: "&7, &e"
   notFound: "%prefix% Home &e%home% &7doesn't exist"
   self: "%prefix% Teleporting to home &e%home%"

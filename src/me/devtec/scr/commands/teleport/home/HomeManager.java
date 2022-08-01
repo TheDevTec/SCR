@@ -23,12 +23,14 @@ public class HomeManager {
 		user.set("home."+name.toLowerCase()+".name", name);
 		user.set("home."+name.toLowerCase()+".location", location);
 		user.set("home."+name.toLowerCase()+".icon", icon);
+		user.save();
 		return warp;
 	}
 	
 	public static void delete(UUID owner, String name) {
 		Config user = API.getUser(owner);
 		user.remove("home."+name);
+		user.save();
 	}
 	
 	public static boolean existsHome(UUID owner, String name) {

@@ -44,7 +44,8 @@ public class Home implements ScrCommand {
 			HomeHolder home = HomeManager.find(((Player) s).getUniqueId(), args[0]);
 			((Player) s).teleport(home.location().toLocation());
 			msgSec(s, "self", Placeholders.c().add("home", home.name()));
-		}).fallback((s, structure, args) -> {
+		}).priority(1)
+				.fallback((s, structure, args) -> {
 			offlinePlayer(s, args[1]);
 		}).argument("-s", (s, structure, args) -> { // cmd [home] -s
 			if (!(s instanceof Player)) { // must be player
@@ -54,27 +55,29 @@ public class Home implements ScrCommand {
 
 			HomeHolder home = HomeManager.find(((Player) s).getUniqueId(), args[0]);
 			((Player) s).teleport(home.location().toLocation());
-		}).first() // cmd
-				.fallback((s, structure, args) -> {
-					offlinePlayer(s, args[0]);
-				}).selector(Selector.PLAYER, (s, structure, args) -> { // cmd [player]
-					StringBuilder homeNames = new StringBuilder();
-					Set<String> homes = HomeManager.homesOf(Bukkit.getPlayer(args[0]).getUniqueId());
-					for (String home : homes) {
-						if (homeNames.length() != 0)
-							homeNames.append(Loader.translations.getString(configSection() + ".list_split"));
-						homeNames.append(home);
-					}
-					msgSec(s, "listOther", Placeholders.c().add("player", Bukkit.getPlayer(args[0]).getName()).add("homes", homeNames).add("amount", homes.size()));
-				}).permission(permission("admin")).callableArgument((s, structure, args) -> new ArrayList<>(HomeManager.homesOf(Bukkit.getPlayer(args[0]).getUniqueId())), (s, structure, args) -> { // cmd
-																																																	// [player]
+		}).parent() // cmd [home]
+		.parent() // cmd
+			.fallback((s, structure, args) -> {
+				offlinePlayer(s, args[0]);
+			}).selector(Selector.PLAYER, (s, structure, args) -> { // cmd [player]
+				StringBuilder homeNames = new StringBuilder();
+				Set<String> homes = HomeManager.homesOf(Bukkit.getPlayer(args[0]).getUniqueId());
+				for (String home : homes) {
+					if (homeNames.length() != 0)
+						homeNames.append(Loader.translations.getString(configSection() + ".list_split"));
+					homeNames.append(home);
+				}
+				msgSec(s, "listOther", Placeholders.c().add("player", Bukkit.getPlayer(args[0]).getName()).add("homes", homeNames).add("amount", homes.size()));
+			}).permission(permission("admin"))
+				// cmd [player] [homes]
+				.callableArgument((s, structure, args) -> new ArrayList<>(HomeManager.homesOf(Bukkit.getPlayer(args[0]).getUniqueId())), (s, structure, args) -> {
 																																																	// [home]
 					if (!(s instanceof Player)) {
 						help(s, "usage");
 						return;
 					}
 
-					HomeHolder home = HomeManager.find(((Player) s).getUniqueId(), args[0]);
+					HomeHolder home = HomeManager.find(((Player) s).getUniqueId(), args[1]);
 					((Player) s).teleport(home.location().toLocation());
 					msgSec(s, "self", Placeholders.c().add("home", home.name()));
 				}).argument("-s", (s, structure, args) -> { // cmd [player] [home] -s
@@ -83,9 +86,27 @@ public class Home implements ScrCommand {
 						return;
 					}
 
-					HomeHolder home = HomeManager.find(((Player) s).getUniqueId(), args[0]);
+					HomeHolder home = HomeManager.find(((Player) s).getUniqueId(), args[1]);
 					((Player) s).teleport(home.location().toLocation());
-				}).first()
+				}).parent() // cmd [player] [home]
+
+				.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [player] [home] [target]
+					HomeHolder home = HomeManager.find(UUID.fromString(API.getUser(args[0]).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)), args[1]);
+					for (Player p : playerSelectors(s, args[2])) {
+						p.teleport(home.location().toLocation());
+						msgSec(s, "other-otherHouse.sender", Placeholders.c().add("player", args[0]).add("home", home.name()).add("target", p.getName()));
+						msgSec(p, "other-otherHouse.target", Placeholders.c().add("player", args[0]).add("home", home.name()).add("target", s.getName()));
+					}
+				}).permission(permission("tp_other"))
+				.argument("-s", (s, structure, args) -> { // cmd [player] [home] -s
+					HomeHolder home = HomeManager.find(UUID.fromString(API.getUser(args[0]).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)), args[1]);
+					for (Player p : playerSelectors(s, args[2]))
+						p.teleport(home.location().toLocation());
+				})
+				.parent() // cmd [player] [home] [target]
+				.parent() // cmd [player] [home]
+				.parent() // cmd [player]
+				.parent() // cmd
 
 				.argument(null, (s, structure, args) -> { // cmd [playerName/uuid]
 					StringBuilder homeNames = new StringBuilder();
@@ -98,13 +119,14 @@ public class Home implements ScrCommand {
 					msgSec(s, "listOther", Placeholders.c().add("player", args[0]).add("homes", homeNames).add("amount", homes.size()));
 				}).fallback((s, structure, args) -> {
 					offlinePlayer(s, args[0]);
+					// cmd [uuid] [homes]
 				}).callableArgument((s, structure, args) -> new ArrayList<>(API.getUser(args[0]).getKeys("home")), (s, structure, args) -> { // cmd [player] [home]
 					if (!(s instanceof Player)) { // must be player
 						help(s, "admin_usage");
 						return;
 					}
 
-					HomeHolder home = HomeManager.find(UUID.fromString(API.getUser(args[0]).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)), args[0]);
+					HomeHolder home = HomeManager.find(UUID.fromString(API.getUser(args[0]).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)), args[1]);
 					((Player) s).teleport(home.location().toLocation());
 					msgSec(s, "self-otherHouse", Placeholders.c().add("player", args[0]).add("home", home.name()));
 				}).argument("-s", (s, structure, args) -> { // cmd [player] [home] -s
@@ -113,22 +135,24 @@ public class Home implements ScrCommand {
 						return;
 					}
 
-					HomeHolder home = HomeManager.find(UUID.fromString(API.getUser(args[0]).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)), args[0]);
+					HomeHolder home = HomeManager.find(UUID.fromString(API.getUser(args[0]).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)), args[1]);
 					((Player) s).teleport(home.location().toLocation());
 				}).parent() // cmd [player] [home]
 
 				.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [player]
-					HomeHolder home = HomeManager.find(UUID.fromString(API.getUser(args[0]).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)), args[0]);
+					HomeHolder home = HomeManager.find(UUID.fromString(API.getUser(args[0]).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)), args[1]);
 					for (Player p : playerSelectors(s, args[2])) {
 						p.teleport(home.location().toLocation());
 						msgSec(s, "other-otherHouse.sender", Placeholders.c().add("player", args[0]).add("home", home.name()).add("target", p.getName()));
 						msgSec(p, "other-otherHouse.target", Placeholders.c().add("player", args[0]).add("home", home.name()).add("target", s.getName()));
 					}
-				}).permission(permission("tp_other")).argument("-s", (s, structure, args) -> { // cmd [player] [home] -s
-					HomeHolder home = HomeManager.find(UUID.fromString(API.getUser(args[0]).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)), args[0]);
+				}).permission(permission("tp_other"))
+				.argument("-s", (s, structure, args) -> { // cmd [player] [home] -s
+					HomeHolder home = HomeManager.find(UUID.fromString(API.getUser(args[0]).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)), args[1]);
 					for (Player p : playerSelectors(s, args[2]))
 						p.teleport(home.location().toLocation());
-				}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure(), new CooldownHolder(this, cd));
+				})
+				.build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure(), new CooldownHolder(this, cd));
 	}
 
 	@Override
