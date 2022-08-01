@@ -109,7 +109,7 @@ public class ScrEconomy extends AbstractEconomy {
 			return new EconomyResponse(balance, getBalance(name), ResponseType.FAILURE, "Withdraw balance must be higher or equals to 0.");
 		if(pwe)return withdrawPlayer(name, economyGroup(API.getUser(name).getString("disconnectWorld")), balance);
 		Config user = API.getUser(name);
-		double playerBal = user.getDouble("scr.economy") + balance;
+		double playerBal = user.getDouble("scr.economy") - balance;
 		user.set("scr.economy", playerBal);
 		return new EconomyResponse(balance, getBalance(name), ResponseType.SUCCESS, "");
 	}
