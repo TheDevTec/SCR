@@ -1,8 +1,9 @@
 package me.devtec.scr.utils;
 
 import me.devtec.shared.dataholder.Config;
+import net.milkbowl.vault.economy.Economy;
 
-public interface sUser {
+public interface ISuser {
 
 	boolean isAutorized(String permission); // true/false
 
@@ -10,13 +11,13 @@ public interface sUser {
 
 	// cooldowns
 	boolean cooldownExpired(String cooldownpath, String cooldowntime); // true/false
-
 	long expires(String cooldownpath, String cooldowntime);
-
 	void newCooldown(String cooldownpath);
 
 	boolean isConsole();
 
 	Config getUserConfig();
+	
+	Economy getEconomy();
 
 }

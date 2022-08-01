@@ -43,7 +43,7 @@ public class Loader extends JavaPlugin {
 
 	public List<ScrCommand> registered_commands = new ArrayList<>();
 
-	private Config economyConfig;
+	public static Config economyConfig;
 	private Config joinListenerConfig;
 	private Config quitListenerConfig;
 	private Config tablistConfig;
@@ -58,7 +58,7 @@ public class Loader extends JavaPlugin {
 			if (economyConfig.getBoolean("useVaultEconomy")) {
 				vaultEconomyHooking();
 				economyConfig.clear();
-				economyConfig = null;
+				//economyConfig = null; //musíme nějak (v jiných claskách) kontrolovat zda je v tom configu "useVaultEconomy" :D
 			} else {
 				getLogger().info("[Economy] Registering ScrEconomy and using as Vault economy.");
 				economy = new ScrEconomy(economyConfig);

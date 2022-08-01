@@ -24,26 +24,26 @@ Weather:
 
 # Fun
 fly:
-  enabled: "%prefix% Fly enabled"
-  disabled: "%prefix% Fly disabled"
+  enabled: "%prefix% Fly &aenabled"
+  disabled: "%prefix% Fly &cdisabled"
   other:
     enabled:
-      sender: "%prefix% Enabled fly for player {0}"
-      target: "%prefix% Fly enabled"
+      sender: "%prefix% &aEnabled &7fly for player &e%target%"
+      target: "%prefix% Fly &aenabled"
     disabled:
-      sender: "%prefix% Disabled fly for player {0}"
-      target: "%prefix% Fly disabled"
+      sender: "%prefix% &cDisabled &7fly for player &e%target%"
+      target: "%prefix% Fly &cdisabled"
       
 god:
   enabled: "%prefix% God enabled"
   disabled: "%prefix% God disabled"
   other:
     enabled:
-      sender: "%prefix% Enabled god mode for player {0}"
-      target: "%prefix% God enabled"
+      sender: "%prefix% &aEnabled &7god mode for player &e%target%"
+      target: "%prefix% God &aenabled"
     disabled:
-      sender: "%prefix% Disabled god mode for player {0}"
-      target: "%prefix% God disabled"
+      sender: "%prefix% &cDisabled &7god mode for player &e%target%"
+      target: "%prefix% God &cdisabled"
       
 thor:
   loc: "%prefix% Striked position in the world {0} at {1}, {2}, {3}"

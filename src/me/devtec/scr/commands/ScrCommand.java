@@ -17,6 +17,8 @@ import org.bukkit.entity.Player;
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
+import me.devtec.scr.api.API;
+import me.devtec.scr.api.User;
 import me.devtec.scr.listeners.commands.PluginEnable;
 import me.devtec.shared.commands.manager.PermissionChecker;
 import me.devtec.shared.commands.structures.CommandStructure;
@@ -39,8 +41,12 @@ public interface ScrCommand {
 
 	public static final Map<CommandStructure<?>, CooldownHolder> cooldownMap = new ConcurrentHashMap<>();
 
-	public static final PermissionChecker<CommandSender> PERMS_CHECKER = (sender, perm, tablist) -> sender.hasPermission(perm);
-	public static final PermissionChecker<Player> PLAYER_PERMS_CHECKER = (sender, perm, tablist) -> sender.hasPermission(perm);
+	public static final PermissionChecker<CommandSender> PERMS_CHECKER = (sender, perm, tablist) -> {
+		return API.getUser(sender).checkPerm(perm); //also noperm message if needed
+	};
+	public static final PermissionChecker<Player> PLAYER_PERMS_CHECKER = (sender, perm, tablist) -> {
+		return API.getUser(sender).checkPerm(perm); //also noperm message if needed
+	};
 	public static final CooldownDetection<CommandSender> COOLDOWN = (sender, structure, args) -> {
 		CooldownHolder holder = cooldownMap.get(structure.first());
 		if (!(sender instanceof Player) || sender.hasPermission("scr.bypass.commands") || sender.hasPermission(holder.cmd.permission("cd-bypass")))
@@ -138,6 +144,9 @@ public interface ScrCommand {
 	// Permission
 	public default String permission(String path) {
 		return Loader.commands.getString(configSection() + ".permission." + path);
+	}
+	public default Boolean hasPermission(CommandSender s, String path) {
+		return API.getUser(s).isAutorized(Loader.commands.getString(configSection() + ".permission." + path));
 	}
 
 	public void init(int cd, List<String> cmds);

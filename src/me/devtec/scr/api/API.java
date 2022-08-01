@@ -6,30 +6,28 @@ import java.util.Map;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.devtec.scr.utils.sUser;
-
 public class API {
 
 	// Getting users
-	private static final Map<String, sUser> usercache = new HashMap<>();
+	private static final Map<String, User> usercache = new HashMap<>();
 
-	public static sUser getUser(String playername) {
+	public static User getUser(String playername) {
 		if (!usercache.containsKey(playername))
-			usercache.put(playername, new sUser(playername));
+			usercache.put(playername, new User(playername));
 		return usercache.get(playername);
 	}
 
-	public static sUser getUser(Player player) {
+	public static User getUser(Player player) {
 		if (!usercache.containsKey(player.getName()))
-			usercache.put(player.getName(), new sUser(player));
+			usercache.put(player.getName(), new User(player));
 		return usercache.get(player.getName());
 	}
 
-	public static sUser getUser(CommandSender commandsender) {
+	public static User getUser(CommandSender commandsender) {
 		if (!(commandsender instanceof Player))
-			return new sUser("console");
+			return new User("console");
 		if (!usercache.containsKey(commandsender.getName()))
-			usercache.put(commandsender.getName(), new sUser(commandsender));
+			usercache.put(commandsender.getName(), new User(commandsender));
 		return usercache.get(commandsender.getName());
 	}
 

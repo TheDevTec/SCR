@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
+import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.listeners.fun.AntiFallDamage;
 import me.devtec.shared.commands.selectors.Selector;
@@ -19,7 +20,7 @@ public class Fly implements ScrCommand {
 	public static List<UUID> antiFall;
 
 	@Override
-	public void init(List<String> cmds) {
+	public void init(int cd, List<String> cmds) {
 		antiFall = new ArrayList<>();
 
         Loader.plugin.getLogger().info("[Fly] Using AntiFallDamage listener");
@@ -33,20 +34,21 @@ public class Fly implements ScrCommand {
 				String status = p.getAllowFlight() ? "enabled" : "disabled";
 				msgSec(s, ""+status);
 			}else {
-				help(s, 0);
+				help(s, "admin_usage");
 			}
-		}).permission("scr."+configSection()).fallback((s, structure, args) -> {
+		}).permission(permission("cmd"))
+		.fallback((s, structure, args) -> { // /fly [player] //TODO ASI BLBĚ?
 			offlinePlayer(s, args[0]);
 			})
-			.argument("-s", (s, structure, args) -> { // cmd [boolean] -s
+			.argument("-s", (s, structure, args) -> { // cmd -s
 				if(s instanceof Player) {
 					Player p = (Player)s;
 					apply(p, p.getAllowFlight());
 				}else {
-					help(s, 0);
+					help(s, "admin_usage");
 				}
 			})
-			.parent() // cmd
+			.parent() // cmd <-
 			.selector(Selector.BOOLEAN, (s, structure, args) -> { // cmd [boolean]
 				if(s instanceof Player) {
 					Player p = (Player)s;
@@ -55,7 +57,7 @@ public class Fly implements ScrCommand {
 					String status = Boolean.parseBoolean(args[0]) ? "enabled" : "disabled";
 					msgSec(s, ""+status);
 				}else {
-					help(s, 0);
+					help(s, "admin_usage");
 				}
 				})
 				.argument("-s", (s, structure, args) -> { // cmd [boolean] -s
@@ -63,21 +65,22 @@ public class Fly implements ScrCommand {
 						Player p = (Player)s;
 						apply(p, !Boolean.parseBoolean(args[0]));
 					}else {
-						help(s, 0);
+						help(s, "admin_usage");
 					}
 				})
-				.parent() // cmd [boolean]
-			.parent() // cmd
+				.parent() // cmd [boolean] <-
+			.parent() // cmd <-
 			.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
 				for(Player p : playerSelectors(s, args[0])) {
 					apply(p, p.getAllowFlight());
 					
 					String status = p.getAllowFlight() ? "enabled" : "disabled";
-					msgSec(s, "other."+status+".sender", p.getName());
-					msgSec(p, "other."+status+".target", p.getName());
+					msgSec(s, "other."+status+".sender", Placeholders.c().replace("target", p.getName()));
+					msgSec(p, "other."+status+".target", Placeholders.c().replace("target", s.getName()));
 				}
-			}).permission("scr."+configSection()+".other").fallback((s, structure, args) -> {
-				help(s, 0);
+			}).permission(permission("other"))
+			.fallback((s, structure, args) -> {
+				help(s, "admin_usage");
 				})
 				.argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
 					for(Player p : playerSelectors(s, args[0])) {
@@ -90,8 +93,8 @@ public class Fly implements ScrCommand {
 						apply(p, !Boolean.parseBoolean(args[1]));
 						
 						String status = Boolean.parseBoolean(args[1]) ? "enabled" : "disabled";
-						msgSec(s, "other."+status+".sender", p.getName());
-						msgSec(p, "other."+status+".target", p.getName());
+						msgSec(s, "other."+status+".sender", Placeholders.c().replace("target", p.getName()));
+						msgSec(p, "other."+status+".target", Placeholders.c().replace("target", s.getName()));
 					}
 				})
 					.argument("-s", (s, structure, args) -> { // cmd [boolean] -s

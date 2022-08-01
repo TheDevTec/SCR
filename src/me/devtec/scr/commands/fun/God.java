@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
+import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.listeners.fun.AntiDamage;
 import me.devtec.shared.Ref;
@@ -20,7 +21,7 @@ public class God implements ScrCommand {
 	boolean legacy = Ref.isOlderThan(10);
 	
 	@Override
-	public void init(List<String> cmds) {
+	public void init(int cd, List<String> cmds) {
 		if(legacy) { //We have to use listener
 			antiDamage = new ArrayList<>();
 	        Loader.plugin.getLogger().info("[God] Using AntiDamage listener");
@@ -39,11 +40,11 @@ public class God implements ScrCommand {
 				String status = isInvulnerable(p) ? "enabled" : "disabled";
 				msgSec(s, ""+status);
 			}else {
-				help(s, 0);
+				help(s, "admin_usage");
 			}
 		}).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
-			}).permission("scr."+configSection())
+			}).permission(permission(""))
 			.argument("-s", (s, structure, args) -> { // cmd -s
 				if(s instanceof Player) {
 					Player p = (Player)s;
@@ -53,7 +54,7 @@ public class God implements ScrCommand {
 						applyModern(p, isInvulnerable(p));
 					}
 				}else {
-					help(s, 0);
+					help(s, "admin_usage");
 				}
 			})
 			.parent() // cmd 
@@ -69,7 +70,7 @@ public class God implements ScrCommand {
 					String status = Boolean.parseBoolean(args[0]) ? "enabled" : "disabled";
 					msgSec(s, ""+status);
 				}else {
-					help(s, 0);
+					help(s, "admin_usage");
 				}
 				})
 				.argument("-s", (s, structure, args) -> { // cmd [boolean] -s
@@ -81,7 +82,7 @@ public class God implements ScrCommand {
 							applyModern(p, !Boolean.parseBoolean(args[0]));
 						}
 					}else {
-						help(s, 0);
+						help(s, "admin_usage");
 					}
 				})
 				.parent() // cmd [boolean]
@@ -95,11 +96,12 @@ public class God implements ScrCommand {
 					}
 					
 					String status = isInvulnerable(p) ? "enabled" : "disabled";
-					msgSec(s, "other."+status+".sender", p.getName());
-					msgSec(p, "other."+status+".target", p.getName());
+					msgSec(s, "other."+status+".sender", Placeholders.c().replace("target", p.getName()));
+					msgSec(p, "other."+status+".target", Placeholders.c().replace("target", s.getName()));
 				}
-			}).permission("scr."+configSection()+".other").fallback((s, structure, args) -> {
-				help(s, 0);
+			}).permission(permission("other"))
+			.fallback((s, structure, args) -> {
+				help(s, "admin_usage");
 				})
 				.argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
 					for(Player p : playerSelectors(s, args[0])) {
@@ -120,8 +122,8 @@ public class God implements ScrCommand {
 						}
 						
 						String status = Boolean.parseBoolean(args[1]) ? "enabled" : "disabled";
-						msgSec(s, "other."+status+".sender", p.getName());
-						msgSec(p, "other."+status+".target", p.getName());
+						msgSec(s, "other."+status+".sender", Placeholders.c().replace("target", p.getName()));
+						msgSec(p, "other."+status+".target", Placeholders.c().replace("target", s.getName()));
 					}
 					})
 					.argument("-s", (s, structure, args) -> { // cmd [entity_selector] [boolean] -s

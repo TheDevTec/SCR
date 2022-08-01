@@ -161,7 +161,7 @@ anvil:
     usage: "/anvil [player]"
   permission:
     cmd: "scr.command.anvil"
-    other: "scr.command.anvil"
+    other: "scr.command.anvil.other"
   
 loom:
   enabled: true
@@ -171,7 +171,7 @@ loom:
     usage: "/loom [player]"
   permission:
     cmd: "scr.command.loom"
-    other: "scr.command.loom"
+    other: "scr.command.loom.other"
   
 cartography:
   enabled: true
@@ -181,7 +181,7 @@ cartography:
     usage: "/cartography [player]"
   permission:
     cmd: "scr.command.cartography"
-    other: "scr.command.cartography"
+    other: "scr.command.cartography.other"
   
 enderchest:
   enabled: true
@@ -193,7 +193,7 @@ enderchest:
     usage: "/enderchest [player]"
   permission:
     cmd: "scr.command.enderchest"
-    other: "scr.command.enderchest"
+    other: "scr.command.enderchest.other"
   
 grindstone:
   enabled: true
@@ -203,7 +203,7 @@ grindstone:
     usage: "/grindstone [player]"
   permission:
     cmd: "scr.command.grindstone"
-    other: "scr.command.grindstone"
+    other: "scr.command.grindstone.other"
   
 craftingtable:
   enabled: true
@@ -217,7 +217,7 @@ craftingtable:
     usage: "/craftingtable [player]"
   permission:
     cmd: "scr.command.craftingtable"
-    other: "scr.command.craftingtable"
+    other: "scr.command.craftingtable.other"
   
 enchanting:
   enabled: true
@@ -230,7 +230,11 @@ enchanting:
     usage: "/enchanting [player]"
   permission:
     cmd: "scr.command.enchanting"
-    other: "scr.command.enchanting"
+    other: "scr.command.enchanting.other"
+    
+# # # # # # # # # #
+# # # # Fun # # # #
+# # # # # # # # # #
 
 fly:
   enabled: true
@@ -238,8 +242,11 @@ fly:
   - "fly"
   - "flight"
   help:
-    # This is for console & command block
-    '0': "/fly [player] {true/false}"
+    usage: "/fly {true/false}"
+    admin_usage: "/fly [player] {true/false}"
+  permission:
+    cmd: "scr.command.fly"
+    other: "scr.command.fly.other"
     
 god:
   enabled: true
@@ -249,6 +256,12 @@ god:
   help:
     # This is for console & command block
     '0': "/god [player] {true/false}"
+  help:
+    usage: "/god {true/false}"
+    admin_usage: "/god [player] {true/false}"
+  permission:
+    cmd: "scr.command.god"
+    other: "scr.command.god.other"
     
 thor:
   enabled: true
