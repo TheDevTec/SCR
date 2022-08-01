@@ -45,7 +45,8 @@ public class PluginEnable implements Listener {
 					BukkitLoader.getNmsProvider().postToMainThread(() -> {
 						String firstUp = Character.toUpperCase(cmd.configSection().charAt(0)) + cmd.configSection().substring(1);
 						Loader.plugin.getLogger().info("[" + firstUp + "] Registering command.");
-						cmd.init(Loader.commands.getInt(cmd.configSection() + ".cooldown"), waiting.remove(cmd)[1]);
+						//cmd.init(Loader.commands.getInt(cmd.configSection() + ".cooldown"), waiting.remove(cmd)[1]);
+						cmd.init(waiting.remove(cmd)[1]);
 						if (waiting.isEmpty()) {
 							// Unregister listener
 							Loader.plugin.getLogger().info("[Commands Loader] Unregistering PluginEnable listener..");

@@ -14,15 +14,15 @@ import me.devtec.shared.commands.structures.CommandStructure;
 public class PlayerRain implements ScrCommand {
 
 	@Override
-	public void init(int cd, List<String> cmds) {
-		cooldownMap.put(CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
+	public void init(List<String> cmds) {
+		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
 			if (!(s instanceof Player)) {
 				help(s, "usage");
 				return;
 			}
 			apply((Player) s);
 			msg(s, "weather.pRain.self");
-		}).cooldownDetection(COOLDOWN).permission(permission("cmd")).fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).fallback((s, structure, args) -> {
 			help(s, "usage");
 		})
 				// psun -s
@@ -45,7 +45,7 @@ public class PlayerRain implements ScrCommand {
 				.argument("-s", (s, structure, args) -> {
 					for (Player player : playerSelectors(s, args[0]))
 						apply(player);
-				}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure(), new CooldownHolder(this, cd));
+				}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure();
 	}
 
 	public void apply(Player player) {

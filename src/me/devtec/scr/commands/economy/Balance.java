@@ -16,7 +16,7 @@ import net.milkbowl.vault.economy.Economy;
 public class Balance implements ScrCommand {
 	
 	@Override
-	public void init(int cd, List<String> cmds) {
+	public void init(List<String> cmds) {
 		if(Loader.economy == null)return;
 		
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
@@ -25,7 +25,8 @@ public class Balance implements ScrCommand {
 			msgSec(s, "balance", Placeholders.c()
 					.replace("money", ((Economy)Loader.economy).format(((Economy)Loader.economy).getBalance((Player)s))) );
 			else help(s, "usage");
-		}).permission(permission("cmd")).fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd")).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
 			})
 			.selector(Selector.PLAYER, (s, structure, args) -> { // cmd [player]

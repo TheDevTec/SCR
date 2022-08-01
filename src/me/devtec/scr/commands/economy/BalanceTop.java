@@ -23,7 +23,7 @@ public class BalanceTop implements ScrCommand {
 	static ComparableObject<UUID, Double>[] ranking;
 
 	@Override
-	public void init(int cd, List<String> cmds) {
+	public void init(List<String> cmds) {
 		if (Loader.economy == null)
 			return;
 
@@ -36,7 +36,8 @@ public class BalanceTop implements ScrCommand {
 
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			listBaltop(s, 0);
-		}).permission(permission("cmd")).fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd")).fallback((s, structure, args) -> {
 			msgSec(s, "invalidPage", Placeholders.c().replace("page", args[0]));
 		}).selector(Selector.INTEGER, (s, structure, args) -> { // cmd [integer]
 			if (StringUtils.getInt(args[0]) - 1 < 0) {

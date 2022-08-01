@@ -20,7 +20,7 @@ public class Fly implements ScrCommand {
 	public static List<UUID> antiFall;
 
 	@Override
-	public void init(int cd, List<String> cmds) {
+	public void init(List<String> cmds) {
 		antiFall = new ArrayList<>();
 
         Loader.plugin.getLogger().info("[Fly] Using AntiFallDamage listener");
@@ -36,7 +36,8 @@ public class Fly implements ScrCommand {
 			}else {
 				help(s, "admin_usage");
 			}
-		}).permission(permission("cmd"))
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd"))
 		.fallback((s, structure, args) -> { // /fly [player] //TODO ASI BLBĚ?
 			offlinePlayer(s, args[0]);
 			})

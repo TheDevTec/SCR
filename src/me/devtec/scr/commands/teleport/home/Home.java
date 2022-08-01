@@ -19,8 +19,8 @@ import me.devtec.shared.commands.structures.CommandStructure;
 public class Home implements ScrCommand {
 
 	@Override
-	public void init(int cd, List<String> cmds) { // home [home/player] [home] {player}
-		cooldownMap.put(CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
+	public void init(List<String> cmds) { // home [home/player] [home] {player}
+		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			if (!(s instanceof Player)) {
 				help(s, "admin_usage");
 				return;
@@ -33,7 +33,8 @@ public class Home implements ScrCommand {
 				homeNames.append(home);
 			}
 			msgSec(s, "list", Placeholders.c().add("homes", homeNames).add("amount", homes.size()));
-		}).permission(permission("cmd")).fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd")).fallback((s, structure, args) -> {
 			msgSec(s, "notFound", Placeholders.c().add("home", args[0]));
 		}).callableArgument((s, structure, args) -> new ArrayList<>(HomeManager.homesOf(((Player) s).getUniqueId())), (s, structure, args) -> { // cmd [home]
 			if (!(s instanceof Player)) {
@@ -152,7 +153,7 @@ public class Home implements ScrCommand {
 					for (Player p : playerSelectors(s, args[2]))
 						p.teleport(home.location().toLocation());
 				})
-				.build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure(), new CooldownHolder(this, cd));
+				.build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure();
 	}
 
 	@Override

@@ -16,17 +16,18 @@ import me.devtec.shared.commands.structures.CommandStructure;
 public class Loom implements ScrCommand {
 
 	@Override
-	public void init(int cd, List<String> cmds) {
+	public void init(List<String> cmds) {
 		if (Ref.isOlderThan(14))
 			return;
-		cooldownMap.put(CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
+		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
 			if (!(s instanceof Player)) {
 				help(s, "usage");
 				return;
 			}
 			((Player) s).openInventory(Bukkit.createInventory((Player) s, InventoryType.LOOM));
 			msgSec(s, "self");
-		}).permission(permission("cmd")).fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd")).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
 		}).argument("-s", (s, structure, args) -> {
 			if (!(s instanceof Player)) {
@@ -42,7 +43,7 @@ public class Loom implements ScrCommand {
 		}).permission(permission("other")).argument("-s", (s, structure, args) -> {
 			Player p = Bukkit.getPlayer(args[0]);
 			p.openInventory(Bukkit.createInventory(p, InventoryType.LOOM));
-		}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure(), new CooldownHolder(this, cd));
+		}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure();
 	}
 
 	@Override

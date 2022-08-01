@@ -13,10 +13,11 @@ import me.devtec.theapi.bukkit.game.Position;
 public class CreateHome implements ScrCommand {
 
 	@Override
-	public void init(int cd, List<String> cmds) {
-		cooldownMap.put(CommandStructure.create(Player.class, PLAYER_PERMS_CHECKER, (s, structure, args) -> { // cmd
+	public void init(List<String> cmds) {
+		CommandStructure.create(Player.class, PLAYER_PERMS_CHECKER, (s, structure, args) -> { // cmd
 			help(s, "usage");
-		}).permission(permission("cmd")).argument(null, (s, structure, args) -> { // cmd [any string]
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd")).argument(null, (s, structure, args) -> { // cmd [any string]
 			HomeHolder home = HomeManager.find(s.getUniqueId(), args[0]);
 			if (home != null) {
 				msgSec(s, "already_exists", Placeholders.c().add("home", home.name()));
@@ -24,7 +25,7 @@ public class CreateHome implements ScrCommand {
 			}
 			HomeManager.create(s.getUniqueId(), args[0], new Position(s), Material.ENDER_PEARL);
 			msgSec(s, "created", Placeholders.c().add("home", args[0]));
-		}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure(), new CooldownHolder(this, cd));
+		}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure();
 	}
 
 	@Override

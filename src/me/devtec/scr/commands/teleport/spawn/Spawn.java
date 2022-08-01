@@ -19,18 +19,19 @@ public class Spawn implements ScrCommand {
 	protected static Position spawn;
 
 	@Override
-	public void init(int cd, List<String> cmds) {
+	public void init(List<String> cmds) {
 		spawn = Warp.storedWarps.getAs("spawn", Position.class);
 		if (spawn == null)
 			spawn = new Position(Bukkit.getWorlds().get(0).getSpawnLocation());
 
-		cooldownMap.put(CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
+		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			if (s instanceof Player) {
 				((Player) s).teleport(spawn.toLocation());
 				msgSec(s, "self");
 			} else
 				help(s, "usage");
-		}).permission(permission("cmd")).argument("-s", (s, structure, args) -> { // cmd -s
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd")).argument("-s", (s, structure, args) -> { // cmd -s
 			if (s instanceof Player)
 				((Player) s).teleport(spawn.toLocation());
 			else
@@ -46,7 +47,7 @@ public class Spawn implements ScrCommand {
 			Location loc = spawn.toLocation();
 			for (Player p : playerSelectors(s, args[0]))
 				p.teleport(loc);
-		}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure(), new CooldownHolder(this, cd));
+		}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure();
 	}
 
 	@Override

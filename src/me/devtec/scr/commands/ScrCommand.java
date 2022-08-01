@@ -18,7 +18,9 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
+import me.devtec.scr.api.User;
 import me.devtec.scr.listeners.commands.PluginEnable;
+import me.devtec.scr.utils.Utils;
 import me.devtec.shared.commands.manager.PermissionChecker;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.commands.structures.CommandStructure.CooldownDetection;
@@ -54,7 +56,7 @@ public interface ScrCommand {
 	};
 	public static final CooldownDetection<CommandSender> COOLDOWN = (sender, structure, args) -> {
 		CooldownHolder holder = cooldownMap.get(structure.first());
-		if (!(sender instanceof Player) || sender.hasPermission("scr.bypass.commands") || sender.hasPermission(holder.cmd.permission("cd-bypass")))
+		if (!(sender instanceof Player) || sender.hasPermission("scr.bypass.commands") || holder.cmd.hasPermission(sender, "cd-bypass") )
 			return false;
 		long cd = holder.cooldownMap.getOrDefault(((Player) sender).getUniqueId(), 0L);
 		int expireIn = (int) (cd - System.currentTimeMillis() / 1000 + holder.cooldownTime);
@@ -62,7 +64,8 @@ public interface ScrCommand {
 			holder.cooldownMap.put(((Player) sender).getUniqueId(), System.currentTimeMillis() / 1000);
 			return false;
 		}
-		MessageUtils.message(sender, "cooldowns.commands", Placeholders.c().add("expire", StringUtils.timeToString(expireIn)));
+		MessageUtils.message(sender, "cooldowns.commands", Placeholders.c().add("time", StringUtils.timeToString(expireIn))
+				.add("expire", StringUtils.timeToString(expireIn)));
 		return true;
 	};
 
@@ -145,27 +148,46 @@ public interface ScrCommand {
 		}
 		String firstUp = Character.toUpperCase(configSection().charAt(0)) + configSection().substring(1);
 		Loader.plugin.getLogger().info("[" + firstUp + "] Registering command.");
-		init(Loader.commands.getInt(configSection() + ".cooldown"), cmds);
+		init(cmds);
+		//init(Loader.commands.getInt(configSection() + ".cooldown"), cmds);
 	}
 
 	// Permission
 	public default String permission(String path) {
+		if(path.equalsIgnoreCase("cd-bypass") && !Loader.commands.exists(configSection() + ".permission." + path))
+			return null;
 		if(Loader.commands.exists(configSection() + ".permission." + path))
 			return Loader.commands.getString(configSection() + ".permission." + path);
 		else {
-			Loader.plugin.getLogger().warning(MessageUtils.getPrefix()+" &4Missing permission in commands.yml: &e("+configSection()+".permission."+path+")");
-			return null;
+			Loader.plugin.getLogger().warning("[" + configSection() + "] Missing permission in commands.yml: ("+configSection()+".permission."+path+")");
+			return "scr.missingpermission."+configSection()+"."+path;
 		}
 	}
 	public default Boolean hasPermission(CommandSender s, String path) {
-		return API.getUser(s).isAutorized(permission(path));
+		return permission(path)!=null ? API.getUser(s).isAutorized(permission(path)) : false;
+	}
+	
+	
+	public default boolean inCooldown(CommandSender sender) {
+		User user = API.getUser(sender);
+		if(!Utils.cooldownExpired(user, configSection())) { //Cooldown check
+			//if cooldownExpired == true -> no cooldown
+			MessageUtils.message(user.player, "cooldowns.commands",
+			Placeholders.c().replace("time", StringUtils.timeToString( Utils.expires(user, configSection()) ) )
+				.replace("time_sec", Utils.expires(user, configSection()) ));
+			return true; //switching booleans, beacause there is isCommandInCooldown? true ==> is cooldown
+		}
+		return false;
 	}
 
-	public void init(int cd, List<String> cmds);
+	public void init(List<String> cmds);
+	//public void init(int cd,List<String> cmds);
+	 
 
 	public default void disabling() {
 	}
 
 	public String configSection();
+	
 
 }

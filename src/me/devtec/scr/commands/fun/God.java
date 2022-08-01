@@ -21,7 +21,7 @@ public class God implements ScrCommand {
 	boolean legacy = Ref.isOlderThan(10);
 	
 	@Override
-	public void init(int cd, List<String> cmds) {
+	public void init(List<String> cmds) {
 		if(legacy) { //We have to use listener
 			antiDamage = new ArrayList<>();
 	        Loader.plugin.getLogger().info("[God] Using AntiDamage listener");
@@ -42,7 +42,9 @@ public class God implements ScrCommand {
 			}else {
 				help(s, "admin_usage");
 			}
-		}).fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd"))
+		.fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
 			}).permission(permission("cmd"))
 			.argument("-s", (s, structure, args) -> { // cmd -s

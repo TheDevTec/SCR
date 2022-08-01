@@ -70,7 +70,7 @@ public class User implements ISuser {
 	//expires - cooldown time
 	@Override
 	public boolean cooldownExpired(String cooldownpath, String cooldowntime) {
-		if(isAutorized("SCR.Other.Cooldowns.IgnoresAll"))
+		if(isAutorized("scr.bypass.cooldowns"))
 			return true;
 		if(getUserConfig().getLong(cooldownpath) - System.currentTimeMillis()/1000+StringUtils.timeFromString(cooldowntime)<=0) {
 			return true;

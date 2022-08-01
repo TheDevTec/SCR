@@ -17,7 +17,7 @@ import me.devtec.shared.commands.structures.CommandStructure;
 public class Thor implements ScrCommand {
 
 	@Override
-	public void init(int cd, List<String> cmds) {
+	public void init(List<String> cmds) {
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			if(s instanceof Player) {
 				Player p = (Player)s;
@@ -28,7 +28,8 @@ public class Thor implements ScrCommand {
 			}else {
 				help(s, "usage");
 			}
-		}).fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
 		}).permission(permission("cmd"))
 			.argument("-s", (s, structure, args) -> { // cmd -s

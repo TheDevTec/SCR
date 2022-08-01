@@ -15,13 +15,14 @@ import me.devtec.shared.commands.structures.CommandStructure;
 public class Economy implements ScrCommand {
 	
 	@Override
-	public void init(int cd, List<String> cmds) {
+	public void init(List<String> cmds) {
 		if(Loader.economy == null)return;
 		// /economy [add/remove/set] [player] [amount]
 		
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			help(s, "usage");
-		}).permission(permission("cmd"))
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd"))
 		.fallback((s, structure, args) -> {
 			help(s, "usage");
 			})

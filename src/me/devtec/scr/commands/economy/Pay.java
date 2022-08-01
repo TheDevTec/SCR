@@ -16,12 +16,13 @@ public class Pay implements ScrCommand {
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public void init(int cd, List<String> cmds) {
+	public void init(List<String> cmds) {
 		if(Loader.economy == null)return;
 		// /pay [player] [amount]
 		CommandStructure.create(Player.class, PLAYER_PERMS_CHECKER, (s, structure, args) -> { // cmd
 			help(s, "usage");
-		}).permission(permission("cmd")).fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd")).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
 			})
 			.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]

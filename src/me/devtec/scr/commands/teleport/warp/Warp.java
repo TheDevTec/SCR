@@ -20,7 +20,7 @@ public class Warp implements ScrCommand {
 	public static Config storedWarps = new Config("plugins/SCR/warps.yml");
 
 	@Override
-	public void init(int cd, List<String> cmds) {
+	public void init(List<String> cmds) {
 		int count = 0;
 		for (String key : storedWarps.getKeys("warp")) {
 			++count;
@@ -29,7 +29,7 @@ public class Warp implements ScrCommand {
 		}
 		Loader.plugin.getLogger().info("[Warp] Registered " + count + " warp" + (count != 1 ? "s" : ""));
 
-		cooldownMap.put(CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
+		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			StringBuilder warpNames = new StringBuilder();
 			for (String warp : WarpManager.availableWarpNames(s)) {
 				if (warpNames.length() != 0)
@@ -37,7 +37,8 @@ public class Warp implements ScrCommand {
 				warpNames.append(warp);
 			}
 			msgSec(s, "list", Placeholders.c().add("warps", warpNames));
-		}).permission(permission("cmd")).fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd")).fallback((s, structure, args) -> {
 			msgSec(s, "notFound", Placeholders.c().add("warp", args[0]));
 		}).callableArgument((s, structure, args) -> WarpManager.availableWarpNames(s), (s, structure, args) -> { // cmd [warp]
 			if (!(s instanceof Player)) { // must be player
@@ -96,7 +97,7 @@ public class Warp implements ScrCommand {
 						}
 						p.teleport(warp.location().toLocation());
 					}
-				}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure(), new CooldownHolder(this, cd));
+				}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure();
 	}
 
 	@Override

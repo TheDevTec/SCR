@@ -15,7 +15,7 @@ import me.devtec.theapi.bukkit.gui.AnvilGUI;
 public class Anvil implements ScrCommand {
 
 	@Override
-	public void init(int cd, List<String> cmds) {
+	public void init(List<String> cmds) {
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // anvil [player]
 			if (!(s instanceof Player)) {
 				help(s, "usage");
@@ -23,7 +23,8 @@ public class Anvil implements ScrCommand {
 			}
 			new AnvilGUI("Anvil", (Player) s).setInsertable(true);
 			msgSec(s, "self");
-		}).permission(permission("cmd")).fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd")).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
 		}).argument("-s", (s, structure, args) -> {
 			if (!(s instanceof Player)) {
