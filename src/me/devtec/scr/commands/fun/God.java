@@ -44,7 +44,7 @@ public class God implements ScrCommand {
 			}
 		}).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
-			}).permission(permission(""))
+			}).permission(permission("cmd"))
 			.argument("-s", (s, structure, args) -> { // cmd -s
 				if(s instanceof Player) {
 					Player p = (Player)s;

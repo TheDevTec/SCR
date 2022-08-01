@@ -315,3 +315,16 @@ balancetop:
     usage: "/balancetop [page]"
   permission:
     cmd: "scr.command.balancetop"
+
+economy:
+  enabled: true
+  cmds:
+  - "economy"
+  - "eco"
+  help:
+    usage: "/economy [add/remove/set] [player] [amount]"
+    add: "/economy add [player] [amount]"
+    remove: "/economy remove [player] [amount]"
+    set: "/economy set [player] [amount]"
+  permission:
+    cmd: "scr.command.economy"

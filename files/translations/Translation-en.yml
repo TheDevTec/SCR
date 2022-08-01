@@ -158,3 +158,14 @@ balancetop:
   header: "&7=====» &eBalanceTop &e%page%/%pages% &7«====="
   format: "&e%position%. &7%playername% &7(&e%money%&7)"
   footer: ""
+
+economy:
+  set:
+    sender: "%prefix% Economy balance of &e%player% &7set to &e%money%"
+    target: "%prefix% Your economy balance has beed set to &e%money%"
+  add:
+    sender: "%prefix% You added &e%money% &7to account of player %target%"
+    target: "%prefix% &e%money% &7has been added to your account"
+  remove:
+    sender: "%prefix% Taken &e%money% &7from economy account of &e%target%"
+    target: "%prefix% Taken &e%money% &7from your account"

@@ -23,14 +23,14 @@ public class Thor implements ScrCommand {
 				Player p = (Player)s;
 				Location loc = getLookingBlock(p, 30).getLocation();
 				loc.getWorld().strikeLightningEffect(loc);
-				msgSec(s, "oc", Placeholders.c().replace("world", loc.getWorld()).replace("x", loc.getBlockX())
+				msgSec(s, "loc", Placeholders.c().replace("world", loc.getWorld()).replace("x", loc.getBlockX())
 						.replace("y", loc.getBlockY()).replace("z", loc.getBlockZ()) );
 			}else {
 				help(s, "usage");
 			}
 		}).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
-		}).permission("scr."+configSection())
+		}).permission(permission("cmd"))
 			.argument("-s", (s, structure, args) -> { // cmd -s
 				if(s instanceof Player) {
 					Player p = (Player)s;
@@ -46,7 +46,7 @@ public class Thor implements ScrCommand {
 					p.getWorld().strikeLightning(p.getLocation());
 					msgSec(s, "player", Placeholders.c().replace("target", p.getName()));
 				}
-			}).permission("scr."+configSection()+".player")
+			}).permission(permission("other"))
 				.argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
 					for(Player p : playerSelectors(s, args[0])) {
 						p.getWorld().strikeLightning(p.getLocation());
