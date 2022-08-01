@@ -254,9 +254,6 @@ god:
   - "god"
   - "invulnerable"
   help:
-    # This is for console & command block
-    '0': "/god [player] {true/false}"
-  help:
     usage: "/god {true/false}"
     admin_usage: "/god [player] {true/false}"
   permission:
@@ -269,6 +266,8 @@ thor:
   - "thor"
   - "strike"
   help:
-    # This is for console & command block
-    '0': "/thor [player]"
+    usage: "/thor [player]"
+  permission:
+    cmd: "scr.command.thor"
+    other: "scr.command.thor.other"
   

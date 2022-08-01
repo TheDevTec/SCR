@@ -46,8 +46,8 @@ god:
       target: "%prefix% God &cdisabled"
       
 thor:
-  loc: "%prefix% Striked position in the world {0} at {1}, {2}, {3}"
-  player: "%prefix% Striked {0}!"
+  loc: "%prefix% Striked position in the world %world% at %x%, %y%, %z%"
+  player: "%prefix% Striked &e%target%!"
 
 # Teleport
 warp:
