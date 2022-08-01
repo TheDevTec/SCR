@@ -14,6 +14,7 @@ import net.milkbowl.vault.economy.Economy;
 
 public class Pay implements ScrCommand {
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void init(int cd, List<String> cmds) {
 		if(Loader.economy == null)return;
@@ -31,12 +32,19 @@ public class Pay implements ScrCommand {
 				.argument(null, (s, structure, args) -> { // cmd [entity_selector] [any string]
 					double money = ScrEconomy.balanceFromString(args[1]);
 					String bal = ((Economy)Loader.economy).format(money);
-					for(Player p : playerSelectors(s, args[0])) {
-						pay(s, p, money);
-						
-						msgSec(s, "sender", Placeholders.c().replace("target", p.getName()).replace("money", bal));
-						msgSec(p, "target", Placeholders.c().replace("player", s.getName()).replace("money", bal));
+
+					Economy ec = (Economy)Loader.economy;
+					if(ec.has(s.getName(), money)) {
+					
+						for(Player p : playerSelectors(s, args[0])) {
+							pay(s, p, money);
+							
+							msgSec(s, "sender", Placeholders.c().replace("target", p.getName()).replace("money", bal));
+							msgSec(p, "target", Placeholders.c().replace("player", s.getName()).replace("money", bal));
+						}
 					}
+					else
+						msgSec(s, "notEnoughMoney", Placeholders.c().replace("money", bal));
 					})
 					.argument("-s", (s, structure, args) -> { // cmd [entity_selector] [any string] -s
 						double money = ScrEconomy.balanceFromString(args[1]);

@@ -152,6 +152,7 @@ balance:
 pay:
   sender: "%prefix% You paid &e%money% &7to &e%target%"
   target: "%prefix% &e%player% &7paid you &e%money%"
+  notEnoughMoney: "%prefix% You do not have enough money"
 
 balancetop:
   invalidPage: "%prefix% Page &e%page% &7is invalid"
