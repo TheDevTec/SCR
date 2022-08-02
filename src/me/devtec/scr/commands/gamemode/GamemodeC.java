@@ -14,7 +14,8 @@ public class GamemodeC implements ScrCommand{
 
 	@Override
 	public void init(List<String> cmds) {
-		
+		// /gmc {Player} {time}
+		// /gmc {time}
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			if(s instanceof Player) {
 				Player p = (Player)s;
