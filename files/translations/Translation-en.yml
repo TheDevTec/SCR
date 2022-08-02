@@ -181,3 +181,14 @@ economy:
   remove:
     sender: "%prefix% Taken &e%money% &7from economy account of &e%target%"
     target: "%prefix% Taken &e%money% &7from your account"
+
+# # # # # # # # # # # # #
+# # # # Gamemodes # # # #
+# # # # # # # # # # # # #
+
+gamemodes:
+  target:
+    survival: "%prefix% Your gamemode has been set to &eSurvival"
+    creative: "%prefix% Your gamemode has been set to &eCreative"
+    adventure: "%prefix% Your gamemode has been set to &eAdventure"
+    spectator: "%prefix% Your gamemode has been set to &eSpectator"
