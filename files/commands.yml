@@ -353,3 +353,65 @@ economy:
     set: "/economy set [player] [amount]"
   permission:
     cmd: "scr.command.economy"
+
+# # # # # # # # # # # # #
+# # # # Gamemodes # # # #
+# # # # # # # # # # # # #
+
+gamemode:
+  enabled: true
+  cmds:
+  - "gamemode"
+  help:
+    usage: "/gamemode [gamemode] {player}"
+  permission:
+    cmd: "scr.command.gamemode"
+    creative: "scr.command.gamemode.creative"
+    adventure: "scr.command.gamemode.adventure"
+    survival: "scr.command.gamemode.survival"
+    spectator: "scr.command.gamemode.spectator"
+    other: "scr.command.gamemode.other"
+
+gamemodeCreative:
+  enabled: true
+  cmds:
+  - "gamemodeCreative"
+  - "gmc"
+  help:
+    usage: "/gmc {player}"
+  permission:
+    cmd: "scr.command.gamemode.creative"
+    other: "scr.command.gamemode.other"
+
+gamemodeAdventure:
+  enabled: true
+  cmds:
+  - "gamemodeAdventure"
+  - "gma"
+  help:
+    usage: "/gma {player}"
+  permission:
+    cmd: "scr.command.gamemode.adventure"
+    other: "scr.command.gamemode.other"
+    
+gamemodeSurvival:
+  enabled: true
+  cmds:
+  - "gamemodeSurvival"
+  - "gms"
+  help:
+    usage: "/gms {player}"
+  permission:
+    cmd: "scr.command.gamemode.creative"
+    other: "scr.command.gamemode.other"
+    
+gamemodeSpectator:
+  enabled: true
+  cmds:
+  - "gamemodeSpectator"
+  - "gmsp"
+  help:
+    usage: "/gmsp {player}"
+  permission:
+    cmd: "scr.command.gamemode.spectator"
+    other: "scr.command.gamemode.other"
