@@ -37,4 +37,10 @@ public class API {
 	public static String getPlayerName(CommandSender player) {
 		return getUser(player).getName();
 	}
+	public static String getPlayerName(String player) {
+		return getUser(player).getName();
+	}
+	public static String getRealName(String player) {
+		return getUser(player).getRealName();
+	}
 }

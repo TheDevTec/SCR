@@ -22,6 +22,7 @@ public interface ISuser {
 
 	//NICKNAME
 	String getName();
+	String getRealName();
 	boolean haveNickname();
 	void resetNickname();
 	void setNickname(String nick);

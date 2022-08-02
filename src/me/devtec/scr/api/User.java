@@ -54,7 +54,7 @@ public class User implements ISuser {
 	
 	@Override
 	public boolean checkPerm(String permission) {
-		if(player.hasPermission(permission) || isConsole() || permission==null) //If permission==null -> missing perm in config probably
+		if(isConsole() || player.hasPermission(permission)  || permission==null) //If permission==null -> missing perm in config probably
 			return true;
 		else {
 			MessageUtils.noPerm(player, permission);
@@ -65,7 +65,7 @@ public class User implements ISuser {
 	
 	@Override
 	public boolean isAutorized(String permission) {
-		if(player.hasPermission(permission) || isConsole() || permission==null)
+		if(isConsole()|| player.hasPermission(permission) || permission==null)
 			return true;
 		else
 			return false;
@@ -111,6 +111,13 @@ public class User implements ISuser {
 	public String getName() {
 		if(haveNickname()) {
 			return getUserConfig().getString("nickname");
+		}
+		return this.name;
+	}
+	@Override
+	public String getRealName() {
+		if(haveNickname()) {
+			return Loader.data.getString("nicknames."+getName());
 		}
 		return this.name;
 	}

@@ -38,6 +38,7 @@ public class HomeManager {
 	}
 	
 	public static Set<String> homesOf(UUID owner) {
+		if(owner==null) return null;
 		return API.getUser(owner).getKeys("home");
 	}
 }

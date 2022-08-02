@@ -43,7 +43,10 @@ public class MessageUtils {
 			return this;
 		}
 		public Placeholders addPlayer(String placeholder, CommandSender player) {
-			player_set.put(placeholder, Bukkit.getPlayer(player.getName()));
+			if(player instanceof Player)
+				player_set.put(placeholder, Bukkit.getPlayer(player.getName()));
+			else
+				replace(placeholder, "CONSOLE");
 			return this;
 		}
 	}
@@ -81,7 +84,7 @@ public class MessageUtils {
 				}
 				
 			}
-			if(!placeholders.set.containsKey("player"))
+			if(sender instanceof Player && !placeholders.set.containsKey("player"))
 				string = string.replace("%player%", API.getPlayerName(sender));
 			for (Entry<String, String> placeholder : placeholders.set.entrySet())
 				string = string.replace("%"+placeholder.getKey() + "%", placeholder.getValue() + "");
