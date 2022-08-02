@@ -40,8 +40,8 @@ public class Economy implements ScrCommand {
 						String bal = ((net.milkbowl.vault.economy.Economy)Loader.economy).format(money);
 						for(Player p : playerSelectors(s, args[1])) {
 							((net.milkbowl.vault.economy.Economy)Loader.economy).depositPlayer(p, money);
-							msgSec(s, "add.sender", Placeholders.c().replace("money", bal).replace("target", p.getName()) );
-							msgSec(p, "add.target", Placeholders.c().replace("money", bal).replace("target", s.getName()) );
+							msgSec(s, "add.sender", Placeholders.c().replace("money", bal).addPlayer("target", p) );
+							msgSec(p, "add.target", Placeholders.c().replace("money", bal).addPlayer("player", s) );
 						}
 						})
 						.argument("-s", (s, structure, args) -> { // cmd add [entity_selector] [any string] -s
@@ -68,8 +68,8 @@ public class Economy implements ScrCommand {
 						String bal = ((net.milkbowl.vault.economy.Economy)Loader.economy).format(money);
 						for(Player p : playerSelectors(s, args[1])) {
 							((net.milkbowl.vault.economy.Economy)Loader.economy).withdrawPlayer(p, money);
-							msgSec(s, "remove.sender", Placeholders.c().replace("money", bal).replace("target", p.getName()) );
-							msgSec(p, "remove.target", Placeholders.c().replace("money", bal).replace("target", s.getName()) );
+							msgSec(s, "remove.sender", Placeholders.c().replace("money", bal).addPlayer("target", p) );
+							msgSec(p, "remove.target", Placeholders.c().replace("money", bal).addPlayer("player", s) );
 						}
 						})
 						.argument("-s", (s, structure, args) -> { // cmd remove [entity_selector] [any string] -s
@@ -97,8 +97,8 @@ public class Economy implements ScrCommand {
 						for(Player p : playerSelectors(s, args[1])) {
 							((net.milkbowl.vault.economy.Economy)Loader.economy).withdrawPlayer(p, ((net.milkbowl.vault.economy.Economy)Loader.economy).getBalance(p));
 							((net.milkbowl.vault.economy.Economy)Loader.economy).depositPlayer(p, money);
-							msgSec(s, "set.sender", Placeholders.c().replace("money", bal).replace("target", p.getName()));
-							msgSec(p, "set.target", Placeholders.c().replace("money", bal).replace("target", s.getName()));
+							msgSec(s, "set.sender", Placeholders.c().replace("money", bal).addPlayer("target", p) );
+							msgSec(p, "set.target", Placeholders.c().replace("money", bal).addPlayer("player", s) );
 						}
 						})
 						.argument("-s", (s, structure, args) -> { // cmd set [entity_selector] [any string] -s

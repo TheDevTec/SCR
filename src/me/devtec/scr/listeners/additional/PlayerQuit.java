@@ -23,12 +23,12 @@ public class PlayerQuit implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		event.setQuitMessage(null);
 		for (String command : config.getStringList("commands"))
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("{0}", event.getPlayer().getName()));
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", event.getPlayer().getName()));
 		new Tasker() {
 			@Override
 			public void run() {
-				MessageUtils.msgConfig(event.getPlayer(), config, "broadcast", Placeholders.c().add("player", event.getPlayer().getName()), BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
-				MessageUtils.msgConfig(event.getPlayer(), config, "messages", Placeholders.c().add("player", event.getPlayer().getName()), event.getPlayer());
+				MessageUtils.msgConfig(event.getPlayer(), config, "broadcast", Placeholders.c().addPlayer("player", event.getPlayer()), BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
+				MessageUtils.msgConfig(event.getPlayer(), config, "messages", Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
 			}
 		}.runTask();
 	}

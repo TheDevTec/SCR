@@ -34,4 +34,7 @@ public class API {
 	public static String getPlayerName(Player player) {
 		return getUser(player).getName();
 	}
+	public static String getPlayerName(CommandSender player) {
+		return getUser(player).getName();
+	}
 }

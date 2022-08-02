@@ -10,6 +10,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
+import me.devtec.scr.MessageUtils;
+import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.listeners.additional.TablistJoinQuit;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
@@ -48,7 +50,7 @@ public class Tablist {
 		global.nametag_prefix="";
 		global.nametag_suffix="";
 		global.sorting="0099{0}"; //Vanilla
-		global.tabname="{0}";
+		global.tabname="%player%";
 		global.yellowNumber=config.getString("yellowNumber.value");
 		global.yellowNumberDisplay=config.getString("yellowNumber.display");
 		
@@ -248,7 +250,22 @@ public class Tablist {
 		}
 
 		public void replace(Player player) {
+			Placeholders plac = Placeholders.c().addPlayer("player", player);
+			tabname=PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac), player.getUniqueId());
+
 			if(yellowNumberDisplay!=null)
+				yellowNumberDisplay=PlaceholderAPI.apply(MessageUtils.placeholder(player, yellowNumberDisplay, plac), player.getUniqueId());
+			tabname=PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac), player.getUniqueId());
+			header=PlaceholderAPI.apply(MessageUtils.placeholder(player, header, plac), player.getUniqueId());
+			footer=PlaceholderAPI.apply(MessageUtils.placeholder(player, footer, plac), player.getUniqueId());
+			nametag_prefix=PlaceholderAPI.apply(MessageUtils.placeholder(player, nametag_prefix, plac), player.getUniqueId());
+			nametag_suffix=PlaceholderAPI.apply(MessageUtils.placeholder(player, nametag_suffix, plac), player.getUniqueId());
+			if(sorting!=null)
+				sorting=PlaceholderAPI.apply(MessageUtils.placeholder(player, sorting, plac), player.getUniqueId());
+			if(yellowNumber!=null)
+				yellowNumber=PlaceholderAPI.apply(MessageUtils.placeholder(player, yellowNumber, plac), player.getUniqueId());
+			
+			/*if(yellowNumberDisplay!=null)
 				yellowNumberDisplay=PlaceholderAPI.apply(yellowNumberDisplay.replace("{0}", player.getName()), player.getUniqueId());
 			tabname=PlaceholderAPI.apply(tabname.replace("{0}", player.getName()), player.getUniqueId());
 			header=PlaceholderAPI.apply(header.replace("{0}", player.getName()), player.getUniqueId());
@@ -258,7 +275,7 @@ public class Tablist {
 			if(sorting!=null)
 				sorting=PlaceholderAPI.apply(sorting.replace("{0}", player.getName()), player.getUniqueId());
 			if(yellowNumber!=null)
-				yellowNumber=PlaceholderAPI.apply(yellowNumber.replace("{0}", player.getName()), player.getUniqueId());
+				yellowNumber=PlaceholderAPI.apply(yellowNumber.replace("{0}", player.getName()), player.getUniqueId());*/
 		}
 
 		public void colorize() {

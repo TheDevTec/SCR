@@ -35,8 +35,8 @@ public class CraftingTable implements ScrCommand {
 		}).parent().selector(Selector.PLAYER, (s, structure, args) -> {
 			Player p = Bukkit.getPlayer(args[0]);
 			p.openInventory(Bukkit.createInventory(p, InventoryType.WORKBENCH));
-			msgSec(s, "other.sender", Placeholders.c().add("target", p.getName()));
-			msgSec(p, "other.target", Placeholders.c().add("target", s.getName()));
+			msgSec(s, "other.sender", Placeholders.c().addPlayer("target", p));
+			msgSec(p, "other.target", Placeholders.c().addPlayer("player", s));
 		}).permission(permission("other")).argument("-s", (s, structure, args) -> {
 			Player p = Bukkit.getPlayer(args[0]);
 			p.openInventory(Bukkit.createInventory(p, InventoryType.WORKBENCH));

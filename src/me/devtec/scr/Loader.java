@@ -29,13 +29,14 @@ import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin {
 
-	private Config data = new Config();
+	private Config temp_data = new Config();
 
 	public static Loader plugin;
 
 	public static Config config;
 	public static Config commands;
 	public static Config translations;
+	public static Config data;
 
 	// VAULT plugin
 	public static Object economy;
@@ -140,6 +141,7 @@ public class Loader extends JavaPlugin {
 		joinListenerConfig = loadAndMerge("events/join-listener.yml", "events/join-listener.yml");
 		quitListenerConfig = loadAndMerge("events/quit-listener.yml", "events/quit-listener.yml");
 		tablistConfig = loadAndMerge("tablist.yml", "tablist.yml");
+		data = loadAndMerge("data.yml", "data.yml");
 		
 		loadAndMerge("translations/Translation-en.yml", "translations/Translation-en.yml");
 		loadAndMerge("translations/Translation-cz.yml", "translations/Translation-cz.yml");
@@ -150,15 +152,15 @@ public class Loader extends JavaPlugin {
 			type = "en";
 		translations = loadAndMerge("translations/Translation-"+type+".yml", "translations/Translation-"+type+".yml");
 		
-		data.clear();
-		data = null; // clear cache
+		temp_data.clear();
+		temp_data = null; // clear cache
 	}
 
 	private Config loadAndMerge(String sourcePath, String filePath) {
-		data.reload(StreamUtils.fromStream(getResource("files/" + sourcePath)));
+		temp_data.reload(StreamUtils.fromStream(getResource("files/" + sourcePath)));
 
 		Config result = new Config("plugins/SCR/" + filePath);
-		if (result.merge(data))
+		if (result.merge(temp_data))
 			result.save(DataType.YAML);
 		return result;
 	}

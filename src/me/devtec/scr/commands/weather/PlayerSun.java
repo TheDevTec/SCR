@@ -37,8 +37,8 @@ public class PlayerSun implements ScrCommand {
 				.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> {
 					for (Player player : playerSelectors(s, args[0])) {
 						apply(player);
-						msg(s, "weather.pSun.sender", Placeholders.c().add("target", player.getName()));
-						msg(s, "weather.pSun.target", Placeholders.c().add("player", s.getName()));
+						msg(s, "weather.pSun.sender", Placeholders.c().addPlayer("target", player));
+						msg(s, "weather.pSun.target", Placeholders.c().addPlayer("player", s));
 					}
 				}).permission(permission("other"))
 				// psun [target] -s

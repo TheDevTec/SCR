@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.utils.ISuser;
 import me.devtec.shared.dataholder.Config;
@@ -29,8 +30,8 @@ public class User implements ISuser {
 	public User(String player) {
 		//nicknames:
 		//  <nickname>: real_player_name
-		if(me.devtec.shared.API.getUser("SCR").exists("nicknames."+player))
-			name = me.devtec.shared.API.getUser("SCR").getString("nicknames."+player);
+		if(Loader.data.exists("nicknames."+player))
+			name = Loader.data.getString("nicknames."+player);
 		else
 			name = player;
 		if(player.equalsIgnoreCase("console"))
@@ -72,8 +73,8 @@ public class User implements ISuser {
 
 	@Override
 	public Config getUserConfig() {
-		if(API.getUser(name)!=null)
-			return me.devtec.shared.API.getUser(name);
+		if(me.devtec.shared.API.getUser(player.getName())!=null)
+			return me.devtec.shared.API.getUser(player.getName());
 		return null;
 	}
 	
@@ -123,21 +124,23 @@ public class User implements ISuser {
 	public void resetNickname() {
 		Config c = getUserConfig();
 		if(haveNickname()) {
+			Loader.data.remove("nicknames."+getName());
+			Loader.data.save();
 			c.remove("nickname");
 			c.save();
-			Config scr = me.devtec.shared.API.getUser("SCR");
-			scr.remove("nicknames."+getName());
-			scr.save();
 		}
 	}
 	@Override
 	public void setNickname(String nick) {
+		if(haveNickname()) { // reset from global config
+			resetNickname();
+		}
+		 // setting nickname
+		Loader.data.set("nicknames."+nick, player.getName());
+		Loader.data.save();
 		Config c = getUserConfig();
 		c.set("nickname", nick);
 		c.save();
-		Config scr = me.devtec.shared.API.getUser("SCR");
-		scr.set("nicknames."+nick, player.getName());
-		scr.save();
 	}
 	
 

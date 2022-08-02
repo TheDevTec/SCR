@@ -82,8 +82,8 @@ public class Warp implements ScrCommand {
 							return;
 						}
 						p.teleport(warp.location().toLocation());
-						msgSec(s, "other.sender", Placeholders.c().add("warp", warp.name()).add("target", p.getName()));
-						msgSec(p, "other.target", Placeholders.c().add("warp", warp.name()).add("target", s.getName()));
+						msgSec(s, "other.sender", Placeholders.c().add("warp", warp.name()).addPlayer("target", p));
+						msgSec(p, "other.target", Placeholders.c().add("warp", warp.name()).addPlayer("player", s));
 					}
 				}).permission(permission("other"))
 				.argument("-s", (s, structure, args) -> { // cmd [warp] [entity_selector] -s

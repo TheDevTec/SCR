@@ -98,8 +98,8 @@ public class God implements ScrCommand {
 					}
 					
 					String status = isInvulnerable(p) ? "enabled" : "disabled";
-					msgSec(s, "other."+status+".sender", Placeholders.c().replace("target", p.getName()));
-					msgSec(p, "other."+status+".target", Placeholders.c().replace("target", s.getName()));
+					msgSec(s, "other."+status+".sender", Placeholders.c().addPlayer("target", p));
+					msgSec(p, "other."+status+".target", Placeholders.c().addPlayer("player", s));
 				}
 			}).permission(permission("other"))
 			.fallback((s, structure, args) -> {
@@ -124,8 +124,8 @@ public class God implements ScrCommand {
 						}
 						
 						String status = Boolean.parseBoolean(args[1]) ? "enabled" : "disabled";
-						msgSec(s, "other."+status+".sender", Placeholders.c().replace("target", p.getName()));
-						msgSec(p, "other."+status+".target", Placeholders.c().replace("target", s.getName()));
+						msgSec(s, "other."+status+".sender", Placeholders.c().addPlayer("target", p));
+						msgSec(p, "other."+status+".target", Placeholders.c().addPlayer("player", s));
 					}
 					})
 					.argument("-s", (s, structure, args) -> { // cmd [entity_selector] [boolean] -s

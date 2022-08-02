@@ -40,8 +40,8 @@ public class Pay implements ScrCommand {
 						for(Player p : playerSelectors(s, args[0])) {
 							pay(s, p, money);
 							
-							msgSec(s, "sender", Placeholders.c().replace("target", p.getName()).replace("money", bal));
-							msgSec(p, "target", Placeholders.c().replace("player", s.getName()).replace("money", bal));
+							msgSec(s, "sender", Placeholders.c().addPlayer("target", p).replace("money", bal));
+							msgSec(p, "target", Placeholders.c().addPlayer("player", s).replace("money", bal));
 						}
 					}
 					else

@@ -49,6 +49,17 @@ thor:
   loc: "%prefix% Striked position in the world %world% at %x%, %y%, %z%"
   player: "%prefix% Striked &e%target%!"
 
+nickname:
+  change:
+    sender: "%prefix% You changed nickname of player &e%target% &7to &e%nickname%"
+    target: "%prefix% Your nickname changed to &e%nickname%"
+  reset:
+    sender: "%prefix% You reset &e%target%'s &7nickname"
+    target: "%prefix% Your nickname has been reset"
+  list:
+    header: "&7Player &8&l| &eNickname &8:"
+    format: "&7%name% &8» &e%nickname%"
+
 # Teleport
 warp:
   list: "%prefix% List of available warps: &e%warps%"

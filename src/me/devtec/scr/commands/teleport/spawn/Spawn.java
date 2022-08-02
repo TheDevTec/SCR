@@ -40,8 +40,8 @@ public class Spawn implements ScrCommand {
 			Location loc = spawn.toLocation();
 			for (Player p : playerSelectors(s, args[0])) {
 				p.teleport(loc);
-				msgSec(s, "other.sender", Placeholders.c().add("target", p.getName()));
-				msgSec(p, "other.target", Placeholders.c().add("target", s.getName()));
+				msgSec(s, "other.sender", Placeholders.c().addPlayer("target", p));
+				msgSec(p, "other.target", Placeholders.c().addPlayer("player", s));
 			}
 		}).permission(permission("other")).argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
 			Location loc = spawn.toLocation();

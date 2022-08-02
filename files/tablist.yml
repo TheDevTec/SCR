@@ -1,3 +1,7 @@
+# Player placeholders: 
+#    %player% - Real or Nickname
+#    %player_name% - Just Real name
+#    %player_displayname%, %player_customname%
 enabled: true
 
 # Settings of tablist
@@ -43,7 +47,7 @@ perGroup:
       prefix: "&7Default &f"
     #   suffix: ""
       
-    tabname: "&7Default &f{0}"
+    tabname: "&7Default &f%player%"
     
     # yellowNumber:
     #   value: "%ping%"
@@ -59,5 +63,5 @@ perWorld:
 # Per player settings
 perPlayer:
   StraikerinaCZ:
-    tabname: "&4DevTec &e{0}"
+    tabname: "&4DevTec &e%player%"
     

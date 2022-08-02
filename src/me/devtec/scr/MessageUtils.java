@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.devtec.scr.api.API;
 import me.devtec.shared.components.ComponentAPI;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.json.Json;
@@ -22,6 +23,7 @@ import me.devtec.theapi.bukkit.BukkitLoader;
 public class MessageUtils {
 	public static class Placeholders {
 		private final Map<String, String> set = new HashMap<>();
+		private final Map<String, Player> player_set = new HashMap<>();
 
 		public Placeholders add(String placeholder, Object replace) {
 			set.put(placeholder, replace + "");
@@ -35,6 +37,15 @@ public class MessageUtils {
 		public Placeholders replace(String placeholder, Object replace) {
 			return add(placeholder, replace);
 		}
+		
+		public Placeholders addPlayer(String placeholder, Player player) {
+			player_set.put(placeholder, player);
+			return this;
+		}
+		public Placeholders addPlayer(String placeholder, CommandSender player) {
+			player_set.put(placeholder, Bukkit.getPlayer(player.getName()));
+			return this;
+		}
 	}
 
 	public static String getPrefix() {
@@ -46,8 +57,32 @@ public class MessageUtils {
 		if (getPrefix() != null)
 			string = string.replace("%prefix%", getPrefix());
 		if (placeholders != null) {
+			if(!placeholders.player_set.isEmpty()) {
+				for (Entry<String, Player> players : placeholders.player_set.entrySet()) {
+					/* %playe%r, %target%, etc...
+					 * %player% - Real or Nickname
+					 * %player_name% - Just Real name
+					 * %player_displayname%
+					 * %player_customname%
+					 */
+					if(players.getKey().endsWith("_name")) {
+						string = string.replace("%"+players.getKey()+"%", players.getValue().getName());
+						continue;
+						}
+					if(players.getKey().endsWith("_displayname")) {
+						string = string.replace("%"+players.getKey()+"%", players.getValue().getDisplayName());
+					continue;
+					}
+					if(players.getKey().endsWith("_customname")) {
+						string = string.replace("%"+players.getKey()+"%", players.getValue().getCustomName());
+					continue;
+					}
+					string = string.replace("%"+players.getKey()+"%", API.getPlayerName(players.getValue()));
+				}
+				
+			}
 			if(!placeholders.set.containsKey("player"))
-				string = string.replace("%player%", sender.getName());
+				string = string.replace("%player%", API.getPlayerName(sender));
 			for (Entry<String, String> placeholder : placeholders.set.entrySet())
 				string = string.replace("%"+placeholder.getKey() + "%", placeholder.getValue() + "");
 		}

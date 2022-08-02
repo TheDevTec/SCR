@@ -45,7 +45,7 @@ public class Thor implements ScrCommand {
 			.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
 				for(Player p : playerSelectors(s, args[0])) {
 					p.getWorld().strikeLightning(p.getLocation());
-					msgSec(s, "player", Placeholders.c().replace("target", p.getName()));
+					msgSec(s, "player", Placeholders.c().addPlayer("target", p));
 				}
 			}).permission(permission("other"))
 				.argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s

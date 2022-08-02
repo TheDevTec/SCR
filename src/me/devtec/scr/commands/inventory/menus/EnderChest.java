@@ -34,8 +34,8 @@ public class EnderChest implements ScrCommand {
 		}).parent().selector(Selector.PLAYER, (s, structure, args) -> {
 			Player p = Bukkit.getPlayer(args[0]);
 			p.openInventory(p.getEnderChest());
-			msgSec(s, "other.sender", Placeholders.c().add("target", p.getName()));
-			msgSec(p, "other.target", Placeholders.c().add("target", s.getName()));
+			msgSec(s, "other.sender", Placeholders.c().addPlayer("target", p) );
+			msgSec(p, "other.target", Placeholders.c().addPlayer("player", s) );
 		}).permission(permission("other")).argument("-s", (s, structure, args) -> {
 			Player p = Bukkit.getPlayer(args[0]);
 			p.openInventory(p.getEnderChest());

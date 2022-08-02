@@ -283,6 +283,30 @@ thor:
     cmd: "scr.command.thor"
     other: "scr.command.thor.other"
 
+nickname:
+  enabled: true
+  cmds:
+  - "nick"
+  - "nickname"
+  help:
+    usage: "/nickname [nickname]"
+    admin_usage: "/nickname [nickname/list] [player]"
+  permission:
+    cmd: "scr.command.nickname"
+    other: "scr.command.nickname.other"
+    list: "scr.command.nickname.list"
+
+nicknamereset:
+  enabled: true
+  cmds:
+  - "nickreset"
+  - "nicknamereset"
+  help:
+    usage: "/nicknamereset [player]"
+  permission:
+    cmd: "scr.command.nickname"
+    other: "scr.command.nickname.other"
+    
 # # # # # # # # # # # #
 # # # # Economy # # # #
 # # # # # # # # # # # #
