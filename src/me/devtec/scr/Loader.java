@@ -62,8 +62,6 @@ public class Loader extends JavaPlugin {
 			if (economyConfig.getBoolean("useVaultEconomy")) {
 				vaultEconomyHooking();
 				economyConfig.clear();
-				// economyConfig = null; //musíme nějak (v jiných claskách) kontrolovat zda je v
-				// tom configu "useVaultEconomy" :D
 			} else {
 				getLogger().info("[Economy] Registering ScrEconomy and using as Vault economy.");
 				economy = new ScrEconomy(economyConfig);
@@ -76,10 +74,14 @@ public class Loader extends JavaPlugin {
 	public void onEnable() {
 		loadListeners();
 		loadCommands();
-		tablist = new Tablist();
-		tablist.loadTasks(tablistConfig);
-		scoreboard = new ScoreboardManager();
-		scoreboard.loadTasks(scoreboardConfig);
+		if (tablistConfig.getBoolean("enabled")) {
+			tablist = new Tablist();
+			tablist.loadTasks(tablistConfig);
+		}
+		if (scoreboardConfig.getBoolean("enabled")) {
+			scoreboard = new ScoreboardManager();
+			scoreboard.loadTasks(scoreboardConfig);
+		}
 	}
 
 	@Override
@@ -87,8 +89,10 @@ public class Loader extends JavaPlugin {
 		for (ScrCommand cmd : registered_commands)
 			cmd.disabling();
 		registered_commands.clear();
-		tablist.unloadTasks();
-		scoreboard.unloadTasks();
+		if (tablist != null)
+			tablist.unloadTasks();
+		if (scoreboard != null)
+			scoreboard.unloadTasks();
 	}
 
 	private void loadListeners() {
