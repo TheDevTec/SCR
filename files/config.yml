@@ -18,3 +18,81 @@ options:
 
 #commandCooldowns:
 #  jobs: "5"
+
+rrs:
+  # basetime - basic countdown
+  # waitTime - waiting time before reload, stop, ... (after kick, commands and messages) 
+  reload:
+    baseTime: 5
+    waitTime: 0
+    times:
+    - '3'
+    - '2'
+    - '1'
+    start:
+    - "&8****** &4Reload &8******"
+    - "&7Reloading of server in &e%time%"
+    - "&8****** &4Reload &8******"
+    running:
+    - "&8****** &4Reload &8******"
+    - "&7Reloading of server in &e%time%"
+    - "&8****** &4Reload &8******"
+    process:
+    - "&8****** &4Reload &8******"
+    - "&7Server is reloading..."
+    - "&8****** &4Reload &8******"
+    cancel:
+    - "&8****** &4Reload &8******"
+    - "&7Server reload cancelled"
+    - "&8****** &4Reload &8******"
+    commands: []
+  restart:
+    baseTime: 15
+    waitTime: 0
+    times:
+    - '3'
+    - '2'
+    - '1'
+    start:
+    - "&8****** &4Restart &8******"
+    - "&7Restarting of server in &e%time%"
+    - "&8****** &4Restart &8******"
+    running:
+    - "&8****** &4Restart &8******"
+    - "&7Restarting of server in &e%time%"
+    - "&8****** &4Restart &8******"
+    process:
+    - "&8****** &4Restart &8******"
+    - "&7Server is restarting..."
+    - "&8****** &4Restart &8******"
+    cancel:
+    - "&8****** &4Restart &8******"
+    - "&7Server restart cancelled"
+    - "&8****** &4Restart &8******"
+    commands: []
+    kick: "&cServer is restarting"
+  stop:
+    baseTime: 15
+    waitTime: 0
+    times:
+    - '3'
+    - '2'
+    - '1'
+    start:
+    - "&8****** &4Shutdown &8******"
+    - "&7Shutdown of server in &e%time%"
+    - "&8****** &4Shutdown &8******"
+    running:
+    - "&8****** &4Shutdown &8******"
+    - "&7Shutdown of server in &e%time%"
+    - "&8****** &4Shutdown &8******"
+    process:
+    - "&8****** &4Shutdown &8******"
+    - "&7Shutting down the server..."
+    - "&8****** &4Shutdown &8******"
+    cancel:
+    - "&8****** &4Shutdown &8******"
+    - "&7Server shutdown cancelled"
+    - "&8****** &4Shutdown &8******"
+    commands: []
+    kick: "&cServer shutdown"

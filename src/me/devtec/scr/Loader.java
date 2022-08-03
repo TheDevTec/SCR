@@ -16,10 +16,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.devtec.scr.api.ScrEconomy;
 import me.devtec.scr.commands.ScrCommand;
+import me.devtec.scr.functions.ScoreboardManager;
 import me.devtec.scr.functions.Tablist;
 import me.devtec.scr.listeners.additional.PlayerJoin;
 import me.devtec.scr.listeners.additional.PlayerQuit;
-import me.devtec.scr.listeners.additional.TablistJoinQuit;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.DataType;
@@ -49,7 +49,9 @@ public class Loader extends JavaPlugin {
 	private Config joinListenerConfig;
 	private Config quitListenerConfig;
 	private Config tablistConfig;
+	private Config scoreboardConfig;
 	public Tablist tablist;
+	public ScoreboardManager scoreboard;
 
 	@Override
 	public void onLoad() {
@@ -60,7 +62,8 @@ public class Loader extends JavaPlugin {
 			if (economyConfig.getBoolean("useVaultEconomy")) {
 				vaultEconomyHooking();
 				economyConfig.clear();
-				//economyConfig = null; //musíme nějak (v jiných claskách) kontrolovat zda je v tom configu "useVaultEconomy" :D
+				// economyConfig = null; //musíme nějak (v jiných claskách) kontrolovat zda je v
+				// tom configu "useVaultEconomy" :D
 			} else {
 				getLogger().info("[Economy] Registering ScrEconomy and using as Vault economy.");
 				economy = new ScrEconomy(economyConfig);
@@ -75,6 +78,8 @@ public class Loader extends JavaPlugin {
 		loadCommands();
 		tablist = new Tablist();
 		tablist.loadTasks(tablistConfig);
+		scoreboard = new ScoreboardManager();
+		scoreboard.loadTasks(scoreboardConfig);
 	}
 
 	@Override
@@ -83,6 +88,7 @@ public class Loader extends JavaPlugin {
 			cmd.disabling();
 		registered_commands.clear();
 		tablist.unloadTasks();
+		scoreboard.unloadTasks();
 	}
 
 	private void loadListeners() {
@@ -100,7 +106,6 @@ public class Loader extends JavaPlugin {
 			quitListenerConfig.clear();
 			quitListenerConfig = null;
 		}
-		registerListener(new TablistJoinQuit(this.tablist));
 	}
 
 	private void loadCommands() {
@@ -120,7 +125,7 @@ public class Loader extends JavaPlugin {
 				if (ScrCommand.class.isAssignableFrom(cls)) {
 					ScrCommand scrCmd = (ScrCommand) cls.newInstance();
 					++total;
-					if (commands.exists(scrCmd.configSection() + ".enabled") //TODO - Warn message that command is missing in commands.yml?
+					if (commands.exists(scrCmd.configSection() + ".enabled") // TODO - Warn message that command is missing in commands.yml?
 							&& commands.getBoolean(scrCmd.configSection() + ".enabled", true)) {
 						++count;
 						scrCmd.initFirst(commands.getStringList(scrCmd.configSection() + ".cmds"));
@@ -143,17 +148,18 @@ public class Loader extends JavaPlugin {
 		joinListenerConfig = loadAndMerge("events/join-listener.yml", "events/join-listener.yml");
 		quitListenerConfig = loadAndMerge("events/quit-listener.yml", "events/quit-listener.yml");
 		tablistConfig = loadAndMerge("tablist.yml", "tablist.yml");
+		scoreboardConfig = loadAndMerge("scoreboard.yml", "scoreboard.yml");
 		data = loadAndMerge("data.yml", "data.yml");
-		
+
 		loadAndMerge("translations/Translation-en.yml", "translations/Translation-en.yml");
 		loadAndMerge("translations/Translation-cz.yml", "translations/Translation-cz.yml");
 		String type = "en";
-		if(Loader.config.exists("Options.Language"))
+		if (Loader.config.exists("Options.Language"))
 			type = Loader.config.getString("Options.Language");
-		if(!new File("plugins/SCR/translations/Translation-"+type+".yml").exists())
+		if (!new File("plugins/SCR/translations/Translation-" + type + ".yml").exists())
 			type = "en";
-		translations = loadAndMerge("translations/Translation-"+type+".yml", "translations/Translation-"+type+".yml");
-		
+		translations = loadAndMerge("translations/Translation-" + type + ".yml", "translations/Translation-" + type + ".yml");
+
 		temp_data.clear();
 		temp_data = null; // clear cache
 	}

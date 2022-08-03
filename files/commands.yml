@@ -415,3 +415,29 @@ gamemodeSpectator:
   permission:
     cmd: "scr.command.gamemode.spectator"
     other: "scr.command.gamemode.other"
+
+# # # # # # # # # # # #
+# # Servermanagment # #
+# # # # # # # # # # # #
+
+reload:
+  enabled: true
+  cmds:
+  - "reload"
+  - "rl"
+  permission:
+    cmd: "scr.command.reload"
+
+restart:
+  enabled: true
+  cmds:
+  - "restart"
+  permission:
+    cmd: "scr.command.restart"
+
+stop:
+  enabled: true
+  cmds:
+  - "stop"
+  permission:
+    cmd: "scr.command.stop"

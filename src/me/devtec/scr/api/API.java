@@ -3,6 +3,7 @@ package me.devtec.scr.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -34,13 +35,20 @@ public class API {
 	public static String getPlayerName(Player player) {
 		return getUser(player).getName();
 	}
+
 	public static String getPlayerName(CommandSender player) {
 		return getUser(player).getName();
 	}
+
 	public static String getPlayerName(String player) {
 		return getUser(player).getName();
 	}
+
 	public static String getRealName(String player) {
 		return getUser(player).getRealName();
+	}
+
+	public static Player getPlayer(String name) {
+		return Bukkit.getPlayer(getUser(name).getRealName());
 	}
 }

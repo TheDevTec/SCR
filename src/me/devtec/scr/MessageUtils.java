@@ -37,14 +37,15 @@ public class MessageUtils {
 		public Placeholders replace(String placeholder, Object replace) {
 			return add(placeholder, replace);
 		}
-		
+
 		public Placeholders addPlayer(String placeholder, Player player) {
 			player_set.put(placeholder, player);
 			return this;
 		}
+
 		public Placeholders addPlayer(String placeholder, CommandSender player) {
-			if(player instanceof Player)
-				player_set.put(placeholder, Bukkit.getPlayer(player.getName()));
+			if (player instanceof Player)
+				player_set.put(placeholder, (Player) player);
 			else
 				replace(placeholder, "CONSOLE");
 			return this;
@@ -55,39 +56,41 @@ public class MessageUtils {
 		return Loader.config.getString("prefix");
 	}
 
+	public static List<String> placeholder(CommandSender sender, List<String> string, Placeholders placeholders) {
+		List<String> clone = new ArrayList<>(string);
+		clone.replaceAll(s -> placeholder(sender, s, placeholders));
+		return clone;
+	}
+
 	// Replacing placeholders in message
 	public static String placeholder(CommandSender sender, String string, Placeholders placeholders) {
 		if (getPrefix() != null)
 			string = string.replace("%prefix%", getPrefix());
 		if (placeholders != null) {
-			if(!placeholders.player_set.isEmpty()) {
+			if (!placeholders.player_set.isEmpty())
 				for (Entry<String, Player> players : placeholders.player_set.entrySet()) {
-					/* %playe%r, %target%, etc...
-					 * %player% - Real or Nickname
-					 * %player_name% - Just Real name
-					 * %player_displayname%
-					 * %player_customname%
+					/*
+					 * %playe%r, %target%, etc... %player% - Real or Nickname %player_name% - Just
+					 * Real name %player_displayname% %player_customname%
 					 */
-					if(players.getKey().endsWith("_name")) {
-						string = string.replace("%"+players.getKey()+"%", players.getValue().getName());
+					if (players.getKey().endsWith("_name")) {
+						string = string.replace("%" + players.getKey() + "%", players.getValue().getName());
 						continue;
-						}
-					if(players.getKey().endsWith("_displayname")) {
-						string = string.replace("%"+players.getKey()+"%", players.getValue().getDisplayName());
-					continue;
 					}
-					if(players.getKey().endsWith("_customname")) {
-						string = string.replace("%"+players.getKey()+"%", players.getValue().getCustomName());
-					continue;
+					if (players.getKey().endsWith("_displayname")) {
+						string = string.replace("%" + players.getKey() + "%", players.getValue().getDisplayName());
+						continue;
 					}
-					string = string.replace("%"+players.getKey()+"%", API.getPlayerName(players.getValue()));
+					if (players.getKey().endsWith("_customname")) {
+						string = string.replace("%" + players.getKey() + "%", players.getValue().getCustomName());
+						continue;
+					}
+					string = string.replace("%" + players.getKey() + "%", API.getPlayerName(players.getValue()));
 				}
-				
-			}
-			if(sender instanceof Player && !placeholders.set.containsKey("player"))
+			if (sender instanceof Player && !placeholders.set.containsKey("player"))
 				string = string.replace("%player%", API.getPlayerName(sender));
 			for (Entry<String, String> placeholder : placeholders.set.entrySet())
-				string = string.replace("%"+placeholder.getKey() + "%", placeholder.getValue() + "");
+				string = string.replace("%" + placeholder.getKey() + "%", placeholder.getValue() + "");
 		}
 		return string;
 	}
@@ -143,7 +146,7 @@ public class MessageUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void msgJson(CommandSender s, String original, Placeholders placeholders, CommandSender[] targets) {
+	private static void msgJson(CommandSender s, String original, Placeholders placeholders, CommandSender... targets) {
 		Object json = Json.reader().simpleRead(original);
 		List<Map<String, Object>> jsonList = new ArrayList<>();
 		if (json instanceof Collection) {
@@ -181,11 +184,6 @@ public class MessageUtils {
 				String text = entry.getValue() + "";
 
 				text = placeholder(s, text, placeholders);
-
-				/*
-				 * int pos = 0; for(Object placeholder : placeholders) { text =
-				 * text.replace("{"+(pos++)+"}", placeholder.toString()); }
-				 */
 				text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
 				entry.setValue(text);
 				continue;
@@ -210,11 +208,6 @@ public class MessageUtils {
 							String text = val + "";
 
 							text = placeholder(s, text, placeholders);
-
-							/*
-							 * int pos = 0; for(Object placeholder : placeholders) { text =
-							 * text.replace("{"+(pos++)+"}", placeholder.toString()); }
-							 */
 							text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
 							itr.set(text);
 						}
@@ -224,24 +217,15 @@ public class MessageUtils {
 				String text = entry.getValue() + "";
 
 				text = placeholder(s, text, placeholders);
-
-				/*
-				 * int pos = 0; for(Object placeholder : placeholders) { text =
-				 * text.replace("{"+(pos++)+"}", placeholder.toString()); }
-				 */
 				text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
 				entry.setValue(text);
 			}
 		}
 	}
 
-	private static void msg(CommandSender s, String original, Placeholders placeholders, CommandSender[] targets) {
+	private static void msg(CommandSender s, String original, Placeholders placeholders, CommandSender... targets) {
 		String text = original;
 		text = placeholder(s, text, placeholders);
-		/*
-		 * int pos = 0; for(Object placeholder : placeholders) { text =
-		 * text.replace("{"+(pos++)+"}", placeholder.toString()); }
-		 */
 		for (CommandSender target : targets)
 			target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null)));
 	}

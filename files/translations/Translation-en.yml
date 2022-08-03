@@ -192,3 +192,9 @@ gamemodes:
     creative: "%prefix% Your gamemode has been set to &eCreative"
     adventure: "%prefix% Your gamemode has been set to &eAdventure"
     spectator: "%prefix% Your gamemode has been set to &eSpectator"
+  sender:
+    survival: "%prefix% You set gamemode of player &e%target% to &eSurvival"
+    creative: "%prefix% You set gamemode of player &e%target% to &eCreative"
+    adventure: "%prefix% You set gamemode of player &e%target% to &eAdventure"
+    spectator: "%prefix% You set gamemode of player &e%target% to &eSpectator"
+  

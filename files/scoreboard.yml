@@ -1,0 +1,41 @@
+# Player placeholders: 
+#    %player% - Real or Nickname
+#    %player_name% - Just Real name
+#    %player_displayname%, %player_customname%
+enabled: true
+
+# Settings of tablist
+settings:
+  # Time is in ticks (20 = 1s)
+  reflesh: 10
+  
+  # Enable if you have to sync with server for placeholders
+  syncPlaceholders: false
+  
+# Global sb title
+title: "&cScoreboard menu"
+
+# Global footer
+lines:
+- "Money: %vault_balance%"
+- "Health: %player_health%"
+- "Name: %player%"
+
+# Per group settings
+perGroup:
+  exampleGroup:
+    title: ""
+    lines: []
+    
+# Per world settings
+perWorld:
+  exampleWorld:
+    title: ""
+    lines: []
+
+# Per player settings
+perPlayer:
+  examplePlayer:
+    title: ""
+    lines: []
+    
