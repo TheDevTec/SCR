@@ -19,6 +19,7 @@ import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.functions.Tablist;
 import me.devtec.scr.listeners.additional.PlayerJoin;
 import me.devtec.scr.listeners.additional.PlayerQuit;
+import me.devtec.scr.listeners.additional.TablistJoinQuit;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.DataType;
@@ -99,6 +100,7 @@ public class Loader extends JavaPlugin {
 			quitListenerConfig.clear();
 			quitListenerConfig = null;
 		}
+		registerListener(new TablistJoinQuit(this.tablist));
 	}
 
 	private void loadCommands() {
