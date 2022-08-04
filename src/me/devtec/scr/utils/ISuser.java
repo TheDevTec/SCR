@@ -26,4 +26,11 @@ public interface ISuser {
 	boolean haveNickname();
 	void resetNickname();
 	void setNickname(String nick);
+	
+	//IGNORE
+	boolean isIgnoring(String target);
+	public void addIgnore(String target);
+	public void removeIgnore(String target);
+	
+	
 }

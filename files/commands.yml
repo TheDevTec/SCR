@@ -441,3 +441,42 @@ stop:
   - "stop"
   permission:
     cmd: "scr.command.stop"
+
+
+# # # # # # # # # # # # # #
+# # # PrivateMessages # # #
+# # # # # # # # # # # # # #
+
+privateMessage:
+  enabled: true
+  cmds:
+  - "privatemessage"
+  - "pm"
+  - "message"
+  - "msg"
+  help:
+    usage: "/pm [player] {message}"
+  permission:
+    cmd: "scr.command.pm"
+
+reply:
+  enabled: true
+  cmds:
+  - "reply"
+  - "r"
+  help:
+    usage: "/reply {message}"
+  permission:
+    cmd: "scr.command.reply"
+
+socialSpy:
+  enabled: true
+  cmds:
+  - "socialspy"
+  help:
+    usage:
+    - "/socialspy {true/false}"
+    - "/socialspy [player] {true/false}"
+  permission:
+    cmd: "scr.command.socialspy"
+    other: "scr.command.socialspy.other"

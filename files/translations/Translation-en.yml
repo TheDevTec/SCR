@@ -197,4 +197,37 @@ gamemodes:
     creative: "%prefix% You set gamemode of player &e%target% to &eCreative"
     adventure: "%prefix% You set gamemode of player &e%target% to &eAdventure"
     spectator: "%prefix% You set gamemode of player &e%target% to &eSpectator"
+
+# # # # # # # # # # # # # #
+# # # PrivateMessages # # #
+# # # # # # # # # # # # # #
+
+ignore:
+  add: "%prefix% You are now ignoring messages in chat & pm from &e%target%"
+  remove: "%prefix% You are no longer ignoring messages from &e%target%"
   
+privateMessage:
+  formats:
+    sender: "&8(&7You -> &e%to%&8)&7: &e%message%"
+    target: "&8(&e%from% -> &7You&8)&7: &e%message%"
+    socialspy: "&a[&2SP | &6%player% &8>> &e%target%&a] &d%message%"
+  chatlock:
+    enabled: "%prefix% Chat is locked, type text to chat to reply to player &e%target%"
+    disabled: "%prefix% Chat is unlocked"
+  noreply: "%prefix% You have no one to send message"
+
+socialSpy:
+  self:
+    enabled: "%prefix% You have turned &aon &7your &esocial spy &7mode"
+    disabled: "%prefix% You have turned &coff &7your &esocial spy &7mode"
+  other:
+    sender:
+      enabled: "%prefix% You have turned &aon &esocial spy &7mode for player &e%target%"
+      disabled: "%prefix% You have turned &coff &esocial spy &7mode for player &e%target%"
+    target:
+      enabled: "%prefix% Your &esocial spy &7mode is now &aenabled"
+      disabled: "%prefix% Your &esocial spy &7mode is now &cdisabled"
+
+
+
+

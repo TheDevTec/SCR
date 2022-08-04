@@ -119,6 +119,9 @@ public class MessageUtils {
 	}
 
 	public static void msgConfig(CommandSender player, Config config, String path, Placeholders placeholders, CommandSender... targets) {
+		if(player==null)
+			return;
+		
 		Object text = config.get(path);
 
 		if (text == null) {

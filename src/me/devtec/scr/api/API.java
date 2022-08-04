@@ -7,6 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.devtec.theapi.bukkit.BukkitLoader;
+
 public class API {
 
 	// Getting users

@@ -150,5 +150,24 @@ public class User implements ISuser {
 		c.save();
 	}
 	
+	//IGNORE
+	@Override
+	public boolean isIgnoring(String target) {
+		if( !getUserConfig().exists("privateMessage.ignorelist."+target) ) return false;
+		return getUserConfig().getBoolean("privateMessage.ignorelist."+target);
+	}
+	@Override
+	public void addIgnore(String target) {
+		Config c = getUserConfig();
+		c.set("privateMessage.ignorelist."+target, true);
+		c.save();
+	}
+	@Override
+	public void removeIgnore(String target) {
+		Config c = getUserConfig();
+		c.remove("privateMessage.ignorelist."+target);
+		c.save();
+	}
 
+	//SOCIALSPY?
 }
