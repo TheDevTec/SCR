@@ -32,28 +32,38 @@ public class API {
 		return usercache.get(commandsender.getName());
 	}
 
+	public static void removeUser(String player) {
+		if (usercache.containsKey(player))
+			usercache.remove(player);
+	}
+
 	public static String getPlayerName(Player player) {
-		if(player == null) return null;
+		if (player == null)
+			return null;
 		return getUser(player).getName();
 	}
 
 	public static String getPlayerName(CommandSender player) {
-		if(player == null) return null;
+		if (player == null)
+			return null;
 		return getUser(player).getName();
 	}
 
 	public static String getPlayerName(String player) {
-		if(player == null) return null;
+		if (player == null)
+			return null;
 		return getUser(player).getName();
 	}
 
 	public static String getRealName(String player) {
-		if(player == null) return null;
+		if (player == null)
+			return null;
 		return getUser(player).getRealName();
 	}
 
 	public static Player getPlayer(String name) {
-		if(name == null) return null;
+		if (name == null)
+			return null;
 		return Bukkit.getPlayer(getUser(name).getRealName());
 	}
 }

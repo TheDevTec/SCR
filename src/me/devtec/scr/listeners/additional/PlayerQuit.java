@@ -33,5 +33,6 @@ public class PlayerQuit implements Listener {
 			}
 		}.runTask();
 		API.getUser(event.getPlayer()).leaveTime();
+		API.removeUser(event.getPlayer().getName());
 	}
 }

@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,25 +19,10 @@ import me.devtec.scr.api.User;
 import me.devtec.scr.listeners.commands.PluginEnable;
 import me.devtec.scr.utils.Utils;
 import me.devtec.shared.commands.manager.PermissionChecker;
-import me.devtec.shared.commands.structures.CommandStructure;
-import me.devtec.shared.commands.structures.CommandStructure.CooldownDetection;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public interface ScrCommand {
-
-	public class CooldownHolder {
-		public CooldownHolder(ScrCommand cmd, int cooldownTime) {
-			this.cmd = cmd;
-			this.cooldownTime = cooldownTime;
-		}
-
-		public ScrCommand cmd;
-		public Map<UUID, Long> cooldownMap = new ConcurrentHashMap<>();
-		public int cooldownTime;
-	}
-
-	public static final Map<CommandStructure<?>, CooldownHolder> cooldownMap = new ConcurrentHashMap<>();
 
 	public static final PermissionChecker<CommandSender> PERMS_CHECKER = (sender, perm, tablist) -> {
 		if (tablist)
@@ -51,19 +33,6 @@ public interface ScrCommand {
 		if (tablist)
 			return API.getUser(sender).isAutorized(perm);
 		return API.getUser(sender).checkPerm(perm); // also noperm message if needed
-	};
-	public static final CooldownDetection<CommandSender> COOLDOWN = (sender, structure, args) -> {
-		CooldownHolder holder = cooldownMap.get(structure.first());
-		if (!(sender instanceof Player) || sender.hasPermission("scr.bypass.commands") || holder.cmd.hasPermission(sender, "cd-bypass"))
-			return false;
-		long cd = holder.cooldownMap.getOrDefault(((Player) sender).getUniqueId(), 0L);
-		int expireIn = (int) (cd - System.currentTimeMillis() / 1000 + holder.cooldownTime);
-		if (expireIn <= 0) {
-			holder.cooldownMap.put(((Player) sender).getUniqueId(), System.currentTimeMillis() / 1000);
-			return false;
-		}
-		MessageUtils.message(sender, "cooldowns.commands", Placeholders.c().add("time", StringUtils.timeToString(expireIn)).add("expire", StringUtils.timeToString(expireIn)));
-		return true;
 	};
 
 	public default void msg(CommandSender sender, String path) {
@@ -165,8 +134,9 @@ public interface ScrCommand {
 	}
 
 	public default boolean inCooldown(CommandSender sender) {
-		if(!(sender instanceof Player)) return false;
-		User user = API.getUser(sender); 
+		if (!(sender instanceof Player))
+			return false;
+		User user = API.getUser(sender);
 		if (!Utils.cooldownExpired(user, configSection())) { // Cooldown check
 			// if cooldownExpired == true -> no cooldown
 			MessageUtils.message(user.player, "cooldowns.commands",
