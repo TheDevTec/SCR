@@ -131,7 +131,8 @@ public class ScoreboardManager {
 
 	private String getVaultGroup(Player player) {
 		if (Loader.vault != null)
-			return ((Permission) Loader.vault).getPrimaryGroup(player);
+			if (((Permission) Loader.vault).hasGroupSupport())
+				return ((Permission) Loader.vault).getPrimaryGroup(player);
 		return null;
 	}
 
