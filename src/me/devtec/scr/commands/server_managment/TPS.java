@@ -16,7 +16,7 @@ public class TPS implements ScrCommand {
 	public void init(List<String> cmds) {
 
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
-			msgSec(s, "", Placeholders.c()
+			msg(s, "tps", Placeholders.c()
 					.add("tps", ""+getServerTPS())
 					.add("tps_1", ""+getServerTPS(TPSType.ONE_MINUTE))
 					.add("tps_5", ""+getServerTPS(TPSType.FIVE_MINUTES))

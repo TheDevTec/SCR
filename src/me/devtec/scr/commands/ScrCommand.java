@@ -165,7 +165,8 @@ public interface ScrCommand {
 	}
 
 	public default boolean inCooldown(CommandSender sender) {
-		User user = API.getUser(sender);
+		if(!(sender instanceof Player)) return false;
+		User user = API.getUser(sender); 
 		if (!Utils.cooldownExpired(user, configSection())) { // Cooldown check
 			// if cooldownExpired == true -> no cooldown
 			MessageUtils.message(user.player, "cooldowns.commands",

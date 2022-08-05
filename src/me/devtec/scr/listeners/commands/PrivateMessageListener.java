@@ -17,13 +17,15 @@ public class PrivateMessageListener implements Listener {
 		if(event.isCancelled()) return;
 		Player player = event.getPlayer();
 		if(MessageManager.chatLock.containsKey(player.getName())) {
-			event.setCancelled(true);
 			MessageManager.message(player, null, event.getMessage());
+			event.setMessage(null);
+			event.setCancelled(true);
 			return;
 		}
 		if(MessageManager.acChatLock.contains(player.getName())) {
-			event.setCancelled(true);
 			MessageManager.sendhelpop(player, event.getMessage());
+			event.setMessage(null);
+			event.setCancelled(true);
 			return;
 		}
 	}

@@ -7,8 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.devtec.theapi.bukkit.BukkitLoader;
-
 public class API {
 
 	// Getting users
@@ -35,22 +33,27 @@ public class API {
 	}
 
 	public static String getPlayerName(Player player) {
+		if(player == null) return null;
 		return getUser(player).getName();
 	}
 
 	public static String getPlayerName(CommandSender player) {
+		if(player == null) return null;
 		return getUser(player).getName();
 	}
 
 	public static String getPlayerName(String player) {
+		if(player == null) return null;
 		return getUser(player).getName();
 	}
 
 	public static String getRealName(String player) {
+		if(player == null) return null;
 		return getUser(player).getRealName();
 	}
 
 	public static Player getPlayer(String name) {
+		if(name == null) return null;
 		return Bukkit.getPlayer(getUser(name).getRealName());
 	}
 }

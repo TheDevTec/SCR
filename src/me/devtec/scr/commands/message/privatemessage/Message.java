@@ -2,6 +2,7 @@ package me.devtec.scr.commands.message.privatemessage;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,8 +13,7 @@ import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.utility.StringUtils;
 
-public class Message implements ScrCommand{
-
+public class Message implements ScrCommand {
 
 	@Override
 	public void init(List<String> cmds) {
@@ -38,11 +38,20 @@ public class Message implements ScrCommand{
 			}).priority(1)
 				.argument(null, (s, structure, args) -> { // /pm [player] [message]
 					for(Player p : playerSelectors(s, args[0])) {
-						MessageManager.message(s, p, StringUtils.buildString(0, args));
+						MessageManager.message(s, p, StringUtils.buildString(1, args));
 					}
 					
 				})
 				.parent() // pm [player]
+			.parent()// cmd
+			.argument("CONSOLE", (s, structure, args) -> { // /pm [console]
+				MessageManager.message(s, Bukkit.getConsoleSender(), null);
+			}).priority(2)
+				.argument(null, (s, structure, args) -> { // /pm [console] [message]
+					MessageManager.message(s, Bukkit.getConsoleSender(), StringUtils.buildString(1, args));
+					
+				})
+				.parent() // pm [console]
 			.parent() // cmd
 			.argument(null, (s, structure, args) -> { // /pm [message] //if target is locked
 				if(MessageManager.chatLock.containsKey(s.getName()))
@@ -54,7 +63,7 @@ public class Message implements ScrCommand{
 
 	@Override
 	public String configSection() {
-		return "privatemessage";
+		return "privateMessage";
 	}
 
 }

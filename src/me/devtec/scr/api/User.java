@@ -183,7 +183,7 @@ public class User implements ISuser {
 		c.set("joinTime", System.currentTimeMillis()/1000);
 		c.save();
 	}
-	public enum SeenType{
+	public static enum SeenType{
 		ONLINE, OFFLINE;
 	}
 	@Override

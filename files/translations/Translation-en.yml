@@ -242,7 +242,7 @@ socialSpy:
       disabled: "%prefix% Your &esocial spy &7mode is now &cdisabled"
 
 helpop:
-  format: 
+  formats: 
     sender: "&0[&4&lHelpOp&0] &7%player% &7&l» &7%message%"
     reciever: "&0[&4&lHelpOp&0] &e%player% &7&l» &7%message%"
   chatlock:

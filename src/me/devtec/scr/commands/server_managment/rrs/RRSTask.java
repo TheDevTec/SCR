@@ -39,21 +39,22 @@ public class RRSTask { // Reload Restart Stop task
 		broadcastTimes = Loader.config.getIntegerList("rrs." + type.name().toLowerCase() + ".times");
 
 		List<CommandSender> list = new ArrayList<>(BukkitLoader.getOnlinePlayers());
-		list.add(Bukkit.getConsoleSender());
-
-		MessageUtils.msgConfig(null, "rrs." + currentTask.name().toLowerCase() + ".start", Loader.config, Placeholders.c().add("time", StringUtils.timeToString(RRSTask.time)),
+		//list.add(Bukkit.getConsoleSender()); // unused
+		
+		MessageUtils.msgConfig(Bukkit.getConsoleSender(), "rrs." + currentTask.name().toLowerCase() + ".start", Loader.config, Placeholders.c()
+				.add("time", StringUtils.timeToString(RRSTask.time)),
 				list.toArray(new CommandSender[0]));
 
 		task = new Tasker() {
 			@Override
 			public void run() {
 				if (broadcastTimes.contains(RRSTask.time--))
-					MessageUtils.msgConfig(null, "rrs." + currentTask.name().toLowerCase() + ".running", Loader.config, Placeholders.c().add("time", StringUtils.timeToString(RRSTask.time + 1)),
+					MessageUtils.msgConfig(Bukkit.getConsoleSender(), "rrs." + currentTask.name().toLowerCase() + ".running", Loader.config, Placeholders.c().add("time", StringUtils.timeToString(RRSTask.time + 1)),
 							list.toArray(new CommandSender[0]));
 			}
 		}.runRepeatingTimes(0, 20, time, () -> {
 
-			MessageUtils.msgConfig(null, "rrs." + currentTask.name().toLowerCase() + ".process", Loader.config, null, list.toArray(new CommandSender[0]));
+			MessageUtils.msgConfig(Bukkit.getConsoleSender(), "rrs." + currentTask.name().toLowerCase() + ".process", Loader.config, null, list.toArray(new CommandSender[0]));
 
 			BukkitLoader.getNmsProvider().postToMainThread(() -> {
 				switch (currentTask) {

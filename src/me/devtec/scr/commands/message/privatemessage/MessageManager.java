@@ -98,7 +98,7 @@ public class MessageManager {
 	 * message(sender, null, message) - reply
 	 * message(sender, target, message) - normal message (+adding target to reply)
 	 */
-	public static void message(CommandSender sender, Player target, String message) { //Main thing
+	public static void message(CommandSender sender, CommandSender target, String message) { //Main thing
 		if(sender !=null && target!=null && message==null) { //lock
 			chatLock(sender, target);
 			return;
@@ -108,17 +108,18 @@ public class MessageManager {
 		}
 		if(sender!=null && target!=null && message!=null) { //msg player message....
 			addTarget(sender, target);
+			addTarget(target, sender);
 			sendMessage(sender, target, message);
 		}
 		
 	}
-	private static void addTarget(CommandSender sender, Player target) { // reply, msg Player -> locking player to reply
-		if(target==null || replyList.containsKey(sender.getName()))
-			replyList.remove(sender.getName());
-		replyList.put(sender.getName(), target.getName());
+	private static void addTarget(CommandSender sender, CommandSender target) { // reply, msg Player -> locking player to reply
+		if(target==null || replyList.containsKey( ((sender instanceof Player)?sender.getName():"console") ) )
+			replyList.remove( ((sender instanceof Player)?sender.getName():"console") );
+		replyList.put( ((sender instanceof Player)?sender.getName():"console"),((target instanceof Player)?target.getName():"console") );
 	}
 	
-	public static void chatLock(CommandSender sender, Player target) { // locking chat to send message to player
+	public static void chatLock(CommandSender sender, CommandSender target) { // locking chat to send message to player
 		if(chatLock.containsKey(sender.getName()) || target == null) { // removing lock
 			chatLock.remove(sender.getName());
 			addTarget(sender, null); //removing
@@ -126,36 +127,66 @@ public class MessageManager {
 		} else { //adding lock
 			chatLock.put(sender.getName(), target.getName());
 			addTarget(sender, target);
-			MessageUtils.message(sender, "privateMessage.chatlock.enabled", null);
+			MessageUtils.message(sender, "privateMessage.chatlock.enabled", Placeholders.c().addPlayer("target", target));
 		}
 	}
 	
-	private static void sendMessage(CommandSender sender, Player target, String message) {
-		
+	private static void sendMessage(CommandSender sender, CommandSender target, String message) {
+		//if(target instanceof Player) {
 		MessageUtils.message(sender, "privateMessage.formats.sender", Placeholders.c().addPlayer("player", sender)
+				.addPlayer("from", sender).addPlayer("to", target)
 				.addPlayer("target", target).add("message", message) );
-		MessageUtils.message(sender, "privateMessage.formats.target", Placeholders.c().addPlayer("player", sender)
+		MessageUtils.message(target, "privateMessage.formats.target", Placeholders.c().addPlayer("player", sender)
+				.addPlayer("from", sender).addPlayer("to", target)
 				.addPlayer("target", target).add("message", message) );
+		//}
+		/*else { //COSNOLE
+			MessageUtils.message(sender, "privateMessage.formats.sender", Placeholders.c().addPlayer("player", sender)
+					.addPlayer("from", sender).add("to", "CONSOLE")
+					.add("target", "CONSOLE").add("message", message) );
+			MessageUtils.message(target, "privateMessage.formats.target", Placeholders.c().addPlayer("player", sender)
+					.addPlayer("from", sender).add("to", "CONSOLE")
+					.add("target", "CONSOLE").add("message", message) );
+		}*/
 		socialSpyMessage(sender, target, message);
 	}
 	
 	private static void reply(CommandSender sender, String message) {
-		Player target = API.getPlayer(replyList.get(sender.getName()));
+		String t = replyList.get( ((sender instanceof Player)?sender.getName():"console") );
+		CommandSender target;
+		
+		if(t.equalsIgnoreCase("console"))
+			target = Bukkit.getConsoleSender();
+		else
+			target = API.getPlayer(replyList.get( ((sender instanceof Player)?sender.getName():"console") ));
 		
 		if(target == null) { // offline
 			MessageUtils.message(sender, "privateMessage.noreply", Placeholders.c().add("target", target).add("message", message) );
 			return;
 		}
-		
+
+		//if(target instanceof Player) {
 		MessageUtils.message(sender, "privateMessage.formats.sender", Placeholders.c().addPlayer("player", sender)
+				.addPlayer("from", sender).addPlayer("to", target)
 				.addPlayer("target", target).add("message", message) );
-		MessageUtils.message(sender, "privateMessage.formats.target", Placeholders.c().addPlayer("player", sender)
+		MessageUtils.message(target, "privateMessage.formats.target", Placeholders.c().addPlayer("player", sender)
+				.addPlayer("from", sender).addPlayer("to", target)
 				.addPlayer("target", target).add("message", message) );
+		//}
+		/*else { //COSNOLE
+			MessageUtils.message(sender, "privateMessage.formats.sender", Placeholders.c().addPlayer("player", sender)
+					.addPlayer("from", sender).add("to", "CONSOLE")
+					.add("target", "CONSOLE").add("message", message) );
+			MessageUtils.message(target, "privateMessage.formats.target", Placeholders.c().addPlayer("player", sender)
+					.addPlayer("from", sender).add("to", "CONSOLE")
+					.add("target", "CONSOLE").add("message", message) );
+			
+		}*/
 		socialSpyMessage(sender, target, message);
 		
 	}
 	
-	private static void socialSpyMessage(CommandSender sender, Player target, String message) {
+	private static void socialSpyMessage(CommandSender sender, CommandSender target, String message) {
 		MessageUtils.message(Bukkit.getConsoleSender(), "privateMessage.formats.socialspy",
 			Placeholders.c().addPlayer("player", sender).addPlayer("target", target).add("message", message) );
 	
@@ -183,7 +214,7 @@ public class MessageManager {
 		}
 	}
 	public static void sendhelpop(CommandSender sender, String message) {
-		MessageUtils.message(Bukkit.getConsoleSender(), "helpop.formats",
+		MessageUtils.message(Bukkit.getConsoleSender(), "helpop.formats.reciever",
 				Placeholders.c().addPlayer("player", sender).add("message", message) );
 		
 		for(Player p : BukkitLoader.getOnlinePlayers()) {
