@@ -24,27 +24,24 @@ public class Day implements ScrCommand {
 			World world = ((Player) s).getWorld();
 			apply(world);
 			msg(s, "time.day", Placeholders.c().add("world", world.getName()));
-		}).cooldownDetection((s, structure, args) -> inCooldown(s))
-		.permission(permission("cmd"))
-		.fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).fallback((s, structure, args) -> {
 			help(s, "usage");
 		})
-			// day -s
-			.argument("-s", (s, structure, args) -> {
-				if (!(s instanceof Player)) {
-					help(s, "usage");
-					return;
-				}
-				World world = ((Player) s).getWorld();
-				apply(world);
-			})
-		.first() // da
-				// day [world]
-			.selector(Selector.WORLD, (s, structure, args) -> {
-				World world = Bukkit.getWorld(args[0]);
-				apply(world);
-				msg(s, "day.sun", Placeholders.c().add("world", world.getName()));
-			}).permission(permission("world"))
+				// day -s
+				.argument("-s", (s, structure, args) -> {
+					if (!(s instanceof Player)) {
+						help(s, "usage");
+						return;
+					}
+					World world = ((Player) s).getWorld();
+					apply(world);
+				}).first() // da
+							// day [world]
+				.selector(Selector.WORLD, (s, structure, args) -> {
+					World world = Bukkit.getWorld(args[0]);
+					apply(world);
+					msg(s, "time.day", Placeholders.c().add("world", world.getName()));
+				}).permission(permission("world"))
 				// day [world] -s
 				.argument("-s", (s, structure, args) -> {
 					World world = Bukkit.getWorld(args[0]);
@@ -54,9 +51,7 @@ public class Day implements ScrCommand {
 
 	public void apply(World world) {
 		/*
-		 * day - 1000
-		 * night - 13000
-		 * midnight - 18000
+		 * day - 1000 night - 13000 midnight - 18000
 		 */
 		world.setTime(1000);
 	}

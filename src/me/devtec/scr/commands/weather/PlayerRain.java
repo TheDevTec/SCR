@@ -38,7 +38,7 @@ public class PlayerRain implements ScrCommand {
 					for (Player player : playerSelectors(s, args[0])) {
 						apply(player);
 						msg(s, "weather.pRain.sender", Placeholders.c().addPlayer("target", player));
-						msg(s, "weather.pRain.target", Placeholders.c().addPlayer("player", s));
+						msg(player, "weather.pRain.target", Placeholders.c().addPlayer("player", s));
 					}
 				}).permission(permission("other"))
 				// psun [target] -s

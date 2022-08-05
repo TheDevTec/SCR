@@ -38,7 +38,7 @@ public class PlayerSun implements ScrCommand {
 					for (Player player : playerSelectors(s, args[0])) {
 						apply(player);
 						msg(s, "weather.pSun.sender", Placeholders.c().addPlayer("target", player));
-						msg(s, "weather.pSun.target", Placeholders.c().addPlayer("player", s));
+						msg(player, "weather.pSun.target", Placeholders.c().addPlayer("player", s));
 					}
 				}).permission(permission("other"))
 				// psun [target] -s
@@ -48,41 +48,6 @@ public class PlayerSun implements ScrCommand {
 				}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure();
 	}
 
-	/*@Override
-	public void init(int cd, List<String> cmds) {
-		cooldownMap.put(CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
-			if (!(s instanceof Player)) {
-				help(s, "usage");
-				return;
-			}
-			apply((Player) s);
-			msg(s, "weather.pSun.self");
-		}).cooldownDetection(COOLDOWN).permission(permission("cmd")).fallback((s, structure, args) -> {
-			help(s, "usage");
-		})
-				// psun -s
-				.argument("-s", (s, structure, args) -> {
-					if (!(s instanceof Player)) {
-						help(s, "usage");
-						return;
-					}
-					apply((Player) s);
-				}).first() // psun
-				// psun [target]
-				.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> {
-					for (Player player : playerSelectors(s, args[0])) {
-						apply(player);
-						msg(s, "weather.pSun.sender", Placeholders.c().add("target", player.getName()));
-						msg(s, "weather.pSun.target", Placeholders.c().add("player", s.getName()));
-					}
-				}).permission(permission("other"))
-				// psun [target] -s
-				.argument("-s", (s, structure, args) -> {
-					for (Player player : playerSelectors(s, args[0]))
-						apply(player);
-				}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure(), new CooldownHolder(this, cd));
-	}*/
-	
 	public void apply(Player player) {
 		player.setPlayerWeather(WeatherType.CLEAR);
 	}
