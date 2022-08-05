@@ -9,6 +9,9 @@ import me.devtec.scr.commands.message.privatemessage.MessageManager;
 
 public class PrivateMessageListener implements Listener {
 
+	/*
+	 * Locking /msg and /helpop
+	 */
 	@EventHandler
 	public void onMessage(AsyncPlayerChatEvent event) {
 		if(event.isCancelled()) return;
@@ -16,6 +19,11 @@ public class PrivateMessageListener implements Listener {
 		if(MessageManager.chatLock.containsKey(player.getName())) {
 			event.setCancelled(true);
 			MessageManager.message(player, null, event.getMessage());
+			return;
+		}
+		if(MessageManager.acChatLock.contains(player.getName())) {
+			event.setCancelled(true);
+			MessageManager.sendhelpop(player, event.getMessage());
 			return;
 		}
 	}

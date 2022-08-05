@@ -480,3 +480,15 @@ socialSpy:
   permission:
     cmd: "scr.command.socialspy"
     other: "scr.command.socialspy.other"
+
+helpop:
+  enabled: true
+  cmds:
+  - "helpop"
+  - "adminchat"
+  - "ac"
+  help:
+    usage: "/helpop [message]"
+  permission:
+    cmd: "scr.command.helpop"
+    see: "scr.command.helpop.see"

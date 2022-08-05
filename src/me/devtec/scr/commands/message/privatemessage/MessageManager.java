@@ -1,12 +1,15 @@
 package me.devtec.scr.commands.message.privatemessage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
@@ -163,6 +166,35 @@ public class MessageManager {
 				MessageUtils.message(p, "privateMessage.formats.socialspy",
 						Placeholders.c().addPlayer("player", sender).addPlayer("target", target).add("message", message) );
 			continue;
+		}
+	}
+	
+	// HELPOP PART:
+	
+	public static List<String> acChatLock = new ArrayList<>(); // sender
+	
+	public static void acChatLock(CommandSender sender) { // locking chat to send helpops
+		if(acChatLock.contains(sender.getName())) { // removing lock
+			acChatLock.remove(sender.getName());
+			MessageUtils.message(sender, "helpop.chatlock.disabled", null);
+		} else { //adding lock
+			acChatLock.add(sender.getName());
+			MessageUtils.message(sender, "helpop.chatlock.enabled", null);
+		}
+	}
+	public static void sendhelpop(CommandSender sender, String message) {
+		MessageUtils.message(Bukkit.getConsoleSender(), "helpop.formats",
+				Placeholders.c().addPlayer("player", sender).add("message", message) );
+		
+		for(Player p : BukkitLoader.getOnlinePlayers()) {
+			if(p.getName().equalsIgnoreCase(sender.getName())) {		
+				MessageUtils.message(p, "helpop.formats.sender",
+					Placeholders.c().addPlayer("player", sender).add("message", message) );
+				continue;
+			}
+			if(p.hasPermission(Loader.commands.getString("helpop.permission.see")))
+				MessageUtils.message(p, "helpop.formats.reciever",
+					Placeholders.c().addPlayer("player", sender).add("message", message) );
 		}
 	}
 }

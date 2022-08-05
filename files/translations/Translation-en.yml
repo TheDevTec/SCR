@@ -228,6 +228,12 @@ socialSpy:
       enabled: "%prefix% Your &esocial spy &7mode is now &aenabled"
       disabled: "%prefix% Your &esocial spy &7mode is now &cdisabled"
 
-
+helpop:
+  format: 
+    sender: "&0[&4&lHelpOp&0] &7%player% &7&l» &7%message%"
+    reciever: "&0[&4&lHelpOp&0] &e%player% &7&l» &7%message%"
+  chatlock:
+    enabled: "%prefix% Chat is locked, type text to chat to send messages into helpop"
+    disabled: "%prefix% Chat is unlocked"
 
 
