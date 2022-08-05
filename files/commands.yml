@@ -70,6 +70,43 @@ prain:
   permission:
     cmd: "scr.command.prain"
     other: "scr.command.prain.other"
+ 
+# # # # # # # # # # 
+# # # #  TIME # # #
+# # # # # # # # # # 
+
+# Set world's time to day
+day:
+  enabled: true
+  cmds:
+  - "day"
+  help:
+    usage: "/day [world]"
+  permission:
+    cmd: "scr.command.day"
+    world: "scr.command.day.world"
+
+# Set world's time to night
+night:
+  enabled: true
+  cmds:
+  - "night"
+  help:
+    usage: "/night [world]"
+  permission:
+    cmd: "scr.command.night"
+    world: "scr.command.night.world"
+
+# Set world's time to midnight
+midnight:
+  enabled: true
+  cmds:
+  - "midnight"
+  help:
+    usage: "/midnight [world]"
+  permission:
+    cmd: "scr.command.midnight"
+    world: "scr.command.midnight.world"
     
 # # # # # # # # # # #
 # # # # Warps # # # #

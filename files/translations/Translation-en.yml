@@ -26,6 +26,12 @@ weather:
     sender: "%prefix% You set &erainy &7weather for &e%target%"
     target: "%prefix% Player &e%player% &7set your weather to &erainy"
 
+# Translations for time commands
+time:
+  day: "%prefix% You set &eday &7in world &e%world%"
+  night: "%prefix% You set &enight &7in world &e%world%"
+  midnight: "%prefix% You set &emidnight &7in world &e%world%"
+  
 # Fun
 fly:
   enabled: "%prefix% Fly &aenabled"
