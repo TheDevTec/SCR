@@ -110,6 +110,15 @@ home:
     target: "%prefix% Teleporting to the home &e%home% &7of player &e%target%"
 
 # INVENTORY
+give:
+  self: "%prefix% You gave yourself %amount%x %item%"
+  self-nbt: "%prefix% You gave yourself %amount%x %item% with nbt %nbt%"
+  other:
+    sender: "%prefix% You gave %amount%x %item% to player %target%"
+    sender-nbt: "%prefix% You gave %amount%x %item% with nbt %nbt% to player %target%"
+    target: "%prefix% You got %amount%x %item%"
+    target-nbt: "%prefix% You got %amount%x %item% with nbt %nbt%"
+    
 anvil:
   self: "%prefix% Opening anvil"
   other:
