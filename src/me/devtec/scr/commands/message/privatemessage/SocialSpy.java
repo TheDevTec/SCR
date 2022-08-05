@@ -41,6 +41,7 @@ public class SocialSpy implements ScrCommand {
 					MessageManager.socialSpy(s, p, true);
 			}).permission(permission("other"))
 				.argument("-s", (s, structure, args) -> { // cmd [player] -s
+					
 					for(Player p : playerSelectors(s, args[0]))
 						MessageManager.socialSpy(s, p, false);
 				})
