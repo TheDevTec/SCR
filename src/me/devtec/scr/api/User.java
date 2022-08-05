@@ -101,6 +101,7 @@ public class User implements ISuser {
 		c.save();
 	}
 	
+	
 	@Override
 	public Economy getEconomy() {
 		return Bukkit.getServicesManager().getRegistration(Economy.class).getProvider();
@@ -173,7 +174,7 @@ public class User implements ISuser {
 	@Override
 	public void leaveTime() {
 		Config c = getUserConfig();
-		c.set("leaveTime", System.currentTimeMillis()/1000);
+		c.set("lastLeave", System.currentTimeMillis()/1000);
 		c.save();
 	}
 	@Override
@@ -182,15 +183,24 @@ public class User implements ISuser {
 		c.set("joinTime", System.currentTimeMillis()/1000);
 		c.save();
 	}
-	@Override
-	public long getLastOnline() {
-		// TODO Auto-generated method stub
-		return 0;
+	public enum SeenType{
+		ONLINE, OFFLINE;
 	}
 	@Override
-	public long getOnlineTime() {
-		// TODO Auto-generated method stub
-		return 0;
+	public long getSeen(SeenType type) {
+		Config s = getUserConfig();
+		long a = 0;
+		switch (type) {
+		case ONLINE:
+			if (s.exists("joinTime"))
+				a = System.currentTimeMillis() / 1000 - s.getLong("joinTime");
+			break;
+		case OFFLINE:
+			if (s.exists("lastLeave"))
+				a = System.currentTimeMillis() / 1000 - s.getLong("lastLeave");
+			break;
+		}
+		return a;
 	}
 
 }

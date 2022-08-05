@@ -1,5 +1,6 @@
 package me.devtec.scr.utils;
 
+import me.devtec.scr.api.User.SeenType;
 import me.devtec.shared.dataholder.Config;
 import net.milkbowl.vault.economy.Economy;
 
@@ -35,7 +36,6 @@ public interface ISuser {
 	//JOIN & LEAVE time
 	public void leaveTime();
 	public void joinTime();
-	public long getLastOnline();
-	public long getOnlineTime();
+	public long getSeen(SeenType type);
 	
 }
