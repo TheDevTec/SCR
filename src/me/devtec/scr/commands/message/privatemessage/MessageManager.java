@@ -144,13 +144,18 @@ public class MessageManager {
 		String t = replyList.get(sender instanceof Player ? sender.getName() : "console");
 		CommandSender target;
 
+		if (t == null) { // offline
+			MessageUtils.message(sender, "privateMessage.noreply", Placeholders.c().add("message", message));
+			return;
+		}
+
 		if (t.equalsIgnoreCase("console"))
 			target = Bukkit.getConsoleSender();
 		else
 			target = API.getPlayer(replyList.get(sender instanceof Player ? sender.getName() : "console"));
 
 		if (target == null) { // offline
-			MessageUtils.message(sender, "privateMessage.noreply", Placeholders.c().add("target", target).add("message", message));
+			MessageUtils.message(sender, "privateMessage.noreply", Placeholders.c().add("message", message));
 			return;
 		}
 
@@ -178,11 +183,10 @@ public class MessageManager {
 	private static void socialSpyMessage(CommandSender sender, CommandSender target, String message) {
 		MessageUtils.message(Bukkit.getConsoleSender(), "privateMessage.formats.socialspy", Placeholders.c().addPlayer("player", sender).addPlayer("target", target).add("message", message));
 
-		for (Player p : BukkitLoader.getOnlinePlayers()) {
+		for (Player p : BukkitLoader.getOnlinePlayers())
 			// privateMessage.ignorelist.
 			if (p != sender && p != target && me.devtec.shared.API.getUser(p.getName()).getBoolean("privateMessage.socialspy"))
 				MessageUtils.message(p, "privateMessage.formats.socialspy", Placeholders.c().addPlayer("player", sender).addPlayer("target", target).add("message", message));
-		}
 	}
 
 	// HELPOP PART:
