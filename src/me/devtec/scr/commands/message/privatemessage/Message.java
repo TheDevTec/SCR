@@ -39,12 +39,12 @@ public class Message implements ScrCommand {
 				.parent()// cmd
 				.argument("CONSOLE", (s, structure, args) -> { // /pm [console]
 					MessageManager.message(s, Bukkit.getConsoleSender(), null);
-				}).priority(2).argument(null, (s, structure, args) -> { // /pm [console] [message]
+				}).priority(2).argument(null, -1, (s, structure, args) -> { // /pm [console] [message]
 					MessageManager.message(s, Bukkit.getConsoleSender(), StringUtils.buildString(1, args));
 
 				}).parent() // pm [console]
 				.parent() // cmd
-				.argument(null, (s, structure, args) -> { // /pm [message] //if target is locked
+				.argument(null, -1, (s, structure, args) -> { // /pm [message] //if target is locked
 					if (MessageManager.chatLock.containsKey(s.getName()))
 						MessageManager.message(s, null, StringUtils.buildString(args));
 				})
