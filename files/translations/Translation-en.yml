@@ -1,6 +1,10 @@
 offlinePlayer: "%prefix% Player %player% isn't online"
 noPerms: "%prefix% &cYou don't have enought permissions (&4%permission%&c)"
 
+missing:
+  material: "%prefix% Material &e%material% &7doesn't exist"
+  number: "%prefix% Wrong number! Try again..."
+  
 # Translations for cooldowns
 # %time% - time formatted (10min5s)
 # %time_sec% - just number in seconds
