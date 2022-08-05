@@ -32,5 +32,10 @@ public interface ISuser {
 	public void addIgnore(String target);
 	public void removeIgnore(String target);
 	
+	//JOIN & LEAVE time
+	public void leaveTime();
+	public void joinTime();
+	public long getLastOnline();
+	public long getOnlineTime();
 	
 }

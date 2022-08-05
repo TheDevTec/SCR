@@ -169,5 +169,28 @@ public class User implements ISuser {
 		c.save();
 	}
 
-	//SOCIALSPY?
+	//JOIN & LEAVE time
+	@Override
+	public void leaveTime() {
+		Config c = getUserConfig();
+		c.set("leaveTime", System.currentTimeMillis()/1000);
+		c.save();
+	}
+	@Override
+	public void joinTime() {
+		Config c = getUserConfig();
+		c.set("joinTime", System.currentTimeMillis()/1000);
+		c.save();
+	}
+	@Override
+	public long getLastOnline() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public long getOnlineTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

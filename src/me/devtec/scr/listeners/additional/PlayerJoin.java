@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
+import me.devtec.scr.api.API;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.theapi.bukkit.BukkitLoader;
@@ -43,5 +44,6 @@ public class PlayerJoin implements Listener {
 				}
 			}.runTask();
 		}
+		API.getUser(event.getPlayer()).joinTime();
 	}
 }
