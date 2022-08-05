@@ -1,4 +1,4 @@
-package me.devtec.scr.commands.server_managment;
+package me.devtec.scr.commands.server_managment.rrs;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -452,6 +452,13 @@ stop:
   permission:
     cmd: "scr.command.stop"
 
+tps:
+  enabled: true
+  cmds:
+  - "tps"
+  permission:
+    cmd: "scr.command.tps"
+
 
 # # # # # # # # # # # # # #
 # # # PrivateMessages # # #

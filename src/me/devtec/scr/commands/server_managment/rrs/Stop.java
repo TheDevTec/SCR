@@ -1,4 +1,4 @@
-package me.devtec.scr.commands.server_managment;
+package me.devtec.scr.commands.server_managment.rrs;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import me.devtec.scr.Loader;
 import me.devtec.scr.commands.ScrCommand;
-import me.devtec.scr.commands.server_managment.RRSTask.TaskType;
+import me.devtec.scr.commands.server_managment.rrs.RRSTask.TaskType;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.utility.StringUtils;
 

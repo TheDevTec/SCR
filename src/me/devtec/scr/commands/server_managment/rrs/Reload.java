@@ -1,4 +1,4 @@
-package me.devtec.scr.commands.server_managment;
+package me.devtec.scr.commands.server_managment.rrs;
 
 import java.util.List;
 
@@ -6,22 +6,22 @@ import org.bukkit.command.CommandSender;
 
 import me.devtec.scr.Loader;
 import me.devtec.scr.commands.ScrCommand;
-import me.devtec.scr.commands.server_managment.RRSTask.TaskType;
+import me.devtec.scr.commands.server_managment.rrs.RRSTask.TaskType;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.utility.StringUtils;
 
-public class Restart implements ScrCommand {
+public class Reload implements ScrCommand {
 
 	@Override
 	public void init(List<String> cmds) {
 
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
-			RRSTask.startTask(TaskType.RESTART, Loader.config.getInt("rrs.restart.baseTime"));
+			RRSTask.startTask(TaskType.RELOAD, Loader.config.getInt("rrs.reload.baseTime"));
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // perm
 				.argument(null, (s, structure, args) -> { // cmd {time}
 					int time = (int) StringUtils.timeFromString(args[0]);
 					if (time > 0)
-						RRSTask.startTask(TaskType.RESTART, time);
+						RRSTask.startTask(TaskType.RELOAD, time);
 					else
 						RRSTask.cancelTask(true);
 				}).parent() // cmd
@@ -32,7 +32,7 @@ public class Restart implements ScrCommand {
 
 	@Override
 	public String configSection() {
-		return "restart";
+		return "reload";
 	}
 
 }

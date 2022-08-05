@@ -245,4 +245,9 @@ helpop:
     enabled: "%prefix% Chat is locked, type text to chat to send messages into helpop"
     disabled: "%prefix% Chat is unlocked"
 
-
+# Translations for TPS command
+tps:
+- "%prefix% Current TPS: &e%tps%"
+- "%prefix% TPS from 1min: &e%tps_1%"
+- "%prefix% TPS from 5min: &e%tps_5%"
+- "%prefix% TPS from 15min: &e%tps_15%"
