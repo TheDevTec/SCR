@@ -43,6 +43,7 @@ public class ScoreboardManager {
 		// OTHER SETTINGS
 		for (String world : config.getKeys("perWorld")) {
 			SbSettings global = new SbSettings();
+			global.copySettings(this.global);
 			global.title = config.getString("perWorld." + world + ".title");
 			global.lines = config.getStringList("perWorld." + world + ".lines");
 			perWorld.put(world, global);
@@ -51,6 +52,7 @@ public class ScoreboardManager {
 		if (Loader.vault != null)
 			for (String world : config.getKeys("perGroup")) {
 				SbSettings global = new SbSettings();
+				global.copySettings(this.global);
 				global.title = config.getString("perGroup." + world + ".title");
 				global.lines = config.getStringList("perGroup." + world + ".lines");
 				perGroup.put(world, global);
@@ -58,6 +60,7 @@ public class ScoreboardManager {
 
 		for (String world : config.getKeys("perPlayer")) {
 			SbSettings global = new SbSettings();
+			global.copySettings(this.global);
 			global.title = config.getString("perPlayer." + world + ".title");
 			global.lines = config.getStringList("perPlayer." + world + ".lines");
 			perPlayer.put(world, global);
