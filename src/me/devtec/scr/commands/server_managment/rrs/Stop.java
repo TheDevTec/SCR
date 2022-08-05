@@ -26,6 +26,9 @@ public class Stop implements ScrCommand {
 				}).parent() // cmd
 				.argument("cancel", (s, structure, args) -> {
 					RRSTask.cancelTask(true);
+				}).parent() // cmd
+				.argument("now", (s, structure, args) -> {
+					RRSTask.startTask(TaskType.STOP, 0);
 				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
