@@ -32,12 +32,11 @@ public class Message implements ScrCommand {
 				}).selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // /pm [player]
 					for (Player p : playerSelectors(s, args[0]))
 						MessageManager.message(s, p, null);
-				}).priority(1).argument(null, (s, structure, args) -> { // /pm [player] [message]
+				}).priority(1).argument(null, -1, (s, structure, args) -> { // /pm [player] [message]
 					for (Player p : playerSelectors(s, args[0]))
 						MessageManager.message(s, p, StringUtils.buildString(1, args));
 
-				}).parent() // pm [player]
-				.parent()// cmd
+				}).first() // cmd
 				.argument("CONSOLE", (s, structure, args) -> { // /pm [console]
 					MessageManager.message(s, Bukkit.getConsoleSender(), null);
 				}).priority(2).argument(null, -1, (s, structure, args) -> { // /pm [console] [message]
