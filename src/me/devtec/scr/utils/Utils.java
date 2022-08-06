@@ -10,6 +10,7 @@ public class Utils {
 
 	// COMMAND COOLDOWNS
 	public static boolean cooldownExpired(User user, String command) { // Check if cooldown on command expired
+		if(user == null) return true;
 		if (user.isAutorized("scr.bypass.cooldowns"))
 			return true;
 		// Permission cooldown: scr.bypass.cooldowns.<command>.<time>
@@ -43,6 +44,7 @@ public class Utils {
 	}
 
 	public static long expires(User user, String command) { // How long before it expires (return seconds)
+		if(user == null) return 0;
 		// Permission cooldown: SCR.Other.Cooldowns.<command>.<time>
 		String permcooldown = "0";
 		for (PermissionAttachmentInfo permission : user.player.getEffectivePermissions())

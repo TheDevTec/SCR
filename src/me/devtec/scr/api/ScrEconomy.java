@@ -45,18 +45,40 @@ public class ScrEconomy extends AbstractEconomy {
 
 	@Override
 	public String format(double balance) {
-		String format = config.getString("format").replace("{0}", currencyNamePlural());
-		if(format.contains("{1}"))format=format.replace("{1}", balance+"");
-		if(format.contains("{2}")) {
-			return format.replace("{2}", StringUtils.formatDouble(FormatType.BASIC, balance));
+		String format = config.getString("format").replace("{0}", currencyNamePlural())
+				.replace("%money_symbol%", currencyNamePlural());
+		if(format.contains("{1}") ||
+				format.contains("%money_raw%"))
+			format=format.replace("{1}", balance+"")
+				.replace("%money_raw%", balance+"");
+		if(format.contains("{2}") || format.contains("money_raw_formatted")) {
+			return format.replace("{2}", StringUtils.formatDouble(FormatType.BASIC, balance))
+					.replace("{2}", StringUtils.formatDouble(FormatType.BASIC, balance));
 		}
-		if(format.contains("{3}")) {
-			return format.replace("{3}", StringUtils.formatDouble(FormatType.NORMAL, balance));
+		if(format.contains("{3}") || format.contains("money_formatted1")) {
+			return format.replace("{3}", StringUtils.formatDouble(FormatType.NORMAL, balance))
+					.replace("{3}", StringUtils.formatDouble(FormatType.NORMAL, balance));
 		}
-		if(format.contains("{4}")) {
-			return format.replace("{4}", StringUtils.formatDouble(FormatType.COMPLEX, balance));
+		if(format.contains("{4}") || format.contains("money_formatted2")) {
+			return format.replace("{4}", StringUtils.formatDouble(FormatType.COMPLEX, balance))
+					.replace("{4}", StringUtils.formatDouble(FormatType.COMPLEX, balance));
 		}
 		return format;
+	}
+	
+	public static String publicFormat(double balance, String text) {
+		if(text.contains("%money_raw%"))
+			text=text.replace("%money_raw%", balance+"");
+		if(text.contains("%money_raw_formatted%")) {
+			text= text.replace("%money_raw_formatted%", StringUtils.formatDouble(FormatType.BASIC, balance));
+		}
+		if(text.contains("%money_formatted1%")) {
+			text= text.replace("%money_formatted1%", StringUtils.formatDouble(FormatType.NORMAL, balance));
+		}
+		if(text.contains("%money_formatted2%")) {
+			text= text.replace("%money_formatted2%", StringUtils.formatDouble(FormatType.COMPLEX, balance));
+		}
+		return text;
 	}
 
 	@Override

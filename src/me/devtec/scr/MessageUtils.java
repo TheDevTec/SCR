@@ -39,11 +39,13 @@ public class MessageUtils {
 		}
 
 		public Placeholders addPlayer(String placeholder, Player player) {
-			player_set.put(placeholder, player);
+			if(player != null && placeholder!=null)
+				player_set.put(placeholder, player);
 			return this;
 		}
 
 		public Placeholders addPlayer(String placeholder, CommandSender player) {
+			if(player == null || placeholder ==  null) return this;
 			if (player instanceof Player)
 				player_set.put(placeholder, (Player) player);
 			else

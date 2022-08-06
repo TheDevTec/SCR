@@ -1,5 +1,6 @@
 package me.devtec.scr.functions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.listeners.additional.SbJoinQuit;
+import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.placeholders.PlaceholderAPI;
 import me.devtec.shared.scheduler.Scheduler;
@@ -151,6 +153,14 @@ public class ScoreboardManager {
 		}
 
 		public void replace(Player player) {
+			title = PlaceholderAPISupport.replace(title, player, true);
+			List<String> new_lines = new ArrayList<>();
+			for(String text : lines)
+				new_lines.add( PlaceholderAPISupport.replace(text, player, true) );
+			lines = new_lines;
+		}
+		
+		public void replaceOLD(Player player) {
 			Placeholders plac = Placeholders.c().addPlayer("player", player);
 			title = PlaceholderAPI.apply(MessageUtils.placeholder(player, title, plac), player.getUniqueId());
 			lines = PlaceholderAPI.apply(MessageUtils.placeholder(player, lines, plac), player.getUniqueId());

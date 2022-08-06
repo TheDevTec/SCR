@@ -13,6 +13,7 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.listeners.additional.TablistJoinQuit;
+import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.placeholders.PlaceholderAPI;
@@ -254,6 +255,22 @@ public class Tablist {
 		}
 
 		public void replace(Player player) {
+			tabname = PlaceholderAPISupport.replace(tabname, player, true);
+
+			if (yellowNumberDisplay != null)
+				yellowNumberDisplay = PlaceholderAPISupport.replace(yellowNumberDisplay, player, true);
+			tabname = PlaceholderAPISupport.replace(tabname, player, true);
+			header = PlaceholderAPISupport.replace(header, player, true);
+			footer = PlaceholderAPISupport.replace(footer, player, true);
+			nametag_prefix = PlaceholderAPISupport.replace(nametag_prefix, player, true);
+			nametag_suffix = PlaceholderAPISupport.replace(nametag_suffix, player, true);
+			if (sorting != null)
+				sorting = PlaceholderAPISupport.replace(sorting, player, true);
+			if (yellowNumber != null)
+				yellowNumber = PlaceholderAPISupport.replace(yellowNumber, player, true);
+		}
+		
+		public void replaceOLD(Player player) {
 			Placeholders plac = Placeholders.c().addPlayer("player", player);
 			tabname = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac), player.getUniqueId());
 

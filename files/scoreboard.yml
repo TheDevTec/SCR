@@ -17,8 +17,8 @@ title: "&cScoreboard menu"
 
 # Global footer
 lines:
-- "Money: %vault_balance%"
-- "Health: %player_health%"
+- "Money: %money%"
+- "Health: %health%"
 - "Name: %player%"
 
 # Per group settings
