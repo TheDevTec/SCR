@@ -4,11 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.UUID;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
@@ -20,9 +22,11 @@ import me.devtec.scr.functions.ScoreboardManager;
 import me.devtec.scr.functions.Tablist;
 import me.devtec.scr.listeners.additional.PlayerJoin;
 import me.devtec.scr.listeners.additional.PlayerQuit;
+import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.DataType;
+import me.devtec.shared.placeholders.PlaceholderExpansion;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.utility.StreamUtils;
 import net.milkbowl.vault.economy.Economy;
@@ -70,6 +74,8 @@ public class Loader extends JavaPlugin {
 		}
 	}
 
+	private Object papi_theapi;
+	private me.clip.placeholderapi.expansion.PlaceholderExpansion papi;
 	@Override
 	public void onEnable() {
 		loadListeners();
@@ -82,6 +88,9 @@ public class Loader extends JavaPlugin {
 			scoreboard = new ScoreboardManager();
 			scoreboard.loadTasks(scoreboardConfig);
 		}
+
+		//LOAD PLACEHOLDERS
+		loadPlaceholders();
 	}
 
 	@Override
@@ -93,6 +102,8 @@ public class Loader extends JavaPlugin {
 			tablist.unloadTasks();
 		if (scoreboard != null)
 			scoreboard.unloadTasks();
+		((PlaceholderExpansion)papi_theapi).unregister();
+		papi.unregister();
 	}
 
 	private void loadListeners() {
@@ -226,6 +237,56 @@ public class Loader extends JavaPlugin {
 			return vault != null;
 		} catch (Exception e) {
 			return false;
+		}
+	}
+	private void loadPlaceholders() {
+		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI")!=null) {
+			// %theapi_scr_...%
+			papi_theapi = new PlaceholderExpansion("") {
+				@Override
+				public String apply(String params, UUID uuid) {
+					params='%'+params+'%';
+					params = params.replace("%scr_", "%"); // Just in case :D
+					String f;
+					if(Bukkit.getPlayer(uuid)!=null)
+						 f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(uuid), false);
+					else
+						 f = PlaceholderAPISupport.replace(params, null, false);
+					return params.equals(f)?null:f;
+				}
+
+			};
+			((PlaceholderExpansion)papi_theapi).register();
+			// %scr_...%
+			papi = new me.clip.placeholderapi.expansion.PlaceholderExpansion() {
+				
+				@Override
+				public String onRequest(OfflinePlayer player, String params) {
+					params='%'+params+'%';
+					String f;
+					if(Bukkit.getPlayer(player.getUniqueId() )!=null)
+						 f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(player.getUniqueId() ), false);
+					else
+						 f = PlaceholderAPISupport.replace(params, null, false);
+					return params.equals(f)?null:f;
+				}
+				
+				@Override
+				public String getVersion() {
+					return Loader.this.getDescription().getVersion();
+				}
+				
+				@Override
+				public String getIdentifier() {
+					return "scr";
+				}
+				
+				@Override
+				public String getAuthor() {
+					return "DevTec";
+				}
+			};
+			papi.register();
 		}
 	}
 }
