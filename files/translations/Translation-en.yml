@@ -261,3 +261,8 @@ tps:
 - "%prefix% TPS from 1min: &e%tps_1%"
 - "%prefix% TPS from 5min: &e%tps_5%"
 - "%prefix% TPS from 15min: &e%tps_15%"
+
+memory:
+- "%prefix% Free MEM: &e%ram_free% &7MB"
+- "%prefix% Used MEM: &e%ram_used% &7MB"
+- "%prefix% Max MEM: &e%ram_max% &7MB"

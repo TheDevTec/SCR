@@ -15,7 +15,6 @@ public class Memory implements ScrCommand {
 
 	@Override
 	public void init(List<String> cmds) {
-
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
 			if(Loader.config.getBoolean("options.ram-percentage"))
 				msg(s, "memory", Placeholders.c()

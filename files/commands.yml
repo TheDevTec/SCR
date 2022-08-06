@@ -496,6 +496,15 @@ tps:
   permission:
     cmd: "scr.command.tps"
 
+memory:
+  enabled: true
+  cmds:
+  - "memory"
+  - "mem"
+  - "ram"
+  permission:
+    cmd: "scr.command.memory"
+
 
 # # # # # # # # # # # # # #
 # # # PrivateMessages # # #
