@@ -35,7 +35,8 @@ public class Fly implements ScrCommand {
 				msgSec(s, "" + status);
 			} else
 				help(s, "admin_usage");
-		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).fallback((s, structure, args) -> { // /fly [player]
+		}).cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd")).fallback((s, structure, args) -> { // /fly [player]
 			offlinePlayer(s, args[0]);
 		}).argument("-s", (s, structure, args) -> { // cmd -s
 			if (s instanceof Player) {
