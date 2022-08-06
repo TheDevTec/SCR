@@ -28,8 +28,8 @@ public class PlayerQuit implements Listener {
 		new Tasker() {
 			@Override
 			public void run() {
-				MessageUtils.msgConfig(event.getPlayer(), config, "broadcast", Placeholders.c().addPlayer("player", event.getPlayer()), BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
-				MessageUtils.msgConfig(event.getPlayer(), config, "messages", Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
+				MessageUtils.msgConfig(event.getPlayer(), "broadcast", config, Placeholders.c().addPlayer("player", event.getPlayer()), BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
+				MessageUtils.msgConfig(event.getPlayer(), "messages", config, Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
 			}
 		}.runTask();
 		API.getUser(event.getPlayer()).leaveTime();

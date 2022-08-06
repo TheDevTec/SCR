@@ -29,9 +29,9 @@ public class PlayerJoin implements Listener {
 			new Tasker() {
 				@Override
 				public void run() {
-					MessageUtils.msgConfig(event.getPlayer(), config, "firstTime.broadcast", Placeholders.c().addPlayer("player", event.getPlayer()), BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
-					MessageUtils.msgConfig(event.getPlayer(), config, "firstTime.messages", Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
-				}
+					MessageUtils.msgConfig(event.getPlayer(), "firstTime.broadcast", config, Placeholders.c().addPlayer("player", event.getPlayer()), BukkitLoader.getOnlinePlayers().toArray(new Player[0]) );
+					MessageUtils.msgConfig(event.getPlayer(), "firstTime.messages", config, Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
+					}
 			}.runTask();
 		} else {
 			for (String command : config.getStringList("commands"))
@@ -39,8 +39,8 @@ public class PlayerJoin implements Listener {
 			new Tasker() {
 				@Override
 				public void run() {
-					MessageUtils.msgConfig(event.getPlayer(), config, "broadcast", Placeholders.c().addPlayer("player", event.getPlayer()), BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
-					MessageUtils.msgConfig(event.getPlayer(), config, "messages", Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
+					MessageUtils.msgConfig(event.getPlayer(), "broadcast", config, Placeholders.c().addPlayer("player", event.getPlayer()), BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
+					MessageUtils.msgConfig(event.getPlayer(), "messages", config, Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
 				}
 			}.runTask();
 		}
