@@ -2,6 +2,7 @@ package me.devtec.scr;
 
 import java.io.File;
 
+import me.devtec.scr.functions.AutoAnnoucments;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.DataType;
 import me.devtec.shared.utility.StreamUtils;
@@ -11,8 +12,10 @@ public class Configs {
 	
 	public static void reloadConfig(String config) {
 
-		if(config.equalsIgnoreCase("config"))
+		if(config.equalsIgnoreCase("config")) {
 			Loader.config = loadAndMerge("config.yml", "config.yml");
+			AutoAnnoucments.loadtask();
+		}
 		if(config.equalsIgnoreCase("commands"))
 			Loader.commands = loadAndMerge("commands.yml", "commands.yml");
 		
@@ -43,7 +46,9 @@ public class Configs {
 	}
 	
 	public static void loadConfigs() {
+		
 		Loader.config = loadAndMerge("config.yml", "config.yml");
+		AutoAnnoucments.loadtask(); // in config.yml
 		Loader.commands = loadAndMerge("commands.yml", "commands.yml");
 		Loader.economyConfig = loadAndMerge("economy.yml", "economy.yml");
 		Loader.joinListenerConfig = loadAndMerge("events/join-listener.yml", "events/join-listener.yml");

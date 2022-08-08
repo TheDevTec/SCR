@@ -1,6 +1,7 @@
 package me.devtec.scr.listeners.additional;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,7 +30,7 @@ public class PlayerJoin implements Listener {
 			new Tasker() {
 				@Override
 				public void run() {
-					MessageUtils.msgConfig(event.getPlayer(), "firstTime.broadcast", config, Placeholders.c().addPlayer("player", event.getPlayer()), BukkitLoader.getOnlinePlayers().toArray(new Player[0]) );
+					MessageUtils.msgConfig(event.getPlayer(), "firstTime.broadcast", config, Placeholders.c().addPlayer("player", event.getPlayer()), BukkitLoader.getOnlinePlayers().toArray(new CommandSender[0]) );
 					MessageUtils.msgConfig(event.getPlayer(), "firstTime.messages", config, Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
 					}
 			}.runTask();
@@ -39,7 +40,7 @@ public class PlayerJoin implements Listener {
 			new Tasker() {
 				@Override
 				public void run() {
-					MessageUtils.msgConfig(event.getPlayer(), "broadcast", config, Placeholders.c().addPlayer("player", event.getPlayer()), BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
+					MessageUtils.msgConfig(event.getPlayer(), "broadcast", config, Placeholders.c().addPlayer("player", event.getPlayer()), BukkitLoader.getOnlinePlayers().toArray(new Player[0]) );
 					MessageUtils.msgConfig(event.getPlayer(), "messages", config, Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
 				}
 			}.runTask();

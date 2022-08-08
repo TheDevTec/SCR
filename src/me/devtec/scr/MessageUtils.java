@@ -134,8 +134,26 @@ public class MessageUtils {
 	public static void msgConsole(String message) {
 		Bukkit.getConsoleSender().sendMessage(StringUtils.colorize(placeholder(null, message, null)));
 	}
-
-	private static void msgConfig(CommandSender player, Config config, String path, Placeholders placeholders, boolean split, CommandSender... targets) {
+	
+	public static void sendAnnoucment(String message, CommandSender... targets) {
+		boolean split = true;
+		if(targets==null)
+			return;
+		if(message.startsWith("[") && message.endsWith("]") ||
+				message.startsWith("{") && message.endsWith("}")) {
+			String trimmed = message.trim();
+			if (trimmed.equals("[]") || trimmed.equals("{}"))
+				return; // Do not send empty json
+			msgJson(Bukkit.getConsoleSender(), message, null, split, targets);
+			return;
+		}
+			
+		if (message.isEmpty())
+			return; // Do not send empty strings
+		msg(Bukkit.getConsoleSender(), message, null, split, targets);
+	}
+	
+	public static void msgConfig(CommandSender player, Config config, String path, Placeholders placeholders, boolean split, CommandSender... targets) {
 		if(player==null)
 			return;
 		
