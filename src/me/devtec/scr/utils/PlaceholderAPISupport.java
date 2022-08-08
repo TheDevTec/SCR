@@ -7,12 +7,12 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.ScrEconomy;
+import me.devtec.scr.commands.info.Ping;
 import me.devtec.scr.commands.server_managment.Memory;
 import me.devtec.scr.commands.server_managment.TPS;
 import me.devtec.scr.commands.server_managment.TPS.TPSType;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.shared.utility.StringUtils.FormatType;
-import me.devtec.theapi.bukkit.BukkitLoader;
 import net.milkbowl.vault.economy.Economy;
 
 public class PlaceholderAPISupport {
@@ -72,7 +72,7 @@ public class PlaceholderAPISupport {
 			 * %level%
 			 */
 			if(text.contains("%ping%"))
-				placeholders.replace("ping", pingPlayer(p));
+				placeholders.replace("ping", Ping.pingPlayer(p));
 
 			/*
 			 * %afk%
@@ -120,28 +120,5 @@ public class PlaceholderAPISupport {
 		}
 		return text;
 	}
-	private static String getColoredPing(Player p) {
-		int s = getPlayerPing(p);
-		if (s >= 500)
-			return StringUtils.colorize("&c" + s);
-		if (s >= 200)
-			return StringUtils.colorize("&e" + s);
-		if (s >= 0)
-			return StringUtils.colorize("&a" + s);
-		return StringUtils.colorize("&4" + s);
-	}
 
-	public static String pingPlayer(Player who) {
-		//if (tab.getBoolean("Colored-Ping")) //TODO - add?
-			return getColoredPing(who);
-		//return String.valueOf(getPlayerPing(who));
-	}
-	
-	public static int getPlayerPing(Player p) {
-		try {
-			return BukkitLoader.getNmsProvider().getPing(p);
-		} catch (Exception e) {
-			return -1;
-		} 
-	}
 }

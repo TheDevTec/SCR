@@ -565,3 +565,17 @@ helpop:
   permission:
     cmd: "scr.command.helpop"
     see: "scr.command.helpop.see"
+    
+# # # # # # # # # # # # # #
+# # # PrivateMessages # # #
+# # # # # # # # # # # # # #
+
+ping:
+  enabled: true
+  cmds:
+  - "ping"
+  help:
+    usage: "/ping [player]"
+  permission:
+    cmd: "scr.command.ping"
+    see: "scr.command.ping.other"

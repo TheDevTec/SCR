@@ -276,3 +276,7 @@ scr:
     reload_all: "%prefix% &aReloaded all configs"
     error: "%prefix% Something went wrong with config &e%config%. Try looking in the console."
     error_all: "%prefix% Something went wrong with config reload. Try looking in the console."
+
+ping:
+  self: "%prefix% You ping is &e%ping%"
+  other: "%prefix% Ping of player %target% is &e%ping%"

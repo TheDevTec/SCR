@@ -132,11 +132,11 @@ public class MessageUtils {
 	}
 	
 	// Other
-	public static void msgConsole(String message) {
-		Bukkit.getConsoleSender().sendMessage(StringUtils.colorize(placeholder(null, message, null)));
+	public static void msgConsole(String message, Placeholders placehholders) {
+		Bukkit.getConsoleSender().sendMessage(StringUtils.colorize(placeholder(null, message, placehholders)));
 	}
 	
-	public static void sendAnnoucment(String message, CommandSender... targets) {
+	public static void sendAnnoucment(String message, CommandSender... targets) { // AutoMessage annoucments
 		boolean split = true;
 		if(targets==null)
 			return;
