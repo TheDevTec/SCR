@@ -578,4 +578,4 @@ ping:
     usage: "/ping [player]"
   permission:
     cmd: "scr.command.ping"
-    see: "scr.command.ping.other"
+    other: "scr.command.ping.other"

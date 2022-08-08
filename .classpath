@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="D:/jars/mc/spigot-1.17.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Loader - Bukkit"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Shared"/>
+	<classpathentry kind="lib" path="D:/jars/depends/PlaceholderAPI-2.11.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

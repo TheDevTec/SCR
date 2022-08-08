@@ -25,10 +25,8 @@ import me.devtec.scr.listeners.additional.PlayerQuit;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
-import me.devtec.shared.dataholder.DataType;
 import me.devtec.shared.placeholders.PlaceholderExpansion;
 import me.devtec.shared.scheduler.Tasker;
-import me.devtec.shared.utility.StreamUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -74,6 +72,7 @@ public class Loader extends JavaPlugin {
 
 	private Object papi_theapi;
 	private me.clip.placeholderapi.expansion.PlaceholderExpansion papi;
+
 	@Override
 	public void onEnable() {
 		loadListeners();
@@ -87,7 +86,7 @@ public class Loader extends JavaPlugin {
 			scoreboard.loadTasks(scoreboardConfig);
 		}
 
-		//LOAD PLACEHOLDERS
+		// LOAD PLACEHOLDERS
 		loadPlaceholders();
 	}
 
@@ -100,7 +99,7 @@ public class Loader extends JavaPlugin {
 			tablist.unloadTasks();
 		if (scoreboard != null)
 			scoreboard.unloadTasks();
-		((PlaceholderExpansion)papi_theapi).unregister();
+		((PlaceholderExpansion) papi_theapi).unregister();
 		papi.unregister();
 	}
 
@@ -153,37 +152,35 @@ public class Loader extends JavaPlugin {
 		getLogger().info("Commands successfully loaded. (" + count + "/" + total + ")");
 	}
 
-	/*private void loadConfigs() { //MOVED TO Configs class
-		config = loadAndMerge("config.yml", "config.yml");
-		commands = loadAndMerge("commands.yml", "commands.yml");
-		economyConfig = loadAndMerge("economy.yml", "economy.yml");
-		joinListenerConfig = loadAndMerge("events/join-listener.yml", "events/join-listener.yml");
-		quitListenerConfig = loadAndMerge("events/quit-listener.yml", "events/quit-listener.yml");
-		tablistConfig = loadAndMerge("tablist.yml", "tablist.yml");
-		scoreboardConfig = loadAndMerge("scoreboard.yml", "scoreboard.yml");
-		data = loadAndMerge("data.yml", "data.yml");
-
-		loadAndMerge("translations/Translation-en.yml", "translations/Translation-en.yml");
-		loadAndMerge("translations/Translation-cz.yml", "translations/Translation-cz.yml");
-		String type = "en";
-		if (Loader.config.exists("Options.Language"))
-			type = Loader.config.getString("Options.Language");
-		if (!new File("plugins/SCR/translations/Translation-" + type + ".yml").exists())
-			type = "en";
-		translations = loadAndMerge("translations/Translation-" + type + ".yml", "translations/Translation-" + type + ".yml");
-
-		temp_data.clear();
-		temp_data = null; // clear cache
-	}
-
-	private Config loadAndMerge(String sourcePath, String filePath) {
-		temp_data.reload(StreamUtils.fromStream(getResource("files/" + sourcePath)));
-
-		Config result = new Config("plugins/SCR/" + filePath);
-		if (result.merge(temp_data))
-			result.save(DataType.YAML);
-		return result;
-	}*/
+	/*
+	 * private void loadConfigs() { //MOVED TO Configs class config =
+	 * loadAndMerge("config.yml", "config.yml"); commands =
+	 * loadAndMerge("commands.yml", "commands.yml"); economyConfig =
+	 * loadAndMerge("economy.yml", "economy.yml"); joinListenerConfig =
+	 * loadAndMerge("events/join-listener.yml", "events/join-listener.yml");
+	 * quitListenerConfig = loadAndMerge("events/quit-listener.yml",
+	 * "events/quit-listener.yml"); tablistConfig = loadAndMerge("tablist.yml",
+	 * "tablist.yml"); scoreboardConfig = loadAndMerge("scoreboard.yml",
+	 * "scoreboard.yml"); data = loadAndMerge("data.yml", "data.yml");
+	 * 
+	 * loadAndMerge("translations/Translation-en.yml",
+	 * "translations/Translation-en.yml");
+	 * loadAndMerge("translations/Translation-cz.yml",
+	 * "translations/Translation-cz.yml"); String type = "en"; if
+	 * (Loader.config.exists("Options.Language")) type =
+	 * Loader.config.getString("Options.Language"); if (!new
+	 * File("plugins/SCR/translations/Translation-" + type + ".yml").exists()) type
+	 * = "en"; translations = loadAndMerge("translations/Translation-" + type +
+	 * ".yml", "translations/Translation-" + type + ".yml");
+	 * 
+	 * temp_data.clear(); temp_data = null; // clear cache }
+	 * 
+	 * private Config loadAndMerge(String sourcePath, String filePath) {
+	 * temp_data.reload(StreamUtils.fromStream(getResource("files/" + sourcePath)));
+	 * 
+	 * Config result = new Config("plugins/SCR/" + filePath); if
+	 * (result.merge(temp_data)) result.save(DataType.YAML); return result; }
+	 */
 
 	public static void registerListener(Listener listener) {
 		Bukkit.getPluginManager().registerEvents(listener, plugin);
@@ -237,48 +234,49 @@ public class Loader extends JavaPlugin {
 			return false;
 		}
 	}
+
 	private void loadPlaceholders() {
-		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI")!=null) {
+		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 			// %theapi_scr_...%
 			papi_theapi = new PlaceholderExpansion("") {
 				@Override
 				public String apply(String params, UUID uuid) {
-					params='%'+params+'%';
+					params = '%' + params + '%';
 					params = params.replace("%scr_", "%"); // Just in case :D
 					String f;
-					if(Bukkit.getPlayer(uuid)!=null)
-						 f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(uuid), false);
+					if (Bukkit.getPlayer(uuid) != null)
+						f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(uuid), false);
 					else
-						 f = PlaceholderAPISupport.replace(params, null, false);
-					return params.equals(f)?null:f;
+						f = PlaceholderAPISupport.replace(params, null, false);
+					return params.equals(f) ? null : f;
 				}
 
 			};
-			((PlaceholderExpansion)papi_theapi).register();
+			((PlaceholderExpansion) papi_theapi).register();
 			// %scr_...%
 			papi = new me.clip.placeholderapi.expansion.PlaceholderExpansion() {
-				
+
 				@Override
 				public String onRequest(OfflinePlayer player, String params) {
-					params='%'+params+'%';
+					params = '%' + params + '%';
 					String f;
-					if(Bukkit.getPlayer(player.getUniqueId() )!=null)
-						 f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(player.getUniqueId() ), false);
+					if (Bukkit.getPlayer(player.getUniqueId()) != null)
+						f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(player.getUniqueId()), false);
 					else
-						 f = PlaceholderAPISupport.replace(params, null, false);
-					return params.equals(f)?null:f;
+						f = PlaceholderAPISupport.replace(params, null, false);
+					return params.equals(f) ? null : f;
 				}
-				
+
 				@Override
 				public String getVersion() {
 					return Loader.this.getDescription().getVersion();
 				}
-				
+
 				@Override
 				public String getIdentifier() {
 					return "scr";
 				}
-				
+
 				@Override
 				public String getAuthor() {
 					return "DevTec";

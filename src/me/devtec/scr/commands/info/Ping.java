@@ -18,24 +18,18 @@ public class Ping implements ScrCommand {
 	public void init(List<String> cmds) {
 
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
-			if(s instanceof Player)
-				msgSec(s, "self", Placeholders.c()
-					.add("ping", ""+pingPlayer( (Player)s )));
+			if (s instanceof Player)
+				msgSec(s, "self", Placeholders.c().add("ping", "" + pingPlayer((Player) s)));
 			else
 				help(s, "usage");
-		}).cooldownDetection((s, structure, args) -> inCooldown(s))
-		.permission(permission("cmd")) // ping
-		.fallback((s, structure, args) -> { // /ping [player]
-			offlinePlayer(s, args[0]);
-		})
-		.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // ping [player]
-			for(Player p : playerSelectors(s, args[0])) {
-				msgSec(s, "other", Placeholders.c()
-					.add("ping", ""+pingPlayer(p)).addPlayer("target", p) );
-			}
-		})
-		.permission(permission("other")) // ping [player]
-		.build().register(cmds.remove(0), cmds.toArray(new String[0]));
+		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // ping
+				.fallback((s, structure, args) -> { // /ping [player]
+					offlinePlayer(s, args[0]);
+				}).selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // ping [player]
+					for (Player p : playerSelectors(s, args[0]))
+						msgSec(s, "other", Placeholders.c().add("ping", "" + pingPlayer(p)).addPlayer("target", p));
+				}).permission(permission("other")) // ping [player]
+				.build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
 	@Override
@@ -55,17 +49,15 @@ public class Ping implements ScrCommand {
 	}
 
 	public static String pingPlayer(Player who) {
-		//if (tab.getBoolean("Colored-Ping")) //TODO - add?
-			return getColoredPing(who);
-		//return String.valueOf(getPlayerPing(who));
+		return getColoredPing(who);
 	}
-	
+
 	private static int getPlayerPing(Player p) {
 		try {
 			return BukkitLoader.getNmsProvider().getPing(p);
 		} catch (Exception e) {
 			return -1;
-		} 
+		}
 	}
-	
+
 }
