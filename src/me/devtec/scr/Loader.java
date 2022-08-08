@@ -34,7 +34,6 @@ import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin {
 
-
 	public static Loader plugin;
 
 	public static Config config;

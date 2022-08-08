@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.api.API;
+import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.components.ComponentAPI;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.json.Json;
@@ -246,7 +247,8 @@ public class MessageUtils {
 							String text = val + "";
 
 							text = placeholder(s, text, placeholders);
-							text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
+							text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true) );
+							//text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
 							itr.set(text);
 						}
 					}
@@ -255,7 +257,8 @@ public class MessageUtils {
 				String text = entry.getValue() + "";
 
 				text = placeholder(s, text, placeholders);
-				text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
+				text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true) );
+				//text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
 				entry.setValue(text);
 			}
 		}
@@ -274,14 +277,16 @@ public class MessageUtils {
 					lastcolor = lastcolor.replace("&x", "#");
 				}
 				for (CommandSender target : targets)
-					target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply((lastcolor==null?line:lastcolor+""+line), s instanceof Player ? ((Player) s).getUniqueId() : null)));
+					target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace((lastcolor==null?line:lastcolor+""+line), target, true)));
+					//target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply((lastcolor==null?line:lastcolor+""+line), s instanceof Player ? ((Player) s).getUniqueId() : null)));
 	
 				lastcolor = StringUtils.getLastColors(StringUtils.colorize(line));
 			}
 		}
 		else {
 			for (CommandSender target : targets)
-				target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null)));
+				target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(text, target, true)));
+				//target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null)));
 		}
 	}
 

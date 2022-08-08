@@ -20,23 +20,23 @@ public class SCR_Command  implements ScrCommand {
 		}).cooldownDetection((s, structure, args) -> inCooldown(s))
 		.permission(permission("cmd")) // perm
 		.argument("reload", (s, structure, args) -> { // cmd reload - reload all configs
-			msg(s, "reload.reloading", null);
+			msgSec(s, "reload.reloading", null);
 			try {
 				Configs.loadConfigs();
-				msg(s, "reload.reload_all", null);
+				msgSec(s, "reload.reload_all", null);
 			} catch (Exception e) {
-				msg(s, "reload.error_all", null);
+				msgSec(s, "reload.error_all", null);
 				Loader.plugin.getLogger().warning(e.getMessage());
 			}
 		})
 			.argument("config", (s, structure, args) -> { // cmd reload [config]
 				String c = args[1];
-				msg(s, "reload.reloading", null);
+				msgSec(s, "reload.reloading", null);
 				try {
 					Configs.reloadConfig(c);
-					msg(s, "reload.reload", Placeholders.c().add("config", c+".yml"));
+					msgSec(s, "reload.reload", Placeholders.c().add("config", c+".yml"));
 				} catch (Exception e) {
-					msg(s, "reload.error", Placeholders.c().add("config", c+".yml"));
+					msgSec(s, "reload.error", Placeholders.c().add("config", c+".yml"));
 					Loader.plugin.getLogger().warning(e.getMessage());
 				}
 				Configs.reloadConfig(c);

@@ -71,6 +71,8 @@ public class Configs {
 	}
 
 	private static Config loadAndMerge(String sourcePath, String filePath) {
+		if(temp_data==null)
+			temp_data = new Config();
 		temp_data.reload(StreamUtils.fromStream(Loader.plugin.getResource("files/" + sourcePath)));
 
 		Config result = new Config("plugins/SCR/" + filePath);

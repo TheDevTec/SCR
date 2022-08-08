@@ -35,9 +35,9 @@ public class AutoAnnoucments {
 				if(Bukkit.getOnlinePlayers().size()>=Loader.config.getInt("autoAnnoucments.minimalPlayers")) {
 					if(Loader.config.getBoolean("autoAnnoucments.random"))
 						line = new Random().nextInt(list.size());
-					else
-						line = (list.size()>=(line+1) ? (line+1) : 0);
+					
 					MessageUtils.sendAnnoucment(list.get(line), BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
+					line = (list.size()-1>=(line+1) ? (line+1) : 0);
 				}
 				
 			}

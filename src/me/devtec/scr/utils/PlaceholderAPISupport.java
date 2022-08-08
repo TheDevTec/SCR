@@ -1,8 +1,8 @@
 package me.devtec.scr.utils;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
@@ -18,10 +18,11 @@ import net.milkbowl.vault.economy.Economy;
 public class PlaceholderAPISupport {
 
 	@SuppressWarnings({ "static-access" })
-	public static String replace(String text, Player p, boolean placeholderAPI) {
+	public static String replace(String text, CommandSender s, boolean placeholderAPI) {
 		Placeholders placeholders = new Placeholders().c();
 		
-		if(p!=null) {
+		if(s!=null && s instanceof Player) {
+			Player p = (Player) s;
 			placeholders.addPlayer("player", p);
 			/* %money_symbol% - money symbol
 			 * %money% - vault format (probably with currency symbol?)
@@ -112,7 +113,8 @@ public class PlaceholderAPISupport {
 			if(text.contains("%tps_15%"))
 				placeholders.add("tps_15", TPS.getServerTPS(TPSType.FIFTEEN_MINUTES));
 			if(placeholderAPI)
-				text = me.devtec.shared.placeholders.PlaceholderAPI.apply(MessageUtils.placeholder(p, text, placeholders), p.getUniqueId());
+				text = me.devtec.shared.placeholders.PlaceholderAPI.apply(
+						MessageUtils.placeholder(p, text, placeholders), s instanceof Player ? ((Player) s).getUniqueId() : null);
 			else
 				text = MessageUtils.placeholder(p, text, placeholders);
 		}
