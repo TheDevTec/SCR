@@ -262,7 +262,17 @@ tps:
 - "%prefix% TPS from 5min: &e%tps_5%"
 - "%prefix% TPS from 15min: &e%tps_15%"
 
+# Translations for Memory command
 memory:
 - "%prefix% Free MEM: &e%ram_free% &7MB"
 - "%prefix% Used MEM: &e%ram_used% &7MB"
 - "%prefix% Max MEM: &e%ram_max% &7MB"
+
+# Translations for SCR command
+scr:
+  reload:
+    reloading: "%prefix% Reloading..."
+    reload: "%prefix% &aReloaded config &e%config%"
+    reload_all: "%prefix% &aReloaded all configs"
+    error: "%prefix% Something went wrong with config &e%config%. Try looking in the console."
+    error_all: "%prefix% Something went wrong with config reload. Try looking in the console."

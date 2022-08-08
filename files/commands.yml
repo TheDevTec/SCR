@@ -505,7 +505,17 @@ memory:
   permission:
     cmd: "scr.command.memory"
 
-
+scr:
+  enabled: true
+  cmds:
+  - "scr"
+  - "servercontrolreloaded"
+  help:
+    usage:
+    - "/scr reload {config}"
+  permission:
+    cmd: "scr.command.memory"
+    
 # # # # # # # # # # # # # #
 # # # PrivateMessages # # #
 # # # # # # # # # # # # # #

@@ -34,7 +34,6 @@ import net.milkbowl.vault.permission.Permission;
 
 public class Loader extends JavaPlugin {
 
-	private Config temp_data = new Config();
 
 	public static Loader plugin;
 
@@ -50,17 +49,17 @@ public class Loader extends JavaPlugin {
 	public List<ScrCommand> registered_commands = new ArrayList<>();
 
 	public static Config economyConfig;
-	private Config joinListenerConfig;
-	private Config quitListenerConfig;
-	private Config tablistConfig;
-	private Config scoreboardConfig;
-	public Tablist tablist;
+	public static Config joinListenerConfig;
+	public static Config quitListenerConfig;
+	public static Config tablistConfig;
+	public static Config scoreboardConfig;
+	public static Tablist tablist;
 	public ScoreboardManager scoreboard;
 
 	@Override
 	public void onLoad() {
 		plugin = this;
-		loadConfigs();
+		Configs.loadConfigs();
 		if (Bukkit.getPluginManager().getPlugin("Vault") != null && Ref.getClass("net.milkbowl.vault.economy.Economy") != null) {
 			vaultPermissionHooking();
 			if (economyConfig.getBoolean("useVaultEconomy")) {
@@ -155,7 +154,7 @@ public class Loader extends JavaPlugin {
 		getLogger().info("Commands successfully loaded. (" + count + "/" + total + ")");
 	}
 
-	private void loadConfigs() {
+	/*private void loadConfigs() { //MOVED TO Configs class
 		config = loadAndMerge("config.yml", "config.yml");
 		commands = loadAndMerge("commands.yml", "commands.yml");
 		economyConfig = loadAndMerge("economy.yml", "economy.yml");
@@ -185,7 +184,7 @@ public class Loader extends JavaPlugin {
 		if (result.merge(temp_data))
 			result.save(DataType.YAML);
 		return result;
-	}
+	}*/
 
 	public static void registerListener(Listener listener) {
 		Bukkit.getPluginManager().registerEvents(listener, plugin);
