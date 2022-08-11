@@ -285,8 +285,8 @@ public class MessageUtils {
 		}
 		else {
 			for (CommandSender target : targets)
-				target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(text, target, true)));
-				//target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null)));
+				//target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(text, target, true)));
+				target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null)));
 		}
 	}
 

@@ -122,21 +122,11 @@ public class MessageManager {
 	}
 
 	private static void sendMessage(CommandSender sender, CommandSender target, String message) {
-		// if(target instanceof Player) {
 		MessageUtils.message(sender, "privateMessage.formats.sender",
-				Placeholders.c().addPlayer("player", sender).addPlayer("from", sender).addPlayer("to", target).addPlayer("target", target).add("message", message));
+				Placeholders.c().addPlayer("player", sender).addPlayer("from", sender).addPlayer("to", target).addPlayer("target", target).add("message", message), false);
 		MessageUtils.message(target, "privateMessage.formats.target",
-				Placeholders.c().addPlayer("player", sender).addPlayer("from", sender).addPlayer("to", target).addPlayer("target", target).add("message", message));
-		// }
-		/*
-		 * else { //COSNOLE MessageUtils.message(sender,
-		 * "privateMessage.formats.sender", Placeholders.c().addPlayer("player", sender)
-		 * .addPlayer("from", sender).add("to", "CONSOLE") .add("target",
-		 * "CONSOLE").add("message", message) ); MessageUtils.message(target,
-		 * "privateMessage.formats.target", Placeholders.c().addPlayer("player", sender)
-		 * .addPlayer("from", sender).add("to", "CONSOLE") .add("target",
-		 * "CONSOLE").add("message", message) ); }
-		 */
+				Placeholders.c().addPlayer("player", sender).addPlayer("from", sender).addPlayer("to", target).addPlayer("target", target).add("message", message), false);
+
 		socialSpyMessage(sender, target, message);
 	}
 
@@ -158,24 +148,12 @@ public class MessageManager {
 			MessageUtils.message(sender, "privateMessage.noreply", Placeholders.c().add("message", message));
 			return;
 		}
-
-		// if(target instanceof Player) {
+		
 		MessageUtils.message(sender, "privateMessage.formats.sender",
-				Placeholders.c().addPlayer("player", sender).addPlayer("from", sender).addPlayer("to", target).addPlayer("target", target).add("message", message));
+				Placeholders.c().addPlayer("player", sender).addPlayer("from", sender).addPlayer("to", target).addPlayer("target", target).add("message", message), false);
 		MessageUtils.message(target, "privateMessage.formats.target",
-				Placeholders.c().addPlayer("player", sender).addPlayer("from", sender).addPlayer("to", target).addPlayer("target", target).add("message", message));
-		// }
-		/*
-		 * else { //COSNOLE MessageUtils.message(sender,
-		 * "privateMessage.formats.sender", Placeholders.c().addPlayer("player", sender)
-		 * .addPlayer("from", sender).add("to", "CONSOLE") .add("target",
-		 * "CONSOLE").add("message", message) ); MessageUtils.message(target,
-		 * "privateMessage.formats.target", Placeholders.c().addPlayer("player", sender)
-		 * .addPlayer("from", sender).add("to", "CONSOLE") .add("target",
-		 * "CONSOLE").add("message", message) );
-		 * 
-		 * }
-		 */
+				Placeholders.c().addPlayer("player", sender).addPlayer("from", sender).addPlayer("to", target).addPlayer("target", target).add("message", message), false);
+
 		socialSpyMessage(sender, target, message);
 
 	}
@@ -186,7 +164,7 @@ public class MessageManager {
 		for (Player p : BukkitLoader.getOnlinePlayers())
 			// privateMessage.ignorelist.
 			if (p != sender && p != target && me.devtec.shared.API.getUser(p.getName()).getBoolean("privateMessage.socialspy"))
-				MessageUtils.message(p, "privateMessage.formats.socialspy", Placeholders.c().addPlayer("player", sender).addPlayer("target", target).add("message", message));
+				MessageUtils.message(p, "privateMessage.formats.socialspy", Placeholders.c().addPlayer("player", sender).addPlayer("target", target).add("message", message), false);
 	}
 
 	// HELPOP PART:
