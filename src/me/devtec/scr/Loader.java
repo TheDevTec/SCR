@@ -20,6 +20,7 @@ import me.devtec.scr.api.ScrEconomy;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.functions.ScoreboardManager;
 import me.devtec.scr.functions.Tablist;
+import me.devtec.scr.listeners.ServerList;
 import me.devtec.scr.listeners.additional.PlayerJoin;
 import me.devtec.scr.listeners.additional.PlayerQuit;
 import me.devtec.scr.utils.PlaceholderAPISupport;
@@ -118,6 +119,8 @@ public class Loader extends JavaPlugin {
 			quitListenerConfig.clear();
 			quitListenerConfig = null;
 		}
+		if(config.getBoolean("serverlist.enabled"))
+			registerListener(new ServerList());
 	}
 
 	private void loadCommands() {

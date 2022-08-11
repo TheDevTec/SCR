@@ -34,6 +34,45 @@ autoAnnoucments:
   - "&0[&e&lINFO&0] &7You found a bug ? Report it to https://github.com/TheDevTec/ServerControlReloaded"
   - "&0[&e&lINFO&0] &7Do you like our plugin? Write a comment on the https://www.spigotmc.org/resources/71147"
 
+serverlist:
+  enabled: true
+  # Which should be used
+  use: "normal"
+  # If you want to change MOTD after some time...
+  # -1 == disabled changing
+  # If you enable this function, please edit your 'use' section like this: 
+  #    use:
+  #    - "normal"
+  #    - "motd2"
+  #    - "thirt_motd"
+  #    ...
+  change_after: -1
+  
+  normal:
+    motd:
+      0: ""
+      1: ""
+    icon: "server-icon.png"
+    players:
+      # If vanished players should be shown
+      hide-vanished: false
+      playername-format: "%player%"
+      # Fake number of online players
+      # %online% --> default
+      online: "%online%"
+      # Fake number of max online players
+      # %max_players% --> default
+      max: "%max_players%"
+      # If you want custom text instead of players, edit this:
+      # list: []
+    # Leave empty (serverversion: "") for default
+    serverversion: ""
+    # Leave -1 for current protocol
+    protocol: -1
+
+
+
+
 # rrs - ReloadRestartStop commands
 rrs:
   # basetime - basic countdown
