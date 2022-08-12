@@ -1,0 +1,71 @@
+options:
+  # Types: GLOBAL, PER_WORLD, DISTANCE
+  type: "GLOBAL"
+  # 50 blocks - only for chat type "distance"
+  distance: 50
+  # PER_WORLD options:
+  per_world:
+    group1:
+    - "world"
+    - "world2"
+    group2:
+    - "example_world"
+    
+chatNotification:
+  enabled: true
+  color: "&c"
+  sound: "ENTITY_PLAYER_LEVELUP"
+  title:
+  subtitle:
+  actionbar:
+  # Placeholder: %pinged%, %player% (player who send the message), %target% (pinged)
+  commands:
+  messages:
+
+format:
+  enabled: true
+  # global - for all players and groups
+  # groups - just for specific group
+  # user - different chatFormat for different user
+  # world - different chatFormat for each world (or just 1 world)
+  global:
+    # Use %playername% to get 'playername' setting
+    chat: ""
+    playername: "%player%"
+#  group:
+#    default:
+#      # Use %playername% to get 'playername' setting
+#      chat: ""
+#      playername: "%player%"
+#  user:
+#    Houska02:
+#      # Use %playername% to get 'playername' setting
+#      chat: ""
+#      playername: "%player%"
+#  # If you want to set different chatFormats in different worlds
+#  world:
+#    <world>:
+#      global:
+#        # Use %playername% to get 'playername' setting
+#        chat: ""
+#        playername: "%player%"
+#      group:
+#        default:
+#          # Use %playername% to get 'playername' setting
+#           chat: ""
+#          playername: "%player%"
+#      user:
+#        Houska02:
+#          # Use %playername% to get 'playername' setting
+#          chat: ""
+#          playername: "%player%"
+
+
+codes:
+  enabled: true
+  message: ""
+  list:
+  - ""
+  random-command:
+  commands:
+

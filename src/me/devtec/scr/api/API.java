@@ -66,4 +66,9 @@ public class API {
 			return null;
 		return Bukkit.getPlayer(getUser(name).getRealName());
 	}
+	
+	//VANISH
+	public static boolean isVanished(Player p) {
+		return false;
+	}
 }

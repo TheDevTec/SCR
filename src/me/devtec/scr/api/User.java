@@ -81,20 +81,21 @@ public class User implements ISuser {
 	// expires - cooldown time
 	@Override
 	public boolean cooldownExpired(String cooldownpath, String cooldowntime) {
-		if (isAutorized("scr.bypass.cooldowns") || (getUserConfig().getLong(cooldownpath) - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(cooldowntime) <= 0))
+		if (isAutorized("scr.bypass.cooldowns") ||
+				(getUserConfig().getLong("cooldowns."+cooldownpath) - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(cooldowntime) <= 0))
 			return true;
 		return false;
 	}
 
 	@Override
 	public long expires(String cooldownpath, String cooldowntime) {
-		return getUserConfig().getLong(cooldownpath) - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(cooldowntime);
+		return getUserConfig().getLong("cooldowns."+cooldownpath) - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(cooldowntime);
 	}
 
 	@Override
 	public void newCooldown(String cooldownpath) {
 		Config c = getUserConfig();
-		c.set(cooldownpath, System.currentTimeMillis() / 1000);
+		c.set("cooldowns."+cooldownpath, System.currentTimeMillis() / 1000);
 		c.save();
 	}
 

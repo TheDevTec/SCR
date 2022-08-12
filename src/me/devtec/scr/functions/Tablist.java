@@ -197,7 +197,7 @@ public class Tablist {
 		return generated;
 	}
 
-	private String getVaultGroup(Player player) {
+	public static String getVaultGroup(Player player) {
 		if (Loader.vault != null)
 			if (((Permission) Loader.vault).hasGroupSupport())
 				return ((Permission) Loader.vault).getPrimaryGroup(player);

@@ -280,3 +280,7 @@ scr:
 ping:
   self: "%prefix% You ping is &e%ping%"
   other: "%prefix% Ping of player %target% is &e%ping%"
+
+chatlock:
+  isLocked: "%prefix% &cChat is locked!"
+  format: "&7[&c&l!&7] &f%player% %message%"

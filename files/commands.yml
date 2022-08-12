@@ -579,3 +579,7 @@ ping:
   permission:
     cmd: "scr.command.ping"
     other: "scr.command.ping.other"
+
+chatlock:
+  permission:
+    bypass: "scr.command.chatlock.bypass"

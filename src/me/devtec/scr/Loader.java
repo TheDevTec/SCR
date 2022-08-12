@@ -40,6 +40,8 @@ public class Loader extends JavaPlugin {
 	public static Config translations;
 	public static Config data;
 
+	public static Config chat;
+
 	// VAULT plugin
 	public static Object economy;
 	public static Object vault;

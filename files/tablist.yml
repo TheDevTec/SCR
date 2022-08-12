@@ -45,7 +45,7 @@ perGroup:
     
     nametag:
       prefix: "&7Default &f"
-    #   suffix: ""
+      # suffix: ""
       
     tabname: "&7Default &f%player%"
     
