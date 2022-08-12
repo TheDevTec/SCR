@@ -17,6 +17,8 @@ options:
   language: "en"
   
   ram-percentage: true
+  
+  tp-accept_cooldown: 30
 
 #commandCooldowns:
 #  jobs: "5"

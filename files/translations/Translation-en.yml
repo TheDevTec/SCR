@@ -305,7 +305,31 @@ tphere:
   sender: "%prefix% Teleporting &e%target%"
   target: "%prefix% Teleporting you to player &e%player%"
 
+tpa:
+  sender: "%prefix% You sent teleport request to &e%target%"
+  receiver: "%prefix% &e%player% &7wants him to teleport to you. &e/tpaccept &7to accept request"
 
+tpahere:
+  sender: "%prefix% You sent teleport request to &e%target%"
+  receiver: "%prefix% &e%player% &7wants you to teleport to him. &e/tpaccept &7to accept request"
+  
+tpaccept:
+  norequest: "%prefix% You don't have any request"
+  expired: "%prefix% Time for confirmation expired"
+  accepted:
+    sender: "%prefix% You have accepted teleport request from &e%target%"
+    receiver: "%prefix% &e%player% &7accepted your teleport request"
+  teleporting:
+    who: "%prefix% Teleporting to &e%target%"
+    to: "%prefix% Teleporting &e%player% &7to you"
+
+tpadeny:
+  sender: "%prefix% You have rejected teleport request from &e%target%"
+  receiver: "%prefix% &e%player% &7rejected your teleport request"
+  
+tpacancel:
+  sender: "%prefix% You have cancelled teleport request to player &e%player%"
+  receiver: "%prefix% Player %target% cancelled teleport request"
 
 
 

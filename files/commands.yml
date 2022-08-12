@@ -642,6 +642,24 @@ tpahere:
     usage: "/tpahere [player]"
   permission:
     cmd: "scr.command.tpahere"
+    
+tpadeny:
+  enabled: true
+  cmds:
+  - "tpadeny"
+  help:
+    usage: "/tpadeny"
+  permission:
+    cmd: "scr.command.tpadeny"
+    
+tpacancel:
+  enabled: true
+  cmds:
+  - "tpacancel"
+  help:
+    usage: "/tpacancel"
+  permission:
+    cmd: "scr.command.tpacancel"
 
 
 
