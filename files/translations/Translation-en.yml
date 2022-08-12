@@ -281,6 +281,8 @@ ping:
   self: "%prefix% You ping is &e%ping%"
   other: "%prefix% Ping of player %target% is &e%ping%"
 
+broadcast: "%prefix% %message%"
+
 chatlock:
   isLocked: "%prefix% &cChat is locked!"
   format: "&7[&c&l!&7] &f%player% %message%"

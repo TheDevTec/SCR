@@ -515,10 +515,19 @@ scr:
     - "/scr reload {config}"
   permission:
     cmd: "scr.command.memory"
-    
-# # # # # # # # # # # # # #
-# # # PrivateMessages # # #
-# # # # # # # # # # # # # #
+
+chatlock:
+  enabled: true
+  cmds:
+  - "chatlock"
+  help:
+    usage: "/chatlock"
+  permission:
+    cmd: "scr.command.chatlock"
+    bypass: "scr.command.chatlock.bypass"
+# # # # # # # # # #
+# # # Message # # #
+# # # # # # # # # #
 
 privateMessage:
   enabled: true
@@ -566,9 +575,19 @@ helpop:
     cmd: "scr.command.helpop"
     see: "scr.command.helpop.see"
     
-# # # # # # # # # # # # # #
-# # # PrivateMessages # # #
-# # # # # # # # # # # # # #
+broadcast:
+  enabled: true
+  cmds:
+  - "broadcast"
+  - "bc"
+  help:
+    usage: "/broadcast [message]"
+  permission:
+    cmd: "scr.command.broadcast"
+    
+# # # # # # # # #
+# # # Info  # # #
+# # # # # # # # #
 
 ping:
   enabled: true
@@ -579,13 +598,3 @@ ping:
   permission:
     cmd: "scr.command.ping"
     other: "scr.command.ping.other"
-
-chatlock:
-  enabled: true
-  cmds:
-  - "chatlock"
-  help:
-    usage: "/chatlock"
-  permission:
-    cmd: "scr.command.chatlock"
-    bypass: "scr.command.chatlock.bypass"

@@ -1,11 +1,15 @@
 package me.devtec.scr.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class API {
 
@@ -67,6 +71,14 @@ public class API {
 		return Bukkit.getPlayer(getUser(name).getRealName());
 	}
 	
+	//ONLINE PLAYERS
+	public static List<CommandSender> getOnlinePlayers(boolean console) {
+		List<CommandSender> list = new ArrayList<>();
+		list.addAll(BukkitLoader.getOnlinePlayers());
+		if(console)
+			list.add(Bukkit.getConsoleSender());
+		return list;
+	}
 	//VANISH
 	public static boolean isVanished(Player p) {
 		return false;
