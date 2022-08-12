@@ -10,10 +10,15 @@ public class ChatUtils {
 	
 	//LOCK
 	public static void lockChat() { //TODO
+		if(Loader.data.getBoolean("chatlock", false))
+			Loader.data.set("chatlock", false);
+		else
+			Loader.data.set("chatlock", true);
+		Loader.data.save();
 		
 	}
 	public static boolean isChatLocked() { //TODO
-		return false;
+		return Loader.data.getBoolean("chatlock", false);
 	}
 	
 	//CHATFORMAT

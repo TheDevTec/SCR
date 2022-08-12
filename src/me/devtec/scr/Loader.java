@@ -102,6 +102,7 @@ public class Loader extends JavaPlugin {
 			tablist.unloadTasks();
 		if (scoreboard != null)
 			scoreboard.unloadTasks();
+		//Placeholders
 		((PlaceholderExpansion) papi_theapi).unregister();
 		papi.unregister();
 	}

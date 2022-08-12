@@ -581,5 +581,11 @@ ping:
     other: "scr.command.ping.other"
 
 chatlock:
+  enabled: true
+  cmds:
+  - "chatlock"
+  help:
+    usage: "/chatlock"
   permission:
+    cmd: "scr.command.chatlock"
     bypass: "scr.command.chatlock.bypass"
