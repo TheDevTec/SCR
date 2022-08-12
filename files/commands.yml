@@ -598,3 +598,63 @@ ping:
   permission:
     cmd: "scr.command.ping"
     other: "scr.command.ping.other"
+
+# # # # # # # # # # #
+# # # TpSystem  # # #
+# # # # # # # # # # #
+
+tp:
+  enabled: true
+  cmds:
+  - "tp"
+  help:
+    usage: "/tp [player]"
+    other: "/tp [player] [target]"
+  permission:
+    cmd: "scr.command.tp"
+    other: "scr.command.tp.other"
+    location: "scr.command.tp.location"
+
+tphere:
+  enabled: true
+  cmds:
+  - "tphere"
+  help:
+    usage: "/tphere [player]"
+  permission:
+    cmd: "scr.command.tphere"
+    other: "scr.command.tphere.other"
+
+tpa:
+  enabled: true
+  cmds:
+  - "tpa"
+  help:
+    usage: "/tpa [player]"
+  permission:
+    cmd: "scr.command.tpa"
+
+tpahere:
+  enabled: true
+  cmds:
+  - "tpahere"
+  help:
+    usage: "/tpahere [player]"
+  permission:
+    cmd: "scr.command.tpahere"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

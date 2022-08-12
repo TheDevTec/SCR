@@ -4,6 +4,7 @@ noPerms: "%prefix% &cYou don't have enought permissions (&4%permission%&c)"
 missing:
   material: "%prefix% Material &e%material% &7doesn't exist"
   number: "%prefix% Wrong number! Try again..."
+  world: "%prefix% Wron world!"
   
 # Translations for cooldowns
 # %time% - time formatted (10min5s)
@@ -288,3 +289,24 @@ chatlock:
   format: "&7[&c&l!&7] &f%player% %message%"
   enabled: "%prefix% &7Chat is now locked"
   disabled: "%prefix% &7Chat is unlocked"
+
+
+# # # # # # # # # # #
+# # # TpSystem  # # #
+# # # # # # # # # # #
+
+tp:
+  tp: "%prefix% Teleported to player &e%player%"
+  tptarget: "%prefix% Teleporting player &e%player% &7to player &e%target%"
+  tploc: "%prefix% teleporting to location: %x% %y% %z% %world% %yaw% %pitch%"
+  tploctarget: "%prefix% Teleporting &e%player% &7to location: %x% %y% %z% %world% %yaw% %pitch%"
+
+tphere:
+  sender: "%prefix% Teleporting &e%target%"
+  target: "%prefix% Teleporting you to player &e%player%"
+
+
+
+
+
+
