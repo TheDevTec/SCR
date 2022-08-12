@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import me.devtec.scr.Loader;
+import me.devtec.scr.api.API;
 import me.devtec.scr.utils.MOTD;
 import me.devtec.scr.utils.MOTD.PlayersCountType;
 import me.devtec.scr.utils.PlaceholderAPISupport;
@@ -56,7 +57,7 @@ public class ServerList implements Listener {
 			while (p.hasNext()) {
 				PlayerProfile profile = p.next();
 				Player player = Bukkit.getPlayer(profile.getUUID());
-				if(player!=null && hide && false) //TODO - vanished (místo false)
+				if(player!=null && hide && API.isVanished(player))
 					p.remove();
 				else
 					profile.setName( PlaceholderAPISupport.replace(
