@@ -284,3 +284,5 @@ ping:
 chatlock:
   isLocked: "%prefix% &cChat is locked!"
   format: "&7[&c&l!&7] &f%player% %message%"
+  enabled: "%prefix% &7Chat is now locked"
+  disabled: "%prefix% &7Chat is unlocked"
