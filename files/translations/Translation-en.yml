@@ -331,6 +331,9 @@ tpacancel:
   sender: "%prefix% You have cancelled teleport request to player &e%player%"
   receiver: "%prefix% Player %target% cancelled teleport request"
 
+back:
+  teleported: "%prefix% Teleporting back to previous location"
+  sender: "%prefix% Teleporting &e%target% &7back to previous location"
 
 
 

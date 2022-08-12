@@ -8,9 +8,11 @@ import org.bukkit.entity.Player;
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
+import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.scheduler.Scheduler;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.utility.StringUtils;
+import me.devtec.theapi.bukkit.game.Position;
 
 public class TpSystem {
 
@@ -28,9 +30,16 @@ public class TpSystem {
 	}
 	
 	public static void setBack(Player player) {
-		
+		Config c = me.devtec.shared.API.getUser(player.getUniqueId());
+		c.set("back", new Position(player.getLocation()));
+		c.save();
 	}
-
+	
+	public static void teleportBack(Player player) {
+		Position pos = me.devtec.shared.API.getUser(player.getUniqueId()).getAs("back", Position.class);
+		player.teleport(pos.toLocation());
+	}
+	
 	public static HashMap<Player, Player> askTpa = new HashMap<>();  // ke komu | kdo
 	public static HashMap<Player, Player> askTpa2 = new HashMap<>();  // kdo | ke komu
 	

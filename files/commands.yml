@@ -661,6 +661,16 @@ tpacancel:
   permission:
     cmd: "scr.command.tpacancel"
 
+back:
+  enabled: true
+  cmds:
+  - "back"
+  help:
+    usage: "/back [player]"
+  permission:
+    cmd: "scr.command.back"
+    other: "scr.command.back.other"
+
 
 
 
