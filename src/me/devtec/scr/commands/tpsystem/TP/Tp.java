@@ -14,6 +14,7 @@ import me.devtec.scr.commands.tpsystem.TpSystem;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.StringUtils.FormatType;
 
 public class Tp implements ScrCommand {
 
@@ -33,7 +34,7 @@ public class Tp implements ScrCommand {
 		.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // tp [player]
 			for(Player p : playerSelectors(s, args[0])) {
 				TpSystem.teleport((Player)s, p);
-				msg(s, "tp", Placeholders.c().addPlayer("player", p).addPlayer("target", p));
+				msgSec(s, "tp", Placeholders.c().addPlayer("player", p).addPlayer("target", p));
 			}
 		})
 			.argument("-s", (s, structure, args) -> { // tp [player] -s
@@ -49,7 +50,7 @@ public class Tp implements ScrCommand {
 				for(Player who : playerSelectors(s, args[0]))
 					for(Player to : playerSelectors(s, args[1])) {
 						TpSystem.teleport(who, to);
-						msg(s, "tptarget", Placeholders.c().addPlayer("player", who).addPlayer("target", to));
+						msgSec(s, "tptarget", Placeholders.c().addPlayer("player", who).addPlayer("target", to));
 					}
 			})
 			.permission(permission("other"))
@@ -74,12 +75,20 @@ public class Tp implements ScrCommand {
 					Location loc = p.getLocation();
 					loc.setX(StringUtils.getDouble(args[1]));
 					TpSystem.teleport(p, loc);
-					msgSec(p, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-							.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-							.add("pitch", loc.getPitch()));
+					msgSec(p, "tploc", Placeholders.c()
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 					msgSec(s, "tploctarget", Placeholders.c().addPlayer("player", p)
-							.add("x", loc.getX()).add("y", loc.getY()).add("z", loc.getZ())
-							.add("world", loc.getWorld()).add("yaw", loc.getYaw()).add("pitch", loc.getPitch()));
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 				}
 			}, (s, structure, args) -> {
 				List<String> l = new ArrayList<>();
@@ -98,13 +107,21 @@ public class Tp implements ScrCommand {
 					loc.setX(StringUtils.getDouble(args[1]));
 					loc.setY(StringUtils.getDouble(args[2]));
 					TpSystem.teleport(p, loc);
-					msgSec(p, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-							.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-							.add("pitch", loc.getPitch()));
+					msgSec(p, "tploc", Placeholders.c()
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 					msgSec(s, "tploctarget", Placeholders.c().addPlayer("player", p)
-							.add("x", loc.getX()).add("y", loc.getY()).add("z", loc.getZ())
-							.add("world", loc.getWorld()).add("yaw", loc.getYaw()).add("pitch", loc.getPitch()));
-				}
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
+					}
 			}, (s, structure, args) -> {
 				List<String> l = new ArrayList<>();
 				for(Player p : playerSelectors(s, args[0])) {
@@ -122,13 +139,21 @@ public class Tp implements ScrCommand {
 					loc.setY(StringUtils.getDouble(args[2]));
 					loc.setZ(StringUtils.getDouble(args[3]));
 					TpSystem.teleport(p, loc);
-					msgSec(p, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-							.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-							.add("pitch", loc.getPitch()));
+					msgSec(p, "tploc", Placeholders.c()
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 					msgSec(s, "tploctarget", Placeholders.c().addPlayer("player", p)
-							.add("x", loc.getX()).add("y", loc.getY()).add("z", loc.getZ())
-							.add("world", loc.getWorld()).add("yaw", loc.getYaw()).add("pitch", loc.getPitch()));
-				}
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
+					}
 			}, (s, structure, args) -> {
 				List<String> l = new ArrayList<>();
 				for(Player p : playerSelectors(s, args[0])) {
@@ -147,13 +172,21 @@ public class Tp implements ScrCommand {
 					loc.setZ(StringUtils.getDouble(args[3]));
 					loc.setWorld(Bukkit.getWorld(args[4]));
 					TpSystem.teleport(p, loc);
-					msgSec(p, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-							.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-							.add("pitch", loc.getPitch()));
+					msgSec(p, "tploc", Placeholders.c()
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 					msgSec(s, "tploctarget", Placeholders.c().addPlayer("player", p)
-							.add("x", loc.getX()).add("y", loc.getY()).add("z", loc.getZ())
-							.add("world", loc.getWorld()).add("yaw", loc.getYaw()).add("pitch", loc.getPitch()));
-				}
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
+					}
 			})
 			.fallback((s, structure, args) -> {
 				msg(s, "missing.number", Placeholders.c().replace("number", args[5]));
@@ -167,13 +200,21 @@ public class Tp implements ScrCommand {
 					loc.setWorld(Bukkit.getWorld(args[4]));
 					loc.setYaw(StringUtils.getFloat(args[5]));
 					TpSystem.teleport(p, loc);
-					msgSec(p, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-							.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-							.add("pitch", loc.getPitch()));
+					msgSec(p, "tploc", Placeholders.c()
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 					msgSec(s, "tploctarget", Placeholders.c().addPlayer("player", p)
-							.add("x", loc.getX()).add("y", loc.getY()).add("z", loc.getZ())
-							.add("world", loc.getWorld()).add("yaw", loc.getYaw()).add("pitch", loc.getPitch()));
-				}
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
+					}
 			}, (s, structure, args) -> {
 				List<String> l = new ArrayList<>();
 				for(Player p : playerSelectors(s, args[0])) {
@@ -194,13 +235,21 @@ public class Tp implements ScrCommand {
 					loc.setYaw(StringUtils.getFloat(args[5]));
 					loc.setPitch(StringUtils.getFloat(args[6]));
 					TpSystem.teleport(p, loc);
-					msgSec(p, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-							.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-							.add("pitch", loc.getPitch()));
+					msgSec(p, "tploc", Placeholders.c()
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 					msgSec(s, "tploctarget", Placeholders.c().addPlayer("player", p)
-							.add("x", loc.getX()).add("y", loc.getY()).add("z", loc.getZ())
-							.add("world", loc.getWorld()).add("yaw", loc.getYaw()).add("pitch", loc.getPitch()));
-				}
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
+					}
 			}, (s, structure, args) -> {
 				List<String> l = new ArrayList<>();
 				for(Player p : playerSelectors(s, args[0])) {
@@ -222,13 +271,21 @@ public class Tp implements ScrCommand {
 					loc.setZ(StringUtils.getDouble(args[3]));
 					loc.setYaw(StringUtils.getFloat(args[4]));
 					TpSystem.teleport(p, loc);
-					msgSec(p, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-							.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-							.add("pitch", loc.getPitch()));
+					msgSec(p, "tploc", Placeholders.c()
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 					msgSec(s, "tploctarget", Placeholders.c().addPlayer("player", p)
-							.add("x", loc.getX()).add("y", loc.getY()).add("z", loc.getZ())
-							.add("world", loc.getWorld()).add("yaw", loc.getYaw()).add("pitch", loc.getPitch()));
-				}
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
+					}
 			}, (s, structure, args) -> {
 				List<String> l = new ArrayList<>();
 				for(Player p : playerSelectors(s, args[0])) {
@@ -248,13 +305,21 @@ public class Tp implements ScrCommand {
 					loc.setYaw(StringUtils.getFloat(args[4]));
 					loc.setPitch(StringUtils.getFloat(args[5]));
 					TpSystem.teleport(p, loc);
-					msgSec(p, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-							.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-							.add("pitch", loc.getPitch()));
+					msgSec(p, "tploc", Placeholders.c()
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 					msgSec(s, "tploctarget", Placeholders.c().addPlayer("player", p)
-							.add("x", loc.getX()).add("y", loc.getY()).add("z", loc.getZ())
-							.add("world", loc.getWorld()).add("yaw", loc.getYaw()).add("pitch", loc.getPitch()));
-				}
+							.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+							.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+							.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+							.add("world", loc.getWorld().getName())
+							.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+							.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
+					}
 			}, (s, structure, args) -> {
 				List<String> l = new ArrayList<>();
 				for(Player p : playerSelectors(s, args[0])) {
@@ -276,9 +341,13 @@ public class Tp implements ScrCommand {
 			Location loc = ( (Player)s).getLocation();
 			loc.setX(StringUtils.getDouble(args[0]));
 			TpSystem.teleport((Player)s, loc);
-			msgSec(s, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-					.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-					.add("pitch", loc.getPitch()));
+			msgSec(s, "tploc", Placeholders.c()
+					.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+					.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+					.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+					.add("world", loc.getWorld().getName())
+					.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+					.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 		}, (s, structure, args) -> {
 			List<String> l = new ArrayList<>();
 			l.add(""+((Player)s).getLocation().getBlockX());
@@ -290,9 +359,13 @@ public class Tp implements ScrCommand {
 			loc.setX(StringUtils.getDouble(args[0]));
 			loc.setY(StringUtils.getDouble(args[1]));
 			TpSystem.teleport((Player)s, loc);
-			msgSec(s, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-					.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-					.add("pitch", loc.getPitch()));
+			msgSec(s, "tploc", Placeholders.c()
+					.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+					.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+					.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+					.add("world", loc.getWorld().getName())
+					.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+					.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 		}, (s, structure, args) -> {
 			List<String> l = new ArrayList<>();
 			l.add(""+((Player)s).getLocation().getBlockY());
@@ -304,9 +377,13 @@ public class Tp implements ScrCommand {
 			loc.setY(StringUtils.getDouble(args[1]));
 			loc.setZ(StringUtils.getDouble(args[2]));
 			TpSystem.teleport((Player)s, loc);
-			msgSec(s, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-					.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-					.add("pitch", loc.getPitch()));
+			msgSec(s, "tploc", Placeholders.c()
+					.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+					.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+					.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+					.add("world", loc.getWorld().getName())
+					.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+					.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 		}, (s, structure, args) -> {
 			List<String> l = new ArrayList<>();
 			l.add(""+((Player)s).getLocation().getBlockZ());
@@ -322,9 +399,13 @@ public class Tp implements ScrCommand {
 			loc.setZ(StringUtils.getDouble(args[2]));
 			loc.setWorld(Bukkit.getWorld(args[3]));
 			TpSystem.teleport((Player)s, loc);
-			msgSec(s, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-					.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-					.add("pitch", loc.getPitch()));
+			msgSec(s, "tploc", Placeholders.c()
+					.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+					.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+					.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+					.add("world", loc.getWorld().getName())
+					.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+					.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 		})
 		.fallback((s, structure, args) -> {
 			msg(s, "missing.number", Placeholders.c().replace("number", args[2]));
@@ -337,9 +418,13 @@ public class Tp implements ScrCommand {
 			loc.setWorld(Bukkit.getWorld(args[3]));
 			loc.setYaw(StringUtils.getFloat(args[4]));
 			TpSystem.teleport((Player)s, loc);
-			msgSec(s, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-					.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-					.add("pitch", loc.getPitch()));
+			msgSec(s, "tploc", Placeholders.c()
+					.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+					.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+					.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+					.add("world", loc.getWorld().getName())
+					.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+					.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 		}, (s, structure, args) -> {
 			List<String> l = new ArrayList<>();
 			l.add(""+((Player)s).getLocation().getYaw());
@@ -354,9 +439,13 @@ public class Tp implements ScrCommand {
 			loc.setYaw(StringUtils.getFloat(args[4]));
 			loc.setPitch(StringUtils.getFloat(args[5]));
 			TpSystem.teleport((Player)s, loc);
-			msgSec(s, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-					.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-					.add("pitch", loc.getPitch()));
+			msgSec(s, "tploc", Placeholders.c()
+					.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+					.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+					.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+					.add("world", loc.getWorld().getName())
+					.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+					.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 		}, (s, structure, args) -> {
 			List<String> l = new ArrayList<>();
 			l.add(""+((Player)s).getLocation().getPitch());
@@ -372,9 +461,13 @@ public class Tp implements ScrCommand {
 			loc.setZ(StringUtils.getDouble(args[2]));
 			loc.setYaw(StringUtils.getFloat(args[3]));
 			TpSystem.teleport((Player)s, loc);
-			msgSec(s, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-					.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-					.add("pitch", loc.getPitch()));
+			msgSec(s, "tploc", Placeholders.c()
+					.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+					.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+					.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+					.add("world", loc.getWorld().getName())
+					.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+					.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 		}, (s, structure, args) -> {
 			List<String> l = new ArrayList<>();
 			l.add(""+((Player)s).getLocation().getYaw());
@@ -388,9 +481,13 @@ public class Tp implements ScrCommand {
 			loc.setYaw(StringUtils.getFloat(args[3]));
 			loc.setPitch(StringUtils.getFloat(args[4]));
 			TpSystem.teleport((Player)s, loc);
-			msgSec(s, "tploc", Placeholders.c().add("x", loc.getX()).add("y", loc.getY())
-					.add("z", loc.getZ()).add("world", loc.getWorld()).add("yaw", loc.getYaw())
-					.add("pitch", loc.getPitch()));
+			msgSec(s, "tploc", Placeholders.c()
+					.add("x", StringUtils.formatDouble(FormatType.BASIC, loc.getX()) )
+					.add("y", StringUtils.formatDouble(FormatType.BASIC, loc.getY()) )
+					.add("z", StringUtils.formatDouble(FormatType.BASIC, loc.getZ()) )
+					.add("world", loc.getWorld().getName())
+					.add("yaw", StringUtils.formatDouble(FormatType.BASIC, loc.getYaw()) )
+					.add("pitch", StringUtils.formatDouble(FormatType.BASIC, loc.getPitch()) ));
 		}, (s, structure, args) -> {
 			List<String> l = new ArrayList<>();
 			l.add(""+((Player)s).getLocation().getPitch());

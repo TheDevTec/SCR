@@ -26,8 +26,10 @@ import me.devtec.scr.listeners.additional.PlayerQuit;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
+import me.devtec.shared.events.EventManager;
 import me.devtec.shared.placeholders.PlaceholderExpansion;
 import me.devtec.shared.scheduler.Tasker;
+import me.devtec.theapi.bukkit.events.ServerListPingEvent;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -122,8 +124,11 @@ public class Loader extends JavaPlugin {
 			quitListenerConfig.clear();
 			quitListenerConfig = null;
 		}
-		if(config.getBoolean("serverlist.enabled"))
-			registerListener(new ServerList());
+		if(config.getBoolean("serverlist.enabled")) { //MOTD & list of players
+			EventManager.register(new ServerList()).listen(ServerListPingEvent.class);
+			getLogger().info("[Listener] Registering ServerList listener.");
+			//registerListener(new ServerList());
+		}
 	}
 
 	private void loadCommands() {

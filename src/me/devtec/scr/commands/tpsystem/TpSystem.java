@@ -37,6 +37,7 @@ public class TpSystem {
 	
 	public static void teleportBack(Player player) {
 		Position pos = me.devtec.shared.API.getUser(player.getUniqueId()).getAs("back", Position.class);
+		setBack(player);
 		player.teleport(pos.toLocation());
 	}
 	
@@ -58,10 +59,10 @@ public class TpSystem {
 			
 			@Override
 			public void run() {
-				MessageUtils.message(who, "tpaaccept.expired", null);
-				Scheduler.cancelTask( task.get(who) );
+				MessageUtils.message(who, "tpaccept.expired", null);
 				askTpaHere.remove(who);
 				task.remove(who);
+				//Scheduler.cancelTask( task.get(who) );
 			}
 		}.runLater( 20*StringUtils.timeFromString(Loader.config.getString("options.tp-accept_cooldown")) )
 		);
@@ -82,15 +83,19 @@ public class TpSystem {
 			
 			@Override
 			public void run() {
-				MessageUtils.message(to, "tpaaccept.expired", null);
-				Scheduler.cancelTask( task.get(to) );
+				MessageUtils.message(to, "tpaccept.expired", null);
 				askTpa.remove(to);
 				askTpa2.remove(who);
 				task.remove(to);
+				//Scheduler.cancelTask( task.get(to) );
 			}
 		}.runLater( 20*StringUtils.timeFromString(Loader.config.getString("options.tp-accept_cooldown")) )
 		);
 		
+	}
+	private static void stopTask(Player player) {
+		Scheduler.cancelTask( task.get(player) );
+		task.remove(player);
 	}
 	public static void accept(Player player) {
 		if(askTpa.containsKey(player)) { //tpa request
@@ -105,7 +110,8 @@ public class TpSystem {
 			teleport(who, player);
 			askTpa.remove(player);
 			askTpa2.remove(who);
-			task.remove(player);
+			stopTask(player);
+			//task.remove(player);
 			return;
 		}
 		if(askTpaHere.containsKey(player)) { //tpahere request
@@ -119,7 +125,8 @@ public class TpSystem {
 			
 			teleport(player, to);
 			askTpaHere.remove(player);
-			task.remove(player);
+			stopTask(player);
+			//task.remove(player);
 			return;
 		}
 	}
@@ -132,7 +139,8 @@ public class TpSystem {
 
 			askTpa.remove(player);
 			askTpa2.remove(who);
-			task.remove(player);
+			stopTask(player);
+			//task.remove(player);
 			return;
 		}
 		if(askTpaHere.containsKey(player)) { //tpahere deny
@@ -142,7 +150,8 @@ public class TpSystem {
 			MessageUtils.message(to, "tpadeny.receiver", Placeholders.c().addPlayer("target", to).addPlayer("player", player));
 
 			askTpaHere.remove(player);
-			task.remove(player);
+			stopTask(player);
+			//task.remove(player);
 			return;
 		}
 		
@@ -157,8 +166,8 @@ public class TpSystem {
 
 			askTpa.remove(to);
 			askTpa2.remove(player);
-			Scheduler.cancelTask( task.get(to) );
-			task.remove(to);
+			stopTask(to);
+			//task.remove(to);
 			return;
 		}
 		//TODO - tpahere deny nebude, protože se tam dá použít i @a atd... :(

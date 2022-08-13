@@ -27,7 +27,7 @@ public class TpaHere implements ScrCommand {
 			for(Player p : playerSelectors(s, args[0])) {
 				TpSystem.askTpaHere(p, (Player)s);
 				msgSec(s, "sender", Placeholders.c().addPlayer("player", s).addPlayer("target", p));
-				msgSec(s, "target", Placeholders.c().addPlayer("player", s).addPlayer("target", p));
+				msgSec(s, "receiver", Placeholders.c().addPlayer("player", s).addPlayer("target", p));
 			}
 		})
 		.build().register(cmds.remove(0), cmds.toArray(new String[0]));

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.shared.commands.structures.CommandStructure;
 
-public class TpaAccept implements ScrCommand {
+public class TpAccept implements ScrCommand {
 
 	@Override
 	public void init(List<String> cmds) {

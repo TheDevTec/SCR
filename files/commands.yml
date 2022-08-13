@@ -643,6 +643,15 @@ tpahere:
   permission:
     cmd: "scr.command.tpahere"
     
+tpaccept:
+  enabled: true
+  cmds:
+  - "tpaccept"
+  help:
+    usage: "/tpaccept"
+  permission:
+    cmd: "scr.command.tpaccept"
+    
 tpadeny:
   enabled: true
   cmds:
