@@ -100,10 +100,14 @@ spawn:
     
 setspawn: "%prefix% Set spawn on position in the world %world% at %x%, %y%, %z%, %yaw%, %pitch%"
 
-# HOMES
+# # # # # # # # #
+# # # Homes # # #
+# # # # # # # # #
+
 sethome:
   created: "%prefix% Created home &e%home%"
   already_exists: "%prefix% Home &%ehome% &7already exists"
+  limit: "%prefix% You reached maximal limit! You can have just %limit% homes"
 
 delhome:
   deleted: "%prefix% Deleted home &e%home%"
@@ -120,7 +124,9 @@ home:
     sender: "%prefix% Teleporting player &e%player% &7to the home &e%home% &7of player &e%target%"
     target: "%prefix% Teleporting to the home &e%home% &7of player &e%target%"
 
-# INVENTORY
+# # # # # # # # # # #
+# # # Inventory # # #
+# # # # # # # # # # #
 give:
   self: "%prefix% You gave yourself %amount%x %item%"
   self-nbt: "%prefix% You gave yourself %amount%x %item% with nbt %nbt%"

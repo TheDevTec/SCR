@@ -33,7 +33,7 @@ public class Home implements ScrCommand {
 					homeNames.append(Loader.translations.getString(configSection() + ".list_split"));
 				homeNames.append(home);
 			}
-			msgSec(s, "list", Placeholders.c().add("homes", homeNames).add("amount", homes.size()));
+			msgSec(s, "list", Placeholders.c().add("homes", homeNames).add("amount", homes.size()).add("limit", HomeManager.getLimit((Player) s)));
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)) //cd
 		.permission(permission("cmd")) // perm
 		.fallback((s, structure, args) -> {
@@ -73,7 +73,7 @@ public class Home implements ScrCommand {
 					homeNames.append(Loader.translations.getString(configSection() + ".list_split"));
 				homeNames.append(home);
 			}
-			msgSec(s, "listOther", Placeholders.c().addPlayer("player", Bukkit.getPlayer(args[0])).add("homes", homeNames).add("amount", homes.size()));
+			msgSec(s, "listOther", Placeholders.c().addPlayer("player", Bukkit.getPlayer(args[0])).add("homes", homeNames).add("amount", homes.size()) );
 		}).priority(2)
 		.permission(permission("admin"))
 			// cmd [player] [homes]

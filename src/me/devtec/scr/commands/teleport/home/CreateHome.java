@@ -23,6 +23,10 @@ public class CreateHome implements ScrCommand {
 				msgSec(s, "already_exists", Placeholders.c().add("home", home.name()));
 				return;
 			}
+			if(HomeManager.homesOf(s.getUniqueId()).size()+1>HomeManager.getLimit(s)) {
+				msgSec(s, "limit", Placeholders.c().add("limit", HomeManager.getLimit(s)));
+				return;
+			}
 			HomeManager.create(s.getUniqueId(), args[0], new Position(s), Material.ENDER_PEARL);
 			msgSec(s, "created", Placeholders.c().add("home", args[0]));
 		}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure();

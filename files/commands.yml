@@ -172,7 +172,8 @@ sethome:
   help:
     usage: "/sethome [name]"
   permission:
-    cmd: "scr.command.sethome" 
+    cmd: "scr.command.sethome"
+    unlimited_homes: "scr.command.sethome.unlimited"
     
 delhome:
   enabled: true

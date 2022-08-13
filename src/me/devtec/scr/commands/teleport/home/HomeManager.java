@@ -4,7 +4,10 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
+import me.devtec.scr.Loader;
+import me.devtec.scr.functions.Tablist;
 import me.devtec.shared.API;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.theapi.bukkit.game.Position;
@@ -40,5 +43,17 @@ public class HomeManager {
 	public static Set<String> homesOf(UUID owner) {
 		if(owner==null) return null;
 		return API.getUser(owner).getKeys("home");
+	}
+	
+	public static int getLimit(Player p) {
+		if(p.hasPermission(Loader.commands.getString("sethome.permission.unlimited_homes")))
+			return 500000;
+		String group = Tablist.getVaultGroup(p);
+		if(group==null)
+			return Loader.config.getInt("homelimit.default");
+		if(Loader.config.exists("homelimit."+group))
+			return Loader.config.getInt("homelimit."+group);
+
+		return Loader.config.getInt("homelimit.default");
 	}
 }

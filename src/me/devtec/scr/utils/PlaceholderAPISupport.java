@@ -11,6 +11,7 @@ import me.devtec.scr.commands.info.Ping;
 import me.devtec.scr.commands.server_managment.Memory;
 import me.devtec.scr.commands.server_managment.TPS;
 import me.devtec.scr.commands.server_managment.TPS.TPSType;
+import me.devtec.scr.commands.teleport.home.HomeManager;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.shared.utility.StringUtils.FormatType;
 import net.milkbowl.vault.economy.Economy;
@@ -74,6 +75,26 @@ public class PlaceholderAPISupport {
 			if(text.contains("%ping%"))
 				placeholders.replace("ping", Ping.pingPlayer(p));
 
+			/*
+			 * %home_count% 
+			 * %home_limit%
+			 * %home_list% - list of homes
+			 */
+			if(text.contains("%home_count%"))
+				placeholders.replace("home_count", HomeManager.homesOf(p.getUniqueId()));
+			if(text.contains("%home_limit%"))
+				placeholders.replace("home_limit", HomeManager.getLimit(p));
+			if(text.contains("%home_max%"))
+				placeholders.replace("home_max", HomeManager.getLimit(p));
+			if(text.contains("%home_list%")) {
+				StringBuilder homeNames = new StringBuilder();
+				for (String home : HomeManager.homesOf(p.getUniqueId())) {
+					if (homeNames.length() != 0)
+						homeNames.append(Loader.translations.getString("home.list_split"));
+					homeNames.append(home);
+				}
+				placeholders.replace("home_list", homeNames);
+			}
 			/*
 			 * %afk%
 			 * %vanish%
