@@ -79,8 +79,25 @@ public class API {
 			list.add(Bukkit.getConsoleSender());
 		return list;
 	}
+	public static List<Player> getPlayers(CommandSender sender) {
+		List<Player> list = new ArrayList<>();
+		//list.addAll(BukkitLoader.getOnlinePlayers());
+		for(Player target : BukkitLoader.getOnlinePlayers()) {
+			if(canSee(sender, target))
+				list.add(target);
+		}
+		return list;
+	}
 	//VANISH
 	public static boolean isVanished(Player p) {
 		return false;
+	}
+	public static boolean canSee(CommandSender sender, Player target) { //if sender can see target
+		if(!(sender instanceof Player))
+			return true;
+		if(!isVanished(target))
+			return true;
+		
+		return true;
 	}
 }

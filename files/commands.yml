@@ -354,6 +354,50 @@ nicknamereset:
   permission:
     cmd: "scr.command.nickname"
     other: "scr.command.nickname.other"
+
+feed:
+  enabled: true
+  cmds:
+  - "feed"
+  help:
+    usage: "/feed [player] {0-20}"
+  permission:
+    cmd: "scr.command.feed"
+    other: "scr.command.feed.other"
+    food_level: "scr.command.feed.other"
+
+heal:
+  enabled: true
+  cmds:
+  - "heal"
+  help:
+    usage: "/heal [player]"
+  permission:
+    cmd: "scr.command.heal"
+    other: "scr.command.heal.other"
+
+flyspeed:
+  enabled: true
+  cmds:
+  - "flyspeed"
+  - "fspeed"
+  help:
+    usage: "/flyspeed [0-10]"
+    other: "/flyspeed [player] [0-10]"
+  permission:
+    cmd: "scr.command.flyspeed"
+    other: "scr.command.flyspeed.other"
+
+walkspeed:
+  enabled: true
+  cmds:
+  - "walkspeed"
+  help:
+    usage: "/walkspeed [0-10]"
+    other: "/walkspeed [player] [0-10]"
+  permission:
+    cmd: "scr.command.walkspeed"
+    other: "scr.command.walkspeed.other"
     
 # # # # # # # # # # # #
 # # # # Economy # # # #
@@ -599,6 +643,25 @@ ping:
   permission:
     cmd: "scr.command.ping"
     other: "scr.command.ping.other"
+
+staff:
+  enabled: true
+  cmds:
+  - "staff"
+  help:
+    usage: "/staff"
+  permission:
+    cmd: "scr.command.staff"
+
+list:
+  enabled: true
+  cmds:
+  - "list"
+  - "online"
+  help:
+    usage: "/list"
+  permission:
+    cmd: "scr.command.list"
 
 # # # # # # # # # # #
 # # # TpSystem  # # #

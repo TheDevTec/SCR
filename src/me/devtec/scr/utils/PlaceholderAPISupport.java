@@ -22,6 +22,11 @@ public class PlaceholderAPISupport {
 	public static String replace(String text, CommandSender s, boolean placeholderAPI) {
 		Placeholders placeholders = new Placeholders().c();
 		
+		/*
+		 * %online% - if player != null (hide vanished)
+		 * %online_max%
+		 */
+		
 		if(s!=null && s instanceof Player) {
 			Player p = (Player) s;
 			placeholders.addPlayer("player", p);

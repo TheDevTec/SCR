@@ -78,6 +78,9 @@ homelimit:
   # <group>: 5
   default: 5
 
+# List of staff groups
+staff:
+- "owner"
 
 # rrs - ReloadRestartStop commands
 rrs:

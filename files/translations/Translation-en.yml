@@ -71,6 +71,31 @@ nickname:
     header: "&7Player &8&l| &eNickname &8:"
     format: "&7%name% &8» &e%nickname%"
 
+feed:
+  you: "%prefix% You have been fed"
+  other:
+    sender: "%prefix% &e%target% &7has been fed"
+    receiver: "%prefix% You have been fed"
+
+heal:
+  you: "%prefix% You were healed"
+  other:
+    sender: "%prefix% &e%player% &7was healed"
+    receiver: "%prefix% You were healed"
+
+flyspeed:
+  you: "%prefix% Your flyspeed has been set to &e%speed%"
+  other:
+    sender: "%prefix% &e%target%&7's flyspeed has been set to &e%speed%"
+    receiver: "%prefix% Your flyspeed has been set to &e%speed%"
+
+walkspeed:
+  you: "%prefix% Your walkspeed  has been set to &e%speed%"
+  other:
+    sender: "%prefix% &e%target%&7's walkspeed  has been set to &e%speed%"
+    receiver: "%prefix% Your walkspeed has been set to &e%speed%"
+
+
 # Teleport
 warp:
   list: "%prefix% List of available warps: &e%warps%"
@@ -274,6 +299,22 @@ memory:
 - "%prefix% Free MEM: &e%ram_free% &7MB"
 - "%prefix% Used MEM: &e%ram_used% &7MB"
 - "%prefix% Max MEM: &e%ram_max% &7MB"
+
+staff:
+  header: "&7»=== &e%staff_online% &7===«"
+  format: " &7&l» %vault_prefix% &7%player%"
+  footer: ""
+  noone: "%prefix% No one from the admin team is online!"
+
+list:
+  format:
+    split: "&7, &e"
+    staff: "%player%"
+    player: "%player%"
+  message:
+  - "&7»=== &e%online% &8/ &e%online_max% &7===«"
+  - "&7Staff: &e%staff%"
+  - "&7Default: &e%players%"
 
 # Translations for SCR command
 scr:
