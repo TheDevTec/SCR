@@ -56,7 +56,7 @@ public class API {
 	public static String getPlayerName(String player) {
 		if (player == null)
 			return null;
-		return getUser(player).getName();
+		return getUser(player).getName()!=null?getUser(player).getName():player;
 	}
 
 	public static String getRealName(String player) {

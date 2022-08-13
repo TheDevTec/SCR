@@ -71,8 +71,10 @@ public class User implements ISuser {
 
 	@Override
 	public Config getUserConfig() {
-		if (me.devtec.shared.API.getUser(player.getName()) != null)
+		if (player!=null && me.devtec.shared.API.getUser(player.getName()) != null)
 			return me.devtec.shared.API.getUser(player.getName());
+		if(player==null && me.devtec.shared.API.getUser(name) != null)
+			return me.devtec.shared.API.getUser(name);
 		return null;
 	}
 
@@ -107,6 +109,7 @@ public class User implements ISuser {
 	// NICKNAME
 	@Override
 	public String getName() {
+		if(this.player==null) return name;
 		if (haveNickname())
 			return getUserConfig().getString("nickname");
 		return name;
