@@ -25,11 +25,15 @@ import me.devtec.theapi.bukkit.BukkitLoader;
 public interface ScrCommand {
 
 	public static final PermissionChecker<CommandSender> PERMS_CHECKER = (sender, perm, tablist) -> {
+		if(!(sender instanceof Player))
+			return true;
 		if (tablist)
 			return API.getUser(sender).isAutorized(perm);
 		return API.getUser(sender).checkPerm(perm); // also noperm message if needed
 	};
 	public static final PermissionChecker<Player> PLAYER_PERMS_CHECKER = (sender, perm, tablist) -> {
+		if(!(sender instanceof Player))
+			return true;
 		if (tablist)
 			return API.getUser(sender).isAutorized(perm);
 		return API.getUser(sender).checkPerm(perm); // also noperm message if needed
@@ -116,7 +120,6 @@ public interface ScrCommand {
 		String firstUp = Character.toUpperCase(configSection().charAt(0)) + configSection().substring(1);
 		Loader.plugin.getLogger().info("[" + firstUp + "] Registering command.");
 		init(cmds);
-		// init(Loader.commands.getInt(configSection() + ".cooldown"), cmds);
 	}
 
 	// Permission

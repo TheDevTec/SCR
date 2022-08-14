@@ -69,6 +69,9 @@ public class Configs {
 			type = "en";
 		Loader.translations = loadAndMerge("translations/Translation-" + type + ".yml", "translations/Translation-" + type + ".yml");
 
+		//CustomCommands example
+		loadAndMerge("custom commands/example.yml", "custom commands/example.yml");
+		
 		temp_data.clear();
 		temp_data = null; // clear cache
 	}

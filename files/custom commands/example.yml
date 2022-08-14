@@ -1,0 +1,49 @@
+enabled: true
+name: "example"
+cmds:
+- "example"
+- "xmple"
+permission: "scr.customcommand.example"
+
+command:
+  # cmd - /example
+  # How %args[..]% work:
+  #  /example Houska02 - args[0] is Houska02
+  #  /example args[0] args[1] ...
+  cmd:
+    actions:
+      default:
+      - "help:help"
+  hi:
+    actions:
+      default:
+      - "con:mustBePlayer help:console"
+      - "cmd feed %player_name% -s"
+      - "msg You used custom command!!"
+  hello:
+    actions:
+      default:
+      - "con:mustBePlayer isConsole"
+      - "msg Hi!!"
+      isConsole:
+      - "msg Hi CONSOLE!!"
+    PLAYER:
+      actions:
+        default:
+        - "msg Say Hi to player %args[1]%!!"
+# Custom conditions
+# You can apply condition in command like this:
+#    con:<custom condition>
+# Or you can use InBuild conditions: <LINK TO WIKI>
+conditions:
+  exampleCondition:
+    value: "%money_raw%"
+    # List of values that determine whether the condition is "true"
+    positive:
+    - ">500"
+    
+# In build help messages
+help:
+  help: "&f/example [hi/hello]"
+  console: "&f/example [hello]"
+

@@ -17,6 +17,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.devtec.scr.api.ScrEconomy;
+import me.devtec.scr.commands.CustomCommands;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.functions.ScoreboardManager;
 import me.devtec.scr.functions.Tablist;
@@ -142,7 +143,8 @@ public class Loader extends JavaPlugin {
 			Enumeration<JarEntry> entries = jar.entries();
 			while (entries.hasMoreElements()) {
 				JarEntry entry = entries.nextElement();
-				if (!entry.getName().endsWith(".class") || !entry.getName().startsWith("me/devtec/scr/commands/") || entry.getName().equals("me/devtec/scr/commands/ScrCommand.class"))
+				if (!entry.getName().endsWith(".class") || !entry.getName().startsWith("me/devtec/scr/commands/") || entry.getName().equals("me/devtec/scr/commands/ScrCommand.class")
+						|| entry.getName().equals("me/devtec/scr/commands/CustomCommands.class")|| entry.getName().equals("me/devtec/scr/commands/CCommand.class"))
 					continue;
 				Class<?> cls = Class.forName(entry.getName().substring(0, entry.getName().length() - 6).replace("/", "."));
 				if (ScrCommand.class.isAssignableFrom(cls)) {
@@ -161,6 +163,8 @@ public class Loader extends JavaPlugin {
 			return;
 		}
 		getLogger().info("Commands successfully loaded. (" + count + "/" + total + ")");
+		getLogger().info("Loading custom commands!");
+		CustomCommands.load();
 	}
 
 	/*
