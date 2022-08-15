@@ -53,6 +53,13 @@ public class MessageUtils {
 				replace(placeholder, "CONSOLE");
 			return this;
 		}
+		public Placeholders addOffline(String palceholder, String player) {
+			add(palceholder, player);
+			add(palceholder+"_name", player);
+			add(palceholder+"_displayname", player);
+			add(palceholder+"_customname", player);
+			return this;
+		}
 	}
 
 	public static String getPrefix() {

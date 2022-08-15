@@ -5,6 +5,7 @@ missing:
   material: "%prefix% Material &e%material% &7doesn't exist"
   number: "%prefix% Wrong number! Try again..."
   world: "%prefix% Wron world!"
+  playerDontExist: "%prefix% Player %player% does not exist... Try again..."
   
 # Translations for cooldowns
 # %time% - time formatted (10min5s)
@@ -249,9 +250,9 @@ gamemodes:
     adventure: "%prefix% You set gamemode of player &e%target% to &eAdventure"
     spectator: "%prefix% You set gamemode of player &e%target% to &eSpectator"
 
-# # # # # # # # # # # # # #
-# # # PrivateMessages # # #
-# # # # # # # # # # # # # #
+# # # # # # # # # # #
+# # # Messages  # # #
+# # # # # # # # # # #
 
 ignore:
   add: "%prefix% You are now ignoring messages in chat & pm from &e%target%"
@@ -287,6 +288,12 @@ helpop:
     enabled: "%prefix% Chat is locked, type text to chat to send messages into helpop"
     disabled: "%prefix% Chat is unlocked"
 
+broadcast: "%prefix% %message%"
+
+# # # # # # # # # # # # # #
+# # # ServerManagment # # #
+# # # # # # # # # # # # # #
+
 # Translations for TPS command
 tps:
 - "%prefix% Current TPS: &e%tps%"
@@ -313,6 +320,16 @@ chunks:
   load: "%prefix% &e%world%&7: &e%chunks% &7chunks"
   totalLoad: "%prefix% In total: &e%chunks% &7chunks"
 
+chatlock:
+  isLocked: "%prefix% &cChat is locked!"
+  format: "&7[&c&l!&7] &f%player% %message%"
+  enabled: "%prefix% &7Chat is now locked"
+  disabled: "%prefix% &7Chat is unlocked"
+
+# # # # # # # # #
+# # # Info  # # #
+# # # # # # # # #
+ 
 staff:
   header: "&7»=== &e%staff_online% &7===«"
   format: " &7&l» %vault_prefix% &7%player%"
@@ -333,14 +350,9 @@ ping:
   self: "%prefix% You ping is &e%ping%"
   other: "%prefix% Ping of player %target% is &e%ping%"
 
-broadcast: "%prefix% %message%"
-
-chatlock:
-  isLocked: "%prefix% &cChat is locked!"
-  format: "&7[&c&l!&7] &f%player% %message%"
-  enabled: "%prefix% &7Chat is now locked"
-  disabled: "%prefix% &7Chat is unlocked"
-
+seen:
+  online: "%prefix% &e%player%&7 is &aonline &7for &a%time%"
+  offline: "%prefix% &e%player%&7 is &coffline &7for &c%time%"
 
 # # # # # # # # # # #
 # # # TpSystem  # # #

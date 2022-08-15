@@ -671,7 +671,17 @@ list:
   help:
     usage: "/list"
   permission:
-    cmd: "scr.command.list"
+
+seen:
+  enabled: true
+  cmds:
+  - "seen"
+  - "lastonline"
+  help:
+    usage: "/seen"
+  permission:
+    cmd: "scr.command.seen"
+    other: "scr.command.seen.other"
 
 # # # # # # # # # # #
 # # # TpSystem  # # #
