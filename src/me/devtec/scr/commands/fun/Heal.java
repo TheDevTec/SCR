@@ -140,7 +140,7 @@ public class Heal implements ScrCommand {
 				for (int i = 0 ; i<=20 ; i++)
 					list.add(""+i);
 				return list;
-			}).permission(permission("food_level"))
+			}).permission(permission("heal_level"))
 				.argument("-s", (s, structure, args) -> { // heal [player] {level} -s
 					for(Player p : playerSelectors(s, args[0])) {
 						double level = StringUtils.getDouble(args[1]);
