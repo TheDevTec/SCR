@@ -30,7 +30,7 @@ format:
   # world - different chatFormat for each world (or just 1 world)
   global:
     # Use %playername% to get 'playername' setting
-    chat: ""
+    chat: "%playername% &7&l» %message%"
     playername: "%player%"
 #  group:
 #    default:
@@ -59,8 +59,7 @@ format:
 #          # Use %playername% to get 'playername' setting
 #          chat: ""
 #          playername: "%player%"
-
-
+  
 codes:
   enabled: true
   message: ""

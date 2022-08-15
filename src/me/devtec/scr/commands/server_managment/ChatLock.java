@@ -15,9 +15,9 @@ public class ChatLock implements ScrCommand {
 
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
 			if(ChatUtils.isChatLocked())
-				msgSec(s, "enabled");
-			else
 				msgSec(s, "disabled");
+			else
+				msgSec(s, "enabled");
 			ChatUtils.lockChat();
 		}).cooldownDetection((s, structure, args) -> inCooldown(s))
 		.permission(permission("cmd")) // perm

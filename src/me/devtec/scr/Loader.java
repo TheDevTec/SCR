@@ -22,6 +22,7 @@ import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.functions.ScoreboardManager;
 import me.devtec.scr.functions.Tablist;
 import me.devtec.scr.listeners.ServerList;
+import me.devtec.scr.listeners.additional.ChatListeners;
 import me.devtec.scr.listeners.additional.PlayerJoin;
 import me.devtec.scr.listeners.additional.PlayerQuit;
 import me.devtec.scr.utils.PlaceholderAPISupport;
@@ -128,8 +129,9 @@ public class Loader extends JavaPlugin {
 		if(config.getBoolean("serverlist.enabled")) { //MOTD & list of players
 			EventManager.register(new ServerList()).listen(ServerListPingEvent.class);
 			getLogger().info("[Listener] Registering ServerList listener.");
-			//registerListener(new ServerList());
 		}
+		registerListener(new ChatListeners());
+		
 	}
 
 	private void loadCommands() {

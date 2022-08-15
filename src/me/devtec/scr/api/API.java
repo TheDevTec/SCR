@@ -75,7 +75,7 @@ public class API {
 	public static List<CommandSender> getOnlinePlayers(boolean console) {
 		List<CommandSender> list = new ArrayList<>();
 		list.addAll(BukkitLoader.getOnlinePlayers());
-		if(console)
+		if(console && !list.contains(Bukkit.getConsoleSender()))
 			list.add(Bukkit.getConsoleSender());
 		return list;
 	}
@@ -85,6 +85,16 @@ public class API {
 		for(Player target : BukkitLoader.getOnlinePlayers()) {
 			if(canSee(sender, target))
 				list.add(target);
+		}
+		return list;
+	}
+	public static List<CommandSender> getOnlinePlayersWith(String permission) {
+		List<CommandSender> list = new ArrayList<>();
+		for(CommandSender p: getOnlinePlayers(true)) {
+			if( !(p instanceof Player) && !list.contains(p))
+				list.add(p);
+			if(p.hasPermission(permission) && !list.contains(p))
+				list.add(p);
 		}
 		return list;
 	}

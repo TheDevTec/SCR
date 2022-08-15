@@ -19,6 +19,22 @@ options:
   ram-percentage: true
   
   tp-accept_cooldown: 30
+  
+  colors:
+    chat:
+      rainbow: "scr.chat.rainbow"
+      gradient: "scr.chat.gradient"
+      hex: "scr.chat.hex"
+      color: "scr.chat.color"
+      format: "scr.chat.color"
+      magic: "scr.chat.color"
+    sign:
+      rainbow: "scr.chat.rainbow"
+      gradient: "scr.chat.gradient"
+      hex: "scr.chat.hex"
+      color: "scr.chat.color"
+      format: "scr.chat.color"
+      magic: "scr.chat.color"
 
 #commandCooldowns:
 #  jobs: "5"
