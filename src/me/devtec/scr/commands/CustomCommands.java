@@ -18,6 +18,7 @@ import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
 import me.devtec.scr.commands.server_managment.SCR_Command;
 import me.devtec.scr.utils.PlaceholderAPISupport;
+import me.devtec.shared.commands.holder.CommandHolder;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.dataholder.Config;
@@ -50,12 +51,21 @@ public class CustomCommands {
 		if(file.exists() && file.isDirectory()) {
 			for(File f : file.listFiles()) {
 				Config c = new Config(f);
-				CCommand cmd = custom_commands.get(f.getName());
-				cmd.newConfig(c);
+				if(custom_commands.containsKey(f.getName())) {
+					CCommand cmd = custom_commands.get(f.getName());
+					cmd.newConfig(c);
+				}else {
+					if(c.getBoolean("enabled")) {
+						CCommand cmd = new CCommand(c);
+						cmd.createCommand();
+						custom_commands.put(f.getName(), cmd);
+						Loader.plugin.getLogger().info("[CustomCommands] Loaded "+c.getString("name"));
+					}
+				}
 			}
 		}
 	}
-	
+
 	public static class CCommand {
 
 		public CCommand(Config config) {
@@ -73,7 +83,8 @@ public class CustomCommands {
 			List<String> cmds = c.getStringList("cmds");
 			
 			cmd = CommandStructure.create(CommandSender.class, SCR_Command.PERMS_CHECKER, (s, structure, args) -> {
-				actions(s, "cmd", "default", args);
+				if(c.getBoolean("enabled"))
+					actions(s, "cmd", "default", args);
 			}).permission(mainPermission());
 			
 			for(String subcmd : c.getKeys("command")) {
@@ -136,14 +147,16 @@ public class CustomCommands {
 					}
 					if(selector != null) { //Selector
 						cmd = cmd.selector(selector, (s, structure, args) -> {
-							if(Selector.valueOf(subcommand) == Selector.ENTITY_SELECTOR)
+							if(Selector.valueOf(subcommand) == Selector.ENTITY_SELECTOR && c.getBoolean("enabled"))
 								for(Player p : playerSelectors(s, args[(args.length-1)] ))
-									actions(s, path+""+subcommand, "default", args);
-							actions(s, path+""+subcommand, "default", args);
+										actions(s, path+""+subcommand, "default", args);
+							if(c.getBoolean("enabled"))
+								actions(s, path+""+subcommand, "default", args);
 						});
 					}else { //Argument
 						cmd = cmd.argument(subcommand, (s, structure, args) -> {
-							actions(s, path+""+subcommand, "default", args);
+							if(c.getBoolean("enabled"))
+								actions(s, path+""+subcommand, "default", args);
 						});
 					}
 				}else
