@@ -163,8 +163,8 @@ public class Loader extends JavaPlugin {
 			return;
 		}
 		getLogger().info("Commands successfully loaded. (" + count + "/" + total + ")");
-		getLogger().info("Loading custom commands!");
 		CustomCommands.load();
+		Loader.plugin.getLogger().info("Loading custom commands!");
 	}
 
 	/*

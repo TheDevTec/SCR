@@ -18,7 +18,6 @@ import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
 import me.devtec.scr.commands.server_managment.SCR_Command;
 import me.devtec.scr.utils.PlaceholderAPISupport;
-import me.devtec.shared.commands.holder.CommandHolder;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.dataholder.Config;
@@ -78,7 +77,6 @@ public class CustomCommands {
 			this.c = config;
 		}
 		
-		@SuppressWarnings("unused")
 		public void createCommand() {
 			List<String> cmds = c.getStringList("cmds");
 			
@@ -93,40 +91,6 @@ public class CustomCommands {
 					cmd = cmd.first();
 				}
 			}
-			/*for(int i = 0; c.exists("command."+i) ; i++) {
-				Bukkit.broadcastMessage("i:"+i);
-				int subcom = 0;
-				for(String subcommand : c.getKeys("command."+i) ) {
-					Bukkit.broadcastMessage("SubCmd: "+i+" ; "+subcommand);
-					
-					Selector selector = null;
-					for(Selector sel : Selector.values()) {
-						if(sel.toString().equals(subcommand))
-							selector = Selector.valueOf(subcommand);
-					}
-					
-					if(selector != null) {
-						cmd.selector(selector, (s, structure, args) -> {
-							if(Selector.valueOf(subcommand) == Selector.ENTITY_SELECTOR)
-								for(Player p : playerSelectors(s, args[(args.length-1)] ))
-									actions(s, (args.length-1)+"."+subcommand, "default", args);
-							actions(s, (args.length-1)+"."+subcommand, "default", args);
-						});
-					}else {
-						cmd.argument(subcommand, (s, structure, args) -> {
-							actions(s, (args.length-1)+"."+subcommand, "default", args);
-						});
-					}
-					Bukkit.broadcastMessage("SIZE: "+(c.getKeys("command."+i).size()-1)+" ; "+subcom);
-					if( (c.getKeys("command."+i).size()-1)>subcom) {
-						cmd.parent();
-						Bukkit.broadcastMessage("parenting");
-						
-					}
-					subcom++;
-				}
-			}*/
-			
 			
 			cmd.build().register(cmds.remove(0), cmds.toArray(new String[0]));
 		}
@@ -171,6 +135,9 @@ public class CustomCommands {
 		}
 		// command.+'path'+.actions.+'actionp'
 		private void actions(CommandSender s, String path, String actionp, String[] args) {
+			if(!c.exists("command."+path+".actions."+actionp))
+				Loader.plugin.getLogger().warning("Path: "+"command."+path+".actions."+actionp+" does not exist in Custom Command "+c.getFile().getName());
+			
 			for(String action : c.getStringList("command."+path+".actions."+actionp)) {
 				if(action.startsWith("con:")) {
 					String[] conline = action.split(" ");
@@ -322,7 +289,11 @@ public class CustomCommands {
 		
 		//help.+path
 		private void help(CommandSender s, String path, String[] args) {
-			MessageUtils.msgConfig(s, "help."+path, c, getPlaceholders(args));
+			if(c.exists("help."+path))
+				MessageUtils.msgConfig(s, "help."+path, c, getPlaceholders(args));
+			else
+				Loader.plugin.getLogger().warning("Help message: "+"help."+path+" does not exist in Custom Command "+c.getFile().getName());
+			
 		}
 		
 		@SuppressWarnings({ "static-access" })

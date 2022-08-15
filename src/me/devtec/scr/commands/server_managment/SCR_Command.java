@@ -41,7 +41,8 @@ public class SCR_Command  implements ScrCommand {
 				}
 				Configs.reloadConfig(c);
 				
-			}, "translation", "commands", "economy", "tablist", "scoreboard", "join-listener", "quit-listener")
+			}, "translation", "commands", "economy", "tablist", "scoreboard", "join-listener", "quit-listener",
+					"chat", "custom_commands")
 		.build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 

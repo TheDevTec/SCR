@@ -2,6 +2,7 @@ package me.devtec.scr;
 
 import java.io.File;
 
+import me.devtec.scr.commands.CustomCommands;
 import me.devtec.scr.functions.AutoAnnoucments;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.DataType;
@@ -36,15 +37,19 @@ public class Configs {
 			Loader.tablistConfig = loadAndMerge("tablist.yml", "tablist.yml");
 		if(config.equalsIgnoreCase("scoreboard"))
 			Loader.scoreboardConfig = loadAndMerge("scoreboard.yml", "scoreboard.yml");
-		if(config.equalsIgnoreCase("joinConfig"))
+		if(config.equalsIgnoreCase("join-listener"))
 			Loader.joinListenerConfig = loadAndMerge("events/join-listener.yml", "events/join-listener.yml");
-		if(config.equalsIgnoreCase("quitConfig"))
+		if(config.equalsIgnoreCase("quit-listener"))
 			Loader.quitListenerConfig = loadAndMerge("events/quit-listener.yml", "events/quit-listener.yml");
 		if(config.equalsIgnoreCase("chat"))
 			Loader.chat = loadAndMerge("functions/chat.yml", "functions/chat.yml");
 
 		temp_data.clear();
 		temp_data = null; // clear cache
+		
+		//Reload configs for custom commands
+		if(config.equalsIgnoreCase("custom_commands"))
+			CustomCommands.reload();
 	}
 	
 	public static void loadConfigs() {
@@ -74,6 +79,9 @@ public class Configs {
 		
 		temp_data.clear();
 		temp_data = null; // clear cache
+		
+		if(!CustomCommands.custom_commands.isEmpty()) //If not empty ==> /scr reload command
+			CustomCommands.reload();
 	}
 
 	private static Config loadAndMerge(String sourcePath, String filePath) {
