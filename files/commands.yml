@@ -570,6 +570,16 @@ chatlock:
   permission:
     cmd: "scr.command.chatlock"
     bypass: "scr.command.chatlock.bypass"
+
+chunks:
+  enabled: true
+  cmds:
+  - "chunks"
+  help:
+    usage: "/chunks"
+  permission:
+    cmd: "scr.command.chunks"
+
 # # # # # # # # # #
 # # # Message # # #
 # # # # # # # # # #
