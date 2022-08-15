@@ -72,7 +72,7 @@ public class Heal implements ScrCommand {
 				for (int i = 0 ; i<=20 ; i++)
 					list.add(""+i);
 				return list;
-			}).permission(permission("food_level"))
+			}).permission(permission("heal_level"))
 				.argument("-s", (s, structure, args) -> { // heal {level} -s
 					if(s instanceof Player) {
 						Player p = (Player) s;

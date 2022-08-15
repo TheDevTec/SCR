@@ -30,17 +30,16 @@ public class Seen implements ScrCommand {
 		
 			.fallback((s, structure, args) -> { // /seen [player]
 				if( me.devtec.shared.API.getUser(args[0]).exists("lastLeave") ) {
-					long time = API.getUser(s).getSeen(SeenType.OFFLINE);
-					msgSec(s, "online", Placeholders.c()
-							.add("time", StringUtils.timeToString(time)).add("player", args[0])
-							.add("player", args[0]).addOffline("player", args[0]));
+					long time = API.getUser(args[0]).getSeen(SeenType.OFFLINE);
+					msgSec(s, "offline", Placeholders.c()
+							.add("time", StringUtils.timeToString(time)).addOffline("player", args[0]));
 				}else {
 					msg(s, "missing.playerDontExist", Placeholders.c().addOffline("player", args[0]));
 				}
 			}).selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // seen [player]
 				long time = 0;
 				for(Player p : playerSelectors(s, args[0])) {
-					 time = API.getUser(s).getSeen(SeenType.ONLINE);
+					 time = API.getUser(p).getSeen(SeenType.ONLINE);
 					msgSec(s, "online", Placeholders.c()
 							.add("time", StringUtils.timeToString(time)).addPlayer("player", p));
 				}

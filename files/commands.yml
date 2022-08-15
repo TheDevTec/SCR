@@ -371,10 +371,13 @@ heal:
   cmds:
   - "heal"
   help:
-    usage: "/heal [player]"
+    usage: "/heal [player] {0-20}"
   permission:
     cmd: "scr.command.heal"
+    # /heal <player>
     other: "scr.command.heal.other"
+    # /heal <player> {0-20}
+    heal_level: "scr.command.heal.other"
 
 flyspeed:
   enabled: true
@@ -678,7 +681,7 @@ seen:
   - "seen"
   - "lastonline"
   help:
-    usage: "/seen"
+    usage: "/seen [player]"
   permission:
     cmd: "scr.command.seen"
     other: "scr.command.seen.other"
