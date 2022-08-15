@@ -247,7 +247,7 @@ public class MessageUtils {
 							String text = val + "";
 
 							text = placeholder(s, text, placeholders);
-							text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true) );
+							text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null) );
 							//text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
 							itr.set(text);
 						}
@@ -257,7 +257,7 @@ public class MessageUtils {
 				String text = entry.getValue() + "";
 
 				text = placeholder(s, text, placeholders);
-				text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true) );
+				text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null) );
 				//text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
 				entry.setValue(text);
 			}
@@ -277,7 +277,7 @@ public class MessageUtils {
 					lastcolor = lastcolor.replace("&x", "#");
 				}
 				for (CommandSender target : targets)
-					target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace((lastcolor==null?line:lastcolor+""+line), target, true)));
+					target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace((lastcolor==null?line:lastcolor+""+line), target, true, null)));
 					//target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply((lastcolor==null?line:lastcolor+""+line), s instanceof Player ? ((Player) s).getUniqueId() : null)));
 	
 				lastcolor = StringUtils.getLastColors(StringUtils.colorize(line));

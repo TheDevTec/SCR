@@ -38,13 +38,15 @@ public class ListCmd implements ScrCommand {
 			for (Player staff_player : staff) {
 				if (staff_b.length() != 0)
 					staff_b.append(Loader.translations.getString(configSection() + ".format.split"));
-				staff_b.append(PlaceholderAPISupport.replace(Loader.translations.getString(configSection() + ".format.staff"), staff_player, true));
+				staff_b.append(PlaceholderAPISupport.replace(
+						Loader.translations.getString(configSection() + ".format.staff"), staff_player, true, null));
 			}
 			StringBuilder player_b = new StringBuilder();
 			for (Player player_p : players) {
 				if (player_b.length() != 0)
 					player_b.append(Loader.translations.getString(configSection() + ".format.split"));
-				player_b.append(PlaceholderAPISupport.replace(Loader.translations.getString(configSection() + ".format.player"), player_p, true));
+				player_b.append(PlaceholderAPISupport.replace(
+						Loader.translations.getString(configSection() + ".format.player"), player_p, true, null));
 			}
 			msgSec(s, "message", Placeholders.c().add("staff", staff_b.length() == 0 ? "-" : staff_b).add("players", player_b.length() == 0 ? "-" : player_b)
 					.add("online", staff.size() + players.size()).add("online_max", Bukkit.getMaxPlayers()));

@@ -260,9 +260,9 @@ public class Loader extends JavaPlugin {
 					params = params.replace("%scr_", "%"); // Just in case :D
 					String f;
 					if (Bukkit.getPlayer(uuid) != null)
-						f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(uuid), false);
+						f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(uuid), false, null);
 					else
-						f = PlaceholderAPISupport.replace(params, null, false);
+						f = PlaceholderAPISupport.replace(params, null, false, null);
 					return params.equals(f) ? null : f;
 				}
 
@@ -276,9 +276,9 @@ public class Loader extends JavaPlugin {
 					params = '%' + params + '%';
 					String f;
 					if (Bukkit.getPlayer(player.getUniqueId()) != null)
-						f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(player.getUniqueId()), false);
+						f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(player.getUniqueId()), false, null);
 					else
-						f = PlaceholderAPISupport.replace(params, null, false);
+						f = PlaceholderAPISupport.replace(params, null, false, null);
 					return params.equals(f) ? null : f;
 				}
 

@@ -78,9 +78,7 @@ public class CustomCommands {
 			
 			for(String subcmd : c.getKeys("command")) {
 				if(!subcmd.equalsIgnoreCase("cmd")) {
-					Bukkit.broadcastMessage("|||| LOADING SubCmd: "+subcmd);
 					loadSubCommands(subcmd, "");
-					Bukkit.broadcastMessage("|||| LOADED SubCmd: "+subcmd);
 					cmd = cmd.first();
 				}
 			}
@@ -160,12 +158,10 @@ public class CustomCommands {
 		}
 		// command.+'path'+.actions.+'actionp'
 		private void actions(CommandSender s, String path, String actionp, String[] args) {
-			Bukkit.broadcastMessage(path+" ; "+actionp);
 			for(String action : c.getStringList("command."+path+".actions."+actionp)) {
 				if(action.startsWith("con:")) {
 					String[] conline = action.split(" ");
 					String condition = conline[0].replace("con:", "");
-					Bukkit.broadcastMessage("CheckingCondition");
 					if(ConditionPositive(s, condition, args))
 						continue;
 					else {
@@ -252,12 +248,13 @@ public class CustomCommands {
 					return true;
 				return false;
 			}
-			//TODO - 260 chyba
 			//CUSTOM CONDITION
 			String[] con = condition.split(":");
+			
 			if(c.exists("conditions."+con[0])) {
-				String value = PlaceholderAPISupport.replace(c.getString("conditions."+condition+".value"), s, true);
-				if(con.length==1 &&con[1]!=null && !con[1].isEmpty())
+				String value = PlaceholderAPISupport.replace(
+						c.getString("conditions."+con[0]+".value"), s, true, getPlaceholders(args));
+				if(con.length==2 && con[1]!=null && !con[1].isEmpty())
 					value = args[ StringUtils.getInt(con[1]) ];
 				
 				for(String positive : c.getStringList("conditions."+condition+".positive")) {
@@ -282,11 +279,9 @@ public class CustomCommands {
 					if(value.equalsIgnoreCase(positive))
 						return true;
 				}
-			}
-			
-			Loader.plugin.getLogger().warning("Condition " + condition + " not found in Custom Command " + c.getFile().getName() + "");
-			
-			return true;
+			} else
+				Loader.plugin.getLogger().warning("Condition " + condition + " not found in Custom Command " + c.getFile().getName() + "");
+			return false;
 		}
 		/*
 		 * InBuildConditions:
@@ -320,8 +315,9 @@ public class CustomCommands {
 		@SuppressWarnings({ "static-access" })
 		private Placeholders getPlaceholders(String[] args) {
 			Placeholders p = new Placeholders().c();
-			for(int i = 0; i<=(args.length-1); i++)
+			for(int i = 0; i<=(args.length-1); i++) {
 				p.add("args["+i+"]", args[i]);
+			}
 			return p;
 		}
 		
@@ -338,13 +334,14 @@ public class CustomCommands {
 					lastcolor = "&"+lastcolor;
 					lastcolor = lastcolor.replace("&x", "#");
 				}
-				s.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace((lastcolor==null?line:lastcolor+""+line), s, true)));
+				s.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(
+						(lastcolor==null?line:lastcolor+""+line), s, true, null)));
 				lastcolor = StringUtils.getLastColors(StringUtils.colorize(line));
 			}
 		}
 		private static void cmd(CommandSender s, String command, Placeholders placeholders) {
 			Bukkit.getConsoleSender().getServer().dispatchCommand(Bukkit.getConsoleSender(), 
-					PlaceholderAPISupport.replace(MessageUtils.placeholder(s, command, placeholders), s, true));
+					PlaceholderAPISupport.replace(command, s, true,placeholders));
 		}
 		
 		private String mainPermission() {

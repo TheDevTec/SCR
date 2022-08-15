@@ -18,9 +18,15 @@ import net.milkbowl.vault.economy.Economy;
 
 public class PlaceholderAPISupport {
 
-	@SuppressWarnings({ "static-access" })
 	public static String replace(String text, CommandSender s, boolean placeholderAPI) {
-		Placeholders placeholders = new Placeholders().c();
+		return replace(text, s, placeholderAPI, null);
+	}
+	
+	@SuppressWarnings({ "static-access" })
+	public static String replace(String text, CommandSender s, boolean placeholderAPI, Placeholders placeholders) {
+		//Placeholders placeholders = plac!=null?plac.c():new Placeholders().c();
+		if(placeholders == null)
+			placeholders = new Placeholders().c();
 		
 		/*
 		 * %online% - if player != null (hide vanished)
@@ -144,6 +150,8 @@ public class PlaceholderAPISupport {
 			else
 				text = MessageUtils.placeholder(p, text, placeholders);
 		}
+		if(placeholders!=null)
+			text = MessageUtils.placeholder(s, text, placeholders);
 		return text;
 	}
 

@@ -89,7 +89,7 @@ public class MOTD {
 		
 		return StringUtils.getInt( PlaceholderAPISupport.replace(
 				text.replace("%online%", online+"").replace("%online_real%", rOnline+"")
-				.replace("%max_players%", getMaxPlayers()+""), null, false) );
+				.replace("%max_players%", getMaxPlayers()+""), null, false, null) );
 	}
 	private static int getMaxPlayers() {
 		return Bukkit.getMaxPlayers();
@@ -97,7 +97,7 @@ public class MOTD {
 	
 	public static List<String> getList(String motd) {
 		List<String> list = Loader.config.getStringList("serverlist."+motd+".players.list");
-		list.replaceAll(a -> PlaceholderAPISupport.replace(a, null, true));
+		list.replaceAll(a -> PlaceholderAPISupport.replace(a, null, true, null));
 		return list;
 	}
 	public static String getVersion(String motd) {

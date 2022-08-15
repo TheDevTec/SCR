@@ -36,7 +36,7 @@ public class ServerList implements EventListener {
 
 			// MOTD
 			if (MOTD.getMotd(motd_name) != null)
-				e.setMotd(PlaceholderAPISupport.replace(MOTD.getMotd(motd_name), null, false));
+				e.setMotd(PlaceholderAPISupport.replace(MOTD.getMotd(motd_name), null, false, null));
 			Loader.plugin.getLogger().info("3");
 
 			// ONLINE
@@ -67,7 +67,8 @@ public class ServerList implements EventListener {
 					if (player != null && hide && API.isVanished(player))
 						p.remove();
 					else
-						profile.setName(PlaceholderAPISupport.replace(Loader.config.getString("serverlist." + motd_name + ".players.playername-format"), player, true));
+						profile.setName(PlaceholderAPISupport.replace(
+								Loader.config.getString("serverlist." + motd_name + ".players.playername-format"), player, true, null));
 				}
 			}
 			Loader.plugin.getLogger().info("6");
