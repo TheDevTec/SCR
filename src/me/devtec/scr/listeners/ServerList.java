@@ -21,33 +21,25 @@ public class ServerList implements EventListener {
 
 	@Override
 	public void listen(Event event) {
-		Loader.plugin.getLogger().info("OMG OMG");
 		if (event instanceof ServerListPingEvent) {
 			ServerListPingEvent e = (ServerListPingEvent) event;
-			Loader.plugin.getLogger().info("1");
-			// ServerListPingEvent e = (ServerListPingEvent) event;
 
 			if (!Loader.config.getBoolean("serverlist.enabled"))
 				return;
-			// TODO - if maintenance (mohlo by být přídáno do MOTD.getUsed() :D
 
-			Loader.plugin.getLogger().info("2");
 			String motd_name = MOTD.getUsed();
 
 			// MOTD
 			if (MOTD.getMotd(motd_name) != null)
 				e.setMotd(PlaceholderAPISupport.replace(MOTD.getMotd(motd_name), null, false, null));
-			Loader.plugin.getLogger().info("3");
 
 			// ONLINE
 			if (Loader.config.exists("serverlist." + motd_name + ".players.online"))
 				e.setOnlinePlayers(MOTD.getPlayers(motd_name, PlayersCountType.ONLINE));
-			Loader.plugin.getLogger().info("4");
 
 			// MAXIMAL
 			if (Loader.config.exists("serverlist." + motd_name + ".players.max"))
 				e.setMaxPlayers(MOTD.getPlayers(motd_name, PlayersCountType.MAX));
-			Loader.plugin.getLogger().info("5");
 
 			// PLAYERS
 			if (Loader.config.exists("serverlist." + motd_name + ".players.list") && !Loader.config.getStringList("serverlist." + motd_name + ".players.list").isEmpty()) {
@@ -71,12 +63,10 @@ public class ServerList implements EventListener {
 								Loader.config.getString("serverlist." + motd_name + ".players.playername-format"), player, true, null));
 				}
 			}
-			Loader.plugin.getLogger().info("6");
 
 			// ICON
 			if (MOTD.getIcon(motd_name) != null)
 				e.setFalvicon(MOTD.getIcon(motd_name));
-			Loader.plugin.getLogger().info("7");
 
 			// SERVER VERSION
 			if (MOTD.getVersion(motd_name) != null)
@@ -85,7 +75,6 @@ public class ServerList implements EventListener {
 			// PROTOCOL
 			if (MOTD.getProtocol(motd_name) != -1)
 				e.setProtocol(MOTD.getProtocol(motd_name));
-			Loader.plugin.getLogger().info("8");
 
 		}
 	}

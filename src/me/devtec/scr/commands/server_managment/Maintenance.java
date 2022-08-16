@@ -46,7 +46,7 @@ public class Maintenance implements ScrCommand {
 		.argument("off", (s, structure, args) -> {
 			Loader.data.set("maintenance", false);
 			Loader.data.save();
-			MessageUtils.message(s, configSection()+".enable", 
+			MessageUtils.message(s, configSection()+".disable", 
 					Placeholders.c().addPlayer("player", s), API.getOnlinePlayersWith(permission("cmd")).toArray(new CommandSender[0]) );
 		})
 		.build().register(cmds.remove(0), cmds.toArray(new String[0]));

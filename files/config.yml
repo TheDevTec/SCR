@@ -87,6 +87,28 @@ serverlist:
     serverversion: ""
     # Leave -1 for current protocol
     protocol: -1
+  maintenance:
+    motd:
+      0: "&4&lServer is under maintenance"
+      1: "&7Try again later..."
+    icon: "server-icon.png"
+    players:
+      # If vanished players should be shown
+      hide-vanished: false
+      playername-format: "%player%"
+      # If you want custom text instead of players, edit this:
+      list:
+      - "&4&lServer is under maintenance"
+      # Fake number of online players
+      # %online% --> default
+      online: "%online%"
+      # Fake number of max online players
+      # %max_players% --> default
+      max: "%max_players%"
+    # Leave empty (serverversion: "") for default
+    serverversion: ""
+    # Leave -1 for current protocol
+    protocol: -1
 
 # Limit of homes for each group
 # Please do not delete 'default'

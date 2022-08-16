@@ -30,7 +30,8 @@ public class PlayerJoin implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void login(PlayerLoginEvent e) {
 		Player p = e.getPlayer();
-		if(Loader.data.getBoolean("maintenance")) {
+		if(Loader.data.getBoolean("maintenance") && 
+				!p.hasPermission(Loader.commands.getString("maintenance.permission.bypass"))) {
 			String kick = "";
 			for(String s : Loader.translations.getStringList("maintenance.kickMessages"))
 				if(s.endsWith("\n"))

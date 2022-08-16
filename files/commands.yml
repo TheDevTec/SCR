@@ -591,6 +591,7 @@ maintenance:
     usage: "/maintenance [on/off]"
   permission:
     cmd: "scr.command.maintenance"
+    bypass: "scr.command.maintenance.bypass"
 
 # # # # # # # # # #
 # # # Message # # #
