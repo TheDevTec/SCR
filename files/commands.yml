@@ -583,6 +583,15 @@ chunks:
   permission:
     cmd: "scr.command.chunks"
 
+maintenance:
+  enabled: true
+  cmds:
+  - "maintenance"
+  help:
+    usage: "/maintenance [on/off]"
+  permission:
+    cmd: "scr.command.maintenance"
+
 # # # # # # # # # #
 # # # Message # # #
 # # # # # # # # # #

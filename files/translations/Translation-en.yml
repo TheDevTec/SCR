@@ -326,6 +326,16 @@ chatlock:
   enabled: "%prefix% &7Chat is now locked"
   disabled: "%prefix% &7Chat is unlocked"
 
+maintenance:
+  info: "%prefix% Maintenance is %status%"
+  enable: "%prefix% Maintenance mode turned &eon"
+  disable: "%prefix% Maintenance mode turned &eoff"
+  kickMessages:
+  - "&8=-=-=-=-=-= &eMaintenance Mode &8=-=-=-=-=-="
+  - "&7We are sorry &e%player%&7, the server is currently under maintenance mode"
+  - "&7Website: &ewww.example.com"
+  - "&7Discord: &ediscord.link"
+
 # # # # # # # # #
 # # # Info  # # #
 # # # # # # # # #

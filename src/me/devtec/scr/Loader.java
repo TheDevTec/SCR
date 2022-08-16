@@ -112,13 +112,10 @@ public class Loader extends JavaPlugin {
 	}
 
 	private void loadListeners() {
-		if (joinListenerConfig.getBoolean("enabled")) {
-			getLogger().info("[Listener] Registering PlayerJoin listener.");
-			registerListener(new PlayerJoin(joinListenerConfig));
-		} else {
-			joinListenerConfig.clear();
-			joinListenerConfig = null;
-		}
+		//Join listener (messages, maintenance)
+		getLogger().info("[Listener] Registering PlayerJoin listener.");
+		registerListener(new PlayerJoin(joinListenerConfig));
+		
 		if (quitListenerConfig.getBoolean("enabled")) {
 			getLogger().info("[Listener] Registering PlayerQuit listener.");
 			registerListener(new PlayerQuit(quitListenerConfig));
