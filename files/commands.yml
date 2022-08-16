@@ -291,6 +291,17 @@ enchanting:
   permission:
     cmd: "scr.command.enchanting"
     other: "scr.command.enchanting.other"
+
+repair:
+  enabled: true
+  cmds:
+  - "repair"
+  help:
+    usage: "/repair [ALL/player] [ALL]"
+  permission:
+    cmd: "scr.command.repair"
+    all: "scr.command.repair.all"
+    other: "scr.command.repair.other"
     
 # # # # # # # # # #
 # # # # Fun # # # #
@@ -695,6 +706,16 @@ seen:
   permission:
     cmd: "scr.command.seen"
     other: "scr.command.seen.other"
+
+uuid:
+  enabled: true
+  cmds:
+  - "uuid"
+  help:
+    usage: "/uuid [player]"
+  permission:
+    cmd: "scr.command.uuid"
+    other: "scr.command.uuid.other"
 
 # # # # # # # # # # #
 # # # TpSystem  # # #

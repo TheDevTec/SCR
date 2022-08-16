@@ -6,6 +6,8 @@ missing:
   number: "%prefix% Wrong number! Try again..."
   world: "%prefix% Wron world!"
   playerDontExist: "%prefix% Player %player% does not exist... Try again..."
+  handEmpty: "%prefix% Your hand is empty!"
+  targetHandEmpty: "%prefix% &e%player%&7's hand is empty"
   
 # Translations for cooldowns
 # %time% - time formatted (10min5s)
@@ -34,7 +36,10 @@ time:
   night: "%prefix% You set &enight &7in world &e%world%"
   midnight: "%prefix% You set &emidnight &7in world &e%world%"
   
-# Fun
+# # # # # # # #
+# # # Fun # # #
+# # # # # # # #
+
 fly:
   enabled: "%prefix% Fly &aenabled"
   disabled: "%prefix% Fly &cdisabled"
@@ -95,7 +100,6 @@ walkspeed:
   other:
     sender: "%prefix% &e%target%&7's walkspeed  has been set to &e%speed%"
     receiver: "%prefix% Your walkspeed has been set to &e%speed%"
-
 
 # Teleport
 warp:
@@ -204,6 +208,18 @@ loom:
     sender: "%prefix% Opening loom to player &e%target%"
     target: "%prefix% Opening loom"
 
+repair:
+  hand:
+    you: "%prefix% You repaired item in your hand"
+    other:
+      sender: "%prefix% You repaired item in &e%target%&7's hand"
+      receiver: "%prefix% Item in your hand has been repaired"
+  all:
+    you: "%prefix% You repaired all items in your inventory"
+    other:
+      sender: "%prefix% You repaired all items in &e%target%&7's inventory"
+      receiver: "%prefix% All items in your inventory has been repaired"
+      
 # # # # # # # # # # # #
 # # # # Economy # # # #
 # # # # # # # # # # # #
@@ -363,6 +379,10 @@ ping:
 seen:
   online: "%prefix% &e%player%&7 is &aonline &7for &a%time%"
   offline: "%prefix% &e%player%&7 is &coffline &7for &c%time%"
+
+uuid:
+  self: "%prefix% Your UUID is &e%uuid%"
+  target: "%prefix% UUID of player &e%target% &7is &e%uuid%"
 
 # # # # # # # # # # #
 # # # TpSystem  # # #
