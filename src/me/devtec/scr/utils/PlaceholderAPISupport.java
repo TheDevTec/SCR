@@ -6,7 +6,9 @@ import org.bukkit.entity.Player;
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
+import me.devtec.scr.api.API;
 import me.devtec.scr.api.ScrEconomy;
+import me.devtec.scr.api.User;
 import me.devtec.scr.commands.info.Ping;
 import me.devtec.scr.commands.server_managment.Memory;
 import me.devtec.scr.commands.server_managment.TPS;
@@ -35,6 +37,7 @@ public class PlaceholderAPISupport {
 		
 		if(s!=null && s instanceof Player) {
 			Player p = (Player) s;
+			User user = API.getUser(p);
 			placeholders.addPlayer("player", p);
 			/* %money_symbol% - money symbol
 			 * %money% - vault format (probably with currency symbol?)
@@ -112,7 +115,16 @@ public class PlaceholderAPISupport {
 			 * %god%
 			 * %fly%
 			 */
-			
+			if(text.contains("%god%"))
+				if(user.haveGod())
+					placeholders.add("god", Loader.placeholders.getString("god.enabled"));
+				else
+					placeholders.add("god", Loader.placeholders.getString("god.disabled"));
+			if(text.contains("%fly%"))
+				if(user.haveFly())
+					placeholders.add("fly", Loader.placeholders.getString("fly.enabled"));
+				else
+					placeholders.add("fly", Loader.placeholders.getString("fly.disabled"));
 			/*
 			 * %online%
 			 * %online_max% 

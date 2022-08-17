@@ -57,6 +57,8 @@ public class Loader extends JavaPlugin {
 	public static Config quitListenerConfig;
 	public static Config tablistConfig;
 	public static Config scoreboardConfig;
+	public static Config placeholders;
+	
 	public static Tablist tablist;
 	public ScoreboardManager scoreboard;
 

@@ -1,0 +1,8 @@
+god:
+  enabled: "On"
+  disabled: "Off"
+
+fly:
+  enabled: "On"
+  disabled: "Off"
+

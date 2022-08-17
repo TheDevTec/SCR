@@ -43,6 +43,8 @@ public class Configs {
 			Loader.quitListenerConfig = loadAndMerge("events/quit-listener.yml", "events/quit-listener.yml");
 		if(config.equalsIgnoreCase("chat"))
 			Loader.chat = loadAndMerge("chat.yml", "chat.yml");
+		if(config.equalsIgnoreCase("placeholders"))
+			Loader.placeholders = loadAndMerge("placeholders.yml", "placeholders.yml");
 
 		temp_data.clear();
 		temp_data = null; // clear cache
@@ -64,6 +66,7 @@ public class Configs {
 		Loader.scoreboardConfig = loadAndMerge("scoreboard.yml", "scoreboard.yml");
 		Loader.data = loadAndMerge("data.yml", "data.yml");
 		Loader.chat = loadAndMerge("chat.yml", "chat.yml");
+		Loader.placeholders = loadAndMerge("placeholders.yml", "placeholders.yml");
 
 		loadAndMerge("translations/Translation-en.yml", "translations/Translation-en.yml");
 		loadAndMerge("translations/Translation-cz.yml", "translations/Translation-cz.yml");
