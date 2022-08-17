@@ -98,6 +98,14 @@ public class API {
 		}
 		return list;
 	}
+	public static List<CommandSender> getOnlinePlayersWithout(String permission) {
+		List<CommandSender> list = new ArrayList<>();
+		for(CommandSender p: getOnlinePlayers(false)) {
+			if(!p.hasPermission(permission) && !list.contains(p))
+				list.add(p);
+		}
+		return list;
+	}
 	//VANISH
 	public static boolean isVanished(Player p) {
 		return false;

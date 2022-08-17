@@ -308,6 +308,11 @@ broadcast: "%prefix% %message%"
 
 sudo: "%prefix% You send &e%thing% &7as player &e%target%"
 
+clearchat:
+  cleared: "%prefix% Chat has been cleared by &e%player%"
+  specific:  "%prefix% Chat of player &e%target% &7has been cleared"
+  bypass: "%prefix% &e%target% &7ave bypass permission"
+
 # # # # # # # # # # # # # #
 # # # ServerManagment # # #
 # # # # # # # # # # # # # #

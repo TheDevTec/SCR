@@ -673,6 +673,17 @@ sudo:
   permission:
     cmd: "scr.command.sudo"
     
+clearchat:
+  enabled: true
+  cmds:
+  - "clearchat"
+  help:
+    usage: "/clearchat [player]"
+  permission:
+    cmd: "scr.command.clearchat"
+    other: "scr.command.clearchat.other"
+    bypass: "scr.command.clearchat.bypass"
+    
 # # # # # # # # #
 # # # Info  # # #
 # # # # # # # # #
