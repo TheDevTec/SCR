@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils.Placeholders;
+import me.devtec.scr.api.API;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.listeners.fun.AntiFallDamage;
 import me.devtec.shared.commands.selectors.Selector;
@@ -90,10 +91,12 @@ public class Fly implements ScrCommand {
 				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
-	public void apply(Player p, boolean status) {
+	// status == false -- turning fly ON
+	public static void apply(Player p, boolean status) {
 		if (status) {
 			p.setFlying(false);
 			p.setAllowFlight(false);
+			API.getUser(p).saveFly(false);
 			if (!p.isOnGround()) {
 				antiFall.add(p.getUniqueId());
 				new Tasker() {
@@ -118,6 +121,7 @@ public class Fly implements ScrCommand {
 		} else {
 			p.setAllowFlight(true);
 			antiFall.remove(p.getUniqueId());
+			API.getUser(p).saveFly(true);
 			if (!p.isOnGround())
 				p.setFlying(true);
 		}

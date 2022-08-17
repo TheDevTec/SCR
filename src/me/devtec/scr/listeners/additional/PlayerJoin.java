@@ -14,6 +14,8 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
+import me.devtec.scr.api.User;
+import me.devtec.scr.commands.fun.Fly;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.scheduler.Tasker;
@@ -70,6 +72,16 @@ public class PlayerJoin implements Listener {
 				}.runTask();
 			}
 		}
-		API.getUser(event.getPlayer()).joinTime();
+		Player player = event.getPlayer();
+		User user = API.getUser(player);
+		user.joinTime();
+		//On join with turned fly on
+		if(user.haveFly()) {
+			Fly.apply(player, false); //false - turning on
+			MessageUtils.message(player, "fly.stillenabled", null);
+		}
+		if(user.haveGod()) {
+			MessageUtils.message(player, "god.stillenabled", null);
+		}
 	}
 }

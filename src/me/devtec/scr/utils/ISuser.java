@@ -38,4 +38,11 @@ public interface ISuser {
 	public void joinTime();
 	public long getSeen(SeenType type);
 	
+	//GOD
+	public boolean haveGod();
+	public void saveGod(boolean status);
+	//FLY
+	public boolean haveFly();
+	public void saveFly(boolean status);
+	
 }

@@ -20,7 +20,7 @@ public class ClearChat implements ScrCommand {
 		//clearchat [player] [-s
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			clearChat(null, permission("bypass"));
-			MessageUtils.message(s, "clearchat", Placeholders.c().addPlayer("player", s),
+			MessageUtils.message(s, "clearchat.cleared", Placeholders.c().addPlayer("player", s),
 					true, API.getOnlinePlayers(true).toArray(new CommandSender[0]));
 		})
 		.permission(permission("cmd"))
@@ -31,12 +31,12 @@ public class ClearChat implements ScrCommand {
 				for(Player p : playerSelectors(s, args[0])) {
 					if(p.getName().equalsIgnoreCase(s.getName())) // s is p
 						continue;
-					if(hasPermission(p, permission("bypass")) && !p.getName().equalsIgnoreCase(s.getName()))
-						msg(s, "bypass", Placeholders.c().addPlayer("target", p));
+					if(hasPermission(p, "bypass") && !p.getName().equalsIgnoreCase(s.getName()))
+						msgSec(s, "bypass", Placeholders.c().addPlayer("target", p));
 					else {
 						clearChat(p, permission("bypass"));
-						msg(s, "specific", Placeholders.c().addPlayer("target", p));
-						msg(p, "cleared", Placeholders.c().addPlayer("player", s));
+						msgSec(s, "specific", Placeholders.c().addPlayer("target", p));
+						msgSec(p, "cleared", Placeholders.c().addPlayer("player", s));
 					}
 				}
 			})
@@ -44,8 +44,8 @@ public class ClearChat implements ScrCommand {
 					for(Player p : playerSelectors(s, args[0])) {
 						if(p.getName().equalsIgnoreCase(s.getName())) // s is p
 							continue;
-						if(hasPermission(p, permission("bypass")) && !p.getName().equalsIgnoreCase(s.getName()))
-							msg(s, "bypass", Placeholders.c().addPlayer("target", p));
+						if(hasPermission(p, "bypass") && !p.getName().equalsIgnoreCase(s.getName()))
+							msgSec(s, "bypass", Placeholders.c().addPlayer("target", p));
 						else {
 							clearChat(p, permission("bypass"));
 						}

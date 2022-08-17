@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils.Placeholders;
+import me.devtec.scr.api.API;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.listeners.fun.AntiDamage;
 import me.devtec.shared.Ref;
@@ -122,17 +123,23 @@ public class God implements ScrCommand {
 	}
 
 	public void applyLegacy(Player p, boolean status) {
-		if (status)
+		if (status) {
 			antiDamage.remove(p.getUniqueId());
-		else
+			API.getUser(p).saveGod(false);
+		} else {
 			antiDamage.add(p.getUniqueId());
+			API.getUser(p).saveGod(true);
+		}
 	}
 
 	public void applyModern(Player p, boolean status) {
-		if (status)
+		if (status) {
 			p.setInvulnerable(false);
-		else
+			API.getUser(p).saveGod(false);
+		}else {
 			p.setInvulnerable(true);
+			API.getUser(p).saveGod(true);
+		}
 	}
 
 	@Override

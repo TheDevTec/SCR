@@ -210,4 +210,26 @@ public class User implements ISuser {
 		return a;
 	}
 
+	// GOD
+	public boolean haveGod() {
+		return getUserConfig().getBoolean("god");
+	}
+	
+	public void saveGod(boolean status) {
+		Config c = getUserConfig();
+		c.set("god", status);
+		c.save();
+	}
+
+	// GOD
+	public boolean haveFly() {
+		return getUserConfig().getBoolean("fly");
+	}
+	
+	public void saveFly(boolean status) {
+		Config c = getUserConfig();
+		c.set("fly", status);
+		c.save();
+	}
+	
 }

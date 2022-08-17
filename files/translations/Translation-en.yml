@@ -43,6 +43,8 @@ time:
 fly:
   enabled: "%prefix% Fly &aenabled"
   disabled: "%prefix% Fly &cdisabled"
+  # If player joins with Fly enabled
+  stillenabled: "%prefix% &eYour Fly is still enabled"
   other:
     enabled:
       sender: "%prefix% &aEnabled &7fly for player &e%target%"
@@ -54,6 +56,8 @@ fly:
 god:
   enabled: "%prefix% God enabled"
   disabled: "%prefix% God disabled"
+  # If player joins with God enabled
+  stillenabled: "%prefix% &eYour God is still enabled"
   other:
     enabled:
       sender: "%prefix% &aEnabled &7god mode for player &e%target%"
@@ -311,7 +315,7 @@ sudo: "%prefix% You send &e%thing% &7as player &e%target%"
 clearchat:
   cleared: "%prefix% Chat has been cleared by &e%player%"
   specific:  "%prefix% Chat of player &e%target% &7has been cleared"
-  bypass: "%prefix% &e%target% &7ave bypass permission"
+  bypass: "%prefix% &e%target% &7have bypass permission"
 
 # # # # # # # # # # # # # #
 # # # ServerManagment # # #

@@ -38,11 +38,24 @@ public class Sudo implements ScrCommand {
 					for(Player p : playerSelectors(s, args[0])) {
 						String thing = StringUtils.buildString(1, args);
 						if(thing.startsWith("/")) { //Command
-							sudo(p, SudoType.COMMAND, thing);
+							sudo(p, SudoType.COMMAND, thing.replaceFirst("/", ""));
 						}else
 							sudo(p, SudoType.CHAT, thing);
 						msg(s, "sudo", Placeholders.c().addPlayer("target", p).add("thing", thing));
 					}
+				})
+			.parent() // sudo [player]
+		.parent() // sudo
+			.argument("CONSOLE", (s, structure, args) -> { // sudo console
+				help(s, "usage");
+			})
+				.argument(null, (s, structure, args) -> { //sudo console [thing]
+					String thing = StringUtils.buildString(1, args);
+					if(thing.startsWith("/")) { //Command
+						sudoConsole(SudoType.COMMAND, thing.replaceFirst("/", ""));
+					}else
+						sudoConsole(SudoType.CHAT, thing);
+					msg(s, "sudo", Placeholders.c().addPlayer("target", Bukkit.getConsoleSender()).add("thing", thing));
 				})
 		.build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
