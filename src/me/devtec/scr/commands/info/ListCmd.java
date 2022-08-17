@@ -27,7 +27,7 @@ public class ListCmd implements ScrCommand {
 			List<Player> staff = new ArrayList<>();
 			List<Player> players = new ArrayList<>();
 
-			for (Player player : API.getPlayers(s))
+			for (Player player : API.getOnlinePlayersFor(s))
 				if (staff_groups.contains(Tablist.getVaultGroup(player)))
 					staff.add(player);
 				else

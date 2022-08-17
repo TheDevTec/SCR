@@ -395,6 +395,11 @@ uuid:
   self: "%prefix% Your UUID is &e%uuid%"
   target: "%prefix% UUID of player &e%target% &7is &e%uuid%"
 
+afk:
+  start: "%prefix% &e%player% &7is AFK"
+  start_reson: "%prefix% &e%player% &7is AFK &7(&e%reason%&7)"
+  end: "%prefix% &e%player%&7 is no longer AFK"
+
 # # # # # # # # # # #
 # # # TpSystem  # # #
 # # # # # # # # # # #

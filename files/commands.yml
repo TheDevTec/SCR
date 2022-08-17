@@ -737,6 +737,18 @@ uuid:
     cmd: "scr.command.uuid"
     other: "scr.command.uuid.other"
 
+afk:
+  enabled: true
+  cmds:
+  - "afk"
+  help:
+    usage: "/afk [player]"
+  permission:
+    cmd: "scr.command.afk"
+    other: "scr.command.afk.other"
+    # Kick bypass
+    bypass: "scr.command.afk.other"
+
 # # # # # # # # # # #
 # # # TpSystem  # # #
 # # # # # # # # # # #

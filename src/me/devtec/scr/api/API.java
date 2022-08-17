@@ -71,7 +71,10 @@ public class API {
 		return Bukkit.getPlayer(getUser(name).getRealName());
 	}
 	
-	//ONLINE PLAYERS
+	/*
+		ONLINE PLAYERS
+	*/
+	
 	public static List<CommandSender> getOnlinePlayers(boolean console) {
 		List<CommandSender> list = new ArrayList<>();
 		list.addAll(BukkitLoader.getOnlinePlayers());
@@ -79,7 +82,8 @@ public class API {
 			list.add(Bukkit.getConsoleSender());
 		return list;
 	}
-	public static List<Player> getPlayers(CommandSender sender) {
+	// které sender vidí
+	public static List<Player> getOnlinePlayersFor(CommandSender sender) {
 		List<Player> list = new ArrayList<>();
 		//list.addAll(BukkitLoader.getOnlinePlayers());
 		for(Player target : BukkitLoader.getOnlinePlayers()) {
@@ -88,6 +92,16 @@ public class API {
 		}
 		return list;
 	}
+	public static List<CommandSender> getOnlinePlayersThatcanSee(CommandSender target, boolean console) {
+		List<CommandSender> list = new ArrayList<>();
+		//list.addAll(BukkitLoader.getOnlinePlayers());
+		for(CommandSender online : getOnlinePlayers(console)) {
+			if(canSee(online, target) && !list.contains(online))
+				list.add(online);
+		}
+		return list;
+	}
+	// kteří mají permisi
 	public static List<CommandSender> getOnlinePlayersWith(String permission) {
 		List<CommandSender> list = new ArrayList<>();
 		for(CommandSender p: getOnlinePlayers(true)) {
@@ -98,6 +112,7 @@ public class API {
 		}
 		return list;
 	}
+	// kteří nemají permisi
 	public static List<CommandSender> getOnlinePlayersWithout(String permission) {
 		List<CommandSender> list = new ArrayList<>();
 		for(CommandSender p: getOnlinePlayers(false)) {
@@ -107,10 +122,11 @@ public class API {
 		return list;
 	}
 	//VANISH
-	public static boolean isVanished(Player p) {
+	public static boolean isVanished(CommandSender p) {
+		//TODO
 		return false;
 	}
-	public static boolean canSee(CommandSender sender, Player target) { //if sender can see target
+	public static boolean canSee(CommandSender sender, CommandSender target) { //if sender can see target
 		if(!(sender instanceof Player))
 			return true;
 		if(!isVanished(target))

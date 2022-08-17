@@ -23,7 +23,7 @@ public class Staff implements ScrCommand {
 			List<Player> staff = new ArrayList<>();
 			List<String> staff_groups = Loader.config.getStringList("staff");
 
-			for(Player player : API.getPlayers((Player)s)) {
+			for(Player player : API.getOnlinePlayersFor((Player)s)) {
 				Bukkit.broadcastMessage(player.getName()+" ; "+Tablist.getVaultGroup(player));
 				if(staff_groups.contains(Tablist.getVaultGroup(player)))
 					staff.add(player);

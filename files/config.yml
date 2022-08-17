@@ -20,6 +20,19 @@ options:
   
   tp-accept_cooldown: 30
   
+  afk:
+    autoAFK: true
+    autoKick: true
+    times:
+      autoAFK: "5min"
+      autoKick: "10min"
+    # List of commands
+    actions:
+      onStart: []
+      onStop: []
+      onKick:
+      - "kick %player_name% &7You were kicked for &eAFK &7longer than 15 minutes"
+  
   colors:
     chat:
       rainbow: "scr.chat.rainbow"
