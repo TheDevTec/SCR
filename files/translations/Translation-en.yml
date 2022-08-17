@@ -306,6 +306,8 @@ helpop:
 
 broadcast: "%prefix% %message%"
 
+sudo: "%prefix% You send &e%thing% &7as player &e%target%"
+
 # # # # # # # # # # # # # #
 # # # ServerManagment # # #
 # # # # # # # # # # # # # #

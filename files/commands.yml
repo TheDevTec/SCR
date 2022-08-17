@@ -664,6 +664,15 @@ broadcast:
   permission:
     cmd: "scr.command.broadcast"
     
+sudo:
+  enabled: true
+  cmds:
+  - "sudo"
+  help:
+    usage: "/sudo [player] [message]"
+  permission:
+    cmd: "scr.command.sudo"
+    
 # # # # # # # # #
 # # # Info  # # #
 # # # # # # # # #
