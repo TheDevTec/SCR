@@ -153,6 +153,7 @@ public class Kit implements ScrCommand {
 						}
 					}
 				}).permission(permission("other"))
+				//TODO - dokončit kity, money targetu, cooldown targetu
 			
 		.build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
