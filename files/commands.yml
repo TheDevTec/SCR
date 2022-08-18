@@ -831,6 +831,20 @@ back:
     other: "scr.command.back.other"
 
 
+# # # # # # # # #
+# # # KIts  # # #
+# # # # # # # # #
+
+kit:
+  enabled: true
+  cmds:
+  - "kit"
+  help:
+    usage: "/kit [kit]"
+    admin: "/kit [kit] [player]"
+  permission:
+    cmd: "scr.command.kit"
+    other: "scr.command.kit.other"
 
 
 

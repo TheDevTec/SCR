@@ -447,4 +447,26 @@ back:
   sender: "%prefix% Teleporting &e%target% &7back to previous location"
 
 
+# # # # # # # # #
+# # # KIts  # # #
+# # # # # # # # #
+
+kit:
+  notFound: "%prefix% Kit &e%kit% &7 does not exist"
+  used: "%prefix% You used the &e%kit% &7kit"
+  notEnoughMoney: "%prefix% You do not have enough money (&e%money%&7)"
+  cooldown: "%prefix% You have to wait &e%time% &7to use kit &e%kit%"
+  give:
+    sender: "%prefix% You gave the &e%kit% &7kit to &e%target%"
+    receiver: "%prefix% You received the &e%kit% &7kit"
+
+
+
+
+
+
+
+
+
+
 

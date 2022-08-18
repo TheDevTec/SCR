@@ -1,0 +1,73 @@
+name: "example"
+displayName: "&7Example kit"
+enabled: true
+permission: "scr.command.kit.example"
+
+cost: "0"
+cooldown: "60"
+
+commands: []
+messages: []
+
+items:
+  add:
+    stone:
+      type: "STONE"
+      amount: 12
+      displayName: "&uMagic stone"
+      lore:
+      - "&7This stone is so magical, it can push enemies"
+      enchants:
+      - "KNOCKBACK:5"
+  # Or you can set item in specific inventory slot 
+  #set:
+    #<slot>
+      #type: .... 
+    
+
+#  Item options:
+#Availible types: MATERIAL (or ID), BANNER, LEATHER_.., PLAYER_HEAD, POTION, ENCHANTED_BOOK, WRITTEN_BOOK (WRITABLE_BOOK) 
+#type: ""
+#nbt: ""
+#amount: 1
+#damage: 5 //or durability
+#displayName: "Name"
+#lore:
+#- ""
+#unbreakable: true/false
+# You can find ItemFlags at: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/inventory/ItemFlag.html
+#itemFlags:
+#- "FLAG"
+#modelData: 1
+#
+#banner:
+#  You can find availible patterns at: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/banner/PatternType.html
+#  Pleasu use this format: "COLOR:PATTERN"
+#  patterns:
+#  - "RED:STRIPE_TOP" // "COLOR:PATTERN"
+#leather:
+#  color: "RGB"
+#head:
+#  You can use this types: PLAYER, VALUES, URL
+#  type: ""
+#  owner: ""
+#potion:
+#  Availible potion types: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html
+#  You can find effects here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
+#  type: ""
+#  Please use format: "EFFECT:duration:amplifier:ambient:particles"
+#  effects:
+#  - "BAD_OMEN:50:2:true:true"
+#You can find availible encahnts at: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html
+#Please use format: "ENCHANT:level"
+#If type is ENENCHANTED_BOOK, then the book will have these encahnts
+#enchants:
+#- "KNOCKBACK:5"
+#book:
+#  author: ""
+#  Availible generations: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/inventory/meta/BookMeta.Generation.html
+#  generation: ""
+#  title: ""
+#  pages:
+#  - "page1 ....."
+#  - "page 2 ...."
