@@ -412,6 +412,16 @@ walkspeed:
   permission:
     cmd: "scr.command.walkspeed"
     other: "scr.command.walkspeed.other"
+
+hat:
+  enabled: true
+  cmds:
+  - "hat"
+  help:
+    usage: "/hat [player]"
+  permission:
+    cmd: "scr.command.hat"
+    other: "scr.command.hat.other"
     
 # # # # # # # # # # # #
 # # # # Economy # # # #

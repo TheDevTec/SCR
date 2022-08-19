@@ -15,7 +15,6 @@ import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.commands.message.Sudo;
 import me.devtec.scr.commands.message.Sudo.SudoType;
 import me.devtec.scr.listeners.AFKListeners;
-import me.devtec.scr.listeners.fun.AntiFallDamage;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
@@ -46,7 +45,6 @@ public class AFK implements ScrCommand {
 				players.put(s.getName(), System.currentTimeMillis()/1000);
 				MessageUtils.message(s, configSection()+".start", Placeholders.c().addPlayer("player", s)
 						, false, API.getOnlinePlayersThatcanSee(s, true).toArray(new CommandSender[0]));
-				//TODO - task
 			}
 		}).cooldownDetection((s, structure, args) -> inCooldown(s))
 		.permission(permission("cmd"))
@@ -55,7 +53,6 @@ public class AFK implements ScrCommand {
 					players.remove(s.getName());
 				}else { //turn on
 					players.put(s.getName(), System.currentTimeMillis()/1000);
-					//TODO - task
 				}
 			}).priority(1)
 		.parent() // afk
@@ -69,7 +66,6 @@ public class AFK implements ScrCommand {
 				MessageUtils.message(s, configSection()+".start_reson",
 						Placeholders.c().addPlayer("player", s).add("reason", StringUtils.buildString(args))
 						, false, API.getOnlinePlayersThatcanSee(s, true).toArray(new CommandSender[0]));
-				//TODO - task
 			}
 		}).priority(2)
 		.first() // afk
@@ -86,7 +82,6 @@ public class AFK implements ScrCommand {
 						players.put(p.getName(), System.currentTimeMillis()/1000);
 						MessageUtils.message(p, configSection()+".start", Placeholders.c().addPlayer("player", p)
 								, false, API.getOnlinePlayersThatcanSee(p, true).toArray(new CommandSender[0]));
-						//TODO - task
 					}
 				}
 			}).permission(permission("other"))
@@ -96,7 +91,6 @@ public class AFK implements ScrCommand {
 							players.remove(p.getName());
 						}else { //turn on
 							players.put(p.getName(), System.currentTimeMillis()/1000);
-							//TODO - task
 						}
 					}
 				})
@@ -112,7 +106,6 @@ public class AFK implements ScrCommand {
 						MessageUtils.message(p, configSection()+".start_reson",
 								Placeholders.c().addPlayer("player", p).add("reason", StringUtils.buildString(1, args))
 								, false, API.getOnlinePlayersThatcanSee(p, true).toArray(new CommandSender[0]));
-						//TODO - task
 					}
 				}
 			})

@@ -22,7 +22,6 @@ public class AFKListeners implements Listener {
 		AFK.update(e.getPlayer());
 	}
 	
-	@SuppressWarnings("unlikely-arg-type")
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onInteract(PlayerInteractEvent e) {
 		if(AFK.players.containsKey(e.getPlayer().getName())) {

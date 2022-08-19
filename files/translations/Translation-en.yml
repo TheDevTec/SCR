@@ -106,6 +106,14 @@ walkspeed:
     sender: "%prefix% &e%target%&7's walkspeed  has been set to &e%speed%"
     receiver: "%prefix% Your walkspeed has been set to &e%speed%"
 
+hat:
+  fullInv: "%prefix% %target%'s inventory is full. You cannot set item."
+  equipped:
+    you: "%prefix% Item from your hand has been equipped to your head"
+    other:
+      sender: "%prefix% You equipped item from your hand to &e%target%&7's head"
+      receiver: "%prefix% &e%player%&7 equipped item &e%item%&7 to your head"
+  
 # Teleport
 warp:
   list: "%prefix% List of available warps: &e%warps%"
