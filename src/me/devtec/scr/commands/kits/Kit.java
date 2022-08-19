@@ -22,9 +22,10 @@ import net.milkbowl.vault.economy.Economy;
 
 public class Kit implements ScrCommand {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void init(List<String> cmds) {
+		
+		KitUtils.loadKits();
 		
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			if(hasPermission(s, "other") || !(s instanceof Player))

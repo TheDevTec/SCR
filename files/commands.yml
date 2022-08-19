@@ -852,6 +852,30 @@ kit:
     cmd: "scr.command.kit"
     other: "scr.command.kit.other"
 
+kiteditor:
+  enabled: true
+  cmds:
+  - "kiteditor"
+  help:
+    usage:
+    - "/kiteditor list"
+    - "/kiteditor create [name]"
+    - "/kiteditor delete [name]"
+    - "/kiteditor item [kit] add [id] - Use this command to add items if you don't know what you are doing"
+    - "/kiteditor item [kit] set [slot] - Slot: 0-35"
+    - "/kiteditor item remove [id]"
+    create: "/kiteditor create [name]"
+    delete: "/kiteditor delete [name]"
+    item:
+    - "/kiteditor item [kit] add [id] - Use this command to add items if you don't know what you are doing"
+    - "/kiteditor item [kit] set [slot] - Slot: 0-35"
+    - "/kiteditor item remove [id]"
+  permission:
+    cmd: "scr.command.kiteditor"
+    create: "scr.command.kiteditor.create"
+    delete: "scr.command.kiteditor.delete"
+    item: "scr.command.kiteditor.item"
+
 
 
 

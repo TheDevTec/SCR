@@ -45,6 +45,33 @@ public class KitUtils {
 		}
 		return Collections.emptyList();
 	}
+	public static boolean kitExist(String kit) {
+		if(loaded_kits.containsKey(kit))
+			return true;
+		File file = new File("plugins/SCR/kits/"+kit+".yml");
+		return file.exists();
+	}
+	//CREATE | DELETE
+	public static void createKit(String kit) {
+
+		File file = new File("plugins/SCR/kits/"+kit+".yml");
+		Config c = new Config(file);
+		c.set("enabled", true);
+		c.set("name", kit);
+		c.set("permission", "scr.command.kit."+kit);
+		c.save();
+		if(!loaded_kits.containsKey(c.getString("name"))) {
+			loaded_kits.put(c.getString("name"), new Kit(c));
+		}
+	}
+	public static void deleteKit(String kit) {
+		File file = new File("plugins/SCR/kits/"+kit+".yml");
+		Config c = new Config(file);
+		if(loaded_kits.containsKey(c.getString("name"))) {
+			loaded_kits.remove(c.getString("name"));
+			file.delete();
+		}
+	}
 	
 	
 	public static class Kit {
@@ -59,7 +86,9 @@ public class KitUtils {
 			return config.getString("name");
 		}
 		public String displayName() {
-			return StringUtils.colorize(config.getString("displayName"));
+			if(config.exists("displayName"))
+				return StringUtils.colorize(config.getString("displayName"));
+			return config.getString("name");
 		}
 		public String permission() {
 			return config.getString("permission");
@@ -103,6 +132,18 @@ public class KitUtils {
 					p.getInventory().addItem(getItem("items.set."+item));
 				}
 			}
+		}
+		public List<String> getItems() {
+			List<String> list = new ArrayList<>();
+			
+			for(String names : config.getKeys("items.add")) {
+				list.add(names);
+			}
+			for(String slots : config.getKeys("items.set")) {
+				list.add(slots);
+			}
+			
+			return list;
 		}
 	}
 }
