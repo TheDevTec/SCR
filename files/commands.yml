@@ -841,7 +841,13 @@ kit:
   - "kit"
   help:
     usage: "/kit [kit]"
-    admin: "/kit [kit] [player]"
+    admin:
+    - "/kit [kit] [player] -{aditional}"
+    - "Aditional:"
+    - " -c without cooldown"
+    - " -p without perm"
+    - " -e without economy check"
+    - " -s without messages"
   permission:
     cmd: "scr.command.kit"
     other: "scr.command.kit.other"
