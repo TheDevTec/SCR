@@ -19,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.devtec.scr.api.ScrEconomy;
 import me.devtec.scr.commands.CustomCommands;
 import me.devtec.scr.commands.ScrCommand;
+import me.devtec.scr.commands.info.AFK;
 import me.devtec.scr.functions.ScoreboardManager;
 import me.devtec.scr.functions.Tablist;
 import me.devtec.scr.listeners.ServerList;
@@ -108,6 +109,7 @@ public class Loader extends JavaPlugin {
 			tablist.unloadTasks();
 		if (scoreboard != null)
 			scoreboard.unloadTasks();
+		AFK.stopTask();
 		//Placeholders
 		((PlaceholderExpansion) papi_theapi).unregister();
 		papi.unregister();

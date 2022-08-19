@@ -18,6 +18,7 @@ import me.devtec.scr.listeners.AFKListeners;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
+import me.devtec.shared.scheduler.Scheduler;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.utility.StringUtils;
 
@@ -135,8 +136,14 @@ public class AFK implements ScrCommand {
 	}
 	
 	
-	private int task;
+	private static int task = -1;
 	
+	public static void stopTask() {
+		if(task!= -1)
+			Scheduler.cancelTask(task);
+		players.clear();
+		last_interaction.clear();
+	}
 	private void startTask() {
 		
 		task = new Tasker() {

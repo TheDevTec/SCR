@@ -129,7 +129,7 @@ public class KitEditor implements ScrCommand {
 							Material hand = p.getItemInHand().getType();
 							if(hand != Material.AIR) {
 								kit.setItem("items.set."+slot, p.getItemInHand());
-								msgSec(s, "item.add", Placeholders.c()
+								msgSec(s, "item.set", Placeholders.c()
 										.add("kit", kit.displayName()).add("kit_name", kit.getName())
 										.add("slot", slot) );
 							} else

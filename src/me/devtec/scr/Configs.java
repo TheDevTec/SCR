@@ -79,6 +79,8 @@ public class Configs {
 
 		//CustomCommands example
 		loadAndMerge("custom commands/example.yml", "custom commands/example.yml");
+		//Kits example
+		loadAndMerge("kits/example.yml", "kits/example.yml");
 		
 		temp_data.clear();
 		temp_data = null; // clear cache

@@ -129,7 +129,7 @@ public class KitUtils {
 			}
 			if(config.exists("items.add")) {
 				for(String item : config.getKeys("items.add")) {
-					p.getInventory().addItem(getItem("items.set."+item));
+					p.getInventory().addItem(getItem("items.add."+item));
 				}
 			}
 		}

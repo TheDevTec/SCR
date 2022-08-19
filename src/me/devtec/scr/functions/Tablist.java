@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -69,16 +70,16 @@ public class Tablist {
 		}
 
 		if (config.getString("sortingBy").equalsIgnoreCase("group") && Loader.vault != null) {
-			for (String world : config.getKeys("perGroup")) {
-				TabSettings global = new TabSettings();
-				global.header = StringUtils.join(config.getStringList("perGroup." + world + ".header"), "\n");
-				global.footer = StringUtils.join(config.getStringList("perGroup." + world + ".footer"), "\n");
-				global.nametag_prefix = config.getString("perGroup." + world + ".nametag.prefix");
-				global.nametag_suffix = config.getString("perGroup." + world + ".nametag.suffix");
-				global.tabname = config.getString("perGroup." + world + ".tabname");
-				global.yellowNumber = config.getString("perGroup." + world + ".yellowNumber.value");
-				global.yellowNumberDisplay = config.getString("perGroup." + world + ".yellowNumber.display");
-				perGroup.put(world, global);
+			for (String group : config.getKeys("perGroup")) {
+				TabSettings gglobal = new TabSettings();
+				gglobal.header = StringUtils.join(config.getStringList("perGroup." + group + ".header"), "\n");
+				gglobal.footer = StringUtils.join(config.getStringList("perGroup." + group + ".footer"), "\n");
+				gglobal.nametag_prefix = config.getString("perGroup." + group + ".nametag.prefix");
+				gglobal.nametag_suffix = config.getString("perGroup." + group + ".nametag.suffix");
+				gglobal.tabname = config.getString("perGroup." + group + ".tabname");
+				gglobal.yellowNumber = config.getString("perGroup." + group + ".yellowNumber.value");
+				gglobal.yellowNumberDisplay = config.getString("perGroup." + group + ".yellowNumber.display");
+				perGroup.put(group, gglobal);
 			}
 			List<String> groups = config.getStringList("sorting");
 			int length = ("" + groups.size()).length() + 1;
@@ -182,9 +183,8 @@ public class Tablist {
 
 	public TabSettings getSettingsOf(Player player) {
 		TabSettings generated = new TabSettings();
-		// Copy settings from global
-		generated.copySettings(global);
-
+		
+		// first perplayer -> perWorld -> perGroup -> Global (default)
 		TabSettings settings = perPlayer.get(player.getName());
 		if (settings != null)
 			generated.copySettings(settings);
@@ -194,6 +194,9 @@ public class Tablist {
 		settings = perGroup.get(getVaultGroup(player));
 		if (settings != null)
 			generated.copySettings(settings);
+		// Copy settings from global
+		generated.copySettings(global);
+		
 		return generated;
 	}
 
@@ -236,13 +239,13 @@ public class Tablist {
 		public String header, footer, sorting, yellowNumber, yellowNumberDisplay, nametag_prefix, nametag_suffix, tabname;
 
 		public void copySettings(TabSettings global) {
-			if (yellowNumberDisplay == null && global.yellowNumberDisplay != null)
+			if (yellowNumberDisplay == null && global.yellowNumberDisplay != null && !global.yellowNumberDisplay.isEmpty())
 				yellowNumberDisplay = global.yellowNumberDisplay;
-			if (tabname == null && global.tabname != null)
+			if (tabname == null && global.tabname != null && !global.tabname.isEmpty())
 				tabname = global.tabname;
-			if (header == null && global.header != null)
+			if (header == null && global.header != null && !global.header.isEmpty())
 				header = global.header;
-			if (footer == null && global.footer != null)
+			if (footer == null && global.footer != null && !global.footer.isEmpty())
 				footer = global.footer;
 			if (nametag_prefix == null && global.nametag_prefix != null)
 				nametag_prefix = global.nametag_prefix;
@@ -250,16 +253,18 @@ public class Tablist {
 				nametag_suffix = global.nametag_suffix;
 			if (sorting == null && global.sorting != null)
 				sorting = global.sorting;
-			if (yellowNumber == null && global.yellowNumber != null)
+			if (yellowNumber == null && global.yellowNumber != null && !global.yellowNumber.isEmpty())
 				yellowNumber = global.yellowNumber;
 		}
 
 		public void replace(Player player) {
-			tabname = PlaceholderAPISupport.replace(tabname, player, true);
+			//tabname = PlaceholderAPISupport.replace(tabname, player, true);
 
 			if (yellowNumberDisplay != null)
 				yellowNumberDisplay = PlaceholderAPISupport.replace(yellowNumberDisplay, player, true);
+			
 			tabname = PlaceholderAPISupport.replace(tabname, player, true);
+			
 			header = PlaceholderAPISupport.replace(header, player, true);
 			footer = PlaceholderAPISupport.replace(footer, player, true);
 			nametag_prefix = PlaceholderAPISupport.replace(nametag_prefix, player, true);
@@ -274,9 +279,15 @@ public class Tablist {
 			Placeholders plac = Placeholders.c().addPlayer("player", player);
 			tabname = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac), player.getUniqueId());
 
+			Loader.plugin.getLogger().info(tabname);
 			if (yellowNumberDisplay != null)
 				yellowNumberDisplay = PlaceholderAPI.apply(MessageUtils.placeholder(player, yellowNumberDisplay, plac), player.getUniqueId());
 			tabname = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac), player.getUniqueId());
+			Loader.plugin.getLogger().info("2"+tabname);
+			tabname = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac), player.getUniqueId());
+			Loader.plugin.getLogger().info("3"+tabname);
+			tabname = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac), player.getUniqueId());
+			Loader.plugin.getLogger().info("4"+tabname);
 			header = PlaceholderAPI.apply(MessageUtils.placeholder(player, header, plac), player.getUniqueId());
 			footer = PlaceholderAPI.apply(MessageUtils.placeholder(player, footer, plac), player.getUniqueId());
 			nametag_prefix = PlaceholderAPI.apply(MessageUtils.placeholder(player, nametag_prefix, plac), player.getUniqueId());

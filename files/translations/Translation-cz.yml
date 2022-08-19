@@ -1,0 +1,483 @@
+offlinePlayer: "%prefix% hráč %player% není online"
+noPerms: "%prefix% &cNemáš dostatek práv. (&4%permission%&c)"
+
+missing:
+  material: "%prefix% Material &e%material% &7neexistuje."
+  number: "%prefix% Špatné číslo! Zkus to znovu..."
+  useWords: "%prefix% Prosímtě, tady čísla fakt nepoužívej."
+  world: "%prefix% Špatný svět!"
+  playerDontExist: "%prefix% Hráč %player% neexistuje! Zkus to znova."
+  handEmpty: "%prefix% Máš prázdnou ručičku."
+  targetHandEmpty: "%prefix% &7 Hráč &e%player%&7 má prázdné ručičky"
+
+# Translations for cooldowns
+# %time% - time formatted (10min5s)
+# %time_sec% - just number in seconds
+cooldowns:
+  messages: "%prefix% Počkej &e%time% &7před odesláním zprávy."
+  commands: "%prefix% Počkej &e%time% &7před odesláním commandu."
+
+# Translations for weather commands
+weather:
+  sun: "%prefix% Nastavil jsi &eslunečné &7v počasí ve světě &e%world%"
+  rain: "%prefix% Nastavil jsi &edeštivé &7počasí ve světě &e%world%"
+  thunder: "%prefix% Nastavil jsi &edeštivé &7počasí s &ebouřkou &7ve světě &e%world%"
+  pSun:
+    self: "%prefix% Nastavil jsi &eslunečné &7počasí pouze pro sebe."
+    sender: "%prefix% Nastavil jsi &eslunečné &7počasí pro &e%target%"
+    target: "%prefix% Hráč &e%player% &7nastavil tvé počasí na &eslunečno"
+  pRain:
+    self: "%prefix% Nastavil jsi &edeštivé &7počasí sám pro sebe."
+    sender: "%prefix% Nastavil jsi &edeštivé &7počasí pro &e%target%"
+    target: "%prefix% Hráč &e%player% &7nastavil tvé počasí na &epršivo"
+
+# Translations for time commands
+time:
+  day: "%prefix% Nastavil jsi &eden &7ve světě &e%world%"
+  night: "%prefix% Nastavil jsi &enoc &7ve světě &e%world%"
+  midnight: "%prefix% Nastavil jsi &epůlnoc &7ve světě &e%world%"
+
+# # # # # # # #
+# # # Fun # # #
+# # # # # # # #
+
+fly:
+  enabled: "%prefix% Létání &apovoleno"
+  disabled: "%prefix% Létání &czakázáno"
+  # If player joins with Fly enabled
+  stillenabled: "%prefix% &eLétání je stále povoleno"
+  other:
+    enabled:
+      sender: "%prefix% &aPovoleno &7létání pro hráče &e%target%"
+      target: "%prefix% Létání &apovoleno"
+    disabled:
+      sender: "%prefix% &cZakázáno &7létání pro hráče &e%target%"
+      target: "%prefix% Létání &czakázáno"
+
+god:
+  enabled: "%prefix% God povolen"
+  disabled: "%prefix% God zakázán"
+  # If player joins with God enabled
+  stillenabled: "%prefix% &eTvůj Bůh je stále povolen"
+  other:
+    enabled:
+      sender: "%prefix% &aPovolen &7god mode pro hráče &e%target%"
+      target: "%prefix% God &apovolen"
+    disabled:
+      sender: "%prefix% &cZakázán &7god mode pro hráče &e%target%"
+      target: "%prefix% God &czakázán"
+
+thor:
+  loc: "%prefix% Zasažená oblas se nachází ve světě %world% na %x%, %y%, %z%"
+  player: "%prefix% Zasáhl &e%target%!"
+
+nickname:
+  change:
+    sender: "%prefix% Změnil jsi přezdívku hráči &e%target% &7ne &e%nickname%"
+    target: "%prefix% Dostal jsi novou přezdívku: &e%nickname%"
+  reset:
+    sender: "%prefix% Resetoval jsi přezdívku hráče &e%target%"
+    target: "%prefix% Tvá přezdívka byla resetována."
+  list:
+    header: "&7Hráč &8&l| &ePřezdívka &8:"
+    format: "&7%name% &8» &e%nickname%"
+
+feed:
+  you: "%prefix% Byl jsi nakrmen"
+  other:
+    sender: "%prefix% &e%target% &7byl nakrmen"
+    receiver: "%prefix% Byl nakrmen"
+
+heal:
+  you: "%prefix% Byl jsi vyléčen"
+  other:
+    sender: "%prefix% &e%player% &7byl vyléčen"
+    receiver: "%prefix% byl jsi vyléčen"
+
+flyspeed:
+  you: "%prefix% Tvůj flyspeed byl nastaven na &e%speed%"
+  other:
+    sender: "%prefix% flyspeed hráče &e%target%&7 byl nastaven na &e%speed%"
+    receiver: "%prefix% Tvůj flyspeed byl nastaven na &e%speed%"
+
+walkspeed:
+  you: "%prefix% Tvůj walkspeed byl nastaven na &e%speed%"
+  other:
+    sender: "%prefix% Walkspeed hráče &e%target%&7 byl nastaven na &e%speed%"
+    receiver: "%prefix% Tvůj walkspeed byl nastaven na &e%speed%"
+
+hat:
+  fullInv: "%prefix% Inventář hráče %target% je plný. Nemůžeš si tedy nastavit čepku."
+  equipped:
+    you: "%prefix% Item z tvojí pacičky byl nastaven jako čepička."
+    other:
+      sender: "%prefix% Item z tvojí packy byl nastaven jako čepka hráče &e%target%&7."
+      receiver: "%prefix% Hráč &e%player%&7 ti dal &e%item%&7 na hlavu."
+
+# Teleport
+warp:
+  list: "%prefix% Seznam warpů: &e%warps%"
+  list_split: "&7, &e"
+  notFound: "%prefix% Warp jménem &e%warp% &7neexistuje."
+  self: "%prefix% Warpuju do &e%warp%..Wžůům"
+  cannot_teleport:
+    perm: "%prefix% Nemůžeš se teleportovat na &e%warp% &7, protože asi nemáš dost práv."
+    money: "%prefix% Nemáš dost penízků na teleportaci na warp &e%warp%"
+  other:
+    sender: "%prefix% Warpuji hráče %target% na %warp% warp."
+    target: "%prefix% Warpuji na %warp%.."
+
+setwarp:
+  created: "%prefix% Vytvořen warp &e%warp%"
+  already_exists: "%prefix% Warp &e%warp% &7už existuje."
+
+delwarp:
+  deleted: "%prefix% Warp &e%warp% byl smazán."
+  not_exists: "%prefix% Warp &e%warp% &7neexistuje."
+
+spawn:
+  self: "%prefix% Teleportuji tě na spawn."
+  other:
+    sender: "%prefix% Teleportuji %player% na spawn"
+    target: "%prefix% Teleportuji na spawn."
+
+setspawn: "%prefix% Spawn světa %world% byl nastaven na pozici na %x%, %y%, %z%, %yaw%, %pitch%"
+
+# # # # # # # # # #
+# # # Domešky # # #
+# # # # # # # # # #
+
+sethome:
+  created: "%prefix% Nastavil jsi domov &e%home%"
+  already_exists: "%prefix% Domov &%ehome% &7už existuje."
+  limit: "%prefix% Dosáhl jsi maximálního limitu! Máš nárok pouz na %limit% domovů"
+
+delhome:
+  deleted: "%prefix% Domov &e%home% byl smazán"
+  not_exists: "%prefix% Domov jménem &e%home% &7neexistuje"
+
+home:
+  list: "%prefix% &7Tvé domovy (%amount%): &e%homes%"
+  listOther: "Domovy hráče &7%player% (%amount%): &e%homes%"
+  list_split: "&7, &e"
+  notFound: "%prefix% Domov &e%home% &7neexistuje"
+  self: "%prefix% Teleportuji tě do domova jménem &e%home%"
+  self-otherHouse: "%prefix% Teleportuji tě na domov &e%home% &7hráče %player%"
+  other-otherHouse:
+    sender: "%prefix% Teleportace hráče &e%player% &7do domova &e%home% &7hráče &e%target%"
+    target: "%prefix% Teleportace do domova &e%home% &7hráče &e%target%"
+
+# # # # # # # # # # #
+# # # Inventory # # #
+# # # # # # # # # # #
+give:
+  self: "%prefix% Podaroval jsi se %amount%x %item%"
+  self-nbt: "%prefix% Podaroval jsi se %amount%x %item% s NBT %nbt%"
+  other:
+    sender: "%prefix% Dal jsi %amount%x %item% hráči %target%"
+    sender-nbt: "%prefix% Dal jsi %amount%x %item% s NBT %nbt% hráči %target%"
+    target: "%prefix% Dostal jsi %amount%x %item%"
+    target-nbt: "%prefix% Doatal jsi %amount%x %item% s NBT %nbt%"
+
+anvil:
+  self: "%prefix% Otevírám kovadlinu"
+  other:
+    sender: "%prefix% Otevírám kovadlinu hráči &e%target%"
+    target: "%prefix% Otevírám kovadlinu"
+
+cartography:
+  self: "%prefix% Otevírám mapařský stůl"
+  other:
+    sender: "%prefix% Otevírám mapařský stůl hráči &e%target%"
+    target: "%prefix% Otevírám mapařský stůl"
+
+craftingtable:
+  self: "%prefix% Otevírám crafťák"
+  other:
+    sender: "%prefix% Otevírám crafťák hráči &e%target%"
+    target: "%prefix% Otevírám crafťák"
+
+enderchest:
+  self: "%prefix% Otevírám enderchest"
+  other:
+    sender: "%prefix% Otevírám enderchest hráči &e%target%"
+    target: "%prefix% Otevírám enderchest"
+
+enchanting:
+  self: "%prefix% Otevírám enchanting"
+  other:
+    sender: "%prefix% Otevírám enchanting hráči &e%target%"
+    target: "%prefix% Otevírám enchanting"
+
+grindstone:
+  self: "%prefix% Otevírám grindstone"
+  other:
+    sender: "%prefix% Otevírám grindstone hráči &e%target%"
+    target: "%prefix% Otevírám grindstone"
+
+loom:
+  self: "%prefix% Otevírám loom"
+  other:
+    sender: "%prefix% Otevírám loom hráči &e%target%"
+    target: "%prefix% Otevírám loom"
+
+repair:
+  hand:
+    you: "%prefix% Opravil jsi item, který držíš v ruce"
+    other:
+      sender: "%prefix% Opravil jsi item, který má &e%target%&7 v pacičce"
+      receiver: "%prefix% Item, který držíš v ruce, byl opraven."
+  all:
+    you: "%prefix% Opravil jsi všechny itemy v inventáři"
+    other:
+      sender: "%prefix% Opravil jsi všechny itemy v inventáři hráče &e%target%&7"
+      receiver: "%prefix% Všechny tvé itemy byly opraveny."
+
+# # # # # # # # # # # #
+# # # # Economy # # # #
+# # # # # # # # # # # #
+
+balance:
+  balance: "%prefix% Máš &e%money%"
+  other: "%prefix% &e%target% &7má &e%money%"
+
+pay:
+  sender: "%prefix% Zaplatil jsi &e%money% &7hráči &e%target%"
+  target: "%prefix% &e%player% &7ti zaplatil &e%money%"
+  notEnoughMoney: "%prefix% Nemáš dost penízků."
+
+balancetop:
+  invalidPage: "%prefix% Strana &e%page% &7je neplatná"
+  header: "&7=====» &eBalanceTop &e%page%/%pages% &7«====="
+  format: "&e%position%. &7%playername% &7(&e%money%&7)"
+  footer: ""
+
+economy:
+  set:
+    sender: "%prefix% Peníze hráče &e%player% &7byly nastaveny na &e%money%"
+    target: "%prefix% Tvé peníze byly nastaveny na &e%money%"
+  add:
+    sender: "%prefix% Přidal jsi &e%money% &7k dosavadnímu zůstatku hráče %target%"
+    target: "%prefix% &e%money% &7bylo přidáno k tvému zůstatku."
+  remove:
+    sender: "%prefix% Odebral jsi &e%money% &7z účtu hráče &e%target%"
+    target: "%prefix% Bylo odebráno &e%money% &7z tvého účtu."
+
+# # # # # # # # # # # # #
+# # # # Gamemodes # # # #
+# # # # # # # # # # # # #
+
+gamemodes:
+  target:
+    survival: "%prefix% Tvůj gamemode byl nastaven na &eSurvival"
+    creative: "%prefix% Tvůj gamemode byl nastaven na &eCreative"
+    adventure: "%prefix% Tvůj gamemode byl nastaven na &eAdventure"
+    spectator: "%prefix% Tvůj gamemode byl nastaven na &eSpectator"
+  sender:
+    survival: "%prefix% Nastavil jsi gamemode hráče &e%target% na &eSurvival"
+    creative: "%prefix% Nastavil jsi gamemode hráče &e%target% na &eCreative"
+    adventure: "%prefix% Nastavil jsi gamemode hráče &e%target% na &eAdventure"
+    spectator: "%prefix% Nastavil jsi gamemode hráče &e%target% na &eSpectator"
+
+# # # # # # # # # # #
+# # # Messages  # # #
+# # # # # # # # # # #
+
+ignore:
+  add: "%prefix% Ignoruješ všechny zprávy hráče &e%target%"
+  remove: "%prefix% Již neignoruješ zprávy hráče &e%target%"
+
+privateMessage:
+  formats:
+    sender: "&8(&7Ty -> &e%to%&8)&7: &e%message%"
+    target: "&8(&e%from% -> &7Ty&8)&7: &e%message%"
+    socialspy: "&a[&2SP | &6%player% &8>> &e%target%&a] &d%message%"
+  chatlock:
+    enabled: "%prefix% Chat byl nastaven na mód ''pouze odpovědi hráči &e%target%''"
+    disabled: "%prefix% Chat byl odemknut. Nadále tedy neodpovídáš na PM"
+  noreply: "%prefix% Nemáš komu odpovídat."
+
+socialSpy:
+  self:
+    enabled: "%prefix% Zapnul jsi &esocial spy &7mode"
+    disabled: "%prefix% Vypnul  jsi &esocial spy &7mode"
+  other:
+    sender:
+      enabled: "%prefix% Zapnul jsi &esocial spy &7mode hráči &e%target%"
+      disabled: "%prefix% Vypnul jsi &esocial spy &7mode hráči &e%target%"
+    target:
+      enabled: "%prefix% &eSocial spy &7mode byl &azapnut"
+      disabled: "%prefix% &eSocial spy &7mode byl &cvypnut"
+
+helpop:
+  formats:
+    sender: "&0[&4&lHelpOp&0] &7%player% &7&l» &7%message%"
+    reciever: "&0[&4&lHelpOp&0] &e%player% &7&l» &7%message%"
+  chatlock:
+    enabled: "%prefix% Chat je uzamčen. Vše co napíšeš je zasláno jako helpop."
+    disabled: "%prefix% Chat byl odemčen."
+
+broadcast: "%prefix% %message%"
+
+sudo: "%prefix% Poslal jsi &e%thing% &7jako hráč &e%target%"
+
+clearchat:
+  cleared: "%prefix% Chat byl smazán hráčem &e%player%"
+  specific: "%prefix% Chat hráče &e%target% &7byl smazán"
+  bypass: "%prefix% &e%target% &7má bypass permisson."
+
+# # # # # # # # # # # # # #
+# # # ServerManagment # # #
+# # # # # # # # # # # # # #
+
+# Translations for TPS command
+tps:
+- "%prefix% Stávající TPS: &e%tps%"
+- "%prefix% TPS 1min: &e%tps_1%"
+- "%prefix% TPS 5min: &e%tps_5%"
+- "%prefix% TPS 15min: &e%tps_15%"
+
+# Translations for Memory command
+memory:
+- "%prefix% Volná MEM: &e%ram_free% &7MB"
+- "%prefix% Užitá MEM: &e%ram_used% &7MB"
+- "%prefix% Max MEM: &e%ram_max% &7MB"
+
+# Translations for SCR command
+scr:
+  reload:
+    reloading: "%prefix% Reloaduju..."
+    reload: "%prefix% &aReloadnutý config &e%config%"
+    reload_all: "%prefix% &aReloadlé všechny configy"
+    error: "%prefix% Něco je špatně (žádné překvápko) &e%config%. Podívej se do konzole."
+    error_all: "%prefix% Něco je moc moc špatně! POMOC! Zkus se podívat do konzole."
+
+chunks:
+  load: "%prefix% &e%world%&7: &e%chunks% &7chunků"
+  totalLoad: "%prefix% Celkem: &e%chunks% &7chunků"
+
+chatlock:
+  isLocked: "%prefix% &cChat je zamčen!"
+  format: "&7[&c&l!&7] &f%player% %message%"
+  enabled: "%prefix% &7Chat byl odemčen"
+  disabled: "%prefix% &7Chat je odemčen"
+
+maintenance:
+  info: "%prefix% Údržba: %status%"
+  enable: "%prefix% Režim údrřby: &eon"
+  disable: "%prefix% Režim údržby &eoff"
+  kickMessages:
+  - "&8=-=-=-=-=-= &eMaintenance Mode &8=-=-=-=-=-="
+  - "&7Omlouváme se, ale server je právě v údržbě."
+  - "&7Website: &ewww.example.com"
+  - "&7Discord: &ehttps://discord.gg/bmybTV5nWy"
+
+# # # # # # # # #
+# # # Info  # # #
+# # # # # # # # #
+
+staff:
+  header: "&7»=== &e%staff_online% &7===«"
+  format: " &7&l» %vault_prefix% &7%player%"
+  footer: ""
+  noone: "%prefix% Nikdo z atemau není online, ale můžeš se kouknout k nám na discord, pokud něco potřebuješ."
+
+list:
+  format:
+    split: "&7, &e"
+    staff: "%player%"
+    player: "%player%"
+  message:
+  - "&7»=== &e%online% &8/ &e%online_max% &7===«"
+  - "&7Staff: &e%staff%"
+  - "&7Default: &e%players%"
+
+ping:
+  self: "%prefix% Tvůj ping je &e%ping%"
+  other: "%prefix% Ping hráče %target% je &e%ping%"
+
+seen:
+  online: "%prefix% &e%player%&7 je &aonline &7už &a%time%"
+  offline: "%prefix% &e%player%&7 je &coffline &7po dobu &c%time%"
+
+uuid:
+  self: "%prefix% Tvé UUID je &e%uuid%"
+  target: "%prefix% UUID of hráče &e%target% &7je &e%uuid%"
+
+afk:
+  start: "%prefix% &e%player% &7je AFK"
+  start_reson: "%prefix% &e%player% &7je AFK &7(&e%reason%&7)"
+  end: "%prefix% &e%player%&7 už AFK"
+
+# # # # # # # # # # #
+# # # TpSystem  # # #
+# # # # # # # # # # #
+
+tp:
+  tp: "%prefix% Teleportováno na hráče &e%player%"
+  tptarget: "%prefix% Teleportuji hráče &e%player% &7na hráče &e%target%"
+  tploc: "%prefix% Teleportuji tě na souřadnice: %x% %y% %z% %world% %yaw% %pitch%"
+  tploctarget: "%prefix% Teleportuji &e%player% &7na souřanice: %x% %y% %z% %world% %yaw% %pitch%"
+
+tphere:
+  sender: "%prefix% Teleportuji &e%target%"
+  target: "%prefix% Teleportuji tě na hráče &e%player%"
+
+tpa:
+  sender: "%prefix% Poslal jsi žádost o teleport hráči &e%target%"
+  receiver: "%prefix% &e%player% &7by se na tebe rád teleportoval. &e/tpaccept &7pro přijetí žádosti."
+
+tpahere:
+  sender: "%prefix% Poslal jsi žádost o teleport hráči &e%target%"
+  receiver: "%prefix% &e%player% &7by tě rád teleportoval na sebe. &e/tpaccept &7pro přijetí žádosti."
+
+tpaccept:
+  norequest: "%prefix% Nemáš žádnou žádost."
+  expired: "%prefix% Čas pro přijetí žádosti vypršela."
+  accepted:
+    sender: "%prefix% Přijal jsi žádost o teleport hráče &e%target%"
+    receiver: "%prefix% &e%player% &7accepted your teleport request"
+  teleporting:
+    who: "%prefix% Teleportuji tě na &e%target%"
+    to: "%prefix% Hráč &e%player% &7se na tebe teleportuje"
+
+tpadeny:
+  norequest: "%prefix% Nemáš žádnou žádost"
+  sender: "%prefix% Odmítl jsi žádost o teleport &e%target%"
+  receiver: "%prefix% Hráč &e%player% &7odmítl tvou žádost o teleport"
+
+tpacancel:
+  norequest: "%prefix% Nemáš žádnou žádost"
+  sender: "%prefix% Odmítl jsi žádost o teleport &e%player%"
+  receiver: "%prefix% Hráč %target% odmítl tvou žáodst o teleport"
+
+back:
+  teleported: "%prefix% Teleportuji tě zpět na předešlou lokaci"
+  sender: "%prefix% Teleportuji hráče &e%target% &7zpět na předešlou lokaci"
+
+
+# # # # # # # # #
+# # # KIts  # # #
+# # # # # # # # #
+
+kit:
+  notFound: "%prefix% Kit &e%kit% &7 neexistuje"
+  used: "%prefix% Vybral jsi kit &e%kit%"
+  notEnoughMoney: "%prefix% Nemáš dost penízků (&e%money%&7)"
+  cooldown: "%prefix% Musíš počakt ještě &e%time% &7pro znovu vybrání kitu &e%kit%"
+  give:
+    sender: "%prefix% Dal jsi &e%kit% &7kit hráči &e%target%"
+    receiver: "%prefix% Obdržel jsi kit &e%kit%"
+
+kiteditor:
+  create: "%prefix% Vytvořil jsi nový kit (&e%kit%)"
+  delete: "%prefix% Smazal jsi kit &e%kit%"
+  exist: "%prefix% Kit &e%kit% &7už existuje"
+  notFound: "%prefix% Kit &e%kit% &7neexistuje"
+  item:
+    exist: "%prefix% Tento item už je v tomto kitu (&e%item%&7)"
+    add: "%prefix% Item &e%item% &7byl přidán do kitu &e%kit%"
+    set: "%prefix% Item byl přidán do slotu &e%slot%"
+    remove: "%prefix% Item &e%item% &7byl odebrán"
+  list: "%prefix% Seznam aktivních kitů: &a%kits%"
+  list_split: "&7, &a"

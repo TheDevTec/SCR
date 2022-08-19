@@ -5,7 +5,7 @@ missing:
   material: "%prefix% Material &e%material% &7doesn't exist"
   number: "%prefix% Wrong number! Try again..."
   useWords: "%prefix% Please do not use numbers here!"
-  world: "%prefix% Wron world!"
+  world: "%prefix% Wrong world!"
   playerDontExist: "%prefix% Player %player% does not exist... Try again..."
   handEmpty: "%prefix% Your hand is empty!"
   targetHandEmpty: "%prefix% &e%player%&7's hand is empty"
@@ -363,7 +363,7 @@ chatlock:
   disabled: "%prefix% &7Chat is unlocked"
 
 maintenance:
-  info: "%prefix% Maintenance is %status%"
+  info: "&7INFO &7&l» &7Maintenance is %status%"
   enable: "%prefix% Maintenance mode turned &eon"
   disable: "%prefix% Maintenance mode turned &eoff"
   kickMessages:
@@ -393,7 +393,7 @@ list:
   - "&7Default: &e%players%"
 
 ping:
-  self: "%prefix% You ping is &e%ping%"
+  self: "%prefix% Your ping is &e%ping%"
   other: "%prefix% Ping of player %target% is &e%ping%"
 
 seen:
@@ -470,14 +470,14 @@ kit:
     receiver: "%prefix% You received the &e%kit% &7kit"
 
 kiteditor:
-  create: "%prefix% You created new kit (&e%kit%)"
+  create: "%prefix% You created new kit &e%kit%"
   delete: "%prefix% You deleted kit &e%kit%"
   exist: "%prefix% Kit &e%kit% &7 already exist"
   notFound: "%prefix% Kit &e%kit% &7 does not exist"
   item:
     exist: "%prefix% This item already exist in this kit (&e%item%&7)"
-    add: "%prefix% Item &e%item% &7added to kit &e%kit%"
-    set: "%prefix% Item added to slot &e%slot%"
+    add: "%prefix% Item &e%item% &7has been added to kit &e%kit%"
+    set: "%prefix% Item has been added to slot &e%slot%"
     remove: "%prefix% Item &e%item% &7removed"
   list: "%prefix% List of available kits: &a%kits%"
   list_split: "&7, &a"
