@@ -19,21 +19,33 @@ public class KitUtils {
 
 	public static HashMap<String, Kit> loaded_kits = new HashMap<>();
 	
-	public static void loadKits() {
+	public static void loadKits() { // load & reload
 		//Utility
 		File file = new File("plugins/SCR/kits");
 		if(file.exists() && file.isDirectory()) {
 			for(File f : file.listFiles()) {
 				Config c = new Config(f);
-				if(c.getBoolean("enabled")) {
-					if(!loaded_kits.containsKey(c.getString("name"))) {
+				if(!loaded_kits.containsKey(c.getString("name"))) { //Loading kit
+					if(c.getBoolean("enabled")) { //Adding enabled kit
 						loaded_kits.put(c.getString("name"), new Kit(c));
 						Loader.plugin.getLogger().info("[Kits] Loaded kit "+c.getString("name"));
 					}
+				}else { //Reloading kit
+					if(c.getBoolean("enabled")) { // Reloading kits config
+						Kit kit = loaded_kits.get(c.getString("name"));
+						kit.config = c;
+						loaded_kits.replace(c.getString("name"), kit);
+						//loaded_kits.remove(c.getString("name"));
+						//loaded_kits.put(c.getString("name"), new Kit(c));
+						Loader.plugin.getLogger().info("[Kits] Reloaded kit "+c.getString("name"));
+					}else // Unloading disabled kit
+						loaded_kits.remove(c.getString("name"));
+					
 				}
 			}
 		}
 	}
+	
 	public static List<String> getKitsFor(CommandSender player){
 		if(player instanceof Player) {
 			List<String> list = new ArrayList<>();
