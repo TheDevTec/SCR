@@ -50,8 +50,10 @@ public class ListCmd implements ScrCommand {
 			}
 			msgSec(s, "message", Placeholders.c().add("staff", staff_b.length() == 0 ? "-" : staff_b).add("players", player_b.length() == 0 ? "-" : player_b)
 					.add("online", staff.size() + players.size()).add("online_max", Bukkit.getMaxPlayers()));
-		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // ping
-				.build().register(cmds.remove(0), cmds.toArray(new String[0]));
+		})
+		.cooldownDetection((s, structure, args) -> inCooldown(s))
+		.permission(permission("cmd")) // ping
+		.build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
 	@Override
