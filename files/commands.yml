@@ -725,6 +725,7 @@ list:
   help:
     usage: "/list"
   permission:
+    cmd: "scr.command.list"
 
 seen:
   enabled: true
