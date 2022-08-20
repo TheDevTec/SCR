@@ -96,6 +96,8 @@ public class Configs {
 		// scr reload stuff:
 		if(!CustomCommands.custom_commands.isEmpty()) //If not empty ==> /scr reload command
 			CustomCommands.reload();
+		if(!KitUtils.loaded_kits.isEmpty()) //If not empty ==> /scr reload command
+			KitUtils.loadKits();
 		if(Loader.tablist!= null) //If != null ==> /scr reload command
 			Loader.plugin.loadTab(); //Reloading tasks and loading tab again
 		if(Loader.plugin!=null && Loader.plugin.scoreboard != null) //If != null ==> /scr reload command
