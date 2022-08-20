@@ -66,7 +66,8 @@ public class Loader extends JavaPlugin {
 	@Override
 	public void onLoad() {
 		plugin = this;
-		Configs.loadConfigs();
+		Configs.loadConfigs(); //Loading all configs
+		
 		if (Bukkit.getPluginManager().getPlugin("Vault") != null && Ref.getClass("net.milkbowl.vault.economy.Economy") != null) {
 			vaultPermissionHooking();
 			if (economyConfig.getBoolean("useVaultEconomy")) {
@@ -85,16 +86,12 @@ public class Loader extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		loadListeners();
-		loadCommands();
-		if (tablistConfig.getBoolean("enabled")) {
-			tablist = new Tablist();
-			tablist.loadTasks(tablistConfig);
-		}
-		if (scoreboardConfig.getBoolean("enabled")) {
-			scoreboard = new ScoreboardManager();
-			scoreboard.loadTasks(scoreboardConfig);
-		}
+		loadListeners(); //Loading Events
+		loadCommands(); // Loading commands & CustomCommands
+		
+		//Loading TAB & Scoreboard
+		loadTab();
+		loadScoreboard();
 
 		// LOAD PLACEHOLDERS
 		loadPlaceholders();
@@ -110,11 +107,32 @@ public class Loader extends JavaPlugin {
 		if (scoreboard != null)
 			scoreboard.unloadTasks();
 		AFK.stopTask();
-		//Placeholders
+		
+		//Placeholders unload
 		((PlaceholderExpansion) papi_theapi).unregister();
 		papi.unregister();
 	}
 
+	public void loadScoreboard() {
+		// Unloading tasks
+		if (scoreboard != null)
+			scoreboard.unloadTasks();
+		//Loading tasks
+		if (scoreboardConfig.getBoolean("enabled")) {
+			scoreboard = new ScoreboardManager();
+			scoreboard.loadTasks(scoreboardConfig);
+		}
+	}
+	public void loadTab() {
+		// Unloading tasks
+		if (tablist != null)
+			tablist.unloadTasks();
+		//Loading tasks
+		if (tablistConfig.getBoolean("enabled")) {
+			tablist = new Tablist();
+			tablist.loadTasks(tablistConfig);
+		}
+	}
 	private void loadListeners() {
 		//Join listener (messages, maintenance)
 		getLogger().info("[Listener] Registering PlayerJoin listener.");
@@ -169,36 +187,6 @@ public class Loader extends JavaPlugin {
 		CustomCommands.load();
 		Loader.plugin.getLogger().info("Loading custom commands!");
 	}
-
-	/*
-	 * private void loadConfigs() { //MOVED TO Configs class config =
-	 * loadAndMerge("config.yml", "config.yml"); commands =
-	 * loadAndMerge("commands.yml", "commands.yml"); economyConfig =
-	 * loadAndMerge("economy.yml", "economy.yml"); joinListenerConfig =
-	 * loadAndMerge("events/join-listener.yml", "events/join-listener.yml");
-	 * quitListenerConfig = loadAndMerge("events/quit-listener.yml",
-	 * "events/quit-listener.yml"); tablistConfig = loadAndMerge("tablist.yml",
-	 * "tablist.yml"); scoreboardConfig = loadAndMerge("scoreboard.yml",
-	 * "scoreboard.yml"); data = loadAndMerge("data.yml", "data.yml");
-	 * 
-	 * loadAndMerge("translations/Translation-en.yml",
-	 * "translations/Translation-en.yml");
-	 * loadAndMerge("translations/Translation-cz.yml",
-	 * "translations/Translation-cz.yml"); String type = "en"; if
-	 * (Loader.config.exists("Options.Language")) type =
-	 * Loader.config.getString("Options.Language"); if (!new
-	 * File("plugins/SCR/translations/Translation-" + type + ".yml").exists()) type
-	 * = "en"; translations = loadAndMerge("translations/Translation-" + type +
-	 * ".yml", "translations/Translation-" + type + ".yml");
-	 * 
-	 * temp_data.clear(); temp_data = null; // clear cache }
-	 * 
-	 * private Config loadAndMerge(String sourcePath, String filePath) {
-	 * temp_data.reload(StreamUtils.fromStream(getResource("files/" + sourcePath)));
-	 * 
-	 * Config result = new Config("plugins/SCR/" + filePath); if
-	 * (result.merge(temp_data)) result.save(DataType.YAML); return result; }
-	 */
 
 	public static void registerListener(Listener listener) {
 		Bukkit.getPluginManager().registerEvents(listener, plugin);

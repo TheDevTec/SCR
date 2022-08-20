@@ -3,6 +3,7 @@ package me.devtec.scr;
 import java.io.File;
 
 import me.devtec.scr.commands.CustomCommands;
+import me.devtec.scr.commands.kits.KitUtils;
 import me.devtec.scr.functions.AutoAnnoucments;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.DataType;
@@ -33,10 +34,14 @@ public class Configs {
 		
 		if(config.equalsIgnoreCase("economy"))
 			Loader.economyConfig = loadAndMerge("economy.yml", "economy.yml");
-		if(config.equalsIgnoreCase("tablist"))
+		if(config.equalsIgnoreCase("tablist")) {
 			Loader.tablistConfig = loadAndMerge("tablist.yml", "tablist.yml");
-		if(config.equalsIgnoreCase("scoreboard"))
+			Loader.plugin.loadTab(); //Reloading tasks and loading tab again
+		}
+		if(config.equalsIgnoreCase("scoreboard")) {
 			Loader.scoreboardConfig = loadAndMerge("scoreboard.yml", "scoreboard.yml");
+			Loader.plugin.loadScoreboard(); //Reloading tasks and loading scoreboard again
+		}
 		if(config.equalsIgnoreCase("join-listener"))
 			Loader.joinListenerConfig = loadAndMerge("events/join-listener.yml", "events/join-listener.yml");
 		if(config.equalsIgnoreCase("quit-listener"))
@@ -52,6 +57,9 @@ public class Configs {
 		//Reload configs for custom commands
 		if(config.equalsIgnoreCase("custom_commands"))
 			CustomCommands.reload();
+		//Reload configs for kits
+		if(config.equalsIgnoreCase("kits"))
+			KitUtils.loadKits();
 	}
 	
 	public static void loadConfigs() {
@@ -85,8 +93,13 @@ public class Configs {
 		temp_data.clear();
 		temp_data = null; // clear cache
 		
+		// scr reload stuff:
 		if(!CustomCommands.custom_commands.isEmpty()) //If not empty ==> /scr reload command
 			CustomCommands.reload();
+		if(Loader.tablist!= null) //If != null ==> /scr reload command
+			Loader.plugin.loadTab(); //Reloading tasks and loading tab again
+		if(Loader.plugin!=null && Loader.plugin.scoreboard != null) //If != null ==> /scr reload command
+			Loader.plugin.loadScoreboard(); //Reloading tasks and loading scoreboard again
 	}
 
 	private static Config loadAndMerge(String sourcePath, String filePath) {
