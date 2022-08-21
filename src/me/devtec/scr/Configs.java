@@ -25,8 +25,8 @@ public class Configs {
 			loadAndMerge("translations/Translation-en.yml", "translations/Translation-en.yml");
 			loadAndMerge("translations/Translation-cz.yml", "translations/Translation-cz.yml");
 			String type = "en";
-			if (Loader.config.exists("Options.Language"))
-				type = Loader.config.getString("Options.Language");
+			if (Loader.config.exists("options.language"))
+				type = Loader.config.getString("options.language");
 			if (!new File("plugins/SCR/translations/Translation-" + type + ".yml").exists())
 				type = "en";
 			Loader.translations = loadAndMerge("translations/Translation-" + type + ".yml", "translations/Translation-" + type + ".yml");
@@ -79,8 +79,8 @@ public class Configs {
 		loadAndMerge("translations/Translation-en.yml", "translations/Translation-en.yml");
 		loadAndMerge("translations/Translation-cz.yml", "translations/Translation-cz.yml");
 		String type = "en";
-		if (Loader.config.exists("Options.Language"))
-			type = Loader.config.getString("Options.Language");
+		if (Loader.config.exists("options.language"))
+			type = Loader.config.getString("options.language");
 		if (!new File("plugins/SCR/translations/Translation-" + type + ".yml").exists())
 			type = "en";
 		Loader.translations = loadAndMerge("translations/Translation-" + type + ".yml", "translations/Translation-" + type + ".yml");
