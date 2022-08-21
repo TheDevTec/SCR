@@ -13,14 +13,15 @@ options:
     
 chatNotification:
   enabled: true
-  color: "&c"
+  # Please use § instead of &
+  color: "§c"
   sound: "ENTITY_PLAYER_LEVELUP"
-  title: ""
-  subtitle: ""
-  actionbar: ""
-  # Placeholder: %pinged%, %player% (player who send the message), %target% (pinged)
-  commands: []
-  messages: []
+  # title: ""
+  # subtitle: ""
+  # actionbar: ""
+  # Placeholder: %pinged%, %player% (player who send the message), %target% (or %pinged%)
+  # commands: []
+  # messages: []
 
 format:
   enabled: true
@@ -30,35 +31,36 @@ format:
   # world - different chatFormat for each world (or just 1 world)
   global:
     # Use %playername% to get 'playername' setting
-    chat: "%playername% &7&l» %message%"
-    message: "&f%message%"
+    # Use %message% to get 'message' setting
+    format: "%playername% &7&l» %message%"
     playername: "%player%"
+    message: "&f%message%"
 #  group:
 #    default:
 #      # Use %playername% to get 'playername' setting
-#      chat: ""
+#      format: ""
 #      playername: "%player%"
 #  user:
 #    Houska02:
 #      # Use %playername% to get 'playername' setting
-#      chat: ""
+#      format: ""
 #      playername: "%player%"
 #  # If you want to set different chatFormats in different worlds
 #  world:
 #    <world>:
 #      global:
 #        # Use %playername% to get 'playername' setting
-#        chat: ""
+#        format: ""
 #        playername: "%player%"
 #      group:
 #        default:
 #          # Use %playername% to get 'playername' setting
-#           chat: ""
+#           format: ""
 #          playername: "%player%"
 #      user:
 #        Houska02:
 #          # Use %playername% to get 'playername' setting
-#          chat: ""
+#          format: ""
 #          playername: "%player%"
   
 codes:

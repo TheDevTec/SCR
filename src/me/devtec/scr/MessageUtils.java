@@ -288,10 +288,8 @@ public class MessageUtils {
 					lastcolor = lastcolor.replace("&x", "#");
 				}
 				for (CommandSender target : targets)
-					target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, target, true, null)));
-				// target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply((lastcolor==null?line:lastcolor+""+line),
-				// s instanceof Player ? ((Player) s).getUniqueId() : null)));
-
+					target.sendMessage(StringUtils.colorize(
+							PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, target, true, null)));
 				lastcolor = StringUtils.getLastColors(StringUtils.colorize(line));
 			}
 		} else

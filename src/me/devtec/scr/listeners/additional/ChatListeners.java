@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -95,63 +94,33 @@ public class ChatListeners implements Listener {
 			}
 
 			// TODO - flood, antispam, ...
-
+			
+			String format_path = ChatFormat.getPath(player);
+			
+			if(Loader.chat.exists(format_path+".message")) // Adding config message color
+				message = StringUtils.colorize( PlaceholderAPISupport.replace(Loader.chat.getString(format_path+".message"), player))
+				.replace("%message%", message);
+			
 			message = colors(message, player);
 			List<String> ignoredStrings = new ArrayList<>();
 			for (Player p : BukkitLoader.getOnlinePlayers())
 				if (!p.getUniqueId().equals(e.getPlayer().getUniqueId()))
 					ignoredStrings.add(p.getName());
-
-			if (me.devtec.scr.utils.ChatUtils.Notification.isEnabled())
-				message = notificationReplace(player, message, "§c");
+			
+			//Chat notigications
+			if (ChatUtils.Notification.isEnabled())
+				message = ChatUtils.Notification.notificationReplace(player, message, e.getRecipients());
+				//message = notificationReplace(player, message, "§c");
 
 			if (message != null) {
-				String format_path = ChatFormat.getPath(player);
 				e.setMessage(message);
-				setFormat(player, format_path, Placeholders.c().addPlayer("player", player).add("message", message.replace("%", "%%")).add("playername",
+				setFormat(player, format_path, 
+						Placeholders.c().addPlayer("player", player).add("message", message.replace("%", "%%")).add("playername",
 						StringUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".playername"), player))), e);
 
 			}
 
 		}
-	}
-
-	private static String notificationReplace(Player pinger, String msg, String notificationNickColor) {
-		for (Player player : BukkitLoader.getOnlinePlayers())
-			if (!player.getUniqueId().equals(pinger.getUniqueId()) && msg.contains(player.getName())) {
-				boolean endsWithName = msg.endsWith(player.getName());
-				player.sendMessage("Pinged by " + pinger.getName());
-
-				String[] split = Pattern.compile(player.getName(), Pattern.CASE_INSENSITIVE).split(msg);
-				if (split.length == 0)
-					return notificationNickColor + player.getName();
-				String lastColors = StringUtils.getLastColors(split[0]);
-				if (lastColors.isEmpty())
-					lastColors = "§f";
-				else {
-					char[] chars = lastColors.toCharArray();
-					lastColors = "";
-					for (char c : chars)
-						lastColors += "§" + c;
-				}
-				StringBuilder builder = new StringBuilder(split[0]);
-				for (int i = 1; i < split.length; ++i) {
-					builder.append(notificationNickColor).append(player.getName()).append(lastColors).append(split[i]);
-					lastColors = StringUtils.getLastColors(lastColors + split[i]);
-					if (lastColors.isEmpty())
-						lastColors = "&f";
-					else {
-						char[] chars = lastColors.toCharArray();
-						lastColors = "";
-						for (char c : chars)
-							lastColors += "§" + c;
-					}
-				}
-				if (endsWithName)
-					builder.append(notificationNickColor).append(player.getName());
-				msg = builder.toString();
-			}
-		return msg;
 	}
 
 	public static String colors(String msg, Player p) {
@@ -163,7 +132,7 @@ public class ChatListeners implements Listener {
 		if (player == null)
 			return;
 
-		Object text = Loader.chat.get(path + ".chat");
+		Object text = Loader.chat.get(path + ".format");
 
 		if (text instanceof Collection) {
 			if (Loader.chat.isJson(path)) {
@@ -178,7 +147,7 @@ public class ChatListeners implements Listener {
 				msg(player, line, placeholders, event);
 			return;
 		}
-		String line = Loader.chat.getString(path + ".chat");
+		String line = Loader.chat.getString(path + ".format");
 		if (line.isEmpty())
 			return; // Do not send empty strings
 		msg(player, line, placeholders, event);
