@@ -283,9 +283,16 @@ public class MessageUtils {
 			for (String line : text.replace("\\n", "\n").split("\n")) {
 				if (lastcolor != null && lastcolor.length() == 1)
 					lastcolor = "&" + lastcolor;
-				if (lastcolor != null && lastcolor.length() == 7) {
+				if (lastcolor != null && lastcolor.length() == 7) { // HEX
 					lastcolor = "&" + lastcolor;
 					lastcolor = lastcolor.replace("&x", "#");
+				}
+				if (lastcolor != null && lastcolor.length() > 7) {
+					String build = "";
+					for(String c : lastcolor.split("")) {
+						build = build+"&"+c;
+					}
+					lastcolor=build;
 				}
 				for (CommandSender target : targets)
 					target.sendMessage(StringUtils.colorize(
