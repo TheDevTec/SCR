@@ -13,6 +13,10 @@ import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 
 public class ClearChat implements ScrCommand {
+	private static final String CHAT_MESSAGE = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n"
+			+ "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n" + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n"
+			+ "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n" + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n"
+			+ "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n" + "\n\n\n\n\n\n\n\n\n\n";
 
 	@Override
 	public void init(List<String> cmds) {
@@ -55,14 +59,11 @@ public class ClearChat implements ScrCommand {
 	}
 
 	public static void clearChat(Player target, String bypass_perm) {
-
 		if (target == null)
 			for (CommandSender p : API.getOnlinePlayersWithout(bypass_perm))
-				for (int i = 0; i < 250; i++)
-					p.sendMessage(" \n \n \n ");
+				p.sendMessage(CHAT_MESSAGE);
 		else
-			for (int i = 0; i < 250; i++)
-				target.sendMessage(" ");
+			target.sendMessage(CHAT_MESSAGE);
 	}
 
 }
