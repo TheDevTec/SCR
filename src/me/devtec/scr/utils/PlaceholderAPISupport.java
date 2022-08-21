@@ -36,10 +36,10 @@ public class PlaceholderAPISupport {
 
 	public static String replace(String text, CommandSender s, boolean placeholderapi, Placeholders placeholders) {
 
-		// %online% - if player != null (hide vanished)
-		// %online_max%
+		if(placeholders == null)
+			placeholders = Placeholders.c();
 
-		if (s instanceof Player) {
+		if (s !=null && s instanceof Player) {
 			Player p = (Player) s;
 			User user = API.getUser(p);
 			placeholders.addPlayer("player", p);
@@ -128,7 +128,7 @@ public class PlaceholderAPISupport {
 			// %time%
 			// %date%
 			if (text.contains("%online%"))
-				placeholders.add("online", API.getOnlinePlayersFor(null));
+				placeholders.add("online", API.getOnlinePlayersFor(s).size());
 			if (text.contains("%online_max%"))
 				placeholders.add("online_max", Bukkit.getMaxPlayers());
 
