@@ -40,24 +40,26 @@ public class MessageUtils {
 		}
 
 		public Placeholders addPlayer(String placeholder, Player player) {
-			if(player != null && placeholder!=null)
+			if (player != null && placeholder != null)
 				player_set.put(placeholder, player);
 			return this;
 		}
 
 		public Placeholders addPlayer(String placeholder, CommandSender player) {
-			if(player == null || placeholder ==  null) return this;
+			if (player == null || placeholder == null)
+				return this;
 			if (player instanceof Player)
 				player_set.put(placeholder, (Player) player);
 			else
 				replace(placeholder, "CONSOLE");
 			return this;
 		}
+
 		public Placeholders addOffline(String palceholder, String player) {
 			add(palceholder, player);
-			add(palceholder+"_name", player);
-			add(palceholder+"_displayname", player);
-			add(palceholder+"_customname", player);
+			add(palceholder + "_name", player);
+			add(palceholder + "_displayname", player);
+			add(palceholder + "_customname", player);
 			return this;
 		}
 	}
@@ -109,6 +111,7 @@ public class MessageUtils {
 	public static void message(CommandSender player, String path, Placeholders placeholders) {
 		msgConfig(player, Loader.translations, path, placeholders, true, player);
 	}
+
 	public static void message(CommandSender player, String path, Placeholders placeholders, boolean split) {
 		msgConfig(player, Loader.translations, path, placeholders, split, player);
 	}
@@ -116,8 +119,8 @@ public class MessageUtils {
 	public static void message(CommandSender player, String path, Placeholders placeholders, CommandSender... targets) {
 		msgConfig(player, Loader.translations, path, placeholders, true, targets);
 	}
-	
-	public static void message(CommandSender player, String path, Placeholders placeholders,  boolean split, CommandSender... targets) {
+
+	public static void message(CommandSender player, String path, Placeholders placeholders, boolean split, CommandSender... targets) {
 		msgConfig(player, Loader.translations, path, placeholders, split, targets);
 	}
 
@@ -125,9 +128,9 @@ public class MessageUtils {
 	public static void msgConfig(CommandSender player, String path, Config config, Placeholders placeholders) {
 		msgConfig(player, config, path, placeholders, true, player);
 	}
-	
+
 	public static void msgConfig(CommandSender player, String path, Config config, Placeholders placeholders, boolean split) {
-		msgConfig(player, config, path, placeholders, split,  player);
+		msgConfig(player, config, path, placeholders, split, player);
 	}
 
 	public static void msgConfig(CommandSender player, String path, Config config, Placeholders placeholders, CommandSender... targets) {
@@ -137,34 +140,33 @@ public class MessageUtils {
 	public static void msgConfig(CommandSender player, String path, Config config, Placeholders placeholders, boolean split, CommandSender... targets) {
 		msgConfig(player, config, path, placeholders, split, targets);
 	}
-	
+
 	// Other
 	public static void msgConsole(String message, Placeholders placehholders) {
 		Bukkit.getConsoleSender().sendMessage(StringUtils.colorize(placeholder(null, message, placehholders)));
 	}
-	
+
 	public static void sendAnnoucment(String message, CommandSender... targets) { // AutoMessage annoucments
 		boolean split = true;
-		if(targets==null)
+		if (targets == null)
 			return;
-		if(message.startsWith("[") && message.endsWith("]") ||
-				message.startsWith("{") && message.endsWith("}")) {
+		if (message.startsWith("[") && message.endsWith("]") || message.startsWith("{") && message.endsWith("}")) {
 			String trimmed = message.trim();
 			if (trimmed.equals("[]") || trimmed.equals("{}"))
 				return; // Do not send empty json
 			msgJson(Bukkit.getConsoleSender(), message, null, split, targets);
 			return;
 		}
-			
+
 		if (message.isEmpty())
 			return; // Do not send empty strings
 		msg(Bukkit.getConsoleSender(), message, null, split, targets);
 	}
-	
+
 	public static void msgConfig(CommandSender player, Config config, String path, Placeholders placeholders, boolean split, CommandSender... targets) {
-		if(player==null)
+		if (player == null)
 			return;
-		
+
 		Object text = config.get(path);
 
 		if (text == null) {
@@ -254,8 +256,9 @@ public class MessageUtils {
 							String text = val + "";
 
 							text = placeholder(s, text, placeholders);
-							text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null) );
-							//text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
+							text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null));
+							// text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ?
+							// ((Player) s).getUniqueId() : null));
 							itr.set(text);
 						}
 					}
@@ -264,8 +267,9 @@ public class MessageUtils {
 				String text = entry.getValue() + "";
 
 				text = placeholder(s, text, placeholders);
-				text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null) );
-				//text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
+				text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null));
+				// text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ?
+				// ((Player) s).getUniqueId() : null));
 				entry.setValue(text);
 			}
 		}
@@ -273,28 +277,28 @@ public class MessageUtils {
 
 	private static void msg(CommandSender s, String original, Placeholders placeholders, boolean split, CommandSender... targets) {
 		String text = original;
-		text = StringUtils.colorize( placeholder(s, text, placeholders) );
-		if(split) {
+		text = StringUtils.colorize(placeholder(s, text, placeholders));
+		if (split) {
 			String lastcolor = null;
-			for(String line : text.replace("\\n", "\n").split("\n")) {
-				if(lastcolor!=null && lastcolor.length()==1)
-					lastcolor = "&"+lastcolor;
-				if(lastcolor!=null && lastcolor.length()==7) {
-					lastcolor = "&"+lastcolor;
+			for (String line : text.replace("\\n", "\n").split("\n")) {
+				if (lastcolor != null && lastcolor.length() == 1)
+					lastcolor = "&" + lastcolor;
+				if (lastcolor != null && lastcolor.length() == 7) {
+					lastcolor = "&" + lastcolor;
 					lastcolor = lastcolor.replace("&x", "#");
 				}
 				for (CommandSender target : targets)
-					target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace((lastcolor==null?line:lastcolor+""+line), target, true, null)));
-					//target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply((lastcolor==null?line:lastcolor+""+line), s instanceof Player ? ((Player) s).getUniqueId() : null)));
-	
+					target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, target, true, null)));
+				// target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply((lastcolor==null?line:lastcolor+""+line),
+				// s instanceof Player ? ((Player) s).getUniqueId() : null)));
+
 				lastcolor = StringUtils.getLastColors(StringUtils.colorize(line));
 			}
-		}
-		else {
+		} else
 			for (CommandSender target : targets)
-				//target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(text, target, true)));
+				// target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(text,
+				// target, true)));
 				target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null)));
-		}
 	}
 
 	public static void noPerm(CommandSender player, String permission) {

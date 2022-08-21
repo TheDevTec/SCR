@@ -59,15 +59,15 @@ public class Loader extends JavaPlugin {
 	public static Config tablistConfig;
 	public static Config scoreboardConfig;
 	public static Config placeholders;
-	
+
 	public static Tablist tablist;
 	public ScoreboardManager scoreboard;
 
 	@Override
 	public void onLoad() {
 		plugin = this;
-		Configs.loadConfigs(); //Loading all configs
-		
+		Configs.loadConfigs(); // Loading all configs
+
 		if (Bukkit.getPluginManager().getPlugin("Vault") != null && Ref.getClass("net.milkbowl.vault.economy.Economy") != null) {
 			vaultPermissionHooking();
 			if (economyConfig.getBoolean("useVaultEconomy")) {
@@ -81,15 +81,15 @@ public class Loader extends JavaPlugin {
 		}
 	}
 
-	private Object papi_theapi;
-	private me.clip.placeholderapi.expansion.PlaceholderExpansion papi;
+	private PlaceholderExpansion papi_theapi;
+	private Object papi;
 
 	@Override
 	public void onEnable() {
-		loadListeners(); //Loading Events
+		loadListeners(); // Loading Events
 		loadCommands(); // Loading commands & CustomCommands
-		
-		//Loading TAB & Scoreboard
+
+		// Loading TAB & Scoreboard
 		loadTab();
 		loadScoreboard();
 
@@ -107,37 +107,38 @@ public class Loader extends JavaPlugin {
 		if (scoreboard != null)
 			scoreboard.unloadTasks();
 		AFK.stopTask();
-		
-		//Placeholders unload
-		((PlaceholderExpansion) papi_theapi).unregister();
-		papi.unregister();
+
+		// Placeholders unload
+		papi_theapi.unregister();
 	}
 
 	public void loadScoreboard() {
 		// Unloading tasks
 		if (scoreboard != null)
 			scoreboard.unloadTasks();
-		//Loading tasks
+		// Loading tasks
 		if (scoreboardConfig.getBoolean("enabled")) {
 			scoreboard = new ScoreboardManager();
 			scoreboard.loadTasks(scoreboardConfig);
 		}
 	}
+
 	public void loadTab() {
 		// Unloading tasks
 		if (tablist != null)
 			tablist.unloadTasks();
-		//Loading tasks
+		// Loading tasks
 		if (tablistConfig.getBoolean("enabled")) {
 			tablist = new Tablist();
 			tablist.loadTasks(tablistConfig);
 		}
 	}
+
 	private void loadListeners() {
-		//Join listener (messages, maintenance)
+		// Join listener (messages, maintenance)
 		getLogger().info("[Listener] Registering PlayerJoin listener.");
 		registerListener(new PlayerJoin(joinListenerConfig));
-		
+
 		if (quitListenerConfig.getBoolean("enabled")) {
 			getLogger().info("[Listener] Registering PlayerQuit listener.");
 			registerListener(new PlayerQuit(quitListenerConfig));
@@ -145,12 +146,12 @@ public class Loader extends JavaPlugin {
 			quitListenerConfig.clear();
 			quitListenerConfig = null;
 		}
-		if(config.getBoolean("serverlist.enabled")) { //MOTD & list of players
+		if (config.getBoolean("serverlist.enabled")) { // MOTD & list of players
 			EventManager.register(new ServerList()).listen(ServerListPingEvent.class);
 			getLogger().info("[Listener] Registering ServerList listener.");
 		}
 		registerListener(new ChatListeners());
-		
+
 	}
 
 	private void loadCommands() {
@@ -165,7 +166,7 @@ public class Loader extends JavaPlugin {
 			while (entries.hasMoreElements()) {
 				JarEntry entry = entries.nextElement();
 				if (!entry.getName().endsWith(".class") || !entry.getName().startsWith("me/devtec/scr/commands/") || entry.getName().equals("me/devtec/scr/commands/ScrCommand.class")
-						|| entry.getName().equals("me/devtec/scr/commands/CustomCommands.class")|| entry.getName().equals("me/devtec/scr/commands/CCommand.class"))
+						|| entry.getName().equals("me/devtec/scr/commands/CustomCommands.class") || entry.getName().equals("me/devtec/scr/commands/CCommand.class"))
 					continue;
 				Class<?> cls = Class.forName(entry.getName().substring(0, entry.getName().length() - 6).replace("/", "."));
 				if (ScrCommand.class.isAssignableFrom(cls)) {
@@ -242,23 +243,24 @@ public class Loader extends JavaPlugin {
 	}
 
 	private void loadPlaceholders() {
-		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-			// %theapi_scr_...%
-			papi_theapi = new PlaceholderExpansion("") {
-				@Override
-				public String apply(String params, UUID uuid) {
-					params = '%' + params + '%';
-					params = params.replace("%scr_", "%"); // Just in case :D
-					String f;
-					if (Bukkit.getPlayer(uuid) != null)
-						f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(uuid), false, null);
-					else
-						f = PlaceholderAPISupport.replace(params, null, false, null);
-					return params.equals(f) ? null : f;
-				}
+		// %theapi_scr_...%
+		papi_theapi = new PlaceholderExpansion("scr") {
+			@Override
+			public String apply(String params, UUID uuid) {
+				params = '%' + params + '%';
+				params = params.replace("%scr_", "%"); // Just in case :D
+				String f;
+				if (Bukkit.getPlayer(uuid) != null)
+					f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(uuid), false, null);
+				else
+					f = PlaceholderAPISupport.replace(params, null, false, null);
+				return params.equals(f) ? null : f;
+			}
 
-			};
-			((PlaceholderExpansion) papi_theapi).register();
+		};
+		papi_theapi.register();
+
+		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 			// %scr_...%
 			papi = new me.clip.placeholderapi.expansion.PlaceholderExpansion() {
 
@@ -288,7 +290,7 @@ public class Loader extends JavaPlugin {
 					return "DevTec";
 				}
 			};
-			papi.register();
+			((me.clip.placeholderapi.expansion.PlaceholderExpansion) papi).register();
 		}
 	}
 }

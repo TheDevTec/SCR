@@ -19,6 +19,7 @@ import me.devtec.shared.scheduler.Scheduler;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
+import me.devtec.theapi.bukkit.scoreboard.ScoreboardAPI;
 import me.devtec.theapi.bukkit.scoreboard.SimpleScore;
 import net.milkbowl.vault.permission.Permission;
 
@@ -108,7 +109,9 @@ public class ScoreboardManager {
 
 	public void fullyUnregister(Player p) {
 		players.remove(p.getUniqueId());
-		SimpleScore.scores.remove(p.getUniqueId()).destroy();
+		ScoreboardAPI sb = SimpleScore.scores.remove(p.getUniqueId());
+		if (sb != null)
+			sb.destroy();
 	}
 
 	public void apply(Player target, SbSettings settings, SimpleScore score) {
@@ -153,13 +156,13 @@ public class ScoreboardManager {
 		}
 
 		public void replace(Player player) {
-			title = PlaceholderAPISupport.replace(title, player, true);
+			title = PlaceholderAPISupport.replace(title, player);
 			List<String> new_lines = new ArrayList<>();
-			for(String text : lines)
-				new_lines.add( PlaceholderAPISupport.replace(text, player, true) );
+			for (String text : lines)
+				new_lines.add(PlaceholderAPISupport.replace(text, player));
 			lines = new_lines;
 		}
-		
+
 		public void replaceOLD(Player player) {
 			Placeholders plac = Placeholders.c().addPlayer("player", player);
 			title = PlaceholderAPI.apply(MessageUtils.placeholder(player, title, plac), player.getUniqueId());

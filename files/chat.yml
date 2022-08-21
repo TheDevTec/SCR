@@ -15,12 +15,12 @@ chatNotification:
   enabled: true
   color: "&c"
   sound: "ENTITY_PLAYER_LEVELUP"
-  title:
-  subtitle:
-  actionbar:
+  title: ""
+  subtitle: ""
+  actionbar: ""
   # Placeholder: %pinged%, %player% (player who send the message), %target% (pinged)
-  commands:
-  messages:
+  commands: []
+  messages: []
 
 format:
   enabled: true
@@ -31,6 +31,7 @@ format:
   global:
     # Use %playername% to get 'playername' setting
     chat: "%playername% &7&l» %message%"
+    message: "&f%message%"
     playername: "%player%"
 #  group:
 #    default:

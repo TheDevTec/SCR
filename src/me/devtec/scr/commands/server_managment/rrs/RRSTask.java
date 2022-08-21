@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
+import me.devtec.scr.api.API;
 import me.devtec.shared.Ref;
 import me.devtec.shared.scheduler.Scheduler;
 import me.devtec.shared.scheduler.Tasker;
@@ -38,7 +39,7 @@ public class RRSTask { // Reload Restart Stop task
 
 		broadcastTimes = Loader.config.getIntegerList("rrs." + type.name().toLowerCase() + ".times");
 
-		List<CommandSender> list = new ArrayList<>(BukkitLoader.getOnlinePlayers());
+		List<CommandSender> list = new ArrayList<>(API.getOnlinePlayers(true));
 		// list.add(Bukkit.getConsoleSender()); // unused
 
 		MessageUtils.msgConfig(Bukkit.getConsoleSender(), "rrs." + currentTask.name().toLowerCase() + ".start", Loader.config, Placeholders.c().add("time", StringUtils.timeToString(RRSTask.time)),

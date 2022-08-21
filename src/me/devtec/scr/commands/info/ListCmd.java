@@ -38,22 +38,18 @@ public class ListCmd implements ScrCommand {
 			for (Player staff_player : staff) {
 				if (staff_b.length() != 0)
 					staff_b.append(Loader.translations.getString(configSection() + ".format.split"));
-				staff_b.append(PlaceholderAPISupport.replace(
-						Loader.translations.getString(configSection() + ".format.staff"), staff_player, true, null));
+				staff_b.append(PlaceholderAPISupport.replace(Loader.translations.getString(configSection() + ".format.staff"), staff_player, true, null));
 			}
 			StringBuilder player_b = new StringBuilder();
 			for (Player player_p : players) {
 				if (player_b.length() != 0)
 					player_b.append(Loader.translations.getString(configSection() + ".format.split"));
-				player_b.append(PlaceholderAPISupport.replace(
-						Loader.translations.getString(configSection() + ".format.player"), player_p, true, null));
+				player_b.append(PlaceholderAPISupport.replace(Loader.translations.getString(configSection() + ".format.player"), player_p, true, null));
 			}
 			msgSec(s, "message", Placeholders.c().add("staff", staff_b.length() == 0 ? "-" : staff_b).add("players", player_b.length() == 0 ? "-" : player_b)
 					.add("online", staff.size() + players.size()).add("online_max", Bukkit.getMaxPlayers()));
-		})
-		.cooldownDetection((s, structure, args) -> inCooldown(s))
-		.permission(permission("cmd")) // ping
-		.build().register(cmds.remove(0), cmds.toArray(new String[0]));
+		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // ping
+				.build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
 	@Override

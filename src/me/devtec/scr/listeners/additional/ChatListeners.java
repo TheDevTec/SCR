@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,103 +35,135 @@ public class ChatListeners implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void chatFormat(AsyncPlayerChatEvent e) {
-		if(e.isCancelled()) return;
+		if (e.isCancelled())
+			return;
 		Player player = e.getPlayer();
 		User u = API.getUser(player);
-		
-		//CooldownCheck
-		
-		//ChatFormat
-		if(ChatFormat.isEnabled()) {
-			String message = e.getMessage();
-			//ChatLock
-			if(ChatUtils.isChatLocked() && 
-					!u.isAutorized(Loader.commands.getString("chatlock.permission.bypass"))) {
-				e.setCancelled(true);
-				if(Loader.translations.exists("chatlock.isLocked"))
-					MessageUtils.message(player, "chatlock.isLocked", null, true);
-				MessageUtils.message(player, "chatlock.format", Placeholders.c().addPlayer("player", player)
-						.add("message", message), true,
-						API.getOnlinePlayersWith(Loader.commands.getString("chatlock.permission.bypass") ).toArray(new CommandSender[0]) );
-				return;
-			}
-			
-			//ChatType loading variables
+
+		String message = e.getMessage();
+		// ChatLock
+		if (ChatUtils.isChatLocked() && !u.isAutorized(Loader.commands.getString("chatlock.permission.bypass"))) {
+			e.setCancelled(true);
+			if (Loader.translations.exists("chatlock.isLocked"))
+				MessageUtils.message(player, "chatlock.isLocked", null, true);
+			MessageUtils.message(player, "chatlock.format", Placeholders.c().addPlayer("player", player).add("message", message), true,
+					API.getOnlinePlayersWith(Loader.commands.getString("chatlock.permission.bypass")).toArray(new CommandSender[0]));
+			return;
+		}
+
+		// CooldownCheck
+
+		// ChatFormat
+		if (ChatFormat.isEnabled()) {
+
+			// ChatType loading variables
 			Iterator<Player> targets = e.getRecipients().iterator();
 			String type = Loader.chat.getString("options.type");
 			double distance = Loader.chat.getDouble("options.distance");
-			
+
 			List<String> worlds = new ArrayList<>();
-			if(type.equalsIgnoreCase("PER_WORLD") || type.equalsIgnoreCase("PERWORLD") || type.equalsIgnoreCase("WORLD")) {
-				for(String path : Loader.chat.getKeys("options.per_world"))
-					if(Loader.chat.getStringList("options.per_world."+path)
-							.contains(player.getLocation().getWorld().getName()))
-						worlds = Loader.chat.getStringList("options.per_world."+path);
-				if(worlds.isEmpty())
+			if (type.equalsIgnoreCase("PER_WORLD") || type.equalsIgnoreCase("PERWORLD") || type.equalsIgnoreCase("WORLD")) {
+				for (String path : Loader.chat.getKeys("options.per_world"))
+					if (Loader.chat.getStringList("options.per_world." + path).contains(player.getLocation().getWorld().getName()))
+						worlds = Loader.chat.getStringList("options.per_world." + path);
+				if (worlds.isEmpty())
 					worlds.add(player.getLocation().getWorld().getName());
 			}
-			
-			//ChatType - removing bad players
+
+			// ChatType - removing players
 			while (targets.hasNext()) {
 				Player target = targets.next();
-				if(target.equals(player)) continue; // sender je target
-				//TODO - ignore
-				
-				if(target.hasPermission("SCR.Other.ChatTypeBypass")) continue; //TODO - permise do configu
-				
-				//PER_WORLD type
-				if(type.equalsIgnoreCase("PER_WORLD") || type.equalsIgnoreCase("PERWORLD") || type.equalsIgnoreCase("WORLD")) {
-					if( !worlds.contains(target.getLocation().getWorld().getName()) ) //If group of worlds contains target world
+				// sender je target
+				// TODO - ignore
+
+				if (target.equals(player) || target.hasPermission("SCR.Other.ChatTypeBypass"))
+					continue; // TODO - permise do configu
+
+				// PER_WORLD type
+				if (type.equalsIgnoreCase("PER_WORLD") || type.equalsIgnoreCase("PERWORLD") || type.equalsIgnoreCase("WORLD")) {
+					if (!worlds.contains(target.getLocation().getWorld().getName())) // If group of worlds contains target world
 						target.remove();
 					continue;
 				}
-			
-				//DISTANCE
-				if( type.equalsIgnoreCase("DISTANCE") ) {
-					if(!player.getWorld().equals(target.getWorld())) //If they are in same world
-						target.remove();
-					else if(target.getLocation().distance(player.getLocation()) > distance)
+
+				// DISTANCE
+				if (type.equalsIgnoreCase("DISTANCE")) {
+					if (!player.getWorld().equals(target.getWorld()) || target.getLocation().distance(player.getLocation()) > distance) // If they are not in same world
 						target.remove();
 					continue;
 				}
 			}
-			
-			//TODO - flood, antispam, ...
-			
-			if(me.devtec.scr.utils.ChatUtils.Notification.isEnabled()) {
-				//TODO - notification
-			}
-			
-			if(message != null) {
-				String nmsg = colors(message, player);
+
+			// TODO - flood, antispam, ...
+
+			message = colors(message, player);
+			List<String> ignoredStrings = new ArrayList<>();
+			for (Player p : BukkitLoader.getOnlinePlayers())
+				if (!p.getUniqueId().equals(e.getPlayer().getUniqueId()))
+					ignoredStrings.add(p.getName());
+
+			if (me.devtec.scr.utils.ChatUtils.Notification.isEnabled())
+				message = notificationReplace(player, message, "§c");
+
+			if (message != null) {
 				String format_path = ChatFormat.getPath(player);
-				e.setMessage(nmsg);
-				setFormat(player, format_path, Placeholders.c().addPlayer("player", player)
-						.add("message", nmsg.replace("%", "%%")).add("playername", 
-								StringUtils.colorize(
-										PlaceholderAPISupport.replace(
-												Loader.chat.getString(format_path+".playername"), player, true
-												)
-										))
-						, e);
-				
-				
+				e.setMessage(message);
+				setFormat(player, format_path, Placeholders.c().addPlayer("player", player).add("message", message.replace("%", "%%")).add("playername",
+						StringUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".playername"), player))), e);
+
 			}
-			
+
 		}
 	}
-	
+
+	private static String notificationReplace(Player pinger, String msg, String notificationNickColor) {
+		for (Player player : BukkitLoader.getOnlinePlayers())
+			if (!player.getUniqueId().equals(pinger.getUniqueId()) && msg.contains(player.getName())) {
+				boolean endsWithName = msg.endsWith(player.getName());
+				player.sendMessage("Pinged by " + pinger.getName());
+
+				String[] split = Pattern.compile(player.getName(), Pattern.CASE_INSENSITIVE).split(msg);
+				if (split.length == 0)
+					return notificationNickColor + player.getName();
+				String lastColors = StringUtils.getLastColors(split[0]);
+				if (lastColors.isEmpty())
+					lastColors = "§f";
+				else {
+					char[] chars = lastColors.toCharArray();
+					lastColors = "";
+					for (char c : chars)
+						lastColors += "§" + c;
+				}
+				StringBuilder builder = new StringBuilder(split[0]);
+				for (int i = 1; i < split.length; ++i) {
+					builder.append(notificationNickColor).append(player.getName()).append(lastColors).append(split[i]);
+					lastColors = StringUtils.getLastColors(lastColors + split[i]);
+					if (lastColors.isEmpty())
+						lastColors = "&f";
+					else {
+						char[] chars = lastColors.toCharArray();
+						lastColors = "";
+						for (char c : chars)
+							lastColors += "§" + c;
+					}
+				}
+				if (endsWithName)
+					builder.append(notificationNickColor).append(player.getName());
+				msg = builder.toString();
+			}
+		return msg;
+	}
+
 	public static String colors(String msg, Player p) {
 		return Colors.colorize(msg, false, p);
 	}
-	
 
-	//path - path.chat
+	// path - path.chat
 	public static void setFormat(CommandSender player, String path, Placeholders placeholders, AsyncPlayerChatEvent event) {
-		if(player==null)
+		if (player == null)
 			return;
-		
-		Object text = Loader.chat.get(path+".chat");
+
+		Object text = Loader.chat.get(path + ".chat");
 
 		if (text instanceof Collection) {
 			if (Loader.chat.isJson(path)) {
@@ -145,13 +178,13 @@ public class ChatListeners implements Listener {
 				msg(player, line, placeholders, event);
 			return;
 		}
-		String line = Loader.chat.getString(path+".chat");
+		String line = Loader.chat.getString(path + ".chat");
 		if (line.isEmpty())
 			return; // Do not send empty strings
 		msg(player, line, placeholders, event);
 	}
 
-	//original - from chat.yml - chat
+	// original - from chat.yml - chat
 	@SuppressWarnings("unchecked")
 	private static void msgJson(CommandSender s, String original, Placeholders placeholders, AsyncPlayerChatEvent event) {
 		Object json = Json.reader().simpleRead(original);
@@ -181,15 +214,14 @@ public class ChatListeners implements Listener {
 		BukkitLoader.getPacketHandler().send(event.getRecipients(), packet);
 	}
 
-	//original - from chat.yml - chat
+	// original - from chat.yml - chat
 	@SuppressWarnings("unchecked")
 	private static void replaceJson(CommandSender s, Map<String, Object> map, Placeholders placeholders) {
 		for (Entry<String, Object> entry : map.entrySet()) {
 			if (entry.getKey().equals("text")) {
 				String text = entry.getValue() + "";
 
-				text = StringUtils.colorize(
-						PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null) );
+				text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
 				text = MessageUtils.placeholder(s, text, placeholders);
 				entry.setValue(text);
 				continue;
@@ -222,17 +254,18 @@ public class ChatListeners implements Listener {
 				}
 				String text = entry.getValue() + "";
 
-				text = StringUtils.colorize( PlaceholderAPISupport.replace(text, s, true, null) );
+				text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null));
 				text = MessageUtils.placeholder(s, text, placeholders);
 				entry.setValue(text);
 			}
 		}
 	}
-	//original - from chat.yml - chat
+
+	// original - from chat.yml - chat
 	private static void msg(CommandSender s, String original, Placeholders placeholders, AsyncPlayerChatEvent event) {
 		String text = original;
-		//first replacing chat palceholders, then adding %message% from player
-		text = MessageUtils.placeholder(s, StringUtils.colorize( PlaceholderAPISupport.replace(text, s, true)), placeholders);
+		// first replacing chat palceholders, then adding %message% from player
+		text = MessageUtils.placeholder(s, StringUtils.colorize(PlaceholderAPISupport.replace(text, s)), placeholders);
 		event.setFormat(text);
 	}
 }

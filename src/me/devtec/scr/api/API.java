@@ -2,6 +2,7 @@ package me.devtec.scr.api;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +57,7 @@ public class API {
 	public static String getPlayerName(String player) {
 		if (player == null)
 			return null;
-		return getUser(player).getName()!=null?getUser(player).getName():player;
+		return getUser(player).getName() != null ? getUser(player).getName() : player;
 	}
 
 	public static String getRealName(String player) {
@@ -70,68 +71,70 @@ public class API {
 			return null;
 		return Bukkit.getPlayer(getUser(name).getRealName());
 	}
-	
+
 	/*
-		ONLINE PLAYERS
-	*/
-	
+	 * ONLINE PLAYERS
+	 */
+
 	public static List<CommandSender> getOnlinePlayers(boolean console) {
-		List<CommandSender> list = new ArrayList<>();
-		list.addAll(BukkitLoader.getOnlinePlayers());
-		if(console && !list.contains(Bukkit.getConsoleSender()))
+		List<CommandSender> list = new ArrayList<>(BukkitLoader.getOnlinePlayers());
+		if (console)
 			list.add(Bukkit.getConsoleSender());
 		return list;
 	}
+
 	// které sender vidí
 	public static List<Player> getOnlinePlayersFor(CommandSender sender) {
 		List<Player> list = new ArrayList<>();
-		//list.addAll(BukkitLoader.getOnlinePlayers());
-		for(Player target : BukkitLoader.getOnlinePlayers()) {
-			if(canSee(sender, target))
+		// list.addAll(BukkitLoader.getOnlinePlayers());
+		for (Player target : BukkitLoader.getOnlinePlayers())
+			if (canSee(sender, target) && !list.contains(target))
 				list.add(target);
-		}
 		return list;
 	}
+
 	public static List<CommandSender> getOnlinePlayersThatcanSee(CommandSender target, boolean console) {
-		List<CommandSender> list = new ArrayList<>();
-		//list.addAll(BukkitLoader.getOnlinePlayers());
-		for(CommandSender online : getOnlinePlayers(console)) {
-			if(canSee(online, target) && !list.contains(online))
-				list.add(online);
+		List<CommandSender> list = getOnlinePlayers(console);
+		Iterator<CommandSender> iterator = list.iterator();
+		while (iterator.hasNext()) {
+			CommandSender online = iterator.next();
+			if (!canSee(online, target))
+				iterator.remove();
 		}
 		return list;
 	}
+
 	// kteří mají permisi
 	public static List<CommandSender> getOnlinePlayersWith(String permission) {
-		List<CommandSender> list = new ArrayList<>();
-		for(CommandSender p: getOnlinePlayers(true)) {
-			if( !(p instanceof Player) && !list.contains(p))
-				list.add(p);
-			if(p.hasPermission(permission) && !list.contains(p))
-				list.add(p);
+		List<CommandSender> list = getOnlinePlayers(true);
+		Iterator<CommandSender> iterator = list.iterator();
+		while (iterator.hasNext()) {
+			CommandSender online = iterator.next();
+			if (!online.hasPermission(permission))
+				iterator.remove();
 		}
 		return list;
 	}
+
 	// kteří nemají permisi
 	public static List<CommandSender> getOnlinePlayersWithout(String permission) {
 		List<CommandSender> list = new ArrayList<>();
-		for(CommandSender p: getOnlinePlayers(false)) {
-			if(!p.hasPermission(permission) && !list.contains(p))
-				list.add(p);
+		Iterator<CommandSender> iterator = list.iterator();
+		while (iterator.hasNext()) {
+			CommandSender online = iterator.next();
+			if (online.hasPermission(permission))
+				iterator.remove();
 		}
 		return list;
 	}
-	//VANISH
+
+	// VANISH
 	public static boolean isVanished(CommandSender p) {
-		//TODO
+		// TODO
 		return false;
 	}
-	public static boolean canSee(CommandSender sender, CommandSender target) { //if sender can see target
-		if(!(sender instanceof Player))
-			return true;
-		if(!isVanished(target))
-			return true;
-		
-		return true;
+
+	public static boolean canSee(CommandSender sender, CommandSender target) { // if sender can see target
+		return sender == null || target == null || !(sender instanceof Player) || !(target instanceof Player) || ((Player) sender).canSee((Player) target);
 	}
 }

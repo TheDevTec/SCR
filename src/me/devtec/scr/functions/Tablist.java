@@ -10,13 +10,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
-import me.devtec.scr.MessageUtils;
-import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.listeners.additional.TablistJoinQuit;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
-import me.devtec.shared.placeholders.PlaceholderAPI;
 import me.devtec.shared.scheduler.Scheduler;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.utility.StringUtils;
@@ -142,7 +139,9 @@ public class Tablist {
 	}
 
 	public void fullyUnregister(Player p) {
-		tags.remove(p.getUniqueId()).reset(BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
+		NameTagAPI nametag = tags.remove(p.getUniqueId());
+		if (nametag != null)
+			nametag.reset(BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
 		for (NameTagAPI a : tags.values())
 			a.reset(p);
 		dType.remove(p.getUniqueId());
@@ -182,7 +181,7 @@ public class Tablist {
 
 	public TabSettings getSettingsOf(Player player) {
 		TabSettings generated = new TabSettings();
-		
+
 		// first perplayer -> perWorld -> perGroup -> Global (default)
 		TabSettings settings = perPlayer.get(player.getName());
 		if (settings != null)
@@ -195,7 +194,7 @@ public class Tablist {
 			generated.copySettings(settings);
 		// Copy settings from global
 		generated.copySettings(global);
-		
+
 		return generated;
 	}
 
@@ -257,45 +256,51 @@ public class Tablist {
 		}
 
 		public void replace(Player player) {
-			//tabname = PlaceholderAPISupport.replace(tabname, player, true);
+			// tabname = PlaceholderAPISupport.replace(tabname, player, true);
 
 			if (yellowNumberDisplay != null)
-				yellowNumberDisplay = PlaceholderAPISupport.replace(yellowNumberDisplay, player, true);
-			
-			tabname = PlaceholderAPISupport.replace(tabname, player, true);
-			
-			header = PlaceholderAPISupport.replace(header, player, true);
-			footer = PlaceholderAPISupport.replace(footer, player, true);
-			nametag_prefix = PlaceholderAPISupport.replace(nametag_prefix, player, true);
-			nametag_suffix = PlaceholderAPISupport.replace(nametag_suffix, player, true);
-			if (sorting != null)
-				sorting = PlaceholderAPISupport.replace(sorting, player, true);
-			if (yellowNumber != null)
-				yellowNumber = PlaceholderAPISupport.replace(yellowNumber, player, true);
-		}
-		
-		public void replaceOLD(Player player) {
-			Placeholders plac = Placeholders.c().addPlayer("player", player);
-			tabname = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac), player.getUniqueId());
+				yellowNumberDisplay = PlaceholderAPISupport.replace(yellowNumberDisplay, player);
 
-			Loader.plugin.getLogger().info(tabname);
-			if (yellowNumberDisplay != null)
-				yellowNumberDisplay = PlaceholderAPI.apply(MessageUtils.placeholder(player, yellowNumberDisplay, plac), player.getUniqueId());
-			tabname = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac), player.getUniqueId());
-			Loader.plugin.getLogger().info("2"+tabname);
-			tabname = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac), player.getUniqueId());
-			Loader.plugin.getLogger().info("3"+tabname);
-			tabname = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac), player.getUniqueId());
-			Loader.plugin.getLogger().info("4"+tabname);
-			header = PlaceholderAPI.apply(MessageUtils.placeholder(player, header, plac), player.getUniqueId());
-			footer = PlaceholderAPI.apply(MessageUtils.placeholder(player, footer, plac), player.getUniqueId());
-			nametag_prefix = PlaceholderAPI.apply(MessageUtils.placeholder(player, nametag_prefix, plac), player.getUniqueId());
-			nametag_suffix = PlaceholderAPI.apply(MessageUtils.placeholder(player, nametag_suffix, plac), player.getUniqueId());
+			tabname = PlaceholderAPISupport.replace(tabname, player);
+
+			header = PlaceholderAPISupport.replace(header, player);
+			footer = PlaceholderAPISupport.replace(footer, player);
+			nametag_prefix = PlaceholderAPISupport.replace(nametag_prefix, player);
+			nametag_suffix = PlaceholderAPISupport.replace(nametag_suffix, player);
 			if (sorting != null)
-				sorting = PlaceholderAPI.apply(MessageUtils.placeholder(player, sorting, plac), player.getUniqueId());
+				sorting = PlaceholderAPISupport.replace(sorting, player);
 			if (yellowNumber != null)
-				yellowNumber = PlaceholderAPI.apply(MessageUtils.placeholder(player, yellowNumber, plac), player.getUniqueId());
+				yellowNumber = PlaceholderAPISupport.replace(yellowNumber, player);
 		}
+
+		/*
+		 * public void replaceOLD(Player player) { Placeholders plac =
+		 * Placeholders.c().addPlayer("player", player); tabname =
+		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac),
+		 * player.getUniqueId());
+		 * 
+		 * Loader.plugin.getLogger().info(tabname); if (yellowNumberDisplay != null)
+		 * yellowNumberDisplay = PlaceholderAPI.apply(MessageUtils.placeholder(player,
+		 * yellowNumberDisplay, plac), player.getUniqueId()); tabname =
+		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac),
+		 * player.getUniqueId()); Loader.plugin.getLogger().info("2" + tabname); tabname
+		 * = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac),
+		 * player.getUniqueId()); Loader.plugin.getLogger().info("3" + tabname); tabname
+		 * = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac),
+		 * player.getUniqueId()); Loader.plugin.getLogger().info("4" + tabname); header
+		 * = PlaceholderAPI.apply(MessageUtils.placeholder(player, header, plac),
+		 * player.getUniqueId()); footer =
+		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, footer, plac),
+		 * player.getUniqueId()); nametag_prefix =
+		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, nametag_prefix, plac),
+		 * player.getUniqueId()); nametag_suffix =
+		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, nametag_suffix, plac),
+		 * player.getUniqueId()); if (sorting != null) sorting =
+		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, sorting, plac),
+		 * player.getUniqueId()); if (yellowNumber != null) yellowNumber =
+		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, yellowNumber, plac),
+		 * player.getUniqueId()); }
+		 */
 
 		public void colorize() {
 			tabname = StringUtils.colorize(tabname);

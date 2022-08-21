@@ -16,61 +16,53 @@ public class ClearChat implements ScrCommand {
 
 	@Override
 	public void init(List<String> cmds) {
-		
-		//clearchat [player] [-s
+
+		// clearchat [player] [-s
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			clearChat(null, permission("bypass"));
-			MessageUtils.message(s, "clearchat.cleared", Placeholders.c().addPlayer("player", s),
-					true, API.getOnlinePlayers(true).toArray(new CommandSender[0]));
-		})
-		.permission(permission("cmd"))
-		.fallback((s, structure, args) -> { // clearchat [player]
+			MessageUtils.message(s, "clearchat.cleared", Placeholders.c().addPlayer("player", s), true, API.getOnlinePlayers(true).toArray(new CommandSender[0]));
+		}).permission(permission("cmd")).fallback((s, structure, args) -> { // clearchat [player]
 			offlinePlayer(s, args[0]);
-		})
-			.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { //clearchat [player]
-				for(Player p : playerSelectors(s, args[0])) {
-					if(p.getName().equalsIgnoreCase(s.getName())) // s is p
-						continue;
-					if(hasPermission(p, "bypass") && !p.getName().equalsIgnoreCase(s.getName()))
-						msgSec(s, "bypass", Placeholders.c().addPlayer("target", p));
-					else {
-						clearChat(p, permission("bypass"));
-						msgSec(s, "specific", Placeholders.c().addPlayer("target", p));
-						msgSec(p, "cleared", Placeholders.c().addPlayer("player", s));
-					}
+		}).selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // clearchat [player]
+			for (Player p : playerSelectors(s, args[0])) {
+				if (p.getName().equalsIgnoreCase(s.getName())) // s is p
+					continue;
+				if (hasPermission(p, "bypass") && !p.getName().equalsIgnoreCase(s.getName()))
+					msgSec(s, "bypass", Placeholders.c().addPlayer("target", p));
+				else {
+					clearChat(p, permission("bypass"));
+					msgSec(s, "specific", Placeholders.c().addPlayer("target", p));
+					msgSec(p, "cleared", Placeholders.c().addPlayer("player", s));
 				}
-			})
-				.argument("-s", (s, structure, args) -> { // clearchat [player] -s
-					for(Player p : playerSelectors(s, args[0])) {
-						if(p.getName().equalsIgnoreCase(s.getName())) // s is p
-							continue;
-						if(hasPermission(p, "bypass") && !p.getName().equalsIgnoreCase(s.getName()))
-							msgSec(s, "bypass", Placeholders.c().addPlayer("target", p));
-						else {
-							clearChat(p, permission("bypass"));
-						}
-					}
-				})
-			
-		.build().register(cmds.remove(0), cmds.toArray(new String[0]));
+			}
+		}).argument("-s", (s, structure, args) -> { // clearchat [player] -s
+			for (Player p : playerSelectors(s, args[0])) {
+				if (p.getName().equalsIgnoreCase(s.getName())) // s is p
+					continue;
+				if (hasPermission(p, "bypass") && !p.getName().equalsIgnoreCase(s.getName()))
+					msgSec(s, "bypass", Placeholders.c().addPlayer("target", p));
+				else
+					clearChat(p, permission("bypass"));
+			}
+		})
+
+				.build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
 	@Override
 	public String configSection() {
 		return "clearchat";
 	}
-	
+
 	public static void clearChat(Player target, String bypass_perm) {
-		
-		if(target == null) { //ALL
-			for(CommandSender p : API.getOnlinePlayersWithout(bypass_perm)) {
-				for(int i = 0; i < 250; i++)
-					p.sendMessage(" ");
-			}
-		} else { // target
-			for(int i = 0; i < 250; i++)
+
+		if (target == null)
+			for (CommandSender p : API.getOnlinePlayersWithout(bypass_perm))
+				for (int i = 0; i < 250; i++)
+					p.sendMessage(" \n \n \n ");
+		else
+			for (int i = 0; i < 250; i++)
 				target.sendMessage(" ");
-		}
 	}
-	
+
 }
