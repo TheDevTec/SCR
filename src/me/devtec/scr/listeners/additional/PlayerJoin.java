@@ -45,7 +45,6 @@ public class PlayerJoin implements Listener {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		event.getPlayer().sendMessage("a \nb \nc \nd ");
 		event.setJoinMessage(null);
 		if (joinconfig.getBoolean("enabled"))
 			if (!event.getPlayer().hasPlayedBefore()) {
