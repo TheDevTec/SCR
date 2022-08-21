@@ -76,7 +76,7 @@ public class Sudo implements ScrCommand {
 			target.chat(value);
 			break;
 		case COMMAND:
-			dispatchCommandAsync((CommandSender)target, value);
+			dispatchCommand((CommandSender)target, value);
 			break;
 		} 
 	}
@@ -84,10 +84,10 @@ public class Sudo implements ScrCommand {
 	public static void sudoConsole(SudoType type, String value) {
 		switch (type) {
 		case CHAT:
-			dispatchCommandAsync(Bukkit.getConsoleSender(), "say " + value);
+			dispatchCommand(Bukkit.getConsoleSender(), "say " + value);
 			break;
 		case COMMAND:
-			dispatchCommandAsync(Bukkit.getConsoleSender(), value);
+			dispatchCommand(Bukkit.getConsoleSender(), value);
 			break;
 		} 
 	}
@@ -98,7 +98,11 @@ public class Sudo implements ScrCommand {
 		  
 	private static CommandMap cmdMap = (CommandMap)Ref.get(Bukkit.getPluginManager(), "commandMap");
 	  
-	private static void dispatchCommandAsync(CommandSender sender, String cmd) {
+	private static void dispatchCommand(CommandSender sender, String cmd) {
+		if(!(sender instanceof Player)) {
+			sudoConsole(cmd);
+			return;
+		}
 		if (!cmdMap.dispatch(sender, cmd))
 			if (Ref.getClass("org.spigotmc.SpigotConfig") != null) {
 				if (!SpigotConfig.unknownCommandMessage.isEmpty())
@@ -107,6 +111,6 @@ public class Sudo implements ScrCommand {
 				sender.sendMessage("Unknown command. Type \"/help\" for help.");
 			} else {
 				sender.sendMessage("Unknown command. Type \"help\" for help.");
-			}  
+			}
 	}
 }

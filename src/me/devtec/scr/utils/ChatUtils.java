@@ -147,15 +147,19 @@ public class ChatUtils {
 			}
 			//CMDS
 			for(String cmd : Loader.chat.getStringList("chatNotification.commands")) {
-				Sudo.sudoConsole(SudoType.COMMAND,  MessageUtils.placeholder(target, cmd, Placeholders.c()
-						.addPlayer("pinger", pinger).addPlayer("player", pinger)
-						.addPlayer("pinged", target).addPlayer("target", target) ));
+				BukkitLoader.getNmsProvider().postToMainThread(() -> {
+					Sudo.sudoConsole(SudoType.COMMAND,  MessageUtils.placeholder(target, cmd, Placeholders.c()
+							.addPlayer("pinger", pinger).addPlayer("player", pinger)
+							.addPlayer("pinged", target).addPlayer("target", target) ));
+					});
 			}
 			//MSGS
 			if(Loader.chat.exists("chatNotification.messages"))
+				BukkitLoader.getNmsProvider().postToMainThread(() -> {
 				MessageUtils.msgConfig(target, "chatNotification.messages", Loader.chat, Placeholders.c()
 						.addPlayer("pinger", pinger).addPlayer("player", pinger)
 						.addPlayer("pinged", target).addPlayer("target", target));
+				});
 		}
 		
 		public static void sendTitle(Player p, String firstLine, String nextLine) {
