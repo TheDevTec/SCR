@@ -47,5 +47,6 @@ public class AutoAnnoucments {
 	public static void unloadTask() {
 		if(task != -1)
 			Scheduler.cancelTask(task);
+		task = -1;
 	}
 }

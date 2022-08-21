@@ -16,7 +16,7 @@ options:
   # en, cz
   language: "en"
   
-  ram-percentage: true
+  ram-percentage: false
   
   tp-accept_cooldown: 30
   
