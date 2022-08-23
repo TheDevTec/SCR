@@ -64,6 +64,26 @@ public class ConfigCommand implements ScrCommand {
 							})
 							.parent() // cmd user player set path
 						.parent() // cmd user player set
+						.argument(null, (s, structure, args) -> { // cmd user player set <new path>
+							help(s, "user");
+						})
+							.argument(null, (s, structure, args) -> { // cmd user player set path [value]
+								for(Player p : playerSelectors(s, args[1])) {
+									Config user = API.getUser(p.getName());
+									String path = args[3];
+									String value = StringUtils.buildString(4, args);
+									if(value == null || value.equalsIgnoreCase("null")) {
+										user.remove(path);
+									} else {
+										user.set(path, value);
+									}
+									user.save();
+									msgSec(s, "user.set", Placeholders.c().addPlayer("player", p).add("value", value)
+											.add("path", path));
+								}
+							})
+							.parent() // cmd user player set new_path
+						.parent() // cmd user player set
 					.parent() // cmd user player
 					
 					.argument("Remove", (s, structure, args) -> { // cmd user [Player] Remove

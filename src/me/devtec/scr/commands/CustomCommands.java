@@ -233,16 +233,18 @@ public class CustomCommands {
 				Loader.plugin.getLogger().warning("Condition " + condition + " not found in Custom Command " + c.getFile().getName() + "");
 			return false;
 		}
-		/*
-		 * InBuildConditions: mustBePlayer/isPlayer - sender must be Player
-		 * mustBeConsole/isConsole - sender must be Console isOnline - argument must be
-		 * a online player havePerm:scr.exampleperm - sender must have subpermission
-		 * isWorld - argument must be a world isNumber - argument must be a number
-		 * isMaterial - argument must be a valid material isBoolean - argument must be
-		 * true/false
-		 * 
-		 * isOnline:0 - if args[0] is online
-		 */
+		//InBuildConditions: 
+		  	// mustBePlayer/isPlayer - sender must be Player
+		    // mustBeConsole/isConsole - sender must be Console 
+		    // isOnline - argument must be a online player 
+		    // havePerm:scr.exampleperm - sender must have subpermission
+		    // isWorld - argument must be a world 
+		    // isNumber - argument must be a number
+		    // isMaterial - argument must be a valid material 
+		    // isBoolean - argument must be true/false
+		
+		  //isOnline:0 - if args[0] is online
+		
 		/*
 		 * CustomConditions >=50 >50 <=50 <50 ==50 (or =50) <value> -> equalsIgnoreCase
 		 */

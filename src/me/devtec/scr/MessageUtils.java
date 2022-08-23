@@ -85,16 +85,16 @@ public class MessageUtils {
 					 * %playe%r, %target%, etc... %player% - Real or Nickname %player_name% - Just
 					 * Real name %player_displayname% %player_customname%
 					 */
-					if (players.getKey().endsWith("_name")) {
-						string = string.replace("%" + players.getKey() + "%", players.getValue().getName());
+					if (string.contains("%"+players.getKey()+"_name%")) {
+						string = string.replace("%" + players.getKey() + "_name%", players.getValue().getName());
 						continue;
 					}
-					if (players.getKey().endsWith("_displayname")) {
-						string = string.replace("%" + players.getKey() + "%", players.getValue().getDisplayName());
+					if (string.contains("%"+players.getKey()+"_displayname%")) {
+						string = string.replace("%" + players.getKey() + "_displayname%", players.getValue().getDisplayName());
 						continue;
 					}
-					if (players.getKey().endsWith("_customname")) {
-						string = string.replace("%" + players.getKey() + "%", players.getValue().getCustomName());
+					if (string.contains("%"+players.getKey()+"_customname%") ){
+						string = string.replace("%" + players.getKey() + "_customname%", players.getValue().getCustomName());
 						continue;
 					}
 					string = string.replace("%" + players.getKey() + "%", API.getPlayerName(players.getValue()));

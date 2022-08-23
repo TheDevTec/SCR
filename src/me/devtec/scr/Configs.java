@@ -50,8 +50,9 @@ public class Configs {
 			Loader.chat = loadAndMerge("chat.yml", "chat.yml");
 		if(config.equalsIgnoreCase("placeholders"))
 			Loader.placeholders = loadAndMerge("placeholders.yml", "placeholders.yml");
-
-		temp_data.clear();
+		
+		if(temp_data!=null)
+			temp_data.clear();
 		temp_data = null; // clear cache
 		
 		//Reload configs for custom commands
