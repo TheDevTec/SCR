@@ -13,6 +13,7 @@ import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
 import me.devtec.scr.api.ScrEconomy;
 import me.devtec.scr.api.User;
+import me.devtec.scr.commands.info.AFK;
 import me.devtec.scr.commands.info.Ping;
 import me.devtec.scr.commands.server_managment.Memory;
 import me.devtec.scr.commands.server_managment.TPS;
@@ -117,7 +118,7 @@ public class PlaceholderAPISupport {
 			 //%god% 
 			 //%fly%
 			if (text.contains("%afk%"))
-				if (user.haveGod())
+				if (AFK.players.containsKey(p.getName()))
 					placeholders.add("afk", Loader.placeholders.getString("afk.enabled"));
 				else
 					placeholders.add("afk", Loader.placeholders.getString("afk.disabled"));
