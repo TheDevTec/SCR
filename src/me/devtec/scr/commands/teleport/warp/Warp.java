@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
+import me.devtec.scr.commands.tpsystem.TpSystem;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.dataholder.Config;
@@ -53,7 +54,8 @@ public class Warp implements ScrCommand {
 				msgSec(s, "cannot_teleport." + reason, Placeholders.c().add("warp", warp.name()));
 				return;
 			}
-			((Player) s).teleport(warp.location().toLocation());
+			TpSystem.teleport((Player)s, warp.location().toLocation());
+			//((Player) s).teleport(warp.location().toLocation());
 			msgSec(s, "self", Placeholders.c().add("warp", warp.name()));
 		}).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[1]);
@@ -70,7 +72,8 @@ public class Warp implements ScrCommand {
 				msgSec(s, "cannot_teleport." + reason, Placeholders.c().add("warp", warp.name()));
 				return;
 			}
-			((Player) s).teleport(warp.location().toLocation());
+			TpSystem.teleport((Player)s, warp.location().toLocation());
+			//((Player) s).teleport(warp.location().toLocation());
 		}).parent() // cmd [warp]
 				.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [warp] [entity_selector]
 					WarpHolder warp = WarpManager.find(args[0]);
@@ -81,7 +84,8 @@ public class Warp implements ScrCommand {
 							msgSec(s, "cannot_teleport." + reason, Placeholders.c().add("warp", warp.name()));
 							return;
 						}
-						p.teleport(warp.location().toLocation());
+						TpSystem.teleport(p, warp.location().toLocation());
+						//p.teleport(warp.location().toLocation());
 						msgSec(s, "other.sender", Placeholders.c().add("warp", warp.name()).addPlayer("target", p));
 						msgSec(p, "other.target", Placeholders.c().add("warp", warp.name()).addPlayer("player", s));
 					}
@@ -95,7 +99,8 @@ public class Warp implements ScrCommand {
 							msgSec(s, "cannot_teleport." + reason, Placeholders.c().add("warp", warp.name()));
 							return;
 						}
-						p.teleport(warp.location().toLocation());
+						TpSystem.teleport(p, warp.location().toLocation());
+						//p.teleport(warp.location().toLocation());
 					}
 				}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure();
 	}

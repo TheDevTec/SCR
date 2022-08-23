@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
+import me.devtec.scr.commands.tpsystem.TpSystem;
 import me.devtec.shared.API;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
@@ -48,7 +49,8 @@ public class Home implements ScrCommand {
 			}
 
 			HomeHolder home = HomeManager.find(((Player) s).getUniqueId(), args[0]);
-			((Player) s).teleport(home.location().toLocation());
+			TpSystem.teleport((Player)s, home.location().toLocation());
+			//((Player) s).teleport(home.location().toLocation());
 			msgSec(s, "self", Placeholders.c().add("home", home.name()));
 		}).priority(1)
 			.argument("-s", (s, structure, args) -> { // cmd [home] -s
@@ -58,7 +60,8 @@ public class Home implements ScrCommand {
 				}
 	
 				HomeHolder home = HomeManager.find(((Player) s).getUniqueId(), args[0]);
-				((Player) s).teleport(home.location().toLocation());
+				TpSystem.teleport((Player)s, home.location().toLocation());
+				//((Player) s).teleport(home.location().toLocation());
 			})
 			.parent() // cmd [home]
 		.parent() // cmd
@@ -85,7 +88,8 @@ public class Home implements ScrCommand {
 				}
 
 				HomeHolder home = HomeManager.find(Bukkit.getPlayer(me.devtec.scr.api.API.getRealName(args[0])).getUniqueId(), args[1]);
-				((Player) s).teleport(home.location().toLocation());
+				//((Player) s).teleport(home.location().toLocation());
+				TpSystem.teleport((Player)s, home.location().toLocation());
 				msgSec(s, "self", Placeholders.c().add("home", home.name()));
 			})
 				.argument("-s", (s, structure, args) -> { // cmd [player] [home] -s
@@ -95,7 +99,8 @@ public class Home implements ScrCommand {
 					}
 	
 					HomeHolder home = HomeManager.find(((Player) s).getUniqueId(), args[1]);
-					((Player) s).teleport(home.location().toLocation());
+					//((Player) s).teleport(home.location().toLocation());
+					TpSystem.teleport((Player)s, home.location().toLocation());
 				})
 			.parent() // cmd [player] [home]
 
@@ -103,7 +108,8 @@ public class Home implements ScrCommand {
 				HomeHolder home = HomeManager.find(UUID.fromString(API.getUser(me.devtec.scr.api.API.getRealName(args[0])).getFile().getName().substring(0,
 						API.getUser(me.devtec.scr.api.API.getRealName(args[0])).getFile().getName().length() - 4)), args[1]);
 				for (Player p : playerSelectors(s, args[2])) {
-					p.teleport(home.location().toLocation());
+					TpSystem.teleport(p, home.location().toLocation());
+					//p.teleport(home.location().toLocation());
 					msgSec(s, "other-otherHouse.sender", Placeholders.c().addPlayer("target", Bukkit.getPlayer(args[0])).add("home", home.name()).addPlayer("player", p));
 					msgSec(p, "other-otherHouse.target", Placeholders.c().addPlayer("target", Bukkit.getPlayer(args[0])).add("home", home.name()).addPlayer("player", s));
 				}
@@ -111,7 +117,8 @@ public class Home implements ScrCommand {
 				.argument("-s", (s, structure, args) -> { // cmd [player] [home] -s
 					HomeHolder home = HomeManager.find(UUID.fromString(API.getUser(args[0]).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)), args[1]);
 					for (Player p : playerSelectors(s, args[2]))
-						p.teleport(home.location().toLocation());
+						TpSystem.teleport(p, home.location().toLocation());
+						//p.teleport(home.location().toLocation());
 				})
 				.parent() // cmd [player] [home] [target]
 			.parent() // cmd [player] [home]
@@ -137,6 +144,7 @@ public class Home implements ScrCommand {
 
 				HomeHolder home = HomeManager.find(
 						UUID.fromString(API.getUser(me.devtec.scr.api.API.getRealName(args[0])).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)), args[1]);
+				TpSystem.teleport((Player)s, home.location().toLocation());
 				((Player) s).teleport(home.location().toLocation());
 				msgSec(s, "self-otherHouse", Placeholders.c().add("player", me.devtec.scr.api.API.getPlayerName(args[0])).add("home", home.name()));
 			})
@@ -149,7 +157,8 @@ public class Home implements ScrCommand {
 					HomeHolder home = HomeManager.find(
 							UUID.fromString(API.getUser(me.devtec.scr.api.API.getPlayerName(args[0])).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)),
 							args[1]);
-					((Player) s).teleport(home.location().toLocation());
+					TpSystem.teleport((Player)s, home.location().toLocation());
+					//((Player) s).teleport(home.location().toLocation());
 				})
 			.parent() // cmd [player] [home]
 			.fallback((s, structure, args) -> {
@@ -160,7 +169,8 @@ public class Home implements ScrCommand {
 						UUID.fromString(API.getUser(me.devtec.scr.api.API.getPlayerName(args[0])).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)),
 						args[1]);
 				for (Player p : playerSelectors(s, args[2])) {
-					p.teleport(home.location().toLocation());
+					TpSystem.teleport(p, home.location().toLocation());
+					//p.teleport(home.location().toLocation());
 					msgSec(s, "other-otherHouse.sender", Placeholders.c().add("target", me.devtec.scr.api.API.getPlayerName(args[0])).add("home", home.name()).addPlayer("player", p));
 					msgSec(p, "other-otherHouse.target", Placeholders.c().add("target", me.devtec.scr.api.API.getPlayerName(args[0])).add("home", home.name()).addPlayer("player", s));
 				}
@@ -170,7 +180,8 @@ public class Home implements ScrCommand {
 							UUID.fromString(API.getUser(me.devtec.scr.api.API.getPlayerName(args[0])).getFile().getName().substring(0, API.getUser(args[0]).getFile().getName().length() - 4)),
 							args[1]);
 					for (Player p : playerSelectors(s, args[2]))
-						p.teleport(home.location().toLocation());
+						TpSystem.teleport(p, home.location().toLocation());
+						//p.teleport(home.location().toLocation());
 				}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure();
 	}
 

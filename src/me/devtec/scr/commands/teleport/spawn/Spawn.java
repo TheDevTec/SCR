@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.commands.teleport.warp.Warp;
+import me.devtec.scr.commands.tpsystem.TpSystem;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.dataholder.DataType;
@@ -26,27 +27,31 @@ public class Spawn implements ScrCommand {
 
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			if (s instanceof Player) {
-				((Player) s).teleport(spawn.toLocation());
+				TpSystem.teleport((Player)s, spawn.toLocation());
+				//((Player) s).teleport(spawn.toLocation());
 				msgSec(s, "self");
 			} else
 				help(s, "usage");
 		}).cooldownDetection((s, structure, args) -> inCooldown(s))
 		.permission(permission("cmd")).argument("-s", (s, structure, args) -> { // cmd -s
 			if (s instanceof Player)
-				((Player) s).teleport(spawn.toLocation());
+				TpSystem.teleport((Player)s, spawn.toLocation());
+				//((Player) s).teleport(spawn.toLocation());
 			else
 				help(s, "usage");
 		}).parent().selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
 			Location loc = spawn.toLocation();
 			for (Player p : playerSelectors(s, args[0])) {
-				p.teleport(loc);
+				//p.teleport(loc);
+				TpSystem.teleport(p, loc);
 				msgSec(s, "other.sender", Placeholders.c().addPlayer("target", p));
 				msgSec(p, "other.target", Placeholders.c().addPlayer("player", s));
 			}
 		}).permission(permission("other")).argument("-s", (s, structure, args) -> { // cmd [entity_selector] -s
 			Location loc = spawn.toLocation();
 			for (Player p : playerSelectors(s, args[0]))
-				p.teleport(loc);
+				TpSystem.teleport(p, loc);
+				//p.teleport(loc);
 		}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure();
 	}
 
