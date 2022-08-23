@@ -109,19 +109,39 @@ public class MessageUtils {
 
 	// Translation messages
 	public static void message(CommandSender player, String path, Placeholders placeholders) {
-		msgConfig(player, Loader.translations, path, placeholders, true, player);
+		if(Loader.translations.exists(path))
+			msgConfig(player, Loader.translations, path, placeholders, true, player);
+		else {
+			Loader.plugin.getLogger().warning("Path " + path + " not found in config " + Loader.translations.getFile().getName() + ", please complete your translation.");
+			msgConfig(player, Loader.engtrans, path, placeholders, true, player);
+		}
 	}
 
 	public static void message(CommandSender player, String path, Placeholders placeholders, boolean split) {
-		msgConfig(player, Loader.translations, path, placeholders, split, player);
+		if(Loader.translations.exists(path))
+			msgConfig(player, Loader.translations, path, placeholders, split, player);
+		else {
+			Loader.plugin.getLogger().warning("Path " + path + " not found in config " + Loader.translations.getFile().getName() + ", please complete your translation.");
+			msgConfig(player, Loader.engtrans, path, placeholders, split, player);
+		}
 	}
 
 	public static void message(CommandSender player, String path, Placeholders placeholders, CommandSender... targets) {
-		msgConfig(player, Loader.translations, path, placeholders, true, targets);
+		if(Loader.translations.exists(path))
+			msgConfig(player, Loader.translations, path, placeholders, true, targets);
+		else {
+			Loader.plugin.getLogger().warning("Path " + path + " not found in config " + Loader.translations.getFile().getName() + ", please complete your translation.");
+			msgConfig(player, Loader.engtrans, path, placeholders, true, targets);
+		}
 	}
 
 	public static void message(CommandSender player, String path, Placeholders placeholders, boolean split, CommandSender... targets) {
-		msgConfig(player, Loader.translations, path, placeholders, split, targets);
+		if(Loader.translations.exists(path))
+			msgConfig(player, Loader.translations, path, placeholders, split, targets);
+		else {
+			Loader.plugin.getLogger().warning("Path " + path + " not found in config " + Loader.translations.getFile().getName() + ", please complete your translation.");
+			msgConfig(player, Loader.engtrans, path, placeholders, split, targets);
+		}
 	}
 
 	// Specific config messages

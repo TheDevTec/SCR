@@ -43,7 +43,7 @@ public class Loader extends JavaPlugin {
 
 	public static Config config;
 	public static Config commands;
-	public static Config translations;
+	public static Config translations, engtrans;
 	public static Config data;
 
 	public static Config chat;

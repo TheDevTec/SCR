@@ -614,6 +614,16 @@ maintenance:
     cmd: "scr.command.maintenance"
     bypass: "scr.command.maintenance.bypass"
 
+config:
+  enabled: true
+  cmds:
+  - "config"
+  help:
+    usage: "TODO"
+    user: "TODO"
+  permission:
+    cmd: "scr.command.maintenance"
+
 # # # # # # # # # #
 # # # Message # # #
 # # # # # # # # # #

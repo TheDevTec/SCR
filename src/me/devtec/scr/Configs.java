@@ -22,7 +22,7 @@ public class Configs {
 			Loader.commands = loadAndMerge("commands.yml", "commands.yml");
 		
 		if(config.equalsIgnoreCase("translation")) {
-			loadAndMerge("translations/Translation-en.yml", "translations/Translation-en.yml");
+			Loader.engtrans = loadAndMerge("translations/Translation-en.yml", "translations/Translation-en.yml");
 			loadAndMerge("translations/Translation-cz.yml", "translations/Translation-cz.yml");
 			String type = "en";
 			if (Loader.config.exists("options.language"))
@@ -76,7 +76,7 @@ public class Configs {
 		Loader.chat = loadAndMerge("chat.yml", "chat.yml");
 		Loader.placeholders = loadAndMerge("placeholders.yml", "placeholders.yml");
 
-		loadAndMerge("translations/Translation-en.yml", "translations/Translation-en.yml");
+		Loader.engtrans = loadAndMerge("translations/Translation-en.yml", "translations/Translation-en.yml");
 		loadAndMerge("translations/Translation-cz.yml", "translations/Translation-cz.yml");
 		String type = "en";
 		if (Loader.config.exists("options.language"))

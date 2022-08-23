@@ -372,6 +372,12 @@ maintenance:
   - "&7Website: &ewww.example.com"
   - "&7Discord: &ediscord.link"
 
+config:
+  user:
+    set: "%prefix% &7You set value &e%value% &7on &e%path% &7for player &e%player%"
+    remove: "%prefix% &7Removed path &e%path% &7from user data of &e%player%"
+    get: "&e%path% &7: &f%value%"
+  
 # # # # # # # # #
 # # # Info  # # #
 # # # # # # # # #
