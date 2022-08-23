@@ -620,7 +620,11 @@ config:
   - "config"
   help:
     usage: "TODO"
-    user: "TODO"
+    user:
+    - "/config user [Player] Get [Path]"
+    - "/config user [Player] Set [Path] <Value>"
+    - "/config user [Player] Remove [Path]"
+    - "[Player] - Player, name or UUID"
   permission:
     cmd: "scr.command.maintenance"
 
