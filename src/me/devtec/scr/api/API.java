@@ -20,12 +20,28 @@ public class API {
 	public static User getUser(String playername) {
 		if (!usercache.containsKey(playername))
 			usercache.put(playername, new User(playername));
+		else if(!playername.equalsIgnoreCase("console")) {
+			User u = usercache.get(playername);
+			if(u.player==null ) {
+				usercache.remove(playername, new User(playername));
+				usercache.put(playername, new User(playername));
+			}
+			return u;
+		}
 		return usercache.get(playername);
 	}
 
 	public static User getUser(Player player) {
 		if (!usercache.containsKey(player.getName()))
 			usercache.put(player.getName(), new User(player));
+		else {
+			User u = usercache.get(player.getName());
+			if(u.player==null) {
+				usercache.remove(player.getName(), new User(player));
+				usercache.put(player.getName(), new User(player));
+			}
+			return u;
+		}
 		return usercache.get(player.getName());
 	}
 
@@ -34,6 +50,13 @@ public class API {
 			return new User("console");
 		if (!usercache.containsKey(commandsender.getName()))
 			usercache.put(commandsender.getName(), new User(commandsender));
+		else {
+			User u = usercache.get(commandsender.getName());
+			if(u.player==null) {
+				usercache.remove(commandsender.getName(), new User(commandsender));
+				usercache.put(commandsender.getName(), new User(commandsender));
+			}
+		}
 		return usercache.get(commandsender.getName());
 	}
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
 import me.devtec.scr.api.User.SeenType;
@@ -31,6 +32,8 @@ public class Seen implements ScrCommand {
 			.fallback((s, structure, args) -> { // /seen [player]
 				if( me.devtec.shared.API.getUser(args[0]).exists("lastLeave") ) {
 					long time = API.getUser(args[0]).getSeen(SeenType.OFFLINE);
+					Loader.plugin.getLogger().info("Time: "+time+ " ; "+
+							me.devtec.shared.API.getUser(args[0]).getLong("lastLeave") );
 					msgSec(s, "offline", Placeholders.c()
 							.add("time", StringUtils.timeToString(time)).addOffline("player", args[0]));
 				}else {

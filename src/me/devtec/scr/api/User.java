@@ -221,7 +221,7 @@ public class User implements ISuser {
 		c.save();
 	}
 
-	// GOD
+	// FLY
 	public boolean haveFly() {
 		return getUserConfig().getBoolean("fly");
 	}

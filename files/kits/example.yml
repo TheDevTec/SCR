@@ -6,8 +6,8 @@ permission: "scr.command.kit.example"
 cost: "0"
 cooldown: "60"
 
-commands: []
-messages: []
+#commands: []
+#messages: []
 
 items:
   add:
