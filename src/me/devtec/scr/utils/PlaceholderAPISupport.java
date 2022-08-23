@@ -1,5 +1,8 @@
 package me.devtec.scr.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -155,6 +158,15 @@ public class PlaceholderAPISupport {
 			if (text.contains("%tps_15%"))
 				placeholders.add("tps_15", TPS.getServerTPS(TPSType.FIFTEEN_MINUTES));
 
+			// %user_path%
+			Pattern pat = Pattern.compile("%user:(.+?)%");
+			Matcher mat = pat.matcher(text);
+			if(mat.find()) {
+				String path = mat.group(1);
+				placeholders.add("user:"+path, me.devtec.shared.API.getUser(p.getName()).get(path));
+			}
+			
+			
 			/*
 			 * text = me.devtec.shared.placeholders.PlaceholderAPI.apply(
 			 * MessageUtils.placeholder(p, text, placeholders), s instanceof Player ?
@@ -169,4 +181,20 @@ public class PlaceholderAPISupport {
 			text = MessageUtils.placeholder(s, text, placeholders);
 		return text;
 	}
+	
+	/*public static void main(String args[]) {
+		String text = "%user:joinTime%";
+		Pattern pat = Pattern.compile("%user:(.+?)%");
+		Matcher mat = pat.matcher(text);
+		System.out.println("text: "+text);
+		
+		if(mat.find()) {
+			String match = mat.group(1);
+			System.out.println("match: "+match);
+			for(String s : match.split(":"))
+				System.out.println("split: "+s);
+			//String path = match.split(":")[1].replace("%", "");
+			//System.out.println(match+" ; "+path);
+		}
+	}*/
 }
