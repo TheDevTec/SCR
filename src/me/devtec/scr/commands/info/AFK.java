@@ -21,6 +21,7 @@ import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.scheduler.Scheduler;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.utility.StringUtils;
+import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class AFK implements ScrCommand {
 
@@ -139,7 +140,9 @@ public class AFK implements ScrCommand {
 					// if (expired)
 					if (start - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(Loader.config.getString("options.afk.times.autoKick")) <= 0)
 						for (String cmd : Loader.config.getStringList("options.afk.actions.onKick"))
-							Sudo.sudoConsole(SudoType.COMMAND, PlaceholderAPISupport.replace(cmd, Bukkit.getPlayer(player), null));
+							BukkitLoader.getNmsProvider().postToMainThread(() -> {
+								Sudo.sudoConsole(SudoType.COMMAND, PlaceholderAPISupport.replace(cmd, Bukkit.getPlayer(player), null));
+							});
 				}
 				for (String player : last_interaction.keySet()) {
 					if (Bukkit.getPlayer(player) == null) { // if offline
@@ -153,7 +156,9 @@ public class AFK implements ScrCommand {
 					if (last - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(Loader.config.getString("options.afk.times.autoAFK")) <= 0) {
 						// cmds
 						for (String cmd : Loader.config.getStringList("options.afk.actions.onStart"))
-							Sudo.sudoConsole(SudoType.COMMAND, PlaceholderAPISupport.replace(cmd, Bukkit.getPlayer(player), null));
+							BukkitLoader.getNmsProvider().postToMainThread(() -> {
+								Sudo.sudoConsole(SudoType.COMMAND, PlaceholderAPISupport.replace(cmd, Bukkit.getPlayer(player), null));
+							});
 						// AFK on
 						players.put(p.getName(), System.currentTimeMillis() / 1000);
 						MessageUtils.message(p, configSection() + ".start", Placeholders.c().addPlayer("player", p), false, API.getOnlinePlayersThatcanSee(p, true).toArray(new CommandSender[0]));

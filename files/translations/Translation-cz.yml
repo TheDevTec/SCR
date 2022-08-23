@@ -407,7 +407,7 @@ uuid:
 afk:
   start: "%prefix% &e%player% &7je AFK"
   start_reson: "%prefix% &e%player% &7je AFK &7(&e%reason%&7)"
-  end: "%prefix% &e%player%&7 už AFK"
+  end: "%prefix% &e%player%&7 už není AFK"
 
 # # # # # # # # # # #
 # # # TpSystem  # # #

@@ -7,7 +7,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import me.devtec.scr.Loader;
 import me.devtec.scr.commands.info.AFK;
@@ -20,6 +22,20 @@ public class AFKListeners implements Listener {
 			AFK.afk(e.getPlayer(), false);
 		}
 		AFK.update(e.getPlayer());
+	}
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onJoin(PlayerJoinEvent e) {
+		if(AFK.players.containsKey(e.getPlayer().getName())) {
+			AFK.afk(e.getPlayer(), false);
+		}
+		AFK.update(e.getPlayer());
+	}
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onJoin(PlayerQuitEvent e) {
+		if(AFK.players.containsKey(e.getPlayer().getName()))
+			AFK.players.remove(e.getPlayer().getName());
+		if(AFK.last_interaction.containsKey(e.getPlayer().getName()))
+			AFK.last_interaction.remove(e.getPlayer().getName());
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)

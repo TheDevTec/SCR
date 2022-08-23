@@ -112,9 +112,15 @@ public class PlaceholderAPISupport {
 				}
 				placeholders.replace("home_list", homeNames);
 			}
-			/*
-			 * %afk% %vanish% %god% %fly%
-			 */
+			 //%afk% 
+			 //%vanish% 
+			 //%god% 
+			 //%fly%
+			if (text.contains("%afk%"))
+				if (user.haveGod())
+					placeholders.add("afk", Loader.placeholders.getString("afk.enabled"));
+				else
+					placeholders.add("afk", Loader.placeholders.getString("afk.disabled"));
 			if (text.contains("%god%"))
 				if (user.haveGod())
 					placeholders.add("god", Loader.placeholders.getString("god.enabled"));

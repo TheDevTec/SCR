@@ -6,3 +6,6 @@ fly:
   enabled: "On"
   disabled: "Off"
 
+afk:
+  enabled: "&4AFK"
+  disabled: ""
