@@ -135,7 +135,7 @@ public class ChatListeners implements Listener {
 
 		Object text = Loader.chat.get(path + ".format");
 
-		if (text instanceof Collection) {
+		if (text instanceof Collection || text instanceof Map) {
 			if (Loader.chat.isJson(path)) {
 				String line = Loader.chat.getString(path);
 				String trimmed = line.trim();
