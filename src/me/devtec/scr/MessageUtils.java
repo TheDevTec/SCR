@@ -20,6 +20,7 @@ import me.devtec.shared.json.Json;
 import me.devtec.shared.placeholders.PlaceholderAPI;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
+import me.devtec.theapi.bukkit.nms.NmsProvider.ChatType;
 
 public class MessageUtils {
 	public static class Placeholders {
@@ -194,7 +195,7 @@ public class MessageUtils {
 			return;
 		}
 
-		if (text instanceof Collection) {
+		if (text instanceof Collection || text instanceof Map) {
 			if (config.isJson(path)) {
 				String line = config.getString(path);
 				String trimmed = line.trim();
@@ -234,13 +235,13 @@ public class MessageUtils {
 		// PROCESS PLACEHOLDER & COLORS
 		for (Map<String, Object> map : jsonList)
 			replaceJson(s, map, placeholders);
-
 		jsonList = ComponentAPI.fixJsonList(jsonList);
 		Object packet = BukkitLoader.getNmsProvider().chatBase(Json.writer().simpleWrite(jsonList));
-
+		
 		for (CommandSender target : targets)
 			if (target instanceof Player)
-				BukkitLoader.getPacketHandler().send((Player) target, packet);
+				BukkitLoader.getPacketHandler().send((Player) target,
+						BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, packet) );
 			else
 				target.sendMessage(ComponentAPI.listToString(jsonList));
 	}

@@ -29,6 +29,7 @@ import me.devtec.shared.json.Json;
 import me.devtec.shared.placeholders.PlaceholderAPI;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
+import me.devtec.theapi.bukkit.nms.NmsProvider.ChatType;
 
 public class ChatListeners implements Listener {
 
@@ -180,7 +181,8 @@ public class ChatListeners implements Listener {
 		jsonList = ComponentAPI.fixJsonList(jsonList);
 		Object packet = BukkitLoader.getNmsProvider().chatBase(Json.writer().simpleWrite(jsonList));
 
-		BukkitLoader.getPacketHandler().send(event.getRecipients(), packet);
+		BukkitLoader.getPacketHandler().send(event.getRecipients(),
+				BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, packet) );
 	}
 
 	// original - from chat.yml - chat
