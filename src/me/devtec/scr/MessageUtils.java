@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.api.API;
+import me.devtec.scr.listeners.additional.ChatListeners;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.components.ComponentAPI;
 import me.devtec.shared.dataholder.Config;
@@ -235,7 +236,7 @@ public class MessageUtils {
 		// PROCESS PLACEHOLDER & COLORS
 		for (Map<String, Object> map : jsonList)
 			replaceJson(s, map, placeholders);
-		jsonList = ComponentAPI.fixJsonList(jsonList);
+		jsonList = ChatListeners.fixJsonList(jsonList);
 		Object packet = BukkitLoader.getNmsProvider().chatBase(Json.writer().simpleWrite(jsonList));
 		
 		for (CommandSender target : targets)
