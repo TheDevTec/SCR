@@ -8,6 +8,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,6 +25,7 @@ import me.devtec.scr.utils.ChatUtils;
 import me.devtec.scr.utils.ChatUtils.ChatFormat;
 import me.devtec.scr.utils.ChatUtils.Colors;
 import me.devtec.scr.utils.PlaceholderAPISupport;
+import me.devtec.shared.components.Component;
 import me.devtec.shared.components.ComponentAPI;
 import me.devtec.shared.json.Json;
 import me.devtec.shared.placeholders.PlaceholderAPI;
@@ -136,15 +138,15 @@ public class ChatListeners implements Listener {
 		Object text = Loader.chat.get(path + ".format");
 
 		if (text instanceof Collection || text instanceof Map) {
-			if (Loader.chat.isJson(path)) {
-				String line = Loader.chat.getString(path);
+			if (Loader.chat.isJson(path + ".format")) {
+				String line = Loader.chat.getString(path + ".format");
 				String trimmed = line.trim();
 				if (trimmed.equals("[]") || trimmed.equals("{}"))
 					return; // Do not send empty json
 				msgJson(player, line, placeholders, event);
 				return;
 			}
-			for (String line : Loader.chat.getStringList(path))
+			for (String line : Loader.chat.getStringList(path + ".format"))
 				msg(player, line, placeholders, event);
 			return;
 		}
@@ -176,13 +178,16 @@ public class ChatListeners implements Listener {
 		// PROCESS PLACEHOLDER & COLORS
 		for (Map<String, Object> map : jsonList)
 			replaceJson(s, map, placeholders);
+		//Replacing to minecraft json
+		jsonList = fixJsonList(jsonList);
+		//Setting format
 		event.setFormat(ComponentAPI.listToString(jsonList));
-
-		jsonList = ComponentAPI.fixJsonList(jsonList);
+		//Sending packet
 		Object packet = BukkitLoader.getNmsProvider().chatBase(Json.writer().simpleWrite(jsonList));
-
 		BukkitLoader.getPacketHandler().send(event.getRecipients(),
 				BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, packet) );
+		
+		event.getRecipients().clear();
 	}
 
 	// original - from chat.yml - chat
@@ -216,7 +221,7 @@ public class ChatListeners implements Listener {
 						else {
 							String text = val + "";
 
-							text = PlaceholderAPISupport.replace(text, s, true, null);
+							text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null));
 							text = MessageUtils.placeholder(s, text, placeholders);
 							itr.set(text);
 						}
@@ -238,5 +243,95 @@ public class ChatListeners implements Listener {
 		// first replacing chat palceholders, then adding %message% from player
 		text = MessageUtils.placeholder(s, StringUtils.colorize(PlaceholderAPISupport.replace(text, s)), placeholders);
 		event.setFormat(text);
+	}
+	
+	//From TheAPI componentAPI
+	@SuppressWarnings("unchecked")
+	public static List<Map<String, Object>> fixJsonList(List<Map<String, Object>> lists) { // usable for ex. chat format
+		if (lists == null)
+			return null;
+		ListIterator<Map<String, Object>> it = lists.listIterator();
+		while (it.hasNext()) {
+			Map<String, Object> text = it.next();
+			Map<String, Object> hover = (Map<String, Object>) text.get("hoverEvent");
+			Map<String, Object> click = (Map<String, Object>) text.get("clickEvent");
+			if (hover != null)
+				hover = convertMapValues("hoverEvent", hover);
+			if (click != null)
+				click = convertMapValues("clickEvent", click);
+			String interact = (String) text.get("insertion");
+			boolean remove = false;
+			for (Entry<String, Object> s : text.entrySet()) {
+				if (s.getKey().equals("color") || s.getKey().equals("insertion"))
+					continue;
+				if (s.getValue() instanceof String) {
+					Component c = ComponentAPI.fromString((String) s.getValue(), true);
+					if (c.getText() != null && !c.getText().isEmpty() || c.getExtra() != null) {
+						try {
+							if (!remove) {
+								it.remove();
+								remove = true;
+							}
+						} catch (Exception err) {
+						}
+						Map<String, Object> d = c.toJsonMap();
+						if (!d.containsKey("color") && text.containsKey("color"))
+							d.put("color", text.get("color"));
+						if (hover != null && !d.containsKey("hoverEvent"))
+							d.put("hoverEvent", hover);
+						if (click != null && !d.containsKey("clickEvent"))
+							d.put("clickEvent", click);
+						if (interact != null && !d.containsKey("insertation"))
+							d.put("insertion", interact);
+						it.add(d);
+						if (c.getExtra() != null)
+							fixJsonListAll(it, c.getExtra());
+					}
+
+				} else if (s.getValue() instanceof Map) // hoverEvent or clickEvent
+					text.put(s.getKey(), s.getValue());
+				else if (s.getValue() instanceof List) // extras
+					text.put(s.getKey(), fixJsonList((List<Map<String, Object>>) s.getValue()));
+			}
+		}
+		return lists;
+	}
+	
+	private static void fixJsonListAll(ListIterator<Map<String, Object>> list, List<Component> extra) {
+		for (Component c : extra) {
+			list.add(c.toJsonMap());
+			if (c.getExtra() != null)
+				fixJsonListAll(list, c.getExtra());
+		}
+	}
+	
+	private static Map<String, Object> convertMapValues(String key, Map<String, Object> hover) {
+		Object val = hover.getOrDefault("value", hover.getOrDefault("content", hover.getOrDefault("contents", null)));
+		if (val == null)
+			hover.put("value", "");
+		else if (key.equalsIgnoreCase("hoverEvent")) {
+			if (val instanceof Collection || val instanceof Map) {
+				Object ac = hover.get("action");
+				hover.clear();
+				hover.put("action", ac);
+				hover.put("value", val);
+			} else {
+				Object ac = hover.get("action");
+				hover.clear();
+				hover.put("action", ac);
+				hover.put("value", ComponentAPI.toJsonList(val + ""));
+			}
+		} else if (val instanceof Collection || val instanceof Map) {
+			Object ac = hover.get("action");
+			hover.clear();
+			hover.put("action", ac);
+			hover.put("value", val);
+		} else {
+			Object ac = hover.get("action");
+			hover.clear();
+			hover.put("action", ac);
+			hover.put("value", val + "");
+		}
+		return hover;
 	}
 }
