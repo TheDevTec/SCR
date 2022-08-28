@@ -4,7 +4,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -77,22 +76,21 @@ public class ChatUtils {
 		public static boolean isEnabled() {
 			return Loader.chat.getBoolean("chatNotification.enabled");
 		}
-		
+
 		public static String notificationReplace(Player pinger, String msg, Set<Player> targets) {
 			for (Player player : targets)
-				if (//!player.getUniqueId().equals(pinger.getUniqueId()) && 
-						msg.contains(player.getName())) {
+				if (// !player.getUniqueId().equals(pinger.getUniqueId()) &&
+				msg.contains(player.getName())) {
 					boolean endsWithName = msg.endsWith(player.getName());
-					
-					String notificationColor = Loader.chat.exists("chatNotification.color")?
-							Loader.chat.getString("chatNotification.color"):"§c";
-					
+
+					String notificationColor = Loader.chat.exists("chatNotification.color") ? Loader.chat.getString("chatNotification.color") : "§c";
+
 					notify(pinger, player);
 
 					String[] split = Pattern.compile(player.getName(), Pattern.CASE_INSENSITIVE).split(msg);
 					if (split.length == 0) // Just Player
 						return notificationColor + player.getName();
-					
+
 					String lastColors = StringUtils.getLastColors(split[0]);
 					if (lastColors.isEmpty())
 						lastColors = "§f";
@@ -121,64 +119,55 @@ public class ChatUtils {
 				}
 			return msg;
 		}
-		
+
 		private static void notify(Player pinger, Player target) {
-			Sound sound = Loader.chat.exists("chatNotification.color")?
-					Sound.valueOf(Loader.chat.getString("chatNotification.sound")):null;
-			
-			if(sound != null) //Sound
+			Sound sound = Loader.chat.exists("chatNotification.color") ? Sound.valueOf(Loader.chat.getString("chatNotification.sound")) : null;
+
+			if (sound != null) // Sound
 				target.playSound(target.getLocation(), sound, 5, 5);
-			//Title & SubTitle
-			if(Loader.chat.exists("chatNotification.title") || Loader.chat.exists("chatNotification.subtitle")) {
-				String title = Loader.chat.exists("chatNotification.title")?Loader.chat.getString("chatNotification.title"):"";
-				String subtitle = Loader.chat.exists("chatNotification.subtitle")?Loader.chat.getString("chatNotification.subtitle"):"";
-				sendTitle(pinger, MessageUtils.placeholder(target, title, Placeholders.c()
-						.addPlayer("pinger", pinger).addPlayer("player", pinger)
-						.addPlayer("pinged", target).addPlayer("target", target) ),
-						MessageUtils.placeholder(target, subtitle, Placeholders.c()
-								.addPlayer("pinger", pinger).addPlayer("player", pinger)
-								.addPlayer("pinged", target).addPlayer("target", target) ));
+			// Title & SubTitle
+			if (Loader.chat.exists("chatNotification.title") || Loader.chat.exists("chatNotification.subtitle")) {
+				String title = Loader.chat.exists("chatNotification.title") ? Loader.chat.getString("chatNotification.title") : "";
+				String subtitle = Loader.chat.exists("chatNotification.subtitle") ? Loader.chat.getString("chatNotification.subtitle") : "";
+				sendTitle(pinger,
+						MessageUtils.placeholder(target, title, Placeholders.c().addPlayer("pinger", pinger).addPlayer("player", pinger).addPlayer("pinged", target).addPlayer("target", target)),
+						MessageUtils.placeholder(target, subtitle, Placeholders.c().addPlayer("pinger", pinger).addPlayer("player", pinger).addPlayer("pinged", target).addPlayer("target", target)));
 			}
-			//ActionBar
-			if(Loader.chat.exists("chatNotification.actionbar")) {
-				sendActionBar(pinger, MessageUtils.placeholder(target, Loader.chat.getString("chatNotification.actionbar"), Placeholders.c()
-						.addPlayer("pinger", pinger).addPlayer("player", pinger)
-						.addPlayer("pinged", target).addPlayer("target", target) ));
-			}
-			//CMDS
-			for(String cmd : Loader.chat.getStringList("chatNotification.commands")) {
+			// ActionBar
+			if (Loader.chat.exists("chatNotification.actionbar"))
+				sendActionBar(pinger, MessageUtils.placeholder(target, Loader.chat.getString("chatNotification.actionbar"),
+						Placeholders.c().addPlayer("pinger", pinger).addPlayer("player", pinger).addPlayer("pinged", target).addPlayer("target", target)));
+			// CMDS
+			for (String cmd : Loader.chat.getStringList("chatNotification.commands"))
 				BukkitLoader.getNmsProvider().postToMainThread(() -> {
-					Sudo.sudoConsole(SudoType.COMMAND,  MessageUtils.placeholder(target, cmd, Placeholders.c()
-							.addPlayer("pinger", pinger).addPlayer("player", pinger)
-							.addPlayer("pinged", target).addPlayer("target", target) ));
-					});
-			}
-			//MSGS
-			if(Loader.chat.exists("chatNotification.messages"))
+					Sudo.sudoConsole(SudoType.COMMAND,
+							MessageUtils.placeholder(target, cmd, Placeholders.c().addPlayer("pinger", pinger).addPlayer("player", pinger).addPlayer("pinged", target).addPlayer("target", target)));
+				});
+			// MSGS
+			if (Loader.chat.exists("chatNotification.messages"))
 				BukkitLoader.getNmsProvider().postToMainThread(() -> {
-				MessageUtils.msgConfig(target, "chatNotification.messages", Loader.chat, Placeholders.c()
-						.addPlayer("pinger", pinger).addPlayer("player", pinger)
-						.addPlayer("pinged", target).addPlayer("target", target));
+					MessageUtils.msgConfig(target, "chatNotification.messages", Loader.chat,
+							Placeholders.c().addPlayer("pinger", pinger).addPlayer("player", pinger).addPlayer("pinged", target).addPlayer("target", target));
 				});
 		}
-		
+
 		public static void sendTitle(Player p, String firstLine, String nextLine) {
-			if(p == null && firstLine == null && nextLine == null)
+			if (p == null && firstLine == null && nextLine == null)
 				return;
-			if(firstLine.isEmpty() && nextLine.isEmpty() )
+			if (firstLine.isEmpty() && nextLine.isEmpty())
 				return;
-			if((firstLine == null && nextLine!=null) || (firstLine.isEmpty() && !nextLine.isEmpty()) ) firstLine=""; // Just in case...
-			if((firstLine != null && nextLine==null) || !firstLine.isEmpty() && nextLine.isEmpty()) nextLine="";
+			if (firstLine == null && nextLine != null || firstLine.isEmpty() && !nextLine.isEmpty())
+				firstLine = ""; // Just in case...
+			if (firstLine != null && nextLine == null || !firstLine.isEmpty() && nextLine.isEmpty())
+				nextLine = "";
 			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.TITLE, StringUtils.colorize(firstLine)));
 			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.SUBTITLE, StringUtils.colorize(nextLine)));
 		}
+
 		public static void sendActionBar(Player p, String text) {
-			if(text == null)
+			if ((text == null) || text.isEmpty())
 				return;
-			if(text.isEmpty())
-				return;
-			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(
-					TitleAction.ACTIONBAR, StringUtils.colorize(text), 10, 20, 10));
+			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.ACTIONBAR, StringUtils.colorize(text), 10, 20, 10));
 		}
 	}
 
