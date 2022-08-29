@@ -64,6 +64,7 @@ public class PlaceholderAPISupport {
 			if (text.contains("%money_raw%") || text.contains("%money_raw_formatted%") || text.contains("%money_formatted1%") || text.contains("%money_formatted2%"))
 				text = ScrEconomy.publicFormat(Loader.economy == null ? 0 : ((Economy) Loader.economy).getBalance(p), text);
 			// %world%
+			// %world_custom% - custom name of world (for example you can repalce 'world' into 'Survival' in placeholders.yml)
 			// %x%
 			// %y%
 			// %z%
@@ -71,6 +72,12 @@ public class PlaceholderAPISupport {
 			// %pitch%
 			if (text.contains("%world%"))
 				placeholders.replace("world", p.getWorld().getName());
+			if (text.contains("%world_custom%")) {
+				if(Loader.placeholders.exists("world_custom."+p.getWorld().getName()))
+					placeholders.replace("world_custom", Loader.placeholders.getString("world_custom."+p.getWorld().getName()));
+				else
+					placeholders.replace("world_custom", p.getWorld().getName());
+			}
 			if (text.contains("%x%"))
 				placeholders.replace("x", StringUtils.formatDouble(FormatType.BASIC, p.getLocation().getX()));
 			if (text.contains("%y%"))

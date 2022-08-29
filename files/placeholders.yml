@@ -9,3 +9,9 @@ fly:
 afk:
   enabled: "&4AFK"
   disabled: ""
+
+# Replaces the world name with your own
+# %world_custom%
+world_custom:
+  world: "world"
+  example_world: "Super mega world"
