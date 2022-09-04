@@ -42,7 +42,7 @@ public class SCR_Command  implements ScrCommand {
 				Configs.reloadConfig(c);
 				
 			}, "translation", "commands", "economy", "tablist", "scoreboard", "join-listener", "quit-listener",
-					"chat", "custom_commands", "placeholders", "kits")
+					"chat", "custom_commands", "placeholders", "kits", "guis")
 		.build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 

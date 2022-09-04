@@ -1,0 +1,65 @@
+enabled: true
+
+# This is just basic commands.
+# You can create more advanced commands in 'custom commands' file, and adding 'open:example'
+commands:
+- "eshop"
+
+permission: "scr.gui.example"
+
+# If dynamic si true, placeholders like %player%, %money%, ... will be replaced
+#dynamic: true/false
+# Update menu every X seconds (just use if dynamic is false -> for example BalanaceTop GUI)
+#update: 600
+
+title: "&bExample GUI"
+
+layout:
+- "xxxxxxxxx"
+- "x   n   x"
+- "xxxxxxxxx"
+
+
+items:
+  x:
+    item:
+      type: "BLACK_STAINED_GLASS_PANE"
+      amount: 1
+      displayName: "&7 "   
+  n:
+    item:
+      displayName: "&eNothing right now, sorry..."
+      amount: 1
+      type: "STONE"
+      lore:
+      - "&7"
+      - "&7 Out of stock :("
+      - "&7"
+      
+    # middle, left, right, shift_right, shift_left
+    actions:
+      # just do one more money check for security..
+      default:
+      - "any con:reqMon noMoney"
+      - "any msg &7Hi"
+      - "any close"
+      noMoney:
+      - "any msg You don't have money"
+      - "any close"
+      
+    conditions:
+      # if item_show condition is not true, item won't show in GUI
+      item_show:
+        # value: PLACEHOLDER
+        value: "%money_raw%"
+        # list of values that determine whether the condition is "true"
+        positive:
+        - ">=1"
+        # item:
+          # .... next item.
+      reqMon:
+        # value: PLACEHOLDER
+        value: "%money_raw%"
+        # list of values that determine whether the condition is "true"
+        positive:
+        - ">=500"

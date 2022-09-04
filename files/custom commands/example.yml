@@ -27,6 +27,7 @@ command:
       - "msg Hi!!"
       isConsole:
       - "msg Hi CONSOLE!!"
+    # /cmd hello <Player>
     PLAYER:
       actions:
         default:

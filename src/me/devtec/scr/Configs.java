@@ -5,6 +5,7 @@ import java.io.File;
 import me.devtec.scr.commands.CustomCommands;
 import me.devtec.scr.commands.kits.KitUtils;
 import me.devtec.scr.functions.AutoAnnoucments;
+import me.devtec.scr.functions.guis.GUIManager;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.DataType;
 import me.devtec.shared.utility.StreamUtils;
@@ -61,6 +62,8 @@ public class Configs {
 		//Reload configs for kits
 		if(config.equalsIgnoreCase("kits"))
 			KitUtils.loadKits();
+		if(config.equalsIgnoreCase("guis"))
+			GUIManager.load();
 	}
 	
 	public static void loadConfigs() {
@@ -90,6 +93,8 @@ public class Configs {
 		loadAndMerge("custom commands/example.yml", "custom commands/example.yml");
 		//Kits example
 		loadAndMerge("kits/example.yml", "kits/example.yml");
+		//GUI example
+		loadAndMerge("guis/example.yml", "guis/example.yml");
 		
 		temp_data.clear();
 		temp_data = null; // clear cache
@@ -103,6 +108,9 @@ public class Configs {
 			Loader.plugin.loadTab(); //Reloading tasks and loading tab again
 		if(Loader.plugin!=null && Loader.plugin.scoreboard != null) //If != null ==> /scr reload command
 			Loader.plugin.loadScoreboard(); //Reloading tasks and loading scoreboard again
+		//if(!GUIManager.guis.isEmpty()) //If not empty ==> /scr reload command
+		
+		GUIManager.load(); //Loading GUIS
 	}
 
 	private static Config loadAndMerge(String sourcePath, String filePath) {

@@ -16,6 +16,7 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
+import me.devtec.scr.functions.guis.GUIManager;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
@@ -151,6 +152,8 @@ public class CustomCommands {
 					cmd(s, action.replaceFirst("cmd ", ""), getPlaceholders(args).addPlayer("player", s));
 				if (action.startsWith("msg "))
 					msg(s, action.replaceFirst("msg ", ""), getPlaceholders(args).addPlayer("player", s));
+				if (action.startsWith("open:"))
+					GUIManager.open((Player)s, action.replaceFirst("open:", ""));
 			}
 
 		}

@@ -1,5 +1,7 @@
 package me.devtec.scr.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +28,13 @@ import net.milkbowl.vault.economy.Economy;
 
 public class PlaceholderAPISupport {
 
+	public static List<String> replace(List<String> text, CommandSender s) {
+		List<String> replaced = new ArrayList<>();
+		for(String t : text)
+			replaced.add( replace(t, s, true, Placeholders.c()) );
+		return replaced;
+	}
+	
 	public static String replace(String text, CommandSender s) {
 		return replace(text, s, true, Placeholders.c());
 	}
@@ -39,7 +48,8 @@ public class PlaceholderAPISupport {
 	}
 
 	public static String replace(String text, CommandSender s, boolean placeholderapi, Placeholders placeholders) {
-
+		if(text == null)
+			return null;
 		if(placeholders == null)
 			placeholders = Placeholders.c();
 
