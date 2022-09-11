@@ -30,11 +30,11 @@ public class PlaceholderAPISupport {
 
 	public static List<String> replace(List<String> text, CommandSender s) {
 		List<String> replaced = new ArrayList<>();
-		for(String t : text)
-			replaced.add( replace(t, s, true, Placeholders.c()) );
+		for (String t : text)
+			replaced.add(replace(t, s, true, Placeholders.c()));
 		return replaced;
 	}
-	
+
 	public static String replace(String text, CommandSender s) {
 		return replace(text, s, true, Placeholders.c());
 	}
@@ -48,12 +48,12 @@ public class PlaceholderAPISupport {
 	}
 
 	public static String replace(String text, CommandSender s, boolean placeholderapi, Placeholders placeholders) {
-		if(text == null)
+		if (text == null)
 			return null;
-		if(placeholders == null)
+		if (placeholders == null)
 			placeholders = Placeholders.c();
 
-		if (s !=null && s instanceof Player) {
+		if (s instanceof Player) {
 			Player p = (Player) s;
 			User user = API.getUser(p);
 			placeholders.addPlayer("player", p);
@@ -74,7 +74,8 @@ public class PlaceholderAPISupport {
 			if (text.contains("%money_raw%") || text.contains("%money_raw_formatted%") || text.contains("%money_formatted1%") || text.contains("%money_formatted2%"))
 				text = ScrEconomy.publicFormat(Loader.economy == null ? 0 : ((Economy) Loader.economy).getBalance(p), text);
 			// %world%
-			// %world_custom% - custom name of world (for example you can repalce 'world' into 'Survival' in placeholders.yml)
+			// %world_custom% - custom name of world (for example you can repalce 'world'
+			// into 'Survival' in placeholders.yml)
 			// %x%
 			// %y%
 			// %z%
@@ -82,12 +83,11 @@ public class PlaceholderAPISupport {
 			// %pitch%
 			if (text.contains("%world%"))
 				placeholders.replace("world", p.getWorld().getName());
-			if (text.contains("%world_custom%")) {
-				if(Loader.placeholders.exists("world_custom."+p.getWorld().getName()))
-					placeholders.replace("world_custom", Loader.placeholders.getString("world_custom."+p.getWorld().getName()));
+			if (text.contains("%world_custom%"))
+				if (Loader.placeholders.exists("world_custom." + p.getWorld().getName()))
+					placeholders.replace("world_custom", Loader.placeholders.getString("world_custom." + p.getWorld().getName()));
 				else
 					placeholders.replace("world_custom", p.getWorld().getName());
-			}
 			if (text.contains("%x%"))
 				placeholders.replace("x", StringUtils.formatDouble(FormatType.BASIC, p.getLocation().getX()));
 			if (text.contains("%y%"))
@@ -130,10 +130,10 @@ public class PlaceholderAPISupport {
 				}
 				placeholders.replace("home_list", homeNames);
 			}
-			 //%afk% 
-			 //%vanish% 
-			 //%god% 
-			 //%fly%
+			// %afk%
+			// %vanish%
+			// %god%
+			// %fly%
 			if (text.contains("%afk%"))
 				if (AFK.players.containsKey(p.getName()))
 					placeholders.add("afk", Loader.placeholders.getString("afk.enabled"));
@@ -185,12 +185,11 @@ public class PlaceholderAPISupport {
 			// %user_path%
 			Pattern pat = Pattern.compile("%user:(.+?)%");
 			Matcher mat = pat.matcher(text);
-			if(mat.find()) {
+			if (mat.find()) {
 				String path = mat.group(1);
-				placeholders.add("user:"+path, me.devtec.shared.API.getUser(p.getName()).get(path));
+				placeholders.add("user:" + path, me.devtec.shared.API.getUser(p.getName()).get(path));
 			}
-			
-			
+
 			/*
 			 * text = me.devtec.shared.placeholders.PlaceholderAPI.apply(
 			 * MessageUtils.placeholder(p, text, placeholders), s instanceof Player ?
@@ -205,20 +204,4 @@ public class PlaceholderAPISupport {
 			text = MessageUtils.placeholder(s, text, placeholders);
 		return text;
 	}
-	
-	/*public static void main(String args[]) {
-		String text = "%user:joinTime%";
-		Pattern pat = Pattern.compile("%user:(.+?)%");
-		Matcher mat = pat.matcher(text);
-		System.out.println("text: "+text);
-		
-		if(mat.find()) {
-			String match = mat.group(1);
-			System.out.println("match: "+match);
-			for(String s : match.split(":"))
-				System.out.println("split: "+s);
-			//String path = match.split(":")[1].replace("%", "");
-			//System.out.println(match+" ; "+path);
-		}
-	}*/
 }

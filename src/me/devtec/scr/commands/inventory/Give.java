@@ -19,7 +19,6 @@ public class Give implements ScrCommand {
 
 	@Override
 	public void init(List<String> cmds) {
-
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
 			help(s, "usage");
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // perm

@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.commands.ScrCommand;
-import me.devtec.scr.functions.guis.NewLayout.Item;
+import me.devtec.scr.functions.guis.Layout.Item;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
@@ -25,13 +25,13 @@ public class GUIMaker {
 	
 	public String title;
 	public boolean dynamic;
-	public NewLayout layout;
+	public Layout layout;
 	private GUI gui;
 	
 	public GUIMaker(Config file) {
 		dynamic = file.getBoolean("dynamic");
 		title = file.getString("title");
-		layout = new NewLayout(file); // Loading layout and Items
+		layout = new Layout(file); // Loading layout and Items
 		//if(!dynamic)
 		//	build(null);
 		config = file;
@@ -41,7 +41,7 @@ public class GUIMaker {
 		this.config=file;
 		dynamic = file.getBoolean("dynamic");
 		title = file.getString("title");
-		layout = new NewLayout(file); // Loading layout and Items
+		layout = new Layout(file); // Loading layout and Items
 		//if(!dynamic)
 		//	build(null);
 	}

@@ -8,7 +8,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -97,28 +96,26 @@ public class ChatListeners implements Listener {
 			}
 
 			// TODO - flood, antispam, ...
-			
+
 			String format_path = ChatFormat.getPath(player);
-			
-			if(Loader.chat.exists(format_path+".message")) // Adding config message color
-				message = StringUtils.colorize( PlaceholderAPISupport.replace(Loader.chat.getString(format_path+".message"), player))
-				.replace("%message%", message);
-			
+
+			if (Loader.chat.exists(format_path + ".message")) // Adding config message color
+				message = StringUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".message"), player)).replace("%message%", message);
+
 			message = colors(message, player);
 			List<String> ignoredStrings = new ArrayList<>();
 			for (Player p : BukkitLoader.getOnlinePlayers())
 				if (!p.getUniqueId().equals(e.getPlayer().getUniqueId()))
 					ignoredStrings.add(p.getName());
-			
-			//Chat notigications
+
+			// Chat notigications
 			if (ChatUtils.Notification.isEnabled())
 				message = ChatUtils.Notification.notificationReplace(player, message, e.getRecipients());
-				//message = notificationReplace(player, message, "§c");
+			// message = notificationReplace(player, message, "§c");
 
 			if (message != null) {
 				e.setMessage(message);
-				setFormat(player, format_path, 
-						Placeholders.c().addPlayer("player", player).add("message", message.replace("%", "%%")).add("playername",
+				setFormat(player, format_path, Placeholders.c().addPlayer("player", player).add("message", message.replace("%", "%%")).add("playername",
 						StringUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".playername"), player))), e);
 
 			}
@@ -178,15 +175,14 @@ public class ChatListeners implements Listener {
 		// PROCESS PLACEHOLDER & COLORS
 		for (Map<String, Object> map : jsonList)
 			replaceJson(s, map, placeholders);
-		//Replacing to minecraft json
+		// Replacing to minecraft json
 		jsonList = fixJsonList(jsonList);
-		//Setting format
+		// Setting format
 		event.setFormat(ComponentAPI.listToString(jsonList));
-		//Sending packet
+		// Sending packet
 		Object packet = BukkitLoader.getNmsProvider().chatBase(Json.writer().simpleWrite(jsonList));
-		BukkitLoader.getPacketHandler().send(event.getRecipients(),
-				BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, packet) );
-		
+		BukkitLoader.getPacketHandler().send(event.getRecipients(), BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, packet));
+
 		event.getRecipients().clear();
 	}
 
@@ -244,8 +240,8 @@ public class ChatListeners implements Listener {
 		text = MessageUtils.placeholder(s, StringUtils.colorize(PlaceholderAPISupport.replace(text, s)), placeholders);
 		event.setFormat(text);
 	}
-	
-	//From TheAPI componentAPI
+
+	// From TheAPI componentAPI
 	@SuppressWarnings("unchecked")
 	public static List<Map<String, Object>> fixJsonList(List<Map<String, Object>> lists) { // usable for ex. chat format
 		if (lists == null)
@@ -296,7 +292,7 @@ public class ChatListeners implements Listener {
 		}
 		return lists;
 	}
-	
+
 	private static void fixJsonListAll(ListIterator<Map<String, Object>> list, List<Component> extra) {
 		for (Component c : extra) {
 			list.add(c.toJsonMap());
@@ -304,7 +300,7 @@ public class ChatListeners implements Listener {
 				fixJsonListAll(list, c.getExtra());
 		}
 	}
-	
+
 	private static Map<String, Object> convertMapValues(String key, Map<String, Object> hover) {
 		Object val = hover.getOrDefault("value", hover.getOrDefault("content", hover.getOrDefault("contents", null)));
 		if (val == null)
