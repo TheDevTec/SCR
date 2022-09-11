@@ -365,7 +365,7 @@ public class NewLayout {
 					String headType = config.getString(path + ".head.type", "PLAYER").toUpperCase();
 					if (headType.equals("PLAYER"))
 						skull.setOwner(PlaceholderAPISupport.replace(headOwner, player));
-					if (headType.equals("HBD") && (headType.equals("VALUES") || headType.equals("URL"))) {
+					if (headType.equals("VALUES") || headType.equals("URL")) {
 						if (headType.equals("URL"))
 							headOwner = ItemMaker.fromUrl(headOwner);
 						Ref.set(skull, profileField, BukkitLoader.getNmsProvider().toGameProfile(GameProfileHandler.of("SCR", UUID.randomUUID(), PropertyHandler.of("textures", headOwner))));
