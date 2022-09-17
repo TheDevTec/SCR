@@ -153,7 +153,7 @@ public class CustomCommands {
 				if (action.startsWith("msg "))
 					msg(s, action.replaceFirst("msg ", ""), getPlaceholders(args).addPlayer("player", s));
 				if (action.startsWith("open:"))
-					GUIManager.open((Player)s, action.replaceFirst("open:", ""));
+					GUIManager.open((Player) s, action.replaceFirst("open:", ""));
 			}
 
 		}
@@ -227,7 +227,8 @@ public class CustomCommands {
 						return true;
 					if (positive.startsWith("<") && !positive.startsWith("<=") && StringUtils.getDouble(value) < StringUtils.getDouble(positive.replace("<", "")))
 						return true;
-					if ((positive.startsWith("=") && StringUtils.getDouble(value) == StringUtils.getDouble(positive.replace("=", ""))) || (positive.startsWith("==") && StringUtils.getDouble(value) == StringUtils.getDouble(positive.replace("==", ""))))
+					if (positive.startsWith("=") && StringUtils.getDouble(value) == StringUtils.getDouble(positive.replace("=", ""))
+							|| positive.startsWith("==") && StringUtils.getDouble(value) == StringUtils.getDouble(positive.replace("==", "")))
 						return true;
 					if (value.equalsIgnoreCase(positive))
 						return true;
@@ -236,18 +237,18 @@ public class CustomCommands {
 				Loader.plugin.getLogger().warning("Condition " + condition + " not found in Custom Command " + c.getFile().getName() + "");
 			return false;
 		}
-		//InBuildConditions: 
-		  	// mustBePlayer/isPlayer - sender must be Player
-		    // mustBeConsole/isConsole - sender must be Console 
-		    // isOnline - argument must be a online player 
-		    // havePerm:scr.exampleperm - sender must have subpermission
-		    // isWorld - argument must be a world 
-		    // isNumber - argument must be a number
-		    // isMaterial - argument must be a valid material 
-		    // isBoolean - argument must be true/false
-		
-		  //isOnline:0 - if args[0] is online
-		
+		// InBuildConditions:
+		// mustBePlayer/isPlayer - sender must be Player
+		// mustBeConsole/isConsole - sender must be Console
+		// isOnline - argument must be a online player
+		// havePerm:scr.exampleperm - sender must have subpermission
+		// isWorld - argument must be a world
+		// isNumber - argument must be a number
+		// isMaterial - argument must be a valid material
+		// isBoolean - argument must be true/false
+
+		// isOnline:0 - if args[0] is online
+
 		/*
 		 * CustomConditions >=50 >50 <=50 <50 ==50 (or =50) <value> -> equalsIgnoreCase
 		 */
@@ -306,7 +307,7 @@ public class CustomCommands {
 				case '*':
 					return BukkitLoader.getOnlinePlayers();
 				case 'r':
-					return Arrays.asList(StringUtils.getRandomFromCollection(BukkitLoader.getOnlinePlayers()));
+					return Arrays.asList(StringUtils.randomFromCollection(BukkitLoader.getOnlinePlayers()));
 				case 's':
 				case 'p':
 					Location pos = null;

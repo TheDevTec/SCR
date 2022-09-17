@@ -25,14 +25,14 @@ import me.devtec.theapi.bukkit.BukkitLoader;
 public interface ScrCommand {
 
 	public static final PermissionChecker<CommandSender> PERMS_CHECKER = (sender, perm, tablist) -> {
-		if(!(sender instanceof Player))
+		if (!(sender instanceof Player))
 			return true;
 		if (tablist)
 			return API.getUser(sender).isAutorized(perm);
 		return API.getUser(sender).checkPerm(perm); // also noperm message if needed
 	};
 	public static final PermissionChecker<Player> PLAYER_PERMS_CHECKER = (sender, perm, tablist) -> {
-		if(!(sender instanceof Player))
+		if (!(sender instanceof Player))
 			return true;
 		if (tablist)
 			return API.getUser(sender).isAutorized(perm);
@@ -68,7 +68,7 @@ public interface ScrCommand {
 			case '*':
 				return BukkitLoader.getOnlinePlayers();
 			case 'r':
-				return Arrays.asList(StringUtils.getRandomFromCollection(BukkitLoader.getOnlinePlayers()));
+				return Arrays.asList(StringUtils.randomFromCollection(BukkitLoader.getOnlinePlayers()));
 			case 's':
 			case 'p':
 				Location pos = null;
