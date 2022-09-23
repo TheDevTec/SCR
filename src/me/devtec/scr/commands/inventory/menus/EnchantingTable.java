@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -25,9 +24,7 @@ public class EnchantingTable implements ScrCommand {
 
 	@Override
 	public void init(List<String> cmds) {
-
-		loc = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
-		loc.getBlock().setType(Material.ENCHANTING_TABLE);
+		// TODO packets
 
 		Loader.plugin.getLogger().info("[Enchanting] Using PrepareItemEnchant listener");
 		Loader.registerListener(new EnchantingTableListener(this));

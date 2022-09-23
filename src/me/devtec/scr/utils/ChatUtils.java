@@ -80,7 +80,7 @@ public class ChatUtils {
 		public static String notificationReplace(Player pinger, String msg, Set<Player> targets) {
 			for (Player player : targets)
 				if (// !player.getUniqueId().equals(pinger.getUniqueId()) &&
-				msg.contains(player.getName())) {
+				(player != pinger) && msg.contains(player.getName())) {
 					boolean endsWithName = msg.endsWith(player.getName());
 
 					String notificationColor = Loader.chat.exists("chatNotification.color") ? Loader.chat.getString("chatNotification.color") : "§c";
@@ -165,7 +165,7 @@ public class ChatUtils {
 		}
 
 		public static void sendActionBar(Player p, String text) {
-			if ((text == null) || text.isEmpty())
+			if (text == null || text.isEmpty())
 				return;
 			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.ACTIONBAR, StringUtils.colorize(text), 10, 20, 10));
 		}

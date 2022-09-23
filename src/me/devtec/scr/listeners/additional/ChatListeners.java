@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,7 +25,6 @@ import me.devtec.scr.utils.ChatUtils;
 import me.devtec.scr.utils.ChatUtils.ChatFormat;
 import me.devtec.scr.utils.ChatUtils.Colors;
 import me.devtec.scr.utils.PlaceholderAPISupport;
-import me.devtec.shared.components.Component;
 import me.devtec.shared.components.ComponentAPI;
 import me.devtec.shared.json.Json;
 import me.devtec.shared.placeholders.PlaceholderAPI;
@@ -111,12 +111,12 @@ public class ChatListeners implements Listener {
 			// Chat notigications
 			if (ChatUtils.Notification.isEnabled())
 				message = ChatUtils.Notification.notificationReplace(player, message, e.getRecipients());
-			// message = notificationReplace(player, message, "§c");
 
 			if (message != null) {
-				e.setMessage(message);
-				setFormat(player, format_path, Placeholders.c().addPlayer("player", player).add("message", message.replace("%", "%%")).add("playername",
+				e.setMessage(message); // for console
+				setFormat(player, e.getRecipients(), format_path, Placeholders.c().addPlayer("player", player).add("message", message.replace("%", "%%")).add("playername",
 						StringUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".playername"), player))), e);
+				e.getRecipients().clear();
 
 			}
 
@@ -128,7 +128,7 @@ public class ChatListeners implements Listener {
 	}
 
 	// path - path.chat
-	public static void setFormat(CommandSender player, String path, Placeholders placeholders, AsyncPlayerChatEvent event) {
+	public static void setFormat(CommandSender player, Set<Player> set, String path, Placeholders placeholders, AsyncPlayerChatEvent event) {
 		if (player == null)
 			return;
 
@@ -140,22 +140,22 @@ public class ChatListeners implements Listener {
 				String trimmed = line.trim();
 				if (trimmed.equals("[]") || trimmed.equals("{}"))
 					return; // Do not send empty json
-				msgJson(player, line, placeholders, event);
+				msgJson(player, set, line, placeholders, event);
 				return;
 			}
 			for (String line : Loader.chat.getStringList(path + ".format"))
-				msg(player, line, placeholders, event);
+				msg(player, set, line, placeholders, event);
 			return;
 		}
 		String line = Loader.chat.getString(path + ".format");
 		if (line.isEmpty())
 			return; // Do not send empty strings
-		msg(player, line, placeholders, event);
+		msg(player, set, line, placeholders, event);
 	}
 
 	// original - from chat.yml - chat
 	@SuppressWarnings("unchecked")
-	private static void msgJson(CommandSender s, String original, Placeholders placeholders, AsyncPlayerChatEvent event) {
+	private static void msgJson(CommandSender s, Set<Player> set, String original, Placeholders placeholders, AsyncPlayerChatEvent event) {
 		Object json = Json.reader().simpleRead(original);
 		List<Map<String, Object>> jsonList = new ArrayList<>();
 		if (json instanceof Collection) {
@@ -176,14 +176,15 @@ public class ChatListeners implements Listener {
 		for (Map<String, Object> map : jsonList)
 			replaceJson(s, map, placeholders);
 		// Replacing to minecraft json
-		jsonList = fixJsonList(jsonList);
+		jsonList = ComponentAPI.fixJsonList(jsonList);
 		// Setting format
 		event.setFormat(ComponentAPI.listToString(jsonList));
 		// Sending packet
-		Object packet = BukkitLoader.getNmsProvider().chatBase(Json.writer().simpleWrite(jsonList));
-		BukkitLoader.getPacketHandler().send(event.getRecipients(), BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, packet));
+		String written = Json.writer().simpleWrite(jsonList);
+		written = "[\"\", " + written.substring(1);
+		Object chat = BukkitLoader.getNmsProvider().chatBase(written);
 
-		event.getRecipients().clear();
+		BukkitLoader.getPacketHandler().send(set, BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, chat));
 	}
 
 	// original - from chat.yml - chat
@@ -226,7 +227,7 @@ public class ChatListeners implements Listener {
 				}
 				String text = entry.getValue() + "";
 
-				text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null));
+				text = StringUtils.colorize(PlaceholderAPI.apply(text, ((Player) s).getUniqueId()));
 				text = MessageUtils.placeholder(s, text, placeholders);
 				entry.setValue(text);
 			}
@@ -234,100 +235,11 @@ public class ChatListeners implements Listener {
 	}
 
 	// original - from chat.yml - chat
-	private static void msg(CommandSender s, String original, Placeholders placeholders, AsyncPlayerChatEvent event) {
+	private static void msg(CommandSender s, Set<Player> set, String original, Placeholders placeholders, AsyncPlayerChatEvent event) {
 		String text = original;
 		// first replacing chat palceholders, then adding %message% from player
 		text = MessageUtils.placeholder(s, StringUtils.colorize(PlaceholderAPISupport.replace(text, s)), placeholders);
-		event.setFormat(text);
-	}
-
-	// From TheAPI componentAPI
-	@SuppressWarnings("unchecked")
-	public static List<Map<String, Object>> fixJsonList(List<Map<String, Object>> lists) { // usable for ex. chat format
-		if (lists == null)
-			return null;
-		ListIterator<Map<String, Object>> it = lists.listIterator();
-		while (it.hasNext()) {
-			Map<String, Object> text = it.next();
-			Map<String, Object> hover = (Map<String, Object>) text.get("hoverEvent");
-			Map<String, Object> click = (Map<String, Object>) text.get("clickEvent");
-			if (hover != null)
-				hover = convertMapValues("hoverEvent", hover);
-			if (click != null)
-				click = convertMapValues("clickEvent", click);
-			String interact = (String) text.get("insertion");
-			boolean remove = false;
-			for (Entry<String, Object> s : text.entrySet()) {
-				if (s.getKey().equals("color") || s.getKey().equals("insertion"))
-					continue;
-				if (s.getValue() instanceof String) {
-					Component c = ComponentAPI.fromString((String) s.getValue(), true);
-					if (c.getText() != null && !c.getText().isEmpty() || c.getExtra() != null) {
-						try {
-							if (!remove) {
-								it.remove();
-								remove = true;
-							}
-						} catch (Exception err) {
-						}
-						Map<String, Object> d = c.toJsonMap();
-						if (!d.containsKey("color") && text.containsKey("color"))
-							d.put("color", text.get("color"));
-						if (hover != null && !d.containsKey("hoverEvent"))
-							d.put("hoverEvent", hover);
-						if (click != null && !d.containsKey("clickEvent"))
-							d.put("clickEvent", click);
-						if (interact != null && !d.containsKey("insertation"))
-							d.put("insertion", interact);
-						it.add(d);
-						if (c.getExtra() != null)
-							fixJsonListAll(it, c.getExtra());
-					}
-
-				} else if (s.getValue() instanceof Map) // hoverEvent or clickEvent
-					text.put(s.getKey(), s.getValue());
-				else if (s.getValue() instanceof List) // extras
-					text.put(s.getKey(), fixJsonList((List<Map<String, Object>>) s.getValue()));
-			}
-		}
-		return lists;
-	}
-
-	private static void fixJsonListAll(ListIterator<Map<String, Object>> list, List<Component> extra) {
-		for (Component c : extra) {
-			list.add(c.toJsonMap());
-			if (c.getExtra() != null)
-				fixJsonListAll(list, c.getExtra());
-		}
-	}
-
-	private static Map<String, Object> convertMapValues(String key, Map<String, Object> hover) {
-		Object val = hover.getOrDefault("value", hover.getOrDefault("content", hover.getOrDefault("contents", null)));
-		if (val == null)
-			hover.put("value", "");
-		else if (key.equalsIgnoreCase("hoverEvent")) {
-			if (val instanceof Collection || val instanceof Map) {
-				Object ac = hover.get("action");
-				hover.clear();
-				hover.put("action", ac);
-				hover.put("value", val);
-			} else {
-				Object ac = hover.get("action");
-				hover.clear();
-				hover.put("action", ac);
-				hover.put("value", ComponentAPI.toJsonList(val + ""));
-			}
-		} else if (val instanceof Collection || val instanceof Map) {
-			Object ac = hover.get("action");
-			hover.clear();
-			hover.put("action", ac);
-			hover.put("value", val);
-		} else {
-			Object ac = hover.get("action");
-			hover.clear();
-			hover.put("action", ac);
-			hover.put("value", val + "");
-		}
-		return hover;
+		event.setFormat(text.replace("%", "%%"));
+		BukkitLoader.getPacketHandler().send(set, BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, text));
 	}
 }

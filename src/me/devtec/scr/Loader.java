@@ -34,6 +34,7 @@ import me.devtec.shared.events.EventManager;
 import me.devtec.shared.placeholders.PlaceholderExpansion;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.theapi.bukkit.events.ServerListPingEvent;
+import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -51,6 +52,7 @@ public class Loader extends JavaPlugin {
 	// VAULT plugin
 	public static Object economy;
 	public static Object vault;
+	public static Object luckperms;
 
 	public List<ScrCommand> registered_commands = new ArrayList<>();
 
@@ -87,6 +89,10 @@ public class Loader extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+
+		if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null)
+			luckperms = LuckPermsProvider.get();
+
 		loadListeners(); // Loading Events
 		loadCommands(); // Loading commands & CustomCommands
 

@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
 import me.devtec.scr.listeners.additional.TablistJoinQuit;
-import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
+import me.devtec.shared.placeholders.PlaceholderAPI;
 import me.devtec.shared.scheduler.Scheduler;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.utility.StringUtils;
@@ -22,6 +22,7 @@ import me.devtec.theapi.bukkit.nms.NmsProvider.Action;
 import me.devtec.theapi.bukkit.nms.NmsProvider.DisplayType;
 import me.devtec.theapi.bukkit.tablist.NameTagAPI;
 import me.devtec.theapi.bukkit.tablist.TabAPI;
+import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.permission.Permission;
 
 public class Tablist {
@@ -65,7 +66,7 @@ public class Tablist {
 			perWorld.put(world, global);
 		}
 
-		if (config.getString("sortingBy").equalsIgnoreCase("group") && Loader.vault != null) {
+		if (config.getString("sortingBy").equalsIgnoreCase("group") && (Loader.luckperms != null || Loader.vault != null)) {
 			for (String group : config.getKeys("perGroup")) {
 				TabSettings gglobal = new TabSettings();
 				gglobal.header = StringUtils.join(config.getStringList("perGroup." + group + ".header"), "\n");
@@ -89,6 +90,27 @@ public class Tablist {
 				if (tab == null)
 					continue;
 				tab.sorting = s.append("{0}").toString();
+			}
+		}
+
+		if (config.getString("sortingBy").equalsIgnoreCase("weight") && Loader.luckperms != null) {
+			for (String group : config.getKeys("perGroup")) {
+				TabSettings gglobal = new TabSettings();
+				gglobal.header = StringUtils.join(config.getStringList("perGroup." + group + ".header"), "\n");
+				gglobal.footer = StringUtils.join(config.getStringList("perGroup." + group + ".footer"), "\n");
+				gglobal.nametag_prefix = config.getString("perGroup." + group + ".nametag.prefix");
+				gglobal.nametag_suffix = config.getString("perGroup." + group + ".nametag.suffix");
+				gglobal.tabname = config.getString("perGroup." + group + ".tabname");
+				gglobal.yellowNumber = config.getString("perGroup." + group + ".yellowNumber.value");
+				gglobal.yellowNumberDisplay = config.getString("perGroup." + group + ".yellowNumber.display");
+				perGroup.put(group, gglobal);
+			}
+			List<String> groups = config.getStringList("sorting");
+			for (String group : groups) {
+				TabSettings tab = perGroup.get(group);
+				if (tab == null)
+					continue;
+				tab.sorting = "{weight}";
 			}
 		}
 
@@ -159,8 +181,8 @@ public class Tablist {
 		if (tag == null)
 			tags.put(target.getUniqueId(), tag = new NameTagAPI(target, settings.sorting));
 		tag.set(getColor(settings.nametag_prefix), settings.nametag_prefix, settings.nametag_suffix);
-		tag.send(collection.toArray(new Player[0]));
 		tag.setName(settings.sorting);
+		tag.send(collection.toArray(new Player[0]));
 
 		// yellow number
 		int number = StringUtils.getInt(settings.yellowNumber);
@@ -189,7 +211,7 @@ public class Tablist {
 		settings = perWorld.get(player.getWorld().getName());
 		if (settings != null)
 			generated.copySettings(settings);
-		settings = perGroup.get(getVaultGroup(player));
+		settings = perGroup.getOrDefault(getVaultGroup(player), perGroup.get("default"));
 		if (settings != null)
 			generated.copySettings(settings);
 		// Copy settings from global
@@ -199,10 +221,12 @@ public class Tablist {
 	}
 
 	public static String getVaultGroup(Player player) {
+		if (Loader.luckperms != null)
+			return ((LuckPerms) Loader.luckperms).getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getPrimaryGroup();
 		if (Loader.vault != null)
 			if (((Permission) Loader.vault).hasGroupSupport())
 				return ((Permission) Loader.vault).getPrimaryGroup(player);
-		return null;
+		return "default";
 	}
 
 	private static ChatColor getColor(String lastColors) {
@@ -256,51 +280,22 @@ public class Tablist {
 		}
 
 		public void replace(Player player) {
-			// tabname = PlaceholderAPISupport.replace(tabname, player, true);
-
 			if (yellowNumberDisplay != null)
-				yellowNumberDisplay = PlaceholderAPISupport.replace(yellowNumberDisplay, player);
+				yellowNumberDisplay = PlaceholderAPI.apply(yellowNumberDisplay, player.getUniqueId());
 
-			tabname = PlaceholderAPISupport.replace(tabname, player);
+			tabname = PlaceholderAPI.apply(tabname, player.getUniqueId());
 
-			header = PlaceholderAPISupport.replace(header, player);
-			footer = PlaceholderAPISupport.replace(footer, player);
-			nametag_prefix = PlaceholderAPISupport.replace(nametag_prefix, player);
-			nametag_suffix = PlaceholderAPISupport.replace(nametag_suffix, player);
+			header = PlaceholderAPI.apply(header, player.getUniqueId());
+			footer = PlaceholderAPI.apply(footer, player.getUniqueId());
+			nametag_prefix = PlaceholderAPI.apply(nametag_prefix, player.getUniqueId());
+			nametag_suffix = PlaceholderAPI.apply(nametag_suffix, player.getUniqueId());
 			if (sorting != null)
-				sorting = PlaceholderAPISupport.replace(sorting, player);
+				sorting = PlaceholderAPI.apply(sorting, player.getUniqueId()).replace("{0}", player.getName()).replace("{weight}",
+						Loader.luckperms != null ? "" + ((LuckPerms) Loader.luckperms).getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getWeight()
+								: "0001" + player.getName());
 			if (yellowNumber != null)
-				yellowNumber = PlaceholderAPISupport.replace(yellowNumber, player);
+				yellowNumber = PlaceholderAPI.apply(yellowNumber, player.getUniqueId());
 		}
-
-		/*
-		 * public void replaceOLD(Player player) { Placeholders plac =
-		 * Placeholders.c().addPlayer("player", player); tabname =
-		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac),
-		 * player.getUniqueId());
-		 * 
-		 * Loader.plugin.getLogger().info(tabname); if (yellowNumberDisplay != null)
-		 * yellowNumberDisplay = PlaceholderAPI.apply(MessageUtils.placeholder(player,
-		 * yellowNumberDisplay, plac), player.getUniqueId()); tabname =
-		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac),
-		 * player.getUniqueId()); Loader.plugin.getLogger().info("2" + tabname); tabname
-		 * = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac),
-		 * player.getUniqueId()); Loader.plugin.getLogger().info("3" + tabname); tabname
-		 * = PlaceholderAPI.apply(MessageUtils.placeholder(player, tabname, plac),
-		 * player.getUniqueId()); Loader.plugin.getLogger().info("4" + tabname); header
-		 * = PlaceholderAPI.apply(MessageUtils.placeholder(player, header, plac),
-		 * player.getUniqueId()); footer =
-		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, footer, plac),
-		 * player.getUniqueId()); nametag_prefix =
-		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, nametag_prefix, plac),
-		 * player.getUniqueId()); nametag_suffix =
-		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, nametag_suffix, plac),
-		 * player.getUniqueId()); if (sorting != null) sorting =
-		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, sorting, plac),
-		 * player.getUniqueId()); if (yellowNumber != null) yellowNumber =
-		 * PlaceholderAPI.apply(MessageUtils.placeholder(player, yellowNumber, plac),
-		 * player.getUniqueId()); }
-		 */
 
 		public void colorize() {
 			tabname = StringUtils.colorize(tabname);

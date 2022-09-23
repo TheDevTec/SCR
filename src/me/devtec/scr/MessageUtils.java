@@ -13,7 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.api.API;
-import me.devtec.scr.listeners.additional.ChatListeners;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.components.ComponentAPI;
 import me.devtec.shared.dataholder.Config;
@@ -87,15 +86,15 @@ public class MessageUtils {
 					 * %playe%r, %target%, etc... %player% - Real or Nickname %player_name% - Just
 					 * Real name %player_displayname% %player_customname%
 					 */
-					if (string.contains("%"+players.getKey()+"_name%")) {
+					if (string.contains("%" + players.getKey() + "_name%")) {
 						string = string.replace("%" + players.getKey() + "_name%", players.getValue().getName());
 						continue;
 					}
-					if (string.contains("%"+players.getKey()+"_displayname%")) {
+					if (string.contains("%" + players.getKey() + "_displayname%")) {
 						string = string.replace("%" + players.getKey() + "_displayname%", players.getValue().getDisplayName());
 						continue;
 					}
-					if (string.contains("%"+players.getKey()+"_customname%") ){
+					if (string.contains("%" + players.getKey() + "_customname%")) {
 						string = string.replace("%" + players.getKey() + "_customname%", players.getValue().getCustomName());
 						continue;
 					}
@@ -111,7 +110,7 @@ public class MessageUtils {
 
 	// Translation messages
 	public static void message(CommandSender player, String path, Placeholders placeholders) {
-		if(Loader.translations.exists(path))
+		if (Loader.translations.exists(path))
 			msgConfig(player, Loader.translations, path, placeholders, true, player);
 		else {
 			Loader.plugin.getLogger().warning("Path " + path + " not found in config " + Loader.translations.getFile().getName() + ", please complete your translation.");
@@ -120,7 +119,7 @@ public class MessageUtils {
 	}
 
 	public static void message(CommandSender player, String path, Placeholders placeholders, boolean split) {
-		if(Loader.translations.exists(path))
+		if (Loader.translations.exists(path))
 			msgConfig(player, Loader.translations, path, placeholders, split, player);
 		else {
 			Loader.plugin.getLogger().warning("Path " + path + " not found in config " + Loader.translations.getFile().getName() + ", please complete your translation.");
@@ -129,7 +128,7 @@ public class MessageUtils {
 	}
 
 	public static void message(CommandSender player, String path, Placeholders placeholders, CommandSender... targets) {
-		if(Loader.translations.exists(path))
+		if (Loader.translations.exists(path))
 			msgConfig(player, Loader.translations, path, placeholders, true, targets);
 		else {
 			Loader.plugin.getLogger().warning("Path " + path + " not found in config " + Loader.translations.getFile().getName() + ", please complete your translation.");
@@ -138,7 +137,7 @@ public class MessageUtils {
 	}
 
 	public static void message(CommandSender player, String path, Placeholders placeholders, boolean split, CommandSender... targets) {
-		if(Loader.translations.exists(path))
+		if (Loader.translations.exists(path))
 			msgConfig(player, Loader.translations, path, placeholders, split, targets);
 		else {
 			Loader.plugin.getLogger().warning("Path " + path + " not found in config " + Loader.translations.getFile().getName() + ", please complete your translation.");
@@ -176,7 +175,7 @@ public class MessageUtils {
 			String trimmed = message.trim();
 			if (trimmed.equals("[]") || trimmed.equals("{}"))
 				return; // Do not send empty json
-			msgJson(Bukkit.getConsoleSender(), message, null, split, targets);
+			msgJson(Bukkit.getConsoleSender(), message, null, targets);
 			return;
 		}
 
@@ -202,7 +201,7 @@ public class MessageUtils {
 				String trimmed = line.trim();
 				if (trimmed.equals("[]") || trimmed.equals("{}"))
 					return; // Do not send empty json
-				msgJson(player, line, placeholders, split, targets);
+				msgJson(player, line, placeholders, targets);
 				return;
 			}
 			for (String line : config.getStringList(path))
@@ -216,7 +215,7 @@ public class MessageUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void msgJson(CommandSender s, String original, Placeholders placeholders, boolean split, CommandSender... targets) {
+	private static void msgJson(CommandSender s, String original, Placeholders placeholders, CommandSender... targets) {
 		Object json = Json.reader().simpleRead(original);
 		List<Map<String, Object>> jsonList = new ArrayList<>();
 		if (json instanceof Collection) {
@@ -236,13 +235,17 @@ public class MessageUtils {
 		// PROCESS PLACEHOLDER & COLORS
 		for (Map<String, Object> map : jsonList)
 			replaceJson(s, map, placeholders);
-		jsonList = ChatListeners.fixJsonList(jsonList);
-		Object packet = BukkitLoader.getNmsProvider().chatBase(Json.writer().simpleWrite(jsonList));
-		
+		// Replacing to minecraft json
+		jsonList = ComponentAPI.fixJsonList(jsonList);
+		// Sending packet
+		String written = Json.writer().simpleWrite(jsonList);
+		written = "[\"\", " + written.substring(1);
+		Object chat = BukkitLoader.getNmsProvider().chatBase(written);
+
+		Object packet = BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, chat);
 		for (CommandSender target : targets)
 			if (target instanceof Player)
-				BukkitLoader.getPacketHandler().send((Player) target,
-						BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, packet) );
+				BukkitLoader.getPacketHandler().send((Player) target, packet);
 			else
 				target.sendMessage(ComponentAPI.listToString(jsonList));
 	}
@@ -310,15 +313,13 @@ public class MessageUtils {
 					lastcolor = lastcolor.replace("&x", "#");
 				}
 				if (lastcolor != null && lastcolor.length() > 7) {
-					String build = "";
-					for(String c : lastcolor.split("")) {
-						build = build+"&"+c;
-					}
-					lastcolor=build;
+					StringBuilder build = new StringBuilder();
+					for (String c : lastcolor.split(""))
+						build.append("&").append(c);
+					lastcolor = build.toString();
 				}
 				for (CommandSender target : targets)
-					target.sendMessage(StringUtils.colorize(
-							PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, target, true, null)));
+					target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, target, true, null)));
 				lastcolor = StringUtils.getLastColors(StringUtils.colorize(line));
 			}
 		} else

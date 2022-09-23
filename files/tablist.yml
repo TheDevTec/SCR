@@ -25,7 +25,7 @@ yellowNumber:
   # Display type of showing yellow numbers - integer or hearts
   display: "integer"
 
-# Sorting types: GROUP (Vault), NAME (Vanilla)
+# Sorting types: GROUP (Vault/LuckPerms), WEIGHT (LuckPerms), NAME (Vanilla)
 sortingBy: GROUP
 
 # Sorting by Vault groups
@@ -62,6 +62,6 @@ perWorld:
 
 # Per player settings
 perPlayer:
-  StraikerinaCZ:
+  examplePlayer:
     tabname: "&4DevTec &e%player%"
     
