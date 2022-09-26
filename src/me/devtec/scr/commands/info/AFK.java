@@ -124,7 +124,6 @@ public class AFK implements ScrCommand {
 	}
 
 	private void startTask() {
-
 		task = new Tasker() {
 
 			@Override
@@ -141,7 +140,7 @@ public class AFK implements ScrCommand {
 					if (start - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(Loader.config.getString("options.afk.times.autoKick")) <= 0)
 						for (String cmd : Loader.config.getStringList("options.afk.actions.onKick"))
 							BukkitLoader.getNmsProvider().postToMainThread(() -> {
-								Sudo.sudoConsole(SudoType.COMMAND, PlaceholderAPISupport.replace(cmd, Bukkit.getPlayer(player), null));
+								Sudo.sudoConsole(SudoType.COMMAND, StringUtils.colorize(PlaceholderAPISupport.replace(cmd, Bukkit.getPlayer(player), null)));
 							});
 				}
 				for (String player : last_interaction.keySet()) {
@@ -157,7 +156,7 @@ public class AFK implements ScrCommand {
 						// cmds
 						for (String cmd : Loader.config.getStringList("options.afk.actions.onStart"))
 							BukkitLoader.getNmsProvider().postToMainThread(() -> {
-								Sudo.sudoConsole(SudoType.COMMAND, PlaceholderAPISupport.replace(cmd, Bukkit.getPlayer(player), null));
+								Sudo.sudoConsole(SudoType.COMMAND, StringUtils.colorize(PlaceholderAPISupport.replace(cmd, Bukkit.getPlayer(player), null)));
 							});
 						// AFK on
 						players.put(p.getName(), System.currentTimeMillis() / 1000);
