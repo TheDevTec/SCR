@@ -1,7 +1,6 @@
 package me.devtec.scr.utils;
 
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Sound;
@@ -80,7 +79,7 @@ public class ChatUtils {
 		public static String notificationReplace(Player pinger, String msg, Set<Player> targets) {
 			for (Player player : targets)
 				if (// !player.getUniqueId().equals(pinger.getUniqueId()) &&
-				(player != pinger) && msg.contains(player.getName())) {
+				player != pinger && msg.contains(player.getName())) {
 					boolean endsWithName = msg.endsWith(player.getName());
 
 					String notificationColor = Loader.chat.exists("chatNotification.color") ? Loader.chat.getString("chatNotification.color") : "§c";
@@ -172,68 +171,33 @@ public class ChatUtils {
 	}
 
 	public static class Colors {
-		private final static Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-
 		public static String remove(String string) {
 			if (string != null)
 				string = string.replace("§", "&");
 			return string;
 		}
 
-		private static final Pattern fixedSplit = Pattern.compile("(#[A-Fa-f0-9]{6}|[&§][Xx]([&§][A-Fa-f0-9]){6}|[&§][A-Fa-f0-9UuXx])");
-
 		public static String colorize(String b, boolean sign, CommandSender dr) {
 			String p = sign ? "sign" : "chat";
-			if (Loader.config.getString("options.colors." + p + ".rainbow") != null && !Loader.config.getString("options.colors." + p + ".rainbow").equals("") && b.toLowerCase().contains("&u")
-					&& dr.hasPermission(Loader.config.getString("options.colors." + p + ".rainbow"))) {
-				StringBuilder d = new StringBuilder(b.length());
-				String[] split = fixedSplit.split(b);
-				// atempt to add colors to split
-				Matcher m = fixedSplit.matcher(b);
-				int id = 1;
-				while (m.find())
-					try {
-						split[id] = m.group(1) + split[id++];
-					} catch (Exception err) {
-					}
-				// colors
-				for (String ff : split) {
-					String lower = ff.toLowerCase();
-					if (lower.contains("§u") || lower.contains("&u"))
-						ff = StringUtils.colorize(ff.replaceAll("[§&][Uu]", ""));
-					d.append(ff);
-				}
-				b = d.toString();
-			}
-			if (Ref.isNewerThan(15)) {
-				if (Loader.config.getString("options.colors." + p + ".gradient") != null && !Loader.config.getString("options.colors." + p + ".gradient").equals("")
-						&& dr.hasPermission(Loader.config.getString("options.colors." + p + ".gradient")))
-					b = StringUtils.gradient(b);
-				if (b.contains("#") || b.contains("&x"))
-					if (Loader.config.getString("options.colors." + p + ".hex") != null && !Loader.config.getString("options.colors." + p + ".hex").equals("")
-							&& dr.hasPermission(Loader.config.getString("options.colors." + p + ".hex"))) {
-						b = b.replaceAll("&[xX]", "§x");
-						Matcher match = pattern.matcher(b);
-						while (match.find()) {
-							String color = match.group();
-							StringBuilder magic = new StringBuilder("§x");
-							char[] c = color.substring(1).toCharArray();
-							for (char value : c)
-								magic.append("§" + Character.toLowerCase(value));
-							b = b.replace(color, magic.toString());
-						}
-					}
-			}
-			if (Loader.config.getString("options.colors." + p + ".color") != null && !Loader.config.getString("options.colors." + p + ".color").equals("")
-					&& dr.hasPermission(Loader.config.getString("options.colors." + p + ".color"))) {
-				for (int i = 0; i < 10; ++i)
-					b = b.replace("&" + i, "§" + i);
-				b = b.replaceAll("&([aAbBcCdDeEfF])", "§$1");
-			}
-			if (dr.hasPermission(Loader.config.getString("options.colors." + p + ".format")))
-				b = b.replaceAll("&([oOlLmMnNrR])", "§$1");
-			if (dr.hasPermission(Loader.config.getString("options.colors." + p + ".magic")))
+			if (Loader.config.getString("options.colors." + p + ".color").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".color")))
+				b = b.replaceAll("&([A-Fa-f0-9])", "§$1");
+			if (Loader.config.getString("options.colors." + p + ".format").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".format")))
+				b = b.replaceAll("&([l-oL-orR])", "§$1");
+			if (Loader.config.getString("options.colors." + p + ".magic").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".magic")))
 				b = b.replaceAll("&[kK]", "§k");
+			if (Ref.isNewerThan(15) && StringUtils.color != null) {
+				if (Loader.config.getString("options.colors." + p + ".gradient").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".gradient")))
+					b = StringUtils.gradient(b, null);
+				if ((b.contains("#") || b.contains("&x"))
+						&& (Loader.config.getString("options.colors." + p + ".hex").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".hex")))) {
+					b = b.replaceAll("&[xX]", "§x");
+					if (b.contains("#"))
+						b = StringUtils.color.replaceHex(b);
+				}
+			}
+			if (b.toLowerCase().contains("&u")
+					&& (Loader.config.getString("options.colors." + p + ".rainbow").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".rainbow"))))
+				b = StringUtils.color.rainbow(b, StringUtils.color.generateColor(), StringUtils.color.generateColor(), null);
 			return b;
 		}
 	}

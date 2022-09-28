@@ -100,9 +100,9 @@ public class ChatListeners implements Listener {
 			String format_path = ChatFormat.getPath(player);
 
 			if (Loader.chat.exists(format_path + ".message")) // Adding config message color
-				message = StringUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".message"), player)).replace("%message%", message);
-
-			message = colors(message, player);
+				message = StringUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".message"), player)).replace("%message%", colors(message, player));
+			else
+				message = colors(message, player);
 			List<String> ignoredStrings = new ArrayList<>();
 			for (Player p : BukkitLoader.getOnlinePlayers())
 				if (!p.getUniqueId().equals(e.getPlayer().getUniqueId()))
