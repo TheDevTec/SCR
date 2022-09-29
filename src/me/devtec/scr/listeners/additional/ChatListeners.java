@@ -114,7 +114,7 @@ public class ChatListeners implements Listener {
 
 			if (message != null) {
 				e.setMessage(message); // for console
-				setFormat(player, e.getRecipients(), format_path, Placeholders.c().addPlayer("player", player).add("message", message.replace("%", "%%")).add("playername",
+				setFormat(player, e.getRecipients(), format_path, Placeholders.c().addPlayer("player", player).add("message", message).add("playername",
 						StringUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".playername"), player))), e);
 				e.getRecipients().clear();
 
@@ -178,7 +178,7 @@ public class ChatListeners implements Listener {
 		// Replacing to minecraft json
 		jsonList = ComponentAPI.fixJsonList(jsonList);
 		// Setting format
-		event.setFormat(ComponentAPI.listToString(jsonList));
+		event.setFormat(ComponentAPI.listToString(jsonList).replace("%", "%%"));
 		// Sending packet
 		String written = Json.writer().simpleWrite(jsonList);
 		written = "[\"\", " + written.substring(1);
