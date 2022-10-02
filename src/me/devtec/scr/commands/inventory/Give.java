@@ -49,7 +49,7 @@ public class Give implements ScrCommand {
 					}
 				}).argument(null, -1, (s, structure, args) -> { // give [player] [material] [amount] [nbt]
 					ItemStack item = XMaterial.matchXMaterial(args[1].toUpperCase()).get().parseItem();
-					String nbt = StringUtils.join(args, "", 3);
+					String nbt = StringUtils.join(args, " ", 3);
 					item = BukkitLoader.getNmsProvider().setNBT(item, nbt);
 					item.setAmount(StringUtils.getInt(args[2]));
 
@@ -80,7 +80,7 @@ public class Give implements ScrCommand {
 					msgSec(s, "self", Placeholders.c().add("item", args[0].toUpperCase()).add("amount", item.getAmount()));
 				}).argument(null, -1, (s, structure, args) -> { // give [material] [amount] [nbt]
 					ItemStack item = XMaterial.matchXMaterial(args[0].toUpperCase()).get().parseItem();
-					String nbt = StringUtils.join(args, "", 2);
+					String nbt = StringUtils.join(args, " ", 2);
 					item = BukkitLoader.getNmsProvider().setNBT(item, nbt);
 					item.setAmount(StringUtils.getInt(args[1]));
 
