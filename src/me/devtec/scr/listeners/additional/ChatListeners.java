@@ -31,15 +31,11 @@ import me.devtec.shared.placeholders.PlaceholderAPI;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 import me.devtec.theapi.bukkit.nms.NmsProvider.ChatType;
-import me.devtec.theapi.bukkit.nms.NmsProvider.TitleAction;
 
 public class ChatListeners implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void chatFormat(AsyncPlayerChatEvent e) {
-
-		BukkitLoader.getPacketHandler().send(e.getPlayer(), BukkitLoader.getNmsProvider().packetTitle(TitleAction.ACTIONBAR, "§aC§cOLORS"));
-
 		if (e.isCancelled())
 			return;
 		Player player = e.getPlayer();
