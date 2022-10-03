@@ -21,28 +21,22 @@ public class Spawn implements ScrCommand {
 
 	@Override
 	public void init(List<String> cmds) {
-		spawn = Warp.storedWarps.getAs("spawn", Position.class);
-		if (spawn == null)
-			spawn = new Position(Bukkit.getWorlds().get(0).getSpawnLocation());
+		spawn = Warp.storedWarps.getAs("spawn", Position.class, new Position(Bukkit.getWorlds().get(0).getSpawnLocation()));
 
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			if (s instanceof Player) {
-				TpSystem.teleport((Player)s, spawn.toLocation());
-				//((Player) s).teleport(spawn.toLocation());
+				TpSystem.teleport((Player) s, spawn.toLocation());
 				msgSec(s, "self");
 			} else
 				help(s, "usage");
-		}).cooldownDetection((s, structure, args) -> inCooldown(s))
-		.permission(permission("cmd")).argument("-s", (s, structure, args) -> { // cmd -s
+		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).argument("-s", (s, structure, args) -> { // cmd -s
 			if (s instanceof Player)
-				TpSystem.teleport((Player)s, spawn.toLocation());
-				//((Player) s).teleport(spawn.toLocation());
+				TpSystem.teleport((Player) s, spawn.toLocation());
 			else
 				help(s, "usage");
 		}).parent().selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd [entity_selector]
 			Location loc = spawn.toLocation();
 			for (Player p : playerSelectors(s, args[0])) {
-				//p.teleport(loc);
 				TpSystem.teleport(p, loc);
 				msgSec(s, "other.sender", Placeholders.c().addPlayer("target", p));
 				msgSec(p, "other.target", Placeholders.c().addPlayer("player", s));
@@ -51,7 +45,6 @@ public class Spawn implements ScrCommand {
 			Location loc = spawn.toLocation();
 			for (Player p : playerSelectors(s, args[0]))
 				TpSystem.teleport(p, loc);
-				//p.teleport(loc);
 		}).build().register(cmds.remove(0), cmds.toArray(new String[0])).getStructure();
 	}
 

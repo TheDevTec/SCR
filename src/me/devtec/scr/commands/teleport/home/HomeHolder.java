@@ -2,38 +2,37 @@ package me.devtec.scr.commands.teleport.home;
 
 import java.util.UUID;
 
-import org.bukkit.Material;
-
 import me.devtec.theapi.bukkit.game.Position;
+import me.devtec.theapi.bukkit.xseries.XMaterial;
 
 public class HomeHolder {
 	private String name;
 	private Position loc;
-	
-	//gui
-	Material icon;
-	
-	//additional - warp owner
+
+	// gui
+	XMaterial icon;
+
+	// additional - warp owner
 	private UUID owner;
-	
-	public HomeHolder(UUID owner, String name, Position loc, Material icont) {
-		this.owner=owner;
-		this.name=name;
-		this.loc=loc;
+
+	public HomeHolder(UUID owner, String name, Position loc, XMaterial icont) {
+		this.owner = owner;
+		this.name = name;
+		this.loc = loc;
 	}
-	
+
 	public String name() {
 		return name;
 	}
-	
-	public Material icon() {
+
+	public XMaterial icon() {
 		return icon;
 	}
-	
+
 	public Position location() {
 		return loc;
 	}
-	
+
 	public UUID owner() {
 		return owner;
 	}
