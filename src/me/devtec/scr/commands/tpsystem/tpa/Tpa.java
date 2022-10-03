@@ -1,4 +1,4 @@
-package me.devtec.scr.commands.tpsystem.TPA;
+package me.devtec.scr.commands.tpsystem.tpa;
 
 import java.util.List;
 

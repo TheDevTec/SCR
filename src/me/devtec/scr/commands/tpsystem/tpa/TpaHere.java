@@ -1,4 +1,4 @@
-package me.devtec.scr.commands.tpsystem.TP;
+package me.devtec.scr.commands.tpsystem.tpa;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import me.devtec.scr.commands.tpsystem.TpSystem;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 
-public class TpHere implements ScrCommand {
+public class TpaHere implements ScrCommand {
 
 	@Override
 	public void init(List<String> cmds) {
@@ -20,14 +20,14 @@ public class TpHere implements ScrCommand {
 			help(s, "usage");
 		}).cooldownDetection((s, structure, args) -> inCooldown(s))
 		.permission(permission("cmd")) // perm
-		.fallback((s, structure, args) -> { // /tphere [player]
+		.fallback((s, structure, args) -> { // /tpahere [player]
 			offlinePlayer(s, args[0]);
 		})
-		.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // /tphere [player]
+		.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // /tpahere [player]
 			for(Player p : playerSelectors(s, args[0])) {
+				TpSystem.askTpaHere(p, (Player)s);
 				msgSec(s, "sender", Placeholders.c().addPlayer("player", s).addPlayer("target", p));
-				msgSec(s, "target", Placeholders.c().addPlayer("player", s).addPlayer("target", p));
-				TpSystem.teleport(p, (Player)s);
+				msgSec(s, "receiver", Placeholders.c().addPlayer("player", s).addPlayer("target", p));
 			}
 		})
 		.build().register(cmds.remove(0), cmds.toArray(new String[0]));
@@ -35,6 +35,6 @@ public class TpHere implements ScrCommand {
 
 	@Override
 	public String configSection() {
-		return "tphere";
+		return "tpahere";
 	}
 }

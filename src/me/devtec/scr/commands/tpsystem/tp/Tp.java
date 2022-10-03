@@ -1,4 +1,4 @@
-package me.devtec.scr.commands.tpsystem.TP;
+package me.devtec.scr.commands.tpsystem.tp;
 
 import java.util.ArrayList;
 import java.util.List;
