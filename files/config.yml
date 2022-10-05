@@ -52,8 +52,8 @@ options:
 #commandCooldowns:
 #  jobs: "5"
 
-autoAnnoucments:
-  enable: true
+autoAnnouncements:
+  enabled: true
   minimalPlayers: 1
   interval: "5min"
   random: false
@@ -61,7 +61,7 @@ autoAnnoucments:
   messages:
   - "&0[&e&lINFO&0] &7ServerControlReloaded created by &nDevTec"
   - "&0[&e&lINFO&0] &720% Bugs free"
-  - "&0[&e&lINFO&0] &7Online players &e%online%&7/&e%max_players%"
+  - "&0[&e&lINFO&0] &7Online players &e%online%&7/&e%online_max%"
   - "&0[&e&lINFO&0] &7You found a bug ? Report it to https://github.com/TheDevTec/ServerControlReloaded"
   - "&0[&e&lINFO&0] &7Do you like our plugin? Write a comment on the https://www.spigotmc.org/resources/71147"
 

@@ -45,7 +45,7 @@ fly:
   enabled: "%prefix% Létání &apovoleno"
   disabled: "%prefix% Létání &czakázáno"
   # If player joins with Fly enabled
-  stillenabled: "%prefix% &eLétání je stále povoleno"
+  stillenabled: "%prefix% Létání je stále povoleno"
   other:
     enabled:
       sender: "%prefix% &aPovoleno &7létání pro hráče &e%target%"
@@ -58,7 +58,7 @@ god:
   enabled: "%prefix% God povolen"
   disabled: "%prefix% God zakázán"
   # If player joins with God enabled
-  stillenabled: "%prefix% &eTvůj Bůh je stále povolen"
+  stillenabled: "%prefix% God je stále povolen"
   other:
     enabled:
       sender: "%prefix% &aPovolen &7god mode pro hráče &e%target%"
@@ -68,7 +68,7 @@ god:
       target: "%prefix% God &czakázán"
 
 thor:
-  loc: "%prefix% Zasažená oblas se nachází ve světě %world% na %x%, %y%, %z%"
+  loc: "%prefix% Zasažená oblast se nachází ve světě %world% na %x%, %y%, %z%"
   player: "%prefix% Zasáhl &e%target%!"
 
 nickname:
@@ -109,9 +109,9 @@ walkspeed:
 hat:
   fullInv: "%prefix% Inventář hráče %target% je plný. Nemůžeš si tedy nastavit čepku."
   equipped:
-    you: "%prefix% Item z tvojí pacičky byl nastaven jako čepička."
+    you: "%prefix% Item z tvojí ruky byl nastaven jako čepička."
     other:
-      sender: "%prefix% Item z tvojí packy byl nastaven jako čepka hráče &e%target%&7."
+      sender: "%prefix% Item z tvojí ruky byl nastaven jako čepka hráče &e%target%&7."
       receiver: "%prefix% Hráč &e%player%&7 ti dal &e%item%&7 na hlavu."
 
 # Teleport
@@ -119,10 +119,10 @@ warp:
   list: "%prefix% Seznam warpů: &e%warps%"
   list_split: "&7, &e"
   notFound: "%prefix% Warp jménem &e%warp% &7neexistuje."
-  self: "%prefix% Warpuju do &e%warp%..Wžůům"
+  self: "%prefix% Warpuji na &e%warp%.."
   cannot_teleport:
     perm: "%prefix% Nemůžeš se teleportovat na &e%warp% &7, protože asi nemáš dost práv."
-    money: "%prefix% Nemáš dost penízků na teleportaci na warp &e%warp%"
+    money: "%prefix% Nemáš dost peněz na teleportaci na warp &e%warp%"
   other:
     sender: "%prefix% Warpuji hráče %target% na %warp% warp."
     target: "%prefix% Warpuji na %warp%.."
@@ -150,7 +150,7 @@ setspawn: "%prefix% Spawn světa %world% byl nastaven na pozici na %x%, %y%, %z%
 sethome:
   created: "%prefix% Nastavil jsi domov &e%home%"
   already_exists: "%prefix% Domov &%ehome% &7už existuje."
-  limit: "%prefix% Dosáhl jsi maximálního limitu! Máš nárok pouz na %limit% domovů"
+  limit: "%prefix% Dosáhl jsi maximálního limitu! Máš nárok pouze na %limit% domovů"
 
 delhome:
   deleted: "%prefix% Domov &e%home% byl smazán"
@@ -192,22 +192,22 @@ cartography:
     target: "%prefix% Otevírám mapařský stůl"
 
 craftingtable:
-  self: "%prefix% Otevírám crafťák"
+  self: "%prefix% Otevírám pracovní stůl"
   other:
-    sender: "%prefix% Otevírám crafťák hráči &e%target%"
-    target: "%prefix% Otevírám crafťák"
+    sender: "%prefix% Otevírám pracovní stůl hráči &e%target%"
+    target: "%prefix% Otevírám pracovní stůl"
 
 enderchest:
-  self: "%prefix% Otevírám enderchest"
+  self: "%prefix% Otevírám ender truhlu"
   other:
-    sender: "%prefix% Otevírám enderchest hráči &e%target%"
-    target: "%prefix% Otevírám enderchest"
+    sender: "%prefix% Otevírám ender truhlu hráči &e%target%"
+    target: "%prefix% Otevírám ender truhlu"
 
 enchanting:
-  self: "%prefix% Otevírám enchanting"
+  self: "%prefix% Otevírám enchantovací stůl"
   other:
-    sender: "%prefix% Otevírám enchanting hráči &e%target%"
-    target: "%prefix% Otevírám enchanting"
+    sender: "%prefix% Otevírám enchantovací stůl hráči &e%target%"
+    target: "%prefix% Otevírám enchantovací stůl"
 
 grindstone:
   self: "%prefix% Otevírám grindstone"
@@ -225,7 +225,7 @@ repair:
   hand:
     you: "%prefix% Opravil jsi item, který držíš v ruce"
     other:
-      sender: "%prefix% Opravil jsi item, který má &e%target%&7 v pacičce"
+      sender: "%prefix% Opravil jsi item, který má &e%target%&7 v ruce"
       receiver: "%prefix% Item, který držíš v ruce, byl opraven."
   all:
     you: "%prefix% Opravil jsi všechny itemy v inventáři"
@@ -244,7 +244,7 @@ balance:
 pay:
   sender: "%prefix% Zaplatil jsi &e%money% &7hráči &e%target%"
   target: "%prefix% &e%player% &7ti zaplatil &e%money%"
-  notEnoughMoney: "%prefix% Nemáš dost penízků."
+  notEnoughMoney: "%prefix% Nemáš dost peněz."
 
 balancetop:
   invalidPage: "%prefix% Strana &e%page% &7je neplatná"
@@ -463,7 +463,7 @@ back:
 kit:
   notFound: "%prefix% Kit &e%kit% &7 neexistuje"
   used: "%prefix% Vybral jsi kit &e%kit%"
-  notEnoughMoney: "%prefix% Nemáš dost penízků (&e%money%&7)"
+  notEnoughMoney: "%prefix% Nemáš dostatek peněz &7(&e%money%&7)"
   cooldown: "%prefix% Musíš počakt ještě &e%time% &7pro znovu vybrání kitu &e%kit%"
   give:
     sender: "%prefix% Dal jsi &e%kit% &7kit hráči &e%target%"
@@ -480,4 +480,4 @@ kiteditor:
     set: "%prefix% Item byl přidán do slotu &e%slot%"
     remove: "%prefix% Item &e%item% &7byl odebrán"
   list: "%prefix% Seznam aktivních kitů: &a%kits%"
-  list_split: "&7, &a"
+  list_split: "&7, &e"

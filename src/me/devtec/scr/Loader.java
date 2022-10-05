@@ -20,7 +20,7 @@ import me.devtec.scr.api.ScrEconomy;
 import me.devtec.scr.commands.CustomCommands;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.commands.info.AFK;
-import me.devtec.scr.functions.AutoAnnoucments;
+import me.devtec.scr.functions.AutoAnnouncements;
 import me.devtec.scr.functions.ScoreboardManager;
 import me.devtec.scr.functions.Tablist;
 import me.devtec.scr.listeners.ServerList;
@@ -114,7 +114,7 @@ public class Loader extends JavaPlugin {
 		if (scoreboard != null)
 			scoreboard.unloadTasks();
 		AFK.stopTask();
-		AutoAnnoucments.unloadTask();
+		AutoAnnouncements.unloadTask();
 
 		// Placeholders unload
 		papi_theapi.unregister();
