@@ -171,13 +171,13 @@ home:
 # # # Inventory # # #
 # # # # # # # # # # #
 give:
-  self: "%prefix% Podaroval jsi se %amount%x %item%"
-  self-nbt: "%prefix% Podaroval jsi se %amount%x %item% s NBT %nbt%"
+  self: "%prefix% Dal sis %amount%x %item%"
+  self-nbt: "%prefix% Dal sis %amount%x %item% s NBT %nbt%"
   other:
     sender: "%prefix% Dal jsi %amount%x %item% hráči %target%"
     sender-nbt: "%prefix% Dal jsi %amount%x %item% s NBT %nbt% hráči %target%"
     target: "%prefix% Dostal jsi %amount%x %item%"
-    target-nbt: "%prefix% Doatal jsi %amount%x %item% s NBT %nbt%"
+    target-nbt: "%prefix% Dostal jsi %amount%x %item% s NBT %nbt%"
 
 anvil:
   self: "%prefix% Otevírám kovadlinu"
