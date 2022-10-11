@@ -78,63 +78,63 @@ public class Gamemode implements ScrCommand {
 						p.setGameMode(GameMode.SURVIVAL);
 				}).first() // cmd
 				// SPECTATOR
-				.argument("spectator", (s, structure, args) -> { // cmd spectator
+				.argument("adventure", (s, structure, args) -> { // cmd adventure
 					if (!(s instanceof Player)) {
 						help(s, "usage");
 						return;
 					}
 					Player p = (Player) s;
-					p.setGameMode(GameMode.SPECTATOR);
+					p.setGameMode(GameMode.ADVENTURE);
 					msg(s, "gamemodes.target." + p.getGameMode().name().toLowerCase());
-				}).permission(permission("spectator")) // perm
-				.argument("-s", (s, structure, args) -> { // cmd spectator
+				}).permission(permission("adventure")) // perm
+				.argument("-s", (s, structure, args) -> {// cmd adventure -s
 					if (!(s instanceof Player)) {
 						help(s, "usage");
 						return;
 					}
 					Player p = (Player) s;
-					p.setGameMode(GameMode.SPECTATOR);
-				}).parent() // cmd survival
-				.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd spectator [target]
+					p.setGameMode(GameMode.ADVENTURE);
+				}).parent() // cmd adventure
+				.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd adventure [target]
 					for (Player p : playerSelectors(s, args[1])) {
-						p.setGameMode(GameMode.SPECTATOR);
+						p.setGameMode(GameMode.ADVENTURE);
 						msg(s, "gamemodes.target." + p.getGameMode().name().toLowerCase());
 						msg(p, "gamemodes.sender." + p.getGameMode().name().toLowerCase(), Placeholders.c().addPlayer("target", p));
 					}
 				}).permission(permission("other")) // perm
-				.argument("-s", (s, structure, args) -> { // cmd spectator [target] -s
+				.argument("-s", (s, structure, args) -> { // cmd adventure [target] -s
 					for (Player p : playerSelectors(s, args[1]))
-						p.setGameMode(GameMode.SPECTATOR);
+						p.setGameMode(GameMode.ADVENTURE);
 				}).first();
 
 		if (Ref.isNewerThan(7))
-			str.argument("adventure", (s, structure, args) -> { // cmd adventure
+			str.argument("spectator", (s, structure, args) -> { // cmd spectator
 				if (!(s instanceof Player)) {
 					help(s, "usage");
 					return;
 				}
 				Player p = (Player) s;
-				p.setGameMode(GameMode.ADVENTURE);
+				p.setGameMode(GameMode.SPECTATOR);
 				msg(s, "gamemodes.target." + p.getGameMode().name().toLowerCase());
-			}).permission(permission("adventure")) // perm
-					.argument("-s", (s, structure, args) -> {// cmd adventure -s
+			}).permission(permission("spectator")) // perm
+					.argument("-s", (s, structure, args) -> { // cmd spectator
 						if (!(s instanceof Player)) {
 							help(s, "usage");
 							return;
 						}
 						Player p = (Player) s;
-						p.setGameMode(GameMode.ADVENTURE);
-					}).parent() // cmd adventure
-					.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd adventure [target]
+						p.setGameMode(GameMode.SPECTATOR);
+					}).parent() // cmd survival
+					.selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd spectator [target]
 						for (Player p : playerSelectors(s, args[1])) {
-							p.setGameMode(GameMode.ADVENTURE);
+							p.setGameMode(GameMode.SPECTATOR);
 							msg(s, "gamemodes.target." + p.getGameMode().name().toLowerCase());
 							msg(p, "gamemodes.sender." + p.getGameMode().name().toLowerCase(), Placeholders.c().addPlayer("target", p));
 						}
 					}).permission(permission("other")) // perm
-					.argument("-s", (s, structure, args) -> { // cmd adventure [target] -s
+					.argument("-s", (s, structure, args) -> { // cmd spectator [target] -s
 						for (Player p : playerSelectors(s, args[1]))
-							p.setGameMode(GameMode.ADVENTURE);
+							p.setGameMode(GameMode.SPECTATOR);
 					});
 
 		str.build().register(cmds.remove(0), cmds.toArray(new String[0]));

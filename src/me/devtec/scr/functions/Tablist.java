@@ -161,6 +161,8 @@ public class Tablist {
 	}
 
 	public void fullyUnregister(Player p) {
+		TabAPI.setHeaderFooter(p, "", "");
+		TabAPI.setTabListName(p, p.getName());
 		NameTagAPI nametag = tags.remove(p.getUniqueId());
 		if (nametag != null)
 			nametag.reset(BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
@@ -169,8 +171,6 @@ public class Tablist {
 		dType.remove(p.getUniqueId());
 		players.remove(p.getUniqueId());
 		BukkitLoader.getPacketHandler().send(BukkitLoader.getOnlinePlayers(), BukkitLoader.getNmsProvider().packetScoreboardScore(Action.REMOVE, "ping", p.getName(), 0));
-		TabAPI.setHeaderFooter(p, "", "");
-		TabAPI.setTabListName(p, p.getName());
 	}
 
 	public void apply(Player target, Collection<? extends Player> collection, TabSettings settings, TabSettings prev) {

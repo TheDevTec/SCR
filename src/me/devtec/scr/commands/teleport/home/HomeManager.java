@@ -16,7 +16,7 @@ public class HomeManager {
 
 	public static HomeHolder find(UUID owner, String name) {
 		Config user = API.getUser(owner);
-		if (!user.exists("home." + name))
+		if (!user.exists("home." + name) || user.getAs("home." + name.toLowerCase() + ".location", Position.class) == null)
 			return null;
 		return new HomeHolder(owner, user.getString("home." + name.toLowerCase() + ".name"), user.getAs("home." + name.toLowerCase() + ".location", Position.class),
 				XMaterial.matchXMaterial(user.getString("home." + name.toLowerCase() + ".icon")).orElse(XMaterial.OAK_DOOR));

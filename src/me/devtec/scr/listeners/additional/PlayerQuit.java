@@ -32,7 +32,7 @@ public class PlayerQuit implements Listener {
 				MessageUtils.msgConfig(event.getPlayer(), "messages", config, Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
 			}
 		}.runTask();
-		API.getUser(event.getPlayer()).leaveTime();
-		API.removeUser(event.getPlayer().getName());
+		API.getUser(event.getPlayer()).notifyQuit();
+		API.removeUser(event.getPlayer().getUniqueId());
 	}
 }

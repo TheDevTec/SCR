@@ -43,7 +43,7 @@ public class ChatListeners implements Listener {
 
 		String message = e.getMessage();
 		// ChatLock
-		if (ChatUtils.isChatLocked() && !u.isAutorized(Loader.commands.getString("chatlock.permission.bypass"))) {
+		if (ChatUtils.isChatLocked() && !u.hasPerm(Loader.commands.getString("chatlock.permission.bypass"), false)) {
 			e.setCancelled(true);
 			if (Loader.translations.exists("chatlock.isLocked"))
 				MessageUtils.message(player, "chatlock.isLocked", null, true);

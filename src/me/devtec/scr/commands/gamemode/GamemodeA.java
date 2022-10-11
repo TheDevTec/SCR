@@ -15,7 +15,6 @@ public class GamemodeA implements ScrCommand {
 
 	@Override
 	public void init(List<String> cmds) {
-
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			if (s instanceof Player) {
 				Player p = (Player) s;
@@ -34,7 +33,7 @@ public class GamemodeA implements ScrCommand {
 		}).parent() // /cmd
 				.fallback((s, structure, args) -> {
 					offlinePlayer(s, args[0]);
-				}).selector(Selector.PLAYER, (s, structure, args) -> { // cmd {player}
+				}).selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd {player}
 					for (Player p : playerSelectors(s, args[0])) {
 
 						p.setGameMode(GameMode.ADVENTURE);

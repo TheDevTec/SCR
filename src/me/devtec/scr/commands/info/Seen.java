@@ -20,7 +20,7 @@ public class Seen implements ScrCommand {
 
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
 			if (s instanceof Player) {
-				long time = API.getUser(s).getSeen(SeenType.ONLINE);
+				long time = API.getUser((Player) s).seen(SeenType.CURRENT_STATE);
 				msgSec(s, "online", Placeholders.c().add("time", StringUtils.timeToString(time)).addPlayer("player", s));
 			} else
 				help(s, "usage");
@@ -28,14 +28,14 @@ public class Seen implements ScrCommand {
 
 				.fallback((s, structure, args) -> { // /seen [player]
 					if (me.devtec.shared.API.getUser(args[0]).exists("lastLeave")) {
-						long time = API.getUser(args[0]).getSeen(SeenType.OFFLINE);
+						long time = API.getUser(args[0]).seen(SeenType.OFFLINE);
 						msgSec(s, "offline", Placeholders.c().add("time", StringUtils.timeToString(time)).addOffline("player", args[0]));
 					} else
 						msg(s, "missing.playerDontExist", Placeholders.c().addOffline("player", args[0]));
 				}).selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // seen [player]
 					long time = 0;
 					for (Player p : playerSelectors(s, args[0])) {
-						time = API.getUser(p).getSeen(SeenType.ONLINE);
+						time = API.getUser(p).seen(SeenType.ONLINE);
 						msgSec(s, "online", Placeholders.c().add("time", StringUtils.timeToString(time)).addPlayer("player", p));
 					}
 				}).permission(permission("other")) // seen [player]

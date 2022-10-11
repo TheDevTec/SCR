@@ -20,7 +20,7 @@ import me.devtec.theapi.bukkit.BukkitLoader;
 public class MessageManager {
 
 	// IGNORE
-	public static void ignore(CommandSender sender, Player target) {
+	public static void ignore(Player sender, Player target) {
 		User s = API.getUser(sender);
 		if (s.isIgnoring(target.getName())) {
 			s.removeIgnore(target.getName());
@@ -142,13 +142,13 @@ public class MessageManager {
 		if (t.equalsIgnoreCase("console"))
 			target = Bukkit.getConsoleSender();
 		else
-			target = API.getPlayer(replyList.get(sender instanceof Player ? sender.getName() : "console"));
+			target = Bukkit.getPlayer(t);
 
 		if (target == null) { // offline
 			MessageUtils.message(sender, "privateMessage.noreply", Placeholders.c().add("message", message));
 			return;
 		}
-		
+
 		MessageUtils.message(sender, "privateMessage.formats.sender",
 				Placeholders.c().addPlayer("player", sender).addPlayer("from", sender).addPlayer("to", target).addPlayer("target", target).add("message", message), false);
 		MessageUtils.message(target, "privateMessage.formats.target",

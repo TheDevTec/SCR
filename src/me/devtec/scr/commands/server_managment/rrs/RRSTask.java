@@ -40,10 +40,10 @@ public class RRSTask { // Reload Restart Stop task
 		broadcastTimes = Loader.config.getIntegerList("rrs." + type.name().toLowerCase() + ".times");
 
 		List<CommandSender> list = new ArrayList<>(API.getOnlinePlayers(true));
-		
-		if(time > 0)
+
+		if (time > 0)
 			MessageUtils.msgConfig(Bukkit.getConsoleSender(), "rrs." + currentTask.name().toLowerCase() + ".start", Loader.config, Placeholders.c().add("time", StringUtils.timeToString(RRSTask.time)),
-				list.toArray(new CommandSender[0]));
+					list.toArray(new CommandSender[0]));
 
 		task = new Tasker() {
 			@Override
@@ -82,12 +82,12 @@ public class RRSTask { // Reload Restart Stop task
 						try {
 							int waitTime = Loader.config.getInt("rrs." + currentTask.name().toLowerCase() + ".waitTime");
 							if (waitTime <= 0)
-								Bukkit.spigot().restart();
+								Bukkit.shutdown();
 							else
 								new Tasker() {
 									@Override
 									public void run() {
-										BukkitLoader.getNmsProvider().postToMainThread(() -> Bukkit.spigot().restart());
+										BukkitLoader.getNmsProvider().postToMainThread(Bukkit::shutdown);
 									}
 								}.runLater(waitTime * 20);
 						} catch (Exception | NoSuchMethodError e) {

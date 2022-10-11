@@ -50,8 +50,7 @@ public class Spawn implements ScrCommand {
 
 	@Override
 	public void disabling() {
-		Warp.storedWarps.set("spawn", spawn);
-		Warp.storedWarps.save(DataType.YAML);
+		Warp.storedWarps.set("spawn", spawn).save(DataType.YAML);
 	}
 
 	@Override

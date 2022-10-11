@@ -27,17 +27,9 @@ public interface ScrCommand {
 	public static final PermissionChecker<CommandSender> PERMS_CHECKER = (sender, perm, tablist) -> {
 		if (!(sender instanceof Player))
 			return true;
-		if (tablist)
-			return API.getUser(sender).isAutorized(perm);
-		return API.getUser(sender).checkPerm(perm); // also noperm message if needed
+		return API.getUser((Player) sender).hasPerm(perm, !tablist);
 	};
-	public static final PermissionChecker<Player> PLAYER_PERMS_CHECKER = (sender, perm, tablist) -> {
-		if (!(sender instanceof Player))
-			return true;
-		if (tablist)
-			return API.getUser(sender).isAutorized(perm);
-		return API.getUser(sender).checkPerm(perm); // also noperm message if needed
-	};
+	public static final PermissionChecker<Player> PLAYER_PERMS_CHECKER = (sender, perm, tablist) -> API.getUser(sender).hasPerm(perm, !tablist);
 
 	public default void msg(CommandSender sender, String path) {
 		MessageUtils.message(sender, path, null);
@@ -87,19 +79,11 @@ public interface ScrCommand {
 					}
 				return Arrays.asList(nearestPlayer == null ? BukkitLoader.getOnlinePlayers().iterator().next() : nearestPlayer);
 			}
-		return Arrays.asList(API.getPlayer(selector));
+		return Arrays.asList(Bukkit.getPlayer(selector));
 	}
 
 	public default void help(CommandSender sender, String arg) {
 		MessageUtils.msgConfig(sender, configSection() + ".help." + arg, Loader.commands, null);
-		/*
-		 * Object val = Loader.commands.get(configSection() + ".help." + arg); if (val
-		 * instanceof Collection) for (String list :
-		 * Loader.commands.getStringList(configSection() + ".help." + arg)) msg(sender,
-		 * list, null); else MessageUtils.msgConfig(sender,
-		 * configSection()+".help."+arg, Loader.commands, null); //msg(sender,
-		 * Loader.commands.getString(configSection() + ".help." + arg), null);
-		 */
 	}
 
 	// Do not overide this - onLoad
@@ -132,17 +116,17 @@ public interface ScrCommand {
 		return "scr.missingpermission." + configSection() + "." + path;
 	}
 
-	public default Boolean hasPermission(CommandSender s, String path) {
-		return permission(path) != null ? API.getUser(s).isAutorized(permission(path)) : false;
+	public default boolean hasPermission(CommandSender s, String path) {
+		return permission(path) != null ? s instanceof Player ? API.getUser((Player) s).hasPerm(permission(path), false) : true : false;
 	}
 
 	public default boolean inCooldown(CommandSender sender) {
 		if (!(sender instanceof Player))
 			return false;
-		User user = API.getUser(sender);
+		User user = API.getUser((Player) sender);
 		if (!Utils.cooldownExpired(user, configSection())) { // Cooldown check
 			// if cooldownExpired == true -> no cooldown
-			MessageUtils.message(user.player, "cooldowns.commands",
+			MessageUtils.message(sender, "cooldowns.commands",
 					Placeholders.c().replace("time", StringUtils.timeToString(Utils.expires(user, configSection()))).replace("time_sec", Utils.expires(user, configSection())));
 			return true; // switching booleans, beacause there is isCommandInCooldown? true ==> is
 							// cooldown

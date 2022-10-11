@@ -21,18 +21,13 @@ public class Hat implements ScrCommand {
 			if (s.getItemInHand().getType() != Material.AIR) {
 				// INV free slot checker
 				Inventory inv = s.getInventory();
-				boolean check = false;
-				for (ItemStack item : inv.getStorageContents())
-					if (item == null) {
-						check = true;
-						break;
-					}
+				boolean check = inv.firstEmpty() == -1;
 				ItemStack helmet = new ItemStack(Material.AIR);
 				if (s.getInventory().getHelmet() != null && check)
 					s.getInventory().addItem(s.getInventory().getHelmet());
 				if (s.getInventory().getHelmet() != null && !check)
 					helmet = s.getInventory().getHelmet();
-				s.getInventory().setHelmet(s.getEquipment().getItemInMainHand());
+				s.getInventory().setHelmet(s.getItemInHand());
 				s.getInventory().setItemInHand(helmet);
 				msgSec(s, "equipped.you", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()));
 			} else
@@ -42,18 +37,13 @@ public class Hat implements ScrCommand {
 			if (s.getItemInHand().getType() != Material.AIR) {
 				// INV free slot checker
 				Inventory inv = s.getInventory();
-				boolean check = false;
-				for (ItemStack item : inv.getStorageContents())
-					if (item == null) {
-						check = true;
-						break;
-					}
+				boolean check = inv.firstEmpty() == -1;
 				ItemStack helmet = new ItemStack(Material.AIR);
 				if (s.getInventory().getHelmet() != null && check)
 					s.getInventory().addItem(s.getInventory().getHelmet());
 				if (s.getInventory().getHelmet() != null && !check)
 					helmet = s.getInventory().getHelmet();
-				s.getInventory().setHelmet(s.getEquipment().getItemInMainHand());
+				s.getInventory().setHelmet(s.getItemInHand());
 				s.getInventory().setItemInHand(helmet);
 			} else
 				msg(s, "missing.handEmpty");
@@ -66,18 +56,13 @@ public class Hat implements ScrCommand {
 						if (s.getItemInHand().getType() != Material.AIR) {
 							// INV free slot checker
 							Inventory inv = target.getInventory();
-							boolean check = false;
-							for (ItemStack item : inv.getStorageContents())
-								if (item == null || item == new ItemStack(Material.AIR)) {
-									check = true; // free spot in inventory
-									break;
-								}
-							if ((target.getInventory().getHelmet() == null) || !check) { // FULL INV
+							boolean check = inv.firstEmpty() == -1;
+							if (target.getInventory().getHelmet() == null || !check) { // FULL INV
 								msgSec(s, "fullInv", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()).addPlayer("target", target));
 								return;
 							}
 							target.getInventory().addItem(target.getInventory().getHelmet());
-							target.getInventory().setHelmet(s.getEquipment().getItemInMainHand());
+							target.getInventory().setHelmet(s.getItemInHand());
 							target.getInventory().setItemInHand(new ItemStack(Material.AIR));
 
 							msgSec(s, "equipped.other.sender", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()).addPlayer("target", target));
@@ -89,18 +74,13 @@ public class Hat implements ScrCommand {
 						if (s.getItemInHand().getType() != Material.AIR) {
 							// INV free slot checker
 							Inventory inv = target.getInventory();
-							boolean check = false;
-							for (ItemStack item : inv.getStorageContents())
-								if (item == null) {
-									check = true;
-									break;
-								}
-							if ((target.getInventory().getHelmet() == null) || !check) { // FULL INV
+							boolean check = inv.firstEmpty() == -1;
+							if (target.getInventory().getHelmet() == null || !check) { // FULL INV
 								msgSec(s, "fullInv", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()).addPlayer("target", target));
 								return;
 							}
 							target.getInventory().addItem(target.getInventory().getHelmet());
-							target.getInventory().setHelmet(s.getEquipment().getItemInMainHand());
+							target.getInventory().setHelmet(s.getItemInHand());
 							s.getInventory().setItemInHand(new ItemStack(Material.AIR));
 						} else
 							msg(s, "missing.handEmpty");

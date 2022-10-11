@@ -3,6 +3,7 @@ package me.devtec.scr.commands.fun.nickname;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
@@ -18,45 +19,39 @@ public class NickReset implements ScrCommand {
 		// /nick [nickname]
 		// /nick [nickname] [player]
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
-			User user = API.getUser(s);
-			if(!user.isConsole()) {
+			if (s instanceof Player) {
+				User user = API.getUser((Player) s);
 				user.resetNickname();
-				msg(s, "nickname.reset.target", Placeholders.c().addPlayer("player", s) );
+				msg(s, "nickname.reset.target", Placeholders.c().addPlayer("player", s));
 			} else
 				help(s, "usage");
-		}).cooldownDetection((s, structure, args) -> inCooldown(s))
-		.permission(permission("cmd"))
-			.argument("-s", (s, structure, args) -> {  // /cmd -s
-				User user = API.getUser(s);
-				if(!user.isConsole()) {
-					user.resetNickname();
-				} else
-					help(s, "usage");
-				
-			})
-			.parent() // cmd <-
-			.fallback((s, structure, args) -> { // /cmd [player]
-				offlinePlayer(s, args[0]);
-				})
-			.selector(Selector.PLAYER, (s, structure, args) -> { // /cmd [player]
-				User u = API.getUser(args[0]);
-				u.resetNickname();
-				msg(s, "nickname.reset.sender", Placeholders.c().addPlayer("target", u.player));
-				msg(s, "nickname.reset.target", Placeholders.c().addPlayer("player", s) );
-				
-			}).permission(permission("other"))
-				.argument("-s", (s, structure, args) -> {  // /cmd [player] -s
+		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).argument("-s", (s, structure, args) -> { // /cmd -s
+			if (s instanceof Player) {
+				User user = API.getUser((Player) s);
+				user.resetNickname();
+			} else
+				help(s, "usage");
+
+		}).parent() // cmd <-
+				.fallback((s, structure, args) -> { // /cmd [player]
+					offlinePlayer(s, args[0]);
+				}).selector(Selector.PLAYER, (s, structure, args) -> { // /cmd [player]
 					User u = API.getUser(args[0]);
 					u.resetNickname();
-					
-				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));	
-		
+					msg(s, "nickname.reset.sender", Placeholders.c().addPlayer("target", u.getPlayer()));
+					msg(s, "nickname.reset.target", Placeholders.c().addPlayer("player", s));
+
+				}).permission(permission("other")).argument("-s", (s, structure, args) -> { // /cmd [player] -s
+					User u = API.getUser(args[0]);
+					u.resetNickname();
+
+				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
+
 	}
 
 	@Override
 	public String configSection() {
 		return "nicknamereset";
 	}
-
 
 }

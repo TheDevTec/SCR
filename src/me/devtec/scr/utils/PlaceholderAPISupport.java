@@ -140,12 +140,12 @@ public class PlaceholderAPISupport {
 				else
 					placeholders.add("afk", Loader.placeholders.getString("afk.disabled"));
 			if (text.contains("%god%"))
-				if (user.haveGod())
+				if (user.god())
 					placeholders.add("god", Loader.placeholders.getString("god.enabled"));
 				else
 					placeholders.add("god", Loader.placeholders.getString("god.disabled"));
 			if (text.contains("%fly%"))
-				if (user.haveFly())
+				if (user.fly())
 					placeholders.add("fly", Loader.placeholders.getString("fly.enabled"));
 				else
 					placeholders.add("fly", Loader.placeholders.getString("fly.disabled"));

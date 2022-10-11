@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -15,84 +16,32 @@ import me.devtec.theapi.bukkit.BukkitLoader;
 public class API {
 
 	// Getting users
-	private static final Map<String, User> usercache = new HashMap<>();
+	private static final Map<UUID, User> userCache = new HashMap<>();
 
-	public static User getUser(String playername) {
-		if (!usercache.containsKey(playername))
-			usercache.put(playername, new User(playername));
-		else if(!playername.equalsIgnoreCase("console")) {
-			User u = usercache.get(playername);
-			if(u.player==null ) {
-				usercache.remove(playername, new User(playername));
-				usercache.put(playername, new User(playername));
-			}
-			return u;
-		}
-		return usercache.get(playername);
+	public static User getUser(String name) {
+		UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes());
+		User cached = userCache.get(uuid);
+		if (cached != null)
+			return cached;
+		return new User(uuid); // Not caching
+	}
+
+	public static User getUser(UUID uuid) {
+		User user = userCache.get(uuid);
+		if (user == null)
+			userCache.put(uuid, user = new User(uuid));
+		return user;
 	}
 
 	public static User getUser(Player player) {
-		if (!usercache.containsKey(player.getName()))
-			usercache.put(player.getName(), new User(player));
-		else {
-			User u = usercache.get(player.getName());
-			if(u.player==null) {
-				usercache.remove(player.getName(), new User(player));
-				usercache.put(player.getName(), new User(player));
-			}
-			return u;
-		}
-		return usercache.get(player.getName());
+		User user = userCache.get(player.getUniqueId());
+		if (user == null)
+			userCache.put(player.getUniqueId(), user = new User(player));
+		return user;
 	}
 
-	public static User getUser(CommandSender commandsender) {
-		if (!(commandsender instanceof Player))
-			return new User("console");
-		if (!usercache.containsKey(commandsender.getName()))
-			usercache.put(commandsender.getName(), new User(commandsender));
-		else {
-			User u = usercache.get(commandsender.getName());
-			if(u.player==null) {
-				usercache.remove(commandsender.getName(), new User(commandsender));
-				usercache.put(commandsender.getName(), new User(commandsender));
-			}
-		}
-		return usercache.get(commandsender.getName());
-	}
-
-	public static void removeUser(String player) {
-		if (usercache.containsKey(player))
-			usercache.remove(player);
-	}
-
-	public static String getPlayerName(Player player) {
-		if (player == null)
-			return null;
-		return getUser(player).getName();
-	}
-
-	public static String getPlayerName(CommandSender player) {
-		if (player == null)
-			return null;
-		return getUser(player).getName();
-	}
-
-	public static String getPlayerName(String player) {
-		if (player == null)
-			return null;
-		return getUser(player).getName() != null ? getUser(player).getName() : player;
-	}
-
-	public static String getRealName(String player) {
-		if (player == null)
-			return null;
-		return getUser(player).getRealName();
-	}
-
-	public static Player getPlayer(String name) {
-		if (name == null)
-			return null;
-		return Bukkit.getPlayer(getUser(name).getRealName());
+	public static void removeUser(UUID uuid) {
+		userCache.remove(uuid);
 	}
 
 	/*
@@ -109,7 +58,6 @@ public class API {
 	// které sender vidí
 	public static List<Player> getOnlinePlayersFor(CommandSender sender) {
 		List<Player> list = new ArrayList<>();
-		// list.addAll(BukkitLoader.getOnlinePlayers());
 		for (Player target : BukkitLoader.getOnlinePlayers())
 			if (canSee(sender, target) && !list.contains(target))
 				list.add(target);

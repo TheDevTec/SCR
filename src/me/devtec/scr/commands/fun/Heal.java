@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
@@ -22,7 +23,7 @@ public class Heal implements ScrCommand {
 				Player p = (Player) s;
 				p.setFoodLevel(20);
 				p.setFireTicks(-20);
-				p.setHealth(p.getMaxHealth());
+				p.setHealth(((Damageable) p).getMaxHealth());
 				for (PotionEffect e : p.getActivePotionEffects())
 					p.removePotionEffect(e.getType());
 
@@ -34,7 +35,7 @@ public class Heal implements ScrCommand {
 				Player p = (Player) s;
 				p.setFoodLevel(20);
 				p.setFireTicks(-20);
-				p.setHealth(p.getMaxHealth());
+				p.setHealth(((Damageable) p).getMaxHealth());
 				for (PotionEffect e : p.getActivePotionEffects())
 					p.removePotionEffect(e.getType());
 			} else
@@ -88,7 +89,7 @@ public class Heal implements ScrCommand {
 					for (Player p : playerSelectors(s, args[0])) {
 						p.setFoodLevel(20);
 						p.setFireTicks(-20);
-						p.setHealth(p.getMaxHealth());
+						p.setHealth(((Damageable) p).getMaxHealth());
 						for (PotionEffect e : p.getActivePotionEffects())
 							p.removePotionEffect(e.getType());
 						msgSec(s, "other.sender", Placeholders.c().addPlayer("target", p).addPlayer("player", s));
@@ -98,7 +99,7 @@ public class Heal implements ScrCommand {
 					for (Player p : playerSelectors(s, args[0])) {
 						p.setFoodLevel(20);
 						p.setFireTicks(-20);
-						p.setHealth(p.getMaxHealth());
+						p.setHealth(((Damageable) p).getMaxHealth());
 						for (PotionEffect e : p.getActivePotionEffects())
 							p.removePotionEffect(e.getType());
 					}

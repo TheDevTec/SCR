@@ -1,50 +1,25 @@
 package me.devtec.scr.functions.guis;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.regex.Matcher;
 
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.BookMeta.Generation;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
-import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.message.Sudo;
 import me.devtec.scr.utils.PlaceholderAPISupport;
-import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 import me.devtec.theapi.bukkit.game.ItemMaker;
 import me.devtec.theapi.bukkit.gui.GUI.ClickType;
 import me.devtec.theapi.bukkit.gui.HolderGUI;
-import me.devtec.theapi.bukkit.nms.GameProfileHandler;
-import me.devtec.theapi.bukkit.nms.GameProfileHandler.PropertyHandler;
-import me.devtec.theapi.bukkit.xseries.XMaterial;
 
 public class Layout {
 
@@ -291,128 +266,10 @@ public class Layout {
 					return notupdated;
 			}
 
-			if (config.getString(path + ".type") == null)
-				return null; // missing type
-
-			String[] typeSplit = PlaceholderAPISupport.replace(config.getString(path + ".type"), player, true).split(":");
-			XMaterial type;
-			if (StringUtils.isInt(typeSplit[0]))
-				type = XMaterial.matchXMaterial(StringUtils.getInt(typeSplit[0]), typeSplit.length >= 2 ? StringUtils.getByte(typeSplit[1]) : 0).get();
-			else
-				type = XMaterial.matchXMaterial(typeSplit[0].toUpperCase()).get();
-
-			ItemStack stack = type.parseItem();
-
-			if (config.getString(path + ".head.type", "PLAYER").toUpperCase().equalsIgnoreCase("HDB")) // HEADDATABASE plugin
-				if (new HeadDatabaseAPI().isHead(config.getString(path + ".head.owner")))
-					stack = new HeadDatabaseAPI().getItemHead(config.getString(path + ".head.owner"));
-
-			String nbt = config.getString(path + ".nbt"); // additional nbt
-			if (nbt != null)
-				stack = BukkitLoader.getNmsProvider().setNBT(stack, BukkitLoader.getNmsProvider().parseNBT(PlaceholderAPISupport.replace(nbt, player)));
-
-			stack.setAmount(StringUtils.getInt(PlaceholderAPISupport.replace(config.getInt(path + ".amount", 1) + "", player, true)));
-			short damage = config.getShort(path + ".damage", config.getShort(path + ".durability"));
-			if (damage != 0)
-				stack.setDurability(damage);
-
-			ItemMeta meta = stack.getItemMeta();
-
-			String displayName = config.getString(path + ".displayName", config.getString(path + ".display-name"));
-			if (displayName != null)
-				meta.setDisplayName(StringUtils.colorize(PlaceholderAPISupport.replace(displayName, player)));
-			List<String> lore = config.getStringList(path + ".lore");
-			if (!lore.isEmpty())
-				meta.setLore(StringUtils.colorize(PlaceholderAPISupport.replace(lore, player)));
-			if (config.getBoolean(path + ".unbreakable"))
-				if (Ref.isNewerThan(10)) // 1.11+
-					meta.setUnbreakable(true);
-				else
-					try {
-						Ref.invoke(Ref.invoke(meta, "spigot"), "setUnbreakable", true);
-					} catch (NoSuchFieldError | Exception e2) {
-						// unsupported
-					}
-			if (Ref.isNewerThan(7)) // 1.8+
-				for (String flag : config.getStringList(path + ".itemFlags"))
-					meta.addItemFlags(ItemFlag.valueOf(flag.toUpperCase()));
-
-			int modelData = config.getInt(path + ".modelData");
-			if (Ref.isNewerThan(13) && modelData != 0) // 1.14+
-				meta.setCustomModelData(modelData);
-
-			if (type.name().contains("BANNER")) {
-				BannerMeta banner = (BannerMeta) meta;
-				// Example: RED:STRIPE_TOP
-				for (String pattern : config.getStringList(path + ".banner.patterns")) {
-					String[] split = pattern.split(":");
-					banner.addPattern(new Pattern(DyeColor.valueOf(split[0].toUpperCase()), PatternType.valueOf(split[1].toUpperCase())));
-				}
-			}
-			if (type == XMaterial.PLAYER_HEAD) { // HEAD
-				SkullMeta skull = (SkullMeta) meta;
-				String headOwner = config.getString(path + ".head.owner");
-				if (headOwner != null) {
-					/*
-					 * PLAYER VALUES URL
-					 */
-					String headType = config.getString(path + ".head.type", "PLAYER").toUpperCase();
-					if (headType.equals("PLAYER"))
-						skull.setOwner(PlaceholderAPISupport.replace(headOwner, player));
-					if (headType.equals("VALUES") || headType.equals("URL")) {
-						if (headType.equals("URL"))
-							headOwner = ItemMaker.fromUrl(headOwner);
-						Ref.set(skull, profileField, BukkitLoader.getNmsProvider().toGameProfile(GameProfileHandler.of("SCR", UUID.randomUUID(), PropertyHandler.of("textures", headOwner))));
-					}
-				}
-			}
-			if (type.name().contains("LEATHER_") && config.getString(path + ".leather.color") != null) {
-				LeatherArmorMeta armor = (LeatherArmorMeta) meta;
-				armor.setColor(Color.fromRGB(Integer.decode(config.getString(path + ".leather.color"))));
-			}
-			if (type.name().contains("POTION")) {
-				PotionMeta potion = (PotionMeta) meta;
-				if (Ref.isNewerThan(9) && config.getString(path + ".potion.type") != null)
-					potion.setBasePotionData(new PotionData(PotionType.valueOf(config.getString(path + ".potion.type").toUpperCase())));
-				for (String pattern : config.getStringList(path + ".potion.effects")) {
-					String[] split = pattern.split(":");
-					// PotionEffectType type, int duration, int amplifier, boolean ambient, boolean
-					// particles
-					potion.addCustomEffect(new PotionEffect(PotionEffectType.getByName(split[0].toUpperCase()), StringUtils.getInt(split[1]), StringUtils.getInt(split[2]),
-							split.length >= 4 ? StringUtils.getBoolean(split[3]) : true, split.length >= 5 ? StringUtils.getBoolean(split[4]) : true), true);
-				}
-				if (Ref.isNewerThan(10) && config.getString(path + ".potion.color") != null) // 1.11+
-					potion.setColor(Color.fromRGB(Integer.decode(config.getString(path + ".potion.color"))));
-			}
-			if (type == XMaterial.ENCHANTED_BOOK) {
-				EnchantmentStorageMeta book = (EnchantmentStorageMeta) meta;
-				for (String enchant : config.getStringList(path + ".enchants")) {
-					String[] split = enchant.split(":");
-					book.addStoredEnchant(Enchantment.getByName(split[0].toUpperCase()), split.length >= 2 ? StringUtils.getInt(split[1]) : 1, true);
-				}
-			} else
-				for (String enchant : config.getStringList(path + ".enchants")) {
-					String[] split = enchant.split(":");
-					meta.addEnchant(Enchantment.getByName(split[0].toUpperCase()), split.length >= 2 ? StringUtils.getInt(split[1]) : 1, true);
-				}
-			if (type == XMaterial.WRITTEN_BOOK || type == XMaterial.WRITABLE_BOOK) {
-				BookMeta book = (BookMeta) meta;
-				if (config.getString(path + ".book.author") != null)
-					book.setAuthor(StringUtils.colorize(PlaceholderAPISupport.replace(config.getString(path + ".book.author"), player)));
-				if (Ref.isNewerThan(9) && config.getString(path + ".book.generation") != null) // 1.10+
-					book.setGeneration(Generation.valueOf(config.getString(path + ".book.generation").toUpperCase()));
-				if (config.getString(path + ".book.title") != null)
-					book.setTitle(StringUtils.colorize(PlaceholderAPISupport.replace(config.getString(path + ".book.title"), player)));
-				book.setPages(StringUtils.colorize(PlaceholderAPISupport.replace(config.getStringList(path + ".book.pages"), player)));
-			}
-			stack.setItemMeta(meta);
-
-			notupdated = stack;
+			notupdated = ItemMaker.loadFromConfig(config, path);
 			lastUpdate = System.currentTimeMillis() / 1000;
-			return stack;
+			return notupdated;
 		}
-
-		private Field profileField = Ref.field(Ref.craft("inventory.CraftMetaSkull"), "profile");
 
 	}
 }

@@ -1,48 +1,80 @@
 package me.devtec.scr.utils;
 
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
+import org.bukkit.entity.Player;
+
+import me.devtec.scr.api.User;
 import me.devtec.scr.api.User.SeenType;
+import me.devtec.scr.commands.tpsystem.requests.TeleportRequest;
 import me.devtec.shared.dataholder.Config;
-import net.milkbowl.vault.economy.Economy;
 
 public interface ISuser {
 
-	boolean isAutorized(String permission); // true/false
+	void addTpReq(TeleportRequest req);
 
-	boolean checkPerm(String permissin); // true/false + Also sends noPerm message
+	@Nullable
+	TeleportRequest getTpReqOf(User sender);
 
-	// cooldowns
-	boolean cooldownExpired(String cooldownpath, String cooldowntime); // true/false
-	long expires(String cooldownpath, String cooldowntime);
-	void newCooldown(String cooldownpath);
+	void removeTpReq(TeleportRequest req);
 
-	boolean isConsole();
+	void addSendTpReq(TeleportRequest req);
 
-	Config getUserConfig();
-	
-	Economy getEconomy();
+	void removeSendTpReq(TeleportRequest req);
 
-	//NICKNAME
+	@Nullable
+	TeleportRequest getTpReq();
+
+	boolean hasPerm(String permission, boolean noPermsMessage);
+
+	boolean cooldownExpired(String cooldownpath, String cooldowntime);
+
+	long cooldownExpire(String cooldownpath, String cooldowntime);
+
+	void cooldownMake(String cooldownpath);
+
+	@Nullable
+	Player getPlayer();
+
+	default boolean isOnline() {
+		return getPlayer() != null;
+	}
+
+	Config getFile();
+
+	UUID getUUID();
+
 	String getName();
-	String getRealName();
-	boolean haveNickname();
+
+	@Nullable
+	String getNickname();
+
+	boolean hasNickname();
+
 	void resetNickname();
+
 	void setNickname(String nick);
-	
-	//IGNORE
+
 	boolean isIgnoring(String target);
-	public void addIgnore(String target);
-	public void removeIgnore(String target);
-	
-	//JOIN & LEAVE time
-	public void leaveTime();
-	public void joinTime();
-	public long getSeen(SeenType type);
-	
-	//GOD
-	public boolean haveGod();
-	public void saveGod(boolean status);
-	//FLY
-	public boolean haveFly();
-	public void saveFly(boolean status);
-	
+
+	void addIgnore(String target);
+
+	void removeIgnore(String target);
+
+	void notifyJoin(Player instance);
+
+	void notifyQuit();
+
+	long seen(SeenType type);
+
+	boolean god();
+
+	void god(boolean status);
+
+	boolean fly();
+
+	void fly(boolean status);
+
 }

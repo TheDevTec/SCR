@@ -1,235 +1,256 @@
 package me.devtec.scr.api;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
+import java.util.Queue;
+import java.util.UUID;
+import java.util.concurrent.LinkedBlockingDeque;
+
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
+import me.devtec.scr.commands.tpsystem.requests.TeleportRequest;
 import me.devtec.scr.utils.ISuser;
+import me.devtec.shared.API;
 import me.devtec.shared.dataholder.Config;
+import me.devtec.shared.dataholder.DataType;
+import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.utility.StringUtils;
-import net.milkbowl.vault.economy.Economy;
 
 public class User implements ISuser {
+	// TpSystem
+	private final Queue<TeleportRequest> requests = new LinkedBlockingDeque<TeleportRequest>() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public void addLast(TeleportRequest value) {
+			super.addLast(value);
+			new Tasker() {
+
+				@Override
+				public void run() {
+					value.timeout();
+				}
+			}.runLater(20 * StringUtils.timeFromString(Loader.config.getString("options.tp-accept_cooldown")));
+		}
+	};
+	private final Queue<TeleportRequest> sentRequests = new LinkedBlockingDeque<TeleportRequest>() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public void addLast(TeleportRequest value) {
+			super.addFirst(value);
+		}
+	};
+
+	private UUID uuid;
+	private String nickname;
+	private String name;
+	private Config userFile;
+	private Player cached;
 
 	public User(Player player) {
-		this.player = player;
-		if (haveNickname())
-			name = getName();
-		else
-			name = player.getName();
+		this(player.getUniqueId(), player.getName());
 	}
 
-	public User(CommandSender player) {
-		this.player = Bukkit.getPlayer(player.getName());
-		if (haveNickname())
-			name = getName();
-		else
-			name = player.getName();
+	public User(String name) {
+		this(API.offlineCache().lookupId(name), name);
 	}
 
-	public User(String player) {
-		// nicknames:
-		// <nickname>: real_player_name
-		if (Loader.data.exists("nicknames." + player))
-			name = Loader.data.getString("nicknames." + player);
-		else
-			name = player;
-		if (player.equalsIgnoreCase("console"))
-			this.player = null;
-		else
-			this.player = Bukkit.getPlayer(name) != null ? Bukkit.getPlayer(name) : null;
+	public User(UUID uuid) {
+		this(uuid, API.offlineCache().lookupNameById(uuid));
 	}
 
-	public Player player; // Always real player
-	private String name; // Can be Nickname -> use getName()
-
-	@Override
-	public boolean isConsole() {
-		if (name.equalsIgnoreCase("console"))
-			return true;
-		return false;
+	public User(UUID uuid, String playerName) {
+		name = playerName;
+		this.uuid = uuid;
+		nickname = getNickname();
+		userFile = API.getUser(uuid);
 	}
 
 	@Override
-	public boolean checkPerm(String permission) {
-		if (permission == null || isConsole() || player.hasPermission(permission)) // If permission==null -> missing perm in config probably
-			return true;
-		MessageUtils.noPerm(player, permission);
-		// Messages.message(player, "NoPermission",
-		// Placeholder.c().replace("%permission%", permission));
-		return false;
+	public Player getPlayer() {
+		return cached;
 	}
 
 	@Override
-	public boolean isAutorized(String permission) {
-		if (permission == null || isConsole() || player.hasPermission(permission) )
-			return true;
-		return false;
+	public Config getFile() {
+		return userFile;
 	}
 
 	@Override
-	public Config getUserConfig() {
-		if (player!=null && me.devtec.shared.API.getUser(player.getName()) != null)
-			return me.devtec.shared.API.getUser(player.getName());
-		if(player==null && me.devtec.shared.API.getUser(name) != null)
-			return me.devtec.shared.API.getUser(name);
-		return null;
-	}
-
-	// COOLDOWNS
-	// cooldownpath - in user config
-	// expires - cooldown time
-	@Override
-	public boolean cooldownExpired(String cooldownpath, String cooldowntime) {
-		if (isAutorized("scr.bypass.cooldowns") ||
-				(getUserConfig().getLong("cooldowns."+cooldownpath) - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(cooldowntime) <= 0))
-			return true;
-		return false;
+	public UUID getUUID() {
+		return uuid;
 	}
 
 	@Override
-	public long expires(String cooldownpath, String cooldowntime) {
-		return getUserConfig().getLong("cooldowns."+cooldownpath) - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(cooldowntime);
+	public boolean hasNickname() {
+		return nickname != null;
 	}
 
 	@Override
-	public void newCooldown(String cooldownpath) {
-		Config c = getUserConfig();
-		c.set("cooldowns."+cooldownpath, System.currentTimeMillis() / 1000);
-		c.save();
+	public String getNickname() {
+		return nickname;
 	}
 
-	@Override
-	public Economy getEconomy() {
-		return (Economy) Loader.economy;
-	}
-
-	// NICKNAME
-	@Override
-	public String getName() {
-		if(this.player==null) return name;
-		if (haveNickname())
-			return getUserConfig().getString("nickname");
-		return name;
-	}
-
-	@Override
-	public String getRealName() {
-		if (haveNickname())
-			return Loader.data.getString("nicknames." + getName());
-		return name;
-	}
-
-	@Override
-	public boolean haveNickname() {
-		return getUserConfig().exists("nickname");
-	}
-
-	// nicknames:
-	// <nickname>: real_player_name
 	@Override
 	public void resetNickname() {
-		Config c = getUserConfig();
-		if (haveNickname()) {
-			Loader.data.remove("nicknames." + getName());
-			Loader.data.save();
-			c.remove("nickname");
-			c.save();
-		}
+		nickname = null;
+		userFile.remove("nickname").save(DataType.YAML);
+		Player online = getPlayer();
+		if (online != null)
+			online.setCustomName(null);
 	}
 
 	@Override
 	public void setNickname(String nick) {
-		if (haveNickname())
-			resetNickname();
-		// setting nickname
-		Loader.data.set("nicknames." + nick, player.getName());
-		Loader.data.save();
-		Config c = getUserConfig();
-		c.set("nickname", nick);
-		c.save();
+		nickname = StringUtils.colorize(nick);
+		userFile.set("nickname", nick).save(DataType.YAML);
+		Player online = getPlayer();
+		if (online != null)
+			online.setCustomName(nickname);
 	}
 
-	// IGNORE
+	@Override
+	public boolean hasPerm(String permission, boolean noPermsMessage) {
+		if (permission == null || permission.isEmpty() || getPlayer().hasPermission(permission))
+			return true;
+		if (noPermsMessage)
+			MessageUtils.noPerm(getPlayer(), permission);
+		return false;
+	}
+
+	@Override
+	public boolean cooldownExpired(String cooldownpath, String cooldowntime) {
+		return hasPerm("scr.bypass.cooldowns", false) || userFile.getLong("cooldowns." + cooldownpath) - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(cooldowntime) <= 0;
+	}
+
+	@Override
+	public long cooldownExpire(String cooldownpath, String cooldowntime) {
+		return userFile.getLong("cooldowns." + cooldownpath) - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(cooldowntime);
+	}
+
+	@Override
+	public void cooldownMake(String cooldownpath) {
+		userFile.set("cooldowns." + cooldownpath, System.currentTimeMillis() / 1000).save(DataType.YAML);
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public boolean isIgnoring(String target) {
-		if (!getUserConfig().exists("privateMessage.ignorelist." + target))
-			return false;
-		return getUserConfig().getBoolean("privateMessage.ignorelist." + target);
+		return userFile.getBoolean("privateMessage.ignorelist." + target);
 	}
 
 	@Override
 	public void addIgnore(String target) {
-		Config c = getUserConfig();
-		c.set("privateMessage.ignorelist." + target, true);
-		c.save();
+		userFile.set("privateMessage.ignorelist." + target, true).save(DataType.YAML);
 	}
 
 	@Override
 	public void removeIgnore(String target) {
-		Config c = getUserConfig();
-		c.remove("privateMessage.ignorelist." + target);
-		c.save();
-	}
-
-	// JOIN & LEAVE time
-	@Override
-	public void leaveTime() {
-		Config c = getUserConfig();
-		c.set("lastLeave", System.currentTimeMillis() / 1000);
-		c.save();
+		userFile.remove("privateMessage.ignorelist." + target).save(DataType.YAML);
 	}
 
 	@Override
-	public void joinTime() {
-		Config c = getUserConfig();
-		c.set("joinTime", System.currentTimeMillis() / 1000);
-		c.save();
-	}
-
-	public static enum SeenType {
-		ONLINE, OFFLINE;
+	public void notifyQuit() {
+		userFile.remove("lastLeave" + System.currentTimeMillis() / 1000).save(DataType.YAML);
+		cached = null;
 	}
 
 	@Override
-	public long getSeen(SeenType type) {
-		Config s = getUserConfig();
-		long a = 0;
+	public void notifyJoin(Player instance) {
+		cached = instance;
+	}
+
+	public enum SeenType {
+		ONLINE, OFFLINE, CURRENT_STATE;
+	}
+
+	@Override
+	public long seen(SeenType type) {
+		Config s = userFile;
+		Player player = getPlayer();
 		switch (type) {
 		case ONLINE:
-			if (s.exists("joinTime"))
-				a = System.currentTimeMillis() / 1000 - s.getLong("joinTime");
-			break;
+			if (player != null)
+				return System.currentTimeMillis() / 1000 - player.getLastPlayed();
+			return 0; // Not online
 		case OFFLINE:
 			if (s.exists("lastLeave"))
-				a = System.currentTimeMillis() / 1000 - s.getLong("lastLeave");
-			break;
+				return System.currentTimeMillis() / 1000 - s.getLong("lastLeave");
+			return 0;
+		case CURRENT_STATE:
+			if (player != null)
+				return System.currentTimeMillis() / 1000 - player.getLastPlayed();
+			return System.currentTimeMillis() / 1000 - s.getLong("lastLeave");
 		}
-		return a;
+		return 0;
 	}
 
-	// GOD
-	public boolean haveGod() {
-		return getUserConfig().getBoolean("god");
-	}
-	
-	public void saveGod(boolean status) {
-		Config c = getUserConfig();
-		c.set("god", status);
-		c.save();
+	@Override
+	public boolean god() {
+		return userFile.getBoolean("god");
 	}
 
-	// FLY
-	public boolean haveFly() {
-		return getUserConfig().getBoolean("fly");
+	@Override
+	public void god(boolean status) {
+		userFile.set("god", status).save(DataType.YAML);
 	}
-	
-	public void saveFly(boolean status) {
-		Config c = getUserConfig();
-		c.set("fly", status);
-		c.save();
+
+	@Override
+	public boolean fly() {
+		return userFile.getBoolean("fly");
 	}
-	
+
+	@Override
+	public void fly(boolean status) {
+		userFile.set("fly", status).save(DataType.YAML);
+		Player online = getPlayer();
+		if (online != null)
+			if (status) {
+				online.setAllowFlight(true);
+				if (online.isOnGround())
+					online.setFlying(true);
+			} else {
+				online.setFlying(false);
+				online.setAllowFlight(false);
+			}
+	}
+
+	@Override
+	public void addTpReq(TeleportRequest req) {
+		requests.add(req);
+	}
+
+	@Override
+	public void removeTpReq(TeleportRequest req) {
+		requests.remove(req);
+	}
+
+	@Override
+	public void addSendTpReq(TeleportRequest tpaRequest) {
+		sentRequests.add(tpaRequest);
+	}
+
+	@Override
+	public void removeSendTpReq(TeleportRequest tpaRequest) {
+		sentRequests.remove(tpaRequest);
+	}
+
+	@Override
+	public TeleportRequest getTpReqOf(User sender) {
+		for (TeleportRequest req : requests)
+			if (req.getRequester().getUUID().equals(sender.getUUID()))
+				return req;
+		return null;
+	}
+
+	@Override
+	public TeleportRequest getTpReq() {
+		return requests.poll();
+	}
+
 }

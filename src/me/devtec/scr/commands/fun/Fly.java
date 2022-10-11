@@ -36,8 +36,7 @@ public class Fly implements ScrCommand {
 				msgSec(s, "" + status);
 			} else
 				help(s, "admin_usage");
-		}).cooldownDetection((s, structure, args) -> inCooldown(s))
-		.permission(permission("cmd")).fallback((s, structure, args) -> { // /fly [player]
+		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).fallback((s, structure, args) -> { // /fly [player]
 			offlinePlayer(s, args[0]);
 		}).argument("-s", (s, structure, args) -> { // cmd -s
 			if (s instanceof Player) {
@@ -96,7 +95,7 @@ public class Fly implements ScrCommand {
 		if (status) {
 			p.setFlying(false);
 			p.setAllowFlight(false);
-			API.getUser(p).saveFly(false);
+			API.getUser(p).fly(false);
 			if (!p.isOnGround()) {
 				antiFall.add(p.getUniqueId());
 				new Tasker() {
@@ -121,7 +120,7 @@ public class Fly implements ScrCommand {
 		} else {
 			p.setAllowFlight(true);
 			antiFall.remove(p.getUniqueId());
-			API.getUser(p).saveFly(true);
+			API.getUser(p).fly(true);
 			if (!p.isOnGround())
 				p.setFlying(true);
 		}

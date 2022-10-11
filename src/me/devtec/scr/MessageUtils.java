@@ -12,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.devtec.scr.api.API;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.components.ComponentAPI;
 import me.devtec.shared.dataholder.Config;
@@ -98,10 +97,10 @@ public class MessageUtils {
 						string = string.replace("%" + players.getKey() + "_customname%", players.getValue().getCustomName());
 						continue;
 					}
-					string = string.replace("%" + players.getKey() + "%", API.getPlayerName(players.getValue()));
+					string = string.replace("%" + players.getKey() + "%", players.getValue().getName());
 				}
 			if (sender instanceof Player && !placeholders.set.containsKey("player"))
-				string = string.replace("%player%", API.getPlayerName(sender));
+				string = string.replace("%player%", sender.getName());
 			for (Entry<String, String> placeholder : placeholders.set.entrySet())
 				string = string.replace("%" + placeholder.getKey() + "%", placeholder.getValue() + "");
 		}

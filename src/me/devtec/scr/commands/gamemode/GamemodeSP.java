@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
+import me.devtec.shared.Ref;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 
@@ -15,6 +16,8 @@ public class GamemodeSP implements ScrCommand {
 
 	@Override
 	public void init(List<String> cmds) {
+		if (Ref.isOlderThan(8))
+			return;
 
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> { // cmd
 			if (s instanceof Player) {
@@ -34,7 +37,7 @@ public class GamemodeSP implements ScrCommand {
 		}).parent() // /cmd
 				.fallback((s, structure, args) -> {
 					offlinePlayer(s, args[0]);
-				}).selector(Selector.PLAYER, (s, structure, args) -> { // cmd {player}
+				}).selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd {player}
 					for (Player p : playerSelectors(s, args[0])) {
 						p.setGameMode(GameMode.SPECTATOR);
 						msg(s, "gamemodes.sender." + p.getGameMode().name().toLowerCase(), Placeholders.c().addPlayer("target", p));

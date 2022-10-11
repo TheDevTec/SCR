@@ -1,5 +1,6 @@
 package me.devtec.scr.listeners;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -18,62 +19,59 @@ public class AFKListeners implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onMove(PlayerMoveEvent e) {
-		if(AFK.players.containsKey(e.getPlayer().getName())) {
+		if (AFK.players.containsKey(e.getPlayer().getName()))
 			AFK.afk(e.getPlayer(), false);
-		}
 		AFK.update(e.getPlayer());
 	}
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerJoinEvent e) {
-		if(AFK.players.containsKey(e.getPlayer().getName())) {
+		if (AFK.players.containsKey(e.getPlayer().getName()))
 			AFK.afk(e.getPlayer(), false);
-		}
 		AFK.update(e.getPlayer());
 	}
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerQuitEvent e) {
-		if(AFK.players.containsKey(e.getPlayer().getName()))
+		if (AFK.players.containsKey(e.getPlayer().getName()))
 			AFK.players.remove(e.getPlayer().getName());
-		if(AFK.last_interaction.containsKey(e.getPlayer().getName()))
+		if (AFK.last_interaction.containsKey(e.getPlayer().getName()))
 			AFK.last_interaction.remove(e.getPlayer().getName());
 	}
-	
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onInteract(PlayerInteractEvent e) {
-		if(AFK.players.containsKey(e.getPlayer().getName())) {
+		if (AFK.players.containsKey(e.getPlayer().getName()))
 			AFK.afk(e.getPlayer(), false);
-		}
 		AFK.update(e.getPlayer());
 	}
-	
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChat(AsyncPlayerChatEvent e) {
-		if(AFK.players.containsKey(e.getPlayer().getName())) {
+		if (AFK.players.containsKey(e.getPlayer().getName()))
 			AFK.afk(e.getPlayer(), false);
-		}
 		AFK.update(e.getPlayer());
 	}
-	
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChat(InventoryClickEvent e) {
-		if(AFK.players.containsKey(e.getWhoClicked().getName())) {
-			AFK.afk(e.getWhoClicked(), false);
-		}
-		AFK.update(e.getWhoClicked());
+		if (AFK.players.containsKey(e.getWhoClicked().getName()))
+			AFK.afk((CommandSender) e.getWhoClicked(), false);
+		AFK.update((CommandSender) e.getWhoClicked());
 	}
-	
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCommand(PlayerCommandPreprocessEvent e) {
-		if(e.isCancelled()) return;
-		if(Loader.commands.getBoolean("afk.enabled")) {
+		if (e.isCancelled())
+			return;
+		if (Loader.commands.getBoolean("afk.enabled")) {
 			String cmd = e.getMessage().substring(1);
-			for(String afk : Loader.commands.getStringList("afk.cmds"))
-				if(cmd.toLowerCase().startsWith( afk.toLowerCase()) )
+			for (String afk : Loader.commands.getStringList("afk.cmds"))
+				if (cmd.toLowerCase().startsWith(afk.toLowerCase()))
 					return;
 		}
-		if(AFK.players.containsKey(e.getPlayer().getName())) {
+		if (AFK.players.containsKey(e.getPlayer().getName()))
 			AFK.afk(e.getPlayer(), false);
-		}
 		AFK.update(e.getPlayer());
 	}
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
@@ -35,7 +34,7 @@ public class AutoAnnouncements {
 
 			@Override
 			public void run() {
-				if (Bukkit.getOnlinePlayers().size() >= Loader.config.getInt("autoAnnouncements.minimalPlayers")) {
+				if (BukkitLoader.getOnlinePlayers().size() >= Loader.config.getInt("autoAnnouncements.minimalPlayers")) {
 					if (Loader.config.getBoolean("autoAnnouncements.random"))
 						line = new Random().nextInt(list.size());
 

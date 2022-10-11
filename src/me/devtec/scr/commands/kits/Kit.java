@@ -32,17 +32,14 @@ public class Kit implements ScrCommand {
 				help(s, "admin");
 			else
 				help(s, "help");
-		}).cooldownDetection((s, structure, args) -> inCooldown(s))
-		.permission(permission("cmd"))
-		.fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).fallback((s, structure, args) -> {
 			msgSec(s, "notFound", Placeholders.c().add("kit", args[0]));
-		})
-		.callableArgument((s, structure, args) -> KitUtils.getKitsFor(s), (s, structure, args) -> { // kit [kit]
+		}).callableArgument((s, structure, args) -> KitUtils.getKitsFor(s), (s, structure, args) -> { // kit [kit]
 			if (!(s instanceof Player)) {
 				help(s, "admin");
 				return;
 			}
-			kit(s, s, args[0], true, true, true, false);
+			kit(s, (Player) s, args[0], true, true, true, false);
 			/*
 			 * me.devtec.scr.commands.kits.KitUtils.Kit kit =
 			 * KitUtils.loaded_kits.get(args[0]); if(s.hasPermission(kit.permission())) { //
@@ -80,7 +77,7 @@ public class Kit implements ScrCommand {
 				help(s, "admin");
 				return;
 			}
-			kit(s, s, args[0], true, true, true, true);
+			kit(s, (Player) s, args[0], true, true, true, true);
 		}).parent() // kit [kit]
 				.fallback((s, structure, args) -> { // kit [kit] [player]
 					offlinePlayer(s, args[1]);
@@ -124,7 +121,7 @@ public class Kit implements ScrCommand {
 	// cooldown true == yes check cooldown
 	// economy true == yes check economy
 	// silent true == without messages
-	public void kit(CommandSender sender, CommandSender target, String kit_name, boolean permission, boolean cooldown, boolean economy, boolean silent) {
+	public void kit(CommandSender sender, Player target, String kit_name, boolean permission, boolean cooldown, boolean economy, boolean silent) {
 		me.devtec.scr.commands.kits.KitUtils.Kit kit = KitUtils.loaded_kits.get(kit_name);
 		if (!permission || sender.hasPermission(kit.permission())) { // PERMISSION
 			User u = API.getUser(target);
@@ -140,7 +137,7 @@ public class Kit implements ScrCommand {
 						return;
 					}
 					if (ec.has(target.getName(), money))
-						ec.withdrawPlayer((Player) target, money);
+						ec.withdrawPlayer(target, money);
 				}
 				kit.giveItems(target); // giving items to player
 				// COMMAND
@@ -149,20 +146,17 @@ public class Kit implements ScrCommand {
 						Sudo.sudoConsole(SudoType.COMMAND, PlaceholderAPISupport.replace(cmd, target, Placeholders.c().addPlayer("player", target)));
 				// MESSAGE
 				if (!silent && kit.config.exists("messages"))
-					MessageUtils.msgConfig(target, "messages", kit.config, Placeholders.c().add("cooldown", StringUtils.timeFromString(kit.getCooldownTime()))
-							.add("kit", kit.displayName()).add("kit_name", kit.getName())
-							.add("cost", ((Economy) Loader.economy).format(ScrEconomy.balanceFromString(kit.getCost()))));
+					MessageUtils.msgConfig(target, "messages", kit.config, Placeholders.c().add("cooldown", StringUtils.timeFromString(kit.getCooldownTime())).add("kit", kit.displayName())
+							.add("kit_name", kit.getName()).add("cost", ((Economy) Loader.economy).format(ScrEconomy.balanceFromString(kit.getCost()))));
 				else if (!silent)
-					msgSec(target, "give.receiver", Placeholders.c().addPlayer("target", target).add("cooldown", StringUtils.timeFromString(kit.getCooldownTime()))
-							.add("kit", kit.displayName()).add("kit_name", kit.getName())
-							.add("cost", ((Economy) Loader.economy).format(ScrEconomy.balanceFromString(kit.getCost()))));
+					msgSec(target, "give.receiver", Placeholders.c().addPlayer("target", target).add("cooldown", StringUtils.timeFromString(kit.getCooldownTime())).add("kit", kit.displayName())
+							.add("kit_name", kit.getName()).add("cost", ((Economy) Loader.economy).format(ScrEconomy.balanceFromString(kit.getCost()))));
 				if (!sender.getName().equalsIgnoreCase(target.getName()))
-					msgSec(sender, "give.sender", Placeholders.c().addPlayer("target", target).add("cooldown", StringUtils.timeFromString(kit.getCooldownTime()))
-							.add("kit", kit.displayName()).add("kit_name", kit.getName())
-							.add("cost", ((Economy) Loader.economy).format(ScrEconomy.balanceFromString(kit.getCost()))));
+					msgSec(sender, "give.sender", Placeholders.c().addPlayer("target", target).add("cooldown", StringUtils.timeFromString(kit.getCooldownTime())).add("kit", kit.displayName())
+							.add("kit_name", kit.getName()).add("cost", ((Economy) Loader.economy).format(ScrEconomy.balanceFromString(kit.getCost()))));
 			} else
-				msgSec(target, "cooldown",
-						Placeholders.c().add("time", StringUtils.timeToString(u.expires("kits." + kit.getName(), kit.getCooldownTime()))).add("kit", kit.displayName()).add("kit_name", kit.getName()));
+				msgSec(target, "cooldown", Placeholders.c().add("time", StringUtils.timeToString(u.cooldownExpire("kits." + kit.getName(), kit.getCooldownTime()))).add("kit", kit.displayName())
+						.add("kit_name", kit.getName()));
 		} else
 			MessageUtils.noPerm(target, kit.permission());
 

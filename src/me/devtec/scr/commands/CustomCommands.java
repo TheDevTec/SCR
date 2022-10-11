@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,7 +16,6 @@ import org.bukkit.entity.Player;
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
-import me.devtec.scr.api.API;
 import me.devtec.scr.functions.guis.GUIManager;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.commands.selectors.Selector;
@@ -27,7 +27,7 @@ import me.devtec.theapi.bukkit.xseries.XMaterial;
 
 public class CustomCommands {
 
-	public static HashMap<String, CCommand> custom_commands = new HashMap<>(); // name | CCommand
+	public static Map<String, CCommand> custom_commands = new HashMap<>();
 
 	public static void load() {
 		// Utility
@@ -326,7 +326,7 @@ public class CustomCommands {
 						}
 					return Arrays.asList(nearestPlayer == null ? BukkitLoader.getOnlinePlayers().iterator().next() : nearestPlayer);
 				}
-			return Arrays.asList(API.getPlayer(selector));
+			return Arrays.asList(Bukkit.getPlayer(selector));
 		}
 	}
 

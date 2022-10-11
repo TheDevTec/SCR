@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.MessageUtils.Placeholders;
-import me.devtec.scr.api.API;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
@@ -35,17 +34,17 @@ public class GamemodeC implements ScrCommand {
 		}).parent() // /cmd
 				.fallback((s, structure, args) -> {
 					offlinePlayer(s, args[0]);
-				}).selector(Selector.PLAYER, (s, structure, args) -> { // cmd {player}
-					Player p = API.getPlayer(args[0]);
+				}).selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // cmd {player}
+					for (Player p : playerSelectors(s, args[0])) {
 
-					p.setGameMode(GameMode.CREATIVE);
-					msg(s, "gamemodes.sender." + p.getGameMode().name().toLowerCase(), Placeholders.c().addPlayer("target", p));
-					msg(p, "gamemodes.target." + p.getGameMode().name().toLowerCase());
-
+						p.setGameMode(GameMode.CREATIVE);
+						msg(s, "gamemodes.sender." + p.getGameMode().name().toLowerCase(), Placeholders.c().addPlayer("target", p));
+						msg(p, "gamemodes.target." + p.getGameMode().name().toLowerCase());
+					}
 				}).argument("-s", (s, structure, args) -> { // cmd {player} -s
-					Player p = API.getPlayer(args[0]);
+					for (Player p : playerSelectors(s, args[0]))
 
-					p.setGameMode(GameMode.CREATIVE);
+						p.setGameMode(GameMode.CREATIVE);
 				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 
 	}
