@@ -253,4 +253,8 @@ public class User implements ISuser {
 		return requests.poll();
 	}
 
+	public TeleportRequest getSendTpReq() {
+		return sentRequests.peek();
+	}
+
 }

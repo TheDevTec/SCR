@@ -3,6 +3,7 @@ package me.devtec.scr.commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -52,8 +53,8 @@ public interface ScrCommand {
 	}
 
 	public default Collection<? extends Player> playerSelectors(CommandSender sender, String selector) {
-		char lowerCase = selector.equals("*") ? '*' : Character.toLowerCase(selector.charAt(1));
-		if (lowerCase == '*' || selector.charAt(0) == '@')
+		char lowerCase = selector.charAt(0) == '*' ? '*' : selector.charAt(0) == '@' && selector.length() == 2 ? Character.toLowerCase(selector.charAt(1)) : 0;
+		if (lowerCase != 0)
 			switch (lowerCase) {
 			case 'a':
 			case 'e':
@@ -77,9 +78,10 @@ public interface ScrCommand {
 						distance = sameWorld.getLocation().distance(pos);
 						nearestPlayer = sameWorld;
 					}
-				return Arrays.asList(nearestPlayer == null ? BukkitLoader.getOnlinePlayers().iterator().next() : nearestPlayer);
+				return BukkitLoader.getOnlinePlayers().isEmpty() ? Collections.emptyList() : Arrays.asList(nearestPlayer == null ? BukkitLoader.getOnlinePlayers().iterator().next() : nearestPlayer);
 			}
-		return Arrays.asList(Bukkit.getPlayer(selector));
+		Player target = Bukkit.getPlayer(selector);
+		return target == null ? Collections.emptyList() : Arrays.asList(target);
 	}
 
 	public default void help(CommandSender sender, String arg) {

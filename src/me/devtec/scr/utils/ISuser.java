@@ -27,6 +27,9 @@ public interface ISuser {
 	@Nullable
 	TeleportRequest getTpReq();
 
+	@Nullable
+	TeleportRequest getSendTpReq();
+
 	boolean hasPerm(String permission, boolean noPermsMessage);
 
 	boolean cooldownExpired(String cooldownpath, String cooldowntime);

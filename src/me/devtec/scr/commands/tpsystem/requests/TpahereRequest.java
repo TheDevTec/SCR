@@ -40,7 +40,7 @@ public class TpahereRequest implements TeleportRequest {
 		if (isFinished())
 			return;
 		finish();
-		MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.accept.sender", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
+		MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.accept.sender", Placeholders.c().addPlayer("target", requester.getPlayer()).addPlayer("player", target.getPlayer()));
 		MessageUtils.message(target.getPlayer(), "teleportreq.tpahere.accept.receiver", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
 		target.getPlayer().teleport(requester.getPlayer());
 		removeRequest();
@@ -51,7 +51,7 @@ public class TpahereRequest implements TeleportRequest {
 		if (isFinished())
 			return;
 		finish();
-		MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.reject.sender", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
+		MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.reject.sender", Placeholders.c().addPlayer("target", requester.getPlayer()).addPlayer("player", target.getPlayer()));
 		MessageUtils.message(target.getPlayer(), "teleportreq.tpahere.reject.receiver", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
 		removeRequest();
 	}
@@ -61,7 +61,7 @@ public class TpahereRequest implements TeleportRequest {
 		if (isFinished())
 			return;
 		finish();
-		MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.cancel.sender", Placeholders.c().addPlayer("player", target.getPlayer()).addPlayer("target", requester.getPlayer()));
+		MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.cancel.sender", Placeholders.c().addPlayer("player", requester.getPlayer()).addPlayer("target", target.getPlayer()));
 		MessageUtils.message(target.getPlayer(), "teleportreq.tpahere.cancel.receiver", Placeholders.c().addPlayer("player", target.getPlayer()).addPlayer("target", requester.getPlayer()));
 		removeRequest();
 	}
@@ -72,12 +72,13 @@ public class TpahereRequest implements TeleportRequest {
 			return;
 		finish();
 		if (target.isOnline())
-			MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.expired.online", Placeholders.c().addPlayer("player", target.getPlayer()));
+			MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.expired.online", Placeholders.c().addPlayer("target", target.getPlayer()));
 		else
-			MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.expired.offline", Placeholders.c().add("player", target.getName()));
+			MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.expired.offline", Placeholders.c().add("target", target.getName()));
 		removeRequest();
 	}
 
+	@Override
 	public void removeRequest() {
 		requester.removeSendTpReq(this);
 		target.removeTpReq(this);

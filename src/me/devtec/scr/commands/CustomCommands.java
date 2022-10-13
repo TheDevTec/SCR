@@ -299,7 +299,7 @@ public class CustomCommands {
 		}
 
 		private Collection<? extends Player> playerSelectors(CommandSender sender, String selector) {
-			char lowerCase = selector.equals("*") ? '*' : Character.toLowerCase(selector.charAt(1));
+			char lowerCase = selector.length() == 1 ? 0 : selector.equals("*") ? '*' : Character.toLowerCase(selector.charAt(1));
 			if (lowerCase == '*' || selector.charAt(0) == '@')
 				switch (lowerCase) {
 				case 'a':

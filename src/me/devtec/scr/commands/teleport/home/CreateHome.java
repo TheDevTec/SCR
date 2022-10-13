@@ -15,7 +15,12 @@ public class CreateHome implements ScrCommand {
 	@Override
 	public void init(List<String> cmds) {
 		CommandStructure.create(Player.class, PLAYER_PERMS_CHECKER, (s, structure, args) -> { // cmd
-			help(s, "usage");
+			if (HomeManager.homesOf(s.getUniqueId()).size() + 1 > HomeManager.getLimit(s)) {
+				msgSec(s, "limit", Placeholders.c().add("limit", HomeManager.getLimit(s)));
+				return;
+			}
+			HomeManager.create(s.getUniqueId(), "home", new Position(s), XMaterial.OAK_DOOR);
+			msgSec(s, "created", Placeholders.c().add("home", "home"));
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).argument(null, (s, structure, args) -> { // cmd [any string]
 			HomeHolder home = HomeManager.find(s.getUniqueId(), args[0]);
 			if (home != null) {

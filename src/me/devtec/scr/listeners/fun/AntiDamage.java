@@ -13,15 +13,14 @@ public class AntiDamage implements Listener {
 
 	@EventHandler
 	public void onDamage(EntityTargetEvent e) {
-		if (e.getTarget().getType() == EntityType.PLAYER)
+		if (e.getTarget() != null && e.getTarget().getType() == EntityType.PLAYER)
 			if (API.getUser((Player) e.getTarget()).god())
 				e.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onDamage(EntityDamageEvent e) {
-		if (e.getEntityType() == EntityType.PLAYER)
-			if (API.getUser((Player) e.getEntity()).god())
-				e.setCancelled(true);
+		if (e.getEntityType() == EntityType.PLAYER && API.getUser((Player) e.getEntity()).god())
+			e.setCancelled(true);
 	}
 }

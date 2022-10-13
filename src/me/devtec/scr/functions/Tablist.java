@@ -67,7 +67,7 @@ public class Tablist {
 		}
 
 		if (config.getString("sortingBy").equalsIgnoreCase("group") && (Loader.luckperms != null || Loader.vault != null)) {
-			for (String group : config.getKeys("perGroup")) {
+			for (String group : config.getStringList("sorting")) {
 				TabSettings gglobal = new TabSettings();
 				gglobal.header = StringUtils.join(config.getStringList("perGroup." + group + ".header"), "\n");
 				gglobal.footer = StringUtils.join(config.getStringList("perGroup." + group + ".footer"), "\n");
@@ -94,7 +94,7 @@ public class Tablist {
 		}
 
 		if (config.getString("sortingBy").equalsIgnoreCase("weight") && Loader.luckperms != null) {
-			for (String group : config.getKeys("perGroup")) {
+			for (String group : config.getStringList("sorting")) {
 				TabSettings gglobal = new TabSettings();
 				gglobal.header = StringUtils.join(config.getStringList("perGroup." + group + ".header"), "\n");
 				gglobal.footer = StringUtils.join(config.getStringList("perGroup." + group + ".footer"), "\n");
@@ -180,8 +180,11 @@ public class Tablist {
 		NameTagAPI tag = tags.get(target.getUniqueId());
 		if (tag == null)
 			tags.put(target.getUniqueId(), tag = new NameTagAPI(target, settings.sorting));
+		else if (!tag.getTeamName().equals(settings.sorting)) {
+			tag.reset(target);
+			tags.put(target.getUniqueId(), tag = new NameTagAPI(target, settings.sorting));
+		}
 		tag.set(getColor(settings.nametag_prefix), settings.nametag_prefix, settings.nametag_suffix);
-		tag.setName(settings.sorting);
 		tag.send(collection.toArray(new Player[0]));
 
 		// yellow number

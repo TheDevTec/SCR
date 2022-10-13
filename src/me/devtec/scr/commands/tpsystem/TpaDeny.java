@@ -19,7 +19,7 @@ public class TpaDeny implements ScrCommand {
 			if (req != null)
 				req.decnile();
 			else
-				msgSec(s, "norequest");
+				msg(s, "teleportreq.norequest");
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // perm
 				.build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}

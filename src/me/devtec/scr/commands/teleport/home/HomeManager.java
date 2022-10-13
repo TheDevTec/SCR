@@ -50,7 +50,7 @@ public class HomeManager {
 
 	public static int getLimit(Player p) {
 		if (p.hasPermission(Loader.commands.getString("sethome.permission.unlimited_homes")))
-			return 500000;
+			return Integer.MAX_VALUE;
 		String group = Tablist.getVaultGroup(p);
 		if (group == null)
 			return Loader.config.getInt("homelimit.default");

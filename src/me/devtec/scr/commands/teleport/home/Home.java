@@ -27,14 +27,20 @@ public class Home implements ScrCommand {
 				help(s, "admin_usage");
 				return;
 			}
-			StringBuilder homeNames = new StringBuilder();
-			Set<String> homes = HomeManager.homesOf(((Player) s).getUniqueId());
-			for (String home : homes) {
-				if (homeNames.length() != 0)
-					homeNames.append(Loader.translations.getString(configSection() + ".list_split"));
-				homeNames.append(home);
+			HomeHolder homeDef = HomeManager.find(((Player) s).getUniqueId(), "home");
+			if (homeDef != null) {
+				TpSystem.teleport((Player) s, homeDef.location().toLocation());
+				msgSec(s, "self", Placeholders.c().add("home", homeDef.name()));
+			} else {
+				StringBuilder homeNames = new StringBuilder();
+				Set<String> homes = HomeManager.homesOf(((Player) s).getUniqueId());
+				for (String home : homes) {
+					if (homeNames.length() != 0)
+						homeNames.append(Loader.translations.getString(configSection() + ".list_split"));
+					homeNames.append(home);
+				}
+				msgSec(s, "list", Placeholders.c().add("homes", homeNames).add("amount", homes.size()).add("limit", HomeManager.getLimit((Player) s)));
 			}
-			msgSec(s, "list", Placeholders.c().add("homes", homeNames).add("amount", homes.size()).add("limit", HomeManager.getLimit((Player) s)));
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)) // cd
 				.permission(permission("cmd")) // perm
 				.fallback((s, structure, args) -> {

@@ -23,11 +23,15 @@ public class TpaHere implements ScrCommand {
 					offlinePlayer(s, args[0]);
 				}).selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // /tpahere [player]
 					for (Player p : playerSelectors(s, args[0])) {
+						if (API.getUser(p).getTpReqOf(API.getUser(s)) != null) {
+							msg(s, "teleportreq.tpahere.already-send", Placeholders.c().addPlayer("target", p).addPlayer("player", s));
+							continue;
+						}
 						TpahereRequest req = new TpahereRequest(API.getUser(s), API.getUser(p));
 						API.getUser(s).addSendTpReq(req);
 						API.getUser(p).addTpReq(req);
-						msgSec(s, "sender", Placeholders.c().addPlayer("player", s).addPlayer("target", p));
-						msgSec(s, "receiver", Placeholders.c().addPlayer("player", s).addPlayer("target", p));
+						msg(s, "teleportreq.tpahere.send.sender", Placeholders.c().addPlayer("target", p).addPlayer("player", s));
+						msg(p, "teleportreq.tpahere.send.receiver", Placeholders.c().addPlayer("target", s).addPlayer("player", p));
 					}
 				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}

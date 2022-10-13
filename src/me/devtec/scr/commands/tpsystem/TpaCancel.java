@@ -15,11 +15,11 @@ public class TpaCancel implements ScrCommand {
 	public void init(List<String> cmds) {
 
 		CommandStructure.create(Player.class, PLAYER_PERMS_CHECKER, (s, structure, args) -> {
-			TeleportRequest req = API.getUser(s).getTpReq();
+			TeleportRequest req = API.getUser(s).getSendTpReq();
 			if (req != null)
 				req.cancel();
 			else
-				msgSec(s, "norequest");
+				msg(s, "teleportreq.norequest");
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // perm
 				.build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}

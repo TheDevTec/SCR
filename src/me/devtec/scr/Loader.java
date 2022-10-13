@@ -11,11 +11,13 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.devtec.scr.api.API;
 import me.devtec.scr.api.ScrEconomy;
 import me.devtec.scr.commands.CustomCommands;
 import me.devtec.scr.commands.ScrCommand;
@@ -33,6 +35,7 @@ import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.events.EventManager;
 import me.devtec.shared.placeholders.PlaceholderExpansion;
 import me.devtec.shared.scheduler.Tasker;
+import me.devtec.theapi.bukkit.BukkitLoader;
 import me.devtec.theapi.bukkit.events.ServerListPingEvent;
 import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.economy.Economy;
@@ -89,6 +92,9 @@ public class Loader extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		// Did you reload plugin?!!?!?
+		for (Player player : BukkitLoader.getOnlinePlayers())
+			API.getUser(player).notifyJoin(player);
 
 		if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null)
 			luckperms = LuckPermsProvider.get();

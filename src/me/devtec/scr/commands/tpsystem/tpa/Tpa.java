@@ -22,11 +22,15 @@ public class Tpa implements ScrCommand {
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // perm
 				.selector(Selector.PLAYER, (s, structure, args) -> {
 					Player p = Bukkit.getPlayer(args[0]);
+					if (API.getUser(p).getTpReqOf(API.getUser(s)) != null) {
+						msg(s, "teleportreq.tpa.already-send", Placeholders.c().addPlayer("target", p).addPlayer("player", s));
+						return;
+					}
 					TpaRequest req = new TpaRequest(API.getUser(s), API.getUser(p));
 					API.getUser(s).addSendTpReq(req);
 					API.getUser(p).addTpReq(req);
-					msgSec(s, "sender", Placeholders.c().addPlayer("target", p).addPlayer("player", s));
-					msgSec(s, "receiver", Placeholders.c().addPlayer("target", p).addPlayer("player", s));
+					msg(s, "teleportreq.tpa.send.sender", Placeholders.c().addPlayer("target", p).addPlayer("player", s));
+					msg(p, "teleportreq.tpa.send.receiver", Placeholders.c().addPlayer("target", s).addPlayer("player", p));
 				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
