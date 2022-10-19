@@ -30,7 +30,6 @@ import me.devtec.scr.listeners.additional.ChatListeners;
 import me.devtec.scr.listeners.additional.PlayerJoin;
 import me.devtec.scr.listeners.additional.PlayerQuit;
 import me.devtec.scr.utils.PlaceholderAPISupport;
-import me.devtec.scr.utils.UnsecuredChatToast;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.events.EventManager;
@@ -97,10 +96,6 @@ public class Loader extends JavaPlugin {
 		for (Player player : BukkitLoader.getOnlinePlayers())
 			API.getUser(player).notifyJoin(player);
 
-		// Hide unsecured server toast message
-		if (Ref.isNewerThan(18) && !new Config("server.properties").getBoolean("enforce-secure-profile")) // 1.19+
-			UnsecuredChatToast.load();
-
 		if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null)
 			luckperms = LuckPermsProvider.get();
 
@@ -117,8 +112,6 @@ public class Loader extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		if (Ref.isNewerThan(18) && !new Config("server.properties").getBoolean("enforce-secure-profile")) // 1.19+
-			UnsecuredChatToast.unload();
 		for (ScrCommand cmd : registered_commands)
 			cmd.disabling();
 		registered_commands.clear();
