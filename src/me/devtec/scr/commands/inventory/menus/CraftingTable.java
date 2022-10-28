@@ -5,7 +5,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
@@ -21,25 +20,24 @@ public class CraftingTable implements ScrCommand {
 				help(s, "usage");
 				return;
 			}
-			((Player) s).openInventory(Bukkit.createInventory((Player) s, InventoryType.WORKBENCH));
+			((Player) s).openWorkbench(null, true);
 			msgSec(s, "self");
-		}).cooldownDetection((s, structure, args) -> inCooldown(s))
-		.permission(permission("cmd")).fallback((s, structure, args) -> {
+		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
 		}).argument("-s", (s, structure, args) -> {
 			if (!(s instanceof Player)) {
 				help(s, "usage");
 				return;
 			}
-			((Player) s).openInventory(Bukkit.createInventory((Player) s, InventoryType.WORKBENCH));
+			((Player) s).openWorkbench(null, true);
 		}).parent().selector(Selector.PLAYER, (s, structure, args) -> {
 			Player p = Bukkit.getPlayer(args[0]);
-			p.openInventory(Bukkit.createInventory(p, InventoryType.WORKBENCH));
+			p.openWorkbench(null, true);
 			msgSec(s, "other.sender", Placeholders.c().addPlayer("target", p));
 			msgSec(p, "other.target", Placeholders.c().addPlayer("player", s));
 		}).permission(permission("other")).argument("-s", (s, structure, args) -> {
 			Player p = Bukkit.getPlayer(args[0]);
-			p.openInventory(Bukkit.createInventory(p, InventoryType.WORKBENCH));
+			p.openWorkbench(null, true);
 		}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 

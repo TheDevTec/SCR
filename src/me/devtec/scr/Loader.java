@@ -10,7 +10,6 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -88,7 +87,6 @@ public class Loader extends JavaPlugin {
 	}
 
 	private PlaceholderExpansion papi_theapi;
-	private Object papi;
 
 	@Override
 	public void onEnable() {
@@ -273,38 +271,5 @@ public class Loader extends JavaPlugin {
 
 		};
 		papi_theapi.register();
-
-		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-			// %scr_...%
-			papi = new me.clip.placeholderapi.expansion.PlaceholderExpansion() {
-
-				@Override
-				public String onRequest(OfflinePlayer player, String params) {
-					params = '%' + params + '%';
-					String f;
-					if (Bukkit.getPlayer(player.getUniqueId()) != null)
-						f = PlaceholderAPISupport.replace(params, Bukkit.getPlayer(player.getUniqueId()), false, null);
-					else
-						f = PlaceholderAPISupport.replace(params, null, false, null);
-					return params.equals(f) ? null : f;
-				}
-
-				@Override
-				public String getVersion() {
-					return Loader.this.getDescription().getVersion();
-				}
-
-				@Override
-				public String getIdentifier() {
-					return "scr";
-				}
-
-				@Override
-				public String getAuthor() {
-					return "DevTec";
-				}
-			};
-			((me.clip.placeholderapi.expansion.PlaceholderExpansion) papi).register();
-		}
 	}
 }

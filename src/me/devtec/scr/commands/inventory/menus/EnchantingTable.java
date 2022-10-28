@@ -3,7 +3,7 @@ package me.devtec.scr.commands.inventory.menus;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -11,10 +11,9 @@ import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
+import me.devtec.theapi.bukkit.xseries.XMaterial;
 
 public class EnchantingTable implements ScrCommand {
-
-	private Location loc;
 
 	@Override
 	public void init(List<String> cmds) {
@@ -26,7 +25,11 @@ public class EnchantingTable implements ScrCommand {
 				return;
 			}
 			msgSec(s, "self");
-			((Player) s).openEnchanting(loc, true);
+
+			Block block = ((Player) s).getWorld().getBlockAt(0, 1, 0);
+			if (block.getType() != XMaterial.ENCHANTING_TABLE.parseMaterial())
+				block.setType(XMaterial.ENCHANTING_TABLE.parseMaterial());
+			((Player) s).openEnchanting(block.getLocation(), true);
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
 		}).argument("-s", (s, structure, args) -> {
@@ -34,15 +37,24 @@ public class EnchantingTable implements ScrCommand {
 				help(s, "usage");
 				return;
 			}
-			((Player) s).openEnchanting(loc, true);
+			Block block = ((Player) s).getWorld().getBlockAt(0, 1, 0);
+			if (block.getType() != XMaterial.ENCHANTING_TABLE.parseMaterial())
+				block.setType(XMaterial.ENCHANTING_TABLE.parseMaterial());
+			((Player) s).openEnchanting(block.getLocation(), true);
 		}).parent().selector(Selector.PLAYER, (s, structure, args) -> {
 			Player p = Bukkit.getPlayer(args[0]);
-			p.openEnchanting(loc, true);
+			Block block = p.getWorld().getBlockAt(0, 1, 0);
+			if (block.getType() != XMaterial.ENCHANTING_TABLE.parseMaterial())
+				block.setType(XMaterial.ENCHANTING_TABLE.parseMaterial());
+			p.openEnchanting(block.getLocation(), true);
 			msgSec(s, "other.sender", Placeholders.c().addPlayer("target", p));
 			msgSec(p, "other.target", Placeholders.c().addPlayer("player", s));
 		}).permission(permission("other")).argument("-s", (s, structure, args) -> {
 			Player p = Bukkit.getPlayer(args[0]);
-			p.openEnchanting(loc, true);
+			Block block = p.getWorld().getBlockAt(0, 1, 0);
+			if (block.getType() != XMaterial.ENCHANTING_TABLE.parseMaterial())
+				block.setType(XMaterial.ENCHANTING_TABLE.parseMaterial());
+			p.openEnchanting(block.getLocation(), true);
 		}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
