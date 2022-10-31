@@ -253,8 +253,19 @@ public class User implements ISuser {
 		return requests.poll();
 	}
 
+	@Override
 	public TeleportRequest getSendTpReq() {
 		return sentRequests.peek();
+	}
+
+	private boolean flyAfterWorldChange;
+
+	public void flyAfterWorldChange(boolean value) {
+		flyAfterWorldChange = value;
+	}
+
+	public boolean isFlyAfterWorldChange() {
+		return flyAfterWorldChange;
 	}
 
 }

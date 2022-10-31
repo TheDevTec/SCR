@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
@@ -16,6 +17,7 @@ import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
 import me.devtec.scr.api.User;
 import me.devtec.scr.commands.fun.Fly;
+import me.devtec.scr.commands.teleport.spawn.Spawn;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.scheduler.Tasker;
@@ -41,6 +43,13 @@ public class PlayerJoin implements Listener {
 					kick.append(s).append("\n");
 			e.disallow(Result.KICK_WHITELIST, StringUtils.colorize(PlaceholderAPISupport.replace(kick.toString(), p)));
 		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void login(PlayerSpawnLocationEvent e) {
+		Player p = e.getPlayer();
+		if (!p.hasPlayedBefore() && Spawn.spawn != null)
+			e.setSpawnLocation(Spawn.spawn.toLocation());
 	}
 
 	@EventHandler

@@ -470,6 +470,7 @@ teleportreq:
       online: "%prefix% Expired tpa request for &e%target%"
       offline: "%prefix% Expired tpa request for &e%target%"
   norequest: "%prefix% You don't have any request"
+  send-request-to-self: "%prefix% You can't send teleport request to yourself"
 
 tphere:
   sender: "%prefix% Teleporting &e%target%"

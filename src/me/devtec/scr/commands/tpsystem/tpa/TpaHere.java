@@ -1,5 +1,6 @@
 package me.devtec.scr.commands.tpsystem.tpa;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.entity.Player;
@@ -22,7 +23,13 @@ public class TpaHere implements ScrCommand {
 				.fallback((s, structure, args) -> { // /tpahere [player]
 					offlinePlayer(s, args[0]);
 				}).selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // /tpahere [player]
-					for (Player p : playerSelectors(s, args[0])) {
+					Collection<? extends Player> players = playerSelectors(s, args[0]);
+					for (Player p : players) {
+						if (p.equals(s)) {
+							if (players.size() == 1)
+								msg(s, "teleportreq.send-request-to-self", Placeholders.c().addPlayer("player", p));
+							continue;
+						}
 						if (API.getUser(p).getTpReqOf(API.getUser(s)) != null) {
 							msg(s, "teleportreq.tpahere.already-send", Placeholders.c().addPlayer("target", p).addPlayer("player", s));
 							continue;

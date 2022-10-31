@@ -17,7 +17,7 @@ import me.devtec.shared.dataholder.DataType;
 import me.devtec.theapi.bukkit.game.Position;
 
 public class Spawn implements ScrCommand {
-	protected static Position spawn;
+	public static Position spawn;
 
 	@Override
 	public void init(List<String> cmds) {

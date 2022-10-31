@@ -22,6 +22,10 @@ public class Tpa implements ScrCommand {
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // perm
 				.selector(Selector.PLAYER, (s, structure, args) -> {
 					Player p = Bukkit.getPlayer(args[0]);
+					if (p.equals(s)) {
+						msg(s, "teleportreq.send-request-to-self", Placeholders.c().addPlayer("player", p));
+						return;
+					}
 					if (API.getUser(p).getTpReqOf(API.getUser(s)) != null) {
 						msg(s, "teleportreq.tpa.already-send", Placeholders.c().addPlayer("target", p).addPlayer("player", s));
 						return;

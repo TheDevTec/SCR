@@ -76,7 +76,7 @@ public class Anvil implements ScrCommand {
 			}
 
 			@Override
-			public boolean onIteractItem(Player player, ItemStack item, ClickType type, int slot, boolean gui) {
+			public boolean onInteractItem(Player player, ItemStack item, ItemStack old, ClickType type, int slot, boolean gui) {
 				if (gui && slot == 2) {
 					ItemStack first = getItem(0);
 					if (first == null)
