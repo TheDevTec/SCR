@@ -45,8 +45,11 @@ public class PlayerJoin implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void login(PlayerSpawnLocationEvent e) {
+	/**
+	 * Teleport to the spawn on first join
+	 */
+	@EventHandler
+	public void onSpawnLocation(PlayerSpawnLocationEvent e) {
 		Player p = e.getPlayer();
 		if (!p.hasPlayedBefore() && Spawn.spawn != null)
 			e.setSpawnLocation(Spawn.spawn.toLocation());

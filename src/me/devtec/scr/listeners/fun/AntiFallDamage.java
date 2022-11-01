@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 
 import me.devtec.scr.api.API;
 import me.devtec.scr.api.User;
@@ -23,18 +23,21 @@ public class AntiFallDamage implements Listener {
 		}
 	}
 
-	@EventHandler
-	public void onTeleport(PlayerTeleportEvent e) {
-		if (!e.getFrom().getWorld().equals(e.getTo().getWorld())) {
-			User user = API.getUser(e.getPlayer());
-			user.flyAfterWorldChange(e.getPlayer().getAllowFlight());
-		}
-	}
+	/**
+	 * Re-allowing fly when change gamemode/world
+	 */
 
 	@EventHandler
 	public void onWorldChange(PlayerChangedWorldEvent e) {
 		User user = API.getUser(e.getPlayer());
-		if (user.isFlyAfterWorldChange())
-			e.getPlayer().setAllowFlight(true);
+		if (user.fly())
+			Fly.apply(e.getPlayer(), false); // false - turning on
+	}
+
+	@EventHandler
+	public void onWorldChange(PlayerGameModeChangeEvent e) {
+		User user = API.getUser(e.getPlayer());
+		if (user.fly())
+			Fly.apply(e.getPlayer(), false); // false - turning on
 	}
 }

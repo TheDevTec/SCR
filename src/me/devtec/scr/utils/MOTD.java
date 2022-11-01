@@ -27,15 +27,8 @@ public class MOTD {
 		if (start - System.currentTimeMillis() / 1000 + time <= 0) { // if time expired
 
 			List<String> list = Loader.config.getStringList("serverlist.use");
-
-			int last = -1;
-			int size = -1;
-
-			// Zda byl někdy použit changing motd
-			if (Loader.data.exists("serverlist.last"))
-				last = Loader.data.getInt("serverlist.last");
-			if (Loader.data.exists("serverlist.size"))
-				size = Loader.data.getInt("serverlist.size");
+			int last = Loader.data.getInt("serverlist.last", -1);
+			int size = Loader.data.getInt("serverlist.size", -1);
 
 			if (size != list.size()) { // Pokud se seznam změnil -> reset
 				last = 0;
