@@ -63,6 +63,7 @@ public class ChatListeners implements Listener {
 			double distance = Loader.chat.getDouble("options.distance");
 
 			List<String> worlds = new ArrayList<>();
+			List<String> players = new ArrayList<>();
 			if (type.equalsIgnoreCase("PER_WORLD") || type.equalsIgnoreCase("PERWORLD") || type.equalsIgnoreCase("WORLD")) {
 				for (String path : Loader.chat.getKeys("options.per_world"))
 					if (Loader.chat.getStringList("options.per_world." + path).contains(player.getLocation().getWorld().getName()))
@@ -93,20 +94,19 @@ public class ChatListeners implements Listener {
 						target.remove();
 					continue;
 				}
+				players.add(target.getName());
 			}
 
+			players.add(e.getPlayer().getName());
 			// TODO - flood, antispam, ...
 
 			String format_path = ChatFormat.getPath(player);
 
 			if (Loader.chat.exists(format_path + ".message")) // Adding config message color
-				message = StringUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".message"), player)).replace("%message%", colors(message, player));
+				message = StringUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".message"), player)).replace("%message%",
+						Colors.colorize(message, false, player, players));
 			else
-				message = colors(message, player);
-			List<String> ignoredStrings = new ArrayList<>();
-			for (Player p : BukkitLoader.getOnlinePlayers())
-				if (!p.getUniqueId().equals(e.getPlayer().getUniqueId()))
-					ignoredStrings.add(p.getName());
+				message = Colors.colorize(message, false, player, players);
 
 			// Chat notigications
 			if (ChatUtils.Notification.isEnabled())
@@ -121,10 +121,6 @@ public class ChatListeners implements Listener {
 			}
 
 		}
-	}
-
-	public static String colors(String msg, Player p) {
-		return Colors.colorize(msg, false, p);
 	}
 
 	// path - path.chat

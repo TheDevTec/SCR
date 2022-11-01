@@ -1,5 +1,6 @@
 package me.devtec.scr.utils;
 
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -176,7 +177,7 @@ public class ChatUtils {
 			return string;
 		}
 
-		public static String colorize(String b, boolean sign, CommandSender dr) {
+		public static String colorize(String b, boolean sign, CommandSender dr, List<String> ignored) {
 			String p = sign ? "sign" : "chat";
 			if (Loader.config.getString("options.colors." + p + ".color").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".color")))
 				b = b.replaceAll("&([A-Fa-f0-9])", "§$1");
@@ -186,7 +187,7 @@ public class ChatUtils {
 				b = b.replaceAll("&[kK]", "§k");
 			if (Ref.isNewerThan(15) && StringUtils.color != null) {
 				if (Loader.config.getString("options.colors." + p + ".gradient").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".gradient")))
-					b = StringUtils.gradient(b, null);
+					b = StringUtils.gradient(b, ignored);
 				if ((b.contains("#") || b.contains("&x"))
 						&& (Loader.config.getString("options.colors." + p + ".hex").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".hex")))) {
 					b = b.replaceAll("&[xX]", "§x");
@@ -196,7 +197,7 @@ public class ChatUtils {
 			}
 			if (b.toLowerCase().contains("&u")
 					&& (Loader.config.getString("options.colors." + p + ".rainbow").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".rainbow"))))
-				b = StringUtils.color.rainbow(b, StringUtils.color.generateColor(), StringUtils.color.generateColor(), null);
+				b = StringUtils.color.rainbow(b, StringUtils.color.generateColor(), StringUtils.color.generateColor(), ignored);
 			return b;
 		}
 	}
