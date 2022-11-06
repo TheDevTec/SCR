@@ -13,8 +13,8 @@ import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.message.Sudo;
 import me.devtec.scr.commands.message.Sudo.SudoType;
-import me.devtec.scr.functions.Tablist;
 import me.devtec.shared.Ref;
+import me.devtec.shared.components.ComponentAPI;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
@@ -53,16 +53,16 @@ public class ChatUtils {
 			if (c.exists("format.world." + world)) { // World formats:
 				if (c.exists("format.world." + world + ".user." + p.getName()))
 					return "format.world." + world + ".user." + p.getName();
-				if (c.exists("format.world." + world + ".group." + Tablist.getVaultGroup(p)))
-					return "format.world." + world + ".group." + Tablist.getVaultGroup(p);
+				if (c.exists("format.world." + world + ".group." + Loader.getVaultGroup(p)))
+					return "format.world." + world + ".group." + Loader.getVaultGroup(p);
 				if (c.exists("format.world." + world + ".global"))
 					return "format.world." + world + ".global";
 			}
 
 			if (c.exists("format.user." + p.getName()))
 				return "format.user." + p.getName();
-			if (c.exists("format.group." + Tablist.getVaultGroup(p)))
-				return "format.group." + Tablist.getVaultGroup(p);
+			if (c.exists("format.group." + Loader.getVaultGroup(p)))
+				return "format.group." + Loader.getVaultGroup(p);
 			if (c.exists("format.global")) {
 			}
 
@@ -159,14 +159,14 @@ public class ChatUtils {
 				firstLine = ""; // Just in case...
 			if (firstLine != null && nextLine == null || !firstLine.isEmpty() && nextLine.isEmpty())
 				nextLine = "";
-			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.TITLE, StringUtils.colorize(firstLine)));
-			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.SUBTITLE, StringUtils.colorize(nextLine)));
+			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.TITLE, ComponentAPI.fromString(StringUtils.colorize(firstLine))));
+			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.SUBTITLE, ComponentAPI.fromString(StringUtils.colorize(nextLine))));
 		}
 
 		public static void sendActionBar(Player p, String text) {
 			if (text == null || text.isEmpty())
 				return;
-			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.ACTIONBAR, StringUtils.colorize(text), 10, 20, 10));
+			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.ACTIONBAR, ComponentAPI.fromString(StringUtils.colorize(text)), 10, 20, 10));
 		}
 	}
 

@@ -11,7 +11,6 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
 import me.devtec.scr.commands.ScrCommand;
-import me.devtec.scr.functions.Tablist;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.commands.structures.CommandStructure;
 
@@ -28,7 +27,7 @@ public class ListCmd implements ScrCommand {
 			List<Player> players = new ArrayList<>();
 
 			for (Player player : API.getOnlinePlayersFor(s))
-				if (staff_groups.contains(Tablist.getVaultGroup(player)))
+				if (staff_groups.contains(Loader.getVaultGroup(player)))
 					staff.add(player);
 				else
 					players.add(player);

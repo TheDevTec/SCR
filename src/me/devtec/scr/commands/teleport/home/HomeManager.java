@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.Loader;
-import me.devtec.scr.functions.Tablist;
 import me.devtec.shared.API;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.theapi.bukkit.game.Position;
@@ -51,7 +50,7 @@ public class HomeManager {
 	public static int getLimit(Player p) {
 		if (p.hasPermission(Loader.commands.getString("sethome.permission.unlimited_homes")))
 			return Integer.MAX_VALUE;
-		String group = Tablist.getVaultGroup(p);
+		String group = Loader.getVaultGroup(p);
 		if (group == null)
 			return Loader.config.getInt("homelimit.default");
 		if (Loader.config.exists("homelimit." + group))

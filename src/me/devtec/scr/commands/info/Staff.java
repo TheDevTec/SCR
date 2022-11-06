@@ -10,7 +10,6 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
 import me.devtec.scr.commands.ScrCommand;
-import me.devtec.scr.functions.Tablist;
 import me.devtec.shared.commands.structures.CommandStructure;
 
 public class Staff implements ScrCommand {
@@ -23,7 +22,7 @@ public class Staff implements ScrCommand {
 			List<String> staff_groups = Loader.config.getStringList("staff");
 
 			for (Player player : API.getOnlinePlayersFor(s))
-				if (staff_groups.contains(Tablist.getVaultGroup(player)))
+				if (staff_groups.contains(Loader.getVaultGroup(player)))
 					staff.add(player);
 			if (!staff.isEmpty()) {
 				msgSec(s, "header", Placeholders.c().add("staff_online", staff.size()));

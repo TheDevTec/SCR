@@ -23,7 +23,6 @@ import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.commands.info.AFK;
 import me.devtec.scr.functions.AutoAnnouncements;
 import me.devtec.scr.functions.ScoreboardManager;
-import me.devtec.scr.functions.Tablist;
 import me.devtec.scr.listeners.ServerList;
 import me.devtec.scr.listeners.additional.ChatListeners;
 import me.devtec.scr.listeners.additional.PlayerJoin;
@@ -36,6 +35,7 @@ import me.devtec.shared.placeholders.PlaceholderExpansion;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.theapi.bukkit.BukkitLoader;
 import me.devtec.theapi.bukkit.events.ServerListPingEvent;
+import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -65,7 +65,6 @@ public class Loader extends JavaPlugin {
 	public static Config scoreboardConfig;
 	public static Config placeholders;
 
-	public static Tablist tablist;
 	public ScoreboardManager scoreboard;
 
 	@Override
@@ -113,8 +112,9 @@ public class Loader extends JavaPlugin {
 		for (ScrCommand cmd : registered_commands)
 			cmd.disabling();
 		registered_commands.clear();
-		if (tablist != null)
-			tablist.unloadTasks();
+		// TODO tab
+		// if (tablist != null)
+		// tablist.unloadTasks();
 		if (scoreboard != null)
 			scoreboard.unloadTasks();
 		AFK.stopTask();
@@ -136,14 +136,24 @@ public class Loader extends JavaPlugin {
 	}
 
 	public void loadTab() {
+		// TODO tab
 		// Unloading tasks
-		if (tablist != null)
-			tablist.unloadTasks();
+		// if (tablist != null)
+		// tablist.unloadTasks();
 		// Loading tasks
-		if (tablistConfig.getBoolean("enabled")) {
-			tablist = new Tablist();
-			tablist.loadTasks(tablistConfig);
-		}
+		// if (tablistConfig.getBoolean("enabled")) {
+		// tablist = new Tablist();
+		// tablist.loadTasks(tablistConfig);
+		// }
+	}
+
+	public static String getVaultGroup(Player player) {
+		if (Loader.luckperms != null)
+			return ((LuckPerms) Loader.luckperms).getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getPrimaryGroup();
+		if (Loader.vault != null)
+			if (((Permission) Loader.vault).hasGroupSupport())
+				return ((Permission) Loader.vault).getPrimaryGroup(player);
+		return "default";
 	}
 
 	private void loadListeners() {

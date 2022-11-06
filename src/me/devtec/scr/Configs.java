@@ -66,6 +66,7 @@ public class Configs {
 			GUIManager.load();
 	}
 
+	@Deprecated
 	public static void loadConfigs() {
 
 		Loader.config = loadAndMerge("config.yml", "config.yml");
@@ -104,8 +105,9 @@ public class Configs {
 			CustomCommands.reload();
 		if (!KitUtils.loaded_kits.isEmpty()) // If not empty ==> /scr reload command
 			KitUtils.loadKits();
-		if (Loader.tablist != null) // If != null ==> /scr reload command
-			Loader.plugin.loadTab(); // Reloading tasks and loading tab again
+		// TODO tab
+		// if (Loader.tablist != null) // If != null ==> /scr reload command
+		// Loader.plugin.loadTab(); // Reloading tasks and loading tab again
 		if (Loader.plugin != null && Loader.plugin.scoreboard != null) // If != null ==> /scr reload command
 			Loader.plugin.loadScoreboard(); // Reloading tasks and loading scoreboard again
 		// if(!GUIManager.guis.isEmpty()) //If not empty ==> /scr reload command
