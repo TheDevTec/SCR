@@ -1,6 +1,7 @@
 package me.devtec.scr.listeners.additional;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import me.devtec.scr.Loader;
@@ -46,13 +48,29 @@ public class PlayerJoin implements Listener {
 	}
 
 	/**
-	 * Teleport to the spawn on first join
+	 * Teleport to the spawn on first join or respawinng
 	 */
 	@EventHandler
 	public void onSpawnLocation(PlayerSpawnLocationEvent e) {
 		Player p = e.getPlayer();
-		if (!p.hasPlayedBefore() && Spawn.spawn != null)
+		if (Spawn.spawn != null && !p.hasPlayedBefore())
 			e.setSpawnLocation(Spawn.spawn.toLocation());
+	}
+
+	/**
+	 * Teleport to the spawn on first join or respawinng
+	 */
+	@EventHandler
+	public void onRespawn(PlayerRespawnEvent e) {
+		Player p = e.getPlayer();
+		if (Spawn.spawn != null)
+			if (Spawn.spawn != null && (p.getBedSpawnLocation() == null || !compile(p.getBedSpawnLocation(), e.getRespawnLocation())))
+				e.setRespawnLocation(Spawn.spawn.toLocation());
+	}
+
+	private boolean compile(Location bedSpawnLocation, Location respawnLocation) {
+		return bedSpawnLocation.getWorld().getUID().equals(respawnLocation.getWorld().getUID()) && bedSpawnLocation.getX() == respawnLocation.getX()
+				&& bedSpawnLocation.getY() == respawnLocation.getY() && bedSpawnLocation.getZ() == respawnLocation.getZ();
 	}
 
 	@EventHandler
