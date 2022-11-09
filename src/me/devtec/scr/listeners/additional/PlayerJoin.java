@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
@@ -20,6 +21,7 @@ import me.devtec.scr.api.API;
 import me.devtec.scr.api.User;
 import me.devtec.scr.commands.fun.Fly;
 import me.devtec.scr.commands.teleport.spawn.Spawn;
+import me.devtec.scr.commands.tpsystem.TpSystem;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.scheduler.Tasker;
@@ -45,6 +47,14 @@ public class PlayerJoin implements Listener {
 					kick.append(s).append("\n");
 			e.disallow(Result.KICK_WHITELIST, StringUtils.colorize(PlaceholderAPISupport.replace(kick.toString(), p)));
 		}
+	}
+
+	/**
+	 * Teleport to the spawn on first join or respawinng
+	 */
+	@EventHandler
+	public void onDeath(PlayerDeathEvent e) {
+		TpSystem.setBack(e.getEntity());
 	}
 
 	/**
