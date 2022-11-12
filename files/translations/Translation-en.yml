@@ -2,13 +2,14 @@ offlinePlayer: "%prefix% Player %player% isn't online"
 noPerms: "%prefix% &cYou don't have enought permissions (&4%permission%&c)"
 
 missing:
-  material: "%prefix% Material &e%material% &7doesn't exist"
-  number: "%prefix% Wrong number! Try again..."
-  useWords: "%prefix% Please do not use numbers here!"
-  world: "%prefix% Wrong world!"
-  playerDontExist: "%prefix% Player %player% does not exist... Try again..."
-  handEmpty: "%prefix% Your hand is empty!"
-  targetHandEmpty: "%prefix% &e%player%&7's hand is empty"
+  material: "%prefix% Material &e%material% &7doesn't exist."
+  number: "%prefix% Argument must be number! Try again..."
+  useWords: "%prefix% Please, do not use numbers here!"
+  world: "%prefix% World doens't exist!"
+  # Seen
+  playerDontExist: "%prefix% Player %player% doesn't exist! Try again."
+  handEmpty: "%prefix% Your hand is empty."
+  targetHandEmpty: "%prefix% Player &e%player%&7 have empty hand."
   
 # Translations for cooldowns
 # %time% - time formatted (10min5s)
@@ -467,8 +468,8 @@ teleportreq:
       sender: "%prefix% You sent teleport request to &e%target%"
       receiver: "%prefix% &e%target% &7wants you to teleport to him. &e/tpaccept &7to accept request"
     expired:
-      online: "%prefix% Expired tpa request for &e%target%"
-      offline: "%prefix% Expired tpa request for &e%target%"
+      online: "%prefix% Expired tpahere request for &e%target%"
+      offline: "%prefix% Expired tpahere request for &e%target%"
   norequest: "%prefix% You don't have any request"
   send-request-to-self: "%prefix% You can't send teleport request to yourself"
 

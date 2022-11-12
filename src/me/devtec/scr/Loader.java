@@ -91,7 +91,7 @@ public class Loader extends JavaPlugin {
 	public void onEnable() {
 		// Did you reload plugin?!!?!?
 		for (Player player : BukkitLoader.getOnlinePlayers())
-			API.getUser(player).notifyJoin(player);
+			API.getUser(player).notifyJoin(player, false);
 
 		if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null)
 			luckperms = LuckPermsProvider.get();

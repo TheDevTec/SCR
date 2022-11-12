@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import org.bukkit.entity.Player;
 
 import me.devtec.scr.api.User;
-import me.devtec.scr.api.User.SeenType;
 import me.devtec.scr.commands.tpsystem.requests.TeleportRequest;
 import me.devtec.shared.dataholder.Config;
 
@@ -66,11 +65,11 @@ public interface ISuser {
 
 	void removeIgnore(String target);
 
-	void notifyJoin(Player instance);
+	void notifyJoin(Player instance, boolean isEvent);
 
 	void notifyQuit();
 
-	long seen(SeenType type);
+	long seen();
 
 	boolean god();
 

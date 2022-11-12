@@ -112,7 +112,7 @@ public class PlayerJoin implements Listener {
 			}
 		Player player = event.getPlayer();
 		User user = API.getUser(player);
-		user.notifyJoin(player);
+		user.notifyJoin(player, true);
 		// On join with turned fly on
 		if (user.fly()) {
 			Fly.apply(player, false); // false - turning on

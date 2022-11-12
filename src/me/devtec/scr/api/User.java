@@ -156,38 +156,22 @@ public class User implements ISuser {
 
 	@Override
 	public void notifyQuit() {
-		userFile.remove("lastLeave" + System.currentTimeMillis() / 1000).save(DataType.YAML);
+		userFile.set("lastLeave", System.currentTimeMillis() / 1000).save(DataType.YAML);
 		cached = null;
 	}
 
 	@Override
-	public void notifyJoin(Player instance) {
+	public void notifyJoin(Player instance, boolean isEvent) {
+		if (isEvent)
+			userFile.set("lastLeave", System.currentTimeMillis() / 1000).save(DataType.YAML);
 		cached = instance;
 	}
 
-	public enum SeenType {
-		ONLINE, OFFLINE, CURRENT_STATE;
-	}
-
 	@Override
-	public long seen(SeenType type) {
+	public long seen() {
 		Config s = userFile;
-		Player player = getPlayer();
-		switch (type) {
-		case ONLINE:
-			if (player != null)
-				return System.currentTimeMillis() / 1000 - player.getLastPlayed();
-			return 0; // Not online
-		case OFFLINE:
-			if (s.exists("lastLeave"))
-				return System.currentTimeMillis() / 1000 - s.getLong("lastLeave");
-			return 0;
-		case CURRENT_STATE:
-			if (player != null)
-				return System.currentTimeMillis() / 1000 - player.getLastPlayed();
-			return System.currentTimeMillis() / 1000 - s.getLong("lastLeave");
-		}
-		return 0;
+		long result = System.currentTimeMillis() / 1000 - s.getLong("lastLeave");
+		return result < 0 ? 0 : result;
 	}
 
 	@Override

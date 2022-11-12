@@ -1,14 +1,15 @@
-offlinePlayer: "%prefix% hráč %player% není online"
+offlinePlayer: "%prefix% Hráč %player% není online"
 noPerms: "%prefix% &cNemáš dostatek práv. (&4%permission%&c)"
 
 missing:
   material: "%prefix% Material &e%material% &7neexistuje."
-  number: "%prefix% Špatné číslo! Zkus to znovu..."
-  useWords: "%prefix% Prosímtě, tady čísla fakt nepoužívej."
-  world: "%prefix% Špatný svět!"
+  number: "%prefix% Argument musí být číslo! Zkus to znovu..."
+  useWords: "%prefix% Prosím, nepoužívej zde čísla."
+  world: "%prefix% Tento svět neexistuje!"
+  # Seen
   playerDontExist: "%prefix% Hráč %player% neexistuje! Zkus to znova."
-  handEmpty: "%prefix% Máš prázdnou ručičku."
-  targetHandEmpty: "%prefix% &7 Hráč &e%player%&7 má prázdné ručičky"
+  handEmpty: "%prefix% Máš prázdnou ruku."
+  targetHandEmpty: "%prefix% Hráč &e%player%&7 má prázdnou ruku."
 
 # Translations for cooldowns
 # %time% - time formatted (10min5s)
@@ -144,7 +145,7 @@ spawn:
 setspawn: "%prefix% Spawn světa %world% byl nastaven na pozici na %x%, %y%, %z%, %yaw%, %pitch%"
 
 # # # # # # # # # #
-# # # Domešky # # #
+# # # Homes   # # #
 # # # # # # # # # #
 
 sethome:
@@ -414,42 +415,60 @@ afk:
 # # # # # # # # # # #
 
 tp:
-  tp: "%prefix% Teleportováno na hráče &e%player%"
-  tptarget: "%prefix% Teleportuji hráče &e%player% &7na hráče &e%target%"
-  tploc: "%prefix% Teleportuji tě na souřadnice: %x% %y% %z% %world% %yaw% %pitch%"
-  tploctarget: "%prefix% Teleportuji &e%player% &7na souřanice: %x% %y% %z% %world% %yaw% %pitch%"
+  self-target: "%prefix% Teleportování na hráče &e%target%"
+  other-target:
+    sender: "%prefix% Teleportování hráče &e%target% &7na hráče &e%target2%"
+    receiver: "%prefix% Teleportování na hráče &e%target2%"
+  other-world:
+    sender: "%prefix% Teleportování hráče &e%target% &7do světa &e%world%"
+    receiver: "%prefix% Teleportování do světa &e%world%"
+  other-world-loc:
+    sender: "%prefix% Teleportování hráče &e%target% &7do světa &e%world% &7na pozici X:&e%x%&7, X:&e%x%&7, Y:&e%y%&7, Z:&e%z%&7, Yaw:&e%yaw%&7, Pitch:&e%pitch%"
+    receiver: "%prefix% Teleportování do světa &e%world% &7na pozici X:&e%x%&7, X:&e%x%&7, Y:&e%y%&7, Z:&e%z%&7, Yaw:&e%yaw%&7, Pitch:&e%pitch%"
+  self-world: "%prefix% Teleportování do světa &e%world%"
+  self-world-loc: "%prefix% Teleportování do světa &e%world% &7na pozici X:&e%x%&7, X:&e%x%&7, Y:&e%y%&7, Z:&e%z%&7, Yaw:&e%yaw%&7, Pitch:&e%pitch%"
+  
+teleportreq:
+  tpa:
+    already-send: "%prefix% &e%target% &7již má od tebe žádost"
+    accept:
+      sender: "%prefix% Teleportování na &e%target%"
+      receiver: "%prefix% Teleportování &e%target% &7na tebe"
+    reject:
+      sender: "%prefix% Odmítnul jsi žádost o teleportaci od &e%target%"
+      receiver: "%prefix% &e%target% &7odmítnul tvojí žádost o teleportaci"
+    cancel:
+      sender: "%prefix% Zrušil jsi žádost o teleportaci na &e%player%"
+      receiver: "%prefix% &e%target% &7zrušil žádost o teleportaci"
+    send:
+      sender: "%prefix% Odeslal jsi žádost o teleportaci na &e%target%"
+      receiver: "%prefix% &e%target% &7by se chtěl teleportovat na tebe. &e/tpaccept &7pro přijetí žádosti"
+    expired:
+      online: "%prefix% Vypršela žádost o teleportaci pro &e%target%"
+      offline: "%prefix% Vypršela žádost o teleportaci pro &e%target%"
+  tpahere:
+    already-send: "%prefix% &e%target% &7již má od tebe žádost"
+    accept:
+      sender: "%prefix% Teleportování &e%target% &7na tvojí pozici"
+      receiver: "%prefix% Teleportování na &e%target%"
+    reject:
+      sender: "%prefix% Odmítnul jsi žádost o teleportaci od &e%target%"
+      receiver: "%prefix% &e%target% &7odmítnul tvojí žádost o teleportaci"
+    cancel:
+      sender: "%prefix% Zrušil jsi žádost o teleportaci na &e%player%"
+      receiver: "%prefix% &e%target% &7zrušil žádost o teleportaci"
+    send:
+      sender: "%prefix% Odeslal jsi žádost o teleportaci &e%target% &7na tebe"
+      receiver: "%prefix% &e%target% &7by chtěl teleportovat tebe na svojí lokaci. &e/tpaccept &7pro přijetí žádosti"
+    expired:
+      online: "%prefix% Vypršela žádost o teleportaci pro &e%target%"
+      offline: "%prefix% Vypršela žádost o teleportaci pro &e%target%"
+  norequest: "%prefix% Nemáš žádné žádosti o teleportaci"
+  send-request-to-self: "%prefix% Nemůžeš poslat žádost o teleportaci sám sobě"
 
 tphere:
   sender: "%prefix% Teleportuji &e%target%"
   target: "%prefix% Teleportuji tě na hráče &e%player%"
-
-tpa:
-  sender: "%prefix% Poslal jsi žádost o teleport hráči &e%target%"
-  receiver: "%prefix% &e%player% &7by se na tebe rád teleportoval. &e/tpaccept &7pro přijetí žádosti."
-
-tpahere:
-  sender: "%prefix% Poslal jsi žádost o teleport hráči &e%target%"
-  receiver: "%prefix% &e%player% &7by tě rád teleportoval na sebe. &e/tpaccept &7pro přijetí žádosti."
-
-tpaccept:
-  norequest: "%prefix% Nemáš žádnou žádost."
-  expired: "%prefix% Čas pro přijetí žádosti vypršela."
-  accepted:
-    sender: "%prefix% Přijal jsi žádost o teleport hráče &e%target%"
-    receiver: "%prefix% &e%player% &7accepted your teleport request"
-  teleporting:
-    who: "%prefix% Teleportuji tě na &e%target%"
-    to: "%prefix% Hráč &e%player% &7se na tebe teleportuje"
-
-tpadeny:
-  norequest: "%prefix% Nemáš žádnou žádost"
-  sender: "%prefix% Odmítl jsi žádost o teleport &e%target%"
-  receiver: "%prefix% Hráč &e%player% &7odmítl tvou žádost o teleport"
-
-tpacancel:
-  norequest: "%prefix% Nemáš žádnou žádost"
-  sender: "%prefix% Odmítl jsi žádost o teleport &e%player%"
-  receiver: "%prefix% Hráč %target% odmítl tvou žáodst o teleport"
 
 back:
   teleported: "%prefix% Teleportuji tě zpět na předešlou lokaci"
