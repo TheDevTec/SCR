@@ -101,8 +101,7 @@ public class API {
 
 	// VANISH
 	public static boolean isVanished(CommandSender p) {
-		// TODO
-		return false;
+		return getUser(p.getName()).isVanished();
 	}
 
 	public static boolean canSee(CommandSender sender, CommandSender target) { // if sender can see target

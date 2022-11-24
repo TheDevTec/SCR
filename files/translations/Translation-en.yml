@@ -353,6 +353,19 @@ scr:
     error: "%prefix% Something went wrong with config &e%config%. Try looking in the console."
     error_all: "%prefix% Something went wrong with config reload. Try looking in the console."
 
+# Translations for Vanish
+vanish:
+  self:
+    enabled: "%prefix% Vanish is &aon&7, players can't see you."
+    disabled: "%prefix% Vanish is &coff&7, players now can see you."
+  other:
+    enabled:
+      sender: "%prefix% Vanish of %target% is &aon&7, players can't see him."
+      target: "%prefix% Vanish is &aon&7, players can't see you."
+    disabled:
+      sender: "%prefix% Vanish of %target% is &coff&7, players now can see him."
+      target: "%prefix% Vanish is &coff&7, players now can see you."
+
 chunks:
   load: "%prefix% &e%world%&7: &e%chunks% &7chunks"
   totalLoad: "%prefix% In total: &e%chunks% &7chunks"

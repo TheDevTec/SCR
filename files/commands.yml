@@ -558,6 +558,17 @@ stop:
   permission:
     cmd: "scr.command.stop"
 
+vanish:
+  enabled: true
+  cmds:
+  - "vanish"
+  - "v"
+  permission:
+    cmd: "scr.command.vanish"
+  help:
+    usage:
+    - "/vanish [player] {on/off}"
+
 tps:
   enabled: true
   cmds:

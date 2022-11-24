@@ -73,9 +73,8 @@ public class PlayerJoin implements Listener {
 	@EventHandler
 	public void onRespawn(PlayerRespawnEvent e) {
 		Player p = e.getPlayer();
-		if (Spawn.spawn != null)
-			if (Spawn.spawn != null && (p.getBedSpawnLocation() == null || !compile(p.getBedSpawnLocation(), e.getRespawnLocation())))
-				e.setRespawnLocation(Spawn.spawn.toLocation());
+		if (Spawn.spawn != null && (p.getBedSpawnLocation() == null || !compile(p.getBedSpawnLocation(), e.getRespawnLocation())))
+			e.setRespawnLocation(Spawn.spawn.toLocation());
 	}
 
 	private boolean compile(Location bedSpawnLocation, Location respawnLocation) {
@@ -86,33 +85,41 @@ public class PlayerJoin implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		event.setJoinMessage(null);
+		Player player = event.getPlayer();
+		User user = API.getUser(player);
+		user.notifyJoin(player, true);
+		boolean vanish = user.isVanished();
+
+		if (vanish) // Apply vanish
+			for (Player target : BukkitLoader.getOnlinePlayers())
+				if (!target.hasPermission(Loader.commands.getString("vanish.permission.cmd")))
+					target.hidePlayer(player);
+
 		if (joinconfig.getBoolean("enabled"))
-			if (!event.getPlayer().hasPlayedBefore()) {
+			if (!player.hasPlayedBefore()) {
 				for (String command : joinconfig.getStringList("firstTime.commands"))
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", event.getPlayer().getName()));
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
 				new Tasker() {
 					@Override
 					public void run() {
-						MessageUtils.msgConfig(event.getPlayer(), "firstTime.broadcast", joinconfig, Placeholders.c().addPlayer("player", event.getPlayer()),
-								BukkitLoader.getOnlinePlayers().toArray(new CommandSender[0]));
-						MessageUtils.msgConfig(event.getPlayer(), "firstTime.messages", joinconfig, Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
+						if (!vanish)
+							MessageUtils.msgConfig(player, "firstTime.broadcast", joinconfig, Placeholders.c().addPlayer("player", player),
+									BukkitLoader.getOnlinePlayers().toArray(new CommandSender[0]));
+						MessageUtils.msgConfig(player, "firstTime.messages", joinconfig, Placeholders.c().addPlayer("player", player), player);
 					}
 				}.runTask();
 			} else {
 				for (String command : joinconfig.getStringList("commands"))
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", event.getPlayer().getName()));
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
 				new Tasker() {
 					@Override
 					public void run() {
-						MessageUtils.msgConfig(event.getPlayer(), "broadcast", joinconfig, Placeholders.c().addPlayer("player", event.getPlayer()),
-								BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
-						MessageUtils.msgConfig(event.getPlayer(), "messages", joinconfig, Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
+						if (!vanish)
+							MessageUtils.msgConfig(player, "broadcast", joinconfig, Placeholders.c().addPlayer("player", player), BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
+						MessageUtils.msgConfig(player, "messages", joinconfig, Placeholders.c().addPlayer("player", player), player);
 					}
 				}.runTask();
 			}
-		Player player = event.getPlayer();
-		User user = API.getUser(player);
-		user.notifyJoin(player, true);
 		// On join with turned fly on
 		if (user.fly()) {
 			Fly.apply(player, false); // false - turning on

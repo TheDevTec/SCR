@@ -15,6 +15,7 @@ import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.DataType;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.utility.StringUtils;
+import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class User implements ISuser {
 	// TpSystem
@@ -47,6 +48,7 @@ public class User implements ISuser {
 	private String name;
 	private Config userFile;
 	private Player cached;
+	private boolean vanish;
 
 	public User(Player player) {
 		this(player.getUniqueId(), player.getName());
@@ -95,7 +97,7 @@ public class User implements ISuser {
 	@Override
 	public void resetNickname() {
 		nickname = null;
-		userFile.remove("nickname").save(DataType.YAML);
+		userFile.remove("nickname");
 		Player online = getPlayer();
 		if (online != null)
 			online.setCustomName(null);
@@ -104,7 +106,7 @@ public class User implements ISuser {
 	@Override
 	public void setNickname(String nick) {
 		nickname = StringUtils.colorize(nick);
-		userFile.set("nickname", nick).save(DataType.YAML);
+		userFile.set("nickname", nick);
 		Player online = getPlayer();
 		if (online != null)
 			online.setCustomName(nickname);
@@ -131,7 +133,7 @@ public class User implements ISuser {
 
 	@Override
 	public void cooldownMake(String cooldownpath) {
-		userFile.set("cooldowns." + cooldownpath, System.currentTimeMillis() / 1000).save(DataType.YAML);
+		userFile.set("cooldowns." + cooldownpath, System.currentTimeMillis() / 1000);
 	}
 
 	@Override
@@ -146,22 +148,24 @@ public class User implements ISuser {
 
 	@Override
 	public void addIgnore(String target) {
-		userFile.set("privateMessage.ignorelist." + target, true).save(DataType.YAML);
+		userFile.set("privateMessage.ignorelist." + target, true);
 	}
 
 	@Override
 	public void removeIgnore(String target) {
-		userFile.remove("privateMessage.ignorelist." + target).save(DataType.YAML);
+		userFile.remove("privateMessage.ignorelist." + target);
 	}
 
 	@Override
 	public void notifyQuit() {
+		userFile.set("vanish", vanish ? true : null);
 		userFile.set("lastLeave", System.currentTimeMillis() / 1000).save(DataType.YAML);
 		cached = null;
 	}
 
 	@Override
 	public void notifyJoin(Player instance, boolean isEvent) {
+		vanish = userFile.getBoolean("vanish");
 		if (isEvent)
 			userFile.set("lastLeave", System.currentTimeMillis() / 1000).save(DataType.YAML);
 		cached = instance;
@@ -181,7 +185,7 @@ public class User implements ISuser {
 
 	@Override
 	public void god(boolean status) {
-		userFile.set("god", status).save(DataType.YAML);
+		userFile.set("god", status);
 	}
 
 	@Override
@@ -191,7 +195,7 @@ public class User implements ISuser {
 
 	@Override
 	public void fly(boolean status) {
-		userFile.set("fly", status).save(DataType.YAML);
+		userFile.set("fly", status);
 		Player online = getPlayer();
 		if (online != null)
 			if (status) {
@@ -240,6 +244,23 @@ public class User implements ISuser {
 	@Override
 	public TeleportRequest getSendTpReq() {
 		return sentRequests.peek();
+	}
+
+	public boolean isVanished() {
+		return vanish;
+	}
+
+	public void setVanished(boolean status) {
+		vanish = status;
+		if (getPlayer() != null)
+			if (status) {
+				for (Player player : BukkitLoader.getOnlinePlayers())
+					if (!player.hasPermission(Loader.commands.getString("vanish.permission.cmd")))
+						player.hidePlayer(getPlayer());
+			} else
+				for (Player player : BukkitLoader.getOnlinePlayers())
+					if (!player.canSee(getPlayer()))
+						player.showPlayer(getPlayer());
 	}
 
 }
