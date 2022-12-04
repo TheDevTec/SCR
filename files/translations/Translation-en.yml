@@ -521,8 +521,20 @@ kiteditor:
   list: "%prefix% List of available kits: &a%kits%"
   list_split: "&7, &a"
 
+# # # # # # # # # #
+# # # Display # # #
+# # # # # # # # # #
 
-
+scoreboard:
+  enabled: "%prefix% Scoreboard enabled"
+  disabled: "%prefix% Scoreboard disabled"
+  other:
+    enabled:
+      sender: "%prefix% Scoreboard of &e%player%&7 enabled"
+      receiver: "%prefix% Scoreboard enabled"
+    disabled:
+      sender: "%prefix% Scoreboard of &e%player%&7 disabled"
+      receiver: "%prefix% Scoreboard disabled"
 
 
 

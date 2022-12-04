@@ -33,6 +33,7 @@ public class ScoreboardManager {
 	public SbSettings global = new SbSettings();
 
 	public Map<UUID, SimpleScore> players = new HashMap<>();
+	public List<UUID> hidden = new ArrayList<>();
 
 	public void loadTasks(Config config) {
 		Loader.plugin.getLogger().info("[Scoreboard] Registering Join & Quit listener.");
@@ -75,6 +76,8 @@ public class ScoreboardManager {
 			@Override
 			public void run() {
 				for (Player player : BukkitLoader.getOnlinePlayers()) { // Use this method for 1.7.10 support
+					if (hidden.contains(player.getUniqueId()))
+						continue;
 					SbSettings settings = getSettingsOf(player); // Find player's settings
 					if (sync)
 						BukkitLoader.getNmsProvider().postToMainThread(() -> {
