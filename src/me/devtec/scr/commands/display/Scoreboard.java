@@ -33,7 +33,17 @@ public class Scoreboard implements ScrCommand {
 				help(s, "usage");
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).fallback((s, structure, args) -> {
 			offlinePlayer(s, args[0]);
-		}).selector(Selector.BOOLEAN, (s, structure, args) -> { // cmd
+		}).argument("-s", (s, structure, args) -> { // cmd
+			if (s instanceof Player) {
+				Player player = (Player) s;
+				if (Loader.plugin.scoreboard.players.containsKey(player.getUniqueId())) {
+					Loader.plugin.scoreboard.hidden.add(player.getUniqueId());
+					Loader.plugin.scoreboard.fullyUnregister(player);
+				} else
+					Loader.plugin.scoreboard.hidden.remove(player.getUniqueId());
+			} else
+				help(s, "usage");
+		}).first().selector(Selector.BOOLEAN, (s, structure, args) -> { // cmd [boolean]
 			if (s instanceof Player) {
 				Player player = (Player) s;
 				if (StringUtils.getBoolean(args[0])) {
@@ -48,7 +58,18 @@ public class Scoreboard implements ScrCommand {
 				}
 			} else
 				help(s, "usage");
-		}).parent().selector(Selector.ENTITY_SELECTOR, (sender, structure, args) -> { // cmd [entity_selector]
+		}).argument("-s", (s, structure, args) -> { // cmd [boolean] -s
+			if (s instanceof Player) {
+				Player player = (Player) s;
+				if (StringUtils.getBoolean(args[0]))
+					Loader.plugin.scoreboard.hidden.remove(player.getUniqueId());
+				else if (!Loader.plugin.scoreboard.hidden.contains(player.getUniqueId())) {
+					Loader.plugin.scoreboard.hidden.add(player.getUniqueId());
+					Loader.plugin.scoreboard.fullyUnregister(player);
+				}
+			} else
+				help(s, "usage");
+		}).first().selector(Selector.ENTITY_SELECTOR, (sender, structure, args) -> { // cmd [entity_selector]
 			for (Player s : playerSelectors(sender, args[0]))
 				if (Loader.plugin.scoreboard.players.containsKey(s.getUniqueId())) {
 					if (sender.equals(s))
@@ -68,7 +89,14 @@ public class Scoreboard implements ScrCommand {
 					}
 					Loader.plugin.scoreboard.hidden.remove(s.getUniqueId());
 				}
-		}).permission(permission("other")).selector(Selector.BOOLEAN, (sender, structure, args) -> { // cmd
+		}).permission(permission("other")).argument("-s", (sender, structure, args) -> { // cmd [entity_selector] -s
+			for (Player s : playerSelectors(sender, args[0]))
+				if (Loader.plugin.scoreboard.players.containsKey(s.getUniqueId())) {
+					Loader.plugin.scoreboard.hidden.add(s.getUniqueId());
+					Loader.plugin.scoreboard.fullyUnregister(s);
+				} else
+					Loader.plugin.scoreboard.hidden.remove(s.getUniqueId());
+		}).parent().selector(Selector.BOOLEAN, (sender, structure, args) -> { // cmd [entity_selector] [boolean]
 			boolean status = StringUtils.getBoolean(args[1]);
 			for (Player s : playerSelectors(sender, args[0]))
 				if (status) {
@@ -90,6 +118,15 @@ public class Scoreboard implements ScrCommand {
 						Loader.plugin.scoreboard.hidden.add(s.getUniqueId());
 						Loader.plugin.scoreboard.fullyUnregister(s);
 					}
+				}
+		}).argument("-s", (sender, structure, args) -> { // cmd [entity_selector] [boolean] -s
+			boolean status = StringUtils.getBoolean(args[1]);
+			for (Player s : playerSelectors(sender, args[0]))
+				if (status)
+					Loader.plugin.scoreboard.hidden.remove(s.getUniqueId());
+				else if (!Loader.plugin.scoreboard.hidden.contains(s.getUniqueId())) {
+					Loader.plugin.scoreboard.hidden.add(s.getUniqueId());
+					Loader.plugin.scoreboard.fullyUnregister(s);
 				}
 		}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}

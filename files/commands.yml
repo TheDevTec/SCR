@@ -912,16 +912,14 @@ kiteditor:
     delete: "scr.command.kiteditor.delete"
     item: "scr.command.kiteditor.item"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+scoreboard:
+  enabled: true
+  cmds:
+  - "sb"
+  - "board"
+  - "scoreboard"
+  help:
+    usage: "/sb [player/boolean] {boolean}"
+  permission:
+    cmd: "scr.command.scoreboard"
+    other: "scr.command.scoreboard.other"
