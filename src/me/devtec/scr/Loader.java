@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.spigotmc.SpigotConfig;
 
 import me.devtec.scr.api.API;
 import me.devtec.scr.api.ScrEconomy;
@@ -92,6 +93,10 @@ public class Loader extends JavaPlugin {
 		// Did you reload plugin?!!?!?
 		for (Player player : BukkitLoader.getOnlinePlayers())
 			API.getUser(player).notifyJoin(player, false);
+
+		if (Ref.getClass("org.spigotmc.SpigotConfig") != null)
+			if (SpigotConfig.bungee)
+				Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
 
 		if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null)
 			luckperms = LuckPermsProvider.get();

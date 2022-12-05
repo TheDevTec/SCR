@@ -9,7 +9,6 @@ import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
-import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class Ping implements ScrCommand {
@@ -40,12 +39,12 @@ public class Ping implements ScrCommand {
 	private static String getColoredPing(Player p) {
 		int s = getPlayerPing(p);
 		if (s >= 500)
-			return StringUtils.colorize("&c" + s);
+			return "§c" + s;
 		if (s >= 200)
-			return StringUtils.colorize("&e" + s);
+			return "§e" + s;
 		if (s >= 0)
-			return StringUtils.colorize("&a" + s);
-		return StringUtils.colorize("&4" + s);
+			return "§a" + s;
+		return "§4" + s;
 	}
 
 	public static String pingPlayer(Player who) {

@@ -20,14 +20,14 @@ import me.devtec.theapi.bukkit.BukkitLoader;
 public class MessageManager {
 
 	// IGNORE
-	public static void ignore(Player sender, Player target) {
+	public static void ignore(Player sender, String target) {
 		User s = API.getUser(sender);
-		if (s.isIgnoring(target.getName())) {
-			s.removeIgnore(target.getName());
-			MessageUtils.message(sender, "ignore.remove", Placeholders.c().addPlayer("target", target));
+		if (s.isIgnoring(target)) {
+			s.removeIgnore(target);
+			MessageUtils.message(sender, "ignore.remove", Placeholders.c().addOffline("target", target));
 		} else {
-			s.addIgnore(target.getName());
-			MessageUtils.message(sender, "ignore.add", Placeholders.c().addPlayer("target", target));
+			s.addIgnore(target);
+			MessageUtils.message(sender, "ignore.add", Placeholders.c().addOffline("target", target));
 		}
 	}
 
@@ -87,20 +87,21 @@ public class MessageManager {
 	 * target to reply)
 	 */
 	public static void message(CommandSender sender, CommandSender target, String message) { // Main thing
-		if (sender != null && target != null && message == null) { // lock
-			chatLock(sender, target);
-			return;
+		if (target instanceof Player ? !API.getUser((Player) target).isIgnoring(sender.getName()) : true) {
+			if (sender != null && target != null && message == null) { // lock
+				chatLock(sender, target);
+				return;
+			}
+			if (sender != null && target == null && message != null) { // reply
+				reply(sender, message);
+				addTarget(target, sender);
+			}
+			if (sender != null && target != null && message != null) { // msg player message....
+				addTarget(sender, target);
+				addTarget(target, sender);
+				sendMessage(sender, target, message);
+			}
 		}
-		if (sender != null && target == null && message != null) { // reply
-			reply(sender, message);
-			addTarget(target, sender);
-		}
-		if (sender != null && target != null && message != null) { // msg player message....
-			addTarget(sender, target);
-			addTarget(target, sender);
-			sendMessage(sender, target, message);
-		}
-
 	}
 
 	private static void addTarget(CommandSender sender, CommandSender target) { // reply, msg Player -> locking player to reply

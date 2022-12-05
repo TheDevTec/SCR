@@ -75,7 +75,7 @@ public class Scoreboard implements ScrCommand {
 					if (sender.equals(s))
 						msgSec(s, "disabled", Placeholders.c().addPlayer("player", s));
 					else {
-						msgSec(s, "other.disabled.sender", Placeholders.c().addPlayer("player", sender).addPlayer("target", s));
+						msgSec(sender, "other.disabled.sender", Placeholders.c().addPlayer("player", sender).addPlayer("target", s));
 						msgSec(s, "other.disabled.receiver", Placeholders.c().addPlayer("target", s).addPlayer("player", sender));
 					}
 					Loader.plugin.scoreboard.hidden.add(s.getUniqueId());
@@ -84,7 +84,7 @@ public class Scoreboard implements ScrCommand {
 					if (sender.equals(s))
 						msgSec(s, "enabled", Placeholders.c().addPlayer("player", s));
 					else {
-						msgSec(s, "other.enabled.sender", Placeholders.c().addPlayer("player", sender).addPlayer("target", s));
+						msgSec(sender, "other.enabled.sender", Placeholders.c().addPlayer("player", sender).addPlayer("target", s));
 						msgSec(s, "other.enabled.receiver", Placeholders.c().addPlayer("target", s).addPlayer("player", sender));
 					}
 					Loader.plugin.scoreboard.hidden.remove(s.getUniqueId());
@@ -103,7 +103,7 @@ public class Scoreboard implements ScrCommand {
 					if (sender.equals(s))
 						msgSec(s, "enabled", Placeholders.c().addPlayer("player", s));
 					else {
-						msgSec(s, "other.enabled.sender", Placeholders.c().addPlayer("player", sender).addPlayer("target", s));
+						msgSec(sender, "other.enabled.sender", Placeholders.c().addPlayer("player", sender).addPlayer("target", s));
 						msgSec(s, "other.enabled.receiver", Placeholders.c().addPlayer("target", s).addPlayer("player", sender));
 					}
 					Loader.plugin.scoreboard.hidden.remove(s.getUniqueId());
@@ -111,7 +111,7 @@ public class Scoreboard implements ScrCommand {
 					if (sender.equals(s))
 						msgSec(s, "disabled", Placeholders.c().addPlayer("player", s));
 					else {
-						msgSec(s, "other.disabled.sender", Placeholders.c().addPlayer("player", sender).addPlayer("target", s));
+						msgSec(sender, "other.disabled.sender", Placeholders.c().addPlayer("player", sender).addPlayer("target", s));
 						msgSec(s, "other.disabled.receiver", Placeholders.c().addPlayer("target", s).addPlayer("player", sender));
 					}
 					if (!Loader.plugin.scoreboard.hidden.contains(s.getUniqueId())) {

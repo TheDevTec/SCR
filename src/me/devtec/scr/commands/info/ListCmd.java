@@ -31,8 +31,6 @@ public class ListCmd implements ScrCommand {
 					staff.add(player);
 				else
 					players.add(player);
-			if (players.isEmpty() && staff.isEmpty())
-				return;
 			StringBuilder staff_b = new StringBuilder();
 			for (Player staff_player : staff) {
 				if (staff_b.length() != 0)
