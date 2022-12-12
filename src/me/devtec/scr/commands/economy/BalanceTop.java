@@ -50,17 +50,21 @@ public class BalanceTop implements ScrCommand {
 	public void refleshBaltop() {
 		Map<UUID, Double> map = new HashMap<>();
 		File file = new File("plugins/TheAPI/Users");
-		if (file.exists())
+		if (file.exists() && file.isDirectory())
 			for (String userFile : file.list()) {
 				UUID id = UUID.fromString(userFile.split("/")[userFile.split("/").length - 1].replace(".yml", ""));
-				double bal = ((net.milkbowl.vault.economy.Economy) Loader.economy).getBalance(API.offlineCache().lookupNameById(id));
-				if (bal > 0)
-					map.put(id, bal);
+				String playerName = API.offlineCache().lookupNameById(id);
+				if (playerName != null) {
+					double bal = ((net.milkbowl.vault.economy.Economy) Loader.economy).getBalance(playerName);
+					if (bal > 0)
+						map.put(id, bal);
+				}
 			}
 		ranking = SortingAPI.sortByValueArray(map, true);
 	}
 
 	public void listBaltop(CommandSender s, int page) {
+		awaitInitRanking();
 		int rank = page + 1;
 		msgSec(s, "header", Placeholders.c().replace("page", page + 1).replace("pages", Math.max(1, ranking.length / 10)));
 		for (int i = page * 10; i < (page + 1) * 10 && i < ranking.length; ++i) {

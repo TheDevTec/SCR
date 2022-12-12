@@ -5,6 +5,7 @@ import java.io.File;
 import me.devtec.scr.commands.CustomCommands;
 import me.devtec.scr.commands.kits.KitUtils;
 import me.devtec.scr.functions.AutoAnnouncements;
+import me.devtec.scr.functions.SmartNightSkipping;
 import me.devtec.scr.functions.guis.GUIManager;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.DataType;
@@ -14,10 +15,13 @@ public class Configs {
 	private static Config temp_data = new Config();
 
 	public static void reloadConfig(String config) {
-
 		if (config.equalsIgnoreCase("config")) {
 			Loader.config = loadAndMerge("config.yml", "config.yml");
 			AutoAnnouncements.loadtask();
+			SmartNightSkipping.unload();
+			if (Loader.config.getBoolean("smartNightSkipping.enabled"))
+				SmartNightSkipping.load(Loader.config.getString("smartNightSkipping.mode").equalsIgnoreCase("SKIP"), Loader.config.getInt("smartNightSkipping.minimumPlayers"),
+						Loader.config.getInt("smartNightSkipping.speedingUp.everySleepingPlayer"));
 		}
 		if (config.equalsIgnoreCase("commands"))
 			Loader.commands = loadAndMerge("commands.yml", "commands.yml");
@@ -71,6 +75,10 @@ public class Configs {
 
 		Loader.config = loadAndMerge("config.yml", "config.yml");
 		AutoAnnouncements.loadtask(); // in config.yml
+		SmartNightSkipping.unload();
+		if (Loader.config.getBoolean("smartNightSkipping.enabled"))
+			SmartNightSkipping.load(Loader.config.getString("smartNightSkipping.mode").equalsIgnoreCase("SKIP"), Loader.config.getInt("smartNightSkipping.minimumPlayers"),
+					Loader.config.getInt("smartNightSkipping.speedingUp.everySleepingPlayer"));
 		Loader.commands = loadAndMerge("commands.yml", "commands.yml");
 		Loader.economyConfig = loadAndMerge("economy.yml", "economy.yml");
 		Loader.joinListenerConfig = loadAndMerge("events/join-listener.yml", "events/join-listener.yml");

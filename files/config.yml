@@ -133,6 +133,29 @@ homelimit:
 staff:
 - "owner"
 
+
+# Fast night function
+smartNightSkipping:
+  enabled: true
+  
+  # modes:
+  # SPEEDING_UP
+  # SKIP
+  mode: SPEEDING_UP
+  
+  # Minimum of sleeping players to start skipping
+  # Limit is applied only if online player count is higher than this value
+  minimumPlayers: 2
+  
+  speedingUp:
+    # For every sleeping player night will for 20 ticks
+    everySleepingPlayer: 20
+    
+  # Actionbar message for all players in the same world
+  actionBar:
+    skip: "&eSkipping night"
+    waiting: "&7Needs &e{amount} &7players sleeping to start &espeeding up &7night cycle"
+
 # rrs - ReloadRestartStop commands
 rrs:
   # basetime - basic countdown
