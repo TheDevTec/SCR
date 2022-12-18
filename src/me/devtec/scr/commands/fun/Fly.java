@@ -96,7 +96,7 @@ public class Fly implements ScrCommand {
 			p.setFlying(false);
 			p.setAllowFlight(false);
 			API.getUser(p).fly(false);
-			if (!p.isOnGround()) {
+			if (antiFall != null && !p.isOnGround()) {
 				antiFall.add(p.getUniqueId());
 				new Tasker() {
 					@Override
@@ -119,7 +119,8 @@ public class Fly implements ScrCommand {
 			}
 		} else {
 			p.setAllowFlight(true);
-			antiFall.remove(p.getUniqueId());
+			if (antiFall != null)
+				antiFall.remove(p.getUniqueId());
 			API.getUser(p).fly(true);
 			if (!p.isOnGround())
 				p.setFlying(true);
@@ -129,6 +130,10 @@ public class Fly implements ScrCommand {
 	@Override
 	public String configSection() {
 		return "fly";
+	}
+
+	public static boolean isEnabled() {
+		return antiFall != null;
 	}
 
 }

@@ -15,8 +15,11 @@ import me.devtec.shared.commands.structures.CommandStructure;
 
 public class God implements ScrCommand {
 
+	private static boolean enabled;
+
 	@Override
 	public void init(List<String> cmds) {
+		enabled = true;
 		Loader.plugin.getLogger().info("[God] Using AntiDamage listener");
 		Loader.registerListener(new AntiDamage());
 
@@ -83,11 +86,11 @@ public class God implements ScrCommand {
 				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
-	public boolean isInvulnerable(Player p) {
+	public static boolean isInvulnerable(Player p) {
 		return API.getUser(p).god();
 	}
 
-	public void apply(Player p, boolean status) {
+	public static void apply(Player p, boolean status) {
 		if (status)
 			API.getUser(p).god(false);
 		else
@@ -97,6 +100,10 @@ public class God implements ScrCommand {
 	@Override
 	public String configSection() {
 		return "god";
+	}
+
+	public static boolean isEnabled() {
+		return enabled;
 	}
 
 }

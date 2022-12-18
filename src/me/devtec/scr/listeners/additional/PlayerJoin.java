@@ -20,6 +20,7 @@ import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
 import me.devtec.scr.api.User;
 import me.devtec.scr.commands.fun.Fly;
+import me.devtec.scr.commands.fun.God;
 import me.devtec.scr.commands.teleport.spawn.Spawn;
 import me.devtec.scr.commands.tpsystem.TpSystem;
 import me.devtec.scr.utils.PlaceholderAPISupport;
@@ -121,11 +122,11 @@ public class PlayerJoin implements Listener {
 				}.runTask();
 			}
 		// On join with turned fly on
-		if (user.fly()) {
+		if (Fly.isEnabled() && user.fly()) {
 			Fly.apply(player, false); // false - turning on
 			MessageUtils.message(player, "fly.stillenabled", null);
 		}
-		if (user.god())
+		if (God.isEnabled() && user.god())
 			MessageUtils.message(player, "god.stillenabled", null);
 	}
 }

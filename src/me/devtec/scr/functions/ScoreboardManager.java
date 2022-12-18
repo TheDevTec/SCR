@@ -76,7 +76,7 @@ public class ScoreboardManager {
 			@Override
 			public void run() {
 				for (Player player : BukkitLoader.getOnlinePlayers()) { // Use this method for 1.7.10 support
-					if (hidden.contains(player.getUniqueId()))
+					if (!(player.isOnline() && !player.isDead()) || hidden.contains(player.getUniqueId()))
 						continue;
 					SbSettings settings = getSettingsOf(player); // Find player's settings
 					if (sync)

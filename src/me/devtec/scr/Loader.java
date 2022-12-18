@@ -101,12 +101,12 @@ public class Loader extends JavaPlugin {
 		if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null)
 			luckperms = LuckPermsProvider.get();
 
-		loadListeners(); // Loading Events
-		loadCommands(); // Loading commands & CustomCommands
-
 		// Loading TAB & Scoreboard
 		loadTab();
 		loadScoreboard();
+
+		loadListeners(); // Loading Events
+		loadCommands(); // Loading commands & CustomCommands
 
 		// LOAD PLACEHOLDERS
 		loadPlaceholders();
