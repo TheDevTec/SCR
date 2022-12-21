@@ -317,15 +317,18 @@ public class MessageUtils {
 						build.append("&").append(c);
 					lastcolor = build.toString();
 				}
+				String colored = StringUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, s, true, null));
 				for (CommandSender target : targets)
-					target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, target, true, null)));
+					target.sendMessage(colored);
 				lastcolor = StringUtils.getLastColors(StringUtils.colorize(line));
 			}
-		} else
+		} else {
+			String colored = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
 			for (CommandSender target : targets)
 				// target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(text,
 				// target, true)));
-				target.sendMessage(StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null)));
+				target.sendMessage(colored);
+		}
 	}
 
 	public static void noPerm(CommandSender player, String permission) {
