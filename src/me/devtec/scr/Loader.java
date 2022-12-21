@@ -24,6 +24,7 @@ import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.commands.info.AFK;
 import me.devtec.scr.functions.AutoAnnouncements;
 import me.devtec.scr.functions.ScoreboardManager;
+import me.devtec.scr.functions.SmartNightSkipping;
 import me.devtec.scr.listeners.ServerList;
 import me.devtec.scr.listeners.additional.ChatListeners;
 import me.devtec.scr.listeners.additional.PlayerJoin;
@@ -100,6 +101,10 @@ public class Loader extends JavaPlugin {
 
 		if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null)
 			luckperms = LuckPermsProvider.get();
+
+		if (Loader.config.getBoolean("smartNightSkipping.enabled"))
+			SmartNightSkipping.load(Loader.config.getString("smartNightSkipping.mode").equalsIgnoreCase("SKIP"), Loader.config.getInt("smartNightSkipping.minimumPlayers"),
+					Loader.config.getInt("smartNightSkipping.speedingUp.everySleepingPlayer"));
 
 		// Loading TAB & Scoreboard
 		loadTab();

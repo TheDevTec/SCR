@@ -76,9 +76,6 @@ public class Configs {
 		Loader.config = loadAndMerge("config.yml", "config.yml");
 		AutoAnnouncements.loadtask(); // in config.yml
 		SmartNightSkipping.unload();
-		if (Loader.config.getBoolean("smartNightSkipping.enabled"))
-			SmartNightSkipping.load(Loader.config.getString("smartNightSkipping.mode").equalsIgnoreCase("SKIP"), Loader.config.getInt("smartNightSkipping.minimumPlayers"),
-					Loader.config.getInt("smartNightSkipping.speedingUp.everySleepingPlayer"));
 		Loader.commands = loadAndMerge("commands.yml", "commands.yml");
 		Loader.economyConfig = loadAndMerge("economy.yml", "economy.yml");
 		Loader.joinListenerConfig = loadAndMerge("events/join-listener.yml", "events/join-listener.yml");
