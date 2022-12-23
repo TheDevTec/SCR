@@ -39,7 +39,7 @@ public class SmartNightSkipping implements Listener {
 						BukkitLoader.getNmsProvider().postToMainThread(() -> {
 							if (skipNight) {
 								world.setThundering(false);
-								world.setTime(1200);
+								world.setTime(0);
 							} else
 								world.setTime(world.getTime() + skipTicksPerTick * sleepingPlayers.getOrDefault(world.getUID(), 1));
 						});
@@ -71,6 +71,7 @@ public class SmartNightSkipping implements Listener {
 
 	@EventHandler
 	public void onLeaveBed(PlayerBedLeaveEvent e) {
+		System.out.println(e.getPlayer().getWorld().getTime());
 		sleepingPlayers.put(e.getPlayer().getWorld().getUID(), sleepingPlayers.getOrDefault(e.getPlayer().getWorld().getUID(), 1) - 1);
 	}
 }

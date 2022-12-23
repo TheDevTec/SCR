@@ -30,10 +30,10 @@ import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class PlayerJoin implements Listener {
-	Config joinconfig;
+	public static Config config;
 
 	public PlayerJoin(Config config) {
-		joinconfig = config;
+		PlayerJoin.config = config;
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -96,28 +96,27 @@ public class PlayerJoin implements Listener {
 				if (!target.hasPermission(Loader.commands.getString("vanish.permission.cmd")))
 					target.hidePlayer(player);
 
-		if (joinconfig.getBoolean("enabled"))
+		if (config.getBoolean("enabled"))
 			if (!player.hasPlayedBefore()) {
-				for (String command : joinconfig.getStringList("firstTime.commands"))
+				for (String command : config.getStringList("firstTime.commands"))
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
 				new Tasker() {
 					@Override
 					public void run() {
 						if (!vanish)
-							MessageUtils.msgConfig(player, "firstTime.broadcast", joinconfig, Placeholders.c().addPlayer("player", player),
-									BukkitLoader.getOnlinePlayers().toArray(new CommandSender[0]));
-						MessageUtils.msgConfig(player, "firstTime.messages", joinconfig, Placeholders.c().addPlayer("player", player), player);
+							MessageUtils.msgConfig(player, "firstTime.broadcast", config, Placeholders.c().addPlayer("player", player), BukkitLoader.getOnlinePlayers().toArray(new CommandSender[0]));
+						MessageUtils.msgConfig(player, "firstTime.messages", config, Placeholders.c().addPlayer("player", player), player);
 					}
 				}.runTask();
 			} else {
-				for (String command : joinconfig.getStringList("commands"))
+				for (String command : config.getStringList("commands"))
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
 				new Tasker() {
 					@Override
 					public void run() {
 						if (!vanish)
-							MessageUtils.msgConfig(player, "broadcast", joinconfig, Placeholders.c().addPlayer("player", player), BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
-						MessageUtils.msgConfig(player, "messages", joinconfig, Placeholders.c().addPlayer("player", player), player);
+							MessageUtils.msgConfig(player, "broadcast", config, Placeholders.c().addPlayer("player", player), BukkitLoader.getOnlinePlayers().toArray(new Player[0]));
+						MessageUtils.msgConfig(player, "messages", config, Placeholders.c().addPlayer("player", player), player);
 					}
 				}.runTask();
 			}
