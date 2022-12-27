@@ -3,7 +3,9 @@ package me.devtec.scr;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -19,6 +21,7 @@ import org.spigotmc.SpigotConfig;
 
 import me.devtec.scr.api.API;
 import me.devtec.scr.api.ScrEconomy;
+import me.devtec.scr.api.User;
 import me.devtec.scr.commands.CustomCommands;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.commands.info.AFK;
@@ -115,6 +118,21 @@ public class Loader extends JavaPlugin {
 
 		// LOAD PLACEHOLDERS
 		loadPlaceholders();
+
+		new Tasker() {
+
+			Set<UUID> removeCached = new HashSet<>();
+
+			@Override
+			public void run() {
+				for (User cached : API.getCachedUsers())
+					if (!cached.isOnline())
+						removeCached.add(cached.getUUID());
+				for (UUID uuid : removeCached)
+					API.removeUser(uuid);
+				removeCached.clear();
+			}
+		}.runRepeating(300, 300);
 	}
 
 	@Override
@@ -129,6 +147,7 @@ public class Loader extends JavaPlugin {
 			scoreboard.unloadTasks();
 		AFK.stopTask();
 		AutoAnnouncements.unloadTask();
+		SmartNightSkipping.unload();
 
 		// Placeholders unload
 		papi_theapi.unregister();

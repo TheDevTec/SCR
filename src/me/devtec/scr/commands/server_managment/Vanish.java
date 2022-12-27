@@ -47,11 +47,11 @@ public class Vanish implements ScrCommand {
 
 	private void apply(CommandSender sender, Player s, boolean status) {
 		API.getUser(s).setVanished(status);
-		if (status)
+		if (!status) {
 			if (PlayerJoin.config.getBoolean("enabled"))
 				MessageUtils.msgConfig(s, "broadcast", PlayerJoin.config, Placeholders.c().addPlayer("player", s), whoCannotSee(s));
-			else if (PlayerQuit.config.getBoolean("enabled"))
-				MessageUtils.msgConfig(s, "broadcast", PlayerQuit.config, Placeholders.c().addPlayer("player", s), whoCannotSee(s));
+		} else if (PlayerQuit.config.getBoolean("enabled"))
+			MessageUtils.msgConfig(s, "broadcast", PlayerQuit.config, Placeholders.c().addPlayer("player", s), whoCannotSee(s));
 
 		if (sender.equals(s))
 			msgSec(s, status ? "self.enabled" : "self.disabled");

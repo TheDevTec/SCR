@@ -1,6 +1,5 @@
 package me.devtec.scr.listeners;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -33,10 +32,8 @@ public class AFKListeners implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerQuitEvent e) {
-		if (AFK.players.containsKey(e.getPlayer().getName()))
-			AFK.players.remove(e.getPlayer().getName());
-		if (AFK.last_interaction.containsKey(e.getPlayer().getName()))
-			AFK.last_interaction.remove(e.getPlayer().getName());
+		AFK.players.remove(e.getPlayer().getName());
+		AFK.last_interaction.remove(e.getPlayer().getName());
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -56,8 +53,8 @@ public class AFKListeners implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChat(InventoryClickEvent e) {
 		if (AFK.players.containsKey(e.getWhoClicked().getName()))
-			AFK.afk((CommandSender) e.getWhoClicked(), false);
-		AFK.update((CommandSender) e.getWhoClicked());
+			AFK.afk(e.getWhoClicked(), false);
+		AFK.update(e.getWhoClicked());
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)

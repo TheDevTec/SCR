@@ -1,6 +1,7 @@
 package me.devtec.scr.api;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -40,8 +41,8 @@ public class API {
 		return user;
 	}
 
-	public static void removeUser(UUID uuid) {
-		userCache.remove(uuid);
+	public static User removeUser(UUID uuid) {
+		return userCache.remove(uuid);
 	}
 
 	/*
@@ -106,5 +107,9 @@ public class API {
 
 	public static boolean canSee(CommandSender sender, CommandSender target) { // if sender can see target
 		return sender == null || target == null || !(sender instanceof Player) || !(target instanceof Player) || ((Player) sender).canSee((Player) target);
+	}
+
+	public static Collection<User> getCachedUsers() {
+		return userCache.values();
 	}
 }

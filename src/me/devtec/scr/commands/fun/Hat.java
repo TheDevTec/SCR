@@ -57,13 +57,13 @@ public class Hat implements ScrCommand {
 							// INV free slot checker
 							Inventory inv = target.getInventory();
 							boolean check = inv.firstEmpty() == -1;
-							if (target.getInventory().getHelmet() == null || !check) { // FULL INV
+							if (target.getInventory().getHelmet() != null && !check) { // FULL INV
 								msgSec(s, "fullInv", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()).addPlayer("target", target));
 								return;
 							}
 							target.getInventory().addItem(target.getInventory().getHelmet());
 							target.getInventory().setHelmet(s.getItemInHand());
-							target.getInventory().setItemInHand(new ItemStack(Material.AIR));
+							s.getInventory().setItemInHand(new ItemStack(Material.AIR));
 
 							msgSec(s, "equipped.other.sender", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()).addPlayer("target", target));
 							msgSec(target, "equipped.other.target", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()).addPlayer("player", s));
@@ -75,7 +75,7 @@ public class Hat implements ScrCommand {
 							// INV free slot checker
 							Inventory inv = target.getInventory();
 							boolean check = inv.firstEmpty() == -1;
-							if (target.getInventory().getHelmet() == null || !check) { // FULL INV
+							if (target.getInventory().getHelmet() != null && !check) { // FULL INV
 								msgSec(s, "fullInv", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()).addPlayer("target", target));
 								return;
 							}

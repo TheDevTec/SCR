@@ -10,6 +10,7 @@ import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
 import me.devtec.scr.api.User;
+import me.devtec.scr.commands.fun.Fly;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.theapi.bukkit.BukkitLoader;
@@ -26,7 +27,9 @@ public class PlayerQuit implements Listener {
 		event.setQuitMessage(null);
 		for (String command : config.getStringList("commands"))
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", event.getPlayer().getName()));
-		User user = API.getUser(event.getPlayer());
+		User user = API.getUser(event.getPlayer().getUniqueId());
+		if (user == null)
+			return;
 		boolean vanish = user.isVanished();
 		new Tasker() {
 			@Override
@@ -36,7 +39,8 @@ public class PlayerQuit implements Listener {
 				MessageUtils.msgConfig(event.getPlayer(), "messages", config, Placeholders.c().addPlayer("player", event.getPlayer()), event.getPlayer());
 			}
 		}.runTask();
+		if (Fly.isEnabled())
+			Fly.antiFall.remove(event.getPlayer().getUniqueId());
 		user.notifyQuit();
-		API.removeUser(event.getPlayer().getUniqueId());
 	}
 }

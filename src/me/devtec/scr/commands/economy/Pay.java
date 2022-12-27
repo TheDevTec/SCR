@@ -8,6 +8,7 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.ScrEconomy;
 import me.devtec.scr.commands.ScrCommand;
+import me.devtec.shared.API;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 import net.milkbowl.vault.economy.Economy;
@@ -45,6 +46,28 @@ public class Pay implements ScrCommand {
 			double money = ScrEconomy.balanceFromString(args[1]);
 			for (Player p : playerSelectors(s, args[0]))
 				pay(s, p, money);
+		}).parent(3).argument(null, 1, (s, structure, args) -> { // cmd [playerName]
+			help(s, "usage");
+		}).argument(null, (s, structure, args) -> { // cmd [playerName] [any string]
+			double money = ScrEconomy.balanceFromString(args[1]);
+			String bal = ((net.milkbowl.vault.economy.Economy) Loader.economy).format(money);
+			if (API.offlineCache().lookupQuery(args[0]) == null) {
+				offlinePlayer(s, args[0]);
+				return;
+			}
+			Economy ec = (Economy) Loader.economy;
+			ec.withdrawPlayer(s, money);
+			ec.depositPlayer(args[0], money);
+			msgSec(s, "set.sender", Placeholders.c().replace("money", bal).addOffline("target", args[1]));
+		}).argument("-s", (s, structure, args) -> { // cmd [playerName] [any string] -s
+			double money = ScrEconomy.balanceFromString(args[1]);
+			if (API.offlineCache().lookupQuery(args[0]) == null) {
+				offlinePlayer(s, args[0]);
+				return;
+			}
+			Economy ec = (Economy) Loader.economy;
+			ec.withdrawPlayer(s, money);
+			ec.depositPlayer(args[0], money);
 		}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 

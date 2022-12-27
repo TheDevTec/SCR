@@ -71,7 +71,6 @@ public class SmartNightSkipping implements Listener {
 
 	@EventHandler
 	public void onLeaveBed(PlayerBedLeaveEvent e) {
-		System.out.println(e.getPlayer().getWorld().getTime());
 		sleepingPlayers.put(e.getPlayer().getWorld().getUID(), sleepingPlayers.getOrDefault(e.getPlayer().getWorld().getUID(), 1) - 1);
 	}
 }

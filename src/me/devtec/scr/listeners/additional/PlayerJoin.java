@@ -38,15 +38,19 @@ public class PlayerJoin implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void login(PlayerLoginEvent e) {
-		Player p = e.getPlayer();
-		if (Loader.data.getBoolean("maintenance") && !p.hasPermission(Loader.commands.getString("maintenance.permission.bypass"))) {
-			StringBuilder kick = new StringBuilder();
-			for (String s : Loader.translations.getStringList("maintenance.kickMessages"))
-				if (s.endsWith("\n"))
-					kick.append(s);
-				else
-					kick.append(s).append("\n");
-			e.disallow(Result.KICK_WHITELIST, StringUtils.colorize(PlaceholderAPISupport.replace(kick.toString(), p)));
+		if (e.getResult() == Result.ALLOWED) {
+			Player p = e.getPlayer();
+			if (Loader.data.getBoolean("maintenance") && !p.hasPermission(Loader.commands.getString("maintenance.permission.bypass"))) {
+				StringBuilder kick = new StringBuilder();
+				for (String s : Loader.translations.getStringList("maintenance.kickMessages"))
+					if (s.endsWith("\n"))
+						kick.append(s);
+					else
+						kick.append(s).append("\n");
+				e.disallow(Result.KICK_WHITELIST, StringUtils.colorize(PlaceholderAPISupport.replace(kick.toString(), p)));
+				return;
+			}
+			API.getUser(p); // Load user async
 		}
 	}
 

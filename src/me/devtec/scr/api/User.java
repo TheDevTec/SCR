@@ -13,35 +13,14 @@ import me.devtec.scr.utils.ISuser;
 import me.devtec.shared.API;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.DataType;
-import me.devtec.shared.scheduler.Tasker;
+import me.devtec.shared.dataholder.cache.TempList;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class User implements ISuser {
 	// TpSystem
-	private final Queue<TeleportRequest> requests = new LinkedBlockingDeque<TeleportRequest>() {
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public void addLast(TeleportRequest value) {
-			super.addLast(value);
-			new Tasker() {
-
-				@Override
-				public void run() {
-					value.timeout();
-				}
-			}.runLater(20 * StringUtils.timeFromString(Loader.config.getString("options.tp-accept_cooldown")));
-		}
-	};
-	private final Queue<TeleportRequest> sentRequests = new LinkedBlockingDeque<TeleportRequest>() {
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public void addLast(TeleportRequest value) {
-			super.addFirst(value);
-		}
-	};
+	private TempList<TeleportRequest> requests;
+	private Queue<TeleportRequest> sentRequests;
 
 	private UUID uuid;
 	private String nickname;
@@ -153,28 +132,41 @@ public class User implements ISuser {
 
 	@Override
 	public void removeIgnore(String target) {
-		userFile.remove("privateMessage.ignorelist." + target);
+		userFile.set("privateMessage.ignorelist." + target, null);
 	}
 
 	@Override
 	public void notifyQuit() {
-		userFile.set("vanish", vanish ? true : null);
+		if (cached != null)
+			userFile.set("disconnectWorld", cached.getWorld().getName());
 		userFile.set("lastLeave", System.currentTimeMillis() / 1000).save(DataType.YAML);
 		cached = null;
+		requests = null;
+		sentRequests = null;
 	}
 
 	@Override
 	public void notifyJoin(Player instance, boolean isEvent) {
+		cached = instance;
 		vanish = userFile.getBoolean("vanish");
 		if (isEvent)
 			userFile.set("lastLeave", System.currentTimeMillis() / 1000).save(DataType.YAML);
-		cached = instance;
+		if (requests == null)
+			requests = new TempList<>(20 * Math.min(StringUtils.timeFromString(Loader.config.getString("options.tp-accept_cooldown")), 5));
+		if (sentRequests == null)
+			sentRequests = new LinkedBlockingDeque<TeleportRequest>() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void addLast(TeleportRequest value) {
+					super.addFirst(value);
+				}
+			};
 	}
 
 	@Override
 	public long seen() {
-		Config s = userFile;
-		long result = System.currentTimeMillis() / 1000 - s.getLong("lastLeave");
+		long result = System.currentTimeMillis() / 1000 - userFile.getLong("lastLeave");
 		return result < 0 ? 0 : result;
 	}
 
@@ -185,7 +177,7 @@ public class User implements ISuser {
 
 	@Override
 	public void god(boolean status) {
-		userFile.set("god", status);
+		userFile.set("god", status ? true : null);
 	}
 
 	@Override
@@ -195,7 +187,7 @@ public class User implements ISuser {
 
 	@Override
 	public void fly(boolean status) {
-		userFile.set("fly", status);
+		userFile.set("fly", status ? true : null);
 		Player online = getPlayer();
 		if (online != null)
 			if (status) {
@@ -238,7 +230,7 @@ public class User implements ISuser {
 
 	@Override
 	public TeleportRequest getTpReq() {
-		return requests.poll();
+		return requests.get(0);
 	}
 
 	@Override
@@ -252,6 +244,7 @@ public class User implements ISuser {
 
 	public void setVanished(boolean status) {
 		vanish = status;
+		userFile.set("vanish", vanish ? true : null);
 		if (getPlayer() != null)
 			if (status) {
 				for (Player player : BukkitLoader.getOnlinePlayers())

@@ -317,17 +317,23 @@ public class MessageUtils {
 						build.append("&").append(c);
 					lastcolor = build.toString();
 				}
-				String colored = StringUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, s, true, null));
+				String coloredText = StringUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, s, true, null));
+				Object packet = BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, ComponentAPI.fromString(coloredText));
 				for (CommandSender target : targets)
-					target.sendMessage(colored);
+					if (target instanceof Player)
+						BukkitLoader.getPacketHandler().send((Player) target, packet);
+					else
+						target.sendMessage(coloredText);
 				lastcolor = StringUtils.getLastColors(StringUtils.colorize(line));
 			}
 		} else {
-			String colored = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
+			String coloredText = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
+			Object packet = BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, ComponentAPI.fromString(coloredText));
 			for (CommandSender target : targets)
-				// target.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(text,
-				// target, true)));
-				target.sendMessage(colored);
+				if (target instanceof Player)
+					BukkitLoader.getPacketHandler().send((Player) target, packet);
+				else
+					target.sendMessage(coloredText);
 		}
 	}
 

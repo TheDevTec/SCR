@@ -56,10 +56,6 @@ public class Configs {
 		if (config.equalsIgnoreCase("placeholders"))
 			Loader.placeholders = loadAndMerge("placeholders.yml", "placeholders.yml");
 
-		if (temp_data != null)
-			temp_data.clear();
-		temp_data = null; // clear cache
-
 		// Reload configs for custom commands
 		if (config.equalsIgnoreCase("custom_commands"))
 			CustomCommands.reload();
@@ -72,7 +68,6 @@ public class Configs {
 
 	@Deprecated
 	public static void loadConfigs() {
-
 		Loader.config = loadAndMerge("config.yml", "config.yml");
 		AutoAnnouncements.loadtask(); // in config.yml
 		SmartNightSkipping.unload();
@@ -102,9 +97,6 @@ public class Configs {
 		// GUI example
 		loadAndMerge("guis/example.yml", "guis/example.yml");
 
-		temp_data.clear();
-		temp_data = null; // clear cache
-
 		// scr reload stuff:
 		if (!CustomCommands.custom_commands.isEmpty()) // If not empty ==> /scr reload command
 			CustomCommands.reload();
@@ -121,13 +113,11 @@ public class Configs {
 	}
 
 	private static Config loadAndMerge(String sourcePath, String filePath) {
-		if (temp_data == null)
-			temp_data = new Config();
 		temp_data.reload(StreamUtils.fromStream(Loader.plugin.getResource("files/" + sourcePath)));
-
 		Config result = new Config("plugins/SCR/" + filePath);
 		if (result.merge(temp_data))
 			result.save(DataType.YAML);
+		temp_data.clear();
 		return result;
 	}
 
