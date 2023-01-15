@@ -10,13 +10,11 @@ public class TpSystem {
 
 	public static void teleport(Player who, Player to) {
 		// TODO - safe TP ?
-		setBack(who);
 		who.teleport(to);
 	}
 
 	public static void teleport(Player who, Location to) {
 		// TODO - safe TP ?
-		setBack(who);
 		who.teleport(to);
 	}
 
@@ -28,7 +26,6 @@ public class TpSystem {
 
 	public static void teleportBack(Player player) {
 		Position pos = me.devtec.shared.API.getUser(player.getUniqueId()).getAs("back", Position.class);
-		setBack(player);
 		player.teleport(pos.toLocation());
 	}
 }

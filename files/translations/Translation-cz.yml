@@ -438,7 +438,7 @@ teleportreq:
       sender: "%prefix% Odmítnul jsi žádost o teleportaci od &e%target%"
       receiver: "%prefix% &e%target% &7odmítnul tvojí žádost o teleportaci"
     cancel:
-      sender: "%prefix% Zrušil jsi žádost o teleportaci na &e%player%"
+      sender: "%prefix% Zrušil jsi žádost o teleportaci na &e%target%"
       receiver: "%prefix% &e%target% &7zrušil žádost o teleportaci"
     send:
       sender: "%prefix% Odeslal jsi žádost o teleportaci na &e%target%"
@@ -455,7 +455,7 @@ teleportreq:
       sender: "%prefix% Odmítnul jsi žádost o teleportaci od &e%target%"
       receiver: "%prefix% &e%target% &7odmítnul tvojí žádost o teleportaci"
     cancel:
-      sender: "%prefix% Zrušil jsi žádost o teleportaci na &e%player%"
+      sender: "%prefix% Zrušil jsi žádost o teleportaci na &e%target%"
       receiver: "%prefix% &e%target% &7zrušil žádost o teleportaci"
     send:
       sender: "%prefix% Odeslal jsi žádost o teleportaci &e%target% &7na tebe"

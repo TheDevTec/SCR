@@ -40,8 +40,8 @@ public class TpahereRequest implements TeleportRequest {
 		if (isFinished())
 			return;
 		finish();
-		MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.accept.sender", Placeholders.c().addPlayer("target", requester.getPlayer()).addPlayer("player", target.getPlayer()));
-		MessageUtils.message(target.getPlayer(), "teleportreq.tpahere.accept.receiver", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
+		MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.accept.sender", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
+		MessageUtils.message(target.getPlayer(), "teleportreq.tpahere.accept.receiver", Placeholders.c().addPlayer("target", requester.getPlayer()).addPlayer("player", target.getPlayer()));
 		target.getPlayer().teleport(requester.getPlayer());
 		removeRequest();
 	}
@@ -51,8 +51,8 @@ public class TpahereRequest implements TeleportRequest {
 		if (isFinished())
 			return;
 		finish();
-		MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.reject.sender", Placeholders.c().addPlayer("target", requester.getPlayer()).addPlayer("player", target.getPlayer()));
-		MessageUtils.message(target.getPlayer(), "teleportreq.tpahere.reject.receiver", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
+		MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.reject.sender", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
+		MessageUtils.message(target.getPlayer(), "teleportreq.tpahere.reject.receiver", Placeholders.c().addPlayer("target", requester.getPlayer()).addPlayer("player", target.getPlayer()));
 		removeRequest();
 	}
 
@@ -61,8 +61,8 @@ public class TpahereRequest implements TeleportRequest {
 		if (isFinished())
 			return;
 		finish();
-		MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.cancel.sender", Placeholders.c().addPlayer("player", requester.getPlayer()).addPlayer("target", target.getPlayer()));
-		MessageUtils.message(target.getPlayer(), "teleportreq.tpahere.cancel.receiver", Placeholders.c().addPlayer("player", target.getPlayer()).addPlayer("target", requester.getPlayer()));
+		MessageUtils.message(requester.getPlayer(), "teleportreq.tpahere.cancel.sender", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
+		MessageUtils.message(target.getPlayer(), "teleportreq.tpahere.cancel.receiver", Placeholders.c().addPlayer("target", requester.getPlayer()).addPlayer("player", target.getPlayer()));
 		removeRequest();
 	}
 

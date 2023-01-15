@@ -152,7 +152,9 @@ public class User implements ISuser {
 		if (isEvent)
 			userFile.set("lastLeave", System.currentTimeMillis() / 1000).save(DataType.YAML);
 		if (requests == null)
-			requests = new TempList<>(20 * Math.min(StringUtils.timeFromString(Loader.config.getString("options.tp-accept_cooldown")), 5));
+			requests = new TempList<TeleportRequest>(20 * Math.max(StringUtils.timeFromString(Loader.config.getString("options.tp-accept_cooldown")), 5)).setCallback(req -> {
+				req.timeout();
+			});
 		if (sentRequests == null)
 			sentRequests = new LinkedBlockingDeque<TeleportRequest>() {
 				private static final long serialVersionUID = 1L;

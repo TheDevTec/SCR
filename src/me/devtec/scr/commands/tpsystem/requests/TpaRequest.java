@@ -40,8 +40,8 @@ public class TpaRequest implements TeleportRequest {
 		if (isFinished())
 			return;
 		finish();
-		MessageUtils.message(requester.getPlayer(), "teleportreq.tpa.accept.sender", Placeholders.c().addPlayer("target", requester.getPlayer()).addPlayer("player", target.getPlayer()));
-		MessageUtils.message(target.getPlayer(), "teleportreq.tpa.accept.receiver", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
+		MessageUtils.message(requester.getPlayer(), "teleportreq.tpa.accept.sender", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
+		MessageUtils.message(target.getPlayer(), "teleportreq.tpa.accept.receiver", Placeholders.c().addPlayer("target", requester.getPlayer()).addPlayer("player", target.getPlayer()));
 		requester.getPlayer().teleport(target.getPlayer());
 		removeRequest();
 	}
@@ -51,8 +51,8 @@ public class TpaRequest implements TeleportRequest {
 		if (isFinished())
 			return;
 		finish();
-		MessageUtils.message(requester.getPlayer(), "teleportreq.tpa.reject.sender", Placeholders.c().addPlayer("target", requester.getPlayer()).addPlayer("player", target.getPlayer()));
-		MessageUtils.message(target.getPlayer(), "teleportreq.tpa.reject.receiver", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
+		MessageUtils.message(requester.getPlayer(), "teleportreq.tpa.reject.sender", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
+		MessageUtils.message(target.getPlayer(), "teleportreq.tpa.reject.receiver", Placeholders.c().addPlayer("target", requester.getPlayer()).addPlayer("player", target.getPlayer()));
 		removeRequest();
 	}
 
@@ -61,8 +61,8 @@ public class TpaRequest implements TeleportRequest {
 		if (isFinished())
 			return;
 		finish();
-		MessageUtils.message(requester.getPlayer(), "teleportreq.tpa.cancel.sender", Placeholders.c().addPlayer("player", requester.getPlayer()).addPlayer("target", target.getPlayer()));
-		MessageUtils.message(target.getPlayer(), "teleportreq.tpa.cancel.receiver", Placeholders.c().addPlayer("player", target.getPlayer()).addPlayer("target", requester.getPlayer()));
+		MessageUtils.message(requester.getPlayer(), "teleportreq.tpa.cancel.sender", Placeholders.c().addPlayer("target", target.getPlayer()).addPlayer("player", requester.getPlayer()));
+		MessageUtils.message(target.getPlayer(), "teleportreq.tpa.cancel.receiver", Placeholders.c().addPlayer("target", requester.getPlayer()).addPlayer("player", target.getPlayer()));
 		removeRequest();
 	}
 

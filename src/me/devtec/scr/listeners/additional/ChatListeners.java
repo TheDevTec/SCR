@@ -236,6 +236,6 @@ public class ChatListeners implements Listener {
 		// first replacing chat palceholders, then adding %message% from player
 		text = MessageUtils.placeholder(s, StringUtils.colorize(PlaceholderAPISupport.replace(text, s)), placeholders);
 		event.setFormat(text.replace("%", "%%"));
-		BukkitLoader.getPacketHandler().send(set, BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, text));
+		BukkitLoader.getPacketHandler().send(set, BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, ComponentAPI.fromString(text)));
 	}
 }

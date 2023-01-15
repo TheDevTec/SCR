@@ -458,7 +458,7 @@ teleportreq:
       sender: "%prefix% You have rejected teleport request from &e%target%"
       receiver: "%prefix% &e%target% &7rejected your teleport request"
     cancel:
-      sender: "%prefix% You have cancelled teleport request to &e%player%"
+      sender: "%prefix% You have cancelled teleport request to &e%target%"
       receiver: "%prefix% &e%target% &7cancelled teleport request"
     send:
       sender: "%prefix% You sent teleport request to &e%target%"
@@ -475,7 +475,7 @@ teleportreq:
       sender: "%prefix% You have rejected teleport request from &e%target%"
       receiver: "%prefix% &e%target% &7rejected your teleport request"
     cancel:
-      sender: "%prefix% You have cancelled teleport request to &e%player%"
+      sender: "%prefix% You have cancelled teleport request to &e%target%"
       receiver: "%prefix% &e%target% &7cancelled teleport request"
     send:
       sender: "%prefix% You sent teleport request to &e%target%"
