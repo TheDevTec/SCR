@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import me.devtec.scr.MessageUtils.Placeholders;
@@ -17,75 +16,85 @@ public class Hat implements ScrCommand {
 	@Override
 	public void init(List<String> cmds) {
 		CommandStructure.create(Player.class, PLAYER_PERMS_CHECKER, (s, structure, args) -> { // cmd
-
-			if (s.getItemInHand().getType() != Material.AIR) {
-				// INV free slot checker
-				Inventory inv = s.getInventory();
-				boolean check = inv.firstEmpty() == -1;
-				ItemStack helmet = new ItemStack(Material.AIR);
-				if (s.getInventory().getHelmet() != null && check)
-					s.getInventory().addItem(s.getInventory().getHelmet());
-				if (s.getInventory().getHelmet() != null && !check)
-					helmet = s.getInventory().getHelmet();
-				s.getInventory().setHelmet(s.getItemInHand());
-				s.getInventory().setItemInHand(helmet);
+			switch (setHat(s, s)) {
+			case EMPTY_HAND:
+				msg(s, "missing.handEmpty");
+				break;
+			case FULL_INVENTORY:
+				msgSec(s, "fullInv");
+				break;
+			case SUCCESS:
 				msgSec(s, "equipped.you", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()));
-			} else
-				msg(s, "missing.handEmpty");
+				break;
+			}
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).argument("-s", (s, structure, args) -> { // hat -s
-
-			if (s.getItemInHand().getType() != Material.AIR) {
-				// INV free slot checker
-				Inventory inv = s.getInventory();
-				boolean check = inv.firstEmpty() == -1;
-				ItemStack helmet = new ItemStack(Material.AIR);
-				if (s.getInventory().getHelmet() != null && check)
-					s.getInventory().addItem(s.getInventory().getHelmet());
-				if (s.getInventory().getHelmet() != null && !check)
-					helmet = s.getInventory().getHelmet();
-				s.getInventory().setHelmet(s.getItemInHand());
-				s.getInventory().setItemInHand(helmet);
-			} else
+			switch (setHat(s, s)) {
+			case EMPTY_HAND:
 				msg(s, "missing.handEmpty");
-		}).parent() // cmd
-
+				break;
+			case FULL_INVENTORY:
+				msgSec(s, "fullInv");
+				break;
+			case SUCCESS:
+				break;
+			}
+		}).first() // cmd
 				.fallback((s, structure, args) -> {
 					offlinePlayer(s, args[0]);
 				}).selector(Selector.ENTITY_SELECTOR, (s, structure, args) -> { // hat [player]
+					ItemStack current = s.getEquipment().getItemInMainHand();
 					for (Player target : playerSelectors(s, args[0]))
-						if (s.getItemInHand().getType() != Material.AIR) {
-							// INV free slot checker
-							Inventory inv = target.getInventory();
-							boolean check = inv.firstEmpty() == -1;
-							if (target.getInventory().getHelmet() != null && !check) { // FULL INV
-								msgSec(s, "fullInv", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()).addPlayer("target", target));
-								return;
-							}
-							target.getInventory().addItem(target.getInventory().getHelmet());
-							target.getInventory().setHelmet(s.getItemInHand());
-							s.getInventory().setItemInHand(new ItemStack(Material.AIR));
-
-							msgSec(s, "equipped.other.sender", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()).addPlayer("target", target));
-							msgSec(target, "equipped.other.target", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()).addPlayer("player", s));
-						} else
+						switch (setHat(target, current)) {
+						case EMPTY_HAND:
 							msg(s, "missing.handEmpty");
+							break;
+						case FULL_INVENTORY:
+							msgSec(s, "fullInv");
+							break;
+						case SUCCESS:
+							msgSec(s, "equipped.other.sender", Placeholders.c().add("item", current.getType().name()).addPlayer("target", target));
+							msgSec(target, "equipped.other.target", Placeholders.c().add("item", current.getType().name()).addPlayer("player", s));
+							break;
+						}
 				}).permission(permission("other")).argument("-s", (s, structure, args) -> { // hat [player] -s
+					ItemStack current = s.getEquipment().getItemInMainHand();
 					for (Player target : playerSelectors(s, args[0]))
-						if (s.getItemInHand().getType() != Material.AIR) {
-							// INV free slot checker
-							Inventory inv = target.getInventory();
-							boolean check = inv.firstEmpty() == -1;
-							if (target.getInventory().getHelmet() != null && !check) { // FULL INV
-								msgSec(s, "fullInv", Placeholders.c().add("item", s.getInventory().getHelmet().getType().name()).addPlayer("target", target));
-								return;
-							}
-							target.getInventory().addItem(target.getInventory().getHelmet());
-							target.getInventory().setHelmet(s.getItemInHand());
-							s.getInventory().setItemInHand(new ItemStack(Material.AIR));
-						} else
+						switch (setHat(target, current)) {
+						case EMPTY_HAND:
 							msg(s, "missing.handEmpty");
-
+							break;
+						case FULL_INVENTORY:
+							msgSec(s, "fullInv");
+							break;
+						case SUCCESS:
+							break;
+						}
 				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
+	}
+
+	public static enum HatAction {
+		SUCCESS, FULL_INVENTORY, EMPTY_HAND
+	}
+
+	public HatAction setHat(Player from, Player target) {
+		ItemStack current = from.getEquipment().getItemInMainHand();
+		HatAction result;
+		if ((result = setHat(target, current)) == HatAction.SUCCESS)
+			from.getEquipment().setItemInMainHand(null);
+		return result;
+	}
+
+	public HatAction setHat(Player target, ItemStack item) {
+		if (item == null || item.getType() == Material.AIR || item.getAmount() <= 0)
+			return HatAction.EMPTY_HAND;
+		ItemStack current = target.getEquipment().getHelmet();
+		if (current != null) {
+			if (target.getInventory().firstEmpty() == -1)
+				return HatAction.FULL_INVENTORY;
+			target.getInventory().addItem(current);
+		}
+		target.getEquipment().setHelmet(item);
+		return HatAction.SUCCESS;
 	}
 
 	@Override
