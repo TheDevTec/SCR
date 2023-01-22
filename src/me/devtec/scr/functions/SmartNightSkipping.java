@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
 
 import me.devtec.scr.Loader;
+import me.devtec.shared.Ref;
 import me.devtec.shared.scheduler.Scheduler;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.theapi.bukkit.BukkitLoader;
@@ -65,7 +66,10 @@ public class SmartNightSkipping implements Listener {
 
 	@EventHandler
 	public void onEnterBed(PlayerBedEnterEvent e) {
-		if (e.getBedEnterResult() == BedEnterResult.OK)
+		if (Ref.isNewerThan(7)) {
+			if (e.getBedEnterResult() == BedEnterResult.OK)
+				sleepingPlayers.put(e.getPlayer().getWorld().getUID(), sleepingPlayers.getOrDefault(e.getPlayer().getWorld().getUID(), 0) + 1);
+		} else // getBedEnterResult method doesn't exist.
 			sleepingPlayers.put(e.getPlayer().getWorld().getUID(), sleepingPlayers.getOrDefault(e.getPlayer().getWorld().getUID(), 0) + 1);
 	}
 
