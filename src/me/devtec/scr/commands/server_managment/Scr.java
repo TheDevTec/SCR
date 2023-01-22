@@ -19,17 +19,17 @@ public class Scr implements ScrCommand {
 			help(s, "usage");
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // perm
 				.argument("reload", (s, structure, args) -> { // cmd reload - reload all configs
-					msgSec(s, "reload.reloading", null);
+					msgSec(s, "reload.reloading");
 					try {
 						Configs.loadConfigs();
-						msgSec(s, "reload.reload_all", null);
+						msgSec(s, "reload.reload_all");
 					} catch (Exception e) {
-						msgSec(s, "reload.error_all", null);
+						msgSec(s, "reload.error_all");
 						Loader.plugin.getLogger().warning(e.getMessage());
 					}
 				}).argument("config", (s, structure, args) -> { // cmd reload [config]
 					String c = args[1];
-					msgSec(s, "reload.reloading", null);
+					msgSec(s, "reload.reloading");
 					try {
 						Configs.reloadConfig(c);
 						msgSec(s, "reload.reload", Placeholders.c().add("config", c + ".yml"));
@@ -37,7 +37,6 @@ public class Scr implements ScrCommand {
 						msgSec(s, "reload.error", Placeholders.c().add("config", c + ".yml"));
 						Loader.plugin.getLogger().warning(e.getMessage());
 					}
-
 				}, "translation", "commands", "economy", "tablist", "scoreboard", "join-listener", "quit-listener", "chat", "custom_commands", "placeholders", "kits", "guis").build()
 				.register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
