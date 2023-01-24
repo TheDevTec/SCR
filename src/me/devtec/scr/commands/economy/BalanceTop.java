@@ -44,6 +44,8 @@ public class BalanceTop implements ScrCommand {
 				return;
 			}
 			listBaltop(s, StringUtils.getInt(args[0]) - 1);
+		}).parent().argument("last", (s, structure, args) -> { // cmd last
+			listBaltop(s, Math.max(0, ranking.length / 10));
 		}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
