@@ -52,7 +52,7 @@ public class BalanceTop implements ScrCommand {
 		File file = new File("plugins/TheAPI/Users");
 		if (file.exists() && file.isDirectory())
 			for (String userFile : file.list()) {
-				UUID id = UUID.fromString(userFile.split("/")[userFile.split("/").length - 1].replace(".yml", ""));
+				UUID id = UUID.fromString(userFile.substring(0, userFile.length() - 4));
 				String playerName = API.offlineCache().lookupNameById(id);
 				if (playerName != null) {
 					double bal = ((net.milkbowl.vault.economy.Economy) Loader.economy).getBalance(playerName);
@@ -65,14 +65,16 @@ public class BalanceTop implements ScrCommand {
 
 	public void listBaltop(CommandSender s, int page) {
 		awaitInitRanking();
-		int rank = page + 1;
-		msgSec(s, "header", Placeholders.c().replace("page", page + 1).replace("pages", Math.max(1, ranking.length / 10)));
+		int totalPages = Math.max(0, ranking.length / 10);
+		if (page > totalPages)
+			page = totalPages;
+		msgSec(s, "header", Placeholders.c().replace("page", page + 1).replace("pages", totalPages + 1));
 		for (int i = page * 10; i < (page + 1) * 10 && i < ranking.length; ++i) {
 			ComparableObject<UUID, Double> comp = ranking[i];
-			msgSec(s, "format", Placeholders.c().replace("position", rank++).replace("playername", API.offlineCache().lookupNameById(comp.getKey())).replace("money",
+			msgSec(s, "format", Placeholders.c().replace("position", i + 1).replace("playername", API.offlineCache().lookupNameById(comp.getKey())).replace("money",
 					((net.milkbowl.vault.economy.Economy) Loader.economy).format(comp.getValue())));
 		}
-		msgSec(s, "footer", Placeholders.c().replace("page", page + 1).replace("pages", Math.max(1, ranking.length / 10)));
+		msgSec(s, "footer", Placeholders.c().replace("page", page + 1).replace("pages", totalPages + 1));
 	}
 
 	@Override
