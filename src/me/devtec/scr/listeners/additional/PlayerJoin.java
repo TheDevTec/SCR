@@ -95,10 +95,12 @@ public class PlayerJoin implements Listener {
 		user.notifyJoin(player, true);
 		boolean vanish = user.isVanished();
 
-		if (vanish) // Apply vanish
+		if (vanish) { // Apply vanish
+			MessageUtils.message(player, "vanish.stillenabled", null);
 			for (Player target : BukkitLoader.getOnlinePlayers())
 				if (!target.hasPermission(Loader.commands.getString("vanish.permission.cmd")))
 					target.hidePlayer(player);
+		}
 
 		if (config.getBoolean("enabled"))
 			if (!player.hasPlayedBefore()) {

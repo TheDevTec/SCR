@@ -355,6 +355,8 @@ scr:
 
 # Translations for Vanish
 vanish:
+  # If player joins with Fly enabled
+  stillenabled: "%prefix% &eYou are still in the Vanish, players can't see you"
   self:
     enabled: "%prefix% Vanish is &aon&7, players can't see you."
     disabled: "%prefix% Vanish is &coff&7, players now can see you."

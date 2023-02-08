@@ -344,6 +344,21 @@ memory:
 - "%prefix% Užitá MEM: &e%ram_used% &7MB"
 - "%prefix% Max MEM: &e%ram_max% &7MB"
 
+# Translations for Vanish
+vanish:
+  # If player joins with Fly enabled
+  stillenabled: "%prefix% &eStále máš Vanish, hráči tě nemohou vidět"
+  self:
+    enabled: "%prefix% Vanish je &azapnut&7, hráči tě nemohou vidět."
+    disabled: "%prefix% Vanish je &cvypnut&7, hráči tě nyní mohou vidět."
+  other:
+    enabled:
+      sender: "%prefix% Vanish hráče %target% je &azapnut&7, hráči ho nemohou vidět."
+      target: "%prefix% Vanish je &azapnut&7, hráči tě nemohou vidět."
+    disabled:
+      sender: "%prefix% Vanish hráče %target% je &cvypnut&7, hráči ho nyní mohou vidět."
+      target: "%prefix% Vanish je &cvypnut&7, hráči tě nyní mohou vidět."
+      
 # Translations for SCR command
 scr:
   reload:
