@@ -7,12 +7,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+
+import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.api.API;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.listeners.additional.PlayerJoin;
 import me.devtec.scr.listeners.additional.PlayerQuit;
+import me.devtec.shared.Ref;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.utility.StringUtils;
@@ -20,9 +25,39 @@ import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class Vanish implements ScrCommand {
 
+	public static enum VanishStatus {
+		ENABLED(0), DISABLED(1), ENABLED_ON_JOIN(2), NOT_SET(3);
+
+		private final int id;
+
+		VanishStatus(int i) {
+			id = i;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public static VanishStatus byId(int id) {
+			switch (id) {
+			case 0:
+				return ENABLED;
+			case 1:
+				return DISABLED;
+			case 2:
+				return ENABLED_ON_JOIN;
+			case 3:
+				return NOT_SET;
+			}
+			return NOT_SET;
+		}
+	}
+
+	public static boolean ENABLED;
+
 	@Override
 	public void init(List<String> cmds) {
-
+		ENABLED = true;
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
 			if (s instanceof Player)
 				toggle(s, (Player) s);
@@ -46,6 +81,12 @@ public class Vanish implements ScrCommand {
 	}
 
 	private void apply(CommandSender sender, Player s, boolean status) {
+		if (Ref.getClass("org.spigotmc.SpigotConfig") != null) {
+			ByteArrayDataOutput out = ByteStreams.newDataOutput();
+			out.writeUTF(s.getName());
+			out.writeInt(status ? VanishStatus.ENABLED.getId() : VanishStatus.DISABLED.getId());
+			s.sendPluginMessage(Loader.plugin, "scr:vanish", out.toByteArray());
+		}
 		API.getUser(s).setVanished(status);
 		if (!status) {
 			if (PlayerJoin.config.getBoolean("enabled"))

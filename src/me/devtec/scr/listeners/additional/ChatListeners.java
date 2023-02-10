@@ -2,6 +2,7 @@ package me.devtec.scr.listeners.additional;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -110,7 +111,7 @@ public class ChatListeners implements Listener {
 
 			// Chat notigications
 			if (ChatUtils.Notification.isEnabled())
-				message = ChatUtils.Notification.notificationReplace(player, message, e.getRecipients());
+				message = ChatUtils.Notification.notificationReplace(player, message, filterNotVisible(player, e.getRecipients()));
 
 			if (message != null) {
 				e.setMessage(message); // for console
@@ -121,6 +122,14 @@ public class ChatListeners implements Listener {
 			}
 
 		}
+	}
+
+	private Set<Player> filterNotVisible(Player player, Set<Player> recipients) {
+		Set<Player> targets = new HashSet<>();
+		for (Player online : recipients)
+			if (player.canSee(online))
+				targets.add(online);
+		return targets;
 	}
 
 	// path - path.chat

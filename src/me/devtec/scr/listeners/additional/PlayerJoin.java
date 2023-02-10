@@ -14,6 +14,9 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.scr.MessageUtils.Placeholders;
@@ -21,9 +24,12 @@ import me.devtec.scr.api.API;
 import me.devtec.scr.api.User;
 import me.devtec.scr.commands.fun.Fly;
 import me.devtec.scr.commands.fun.God;
+import me.devtec.scr.commands.server_managment.Vanish;
+import me.devtec.scr.commands.server_managment.Vanish.VanishStatus;
 import me.devtec.scr.commands.teleport.spawn.Spawn;
 import me.devtec.scr.commands.tpsystem.TpSystem;
 import me.devtec.scr.utils.PlaceholderAPISupport;
+import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.utility.StringUtils;
@@ -95,12 +101,24 @@ public class PlayerJoin implements Listener {
 		user.notifyJoin(player, true);
 		boolean vanish = user.isVanished();
 
-		if (vanish) { // Apply vanish
-			MessageUtils.message(player, "vanish.stillenabled", null);
-			for (Player target : BukkitLoader.getOnlinePlayers())
-				if (!target.hasPermission(Loader.commands.getString("vanish.permission.cmd")))
-					target.hidePlayer(player);
-		}
+		if (Vanish.ENABLED)
+			if (vanish) { // Apply vanish
+				MessageUtils.message(player, "vanish.stillenabled", null);
+				if (Ref.getClass("org.spigotmc.SpigotConfig") != null) {
+					ByteArrayDataOutput out = ByteStreams.newDataOutput();
+					out.writeUTF(player.getName());
+					out.writeInt(VanishStatus.ENABLED_ON_JOIN.getId());
+					player.sendPluginMessage(Loader.plugin, "scr:vanish", out.toByteArray());
+				}
+				for (Player target : BukkitLoader.getOnlinePlayers())
+					if (!target.hasPermission(Loader.commands.getString("vanish.permission.cmd")))
+						target.hidePlayer(player);
+			} else if (Ref.getClass("org.spigotmc.SpigotConfig") != null) {
+				ByteArrayDataOutput out = ByteStreams.newDataOutput();
+				out.writeUTF(player.getName());
+				out.writeInt(VanishStatus.NOT_SET.getId());
+				player.sendPluginMessage(Loader.plugin, "scr:vanish", out.toByteArray());
+			}
 
 		if (config.getBoolean("enabled"))
 			if (!player.hasPlayedBefore()) {

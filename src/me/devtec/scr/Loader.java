@@ -98,9 +98,11 @@ public class Loader extends JavaPlugin {
 		for (Player player : BukkitLoader.getOnlinePlayers())
 			API.getUser(player).notifyJoin(player, false);
 
-		if (Ref.getClass("org.spigotmc.SpigotConfig") != null)
+		if (Ref.getClass("org.spigotmc.SpigotConfig") != null) {
 			if (SpigotConfig.bungee)
 				Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
+			Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "scr:vanish");
+		}
 
 		if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null)
 			luckperms = LuckPermsProvider.get();
