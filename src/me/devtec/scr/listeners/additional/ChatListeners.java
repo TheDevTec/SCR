@@ -79,20 +79,20 @@ public class ChatListeners implements Listener {
 				// sender je target
 				// TODO - ignore
 
-				if (target.equals(player) || target.hasPermission("SCR.Other.ChatTypeBypass"))
-					continue; // TODO - permise do configu
+				if (target.equals(player) || target.hasPermission("SCR.Other.ChatTypeBypass") || !player.canSee(target))
+					continue;
 
 				// PER_WORLD type
 				if (type.equalsIgnoreCase("PER_WORLD") || type.equalsIgnoreCase("PERWORLD") || type.equalsIgnoreCase("WORLD")) {
 					if (!worlds.contains(target.getLocation().getWorld().getName())) // If group of worlds contains target world
-						target.remove();
+						targets.remove();
 					continue;
 				}
 
 				// DISTANCE
 				if (type.equalsIgnoreCase("DISTANCE")) {
 					if (!player.getWorld().equals(target.getWorld()) || target.getLocation().distance(player.getLocation()) > distance) // If they are not in same world
-						target.remove();
+						targets.remove();
 					continue;
 				}
 				players.add(target.getName());
