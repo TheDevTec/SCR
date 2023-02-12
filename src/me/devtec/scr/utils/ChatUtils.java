@@ -79,7 +79,7 @@ public class ChatUtils {
 
 		public static String notificationReplace(Player pinger, String msg, Set<Player> targets) {
 			for (Player player : targets)
-				if (player != pinger && msg.contains(player.getName())) {
+				if (player != pinger && msg.contains(player.getName()) && pinger.canSee(player)) {
 					boolean endsWithName = msg.endsWith(player.getName());
 
 					String notificationColor = Loader.chat.getString("chatNotification.color", "§c");
