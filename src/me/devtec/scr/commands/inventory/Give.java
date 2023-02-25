@@ -44,8 +44,8 @@ public class Give implements ScrCommand {
 
 					for (Player player : playerSelectors(s, args[0])) {
 						player.getInventory().addItem(item);
-						msgSec(s, "other.sender", Placeholders.c().addPlayer("target", player).add("item", args[1].toUpperCase()).add("amount", item.getAmount()));
-						msgSec(player, "other.target", Placeholders.c().addPlayer("sender", s).add("item", args[1].toUpperCase()).add("amount", item.getAmount()));
+						msgSec(s, "other.sender", Placeholders.c().addPlayer("target", player).add("item", args[1].toUpperCase()).add("amount", StringUtils.getInt(args[2])));
+						msgSec(player, "other.target", Placeholders.c().addPlayer("sender", s).add("item", args[1].toUpperCase()).add("amount", StringUtils.getInt(args[2])));
 					}
 				}).argument(null, -1, (s, structure, args) -> { // give [player] [material] [amount] [nbt]
 					ItemStack item = XMaterial.matchXMaterial(args[1].toUpperCase()).get().parseItem();
@@ -55,8 +55,8 @@ public class Give implements ScrCommand {
 
 					for (Player player : playerSelectors(s, args[0])) {
 						player.getInventory().addItem(item);
-						msgSec(s, "other.sender-nbt", Placeholders.c().addPlayer("target", player).add("item", args[1].toUpperCase()).add("amount", item.getAmount()).add("nbt", nbt));
-						msgSec(player, "other.target-nbt", Placeholders.c().addPlayer("sender", s).add("item", args[1].toUpperCase()).add("amount", item.getAmount()).add("nbt", nbt));
+						msgSec(s, "other.sender-nbt", Placeholders.c().addPlayer("target", player).add("item", args[1].toUpperCase()).add("amount", StringUtils.getInt(args[2])).add("nbt", nbt));
+						msgSec(player, "other.target-nbt", Placeholders.c().addPlayer("sender", s).add("item", args[1].toUpperCase()).add("amount", StringUtils.getInt(args[2])).add("nbt", nbt));
 					}
 				}, (sender, structure, args) -> Arrays.asList("<nbt>")).first() // give
 				.fallback((s, structure, args) -> { // /give [material]
@@ -77,7 +77,7 @@ public class Give implements ScrCommand {
 					item.setAmount(StringUtils.getInt(args[1]));
 
 					((Player) s).getInventory().addItem(item);
-					msgSec(s, "self", Placeholders.c().add("item", args[0].toUpperCase()).add("amount", item.getAmount()));
+					msgSec(s, "self", Placeholders.c().add("item", args[0].toUpperCase()).add("amount", StringUtils.getInt(args[1])));
 				}).argument(null, -1, (s, structure, args) -> { // give [material] [amount] [nbt]
 					ItemStack item = XMaterial.matchXMaterial(args[0].toUpperCase()).get().parseItem();
 					String nbt = StringUtils.join(args, " ", 2);
@@ -85,7 +85,7 @@ public class Give implements ScrCommand {
 					item.setAmount(StringUtils.getInt(args[1]));
 
 					((Player) s).getInventory().addItem(item);
-					msgSec(s, "self-nbt", Placeholders.c().add("item", args[0].toUpperCase()).add("amount", item.getAmount()).add("nbt", nbt));
+					msgSec(s, "self-nbt", Placeholders.c().add("item", args[0].toUpperCase()).add("amount", StringUtils.getInt(args[2])).add("nbt", nbt));
 				}, (sender, structure, args) -> Arrays.asList("<nbt>")).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 
 	}
