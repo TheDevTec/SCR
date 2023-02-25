@@ -655,6 +655,16 @@ privateMessage:
   permission:
     cmd: "scr.command.pm"
 
+ignore:
+  enabled: false
+  cmds:
+  - "ignore"
+  - "pmignore"
+  help:
+    usage: "/ignore [player]"
+  permission:
+    cmd: "scr.command.ignore"
+
 reply:
   enabled: true
   cmds:
@@ -923,3 +933,40 @@ scoreboard:
   permission:
     cmd: "scr.command.scoreboard"
     other: "scr.command.scoreboard.other"
+
+server:
+  enabled: false
+  cmds:
+  - "server"
+  help:
+    usage: "/sb [serverName]"
+  permission:
+    cmd: "scr.command.server"
+
+send:
+  enabled: false
+  cmds:
+  - "send"
+  - "connect"
+  help:
+    usage: "/send [player] {serverName}"
+  permission:
+    cmd: "scr.command.send"
+
+kill:
+  enabled: false
+  cmds:
+  - "kill"
+  help:
+    usage: "/kill [player]"
+  permission:
+    cmd: "scr.command.kill"
+
+enchant:
+  enabled: false
+  cmds:
+  - "enchant"
+  help:
+    usage: "/enchant {player} [enchant] [level]"
+  permission:
+    cmd: "scr.command.enchant"

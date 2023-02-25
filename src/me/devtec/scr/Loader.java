@@ -229,7 +229,9 @@ public class Loader extends JavaPlugin {
 						++count;
 						scrCmd.initFirst(commands.getStringList(scrCmd.configSection() + ".cmds"));
 						registered_commands.add(scrCmd);
-					}
+					} else if (!commands.exists(scrCmd.configSection() + ".enabled"))
+						getLogger().log(Level.SEVERE, "An issue occurred while loading commands (missing configuration section for command '" + scrCmd.configSection()
+								+ "', please report the error to discord https://discord.gg/5kCSrtkKGF");
 				}
 			}
 			jar.close();
