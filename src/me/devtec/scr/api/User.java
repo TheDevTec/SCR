@@ -12,7 +12,6 @@ import me.devtec.scr.commands.tpsystem.requests.TeleportRequest;
 import me.devtec.scr.utils.ISuser;
 import me.devtec.shared.API;
 import me.devtec.shared.dataholder.Config;
-import me.devtec.shared.dataholder.DataType;
 import me.devtec.shared.dataholder.cache.TempList;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
@@ -139,7 +138,7 @@ public class User implements ISuser {
 	public void notifyQuit() {
 		if (cached != null)
 			userFile.set("disconnectWorld", cached.getWorld().getName());
-		userFile.set("lastLeave", System.currentTimeMillis() / 1000).save(DataType.YAML);
+		userFile.set("lastLeave", System.currentTimeMillis() / 1000);
 		cached = null;
 		requests = null;
 		sentRequests = null;
@@ -150,7 +149,7 @@ public class User implements ISuser {
 		cached = instance;
 		vanish = userFile.getBoolean("vanish");
 		if (isEvent)
-			userFile.set("lastLeave", System.currentTimeMillis() / 1000).save(DataType.YAML);
+			userFile.set("lastLeave", System.currentTimeMillis() / 1000);
 		if (requests == null)
 			requests = new TempList<TeleportRequest>(20 * Math.max(StringUtils.timeFromString(Loader.config.getString("options.tp-accept_cooldown")), 5)).setCallback(req -> {
 				req.timeout();
