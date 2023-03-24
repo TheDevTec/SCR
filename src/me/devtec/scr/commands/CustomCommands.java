@@ -21,6 +21,8 @@ import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.dataholder.Config;
+import me.devtec.shared.utility.ColorUtils;
+import me.devtec.shared.utility.ParseUtils;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 import me.devtec.theapi.bukkit.xseries.XMaterial;
@@ -178,7 +180,7 @@ public class CustomCommands {
 			if (condition.startsWith("isOnline")) {
 				int a = args.length - 1;
 				if (!condition.equalsIgnoreCase("isOnline") && condition.startsWith("isOnline:"))
-					a = StringUtils.getInt(condition.replace("isOnline:", ""));
+					a = ParseUtils.getInt(condition.replace("isOnline:", ""));
 				if (Bukkit.getPlayer(args[a]) != null)
 					return true;
 				return false;
@@ -186,7 +188,7 @@ public class CustomCommands {
 			if (condition.startsWith("isWorld")) {
 				int a = args.length - 1;
 				if (!condition.equalsIgnoreCase("isWorld") && condition.startsWith("isWorld:"))
-					a = StringUtils.getInt(condition.replace("isWorld:", ""));
+					a = ParseUtils.getInt(condition.replace("isWorld:", ""));
 				if (Bukkit.getWorld(args[a]) != null)
 					return true;
 				return false;
@@ -194,19 +196,19 @@ public class CustomCommands {
 			if (condition.startsWith("isNumber")) {
 				int a = args.length - 1;
 				if (!condition.equalsIgnoreCase("isNumber") && condition.startsWith("isNumber:"))
-					a = StringUtils.getInt(condition.replace("isNumber:", ""));
-				return StringUtils.isNumber(args[a]);
+					a = ParseUtils.getInt(condition.replace("isNumber:", ""));
+				return ParseUtils.isNumber(args[a]);
 			}
 			if (condition.startsWith("isMaterial")) {
 				int a = args.length - 1;
 				if (!condition.equalsIgnoreCase("isMaterial") && condition.startsWith("isMaterial:"))
-					a = StringUtils.getInt(condition.replace("isMaterial:", ""));
+					a = ParseUtils.getInt(condition.replace("isMaterial:", ""));
 				return XMaterial.valueOf(args[a]) != null ? true : false;
 			}
 			if (condition.startsWith("isBoolean")) {
 				int a = args.length - 1;
 				if (!condition.equalsIgnoreCase("isBoolean") && condition.startsWith("isBoolean:"))
-					a = StringUtils.getInt(condition.replace("isBoolean:", ""));
+					a = ParseUtils.getInt(condition.replace("isBoolean:", ""));
 				if (args[a].equalsIgnoreCase("true") || args[a].equalsIgnoreCase("on") || args[a].equalsIgnoreCase("false") || args[a].equalsIgnoreCase("off"))
 					return true;
 				return false;
@@ -217,18 +219,18 @@ public class CustomCommands {
 			if (c.exists("conditions." + con[0])) {
 				String value = PlaceholderAPISupport.replace(c.getString("conditions." + con[0] + ".value"), s, true, getPlaceholders(args));
 				if (con.length == 2 && con[1] != null && !con[1].isEmpty())
-					value = args[StringUtils.getInt(con[1])];
+					value = args[ParseUtils.getInt(con[1])];
 
 				for (String positive : c.getStringList("conditions." + condition + ".positive")) {
-					if (positive.startsWith(">=") && StringUtils.getDouble(value) >= StringUtils.getDouble(positive.replace(">=", ""))
-							|| positive.startsWith("<=") && StringUtils.getDouble(value) <= StringUtils.getDouble(positive.replace("<=", "")))
+					if (positive.startsWith(">=") && ParseUtils.getDouble(value) >= ParseUtils.getDouble(positive.replace(">=", ""))
+							|| positive.startsWith("<=") && ParseUtils.getDouble(value) <= ParseUtils.getDouble(positive.replace("<=", "")))
 						return true;
-					if (positive.startsWith(">") && !positive.startsWith(">=") && StringUtils.getDouble(value) > StringUtils.getDouble(positive.replace(">", "")))
+					if (positive.startsWith(">") && !positive.startsWith(">=") && ParseUtils.getDouble(value) > ParseUtils.getDouble(positive.replace(">", "")))
 						return true;
-					if (positive.startsWith("<") && !positive.startsWith("<=") && StringUtils.getDouble(value) < StringUtils.getDouble(positive.replace("<", "")))
+					if (positive.startsWith("<") && !positive.startsWith("<=") && ParseUtils.getDouble(value) < ParseUtils.getDouble(positive.replace("<", "")))
 						return true;
-					if (positive.startsWith("=") && StringUtils.getDouble(value) == StringUtils.getDouble(positive.replace("=", ""))
-							|| positive.startsWith("==") && StringUtils.getDouble(value) == StringUtils.getDouble(positive.replace("==", "")))
+					if (positive.startsWith("=") && ParseUtils.getDouble(value) == ParseUtils.getDouble(positive.replace("=", ""))
+							|| positive.startsWith("==") && ParseUtils.getDouble(value) == ParseUtils.getDouble(positive.replace("==", "")))
 						return true;
 					if (value.equalsIgnoreCase(positive))
 						return true;
@@ -274,7 +276,7 @@ public class CustomCommands {
 
 		private static void msg(CommandSender s, String message, Placeholders placeholders) {
 			String text = message;
-			text = StringUtils.colorize(MessageUtils.placeholder(s, text, placeholders));
+			text = ColorUtils.colorize(MessageUtils.placeholder(s, text, placeholders));
 			String lastcolor = null;
 			for (String line : text.replace("\\n", "\n").split("\n")) {
 				if (lastcolor != null && lastcolor.length() == 1)
@@ -283,8 +285,8 @@ public class CustomCommands {
 					lastcolor = "&" + lastcolor;
 					lastcolor = lastcolor.replace("&x", "#");
 				}
-				s.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, s, true, null)));
-				lastcolor = StringUtils.getLastColors(StringUtils.colorize(line));
+				s.sendMessage(ColorUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, s, true, null)));
+				lastcolor = ColorUtils.getLastColors(ColorUtils.colorize(line));
 			}
 		}
 

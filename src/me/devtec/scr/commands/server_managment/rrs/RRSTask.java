@@ -14,7 +14,8 @@ import me.devtec.scr.api.API;
 import me.devtec.shared.Ref;
 import me.devtec.shared.scheduler.Scheduler;
 import me.devtec.shared.scheduler.Tasker;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ColorUtils;
+import me.devtec.shared.utility.TimeUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class RRSTask { // Reload Restart Stop task
@@ -42,7 +43,7 @@ public class RRSTask { // Reload Restart Stop task
 		List<CommandSender> list = new ArrayList<>(API.getOnlinePlayers(true));
 
 		if (time > 0)
-			MessageUtils.msgConfig(Bukkit.getConsoleSender(), "rrs." + currentTask.name().toLowerCase() + ".start", Loader.config, Placeholders.c().add("time", StringUtils.timeToString(RRSTask.time)),
+			MessageUtils.msgConfig(Bukkit.getConsoleSender(), "rrs." + currentTask.name().toLowerCase() + ".start", Loader.config, Placeholders.c().add("time", TimeUtils.timeToString(RRSTask.time)),
 					list.toArray(new CommandSender[0]));
 
 		task = new Tasker() {
@@ -50,7 +51,7 @@ public class RRSTask { // Reload Restart Stop task
 			public void run() {
 				if (broadcastTimes.contains(RRSTask.time--))
 					MessageUtils.msgConfig(Bukkit.getConsoleSender(), "rrs." + currentTask.name().toLowerCase() + ".running", Loader.config,
-							Placeholders.c().add("time", StringUtils.timeToString(RRSTask.time + 1)), list.toArray(new CommandSender[0]));
+							Placeholders.c().add("time", TimeUtils.timeToString(RRSTask.time + 1)), list.toArray(new CommandSender[0]));
 			}
 		}.runRepeatingTimes(0, 20, time, () -> {
 
@@ -77,7 +78,7 @@ public class RRSTask { // Reload Restart Stop task
 					for (String cmd : Loader.config.getStringList("rrs." + currentTask.name().toLowerCase() + ".commands"))
 						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
 					for (Player p : BukkitLoader.getOnlinePlayers())
-						p.kickPlayer(StringUtils.colorize(Loader.config.getString("rrs." + currentTask.name().toLowerCase() + ".kick")));
+						p.kickPlayer(ColorUtils.colorize(Loader.config.getString("rrs." + currentTask.name().toLowerCase() + ".kick")));
 					if (Ref.getClass("net.md_5.bungee.api.ChatColor") != null) // if spigot
 						try {
 							int waitTime = Loader.config.getInt("rrs." + currentTask.name().toLowerCase() + ".waitTime");
@@ -119,7 +120,7 @@ public class RRSTask { // Reload Restart Stop task
 					for (String cmd : Loader.config.getStringList("rrs." + currentTask.name().toLowerCase() + ".commands"))
 						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
 					for (Player p : BukkitLoader.getOnlinePlayers())
-						p.kickPlayer(StringUtils.colorize(Loader.config.getString("rrs." + currentTask.name().toLowerCase() + ".kick")));
+						p.kickPlayer(ColorUtils.colorize(Loader.config.getString("rrs." + currentTask.name().toLowerCase() + ".kick")));
 					int waitTime = Loader.config.getInt("rrs." + currentTask.name().toLowerCase() + ".waitTime");
 					if (waitTime <= 0)
 						Bukkit.shutdown();

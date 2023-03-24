@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import me.devtec.shared.API;
 import me.devtec.shared.dataholder.Config;
+import me.devtec.shared.utility.ParseUtils;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.shared.utility.StringUtils.FormatType;
 import net.milkbowl.vault.economy.AbstractEconomy;
@@ -15,14 +16,15 @@ import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
 public class ScrEconomy extends AbstractEconomy {
 	private static Pattern moneyPattern = Pattern.compile("([+-]*[0-9]+.*[0-9]*[E]*[0-9]*)([kmbt]|qu[ia]|se[px]|non|oct|dec|und|duo|tre|sed|nov)", Pattern.CASE_INSENSITIVE);
-	
+
 	Config config;
-	//Per world economy
+	// Per world economy
 	boolean pwe;
+
 	public ScrEconomy(Config config) {
-		this.config=config;
+		this.config = config;
 	}
-	
+
 	@Override
 	public boolean isEnabled() {
 		return true;
@@ -45,39 +47,27 @@ public class ScrEconomy extends AbstractEconomy {
 
 	@Override
 	public String format(double balance) {
-		String format = config.getString("format").replace("{0}", currencyNamePlural())
-				.replace("%money_symbol%", currencyNamePlural());
-		if(format.contains("{1}") ||
-				format.contains("%money_raw%"))
-			format=format.replace("{1}", balance+"")
-				.replace("%money_raw%", balance+"");
-		if(format.contains("{2}") || format.contains("money_raw_formatted")) {
-			return format.replace("{2}", StringUtils.formatDouble(FormatType.BASIC, balance))
-					.replace("{2}", StringUtils.formatDouble(FormatType.BASIC, balance));
-		}
-		if(format.contains("{3}") || format.contains("money_formatted1")) {
-			return format.replace("{3}", StringUtils.formatDouble(FormatType.NORMAL, balance))
-					.replace("{3}", StringUtils.formatDouble(FormatType.NORMAL, balance));
-		}
-		if(format.contains("{4}") || format.contains("money_formatted2")) {
-			return format.replace("{4}", StringUtils.formatDouble(FormatType.COMPLEX, balance))
-					.replace("{4}", StringUtils.formatDouble(FormatType.COMPLEX, balance));
-		}
+		String format = config.getString("format").replace("{0}", currencyNamePlural()).replace("%money_symbol%", currencyNamePlural());
+		if (format.contains("{1}") || format.contains("%money_raw%"))
+			format = format.replace("{1}", balance + "").replace("%money_raw%", balance + "");
+		if (format.contains("{2}") || format.contains("money_raw_formatted"))
+			return format.replace("{2}", StringUtils.formatDouble(FormatType.BASIC, balance)).replace("{2}", StringUtils.formatDouble(FormatType.BASIC, balance));
+		if (format.contains("{3}") || format.contains("money_formatted1"))
+			return format.replace("{3}", StringUtils.formatDouble(FormatType.NORMAL, balance)).replace("{3}", StringUtils.formatDouble(FormatType.NORMAL, balance));
+		if (format.contains("{4}") || format.contains("money_formatted2"))
+			return format.replace("{4}", StringUtils.formatDouble(FormatType.COMPLEX, balance)).replace("{4}", StringUtils.formatDouble(FormatType.COMPLEX, balance));
 		return format;
 	}
-	
+
 	public static String publicFormat(double balance, String text) {
-		if(text.contains("%money_raw%"))
-			text=text.replace("%money_raw%", balance+"");
-		if(text.contains("%money_raw_formatted%")) {
-			text= text.replace("%money_raw_formatted%", StringUtils.formatDouble(FormatType.BASIC, balance));
-		}
-		if(text.contains("%money_formatted1%")) {
-			text= text.replace("%money_formatted1%", StringUtils.formatDouble(FormatType.NORMAL, balance));
-		}
-		if(text.contains("%money_formatted2%")) {
-			text= text.replace("%money_formatted2%", StringUtils.formatDouble(FormatType.COMPLEX, balance));
-		}
+		if (text.contains("%money_raw%"))
+			text = text.replace("%money_raw%", balance + "");
+		if (text.contains("%money_raw_formatted%"))
+			text = text.replace("%money_raw_formatted%", StringUtils.formatDouble(FormatType.BASIC, balance));
+		if (text.contains("%money_formatted1%"))
+			text = text.replace("%money_formatted1%", StringUtils.formatDouble(FormatType.NORMAL, balance));
+		if (text.contains("%money_formatted2%"))
+			text = text.replace("%money_formatted2%", StringUtils.formatDouble(FormatType.COMPLEX, balance));
 		return text;
 	}
 
@@ -93,26 +83,30 @@ public class ScrEconomy extends AbstractEconomy {
 
 	@Override
 	public boolean hasAccount(String name) {
-		if(pwe)return hasAccount(name, economyGroup(API.getUser(name).getString("disconnectWorld")));
+		if (pwe)
+			return hasAccount(name, economyGroup(API.getUser(name).getString("disconnectWorld")));
 		return API.getUser(name).exists("scr.economy");
 	}
 
 	@Override
 	public boolean hasAccount(String name, String world) {
-		if(!pwe)return hasAccount(name);
-		return API.getUser(name).exists("scr.economy."+world);
+		if (!pwe)
+			return hasAccount(name);
+		return API.getUser(name).exists("scr.economy." + world);
 	}
 
 	@Override
 	public double getBalance(String name) {
-		if(pwe)return getBalance(name, economyGroup(API.getUser(name).getString("disconnectWorld")));
+		if (pwe)
+			return getBalance(name, economyGroup(API.getUser(name).getString("disconnectWorld")));
 		return API.getUser(name).getDouble("scr.economy");
 	}
 
 	@Override
 	public double getBalance(String name, String world) {
-		if(!pwe)return getBalance(name);
-		return API.getUser(name).getDouble("scr.economy."+world);
+		if (!pwe)
+			return getBalance(name);
+		return API.getUser(name).getDouble("scr.economy." + world);
 	}
 
 	@Override
@@ -127,9 +121,10 @@ public class ScrEconomy extends AbstractEconomy {
 
 	@Override
 	public EconomyResponse withdrawPlayer(String name, double balance) {
-		if(balance < 0)
+		if (balance < 0)
 			return new EconomyResponse(balance, getBalance(name), ResponseType.FAILURE, "Withdraw balance must be higher or equals to 0.");
-		if(pwe)return withdrawPlayer(name, economyGroup(API.getUser(name).getString("disconnectWorld")), balance);
+		if (pwe)
+			return withdrawPlayer(name, economyGroup(API.getUser(name).getString("disconnectWorld")), balance);
 		Config user = API.getUser(name);
 		double playerBal = user.getDouble("scr.economy") - balance;
 		user.set("scr.economy", playerBal);
@@ -139,22 +134,24 @@ public class ScrEconomy extends AbstractEconomy {
 
 	@Override
 	public EconomyResponse withdrawPlayer(String name, String world, double balance) {
-		if(balance < 0)
+		if (balance < 0)
 			return new EconomyResponse(balance, getBalance(name), ResponseType.FAILURE, "Withdraw balance must be higher or equals to 0.");
-		if(!pwe)return withdrawPlayer(name, balance);
+		if (!pwe)
+			return withdrawPlayer(name, balance);
 		Config user = API.getUser(name);
 		String group = economyGroup(world);
-		double playerBal = user.getDouble("scr.economy."+group) - balance;
-		user.set("scr.economy."+group, playerBal);
+		double playerBal = user.getDouble("scr.economy." + group) - balance;
+		user.set("scr.economy." + group, playerBal);
 		user.save();
 		return new EconomyResponse(balance, getBalance(name), ResponseType.SUCCESS, "");
 	}
 
 	@Override
 	public EconomyResponse depositPlayer(String name, double balance) {
-		if(balance < 0)
+		if (balance < 0)
 			return new EconomyResponse(balance, getBalance(name), ResponseType.FAILURE, "Deposit balance must be higher or equals to 0.");
-		if(pwe)return depositPlayer(name, API.getUser(name).getString("disconnectWorld"), balance);
+		if (pwe)
+			return depositPlayer(name, API.getUser(name).getString("disconnectWorld"), balance);
 		Config user = API.getUser(name);
 		double playerBal = user.getDouble("scr.economy") + balance;
 		user.set("scr.economy", playerBal);
@@ -164,13 +161,14 @@ public class ScrEconomy extends AbstractEconomy {
 
 	@Override
 	public EconomyResponse depositPlayer(String name, String world, double balance) {
-		if(balance < 0)
+		if (balance < 0)
 			return new EconomyResponse(balance, getBalance(name), ResponseType.FAILURE, "Deposit balance must be higher or equals to 0.");
-		if(!pwe)return depositPlayer(name, balance);
+		if (!pwe)
+			return depositPlayer(name, balance);
 		Config user = API.getUser(name);
 		String group = economyGroup(world);
-		double playerBal = user.getDouble("scr.economy."+group) + balance;
-		user.set("scr.economy."+group, playerBal);
+		double playerBal = user.getDouble("scr.economy." + group) + balance;
+		user.set("scr.economy." + group, playerBal);
 		user.save();
 		return new EconomyResponse(balance, playerBal, ResponseType.SUCCESS, "");
 	}
@@ -223,9 +221,8 @@ public class ScrEconomy extends AbstractEconomy {
 	@Override
 	public boolean createPlayerAccount(String name) {
 		Config user = API.getUser(name);
-		if(user.existsKey("scr.economy")) {
+		if (user.existsKey("scr.economy"))
 			return false;
-		}
 		user.set("scr.economy", startingMoney(name, null));
 		user.save();
 		return true;
@@ -233,82 +230,82 @@ public class ScrEconomy extends AbstractEconomy {
 
 	@Override
 	public boolean createPlayerAccount(String name, String world) {
-		if(!pwe)return createPlayerAccount(name);
+		if (!pwe)
+			return createPlayerAccount(name);
 		Config user = API.getUser(name);
-		if(user.existsKey("scr.economy."+world)) {
+		if (user.existsKey("scr.economy." + world))
 			return false;
-		}
-		user.set("scr.economy."+world, startingMoney(name, world));
+		user.set("scr.economy." + world, startingMoney(name, world));
 		user.save();
 		return true;
 	}
 
 	private double startingMoney(String name, String world) {
-		if(pwe && world!=null) {
-			return config.getDouble("startingMoney.perWorld."+economyGroup(world));
-		}
+		if (pwe && world != null)
+			return config.getDouble("startingMoney.perWorld." + economyGroup(world));
 		return config.getDouble("startingMoney.default");
 	}
 
 	private String economyGroup(String world) {
-		for(String group : config.getKeys("perWorldEconomy.groups"))
-			if(config.getStringList("perWorldEconomy.groups."+group).contains(world))
+		for (String group : config.getKeys("perWorldEconomy.groups"))
+			if (config.getStringList("perWorldEconomy.groups." + group).contains(world))
 				return group;
 		return "default";
 	}
-	
+
 	public static double balanceFromString(String text) {
 		double has = 0;
 		Matcher m = moneyPattern.matcher(text);
-		while(m.find())
-			has+=StringUtils.getDouble(m.group(1))*getMultiply(m.group(2));
-		if(has==0)has=StringUtils.getDouble(text);
+		while (m.find())
+			has += ParseUtils.getDouble(m.group(1)) * getMultiply(m.group(2));
+		if (has == 0)
+			has = ParseUtils.getDouble(text);
 		return has;
 	}
-	
+
 	private static double getMultiply(String name) {
-    	switch(name) {
-    	case "k":
-    		return 1000;
-    	case "m":
-    		return 1000000;
-    	case "b":
-    		return 1.0E9;
-    	case "t":
-    		return 1.0E12;
-    	case "qua":
-    		return 1.0E15;
-    	case "qui":
-    		return 1.0E18;
-    	case "sex": //No, it's not "sex"...
-    		return 1.0E21;
-    	case "sep":
-    		return 1.0E24;
-    	case "oct":
-    		return 1.0E27;
-    	case "non":
-    		return 1.0E30;
-    	case "dec":
-    		return 1.0E33;
-    	case "und":
-    		return 1.0E36;
-    	case "duo":
-    		return 1.0E39;
-    	case "tre":
-    		return 1.0E42;
-    	case "QUA":
-    		return 1.0E45;
-    	case "QUI":
-    		return 1.0E48;
-    	case "SED":
-    		return 1.0E51;
-    	case "SEP":
-    		return 1.0E54;
-    	case "OCT":
-    		return 1.0E57;
-    	case "NOV":
-    		return 1.0E60;
-    	}
-    	return 1;
-    }
+		switch (name) {
+		case "k":
+			return 1000;
+		case "m":
+			return 1000000;
+		case "b":
+			return 1.0E9;
+		case "t":
+			return 1.0E12;
+		case "qua":
+			return 1.0E15;
+		case "qui":
+			return 1.0E18;
+		case "sex": // No, it's not "sex"...
+			return 1.0E21;
+		case "sep":
+			return 1.0E24;
+		case "oct":
+			return 1.0E27;
+		case "non":
+			return 1.0E30;
+		case "dec":
+			return 1.0E33;
+		case "und":
+			return 1.0E36;
+		case "duo":
+			return 1.0E39;
+		case "tre":
+			return 1.0E42;
+		case "QUA":
+			return 1.0E45;
+		case "QUI":
+			return 1.0E48;
+		case "SED":
+			return 1.0E51;
+		case "SEP":
+			return 1.0E54;
+		case "OCT":
+			return 1.0E57;
+		case "NOV":
+			return 1.0E60;
+		}
+		return 1;
+	}
 }

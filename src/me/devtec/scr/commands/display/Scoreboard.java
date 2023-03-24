@@ -10,7 +10,7 @@ import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ParseUtils;
 
 public class Scoreboard implements ScrCommand {
 
@@ -46,7 +46,7 @@ public class Scoreboard implements ScrCommand {
 		}).first().selector(Selector.BOOLEAN, (s, structure, args) -> { // cmd [boolean]
 			if (s instanceof Player) {
 				Player player = (Player) s;
-				if (StringUtils.getBoolean(args[0])) {
+				if (ParseUtils.getBoolean(args[0])) {
 					msgSec(s, "enabled", Placeholders.c().addPlayer("player", player));
 					Loader.plugin.scoreboard.hidden.remove(player.getUniqueId());
 				} else {
@@ -61,7 +61,7 @@ public class Scoreboard implements ScrCommand {
 		}).argument("-s", (s, structure, args) -> { // cmd [boolean] -s
 			if (s instanceof Player) {
 				Player player = (Player) s;
-				if (StringUtils.getBoolean(args[0]))
+				if (ParseUtils.getBoolean(args[0]))
 					Loader.plugin.scoreboard.hidden.remove(player.getUniqueId());
 				else if (!Loader.plugin.scoreboard.hidden.contains(player.getUniqueId())) {
 					Loader.plugin.scoreboard.hidden.add(player.getUniqueId());
@@ -97,7 +97,7 @@ public class Scoreboard implements ScrCommand {
 				} else
 					Loader.plugin.scoreboard.hidden.remove(s.getUniqueId());
 		}).parent().selector(Selector.BOOLEAN, (sender, structure, args) -> { // cmd [entity_selector] [boolean]
-			boolean status = StringUtils.getBoolean(args[1]);
+			boolean status = ParseUtils.getBoolean(args[1]);
 			for (Player s : playerSelectors(sender, args[0]))
 				if (status) {
 					if (sender.equals(s))
@@ -120,7 +120,7 @@ public class Scoreboard implements ScrCommand {
 					}
 				}
 		}).argument("-s", (sender, structure, args) -> { // cmd [entity_selector] [boolean] -s
-			boolean status = StringUtils.getBoolean(args[1]);
+			boolean status = ParseUtils.getBoolean(args[1]);
 			for (Player s : playerSelectors(sender, args[0]))
 				if (status)
 					Loader.plugin.scoreboard.hidden.remove(s.getUniqueId());

@@ -12,7 +12,7 @@ import me.devtec.scr.commands.ScrCommand;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.dataholder.Config;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.TimeUtils;
 
 public class Seen implements ScrCommand {
 
@@ -21,7 +21,7 @@ public class Seen implements ScrCommand {
 		CommandStructure.create(CommandSender.class, PERMS_CHECKER, (s, structure, args) -> {
 			if (s instanceof Player) {
 				long time = API.getUser((Player) s).seen();
-				msgSec(s, "online", Placeholders.c().add("time", StringUtils.timeToString(time)).addPlayer("player", s));
+				msgSec(s, "online", Placeholders.c().add("time", TimeUtils.timeToString(time)).addPlayer("player", s));
 			} else
 				help(s, "usage");
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // seen
@@ -29,13 +29,13 @@ public class Seen implements ScrCommand {
 					Config user = me.devtec.shared.API.getUser(args[0]);
 					if (user.exists("lastLeave")) {
 						long time = API.getUser(args[0]).seen();
-						msgSec(s, "offline", Placeholders.c().add("time", StringUtils.timeToString(time)).addOffline("player", args[0]));
+						msgSec(s, "offline", Placeholders.c().add("time", TimeUtils.timeToString(time)).addOffline("player", args[0]));
 					} else
 						msg(s, "missing.playerDontExist", Placeholders.c().addOffline("player", args[0]));
 				}).selector(Selector.PLAYER, (s, structure, args) -> { // seen [player]
 					Player p = Bukkit.getPlayer(args[0]);
 					long time = API.getUser(p).seen();
-					msgSec(s, "online", Placeholders.c().add("time", StringUtils.timeToString(time)).addPlayer("player", p));
+					msgSec(s, "online", Placeholders.c().add("time", TimeUtils.timeToString(time)).addPlayer("player", p));
 
 				}).permission(permission("other")) // seen [player]
 

@@ -17,11 +17,11 @@ import me.devtec.scr.api.ScrEconomy;
 import me.devtec.scr.api.User;
 import me.devtec.scr.commands.info.AFK;
 import me.devtec.scr.commands.info.Ping;
-import me.devtec.scr.commands.server_managment.Memory;
 import me.devtec.scr.commands.server_managment.TPS;
 import me.devtec.scr.commands.server_managment.TPS.TPSType;
 import me.devtec.scr.commands.teleport.home.HomeManager;
 import me.devtec.shared.placeholders.PlaceholderAPI;
+import me.devtec.shared.utility.MemoryAPI;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.shared.utility.StringUtils.FormatType;
 import net.milkbowl.vault.economy.Economy;
@@ -167,11 +167,11 @@ public class PlaceholderAPISupport {
 			// %tps_5%
 			// %tps_15%
 			if (text.contains("%ram_free%"))
-				placeholders.add("ram_free", Memory.getFreeMemory(Loader.config.getBoolean("options.ram-percentage")));
+				placeholders.add("ram_free", MemoryAPI.getFreeMemory(Loader.config.getBoolean("options.ram-percentage")));
 			if (text.contains("%ram_max%"))
-				placeholders.add("ram_max", Memory.getMaxMemory());
+				placeholders.add("ram_max", MemoryAPI.getMaxMemory());
 			if (text.contains("%ram_used%"))
-				placeholders.add("ram_used", Memory.getUsedMemory(Loader.config.getBoolean("options.ram-percentage")));
+				placeholders.add("ram_used", MemoryAPI.getUsedMemory(Loader.config.getBoolean("options.ram-percentage")));
 
 			if (text.contains("%tps%"))
 				placeholders.add("tps", TPS.getServerTPS());

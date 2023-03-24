@@ -13,7 +13,7 @@ import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ParseUtils;
 import me.devtec.theapi.bukkit.game.EnchantmentAPI;
 
 public class Enchant implements ScrCommand {
@@ -45,10 +45,10 @@ public class Enchant implements ScrCommand {
 			}
 			msgSec(s, "self", Placeholders.c().addPlayer("player", s).addPlayer("target", target).add("enchantment", args[0].toUpperCase()).add("level", args[1]));
 			ItemStack stack = target.getItemInHand();
-			if (StringUtils.getInt(args[1]) == 0)
+			if (ParseUtils.getInt(args[1]) == 0)
 				stack.removeEnchantment(EnchantmentAPI.byName(args[0].toUpperCase()).getEnchantment());
 			else
-				stack.addUnsafeEnchantment(EnchantmentAPI.byName(args[0].toUpperCase()).getEnchantment(), StringUtils.getInt(args[1]));
+				stack.addUnsafeEnchantment(EnchantmentAPI.byName(args[0].toUpperCase()).getEnchantment(), ParseUtils.getInt(args[1]));
 			target.setItemInHand(stack);
 		}).argument("-s", (s, structure, args) -> {
 			if (!(s instanceof Player)) {
@@ -61,13 +61,13 @@ public class Enchant implements ScrCommand {
 				return;
 			}
 			ItemStack stack = target.getItemInHand();
-			if (StringUtils.getInt(args[1]) == 0)
+			if (ParseUtils.getInt(args[1]) == 0)
 				stack.removeEnchantment(EnchantmentAPI.byName(args[0].toUpperCase()).getEnchantment());
 			else
-				stack.addUnsafeEnchantment(EnchantmentAPI.byName(args[0].toUpperCase()).getEnchantment(), StringUtils.getInt(args[1]));
+				stack.addUnsafeEnchantment(EnchantmentAPI.byName(args[0].toUpperCase()).getEnchantment(), ParseUtils.getInt(args[1]));
 			target.setItemInHand(stack);
 		}).first() // enchant
-				// for all
+					// for all
 				.selector(Selector.PLAYER, (s, structure, args) -> { // enchant {player}
 					help(s, "usage");
 				}).permission(permission("other")).callableArgument((s, structure, args) -> enchants, (s, structure, args) -> { // enchant {player} [enchant]
@@ -81,10 +81,10 @@ public class Enchant implements ScrCommand {
 					msgSec(s, "other.sender", Placeholders.c().addPlayer("player", s).addPlayer("target", target).add("enchantment", args[1].toUpperCase()).add("level", args[2]));
 					msgSec(target, "other.receiver", Placeholders.c().addPlayer("player", target).addPlayer("target", s).add("enchantment", args[1].toUpperCase()).add("level", args[2]));
 					ItemStack stack = target.getItemInHand();
-					if (StringUtils.getInt(args[2]) == 0)
+					if (ParseUtils.getInt(args[2]) == 0)
 						stack.removeEnchantment(EnchantmentAPI.byName(args[1].toUpperCase()).getEnchantment());
 					else
-						stack.addUnsafeEnchantment(EnchantmentAPI.byName(args[1].toUpperCase()).getEnchantment(), StringUtils.getInt(args[2]));
+						stack.addUnsafeEnchantment(EnchantmentAPI.byName(args[1].toUpperCase()).getEnchantment(), ParseUtils.getInt(args[2]));
 					target.setItemInHand(stack);
 				}).argument("-s", (s, structure, args) -> {
 					Player target = Bukkit.getPlayer(args[0]);
@@ -93,10 +93,10 @@ public class Enchant implements ScrCommand {
 						return;
 					}
 					ItemStack stack = target.getItemInHand();
-					if (StringUtils.getInt(args[2]) == 0)
+					if (ParseUtils.getInt(args[2]) == 0)
 						stack.removeEnchantment(EnchantmentAPI.byName(args[1].toUpperCase()).getEnchantment());
 					else
-						stack.addUnsafeEnchantment(EnchantmentAPI.byName(args[1].toUpperCase()).getEnchantment(), StringUtils.getInt(args[2]));
+						stack.addUnsafeEnchantment(EnchantmentAPI.byName(args[1].toUpperCase()).getEnchantment(), ParseUtils.getInt(args[2]));
 					target.setItemInHand(stack);
 				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}

@@ -15,7 +15,9 @@ import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.message.Sudo;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.dataholder.Config;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ColorUtils;
+import me.devtec.shared.utility.ParseUtils;
+import me.devtec.shared.utility.TimeUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 import me.devtec.theapi.bukkit.game.ItemMaker;
 import me.devtec.theapi.bukkit.gui.GUI.ClickType;
@@ -99,20 +101,20 @@ public class Layout {
 				String value = PlaceholderAPISupport.replace(config.getString(config_path + ".conditions." + con[0] + ".value"), s, true);
 				/*
 				 * if (con.length == 2 && con[1] != null && !con[1].isEmpty()) value =
-				 * args[StringUtils.getInt(con[1])];
+				 * args[ParseUtils.getInt(con[1])];
 				 */
 
 				for (String positive : config.getStringList(config_path + ".conditions." + condition + ".positive")) {
 					// Bukkit.broadcastMessage(value+" ; "+positive);
-					if (positive.startsWith(">=") && StringUtils.getDouble(value) >= StringUtils.getDouble(positive.replace(">=", ""))
-							|| positive.startsWith("<=") && StringUtils.getDouble(value) <= StringUtils.getDouble(positive.replace("<=", "")))
+					if (positive.startsWith(">=") && ParseUtils.getDouble(value) >= ParseUtils.getDouble(positive.replace(">=", ""))
+							|| positive.startsWith("<=") && ParseUtils.getDouble(value) <= ParseUtils.getDouble(positive.replace("<=", "")))
 						return true;
-					if (positive.startsWith(">") && !positive.startsWith(">=") && StringUtils.getDouble(value) > StringUtils.getDouble(positive.replace(">", "")))
+					if (positive.startsWith(">") && !positive.startsWith(">=") && ParseUtils.getDouble(value) > ParseUtils.getDouble(positive.replace(">", "")))
 						return true;
-					if (positive.startsWith("<") && !positive.startsWith("<=") && StringUtils.getDouble(value) < StringUtils.getDouble(positive.replace("<", "")))
+					if (positive.startsWith("<") && !positive.startsWith("<=") && ParseUtils.getDouble(value) < ParseUtils.getDouble(positive.replace("<", "")))
 						return true;
-					if (positive.startsWith("=") && StringUtils.getDouble(value) == StringUtils.getDouble(positive.replace("=", ""))
-							|| positive.startsWith("==") && StringUtils.getDouble(value) == StringUtils.getDouble(positive.replace("==", "")))
+					if (positive.startsWith("=") && ParseUtils.getDouble(value) == ParseUtils.getDouble(positive.replace("=", ""))
+							|| positive.startsWith("==") && ParseUtils.getDouble(value) == ParseUtils.getDouble(positive.replace("==", "")))
 						return true;
 					if (value.equalsIgnoreCase(positive))
 						return true;
@@ -230,7 +232,7 @@ public class Layout {
 
 		private void msg(CommandSender s, String message, Placeholders placeholders) {
 			String text = message;
-			text = StringUtils.colorize(MessageUtils.placeholder(s, text, placeholders));
+			text = ColorUtils.colorize(MessageUtils.placeholder(s, text, placeholders));
 			String lastcolor = null;
 			for (String line : text.replace("\\n", "\n").split("\n")) {
 				if (lastcolor != null && lastcolor.length() == 1)
@@ -239,8 +241,8 @@ public class Layout {
 					lastcolor = "&" + lastcolor;
 					lastcolor = lastcolor.replace("&x", "#");
 				}
-				s.sendMessage(StringUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, s, true, null)));
-				lastcolor = StringUtils.getLastColors(StringUtils.colorize(line));
+				s.sendMessage(ColorUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, s, true, null)));
+				lastcolor = ColorUtils.getLastColors(ColorUtils.colorize(line));
 			}
 		}
 
@@ -261,7 +263,7 @@ public class Layout {
 					return notupdated;
 				long updateAfter = 900;
 				if (config.exists("update"))
-					updateAfter = StringUtils.timeFromString(config.getString(path + ".update"));
+					updateAfter = TimeUtils.timeFromString(config.getString(path + ".update"));
 				if (lastUpdate - System.currentTimeMillis() / 1000 + updateAfter >= 0)
 					return notupdated;
 			}

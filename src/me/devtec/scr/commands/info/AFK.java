@@ -20,7 +20,9 @@ import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.scheduler.Scheduler;
 import me.devtec.shared.scheduler.Tasker;
+import me.devtec.shared.utility.ColorUtils;
 import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.TimeUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class AFK implements ScrCommand {
@@ -137,10 +139,10 @@ public class AFK implements ScrCommand {
 
 					long start = players.get(player);
 					// if (expired)
-					if (start - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(Loader.config.getString("options.afk.times.autoKick")) <= 0)
+					if (start - System.currentTimeMillis() / 1000 + TimeUtils.timeFromString(Loader.config.getString("options.afk.times.autoKick")) <= 0)
 						for (String cmd : Loader.config.getStringList("options.afk.actions.onKick"))
 							BukkitLoader.getNmsProvider().postToMainThread(() -> {
-								Sudo.sudoConsole(SudoType.COMMAND, StringUtils.colorize(PlaceholderAPISupport.replace(cmd, Bukkit.getPlayer(player), null)));
+								Sudo.sudoConsole(SudoType.COMMAND, ColorUtils.colorize(PlaceholderAPISupport.replace(cmd, Bukkit.getPlayer(player), null)));
 							});
 				}
 				for (String player : last_interaction.keySet()) {
@@ -152,11 +154,11 @@ public class AFK implements ScrCommand {
 					if (players.containsKey(player))
 						continue;
 					long last = last_interaction.get(player);
-					if (last - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(Loader.config.getString("options.afk.times.autoAFK")) <= 0) {
+					if (last - System.currentTimeMillis() / 1000 + TimeUtils.timeFromString(Loader.config.getString("options.afk.times.autoAFK")) <= 0) {
 						// cmds
 						for (String cmd : Loader.config.getStringList("options.afk.actions.onStart"))
 							BukkitLoader.getNmsProvider().postToMainThread(() -> {
-								Sudo.sudoConsole(SudoType.COMMAND, StringUtils.colorize(PlaceholderAPISupport.replace(cmd, Bukkit.getPlayer(player), null)));
+								Sudo.sudoConsole(SudoType.COMMAND, ColorUtils.colorize(PlaceholderAPISupport.replace(cmd, Bukkit.getPlayer(player), null)));
 							});
 						// AFK on
 						players.put(p.getName(), System.currentTimeMillis() / 1000);

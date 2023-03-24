@@ -17,7 +17,7 @@ import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.scheduler.Tasker;
 import me.devtec.shared.sorting.SortingAPI;
 import me.devtec.shared.sorting.SortingAPI.ComparableObject;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ParseUtils;
 
 public class BalanceTop implements ScrCommand {
 	private static ComparableObject<UUID, Double>[] ranking;
@@ -39,11 +39,11 @@ public class BalanceTop implements ScrCommand {
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")).fallback((s, structure, args) -> {
 			msgSec(s, "invalidPage", Placeholders.c().replace("page", args[0]));
 		}).selector(Selector.INTEGER, (s, structure, args) -> { // cmd [integer]
-			if (StringUtils.getInt(args[0]) - 1 < 0) {
+			if (ParseUtils.getInt(args[0]) - 1 < 0) {
 				msgSec(s, "invalidPage", Placeholders.c().replace("page", args[0]));
 				return;
 			}
-			listBaltop(s, StringUtils.getInt(args[0]) - 1);
+			listBaltop(s, ParseUtils.getInt(args[0]) - 1);
 		}).parent().argument("last", (s, structure, args) -> { // cmd last
 			listBaltop(s, Math.max(0, ranking.length / 10));
 		}).build().register(cmds.remove(0), cmds.toArray(new String[0]));

@@ -13,7 +13,8 @@ import me.devtec.scr.utils.ISuser;
 import me.devtec.shared.API;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.dataholder.cache.TempList;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ColorUtils;
+import me.devtec.shared.utility.TimeUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class User implements ISuser {
@@ -83,7 +84,7 @@ public class User implements ISuser {
 
 	@Override
 	public void setNickname(String nick) {
-		nickname = StringUtils.colorize(nick);
+		nickname = ColorUtils.colorize(nick);
 		userFile.set("nickname", nick);
 		Player online = getPlayer();
 		if (online != null)
@@ -101,12 +102,12 @@ public class User implements ISuser {
 
 	@Override
 	public boolean cooldownExpired(String cooldownpath, String cooldowntime) {
-		return hasPerm("scr.bypass.cooldowns", false) || userFile.getLong("cooldowns." + cooldownpath) - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(cooldowntime) <= 0;
+		return hasPerm("scr.bypass.cooldowns", false) || userFile.getLong("cooldowns." + cooldownpath) - System.currentTimeMillis() / 1000 + TimeUtils.timeFromString(cooldowntime) <= 0;
 	}
 
 	@Override
 	public long cooldownExpire(String cooldownpath, String cooldowntime) {
-		return userFile.getLong("cooldowns." + cooldownpath) - System.currentTimeMillis() / 1000 + StringUtils.timeFromString(cooldowntime);
+		return userFile.getLong("cooldowns." + cooldownpath) - System.currentTimeMillis() / 1000 + TimeUtils.timeFromString(cooldowntime);
 	}
 
 	@Override
@@ -151,7 +152,7 @@ public class User implements ISuser {
 		if (isEvent)
 			userFile.set("lastLeave", System.currentTimeMillis() / 1000);
 		if (requests == null)
-			requests = new TempList<TeleportRequest>(20 * Math.max(StringUtils.timeFromString(Loader.config.getString("options.tp-accept_cooldown")), 5)).setCallback(req -> {
+			requests = new TempList<TeleportRequest>(20 * Math.max(TimeUtils.timeFromString(Loader.config.getString("options.tp-accept_cooldown")), 5)).setCallback(req -> {
 				req.timeout();
 			});
 		if (sentRequests == null)

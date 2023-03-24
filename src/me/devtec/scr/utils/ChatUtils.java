@@ -16,7 +16,7 @@ import me.devtec.scr.commands.message.Sudo.SudoType;
 import me.devtec.shared.Ref;
 import me.devtec.shared.components.ComponentAPI;
 import me.devtec.shared.dataholder.Config;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ColorUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 import me.devtec.theapi.bukkit.nms.NmsProvider.TitleAction;
 
@@ -90,7 +90,7 @@ public class ChatUtils {
 					if (split.length == 0) // Just Player
 						return notificationColor + player.getName();
 
-					String lastColors = StringUtils.getLastColors(split[0]);
+					String lastColors = ColorUtils.getLastColors(split[0]);
 					if (lastColors.isEmpty())
 						lastColors = "§f";
 					else {
@@ -102,7 +102,7 @@ public class ChatUtils {
 					StringBuilder builder = new StringBuilder(split[0]);
 					for (int i = 1; i < split.length; ++i) {
 						builder.append(notificationColor).append(player.getName()).append(lastColors).append(split[i]);
-						lastColors = StringUtils.getLastColors(lastColors + split[i]);
+						lastColors = ColorUtils.getLastColors(lastColors + split[i]);
 						if (lastColors.isEmpty())
 							lastColors = "&f";
 						else {
@@ -159,14 +159,14 @@ public class ChatUtils {
 				firstLine = ""; // Just in case...
 			if (firstLine != null && nextLine == null || !firstLine.isEmpty() && nextLine.isEmpty())
 				nextLine = "";
-			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.TITLE, ComponentAPI.fromString(StringUtils.colorize(firstLine))));
-			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.SUBTITLE, ComponentAPI.fromString(StringUtils.colorize(nextLine))));
+			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.TITLE, ComponentAPI.fromString(ColorUtils.colorize(firstLine))));
+			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.SUBTITLE, ComponentAPI.fromString(ColorUtils.colorize(nextLine))));
 		}
 
 		public static void sendActionBar(Player p, String text) {
 			if (text == null || text.isEmpty())
 				return;
-			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.ACTIONBAR, ComponentAPI.fromString(StringUtils.colorize(text)), 10, 20, 10));
+			BukkitLoader.getPacketHandler().send(p, BukkitLoader.getNmsProvider().packetTitle(TitleAction.ACTIONBAR, ComponentAPI.fromString(ColorUtils.colorize(text)), 10, 20, 10));
 		}
 	}
 
@@ -185,19 +185,19 @@ public class ChatUtils {
 				b = b.replaceAll("&([l-oL-orR])", "§$1");
 			if (Loader.config.getString("options.colors." + p + ".magic").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".magic")))
 				b = b.replaceAll("&[kK]", "§k");
-			if (Ref.isNewerThan(15) && StringUtils.color != null) {
+			if (Ref.isNewerThan(15) && ColorUtils.color != null) {
 				if (Loader.config.getString("options.colors." + p + ".gradient").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".gradient")))
-					b = StringUtils.gradient(b, ignored);
+					b = ColorUtils.gradient(b, ignored);
 				if ((b.contains("#") || b.contains("&x"))
 						&& (Loader.config.getString("options.colors." + p + ".hex").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".hex")))) {
 					b = b.replaceAll("&[xX]", "§x");
 					if (b.contains("#"))
-						b = StringUtils.color.replaceHex(b);
+						b = ColorUtils.color.replaceHex(b);
 				}
 			}
 			if (b.toLowerCase().contains("&u")
 					&& (Loader.config.getString("options.colors." + p + ".rainbow").equals("") || dr.hasPermission(Loader.config.getString("options.colors." + p + ".rainbow"))))
-				b = StringUtils.color.rainbow(b, StringUtils.color.generateColor(), StringUtils.color.generateColor(), ignored);
+				b = ColorUtils.color.rainbow(b, ColorUtils.color.generateColor(), ColorUtils.color.generateColor(), ignored);
 			return b;
 		}
 	}

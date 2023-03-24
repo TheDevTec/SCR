@@ -14,7 +14,7 @@ import me.devtec.scr.commands.kits.KitUtils.Kit;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
 import me.devtec.shared.dataholder.Config;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ParseUtils;
 
 public class KitEditor implements ScrCommand {
 
@@ -72,7 +72,7 @@ public class KitEditor implements ScrCommand {
 					me.devtec.scr.commands.kits.KitUtils.Kit kit = KitUtils.loaded_kits.get(args[1]);
 					if (kit != null) {
 						String id = args[3];
-						if (StringUtils.isNumber(id)) {
+						if (ParseUtils.isNumber(id)) {
 							msg(s, "missing.useWords");
 							return;
 						}
@@ -97,7 +97,7 @@ public class KitEditor implements ScrCommand {
 				}).selector(Selector.INTEGER, (s, structure, args) -> { // cmd item [kit] set [slot]
 					me.devtec.scr.commands.kits.KitUtils.Kit kit = KitUtils.loaded_kits.get(args[1]);
 					if (kit != null) {
-						int slot = StringUtils.getInt(args[3]);
+						int slot = ParseUtils.getInt(args[3]);
 						if (kit.config.exists("items.set." + slot)) { // if item already exist in kit
 							msgSec(s, "item.exist", Placeholders.c().add("kit", kit.displayName()).add("kit_name", kit.getName()).add("item", slot));
 							return;
@@ -120,8 +120,8 @@ public class KitEditor implements ScrCommand {
 				.callableArgument((s, structure, args) -> KitUtils.loaded_kits.get(args[1]).getItems(), (s, structure, args) -> {
 					Kit kit = KitUtils.loaded_kits.get(args[1]);
 					String id = args[3];
-					if (StringUtils.isNumber(id)) { // items.set
-						int slot = StringUtils.getInt(id);
+					if (ParseUtils.isInt(id)) { // items.set
+						int slot = ParseUtils.getInt(id);
 						kit.config.remove("items.set." + slot);
 						kit.config.save();
 						msgSec(s, "item.remove", Placeholders.c().add("item", slot));

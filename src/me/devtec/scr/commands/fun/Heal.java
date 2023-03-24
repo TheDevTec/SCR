@@ -12,7 +12,7 @@ import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ParseUtils;
 
 public class Heal implements ScrCommand {
 
@@ -47,7 +47,7 @@ public class Heal implements ScrCommand {
 				}).selector(Selector.NUMBER, (s, structure, args) -> { // heal {level}
 					if (s instanceof Player) {
 						Player p = (Player) s;
-						double level = StringUtils.getDouble(args[0]);
+						double level = ParseUtils.getDouble(args[0]);
 						if (level < 0)
 							level = 0;
 						if (level > 20)
@@ -68,7 +68,7 @@ public class Heal implements ScrCommand {
 				}).permission(permission("heal_level")).argument("-s", (s, structure, args) -> { // heal {level} -s
 					if (s instanceof Player) {
 						Player p = (Player) s;
-						double level = StringUtils.getDouble(args[0]);
+						double level = ParseUtils.getDouble(args[0]);
 						if (level < 0)
 							level = 0;
 						if (level > 20)
@@ -108,7 +108,7 @@ public class Heal implements ScrCommand {
 					msg(s, "missing.number", Placeholders.c().replace("number", args[0]));
 				}).selector(Selector.NUMBER, (s, structure, args) -> { // heal [player] {level}
 					for (Player p : playerSelectors(s, args[0])) {
-						double level = StringUtils.getDouble(args[1]);
+						double level = ParseUtils.getDouble(args[1]);
 						if (level < 0)
 							level = 0;
 						if (level > 20)
@@ -128,7 +128,7 @@ public class Heal implements ScrCommand {
 					return list;
 				}).permission(permission("heal_level")).argument("-s", (s, structure, args) -> { // heal [player] {level} -s
 					for (Player p : playerSelectors(s, args[0])) {
-						double level = StringUtils.getDouble(args[1]);
+						double level = ParseUtils.getDouble(args[1]);
 						if (level < 0)
 							level = 0;
 						if (level > 20)

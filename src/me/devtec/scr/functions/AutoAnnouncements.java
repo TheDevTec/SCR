@@ -10,7 +10,7 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils;
 import me.devtec.shared.scheduler.Scheduler;
 import me.devtec.shared.scheduler.Tasker;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.TimeUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class AutoAnnouncements {
@@ -26,7 +26,7 @@ public class AutoAnnouncements {
 		if (!Loader.config.getBoolean("autoAnnouncements.enabled"))
 			return;
 
-		long time = StringUtils.timeFromString(Loader.config.getString("autoAnnouncements.interval"));
+		long time = TimeUtils.timeFromString(Loader.config.getString("autoAnnouncements.interval"));
 		list = Loader.config.getStringList("autoAnnouncements.messages");
 		line = 0;
 

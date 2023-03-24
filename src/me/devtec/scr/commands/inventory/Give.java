@@ -11,6 +11,7 @@ import me.devtec.scr.MessageUtils.Placeholders;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
+import me.devtec.shared.utility.ParseUtils;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 import me.devtec.theapi.bukkit.xseries.XMaterial;
@@ -40,23 +41,23 @@ public class Give implements ScrCommand {
 					msg(s, "missing.number", Placeholders.c().replace("number", args[2]));
 				}).selector(Selector.INTEGER, (s, structure, args) -> { // give [player] [material] [amount]
 					ItemStack item = XMaterial.matchXMaterial(args[1].toUpperCase()).get().parseItem();
-					item.setAmount(StringUtils.getInt(args[2]));
+					item.setAmount(ParseUtils.getInt(args[2]));
 
 					for (Player player : playerSelectors(s, args[0])) {
 						player.getInventory().addItem(item);
-						msgSec(s, "other.sender", Placeholders.c().addPlayer("target", player).add("item", args[1].toUpperCase()).add("amount", StringUtils.getInt(args[2])));
-						msgSec(player, "other.target", Placeholders.c().addPlayer("sender", s).add("item", args[1].toUpperCase()).add("amount", StringUtils.getInt(args[2])));
+						msgSec(s, "other.sender", Placeholders.c().addPlayer("target", player).add("item", args[1].toUpperCase()).add("amount", ParseUtils.getInt(args[2])));
+						msgSec(player, "other.target", Placeholders.c().addPlayer("sender", s).add("item", args[1].toUpperCase()).add("amount", ParseUtils.getInt(args[2])));
 					}
 				}).argument(null, -1, (s, structure, args) -> { // give [player] [material] [amount] [nbt]
 					ItemStack item = XMaterial.matchXMaterial(args[1].toUpperCase()).get().parseItem();
 					String nbt = StringUtils.join(args, " ", 3);
 					item = BukkitLoader.getNmsProvider().setNBT(item, nbt);
-					item.setAmount(StringUtils.getInt(args[2]));
+					item.setAmount(ParseUtils.getInt(args[2]));
 
 					for (Player player : playerSelectors(s, args[0])) {
 						player.getInventory().addItem(item);
-						msgSec(s, "other.sender-nbt", Placeholders.c().addPlayer("target", player).add("item", args[1].toUpperCase()).add("amount", StringUtils.getInt(args[2])).add("nbt", nbt));
-						msgSec(player, "other.target-nbt", Placeholders.c().addPlayer("sender", s).add("item", args[1].toUpperCase()).add("amount", StringUtils.getInt(args[2])).add("nbt", nbt));
+						msgSec(s, "other.sender-nbt", Placeholders.c().addPlayer("target", player).add("item", args[1].toUpperCase()).add("amount", ParseUtils.getInt(args[2])).add("nbt", nbt));
+						msgSec(player, "other.target-nbt", Placeholders.c().addPlayer("sender", s).add("item", args[1].toUpperCase()).add("amount", ParseUtils.getInt(args[2])).add("nbt", nbt));
 					}
 				}, (sender, structure, args) -> Arrays.asList("<nbt>")).first() // give
 				.fallback((s, structure, args) -> { // /give [material]
@@ -74,18 +75,18 @@ public class Give implements ScrCommand {
 					msg(s, "missing.number", Placeholders.c().replace("number", args[1]));
 				}).selector(Selector.INTEGER, (s, structure, args) -> { // give [material] [amount]
 					ItemStack item = XMaterial.matchXMaterial(args[0].toUpperCase()).get().parseItem();
-					item.setAmount(StringUtils.getInt(args[1]));
+					item.setAmount(ParseUtils.getInt(args[1]));
 
 					((Player) s).getInventory().addItem(item);
-					msgSec(s, "self", Placeholders.c().add("item", args[0].toUpperCase()).add("amount", StringUtils.getInt(args[1])));
+					msgSec(s, "self", Placeholders.c().add("item", args[0].toUpperCase()).add("amount", ParseUtils.getInt(args[1])));
 				}).argument(null, -1, (s, structure, args) -> { // give [material] [amount] [nbt]
 					ItemStack item = XMaterial.matchXMaterial(args[0].toUpperCase()).get().parseItem();
 					String nbt = StringUtils.join(args, " ", 2);
 					item = BukkitLoader.getNmsProvider().setNBT(item, nbt);
-					item.setAmount(StringUtils.getInt(args[1]));
+					item.setAmount(ParseUtils.getInt(args[1]));
 
 					((Player) s).getInventory().addItem(item);
-					msgSec(s, "self-nbt", Placeholders.c().add("item", args[0].toUpperCase()).add("amount", StringUtils.getInt(args[2])).add("nbt", nbt));
+					msgSec(s, "self-nbt", Placeholders.c().add("item", args[0].toUpperCase()).add("amount", ParseUtils.getInt(args[2])).add("nbt", nbt));
 				}, (sender, structure, args) -> Arrays.asList("<nbt>")).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 
 	}

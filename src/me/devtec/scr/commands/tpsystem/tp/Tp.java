@@ -14,6 +14,8 @@ import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.commands.tpsystem.TpSystem;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
+import me.devtec.shared.utility.MathUtils;
+import me.devtec.shared.utility.ParseUtils;
 import me.devtec.shared.utility.StringUtils;
 import me.devtec.shared.utility.StringUtils.FormatType;
 
@@ -50,27 +52,27 @@ public class Tp implements ScrCommand {
 						msgSec(p, "other-world.receiver", Placeholders.c().addPlayer("player", p).addPlayer("target", s).add("world", destination.getName()));
 					}
 				}).callableArgument((sender, structure, args) -> {
-					if (args[2].equals("~") || StringUtils.isNumber(args[2]) || args[2].matches("[~0-9.+-]+"))
+					if (args[2].equals("~") || ParseUtils.isNumber(args[2]) || args[2].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[2]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					help(s, "usage");
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getX())) : Arrays.asList("{x}"))
 				.callableArgument((sender, structure, args) -> {
-					if (args[3].equals("~") || StringUtils.isNumber(args[3]) || args[3].matches("[~0-9.+-]+"))
+					if (args[3].equals("~") || ParseUtils.isNumber(args[3]) || args[3].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[3]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					help(s, "usage");
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getY())) : Arrays.asList("{y}"))
 				.callableArgument((sender, structure, args) -> { // tp player world x y z
-					if (args[4].equals("~") || StringUtils.isNumber(args[4]) || args[4].matches("[~0-9.+-]+"))
+					if (args[4].equals("~") || ParseUtils.isNumber(args[4]) || args[4].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[4]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
-					Location destination = new Location(Bukkit.getWorld(args[1]), StringUtils.calculate(args[2].replace("~", ((Player) s).getLocation().getX() + "+0")),
-							StringUtils.calculate(args[3].replace("~", ((Player) s).getLocation().getY() + "+0")),
-							StringUtils.calculate(args[4].replace("~", ((Player) s).getLocation().getZ() + "+0")), ((Player) s).getLocation().getYaw(), ((Player) s).getLocation().getPitch());
+					Location destination = new Location(Bukkit.getWorld(args[1]), MathUtils.calculate(args[2].replace("~", ((Player) s).getLocation().getX() + "+0")),
+							MathUtils.calculate(args[3].replace("~", ((Player) s).getLocation().getY() + "+0")), MathUtils.calculate(args[4].replace("~", ((Player) s).getLocation().getZ() + "+0")),
+							((Player) s).getLocation().getYaw(), ((Player) s).getLocation().getPitch());
 					for (Player p : playerSelectors(s, args[0])) {
 						TpSystem.teleport(p, destination);
 						msgSec(s, "other-world-loc.sender",
@@ -86,22 +88,21 @@ public class Tp implements ScrCommand {
 					}
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getZ())) : Arrays.asList("{z}"))
 				.callableArgument((sender, structure, args) -> { // yaw
-					if (args[5].equals("~") || StringUtils.isNumber(args[5]) || args[5].matches("[~0-9.+-]+"))
+					if (args[5].equals("~") || ParseUtils.isNumber(args[5]) || args[5].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[5]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					help(s, "usage");
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getYaw())) : Arrays.asList("{yaw}"))
 				.callableArgument((sender, structure, args) -> { // pitch
-					if (args[6].equals("~") || StringUtils.isNumber(args[6]) || args[6].matches("[~0-9.+-]+"))
+					if (args[6].equals("~") || ParseUtils.isNumber(args[6]) || args[6].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[6]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
-					Location destination = new Location(Bukkit.getWorld(args[1]), StringUtils.calculate(args[2].replace("~", ((Player) s).getLocation().getX() + "+0")),
-							StringUtils.calculate(args[3].replace("~", ((Player) s).getLocation().getY() + "+0")),
-							StringUtils.calculate(args[4].replace("~", ((Player) s).getLocation().getZ() + "+0")),
-							(float) StringUtils.calculate(args[5].replace("~", ((Player) s).getLocation().getYaw() + "+0")),
-							(float) StringUtils.calculate(args[6].replace("~", ((Player) s).getLocation().getPitch() + "+0")));
+					Location destination = new Location(Bukkit.getWorld(args[1]), MathUtils.calculate(args[2].replace("~", ((Player) s).getLocation().getX() + "+0")),
+							MathUtils.calculate(args[3].replace("~", ((Player) s).getLocation().getY() + "+0")), MathUtils.calculate(args[4].replace("~", ((Player) s).getLocation().getZ() + "+0")),
+							(float) MathUtils.calculate(args[5].replace("~", ((Player) s).getLocation().getYaw() + "+0")),
+							(float) MathUtils.calculate(args[6].replace("~", ((Player) s).getLocation().getPitch() + "+0")));
 					for (Player p : playerSelectors(s, args[0])) {
 						TpSystem.teleport(p, destination);
 						msgSec(s, "other-world-loc.sender",
@@ -117,27 +118,27 @@ public class Tp implements ScrCommand {
 					}
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getPitch())) : Arrays.asList("{pitch}"))
 				.parent(6).callableArgument((sender, structure, args) -> {
-					if (args[1].equals("~") || StringUtils.isNumber(args[1]) || args[1].matches("[~0-9.+-]+"))
+					if (args[1].equals("~") || ParseUtils.isNumber(args[1]) || args[1].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[1]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					help(s, "usage");
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getX())) : Arrays.asList("{x}"))
 				.callableArgument((sender, structure, args) -> {
-					if (args[2].equals("~") || StringUtils.isNumber(args[2]) || args[2].matches("[~0-9.+-]+"))
+					if (args[2].equals("~") || ParseUtils.isNumber(args[2]) || args[2].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[2]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					help(s, "usage");
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getY())) : Arrays.asList("{y}"))
 				.callableArgument((sender, structure, args) -> { // tp player x y z
-					if (args[3].equals("~") || StringUtils.isNumber(args[3]) || args[3].matches("[~0-9.+-]+"))
+					if (args[3].equals("~") || ParseUtils.isNumber(args[3]) || args[3].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[3]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
-					Location destination = new Location(((Player) s).getWorld(), StringUtils.calculate(args[1].replace("~", ((Player) s).getLocation().getX() + "+0")),
-							StringUtils.calculate(args[2].replace("~", ((Player) s).getLocation().getY() + "+0")),
-							StringUtils.calculate(args[3].replace("~", ((Player) s).getLocation().getZ() + "+0")), ((Player) s).getLocation().getYaw(), ((Player) s).getLocation().getPitch());
+					Location destination = new Location(((Player) s).getWorld(), MathUtils.calculate(args[1].replace("~", ((Player) s).getLocation().getX() + "+0")),
+							MathUtils.calculate(args[2].replace("~", ((Player) s).getLocation().getY() + "+0")), MathUtils.calculate(args[3].replace("~", ((Player) s).getLocation().getZ() + "+0")),
+							((Player) s).getLocation().getYaw(), ((Player) s).getLocation().getPitch());
 					for (Player p : playerSelectors(s, args[0])) {
 						TpSystem.teleport(p, destination);
 						msgSec(s, "other-world-loc.sender",
@@ -153,22 +154,21 @@ public class Tp implements ScrCommand {
 					}
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getZ())) : Arrays.asList("{z}"))
 				.callableArgument((sender, structure, args) -> { // yaw
-					if (args[4].equals("~") || StringUtils.isNumber(args[4]) || args[4].matches("[~0-9.+-]+"))
+					if (args[4].equals("~") || ParseUtils.isNumber(args[4]) || args[4].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[4]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					help(s, "usage");
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getYaw())) : Arrays.asList("{yaw}"))
 				.callableArgument((sender, structure, args) -> { // pitch
-					if (args[5].equals("~") || StringUtils.isNumber(args[5]) || args[5].matches("[~0-9.+-]+"))
+					if (args[5].equals("~") || ParseUtils.isNumber(args[5]) || args[5].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[5]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
-					Location destination = new Location(((Player) s).getWorld(), StringUtils.calculate(args[1].replace("~", ((Player) s).getLocation().getX() + "+0")),
-							StringUtils.calculate(args[2].replace("~", ((Player) s).getLocation().getY() + "+0")),
-							StringUtils.calculate(args[3].replace("~", ((Player) s).getLocation().getZ() + "+0")),
-							(float) StringUtils.calculate(args[4].replace("~", ((Player) s).getLocation().getYaw() + "+0")),
-							(float) StringUtils.calculate(args[5].replace("~", ((Player) s).getLocation().getPitch() + "+0")));
+					Location destination = new Location(((Player) s).getWorld(), MathUtils.calculate(args[1].replace("~", ((Player) s).getLocation().getX() + "+0")),
+							MathUtils.calculate(args[2].replace("~", ((Player) s).getLocation().getY() + "+0")), MathUtils.calculate(args[3].replace("~", ((Player) s).getLocation().getZ() + "+0")),
+							(float) MathUtils.calculate(args[4].replace("~", ((Player) s).getLocation().getYaw() + "+0")),
+							(float) MathUtils.calculate(args[5].replace("~", ((Player) s).getLocation().getPitch() + "+0")));
 					for (Player p : playerSelectors(s, args[0])) {
 						TpSystem.teleport(p, destination);
 						msgSec(s, "other-world-loc.sender",
@@ -184,27 +184,27 @@ public class Tp implements ScrCommand {
 					}
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getPitch())) : Arrays.asList("{pitch}"))
 				.first().callableArgument((sender, structure, args) -> {
-					if (args[0].equals("~") || StringUtils.isNumber(args[0]) || args[0].matches("[~0-9.+-]+"))
+					if (args[0].equals("~") || ParseUtils.isNumber(args[0]) || args[0].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[0]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					help(s, "usage");
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getX())) : Arrays.asList("{x}"))
 				.callableArgument((sender, structure, args) -> {
-					if (args[1].equals("~") || StringUtils.isNumber(args[1]) || args[1].matches("[~0-9.+-]+"))
+					if (args[1].equals("~") || ParseUtils.isNumber(args[1]) || args[1].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[1]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					help(s, "usage");
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getY())) : Arrays.asList("{y}"))
 				.callableArgument((sender, structure, args) -> { // tp player x y z
-					if (args[2].equals("~") || StringUtils.isNumber(args[2]) || args[2].matches("[~0-9.+-]+"))
+					if (args[2].equals("~") || ParseUtils.isNumber(args[2]) || args[2].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[2]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					Player p = (Player) s;
-					Location destination = new Location(p.getWorld(), StringUtils.calculate(args[0].replace("~", p.getLocation().getX() + "+0")),
-							StringUtils.calculate(args[1].replace("~", p.getLocation().getY() + "+0")), StringUtils.calculate(args[2].replace("~", p.getLocation().getZ() + "+0")),
+					Location destination = new Location(p.getWorld(), MathUtils.calculate(args[0].replace("~", p.getLocation().getX() + "+0")),
+							MathUtils.calculate(args[1].replace("~", p.getLocation().getY() + "+0")), MathUtils.calculate(args[2].replace("~", p.getLocation().getZ() + "+0")),
 							p.getLocation().getYaw(), p.getLocation().getPitch());
 					TpSystem.teleport(p, destination);
 					msgSec(s, "self-world-loc",
@@ -213,22 +213,21 @@ public class Tp implements ScrCommand {
 									.add("yaw", StringUtils.formatDouble(FormatType.BASIC, destination.getYaw())).add("pitch", StringUtils.formatDouble(FormatType.BASIC, destination.getPitch())));
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getZ())) : Arrays.asList("{z}"))
 				.callableArgument((sender, structure, args) -> { // yaw
-					if (args[3].equals("~") || StringUtils.isNumber(args[3]) || args[3].matches("[~0-9.+-]+"))
+					if (args[3].equals("~") || ParseUtils.isNumber(args[3]) || args[3].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[3]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					help(s, "usage");
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getYaw())) : Arrays.asList("{yaw}"))
 				.callableArgument((sender, structure, args) -> { // pitch
-					if (args[4].equals("~") || StringUtils.isNumber(args[4]) || args[4].matches("[~0-9.+-]+"))
+					if (args[4].equals("~") || ParseUtils.isNumber(args[4]) || args[4].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[4]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					Player p = (Player) s;
-					Location destination = new Location(p.getWorld(), StringUtils.calculate(args[0].replace("~", p.getLocation().getX() + "+0")),
-							StringUtils.calculate(args[1].replace("~", p.getLocation().getY() + "+0")), StringUtils.calculate(args[2].replace("~", p.getLocation().getZ() + "+0")),
-							(float) StringUtils.calculate(args[3].replace("~", p.getLocation().getYaw() + "+0")),
-							(float) StringUtils.calculate(args[4].replace("~", p.getLocation().getPitch() + "+0")));
+					Location destination = new Location(p.getWorld(), MathUtils.calculate(args[0].replace("~", p.getLocation().getX() + "+0")),
+							MathUtils.calculate(args[1].replace("~", p.getLocation().getY() + "+0")), MathUtils.calculate(args[2].replace("~", p.getLocation().getZ() + "+0")),
+							(float) MathUtils.calculate(args[3].replace("~", p.getLocation().getYaw() + "+0")), (float) MathUtils.calculate(args[4].replace("~", p.getLocation().getPitch() + "+0")));
 					TpSystem.teleport(p, destination);
 					msgSec(s, "self-world-loc",
 							Placeholders.c().addPlayer("player", s).add("world", destination.getWorld().getName()).add("x", StringUtils.formatDouble(FormatType.BASIC, destination.getX()))
@@ -241,27 +240,27 @@ public class Tp implements ScrCommand {
 					TpSystem.teleport(p, destination.getSpawnLocation());
 					msgSec(s, "self-world", Placeholders.c().addPlayer("player", s).add("world", destination.getName()));
 				}).callableArgument((sender, structure, args) -> {
-					if (args[1].equals("~") || StringUtils.isNumber(args[1]) || args[1].matches("[~0-9.+-]+"))
+					if (args[1].equals("~") || ParseUtils.isNumber(args[1]) || args[1].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[1]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					help(s, "usage");
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getX())) : Arrays.asList("{x}"))
 				.callableArgument((sender, structure, args) -> {
-					if (args[2].equals("~") || StringUtils.isNumber(args[2]) || args[2].matches("[~0-9.+-]+"))
+					if (args[2].equals("~") || ParseUtils.isNumber(args[2]) || args[2].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[2]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					help(s, "usage");
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getY())) : Arrays.asList("{y}"))
 				.callableArgument((sender, structure, args) -> { // tp world x y z
-					if (args[3].equals("~") || StringUtils.isNumber(args[3]) || args[3].matches("[~0-9.+-]+"))
+					if (args[3].equals("~") || ParseUtils.isNumber(args[3]) || args[3].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[3]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					Player p = (Player) s;
-					Location destination = new Location(Bukkit.getWorld(args[0]), StringUtils.calculate(args[1].replace("~", p.getLocation().getX() + "+0")),
-							StringUtils.calculate(args[2].replace("~", p.getLocation().getY() + "+0")), StringUtils.calculate(args[3].replace("~", p.getLocation().getZ() + "+0")),
+					Location destination = new Location(Bukkit.getWorld(args[0]), MathUtils.calculate(args[1].replace("~", p.getLocation().getX() + "+0")),
+							MathUtils.calculate(args[2].replace("~", p.getLocation().getY() + "+0")), MathUtils.calculate(args[3].replace("~", p.getLocation().getZ() + "+0")),
 							p.getLocation().getYaw(), p.getLocation().getPitch());
 					TpSystem.teleport(p, destination);
 					msgSec(s, "self-world-loc",
@@ -270,22 +269,21 @@ public class Tp implements ScrCommand {
 									.add("yaw", StringUtils.formatDouble(FormatType.BASIC, destination.getYaw())).add("pitch", StringUtils.formatDouble(FormatType.BASIC, destination.getPitch())));
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getZ())) : Arrays.asList("{z}"))
 				.callableArgument((sender, structure, args) -> { // yaw
-					if (args[4].equals("~") || StringUtils.isNumber(args[4]) || args[4].matches("[~0-9.+-]+"))
+					if (args[4].equals("~") || ParseUtils.isNumber(args[4]) || args[4].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[4]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					help(s, "usage");
 				}, (s, structure, args) -> s instanceof Player ? Arrays.asList("~", StringUtils.formatDouble(FormatType.BASIC, ((Player) s).getLocation().getYaw())) : Arrays.asList("{yaw}"))
 				.callableArgument((sender, structure, args) -> { // pitch
-					if (args[5].equals("~") || StringUtils.isNumber(args[5]) || args[5].matches("[~0-9.+-]+"))
+					if (args[5].equals("~") || ParseUtils.isNumber(args[5]) || args[5].matches("[~0-9.+-]+"))
 						return Arrays.asList(args[5]);
 					return Arrays.asList("~");
 				}, (s, structure, args) -> {
 					Player p = (Player) s;
-					Location destination = new Location(Bukkit.getWorld(args[0]), StringUtils.calculate(args[1].replace("~", p.getLocation().getX() + "+0")),
-							StringUtils.calculate(args[2].replace("~", p.getLocation().getY() + "+0")), StringUtils.calculate(args[3].replace("~", p.getLocation().getZ() + "+0")),
-							(float) StringUtils.calculate(args[4].replace("~", p.getLocation().getYaw() + "+0")),
-							(float) StringUtils.calculate(args[5].replace("~", p.getLocation().getPitch() + "+0")));
+					Location destination = new Location(Bukkit.getWorld(args[0]), MathUtils.calculate(args[1].replace("~", p.getLocation().getX() + "+0")),
+							MathUtils.calculate(args[2].replace("~", p.getLocation().getY() + "+0")), MathUtils.calculate(args[3].replace("~", p.getLocation().getZ() + "+0")),
+							(float) MathUtils.calculate(args[4].replace("~", p.getLocation().getYaw() + "+0")), (float) MathUtils.calculate(args[5].replace("~", p.getLocation().getPitch() + "+0")));
 					TpSystem.teleport(p, destination);
 					msgSec(s, "self-world-loc",
 							Placeholders.c().addPlayer("player", s).add("world", destination.getWorld().getName()).add("x", StringUtils.formatDouble(FormatType.BASIC, destination.getX()))

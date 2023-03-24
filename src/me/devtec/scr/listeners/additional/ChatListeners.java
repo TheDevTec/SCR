@@ -1,6 +1,7 @@
 package me.devtec.scr.listeners.additional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +29,7 @@ import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.components.ComponentAPI;
 import me.devtec.shared.json.Json;
 import me.devtec.shared.placeholders.PlaceholderAPI;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ColorUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 import me.devtec.theapi.bukkit.nms.NmsProvider.ChatType;
 
@@ -103,7 +104,7 @@ public class ChatListeners implements Listener {
 			String format_path = ChatFormat.getPath(player);
 
 			if (Loader.chat.exists(format_path + ".message")) // Adding config message color
-				message = StringUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".message"), player)).replace("%message%",
+				message = ColorUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".message"), player), Arrays.asList("%message%")).replace("%message%",
 						Colors.colorize(message, false, player, players));
 			else
 				message = Colors.colorize(message, false, player, players);
@@ -115,7 +116,7 @@ public class ChatListeners implements Listener {
 			if (message != null) {
 				e.setMessage(message); // for console
 				setFormat(player, e.getRecipients(), format_path, Placeholders.c().addPlayer("player", player).add("message", message).add("playername",
-						StringUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".playername"), player))), e);
+						ColorUtils.colorize(PlaceholderAPISupport.replace(Loader.chat.getString(format_path + ".playername"), player))), e);
 				e.getRecipients().clear();
 
 			}
@@ -190,7 +191,7 @@ public class ChatListeners implements Listener {
 			if (entry.getKey().equals("text")) {
 				String text = entry.getValue() + "";
 
-				text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
+				text = ColorUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
 				text = MessageUtils.placeholder(s, text, placeholders);
 				entry.setValue(text);
 				continue;
@@ -214,7 +215,7 @@ public class ChatListeners implements Listener {
 						else {
 							String text = val + "";
 
-							text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null));
+							text = ColorUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null));
 							text = MessageUtils.placeholder(s, text, placeholders);
 							itr.set(text);
 						}
@@ -223,7 +224,7 @@ public class ChatListeners implements Listener {
 				}
 				String text = entry.getValue() + "";
 
-				text = StringUtils.colorize(PlaceholderAPI.apply(text, ((Player) s).getUniqueId()));
+				text = ColorUtils.colorize(PlaceholderAPI.apply(text, ((Player) s).getUniqueId()));
 				text = MessageUtils.placeholder(s, text, placeholders);
 				entry.setValue(text);
 			}
@@ -234,7 +235,7 @@ public class ChatListeners implements Listener {
 	private static void msg(CommandSender s, Set<Player> set, String original, Placeholders placeholders, AsyncPlayerChatEvent event) {
 		String text = original;
 		// first replacing chat palceholders, then adding %message% from player
-		text = MessageUtils.placeholder(s, StringUtils.colorize(PlaceholderAPISupport.replace(text, s)), placeholders);
+		text = MessageUtils.placeholder(s, ColorUtils.colorize(PlaceholderAPISupport.replace(text, s)), placeholders);
 		event.setFormat(text.replace("%", "%%"));
 		BukkitLoader.getPacketHandler().send(set, BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, ComponentAPI.fromString(text)));
 	}

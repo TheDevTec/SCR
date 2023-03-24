@@ -32,7 +32,7 @@ import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.Ref;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.scheduler.Tasker;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ColorUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class PlayerJoin implements Listener {
@@ -53,7 +53,7 @@ public class PlayerJoin implements Listener {
 						kick.append(s);
 					else
 						kick.append(s).append("\n");
-				e.disallow(Result.KICK_WHITELIST, StringUtils.colorize(PlaceholderAPISupport.replace(kick.toString(), p)));
+				e.disallow(Result.KICK_WHITELIST, ColorUtils.colorize(PlaceholderAPISupport.replace(kick.toString(), p)));
 				return;
 			}
 			API.getUser(p); // Load user async

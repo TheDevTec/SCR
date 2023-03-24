@@ -17,7 +17,7 @@ import me.devtec.shared.components.ComponentAPI;
 import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.json.Json;
 import me.devtec.shared.placeholders.PlaceholderAPI;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ColorUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 import me.devtec.theapi.bukkit.nms.NmsProvider.ChatType;
 
@@ -163,7 +163,7 @@ public class MessageUtils {
 
 	// Other
 	public static void msgConsole(String message, Placeholders placehholders) {
-		Bukkit.getConsoleSender().sendMessage(StringUtils.colorize(placeholder(null, message, placehholders)));
+		Bukkit.getConsoleSender().sendMessage(ColorUtils.colorize(placeholder(null, message, placehholders)));
 	}
 
 	public static void sendAnnoucment(String message, CommandSender... targets) { // AutoMessage annoucments
@@ -256,7 +256,7 @@ public class MessageUtils {
 				String text = entry.getValue() + "";
 
 				text = placeholder(s, text, placeholders);
-				text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
+				text = ColorUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
 				entry.setValue(text);
 				continue;
 			}
@@ -280,8 +280,8 @@ public class MessageUtils {
 							String text = val + "";
 
 							text = placeholder(s, text, placeholders);
-							text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null));
-							// text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ?
+							text = ColorUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null));
+							// text = ColorUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ?
 							// ((Player) s).getUniqueId() : null));
 							itr.set(text);
 						}
@@ -291,8 +291,8 @@ public class MessageUtils {
 				String text = entry.getValue() + "";
 
 				text = placeholder(s, text, placeholders);
-				text = StringUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null));
-				// text = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ?
+				text = ColorUtils.colorize(PlaceholderAPISupport.replace(text, s, true, null));
+				// text = ColorUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ?
 				// ((Player) s).getUniqueId() : null));
 				entry.setValue(text);
 			}
@@ -301,7 +301,7 @@ public class MessageUtils {
 
 	private static void msg(CommandSender s, String original, Placeholders placeholders, boolean split, CommandSender... targets) {
 		String text = original;
-		text = StringUtils.colorize(placeholder(s, text, placeholders));
+		text = ColorUtils.colorize(placeholder(s, text, placeholders));
 		if (split) {
 			String lastcolor = null;
 			for (String line : text.replace("\\n", "\n").split("\n")) {
@@ -317,17 +317,17 @@ public class MessageUtils {
 						build.append("&").append(c);
 					lastcolor = build.toString();
 				}
-				String coloredText = StringUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, s, true, null));
+				String coloredText = ColorUtils.colorize(PlaceholderAPISupport.replace(lastcolor == null ? line : lastcolor + "" + line, s, true, null));
 				Object packet = BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, ComponentAPI.fromString(coloredText));
 				for (CommandSender target : targets)
 					if (target instanceof Player)
 						BukkitLoader.getPacketHandler().send((Player) target, packet);
 					else
 						target.sendMessage(coloredText);
-				lastcolor = StringUtils.getLastColors(StringUtils.colorize(line));
+				lastcolor = ColorUtils.getLastColors(ColorUtils.colorize(line));
 			}
 		} else {
-			String coloredText = StringUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
+			String coloredText = ColorUtils.colorize(PlaceholderAPI.apply(text, s instanceof Player ? ((Player) s).getUniqueId() : null));
 			Object packet = BukkitLoader.getNmsProvider().packetChat(ChatType.SYSTEM, ComponentAPI.fromString(coloredText));
 			for (CommandSender target : targets)
 				if (target instanceof Player)

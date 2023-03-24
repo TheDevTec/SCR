@@ -17,7 +17,7 @@ import me.devtec.shared.dataholder.Config;
 import me.devtec.shared.placeholders.PlaceholderAPI;
 import me.devtec.shared.scheduler.Scheduler;
 import me.devtec.shared.scheduler.Tasker;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ColorUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 import me.devtec.theapi.bukkit.scoreboard.ScoreboardAPI;
 import me.devtec.theapi.bukkit.scoreboard.SimpleScore;
@@ -173,8 +173,8 @@ public class ScoreboardManager {
 		}
 
 		public void colorize() {
-			title = StringUtils.colorize(title);
-			lines = StringUtils.colorize(lines);
+			title = ColorUtils.colorize(title);
+			lines = ColorUtils.colorize(lines);
 		}
 	}
 }

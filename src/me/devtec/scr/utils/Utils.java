@@ -4,7 +4,7 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import me.devtec.scr.Loader;
 import me.devtec.scr.api.User;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.TimeUtils;
 
 public class Utils {
 
@@ -16,7 +16,7 @@ public class Utils {
 		String permcooldown = "0";
 		for (PermissionAttachmentInfo permission : user.getPlayer().getEffectivePermissions())
 			if (permission.getPermission().toLowerCase().startsWith("scr.bypass.cooldowns." + command.toLowerCase()))
-				permcooldown = "" + StringUtils.timeFromString(permission.getPermission().toLowerCase().replace("scr.bypass.cooldowns." + command.toLowerCase() + ".", ""));
+				permcooldown = "" + TimeUtils.timeFromString(permission.getPermission().toLowerCase().replace("scr.bypass.cooldowns." + command.toLowerCase() + ".", ""));
 		if (!permcooldown.equalsIgnoreCase("0")) {
 			if (!user.cooldownExpired("permcommands." + command, permcooldown))
 				return false;
@@ -49,7 +49,7 @@ public class Utils {
 		String permcooldown = "0";
 		for (PermissionAttachmentInfo permission : user.getPlayer().getEffectivePermissions())
 			if (permission.getPermission().toLowerCase().startsWith("scr.bypass.cooldowns." + command.toLowerCase()))
-				permcooldown = "" + StringUtils.timeFromString(permission.getPermission().toLowerCase().replace("scr.bypass.cooldowns." + command.toLowerCase() + ".", ""));
+				permcooldown = "" + TimeUtils.timeFromString(permission.getPermission().toLowerCase().replace("scr.bypass.cooldowns." + command.toLowerCase() + ".", ""));
 		if (!permcooldown.equalsIgnoreCase("0"))
 			return user.cooldownExpire("permcommands." + command, permcooldown);
 		// SCR Command cooldown

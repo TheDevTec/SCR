@@ -8,7 +8,7 @@ import me.devtec.scr.Loader;
 import me.devtec.scr.commands.ScrCommand;
 import me.devtec.scr.commands.server_managment.rrs.RRSTask.TaskType;
 import me.devtec.shared.commands.structures.CommandStructure;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.TimeUtils;
 
 public class Stop implements ScrCommand {
 
@@ -18,7 +18,7 @@ public class Stop implements ScrCommand {
 			RRSTask.startTask(TaskType.STOP, Loader.config.getInt("rrs.stop.baseTime"));
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // perm
 				.argument(null, (s, structure, args) -> { // cmd {time}
-					int time = (int) StringUtils.timeFromString(args[0]);
+					int time = (int) TimeUtils.timeFromString(args[0]);
 					if (time > 0)
 						RRSTask.startTask(TaskType.STOP, time);
 					else

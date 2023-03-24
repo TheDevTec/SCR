@@ -6,7 +6,9 @@ import org.bukkit.Bukkit;
 
 import me.devtec.scr.Loader;
 import me.devtec.scr.MessageUtils.Placeholders;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ColorUtils;
+import me.devtec.shared.utility.ParseUtils;
+import me.devtec.shared.utility.TimeUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class MOTD {
@@ -22,7 +24,7 @@ public class MOTD {
 	// (START
 	// - System.currentTimeMillis() / 1000 + TIME <= 0)
 	private static String getChangingUsed() {
-		long time = StringUtils.timeFromString(Loader.config.getString("serverlist.change_after"));
+		long time = TimeUtils.timeFromString(Loader.config.getString("serverlist.change_after"));
 		long start = Loader.data.getLong("serverlist.start");
 		if (start - System.currentTimeMillis() / 1000 + time <= 0) { // if time expired
 
@@ -59,7 +61,7 @@ public class MOTD {
 
 	public static String getMotd(String motd) {
 		if (Loader.config.exists("serverlist." + motd + ".motd.0") && Loader.config.exists("serverlist." + motd + ".motd.1"))
-			return StringUtils.colorize(Loader.config.getString("serverlist." + motd + ".motd.0") + "\n" + Loader.config.getString("serverlist." + motd + ".motd.1"));
+			return ColorUtils.colorize(Loader.config.getString("serverlist." + motd + ".motd.0") + "\n" + Loader.config.getString("serverlist." + motd + ".motd.1"));
 		return null;
 	}
 
@@ -86,7 +88,7 @@ public class MOTD {
 			break;
 		}
 
-		return StringUtils
+		return ParseUtils
 				.getInt(PlaceholderAPISupport.replace(text, null, false, Placeholders.c().add("online", online + "").add("online_real", rOnline + "").add("max_players", getMaxPlayers() + "")));
 	}
 
@@ -97,12 +99,12 @@ public class MOTD {
 	public static List<String> getList(String motd) {
 		List<String> list = Loader.config.getStringList("serverlist." + motd + ".players.list");
 		list.replaceAll(a -> PlaceholderAPISupport.replace(a, null, true, null));
-		return StringUtils.colorize(list);
+		return ColorUtils.colorize(list);
 	}
 
 	public static String getVersion(String motd) {
 		if (Loader.config.exists("serverlist." + motd + ".serverversion") && !Loader.config.getString("serverlist." + motd + ".serverversion").isEmpty())
-			return StringUtils.colorize(Loader.config.getString("serverlist." + motd + ".serverversion"));
+			return ColorUtils.colorize(Loader.config.getString("serverlist." + motd + ".serverversion"));
 		return null;
 	}
 

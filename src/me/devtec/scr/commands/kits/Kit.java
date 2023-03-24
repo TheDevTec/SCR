@@ -17,7 +17,7 @@ import me.devtec.scr.commands.message.Sudo.SudoType;
 import me.devtec.scr.utils.PlaceholderAPISupport;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.TimeUtils;
 import net.milkbowl.vault.economy.Economy;
 
 public class Kit implements ScrCommand {
@@ -59,15 +59,15 @@ public class Kit implements ScrCommand {
 			 * Placeholders.c().addPlayer("player", s))); //MESSAGE
 			 * if(kit.config.exists("messages")) MessageUtils.msgConfig(s, "messages",
 			 * kit.config, Placeholders.c() .add("cooldown",
-			 * StringUtils.timeFromString(kit.getCooldownTime())) .add("kit",
+			 * TimeUtils.timeFromString(kit.getCooldownTime())) .add("kit",
 			 * kit.displayName()).add("kit_name", kit.getName()) .add("cost", ((Economy)
 			 * Loader.economy).format( ScrEconomy.balanceFromString(kit.getCost()))) ); else
 			 * msgSec(s, "used", Placeholders.c() .add("cooldown",
-			 * StringUtils.timeFromString(kit.getCooldownTime())) .add("kit",
+			 * TimeUtils.timeFromString(kit.getCooldownTime())) .add("kit",
 			 * kit.displayName()).add("kit_name", kit.getName()) .add("cost", ((Economy)
 			 * Loader.economy).format( ScrEconomy.balanceFromString(kit.getCost()))) ); }
 			 * else { // cooldown msg msgSec(s, "cooldown", Placeholders.c() .add("time",
-			 * StringUtils.timeToString(u.expires("kits."+kit.getName(),
+			 * TimeUtils.timeToString(u.expires("kits."+kit.getName(),
 			 * kit.getCooldownTime()))) .add("kit", kit.displayName()).add("kit_name",
 			 * kit.getName())); return; } } else { // no perms MessageUtils.noPerm(s,
 			 * kit.permission()); return; }
@@ -146,16 +146,16 @@ public class Kit implements ScrCommand {
 						Sudo.sudoConsole(SudoType.COMMAND, PlaceholderAPISupport.replace(cmd, target, Placeholders.c().addPlayer("player", target)));
 				// MESSAGE
 				if (!silent && kit.config.exists("messages"))
-					MessageUtils.msgConfig(target, "messages", kit.config, Placeholders.c().add("cooldown", StringUtils.timeFromString(kit.getCooldownTime())).add("kit", kit.displayName())
+					MessageUtils.msgConfig(target, "messages", kit.config, Placeholders.c().add("cooldown", TimeUtils.timeFromString(kit.getCooldownTime())).add("kit", kit.displayName())
 							.add("kit_name", kit.getName()).add("cost", ((Economy) Loader.economy).format(ScrEconomy.balanceFromString(kit.getCost()))));
 				else if (!silent)
-					msgSec(target, "give.receiver", Placeholders.c().addPlayer("target", target).add("cooldown", StringUtils.timeFromString(kit.getCooldownTime())).add("kit", kit.displayName())
+					msgSec(target, "give.receiver", Placeholders.c().addPlayer("target", target).add("cooldown", TimeUtils.timeFromString(kit.getCooldownTime())).add("kit", kit.displayName())
 							.add("kit_name", kit.getName()).add("cost", ((Economy) Loader.economy).format(ScrEconomy.balanceFromString(kit.getCost()))));
 				if (!sender.getName().equalsIgnoreCase(target.getName()))
-					msgSec(sender, "give.sender", Placeholders.c().addPlayer("target", target).add("cooldown", StringUtils.timeFromString(kit.getCooldownTime())).add("kit", kit.displayName())
+					msgSec(sender, "give.sender", Placeholders.c().addPlayer("target", target).add("cooldown", TimeUtils.timeFromString(kit.getCooldownTime())).add("kit", kit.displayName())
 							.add("kit_name", kit.getName()).add("cost", ((Economy) Loader.economy).format(ScrEconomy.balanceFromString(kit.getCost()))));
 			} else
-				msgSec(target, "cooldown", Placeholders.c().add("time", StringUtils.timeToString(u.cooldownExpire("kits." + kit.getName(), kit.getCooldownTime()))).add("kit", kit.displayName())
+				msgSec(target, "cooldown", Placeholders.c().add("time", TimeUtils.timeToString(u.cooldownExpire("kits." + kit.getName(), kit.getCooldownTime()))).add("kit", kit.displayName())
 						.add("kit_name", kit.getName()));
 		} else
 			MessageUtils.noPerm(target, kit.permission());

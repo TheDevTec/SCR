@@ -21,6 +21,7 @@ import me.devtec.scr.listeners.commands.PluginEnable;
 import me.devtec.scr.utils.Utils;
 import me.devtec.shared.commands.manager.PermissionChecker;
 import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.TimeUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public interface ScrCommand {
@@ -129,7 +130,7 @@ public interface ScrCommand {
 		if (!Utils.cooldownExpired(user, configSection())) { // Cooldown check
 			// if cooldownExpired == true -> no cooldown
 			MessageUtils.message(sender, "cooldowns.commands",
-					Placeholders.c().replace("time", StringUtils.timeToString(Utils.expires(user, configSection()))).replace("time_sec", Utils.expires(user, configSection())));
+					Placeholders.c().replace("time", TimeUtils.timeToString(Utils.expires(user, configSection()))).replace("time_sec", Utils.expires(user, configSection())));
 			return true; // switching booleans, beacause there is isCommandInCooldown? true ==> is
 							// cooldown
 		}

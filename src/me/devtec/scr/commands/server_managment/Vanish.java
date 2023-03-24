@@ -20,7 +20,7 @@ import me.devtec.scr.listeners.additional.PlayerQuit;
 import me.devtec.shared.Ref;
 import me.devtec.shared.commands.selectors.Selector;
 import me.devtec.shared.commands.structures.CommandStructure;
-import me.devtec.shared.utility.StringUtils;
+import me.devtec.shared.utility.ParseUtils;
 import me.devtec.theapi.bukkit.BukkitLoader;
 
 public class Vanish implements ScrCommand {
@@ -66,13 +66,13 @@ public class Vanish implements ScrCommand {
 		}).cooldownDetection((s, structure, args) -> inCooldown(s)).permission(permission("cmd")) // perm
 				.selector(Selector.BOOLEAN, (s, structure, args) -> {
 					if (s instanceof Player)
-						apply(s, (Player) s, StringUtils.getBoolean(args[0]));
+						apply(s, (Player) s, ParseUtils.getBoolean(args[0]));
 					else
 						help(s, "usage");
 				}).first().selector(Selector.PLAYER, (s, structure, args) -> {
 					toggle(s, Bukkit.getPlayer(args[0]));
 				}).selector(Selector.BOOLEAN, (s, structure, args) -> {
-					apply(s, Bukkit.getPlayer(args[0]), StringUtils.getBoolean(args[1]));
+					apply(s, Bukkit.getPlayer(args[0]), ParseUtils.getBoolean(args[1]));
 				}).build().register(cmds.remove(0), cmds.toArray(new String[0]));
 	}
 
