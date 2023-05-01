@@ -4,6 +4,7 @@ import java.io.File;
 
 import me.devtec.scr.commands.CustomCommands;
 import me.devtec.scr.commands.kits.KitUtils;
+import me.devtec.scr.commands.teleport.warp.Warp;
 import me.devtec.scr.functions.AutoAnnouncements;
 import me.devtec.scr.functions.SmartNightSkipping;
 import me.devtec.scr.functions.guis.GUIManager;
@@ -68,6 +69,7 @@ public class Configs {
 
 	@Deprecated
 	public static void loadConfigs() {
+		Warp.storedWarps = new Config("plugins/SCR/warps.yml");
 		Loader.config = loadAndMerge("config.yml", "config.yml");
 		AutoAnnouncements.loadtask(); // in config.yml
 		SmartNightSkipping.unload();

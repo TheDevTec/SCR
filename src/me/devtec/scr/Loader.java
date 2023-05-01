@@ -75,6 +75,12 @@ public class Loader extends JavaPlugin {
 	@Override
 	public void onLoad() {
 		plugin = this;
+	}
+
+	private PlaceholderExpansion papi_theapi;
+
+	@Override
+	public void onEnable() {
 		Configs.loadConfigs(); // Loading all configs
 
 		if (Bukkit.getPluginManager().getPlugin("Vault") != null && Ref.getClass("net.milkbowl.vault.economy.Economy") != null) {
@@ -88,12 +94,6 @@ public class Loader extends JavaPlugin {
 				Bukkit.getServicesManager().register(Economy.class, (ScrEconomy) economy, this, ServicePriority.Normal);
 			}
 		}
-	}
-
-	private PlaceholderExpansion papi_theapi;
-
-	@Override
-	public void onEnable() {
 		// Did you reload plugin?!!?!?
 		for (Player player : BukkitLoader.getOnlinePlayers())
 			API.getUser(player).notifyJoin(player, false);
